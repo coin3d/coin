@@ -123,6 +123,7 @@ RegularSources = \
 	SoChildList.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \
+	SoGLBigImage.cpp \
 	SoGlyph.cpp \
 	SoNormalGenerator.cpp \
 	SoNotification.cpp \
@@ -172,6 +173,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/misc/SoGL.h \
 	$(top_srcdir)/include/Inventor/misc/SoGLImage.h \
+	$(top_srcdir)/include/Inventor/misc/SoGLBigImage.h \
 	$(top_srcdir)/include/Inventor/misc/SoGlyph.h \
 	$(top_srcdir)/include/Inventor/misc/SoGenerate.h \
 	GLUWrapper.h \
@@ -241,18 +243,18 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS = all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc_la_OBJECTS = SoBase.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoChildList.lo SoGL.lo SoGLImage.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoGlyph.lo SoNormalGenerator.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoNotification.lo SoState.lo SoDB.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoFullPath.lo SoTempPath.lo SoLightPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoInput.lo SoInteraction.lo SoOutput.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoPath.lo SoPickedPoint.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoPrimitiveVertex.lo SoSceneManager.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoType.lo SoOffscreenRenderer.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoGenerate.lo SoLockManager.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoByteStream.lo SoTranSender.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@ default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@ simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@ SoGLBigImage.lo SoGlyph.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalGenerator.lo SoNotification.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoState.lo SoDB.lo SoFullPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTempPath.lo SoLightPath.lo SoInput.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInteraction.lo SoOutput.lo SoPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickedPoint.lo SoPrimitiveVertex.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSceneManager.lo SoType.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoOffscreenRenderer.lo SoGenerate.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLockManager.lo SoByteStream.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranSender.lo SoTranReceiver.lo \
+@HACKING_COMPACT_BUILD_FALSE@ default3dfont.lo default2dfont.lo \
+@HACKING_COMPACT_BUILD_FALSE@ GLUWrapper.lo simage_wrapper.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS = 
 libmisc@SUFFIX@LINKHACK_la_LIBADD = 
@@ -260,7 +262,7 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@ all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@ SoBase.lo SoChildList.lo SoGL.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoGLImage.lo SoGlyph.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLImage.lo SoGLBigImage.lo SoGlyph.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoNormalGenerator.lo SoNotification.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTempPath.lo SoLightPath.lo SoInput.lo \
@@ -297,6 +299,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@ $(DEPDIR)/SoChildList.Plo $(DEPDIR)/SoChildList.Po \
 @AMDEP@ $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
 @AMDEP@ $(DEPDIR)/SoFullPath.Po $(DEPDIR)/SoGL.Plo $(DEPDIR)/SoGL.Po \
+@AMDEP@ $(DEPDIR)/SoGLBigImage.Plo $(DEPDIR)/SoGLBigImage.Po \
 @AMDEP@ $(DEPDIR)/SoGLFaceSetTemplate.Plo \
 @AMDEP@ $(DEPDIR)/SoGLFaceSetTemplate.Po $(DEPDIR)/SoGLImage.Plo \
 @AMDEP@ $(DEPDIR)/SoGLImage.Po $(DEPDIR)/SoGLLineSetTemplate.Plo \
@@ -460,6 +463,8 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoFullPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGL.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoGL.Po
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLBigImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLBigImage.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLFaceSetTemplate.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLFaceSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLImage.Plo

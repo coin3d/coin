@@ -33,8 +33,9 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -126,7 +127,7 @@ SoTexture2::SoTexture2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
-  this->glimage = new SoGLImage();
+  this->glimage = NULL;
   this->glimagevalid = FALSE;
   this->readstatus = 1;
 
@@ -205,6 +206,23 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     SbVec2s size;
     const unsigned char * bytes =
       this->image.getValue(size, nc);
+    SbBool needbig =
+      SoTextureScalePolicyElement::get(state) ==
+      SoTextureScalePolicyElement::DONT_SCALE;
+
+    if (needbig &&
+        (this->glimage == NULL ||
+         this->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (this->glimage) this->glimage->unref(state);
+      this->glimage = new SoGLBigImage();
+    }
+    else if (!needbig &&
+             (this->glimage == NULL ||
+              this->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (this->glimage) this->glimage->unref(state);
+      this->glimage = new SoGLImage();
+    }
+
     if (bytes && size != SbVec2s(0,0)) {
       this->glimage->setData(bytes, size, nc,
                              translateWrap((Wrap)this->wrapS.getValue()),
@@ -212,7 +230,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       this->glimagevalid = TRUE;
     }
   }
-  
+
   SoGLTextureImageElement::set(state, this,
                                this->glimagevalid ? this->glimage : NULL,
                                (SoTextureImageElement::Model) model.getValue(),
@@ -257,7 +275,7 @@ SoTexture2::doAction(SoAction * action)
                                (int)this->wrapT.getValue(),
                                (int)this->wrapS.getValue(),
                                (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());    
+                               this->blendColor.getValue());
   }
   else {
     SoTextureImageElement::setDefault(state, this);

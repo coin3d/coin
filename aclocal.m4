@@ -1252,8 +1252,11 @@ fi
 # Cygwin, using the Microsoft Visual C++ compiler (the configure script will
 # pick the GCC preprocessor).
 
-AC_DEFUN([SIM_AC_CHECK_HEADER], [
-AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+AC_DEFUN([SIM_AS_TR_CPP],
+[m4_ifdef([AS_TR_CPP],[AS_TR_CPP([$1])],[AC_TR_CPP([$1])])])
+
+AC_DEFUN([SIM_AC_CHECK_HEADER],
+[AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
 AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>])
 AC_CACHE_CHECK(
   [for $1],
@@ -1279,7 +1282,7 @@ AC_DEFUN([SIM_AC_CHECK_HEADERS],
 do
 SIM_AC_CHECK_HEADER(
   [$ac_header],
-  [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
+  [AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(HAVE_$ac_header)) $2],
   [$3])
 done
 ])# SIM_AC_CHECK_HEADERS
@@ -1303,8 +1306,7 @@ AC_CHECK_TYPE([$1], [
 # 
 # FIXME: pretty ugly code with several quick hacks. 20010324 mortene.
 AC_DEFUN([SIM_AC_BYTESIZE_TYPE],
-[
-sim_ac_searching=true
+[sim_ac_searching=true
 for sim_ac_type in $1 $3
 do
   if $sim_ac_searching; then
@@ -1324,9 +1326,9 @@ do
     if test "$sim_ac_bytesize" = "$2"; then
       sim_ac_searching=false
       if test "$sim_ac_type" = "$1"; then
-        AC_DEFINE_UNQUOTED(AC_TR_CPP(have_$1), 1, [define this if the type is available on the system])
+        AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
       fi
-      AC_DEFINE_UNQUOTED(AC_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
+      AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
     fi
   fi
 done

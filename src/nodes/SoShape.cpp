@@ -51,8 +51,11 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoCullElement.h>
 
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -63,6 +66,13 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
+#include <Inventor/SbClip.h>
+
+// SoShape.cpp grew too big, so I had to move some code into
+// three new files. pederb, 2001-07-18
+#include "soshape_primdata.h"
+#include "soshape_trianglesort.h"
+#include "soshape_bigtexture.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -88,313 +98,6 @@
   \fn void SoShape::generatePrimitives(SoAction * action)
   \internal
 */
-
-// *************************************************************************
-
-// Private class.
-
-class shapePrimitiveData {
-public:
-  shapePrimitiveData() {
-    this->counter = 0;
-    this->action = NULL;
-    this->shape = NULL;
-    this->faceCounter = 0;
-    this->arraySize = 4;
-    this->vertsArray = new SoPrimitiveVertex[this->arraySize];
-    this->pointDetails = new SoPointDetail[this->arraySize];
-    this->tess = new SbTesselator();
-    this->faceDetail = NULL;
-    this->lineDetail = NULL;
-  }
-  ~shapePrimitiveData() {
-    delete [] this->vertsArray;
-    delete [] this->pointDetails;
-    delete this->tess;
-  }
-
-  void beginShape(SoShape * shape, SoAction * action,
-                  SoShape::TriangleShape shapetype,
-                  SoDetail * detail) {
-    this->shape = shape;
-    this->action = action;
-    this->shapetype = shapetype;
-    // this is a hack. Only one of these will be used, and the
-    // other one is an illegal cast.
-    this->faceDetail = (SoFaceDetail *)detail;
-    this->lineDetail = (SoLineDetail *)detail;
-    this->counter = 0;
-  }
-  void endShape() {
-    if (this->shapetype == SoShape::POLYGON) {
-      this->handleFaceDetail(this->counter);
-
-      if (SoShapeHintsElement::getFaceType(action->getState()) ==
-          SoShapeHintsElement::CONVEX) {
-        for (int i = 1; i < this->counter-1; i++) {
-          this->shape->invokeTriangleCallbacks(this->action,
-                                               &vertsArray[0],
-                                               &vertsArray[i],
-                                               &vertsArray[i+1]);
-        }
-      }
-      else {
-        this->tess->setCallback(shapePrimitiveData::tess_callback, this);
-        this->tess->beginPolygon(TRUE);
-        for (int i = 0; i < counter; i++) {
-          this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
-        }
-        this->tess->endPolygon();
-      }
-    }
-  }
-
-  void shapeVertex(const SoPrimitiveVertex * const v) {
-    switch (shapetype) {
-    case SoShape::TRIANGLE_STRIP:
-      if (this->counter >= 3) {
-        if (this->counter & 1) this->copyVertex(2, 0);
-        else this->copyVertex(2, 1);
-      }
-      this->setVertex(SbMin(this->counter, 2), v);
-      this->counter++;
-      if (this->counter >= 3) {
-        this->handleFaceDetail(3);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[1],
-                                             &vertsArray[2]);
-      }
-      break;
-    case SoShape::TRIANGLE_FAN:
-      if (this->counter == 3) {
-        this->copyVertex(2, 1);
-        this->setVertex(2, v);
-      }
-      else {
-        this->setVertex(this->counter++, v);
-      }
-      if (this->counter == 3) {
-        this->handleFaceDetail(3);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[1],
-                                             &vertsArray[2]);
-      }
-      break;
-    case SoShape::TRIANGLES:
-      this->setVertex(counter++, v);
-      if (this->counter == 3) {
-        this->handleFaceDetail(3);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[1],
-                                             &vertsArray[2]);
-        this->counter = 0;
-      }
-      break;
-    case SoShape::POLYGON:
-      if (this->counter >= this->arraySize) {
-        this->arraySize <<= 1;
-        SoPrimitiveVertex * newArray = new SoPrimitiveVertex[this->arraySize];
-        memcpy(newArray, this->vertsArray,
-               sizeof(SoPrimitiveVertex)* this->counter);
-        delete [] this->vertsArray;
-        this->vertsArray = newArray;
-
-        SoPointDetail * newparray = new SoPointDetail[this->arraySize];
-        memcpy(newparray, this->pointDetails,
-               sizeof(SoPointDetail)* this->counter);
-        delete [] this->pointDetails;
-        this->pointDetails = newparray;
-
-        if (this->faceDetail) {
-          for (int i = 0; i < this->counter; i++) {
-            this->vertsArray[i].setDetail(&this->pointDetails[i]);
-          }
-        }
-      }
-      this->setVertex(this->counter++, v);
-      break;
-    case SoShape::QUADS:
-      this->setVertex(this->counter++, v);
-      if (this->counter == 4) {
-        this->handleFaceDetail(4);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[1],
-                                             &vertsArray[2]);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[2],
-                                             &vertsArray[3]);
-        this->counter = 0;
-      }
-      break;
-    case SoShape::QUAD_STRIP:
-      this->setVertex(this->counter++, v);
-      if (counter == 4) {
-        // can't use handleFaceDetail(), because of the vertex
-        // order.
-        if (this->faceDetail) {
-          this->faceDetail->setNumPoints(4);
-          this->faceDetail->setPoint(0, &this->pointDetails[0]);
-          this->vertsArray[0].setDetail(this->faceDetail);
-          this->faceDetail->setPoint(1, &this->pointDetails[1]);
-          this->vertsArray[1].setDetail(this->faceDetail);
-          this->faceDetail->setPoint(2, &this->pointDetails[3]);
-          this->vertsArray[2].setDetail(this->faceDetail);
-          this->faceDetail->setPoint(3, &this->pointDetails[2]);
-          this->vertsArray[3].setDetail(this->faceDetail);
-        }
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[1],
-                                             &vertsArray[3]);
-        this->shape->invokeTriangleCallbacks(this->action,
-                                             &vertsArray[0],
-                                             &vertsArray[3],
-                                             &vertsArray[2]);
-        this->copyVertex(2, 0);
-        this->copyVertex(3, 1);
-        this->counter = 2;
-      }
-      break;
-    case SoShape::POINTS:
-      this->shape->invokePointCallbacks(this->action, v);
-      break;
-    case SoShape::LINES:
-      this->setVertex(this->counter++, v);
-      if (this->counter == 2) {
-        this->handleLineDetail();
-        this->shape->invokeLineSegmentCallbacks(this->action,
-                                                &vertsArray[0],
-                                                &vertsArray[1]);
-        this->counter = 0;
-      }
-      break;
-    case SoShape::LINE_STRIP:
-      this->setVertex(this->counter++, v);
-      if (this->counter == 2) {
-        this->handleLineDetail();
-        this->shape->invokeLineSegmentCallbacks(this->action,
-                                                &vertsArray[0],
-                                                &vertsArray[1]);
-        this->copyVertex(1, 0);
-        this->counter = 1;
-      }
-      break;
-    default:
-      assert(0 && "Unknown shape type");
-    }
-  }
-
-public:
-  SoShape::TriangleShape shapetype;
-  SoAction * action;
-  SoShape * shape;
-  SoPrimitiveVertex * vertsArray;
-  SoPointDetail * pointDetails;
-  SoFaceDetail * faceDetail;
-  SoLineDetail * lineDetail;
-  int arraySize;
-  int counter;
-  SbTesselator * tess;
-  int faceCounter;
-
-  void copyVertex(const int src, const int dest) {
-    this->vertsArray[dest] = this->vertsArray[src];
-    if (this->faceDetail) {
-      this->pointDetails[dest] = this->pointDetails[src];
-      this->vertsArray[dest].setDetail(&this->pointDetails[dest]);
-    }
-  }
-  void setVertex(const int idx, const SoPrimitiveVertex * const v) {
-    this->vertsArray[idx] = *v;
-    if (this->faceDetail) {
-      SoPointDetail * pd = (SoPointDetail *)v->getDetail();
-      assert(pd);
-      this->pointDetails[idx] = * pd;
-      this->vertsArray[idx].setDetail(&this->pointDetails[idx]);
-    }
-  }
-
-  void handleFaceDetail(const int numv) {
-    if (this->faceDetail) {
-      this->faceDetail->setNumPoints(numv);
-      for (int i = 0; i < numv; i++) {
-        this->faceDetail->setPoint(i, &this->pointDetails[i]);
-        this->vertsArray[i].setDetail(this->faceDetail);
-      }
-    }
-  }
-  void handleLineDetail(void) {
-    if (this->lineDetail) {
-      this->lineDetail->setPoint0(&this->pointDetails[0]);
-      this->lineDetail->setPoint1(&this->pointDetails[1]);
-    }
-  }
-
-  SoDetail * createPickDetail() {
-    switch (this->shapetype) {
-    case SoShape::TRIANGLE_STRIP:
-    case SoShape::TRIANGLE_FAN:
-    case SoShape::TRIANGLES:
-      {
-        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
-        detail->setNumPoints(3);
-        detail->setPoint(0, &this->pointDetails[0]);
-        detail->setPoint(1, &this->pointDetails[1]);
-        detail->setPoint(2, &this->pointDetails[2]);
-        return detail;
-      }
-    case SoShape::POLYGON:
-      {
-        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
-        detail->setNumPoints(this->counter);
-        for (int i = 0; i < this->counter; i++) {
-          detail->setPoint(i, &this->pointDetails[i]);
-        }
-        return detail;
-      }
-    case SoShape::QUADS:
-    case SoShape::QUAD_STRIP:
-      {
-        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
-        detail->setNumPoints(4);
-        detail->setPoint(0, &this->pointDetails[0]);
-        detail->setPoint(1, &this->pointDetails[1]);
-        detail->setPoint(2, &this->pointDetails[2]);
-        detail->setPoint(3, &this->pointDetails[3]);
-        return detail;
-      }
-    case SoShape::POINTS:
-      {
-        assert(0 && "should not get here");
-        return NULL;
-      }
-    case SoShape::LINES:
-    case SoShape::LINE_STRIP:
-      {
-        SoLineDetail * detail = (SoLineDetail *)this->lineDetail->copy();
-        detail->setPoint0(&this->pointDetails[0]);
-        detail->setPoint1(&this->pointDetails[1]);
-        return detail;
-      }
-    default:
-      assert(0 && "unknown shape type");
-      return NULL;
-    }
-  }
-
-  static void tess_callback(void * v0, void * v1, void * v2, void * data) {
-    shapePrimitiveData * thisp = (shapePrimitiveData *) data;
-    thisp->shape->invokeTriangleCallbacks(thisp->action,
-                                          (SoPrimitiveVertex *)v0,
-                                          (SoPrimitiveVertex *)v1,
-                                          (SoPrimitiveVertex *)v2);
-  }
-};
 
 // *************************************************************************
 
@@ -493,11 +196,11 @@ SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
   projmatrix = (SoModelMatrixElement::get(state) *
                 SoViewingMatrixElement::get(state) *
                 SoProjectionMatrixElement::get(state));
-  
+
   SbVec2s vpsize = SoViewportRegionElement::get(state).getViewportSizePixels();
   SbVec3f bmin, bmax;
   boundingbox.getBounds(bmin, bmax);
-  
+
   SbVec3f v;
   SbBox2f normbox;
   normbox.makeEmpty();
@@ -517,7 +220,7 @@ SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
   // pederb, 2001-05-20
   if (nx > 10.0f) nx = 10.0f;
   if (ny > 10.0f) ny = 10.0f;
-  
+
   rectsize[0] = (short) SbMin(32767.0f, float(vpsize[0])*0.5f*nx);
   rectsize[1] = (short) SbMin(32767.0f, float(vpsize[1])*0.5f*ny);
 }
@@ -564,35 +267,8 @@ SoShape::getComplexityValue(SoAction * action)
   }
 }
 
-typedef struct {
-  int idx : 31;
-  unsigned int backface : 1;
-  float dist;
-} sorted_triangle;
-
-static SbList <SoPrimitiveVertex> * transparencybuffer = NULL;
-static SbList <sorted_triangle> * sorted_triangle_list = NULL;
-static SbBool is_doing_sorted_rendering; // need this in invokeTriangleCallbacks()
-
-// qsort callback
-static int
-compare_triangles(const void * ptr1, const void * ptr2)
-{
-  sorted_triangle * tri1 = (sorted_triangle*) ptr1;
-  sorted_triangle * tri2 = (sorted_triangle*) ptr2;
-
-  if (tri1->dist > tri2->dist) return -1;
-  if (tri1->dist == tri2->dist) return tri2->backface - tri1->backface;
-  return 1;
-}
-
-// atexit callback
-static void
-soshape_cleanup_transparencybuffer(void)
-{
-  delete transparencybuffer;
-  delete sorted_triangle_list;
-}
+static SbBool is_doing_sorted_rendering;     // need this in invokeTriangleCallbacks()
+static SbBool is_doing_bigtexture_rendering;
 
 /*!
   \internal
@@ -671,129 +347,49 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
        (action->getTransparencyType() ==
         SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
 
-    if (transparencybuffer == NULL) {
-      transparencybuffer = new SbList <SoPrimitiveVertex>;
-      sorted_triangle_list = new SbList <sorted_triangle>;
-      atexit(soshape_cleanup_transparencybuffer);
-    }
-
     // do this before generating triangles to get correct
     // material for lines and point (only triangles are sorted).
     SoMaterialBundle mb(action);
     mb.sendFirst();
     currentBundle = &mb;
 
+    trisort_begin_shape(state);
+
     // this will render lines and points, and copy triangle vertices
     // into transparencybuffer.
-    transparencybuffer->truncate(0);
     is_doing_sorted_rendering = TRUE;
     this->generatePrimitives(action);
     is_doing_sorted_rendering = FALSE;
-    int i, n = transparencybuffer->getLength() / 3;
-    if (n == 0) return FALSE; // finished
-
-    const SoPrimitiveVertex * varray = transparencybuffer->getArrayPtr();
-
-    sorted_triangle_list->truncate(0);
-    sorted_triangle tri;
-
-    const SoPrimitiveVertex * v;
-    const SbMatrix & mm = SoModelMatrixElement::get(state);
-
-    SoShapeHintsElement::VertexOrdering vo;
-    SoShapeHintsElement::ShapeType st;
-    SoShapeHintsElement::FaceType ft;
-    SoShapeHintsElement::get(state, vo, st, ft);
-
-    SbBool bfcull = 
-      (vo != SoShapeHintsElement::UNKNOWN_ORDERING) &&
-      (st == SoShapeHintsElement::SOLID);
-
-    if (bfcull || vo == SoShapeHintsElement::UNKNOWN_ORDERING) {
-      SbPlane nearp = SoViewVolumeElement::get(state).getPlane(0.0f);
-      nearp = SbPlane(-nearp.getNormal(), -nearp.getDistanceFromOrigin());
-      // if back face culling is enabled, we can do less work
-      SbVec3f center;
-      for (i = 0; i < n; i++) {
-        int idx = i*3;
-        center.setValue(0.0f, 0.0f, 0.0f);
-        tri.idx = idx;
-        for (int j = 0; j < 3; j++) {
-          tri.backface = 0;
-          v = varray + idx + j;
-          center += v->getPoint();
-        }
-        center /= 3.0f;
-        mm.multVecMatrix(center, center);
-        tri.dist = nearp.getDistance(center);
-        sorted_triangle_list->append(tri);
-      }
-    }
-    else {
-      // project each point onto screen to find the vertex
-      // ordering of the triangle. Sort on vertex closest
-      // to the near plane.
-      SbMatrix obj2vp = 
-        mm * SoViewingMatrixElement::get(state) *
-        SoProjectionMatrixElement::get(state);
-      
-      int clockwise = (vo == SoShapeHintsElement::CLOCKWISE) ? 1 : 0;
-      SbVec3f c[3];
-      for (i = 0; i < n; i++) {
-        int idx = i*3;
-        tri.idx = idx;
-        // projected coordinates are between -1 and 1
-        float smalldist = 10.0f;
-        for (int j = 0; j < 3; j++) {
-          v = varray + idx + j;
-          c[j] = v->getPoint();
-          obj2vp.multVecMatrix(c[j], c[j]);
-          float dist = c[j][2];
-          if (dist < smalldist) smalldist = dist;
-        }
-        SbVec3f v0 = c[2]-c[0];
-        SbVec3f v1 = c[1]-c[0];
-        // we need only the z-component of the cross product
-        // to determine if triangle is cw or ccw
-        float cz = v0[0]*v1[1] - v0[1]*v1[0];
-        tri.backface = clockwise; 
-        if (cz < 0.0f) tri.backface = 1 - clockwise;
-        tri.dist = smalldist;
-        sorted_triangle_list->append(tri);
-      }
-    }
-
-    const sorted_triangle * tarray = sorted_triangle_list->getArrayPtr();
-    qsort((void*)tarray, n, sizeof(sorted_triangle), compare_triangles);
-
-    int idx;
     
-    // this rendering loop can be optimized a lot, of course, but speed
-    // is not so important here, since it's slow to generate, copy and
-    // sort the triangles anyway.
-    glBegin(GL_TRIANGLES);
-    for (i = 0; i < n; i++) {
-      idx = tarray[i].idx;
-      v = varray + idx;
-      glTexCoord4fv(v->getTextureCoords().getValue());
-      glNormal3fv(v->getNormal().getValue());
-      currentBundle->send(v->getMaterialIndex(), TRUE);
-      glVertex3fv(v->getPoint().getValue());
-
-      v = varray + idx+1;
-      glTexCoord4fv(v->getTextureCoords().getValue());
-      glNormal3fv(v->getNormal().getValue());
-      currentBundle->send(v->getMaterialIndex(), TRUE);
-      glVertex3fv(v->getPoint().getValue());
-
-      v = varray + idx+2;
-      glTexCoord4fv(v->getTextureCoords().getValue());
-      glNormal3fv(v->getNormal().getValue());
-      currentBundle->send(v->getMaterialIndex(), TRUE);
-      glVertex3fv(v->getPoint().getValue());
-    }
-    glEnd();
+    trisort_end_shape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
+  }
+
+  SoGLTextureImageElement::Model model;
+  SbColor blendcolor;
+  SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+  if (glimage && 
+      glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
+      SoGLTextureEnabledElement::get(state)) {
+    // do this before generating triangles to get correct
+    // material for lines and point (only triangles are handled for now).
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    currentBundle = &mb;
+
+    SoGLBigImage * big = (SoGLBigImage*) glimage;
+
+    is_doing_bigtexture_rendering = TRUE;
+
+    const int num = bigtexture_init(state, big, SoTextureQualityElement::get(state));
+
+    for (int i = 0; i < num; i++) {
+      bigtexture_subinit(state, i);
+      this->generatePrimitives(action);
+    }
+    is_doing_bigtexture_rendering = FALSE;
+
+    return FALSE;
   }
   return TRUE;
 }
@@ -1015,9 +611,10 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     if (is_doing_sorted_rendering) {
-      transparencybuffer->append(*v1);
-      transparencybuffer->append(*v2);
-      transparencybuffer->append(*v3);
+      trisort_triangle(action->getState(), v1, v2, v3);
+    }
+    else if (is_doing_bigtexture_rendering) {
+      bigtexture_triangle(action->getState(), *currentBundle, v1, v2, v3);
     }
     else {
       glBegin(GL_TRIANGLES);

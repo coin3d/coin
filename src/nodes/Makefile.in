@@ -221,7 +221,10 @@ RegularSources = \
 	SoVertexProperty.cpp \
 	SoVertexShape.cpp \
 	SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoWWWInline.cpp \
+	soshape_primdata.cpp \
+	soshape_bigtexture.cpp \
+	soshape_trianglesort.cpp
 
 LinkHackSources = \
 	all.cpp
@@ -334,7 +337,10 @@ PublicHeaders = \
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
 	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h
+	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_primdata.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_trianglesort.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_bigtexture.h 
 
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
@@ -440,7 +446,9 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoUnknownNode.lo SoVertexProperty.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo soshape_primdata.lo \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_bigtexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_trianglesort.lo
 libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS = 
 libnodes@SUFFIX@LINKHACK_la_LIBADD = 
@@ -496,7 +504,9 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoUnknownNode.lo SoVertexProperty.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo soshape_primdata.lo \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_bigtexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_trianglesort.lo
 libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 $(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -627,7 +637,11 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@ $(DEPDIR)/SoVertexProperty.Po $(DEPDIR)/SoVertexShape.Plo \
 @AMDEP@ $(DEPDIR)/SoVertexShape.Po $(DEPDIR)/SoWWWAnchor.Plo \
 @AMDEP@ $(DEPDIR)/SoWWWAnchor.Po $(DEPDIR)/SoWWWInline.Plo \
-@AMDEP@ $(DEPDIR)/SoWWWInline.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
+@AMDEP@ $(DEPDIR)/SoWWWInline.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po \
+@AMDEP@ $(DEPDIR)/soshape_bigtexture.Plo $(DEPDIR)/soshape_bigtexture.Po \
+@AMDEP@ $(DEPDIR)/soshape_primdata.Plo $(DEPDIR)/soshape_primdata.Po \
+@AMDEP@ $(DEPDIR)/soshape_trianglesort.Plo \
+@AMDEP@ $(DEPDIR)/soshape_trianglesort.Po
 DIST_COMMON = $(libnodesinc_HEADERS) Makefile.am Makefile.in
 
 SOURCES = $(nodes_lst_SOURCES) $(EXTRA_nodes_lst_SOURCES) $(libnodes_la_SOURCES) $(EXTRA_libnodes_la_SOURCES) $(libnodes@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES)
@@ -950,6 +964,12 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoWWWInline.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/all.Po
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_bigtexture.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_bigtexture.Po
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_primdata.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_primdata.Po
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_trianglesort.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/soshape_trianglesort.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

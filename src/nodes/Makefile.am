@@ -104,7 +104,10 @@ RegularSources = \
 	SoVertexProperty.cpp \
 	SoVertexShape.cpp \
 	SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoWWWInline.cpp \
+	soshape_primdata.cpp \
+	soshape_bigtexture.cpp \
+	soshape_trianglesort.cpp
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
@@ -214,7 +217,10 @@ PublicHeaders = \
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
 	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h
+	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_primdata.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_trianglesort.h \
+	$(top_srcdir)/include/Inventor/nodes/soshape_bigtexture.h 
 	
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)

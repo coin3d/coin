@@ -6,6 +6,7 @@ RegularSources = \
 	SoChildList.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \
+	SoGLBigImage.cpp \
 	SoGlyph.cpp \
 	SoNormalGenerator.cpp \
 	SoNotification.cpp \
@@ -52,6 +53,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/misc/SoGL.h \
 	$(top_srcdir)/include/Inventor/misc/SoGLImage.h \
+	$(top_srcdir)/include/Inventor/misc/SoGLBigImage.h \
 	$(top_srcdir)/include/Inventor/misc/SoGlyph.h \
 	$(top_srcdir)/include/Inventor/misc/SoGenerate.h \
 	GLUWrapper.h \
