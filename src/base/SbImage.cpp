@@ -110,15 +110,15 @@ public:
 // FIXME HACK: We use bytes to store the SbImageP pointer to avoid
 // breaking the ABI compatibility. pederb, 2001-11-06
 #undef THIS
-#define THIS ((SbImageP*) (this->bytes_obsoleted))
-#define PRIVATE(image) ((SbImageP*)((image)->bytes_obsoleted))
+#define THIS (this->pimpl)
+#define PRIVATE(image) ((image)->pimpl)
 
 /*!
   Default constructor.
 */
 SbImage::SbImage(void)
 {
-  this->bytes_obsoleted = (unsigned char*) new SbImageP;
+  THIS = new SbImageP;
 }
 
 /*!
@@ -128,7 +128,7 @@ SbImage::SbImage(void)
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec2s & size, const int bytesperpixel)
 {
-  this->bytes_obsoleted = (unsigned char*) new SbImageP;
+  THIS = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
 }
 

@@ -53,17 +53,13 @@ public:
   static SbString searchForFile(const SbString & basename,
                                 const SbString * const * dirlist,
                                 const int numdirs);
-  
+
   SbBool hasData(void) const;
 
 private:
 
-  // FIXME: remove these and replace with SbImageP * pimpl when it's
-  // ok to break ABI compatibility. pederb, 2001-11-06
-  unsigned char * bytes_obsoleted;
-  SbVec2s size_obsoleted;
-  int bpp_obsoleted;
-
+  class SbImageP * pimpl;
+  
 public:
 
   // methods for delaying image loading until it is actually needed.
