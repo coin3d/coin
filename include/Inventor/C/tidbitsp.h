@@ -103,6 +103,16 @@ void coin_flush_ascii85(FILE * fp,
                         int * tuplecnt, int * linecnt,
                         const int rowlen);
 
+/*
+  Parse version string of type <major>.<minor>.<patch>. <minor> or
+  <patch> might not be in the string. It's possible to supply NULL for
+  minor and/or patch if you're not interested in minor and/or patch.
+*/
+SbBool coin_parse_versionstring(const char * versionstr,
+                                int * major,
+                                int * minor,
+                                int * patch);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

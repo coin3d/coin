@@ -45,6 +45,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/list.h>
+#include <Inventor/C/errors/debugerror.h>
 
 /**************************************************************************/
 
@@ -1236,6 +1237,59 @@ coin_flush_ascii85(FILE * fp,
                    const int rowlen)
 {
   coin_output_ascii85(fp, 0, tuple, linebuf, tuplecnt, linecnt, rowlen, TRUE);
+}
+
+SbBool
+coin_parse_versionstring(const char * versionstr,
+                         int * major,
+                         int * minor,
+                         int * patch)
+{
+  char buffer[256];
+  char * dotptr;
+
+  *major = 0;
+  if (minor) *minor = 0;
+  if (patch) *patch = 0;
+  if (versionstr == NULL) return FALSE;
+
+  (void)strncpy(buffer, versionstr, 255);
+  buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
+  dotptr = strchr(buffer, '.');
+  if (dotptr) {
+    char * spaceptr;
+    char * start = buffer;
+    *dotptr = '\0';
+    *major = atoi(start);
+    if (minor == NULL) return TRUE;
+    start = ++dotptr;
+
+    dotptr = strchr(start, '.');
+    spaceptr = strchr(start, ' ');
+    if (!dotptr && spaceptr) dotptr = spaceptr;
+    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
+    if (dotptr) {
+      int terminate = *dotptr == ' ';
+      *dotptr = '\0';
+      *minor = atoi(start);
+      if (patch == NULL) return TRUE;
+      if (!terminate) {
+        start = ++dotptr;
+        dotptr = strchr(start, ' ');
+        if (dotptr) *dotptr = '\0';
+        *patch = atoi(start);
+      }
+    }
+    else {
+      *minor = atoi(start);
+    }
+  }
+  else {
+    cc_debugerror_post("coin_parse_versionstring",
+                       "Invalid versionstring: \"%s\"\n", versionstr);
+    return FALSE;
+  }
+  return TRUE;
 }
 
 
