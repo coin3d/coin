@@ -62,22 +62,27 @@
   See <http://www.coin3d.org/> for more information about Coin and the
   GUI toolkit libraries.
 
-  FIXME: kill the following block?
-
   <b>IMPORTANT NOTE: the online documentation for the Coin library is
-  still a work-in-progress.</b> Although most classes have been
-  documented properly, there are still a few "holes" in the
-  documentation for certain classes. If you happen upon an
-  undocumented or poorly documented class and / or class method which
-  you find hard to understand, please give us a notice so we can
-  rectify the situation.
-
-  FIXME: list, explain and link to detail-doc on major features
-    - big-image
-    - mp-rendering
-    - VRML97
-    - 3D sound
+  a continuous work-in-progress.</b> Although the large majority of
+  classes have been documented properly, there are still some poorly
+  documentation items. If you happen upon an undocumented or poorly
+  documented class and / or class method which you find hard to
+  understand, please give us a notice so we can rectify the situation.
 */
+
+// FIXME: should really list, explain and link to detail-doc on major
+// features in the mainpage doc above. It should have screenshots and
+// usage examples and all sorts of nice stuff for a good introduction
+// to Coin.
+//
+// Should at least cover these major new features of Coin v2.0:
+//
+//     - big-image
+//     - mp-rendering
+//     - VRML97
+//     - 3D sound
+//
+// 20030227 mortene.
 
 /*! \defgroup actions Actions */
 /*! \defgroup base Base classes */
