@@ -3,6 +3,8 @@ Sun Solaris platforms:
 
 ========================================================================
 
+Forte compiler suite (aka Workshop)
+
  1 The Forte compiler suite for SunOS/Solaris might complain about
    undefined symbols when trying to link Coin.  When these symbols
    contains the string "Crun", it means that libCrun is not linked in
@@ -27,7 +29,9 @@ Sun Solaris platforms:
 
 ========================================================================
 
-2 When building with gcc, (we've tested with gcc 3.3) configuring and
+GNU GCC
+
+1 When building with gcc, (we've tested with gcc 3.3) configuring and
   building Coin is a breeze. You just need to have /opt/csw/gcc3/bin
   in your PATH environment variable, and /opt/csw/gcc3/lib in your
   LD_LIBRARY_PATH environment variable (needed for libstdc++). In
@@ -36,11 +40,26 @@ Sun Solaris platforms:
 
   pederb, 2003-07-04
 
+2 If you nevertheless get linker errors, like the below:
+
+    base/.libs/libbase.a(bitset.o): In function `std::_Base_bitset<(unsigned)1>::_M_do_find_next(unsigned, unsigned) const': /cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: multiple definition of `std::_Base_bitset<(unsigned)1>::_M_do_find_first(unsigned) const'
+    actions/.libs/libactions.a(bitset.o):/cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: first defined here
+    base/.libs/libbase.a(bitset.o): In function `std::_Base_bitset<(unsigned)1>::_M_do_find_next(unsigned, unsigned) const': /cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: multiple definition of `std::_S_first_one'
+    actions/.libs/libactions.a(bitset.o):/cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: first defined here
+
+  ...then you should build Coin from scratch again, and make sure you
+  do not try to build with "g++" (a gcc-wrapper that pulls in all kinds
+  of things implicitly), but build with plain "gcc".  Re-run configure
+  like this:
+
+    .../Coin/configure CC=gcc CXX=gcc ...
+
 ========================================================================
 
-These are so far the only problems we are aware of on Sun Solaris
-platforms when trying to configure and build Coin. If you bump into
-any other problems, please let us know.
+These are so far the problems we are aware of on Sun Solaris platforms
+when trying to configure and build Coin. If you bump into any other
+problems, please let us know.  If you find problems, and manage to
+solve them on your own, we'll be interested in knowing about them too.
 
 --
-mortene@sim.no
+coin-support@sim.no
