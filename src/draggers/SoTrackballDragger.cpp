@@ -178,7 +178,7 @@ void
 SoTrackballDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
-  return inherited::setDefaultOnNonWritingFields();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
