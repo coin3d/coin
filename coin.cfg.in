@@ -7,5 +7,5 @@ cxxflags="@COIN_EXTRA_CXXFLAGS@"
 ldflags="@COIN_EXTRA_LDFLAGS@"
 libs="@COIN_EXTRA_LIBS@"
 datadir="@datadir@"
-compiler="@CXX@"
+compiler="@COIN_COMPILER@"
 have_vrml97=@HAVE_VRML97@

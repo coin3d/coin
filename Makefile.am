@@ -47,3 +47,13 @@ include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
 
+install-exec-local: cfg/m4/wrapmsvc.exe
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@if @BUILD_WITH_MSVC@; then \
+	  p=wrapmsvc.exe; \
+	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
+	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
+	fi
+
+# EOF ######################################################################

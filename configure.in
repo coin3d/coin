@@ -11,6 +11,13 @@ m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
 m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
 m4_define([COIN_ABI_AGE], [0])
 
+# This is probably a more correct setup, but will be harder to keep if
+# we want major and minor to grow slowly (but is that any point?)
+# 20010807 larsa
+# m4_define([COIN_ABI_CURRENT], [m4_eval((COIN_MAJOR*20)+COIN_MINOR)])
+# m4_define([COIN_ABI_REVISION], [COIN_MICRO])
+# m4_define([COIN_ABI_AGE], [COIN_MINOR])
+
 # **************************************************************************
 
 AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO])
@@ -719,6 +726,14 @@ if $sim_ac_build_library; then
     SIM_AC_ISO8601_DATE(coin_configure_date)
     AC_SUBST(coin_configure_date)
   fi
+
+  COIN_COMPILER="$CXX"
+  if $BUILD_WITH_MSVC; then
+    # we'll use the installed wrapper when we use the coin-config script later
+    # so we can remove the source code hierarchy
+    COIN_COMPILER="wrapmsvc"
+  fi
+  AC_SUBST(COIN_COMPILER)
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
