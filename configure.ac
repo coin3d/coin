@@ -528,12 +528,6 @@ fi
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL([], [SIM_AC_ERROR([no-doxygen])])
-  # we don't care about this - 20011204 larsa
-  # sim_ac_doxygen_our_version=1.2.1
-  # if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
-  #   AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
-  # fi
-
   AC_PATH_PROG(sim_ac_perl_exe, perl, false, $PATH)
   if test x"$sim_ac_perl_exe" = xfalse; then
     AC_MSG_WARN(Could not find the Perl executable)
