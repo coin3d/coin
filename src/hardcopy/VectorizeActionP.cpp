@@ -77,6 +77,9 @@ SoVectorizeActionP::SoVectorizeActionP(SoVectorizeAction * p)
   PUBLIC(this)->addLineSegmentCallback(SoShape::getClassTypeId(),
                                        SoVectorizeActionP::line_segment_cb,
                                        this);
+  PUBLIC(this)->addPointCallback(SoShape::getClassTypeId(),
+                                 SoVectorizeActionP::point_cb,
+                                 this);
 
   PUBLIC(this)->addPreCallback(SoShape::getClassTypeId(),
                                SoVectorizeActionP::pre_shape_cb,

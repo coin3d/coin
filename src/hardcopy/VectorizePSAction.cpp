@@ -477,7 +477,9 @@ SoVectorizePSAction::printLine(const SoVectorizeLine * item) const
   fprintf(file,"stroke\n\n");
 }
 
-
+//
+// will print a postscript circle
+//
 void
 SoVectorizePSAction::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
@@ -487,6 +489,28 @@ SoVectorizePSAction::printCircle(const SbVec3f & v, const SbColor & c, const flo
   fprintf(file, "%g %g %g setrgbcolor\n", c[0], c[1], c[2]);
   fprintf(file, "fill\n\n");
 }
+
+//
+// will print a postscript square centered in 'v'
+//
+void 
+SoVectorizePSAction::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
+{
+  FILE * file = this->getOutput()->getFilePointer();
+
+  float s2 = size * 0.5f;
+
+  fprintf(file, "newpath\n");
+  fprintf(file, "%g %g moveto\n", v[0]-s2, v[1]-s2);
+  fprintf(file, "0 %g rlineto\n", size);
+  fprintf(file, "%g 0 rlineto\n", size);
+  fprintf(file, "0 %g neg rlineto\n", size);
+  fprintf(file, "closepath\n");
+  fprintf(file, "%g %g %g setrgbcolor\n",
+          c[0], c[1], c[2]);
+  fprintf(file, "fill\n"); 
+}
+
 
 //
 // will output a point in postscript format
@@ -510,7 +534,16 @@ SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
   v[1] = (v[1] * mul[1]) + add[1];
   c.setPackedValue(item->col, t);
 
-  this->printCircle(v, c, this->convertToPS(item->size * this->getNominalWidth()));
+  switch (this->getPointStyle()) {
+  default:
+    assert(0 && "unknown point style");
+  case CIRCLE:
+    this->printCircle(v, c, this->convertToPS(item->size * this->getNominalWidth() * 0.5f));
+    break;
+  case SQUARE:
+    this->printSquare(v, c, this->convertToPS(item->size * this->getNominalWidth()));
+    break;
+  }
 }
 
 void

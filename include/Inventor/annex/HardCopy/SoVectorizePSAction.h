@@ -69,6 +69,7 @@ private:
   void printSetdash(uint16_t pattern) const;
 
   void printCircle(const SbVec3f & v, const SbColor & c, const float radius) const;
+  void printSquare(const SbVec3f & v, const SbColor & c, const float size) const;
   void printTriangle(const SbVec3f * v, const SbColor * c) const;
   void printTriangle(const SoVectorizeTriangle * item) const;
   void printLine(const SoVectorizeLine * item) const;
