@@ -57,6 +57,21 @@ protected:
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  SoDetail * createTriangleDetail(SoRayPickAction * action,
+                                  const SoPrimitiveVertex * v1,
+                                  const SoPrimitiveVertex * v2,
+                                  const SoPrimitiveVertex * v3,
+                                  SoPickedPoint * pp);
+private:
+  void * nurbsrenderer;
+  void doNurbs(SoAction * action, const SbBool glrender);
+
+  static void tessBegin(int , void * data);
+  static void tessTexCoord(float * texcoord, void * data);
+  static void tessNormal(float * normal, void * data);
+  static void tessVertex(float * vertex, void * data);
+  static void tessEnd(void * data);
+
 };
 
 #endif // !COIN_SOINDEXEDNURBSSURFACE_H
