@@ -1,8 +1,7 @@
 #! /usr/bin/perl
 
 # Script to remove the complete Coin installation, as done by the
-# binary installers for Coin-1.0.3, Coin-1.0.4, Coin-2.0.0 and/or 
-# Coin-2.0.0.
+# binary installers for Coin.
 
 # This script is based on uninstall-devtools.pl by Apple. It's a shame
 # that the recommended/only way of uninstalling packages seems to be
@@ -31,29 +30,37 @@ sub remove_main_packages  {
                    'Coin-1.0.4',
                    'Coin-1.0.3');
     
+    my $found = 0;
     foreach (@pkglist) {
         
         my $pkgname = $_;
-        my $pkgname_fullpath = "$receipts_dir/$pkgname.pkg";
-        my $pkgname_bom_fullpath = "$pkgname_fullpath/Contents/Archive.bom";
-        
-        print("Removing package $pkgname.pkg.\n");
+        my $pkg_fullpath = "$receipts_dir/$pkgname.pkg";
+        my $bom_fullpath = "$pkg_fullpath/Contents/Archive.bom";
+        my $loc_fullpath = "$pkg_fullpath/Contents/Resources/$pkgname.loc";
         
         # If the Package is not installed, continue. 
-        next if (! -d "$pkgname_fullpath" );
-        next if (! -f "$pkgname_bom_fullpath" );
+        next if (! -d "$pkg_fullpath" );
+        next if (! -f "$bom_fullpath" );
+        next if (! -f "$loc_fullpath" );
+        # FIXME: if one of the last two occurs, we have a corrupt receipt.
+        # (kintel 20040119)
+        
+        print("Removing package $pkgname.pkg.\n");
+        $found = 1;
         
         # 1. Delete all files listed in BOM.
         
-        open (LSBOM, "/usr/bin/lsbom -l -f -p f '$pkgname_bom_fullpath' |") 
+        my $loc=`cat $loc_fullpath`;
+        if ($loc eq "/") {$loc = "";}
+
+        open (LSBOM, "/usr/bin/lsbom -l -f -p f '$bom_fullpath' |") 
             or next;
 
         while (<LSBOM>) {
             chomp;
-            m#^\.(/.*)$#;
-            my $filename = $1;
+            m#^\.(/.*)$#;   # Remove first '.'
+            my $filename = $loc.$1;
             next if (!defined ($filename) || $filename eq "");
-            
             remove_file ($filename);
         }
         close (LSBOM);
@@ -62,13 +69,13 @@ sub remove_main_packages  {
         
         my $rooth = { };
         
-        open (LSBOM, "/usr/bin/lsbom -d -p f '$pkgname_bom_fullpath' |") 
+        open (LSBOM, "/usr/bin/lsbom -d -p f '$bom_fullpath' |") 
             or next;
 
         while (<LSBOM>) {
             chomp;
             m#^\.(/.*)$#;
-            my $directory = $1;
+            my $directory = $loc.$1;
             next if (!defined ($directory) || $directory eq "");
             if (-d $directory) {
                 $rooth = add_directory_to_tree ($directory, $rooth);
@@ -81,6 +88,10 @@ sub remove_main_packages  {
         # 3. Remove package receipts.
         remove_package_receipts ("$pkgname.pkg");
     }
+    if (!$found) {
+        print("No installed Coin packages found.\n");
+    }
+
 }
 
 
@@ -138,7 +149,6 @@ sub remove_file
     my $file = shift;
     return if (!defined ($file) || $file eq "");
     return if (! -f $file && ! -l $file);
-    
     if ((unlink $file) != 1)  {
         print ("ERROR: Encountered error while trying to remove \"$file\"\n");
     }   
@@ -194,5 +204,3 @@ sub remove_ds_store {
 }
 
 remove_main_packages ();
-print "Done. Have a nice day! :)\n";
-
