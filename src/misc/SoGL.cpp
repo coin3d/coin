@@ -657,7 +657,9 @@ sogl_vertex_array_ext()
 void
 sogl_free_texture(unsigned int index)
 {
+#if COIN_DEBUG && 0
   SoDebugError::postInfo("sogl_free_texture", "Free texture: %d", index);
+#endif
 #if GL_VERSION_1_1
   glDeleteTextures(1, (const GLuint*)&index);
 #elif GL_EXT_texture_object
