@@ -105,6 +105,64 @@ SbBool
 SbDPLine::getClosestPoints(const SbDPLine& line2,
                          SbVec3d& ptOnThis, SbVec3d& ptOnLine2) const
 {
+#if 1
+  // new optimized version based on formulas from from Boyko Bantchev
+
+  // p1 = point on line 1
+  // p2 = point on line 2
+  // d1 = line 1 direction
+  // d2 = line 2 direction
+  // q1 = closest point on line 1
+  // q2 = closest point on line 2
+
+  // The solution (q1 and q2) must be on their respective 
+  // lines:
+  //
+  // q1 = p1 + t1 * d1                               (0)
+  // q2 = p2 + t2 * d2
+  //
+  // we set u = p2 - p1, and get:
+  //
+  // q2 - q1 = u + t2*d2 - t1*d1                     (1)
+  //
+  // the solution line q2 - q1 is orthogonal to d1 and d2 
+  // (or a null vector if the lines intersect), which yields:
+  //
+  // (u + t2*d2 - t1*d1) · d1 = 0                    (2)
+  // (u + t2*d2 - t1*d1) · d2 = 0
+  //
+  // we know |d1| and |d2| == 1, and set d1 · d2 = t
+  //
+  // t1 - t*t2 = u · d1
+  // t*t1 - t2 = u · d2
+  //
+  // Solve for t1, and find q1 using (0):
+  //
+  // t1 = (u·d1 - t * (u·d2))/ (1 - t^2)
+  //
+  // just find q2 by using line2.getClosestPoint(q1)
+
+  SbVec3d p1 = this->pos;
+  SbVec3d p2 = line2.pos;
+  
+  SbVec3d d1 = this->dir;
+  SbVec3d d2 = line2.dir;
+
+  SbVec3d u = p2-p1;
+  double t = d1.dot(d2);
+
+  const double eps = 1.0e-08;
+  if (t < -1.0f + eps || t > 1.0f-eps) {
+    // lines are parallel
+    return FALSE;
+  }
+  t = (u.dot(d1) - t * u.dot(d2)) / (1-t*t);
+  ptOnThis = p1 + t * d1;
+  ptOnLine2 = line2.getClosestPoint(ptOnThis);
+  return TRUE;
+
+#else // end of new, optimized version
+
 #if COIN_DEBUG
   if(!(this->getDirection().length() != 0.0))
     SoDebugError::postWarning("SbDPLine::getClosestPoints",
@@ -209,6 +267,7 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   ptOnThis = this->getClosestPoint(ptOnLine2);
 
   return TRUE;
+#endif // old version
 }
 
 /*!
@@ -240,17 +299,13 @@ SbDPLine::getClosestPoint(const SbVec3d& point) const
   //  ==>   Q = SP + comp_b(a)*D
   //                                        19980815 mortene.
 
-
-  double numerator = (point - this->pos).dot(this->dir);
-  double denumerator = this->dir.length();
-
-#if COIN_DEBUG
-  if(denumerator == 0.0)
-    SoDebugError::postWarning("SbDPLine::getClosestPoint",
-                              "This line has no direction (zero length).");
-#endif // COIN_DEBUG
-
-  return (this->pos + this->dir * (numerator/denumerator));
+  // No use warning about a zero length line here. The user will get a
+  // warning when the line is constructed. Also, we don't need to
+  // account for the length of the direction vector, since this->dir
+  // is always normalized (or a null-vector). The result will actually
+  // be correct when the line has zero length, since the line starting
+  // point will then be the closest point. pederb, 2005-02-24
+  return this->pos + this->dir * (point - this->pos).dot(this->dir);
 }
 
 /*!
