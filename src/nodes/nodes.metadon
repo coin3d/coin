@@ -84,13 +84,13 @@
 # ID-BGMP-C!              SoSurroundScale
 # idTBGMP-C!              SoTransform
 # IDTBGMP-C!              SoUnits
-#   T-G-P-C!      SoBaseColor
-#   -BGMP-C!      SoCallback
-#   T-G-P-C!      SoClipPlane
+# IDT-G-P-C!      SoBaseColor
+# ID-BGMP-C!      SoCallback
+# IDT-G-P-C!      SoClipPlane
 #        - !      SoColorIndex
-#   -BG-P-C!      SoComplexity
-#   -BG-P-C!      SoCoordinate3
-#   -BG-P-C!      SoCoordinate4
+# ID-BG-P-C!      SoComplexity
+# ID-BG-P-C!      SoCoordinate3
+# ID-BG-P-C!      SoCoordinate4
 #   ------C!      SoLight
 #   T-G---!!              SoDirectionalLight
 #   T-G---!!              SoSpotLight

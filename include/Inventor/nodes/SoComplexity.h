@@ -28,7 +28,7 @@
 
 
 class SoComplexity : public SoNode {
-    typedef SoNode inherited;
+  typedef SoNode inherited;
 
   SO_NODE_HEADER(SoComplexity);
 

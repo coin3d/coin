@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoNode.h>
 
 
-typedef void SoCallbackCB(void *, SoAction *);
+typedef void SoCallbackCB(void * userdata, SoAction * action);
 
 class SoCallback : public SoNode {
     typedef SoNode inherited;
@@ -35,7 +35,7 @@ public:
   static void initClass(void);
   SoCallback(void);
 
-  void setCallback(SoCallbackCB * func, void * userdata = NULL);
+  void setCallback(SoCallbackCB * function, void * userdata = NULL);
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
@@ -51,8 +51,8 @@ public:
 protected:
   virtual ~SoCallback();
 
-  virtual void copyContents(const SoFieldContainer * fromFC,
-                            SbBool copyConnections);
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
 
 private:
   SoCallbackCB * cbfunc;

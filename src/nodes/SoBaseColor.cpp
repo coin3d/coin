@@ -19,27 +19,28 @@
 
 /*!
   \class SoBaseColor SoBaseColor.h Inventor/nodes/SoBaseColor.h
-  \brief The SoBaseColor class ...
+  \brief The SoBaseColor class provides a node type for convenient setting of the base material color.
   \ingroup nodes
 
-  FIXME: write class doc
+  If you want to just set the diffuse color of the following geometry,
+  you can use this node for simplicity.
+
+  \sa SoMaterial
 */
 
 #include <Inventor/nodes/SoBaseColor.h>
 
-
-
-
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
 
 /*!
   \var SoMFColor SoBaseColor::rgb
-  FIXME: write documentation for field
+
+  Color values. Default value of field is to have a single grey color.
 */
 
 // *************************************************************************
@@ -63,11 +64,7 @@ SoBaseColor::~SoBaseColor()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoBaseColor class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoBaseColor::initClass(void)
 {
@@ -80,22 +77,18 @@ SoBaseColor::initClass(void)
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoBaseColor::GLRender(SoGLRenderAction * action)
 {
   SoBaseColor::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoBaseColor::doAction(SoAction *action)
+SoBaseColor::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   if (!rgb.isIgnored() && !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state,
@@ -108,17 +101,16 @@ SoBaseColor::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoBaseColor::callback(SoCallbackAction *action)
+SoBaseColor::callback(SoCallbackAction * action)
 {
   SoBaseColor::doAction(action);
 }
 
+// Doc from superclass.
 void
-SoBaseColor::pick(SoPickAction *action)
+SoBaseColor::pick(SoPickAction * action)
 {
   SoBaseColor::doAction(action);
 }

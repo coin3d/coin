@@ -38,10 +38,10 @@ public:
   SoSFPlane plane;
   SoSFBool on;
 
-  virtual void doAction(SoAction *action);
-  virtual void GLRender(SoGLRenderAction *action);
-  virtual void callback(SoCallbackAction *action);
-  virtual void pick(SoPickAction *action);
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void pick(SoPickAction * action);
 
 protected:
   virtual ~SoClipPlane();

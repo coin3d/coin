@@ -184,6 +184,10 @@ SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoCone::GLRender(SoGLRenderAction * action)
 {
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoCone::GLRender", "start");
+#endif // debug
+
   if (!shouldGLRender(action)) return;
 
   SoState * state = action->getState();
@@ -222,6 +226,10 @@ SoCone::GLRender(SoGLRenderAction * action)
                    (int)(CONE_SIDE_NUMTRIS * complexity),
                    &mb,
                    flags);
+
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoCone::GLRender", "end");
+#endif // debug
 }
 
 // Doc from parent.

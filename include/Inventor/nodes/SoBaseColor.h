@@ -40,6 +40,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void pick(SoPickAction * action);
+
 protected:
   virtual ~SoBaseColor();
 };

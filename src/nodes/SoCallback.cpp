@@ -19,24 +19,32 @@
 
 /*!
   \class SoCallback SoCallback.h Inventor/nodes/SoCallback.h
-  \brief The SoCallback class ...
+  \brief The SoCallback class is a node type which provides a means of setting callback hooks in the scene graph.
   \ingroup nodes
 
-  FIXME: write class doc
+  By inserting SoCallback nodes in a scene graph, the application
+  programmer can set up functions to be executed at certain points in
+  the traversal.
+
+  The callback function will be executed during traversal of \e any
+  action, so check the type of the \a action argument of the callback
+  function if you only want to run your code at specific actions.
 */
 
 #include <Inventor/nodes/SoCallback.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 
-// *************************************************************************
+/*!
+  \typedef void SoCallback::SoCallbackCB(void * userdata, SoAction * action)
+  Signature that callback functions need to have.
+*/
 
 SO_NODE_SOURCE(SoCallback);
 
 /*!
   Constructor.
 */
-SoCallback::SoCallback()
+SoCallback::SoCallback(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCallback);
 
@@ -50,11 +58,7 @@ SoCallback::~SoCallback()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCallback class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoCallback::initClass(void)
 {
@@ -62,102 +66,81 @@ SoCallback::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Set up the \a function to call at traversal of this node. \a
+  userdata will be passed back as the first argument of the callback
+  \a function.
 */
 void
-SoCallback::setCallback(SoCallbackCB * func, void * userdata)
+SoCallback::setCallback(SoCallbackCB * function, void * userdata)
 {
-  this->cbfunc = func;
+  this->cbfunc = function;
   this->cbdata = userdata;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::doAction(SoAction * action)
 {
   if (this->cbfunc) this->cbfunc(this->cbdata, action);
 }
 
-// FIXME: seems a bit weird that they should all call only
-// doAction()? 19990315 mortene.
-
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::callback(SoCallbackAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::getMatrix(SoGetMatrixAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::handleEvent(SoHandleEventAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::pick(SoPickAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::search(SoSearchAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::write(SoWriteAction * action)
 {
   SoCallback::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -165,11 +148,15 @@ SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  FIXME: write doc
-*/
+  Overloaded from parent class to also copy the callback function
+  pointer and userdata.
+ */
 void
-SoCallback::copyContents(const SoFieldContainer * /* fromFC */,
-                         SbBool /* copyConnections */)
+SoCallback::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  COIN_STUB();
+  inherited::copyContents(from, copyconnections);
+
+  SoCallback * fromnode = (SoCallback *)from;
+  this->cbfunc = fromnode->cbfunc;
+  this->cbdata = fromnode->cbdata;
 }

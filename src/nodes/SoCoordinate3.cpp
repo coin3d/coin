@@ -19,25 +19,28 @@
 
 /*!
   \class SoCoordinate3 SoCoordinate3.h Inventor/nodes/SoCoordinate3.h
-  \brief The SoCoordinate3 class ...
+  \brief The SoCoordinate3 class is a node for providing coordinates to shape nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  When encountering nodes of this type during traversal, the
+  coordinates it contains will be put on the statestack for later use
+  by shape nodes of types which needs coordinate sets (like SoFaceSet
+  nodes or SoPointSet nodes).
 */
 
 #include <Inventor/nodes/SoCoordinate3.h>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 
 
 /*!
   \var SoMFVec3f SoCoordinate3::point
-  FIXME: write documentation for field
+  Coordinate set of 3D points.
 */
 
 
@@ -48,7 +51,7 @@ SO_NODE_SOURCE(SoCoordinate3);
 /*!
   Constructor.
 */
-SoCoordinate3::SoCoordinate3()
+SoCoordinate3::SoCoordinate3(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCoordinate3);
 
@@ -62,11 +65,7 @@ SoCoordinate3::~SoCoordinate3()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCoordinate3 class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoCoordinate3::initClass(void)
 {
@@ -79,9 +78,7 @@ SoCoordinate3::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoCoordinateElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCoordinate3::doAction(SoAction * action)
 {
@@ -89,47 +86,37 @@ SoCoordinate3::doAction(SoAction * action)
                             point.getNum(), point.getValues(0));
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCoordinate3::GLRender(SoGLRenderAction * action)
 {
-  SoCoordinate3::doAction((SoAction *)action);
+  SoCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCoordinate3::callback(SoCallbackAction * action)
 {
-  SoCoordinate3::doAction((SoAction *)action);
+  SoCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCoordinate3::pick(SoPickAction * action)
 {
-  SoCoordinate3::doAction((SoAction *)action);
+  SoCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoCoordinate3::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoCoordinate3::doAction((SoAction *)action);
+  SoCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoCoordinate3::doAction((SoAction*)action);
+  SoCoordinate3::doAction(action);
 }

@@ -208,19 +208,19 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoSurroundScale.cpp $(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h \
 	$(top_srcdir)/src/nodes/SoTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoTransform.h \
 	$(top_srcdir)/src/nodes/SoUnits.cpp $(top_srcdir)/include/Inventor/nodes/SoUnits.h \
+	$(top_srcdir)/src/nodes/SoBaseColor.cpp $(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
+	$(top_srcdir)/src/nodes/SoCallback.cpp $(top_srcdir)/include/Inventor/nodes/SoCallback.h \
+	$(top_srcdir)/src/nodes/SoClipPlane.cpp $(top_srcdir)/include/Inventor/nodes/SoClipPlane.h \
+	$(top_srcdir)/src/nodes/SoComplexity.cpp $(top_srcdir)/include/Inventor/nodes/SoComplexity.h \
+	$(top_srcdir)/src/nodes/SoCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoCoordinate3.h \
+	$(top_srcdir)/src/nodes/SoCoordinate4.cpp $(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 #	$(top_srcdir)/src/nodes/SoAnnotation.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
 #	$(top_srcdir)/src/nodes/SoArray.cpp $(top_srcdir)/include/Inventor/nodes/SoArray.h \
-#	$(top_srcdir)/src/nodes/SoBaseColor.cpp $(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
 #	$(top_srcdir)/src/nodes/SoBlinker.cpp $(top_srcdir)/include/Inventor/nodes/SoBlinker.h \
-#	$(top_srcdir)/src/nodes/SoCallback.cpp $(top_srcdir)/include/Inventor/nodes/SoCallback.h \
-#	$(top_srcdir)/src/nodes/SoClipPlane.cpp $(top_srcdir)/include/Inventor/nodes/SoClipPlane.h \
 #	$(top_srcdir)/src/nodes/SoColorIndex.cpp $(top_srcdir)/include/Inventor/nodes/SoColorIndex.h \
-#	$(top_srcdir)/src/nodes/SoComplexity.cpp $(top_srcdir)/include/Inventor/nodes/SoComplexity.h \
-#	$(top_srcdir)/src/nodes/SoCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoCoordinate3.h \
-#	$(top_srcdir)/src/nodes/SoCoordinate4.cpp $(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h \
 #	$(top_srcdir)/src/nodes/SoDirectionalLight.cpp $(top_srcdir)/include/Inventor/nodes/SoDirectionalLight.h \
 #	$(top_srcdir)/src/nodes/SoDrawStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h \
 #	$(top_srcdir)/src/nodes/SoEnvironment.cpp $(top_srcdir)/include/Inventor/nodes/SoEnvironment.h \

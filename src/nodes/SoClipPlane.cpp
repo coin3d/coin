@@ -19,26 +19,29 @@
 
 /*!
   \class SoClipPlane SoClipPlane.h Inventor/nodes/SoClipPlane.h
-  \brief The SoClipPlane class ...
+  \brief The SoClipPlane class is a node type for specifying clipping planes.
   \ingroup nodes
 
-  FIXME: write class doc
+  A scene graph \e without any SoClipPlane nodes uses six clipping
+  planes to define the viewing frustum: top, bottom, left, right, near
+  and far. If you want extra clipping planes for "slicing" the visible
+  geometry, you can do that by using nodes of this type.
 */
 
 #include <Inventor/nodes/SoClipPlane.h>
 
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 
 /*!
   \var SoSFPlane SoClipPlane::plane
-  FIXME: write documentation for field
+  Definition of clipping plane.
 */
 /*!
   \var SoSFBool SoClipPlane::on
-  FIXME: write documentation for field
+  Whether clipping plane should be on or off. Defaults to \c TRUE.
 */
 
 
@@ -49,7 +52,7 @@ SO_NODE_SOURCE(SoClipPlane);
 /*!
   Constructor.
 */
-SoClipPlane::SoClipPlane()
+SoClipPlane::SoClipPlane(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoClipPlane);
 
@@ -64,11 +67,7 @@ SoClipPlane::~SoClipPlane()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoClipPlane class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoClipPlane::initClass(void)
 {
@@ -79,11 +78,9 @@ SoClipPlane::initClass(void)
   SO_ENABLE(SoCallbackAction, SoClipPlaneElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
-SoClipPlane::doAction(SoAction *action)
+SoClipPlane::doAction(SoAction * action)
 {
   SbBool ison = on.isIgnored() ? TRUE : on.getValue();
   if (ison && !plane.isIgnored()) {
@@ -91,29 +88,23 @@ SoClipPlane::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoClipPlane::GLRender(SoGLRenderAction * action)
 {
   SoClipPlane::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoClipPlane::callback(SoCallbackAction *action)
+SoClipPlane::callback(SoCallbackAction * action)
 {
-  SoClipPlane::doAction((SoAction*)action);
+  SoClipPlane::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoClipPlane::pick(SoPickAction *action)
+SoClipPlane::pick(SoPickAction * action)
 {
   SoClipPlane::doAction(action);
 }
