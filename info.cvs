@@ -6,9 +6,9 @@ A retained mode 3D graphics library with an API cloned from Open Inventor.
 
 FULL
 Coin is an open-source clone library of Open Inventor.  It is released
-publicly under the GNU General Public License v2 for developers of
-free software and is also available for commercial use under a non-GPL
-license.
+publicly under the Q Public License for developers of free software
+and is also available for commercial use under a "professional
+edition" license.
 
 STATUS
 mid-development
