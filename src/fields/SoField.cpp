@@ -1315,7 +1315,7 @@ SoField::copyConnection(const SoField * fromfield)
 
   \since 2001-10-17
 */
-SbBool 
+SbBool
 SoField::checkISReference(SoInput * in, SbBool & readok)
 {
   readok = TRUE;
@@ -1671,7 +1671,7 @@ SoField::readConnection(SoInput * in)
   SoField * masterfield = fc->getField(mastername);
   if (!masterfield) {
     if (fc->isOfType(SoEngine::getClassTypeId()) || fc->isOfType(SoNodeEngine::getClassTypeId())) {
-      SoEngineOutput * masteroutput = 
+      SoEngineOutput * masteroutput =
         fc->isOfType(SoEngine::getClassTypeId()) ?
         ((SoEngine*)fc)->getOutput(mastername) :
         ((SoNodeEngine*)fc)->getOutput(mastername);
@@ -1767,9 +1767,9 @@ SoField::resolveWriteConnection(SbName & mastername) const
     fc = enginemaster->getFieldContainer();
     assert(fc);
     // FIXME: couldn't we use getFieldName()? 20000129 mortene.
-    SbBool ok = 
-      enginemaster->isNodeEngineOutput() ? 
-      ((SoNodeEngine *)fc)->getOutputName(enginemaster, mastername) :       
+    SbBool ok =
+      enginemaster->isNodeEngineOutput() ?
+      ((SoNodeEngine *)fc)->getOutputName(enginemaster, mastername) :
       ((SoEngine *)fc)->getOutputName(enginemaster, mastername);
     assert(ok);
   }
@@ -1963,6 +1963,57 @@ SoField::initClasses(void)
                      &SoMFInt32::createInstance);
   SoType::createType(SoMField::getClassTypeId(), "MFULong",
                      &SoMFUInt32::createInstance);
+}
+
+/*!
+  Obsoleted 2001-10-18
+*/
+SbBool 
+SoField::connectFrom(SoVRMLInterpOutput * master,
+                     SbBool notnotify, SbBool append)
+{
+  COIN_OBSOLETED();
+  return FALSE;
+}
+
+/*!
+  Obsoleted 2001-10-18
+*/
+SbBool 
+SoField::appendConnection(SoVRMLInterpOutput * master,
+                          SbBool notnotify)
+{
+  COIN_OBSOLETED();
+  return FALSE;
+}
+
+/*!
+  Obsoleted 2001-10-18
+*/
+void 
+SoField::disconnect(SoVRMLInterpOutput * interpoutput)
+{
+  COIN_OBSOLETED();
+}
+
+/*!
+  Obsoleted 2001-10-18
+*/
+SbBool 
+SoField::isConnectedFromVRMLInterp(void) const
+{
+  COIN_OBSOLETED();
+  return FALSE;
+}
+
+/*!
+  Obsoleted 2001-10-18
+*/
+SbBool 
+SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
+{
+  COIN_OBSOLETED();
+  return FALSE;
 }
 
 #undef FLAG_TYPEMASK

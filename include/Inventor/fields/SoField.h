@@ -30,6 +30,7 @@ class SoFieldConverter;
 class SoFieldList;
 class SoInput;
 class SoOutput;
+class SoVRMLInterpOutput; // OBSOLETED 2001-10-18 pederb
 
 class COIN_DLL_API SoField {
 
@@ -71,6 +72,15 @@ public:
   int getNumConnections(void) const;
   int getForwardConnections(SoFieldList & slavelist) const;
   int getConnections(SoFieldList & masterlist) const;
+
+  // Field<-Interpolator connection stuff. OBSOLETED 2001-10-18 pederb
+  SbBool connectFrom(SoVRMLInterpOutput * master,
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
+  SbBool appendConnection(SoVRMLInterpOutput * master,
+                          SbBool notnotify = FALSE);
+  void disconnect(SoVRMLInterpOutput * interpoutput);
+  SbBool isConnectedFromVRMLInterp(void) const;
+  SbBool getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const;
 
   void disconnect(void);
   SbBool isConnected(void) const;
