@@ -36,9 +36,6 @@ class SbImage;
 typedef SbBool VRMLPrequalifyFileCallback(const SbString &, void *,
                                           SoVRMLImageTexture *);
 
-typedef void SoVRMLImageTextureLoadedCB(void * closure,
-                                        SoVRMLImageTexture * node);
-
 class COIN_DLL_API SoVRMLImageTexture : public SoVRMLTexture
 {
   typedef SoVRMLTexture inherited;
@@ -64,8 +61,6 @@ public:
   const SbImage * getImage(void) const;
 
   static void setImageDataMaxAge(const uint32_t maxage);
-  static void setTextureLoadedCallback(SoVRMLImageTextureLoadedCB *cb,
-                                       void * closure);
 
 protected:
   virtual ~SoVRMLImageTexture();

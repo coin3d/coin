@@ -182,6 +182,7 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <assert.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 
@@ -194,8 +195,6 @@ static VRMLPrequalifyFileCallback * imagetexture_prequalify_cb = NULL;
 static void * imagetexture_prequalify_closure = NULL;
 static SbBool imagetexture_delay_fetch = TRUE;
 static SbBool imagetexture_is_exiting = FALSE;
-static SoVRMLImageTextureLoadedCB * imagetexture_loaded_cb = NULL;
-static void * imagetexture_loaded_closure = NULL;
 
 #ifdef COIN_THREADSAFE
 
@@ -588,15 +587,10 @@ SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure,
       PRIVATE(thisp)->glimage->setEndFrameCallback(glimage_callback, thisp);
       PRIVATE(thisp)->glimagevalid = FALSE;
     }
-    if (imagetexture_loaded_cb) {
-      imagetexture_loaded_cb(imagetexture_loaded_closure, thisp);
-    }
-    else {
 #ifdef COIN_THREADSAFE
-      // this is dangerous when using SoQt since Qt is not thread safe
-      thisp->touch(); // schedule redraw
+    // this is dangerous when using SoQt since Qt is not thread safe
+    thisp->touch(); // schedule redraw
 #endif // COIN_THREADSAFE
-    }
   }
   return ret;
 }
@@ -738,19 +732,6 @@ void
 SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 {
   imagedata_maxage = maxage;
-}
-
-/*!
-  \COININTERNAL
-*/
-void
-SoVRMLImageTexture::setTextureLoadedCallback(SoVRMLImageTextureLoadedCB *cb,
-                                             void * closure)
-{
-  // sets a callback that will be called when the thread that is used
-  // to load images has finished loading an image.
-  imagetexture_loaded_cb = cb;
-  imagetexture_loaded_closure = closure;
 }
 
 #undef PRIVATE
