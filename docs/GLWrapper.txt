@@ -1,61 +1,75 @@
-How to use OpenGL inside Coin
-=============================
+How to use OpenGL/GLX inside Coin
+=================================
 
-FIXME: It isn't very clean having these functions in SoGLCacheContextElement
-       in the first place. Are there any other places we could move them?
+Creating portable OpenGL applications can be a complicated matter since 
+you have to to both compile-time and run-time tests for OpenGL/GLX version,
+and what extensions are available. In addition, you might not have an
+entry point to the (extension) function in question on your build system.
+GLWrapper is here not to relieve the application programmer for that burden.
+GLWrapper can be found in src/misc/GLWrapper.*
 
-OpenGL calls can only be used as long as there is a valid context.
-This means that we can only use OpenGL inside an SoGLRenderAction.
-The following static functions in SoGLCacheContextElement are useful:
+NB! GLWrapper is at the moment a private component of Coin, which means 
+that it is only available to internal Coin components.
 
-// Returns a valid GLWrapper for the current context
-GLWrapper getGLWrapper(SoState *state);
-// Assigns/returns an ID for an extension string.
-int getExtID(const char *str);
-// Returns true if the extension identified by ID is 
-// available for the current context.
-SbBool extSupported(SoState *state, int extid);
-// Returns the OpenGL version for the current context in the 
-// major, minor and revision parameters
-void getOpenGLVersion(SoState *state, int &major, int &minor, int &revision);
-// Returns true if the OpenGL version for the current context at least
-// matches the parameter values.
-SbBool openGLVersionMatchesAtLeast(SoState *state, 
-                                   int major, int minor, int revision);
+Programmer's responsibilities
+-----------------------------
 
-OpenGL calls that are part of OpenGL 1.1 can safely be used without any 
-kind of checking. Extensions to OpenGL 1.1 and functions or extensions in 
-newer versions of OpenGL should be accessed using GLWrapper (Coin/src/misc).
-Note that GLWrapper only supplies dynamic binding of functions. The programmer
-needs to do all necessary run-time checks before calling a function through
-GLWrapper. GLWrapper neither supplies the enums that might be necessary to
-use certain extension and >1.1 functions. Therefore, always do #ifdef tests
-to make sure that they are defined.
+o OpenGL calls that are part of OpenGL 1.0 can safely be used without any 
+  kind of checking.
 
-Example:
+o Do _not_ use GLWrapper unless you are sure that you have a valid OpenGL 
+  context. GLWrapper implicitly assumes that this is the case. In short, only
+  use OpenGL functions inside an SoGLRenderAction.
 
+o To get hold of a GLWrapper instance:
+  const GLWrapper_t *glw = GLWrapper(SoGLCacheContextElement::get(state));
+  or
+  const GLWrapper_t *glw = GLWRAPPER_FROM_STATE(state);
 
-GLWrapper *glWrapper = SoGLCacheContextElement::getGLWrapper(state);
-if (false) {
+  The last one can safely be used in any element's init().
+
+o Always check that the capability you want to use is supported.
+  There are two ways of doing this, but only the first one is
+  supported at the moment (FIXME kintel 20011201):
+  - Check that glw->glWhateverFunction is not NULL.
+  - Query GLWrapper for a group of available calls through 
+    int GLWrapper_queryCapability(GLWrapperCapability cap);
+
+o GLWrapper has some functions for querying OpenGL/GLX version and
+  extension availability. Usually you shouldn't need
+  to use these unless you want to bypass GLWrapper or your function isn't
+  supported by GLWrapper (in which case you should add it).
+
+o SoGLCacheContextElement also has some functions for querying OpenGL 
+  version and extension availability. These are public, so you can use
+  them even in external code. However, use GLWrapper internally for 
+  consistency.
+
+What GLWrapper supplies
+-----------------------
+
+o GLWrapper supplies function pointer to OpenGL and GLX functions used in
+  Coin that are _not_ part of OpenGL 1.0 and GLX 1.1.
+  Note that GLWrapper supplies OpenGL extension functions as if they
+  were standard functions (i.e. without the EXT suffix).
+
+o GLWrapper supplies OpenGL enums in the same way as for OpenGL functions
+  (the _EXT suffix is removed). Please use the GLWrapper enums as you're
+  not guaranteed that extension enums are the same as standard enums.
+  The enums are prepended with COIN_.
+
+The following example accesses OpenGL 3D texturing. It works both on
+OpenGL >= 1.2 and on OpenGL 1.1 with the GL_EXT_texture3D extension.
+
+-----------------------------------------
+
+const GLWrapper_t *glw = GLWrapper(SoGLCacheContextElement::get(state));
+if (glw->glTexImage3D) {
+  glTexImage3D(glw->COIN_GL_PROXY_TEXTURE_3D, 0, GL_RGBA, 
+               64,64,64,0,
+               GL_RGBA, GL_UNSIGNED_BYTE,
+               NULL);
 }
-#ifdef GL_VERSION_1_2 // We need the enums
-else if (GLWrapper()->versionMatchesAtLeast(1,2,0)) { // We have OpenGL 1.2
-  glWrapper->glTexImage3D(GL_PROXY_TEXTURE_3D, 0, GL_RGBA, 
-                          64,64,64,0,
-                          GL_RGBA, GL_UNSIGNED_BYTE,
-                          NULL);
-}
-#elif defined(GL_EXT_texture3D)  // We need the enums
-else { // OpenGL 1.1, check for extensions
-  int idExtTexture3D=SoGLCacheContextElement::getExtID("GL_EXT_texture3D");
-  if (SoGLCacheContextElement::extSupported(state,idExtTexture3D)) {
-    glWrapper->glTexImage3DEXT(GL_PROXY_TEXTURE_3D_EXT, 0, GL_RGBA, 
-                               64,64,64,0,
-                               GL_RGBA, GL_UNSIGNED_BYTE,
-                               NULL);
-  }
-}
-#endif
-else { // Plain OpenGL 1.1
+else {
   // Implement a proper fallback or error handling.
 }
