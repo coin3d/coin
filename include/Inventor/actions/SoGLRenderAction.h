@@ -28,6 +28,8 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/lists/SbList.h>
 
+typedef void SoGLRenderPassCB(void * userdata);
+
 
 class COIN_DLL_EXPORT SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -51,7 +53,6 @@ public:
   };
 
   typedef AbortCode SoGLRenderAbortCB(void * userdata);
-  typedef void SoGLRenderPassCB(void * userdata);
 
   void setViewportRegion(const SbViewportRegion & newregion);
   const SbViewportRegion & getViewportRegion(void) const;
