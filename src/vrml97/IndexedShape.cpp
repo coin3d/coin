@@ -52,6 +52,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/errors/SoDebugError.h>
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedShape);
 
@@ -159,7 +160,18 @@ SoVRMLIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   const int32_t * endptr = ptr + coordIndex.getNum();
   while (ptr < endptr) {
     int idx = *ptr++;
-    assert(idx < numCoords);
+
+    if (idx >= numCoords) {
+      SoDebugError::post("SoVRMLIndexedShape::computeBBox",
+                         "index @ %d: %d is out of bounds [%d, %d]",
+                         (ptr - coordIndex.getValues(0)) / sizeof(*ptr),
+                         idx, numCoords ? 0 : -1, numCoords - 1);
+#if COIN_DEBUG
+      assert(FALSE && "idx out of bounds");
+#endif // COIN_DEBUG
+      continue;
+    }
+
     if (idx >= 0) box.extendBy(coords[idx]);
   }
   if (!box.isEmpty()) center = box.getCenter();
