@@ -1415,7 +1415,7 @@ SoGLImageP::shouldCreateMipmap(void)
 // Actually apply the texture filters using OpenGL calls.
 //
 void
-SoGLImageP::applyFilter(SbBool ismipmap)
+SoGLImageP::applyFilter(const SbBool ismipmap)
 {
   GLenum target;
 
