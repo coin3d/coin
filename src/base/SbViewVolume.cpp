@@ -35,7 +35,12 @@
 
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbDPRotation.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/SbDPLine.h>
+#include <Inventor/SbDPMatrix.h>
+#include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec2d.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
@@ -107,6 +112,42 @@
 */
 
 
+//
+// some convenience function for converting between single precision
+// and double precision classes.
+//
+static void 
+copy_matrix(const SbDPMatrix & src, SbMatrix & dst)
+{
+  const double * s = src[0];
+  float * d = dst[0];
+  for (int i = 0; i < 16; i++) {
+    d[i] = (float) s[i];
+  }
+}
+
+static void 
+copy_matrix(const SbMatrix & src, SbDPMatrix & dst)
+{
+  const float * s = src[0];
+  double * d = dst[0];
+  for (int i = 0; i < 16; i++) {
+    d[i] = (double) s[i];
+  }
+}
+
+static SbVec3f 
+to_sbvec3f(const SbVec3d & v)
+{
+  return SbVec3f((float) v[0], (float) v[1], (float) v[2]);
+}
+
+static SbVec2f 
+to_sbvec2f(const SbVec2d & v)
+{
+  return SbVec2f((float) v[0], (float) v[1]);
+}
+
 /*!
   Constructor. Note that the SbViewVolume instance will be uninitialized
   until you explicitly call \a ortho() or \a perspective().
@@ -132,58 +173,10 @@ SbViewVolume::~SbViewVolume(void)
 void
 SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
 {
-  SbVec3f upvec = this->ulf - this->llf;
-#if COIN_DEBUG
-  if (upvec == SbVec3f(0.0f, 0.0f, 0.0f)) {
-    SoDebugError::postWarning("SbViewVolume::getMatrices",
-                              "empty frustum!");
-    affine = SbMatrix::identity();
-    proj = SbMatrix::identity();
-    return;
-  }
-#endif // COIN_DEBUG
-  SbVec3f rightvec = this->lrf - this->llf;
-
-  // store width and height (needed to generate projection matrix)
-  float height = upvec.normalize();
-  float width = rightvec.normalize();
-
-  // build matrix that will transform into camera coordinate system
-  SbMatrix mat;
-  mat[0][0] = rightvec[0];
-  mat[0][1] = rightvec[1];
-  mat[0][2] = rightvec[2];
-  mat[0][3] = 0.0f;
-
-  mat[1][0] = upvec[0];
-  mat[1][1] = upvec[1];
-  mat[1][2] = upvec[2];
-  mat[1][3] = 0.0f;
-
-  mat[2][0] = -this->projDir[0];
-  mat[2][1] = -this->projDir[1];
-  mat[2][2] = -this->projDir[2];
-  mat[2][3] = 0.0f;
-
-  mat[3][0] = this->projPoint[0];
-  mat[3][1] = this->projPoint[1];
-  mat[3][2] = this->projPoint[2];
-  mat[3][3] = 1.0f;
-
-  // the affine matrix is the inverse of the camera coordinate system
-  affine = mat.inverse();
-
-  float l = -width * 0.5f;
-  float r = width * 0.5f;
-  float t = height * 0.5f;
-  float b = - height * 0.5f;
-  float n = this->getNearDist();
-  float f = n + this->getDepth();
-
-  if(this->type == SbViewVolume::ORTHOGRAPHIC)
-    proj = SbViewVolume::getOrthoProjection(l, r, b, t, n, f);
-  else
-    proj = SbViewVolume::getPerspectiveProjection(l, r, b, t, n, f);
+  SbDPMatrix dpaffine, dpproj;
+  this->dpvv.getMatrices(dpaffine, dpproj);
+  copy_matrix(dpaffine, affine);
+  copy_matrix(dpproj, proj);
 }
 
 /*!
@@ -194,9 +187,10 @@ SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
 SbMatrix
 SbViewVolume::getMatrix(void) const
 {
-  SbMatrix affine, proj;
-  this->getMatrices(affine, proj);
-  return affine.multRight(proj);
+  SbDPMatrix dpmatrix = this->dpvv.getMatrix();
+  SbMatrix matrix;
+  copy_matrix(dpmatrix, matrix);
+  return matrix;
 }
 
 /*!
@@ -212,17 +206,10 @@ SbViewVolume::getMatrix(void) const
 SbMatrix
 SbViewVolume::getCameraSpaceMatrix(void) const
 {
-  // Find rotation of projection direction.
-  SbRotation pdrot =
-    SbRotation(this->projDir, SbVec3f(0.0f, 0.0f, -1.0f));
-
-  // Combine transforms.
-  SbMatrix mat, tmp;
-  mat.setTranslate(-this->projPoint);
-  tmp.setRotate(pdrot);
-  mat.multRight(tmp);
-
-  return mat;
+  SbDPMatrix m = this->dpvv.getCameraSpaceMatrix();
+  SbMatrix ret;
+  copy_matrix(m, ret);
+  return ret;
 }
 
 /*!
@@ -233,9 +220,14 @@ SbViewVolume::getCameraSpaceMatrix(void) const
 void
 SbViewVolume::projectPointToLine(const SbVec2f& pt, SbLine& line) const
 {
-  SbVec3f pt0, pt1;
-  this->projectPointToLine(pt, pt0, pt1);
-  line.setValue(pt0, pt1);
+  SbVec2d dppt;
+
+  dppt[0] = pt[0];
+  dppt[1] = pt[1];
+  
+  SbVec3d pt0, pt1;
+  this->dpvv.projectPointToLine(dppt, pt0, pt1);
+  line.setValue(to_sbvec3f(pt0), to_sbvec3f(pt1));
 }
 
 /*!
@@ -245,53 +237,14 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt, SbLine& line) const
   will be the line endpoint, lying in the far plane.
  */
 void
-SbViewVolume::projectPointToLine(const SbVec2f& pt,
-                                 SbVec3f& line0, SbVec3f& line1) const
+SbViewVolume::projectPointToLine(const SbVec2f & pt,
+                                 SbVec3f & line0, SbVec3f & line1) const
 {
-#if 0 // OBSOLETED, pederb 19991215. More efficient version below
-  SbVec3f scr_n(pt[0], pt[1], -1.0f);
-  SbVec3f scr_f(pt[0], pt[1], 1.0f);
-
-  scr_n[0] -= 0.5f;
-  scr_n[1] -= 0.5f;
-  scr_f[0] -= 0.5f;
-  scr_f[1] -= 0.5f;
-
-  scr_n[0] *= 2.0f;
-  scr_n[1] *= 2.0f;
-  scr_f[0] *= 2.0f;
-  scr_f[1] *= 2.0f;
-
-  SbMatrix m = this->getMatrix().inverse();
-
-  m.multVecMatrix(scr_n, line0);
-  m.multVecMatrix(scr_f, line1);
-
-#else // new, faster version
-
-  SbVec3f dx = this->lrf - this->llf;
-  SbVec3f dy = this->ulf - this->llf;
-
-#if COIN_DEBUG
-  if (dx.sqrLength() == 0.0f || dy.sqrLength() == 0.0f) {
-    SoDebugError::postWarning("SbViewVolume::projectPointToLine",
-                              "invalid frustum");
-    return;
-  }
-#endif // COIN_DEBUG
-
-  line0 = this->llf + dx*pt[0] + dy*pt[1];
-  SbVec3f dir;
-  if (this->type == PERSPECTIVE) {
-    dir = line0 - this->projPoint;
-    dir.normalize();
-    line1 = line0 + dir * this->getDepth() / dir.dot(this->projDir);
-  }
-  else {
-    dir = this->projDir;
-    line1 = line0 + dir*this->getDepth();
-  }
-#endif // faster version
+  SbVec2d dppt(pt[0], pt[1]);
+  SbVec3d dpline0, dpline1;
+  this->dpvv.projectPointToLine(dppt, dpline0, dpline1);
+  line0 = to_sbvec3f(dpline0);
+  line1 = to_sbvec3f(dpline1);
 }
 
 /*!
@@ -312,11 +265,10 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
 void
 SbViewVolume::projectToScreen(const SbVec3f& src, SbVec3f& dst) const
 {
-  this->getMatrix().multVecMatrix(src, dst);
-  
-  // coordinates are in range [-1, 1], normalize to [0,1]
-  dst *= 0.5f;
-  dst += SbVec3f(0.5f, 0.5f, 0.5f);
+  SbVec3d dpsrc(src[0], src[1], src[2]);
+  SbVec3d dpdst;
+  this->dpvv.projectToScreen(dpsrc, dpdst);
+  dst = to_sbvec3f(dpdst);
 }
 
 /*!
@@ -329,8 +281,7 @@ SbViewVolume::projectToScreen(const SbVec3f& src, SbVec3f& dst) const
 SbPlane
 SbViewVolume::getPlane(const float distFromEye) const
 {
-  return SbPlane(-this->projDir,
-                 this->projPoint + distFromEye * this->projDir);
+  return this->dpvv.getPlane(distFromEye);
 }
 
 /*!
@@ -342,7 +293,7 @@ SbViewVolume::getPlane(const float distFromEye) const
 SbVec3f
 SbViewVolume::getSightPoint(const float distFromEye) const
 {
-  return this->projPoint + this->projDir * distFromEye;
+  return to_sbvec3f(this->dpvv.getSightPoint(distFromEye));
 }
 
 /*!
@@ -357,38 +308,8 @@ SbVec3f
 SbViewVolume::getPlanePoint(const float distFromEye,
                             const SbVec2f & normPoint) const
 {
-  SbVec3f volpt;
-
-  if(this->getProjectionType() == SbViewVolume::ORTHOGRAPHIC) {
-    SbVec3f scr(normPoint[0], normPoint[1], -1.0f);
-
-    scr[0] -= 0.5f;
-    scr[1] -= 0.5f;
-    scr[0] *= 2.0f;
-    scr[1] *= 2.0f;
-
-    SbMatrix m = this->getMatrix().inverse();
-    m.multVecMatrix(scr, volpt);
-    volpt += (distFromEye - this->getNearDist()) *
-      this->getProjectionDirection();
-  }
-  else {
-    // Find vector pointing in the direction of the normalized 2D
-    // point.
-    SbVec3f dvec =
-      this->llf +
-      (this->lrf - this->llf) * normPoint[0] +
-      (this->ulf - this->llf) * normPoint[1];
-    dvec -= this->getProjectionPoint();
-    dvec.normalize();
-
-    // Distance to point.
-    float d = distFromEye/dvec.dot(this->getProjectionDirection());
-
-    volpt = d * dvec + this->getProjectionPoint();
-  }
-
-  return volpt;
+  SbVec2d dpnormPoint(normPoint[0], normPoint[1]);
+  return to_sbvec3f(this->dpvv.getPlanePoint(distFromEye, dpnormPoint));
 }
 
 /*!
@@ -411,55 +332,8 @@ float
 SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
                                     float normRadius) const
 {
-#if COIN_DEBUG
-  if (normRadius < 0.0f) {
-    SoDebugError::postWarning("SbViewVolume::getWorldToScreenScale",
-                              "normRadius (%f) should be >=0.0f.", normRadius);
-    return 1.0f;
-  }
-  if (this->getWidth() == 0.0f || this->getHeight() == 0.0f) {
-    SoDebugError::postWarning("SbViewVolume::getWorldToScreenScale",
-                              "invalid frustum <%f, %f>",
-                              this->getWidth(), this->getHeight());
-    return 1.0f;
-  }
-#endif // COIN_DEBUG
-
-  if(this->getProjectionType() == SbViewVolume::ORTHOGRAPHIC) {
-    SbVec3f rightvec = this->lrf - this->llf;
-    return (normRadius * rightvec).length();
-  }
-  else {
-    // Find screen space coordinates of sphere center point and tangent
-    // point.
-    SbVec3f center_scr;
-    this->projectToScreen(worldCenter, center_scr);
-    center_scr[0] += normRadius;
-
-    // Vectors spanning the projection plane.
-    SbVec3f upvec = this->ulf - this->llf;
-    SbVec3f rightvec = this->lrf - this->llf;
-
-    // Find projection plane point for the sphere tangent touch point,
-    // which is then used to define the sphere tangent line.
-    SbVec3f ppp =
-      this->llf + center_scr[0] * rightvec + center_scr[1] * upvec;
-    SbLine tl(this->getProjectionPoint(), ppp);
-
-    // Define the plane which is cutting the sphere in half and is normal
-    // to the camera direction.
-    SbVec3f sphere_camera_vec = worldCenter - this->getProjectionPoint();
-    SbPlane p = SbPlane(sphere_camera_vec, worldCenter);
-
-    // Find tangent point of sphere.
-    SbVec3f tangentpt;
-    SbBool result = p.intersect(tl, tangentpt);
-    assert(result != FALSE);
-
-    // Return radius (which is equal to the scale factor, since we're
-    // dealing with a unit sphere).
-    return (tangentpt - worldCenter).length();
-  }
+  SbVec3d dpworldCenter(worldCenter[0], worldCenter[1], worldCenter[2]);
+  return (float) this->dpvv.getWorldToScreenScale(dpworldCenter, normRadius);
 }
 
 /*!
@@ -469,31 +343,7 @@ SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
 SbVec2f
 SbViewVolume::projectBox(const SbBox3f& box) const
 {
-#if COIN_DEBUG
-  if (box.isEmpty()) {
-    SoDebugError::postWarning("SbViewVolume::projectBox",
-                              "Box is empty.");
-  }
-#endif // COIN_DEBUG
-
-  SbVec3f mincorner = box.getMin();
-  SbVec3f maxcorner = box.getMax();
-  SbBox2f span;
-
-  for(int i=0; i < 2; i++) {
-    for(int j=0; j < 2; j++) {
-      for(int k=0; k < 2; k++) {
-        SbVec3f corner(i ? mincorner[0] : maxcorner[0],
-                       j ? mincorner[1] : maxcorner[1],
-                       k ? mincorner[2] : maxcorner[2]);
-        this->projectToScreen(corner, corner);
-        span.extendBy(SbVec2f(corner[0], corner[1]));
-      }
-    }
-  }
-
-  return SbVec2f(span.getMax()[0] - span.getMin()[0],
-                 span.getMax()[1] - span.getMin()[1]);
+  return to_sbvec2f(this->dpvv.projectBox(box));
 }
 
 /*!
@@ -516,67 +366,10 @@ SbViewVolume
 SbViewVolume::narrow(float left, float bottom,
                      float right, float top) const
 {
-#if COIN_DEBUG && 0 // debug test disabled, 2001-02-16, pederb
-  if (left<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "left coordinate (%f) should be >=0.0f. "
-                              "Clamping to 0.0f.",left);
-    left=0.0f;
-  }
-  if (right>1.0f) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "right coordinate (%f) should be <=1.0f. "
-                              "Clamping to 1.0f.",right);
-    right=1.0f;
-  }
-  if (bottom<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "bottom coordinate (%f) should be >=0.0f. "
-                              "Clamping to 0.0f.",bottom);
-    bottom=0.0f;
-  }
-  if (top>1.0f) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "top coordinate (%f) should be <=1.0f. "
-                              "Clamping to 1.0f.",top);
-    top=1.0f;
-  }
-  if (left>right) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "right coordinate (%f) should be larger than "
-                              "left coordinate (%f). Swapping left/right.",
-                              right,left);
-    float tmp=right;
-    right=left;
-    left=tmp;
-  }
-  if (bottom>top) {
-    SoDebugError::postWarning("SbViewVolume::narrow",
-                              "top coordinate (%f) should be larger than "
-                              "bottom coordinate (%f). Swapping top/bottom.",
-                              top,bottom);
-    float tmp=top;
-    top=bottom;
-    bottom=tmp;
-  }
-#endif // COIN_DEBUG
-
-  SbViewVolume nvw = *this;
-
-  float w = nvw.getWidth();
-  float h = nvw.getHeight();
-
-  SbVec3f xvec = this->lrf - this->llf;
-  xvec.normalize();
-  SbVec3f yvec = this->ulf - this->llf;
-  yvec.normalize();
-
-  nvw.ulf = nvw.llf + (xvec * left * w + yvec * top * h);
-  nvw.lrf =
-    nvw.llf + (xvec * right * w + yvec * bottom * h);
-  nvw.llf += xvec * left * w + yvec * bottom * h;
-
-  return nvw;
+  SbDPViewVolume vv = this->dpvv.narrow(left, bottom, right, top);
+  SbViewVolume ret;
+  vv.copyValues(ret);
+  return ret;
 }
 
 /*!
@@ -592,9 +385,10 @@ SbViewVolume::narrow(float left, float bottom,
 SbViewVolume
 SbViewVolume::narrow(const SbBox3f & box) const
 {
-  const SbVec3f & bmin = box.getMin();
-  const SbVec3f & bmax = box.getMax();
-  return this->narrow(bmin[0], bmin[1], bmax[0], bmax[1]).zNarrow(bmax[2], bmin[2]);
+  SbDPViewVolume vv = this->dpvv.narrow(box);
+  SbViewVolume ret;
+  vv.copyValues(ret);
+  return ret;
 }
 
 // FIXME: bitmap-illustration for function doc which shows how the
@@ -612,43 +406,8 @@ SbViewVolume::ortho(float left, float right,
                     float bottom, float top,
                     float nearval, float farval)
 {
-#if COIN_DEBUG
-  if (left>right) {
-    SoDebugError::postWarning("SbViewVolume::ortho",
-                              "right coordinate (%f) should be larger than "
-                              "left coordinate (%f). Swapping left/right.",
-                              right,left);
-    float tmp=right;
-    right=left;
-    left=tmp;
-  }
-  if (bottom>top) {
-    SoDebugError::postWarning("SbViewVolume::ortho",
-                              "top coordinate (%f) should be larger than "
-                              "bottom coordinate (%f). Swapping bottom/top.",
-                              top,bottom);
-    float tmp=top;
-    top=bottom;
-    bottom=tmp;
-  }
-  if (nearval>farval) {
-    SoDebugError::postWarning("SbViewVolume::ortho",
-                              "far coordinate (%f) should be larger than near "
-                              "coordinate (%f). Swapping near/far.",farval,nearval);
-    float tmp=farval;
-    farval=nearval;
-    nearval=tmp;
-  }
-#endif // COIN_DEBUG
-
-  this->type = SbViewVolume::ORTHOGRAPHIC;
-  this->projPoint.setValue(0.0f, 0.0f, 0.0f);
-  this->projDir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearDist = nearval;
-  this->nearToFar = farval - nearval;
-  this->llf.setValue(left, bottom, -nearval);
-  this->lrf.setValue(right, bottom, -nearval);
-  this->ulf.setValue(left, top, -nearval);
+  this->dpvv.ortho(left, right, bottom, top, nearval, farval);
+  this->dpvv.copyValues(*this);
 }
 
 // FIXME: bitmap-illustration for function doc which shows how the
@@ -663,47 +422,8 @@ void
 SbViewVolume::perspective(float fovy, float aspect,
                           float nearval, float farval)
 {
-#if COIN_DEBUG
-  if (fovy<0.0f || fovy > M_PI) {
-    SoDebugError::postWarning("SbViewVolume::perspective",
-                              "Field of View 'fovy' (%f) is out of bounds "
-                              "[0,PI]. Clamping to be within bounds.",fovy);
-    if (fovy<0.0f) fovy=0.0f;
-    else if (fovy>M_PI) fovy=M_PI;
-  }
-
-  if (aspect<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::perspective",
-                              "Aspect ratio 'aspect' (%d) should be >=0.0f. "
-                              "Clamping to 0.0f.",aspect);
-    aspect=0.0f;
-  }
-
-  if (nearval>farval) {
-    SoDebugError::postWarning("SbViewVolume::perspective",
-                              "far coordinate (%f) should be larger than "
-                              "near coordinate (%f). Swapping near/far.",
-                              farval,nearval);
-    float tmp=farval;
-    farval=nearval;
-    nearval=tmp;
-  }
-#endif // COIN_DEBUG
-
-  this->type = SbViewVolume::PERSPECTIVE;
-  this->projPoint.setValue(0.0f, 0.0f, 0.0f);
-  this->projDir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearDist = nearval;
-  this->nearToFar = farval - nearval;
-
-  float top = nearval * float(tan(fovy/2.0f));
-  float bottom = -top;
-  float left = bottom * aspect;
-  float right = -left;
-
-  this->llf.setValue(left, bottom, -nearval);
-  this->lrf.setValue(right, bottom, -nearval);
-  this->ulf.setValue(left, top, -nearval);
+  this->dpvv.perspective(fovy, aspect, nearval, farval);
+  this->dpvv.copyValues(*this);
 }
 
 /*!
@@ -714,28 +434,16 @@ SbViewVolume::perspective(float fovy, float aspect,
 void
 SbViewVolume::rotateCamera(const SbRotation& q)
 {
-  SbMatrix mat;
-  mat.setRotate(q);
+  const float * quat = q.getValue();
+  double dpquat[4];
+  dpquat[0] = quat[0];
+  dpquat[1] = quat[1];
+  dpquat[2] = quat[2];
+  dpquat[3] = quat[3];
 
-  mat.multDirMatrix(this->projDir, this->projDir);
-
-  if(this->type == SbViewVolume::ORTHOGRAPHIC) {
-    mat.multVecMatrix(this->llf, this->llf);
-    mat.multVecMatrix(this->lrf, this->lrf);
-    mat.multVecMatrix(this->ulf, this->ulf);
-  }
-  // SbViewVolume::PERSPECTIVE
-  else {
-    mat.multVecMatrix(this->llf - this->projPoint,
-                      this->llf);
-    this->llf += this->projPoint;
-    mat.multVecMatrix(this->lrf - this->projPoint,
-                      this->lrf);
-    this->lrf += this->projPoint;
-    mat.multVecMatrix(this->ulf - this->projPoint,
-                      this->ulf);
-    this->ulf += this->projPoint;
-  }
+  SbDPRotation dpq(dpquat);
+  this->dpvv.rotateCamera(dpq);
+  this->dpvv.copyValues(*this);
 }
 
 /*!
@@ -746,10 +454,9 @@ SbViewVolume::rotateCamera(const SbRotation& q)
 void
 SbViewVolume::translateCamera(const SbVec3f& v)
 {
-  this->projPoint += v;
-  this->llf += v;
-  this->lrf += v;
-  this->ulf += v;
+  SbVec3d dpv(v[0], v[1], v[2]);
+  this->dpvv.translateCamera(dpv);
+  this->dpvv.copyValues(*this);
 }
 
 /*!
@@ -778,17 +485,9 @@ SbViewVolume::zVector(void) const
 SbViewVolume
 SbViewVolume::zNarrow(float nearval, float farval) const
 {
-  SbViewVolume narrowed = *this;
-
-  narrowed.nearDist = this->nearDist + (1.0f - nearval) * this->nearToFar;
-  narrowed.nearToFar = this->nearDist + this->nearToFar * (1.0f - farval);
-
-  SbVec3f dummy;
-  this->getPlaneRectangle(narrowed.nearDist-this->nearDist,
-                          narrowed.llf,
-                          narrowed.lrf,
-                          narrowed.ulf,
-                          dummy);
+  SbDPViewVolume dpnarrowed = this->dpvv.zNarrow(nearval, farval);
+  SbViewVolume narrowed;
+  dpnarrowed.copyValues(narrowed);
   return narrowed;
 }
 
@@ -801,17 +500,8 @@ SbViewVolume::zNarrow(float nearval, float farval) const
 void
 SbViewVolume::scale(float factor)
 {
-#if COIN_DEBUG
-  if (factor<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::scale",
-                              "Scale factor (%f) should be >=0.0f. Clamping "
-                              "to 0.0f.",factor);
-    factor=0.0f;
-  }
-#endif // COIN_DEBUG
-
-  this->scaleWidth(factor);
-  this->scaleHeight(factor);
+  this->dpvv.scaleWidth(factor);
+  this->dpvv.scaleHeight(factor);
 }
 
 /*!
@@ -823,26 +513,8 @@ SbViewVolume::scale(float factor)
 void
 SbViewVolume::scaleWidth(float ratio)
 {
-#if COIN_DEBUG
-  if (ratio<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::scaleWidth",
-                              "Scale factor (%f) should be >=0.0f. "
-                              "Clamping to 0.0f.",ratio);
-    ratio=0.0f;
-  }
-#endif // COIN_DEBUG
-
-  float w = this->getWidth();
-  float neww = w * ratio;
-  float wdiff = (neww - w)/2.0f;
-
-  SbVec3f xvec = this->lrf - this->llf;
-  xvec.normalize();
-  SbVec3f diffvec = xvec * wdiff;
-
-  this->llf -= diffvec;
-  this->ulf -= diffvec;
-  this->lrf += diffvec;
+  this->dpvv.scaleWidth(ratio);
+  this->dpvv.copyValues(*this);
 }
 
 /*!
@@ -854,26 +526,8 @@ SbViewVolume::scaleWidth(float ratio)
 void
 SbViewVolume::scaleHeight(float ratio)
 {
-#if COIN_DEBUG
-  if (ratio<0.0f) {
-    SoDebugError::postWarning("SbViewVolume::scaleHeight",
-                              "Scale factor (%f) should be >=0.0f. "
-                              "Clamping to 0.0f.",ratio);
-    ratio=0.0f;
-  }
-#endif // COIN_DEBUG
-
-  float h = this->getHeight();
-  float newh = h * ratio;
-  float hdiff = (newh - h)/2.0f;
-
-  SbVec3f upvec = this->ulf - this->llf;
-  upvec.normalize();
-  SbVec3f diffvec = upvec * hdiff;
-
-  this->llf -= diffvec;
-  this->ulf += diffvec;
-  this->lrf -= diffvec;
+  this->dpvv.scaleHeight(ratio);
+  this->dpvv.copyValues(*this);  
 }
 
 /*!
@@ -928,7 +582,7 @@ SbViewVolume::getNearDist(void) const
 float
 SbViewVolume::getWidth(void) const
 {
-  return (this->lrf - this->llf).length();
+  return (float) this->dpvv.getWidth();
 }
 
 /*!
@@ -939,7 +593,7 @@ SbViewVolume::getWidth(void) const
 float
 SbViewVolume::getHeight(void) const
 {
-  return (this->ulf - this->llf).length();
+  return (float) this->dpvv.getHeight();
 }
 
 /*!
@@ -952,91 +606,6 @@ float
 SbViewVolume::getDepth(void) const
 {
   return this->nearToFar;
-}
-
-/*!
-  Private method to make a matrix for orthogonal parallel projection.
- */
-SbMatrix
-SbViewVolume::getOrthoProjection(const float left, const float right,
-                                 const float bottom, const float top,
-                                 const float nearval, const float farval)
-{
-#if COIN_DEBUG
-  if (left == right || bottom == top || nearval == farval) {
-    SoDebugError::postWarning("SbViewVolume::getOrthoProjection",
-                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
-                              left, right, bottom, top, nearval, farval);
-    return SbMatrix::identity();
-  }
-#endif // COIN_DEBUG
-
-  SbMatrix proj;
-
-  // Projection matrix. From the "OpenGL Programming Guide, release 1",
-  // Appendix G (but with row-major mode).
-
-  proj[0][0] = 2.0f/(right-left);
-  proj[0][1] = 0.0f;
-  proj[0][2] = 0.0f;
-  proj[0][3] = 0.0f;
-  proj[1][0] = 0.0f;
-  proj[1][1] = 2.0f/(top-bottom);
-  proj[1][2] = 0.0f;
-  proj[1][3] = 0.0f;
-  proj[2][0] = 0.0f;
-  proj[2][1] = 0.0f;
-  proj[2][2] = -2.0f/(farval-nearval);
-  proj[2][3] = 0.0f;
-  proj[3][0] = -(right+left)/(right-left);
-  proj[3][1] = -(top+bottom)/(top-bottom);
-  proj[3][2] = -(farval+nearval)/(farval-nearval);
-  proj[3][3] = 1.0f;
-
-  return proj;
-}
-
-
-/*!
-  Private method to make a matrix for perspective projection.
- */
-SbMatrix
-SbViewVolume::getPerspectiveProjection(const float left, const float right,
-                                       const float bottom, const float top,
-                                       const float nearval, const float farval)
-{
-#if COIN_DEBUG
-  if (left == right || bottom == top || nearval == farval) {
-    SoDebugError::postWarning("SbViewVolume::getPerspectiveProjection",
-                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
-                              left, right, bottom, top, nearval, farval);
-    return SbMatrix::identity();
-  }
-#endif // COIN_DEBUG
-
-  SbMatrix proj;
-
-  // Projection matrix. From the "OpenGL Programming Guide, release 1",
-  // Appendix G (but with row-major mode).
-
-  proj[0][0] = 2.0f*nearval/(right-left);
-  proj[0][1] = 0.0f;
-  proj[0][2] = 0.0f;
-  proj[0][3] = 0.0f;
-  proj[1][0] = 0.0f;
-  proj[1][1] = 2.0f*nearval/(top-bottom);
-  proj[1][2] = 0.0f;
-  proj[1][3] = 0.0f;
-  proj[2][0] = (right+left)/(right-left);
-  proj[2][1] = (top+bottom)/(top-bottom);
-  proj[2][2] = -(farval+nearval)/(farval-nearval);
-  proj[2][3] = -1.0f;
-  proj[3][0] = 0.0f;
-  proj[3][1] = 0.0f;
-  proj[3][2] = -2.0f*farval*nearval/(farval-nearval);
-  proj[3][3] = 0.0f;
-
-  return proj;
 }
 
 /*!
@@ -1081,20 +650,7 @@ SbViewVolume::print(FILE * fp) const
 void
 SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
 {
-  SbVec3f far_ll;
-  SbVec3f far_lr;
-  SbVec3f far_ul;
-  SbVec3f far_ur;
-
-  this->getPlaneRectangle(this->nearToFar, far_ll, far_lr, far_ul, far_ur);
-  SbVec3f near_ur = this->ulf + (this->lrf-this->llf);
-
-  planes[0] = SbPlane(this->ulf, this->llf, far_ll);  // left
-  planes[1] = SbPlane(this->llf, this->lrf, far_lr); // bottom
-  planes[2] = SbPlane(this->lrf, near_ur, far_ur); // right
-  planes[3] = SbPlane(near_ur, this->ulf, far_ul); // top
-  planes[4] = SbPlane(this->ulf, near_ur, this->lrf); // near
-  planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
+  this->dpvv.getViewVolumePlanes(planes);
 }
 
 /*!
@@ -1103,20 +659,10 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
 void
 SbViewVolume::transform(const SbMatrix & matrix)
 {
-  matrix.multDirMatrix(this->projDir, this->projDir);
-
-  if(this->type == SbViewVolume::ORTHOGRAPHIC) {
-    matrix.multVecMatrix(this->llf, this->llf);
-    matrix.multVecMatrix(this->lrf, this->lrf);
-    matrix.multVecMatrix(this->ulf, this->ulf);
-  }
-  // SbViewVolume::PERSPECTIVE
-  else {
-    matrix.multVecMatrix(this->llf, this->llf);
-    matrix.multVecMatrix(this->lrf, this->lrf);
-    matrix.multVecMatrix(this->ulf, this->ulf);
-    matrix.multVecMatrix(this->projPoint, this->projPoint);
-  }
+  SbDPMatrix dpmatrix;
+  copy_matrix(matrix, dpmatrix);
+  this->dpvv.transform(dpmatrix);
+  this->dpvv.copyValues(*this);
 }
 
 /*!
@@ -1128,46 +674,5 @@ SbViewVolume::transform(const SbMatrix & matrix)
 SbVec3f
 SbViewVolume::getViewUp(void) const
 {
-  SbVec3f v = this->ulf - this->llf;
-  (void) v.normalize();
-  return v;
-}
-
-//
-// Returns the four points defining the view volume rectangle at the specified distance
-// from the near plane, towards the far plane.
-//
-void
-SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft,
-                                SbVec3f & lowerright,
-                                SbVec3f & upperleft,
-                                SbVec3f & upperright) const
-{
-  SbVec3f near_ur = this->ulf + (this->lrf-this->llf);
-
-  if (this->type == PERSPECTIVE) {
-    float depth = this->nearDist + distance;
-    SbVec3f dir;
-    dir = this->llf - this->projPoint;
-    dir.normalize();
-    lowerleft = this->projPoint + dir * depth / dir.dot(this->projDir);
-
-    dir = this->lrf - this->projPoint;
-    dir.normalize();
-    lowerright = this->projPoint + dir * depth / dir.dot(this->projDir);
-
-    dir = this->ulf - this->projPoint;
-    dir.normalize();
-    upperleft = this->projPoint + dir * depth / dir.dot(this->projDir);
-
-    dir = near_ur - this->projPoint;
-    dir.normalize();
-    upperright = this->projPoint + dir * depth / dir.dot(this->projDir);
-  }
-  else {
-    lowerleft = this->llf + this->projDir * distance;
-    lowerright = this->lrf + this->projDir * distance;
-    upperleft = this->ulf + this->projDir * distance;
-    upperright = near_ur + this->projDir * distance;
-  }
+  return to_sbvec3f(this->dpvv.getViewUp());
 }

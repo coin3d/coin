@@ -185,6 +185,61 @@ AC_CHECK_TYPE([$1], [
 ])# SIM_AC_CHECK_SIZEOF
 
 
+# SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE
+# --------------------
+AC_DEFUN([SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE],
+[
+AC_MSG_CHECKING([standard bytesize typedefs])
+AC_TRY_COMPILE([
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+], [
+  int8_t int8var;
+  uint8_t uint8var;
+  int16_t int16var;
+  uint16_t uint16var;
+  int32_t int32var;
+  uint32_t uint32var;
+  int64_t int64var;
+  uint64_t uint64var;
+],
+[sim_ac_have_have_bytesize_types=true],
+[sim_ac_have_have_bytesize_types=false])
+
+if $sim_ac_have_have_bytesize_types; then
+  AC_MSG_RESULT([available])
+  AC_DEFINE_UNQUOTED([HAVE_INT8_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_INT8_T], [int8_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT8_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_UINT8_T], [uint8_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT16_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_INT16_T], [int16_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT16_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_UINT16_T], [uint16_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT32_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_INT32_T], [int32_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT32_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_UINT32_T], [uint32_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT64_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_INT64_T], [int64_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT64_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_UINT64_T], [uint64_t], [define this to a type of the indicated bitwidth])
+  $1
+else
+  AC_MSG_RESULT([not available])
+  $2
+fi
+])# SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE
+
 # SIM_AC_BYTESIZE_TYPE(TYPEDEFTYPE, BYTESIZE, ALTERNATE_TYPELIST,
 #                     [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # ----------------------------------------------------------
@@ -230,6 +285,7 @@ fi
 # 
 AC_DEFUN([SIM_AC_DEFINE_BYTESIZE_TYPES],
 [
+SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([], [
 SIM_AC_BYTESIZE_TYPE(int8_t, 1, [char], [], AC_MSG_ERROR([could not find 8-bit type]))
 SIM_AC_BYTESIZE_TYPE(uint8_t, 1, [u_int8_t "unsigned char"], [], AC_MSG_ERROR([could not find unsigned 8-bit type]))
 
@@ -241,6 +297,7 @@ SIM_AC_BYTESIZE_TYPE(uint32_t, 4, [u_int32_t "unsigned int" "unsigned long"], []
 
 SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long" __int64], [], AC_MSG_WARN([could not find 64-bit type]))
 SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
+])
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
 
 # Usage:
@@ -5000,20 +5057,20 @@ AC_CACHE_CHECK(
     if test "x$sim_cv_byteorder_conversion_libs" = "xUNRESOLVED"; then
       LIBS="$sim_ac_byc_libcheck $sim_ac_save_libs"
       AC_TRY_LINK([
-#if HAVE_WINSOCK2_H
+#ifdef HAVE_WINSOCK2_H
 #include <winsock2.h> /* MSWindows htonl() etc */
 #endif /* HAVE_WINSOCK2_H */
-#if HAVE_SYS_PARAM_H
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> /* FreeBSD htonl() etc */
 #endif /* HAVE_SYS_PARAM_H */
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs
    to include sys/types.h before netinet/in.h. There have also
    been a problem report for FreeBSD which seems to indicate
    the same dependency on that platform aswell. */
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
-#if HAVE_NETINET_IN_H
+#ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h> /* Linux htonl() etc */
 #endif /* HAVE_NETINET_IN_H */
 ],
@@ -6768,6 +6825,31 @@ fi
 ])
 
 # **************************************************************************
+# SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether the OpenGL implementation includes the method
+# glXGetCurrentDisplay().
+
+AC_DEFUN([SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE], [
+AC_CACHE_CHECK(
+  [whether glXGetCurrentDisplay() is available],
+  sim_cv_have_glxgetcurrentdisplay,
+  AC_TRY_LINK([
+#include <GL/gl.h>
+#include <GL/glx.h>
+],
+[(void)glXGetCurrentDisplay();],
+[sim_cv_have_glxgetcurrentdisplay=true],
+[sim_cv_have_glxgetcurrentdisplay=false]))
+
+if ${sim_cv_have_glxgetcurrentdisplay}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE()
+
+# **************************************************************************
 # SIM_AC_HAVE_GLX_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
 # Check whether GLX is on the system.
@@ -6861,6 +6943,36 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_WGL_IFELSE()
+
+# **************************************************************************
+# SIM_AC_HAVE_AGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether WGL is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_AGL_IFELSE], [
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
+
+LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+
+AC_CACHE_CHECK(
+  [whether AGL is on the system],
+  sim_cv_have_agl,
+  AC_TRY_LINK(
+    [#include <AGL/agl.h>
+#include <Carbon/Carbon.h>],
+    [aglGetCurrentContext();],
+    [sim_cv_have_agl=true],
+    [sim_cv_have_agl=false]))
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_agl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_AGL_IFELSE()
+
 
 # **************************************************************************
 # SIM_AC_UNIQIFY_LIST( VARIABLE, LIST )

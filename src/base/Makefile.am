@@ -46,6 +46,7 @@ RegularSources = \
 	SbVec4f.cpp \
 	SbVec4d.cpp \
 	SbViewVolume.cpp \
+	SbDPViewVolume.cpp \
 	SbViewportRegion.cpp \
 	SbXfBox3f.cpp \
 	$(ThreadsDependentSources)
@@ -89,6 +90,7 @@ PrivateHeaders = \
 	../../include/Inventor/SbVec4f.h \
 	../../include/Inventor/SbVec4d.h \
 	../../include/Inventor/SbViewVolume.h \
+	../../include/Inventor/SbDPViewVolume.h \
 	../../include/Inventor/SbViewportRegion.h \
 	../../include/Inventor/SbXfBox3f.h
 
