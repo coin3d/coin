@@ -96,7 +96,11 @@ protected:
 private:
   static SoType classTypeId;
 
-  int32_t referencecount;
+  struct {
+    int16_t referencecount  : 15;
+    uint16_t writerefcount  : 15;
+    unsigned int multiwrite :  1;
+  } objdata;
 
   // Don't convert this to a pointer reference, as practically
   // speaking all SoBase derived objects have auditors -- so the list

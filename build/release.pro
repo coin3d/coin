@@ -17,13 +17,13 @@
 #
 ############################################################################
 
-# Compile a release version of the Coin library, with no extra code
-# for debugging purposes etc.
+# Compile a release version of the Coin library -- as slim as
+# possible, with no extra code for debugging purposes.
 
 TARGET	    =   Coin
 CONFIG      =	release staticlib
 
-LIBS        =	-L$(SIMAGELIB)/build -lsimage
+LIBS        =
 
 # defines available:
 # COIN_DEBUG = [0,1]   (compile with/without run-time debug code)

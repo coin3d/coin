@@ -100,8 +100,10 @@ SoType SoBase::classTypeId = SoType::badType();
   Constructor. This will set the current reference count to zero.
  */
 SoBase::SoBase(void)
-  : referencecount(0)
 {
+  this->objdata.referencecount = 0;
+  this->objdata.writerefcount = 0;
+  this->objdata.multiwrite = FALSE;
 }
 
 /*!
@@ -183,13 +185,13 @@ SoBase::ref(void) const
 {
   // Cast away constness.
   SoBase * base = (SoBase *)this;
-  base->referencecount++;
+  base->objdata.referencecount++;
 
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::ref",
 			 "%p ('%s') - referencecount: %d",
 			 this, this->getTypeId().getName().getString(),
-			 this->referencecount);
+			 this->objdata.referencecount);
 #endif // debug
 }
 
@@ -207,18 +209,18 @@ SoBase::unref(void) const
 {
   // Cast away constness.
   SoBase * base = (SoBase *)this;
-  base->referencecount--;
+  base->objdata.referencecount--;
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::unref",
 			 "%p ('%s') - referencecount: %d",
 			 this, this->getTypeId().getName().getString(),
-			 this->referencecount);
+			 this->objdata.referencecount);
 #endif // debug
 #if COIN_DEBUG
-  if (this->referencecount < 0)
+  if (this->objdata.referencecount < 0)
     SoDebugError::postWarning("SoBase::unref", "ref count less than zero");
 #endif // COIN_DEBUG
-  if (this->referencecount == 0) base->destroy();
+  if (this->objdata.referencecount == 0) base->destroy();
 }
 
 /*!
@@ -232,12 +234,12 @@ SoBase::unrefNoDelete(void) const
 {
   // Cast away constness.
   SoBase * base = (SoBase *)this;
-  base->referencecount--;
+  base->objdata.referencecount--;
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::unrefNoDelete",
 			 "%p ('%s') - referencecount: %d",
 			 this, this->getTypeId().getName().getString(),
-			 this->referencecount);
+			 this->objdata.referencecount);
 #endif // debug
 }
 
@@ -249,7 +251,7 @@ SoBase::unrefNoDelete(void) const
 int32_t
 SoBase::getRefCount(void) const
 {
-  return this->referencecount;
+  return this->objdata.referencecount;
 }
 
 /*!
@@ -449,13 +451,15 @@ SoBase::getAuditors(void) const
 }
 
 /*!
-  FIXME: write doc
+  This method is used during the first write pass of a write action to
+  count the number of references to this object in the scene graph.
  */
 void
 SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
 {
-  // XXX
-//    assert(0 && "FIXME: not implemented");
+  if (this->objdata.writerefcount == 0) this->objdata.multiwrite = FALSE;
+  this->objdata.writerefcount++;
+  if (this->objdata.writerefcount > 1) this->objdata.multiwrite = TRUE;
 }
 
 /*!
@@ -552,7 +556,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   SbBool result = in->read(name, TRUE);
   if (!result) return TRUE; // EOF, return TRUE with base==NULL
 
-#if 1 // debug
+#if 0 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
 			 name.getString());
 #endif // debug
@@ -622,13 +626,14 @@ SoBase::getTraceRefs(void)
 }
 
 /*!
-  FIXME: write doc
+  Returns \a TRUE if this object will be written more than once upon
+  export. Note that the result from this method is only valid during a
+  write action.
  */
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return this->objdata.multiwrite != FALSE;
 }
 
 /*!
@@ -660,28 +665,43 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
   assert(!isEngine);
 
   out->write(END_OF_LINE);
-
   out->indent();
 
-  // FIXME: what about multiple references (i.e. where, when and how
-  // should we place the code which detects multiple references and
-  // writes USE)? Should perhaps use addReference() and
-  // findReference() in SoOutput? 19990610 mortene.
-
   SbName name = this->getName();
-  if (name.getLength()) {
-    out->write(DEFINITION_KEYWORD);
+  int refid = out->findReference(this);
+  SbBool firstwrite = refid == -1;
+  SbBool multiwrite = this->hasMultipleWriteRefs();
+
+  if (multiwrite && firstwrite) refid = out->addReference(this);
+
+  if (multiwrite && !firstwrite) {
+    out->write(REFERENCE_KEYWORD);
     out->write(' ');
     out->write(name.getString());
-    out->write(' ');
+    out->write(SoBase::refwriteprefix.getString());
+    out->write(refid);
+  }
+  else {
+    if (name.getLength() || multiwrite) {
+      out->write(DEFINITION_KEYWORD);
+      out->write(' ');
+      out->write(name.getString());
+      if (multiwrite) {
+	out->write(SoBase::refwriteprefix.getString());
+	out->write(refid);
+      }
+      out->write(' ');
+    }
+
+    out->write(this->getFileFormatName());
+    out->write(" {");
+    out->write(END_OF_LINE);
+  
+    out->incrementIndent();
   }
 
-  out->write(this->getFileFormatName());
-  out->write(" {");
-  out->write(END_OF_LINE);
-  
-  out->incrementIndent();
-  return FALSE;
+  ((SoBase *)this)->objdata.writerefcount--;
+  return (multiwrite && !firstwrite);
 }
 
 /*!

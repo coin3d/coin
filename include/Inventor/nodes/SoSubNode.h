@@ -22,14 +22,43 @@
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 
+#define SO_NODE_HEADER(_nodeclass_) \
+private: \
+  static SoType classTypeId; \
+public: \
+  static SoType getClassTypeId(void); \
+  virtual SoType getTypeId(void) const; \
+  static void * createInstance(void);
+
+
+#define SO_NODE_SOURCE(_nodeclass_) \
+SoType _nodeclass_::classTypeId = SoType::badType(); \
+void * _nodeclass_::createInstance(void) { return new _nodeclass_; } \
+SoType _nodeclass_::getClassTypeId(void) { return _nodeclass_::classTypeId; } \
+SoType _nodeclass_::getTypeId(void) const { return _nodeclass_::classTypeId; }
+
+
+#define SO_NODE_CONSTRUCTOR(_nodeclass_) \
+assert(_nodeclass_::classTypeId != SoType::badType());
+
+
+#define SO_NODE_INIT_CLASS(_nodeclass_, _parentclass_, _parentname_) \
+assert(_nodeclass_::classTypeId == SoType::badType()); \
+assert(_parentclass_::getClassTypeId() != SoType::badType()); \
+_nodeclass_::classTypeId = \
+  SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_nodeclass_), \
+                     &_nodeclass_::createInstance, \
+                     _parentclass_::nextActionMethodIndex++);
+
+
+
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
-  do { \
-    this->fieldData.addField(this, SO__QUOTE(_fieldname_), \
-                             &this->_fieldname_);\
-    this->_fieldname_.setValue _defaultval_;\
-    this->_fieldname_.setContainer(this); \
-    this->_fieldname_.setDefault(TRUE); \
-  } while (0)
+do { \
+  this->fieldData.addField(this, SO__QUOTE(_fieldname_), &this->_fieldname_);\
+  this->_fieldname_.setValue _defaultval_;\
+  this->_fieldname_.setContainer(this); \
+  this->_fieldname_.setDefault(TRUE); \
+} while (0)
 
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   this->fieldData.addEnumValue(SO__QUOTE(_enumname_), SO__QUOTE(_enumval_), \

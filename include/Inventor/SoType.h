@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TYPE_H_
-#define _SO_TYPE_H_
+#ifndef __SOTYPE_H__
+#define __SOTYPE_H__
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbDict.h>
@@ -33,31 +33,30 @@ template <class Type> class SbList;
 
 class SoType {
 public:
-  typedef void * (*instantiationMethod)( void );
+  typedef void * (*instantiationMethod)(void);
 
   static SoType fromName(const SbName name);
-  SbName getName() const;
-  const SoType getParent() const;
+  SbName getName(void) const;
+  const SoType getParent(void) const;
   SbBool isDerivedFrom(const SoType type) const;
 
   int getAllDerivedFrom(SoTypeList & list) const;
   static int getAllDerivedFrom(const SoType type, SoTypeList & list);
   
-  SbBool canCreateInstance() const;
-  void * createInstance() const;
+  SbBool canCreateInstance(void) const;
+  void * createInstance(void) const;
   
-  uint16_t getData() const;
-  int16_t getKey() const;
+  uint16_t getData(void) const;
+  int16_t getKey(void) const;
 
-  SbBool operator == ( const SoType type ) const;
-  SbBool operator != ( const SoType type ) const;
+  SbBool operator == (const SoType type) const;
+  SbBool operator != (const SoType type) const;
 
-  SbBool operator <  ( const SoType type ) const;
-  SbBool operator <= ( const SoType type ) const;
-  SbBool operator >= ( const SoType type ) const;
-  SbBool operator >  ( const SoType type ) const;
+  SbBool operator <  (const SoType type) const;
+  SbBool operator <= (const SoType type) const;
+  SbBool operator >= (const SoType type) const;
+  SbBool operator >  (const SoType type) const;
 
-// extender:
   static const SoType createType(const SoType parent, const SbName name,
 				 const instantiationMethod method = NULL,
 				 const uint16_t data = 0);
@@ -65,18 +64,17 @@ public:
   static const SoType overrideType(const SoType originalType,
 				   const instantiationMethod method = NULL);
   
-public:
-  static void init();
-  static void clean();
+  static void init(void);
+  static void clean(void);
 
   static SoType fromKey(uint16_t key);
-  static SoType badType();
-  SbBool isBad() const;
+  static SoType badType(void);
+  SbBool isBad(void) const;
 
-  void makeInternal();
-  SbBool isInternal() const;
+  void makeInternal(void);
+  SbBool isInternal(void) const;
   
-  static int getNumTypes();
+  static int getNumTypes(void);
   
 private:    
   int16_t index;
@@ -84,56 +82,56 @@ private:
   static SoTypeList typeList;
   static SbList<SoTypeData *> typeDataList;
   static SbDict typeDict;
-}; // class SoType
+};
 
 /* inline methods ************************************************/
 
 inline int16_t 
-SoType::getKey() const
+SoType::getKey(void) const
 {
   return this->index;
 }
 
 inline SbBool 
-SoType::operator != ( const SoType type ) const
+SoType::operator != (const SoType type) const
 { 
   return (this->getKey() != type.getKey()); 
 }
 
 inline SbBool 
-SoType::operator == ( const SoType type ) const
+SoType::operator == (const SoType type) const
 { 
   return (this->getKey() == type.getKey()); 
 }
 
 inline SbBool 
-SoType::operator <  ( const SoType type ) const
+SoType::operator <  (const SoType type) const
 { 
   return (this->getKey() < type.getKey()); 
 }
 
 inline SbBool 
-SoType::operator <= ( const SoType type ) const
+SoType::operator <= (const SoType type) const
 { 
   return (this->getKey() <= type.getKey()); 
 }
 
 inline SbBool 
-SoType::operator >= ( const SoType type ) const
+SoType::operator >= (const SoType type) const
 { 
   return (this->getKey() >= type.getKey()); 
 }
 
 inline SbBool 
-SoType::operator >  ( const SoType type ) const
+SoType::operator >  (const SoType type) const
 { 
   return (this->getKey() > type.getKey()); 
 }
 
 inline SbBool 
-SoType::isBad() const
+SoType::isBad(void) const
 { 
   return (this->index == 0); 
 }
 
-#endif // ! _SO_TYPE_H_
+#endif // !__SOTYPE_H__

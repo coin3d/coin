@@ -1191,7 +1191,10 @@ SoNode::search(SoSearchAction * action)
 
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
-  FIXME: write function documentation
+  \internal
+
+  Static method registered with SoWriteAction. Just calls the virtual
+  write() method.
 */
 void
 SoNode::writeS(SoAction * const action, SoNode * const node)
@@ -1203,17 +1206,20 @@ SoNode::writeS(SoAction * const action, SoNode * const node)
 }
 
 /*!
-  FIXME: write function documentation
+  This is the default method for writing out a node object. It is used
+  by SoWriteAction.
 */
 void
 SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    // FIXME: code missing here. 19990701 mortene.
+    // FIXME: anything missing here? 19990701 mortene.
   }
   else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE)) return;
     this->writeInstance(out);
+    this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
 }
@@ -1273,13 +1279,8 @@ SoNode::getNodeId(void) const
 void
 SoNode::writeInstance(SoOutput * out)
 {
-  if (this->writeHeader(out, FALSE, FALSE)) return;
-
-  const SoFieldData * fd = this->getFieldData();
-  for (int i=0; i < fd->getNumFields(); i++)
-    fd->getField(this, i)->write(out, fd->getFieldName(i));
-  
-  this->writeFooter(out);
+  // Fields are written from SoFieldContainer.
+  inherited::writeInstance(out);
 }
 
 /*!

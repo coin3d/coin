@@ -426,17 +426,26 @@ SoGroup::handleEvent(SoHandleEventAction * action)
 
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
-  FIXME: write function documentation
+  Write action method is overloaded from SoNode to call
+  SoBase::addWriteReference() on the children of the group.
 */
 void 
 SoGroup::write(SoWriteAction * action)
 {
-  // FIXME: is this code correct? 19990629 mortene.
-
   SoOutput * out = action->getOutput();
-  if (this->writeHeader(out, TRUE, FALSE)) return;
-  SoGroup::doAction((SoAction *)action);
-  this->writeFooter(out);
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    int n = this->getNumChildren();
+    for (int i = 0; i < n; i++)
+      this->getChild(i)->addWriteReference(out, FALSE);
+    SoGroup::doAction((SoAction *)action);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, TRUE, FALSE)) return;
+    this->writeInstance(out);
+    SoGroup::doAction((SoAction *)action);
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 

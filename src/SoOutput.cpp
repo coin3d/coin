@@ -103,6 +103,7 @@ SoOutput::SoOutput(void)
 */
 SoOutput::SoOutput(SoOutput * dictOut)
 {
+  assert(dictOut != NULL);
   this->constructorCommon();
   this->sobase2id = new SbDict(*(dictOut->sobase2id));
 }
@@ -907,7 +908,7 @@ SoOutput::findReference(const SoBase * base) const
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
   void * id;
-  SbBool ok = this->sobase2id->find((unsigned long)base, id);
+  SbBool ok = this->sobase2id && this->sobase2id->find((unsigned long)base, id);
   return ok ? (int)id : -1;
 }
 

@@ -47,7 +47,7 @@ struct SoTypeData {
 	     const SbBool ispublic = FALSE,
 	     const uint16_t theData = 0,
 	     const SoType theParent = SoType::badType(),
-	     const SoType::instantiationMethod createMethod = NULL )
+	     const SoType::instantiationMethod createMethod = NULL)
     : name(theName), isPublic(ispublic), data(theData),
       parent(theParent), method(createMethod) { };
   
@@ -56,7 +56,7 @@ struct SoTypeData {
   uint16_t data;
   SoType parent;
   SoType::instantiationMethod method;
-}; // struct SoTypeData
+};
 
 #if defined(NEED_TEMPLATE_DEFINITION)
 template class SbList<SoTypeData *>;
@@ -82,39 +82,39 @@ SbDict                 SoType::typeDict(512); //increase if necessary
 */
 
 void
-SoType::init() // static
+SoType::init(void)
 {
   // If this assert fails, it is probably because SoType::init() has
   // been called for a second time. --mortene
-  assert( SoType::typeList.getLength() == 0 );
-  assert( SoType::typeDataList.getLength() == 0 );
+  assert(SoType::typeList.getLength() == 0);
+  assert(SoType::typeDataList.getLength() == 0);
   
   SoType::typeList.append(SoType::badType()); // bad type at index 0  
-  SoType::typeDataList.append( new SoTypeData( SbName("BadType") ) );
+  SoType::typeDataList.append(new SoTypeData(SbName("BadType")));
   SoType::typeDict.enter((unsigned long)SbName("BadType").getString(), 0);
-} // init()
+}
 
 /*!
   This function cleans up the type system.
 */
 
 void
-SoType::clean() // static
+SoType::clean(void)
 {
   // clear SoType::typeList
-  SoType::typeList.truncate( 0 );
+  SoType::typeList.truncate(0);
   SoType::typeList.fit();
 
   // clean SoType::typeDataList (first delete structures)
   const int num = SoType::typeDataList.getLength();
-  for ( int i = 0; i < num; i++ ) {
+  for (int i = 0; i < num; i++) {
     delete SoType::typeDataList[ i ];
   }
-  SoType::typeDataList.truncate( 0 );
+  SoType::typeDataList.truncate(0);
   SoType::typeDataList.fit();
   
   SoType::typeDict.clear();
-} // clean()
+}
 
 /*!
   This method creates and registers a new class type.
@@ -128,18 +128,16 @@ SoType::createType(const SoType parent, const SbName name,
 		   const instantiationMethod method,
 		   const uint16_t data)
 {
-  SoTypeData *typeData = new SoTypeData(name, TRUE, data, parent, method);
+  SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
   newType.index = SoType::typeList.getLength();
   SoType::typeList.append(newType);
   SoType::typeDataList.append(typeData);
   // add to dictionary for fast lookup
   SoType::typeDict.enter((unsigned long)name.getString(), 
-			 (void*)newType.index);
-
-  //  fprintf(stderr,"createType: %s, %d\n", name.getString(), newType.index);
+			 (void *)newType.index);
   return newType;
-} // createType()
+}
 
 /*!
   This method makes a new class override an existing class.
@@ -155,7 +153,7 @@ SoType::overrideType(const SoType originalType,
 {
   SoType::typeDataList[originalType.getKey()]->method = method;
   return originalType;
-} // overrideType()
+}
 
 /*!
   This static method returns the SoType object associated with name \a name.
@@ -165,7 +163,7 @@ SoType::overrideType(const SoType originalType,
 SoType
 SoType::fromName(const SbName name)
 {
-  void *temp = NULL;
+  void * temp = NULL;
   if (SoType::typeDict.find((unsigned long)name.getString(), temp)) {
     const int index = (int)temp;
     assert(index >= 0 && index < SoType::typeList.getLength());
@@ -173,7 +171,7 @@ SoType::fromName(const SbName name)
     return SoType::typeList[index];
   }
   return SoType::badType();
-} // fromName()
+}
 
 /*!
   FIXME: write doc.
@@ -192,20 +190,20 @@ SoType::fromKey(uint16_t key)
 */
 
 SbName
-SoType::getName() const
+SoType::getName(void) const
 {
   return SoType::typeDataList[ this->getKey() ]->name;
-} // getName()
+}
 
 /*!
-  \fn uint16_t SoType::getData( void ) const
+  \fn uint16_t SoType::getData(void) const
 
   This method returns a type specific data variable.
 
 */
 
 uint16_t 
-SoType::getData() const
+SoType::getData(void) const
 {
   return SoType::typeDataList[this->getKey()]->data;
 }
@@ -216,7 +214,7 @@ SoType::getData() const
 */
 
 const SoType
-SoType::getParent() const
+SoType::getParent(void) const
 {
   return SoType::typeDataList[this->getKey()]->parent;
 }
@@ -228,15 +226,15 @@ SoType::getParent() const
 */
 
 SoType
-SoType::badType()
+SoType::badType(void)
 {
   SoType bad;
   bad.index = 0;
   return bad;
-} // badType()
+}
 
 /*!
-  \fn SbBool SoType::isBad( void ) const
+  \fn SbBool SoType::isBad(void) const
 
   This method returns TRUE if the SoType object represents an illegal class
   type.
@@ -268,7 +266,7 @@ SoType::isDerivedFrom(const SoType parent) const
       return TRUE;
 
   return FALSE;
-} // isDerivedFrom()
+}
 
 /*!
   This method appends all the class types \a type is derived from to \a list,
@@ -279,18 +277,18 @@ SoType::isDerivedFrom(const SoType parent) const
 int
 SoType::getAllDerivedFrom(SoTypeList & list) const
 {
-  assert( ! this->isBad() );
+  assert(! this->isBad());
 
   int counter = 0;
   SoType type = *this;
-  while ( ! (type = SoType::typeDataList[ type.getKey() ]->parent).isBad() ) {
-    if ( ! type.isInternal() ) {
+  while (! (type = SoType::typeDataList[ type.getKey() ]->parent).isBad()) {
+    if (! type.isInternal()) {
       counter++;
       list.append(type);
     }
   }
   return counter;
-} // getAllDerivedFrom()
+}
 
 /*!
   \overload
@@ -310,10 +308,10 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 */
 
 SbBool
-SoType::canCreateInstance() const
+SoType::canCreateInstance(void) const
 {
   return (SoType::typeDataList[ this->getKey() ]->method != NULL);
-} // canCreateInstance()
+}
 
 /*!
   This method instantiates an object of the current type.
@@ -322,21 +320,21 @@ SoType::canCreateInstance() const
 */
 
 void *
-SoType::createInstance() const
+SoType::createInstance(void) const
 {
-  if( this->canCreateInstance() ) {
+  if (this->canCreateInstance()) {
     return (*(SoType::typeDataList[ this->getKey() ]->method))();
   }
   else {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoType::createInstance",
-			      "can't create instance of class type '%s',"
+			      "can't create instance of class type '%s', "
 			      " use SoType::canCreateInstance()",
 			      this->getName().getString());
 #endif // COIN_DEBUG
     return NULL;
   }
-} // createInstance()
+}
 
 /*!
   This function returns the number of types registered in the run-time type
@@ -344,13 +342,13 @@ SoType::createInstance() const
 */
 
 int
-SoType::getNumTypes()
+SoType::getNumTypes(void)
 {
   return SoType::typeList.getLength();
-} // getNumTypes()
+}
 
 /*!
-  \fn int16_t SoType::getKey( void ) const
+  \fn int16_t SoType::getKey(void) const
  
   This method returns the type's index in the internal typeList.
 
@@ -361,54 +359,53 @@ SoType::getNumTypes()
 */
 
 void
-SoType::makeInternal()
+SoType::makeInternal(void)
 {
   SoType::typeDataList[this->getKey()]->isPublic = FALSE;
-} // makeInternal()
+}
 
 /*!
   This function returns TRUE if the type is an internal type.
 */
 
 SbBool
-SoType::isInternal(
-    void ) const
+SoType::isInternal(void) const
 {
     return SoType::typeDataList[ this->getKey()]->isPublic == FALSE;
-} // isInternal()
+}
 
 /*!
-  \fn SbBool SoType::operator != ( const SoType type ) const
+  \fn SbBool SoType::operator != (const SoType type) const
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SbBool SoType::operator == ( const SoType type ) const
+  \fn SbBool SoType::operator == (const SoType type) const
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SbBool SoType::operator <  ( const SoType type ) const
+  \fn SbBool SoType::operator <  (const SoType type) const
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SbBool SoType::operator <= ( const SoType type ) const
+  \fn SbBool SoType::operator <= (const SoType type) const
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SbBool SoType::operator >= ( const SoType type ) const
+  \fn SbBool SoType::operator >= (const SoType type) const
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SbBool SoType::operator >  ( const SoType type ) const
+  \fn SbBool SoType::operator >  (const SoType type) const
 
   FIXME: write doc.
 */

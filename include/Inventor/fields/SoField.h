@@ -239,10 +239,12 @@ private:
 };
 
 #if !defined(__SOLIB_INTERNAL__)
-#define __INCLUDED_FROM_SOFIELD_H__
+#if !defined(COIN_EXCLUDE_SOSFIELD)
 #include <Inventor/fields/SoSField.h>
+#endif // !COIN_EXCLUDE_SOSFIELD
+#if !defined(COIN_EXCLUDE_SOMFIELD)
 #include <Inventor/fields/SoMField.h>
-#undef __INCLUDED_FROM_SOFIELD_H__
+#endif // !COIN_EXCLUDE_SOMFIELD
 #endif // !__SOLIB_INTERNAL__
 
 #endif // !__SOFIELD_H__

@@ -1191,6 +1191,9 @@ SoField::write(SoOutput * out, const SbName & name) const
       out->write(IGNOREDCHAR);
     }
     out->write(EOLSTR);
+
+    assert(!this->isConnected() &&
+	   "FIXME: ascii export of connections not implemented yet");
   }
   // Binary write.
   else {
@@ -1203,6 +1206,9 @@ SoField::write(SoOutput * out, const SbName & name) const
     if (this->isDefault()) flags |= 0x04;
     // FIXME: more flags? 19990629 mortene.
     out->write(flags);
+
+    assert(!this->isConnected() &&
+	   "FIXME: binary export of connections not implemented yet");
   }
 }
 

@@ -33,10 +33,15 @@
 
 
 #include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/fields/SoField.h>
+
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
+#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoField.h>
 
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
@@ -361,12 +366,27 @@ SoFieldContainer::validateNewFieldValue(SoField * pField, void * newValue)
 }
 
 /*! 
-  FIXME: write doc
+  Overloaded from SoBase to make sure field connections into other
+  field containers are also accounted for.
  */
 void
 SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
 {
-  assert(0 && "FIXME: not implemented");
+  inherited::addWriteReference(out, isFromField);
+  if (isFromField) return;
+
+  const SoFieldData * fd = this->getFieldData();
+  for (int i=0; i < fd->getNumFields(); i++) {
+    SoField * fieldmaster;
+    SoEngineOutput * enginemaster;
+    SoVRMLInterpOutput * interpmaster;
+    if (fd->getField(this, i)->getConnectedField(fieldmaster))
+      fieldmaster->getContainer()->addWriteReference(out, TRUE);
+    else if (fd->getField(this, i)->getConnectedEngine(enginemaster))
+      enginemaster->getContainer()->addWriteReference(out, TRUE);
+    else if (fd->getField(this, i)->getConnectedVRMLInterp(interpmaster))
+      interpmaster->getContainer()->addWriteReference(out, TRUE);
+  }
 }
 
 
@@ -376,7 +396,9 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
 void
 SoFieldContainer::writeInstance(SoOutput * out)
 {
-  assert(0 && "FIXME: not implemented");
+  const SoFieldData * fd = this->getFieldData();
+  for (int i=0; i < fd->getNumFields(); i++)
+    fd->getField(this, i)->write(out, fd->getFieldName(i));
 }
 
 /*! 

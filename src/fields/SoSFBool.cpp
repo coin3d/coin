@@ -244,7 +244,7 @@ SoSFBool::readValue(SoInput * in)
 void
 SoSFBool::writeValue(SoOutput * out) const
 {
-  if (out->isBinary()) out->write((unsigned int) this->getValue() ? 1 : 0);
+  if (out->isBinary()) out->write((unsigned int)(this->getValue() ? 1 : 0));
   else out->write(this->getValue() ? "TRUE" : "FALSE");
 }
 

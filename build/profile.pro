@@ -23,7 +23,7 @@
 TARGET	    =   CoinProfile
 CONFIG      =	debug staticlib
 
-LIBS        =	-L$(SIMAGELIB)/build -lsimage
+LIBS        =
 
 # defines available:
 # COIN_DEBUG = [0,1]   (compile with/without run-time debug code)
