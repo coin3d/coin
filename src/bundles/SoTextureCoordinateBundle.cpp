@@ -242,6 +242,11 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
   this->shapenode->computeBBox(action, box, center);
+  if (!box.hasVolume()) {
+    this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
+    return;
+  }
+
   SbVec3f size;
   box.getSize(size[0], size[1], size[2]);
 
@@ -286,6 +291,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
 
   this->dummyInstance[2] = 0.0f;
   this->dummyInstance[3] = 1.0f;
+  
   assert(this->defaultsize[0] > 0.0f);
   assert(this->defaultsize[1] > 0.0f);
 }
