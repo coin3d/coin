@@ -106,8 +106,8 @@ SoGLCacheList::call(SoGLRenderAction * action, const uint32_t pushattribbits)
 }
 
 /*!
-  Start recording a new cache. Remember to call close() when you've finished 
-  recoring the cache.
+  Start recording a new cache. Remember to call close() when you've
+  finished recording the cache.
 
   \sa close()
 */
