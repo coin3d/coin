@@ -26,5 +26,4 @@
 #include <Inventor/engines/SoInterpolateVec3f.h>
 #include <Inventor/engines/SoInterpolateVec4f.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
-#include <Inventor/engines/SoInterpolateMatrix.h>
 #undef  COIN_INCLUDED_FROM_SOINTERPOLATE_H
