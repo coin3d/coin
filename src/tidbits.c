@@ -44,6 +44,78 @@
 
 
 /**************************************************************************/
+
+/* FIXME: we should _really_ grab some BSD/PD-style licensed code to
+   provide a replacement for the (v)snprintf functions. Not only would
+   that provide a fail-safe option on obscure platforms, but as it is
+   now, we also have problems with locale settings. Under the German
+   locale, for instance, floating-point numbers comes out with ",",
+   not ".", as the decimal-point separator. This is bad, as it causes
+   us to write invalid .iv-files.
+
+   Here is handegar's list of possible candidates (note that many of
+   these can probably be ruled out due to the license restrictions --
+   we need to be able to find code with a liberal enough license that
+   we can re-license it under the Coin PEL and the LGPL, which
+   probably effectively limits us to code in the PD, or possibly under
+   BSD- or MIT-style licenses:
+
+   1) The BSDs:
+   
+      - http://www.openbsd.org/cgi-bin/cvsweb/src/lib/libc/stdio/
+      - http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/stdio/
+      - http://cvsweb.netbsd.org/cgi-bin/cvsweb.cgi/basesrc/lib/libc/stdio/
+   
+   
+   2) A portable snprintf under either GNU (L?)GPL or the "Frontier
+      Artistic Lisence" (wahtever that is):
+   
+      - http://www.ijs.si/software/snprintf/
+   
+   
+   3) TRIO (seems to be under an "MIT-like" license):
+   
+      - http://daniel.haxx.se/trio/
+   
+   
+   4) Samba (under GNU GPL?):
+   
+      - http://samba.org/cgi-bin/cvsweb/samba/source/lib/snprintf.c
+   
+  
+   5) Apache:
+   
+      - http://www.apache.org
+   
+  
+   6) Caolán McNamara's (GNU GPL?):
+   
+      - http://www.csn.ul.ie/~caolan/publink/snprintf-1.1.tar.gz
+   
+
+   7) Castaglia (GNU GPL?):
+   
+      - http://www.castaglia.org/proftpd/doc/devel-guide/src/lib/vsnprintf.c.html
+   
+   
+   8) Gnome (GNU (L?)GPL? -- looks very similar to the Samba
+      implementation):
+   
+      - http://cvs.gnome.org/lxr/
+
+   20021128 mortene.
+
+   UPDATE 20021206 mortene: it looks like integrating any of these
+   would be quite some effort, to get the build / configure stuff
+   correct, to slim down the code of the chosen implementation, etc
+   etc. I think our first step should perhaps be to let configure bail
+   out if no "native" snprintf() is found on the system, with a good
+   error message, a fallback, and a notice about mailing us info on
+   the platform in question. Just so we avoid spending much time
+   solving a problem which is really not there on any platform Coin is
+   being used.
+ */
+
 /*
   coin_vsnprintf() wrapper. Returns -1 if resultant string will be
   longer than n.
@@ -496,9 +568,31 @@ coin_isspace(const char c)
 /* Quick check to see if an integer value is equal to 2^n, for any
    n=[0, ...]. */
 SbBool
-coin_is_power_of_two(unsigned int x)
+coin_is_power_of_two(uint32_t x)
 {
   return (x != 0) && ((x & (x - 1)) == 0);
+}
+
+/*
+  Returns nearest upward number for x that is a power of two.
+
+  Note that if "x" is already a power of two, we will still return the
+  *next* number that is a power of two, and not x itself.
+ */
+uint32_t
+coin_next_power_of_two(uint32_t x)
+{
+  assert((x < (uint32_t)(1 << 31)) && "overflow");
+
+  x |= (x >> 1);
+  x |= (x >> 2);
+  x |= (x >> 4);
+  x |= (x >> 8);
+  x |= (x >> 16);
+  /* This will make it work with 64-bit numbers: */
+  /* x |= (x >> 32); */
+
+  return x + 1;
 }
 
 /*
