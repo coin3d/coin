@@ -63,11 +63,27 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/glue/gl.h>
 
+
+/*!
+  \enum SoBumpMap::Wrap
+
+  Enumeration of wrapping strategies which can be used when the
+  bump map doesn't cover the full extent of the geometry.
+*/
+/*!
+  \var SoBumpMap::Wrap SoBumpMap::REPEAT
+  Repeat bump map  when coordinate is not between 0 and 1.
+*/
+/*!
+  \var SoBumpMap::Wrap SoBumpMap::CLAMP
+  Clamp coordinate between 0 and 1.
+*/
+
 /*!
   \var SoSFString SoBumpMap::filename
 
   Bump map (or normal map) filename, referring to a file on disk in a
-  supported image bitmap format. See SoTexture2::filename for more
+  supported image bitmap format. See SoBumpMap::filename for more
   information.
 */
 
@@ -76,6 +92,23 @@
 
   Inline image data. Defaults to contain an empty bump map.
 
+*/
+
+/*!
+  \var SoSFEnum SoBumpMap::wrapS
+
+  Wrapping strategy for the S coordinate when the bump map is
+  narrower than the object to map unto.
+
+  Default value is SoBumpMap::REPEAT.
+*/
+/*!
+  \var SoSFEnum SoBumpMap::wrapT
+
+  Wrapping strategy for the T coordinate when the bump map is
+  shorter than the object to map unto.
+
+  Default value is SoBumpMap::REPEAT.
 */
 
 // *************************************************************************
@@ -106,6 +139,14 @@ SoBumpMap::SoBumpMap(void)
 
   SO_NODE_ADD_FIELD(filename, (""));
   SO_NODE_ADD_FIELD(image, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(wrapS, (REPEAT));
+  SO_NODE_ADD_FIELD(wrapT, (REPEAT));
+
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
+
+  SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
 
   // use field sensor for filename since we will load an image if
   // filename changes. This is a time-consuming task which should
@@ -154,6 +195,14 @@ SoBumpMap::readInstance(SoInput * in, unsigned short flags)
   return readOK;
 }
 
+static SoGLImage::Wrap
+bumpmap_translateWrap(const SoBumpMap::Wrap wrap)
+{
+  if (wrap == SoBumpMap::REPEAT) return SoGLImage::REPEAT;
+  return SoGLImage::CLAMP;
+}
+
+
 // Documented in superclass.
 void
 SoBumpMap::GLRender(SoGLRenderAction * action)
@@ -170,8 +219,8 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
         PRIVATE(this)->glimage->setData(bytes, size, nc,
-                                        SoGLImage::CLAMP_TO_EDGE,
-                                        SoGLImage::CLAMP_TO_EDGE,
+                                        bumpmap_translateWrap((Wrap)this->wrapS.getValue()),
+                                        bumpmap_translateWrap((Wrap)this->wrapT.getValue()),
                                         1.0f); // max quality for bumpmaps
         PRIVATE(this)->glimagevalid = TRUE;
       }
