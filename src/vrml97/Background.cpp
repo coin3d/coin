@@ -401,6 +401,21 @@ SoVRMLBackground::~SoVRMLBackground()
     PRIVATE(this)->rootnode->removeAllChildren();
     PRIVATE(this)->rootnode->unref();
   }
+
+  delete PRIVATE(this)->backurlsensor;
+  delete PRIVATE(this)->fronturlsensor;
+  delete PRIVATE(this)->lefturlsensor;
+  delete PRIVATE(this)->righturlsensor;
+  delete PRIVATE(this)->bottomurlsensor;
+  delete PRIVATE(this)->topurlsensor;
+
+  delete PRIVATE(this)->groundanglesensor;
+  delete PRIVATE(this)->groundcolorsensor;
+  delete PRIVATE(this)->skyanglesensor;
+  delete PRIVATE(this)->skycolorsensor;
+  
+  delete PRIVATE(this)->setbindsensor;
+  delete PRIVATE(this)->isboundsensor;
   
   delete PRIVATE(this)->children;
   delete PRIVATE(this);

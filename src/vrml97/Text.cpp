@@ -217,6 +217,8 @@ SoVRMLText::~SoVRMLText()
   for (int j = 0; j < PRIVATE(this)->glyphs.getLength(); j++) {
     PRIVATE(this)->glyphs[j]->unref();
   }
+  
+  delete PRIVATE(this)->fontstylesensor;
   delete PRIVATE(this);
 }
 

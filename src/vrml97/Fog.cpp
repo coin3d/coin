@@ -203,6 +203,12 @@ SoVRMLFog::SoVRMLFog(void)
 */
 SoVRMLFog::~SoVRMLFog()
 {
+  delete PRIVATE(this)->setbindsensor;
+  delete PRIVATE(this)->isboundsensor;
+  delete PRIVATE(this)->fogtypesensor;
+  delete PRIVATE(this)->visibilitysensor;
+  delete PRIVATE(this)->colorsensor;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
