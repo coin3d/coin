@@ -58,11 +58,8 @@ SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
 
 SO_ELEMENT_SOURCE(SoProfileCoordinateElement);
 
-/*!
-  This static method initializes static data for the
-  SoProfileCoordinateElement class.
-*/
 
+// doc from parent
 void
 SoProfileCoordinateElement::initClass(void)
 {
@@ -88,26 +85,25 @@ SoProfileCoordinateElement::clean(void)
 /*!
   The destructor.
 */
-
 SoProfileCoordinateElement::~SoProfileCoordinateElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoProfileCoordinateElement::init(SoState * state)
 {
-    inherited::init(state);
-
-    this->numCoords = 1;
-    this->coords2 = SoProfileCoordinateElement::initdefaultcoords;
-    this->coords3 = NULL;
-    this->coordsAre2D = TRUE;
+  inherited::init(state);
+  this->numCoords = 1;
+  this->coords2 = SoProfileCoordinateElement::initdefaultcoords;
+  this->coords3 = NULL;
+  this->coordsAre2D = TRUE;
 }
 
-//! FIXME: write doc.
 
+/*!
+  Sets the profile coordinates.
+*/
 void
 SoProfileCoordinateElement::set2(SoState * const state,
                                  SoNode * const node,
@@ -122,12 +118,12 @@ SoProfileCoordinateElement::set2(SoState * const state,
   element->coords2 = coords;
   element->coords3 = NULL;
   element->coordsAre2D = TRUE;
-
   element->nodeId = node->getNodeId();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the profile coordinates.
+*/
 void
 SoProfileCoordinateElement::set3(SoState * const state,
                                  SoNode * const node,
@@ -142,52 +138,22 @@ SoProfileCoordinateElement::set3(SoState * const state,
   element->coords2 = NULL;
   element->coords3 = coords;
   element->coordsAre2D = FALSE;
-
   element->nodeId = node->getNodeId();
 }
 
-//! FIXME: write doc.
-
-void
-SoProfileCoordinateElement::print(FILE * file) const
-{
-    fprintf(file, "SoProfileCoordinateElement[%p]: %d coords at %p.\n", this,
-        this->numCoords,
-        this->coordsAre2D ? (void *) this->coords2 : (void *) this->coords3);
-}
-
-//! FIXME: write doc.
-
-void
-SoProfileCoordinateElement::push(SoState * state)
-{
-    inherited::push(state);
-}
-
-//! FIXME: write doc.
-
-void
-SoProfileCoordinateElement::pop(SoState * state,
-                                const SoElement * prevTopElement)
-{
-    inherited::pop(state, prevTopElement);
-}
-
 /*!
-  FIXME: write doc.
+  Returns the current element.
 */
-
 const SoProfileCoordinateElement *
 SoProfileCoordinateElement::getInstance(SoState * const state)
 {
   return (const SoProfileCoordinateElement *)
-        (getConstElement(state, classStackIndex));
+    (SoElement::getConstElement(state, classStackIndex));
 }
 
 /*!
-  FIXME: write doc.
+  Returns the number of profile coordinates in this element.
 */
-
 int32_t
 SoProfileCoordinateElement::getNum(void) const
 {
@@ -195,9 +161,9 @@ SoProfileCoordinateElement::getNum(void) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns the \a index'th 2D coordinate.
+  \sa is2D()
 */
-
 const SbVec2f &
 SoProfileCoordinateElement::get2(const int index) const
 {
@@ -207,9 +173,9 @@ SoProfileCoordinateElement::get2(const int index) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns the \a index'th 3D coordinate.
+  \sa is2D()
 */
-
 const SbVec3f &
 SoProfileCoordinateElement::get3(const int index) const
 {
@@ -219,9 +185,8 @@ SoProfileCoordinateElement::get3(const int index) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns if this element contains 2D coordinates.
 */
-
 SbBool
 SoProfileCoordinateElement::is2D(void) const
 {
@@ -229,9 +194,8 @@ SoProfileCoordinateElement::is2D(void) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns the default 2D coordinate.
 */
-
 SbVec2f
 SoProfileCoordinateElement::getDefault2(void)
 {
@@ -239,11 +203,28 @@ SoProfileCoordinateElement::getDefault2(void)
 }
 
 /*!
-  FIXME: write doc.
+  Returns the default 3D coordinate.
 */
-
 SbVec3f
 SoProfileCoordinateElement::getDefault3(void)
 {
   return SbVec3f(0.0f, 0.0f, 1.0f);
+}
+
+/*!
+  Returns a pointer to the 2D coordinates.
+*/
+const SbVec2f * 
+SoProfileCoordinateElement::getArrayPtr2(void) const
+{
+  return this->coords2;
+}
+
+/*!
+  Returns a pointer to the 3D coordinates.
+*/
+const SbVec3f * 
+SoProfileCoordinateElement::getArrayPtr3(void) const
+{
+  return this->coords3;
 }

@@ -42,17 +42,11 @@ protected:
 
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                    const SoElement * prevTopElement);
-
   static void set2(SoState * const state, SoNode * const node,
-                    const int32_t numCoords, const SbVec2f * const coords);
+                   const int32_t numCoords, const SbVec2f * const coords);
   static void set3(SoState * const state, SoNode * const node,
-                    const int32_t numCoords, const SbVec3f * const coords);
-  static const SoProfileCoordinateElement *
-             getInstance(SoState * const state);
+                   const int32_t numCoords, const SbVec3f * const coords);
+  static const SoProfileCoordinateElement * getInstance(SoState * const state);
   int32_t getNum(void) const;
   const SbVec2f & get2(const int index) const;
   const SbVec3f & get3(const int index) const;
@@ -62,7 +56,8 @@ public:
   static SbVec2f getDefault2(void);
   static SbVec3f getDefault3(void);
 
-  virtual void print(FILE * file) const;
+  const SbVec2f * getArrayPtr2(void) const;
+  const SbVec3f * getArrayPtr3(void) const;
 
 protected:
   int32_t numCoords;
