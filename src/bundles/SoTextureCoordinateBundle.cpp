@@ -41,6 +41,8 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoBumpMapCoordinateElement.h>
 
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -62,6 +64,7 @@
 #define FLAG_DIDPUSH            0x08
 #define FLAG_3DTEXTURES         0x10
 #define FLAG_DIDINITDEFAULT     0x20
+#define FLAG_NEEDINDICES        0x40
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -83,10 +86,12 @@ SoTextureCoordinateBundle(SoAction * const action,
   SbBool needinit = 
     SoTextureEnabledElement::get(this->state) ||
     SoTexture3EnabledElement::get(this->state);
+  
+  SbBool glrender = forRendering || action->isOfType(SoGLRenderAction::getClassTypeId());
 
   const SbBool * multienabled = NULL;
   int multimax = 0;
-  if (forRendering) {
+  if (glrender) {
     multienabled = 
       SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
   }
@@ -130,7 +135,8 @@ SoTextureCoordinateBundle(SoAction * const action,
   }
 
   this->glElt = NULL;
-  if (forRendering) {
+  if (glrender) {
+    SbBool needindices = !this->isFunction();
     if (multienabled) {
       const SoMultiTextureCoordinateElement * melem =
         SoMultiTextureCoordinateElement::getInstance(state);
@@ -141,9 +147,21 @@ SoTextureCoordinateBundle(SoAction * const action,
                (melem->getNum(i) == 0))) {
             this->initDefaultMulti(action, i);
           }
+          else if (!needindices && 
+                   (melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT)) {
+            needindices = TRUE;
+          }
         }
       }
     }
+    if (!needindices && this->isFunction()) {
+      // check if bump mapping needs texture coordinate indices
+      if (SoBumpMapElement::get(state) && 
+          (SoBumpMapCoordinateElement::getInstance(state)->getNum())) {
+        needindices = TRUE;
+      }
+    }
+    if (needindices && this->isFunction()) this->flags |= FLAG_NEEDINDICES;
     this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
     this->glElt->initMulti(action->getState());
   }
@@ -178,6 +196,21 @@ SoTextureCoordinateBundle::isFunction() const
 {
   return (this->flags & FLAG_FUNCTION) != 0;
 }
+
+/*!
+
+  Returns \e TRUE if isFunction() is \e TRUE, but the texture
+  coordinate indices are needed either by bump mapping or by one of
+  the other texture units.
+
+  \since Coin 2.2
+*/
+SbBool 
+SoTextureCoordinateBundle::needIndices(void) const
+{
+  return (this->flags & FLAG_NEEDINDICES) != 0;
+}
+
 
 /*!
   Returns the texture coordinates based on \a point and \a normal.

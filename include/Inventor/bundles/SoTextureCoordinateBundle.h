@@ -59,6 +59,8 @@ public:
     glElt->send(index, point, normal);
   }
 
+  SbBool needIndices(void) const;
+
 private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;
