@@ -22,7 +22,22 @@
   \brief The SoJackDragger class is a dragger you can translate, rotate and scale.
   \ingroup draggers
 
-  FIXME: write class doc
+  Translation is done with this dragger by picking the flat
+  transparent box ("x-z" translation) or the solid middle part of the
+  axis ("y"-axis translation). Press a SHIFT-key while translating in
+  x-z to contrain to one of the principal axes.
+
+  Uniform scale operations can be done by dragging any of the 6
+  cubes. Non-uniform scale operations can not be done with this
+  dragger.
+
+  Rotations are invoked by clicking and dragging the line parts of the
+  3 principal "axes" of the dragger geometry.
+
+
+  The name "Jack dragger" probably stems from this dragger being
+  implemented by SGI for interacting with a "jack-in-the-box" type
+  model way back in the Inventor history.
 */
 
 #include <Inventor/draggers/SoJackDragger.h>
@@ -35,6 +50,49 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/jackDragger.h>
+
+/*!
+  \var SoSFVec3f SoJackDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+
+  The application programmer applying this dragger in his code should
+  connect the relevant node fields in the scene to this field to make
+  it follow the dragger.
+*/
+
+/*!
+  \var SoSFRotation SoJackDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector of the dragger.
+*/
+
+/*!
+  \var SoSFVec3f SoJackDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+
+  Only uniform scaling can be done with the SoJackDragger, so the 3
+  vector components will always be equal.
+*/
+
+
+/*!
+  \var SoFieldSensor * SoJackDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoJackDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoJackDragger::scaleFieldSensor
+  \internal
+*/
+
 
 SO_KIT_SOURCE(SoJackDragger);
 
@@ -232,8 +290,8 @@ SoJackDragger::valueChangedCB(void *, SoDragger * d)
 }
 
 /*!
-  Used to invalidate the \e surroundScale and \e antiSquish parts when a child
-  dragger starts or finishes dragging.
+  Used to invalidate the \e surroundScale and \e antiSquish parts when
+  a child dragger starts or finishes dragging.
 */
 void
 SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
