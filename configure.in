@@ -476,6 +476,26 @@ AC_TRY_LINK([
 ])
 
 # *******************************************************************
+#
+
+sim_ac_save_LIBS=$LIBS
+LIBS="$LIBS -lwinmm"
+AC_MSG_CHECKING([for timeGetTime() function])
+AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+], [
+  (void)timeGetTime();
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_TIMEGETTIME],, [Define to use timeGetTime()])
+], [
+  AC_MSG_RESULT([no])
+  LIBS=$sim_ac_save_LIBS
+])
+
+# *******************************************************************
 # Test for misc functions to get systemtime with.
 
 AC_MSG_CHECKING([for QueryPerformanceCounter() function])

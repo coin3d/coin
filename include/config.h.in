@@ -151,6 +151,9 @@
 /* *EXPERIMENTAL* to use the threads extension */
 #undef HAVE_THREADS
 
+/* Define to use timeGetTime() */
+#undef HAVE_TIMEGETTIME
+
 /* define this if the type is available on the system */
 #undef HAVE_UINT16_T
 
