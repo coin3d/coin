@@ -46,7 +46,7 @@ extern "C" {
   */
   
   
-  struct cc_flw_bitmap {
+  typedef struct cc_flw_bitmap {
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
     unsigned int rows; /* height of bitmap */
@@ -55,13 +55,13 @@ extern "C" {
     int advanceX; /* where to position pen for next glyph */
     int advanceY;
     unsigned char * buffer; /* bitmap data */
-  };
+  } cc_flw_bitmap;
   
-  struct cc_flw_vector_glyph {
+  typedef struct cc_flw_vector_glyph {
     cc_list * vertexlist;
     cc_list * indexlist;
     cc_list * edgeindexlist;
-  };
+  } cc_flw_vector_glyph;
 
 
   int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey);
