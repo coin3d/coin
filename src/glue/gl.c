@@ -3698,6 +3698,15 @@ cc_glglue_context_destruct(void * ctx)
 #endif
 }
 
+/*!
+  Returns the \e theoretical maximum dimensions for an offscreen
+  buffer.
+
+  Note that we're still not guaranteed that allocation of this size
+  will succeed, as that is also subject to e.g. memory constraints,
+  which is something that will dynamically change during the running
+  time of an application.
+*/
 void
 cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 {
@@ -3821,6 +3830,13 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      This problem has at least been observed with the MS Windows XP
      software OpenGL renderer, which reports a maximum viewport size
      of 16k x 16k pixels.
+
+     FIXME: we really shouldn't f*ck around with this here, but rather
+     make the client code of this more robust. That means
+     SoOffscreenRenderer should try with successively smaller buffers
+     of allocation if the maximum (or wanted) buffer size fails. For
+     further discussion, see the FIXME at the top of the
+     SoOffscreenRendererP::renderFromBase() method. 20040714 mortene.
   */
   *width = cc_min(*width, 4096);
   *height = cc_min(*height, 4096);

@@ -549,6 +549,20 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
+  // FIXME: the getMaxTileSize() here is the *theoretical* maximum,
+  // we're not guaranteed that we'll be able to allocate a buffer of
+  // this size -- e.g. due to memory constraints on the gfx
+  // card.
+  //
+  // What we should do is to actually try to allocate the wanted size,
+  // and then upon failure, successively try with smaller sizes
+  // (alternating between halving width and height) until either a
+  // workable offscreen buffer was found, or no buffer could be made
+  // (well, don't bother with too small buffers, as that will cause
+  // pain when tiling them together, we should have >= 128x128 or
+  // something like that).
+  //
+  // 20040714 mortene, inspired by kyrah.
   const SbVec2s tilesize = SoOffscreenRendererP::getMaxTileSize();
   if (tilesize == SbVec2s(0, 0)) { return FALSE; }
 
