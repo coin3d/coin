@@ -74,7 +74,7 @@ SoSceneKit::~SoSceneKit()
 void
 SoSceneKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoSceneKit);
+  SO_KIT_INTERNAL_INIT_CLASS(SoSceneKit, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

@@ -31,9 +31,8 @@
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 
-  This manipulator is an extension versus the original SGI Inventor
-  v2.1 API.  In addition to being a Coin extension, it is also present
-  in TGS' Inventor implementation (with the same API).
+  \since TGS Inventor 2.5
+  \since Coin 1.0
 */
 
 
@@ -85,7 +84,7 @@ SO_NODE_SOURCE(SoClipPlaneManip);
 void
 SoClipPlaneManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoClipPlaneManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoClipPlaneManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

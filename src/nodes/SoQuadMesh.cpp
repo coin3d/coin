@@ -154,7 +154,7 @@ SoQuadMesh::~SoQuadMesh()
 void
 SoQuadMesh::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh);
+  SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh, SO_FROM_INVENTOR_2_1);
 }
 
 // Documented in superclass.

@@ -156,7 +156,7 @@ SO_KIT_SOURCE(SoTrackballDragger);
 void
 SoTrackballDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoTrackballDragger);
+  SO_KIT_INTERNAL_INIT_CLASS(SoTrackballDragger, SO_FROM_INVENTOR_2_1);
 }
 
 #undef THIS

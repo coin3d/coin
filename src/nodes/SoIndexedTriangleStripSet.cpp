@@ -89,7 +89,7 @@ SoIndexedTriangleStripSet::~SoIndexedTriangleStripSet()
 void
 SoIndexedTriangleStripSet::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedTriangleStripSet);
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedTriangleStripSet, SO_FROM_INVENTOR_2_1);
 }
 
 // private

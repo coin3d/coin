@@ -94,7 +94,7 @@ SoTransform::~SoTransform()
 void
 SoTransform::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTransform);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTransform, SO_FROM_INVENTOR_2_1);
 } 
 
 /*!

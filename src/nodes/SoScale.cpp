@@ -86,7 +86,7 @@ SoScale::~SoScale()
 void
 SoScale::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoScale);
+  SO_NODE_INTERNAL_INIT_CLASS(SoScale, SO_FROM_INVENTOR_2_1);
 }
 
 // Doc in superclass.

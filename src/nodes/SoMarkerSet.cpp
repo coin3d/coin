@@ -38,6 +38,9 @@
   v2.1 API.  In addition to being a Coin extension, it is also present
   in TGS' Inventor implementation (except TGS doesn't support the NONE 
   markerIndex value).
+
+  \since TGS Inventor 2.5
+  \since Coin 1.0
 */
 
 // FIXME: clean up everything.... it's quite messy at the moment... :-/ skei
@@ -142,7 +145,7 @@ free_marker_images(void)
 void
 SoMarkerSet::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet);
+  SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet, SO_FROM_INVENTOR_2_5);
   markerimages = new GLubyte[NUM_MARKERS*9*4]; // hardcoded markers, 32x9 bitmaps (9x9 used), dword alignment
   markerlist = new SbList<so_marker>;
   coin_atexit((coin_atexit_f *)free_marker_images);

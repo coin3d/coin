@@ -104,7 +104,7 @@ SoFile::~SoFile()
 void
 SoFile::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoFile);
+  SO_NODE_INTERNAL_INIT_CLASS(SoFile, SO_FROM_INVENTOR_2_1);
 }
 
 /*!  

@@ -110,7 +110,7 @@ SoCube::~SoCube()
 void
 SoCube::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoCube);
+  SO_NODE_INTERNAL_INIT_CLASS(SoCube, SO_FROM_INVENTOR_2_1);
 }
 
 // Doc in parent.

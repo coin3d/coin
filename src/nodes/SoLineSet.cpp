@@ -97,7 +97,7 @@ SoLineSet::~SoLineSet()
 void
 SoLineSet::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoLineSet);
+  SO_NODE_INTERNAL_INIT_CLASS(SoLineSet, SO_FROM_INVENTOR_2_1);
 }
 
 // doc from parent

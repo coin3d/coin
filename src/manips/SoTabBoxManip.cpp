@@ -46,7 +46,7 @@ SO_NODE_SOURCE(SoTabBoxManip);
 void
 SoTabBoxManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTabBoxManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTabBoxManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

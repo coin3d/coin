@@ -36,6 +36,9 @@
   switch between using Coin and TGS Inventor.  Please contact us if
   you find discrepancies between Coin SoExtSelection and TGS
   SoExtSelection.
+
+  \since TGS Inventor 2.5
+  \since Coin 1.0
 */
 
 #include <Inventor/nodes/SoExtSelection.h>
@@ -574,7 +577,7 @@ SoExtSelection::~SoExtSelection()
 void
 SoExtSelection::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoExtSelection);
+  SO_NODE_INTERNAL_INIT_CLASS(SoExtSelection, SO_FROM_INVENTOR_2_1);
 }
 
 

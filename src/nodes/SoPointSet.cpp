@@ -104,7 +104,7 @@ SoPointSet::~SoPointSet()
 void
 SoPointSet::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPointSet);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPointSet, SO_FROM_INVENTOR_2_1);
 }
 
 // doc from parent

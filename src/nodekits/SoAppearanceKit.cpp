@@ -78,5 +78,5 @@ SoAppearanceKit::~SoAppearanceKit()
 void
 SoAppearanceKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoAppearanceKit);
+  SO_KIT_INTERNAL_INIT_CLASS(SoAppearanceKit, SO_FROM_INVENTOR_2_1);
 }

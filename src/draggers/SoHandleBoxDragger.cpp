@@ -112,7 +112,7 @@ SO_KIT_SOURCE(SoHandleBoxDragger);
 void
 SoHandleBoxDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoHandleBoxDragger);
+  SO_KIT_INTERNAL_INIT_CLASS(SoHandleBoxDragger, SO_FROM_INVENTOR_2_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

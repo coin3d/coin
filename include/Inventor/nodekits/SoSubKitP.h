@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -43,9 +43,9 @@
 
 // Note for developers: match changes to this macro with the same
 // changes to SoBaseKit::initClass().
-#define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
+#define SO_KIT_INTERNAL_INIT_CLASS(_class_, _fileformats_) \
   do { \
-    SO_NODE_INTERNAL_INIT_CLASS(_class_); \
+    SO_NODE_INTERNAL_INIT_CLASS(_class_, _fileformats_); \
     _class_::parentcatalogptr = inherited::getClassNodekitCatalogPtr(); \
   } while (0)
 

@@ -149,7 +149,7 @@ SoDrawStyle::~SoDrawStyle()
 void
 SoDrawStyle::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoDrawStyle);
+  SO_NODE_INTERNAL_INIT_CLASS(SoDrawStyle, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoGLDrawStyleElement);
   SO_ENABLE(SoGLRenderAction, SoShapeStyleElement);

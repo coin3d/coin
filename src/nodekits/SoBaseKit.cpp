@@ -186,7 +186,7 @@ SoBaseKit::~SoBaseKit()
 void
 SoBaseKit::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
+  SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit, SO_FROM_INVENTOR_2_1);
   // set rayPick method
   SoType type = SoBaseKit::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);

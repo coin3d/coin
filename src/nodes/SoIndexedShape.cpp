@@ -86,7 +86,7 @@ SoIndexedShape::~SoIndexedShape()
 void
 SoIndexedShape::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoIndexedShape);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoIndexedShape, SO_FROM_INVENTOR_2_1);
 }
 
 // Documented in superclass. Overridden to calculate bounding box of

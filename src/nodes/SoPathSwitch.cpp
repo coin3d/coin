@@ -126,7 +126,7 @@ SoPathSwitch::~SoPathSwitch()
 void
 SoPathSwitch::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPathSwitch);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPathSwitch, SO_FROM_INVENTOR_2_1);
 }
 
 // doc in parent

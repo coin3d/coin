@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -46,27 +46,32 @@
   } while (0)
 
 
-#define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
+#define SO_NODE_INTERNAL_INIT_CLASS(_class_, _fileformats_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 
 
-#define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
+#define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_, _fileformats_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 
-
-#define SO_FROM_INVENTOR_1 \
-  (SoNode::INVENTOR_1|SoNode::INVENTOR_2_0|SoNode::INVENTOR_2_1)
-
-#define SO_FROM_INVENTOR_2_0 \
-  (SoNode::INVENTOR_2_0|SoNode::INVENTOR_2_1)
+#define SO_FROM_INVENTOR_2_5 \
+  (SoNode::INVENTOR_2_5)
 
 #define SO_FROM_INVENTOR_2_1 \
-  (SoNode::INVENTOR_2_1)
+  (SoNode::INVENTOR_2_1|SO_FROM_INVENTOR_2_5)
+
+#define SO_FROM_INVENTOR_2_0 \
+  (SoNode::INVENTOR_2_0|SO_FROM_INVENTOR_2_1)
+
+#define SO_FROM_INVENTOR_1 \
+  (SoNode::INVENTOR_1|SO_FROM_INVENTOR_2_0)
+
 
 #endif // !COIN_SOSUBNODEP_H

@@ -90,7 +90,7 @@ SoTextureCoordinateBinding::~SoTextureCoordinateBinding()
 void
 SoTextureCoordinateBinding::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateBinding);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateBinding, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoTextureCoordinateBindingElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateBindingElement);

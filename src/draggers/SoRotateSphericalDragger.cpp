@@ -83,7 +83,7 @@ SO_KIT_SOURCE(SoRotateSphericalDragger);
 void
 SoRotateSphericalDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoRotateSphericalDragger);
+  SO_KIT_INTERNAL_INIT_CLASS(SoRotateSphericalDragger, SO_FROM_INVENTOR_2_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

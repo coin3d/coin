@@ -79,7 +79,7 @@ SoCoordinate3::~SoCoordinate3()
 void
 SoCoordinate3::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoCoordinate3);
+  SO_NODE_INTERNAL_INIT_CLASS(SoCoordinate3, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoGLCoordinateElement);

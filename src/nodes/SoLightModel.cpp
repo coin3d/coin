@@ -88,7 +88,7 @@ SoLightModel::~SoLightModel()
 void
 SoLightModel::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoLightModel);
+  SO_NODE_INTERNAL_INIT_CLASS(SoLightModel, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoCallbackAction, SoLightModelElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);

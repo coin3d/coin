@@ -108,7 +108,7 @@ SoFaceSet::~SoFaceSet()
 void
 SoFaceSet::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoFaceSet);
+  SO_NODE_INTERNAL_INIT_CLASS(SoFaceSet, SO_FROM_INVENTOR_2_1);
 }
 
 // doc from parent

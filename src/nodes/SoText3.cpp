@@ -191,7 +191,7 @@ SoText3::~SoText3()
 void
 SoText3::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoText3);
+  SO_NODE_INTERNAL_INIT_CLASS(SoText3, SO_FROM_INVENTOR_2_1);
 }
 
 // doc in parent

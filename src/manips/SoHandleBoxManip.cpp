@@ -39,7 +39,7 @@ SO_NODE_SOURCE(SoHandleBoxManip);
 void
 SoHandleBoxManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoHandleBoxManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoHandleBoxManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

@@ -113,7 +113,7 @@ SoLight::~SoLight()
 void
 SoLight::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);

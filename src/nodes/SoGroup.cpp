@@ -283,7 +283,7 @@ SoGroup::findChild(const SoNode * node) const
 void
 SoGroup::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoGroup);
+  SO_NODE_INTERNAL_INIT_CLASS(SoGroup, SO_FROM_INVENTOR_2_1);
 }
 
 

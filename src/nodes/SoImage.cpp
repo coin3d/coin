@@ -33,6 +33,9 @@
   The current modelview matrix will be used to find the viewport
   position, and the image is rendered in that position, with
   z-buffer testing activated.
+
+  \since TGS Inventor 2.5
+  \since Coin 1.0
 */
 
 #include <Inventor/nodes/SoImage.h>
@@ -188,7 +191,7 @@ SoImage::~SoImage()
 void
 SoImage::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoImage);
+  SO_NODE_INTERNAL_INIT_CLASS(SoImage, SO_FROM_INVENTOR_2_5);
 }
 
 // doc from parent

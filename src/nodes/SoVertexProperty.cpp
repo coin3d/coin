@@ -221,7 +221,7 @@ SoVertexProperty::~SoVertexProperty()
 void
 SoVertexProperty::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoVertexProperty);
+  SO_NODE_INTERNAL_INIT_CLASS(SoVertexProperty, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
 

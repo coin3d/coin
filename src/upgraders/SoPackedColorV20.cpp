@@ -70,7 +70,7 @@ SoPackedColorV20::~SoPackedColorV20()
 void
 SoPackedColorV20::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPackedColorV20);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPackedColorV20, SoNode::INVENTOR_2_0);
 }
 
 SoPackedColor * 

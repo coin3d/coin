@@ -71,7 +71,7 @@ SoPerspectiveCamera::~SoPerspectiveCamera()
 void
 SoPerspectiveCamera::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPerspectiveCamera);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPerspectiveCamera, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

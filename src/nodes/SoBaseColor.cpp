@@ -73,7 +73,7 @@ SoBaseColor::~SoBaseColor()
 void
 SoBaseColor::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoBaseColor);
+  SO_NODE_INTERNAL_INIT_CLASS(SoBaseColor, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 

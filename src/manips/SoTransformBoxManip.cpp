@@ -46,7 +46,7 @@ SO_NODE_SOURCE(SoTransformBoxManip);
 void
 SoTransformBoxManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTransformBoxManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTransformBoxManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

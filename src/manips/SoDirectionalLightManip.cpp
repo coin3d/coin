@@ -74,7 +74,7 @@ SO_NODE_SOURCE(SoDirectionalLightManip);
 void
 SoDirectionalLightManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLightManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLightManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

@@ -74,5 +74,5 @@ SoLightKit::~SoLightKit()
 void
 SoLightKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoLightKit);
+  SO_KIT_INTERNAL_INIT_CLASS(SoLightKit, SO_FROM_INVENTOR_2_1);
 }

@@ -238,7 +238,7 @@ SoSelection::~SoSelection()
 void
 SoSelection::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoSelection);
+  SO_NODE_INTERNAL_INIT_CLASS(SoSelection, SO_FROM_INVENTOR_2_1);
 }
 
 

@@ -46,7 +46,7 @@ SO_NODE_SOURCE(SoTrackballManip);
 void
 SoTrackballManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTrackballManip);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTrackballManip, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

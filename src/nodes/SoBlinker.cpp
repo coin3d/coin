@@ -90,7 +90,7 @@ SoBlinker::~SoBlinker()
 void
 SoBlinker::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoBlinker);
+  SO_NODE_INTERNAL_INIT_CLASS(SoBlinker, SO_FROM_INVENTOR_2_1);
 }
 
 // Documented in superclass. Overridden to calculate bbox of all

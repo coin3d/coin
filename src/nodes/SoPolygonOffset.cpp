@@ -49,10 +49,8 @@
   polygons, lines and/or points should be offset with regard to other
   primitives.
 
-
-  This node class is an extension versus the original SGI Inventor
-  v2.1 API.  In addition to being a Coin extension, it is also present
-  in TGS' Inventor implementation (with the same API).
+  \since TGS Inventor 2.5
+  \since Coin 1.0
 */
 
 #include <Inventor/nodes/SoPolygonOffset.h>
@@ -128,7 +126,7 @@ SoPolygonOffset::~SoPolygonOffset()
 void
 SoPolygonOffset::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPolygonOffset);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPolygonOffset, SO_FROM_INVENTOR_2_5);
 
   SO_ENABLE(SoCallbackAction, SoPolygonOffsetElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);

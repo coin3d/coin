@@ -68,5 +68,5 @@ SoWrapperKit::~SoWrapperKit()
 void
 SoWrapperKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoWrapperKit);
+  SO_KIT_INTERNAL_INIT_CLASS(SoWrapperKit, SO_FROM_INVENTOR_2_1);
 }

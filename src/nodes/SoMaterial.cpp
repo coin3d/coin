@@ -196,7 +196,7 @@ SoMaterial::~SoMaterial()
 void
 SoMaterial::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoMaterial);
+  SO_NODE_INTERNAL_INIT_CLASS(SoMaterial, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoGLAmbientColorElement);
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);

@@ -67,7 +67,7 @@ SoNonIndexedShape::~SoNonIndexedShape()
 void
 SoNonIndexedShape::initClass()
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoNonIndexedShape);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoNonIndexedShape, SO_FROM_INVENTOR_2_1);
 }
 
 /*!

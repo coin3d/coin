@@ -102,7 +102,7 @@ SoTexture3Transform::~SoTexture3Transform()
 void
 SoTexture3Transform::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTexture3Transform);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTexture3Transform, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
   SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);

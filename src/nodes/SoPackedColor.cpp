@@ -87,7 +87,7 @@ SoPackedColor::~SoPackedColor()
 void
 SoPackedColor::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor);
+  SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor, SO_FROM_INVENTOR_2_1);
 
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);

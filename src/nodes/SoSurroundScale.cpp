@@ -130,7 +130,7 @@ SoSurroundScale::~SoSurroundScale()
 void
 SoSurroundScale::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoSurroundScale);
+  SO_NODE_INTERNAL_INIT_CLASS(SoSurroundScale, SO_FROM_INVENTOR_2_1);
 }
 
 

@@ -114,7 +114,7 @@ SO_KIT_SOURCE(SoTabPlaneDragger);
 void
 SoTabPlaneDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoTabPlaneDragger);
+  SO_KIT_INTERNAL_INIT_CLASS(SoTabPlaneDragger, SO_FROM_INVENTOR_2_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

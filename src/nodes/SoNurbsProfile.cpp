@@ -93,7 +93,7 @@ SoNurbsProfile::~SoNurbsProfile()
 void
 SoNurbsProfile::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoNurbsProfile);
+  SO_NODE_INTERNAL_INIT_CLASS(SoNurbsProfile, SO_FROM_INVENTOR_2_1);
 }
 
 // Doc from superclass.

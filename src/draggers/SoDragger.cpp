@@ -262,7 +262,7 @@ SoDragger::~SoDragger()
 void
 SoDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoDragger);
+  SO_KIT_INTERNAL_INIT_CLASS(SoDragger, SO_FROM_INVENTOR_2_1);
 
   SoDragger::initClasses();
 
