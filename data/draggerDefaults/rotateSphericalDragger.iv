@@ -27,8 +27,15 @@ DEF rotateSphericalFeedbackActive Separator {
 ### Geometry definitions for the ball ########################################
 
 DEF ROTATESPHERICAL_RING Group {
+   # As to why this node is necessary, see comments in
+   # centerballDragger.iv, the CENTERBALL_STRIPE sub-graph.
+   ShapeHints {
+      shapeType UNKNOWN_SHAPE_TYPE
+      vertexOrdering UNKNOWN_ORDERING
+   }
+
    DrawStyle { style LINES lineWidth 2 }
-   Cylinder { parts SIDES height 0.0 }
+   Cylinder { parts SIDES height 0 }
 }
 
 DEF ROTATESPHERICAL_BALL Group {

@@ -1111,8 +1111,16 @@ SoBaseKit::write(SoWriteAction * action)
 {
   // debugging code start **************************************************
 
-  // if envvar is set, we'll write nodekit's current scene graph
-  // instead of writing as a nodekit:
+  // If the below envvar is set, we'll write nodekit's current scene
+  // graph instead of writing as a nodekit.
+  //
+  // Note that if the nodekit is a dragger, the resulting scene graph
+  // export may still not look exactly the same as when the exported
+  // sub-graph is contained within the dragger, as
+  // SoDragger::GLRender() sets a number of elements in the traversal
+  // state to non-intrusive "default" values before rendering the
+  // dragger geometry. These settings will not be part of the exported
+  // iv-file.
   static int dump = -1;
   if (dump == -1) {
     const char * env = coin_getenv("COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE");
