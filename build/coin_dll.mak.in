@@ -103,6 +103,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoArray.obj"
 	-@erase "$(INTDIR)\SoAsciiText.obj"
 	-@erase "$(INTDIR)\SoAuditorList.obj"
+	-@erase "$(INTDIR)\GLUWrapper.obj"
 	-@erase "$(INTDIR)\SoBase.obj"
 	-@erase "$(INTDIR)\SoBaseColor.obj"
 	-@erase "$(INTDIR)\SoBaseKit.obj"
@@ -609,6 +610,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoArray.obj" \
 	"$(INTDIR)\SoAsciiText.obj" \
 	"$(INTDIR)\SoAuditorList.obj" \
+	"$(INTDIR)\GLUWrapper.obj" \
 	"$(INTDIR)\SoBase.obj" \
 	"$(INTDIR)\SoBaseColor.obj" \
 	"$(INTDIR)\SoBaseKit.obj" \
@@ -1104,6 +1106,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoArray.obj"
 	-@erase "$(INTDIR)\SoAsciiText.obj"
 	-@erase "$(INTDIR)\SoAuditorList.obj"
+	-@erase "$(INTDIR)\GLUWrapper.obj"
 	-@erase "$(INTDIR)\SoBase.obj"
 	-@erase "$(INTDIR)\SoBaseColor.obj"
 	-@erase "$(INTDIR)\SoBaseKit.obj"
@@ -1613,6 +1616,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoArray.obj" \
 	"$(INTDIR)\SoAsciiText.obj" \
 	"$(INTDIR)\SoAuditorList.obj" \
+	"$(INTDIR)\GLUWrapper.obj" \
 	"$(INTDIR)\SoBase.obj" \
 	"$(INTDIR)\SoBaseColor.obj" \
 	"$(INTDIR)\SoBaseKit.obj" \
@@ -2464,6 +2468,12 @@ SOURCE="@coin_src_dir@\src\nodes\SoAsciiText.cpp"
 SOURCE="@coin_src_dir@\src\lists\SoAuditorList.cpp"
 
 "$(INTDIR)\SoAuditorList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\GLUWrapper.c"
+
+"$(INTDIR)\GLUWrapper.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

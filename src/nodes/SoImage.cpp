@@ -51,11 +51,15 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#ifdef _WIN32
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // sigh...
-#endif // !_WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
-#include <GL/glu.h> // for gluImageScale
+#include <src/misc/GLUWrapper.h>
 
 /*!
   \enum SoImage::VertAlignment
@@ -629,10 +633,13 @@ SoImage::getImage(SbVec2s & size, int & nc)
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
       glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
-      gluScaleImage(format, orgsize[0], orgsize[1],
-                    GL_UNSIGNED_BYTE, (void*) orgdata,
-                    newsize[0], newsize[1], GL_UNSIGNED_BYTE,
-                    (void*) rezdata);
+      // FIXME: ignoring the error code. Silly. 20000929 mortene.
+      (void)GLUWrapper()->gluScaleImage(format,
+                                        orgsize[0], orgsize[1],
+                                        GL_UNSIGNED_BYTE, (void*) orgdata,
+                                        newsize[0], newsize[1],
+                                        GL_UNSIGNED_BYTE,
+                                        (void*) rezdata);
       this->resizedimagevalid = TRUE;
     }
     return this->resizedimage->getValue(size, nc);

@@ -28,11 +28,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef _WIN32
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
-#endif // _WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
-#include <GL/glu.h>
+#include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
 // if textureQuality is equal or greater than this, use linear filtering
@@ -89,7 +92,7 @@ SoGLImage::setData(const unsigned char * bytes,
   this->flags |= FLAG_INVALIDHANDLE;
   this->quality = quality;
   this->context = context;
-  
+
   if (createhandlenow) {
     if (this->handle) sogl_free_texture(this->handle);
     this->handle = this->createHandle();
@@ -330,11 +333,12 @@ SoGLImage::createHandle(void)
     glPixelStorei(GL_PACK_SKIP_ROWS, 0);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    
-    gluScaleImage(format, xsize, ysize,
-                  GL_UNSIGNED_BYTE, (void*) this->bytes,
-                  newx, newy, GL_UNSIGNED_BYTE,
-                  (void*)glimage_tmpimagebuffer);
+
+    // FIXME: ignoring the error code. Silly. 20000929 mortene.
+    (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
+                                      GL_UNSIGNED_BYTE, (void*) this->bytes,
+                                      newx, newy, GL_UNSIGNED_BYTE,
+                                      (void*)glimage_tmpimagebuffer);
     imageptr = glimage_tmpimagebuffer;
   }
 

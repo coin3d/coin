@@ -40,6 +40,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -49,8 +50,8 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#include <GL/glu.h>
-#include <string.h>
+#include <GLUWrapper.h>
+
 
 #if !GL_VERSION_1_1 && (GL_EXT_polygon_offset || GL_EXT_texture_object || GL_EXT_vertex_array)
 // Function used to check if an extension is supported. (Wrapped in
@@ -632,8 +633,9 @@ really_create_texture(const int wrapS, const int wrapT,
                  0, glformat, GL_UNSIGNED_BYTE, texture);
   }
   else { // mipmaps
-    gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
-                      glformat, GL_UNSIGNED_BYTE, texture);
+    // FIXME: ignoring the error code. Silly. 20000929 mortene.
+    (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
+                                          glformat, GL_UNSIGNED_BYTE, texture);
   }
 }
 
@@ -942,8 +944,16 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                           const int numcoordindex, const int32_t * coordindex,
                           const int numtexcoordindex, const int32_t * texcoordindex)
 {
-#if !GLU_VERSION_1_3
-  if (!glrender) {
+  if (GLUWrapper()->available == 0) {
+    // Should never get here if the NURBS functionality is missing.
+    assert(FALSE && "Function sogl_render_nurbs_surface() is de-funct.");
+  }
+
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0) == 0 &&
+      // We use GLU_NURBS_TESSELLATOR further down in the function if
+      // glrender==FALSE (i.e. on callback actions were we want to get
+      // the polygons), and this is not supported before GLU v1.3.
+      !glrender) {
 #if COIN_DEBUG
     static int first = 1;
     if (first) {
@@ -954,10 +964,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 #endif // COIN_DEBUG
     return;
   }
-#endif // !GLU_VERSION_1_3
 
-#ifdef HAVE_GLU_NURBSOBJECT
-  HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) nurbsrenderer;
   SoState * state = action->getState();
 
   const SoCoordinateElement * coords =
@@ -977,9 +984,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       if (maxpix < 1.0f) maxpix = 1.0f;
       float complexity = SoComplexityElement::get(state);
       complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * maxctrl);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity);
       break;
     }
   case SoComplexityTypeElement::OBJECT_SPACE:
@@ -988,9 +995,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       // add and cube value to give higher complexity values more boost
       complexity += 1.0f;
       complexity = (float) pow(complexity, 3.0);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity * maxctrl);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity * maxctrl);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity * maxctrl);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity * maxctrl);
       break;
     }
   case SoComplexityTypeElement::BOUNDING_BOX:
@@ -1001,12 +1008,14 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     break;
   }
 
-#if GLU_VERSION_1_3
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE,
-                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
-#endif // GLU_VERSION_1_3
-  // need to load sampling matrices?
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
+    // was the only game in town back then in the old days.
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_NURBS_MODE,
+                                   glrender ? GLU_W_NURBS_RENDERER : GLU_W_NURBS_TESSELLATOR);
+  }
+  // Need to load sampling matrices if glrender==FALSE.
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
@@ -1018,10 +1027,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     viewport[1] = origin[1];
     viewport[2] = size[0];
     viewport[3] = size[1];
-    gluLoadSamplingMatrices(nurbsobj,
-                            (float*)glmodelmatrix,
-                            SoProjectionMatrixElement::get(state)[0],
-                            viewport);
+    GLUWrapper()->gluLoadSamplingMatrices(nurbsrenderer,
+                                          (float*)glmodelmatrix,
+                                          SoProjectionMatrixElement::get(state)[0],
+                                          viewport);
   }
 
   int dim = coords->is3D() ? 3 : 4;
@@ -1050,13 +1059,13 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     ptr = (float*) tmpcoordlist->getArrayPtr();
   }
 
-  gluBeginSurface(nurbsobj);
-  gluNurbsSurface(nurbsobj,
-                  numuknot, (GLfloat*) uknotvec,
-                  numvknot, (GLfloat*) vknotvec,
-                  dim, dim * numuctrlpts,
-                  ptr, numuknot - numuctrlpts, numvknot - numvctrlpts,
-                  (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
+  GLUWrapper()->gluBeginSurface(nurbsrenderer);
+  GLUWrapper()->gluNurbsSurface(nurbsrenderer,
+                                numuknot, (GLfloat*) uknotvec,
+                                numvknot, (GLfloat*) vknotvec,
+                                dim, dim * numuctrlpts, ptr,
+                                numuknot - numuctrlpts, numvknot - numvctrlpts,
+                                (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
 
   if (!glrender || SoGLTextureEnabledElement::get(state)) {
     const SoTextureCoordinateElement * tc =
@@ -1083,12 +1092,12 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
         texptr = (float*) tmptexcoordlist->getArrayPtr();
       }
 
-      gluNurbsSurface(nurbsobj,
-                      numsknot, (GLfloat*) sknotvec,
-                      numtknot, (GLfloat*) tknotvec,
-                      texdim, texdim * numsctrlpts,
-                      texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
-                      (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
+      GLUWrapper()->gluNurbsSurface(nurbsrenderer,
+                                    numsknot, (GLfloat*) sknotvec,
+                                    numtknot, (GLfloat*) tknotvec,
+                                    texdim, texdim * numsctrlpts,
+                                    texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
+                                    (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
 
     }
     else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
@@ -1100,9 +1109,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
         1.0f, 1.0f
       };
       static GLfloat defaulttexknot[] = {0.0f, 0.0f, 1.0f, 1.0f};
-      gluNurbsSurface(nurbsobj, 4, defaulttexknot, 4, defaulttexknot,
-                      2, 2*2, defaulttex, 4-2, 4-2,
-                      GL_MAP2_TEXTURE_COORD_2);
+      GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, defaulttexknot, 4, defaulttexknot,
+                                    2, 2*2, defaulttex, 4-2, 4-2,
+                                    GL_MAP2_TEXTURE_COORD_2);
     }
   }
   const SoNodeList & profilelist = SoProfileElement::get(state);
@@ -1121,10 +1130,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 
       if (istrimming && (profile->linkage.getValue() != SoProfileElement::ADD_TO_CURRENT)) {
         istrimming = FALSE;
-        gluEndTrim(nurbsobj);
+        GLUWrapper()->gluEndTrim(nurbsrenderer);
       }
       if (!istrimming) {
-        gluBeginTrim(nurbsobj);
+        GLUWrapper()->gluBeginTrim(nurbsrenderer);
         istrimming = TRUE;
       }
       profile->getTrimCurve(state, numpoints,
@@ -1132,26 +1141,21 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                             numknots, knotvector);
 
       if (numknots) {
-        gluNurbsCurve(nurbsobj, numknots, knotvector, floatspervec,
-                      points, numknots-numpoints, floatspervec == 2 ?
-                      (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3);
+        GLUWrapper()->gluNurbsCurve(nurbsrenderer, numknots, knotvector, floatspervec,
+                                    points, numknots-numpoints, floatspervec == 2 ?
+                                    (GLenum) GLU_W_MAP1_TRIM_2 : (GLenum) GLU_W_MAP1_TRIM_3);
 
       }
 
       else {
-        gluPwlCurve(nurbsobj, numpoints, points, floatspervec,
-                    floatspervec == 2 ?
-                    (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3 );
+        GLUWrapper()->gluPwlCurve(nurbsrenderer, numpoints, points, floatspervec,
+                                  floatspervec == 2 ?
+                                  (GLenum) GLU_W_MAP1_TRIM_2 : (GLenum) GLU_W_MAP1_TRIM_3 );
       }
     }
-    if (istrimming) gluEndTrim(nurbsobj);
+    if (istrimming) GLUWrapper()->gluEndTrim(nurbsrenderer);
   }
-  gluEndSurface(nurbsobj);
-
-#else // !HAVE_GLU_NURBSOBJECT
-  // Should never get here if the NURBS functionality is missing.
-  assert(FALSE && "Function sogl_render_nurbs_surface() is de-funct.");
-#endif // !HAVE_GLU_NURBSOBJECT
+  GLUWrapper()->gluEndSurface(nurbsrenderer);
 }
 
 void
@@ -1164,23 +1168,27 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
                         const SbBool drawaspoints,
                         const int numcoordindex, const int32_t * coordindex)
 {
-#if !GLU_VERSION_1_3
-  if (!glrender) {
+  if (GLUWrapper()->available == 0) {
+    // Should never get here if the NURBS functionality is missing.
+    assert(FALSE && "Function sogl_render_nurbs_curve() is de-funct.");
+  }
+
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0) == 0 &&
+      // We use GLU_NURBS_TESSELLATOR further down in the function if
+      // glrender==FALSE (i.e. on callback actions were we want to get
+      // the polygons), and this is not supported before GLU v1.3.
+      !glrender) {
 #if COIN_DEBUG
     static int first = 1;
     if (first) {
-      SoDebugError::postInfo("sogl_render_nurbs_surface",
+      SoDebugError::postInfo("sogl_render_nurbs_curve",
                              "NURBS tessellator requires GLU 1.3.");
       first = 0;
     }
 #endif // COIN_DEBUG
     return;
   }
-#endif // !GLU_VERSION_1_3
 
-#ifdef HAVE_GLU_NURBSOBJECT
-
-  HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) nurbsrenderer;
   SoState * state = action->getState();
 
   const SoCoordinateElement * coords =
@@ -1198,9 +1206,9 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
       if (maxpix < 1.0f) maxpix = 1.0f;
       float complexity = SoComplexityElement::get(state);
       complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * numctrlpts);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity);
       break;
     }
   case SoComplexityTypeElement::OBJECT_SPACE:
@@ -1209,9 +1217,9 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
       // add and cube value to give higher complexity values more boost
       complexity += 1.0f;
       complexity = (float) pow(complexity, 3.0);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity * numctrlpts);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity * numctrlpts);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity * numctrlpts);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity * numctrlpts);
       break;
     }
   case SoComplexityTypeElement::BOUNDING_BOX:
@@ -1222,13 +1230,15 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     break;
   }
 
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, drawaspoints ? GLU_POINT : GLU_LINE);
-#if GLU_VERSION_1_3
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE,
-                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
-#endif // GLU_VERSION_1_3
-  // need to load sampling matrices?
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, drawaspoints ? GLU_W_POINT : GLU_W_LINE);
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
+    // was the only game in town back then in the old days.
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_NURBS_MODE,
+                                   glrender ? GLU_W_NURBS_RENDERER : GLU_W_NURBS_TESSELLATOR);
+  }
+  // Need to load sampling matrices if glrender==FALSE.
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
@@ -1240,10 +1250,10 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     viewport[1] = origin[1];
     viewport[2] = size[0];
     viewport[3] = size[1];
-    gluLoadSamplingMatrices(nurbsobj,
-                            (float*)glmodelmatrix,
-                            SoProjectionMatrixElement::get(state)[0],
-                            viewport);
+    GLUWrapper()->gluLoadSamplingMatrices(nurbsrenderer,
+                                          (float*)glmodelmatrix,
+                                          SoProjectionMatrixElement::get(state)[0],
+                                          viewport);
   }
 
   int dim = coords->is3D() ? 3 : 4;
@@ -1267,22 +1277,16 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     ptr = (float*) tmpcoordlist->getArrayPtr();
   }
 
-  gluBeginCurve(nurbsobj);
-  gluNurbsCurve(nurbsobj,
-                numknots,
-                (float*)knotvec,
-                dim,
-                ptr,
-                numknots - numctrlpts,
-                (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
+  GLUWrapper()->gluBeginCurve(nurbsrenderer);
+  GLUWrapper()->gluNurbsCurve(nurbsrenderer,
+                              numknots,
+                              (float*)knotvec,
+                              dim,
+                              ptr,
+                              numknots - numctrlpts,
+                              (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
 
-  gluEndCurve(nurbsobj);
-
-#else // !HAVE_GLU_NURBSOBJECT
-  // Should never get here if the NURBS functionality is missing.
-  assert(FALSE && "Function sogl_render_nurbs_curve() is de-funct.");
-#endif // !HAVE_GLU_NURBSOBJECT
-
+  GLUWrapper()->gluEndCurve(nurbsrenderer);
 }
 
 

@@ -32,7 +32,8 @@ ALLSOURCES = \
 	SoTranSender.cpp SoTranSender.h \
 	SoTranReceiver.cpp SoTranReceiver.h \
 	default3dfont.cpp \
-	default2dfont.cpp
+	default2dfont.cpp \
+	GLUWrapper.c
 endif
 
 ALLINSTHEADERS = \

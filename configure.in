@@ -315,24 +315,37 @@ if test x"$sim_ac_gl_avail" = xyes; then
     AC_DEFINE(HAVE_GLX)
   fi
 
+
   # *******************************************************************
-  # ** Check if GLU is available.
+  # ** Check if GLU headers and lib is available on build host.
   # *******************************************************************
-  SIM_AC_CHECK_GLU([AC_DEFINE(HAVE_GLU)
-                    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
-                    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
-                    COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"])
+  sim_ac_libs_before_glu_check=$LIBS
+  SIM_AC_CHECK_GLU([AC_DEFINE(HAVE_GLU)])
 
 
   # *******************************************************************
-  # ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
-  # ** of the interface structure to the NURBS-related functions.
+  # ** Check if GLU should be loaded and linked at runtime (to avoid
+  # ** install dependency libCoin -> libGLU).
   # *******************************************************************
+  AC_ARG_ENABLE([dl-glu],
+    AC_HELP_STRING([--enable-dl-glu],
+                   [use runtime dynamic linking for GLU if possible [[default=yes]]]),
+    [case "${enableval}" in
+      yes | no) enable_dl_glu=${enableval} ;;
+      *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-glu) ;;
+    esac],
+    [enable_dl_glu=yes])
 
-  if test x"$sim_ac_glu_avail" = xyes; then
-    SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
-                           AC_MSG_WARN(no suitable GLU Nurbs interface found))
+  if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
+    AC_DEFINE_UNQUOTED(GLU_RUNTIME_LINKING)
+    # Restore to strip off additional libraries from GLU check.
+    LIBS=$sim_ac_libs_before_glu_check
+  else
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
   fi
+
 
 else # couldn't link with OpenGL
   # Don't stop the configure process if we seem to be configuring to build

@@ -45,3 +45,4 @@
 #include "SoTranSender.cpp"
 #include "default3dfont.cpp"
 #include "default2dfont.cpp"
+#include "GLUWrapper.c"

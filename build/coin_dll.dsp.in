@@ -353,6 +353,10 @@ SOURCE="@coin_src_dir@\src\lists\SoAuditorList.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE="@coin_src_dir@\src\misc\GLUWrapper.c"
+# End Source File
+# Begin Source File
+
 SOURCE="@coin_src_dir@\src\misc\SoBase.cpp"
 # End Source File
 # Begin Source File

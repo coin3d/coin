@@ -43,11 +43,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
-#endif // !_WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
-#include <GL/glu.h>
+#include <src/misc/GLUWrapper.h>
 
 #include <coindefs.h> // COIN_STUB()
 
@@ -124,9 +124,7 @@ SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
 {
   if (this->nurbsrenderer) {
-#ifdef HAVE_GLU_NURBSOBJECT
-    gluDeleteNurbsRenderer((HAVE_GLU_NURBSOBJECT *)this->nurbsrenderer);
-#endif // HAVE_GLU_NURBSOBJECT
+    GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
   }
 }
 
@@ -195,29 +193,28 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * action)
   glDisable(GL_AUTO_NORMAL);
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoIndexedNurbsSurface::rayPick(SoRayPickAction * action)
 {
-#if GLU_VERSION_1_3
-  SoShape::rayPick(action); // do normal generatePrimitives() pick
-#else // ! GLU_VERSION_1_3
-  if (!this->shouldRayPick(action)) return;
-  static SbBool firstpick = TRUE;
-  if (firstpick) {
-    firstpick = FALSE;
-    SoDebugError::postWarning("SoIndexedNurbsSurface::rayPick",
-                              "Proper NURBS picking requires\n"
-                              "GLU version 1.3. Picking is done on bounding box.");
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    SoShape::rayPick(action); // do normal generatePrimitives() pick
   }
-  SoState * state = action->getState();
-  state->push();
-  SoPickStyleElement::set(state, this, SoPickStyleElement::BOUNDING_BOX);
-  (void)this->shouldRayPick(action); // this will cause a pick on bbox
-  state->pop();
-#endif // ! GLU_VERSION_1_3
+  else {
+    if (!this->shouldRayPick(action)) return;
+    static SbBool firstpick = TRUE;
+    if (firstpick) {
+      firstpick = FALSE;
+      SoDebugError::postWarning("SoIndexedNurbsSurface::rayPick",
+                                "Proper NURBS picking requires\n"
+                                "GLU version 1.3. Picking is done on bounding box.");
+    }
+    SoState * state = action->getState();
+    state->push();
+    SoPickStyleElement::set(state, this, SoPickStyleElement::BOUNDING_BOX);
+    (void)this->shouldRayPick(action); // this will cause a pick on bbox
+    state->pop();
+  }
 }
 
 //
@@ -270,59 +267,71 @@ SoIndexedNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
 void
 SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
 {
-#ifdef HAVE_GLU_NURBSOBJECT
+  if (GLUWrapper()->available == 0 || !GLUWrapper()->gluNewNurbsRenderer) {
+#if COIN_DEBUG
+    static int first = 1;
+    if (first) {
+      SoDebugError::postInfo("SoIndexedNurbsCurve::doNurbs",
+                             "Looks like your GLU library doesn't have NURBS "
+                             "functionality");
+      first = 0;
+    }
+#endif // COIN_DEBUG
+    return;
+  }
+
   if (!this->coordIndex.getNum()) return;
 
-  HAVE_GLU_NURBSOBJECT * nurbsobj;
   if (this->nurbsrenderer == NULL) {
-    nurbsobj = gluNewNurbsRenderer();
-    this->nurbsrenderer = (void*) nurbsobj;
+    this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
-#if GLU_VERSION_1_3
-    void * tmp = (void*) tessBegin;
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_BEGIN_DATA, (void (*)())tessBegin);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (void (*)())tessTexCoord);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_NORMAL_DATA, (void (*)())tessNormal);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX_DATA, (void (*)())tessVertex);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_END_DATA, (void (*)())tessEnd);
-#endif // GLU_VERSION_1_3
+    if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+      void * tmp = (void*) tessBegin;
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_BEGIN_DATA, (void (*)())tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_TEXTURE_COORD_DATA, (void (*)())tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_NORMAL_DATA, (void (*)())tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_VERTEX_DATA, (void (*)())tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_END_DATA, (void (*)())tessEnd);
+    }
   }
-  nurbsobj = (HAVE_GLU_NURBSOBJECT *) this->nurbsrenderer;
 
-#if GLU_VERSION_1_3
-  coin_ins_cbdata cbdata;
-  if (!glrender) {
-    gluNurbsCallbackData(nurbsobj, &cbdata);
-    cbdata.action = action;
-    cbdata.thisp = this;
-    cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
-    cbdata.vertex.setMaterialIndex(0);
-    cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
-    cbdata.vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
-    cbdata.vertex.setDetail(NULL);
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    coin_ins_cbdata cbdata;
+    if (!glrender) {
+      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
+      cbdata.action = action;
+      cbdata.thisp = this;
+      cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
+      cbdata.vertex.setMaterialIndex(0);
+      cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
+      cbdata.vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
+      cbdata.vertex.setDetail(NULL);
+    }
   }
-#endif // GLU_VERSION_1_3
 
   SbBool texindex =
     this->textureCoordIndex.getNum() &&
     this->textureCoordIndex[0] >= 0;
 
-  int displaymode = (int) GLU_FILL;
+  int displaymode = (int) GLU_W_FILL;
   if (glrender) {
     switch (SoDrawStyleElement::get(action->getState())) {
     case SoDrawStyleElement::LINES:
-      displaymode = (int) GLU_OUTLINE_POLYGON;
+      displaymode = (int) GLU_W_OUTLINE_POLYGON;
       break;
     case SoDrawStyleElement::POINTS:
       // not possible to draw NURBS as points using GLU...
-      displaymode = (int) GLU_OUTLINE_PATCH;
+      displaymode = (int) GLU_W_OUTLINE_PATCH;
       break;
     default:
       break;
     }
   }
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, displaymode);
+  GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, displaymode);
 
+  // FIXME: we call sogl_render_nurbs_surface() even on GLU <
+  // v1.3. Won't this cause an assert() failure in
+  // sogl_render_nurbs_surface()? 20000929 mortene.
   sogl_render_nurbs_surface(action, this, this->nurbsrenderer,
                             this->numUControlPoints.getValue(),
                             this->numVControlPoints.getValue(),
@@ -341,17 +350,6 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
                             this->coordIndex.getValues(0),
                             texindex ? this->textureCoordIndex.getNum() : 0,
                             texindex ? this->textureCoordIndex.getValues(0) : NULL);
-#else // !HAVE_GLU_NURBSOBJECT
-#if COIN_DEBUG
-  static int first = 1;
-  if (first) {
-    SoDebugError::postInfo("SoIndexedNurbsSurface::doNurbs",
-                           "Looks like your GLU library doesn't have NURBS "
-                           "functionality");
-    first = 0;
-  }
-#endif // COIN_DEBUG
-#endif // !HAVE_GLU_NURBSOBJECT
 }
 
 void
