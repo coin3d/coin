@@ -27,6 +27,7 @@
 #include <Inventor/C/threads/recmutexp.h>
 #include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include <stdlib.h>
 #include <assert.h>
