@@ -37,11 +37,14 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
 
 SO_MFIELD_SOURCE(SoMFVec3f, SbVec3f, const SbVec3f &);
 
@@ -67,10 +70,18 @@ extern void sosfvec3f_write_value(SoOutput * out, const SbVec3f & v);
 SbBool
 SoMFVec3f::read1Value(SoInput * in, int idx)
 {
+#if 1 // 12-25% speed increase when this is activated. pederb, 2004-02-17
+  assert(idx < this->maxNum);
+  return 
+    in->read(this->values[idx][0]) &&
+    in->read(this->values[idx][1]) &&
+    in->read(this->values[idx][2]);
+#else // end of new, optimized version
   SbVec3f v;
   if (!sosfvec3f_read_value(in, v)) return FALSE;
   this->set1Value(idx, v);
   return TRUE;
+#endif // old, slower version
 }
 
 void
