@@ -22,7 +22,7 @@
   \brief The SoVRMLImageTexture class is used for mapping a texture file onto geometry.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   ImageTexture {

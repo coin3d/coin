@@ -22,7 +22,7 @@
   \brief The SoVRMLCylinder class is used to represent a cylinder object.
   \ingroup VRMLnodes
   
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Cylinder {

@@ -115,11 +115,11 @@ SoVRMLTransform::pointAt(const SbVec3f & from,
   this->scale = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
   this->scaleOrientation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
-  
-  this->translation = from;  
+
+  this->translation = from;
   SbVec3f dir = to - from;
   dir.normalize();
-  
+
   SbRotation rot(SbVec3f(0.0f, 0.0f, -1.0f), dir);
   this->rotation = rot;
 }
@@ -194,7 +194,7 @@ SoVRMLTransform::multLeft(const SbMatrix & matrix)
                    this->scale.getValue(),
                    this->scaleOrientation.getValue(),
                    this->center.getValue());
-  
+
   tmp.multLeft(matrix);
   this->setMatrix(tmp);
 }
@@ -246,16 +246,16 @@ SoVRMLTransform::setMatrix(const SbMatrix & matrix)
   SbVec3f t, s, c = this->center.getValue();
   SbRotation r, so;
   matrix.getTransform(t,r,s,so,c);
-  
+
   this->translation = t;
   this->rotation = r;
   this->scale = s;
   this->scaleOrientation = so;
 }
 
-/*!  
+/*!
   Sets the \e center field to \a newcenter. This might affect one
-  or more of the other fields.  
+  or more of the other fields.
 */
 void
 SoVRMLTransform::recenter(const SbVec3f & newcenter)

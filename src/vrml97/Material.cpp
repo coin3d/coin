@@ -20,6 +20,54 @@
 /*!
   \class SoVRMLMaterial SoVRMLMaterial.h Inventor/VRMLnodes/SoVRMLMaterial.h
   \brief The SoVRMLMaterial class is used to assign a material to geometry.
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Material {
+    exposedField SFFloat ambientIntensity  0.2         # [0,1]
+    exposedField SFColor diffuseColor      0.8 0.8 0.8 # [0,1]
+    exposedField SFColor emissiveColor     0 0 0       # [0,1]
+    exposedField SFFloat shininess         0.2         # [0,1]
+    exposedField SFColor specularColor     0 0 0       # [0,1]
+    exposedField SFFloat transparency      0           # [0,1]
+  }
+  \endverbatim
+
+  The Material node specifies surface material properties for
+  associated geometry nodes and is used by the VRML lighting equations
+  during rendering.  Subclause 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  contains a detailed description of the VRML lighting model
+  equations.  All of the fields in the Material node range from 0.0 to
+  1.0.  The fields in the Material node determine how light reflects
+  off an object to create colour:
+
+  - The ambientIntensity field specifies how much ambient light from
+    light sources this surface shall reflect. Ambient light is
+    omnidirectional and depends only on the number of light sources, not
+    their positions with respect to the surface. Ambient colour is
+    calculated as ambientIntensity × diffuseColor.
+ 
+  - The diffuseColor field reflects all VRML light sources depending
+    on the angle of the surface with respect to the light source. The more
+    directly the surface faces the light, the more diffuse light reflects.
+ 
+  - The emissiveColor field models "glowing" objects.
+    This can be useful for displaying pre-lit models (where the light energy
+    of the room is computed explicitly), or for displaying scientific data.
+ 
+  - The specularColor and shininess fields determine the
+    specular highlights (e.g., the shiny spots on an apple). When the
+    angle from the light to the surface is close to the angle from the surface
+    to the viewer, the specularColor is added to the diffuse and ambient
+    colour calculations. Lower shininess values produce soft glows, while higher
+    values result in sharper, smaller highlights.
+ 
+  - The transparency field specifies how "clear" an object
+    is, with 1.0 being completely transparent, and 0.0 completely opaque.  
+
 */
 
 /*!
@@ -212,5 +260,3 @@ SoVRMLMaterial::callback(SoCallbackAction * action)
 {
   SoVRMLMaterial::doAction(action);
 }
-
-

@@ -22,7 +22,7 @@
   \brief The SoVRMLCoordinate class is used define 3D coordinate for shapes.
   \ingroup VRMLnodes
   
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Coordinate { 

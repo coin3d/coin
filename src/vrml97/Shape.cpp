@@ -399,6 +399,7 @@ SoVRMLShape::notify(SoNotList * list)
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
     THIS->childlistvalid = FALSE;
   }
+  if (THIS->bboxcache) THIS->bboxcache->invalidate();
   inherited::notify(list);
 }
 

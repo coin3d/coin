@@ -22,7 +22,7 @@
   \brief The SoVRMLColorInterpolator class is used to interpolate color values.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   ColorInterpolator {

@@ -22,7 +22,7 @@
   \brief The SoVRMLCollision class is used for collision detection with the avatar.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Collision {

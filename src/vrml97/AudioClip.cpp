@@ -22,7 +22,7 @@
   \brief The SoVRMLAudioClip class is used to load and store audio data.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   AudioClip {

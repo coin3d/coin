@@ -22,14 +22,14 @@
   \brief The SoVRMLBox class is used for representing a 3D box.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
-  
+  \WEB3DCOPYRIGHT
+
   \verbatim
   Box {
     field    SFVec3f size  2 2 2        # (0, inf)
   }
   \endverbatim
-  
+
   The Box node specifies a rectangular parallelepiped box centred at (0, 0, 0)
   in the local coordinate system and aligned with the local coordinate axes.
   By default, the box measures 2 units in each dimension, from -1 to +1. The

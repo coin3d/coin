@@ -22,7 +22,7 @@
   \brief The SoVRMLExtrusion class is a a geometry node for extruding a cross section along a spine.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Extrusion {

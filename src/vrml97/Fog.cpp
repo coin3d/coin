@@ -22,7 +22,7 @@
   \brief The SoVRMLFog class is used to specify a global scene fog.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Fog {

@@ -19,4 +19,6 @@ Unsupported features
 - Radius or beamWidth in SpotLight is not supported.
 - The Text node
 - ROUTE is not supported by SoWriteAction/SoOutput
+- Lights should affect all nodes in the current coordinate system,
+  also nodes that precedes them in the children field.
 

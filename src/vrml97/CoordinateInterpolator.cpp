@@ -22,7 +22,7 @@
   \brief The SoVRMLCoordinateInterpolator class is used to interpolate 3D coordinates.
   \ingroup VRMLnodes
   
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   CoordinateInterpolator {

@@ -22,7 +22,7 @@
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
   
   \verbatim
   Color {

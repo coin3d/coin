@@ -22,7 +22,7 @@
   \brief The SoVRMLBackground class is used for specifying a viewer panorama.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Background {

@@ -22,7 +22,7 @@
   \brief The SoVRMLCone class is used to represent a Cone object.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
   
   \verbatim
   Cone {

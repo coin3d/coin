@@ -22,7 +22,7 @@
   \brief The SoVRMLBillboard class is used for rotating geometry towards the viewpoint.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
 

@@ -22,7 +22,7 @@
   \brief The SoVRMLDirectionalLight class is a node type for specifying directional light sources
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   DirectionalLight {

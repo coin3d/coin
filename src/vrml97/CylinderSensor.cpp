@@ -22,7 +22,7 @@
   \brief The SoVRMLCylinderSensor class maps pointer motion into rotations around the Y axis.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   CylinderSensor {

@@ -22,7 +22,7 @@
   \brief The SoVRMLGroup class is used for grouping VRML nodes.
   \ingroup VRMLnodes
 
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Group {

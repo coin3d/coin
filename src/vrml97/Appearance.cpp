@@ -22,7 +22,7 @@
   \brief The SoVRMLAppearance class specifies visual properties for shapes.
   \ingroup VRMLnodes
   
-  WEB3DCOPYRIGHT
+  \WEB3DCOPYRIGHT
 
   \verbatim
 
