@@ -3807,4 +3807,53 @@ incremented during the copy, but never decremented :(
 
     20040915 mortene, reported by kyrah.
 
+    UPDATE 20040915 mortene, this is kintel's write-up of assumed
+    problem areas and issues to cover:
+
+        Cases in which this has potential of breaking Coin:
+        o Offscreen rendering w/Cocoa
+        o Offscreen rendering using a window system layer on top
+          of the native system (as Morten also pointed out), e.g. SoXt under 
+          Windows.
+        o Offscreen rendering of a scene containing an SoSceneTexture2 node
+        o Offscreen rendering done from a callback node
+        o Nested SoSceneTexture2 nodes
+
+        What I have here is not a solution but rather requirements for
+        a solution that will help implementing this properly. The
+        basic mechanism for solving the problem should be the same as
+        kyrah suggested initially (i.e. using callbacks into client
+        code):
+
+        o Must call back into client code (we cannot e.g. execute Objective-C
+          code from Coin)
+        o Must have a stack of these callbacks (to take nested offscreen renderers
+          into account)
+        o Must take into account that multiple threads can simultaneously render
+          (by having one stack per thread?)
+        o Should be able to share resources between on-screen and off-screen 
+          contexts:
+          - Imagine rendering a huge volume with SIMVoleon and wanting to
+            also offscreen render that every frame. Without texture sharing, this is
+            not going to be very fast.
+        o Should also support sharing between "layered" and native contexts:
+          - Using e.g. GLX on Windows or NSOpenGL on Mac, we should make the
+            offscreen context (WGL and AGL respectively) able to share
+            from the layered contexts by e.g. extracting the core component.
+
+    larsa's feedback:
+
+        It must behave like a stack, but it must be implemented
+        non-stackish.  I'm trying to figure out how this relates to
+        how BeOS did things.  There you would have to lock a GL
+        context when using it, and unlock it afterwards.  You couldn't
+        lock another context while one was locked already, so you
+        would basically have to unlock the onscreen rendering context
+        while doing any offscreen rendering.  So that's a model that
+        should fit below the surface of whatever design we end up with
+        on this.  I'm not sure if this is a problem at all yet though,
+        just that you wouldn't be able to translate makeCurrent() into
+        Lock() calls without pairing every Lock() up with Unlock() of
+        the previous context...
+
 =====================================================================
