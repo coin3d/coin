@@ -121,9 +121,8 @@
 
 SO_NODE_SOURCE(SoVRMLFog);
 
-static void fieldsensorCB(void * data, SoSensor * sensor);
-static void bindingchangeCB(void * data, SoSensor * sensor);
-
+static void fog_fieldsensorCB(void * data, SoSensor * sensor);
+static void fog_bindingchangeCB(void * data, SoSensor * sensor);
 
 class SoVRMLFogP {
 
@@ -146,7 +145,6 @@ public:
   int fogType;
 
 };
-
 
 
 // Doc in parent
@@ -177,23 +175,23 @@ SoVRMLFog::SoVRMLFog(void)
   PRIVATE(this)->visibilityRange = 0;
 
   // Binding sensors 
-  PRIVATE(this)->setbindsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
-  PRIVATE(this)->isboundsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->setbindsensor = new SoFieldSensor(fog_bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->isboundsensor = new SoFieldSensor(fog_bindingchangeCB, PRIVATE(this));
   PRIVATE(this)->setbindsensor->attach(&this->set_bind);
   PRIVATE(this)->isboundsensor->attach(&this->isBound);
   PRIVATE(this)->setbindsensor->setPriority(0);
   PRIVATE(this)->isboundsensor->setPriority(0);
 
   // Field sensor
-  PRIVATE(this)->fogtypesensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->fogtypesensor = new SoFieldSensor(fog_fieldsensorCB, PRIVATE(this));
   PRIVATE(this)->fogtypesensor->attach(&this->fogType);
   PRIVATE(this)->fogtypesensor->setPriority(0);
 
-  PRIVATE(this)->visibilitysensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->visibilitysensor = new SoFieldSensor(fog_fieldsensorCB, PRIVATE(this));
   PRIVATE(this)->visibilitysensor->attach(&this->visibilityRange);
   PRIVATE(this)->visibilitysensor->setPriority(0);
 
-  PRIVATE(this)->colorsensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->colorsensor = new SoFieldSensor(fog_fieldsensorCB, PRIVATE(this));
   PRIVATE(this)->colorsensor->attach(&this->color);
   PRIVATE(this)->colorsensor->setPriority(0);
 
@@ -237,7 +235,7 @@ SoVRMLFog::GLRender(SoGLRenderAction * action)
 }
 
 void
-fieldsensorCB(void * data, SoSensor * sensor)
+fog_fieldsensorCB(void * data, SoSensor * sensor)
 {
   SoVRMLFogP * pimpl = (SoVRMLFogP *) data;
  
@@ -260,20 +258,20 @@ fieldsensorCB(void * data, SoSensor * sensor)
 
 
 void
-bindingchangeCB(void * data, SoSensor * sensor)
+fog_bindingchangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLFogP * pimpl = (SoVRMLFogP *) data;
 
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
   // But first, a Coin viewer must support this kind of special node
   // treatment (this applies to 'Background', 'NavigationInfo' and
-  // 'Viewport' nodes aswell) (11Aug2003 handegar)
+  // 'Viewport' nodes aswell) (20030811 handegar)
 
   if (sensor == pimpl->setbindsensor) {
-    SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
+    SoDebugError::postWarning("fog_bindingchangeCB", "'set_bind' event not implemented yet");
   }
   else if (sensor == pimpl->isboundsensor) {
-    SoDebugError::postWarning("bindingchangeCB", "'isBound' event not implemented yet");
+    SoDebugError::postWarning("fog_bindingchangeCB", "'isBound' event not implemented yet");
   }
 
 }
