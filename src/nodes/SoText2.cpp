@@ -162,10 +162,13 @@ static Display * d = NULL;
 static XFontStruct *
 tryFont(const char * fs)
 {
+#if COIN_DEBUG && 0
+  SoDebugError::postInfo("tryFont", "'%s'", fs);
+#endif // COIN_DEBUG
   XFontStruct * font = XLoadQueryFont(d, fs);
   // FIXME: match call with XFreeFont. 19990418 mortene.
-#if COIN_DEBUG
-  SoDebugError::postInfo("tryFont", "'%s': %s", fs, font ? "hit!" : "miss...");
+#if COIN_DEBUG && 0
+  SoDebugError::postInfo("tryFont", "%s", font ? "hit!" : "miss...");
 #endif // COIN_DEBUG
   return font;
 }
@@ -194,9 +197,7 @@ setFont(SbName fontname, int fontsize)
   SbString fs("*");
   fs += fontname;
   fs += "*-r-*-*-";
-  SbString is;
-  is.intToString(fontsize);
-  fs += is;
+  fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
   if ((fstruc = tryFont(fs.getString()))) return fstruc;
@@ -205,8 +206,7 @@ setFont(SbName fontname, int fontsize)
   fs = "*";
   fs += fontname;
   fs += "*-";
-  is.intToString(fontsize);
-  fs += is;
+  fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
   if ((fstruc = tryFont(fs.getString()))) return fstruc;
@@ -214,8 +214,7 @@ setFont(SbName fontname, int fontsize)
   // Can't seem to find a way to use the fontname, so lets try to get
   // _any_ non-italic font at the correct size.
   fs = "-*-*-*-r-*-*-";
-  is.intToString(fontsize);
-  fs += is;
+  fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
   if ((fstruc = tryFont(fs.getString()))) return fstruc;
@@ -223,8 +222,7 @@ setFont(SbName fontname, int fontsize)
   // That didn't work out either, so lets try settle for any font of
   // the correct size.
   fs = "-*-*-*-*-*-*-";
-  is.intToString(fontsize);
-  fs += is;
+  fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
   if ((fstruc = tryFont(fs.getString()))) return fstruc;
@@ -253,9 +251,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   int fontsize = int(SoFontSizeElement::get(state));
 
   SbString fontid(fontname.getString());
-  SbString is;
-  is.intToString(fontsize);
-  fontid += is;
+  fontid.addIntString(fontsize);
 
   // FIXME: hack. Need a proper (templatized?) dict which can do
   // mapping based on string keys. 19990418 mortene.

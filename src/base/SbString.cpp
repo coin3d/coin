@@ -123,17 +123,17 @@ SbString::SbString(const char * str, int start, int end)
 }
 
 /*!
-  Constructs a string from the given integer (e.g. SbString(42) creates
-  the string "42"), and replaces the contents of the string with the ASCII
-  representation of the number.
+  Constructs a string from the given integer (e.g. intToString(42) creates
+  the string "42"), and adds this to the contents of the string.
 */
 void
-SbString::intToString(const int digitString)
+SbString::addIntString(const int value)
 {
   // Find storage size we need for the supplied integer value.
   int w = 1;
-  if (digitString < 0) w++;
-  int tmp = digitString;
+  if (value < 0) w++;
+  int tmp = value;
+  // FIXME: Cheesus, this is lame. Use log10 instead. 19991216 mortene.
   while (tmp >= 10) {
     tmp /= 10;
     w++;
@@ -141,7 +141,7 @@ SbString::intToString(const int digitString)
 
   this->expand(w);
 
-  tmp = digitString;
+  tmp = value;
   if (tmp < 0) {
     tmp = -tmp;
     *this += '-';

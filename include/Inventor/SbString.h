@@ -43,7 +43,7 @@ public:
   SbString getSubString(int startChar, int endChar = -1) const;
   void deleteSubString(int startChar, int endChar = -1);
 
-  void intToString(const int digitString);
+  void addIntString(const int value);
 
   char operator [](int index) const;
   SbString & operator = (const char * str);

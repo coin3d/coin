@@ -339,11 +339,7 @@ SbTime::format(const char * const fmt) const
         dtmp = dtmp / 60.0 / 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        {
-          SbString is;
-          is.intToString((int)dtmp);
-          str += is;
-        }
+        str.addIntString((int)dtmp);
         break;
 
       case 'm':
@@ -352,11 +348,7 @@ SbTime::format(const char * const fmt) const
         dtmp = dtmp / 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        {
-          SbString is;
-          is.intToString((int)dtmp);
-          str += is;
-        }
+        str.addIntString((int)dtmp);
         break;
 
       case 's':
@@ -364,11 +356,7 @@ SbTime::format(const char * const fmt) const
         dtmp = this->dtime - floor(dtmp) * 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        {
-          SbString is;
-          is.intToString((int)dtmp);
-          str += is;
-        }
+        str.addIntString((int)dtmp);
         break;
 
       case 'i':
@@ -377,11 +365,7 @@ SbTime::format(const char * const fmt) const
         dtmp = floor(dtmp);
         if (dtmp < 100.0) str += '0';
         if (dtmp < 10.0) str += '0';
-        {
-          SbString is;
-          is.intToString((int)dtmp);
-          str += is;
-        }
+        str.addIntString((int)dtmp);
         break;
 
       case 'u':
@@ -393,11 +377,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 1000.0) str += '0';
         if (dtmp < 100.0) str += '0';
         if (dtmp < 10.0) str += '0';
-        {
-          SbString is;
-          is.intToString((int)dtmp);
-          str += is;
-        }
+        str.addIntString((int)dtmp);
         break;
 
       default:
@@ -886,9 +866,7 @@ SbTime::addToString(SbString & str, const double v) const
 
     // Add to string.
     val = floor(val);
-    SbString is;
-    is.intToString((int)val);
-    str += is;
+    str.addIntString((int)val);
 
     int scopy = steps;
 
@@ -908,11 +886,7 @@ SbTime::addToString(SbString & str, const double v) const
     }
   }
 
-  if (val != 0.0) {
-    SbString is;
-    is.intToString((int)val);
-    str += is;
-  }
+  if (val != 0.0) str.addIntString((int)val);
 }
 
 

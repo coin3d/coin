@@ -318,7 +318,7 @@ SoDB::readAll(SoInput * in)
 {
 #if 1 // New code, designed to work better with binary files. 19990711 mortene.
 
-#if COIN_DEBUG
+#if COIN_DEBUG // See comments below in next COIN_DEBUG block.
   int stackdepth = in->filestack.getLength();
 #endif // COIN_DEBUG
 

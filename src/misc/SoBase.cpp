@@ -708,9 +708,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
     if (!out->isBinary()) out->write(' ');
     SbString s = name.getString();
     s += SoBase::refwriteprefix.getString();
-    SbString refidstr;
-    refidstr.intToString(refid);
-    s += refidstr;
+    s.addIntString(refid);
     out->write(s.getString());
   }
   else {
@@ -721,9 +719,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
       SbString s = name.getString();
       if (multiref) {
         s += SoBase::refwriteprefix.getString();
-        SbString refidstr;
-        refidstr.intToString(refid);
-        s += refidstr;
+        s.addIntString(refid);
       }
       out->write(s.getString());
       if (!out->isBinary()) out->write(' ');
