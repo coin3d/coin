@@ -58,6 +58,9 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* define if GLU is part of the GL library */
+#undef GLU_IS_PART_OF_GL
+
 /* define for runtime linking with GLU */
 #undef GLU_RUNTIME_LINKING
 
@@ -129,6 +132,9 @@
 
 /* Define to 1 if you have the <io.h> header file. */
 #undef HAVE_IO_H
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#undef HAVE_LIBGEN_H
 
 /* define if you have the simage library */
 #undef HAVE_LIBSIMAGE
@@ -264,9 +270,6 @@
 
 /* Define to 1 if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H
-
-/* Define to 1 if you have the <winsock2.h> header file. */
-#undef HAVE_WINSOCK2_H
 
 /* define if it is possible to build against X11 */
 #undef HAVE_X11_AVAILABLE

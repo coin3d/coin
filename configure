@@ -9579,7 +9579,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
-for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h winsock2.h tlhelp32.h
+for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h tlhelp32.h libgen.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
 if eval "test \"\${$as_ac_Header+set}\" = set"; then
@@ -20082,8 +20082,8 @@ else
 fi;
 
     if $coin_can_do_runtime_linking && $enable_dl_glu; then
-      # See if GLU is part of GL library (this is the case on BeOS, for
-      # instance) before setting us up for runtime linking.
+      # See if GLU is part of GL library (this is the case on Mac OS X
+      # and BeOS, for instance) before setting us up for runtime linking.
 
 sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
 sim_ac_glu_header_avail=false
@@ -20297,13 +20297,18 @@ if $sim_cv_glu_ready; then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_GLU 1
+#define GLU_IS_PART_OF_GL 1
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define GLU_RUNTIME_LINKING 1
 _ACEOF
 
         if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:part of GL library"
+  sim_ac_configuration_settings="GLU linkage:run-time binding, part of GL library"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:part of GL library"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:run-time binding, part of GL library"
 fi
 
 
