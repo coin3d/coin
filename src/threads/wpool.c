@@ -96,6 +96,9 @@ wpool_get_idle_worker(cc_wpool * pool)
 /* ********************************************************************** */
 /* public api */
 
+/*!
+  Construct worker pool.
+*/
 cc_wpool * 
 cc_wpool_construct(int numworkers)
 {
@@ -112,6 +115,9 @@ cc_wpool_construct(int numworkers)
   return pool;
 }
 
+/*!
+  Destruct worker pool.
+*/
 void 
 cc_wpool_destruct(cc_wpool * pool)
 {
@@ -135,12 +141,18 @@ cc_wpool_destruct(cc_wpool * pool)
   free(pool);
 }
 
+/*!
+  Returns the number of workers in the pool.
+*/
 int 
 cc_wpool_get_num_workers(cc_wpool * pool)
 {
   return pool->numworkers;
 }
 
+/*!
+  Sets the number of workers in the pool.
+*/
 void 
 cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
 {
@@ -163,6 +175,12 @@ cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
   pool->numworkers = newnum;
 }
 
+/*!
+  Wait for all pool workers to finish working and go into idle state.
+  This method should only be called by the thread controlling the pool.
+  A pool thread should not call this method, since it will obviously
+  never return from here (it will never go idle).
+*/
 void 
 cc_wpool_wait_all(cc_wpool * pool)
 {
@@ -178,6 +196,32 @@ cc_wpool_wait_all(cc_wpool * pool)
   wpool_unlock(pool);
 }
 
+/*!
+
+  Locks the pool so that workers can be started using the
+  cc_wpool_start_worker() method. \a numworkersneeded should contain
+  the minumum number of workers that is needed, and this method will
+  return the number of workers available, or 0 if too few threads are
+  available. Pseudocode:
+
+  \code
+  
+  int numworkers = 5;
+
+  if (cc_wpool_begin(pool, numworkers)) {
+    for (int i = 0; i < numworkers; i++) {
+      cc_wpool_start_worker(my_work[i], my_closure[i]);
+    }
+    cc_wpool_end(pool);
+  }
+
+  \endcode
+  
+  Important! If too few workers are available, the pool will not be
+  locked and cc_wpool_end() should not be called.
+
+  \sa cc_wpool_start_worker(), cc_wpool_end()
+*/
 int 
 cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
 {
@@ -192,6 +236,13 @@ cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
   return n;
 }
 
+/*!
+
+  Starts a worker. The pool must be locked (using cc_wpool_begin())
+  before calling this method.
+
+  \sa cc_wpool_begin() , cc_wpool_end()
+*/
 void 
 cc_wpool_start_worker(cc_wpool * pool, void (*workfunc)(void *), void * closure)
 {
@@ -202,7 +253,17 @@ cc_wpool_start_worker(cc_wpool * pool, void (*workfunc)(void *), void * closure)
   }
 }
 
+/*!
 
+  Unlocks the pool after a cc_wpool_begin(), cc_wpool_start_worker()
+  sequence.
+
+  Please note that if cc_wpool_begin() returns 0, you should not call
+  cc_wpool_end().
+
+  \sa cc_wpool_begin(), cc_wpool_start_worker()
+
+*/
 void 
 cc_wpool_end(cc_wpool * pool)
 {
