@@ -224,6 +224,7 @@ SoVRMLText::~SoVRMLText()
 void
 SoVRMLText::GLRender(SoGLRenderAction * action)
 {
+
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
@@ -255,12 +256,14 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   glNormal3f(0.0f, 0.0f, 1.0f);
 
   int glyphidx = 0;
-
+  const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
   int maxstringchars = 0;
+  float ypos = 0.0f;
+
   for (i=0;i<n;++i) 
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
 
-  float ypos = 0.0f;
+
   for (i = 0; i < n; i++) {
 
     float xpos = 0.0f;
@@ -315,10 +318,10 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       case SoAsciiText::LEFT:
         break;
       case SoAsciiText::CENTER:
-        ypos = (i * PRIVATE(this)->textsize) + ((n-1) * PRIVATE(this)->textsize) * 0.5f;
+        ypos = (i * spacing) + ((n-1) * spacing) * 0.5f;
         break;
       case SoAsciiText::RIGHT:
-        ypos = (i * PRIVATE(this)->textsize) + ((n-1) * PRIVATE(this)->textsize);
+        ypos = (i * spacing) + ((n-1) * spacing);
         break;        
       default:
         break;
@@ -328,19 +331,19 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
     else { // -- Vertical text -----------------------------------------
 
       if (PRIVATE(this)->lefttorighttext)
-        xpos = i * PRIVATE(this)->textsize;
+        xpos = i * spacing;
       else
-        xpos = -i * PRIVATE(this)->textsize; 
+        xpos = -i * spacing;
         
       switch (PRIVATE(this)->justificationmajor) {
       case SoAsciiText::LEFT:        
-        ypos = 0;
+        ypos = -PRIVATE(this)->textsize;
         break;
       case SoAsciiText::RIGHT:
         if (PRIVATE(this)->toptobottomtext)
-          ypos = this->string[i].getLength() * PRIVATE(this)->textsize; 
+          ypos = this->string[i].getLength() * spacing;
         else
-          ypos = -this->string[i].getLength() * PRIVATE(this)->textsize; 
+          ypos = -this->string[i].getLength() * spacing;
         break;
       case SoAsciiText::CENTER:
         if (PRIVATE(this)->toptobottomtext)
@@ -356,10 +359,10 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       case SoAsciiText::LEFT:
         break;
       case SoAsciiText::CENTER:
-        xpos -= ((n-1) * PRIVATE(this)->textsize) * 0.5f;
+        xpos -= ((n-1) * spacing) * 0.5f;
         break;
       case SoAsciiText::RIGHT:
-        xpos -= ((n-1) * PRIVATE(this)->textsize);
+        xpos -= ((n-1) * spacing);
         break;        
       default:
         break;
@@ -405,17 +408,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
         else 
           ypos += PRIVATE(this)->textsize;
         
-      } else if (PRIVATE(this)->lefttorighttext)
+      } else if (PRIVATE(this)->lefttorighttext) {
         xpos += ((glyph->getWidth() * PRIVATE(this)->textsize) + stretchfactor) * compressfactor;
+      }
 
     }
 
     if (PRIVATE(this)->horizontaltext) {
       if (PRIVATE(this)->toptobottomtext)
-        ypos -= PRIVATE(this)->textsize;
+        ypos -= spacing;
       else
-        ypos += PRIVATE(this)->textsize;
-
+        ypos += spacing;
     }
    
   }
@@ -478,6 +481,9 @@ SoVRMLText::computeBBox(SoAction * action,
     box.setBounds(center, center);
     return;
   }
+
+  const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
+
 
   float maxw = FLT_MIN;
   int maxstringchars = 0;
@@ -549,24 +555,24 @@ SoVRMLText::computeBBox(SoAction * action,
 
     if (PRIVATE(this)->lefttorighttext) {
       minx = 0;
-      maxx = n * PRIVATE(this)->textsize;
+      maxx = ((n-1) * spacing) + PRIVATE(this)->textsize;
     }
     else {
       // FIXME: This is probably not the right way of doing this. The
       // box tends to be abit larger on the right side than
       // needed. (14Aug2003 handegar)
-      maxx = (n * PRIVATE(this)->textsize * 0.5) - 1;
-      minx = -(n+2) * PRIVATE(this)->textsize * 0.5f;
+      maxx = ((n-1) * spacing * 0.5) - PRIVATE(this)->textsize;
+      minx = -(n+2) * spacing * 0.5f;
     }
     
 
     if (PRIVATE(this)->toptobottomtext) {
       maxy = 0;
-      miny = -maxstringchars * PRIVATE(this)->textsize; 
+      miny = -maxstringchars * PRIVATE(this)->textsize;
     }
     else {
       miny = 0;
-      maxy = maxstringchars * PRIVATE(this)->textsize;    
+      maxy = maxstringchars * PRIVATE(this)->textsize;
     }
 
     switch (PRIVATE(this)->justificationmajor) {
@@ -603,7 +609,6 @@ SoVRMLText::computeBBox(SoAction * action,
  
   }
   
-  
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
   center = box.getCenter();
 }
@@ -616,6 +621,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   int i, n = this->string.getNum();
+  const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
 
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
@@ -678,10 +684,10 @@ SoVRMLText::generatePrimitives(SoAction * action)
       case SoAsciiText::LEFT:
         break;
       case SoAsciiText::CENTER:
-        ypos = (i * PRIVATE(this)->textsize) + ((n-1) * PRIVATE(this)->textsize) * 0.5f;
+        ypos = (i * spacing) + ((n-1) * spacing) * 0.5f;
         break;
       case SoAsciiText::RIGHT:
-        ypos = (i * PRIVATE(this)->textsize) + ((n-1) * PRIVATE(this)->textsize);
+        ypos = (i * spacing) + ((n-1) * spacing);
         break;        
       default:
         break;
@@ -691,9 +697,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
     else { // -- Vertical text -----------------------------------------
 
       if (PRIVATE(this)->lefttorighttext)
-        xpos = i * PRIVATE(this)->textsize;
+        xpos = i * spacing;
       else
-        xpos = -i * PRIVATE(this)->textsize; 
+        xpos = -i * spacing;
         
       switch (PRIVATE(this)->justificationmajor) {
       case SoAsciiText::LEFT:        
@@ -701,9 +707,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
         break;
       case SoAsciiText::RIGHT:
         if (PRIVATE(this)->toptobottomtext)
-          ypos = this->string[i].getLength() * PRIVATE(this)->textsize; 
+          ypos = this->string[i].getLength() * spacing;
         else
-          ypos = -this->string[i].getLength() * PRIVATE(this)->textsize; 
+          ypos = -this->string[i].getLength() * spacing;
         break;
       case SoAsciiText::CENTER:
         if (PRIVATE(this)->toptobottomtext)
@@ -719,10 +725,10 @@ SoVRMLText::generatePrimitives(SoAction * action)
       case SoAsciiText::LEFT:
         break;
       case SoAsciiText::CENTER:
-        xpos -= ((n-1) * PRIVATE(this)->textsize) * 0.5f;
+        xpos -= ((n-1) * spacing) * 0.5f;
         break;
       case SoAsciiText::RIGHT:
-        xpos -= ((n-1) * PRIVATE(this)->textsize);
+        xpos -= ((n-1) * spacing);
         break;        
       default:
         break;
@@ -772,9 +778,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
     if (PRIVATE(this)->horizontaltext) {
       if (PRIVATE(this)->toptobottomtext)
-        ypos -= PRIVATE(this)->textsize;
+        ypos -= spacing;
       else
-        ypos += PRIVATE(this)->textsize;
+        ypos += spacing;
     }
 
 
