@@ -575,7 +575,7 @@ SbBool
 SbXfBox3f::intersect(const SbBox3f &bb) const
 {
   if (this->isEmpty() || bb.isEmpty()) {
-#ifdef COIN_DEBUG
+#if COIN_DEBUG
     SoDebugError::postWarning("SbXfBox3f::intersect",
                               "%s is an empty / uninitialized box",
                               this->isEmpty() ? "this" : "input argument");
