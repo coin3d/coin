@@ -20,34 +20,32 @@
 #ifndef COIN_SOTEXTDETAIL_H
 #define COIN_SOTEXTDETAIL_H
 
-#include <Inventor/details/SoDetail.h>
+#include <Inventor/details/SoSubDetail.h>
+
 
 class COIN_DLL_EXPORT SoTextDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader(SoTextDetail)
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-  static void initClass(void);
-private:
-  static SoType classTypeId;
-//$ END TEMPLATE DetailHeader
-public:
-  SoTextDetail();
-  virtual ~SoTextDetail();
-  virtual SoDetail *copy() const;
 
-  int getStringIndex() const;
-  int getCharacterIndex() const;
-  int getPart() const;
+  SO_DETAIL_HEADER(SoTextDetail);
+
+public:
+  SoTextDetail(void);
+  virtual ~SoTextDetail();
+
+  static void initClass(void);
+  virtual SoDetail * copy(void) const;
+
+  int getStringIndex(void) const;
+  int getCharacterIndex(void) const;
+  int getPart(void) const;
 
   void setStringIndex(const int idx);
   void setCharacterIndex(const int idx);
   void setPart(const int idx);
 
-protected:
-  int stringIndex;
-  int charIndex;
+private:
+  int stringindex;
+  int charindex;
   int part;
 };
 

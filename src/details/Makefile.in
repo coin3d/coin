@@ -101,6 +101,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
 @HACKING_COMPACT_BUILD_FALSE@	SoDetail.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	SoDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubDetail.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDetails.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoConeDetail.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	SoConeDetail.h \
@@ -120,6 +121,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoTextDetail.h
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/details/SoSubDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoDetails.h \
 	$(top_srcdir)/include/Inventor/details/SoConeDetail.h \

@@ -20,27 +20,24 @@
 #ifndef COIN_SOPOINTDETAIL_H
 #define COIN_SOPOINTDETAIL_H
 
-#include <Inventor/details/SoDetail.h>
+#include <Inventor/details/SoSubDetail.h>
+
 
 class COIN_DLL_EXPORT SoPointDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader(SoPointDetail)
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-  static void initClass(void);
-private:
-  static SoType classTypeId;
-//$ END TEMPLATE DetailHeader
-public:
-  SoPointDetail();
-  virtual ~SoPointDetail();
-  virtual SoDetail *copy() const;
 
-  int getCoordinateIndex() const;
-  int getMaterialIndex() const;
-  int getNormalIndex() const;
-  int getTextureCoordIndex();
+  SO_DETAIL_HEADER(SoPointDetail);
+
+public:
+  SoPointDetail(void);
+  virtual ~SoPointDetail();
+  static void initClass(void);
+  virtual SoDetail * copy(void) const;
+
+  int getCoordinateIndex(void) const;
+  int getMaterialIndex(void) const;
+  int getNormalIndex(void) const;
+  int getTextureCoordIndex(void);
 
   void setCoordinateIndex(const int idx);
   void setMaterialIndex(const int idx);
@@ -48,10 +45,10 @@ public:
   void setTextureCoordIndex(const int idx);
 
 private:
-  int coordIndex;
-  int matIndex;
-  int normIndex;
-  int texCoordIndex;
+  int coordindex;
+  int matindex;
+  int normindex;
+  int texcoordindex;
 };
 
 #endif // COIN_SOPOINTDETAIL_H

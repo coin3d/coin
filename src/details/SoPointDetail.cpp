@@ -28,36 +28,14 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource(SoPointDetail)
+SO_DETAIL_SOURCE(SoPointDetail);
 
-SoType SoPointDetail::classTypeId;
 
-SoType
-SoPointDetail::getTypeId(void) const
-{
-  return SoPointDetail::classTypeId;
-}
-
-SoType
-SoPointDetail::getClassTypeId(void)
-{
-  return SoPointDetail::classTypeId;
-}
-
-void
-SoPointDetail::initClass(void)
-{
-  SoPointDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoPointDetail"));
-}
-//$ END TEMPLATE DetailSource
-
-SoPointDetail::SoPointDetail()
-  : coordIndex(-1),
-    matIndex(-1),
-    normIndex(-1),
-    texCoordIndex(-1)
+SoPointDetail::SoPointDetail(void)
+  : coordindex(-1),
+    matindex(-1),
+    normindex(-1),
+    texcoordindex(-1)
 {
 }
 
@@ -65,61 +43,64 @@ SoPointDetail::~SoPointDetail()
 {
 }
 
-SoDetail *
-SoPointDetail::copy() const
+void
+SoPointDetail::initClass(void)
 {
-  SoPointDetail *copy = new SoPointDetail();
-  copy->coordIndex = this->coordIndex;
-  copy->matIndex = this->matIndex;
-  copy->normIndex = this->normIndex;
-  copy->texCoordIndex = this->texCoordIndex;
+  SO_DETAIL_INIT_CLASS(SoPointDetail, SoDetail);
+}
+
+SoDetail *
+SoPointDetail::copy(void) const
+{
+  SoPointDetail * copy = new SoPointDetail;
+  *copy = *this;
   return copy;
 }
 
 int
-SoPointDetail::getCoordinateIndex() const
+SoPointDetail::getCoordinateIndex(void) const
 {
-  return this->coordIndex;
+  return this->coordindex;
 }
 
 int
-SoPointDetail::getMaterialIndex() const
+SoPointDetail::getMaterialIndex(void) const
 {
-  return this->matIndex;
+  return this->matindex;
 }
 
 int
-SoPointDetail::getNormalIndex() const
+SoPointDetail::getNormalIndex(void) const
 {
-  return this->normIndex;
+  return this->normindex;
 }
 
 int
-SoPointDetail::getTextureCoordIndex()
+SoPointDetail::getTextureCoordIndex(void)
 {
-  return this->texCoordIndex;
+  return this->texcoordindex;
 }
 
 void
 SoPointDetail::setCoordinateIndex(const int idx)
 {
-  this->coordIndex = idx;
+  this->coordindex = idx;
 }
 
 void
 SoPointDetail::setMaterialIndex(const int idx)
 {
-  this->matIndex = idx;
+  this->matindex = idx;
 }
 
 void
 SoPointDetail::setNormalIndex(const int idx)
 {
-  this->normIndex = idx;
+  this->normindex = idx;
 }
 
 void
 SoPointDetail::setTextureCoordIndex(const int idx)
 {
-  this->texCoordIndex = idx;
+  this->texcoordindex = idx;
 }

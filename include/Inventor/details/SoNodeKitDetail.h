@@ -20,7 +20,7 @@
 #ifndef COIN_SONODEKITDETAIL_H
 #define COIN_SONODEKITDETAIL_H
 
-#include <Inventor/details/SoDetail.h>
+#include <Inventor/details/SoSubDetail.h>
 #include <Inventor/SbName.h>
 
 class SoBaseKit;
@@ -30,19 +30,13 @@ class SoNode;
 class COIN_DLL_EXPORT SoNodeKitDetail : public SoDetail {
   typedef SoDetail inherited;
 
-//$ BEGIN TEMPLATE DetailHeader(SoNodeKitDetail)
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-  static void initClass(void);
-private:
-  static SoType classTypeId;
-//$ END TEMPLATE DetailHeader
+  SO_DETAIL_HEADER(SoNodeKitDetail);
 
 public:
   SoNodeKitDetail(void);
   virtual ~SoNodeKitDetail();
 
+  static void initClass(void);
   virtual SoDetail * copy(void) const;
 
   void setNodeKit(SoBaseKit * kit);

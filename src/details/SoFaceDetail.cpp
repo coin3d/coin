@@ -27,132 +27,115 @@
 
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/SbName.h>
-#include <assert.h>
 #include <stddef.h>
 
-//$ BEGIN TEMPLATE DetailSource(SoFaceDetail)
+SO_DETAIL_SOURCE(SoFaceDetail);
 
-SoType SoFaceDetail::classTypeId;
 
-SoType
-SoFaceDetail::getTypeId(void) const
-{
-  return SoFaceDetail::classTypeId;
-}
-
-SoType
-SoFaceDetail::getClassTypeId(void)
-{
-  return SoFaceDetail::classTypeId;
-}
-
-void
-SoFaceDetail::initClass(void)
-{
-  SoFaceDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoFaceDetail"));
-}
-//$ END TEMPLATE DetailSource
-
-SoFaceDetail::SoFaceDetail()
-  : pointsArray(NULL),
-    numAllocated(0),
-    numPoints(0),
-    faceIndex(0),
-    partIndex(0)
+SoFaceDetail::SoFaceDetail(void)
+  : pointsarray(NULL),
+    numallocated(0),
+    numpoints(0),
+    faceindex(0),
+    partindex(0)
 {
 }
 
 SoFaceDetail::~SoFaceDetail()
 {
-  delete [] this->pointsArray;
+  delete [] this->pointsarray;
+}
+
+void
+SoFaceDetail::initClass(void)
+{
+  SO_DETAIL_INIT_CLASS(SoFaceDetail, SoDetail);
 }
 
 SoDetail *
-SoFaceDetail::copy() const
+SoFaceDetail::copy(void) const
 {
   SoFaceDetail *copy = new SoFaceDetail();
-  if (this->numPoints) {
-    copy->setNumPoints(this->numPoints);
-    for (int i = 0; i < this->numPoints; i++) {
+  if (this->numpoints) {
+    copy->setNumPoints(this->numpoints);
+    for (int i = 0; i < this->numpoints; i++) {
       copy->setPoint(i, this->getPoint(i));
     }
   }
-  copy->faceIndex = this->faceIndex;
-  copy->partIndex = this->partIndex;
+  copy->faceindex = this->faceindex;
+  copy->partindex = this->partindex;
   return copy;
 }
 
 int
-SoFaceDetail::getNumPoints() const
+SoFaceDetail::getNumPoints(void) const
 {
-  return this->numPoints;
+  return this->numpoints;
 }
 
 const SoPointDetail *
 SoFaceDetail::getPoint(const int idx) const
 {
-  assert(idx >= 0 && idx < this->numPoints);
-  return &this->pointsArray[idx];
+  assert(idx >= 0 && idx < this->numpoints);
+  return &this->pointsarray[idx];
 }
 
 SoPointDetail *
-SoFaceDetail::getPoints()
+SoFaceDetail::getPoints(void)
 {
-  return this->pointsArray;
+  return this->pointsarray;
 }
 
 int
-SoFaceDetail::getFaceIndex() const
+SoFaceDetail::getFaceIndex(void) const
 {
-  return this->faceIndex;
+  return this->faceindex;
 }
 
 int
-SoFaceDetail::getPartIndex() const
+SoFaceDetail::getPartIndex(void) const
 {
-  return this->partIndex;
+  return this->partindex;
 }
 
 void
 SoFaceDetail::setNumPoints(const int num)
 {
-  if (num > this->numAllocated) {
-    this->numAllocated = num;
-    delete [] this->pointsArray;
-    this->pointsArray = new SoPointDetail[this->numAllocated];
+  if (num > this->numallocated) {
+    this->numallocated = num;
+    delete [] this->pointsarray;
+    this->pointsarray = new SoPointDetail[this->numallocated];
   }
-  this->numPoints = num;
+  this->numpoints = num;
 }
 
 void
 SoFaceDetail::setPoint(const int idx, const SoPointDetail * const detail)
 {
-  assert(idx >= 0 && idx <= this->numPoints);
-  this->pointsArray[idx] = *detail;
+  assert(idx >= 0 && idx <= this->numpoints);
+  this->pointsarray[idx] = *detail;
 }
 
 void
 SoFaceDetail::setFaceIndex(const int idx)
 {
-  this->faceIndex = idx;
+  this->faceindex = idx;
 }
 
 void
 SoFaceDetail::setPartIndex(const int idx)
 {
-  this->partIndex = idx;
+  this->partindex = idx;
 }
 
 void
-SoFaceDetail::incFaceIndex()
+SoFaceDetail::incFaceIndex(void)
 {
-  this->faceIndex++;
+  this->faceindex++;
 }
 
 void
-SoFaceDetail::incPartIndex()
+SoFaceDetail::incPartIndex(void)
 {
-  this->partIndex++;
+  this->partindex++;
 }

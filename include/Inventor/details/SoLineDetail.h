@@ -20,42 +20,39 @@
 #ifndef COIN_SOLINEDETAIL_H
 #define COIN_SOLINEDETAIL_H
 
-#include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoPointDetail.h>
+
 
 class COIN_DLL_EXPORT SoLineDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader(SoLineDetail)
+
+  SO_DETAIL_HEADER(SoLineDetail);
+
 public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-  static void initClass(void);
-private:
-  static SoType classTypeId;
-//$ END TEMPLATE DetailHeader
-public:
-  SoLineDetail();
+  SoLineDetail(void);
   virtual ~SoLineDetail();
-  virtual SoDetail *copy() const;
 
-  const SoPointDetail *getPoint0() const;
-  const SoPointDetail *getPoint1() const;
+  static void initClass(void);
+  virtual SoDetail * copy(void) const;
 
-  int getLineIndex() const;
-  int getPartIndex() const;
+  const SoPointDetail * getPoint0(void) const;
+  const SoPointDetail * getPoint1(void) const;
+
+  int getLineIndex(void) const;
+  int getPartIndex(void) const;
 
   void setPoint0(const SoPointDetail * const detail);
   void setPoint1(const SoPointDetail * const detail);
   void setLineIndex(const int idx);
   void setPartIndex(const int idx);
 
-  void incLineIndex();
-  void incPartIndex();
+  void incLineIndex(void);
+  void incPartIndex(void);
 
 private:
   SoPointDetail points[2];
-  int lineIndex;
-  int partIndex;
+  int lineindex;
+  int partindex;
 };
 
 #endif // COIN_SOLINEDETAIL_H

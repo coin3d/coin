@@ -20,44 +20,41 @@
 #ifndef COIN_SOFACEDETAIL_H
 #define COIN_SOFACEDETAIL_H
 
-#include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoPointDetail.h>
+
 
 class COIN_DLL_EXPORT SoFaceDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader(SoFaceDetail)
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-  static void initClass(void);
-private:
-  static SoType classTypeId;
-//$ END TEMPLATE DetailHeader
-public:
-  SoFaceDetail();
-  virtual ~SoFaceDetail();
-  virtual SoDetail *copy() const;
 
-  int getNumPoints() const;
-  const SoPointDetail *getPoint(const int idx) const;
-  SoPointDetail *getPoints();
-  int getFaceIndex() const;
-  int getPartIndex() const;
+  SO_DETAIL_HEADER(SoFaceDetail);
+
+public:
+  SoFaceDetail(void);
+  virtual ~SoFaceDetail();
+
+  static void initClass(void);
+  virtual SoDetail * copy(void) const;
+
+  int getNumPoints(void) const;
+  const SoPointDetail * getPoint(const int idx) const;
+  SoPointDetail * getPoints(void);
+  int getFaceIndex(void) const;
+  int getPartIndex(void) const;
 
   void setNumPoints(const int num);
   void setPoint(const int idx, const SoPointDetail * const detail);
   void setFaceIndex(const int idx);
   void setPartIndex(const int idx);
 
-  void incFaceIndex();
-  void incPartIndex();
+  void incFaceIndex(void);
+  void incPartIndex(void);
 
 private:
-  SoPointDetail *pointsArray;
-  int numAllocated;
-  int numPoints;
-  int faceIndex;
-  int partIndex;
+  SoPointDetail * pointsarray;
+  int numallocated;
+  int numpoints;
+  int faceindex;
+  int partindex;
 };
 
 #endif // COIN_SOFACEDETAIL_H

@@ -28,34 +28,11 @@
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource(SoTextDetail)
+SO_DETAIL_SOURCE(SoTextDetail);
 
-SoType SoTextDetail::classTypeId;
-
-SoType
-SoTextDetail::getTypeId(void) const
-{
-  return SoTextDetail::classTypeId;
-}
-
-SoType
-SoTextDetail::getClassTypeId(void)
-{
-  return SoTextDetail::classTypeId;
-}
-
-void
-SoTextDetail::initClass(void)
-{
-  SoTextDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoTextDetail"));
-}
-//$ END TEMPLATE DetailSource
-
-SoTextDetail::SoTextDetail()
-  : stringIndex(-1),
-    charIndex(-1),
+SoTextDetail::SoTextDetail(void)
+  : stringindex(-1),
+    charindex(-1),
     part(-1)
 {
 }
@@ -64,28 +41,34 @@ SoTextDetail::~SoTextDetail()
 {
 }
 
-SoDetail *
-SoTextDetail::copy() const
+void
+SoTextDetail::initClass(void)
 {
-  SoTextDetail *copy = new SoTextDetail();
+  SO_DETAIL_INIT_CLASS(SoTextDetail, SoDetail);
+}
+
+SoDetail *
+SoTextDetail::copy(void) const
+{
+  SoTextDetail *copy = new SoTextDetail;
   *copy = *this;
   return copy;
 }
 
 int
-SoTextDetail::getStringIndex() const
+SoTextDetail::getStringIndex(void) const
 {
-  return this->stringIndex;
+  return this->stringindex;
 }
 
 int
-SoTextDetail::getCharacterIndex() const
+SoTextDetail::getCharacterIndex(void) const
 {
-  return this->charIndex;
+  return this->charindex;
 }
 
 int
-SoTextDetail::getPart() const
+SoTextDetail::getPart(void) const
 {
   return this->part;
 }
@@ -93,13 +76,13 @@ SoTextDetail::getPart() const
 void
 SoTextDetail::setStringIndex(const int idx)
 {
-  this->stringIndex = idx;
+  this->stringindex = idx;
 }
 
 void
 SoTextDetail::setCharacterIndex(const int idx)
 {
-  this->charIndex = idx;
+  this->charindex = idx;
 }
 
 void

@@ -28,32 +28,10 @@
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource(SoConeDetail)
+SO_DETAIL_SOURCE(SoConeDetail);
 
-SoType SoConeDetail::classTypeId;
 
-SoType
-SoConeDetail::getTypeId(void) const
-{
-  return SoConeDetail::classTypeId;
-}
-
-SoType
-SoConeDetail::getClassTypeId(void)
-{
-  return SoConeDetail::classTypeId;
-}
-
-void
-SoConeDetail::initClass(void)
-{
-  SoConeDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoConeDetail"));
-}
-//$ END TEMPLATE DetailSource
-
-SoConeDetail::SoConeDetail()
+SoConeDetail::SoConeDetail(void)
   : part(0)
 {
 }
@@ -62,10 +40,17 @@ SoConeDetail::~SoConeDetail()
 {
 }
 
-SoDetail *
-SoConeDetail::copy() const
+
+void
+SoConeDetail::initClass(void)
 {
-  SoConeDetail *copy = new SoConeDetail();
+  SO_DETAIL_INIT_CLASS(SoConeDetail, SoDetail);
+}
+
+SoDetail *
+SoConeDetail::copy(void) const
+{
+  SoConeDetail * copy = new SoConeDetail;
   copy->part = this->part;
   return copy;
 }
@@ -77,7 +62,7 @@ SoConeDetail::setPart(const int part)
 }
 
 int
-SoConeDetail::getPart() const
+SoConeDetail::getPart(void) const
 {
   return this->part;
 }

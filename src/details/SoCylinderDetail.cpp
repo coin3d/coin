@@ -28,32 +28,10 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource(SoCylinderDetail)
+SO_DETAIL_SOURCE(SoCylinderDetail);
 
-SoType SoCylinderDetail::classTypeId;
 
-SoType
-SoCylinderDetail::getTypeId(void) const
-{
-  return SoCylinderDetail::classTypeId;
-}
-
-SoType
-SoCylinderDetail::getClassTypeId(void)
-{
-  return SoCylinderDetail::classTypeId;
-}
-
-void
-SoCylinderDetail::initClass(void)
-{
-  SoCylinderDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoCylinderDetail"));
-}
-//$ END TEMPLATE DetailSource
-
-SoCylinderDetail::SoCylinderDetail()
+SoCylinderDetail::SoCylinderDetail(void)
   : part(0)
 {
 }
@@ -62,10 +40,17 @@ SoCylinderDetail::~SoCylinderDetail()
 {
 }
 
-SoDetail *
-SoCylinderDetail::copy() const
+
+void
+SoCylinderDetail::initClass(void)
 {
-  SoCylinderDetail *copy = new SoCylinderDetail();
+  SO_DETAIL_INIT_CLASS(SoCylinderDetail, SoDetail);
+}
+
+SoDetail *
+SoCylinderDetail::copy(void) const
+{
+  SoCylinderDetail * copy = new SoCylinderDetail();
   copy->part = this->part;
   return copy;
 }
@@ -77,7 +62,7 @@ SoCylinderDetail::setPart(const int part)
 }
 
 int
-SoCylinderDetail::getPart() const
+SoCylinderDetail::getPart(void) const
 {
   return this->part;
 }

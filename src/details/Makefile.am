@@ -7,6 +7,7 @@ else
 ALLSOURCES = \
 	SoDetail.cpp \
 	SoDetail.h \
+	SoSubDetail.h \
 	SoDetails.h \
 	SoConeDetail.cpp \
 	SoConeDetail.h \
@@ -27,6 +28,7 @@ ALLSOURCES = \
 endif
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/details/SoSubDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoDetails.h \
 	$(top_srcdir)/include/Inventor/details/SoConeDetail.h \

@@ -31,33 +31,9 @@
 */
 
 #include <Inventor/details/SoNodeKitDetail.h>
-#include <assert.h>
 
+SO_DETAIL_SOURCE(SoNodeKitDetail);
 
-//$ BEGIN TEMPLATE DetailSource(SoNodeKitDetail)
-
-SoType SoNodeKitDetail::classTypeId;
-
-SoType
-SoNodeKitDetail::getTypeId(void) const
-{
-  return SoNodeKitDetail::classTypeId;
-}
-
-SoType
-SoNodeKitDetail::getClassTypeId(void)
-{
-  return SoNodeKitDetail::classTypeId;
-}
-
-void
-SoNodeKitDetail::initClass(void)
-{
-  SoNodeKitDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       SbName("SoNodeKitDetail"));
-}
-//$ END TEMPLATE DetailSource
 
 /*!
   Constructor.
@@ -76,9 +52,16 @@ SoNodeKitDetail::~SoNodeKitDetail()
   // set*() methods. 19991109 mortene.
 }
 
-/*!
-  Return a copy of ourself.
-*/
+// Doc in superclass.
+void
+SoNodeKitDetail::initClass(void)
+{
+  SoNodeKitDetail::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       SbName("SoNodeKitDetail"));
+}
+
+// Doc in superclass.
 SoDetail *
 SoNodeKitDetail::copy(void) const
 {

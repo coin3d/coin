@@ -22,28 +22,27 @@
 
 #include <Inventor/SoType.h>
 
+
 class COIN_DLL_EXPORT SoDetail {
+
 public:
   virtual ~SoDetail();
 
-  virtual SoDetail *copy() const = 0;
+  static void initClass(void);
+  static void initClasses(void);
 
-  virtual SoType getTypeId() const = 0;
+  virtual SoDetail * copy(void) const = 0;
+
+  virtual SoType getTypeId(void) const = 0;
   SbBool isOfType(const SoType type) const;
 
-  static SoType getClassTypeId();
-
-public: // internal
-
-  static void initClass();
-  static void initClasses();
+  static SoType getClassTypeId(void);
 
 protected:
-  SoDetail();
+  SoDetail(void);
 
 private:
   static SoType classTypeId;
 };
-
 
 #endif // COIN_SODETAIL_H

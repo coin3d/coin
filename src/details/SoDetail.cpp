@@ -30,21 +30,27 @@
 SoType SoDetail::classTypeId;
 
 /*!
-  A constructor
+  \fn SoDetail * SoDetail::copy(void) const
+  Return a copy of ourself.
 */
-SoDetail::SoDetail()
+
+
+/*!
+  Default constructor.
+*/
+SoDetail::SoDetail(void)
 {
 }
 
 /*!
-  virtual Destructor
+  Destructor.
 */
 SoDetail::~SoDetail()
 {
 }
 
 /*!
-  Returns \e TRUE if \a type is derived from (or \e is) this class.
+  Returns \c TRUE if \a type is derived from (or \e is) this class.
 */
 SbBool
 SoDetail::isOfType(const SoType type) const
@@ -56,21 +62,28 @@ SoDetail::isOfType(const SoType type) const
   Returns the type for this class.
 */
 SoType
-SoDetail::getClassTypeId()
+SoDetail::getClassTypeId(void)
 {
   return SoDetail::classTypeId;
 }
 
+/*!
+  Initialize relevant common data for all instances, like the type
+  system.
+ */
 void
-SoDetail::initClass()
+SoDetail::initClass(void)
 {
-  SoDetail::classTypeId = SoType::createType(SoType::badType(),
-                                             SbName("SoDetail"));
+  SoDetail::classTypeId =
+    SoType::createType(SoType::badType(), SbName("SoDetail"));
   SoDetail::initClasses();
 }
 
+/*!
+  Call the initClass() methods of all built-in detail classes.
+ */
 void
-SoDetail::initClasses()
+SoDetail::initClasses(void)
 {
   SoConeDetail::initClass();
   SoCubeDetail::initClass();
