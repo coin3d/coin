@@ -97,6 +97,12 @@
   }
   \endverbatim
 
+  In examinerviewer the Inventor file looks something like this:
+
+  <center>
+    <img src="http://doc.coin3d.org/images/Coin/nodes/asciitext.png">
+  </center>
+
   \since Inventor 2.1
 */
 
@@ -487,10 +493,14 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
 
+  // maxglyphbbox should never be empty here.
+  assert(!PRIVATE(this)->maxglyphbbox.isEmpty());
+
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
   box.extendBy(SbVec3f(0, PRIVATE(this)->maxglyphbbox.getMin()[1] - (this->string.getNum() - 1) * fontspec->size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
+
   PRIVATE(this)->unlock();
 }
 
@@ -691,7 +701,6 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     const unsigned int length = textnode->string[i].getLength();
     float stringwidth = 0.0f;
     const float * maxbbox;
-    this->maxglyphbbox.makeEmpty();
 
     float stretchfactor = 1.0f;
     if (i < this->master->width.getNum() && this->master->width[i] != 0) { 
@@ -729,6 +738,7 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     if (prevglyph != NULL) {
       // Have to remove the appended advance and add the last character to the calculated with
       stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex * stretchfactor) * fontspecptr->size;
+      prevglyph = NULL; // To make sure the next line starts with blank sheets
     }
 
     this->stringwidths.append(stringwidth);
