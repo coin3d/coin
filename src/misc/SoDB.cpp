@@ -103,6 +103,7 @@
 /*! \defgroup projectors Projector classes (mostly for internal use) */
 /*! \defgroup sensors Sensor classes */
 /*! \defgroup sound 3D sound support */
+/*! \defgroup threads Portable thread-handling abstractions  */
 /*! \defgroup VRMLnodes VRML97 classes */
 
 /*!

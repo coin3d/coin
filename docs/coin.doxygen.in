@@ -745,6 +745,15 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensorManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerQueueSensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbBarrier.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbCondVar.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbFifo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbMutex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbRWMutex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbStorage.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThread.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThreadAutoLock.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbTypedStorage.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRML.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAnchor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAppearance.h \
@@ -1188,6 +1197,12 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/sensors/SoSensorManager.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoTimerQueueSensor.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoTimerSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/barrier.c \
+                         @path_tag@@coin_src_dir@/src/threads/condvar.c \
+                         @path_tag@@coin_src_dir@/src/threads/mutex.c \
+                         @path_tag@@coin_src_dir@/src/threads/rwmutex.c \
+                         @path_tag@@coin_src_dir@/src/threads/storage.c \
+                         @path_tag@@coin_src_dir@/src/threads/thread.c \
                          @path_tag@@coin_src_dir@/src/vrml97/Anchor.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Appearance.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/AudioClip.cpp \
