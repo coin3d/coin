@@ -52,7 +52,7 @@
   "ColorCube { color 1 0 0 size 2 1 1 }\n";
 
   SoInput in;
-  in.setBuffer((void*) myproto, sizeof(myproto));
+  in.setBuffer((void*) myproto, strlen(myproto));
   SoVRMLGroup * protoroot = SoDB::readAllVRML(&in);
   
   \endcode
@@ -139,7 +139,15 @@ soproto_fetchextern_default_cb(SoInput * in,
     // protection of SoInput::popFile().
     if (in->getCurFileName() == filename) {
       char dummy;
-      while (!in->eof()) in->get(dummy);
+      while (!in->eof() && in->get(dummy));
+
+      assert(in->eof());
+
+      // Make sure the stack is really popped on EOF. Popping happens
+      // when attempting to read when the current file in the stack is
+      // at EOF.
+      SbBool gotchar = in->get(dummy);
+      if (gotchar) in->putBack(dummy);
     }
 
     SoReadError::post(in, "Unable to read EXTERNPROTO file: ``%s''",

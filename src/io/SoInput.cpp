@@ -131,6 +131,52 @@
 
 // *************************************************************************
 
+class SoInputP {
+ public:
+  SoInputP(SoInput * owner) {
+    this->owner = owner;
+    this->usingstdin = FALSE;
+  }
+  
+  SoInput_FileInfo * getTopOfStackPopOnEOF(void);
+
+  SoInput * owner;
+  SbBool usingstdin;
+};
+
+// *************************************************************************
+// This is the hack that makes it possible for SoInput to have a
+// private class. The problem has been fixed for Coin 3.
+
+static SbDict * soinput_private_data_dict = NULL;
+
+static void
+soinput_private_data_cleanup(void)
+{
+  delete soinput_private_data_dict;
+  soinput_private_data_dict = NULL;
+}
+
+SoInputP *
+soinput_get_private_data(const SoInput * thisp)
+{
+  if (soinput_private_data_dict == NULL) {
+    soinput_private_data_dict = new SbDict;
+    atexit(soinput_private_data_cleanup);
+  }
+  void * pimpl;
+  if (!soinput_private_data_dict->find((unsigned long) thisp, pimpl)) {
+    pimpl = (void*) new SoInputP((SoInput*) thisp);
+    (void) soinput_private_data_dict->enter((unsigned long) thisp, pimpl);
+  }
+  return (SoInputP*) pimpl;
+}
+
+#undef THIS
+#define THIS (soinput_get_private_data(this))
+
+// *************************************************************************
+
 SbStringList * SoInput::dirsearchlist = NULL;
 
 static SbStorage * soinput_tls = NULL;
@@ -158,6 +204,27 @@ soinput_destruct_tls_data(void * closure)
     delete (*data->searchlist)[i];
   }
   delete data->searchlist;
+}
+
+// *************************************************************************
+
+SoInput_FileInfo * 
+SoInputP::getTopOfStackPopOnEOF(void)
+{
+  SoInput_FileInfo * fi = owner->getTopOfStack();
+  assert(fi); // Should always have a top of stack, because the last
+              // element on the stack is never removed until the
+              // SoInput is closed
+
+  // Pop the stack if end of current file
+  if (fi->isEndOfFile()) {
+    (void) owner->popFile(); // Only pops if more than one file is on
+                             // the stack.
+    fi = owner->getTopOfStack();
+    assert(fi);
+  }
+
+  return fi;
 }
 
 // *************************************************************************
@@ -236,10 +303,9 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 {
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
-  if (info) {
-    info->addRoute(fromnode, fromfield,
+
+  info->addRoute(fromnode, fromfield,
                    tonode, tofield);
-  }
 }
 
 /*!
@@ -270,10 +336,8 @@ SoInput::addProto(SoProto * proto)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
-  if (info) {
-    proto->ref(); // the PROTO is unref'ed when the file is popped
-    info->addProto(proto);
-  }
+  proto->ref(); // the PROTO is unref'ed when the file is popped
+  info->addProto(proto);
 }
 
 /*!
@@ -290,9 +354,7 @@ SoInput::pushProto(SoProto * proto)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
-  if (info) {
-    info->pushProto(proto);
-  }
+  info->pushProto(proto);
 }
 
 /*!
@@ -308,9 +370,7 @@ SoInput::popProto(void)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
-  if (info) {
-    info->popProto();
-  }
+  info->popProto();
 }
 
 /*!
@@ -326,10 +386,7 @@ SoInput::getCurrentProto(void) const
 {
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
-  if (info) {
-    return info->getCurrentProto();
-  }
-  return NULL;
+  return info->getCurrentProto();
 }
 
 /*!
@@ -486,6 +543,25 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
+  // Get rid of default stdin filepointer if it has not yet been read
+  // from. The reason for this is that <stdin> is put on the stack as
+  // the default reader by the constructor.  If pushFile is called
+  // before <stdin> is read from, it should not be used for reading,
+  // so we remove it.  This case happens e.g. when running the code:
+  //
+  // SoFile * f = new SoFile;
+  // f->name = "nonexistant.iv";
+  // 
+  // The name-field has a callback function that calls
+  // File::readNamedFile, which calls pushFile. No other files than
+  // the pushed file should end up on the stack.
+  if (this->filestack.getLength() == 1 &&
+      this->filestack[0]->ivFilePointer() == coin_get_stdin() &&
+      !THIS->usingstdin) { 
+
+    this->closeFile();
+  }
+
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
@@ -719,7 +795,7 @@ SoInput::getNumBytesRead(void) const
 SbString
 SoInput::getHeader(void)
 {
-  (void)this->checkHeader();
+  (void) this->checkHeader();
   SoInput_FileInfo * fi = this->getTopOfStack();
   
   if (fi) {
@@ -748,8 +824,13 @@ SoInput::getIVVersion(void)
 SbBool
 SoInput::isBinary(void)
 {
-  if (!this->checkHeader()) return FALSE;
-  return this->getTopOfStack()->isBinary();
+  (void) this->checkHeader(); // Make sure the file header has been
+                              // read. checkHeader calls
+                              // SoInput_FileInfo::readHeader
+
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  return fi->isBinary();
 }
 
 /*!
@@ -760,8 +841,11 @@ SoInput::isBinary(void)
 SbBool
 SoInput::get(char & c)
 {
+  // It is essential that this method pops on EOF, because this
+  // feature is used in e.g SoFile::readNamedFile
+  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
   return (this->checkHeader() && // Strip off file header, if any.
-          this->getTopOfStack()->get(c));
+          fi->get(c));
 }
 
 /*!
@@ -824,10 +908,10 @@ SoInput::readHex(uint32_t & l)
 SbBool
 SoInput::read(char & c)
 {
+  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+
   if (!this->checkHeader()) return FALSE;
 
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
   return (fi->skipWhiteSpace() && fi->get(c));
 }
 
@@ -839,10 +923,10 @@ SoInput::read(char & c)
 SbBool
 SoInput::read(char & c, SbBool skip)
 {
+  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+
   if (!this->checkHeader()) return FALSE;
 
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
   SbBool ok = TRUE;
   if (skip) ok = fi->skipWhiteSpace();
   return (ok && fi->get(c));
@@ -859,21 +943,30 @@ SoInput::read(char & c, SbBool skip)
   A string not contained in quotes is terminated by the first following
   whitespace character.
 
-  Returns \c FALSE upon encountering end of file before the string is
-  fully parsed, or any other error.
+  Returns \c FALSE upon encountering end of file (EOF) before the
+  string is fully parsed, or any other error. Note: This function does
+  not return \c FALSE when encountering all EOFs. When multiple files
+  are on the stack and a string is being parsed (the parser has found
+  one or more valid characters) and EOF is encountered, the parsing
+  stops and the read string along with \c TRUE is returned. The next
+  time the read method is called, the stack is popped and a read
+  string from the next file is returned - not always returning \c
+  FALSE between the files (though it might on certain
+  circumstances). The solution to this is to test for end of file
+  after each successive read operation.
 */
 SbBool
 SoInput::read(SbString & s)
 {
+  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+
   if (!this->checkHeader()) return FALSE;
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
 
   ////////////////////
   // Binary read
   ////////////////////
 
-  if (this->isBinary()) {
+  if (fi->isBinary()) { // Checkheader has already been called
     // This is just a guess at a sensible limit, to help detect
     // corrupted files and to avoid those leading to attempts at
     // allocating gigabytes of memory.
@@ -935,6 +1028,11 @@ SoInput::read(SbString & s)
           }
           return FALSE;
         }
+        // This method does not return FALSE on all EOFs. When having
+        // started reading the last String, and encountering EOF at
+        // the end of this, it simply stops reading and returns
+        // TRUE. The next time, it just pops the stack and starts
+        // reading on the next file. Not returning FALSE.
         break;
       }
 
@@ -1061,12 +1159,12 @@ soinput_is_ident_char(SoInput * in, char c)
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
 {
+  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();  
+
   if (!this->checkHeader()) return FALSE;
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
 
   // Binary format.
-  if (this->isBinary()) {
+  if (fi->isBinary()) { // Checkheader has already been called
     SbString s;
     if (!this->read(s)) return FALSE;
 
@@ -1189,7 +1287,10 @@ READ_NUM(readReal, double, num, type)
 SbBool
 SoInput::read(int & i)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
     i = tmp;
@@ -1208,7 +1309,10 @@ SoInput::read(int & i)
 SbBool
 SoInput::read(unsigned int & i)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
     i = tmp;
@@ -1227,7 +1331,10 @@ SoInput::read(unsigned int & i)
 SbBool
 SoInput::read(short & s)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
     s = (short) tmp;
@@ -1246,7 +1353,10 @@ SoInput::read(short & s)
 SbBool
 SoInput::read(unsigned short & s)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
     s = (unsigned short) tmp;
@@ -1265,7 +1375,10 @@ SoInput::read(unsigned short & s)
 SbBool
 SoInput::read(float & f)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     if (!this->readBinaryArray(&f, 1)) { return FALSE; }
   }
   else {
@@ -1289,7 +1402,10 @@ SoInput::read(float & f)
 SbBool
 SoInput::read(double & d)
 {
-  if (this->isBinary()) {
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
     if (!this->readBinaryArray(&d, 1)) { return FALSE; }
   }
   else {
@@ -1380,8 +1496,9 @@ SoInput::readBinaryArray(double * d, int length)
 SbBool
 SoInput::eof(void) const
 {
-  if (!this->getTopOfStack()) return TRUE;
-  return this->getTopOfStack()->isEndOfFile();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  if (!fi) return TRUE;
+  return fi->isEndOfFile();
 }
 
 /*!
@@ -1978,18 +2095,21 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
   if (!fi) {
-#if COIN_DEBUG
     SoDebugError::post("SoInput::checkHeader", "no files on the stack");
-#endif // COIN_DEBUG
     return FALSE;
   }
 
-  // Auto pop on EOF if there's more than one file in the stack.
-  if ((this->filestack.getLength() > 1) && fi->isEndOfFile()) {
-    this->popFile();
-    fi = this->getTopOfStack();
-    if (!fi) return FALSE;
+  // Make a note if reading is attempted on <stdin>. By marking if
+  // <stdin> is being read from or not, we have a pretty good way of
+  // telling if the user want to use <stdin> to read from or not when
+  // a new file is pushed on the stack.
+  if (this->filestack.getLength() == 1 && 
+      fi->ivFilePointer() == coin_get_stdin() && 
+      !THIS->usingstdin) {
+
+    THIS->usingstdin = TRUE;
   }
+
   return fi->readHeader(this) && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
 }
 
@@ -2012,12 +2132,15 @@ SoInput::fromBuffer(void) const
 SbBool
 SoInput::skipWhiteSpace(void)
 {
+  // FIXME: pop file on EOF? don't think so, but please let me
+  // know if I'm wrong. jornskaa 20040702
   return (this->checkHeader() && this->getTopOfStack()->skipWhiteSpace());
 }
 
 /*!
   Pop the topmost file off the stack. Returns \c FALSE if there was no
-  files on the stack to pop.
+  files on the stack to pop. A file is only popped when there is more
+  than one file on the stack.
 
   \sa pushFile(), openFile(), closeFile()
  */
@@ -2036,6 +2159,7 @@ SoInput::popFile(void)
 
   // apply post callback, even if we're not going to pop
   topofstack->applyPostCallback(this);
+  // If only one file is on the stack, don't pop it
   if (this->filestack.getLength() == 1) return FALSE;
 
   if (topofstack->ivFilePointer()) {
@@ -2525,9 +2649,7 @@ SoInput_FileInfo *
 SoInput::getTopOfStack(void) const
 {
   if (this->filestack.getLength() == 0) {
-#if COIN_DEBUG
     SoDebugError::post("SoInput::getTopOfStack", "no files in stack");
-#endif // COIN_DEBUG
     return NULL;
   }
   return this->filestack[0];

@@ -701,7 +701,7 @@ SoVRMLBackgroundP::buildGeometry(void)
 
   SoDB::init();
   SoInput in;
-  in.setBuffer(background_scenery_data, sizeof(background_scenery_data));
+  in.setBuffer(background_scenery_data, strlen(background_scenery_data));
   SoSeparator * cubedata = SoDB::readAll(&in);
 
   SoShapeHints * shapehintscube = new SoShapeHints;

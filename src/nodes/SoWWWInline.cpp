@@ -647,6 +647,7 @@ SoWWWInlineP::readNamedFile(SoInput * in)
   if (!in->pushFile(name.getString())) return TRUE;
 
   SoSeparator * node = SoDB::readAll(in);
+
   // Popping the file off the stack again is done implicit in SoInput
   // upon hitting EOF (unless the read fails, see below).
 
@@ -660,7 +661,15 @@ SoWWWInlineP::readNamedFile(SoInput * in)
     // protection of SoInput::popFile().
     if (in->getCurFileName() == name) {
       char dummy;
-      while (!in->eof()) in->get(dummy);
+      while (!in->eof() && in->get(dummy));
+
+      assert(in->eof());
+
+      // Make sure the stack is really popped on EOF. Popping happens
+      // when attempting to read when the current file in the stack is
+      // at EOF.
+      SbBool gotchar = in->get(dummy);
+      if (gotchar) in->putBack(dummy);
     }
 
     // Note that we handle this differently than Inventor, which lets
@@ -668,6 +677,7 @@ SoWWWInlineP::readNamedFile(SoInput * in)
     SoReadError::post(in, "Unable to read subfile: ``%s''",
                       name.getString());
   }
+
   return TRUE;
 }
 

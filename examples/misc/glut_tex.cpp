@@ -127,7 +127,7 @@ createScenegraph(void)
   SoSeparator * texroot = new SoSeparator;
   texroot->ref();
   SoInput in;
-  in.setBuffer(red_cone_iv, sizeof(red_cone_iv));
+  in.setBuffer(red_cone_iv, strlen(red_cone_iv));
   
   SoSeparator * result = SoDB::readAll(&in);
   if (result == NULL) { exit(1); }

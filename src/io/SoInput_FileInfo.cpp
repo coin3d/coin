@@ -27,6 +27,7 @@
 
 #include <string.h>
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/nodes/SoNode.h>
@@ -233,18 +234,6 @@ SoInput_FileInfo::get(char & c)
     }
 
     c = this->readbuf[this->readbufidx++];
-
-    // The memorybuffer reader does not do anything when reaching '\0'
-    // (the null-termination of character strings), so we have to
-    // handle it our selves.
-    if (c == '\0') {
-      this->readbufidx = 0;
-      this->readbuflen = 0;
-      this->eof = TRUE;
-
-      c = (char) EOF;
-      return FALSE;
-    }
   }
 
   // NB: the line counting is not working 100% if we start putting
@@ -354,7 +343,9 @@ SoInput_FileInfo::skipWhiteSpace(void)
 SbBool
 SoInput_FileInfo::readHeader(SoInput * soinput)
 {
-  if (this->headerisread) return this->eof ? FALSE : TRUE;
+  if (this->headerisread) return TRUE;
+  if (this->eof) return FALSE;
+
   this->headerisread = TRUE;
 
   this->header = "";

@@ -138,7 +138,7 @@ SoScaleUniformDragger::SoScaleUniformDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("scaleUniformDragger.iv",
                                        SCALEUNIFORMDRAGGER_draggergeometry,
-                                       sizeof(SCALEUNIFORMDRAGGER_draggergeometry));
+                                       strlen(SCALEUNIFORMDRAGGER_draggergeometry));
   }
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 

@@ -61,6 +61,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <data/draggerDefaults/transformBoxDragger.h>
 
@@ -237,7 +238,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("transformBoxDragger.iv",
                                        TRANSFORMBOXDRAGGER_draggergeometry,
-                                       sizeof(TRANSFORMBOXDRAGGER_draggergeometry));
+                                       strlen(TRANSFORMBOXDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

@@ -155,7 +155,7 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("translate1Dragger.iv",
                                        TRANSLATE1DRAGGER_draggergeometry,
-                                       sizeof(TRANSLATE1DRAGGER_draggergeometry));
+                                       strlen(TRANSLATE1DRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

@@ -275,7 +275,7 @@ SoTrackballDragger::SoTrackballDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("trackballDragger.iv",
                                        TRACKBALLDRAGGER_draggergeometry,
-                                       sizeof(TRACKBALLDRAGGER_draggergeometry));
+                                       strlen(TRACKBALLDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

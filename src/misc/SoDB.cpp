@@ -1568,9 +1568,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     return NULL;
   }
 
-#if COIN_DEBUG // See comments below in next COIN_DEBUG block.
   const int stackdepth = in->filestack.getLength();
-#endif // COIN_DEBUG
 
   SoGroup * root = (SoGroup *)grouptype.createInstance();
   SoNode * topnode;
@@ -1584,13 +1582,14 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
   } while (topnode && in->skipWhiteSpace());
 
   if (!in->eof()) {
-    // All characters may not have been read from the current stream.
-    // The reading stops when the last valid '}' is found, so we have
-    // to read until the current file on the stack is at the end.  All
-    // non-whitespace characters from now on are erroneous.
+    // All  characters  may not  have  been  read  from the  current
+    // stream.  The reading stops when no more valid identifiers are
+    // found, so we have to read until the current file on the stack
+    // is at the end.  All non-whitespace characters from now on are
+    // erroneous.
     static uint32_t readallerrors_termination = 0;
     SbString dummy;
-    while (in->read(dummy)) { 
+    while (!in->eof() && in->read(dummy)) { 
       if (readallerrors_termination < 1) {
         SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
                           "This message will only be shown once for this file, "
@@ -1600,11 +1599,14 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     }
     assert(in->eof());
   }
-  // Detect problems with missing pops from the SoInput file stack.
-  assert(stackdepth == in->filestack.getLength()); 
 
-  // Force a header post callback.
-  if (in->filestack.getLength() == 1) { in->popFile(); }
+  // Make sure the current file (which is EOF) is popped off the stack.
+  in->popFile(); // No popping happens if there is just one file on
+                 // the stack
+
+  // Detect problems with missing pops from the SoInput file stack.
+  assert((stackdepth == 1 && in->filestack.getLength() == 1) ||
+         (stackdepth - 1 == in->filestack.getLength())); 
 
   // Strip off extra root group node if it was unnecessary (i.e. if
   // the file only had a single top-level root, and it was of the same

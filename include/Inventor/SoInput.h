@@ -166,6 +166,7 @@ protected:
 
 private:
   friend class SoDB;
+  friend class SoInputP;
 
   static void clean(void);
   void constructorsCommon(void);

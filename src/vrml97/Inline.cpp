@@ -627,20 +627,25 @@ SoVRMLInline::readLocalFile(SoInput * in)
   THIS->fullurlname = in->getCurFileName();
 
   SoSeparator * node = SoDB::readAll(in);
-  // Popping the file off the stack again is done implicit in SoInput
-  // upon hitting EOF (unless the read fails, see below).
 
   if (node) {
     THIS->children->truncate(0);
     THIS->children->append((SoNode *)node);
   }
   else {
-    // Take care of popping the file off the stack. This is a bit
-    // "hack-ish", but its done this way instead of loosening the
-    // protection of SoInput::popFile().
     if (in->getCurFileName() == THIS->fullurlname) {
+      // Take care of popping the file off the stack. This is a bit
+      // "hack-ish", but its done this way instead of loosening the
+      // protection of SoInput::popFile().
       char dummy;
-      while (!in->eof()) in->get(dummy);
+      while (!in->eof() && in->get(dummy));
+      assert(in->eof());
+      
+      // Make sure the stack is really popped on EOF. Popping happens
+      // when attempting to read when the current file in the stack is
+      // at EOF.
+      SbBool gotchar = in->get(dummy);
+      if (gotchar) in->putBack(dummy);
     }
 
     // Note that we handle this differently than Inventor, which lets

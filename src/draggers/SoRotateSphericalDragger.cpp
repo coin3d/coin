@@ -150,7 +150,7 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateSphericalDragger.iv",
                                        ROTATESPHERICALDRAGGER_draggergeometry,
-                                       sizeof(ROTATESPHERICALDRAGGER_draggergeometry));
+                                       strlen(ROTATESPHERICALDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

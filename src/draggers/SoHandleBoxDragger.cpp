@@ -384,7 +384,7 @@ SoHandleBoxDragger::SoHandleBoxDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("handleBoxDragger.iv",
                                        HANDLEBOXDRAGGER_draggergeometry,
-                                       sizeof(HANDLEBOXDRAGGER_draggergeometry));
+                                       strlen(HANDLEBOXDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

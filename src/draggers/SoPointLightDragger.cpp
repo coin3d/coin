@@ -121,7 +121,7 @@ SoPointLightDragger::SoPointLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("pointLightDragger.iv",
                                        POINTLIGHTDRAGGER_draggergeometry,
-                                       sizeof(POINTLIGHTDRAGGER_draggergeometry));
+                                       strlen(POINTLIGHTDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

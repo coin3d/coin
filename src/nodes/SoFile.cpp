@@ -223,53 +223,62 @@ SoFile::readNamedFile(SoInput * in)
     if (n == NULL) { // this is what happens on EOF, not valid
                      // identifiers, or when children have been given
                      // the NULL keyword
+
       break; 
     }
     cl.append(n);
   } while (TRUE);
-
-  // (Popping the file off the stack again is done implicit in SoInput
-  // upon hitting EOF (unless the read fails, see below).)
+  
+  // The file should not be removed from the stack before it is done
+  // deliberately at the end of this method.
+  assert(in->getCurFileName() == this->name.getValue());
 
   if (readok) {
     this->children->copy(cl); // (copy() implicitly truncates before copying)
 
     if (!in->eof()) {
-      // All characters may not have been read from the current stream.
-      // The reading stops when the last valid '}' is found, so we have
-      // to read until the current file on the stack is at the end.  All
-      // non-whitespace characters from now on are erroneous.
-      if (in->getCurFileName() == this->name.getValue()) {
-        static uint32_t fileerrors_termination = 0;
-        
-        SbString dummy;
-        while (in->read(dummy)) { 
-          if (fileerrors_termination < 1) {
-            SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
-                              "This message will only be shown once for this file, "
-                              "but more errors might be present", dummy.getString());
-          }
-          fileerrors_termination++;
+      // All  characters  may not  have  been  read  from the  current
+      // stream.  The reading stops when no more valid identifiers are
+      // found, so we have to read until the current file on the stack
+      // is at the end.  All non-whitespace characters from now on are
+      // erroneous.
+      static uint32_t fileerrors_termination = 0;
+      SbString dummy;
+      while (!in->eof() && in->read(dummy)) {
+        if (fileerrors_termination < 1) {
+          SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
+                            "This message will only be shown once for this file, "
+                            "but more errors might be present", dummy.getString());
         }
-        
-        assert(in->eof());
+        fileerrors_termination++;
       }
+      assert(in->eof());
     }
   }
   else {
-    // Take care of popping the file off the stack. This is a bit
-    // "hack-ish", but its done this way instead of loosening the
-    // protection of SoInput::popFile().
-    if (in->getCurFileName() == this->name.getValue()) {
+    if (!in->eof()) {
+      // Places the stream at the end of the current file on the
+      // stack. This is a bit "hack-ish", but its done this way
+      // instead of loosening the protection of SoInput::popFile().
       char dummy;
-      while (in->get(dummy));
+      while (!in->eof() && in->get(dummy));
+      assert(in->eof());
     }
-
+      
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
     SoReadError::post(in, "Unable to read subfile: ``%s''",
                       this->name.getValue().getString());
   }
+
+  // Make really sure the stack is popped and that operations like
+  // isBinary that may be called before the next read operation is
+  // encountered is working on the correct file.  This is kind of
+  // hack'ish, but is done because of the protection of
+  // SoInput::popFile
+  char dummy;
+  SbBool gotchar = in->get(dummy);
+  if (gotchar) in->putBack(dummy);
 
   return TRUE;
 }
