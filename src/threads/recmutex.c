@@ -164,7 +164,10 @@ cc_recmutex_init(void)
 {
   recmutex_field_lock = cc_recmutex_construct();
   recmutex_notify_lock = cc_recmutex_construct();
-  coin_atexit((coin_atexit_f*) recmutex_cleanup, 0);
+  /* use -100 as atexit priority to make this callback trigger after
+     normal cleanup functions which might still use a recmutex
+     instance */
+  coin_atexit((coin_atexit_f*) recmutex_cleanup, -100);
 }
 
 int 

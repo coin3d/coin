@@ -205,7 +205,9 @@ cc_mutex_init(void)
 
   if (cc_global_mutex == NULL) {
     cc_global_mutex = cc_mutex_construct();
-    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, 0);
+    /* use -1000 as atexit priority to make this callback trigger
+       after other cleanup functions. */
+    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, -1000);
   }
 }
 

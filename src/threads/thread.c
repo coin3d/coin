@@ -171,11 +171,9 @@ cc_thread_init(void)
   /* needed to quickly generate a thread-id for each thread */
   win32_threadid_idx = TlsAlloc();
   assert(win32_threadid_idx != TLS_OUT_OF_INDEXES); 
-#if 0 /* disabled 2002-08-30, pederb */
-  /* don't free this in atexit, since other cleanup functions might
-   * need win32_threadid_idx */
-  coin_atexit(win32_threadid_idx_cleanup, 0);
-#endif /* disabled */
+  /* use -100000 as cleanup priority so that all other cleanup
+     functions are called before this one */
+  coin_atexit(win32_threadid_idx_cleanup, -100000);
 #endif /* USE_WIN32THREAD */ 
   cc_recmutex_init();
 }
