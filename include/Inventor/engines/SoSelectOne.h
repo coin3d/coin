@@ -36,18 +36,23 @@ public:
   SoSFInt32 index;
   SoMField * input;
 
-  SoEngineOutput * output;
+  SoEngineOutput * output; // The SoSField-version of the SoMField-type.
 
-  SoSelectOne(SoType inputType);
-
-  static void initClass();
+  SoSelectOne(SoType inputtype);
+  static void initClass(void);
 
 private:
   SoSelectOne(void);
   ~SoSelectOne();
-  virtual void evaluate();
+  virtual void evaluate(void);
 
-  // Avoid a g++/egcs warning.
+  // SoSelectOne instances uses a dynamic set of inputs and outputs,
+  // as they are not common for all instances of the class (like for
+  // most of the other engines).
+  SoFieldData * dynamicinput;
+  SoEngineOutputData * dynamicoutput;
+
+  // Avoid a g++/egcs warning on the private default constructor.
   friend class dummy;
 };
 

@@ -22,7 +22,8 @@
   \brief The SoSelectOne class is used to select one value from a set of values.
   \ingroup engines
 
-  FIXME: doc
+  The output field will be the index'th value of the input multivalue
+  field.
 */
 
 #include <Inventor/engines/SoSelectOne.h>
@@ -31,21 +32,73 @@
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
-SO_ENGINE_SOURCE(SoSelectOne);
+/*** SO_ENGINE_SOURCE replacement start *************************************/
+
+// Can not use the standard SO_ENGINE_SOURCE macro, as SoSelectOne
+// engines doesn't keep a class-global set of inputs and outputs.
+
+PRIVATE_ENGINE_TYPESYSTEM_SOURCE(SoSelectOne);
+
+unsigned int SoSelectOne::classinstances = 0;
+/* The next four variables are not used, we keep them here just */
+/* because they are defined by SO_ENGINE_HEADER. */
+SoFieldData * SoSelectOne::inputdata = NULL;
+const SoFieldData ** SoSelectOne::parentinputdata = NULL;
+SoEngineOutputData * SoSelectOne::outputdata = NULL;
+const SoEngineOutputData ** SoSelectOne::parentoutputdata = NULL;
+
+const SoFieldData ** SoSelectOne::getInputDataPtr(void)
+{
+  // FIXME: not correct! We have the index field. 20000919 mortene.
+  assert(0 && "no static inputs");
+  return NULL;
+}
+
+const SoFieldData *
+SoSelectOne::getFieldData(void) const
+{
+  return this->dynamicinput;
+}
+
+const SoEngineOutputData **
+SoSelectOne::getOutputDataPtr(void)
+{
+  assert(0 && "no static outputs");
+  return NULL;
+}
+
+const SoEngineOutputData *
+SoSelectOne::getOutputData(void) const
+{
+  return this->dynamicoutput;
+}
+
+void *
+SoSelectOne::createInstance(void)
+{
+  return new SoSelectOne;
+}
+
+/*** SO_ENGINE_SOURCE replacement end ***************************************/
+
+
 
 /*!
-  Constructor. Sets the type of values to be selected.
+  Constructor. Sets the type of the input field. The input field must
+  be of type SoMField.
 */
-SoSelectOne::SoSelectOne(SoType inputType)
+SoSelectOne::SoSelectOne(SoType inputtype)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
 
-  SO_ENGINE_ADD_INPUT(index,(0));
-  this->input=(SoMField *)inputType.createInstance();
+  SO_ENGINE_ADD_INPUT(index, (-1));
 
-  //Instead of SO_ENGINE_ADD_OUTPUT()
-  this->output=new SoEngineOutput;
-#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
+  // Instead of SO_ENGINE_ADD_INPUT().
+  this->input = (SoMField *)inputtype.createInstance();
+  this->input->setNum(0);
+  this->dynamicinput = new SoFieldData;
+  this->dynamicinput->addField(this, "input", this->input);
+
   // FIXME: couldn't this be extracted by the use of
   // SoMField::getClassTypeId().getAllDerivedFrom() or something?
   // 19990523 mortene.
@@ -70,34 +123,32 @@ SoSelectOne::SoSelectOne(SoType inputType)
     SoMFUShort::getClassTypeId(),SoSFUShort::getClassTypeId(),
     SoMFVec2f::getClassTypeId(),SoSFVec2f::getClassTypeId(),
     SoMFVec3f::getClassTypeId(),SoSFVec3f::getClassTypeId(),
-    SoMFVec4f::getClassTypeId(),SoMFVec4f::getClassTypeId()
+    SoMFVec4f::getClassTypeId(),SoSFVec4f::getClassTypeId()
   };
 
-  SoType outputType;
+  // FIXME: man, this is horrendous. Swap with a dict. 20000919 mortene.
+  SoType outputtype;
   for (int i=0;i<42;i+=2) {
-    if (inputType==types[i]) {
-      outputType=types[i+1];
+    if (inputtype==types[i]) {
+      outputtype=types[i+1];
       break;
     }
   }
-  this->output->setType(outputType);
-#endif // obsoleted
-  this->output->setContainer(this);
 
-  // FIXME: ivestigate whether output should be added to outputdata somehow
-  // pederb, 20000309
+  // Instead of SO_ENGINE_ADD_OUTPUT().
+  this->output = new SoEngineOutput;
+  this->dynamicoutput = new SoEngineOutputData;
+  this->dynamicoutput->addOutput(this, "output", this->output, outputtype);
+  this->output->setContainer(this);
 }
 
 // overloaded from parent
 void
-SoSelectOne::initClass()
+SoSelectOne::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoSelectOne);
 }
 
-//
-// private members
-//
 // dummy default constructor
 SoSelectOne::SoSelectOne(void)
 {
@@ -107,17 +158,24 @@ SoSelectOne::SoSelectOne(void)
 
 SoSelectOne::~SoSelectOne()
 {
+  delete this->dynamicinput;
+  delete this->dynamicoutput;
+
   delete this->input;
   delete this->output;
 }
 
 // overloaded from parent
 void
-SoSelectOne::evaluate()
+SoSelectOne::evaluate(void)
 {
-  SbString valueString;
-  int idx=this->index.getValue();
+  int idx = this->index.getValue();
 
-  this->input->get1(idx,valueString);
-  SO_ENGINE_OUTPUT((*output),SoSField,set(valueString.getString()));
+  if (idx >= 0 && idx < this->input->getNum()) {
+    // FIXME: this is a very suboptimal way of doing the
+    // SoMFField->SoSFField conversion. 20000919 mortene.
+    SbString valuestring;
+    this->input->get1(idx, valuestring);
+    SO_ENGINE_OUTPUT((*output), SoSField, set(valuestring.getString()));
+  }
 }
