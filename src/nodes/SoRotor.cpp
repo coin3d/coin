@@ -78,6 +78,18 @@ get_current_time(void)
   return SbTime::getTimeOfDay();
 }
 
+class SoRotorP {
+public:
+  SbTime starttime;
+  SbVec3f startaxis;
+  float startangle;
+  SoOneShotSensor * oneshotsensor;
+  SoFieldSensor * onfieldsensor;
+  SoFieldSensor * rotfieldsensor;
+  SoFieldSensor * speedfieldsensor;
+};
+
+#define PRIVATE(p) ((p)->pimpl)
 
 SO_NODE_SOURCE(SoRotor);
 
@@ -86,26 +98,28 @@ SO_NODE_SOURCE(SoRotor);
 */
 SoRotor::SoRotor(void)
 {
+  PRIVATE(this) = new SoRotorP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoRotor);
 
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
-  this->oneshotsensor = new SoOneShotSensor(SoRotor::oneshotSensorCB, this);
-  this->oneshotsensor->setPriority(1);
-  this->onfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
-  this->onfieldsensor->setPriority(0);
-  this->onfieldsensor->attach(&this->on);
-  this->speedfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
-  this->speedfieldsensor->setPriority(0);
-  this->speedfieldsensor->attach(&this->speed);
-  this->rotfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
-  this->rotfieldsensor->attach(&this->rotation);
-  this->rotfieldsensor->setPriority(0);
+  PRIVATE(this)->oneshotsensor = new SoOneShotSensor(SoRotor::oneshotSensorCB, this);
+  PRIVATE(this)->oneshotsensor->setPriority(1);
+  PRIVATE(this)->onfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->onfieldsensor->setPriority(0);
+  PRIVATE(this)->onfieldsensor->attach(&this->on);
+  PRIVATE(this)->speedfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->speedfieldsensor->setPriority(0);
+  PRIVATE(this)->speedfieldsensor->attach(&this->speed);
+  PRIVATE(this)->rotfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->rotfieldsensor->attach(&this->rotation);
+  PRIVATE(this)->rotfieldsensor->setPriority(0);
 
-  this->starttime = SbTime::zero();
-  this->rotation.getValue(this->startaxis, this->startangle);
-  this->oneshotsensor->schedule();
+  PRIVATE(this)->starttime = SbTime::zero();
+  this->rotation.getValue(PRIVATE(this)->startaxis, PRIVATE(this)->startangle);
+  PRIVATE(this)->oneshotsensor->schedule();
 }
 
 
@@ -114,10 +128,11 @@ SoRotor::SoRotor(void)
 */
 SoRotor::~SoRotor()
 {
-  delete this->rotfieldsensor;
-  delete this->oneshotsensor;
-  delete this->onfieldsensor;
-  delete this->speedfieldsensor;
+  delete PRIVATE(this)->rotfieldsensor;
+  delete PRIVATE(this)->oneshotsensor;
+  delete PRIVATE(this)->onfieldsensor;
+  delete PRIVATE(this)->speedfieldsensor;
+  delete PRIVATE(this);
 }
 
 // Doc from parent.
@@ -133,25 +148,25 @@ SoRotor::fieldSensorCB(void * d, SoSensor * s)
 {
   SoRotor * thisp = (SoRotor *) d;
 
-  if (s == thisp->onfieldsensor) {
+  if (s == PRIVATE(thisp)->onfieldsensor) {
     if (thisp->on.getValue() == FALSE) {
-      if (thisp->oneshotsensor->isScheduled())
-        thisp->oneshotsensor->unschedule();
+      if (PRIVATE(thisp)->oneshotsensor->isScheduled())
+        PRIVATE(thisp)->oneshotsensor->unschedule();
     }
     else {
-      thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-      thisp->starttime = get_current_time();
-      if (!thisp->oneshotsensor->isScheduled())
-        thisp->oneshotsensor->schedule();
+      thisp->rotation.getValue(PRIVATE(thisp)->startaxis, PRIVATE(thisp)->startangle);
+      PRIVATE(thisp)->starttime = get_current_time();
+      if (!PRIVATE(thisp)->oneshotsensor->isScheduled())
+        PRIVATE(thisp)->oneshotsensor->schedule();
     }
   }
-  else if (s == thisp->speedfieldsensor) {
-    thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-    thisp->starttime = get_current_time();
+  else if (s == PRIVATE(thisp)->speedfieldsensor) {
+    thisp->rotation.getValue(PRIVATE(thisp)->startaxis, PRIVATE(thisp)->startangle);
+    PRIVATE(thisp)->starttime = get_current_time();
   }
-  else if (s == thisp->rotfieldsensor) {
-    thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-    thisp->starttime = get_current_time();
+  else if (s == PRIVATE(thisp)->rotfieldsensor) {
+    thisp->rotation.getValue(PRIVATE(thisp)->startaxis, PRIVATE(thisp)->startangle);
+    PRIVATE(thisp)->starttime = get_current_time();
   }
 }
 
@@ -164,7 +179,7 @@ SoRotor::oneshotSensorCB(void * d, SoSensor *)
   // triggers before onfieldsensor.
   if (thisp->on.getValue()) {
     thisp->setRotation();
-    thisp->oneshotsensor->schedule();
+    PRIVATE(thisp)->oneshotsensor->schedule();
   }
 }
 
@@ -172,24 +187,26 @@ SoRotor::oneshotSensorCB(void * d, SoSensor *)
 void
 SoRotor::setRotation(void)
 {
-  if (this->starttime == SbTime::zero()) {
+  if (PRIVATE(this)->starttime == SbTime::zero()) {
     // don't do anything first time we get here
-    this->starttime = get_current_time();
+    PRIVATE(this)->starttime = get_current_time();
     return;
   }
-  SbTime difftime = get_current_time() - this->starttime;
+  SbTime difftime = get_current_time() - PRIVATE(this)->starttime;
 
   float diffangle = (float)
     (difftime.getValue() *
      ((double)this->speed.getValue()) * M_PI * 2.0);
 
-  float angle = this->startangle + diffangle;
+  float angle = PRIVATE(this)->startangle + diffangle;
 
   if (angle > M_PI * 2.0f) {
     angle = (float) fmod((double)angle, M_PI * 2.0);
   }
-
-  this->rotfieldsensor->detach();
-  this->rotation.setValue(SbRotation(this->startaxis, angle));
-  this->rotfieldsensor->attach(&this->rotation);
+  
+  PRIVATE(this)->rotfieldsensor->detach();
+  this->rotation.setValue(SbRotation(PRIVATE(this)->startaxis, angle));
+  PRIVATE(this)->rotfieldsensor->attach(&this->rotation);
 }
+
+#undef PRIVATE

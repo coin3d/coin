@@ -32,8 +32,7 @@
 #include <Inventor/SbTime.h>
 
 class SoSensor;
-class SoOneShotSensor;
-class SoFieldSensor;
+class SoRotorP;
 
 class COIN_DLL_API SoRotor : public SoRotation {
   typedef SoRotation inherited;
@@ -51,16 +50,9 @@ protected:
   virtual ~SoRotor();
 
 private:
-  SbTime starttime;
-  SbVec3f startaxis;
-  float startangle;
-  SoOneShotSensor * oneshotsensor;
-  SoFieldSensor * onfieldsensor;
-  SoFieldSensor * rotfieldsensor;
-  SoFieldSensor * speedfieldsensor;
+  SoRotorP * pimpl;
   static void oneshotSensorCB(void * d, SoSensor * s);
   static void fieldSensorCB(void * d, SoSensor * s);
-
   void setRotation(void);
 };
 
