@@ -231,9 +231,10 @@ CoinQtWidgetP::renderCB(void * closure, SoSceneManager * manager)
 
 #define PRIVATE(obj) ((obj)->internals)
 
-CoinQtWidget::CoinQtWidget(QWidget * parent = NULL, const char * name = NULL,
-                           const QGLWidget * shareWidget = NULL, WFlags f = 0)
-: inherited(parent, name, shareWidget, f), internals(NULL)
+CoinQtWidget::CoinQtWidget(QWidget * parent, const char * name,
+                           const QGLWidget * shareWidget, WFlags f)
+: inherited(parent, name, shareWidget, f),
+  internals(NULL)
 {
   PRIVATE(this) = new CoinQtWidgetP(this);
   CoinQtManager * manager = CoinQtManager::getManager();
@@ -242,9 +243,9 @@ CoinQtWidget::CoinQtWidget(QWidget * parent = NULL, const char * name = NULL,
   this->setFocusPolicy(QWidget::StrongFocus);
 }
 
-CoinQtWidget::CoinQtWidget(const QGLFormat & format, QWidget * parent = NULL,
-                           const char * name = NULL,
-                           const QGLWidget * shareWidget = NULL, WFlags f = 0)
+CoinQtWidget::CoinQtWidget(const QGLFormat & format, QWidget * parent,
+                           const char * name,
+                           const QGLWidget * shareWidget, WFlags f)
 : inherited(format, parent, name, shareWidget, f), internals(NULL)
 {
   PRIVATE(this) = new CoinQtWidgetP(this);
