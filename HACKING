@@ -444,6 +444,19 @@ prepare the release.
 Source release tarballs are created with "make dist".  Binary releases are
 created from the source release tarball.
 
+
+Correcting Erroneous Log Messages
+=================================
+
+Sometimes commits end up with incorrect log messages.  It can be fixed with
+this command:
+
+  $ cvs admin -m<rev>:<new log message> <file>
+
+Do this instead of reversing and reapplying or other roundabout and
+confusing techniques...
+
+
 ==============================================================================
 
 Coin Code Standards
