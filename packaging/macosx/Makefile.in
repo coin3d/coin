@@ -36,7 +36,7 @@ BUILDOPTIONS = --prefix=$(sdk_prefix) --with-framework-prefix=$(framework_prefix
 all: $(COIN).dmg $(COIN)-no_inst.dmg coin.info
 
 coin.info: ../$(COINDIST) coin.info.template
-	@md5=`md5sum ../$(COINDIST) | awk '{print $$1}'`; \
+	@md5=`md5 ../$(COINDIST)`; \
 	cat coin.info.template | sed -e "s/@md5sum@/$$md5/" > coin.info
 
 $(COIN)-no_inst.dmg: $(COINLIB)
