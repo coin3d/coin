@@ -56,7 +56,7 @@ void wglglue_context_destruct(void * ctx) { assert(FALSE); }
 #else /* HAVE_WGL */
 
 struct wglglue_contextdata;
-static SbBool (* wglglue_context_create)(struct wglglue_contextdata * context) = NULL;
+static SbBool (* wglglue_context_create)(struct wglglue_contextdata * context, SbBool warnonerrors) = NULL;
 
 /* ********************************************************************** */
 
@@ -427,7 +427,7 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
   pixelformat = ChoosePixelFormat(context->memorydc, &pfd);
   if (pixelformat == 0) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+    cc_debugerror_postwarning("wglglue_context_create_context",
                               "ChoosePixelFormat() failed with "
                               "error code %d.", dwError);
     return FALSE;
@@ -436,7 +436,7 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
   /* make that the pixel format of the device context */
   if (!SetPixelFormat(context->memorydc, pixelformat, &pfd)) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+    cc_debugerror_postwarning("wglglue_context_create_context",
                               "SetPixelFormat() failed with error code %d.",
                               dwError);
     return FALSE;
@@ -445,7 +445,7 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
   context->wglcontext = wglCreateContext(context->memorydc);
   if (context->wglcontext == NULL) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+    cc_debugerror_postwarning("wglglue_context_create_context",
                               "wglCreateContext() failed with error code %d.",
                               dwError);
     return FALSE;
@@ -454,7 +454,7 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
   context->wglcontext = wglCreateContext(context->memorydc);
   if (context->wglcontext == NULL) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+    cc_debugerror_postwarning("wglglue_context_create_context",
                               "wglCreateContext() failed with error code %d.",
                               dwError);
     return FALSE;
@@ -464,9 +464,14 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
 }
 
 static SbBool
-wglglue_context_create_software(struct wglglue_contextdata * ctx)
+wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnonerrors)
 {
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+ 
+  if (coin_glglue_debug()) {
+    cc_debugerror_postwarning("wglglue_context_create_software",
+                              "creating software buffer");
+  }
 
   context->memorydc = CreateCompatibleDC(NULL);
   if (context->memorydc == NULL) {
@@ -522,14 +527,24 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx)
   if (!(wglglue_context_create_context(context, PFD_DRAW_TO_BITMAP))) {
     return FALSE;
   }
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postwarning("wglglue_context_create_softwarae",
+                              "success creating software buffer");
+  }
   
   return TRUE;
 }
 
 static SbBool 
-wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
+wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnonerrors)
 {
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postwarning("wglglue_context_create_pbuffere",
+                              "creating pbuffer");
+  }
 
   if ((context->memorydc = wglGetCurrentDC())) { 
     context->wglcontext = wglGetCurrentContext();
@@ -692,6 +707,11 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
     }
   }
 
+  if (coin_glglue_debug()) {
+    cc_debugerror_postwarning("wglglue_context_create_pbuffere",
+                              "success creating pbuffer");
+  }
+
   return TRUE;
 }
 
@@ -712,6 +732,7 @@ void *
 wglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
   struct wglglue_contextdata * swctx, * pbctx;
+  SbBool ispbuffer; 
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("wglglue_context_create_offscreen",
@@ -722,17 +743,32 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
   assert(swctx);
 
   if (wglglue_context_create != NULL) {
-    if (wglglue_context_create(swctx)) { return swctx; }
-
+    
+    ispbuffer = wglglue_context_create == wglglue_context_create_pbuffer;
+    
+    /* don't warn if we fail to open a pbuffer context. we will try software  */
+    if (wglglue_context_create(swctx, !ispbuffer)) { return swctx; }
     wglglue_contextdata_cleanup(swctx);
+    
+    /* fall back to a software context */ 
+    if (ispbuffer) {
+      if (coin_glglue_debug()) {
+        cc_debugerror_postinfo("wglglue_context_create_offscreen",
+                               "pbuffer failed. Trying software ");
+      }
+      swctx = wglglue_contextdata_init(width, height);
+      assert(swctx);
+      if (wglglue_context_create_software(swctx, TRUE)) { return swctx; }
+      wglglue_contextdata_cleanup(swctx);
+    }
     return NULL;
   }
 
   /* As there could possibly be no valid wgl context at this moment,
      we have to first make a context and set it current to be able
      to query pbuffer extension availability. */
-
-  if (!wglglue_context_create_software(swctx)) {
+  
+  if (!wglglue_context_create_software(swctx, TRUE)) {
     wglglue_contextdata_cleanup(swctx);
     return NULL;
   }
@@ -753,7 +789,7 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
   assert(pbctx);
 
   /* attempt to create a pbuffer */
-  if (!wglglue_context_create_pbuffer(pbctx)) {
+  if (!wglglue_context_create_pbuffer(pbctx, FALSE)) {
     wglglue_contextdata_cleanup(pbctx);
     return swctx;
   }
