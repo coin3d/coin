@@ -193,32 +193,35 @@ public:
 
 // *************************************************************************
 
+// Private data class.
+class SoDBP {
+public:
+  static void clean(void);
+  static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
 
-// OBSOLETED: this code was only active for GCC 2.7.x, and I don't
-// think we support that old compiler version anyhow. Do look into if
-// this is what the old SGI MIPSpro CC compiler for IRIX6.2 needs to
-// stop spitting out all those linker warnings, though. 20000208 mortene.
-#if 0 // obsoleted
-// #if defined(NEED_TEMPLATE_DEFINITION)
-template class SbList<SoDB_HeaderInfo *>;
-template class SbList<SbName>;
-template class SbList<SoField *>;
-// [...]
-#endif // obsoleted
+  static SbList<SoDB_HeaderInfo *> * headerlist;
+  static SoSensorManager * sensormanager;
+  static SoTimerSensor * globaltimersensor;
+  static SbTime * realtimeinterval;
+  static SbDict * converters;
+  static int notificationcounter;
+  static SbBool isinitialized;
+};
 
+SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
+SoSensorManager * SoDBP::sensormanager = NULL;
+SbTime * SoDBP::realtimeinterval = NULL;
+SoTimerSensor * SoDBP::globaltimersensor = NULL;
+SbDict * SoDBP::converters = NULL;
+SbBool SoDBP::isinitialized = FALSE;
+int SoDBP::notificationcounter = 0;
 
-SbList<SoDB_HeaderInfo *> * SoDB::headerlist = NULL;
-SoSensorManager * SoDB::sensormanager = NULL;
-SbTime * SoDB::realtimeinterval = NULL;
-SoTimerSensor * SoDB::globaltimersensor = NULL;
-SbDict * SoDB::converters = NULL;
-SbBool SoDB::isinitialized = FALSE;
-int SoDB::notificationcounter = 0;
+// *************************************************************************
 
 #ifdef COIN_THREADSAFE
 #define SODB_NOTIFICATIONCOUNTER *(((int*) sodb_notificationcounter_storage->get()))
 #else // COIN_THREADSAFE
-#define SODB_NOTIFICATIONCOUNTER SoDB::notificationcounter
+#define SODB_NOTIFICATIONCOUNTER SoDBP::notificationcounter
 #endif // ! COIN_THREADSAFE
 
 #ifdef COIN_THREADSAFE
@@ -333,10 +336,10 @@ SoDB::init(void)
 #endif // HAVE_THREADS
 
   // Allocate our static members.
-  SoDB::headerlist = new SbList<SoDB_HeaderInfo *>;
-  SoDB::sensormanager = new SoSensorManager;
-  SoDB::realtimeinterval = new SbTime;
-  SoDB::converters = new SbDict;
+  SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
+  SoDBP::sensormanager = new SoSensorManager;
+  SoDBP::realtimeinterval = new SbTime;
+  SoDBP::converters = new SbDict;
 
   // NB! There are dependencies in the order of initialization of
   // components below.
@@ -420,28 +423,28 @@ SoDB::init(void)
   // and read it anyway if we detect it's a close match. 20020920 mortene.
 
 
-  SoDB::realtimeinterval->setValue(1.0/12.0);
+  SoDBP::realtimeinterval->setValue(1.0/12.0);
 
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
 
-  SoDB::globaltimersensor = new SoTimerSensor;
-  SoDB::globaltimersensor->setFunction(SoDB::updateRealTimeFieldCB);
-  SoDB::globaltimersensor->setInterval(*SoDB::realtimeinterval);
+  SoDBP::globaltimersensor = new SoTimerSensor;
+  SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
+  SoDBP::globaltimersensor->setInterval(*SoDBP::realtimeinterval);
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or does this muck
   // up the code too much? 19990225 mortene.
-  SoDB::globaltimersensor->schedule();
+  SoDBP::globaltimersensor->schedule();
 
   // Force correct time on first getValue() from "realTime" field.
-  SoDB::updateRealTimeFieldCB(NULL, NULL);
+  SoDBP::updateRealTimeFieldCB(NULL, NULL);
 
-  SoDB::isinitialized = TRUE;
+  SoDBP::isinitialized = TRUE;
 
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes.
-  coin_atexit((coin_atexit_f *)SoDB::clean);
+  coin_atexit((coin_atexit_f *)SoDBP::clean);
 #endif // COIN_DEBUG
 }
 
@@ -451,7 +454,7 @@ SoDB::init(void)
 // available again), but it is useful for debugging purposes -- it
 // makes it easier to find memory leaks.
 void
-SoDB::clean(void)
+SoDBP::clean(void)
 {
 #if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
@@ -460,19 +463,19 @@ SoDB::clean(void)
   //
   // (This has already proven itself to be a source of problems with
   // the SoQt library, which wets its pants on the
-  // SoDB::globaltimersensor destruction under MSWindows if we don't
+  // SoDBP::globaltimersensor destruction under MSWindows if we don't
   // first nullify the callback function pointer.)
-  SoDB::sensormanager->setChangedCallback(NULL, NULL);
+  SoDBP::sensormanager->setChangedCallback(NULL, NULL);
 
-  delete SoDB::globaltimersensor;
+  delete SoDBP::globaltimersensor;
 
-  delete SoDB::converters;
-  delete SoDB::realtimeinterval;
-  delete SoDB::sensormanager;
+  delete SoDBP::converters;
+  delete SoDBP::realtimeinterval;
+  delete SoDBP::sensormanager;
 
-  for (int i = 0; i < SoDB::headerlist->getLength(); i++)
-    delete (*SoDB::headerlist)[i];
-  delete SoDB::headerlist;
+  for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
+    delete (*SoDBP::headerlist)[i];
+  delete SoDBP::headerlist;
   
 #ifdef COIN_THREADSAFE
   // we can't delete this here since it might be needed by some atexit
@@ -741,7 +744,7 @@ SoDB::registerHeader(const SbString & headerstring,
   SoDB_HeaderInfo * newheader =
     new SoDB_HeaderInfo(headerstring, isbinary, ivversion,
                         precallback, postcallback, userdata);
-  SoDB::headerlist->append(newheader);
+  SoDBP::headerlist->append(newheader);
   return TRUE;
 }
 
@@ -777,7 +780,7 @@ SoDB::getHeaderData(const SbString & headerstring, SbBool & isbinary,
 
   SbBool hit = FALSE;
   for (int i=0; (i < SoDB::getNumHeaders()) && !hit; i++) {
-    SoDB_HeaderInfo * hi = (*SoDB::headerlist)[i];
+    SoDB_HeaderInfo * hi = (*SoDBP::headerlist)[i];
     SbString & s = hi->headerstring;
     unsigned int reglen = s.getLength();
     assert(reglen > 0);
@@ -813,7 +816,7 @@ SoDB::getHeaderData(const SbString & headerstring, SbBool & isbinary,
 int
 SoDB::getNumHeaders(void)
 {
-  return SoDB::headerlist->getLength();
+  return SoDBP::headerlist->getLength();
 }
 
 /*!
@@ -825,13 +828,13 @@ SbString
 SoDB::getHeaderString(const int i)
 {
 #if COIN_DEBUG
-  if ((i < 0) || (i >= SoDB::headerlist->getLength())) {
+  if ((i < 0) || (i >= SoDBP::headerlist->getLength())) {
     SoDebugError::post("SoDB::getHeaderString", "Index %d out of range.", i);
     return SbString("");
   }
 #endif // COIN_DEBUG
 
-  return (*SoDB::headerlist)[i]->headerstring;
+  return (*SoDBP::headerlist)[i]->headerstring;
 }
 
 /*!
@@ -926,7 +929,7 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
 // This is the timer sensor callback which updates the realTime global
 // field.
 void
-SoDB::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
+SoDBP::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 {
   SoField * f = SoDB::getGlobalField("realTime");
   if (f && (f->getTypeId() == SoSFTime::getClassTypeId())) {
@@ -951,14 +954,14 @@ SoDB::setRealTimeInterval(const SbTime & interval)
   }
 #endif // COIN_DEBUG
 
-  SbBool isscheduled = SoDB::globaltimersensor->isScheduled();
-  if (isscheduled) SoDB::globaltimersensor->unschedule();
+  SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
+  if (isscheduled) SoDBP::globaltimersensor->unschedule();
   if (interval != SbTime(0.0)) {
-    SoDB::globaltimersensor->setInterval(interval);
-    if (isscheduled) SoDB::globaltimersensor->schedule();
+    SoDBP::globaltimersensor->setInterval(interval);
+    if (isscheduled) SoDBP::globaltimersensor->schedule();
   }
 
-  (*SoDB::realtimeinterval) = interval;
+  (*SoDBP::realtimeinterval) = interval;
 }
 
 /*!
@@ -970,7 +973,7 @@ SoDB::setRealTimeInterval(const SbTime & interval)
 const SbTime &
 SoDB::getRealTimeInterval(void)
 {
-  return *SoDB::realtimeinterval;
+  return *SoDBP::realtimeinterval;
 }
 
 /*!
@@ -1004,7 +1007,7 @@ SoDB::getDelaySensorTimeout(void)
 SoSensorManager *
 SoDB::getSensorManager(void)
 {
-  return SoDB::sensormanager;
+  return SoDBP::sensormanager;
 }
 
 /*!
@@ -1085,7 +1088,7 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
   // casting from int16_t to void*.
   uint32_t convtype = (uint32_t)converter.getKey();
 
-  SbBool nonexist = SoDB::converters->enter((unsigned long)linkid,
+  SbBool nonexist = SoDBP::converters->enter((unsigned long)linkid,
                                             (void *)convtype);
   if (!nonexist) {
 #if COIN_DEBUG
@@ -1115,7 +1118,7 @@ SoDB::getConverter(SoType from, SoType to)
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
   // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
   void * key;
-  if (!SoDB::converters->find(val, key)) return SoType::badType();
+  if (!SoDBP::converters->find(val, key)) return SoType::badType();
   // the extra intermediate "long" cast is needed by 64-bits IRIX CC
   return SoType::fromKey((uint16_t)((uint32_t)((long)key)));
 }
@@ -1128,7 +1131,7 @@ SoDB::getConverter(SoType from, SoType to)
 SbBool
 SoDB::isInitialized(void)
 {
-  return SoDB::isinitialized;
+  return SoDBP::isinitialized;
 }
 
 /*!
@@ -1183,9 +1186,9 @@ SoDB::enableRealTimeSensor(SbBool on)
 {
   assert(SoDB::isInitialized());
 
-  SbBool isscheduled = SoDB::globaltimersensor->isScheduled();
-  if (isscheduled && !on) SoDB::globaltimersensor->unschedule();
-  else if (!isscheduled && on) SoDB::globaltimersensor->schedule();
+  SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
+  if (isscheduled && !on) SoDBP::globaltimersensor->unschedule();
+  else if (!isscheduled && on) SoDBP::globaltimersensor->schedule();
 #if COIN_DEBUG
   else SoDebugError::postWarning("SoDB::enableRealTimeSensor",
                                  "realtime sensor already %s",

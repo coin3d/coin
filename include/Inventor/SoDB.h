@@ -33,16 +33,10 @@ class SbName;
 class SbTime;
 class SoBase;
 class SoField;
-class SoFieldConverter;
 class SoInput;
 class SoNode;
 class SoPath;
-class SoSensor;
 class SoSeparator;
-class SoTimerSensor;
-class SoVRMLGroup;
-
-class SoDB_HeaderInfo;
 
 typedef void SoDBHeaderCB(void * data, SoInput * in);
 
@@ -94,18 +88,6 @@ public:
   static void startNotify(void);
   static SbBool isNotifying(void);
   static void endNotify(void);
-
-private:
-  static void clean(void);
-  static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
-
-  static SbList<SoDB_HeaderInfo *> * headerlist;
-  static SoSensorManager * sensormanager;
-  static SoTimerSensor * globaltimersensor;
-  static SbTime * realtimeinterval;
-  static SbDict * converters;
-  static int notificationcounter;
-  static SbBool isinitialized;
 };
 
 #endif // !COIN_SODB_H
