@@ -33,7 +33,7 @@
   fields.
 
   The engine has sixteen input fields; eight scalar inputs (\e a, \e
-  b, \e c, \e d, \e, f \e g, and \e h), and eight vector inputs (\e A,
+  b, \e c, \e d, \e e, \e f \e g, and \e h), and eight vector inputs (\e A,
   \e B, \e C, \e D, \e E, \e F, \e G, and \e H).
 
   There are eight output fields; four scalar outputs (\e oa, \e ob, \e
@@ -137,8 +137,8 @@
   example easier to read)
   
   In addition to the standard comparators (\e <, \e >, \e <=, \e >=,
-  \e ==, \e !=), you can also use \e && (AND) and \e || (OR) to
-  combine expression, and the unary \e ! (NOT) operator.
+  \e ==, \e !=), you can also use && (AND) and || (OR) to
+  combine expression, and the unary ! (NOT) operator.
 
   One final thing worth mentioning is the temporary variables. There
   exists sixteen temporary variables that can be used in expressions.
