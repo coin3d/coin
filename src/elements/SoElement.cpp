@@ -605,17 +605,16 @@ SoElement::getDepth() const
 }
 
 /*!
+  \fn void SoElement::capture(SoState * const state);
+
   This function does whatever is necessary in the state for caching
   purposes.  If should be called by subclasses of SoElement whenever
   any value in the element is accessed.
 */
-inline void
-SoElement::capture(SoState * const state) const
-{
-  if (state->isCacheOpen()) { this->captureThis(state); }
-}
 
 /*!
+  \fn void const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex);
+
   This method returns a reference to the top element of the class with
   stack index \a stackIndex. The returned element is non-mutable.
 
@@ -627,14 +626,6 @@ SoElement::capture(SoState * const state) const
 
   \sa SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
 */
-const SoElement *
-SoElement::getConstElement(SoState * const state,
-                           const int stackIndex)
-{
-  const SoElement * element = state->getConstElement(stackIndex);
-  element->capture(state);
-  return element;
-}
 
 /*!
   Adds the element to the cache.

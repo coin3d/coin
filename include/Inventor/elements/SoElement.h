@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -68,10 +68,10 @@ protected:
   static int classStackIndex;
 
   static SoElement * getElement(SoState * const state, const int stackIndex);
-  static const SoElement * getConstElement(SoState * const state,
-                                           const int stackIndex);
-
+  static const SoElement * getConstElement(SoState * const state, const int stackIndex);
+  
   void capture(SoState * const state) const;
+
   virtual void captureThis(SoState * state) const;
 
   void setTypeId(const SoType typeId);
@@ -105,6 +105,21 @@ SoElement::getElement(SoState * const state,
                       const int stackIndex)
 {
   return state->getElement(stackIndex);
+}
+
+inline void 
+SoElement::capture(SoState * const state) const
+{
+  if (state->isCacheOpen()) this->captureThis(state);
+}
+
+inline const SoElement *
+SoElement::getConstElement(SoState * const state,
+                           const int stackIndex)
+{
+  const SoElement * element = state->getConstElement(stackIndex);
+  element->capture(state);
+  return element;
 }
 
 #endif // !COIN_SOELEMENT_H
