@@ -501,7 +501,7 @@ SoGLBigImageP::copySubImage(const int idx,
                             const int div,
                             const int level)
 {  
-  if (div == 1) {
+  if ((div == 1) || (this->cache && level < this->numcachelevels && this->cache[level])) {
     SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
     
     // FIXME: investigate if it's possible to set the pixel transfer
@@ -509,64 +509,52 @@ SoGLBigImageP::copySubImage(const int idx,
     // image. This is probably fast enough though.
     
     int origin[2];
-    origin[0] = pos[0] * this->imagesize[0];
-    origin[1] = pos[1] * this->imagesize[1];
-    
     int fullsize[2];
-    fullsize[0] = fsize[0];
-    fullsize[1] = fsize[1];
+    int w, h;
+    const unsigned char * datasrc;
+
+    if (div == 1) { // use original image
+      origin[0] = pos[0] * this->imagesize[0];
+      origin[1] = pos[1] * this->imagesize[1];
     
-    const int w = this->imagesize[0];
-    const int h = this->imagesize[1];
-    
-    for (int y = 0; y < h; y++) {
-      int tmpyadd = fullsize[0] * (origin[1]+y);
-      for (int x = 0; x < w; x++) {
-        if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
+      fullsize[0] = fsize[0];
+      fullsize[1] = fsize[1];
+      w = this->imagesize[0];
+      h = this->imagesize[1];
+      datasrc = src;
+    }
+    else { // use cache image
+      origin[0] = pos[0] * (this->imagesize[0] >> level);
+      origin[1] = pos[1] * (this->imagesize[1] >> level);    
+      fullsize[0] = this->cachesize[level][0];
+      fullsize[1] = this->cachesize[level][1];
+      w = this->imagesize[0] >> level;
+      h = this->imagesize[1] >> level;
+      datasrc = this->cache[level];
+    }
+      
+    // check for fast loop (common case)
+    if ((origin[0] + w) < fullsize[0] && (origin[1] + h) < fullsize[1]) {
+      for (int y = 0; y < h; y++) {      
+        int tmpyadd = fullsize[0] * (origin[1]+y);
+        for (int x = 0; x < w; x++) {
           const unsigned char * srcptr =
-            src + nc * (tmpyadd + origin[0]+x);
+            datasrc + nc * (tmpyadd + origin[0]+x);
           for (int c = 0; c < nc; c++) {
             *dst++ = srcptr[c];
           }
-        }
-        else {
-          for (int c = 0; c < nc; c++) *dst++ = 0xff;
-        }
+        } 
       }
     }
-  }
-  else if (this->cache && level < this->numcachelevels && this->cache[level]) {
-    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
-    
-    // FIXME: investigate if it's possible to set the pixel transfer
-    // mode so that we don't have to copy the data into a temporary
-    // image. This is probably fast enough though.
-    
-    int origin[2];
-    origin[0] = pos[0] * (this->imagesize[0] >> level);
-    origin[1] = pos[1] * (this->imagesize[1] >> level);
-    
-    int fullsize[2];
-    fullsize[0] = this->cachesize[level][0];
-    fullsize[1] = this->cachesize[level][1];
-
-    const int w = this->imagesize[0] >> level;
-    const int h = this->imagesize[1] >> level;
-
-    unsigned char * cachesrc = this->cache[level];
-    
-    for (int y = 0; y < h; y++) {
-      int tmpyadd = fullsize[0] * (origin[1]+y);
-      for (int x = 0; x < w; x++) {
-        if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
+    else { // slower loop (x and y values are clamped)
+      for (int y = 0; y < h; y++) {
+        int tmpyadd = fullsize[0] * SbClamp(origin[1]+y, 0, fullsize[1]-1);
+        for (int x = 0; x < w; x++) {
           const unsigned char * srcptr =
-            cachesrc + nc * (tmpyadd + origin[0]+x);
+            datasrc + nc * (tmpyadd + SbClamp(origin[0]+x, 0, fullsize[0]-1));
           for (int c = 0; c < nc; c++) {
             *dst++ = srcptr[c];
           }
-        }
-        else {
-          for (int c = 0; c < nc; c++) *dst++ = 0x00;
         }
       }
     }
