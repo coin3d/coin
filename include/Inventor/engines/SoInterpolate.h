@@ -126,6 +126,7 @@ _class_::initClass(void) \
 
 #ifndef COIN_INTERNAL
 // Include these header files for better Open Inventor compatibility.
+#include <Inventor/engines/SoInterpolateFloat.h>
 #include <Inventor/engines/SoInterpolateVec2f.h>
 #include <Inventor/engines/SoInterpolateVec3f.h>
 #include <Inventor/engines/SoInterpolateVec4f.h>
