@@ -1,7 +1,8 @@
-Basic Installation of Coin Beta version
-=======================================
+Basic Installation of Coin v2.0.0
+=================================
 
-   These are generic installation instructions.
+   These are generic installation instructions.  See INSTALL for
+package-specific installation instructions.
 
    The `configure' shell script attempts to guess correct values for
 various system-dependent variables used during compilation.  It uses
