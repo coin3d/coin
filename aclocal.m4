@@ -890,36 +890,19 @@ dnl * [mortene:20000122] make sure this work on MSWin (with Cygwin)
 dnl * [larsa:20000220] find a less strict AC_PREREQ setting
 dnl
 
-define([sim4_strcompact],[patsubst(patsubst(translit([$1],[
-	], [  ]), [\b +\b], [ ]), [^ \| $], [])])dnl
-
 AC_DEFUN(SIM_CHECK_SIMAGE,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.14.1])
 
-divert(-1)
-# set up attribute variable default values
-define([sim4_simage_with],yes)
-define([sim4_simage_searchprefix],no)
-
-# set up all the valid attributes to zero-expanding m4 defines
-pushdef([default],[define([sim4_simage_with],yes)])
-pushdef([nodefault],[define([sim4_simage_with],no)])
-pushdef([searchprefix],[define([sim4_simage_searchprefix],yes)])
-pushdef([nosearchprefix],[define([sim4_simage_searchprefix],no)])
-
-# ensure that ATTRIBUTE-LIST expands to the empty string (when compacted) -
-# otherwise there's a problem with SIM_CHECK_SIMAGE's given arguments
-ifelse(sim4_strcompact($3), , ,
-  [errprint([SIM_CHECK_SIMAGE ATTRIBUTE-LIST parse error: ]sim4_strcompact($3)[
-])])
-
-# clean up the attribute definitions
-popdef([default])
-popdef([nodefault])
-popdef([searchprefix])
-popdef([nosearchprefix])
-divert
+SIM_PARSE_MODIFIER_LIST([$3],[
+  sim4_simage_with          yes
+  sim4_simage_searchprefix  no
+],[
+  default         sim4_simage_with          yes
+  nodefault       sim4_simage_with          no
+  searchprefix    sim4_simage_searchprefix  yes
+  nosearchprefix  sim4_simage_searchprefix  no
+])
 
 AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], changequote({,}){use simage for loading texture files [default=}sim4_simage_with{]}changequote([,])), , [with_simage=sim4_simage_with])
 
@@ -980,6 +963,153 @@ else
   ifelse($2, , :, $2)
 fi
 ])
+
+
+dnl ************************************************************************
+dnl Usage:
+dnl   SIM_AC_PARSE_MODIFIER_LIST( MODIFIER-LIST-STRING, MODIFIER-VARIABLES, 
+dnl       MODIFIER-LIST, opt ACTION-ON-SUCCESS, opt ACTION-ON-FAILURE )
+dnl
+dnl Description:
+dnl   This macro makes it easy to let macros have a MODIFIER-LIST argument
+dnl   which can add some flexibility to the macro by letting the developer
+dnl   configure some of the macro beaviour from the invocation in the
+dnl   configure.in file.
+dnl
+dnl   Everything is handled on the m4-level, which means things are handled
+dnl   at autoconf-run-time, not configure-run-time.  This lets you discover
+dnl   problems at an earlier stage, which is nice.  It also lets you insert
+dnl   the modifier values into e.g. help strings, something you can't do
+dnl   on the shell level.
+dnl
+dnl   MODIFIER-LIST-STRING is the string of modifiers used in the
+dnl   macro invocation.
+dnl
+dnl   MODIFIER-VARIABLES is a list of variables and their default values.
+dnl   The variables and values are recognized as words matching [[^\s-]*]
+dnl   separated by whitespace, and they must of course come in pairs.
+dnl
+dnl   MODIFIER-LIST is a description-list of all the valid modifiers that
+dnl   can be used in the MODIFIER-LIST-STRING argument.  They must come in
+dnl   tuples of three and three words (same word-definition as above) where
+dnl   the first word is the modifier, the second word is the variable
+dnl   that is to be set by the modifier, and last the value the modifier
+dnl   variable should be set to.
+dnl
+dnl   ACTION-ON-SUCCESS is the expansion of the macro if all the modifiers
+dnl   in MODIFIER-LIST-STRING pass through without problem.  The default
+dnl   expansion is nothing.
+dnl
+dnl   ACTION-ON-FAILURE is the expansion of the macro if some of the
+dnl   modifiers in MODIFIER-LIST-STRING doesn't pass through.  The default
+dnl   expansion is nothing, but warnings are printed to stderr on the
+dnl   modifiers causing the problem.
+dnl
+dnl Sample Usage:
+dnl   [to come later]
+dnl
+dnl Authors:
+dnl   Lars J. Aas <larsa@sim.no> (idea, design, coding)
+dnl   Akim Demaille <akim@epita.fr> (hints, tips, corrections)
+dnl
+dnl TODO:
+dnl * [larsa:20000222] more warnings on potential problems
+dnl
+
+define([m4_noquote],
+[changequote(,)$1changequote([,])])
+
+define([LF],
+[
+])
+
+define([TAB],
+[	])
+
+AC_DEFUN([SIM_AC_PML_WARNING],
+[errprint([SIM_PARSE_MODIFIER_LIST: $1
+  (file "]__file__[", line ]__line__[)
+])])
+
+dnl * this is an unquoted string compaction - words in string must expand to
+dnl * nothing before compaction starts...
+AC_DEFUN([SIM_AC_PML_STRING_COMPACT],
+[patsubst(patsubst([$1],m4_noquote([[TAB LF]+]),[ ]),[^ \| $],[])])
+
+AC_DEFUN([SIM_AC_PML_STRING_WORDCOUNT_COMPACT],
+[m4_eval((1+len(patsubst([[$1]],[[^ ]+],[_])))/2)])
+
+AC_DEFUN([SIM_AC_PML_STRING_WORDCOUNT],
+[SIM_AC_PML_STRING_WORDCOUNT_COMPACT([SIM_AC_PML_STRING_COMPACT([$1])])])
+
+AC_DEFUN([SIM_AC_PML_DEFINE_VARIABLE],
+[define([$1],[$2])])
+
+AC_DEFUN([SIM_AC_PML_DEFINE_VARIABLES],
+[ifelse(SIM_AC_PML_STRING_WORDCOUNT_COMPACT([$1]), 2,
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\)],
+                  [SIM_AC_PML_DEFINE_VARIABLE([\1],[\2])])],
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\) \(.*\)],
+                  [SIM_AC_PML_DEFINE_VARIABLE([\1],[\2])SIM_AC_PML_DEFINE_VARIABLES([\3])])])])
+
+AC_DEFUN([SIM_AC_PML_PUSHDEF_MODIFIER],
+[ifelse(defn([$2]), [],
+        [SIM_AC_PML_ERROR([invalid variable (arg 3): "$2"])],
+        [pushdef([$1],[define([$2],[$3])])])])
+
+AC_DEFUN([SIM_AC_PML_PUSHDEF_MODIFIERS],
+[ifelse(SIM_AC_PML_STRING_WORDCOUNT_COMPACT([$1]), 3,
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\) \([^ ]+\)],
+                  [SIM_AC_PML_PUSHDEF_MODIFIER([\1],[\2],[\3])])],
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\) \([^ ]+\) \(.*\)],
+                  [SIM_AC_PML_PUSHDEF_MODIFIER([\1],[\2],[\3])SIM_AC_PML_PUSHDEF_MODIFIERS([\4])])])])
+
+AC_DEFUN([SIM_AC_PML_POPDEF_MODIFIER],
+[popdef([$1])])
+
+AC_DEFUN([SIM_AC_PML_POPDEF_MODIFIERS],
+[ifelse(SIM_AC_PML_STRING_WORDCOUNT_COMPACT([$1]), 3,
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\) \([^ ]+\)],
+                  [SIM_AC_PML_POPDEF_MODIFIER([\1])])],
+        [patsubst([$1],[^\([^ ]+\) \([^ ]+\) \([^ ]+\) \(.*\)],
+                  [SIM_AC_PML_POPDEF_MODIFIER([\1])SIM_AC_PML_POPDEF_MODIFIERS([\4])])])])
+
+AC_DEFUN([SIM_AC_PML_PARSE_MODIFIER_LIST],
+[pushdef([wordcount],SIM_AC_PML_STRING_WORDCOUNT([$2]))]dnl
+[ifelse(m4_eval(((wordcount % 2) == 0) && (wordcount > 0)), 1,
+        [],
+        [SIM_AC_PML_WARNING([invalid word count (arg 2): "]SIM_AC_PML_STRING_COMPACT([$2])")])]dnl
+[popdef([wordcount])]dnl
+[SIM_AC_PML_DEFINE_VARIABLES([$2])]dnl
+[pushdef([wordcount],SIM_AC_PML_STRING_WORDCOUNT([$3]))]dnl
+[ifelse(m4_eval(((wordcount % 3) == 0) && (wordcount > 0)), 1,
+        [],
+        [SIM_AC_PML_WARNING([invalid word count (arg 3): "$3"])])]dnl
+[popdef([wordcount])]dnl
+[SIM_AC_PML_PUSHDEF_MODIFIERS([$3])]dnl
+[ifelse(SIM_AC_PML_STRING_COMPACT([$1]), [],
+        [ifelse([$4], [], [], [$4])],
+        [ifelse([$5], [],
+                [SIM_AC_PML_WARNING([modifier(s) parse error: "]SIM_AC_PML_STRING_COMPACT([$1])")],
+                [$5])])]dnl
+[SIM_AC_PML_POPDEF_MODIFIERS([$3])])
+
+AC_DEFUN([SIM_AC_PARSE_MODIFIER_LIST],
+[SIM_AC_PML_PARSE_MODIFIER_LIST(
+        SIM_AC_PML_STRING_COMPACT([$1]),
+        SIM_AC_PML_STRING_COMPACT([$2]),
+        SIM_AC_PML_STRING_COMPACT([$3]),
+        [$4],
+        [$5])])
+
+dnl * to be deleted after migrating dependant macros to ac_sim_...
+AC_DEFUN([SIM_PARSE_MODIFIER_LIST],
+[SIM_AC_PML_PARSE_MODIFIER_LIST(
+        SIM_AC_PML_STRING_COMPACT([$1]),
+        SIM_AC_PML_STRING_COMPACT([$2]),
+        SIM_AC_PML_STRING_COMPACT([$3]),
+        [$4],
+        [$5])])
 
 
 dnl Usage:
@@ -1580,8 +1710,8 @@ if test "x$enable_profile" = "xyes"; then
 fi
 ])
 
-dnl  Let the user decide if compilation should be done with all compiler
-dnl  warnings turned on.
+dnl  Take care of making a sensible selection of warning messages
+dnl  to turn on or off.
 dnl
 dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
 dnl  in the configure.in script.
@@ -1589,22 +1719,16 @@ dnl
 dnl  Author: Morten Eriksen, <mortene@sim.no>.
 dnl
 dnl  TODO:
-dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
 dnl    * [mortene:19991114] find out how to get GCC's
 dnl      -Werror-implicit-function-declaration option to work as expected
-dnl    * [larsa:19991126] use -Wno-multichar under BeOS only (BeOS system
-dnl      header files emit lots of warnings due to multichar definitions)
 dnl
 
-
-dnl SIM_COMPILER_WARNINGS( )
 AC_DEFUN(SIM_COMPILER_WARNINGS,
 [
 dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.13])
+AC_PREREQ([2.14])
 AC_ARG_ENABLE(warnings,
-  [  --enable-warnings       (GCC only) turn on warnings when compiling
-                          [default=yes]],
+  AC_HELP_STRING([--enable-warnings], [turn on warnings when compiling [default=yes]]),
   [case "${enableval}" in
     yes) enable_warnings=yes ;;
     no)  enable_warnings=no ;;
@@ -1626,6 +1750,9 @@ if test x"$enable_warnings" = xyes; then
         _warn_flags=
         # Turn on all warnings.
         SIM_COMPILER_OPTION(-fullwarn, _warn_flags="$_warn_flags -fullwarn")
+        # Turn off ``type qualifiers are meaningless in this declaration''
+        # warnings.
+        SIM_COMPILER_OPTION(-woff 3115, _warn_flags="$_warn_flags -woff 3115")
         # Turn off warnings on unused variables.
         SIM_COMPILER_OPTION(-woff 3262, _warn_flags="$_warn_flags -woff 3262")
 
