@@ -1405,7 +1405,7 @@ SbVec2s
 SoOffscreenRendererP::getMaxTileSize(void)
 {
 
-
+  SbVec2s dims;
   unsigned int width = 128;
   unsigned int height = 128;
   cc_glglue_context_max_dimensions(&width, &height);
@@ -1425,7 +1425,14 @@ SoOffscreenRendererP::getMaxTileSize(void)
   if (forcedtilewidth != 0) { width = forcedtilewidth; }
   if (forcedtileheight != 0) { height = forcedtileheight; }
 
-  return SbVec2s((short) width, (short) height);  
+
+  if(width < SHRT_MAX) dims[0] = width;
+  else dims[0] = SHRT_MAX;
+
+  if(height < SHRT_MAX) dims[1] = height;
+  else dims[1] = SHRT_MAX;
+
+  return dims;
 
 }
 
