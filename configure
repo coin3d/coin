@@ -14166,6 +14166,9 @@ fi;
 if $enable_debug; then
   DSUFFIX=d
 
+  if test x"$GCC" = x"yes"; then
+    CPPFLAGS="$CPPFLAGS -fno-builtin";
+  fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 
 else
