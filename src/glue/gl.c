@@ -929,7 +929,7 @@ glglue_resolve_symbols(cc_glglue * w)
      only defines a *subset* of what EXT_color_table etc defines,
      though. */
   if ((w->glColorTable == NULL) &&
-      cc_glglue_glext_supported(w, "SGI_texture_color_table")) {
+      cc_glglue_glext_supported(w, "GL_SGI_texture_color_table")) {
     w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableSGI);
     w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableSGI);
     w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivSGI);
@@ -1122,6 +1122,9 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_NV_register_combiners */
  
 
+  /* FIXME: Must investigate whether the NV and the EXT version of
+     texture_rectangle is equal. (20031202 handegar) */
+
   /* GL_NV_texture_rectangle */
   w->has_nv_texture_rectangle = cc_glglue_glext_supported(w, "GL_NV_texture_rectangle");
   
@@ -1132,11 +1135,17 @@ glglue_resolve_symbols(cc_glglue * w)
   w->has_nv_texture_shader = cc_glglue_glext_supported(w, "GL_NV_texture_shader");
 
   /* GL_ARB_shadow */
-  w->has_arb_shadow = cc_glglue_glext_supported(w, "GL_ARB_shadow");
+  w->has_shadow = (cc_glglue_glext_supported(w, "GL_ARB_shadow") || 
+                   cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
 
   /* GL_ARB_depth_texture */
-  w->has_arb_depth_texture = cc_glglue_glext_supported(w, "GL_ARB_depth_texture");
+  w->has_depth_texture = (cc_glglue_glext_supported(w, "GL_ARB_depth_texture") ||
+                          cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
   
+  /* GL_[ARB/EXT]_texture_env_combine */
+  w->has_texture_env_combine = (cc_glglue_glext_supported(w, "GL_ARB_texture_env_combine") ||
+                                cc_glglue_glext_supported(w, "GL_EXT_texture_env_combine") ||
+                                cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
 
   /* GL_ARB_fragment_program */
   w->glProgramStringARB = NULL;
@@ -1240,12 +1249,11 @@ glglue_resolve_symbols(cc_glglue * w)
   w->can_do_bumpmapping = FALSE;
   if (w->glActiveTexture &&
       (cc_glglue_glversion_matches_at_least(w, 1, 3, 0) ||
-       (cc_glglue_glext_supported(w, "ARB_texture_cube_map") &&
-        cc_glglue_glext_supported(w, "ARB_texture_env_combine") &&
-        cc_glglue_glext_supported(w, "ARB_texture_env_dot3")))) {
+       (cc_glglue_glext_supported(w, "GL_ARB_texture_cube_map") &&
+        w->has_texture_env_combine &&
+        cc_glglue_glext_supported(w, "GL_ARB_texture_env_dot3")))) {
     w->can_do_bumpmapping = TRUE;
   }
-
   
   /* FIXME: We should be able to support more than one way to do order
      independent transparency (eg. by using fragment
@@ -1256,8 +1264,8 @@ glglue_resolve_symbols(cc_glglue * w)
   if(w->has_nv_register_combiners &&
      w->has_nv_texture_rectangle &&
      w->has_nv_texture_shader &&
-     w->has_arb_depth_texture &&
-     w->has_arb_shadow)
+     w->has_depth_texture &&
+     w->has_shadow)
     w->can_do_sortedlayersblend = TRUE;
   
 }
@@ -2750,7 +2758,7 @@ SbBool
 cc_glglue_has_arb_shadow(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_arb_shadow;
+  return glue->has_shadow;
 }
 
 /* GL_ARB_depth_texture */
@@ -2758,7 +2766,7 @@ SbBool
 cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_arb_depth_texture;
+  return glue->has_depth_texture;
 }
 
 /* GL_ARB_fragment_program */
@@ -2769,6 +2777,13 @@ cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
   return glue->has_arb_fragment_program;
 }
 
+/* GL_EXT_texture_env_combine || GL_ARB_texture_env_combine || OGL 1.4 */
+SbBool 
+cc_glglue_has_texture_env_combine(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_texture_env_combine;
+}
 
 /*!
   Returns current X11 display the OpenGL context is in. If none, or if
