@@ -689,7 +689,7 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
 
   SbString partstring(partname.getString());
 
-  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, 
+  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx,
                           makeifneeded, NULL, TRUE)) {
     if (!publiccheck || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
@@ -1047,7 +1047,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
     firstpartname = partname.getSubString(0, periodptr-stringptr-1);
   }
   else firstpartname = partname;
-  
+
   partnum = kit->getNodekitCatalog()->getPartNumber(firstpartname);
   if (partnum == SO_CATALOG_NAME_NOT_FOUND) {
     if (recsearch) { // search leaf nodekits for this part?
@@ -1055,7 +1055,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
       assert(path == NULL); // should not do recsearch when creating path
       const SoNodekitCatalog *catalog = orgkit->getNodekitCatalog();
       for (int i = 1; i < orgkit->numCatalogEntries; i++) {
-        if (catalog->isLeaf(i) && 
+        if (catalog->isLeaf(i) &&
             catalog->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
           kit = (SoBaseKit*) orgkit->fieldList[i]->getValue();
           SbBool didexist = kit != NULL;
@@ -1161,7 +1161,7 @@ SoBaseKit::makePart(const int partnum)
   assert(this->fieldList[partnum]->getValue() == NULL);
 
   SoNode *node = (SoNode*)catalog->getDefaultType(partnum).createInstance();
-  if (catalog->isList(partnum) && 
+  if (catalog->isList(partnum) &&
       (catalog->getListContainerType(partnum) != SoGroup::getClassTypeId())) {
     ((SoNodeKitListPart*)node)->setContainerType(catalog->getListContainerType(partnum));
   }
@@ -1201,8 +1201,8 @@ SoBaseKit::setPart(const int partnum, SoNode *node)
   if (oldnode != NULL) { // part exists, replace
     int oldIdx = childlist->find(oldnode);
     assert(oldIdx >= 0);
-    childlist->remove(oldIdx);
-    if (node) childlist->insert(node, oldIdx);
+    if (node) childlist->set(oldIdx, node);
+    else childlist->remove(oldIdx);
   }
   else if (node) { // find where to insert in parent childlist
     int rightSibling = this->getRightSiblingIndex(partnum);
