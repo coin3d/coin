@@ -1056,6 +1056,23 @@ STUFF TO FIX IN COIN
         http://www.unicode.org/versions/Unicode4.0.0/
 
 
+043 The Coin library should have an option to set up a fatal error handler.
+    2003-12-03  Morten Eriksen  <mortene@sim.no>
+
+    As for the So* libraries, Coin should also provide an interface
+    for setting up a fatal error handler, so the application can exit
+    gracefully if something really nasty happens.
+
+    Currently, I can think of one issue that would justify this: if
+    malloc() (or calloc(), realloc(), etc) returns a NULL
+    pointer.
+
+    There might be more, though. We could for instance consider
+    classifications of asserts, where one class of asserts would lead
+    to the invocation of the handler (with a stack backtrace and all
+    sorts of kinds of debugging information, if possible).
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
