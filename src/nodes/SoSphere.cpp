@@ -19,7 +19,7 @@
 
 /*!
   \class SoSphere SoSphere.h Inventor/nodes/SoSphere.h
-  \brief The SoSphere class ...
+  \brief The SoSphere class is a sphere shape node.
   \ingroup nodes
 
   FIXME: write class doc
@@ -31,7 +31,6 @@
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 #include <Inventor/elements/SoGLShadeModelElement.h>
@@ -77,20 +76,14 @@ SoSphere::~SoSphere()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSphere class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoSphere::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSphere);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoSphere::GLRender(SoGLRenderAction * action)
 {
@@ -106,10 +99,6 @@ SoSphere::GLRender(SoGLRenderAction * action)
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-
-  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  sh->forceSend(TRUE, TRUE, FALSE);
 
   float complexity = this->getComplexityValue(action);
 
@@ -134,34 +123,21 @@ SoSphere::GLRender(SoGLRenderAction * action)
                      flags);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 SbBool
 SoSphere::willSetShadeModel(void) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSphere::willSetShapeHints(void) const
-{
-  return TRUE;
-}
-
-//! FIXME: doc
+// doc from parent
 SbBool
 SoSphere::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
@@ -174,9 +150,7 @@ SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   center.setValue(0.0f, 0.0f, 0.0f);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoSphere::rayPick(SoRayPickAction *action)
 {
@@ -192,9 +166,7 @@ SoSphere::rayPick(SoRayPickAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -204,9 +176,7 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1)));
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoSphere::generatePrimitives(SoAction *action)
 {
