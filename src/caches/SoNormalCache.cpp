@@ -308,13 +308,17 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       calc_normal_vec(facenorm, facenum, vertexFaceArray[currindex], 
 		      threshold, tmpvec);
       tmpvec.normalize();
-      normalArray[nindex] = tmpvec;
+
+      if (normalArray.getLength() <= nindex)
+	normalArray.append(tmpvec);
+      else
+	normalArray[nindex] = tmpvec;
 
       // try to find equal normal (total smoothing)
       SbList <int32_t> &array = vertexNormalArray[currindex];
       found = FALSE;
       n = array.getLength();
-      int same_normal;
+      int same_normal = -1;
       for (j = 0; j < n && !found; j++) {
 	same_normal = array[j];
 	found = normalArray[same_normal].equals(normalArray[nindex], 
