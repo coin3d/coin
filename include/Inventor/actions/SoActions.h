@@ -37,6 +37,6 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
-#include <Inventor/actions/SoIntersectionDetectionAction.h>
+#include <Inventor/collision/SoIntersectionDetectionAction.h>
 
 #endif // !COIN_SOACTIONS_H

@@ -19,8 +19,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
-	../../include/Inventor/actions/SoAudioRenderAction.h \
-	../../include/Inventor/actions/SoIntersectionDetectionAction.h
+	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
 	SbTri3f.icc SbTri3f.ih
@@ -44,6 +43,26 @@ RegularSources = \
 	SoWriteAction.cpp \
 	SoAudioRenderAction.cpp \
 	SoIntersectionDetectionAction.cpp
+
+# The SoIntersectionDetectionAction header needs to be under
+# Inventor/collision/ for TGS compatibility.
+
+collisionincdir = $(includedir)/Inventor/collision
+collisioninc_HEADERS = \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h
+
+install-collisionincHEADERS: $(libcollisioninc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 ##$ BEGIN TEMPLATE Make-Common(actions)
 # **************************************************************************

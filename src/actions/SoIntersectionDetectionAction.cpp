@@ -34,7 +34,7 @@
 #include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/manips/SoSpotLightManip.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoIntersectionDetectionAction.h>
+#include <Inventor/collision/SoIntersectionDetectionAction.h>
 
 #include "SbTri3f.ih"
 #include "SbTri3f.icc"
@@ -138,6 +138,7 @@ SO_ACTION_SOURCE(SoIntersectionDetectionAction);
   \brief The SoIntersectionDetectionAction class is for detecting intersecting
   primitives in a scene.
   \ingroup actions
+  \ingroup collision
 
   Note that the epsilon setting is not supported and that only intersection
   testing between triangles are supported yet.
