@@ -69,6 +69,7 @@ public:
   static SoAudioDevice *singleton;
 
   static SoAudioDevice *private_instance();
+  static void clean();
 
   void *context;
   void *device;
@@ -122,6 +123,7 @@ SoAudioDevice::~SoAudioDevice()
   this->cleanup();
 
   delete PRIVATE(this);
+  SoAudioDeviceP::singleton = NULL;
 }
 
 /*!
@@ -398,3 +400,9 @@ SoAudioDevice::mute(SbBool mute)
   }
 }
 
+void
+SoAudioDeviceP::clean()
+{
+  SoAudioDevice::instance()->cleanup();
+  delete SoAudioDevice::instance();
+}
