@@ -20,6 +20,13 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:20000112] replace larsa's libm macro check with the one
+  which comes with libtool (AC_CHECK_LIBM).
+
+* [mortene:20000112] construct an m4 macro for autoconf which detects
+  the presence of libCoin and adds the propriate flags and stuff for
+  application programmers, and install it in $prefix/share/aclocal/.
+
 * [mortene:19991218] set up a "make test" target which can do
   regression testing. Take a look at the functionality offered by
   DejaGnu to see if it can be useful for our purposes.
