@@ -23,10 +23,8 @@
   \brief The SoVRMLFontStyle class is used to define the current font.
   \ingroup VRMLnodes
   
-  WEB3DCOPYRIGHT
-
-  FIXME: document
-
+  FIXME: implement and document
+  
 */
 
 /*!
