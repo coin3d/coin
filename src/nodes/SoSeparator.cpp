@@ -54,6 +54,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <../tidbits.h> // coin_getenv()
 #include <stdlib.h> // strtol()
