@@ -88,7 +88,7 @@
      // advance "current time" by the FPS value
      realtime->setValue(realtime.getValue() + 1/24.0);
    }
-  \encode
+  \endcode
 
   When making movies you need to write your application control code
   to take care of moving the camera along the correct trajectory
@@ -111,10 +111,26 @@
 //
 // mortene.
 
-
 // FIXME: we don't set up and render to RGBA-capable OpenGL-contexts,
 // even when the requested format from the app-programmer is
-// RGBA. 20020604 mortene.
+// RGBA.
+//
+// I think this is what we should do:
+//
+//        1) first, try to get hold of a p-buffer with destination
+//        alpha (p-buffers are faster to render into, as they can take
+//        advantage of hardware acceleration)
+// 
+//        2) failing that, try to make WGL (or GLX or AGL on
+//        non-MSWindows platforms) set up a buffer with destination
+//        alpha
+// 
+//        3) failing that, get hold of either a p-buffer or a straight
+//        WGL buffer with only RGB (no destination alpha -- this
+//        should never fail), and do post-processing on the rendered
+//        scene pixel-by-pixel to convert it into an RGBA texture
+//
+// 20020604 mortene.
 
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>
