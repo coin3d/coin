@@ -81,10 +81,21 @@ SoDelayQueueSensor::~SoDelayQueueSensor(void)
 }
 
 /*!
-  Set this sensor's priority in the scheduling queue.
+  Set this sensor's priority in the scheduling queue. When sensors
+  are processed, high priority sensors will trigger before low
+  priority sensors. 
+
+  Please note that a low number means a high priority. A sensor with
+  priority 5 will trigger before a sensor with priority 6.
+
+  Sensors with priority 0 have a special meaning in Coin/Inventor.
+  They are called immediate sensors, and will trigger immediately
+  after the current notification chain has finished. Priority 0
+  sensors should be used with care, since they might lead to bad
+  performance if you do some processing in the sensor callback.
 
   \sa getPriority(), getDefaultPriority()
- */
+*/
 void
 SoDelayQueueSensor::setPriority(uint32_t pri)
 {
@@ -109,7 +120,8 @@ SoDelayQueueSensor::getPriority(void) const
 }
 
 /*!
-  Returns the default scheduling priority value.
+  Returns the default scheduling priority value. The default
+  sensor priority is 100.
 
   \sa getPriority()
  */
