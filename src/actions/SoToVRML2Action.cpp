@@ -838,21 +838,29 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
   prevgroup->addChild(newswitch);
   thisp->vrml2path->append(newswitch);
 
-  /* Traverse all children separately, that is, save and restore state between each.
-   * If there is a selected child, traverse it normally afterwards.
+  /* Traverse all children separately, that is, save and restore state
+   * between each.  If there is a selected child, traverse it normally
+   * afterwards.  This is needed so that traversing the not selected
+   * children won't influence the selected child.
    */
-  if (oldswitch->whichChild.getValue() != SO_SWITCH_ALL) {
-    int wc = oldswitch->whichChild.getValue() == SO_SWITCH_INHERIT ?
-      action->getSwitch() : oldswitch->whichChild.getValue();
-
+  int wc = oldswitch->whichChild.getValue() == SO_SWITCH_INHERIT ?
+    action->getSwitch() : oldswitch->whichChild.getValue();
+  if (wc != SO_SWITCH_ALL) {
     int n = oldswitch->getNumChildren();
-    for (int i=0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       if (i != wc) {
+        action->getState()->push();
         action->switchToNodeTraversal(oldswitch->getChild(i));
+        action->getState()->pop();
       }
     }
+    if (wc >= 0 && wc < oldswitch->getNumChildren()) {
+      action->switchToNodeTraversal(oldswitch->getChild(wc));
+    }
+    // so that the children will not be traversed
+    return SoCallbackAction::PRUNE;
   }
-  
+  // traverse Switch node as a normal group node
   return SoCallbackAction::CONTINUE;
 }
 
@@ -873,11 +881,11 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
   SoVRMLSwitch * sw = (SoVRMLSwitch *) grp;
   int wc = sw->whichChoice.getValue() == SO_SWITCH_INHERIT ?
     action->getSwitch() : sw->whichChoice.getValue();
-  if (wc != SO_SWITCH_ALL && wc != SO_SWITCH_NONE) {
+  if (wc >= 0 && wc < sw->getNumChoices()) {
     // Move the last child (which is the selected child) to its correct position
-    SoNode * n = sw->getChild(sw->getNumChildren()-1);
-    sw->removeChild(sw->getNumChildren()-1);
-    sw->insertChild(n, wc);
+    SoNode * n = sw->getChoice(sw->getNumChildren()-1);
+    sw->removeChoice(sw->getNumChildren()-1);
+    sw->insertChoice(n, wc);
   }
     
   THISP(closure)->dict.enter((unsigned long)node, grp);  
