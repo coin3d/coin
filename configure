@@ -20854,7 +20854,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-    #if HAVE_SYS_TYPES_H
+    #ifdef HAVE_SYS_TYPES_H
     #include <sys/types.h>
     #endif /* HAVE_SYS_TYPES_H */
     #include <netinet/in.h>

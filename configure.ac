@@ -524,7 +524,7 @@ fi
 
 AC_CACHE_CHECK([for netinet/in.h], sim_cv_netinet_in_h, [
   AC_TRY_CPP([
-    #if HAVE_SYS_TYPES_H
+    #ifdef HAVE_SYS_TYPES_H
     #include <sys/types.h>
     #endif /* HAVE_SYS_TYPES_H */
     #include <netinet/in.h>],
