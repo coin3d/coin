@@ -41,6 +41,7 @@
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_glx.h>
 #include <Inventor/C/glue/glp.h>
@@ -258,7 +259,7 @@ glxglue_getprocaddress(const char * fname)
   void * ptr = NULL;
 
   if (!glxglue_glXGetProcAddress && !tried_bind_glXGetProcAddress) {
-    cc_libhandle h = cc_dl_open(NULL);
+    cc_libhandle h = cc_dl_handle_with_gl_symbols();
     if (h) {
       glxglue_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
         cc_dl_sym(h, "glXGetProcAddress");
@@ -929,6 +930,9 @@ glxglue_context_reinstate_previous(void * ctx)
 			   glxglue_get_display());
   }
 
+  /* FIXME: this causes a crash with ATI on Linux for me. ATI and Mesa
+     is somehow mixed together, which is probably the reason why the
+     crash happens..? 20041105 mortene. */
   (void)glXMakeCurrent(glxglue_get_display(), None, NULL); /* release */
     
   /* The previous context is stored and reset to make it possible to

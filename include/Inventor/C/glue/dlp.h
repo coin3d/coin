@@ -27,11 +27,15 @@
 /* Functions internal to the library, related to the dynamic linking
    interface. */
 
+/* ********************************************************************** */
+
 #ifndef COIN_INTERNAL
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/basic.h>
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,7 +45,17 @@ extern "C" {
 }
 #endif /* emacs indentation */
 
+/* ********************************************************************** */
+
 SbBool cc_dl_available(void);
+
+cc_libhandle cc_dl_handle_with_gl_symbols(void);
+
+cc_libhandle cc_dl_process_handle(void);
+cc_libhandle cc_dl_coin_handle(void);
+cc_libhandle cc_dl_opengl_handle(void);
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 }

@@ -98,6 +98,22 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <assert.h>
+#include <stddef.h> /* NULL definition. */
+#include <stdlib.h> /* atoi() */
+#include <errno.h>
+#include <string.h> /* strlen(), strcpy(), strerror() */
+#include <stdio.h>  /* snprintf() */
+#ifdef HAVE_LIBGEN_H
+#include <libgen.h> /* dirname() */
+#endif /* HAVE_LIBGEN_H */
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h> /* PATH_MAX */
+#endif /* HAVE_SYS_PARAM_H */
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>  /* stat() */
+#endif /* HAVE_SYS_STAT_H */
+
 #ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
 #include <mach-o/ldsyms.h>
@@ -115,6 +131,7 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
+
 #ifdef HAVE_WIN32_API
 /* Conditional inclusion, as the functions in win32api.h will not be
    implemented unless the Win32 API is available. */
@@ -123,22 +140,9 @@
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
-#include <stddef.h> /* NULL definition. */
-#include <stdlib.h> /* atoi() */
-#include <errno.h>
-#include <string.h> /* strlen(), strcpy(), strerror() */
-#include <stdio.h>  /* snprintf() */
-#ifdef HAVE_LIBGEN_H
-#include <libgen.h> /* dirname() */
-#endif /* HAVE_LIBGEN_H */
-#ifdef HAVE_SYS_PARAM_H
-#include <sys/param.h> /* PATH_MAX */
-#endif /* HAVE_SYS_PARAM_H */
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>  /* stat() */
-#endif /* HAVE_SYS_STAT_H */
+#include <Inventor/system/gl.h> /* for glGetString */
 
 /* ********************************************************************** */
 
@@ -766,3 +770,154 @@ cc_dl_close(cc_libhandle handle)
   if (&handle->libname) cc_string_clean(&handle->libname);
   free(handle);
 }
+
+/* ********************************************************************** */
+
+/*
+  Returns a handle to the current process image, if one could be made.
+*/
+cc_libhandle
+cc_dl_process_handle(void)
+{
+  return cc_dl_open(NULL);
+}
+
+/*
+  Returns a handle to the Coin DLL in the current process image, if
+  one could be made.
+*/
+cc_libhandle
+cc_dl_coin_handle(void)
+{
+#ifndef COIN_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
+#define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
+#endif
+
+  cc_libhandle hnd = cc_dl_open(COIN_SYSTEM_LIBRARY_NAME);
+  if (hnd) {
+    /* for comparing with the known value, to make sure we e.g. don't
+       get a different Coin DLL loaded from disk: */
+    void * func = cc_dl_sym(hnd, "cc_dl_coin_handle");
+
+    if (func == NULL) {
+      /* in case we're using the --enable-linkhack dev hack */
+      cc_libhandle gluehnd = cc_dl_open("libglueLINKHACK.so");
+      if (gluehnd) {
+        func = cc_dl_sym(gluehnd, "cc_dl_coin_handle");
+        cc_dl_close(gluehnd);
+      }
+    }
+
+    if (func) {
+      if (func == cc_dl_coin_handle) { return hnd; }
+
+      if (cc_dl_debugging()) {
+        cc_debugerror_post("cc_dl_coin_handle",
+                           "function ptr from opened Coin image, %p, "
+                           "does not match expected value from current "
+                           "image; %p", func, cc_dl_coin_handle);
+      }
+    }
+    else if (cc_dl_debugging()) {
+      cc_debugerror_post("cc_dl_coin_handle",
+                         "could not find function symbol of self");
+    }
+  }
+  else if (cc_dl_debugging()) {
+    cc_debugerror_post("cc_dl_coin_handle",
+                       "was not able to open Coin image as '%s'",
+                       COIN_SYSTEM_LIBRARY_NAME);
+  }
+
+  /* In case of errors when checking if we got a valid image, make
+     sure to clean up to avoid resource leak. */
+  if (hnd) { cc_dl_close(hnd); }
+  return NULL;
+}
+
+/*
+  Returns a handle to the OpenGL DLL in the current process image, if
+  one could be made.
+*/
+cc_libhandle
+cc_dl_opengl_handle(void)
+{
+#ifndef OPENGL_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
+#define OPENGL_SYSTEM_LIBRARY_NAME "libGL.so"
+#endif
+
+  cc_libhandle hnd = cc_dl_open(OPENGL_SYSTEM_LIBRARY_NAME);
+  if (hnd) {
+    /* for comparing with the known value, to make sure we e.g. don't
+       get a different OpenGL DLL loaded from disk: */
+    void * func = cc_dl_sym(hnd, "glGetString");
+
+    if (func) {
+      if (func == glGetString) { return hnd; }
+
+      if (cc_dl_debugging()) {
+        cc_debugerror_post("cc_dl_opengl_handle",
+                           "function ptr from opened OpenGL image, %p, "
+                           "does not match expected value from current "
+                           "image; %p", func, glGetString);
+      }
+    }
+    else if (cc_dl_debugging()) {
+      cc_debugerror_post("cc_dl_opengl_handle",
+                         "could not find function symbol for 'glGetString'");
+    }
+  }
+  else if (cc_dl_debugging()) {
+    cc_debugerror_post("cc_dl_opengl_handle",
+                       "was not able to open OpenGL image as '%s'",
+                       OPENGL_SYSTEM_LIBRARY_NAME);
+  }
+
+  /* In case of errors when checking if we got a valid image, make
+     sure to clean up to avoid resource leak. */
+  if (hnd) { cc_dl_close(hnd); }
+  return NULL;
+}
+
+/* Using the process handle to get at OpenGL symbols is not always
+   workable, there are cases where the process handle will not "lead
+   us" to Coin symbols or OpenGL symbols. (Like e.g. when running
+   under the Pivy Coin-in-Python binding's interpreter.)
+
+   Therefore, various handles are tried in sequence: first the process
+   handle, then the Coin handle, then a handle directly to
+   OpenGL. Testing is done in that succession because chances are
+   better at getting a valid handle for the process, than for Coin,
+   which again is more likely to be available than one for OpenGL.
+*/
+cc_libhandle
+cc_dl_handle_with_gl_symbols(void)
+{
+  typedef cc_libhandle handlefetch(void);
+  cc_libhandle hnd;
+  size_t i;
+
+  handlefetch * f[] = {
+    cc_dl_process_handle, cc_dl_coin_handle, cc_dl_opengl_handle
+  };
+
+  for (i = 0; i < (sizeof(f) / sizeof(f[0])); i++) {
+    hnd = (*f[i])();
+    if (hnd) {
+      void * glchk = cc_dl_sym(hnd, "glGetString");
+      if (cc_dl_debugging()) {
+        cc_debugerror_post("cc_dl_handle_with_gl_symbols",
+                           "successfully found image handle for '%s', "
+                           "testing OpenGL symbol access: "
+                           "cc_dl_sym(..., \"glGetString\") == %p",
+                           cc_string_get_text(&hnd->libname),
+                           glchk);
+      }
+      if (glchk) { return hnd; }
+      cc_dl_close(hnd); /* OpenGL symbol not found, close again */
+    }
+  }
+  return NULL;
+}
+
+/* ********************************************************************** */

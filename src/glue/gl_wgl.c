@@ -32,6 +32,8 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/dlp.h>
 
 #ifdef HAVE_WIN32_API
 /* Conditional inclusion, as the functions in win32api.h will not be
@@ -195,6 +197,13 @@ coin_wgl_getprocaddress(const char * fname)
      * doesn't work, though, as GetProcAddress() will *only* resolve
      * symbols from the specific DLL module handle.
      */
+
+    /*
+     * UPDATE 20041115 mortene: find out if it is possible to fix all
+     * the above problems by grabbing a handle from
+     * cc_dl_handle_with_gl_symbols() instead.
+     */
+
     HINSTANCE glhandle = GetModuleHandle("opengl32.dll");
 
     if (!glhandle && coin_glglue_debug()) {

@@ -28,7 +28,11 @@
    methods on different operating systems for doing dynamic, run-time
    linking of symbols. */
 
+/* ********************************************************************** */
+
 #include <Inventor/C/basic.h>
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,11 +42,15 @@ extern "C" {
 }
 #endif /* emacs indentation */
 
+/* ********************************************************************** */
+
 typedef struct cc_libhandle_struct * cc_libhandle;
 
 COIN_DLL_API cc_libhandle cc_dl_open(const char * filename);
 COIN_DLL_API void * cc_dl_sym(cc_libhandle handle, const char * symbolname);
 COIN_DLL_API void cc_dl_close(cc_libhandle handle);
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 }

@@ -209,6 +209,7 @@
 #include <Inventor/C/base/namemap.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/glue/gl_agl.h>
 #include <Inventor/C/glue/gl_glx.h>
 #include <Inventor/C/glue/gl_wgl.h>
@@ -222,7 +223,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-static cc_libhandle glglue_self_handle = NULL;
+static cc_libhandle gl_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
@@ -454,8 +455,8 @@ cc_glglue_getprocaddress(const char * symname)
   ptr = aglglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
-  if (glglue_self_handle) {
-    ptr = cc_dl_sym(glglue_self_handle, symname);
+  if (gl_handle) {
+    ptr = cc_dl_sym(gl_handle, symname);
     if (ptr) goto returnpoint;
   }
 
@@ -484,7 +485,7 @@ glglue_cleanup(void)
 {
   cc_hash_apply(gldict, free_glglue_instance, NULL);
   cc_hash_destruct(gldict);
-  if (glglue_self_handle) cc_dl_close(glglue_self_handle);
+  if (gl_handle) cc_dl_close(gl_handle);
 }
 
 /*
@@ -1749,8 +1750,8 @@ cc_glglue_instance(int contextid)
     ptr = gi;
     cc_hash_put(gldict, (unsigned long) contextid, ptr);
 
-    if (!glglue_self_handle && !glglue_tried_open_self) {
-      glglue_self_handle = cc_dl_open(NULL);
+    if (!gl_handle && !glglue_tried_open_self) {
+      gl_handle = cc_dl_handle_with_gl_symbols();
       glglue_tried_open_self = TRUE;
     }
 

@@ -41,6 +41,7 @@
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/glue/gl_agl.h>
 
 /* ********************************************************************** */
@@ -123,6 +124,8 @@ static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
 struct aglglue_contextdata;
 static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
 
+static cc_libhandle glhnd = NULL;
+static SbBool tried_handle = FALSE;
 
 /* 
  * Since AGL does not have an aglGetProcAddress() as such, this is
@@ -132,8 +135,13 @@ static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NUL
 void *
 aglglue_getprocaddress(const char * fname)
 {
-  cc_libhandle h = cc_dl_open(NULL);
-  return cc_dl_sym(h, fname);
+  if (!tried_fetching_handle) {
+    /* FIXME: never released -- one-off resource leak. 20041208 mortene.*/
+    glhnd = cc_dl_handle_with_gl_symbols();
+    tried_fetching_handle = TRUE;
+  }
+
+  return glhnd ? cc_dl_sym(glhnd, fname) : NULL;
 }
 
 static void
