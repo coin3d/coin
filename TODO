@@ -1,8 +1,10 @@
 ===============================================================================
-Todo
-====
+TODO:
+=====
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
+
+*** BUILD ITEMS ***
 
 * [mortene:19990926] add configure option to enable crash (and
   subsequent core dump, of course) on SoDebugError::postWarning() and
@@ -52,11 +54,19 @@ Todo
 * [mortene:19990926] remove compiler warnings when configuring with
   --disable-debug.
 
+
+*** GENERIC ITEMS ***
+
+* [kintel:19990928] test and fix problems with running on 64-bit
+  platforms.
+
 ===============================================================================
-Done
-====
+DONE:
+=====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+*** BUILD ITEMS ***
 
 * [mortene:19990926][mortene:19990926] add "testlib" idea from DDJ to
   increase turnaround time when doing compile & link.
