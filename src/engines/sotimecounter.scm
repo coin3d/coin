@@ -15,6 +15,8 @@
 
 (define viewer (new-soxtexaminerviewer))
 (-> viewer 'setscenegraph scene-graph)
+(-> viewer 'setdecoration 0)
+(-> viewer 'setsize (new-sbvec2s 128 128))
 (-> viewer 'show)
 
 ;;; End initial eval-region
@@ -24,7 +26,7 @@
 
 (-> (-> timecounter 'min) 'setValue 0)
 (-> (-> timecounter 'max) 'setValue 20)
-(-> (-> timecounter 'frequency) 'setValue 0.2)
+(-> (-> timecounter 'frequency) 'setValue 0.3)
 (-> (-> timecounter 'step) 'setValue 1)
 (-> (-> timecounter 'syncIn) 'setValue) ; trigger restart at min value
 
@@ -78,4 +80,5 @@
 ;;;;; scratch area ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (-> (-> text 'justification) 'setValue SoText3::CENTER)
+(-> (-> text 'string) 'disconnect)
 (-> viewer 'viewAll)
