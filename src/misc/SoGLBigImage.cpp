@@ -63,6 +63,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/C/threads/storage.h>
+#endif // COIN_THREADSAFE
+
 #include <Inventor/system/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -73,31 +78,7 @@
 
 #ifndef DOXYGEN_SKIP_THIS
 
-class SoGLBigImageP {
-public:
-  SoGLBigImageP(void) :
-    imagesize(0,0),
-    remain(0,0),
-    dim(0,0),
-    currentdim(0, 0),
-    tmpbuf(NULL),
-    tmpbufsize(0),
-    glimagearray(NULL),
-    glimagediv(NULL),
-    glimageage(NULL),
-    averagebuf(NULL),
-    cache(NULL),
-    cachesize(NULL),
-    numcachelevels(0) { }
-
-  ~SoGLBigImageP() {
-    assert(this->glimagearray == NULL);
-    delete[] this->tmpbuf;
-    delete[] this->averagebuf;
-  }
-
-  static SoType classTypeId;
-
+typedef struct {
   SbVec2s imagesize;
   SbVec2s glimagesize;
   SbVec2s remain;
@@ -111,60 +92,99 @@ public:
   int * glimagediv;
   uint32_t * glimageage;
   int changecnt;
-  SbImage myimage;
+  SbImage * myimage;
   unsigned int * averagebuf;
+} SoGLBigImageTls;
+
+class SoGLBigImageP {
+public:
+  SoGLBigImageP(void);  
+  ~SoGLBigImageP();
+
+  static SoType classTypeId;
+  
+#ifdef COIN_THREADSAFE
+  cc_storage * storage;
+  SbMutex mutex;
+#else // COIN_THREADSAFE
+  SoGLBigImageTls storagedata;
+#endif // !COIN_THREADSAFE
   unsigned char ** cache;
   SbVec2s * cachesize;
   int numcachelevels;
+  
+  // inline for speed
+  inline SoGLBigImageTls * getTls(void) {
+#ifdef COIN_THREADSAFE
+    return (SoGLBigImageTls*) cc_storage_get(this->storage);
+#else
+    return &this->storagedata;
+#endif // !COIN_THREADSAFE
+  }
 
-  void copySubImage(const int idx,
+  inline void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  inline void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
+  
+  void copySubImage(SoGLBigImageTls * tls,
+                    const int idx,
                     const unsigned char * src,
                     const SbVec2s & fullsize,
                     const int nc,
                     unsigned char * dst,
                     const int div,
                     const int level);
-
-  void copyResizeSubImage(const int idx,
+  void copyResizeSubImage(SoGLBigImageTls * tls,
+                          const int idx,
                           const unsigned char * src,
                           const SbVec2s & fullsize,
                           const int nc,
                           unsigned char * dst,
                           const SbVec2s & targetsize);
-
-  void resetCache(void) {
-    for (int i = 0; i < this->numcachelevels; i++) {
-      delete[] this->cache[i];
-    }
-    delete[] this->cache;
-    delete[] this->cachesize;
-    this->cache = NULL;
-    this->cachesize = NULL;
-    this->numcachelevels = 0;
-  }
-
-  void reset(SoState * state = NULL) {
-    const int n = this->currentdim[0] * this->currentdim[1];
-    for (int i = 0; i < n; i++) {
-      if (this->glimagearray[i]) {
-        this->glimagearray[i]->unref(state);
-        this->glimagearray[i] = NULL;
-      }
-    }
-    delete[] this->glimagearray;
-    delete[] this->glimageage;
-    delete[] this->glimagediv;
-    delete[] this->averagebuf;
-    this->glimagearray = NULL;
-    this->glimageage = NULL;
-    this->glimagediv = NULL;
-    this->averagebuf = NULL;
-    this->currentdim.setValue(0,0);
-  }
+  void resetAllTls(SoState * state);
+  void resetCache(void);
+  static void reset(SoGLBigImageTls * tls, SoState * state = NULL);
+  static void unrefOldDL(SoGLBigImageTls * tls, SoState * state, const uint32_t maxage);
   void createCache(const unsigned char * bytes, const SbVec2s size, const int nc);
 };
 
 SoType SoGLBigImageP::classTypeId;
+
+static void
+soglbigimagetls_construct(void * closure)
+{
+  SoGLBigImageTls * storage = (SoGLBigImageTls*) closure;
+  storage->imagesize.setValue(0, 0);
+  storage->remain.setValue(0, 0);
+  storage->dim.setValue(0, 0);
+  storage->currentdim.setValue(0, 0);
+  storage->tmpbuf = NULL;
+  storage->tmpbufsize = 0;
+  storage->glimagearray = NULL;
+  storage->glimagediv = NULL;
+  storage->glimageage = NULL;
+  storage->averagebuf = NULL;
+  storage->myimage = new SbImage;
+}
+
+static void
+soglbigimagetls_destruct(void * closure)
+{
+  SoGLBigImageTls * tls = (SoGLBigImageTls*) closure;
+  SoGLBigImageP::reset(tls, NULL);
+  
+  // these are not destructed in reset()
+  delete tls->myimage;
+  delete[] tls->tmpbuf;
+  delete[] tls->averagebuf;
+}
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -184,7 +204,6 @@ SoGLBigImage::SoGLBigImage(void)
 */
 SoGLBigImage::~SoGLBigImage()
 {
-  THIS->reset(NULL);
   THIS->resetCache();
   delete THIS;
 }
@@ -192,7 +211,7 @@ SoGLBigImage::~SoGLBigImage()
 void
 SoGLBigImage::unref(SoState * state)
 {
-  THIS->reset(state);
+  THIS->resetAllTls(state);
   inherited::unref(state);
 }
 
@@ -226,10 +245,8 @@ SoGLBigImage::setData(const SbImage * image,
     SoDebugError::postWarning("SoGLBigImage::setData",
                               "createinstate must be NULL for SoGLBigImage");
   }
-  THIS->reset(NULL);
-  THIS->resetCache();
-  THIS->imagesize.setValue(0,0);
-  THIS->dim.setValue(0,0);
+  delete THIS;
+  THIS = new SoGLBigImageP;
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
@@ -246,10 +263,8 @@ SoGLBigImage::setData(const SbImage * image,
     SoDebugError::postWarning("SoGLBigImage::setData",
                               "createinstate must be NULL for SoGLBigImage");
   }
-  THIS->reset(NULL);
-  THIS->resetCache();
-  THIS->imagesize.setValue(0,0);
-  THIS->dim.setValue(0,0);
+  delete THIS;
+  THIS = new SoGLBigImageP;
   inherited::setData(image, wraps, wrapt, wrapr, quality, border, NULL);
 }
 
@@ -260,7 +275,7 @@ SoGLBigImage::getGLDisplayList(SoState * state)
   return NULL;
 }
 
-// returns the number of bits set, and ets highbit to
+// returns the number of bits set, and sets highbit to
 // the highest bit set.
 static int
 bi_cnt_bits(unsigned long val, int & highbit)
@@ -290,24 +305,26 @@ int
 SoGLBigImage::initSubImages(SoState * state,
                             const SbVec2s & subimagesize) const
 {
-  THIS->changecnt = 0;
-  if (subimagesize == THIS->imagesize &&
-      THIS->dim[0] > 0) return THIS->dim[0] * THIS->dim[1];
+  SoGLBigImageTls * tls = THIS->getTls();
 
-  THIS->imagesize = subimagesize;
-  THIS->glimagesize[0] = bi_next_power_of_two(THIS->imagesize[0]);
-  THIS->glimagesize[1] = bi_next_power_of_two(THIS->imagesize[1]);
+  tls->changecnt = 0;
+  if (subimagesize == tls->imagesize &&
+      tls->dim[0] > 0) return tls->dim[0] * tls->dim[1];
 
-  if (THIS->glimagesize[0] > THIS->imagesize[0] && THIS->glimagesize[0] >= 256) {
-    int diff = THIS->imagesize[0] - (THIS->glimagesize[0]>>1);
-    float ratio = float(diff) / float(THIS->glimagesize[0]>>1);
-    if (ratio < 0.3) THIS->glimagesize[0] >>= 1;
+  tls->imagesize = subimagesize;
+  tls->glimagesize[0] = bi_next_power_of_two(tls->imagesize[0]);
+  tls->glimagesize[1] = bi_next_power_of_two(tls->imagesize[1]);
+
+  if (tls->glimagesize[0] > tls->imagesize[0] && tls->glimagesize[0] >= 256) {
+    int diff = tls->imagesize[0] - (tls->glimagesize[0]>>1);
+    float ratio = float(diff) / float(tls->glimagesize[0]>>1);
+    if (ratio < 0.3) tls->glimagesize[0] >>= 1;
   }
 
-  if (THIS->glimagesize[1] > THIS->imagesize[1] && THIS->glimagesize[1] >= 256) {
-    int diff = THIS->imagesize[1] - (THIS->glimagesize[1]>>1);
-    float ratio = float(diff) / float(THIS->glimagesize[1]>>1);
-    if (ratio < 0.3) THIS->glimagesize[1] >>= 1;
+  if (tls->glimagesize[1] > tls->imagesize[1] && tls->glimagesize[1] >= 256) {
+    int diff = tls->imagesize[1] - (tls->glimagesize[1]>>1);
+    float ratio = float(diff) / float(tls->glimagesize[1]>>1);
+    if (ratio < 0.3) tls->glimagesize[1] >>= 1;
   }
 
   SbVec2s size(0,0);
@@ -316,17 +333,17 @@ SoGLBigImage::initSubImages(SoState * state,
   const unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, nc) : NULL;
 
-  THIS->dim[0] = size[0] / subimagesize[0];
-  THIS->dim[1] = size[1] / subimagesize[1];
+  tls->dim[0] = size[0] / subimagesize[0];
+  tls->dim[1] = size[1] / subimagesize[1];
 
-  THIS->remain[0] = size[0] % subimagesize[0];
-  if (THIS->remain[0]) THIS->dim[0] += 1;
-  THIS->remain[1] = size[1] % subimagesize[1];
-  if (THIS->remain[1]) THIS->dim[1] += 1;
+  tls->remain[0] = size[0] % subimagesize[0];
+  if (tls->remain[0]) tls->dim[0] += 1;
+  tls->remain[1] = size[1] % subimagesize[1];
+  if (tls->remain[1]) tls->dim[1] += 1;
 
-  THIS->tcmul[0] = float(THIS->dim[0] * subimagesize[0]) / float(size[0]);
-  THIS->tcmul[1] = float(THIS->dim[1] * subimagesize[1]) / float(size[1]);
-  return THIS->dim[0] * THIS->dim[1];
+  tls->tcmul[0] = float(tls->dim[0] * subimagesize[0]) / float(size[0]);
+  tls->tcmul[1] = float(tls->dim[1] * subimagesize[1]) / float(size[1]);
+  return tls->dim[0] * tls->dim[1];
 }
 
 void
@@ -335,17 +352,19 @@ SoGLBigImage::handleSubImage(const int idx,
                              SbVec2f & end,
                              SbVec2f & tcmul)
 {
-  SbVec2s pos(idx % THIS->dim[0], idx / THIS->dim[0]);
-  start[0] = float(pos[0]) / float(THIS->dim[0]);
-  start[1] = float(pos[1]) / float(THIS->dim[1]);
-  end[0] = float(pos[0]+1) / float(THIS->dim[0]);
-  end[1] = float(pos[1]+1) / float(THIS->dim[1]);
+  SoGLBigImageTls * tls = THIS->getTls();
 
-  start[0] *= THIS->tcmul[0];
-  start[1] *= THIS->tcmul[1];
-  end[0] *= THIS->tcmul[0];
-  end[1] *= THIS->tcmul[1];
-  tcmul = THIS->tcmul;
+  SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
+  start[0] = float(pos[0]) / float(tls->dim[0]);
+  start[1] = float(pos[1]) / float(tls->dim[1]);
+  end[0] = float(pos[0]+1) / float(tls->dim[0]);
+  end[1] = float(pos[1]+1) / float(tls->dim[1]);
+
+  start[0] *= tls->tcmul[0];
+  start[1] *= tls->tcmul[1];
+  end[0] *= tls->tcmul[0];
+  end[1] *= tls->tcmul[1];
+  tcmul = tls->tcmul;
 }
 
 void
@@ -358,48 +377,53 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, numcomponents) : NULL;
 
-  if (THIS->currentdim != THIS->dim) {
-    THIS->reset(state);
-    THIS->currentdim = THIS->dim;
-    const int numimages = THIS->dim[0] * THIS->dim[1];
+  SoGLBigImageTls * tls = THIS->getTls();
 
-    THIS->glimagediv = new int[numimages];
-    THIS->glimagearray = new SoGLImage*[numimages];
-    THIS->glimageage = new uint32_t[numimages];
+  if (tls->currentdim != tls->dim) {
+    SoGLBigImageP::reset(tls, state);
+    tls->currentdim = tls->dim;
+    const int numimages = tls->dim[0] * tls->dim[1];
+
+    tls->glimagediv = new int[numimages];
+    tls->glimagearray = new SoGLImage*[numimages];
+    tls->glimageage = new uint32_t[numimages];
     for (int i = 0; i < numimages; i++) {
-      THIS->glimagearray[i] = NULL;
-      THIS->glimagediv[i] = 1;
-      THIS->glimageage[i] = 0;
+      tls->glimagearray[i] = NULL;
+      tls->glimagediv[i] = 1;
+      tls->glimageage[i] = 0;
     }
     
-    int numbytes = THIS->imagesize[0] * THIS->imagesize[1] * numcomponents;
-    THIS->averagebuf = 
+    int numbytes = tls->imagesize[0] * tls->imagesize[1] * numcomponents;
+    tls->averagebuf = 
       new unsigned int[numbytes ? numbytes : 1];
 
+    // lock before testing/creating cache to avoid race conditions
+    THIS->lock();
     if (THIS->cache == NULL) {
       THIS->createCache(bytes, size, numcomponents);
     }
+    THIS->unlock();
   }
-
+  
   int level = 0;
   int div = 2;
-  while ((THIS->imagesize[0]/div > projsize[0]) &&
-         (THIS->imagesize[1]/div > projsize[1])) {
+  while ((tls->imagesize[0]/div > projsize[0]) &&
+         (tls->imagesize[1]/div > projsize[1])) {
     div <<= 1;
     level++;
   }
   div >>= 1;
   
-  if (THIS->glimagearray[idx] == NULL ||
-      (THIS->glimagediv[idx] != div && THIS->changecnt < CHANGELIMIT)) {
+  if (tls->glimagearray[idx] == NULL ||
+      (tls->glimagediv[idx] != div && tls->changecnt < CHANGELIMIT)) {
     
-    if (THIS->glimagearray[idx] == NULL) {
-      THIS->glimagearray[idx] = new SoGLImage();
+    if (tls->glimagearray[idx] == NULL) {
+      tls->glimagearray[idx] = new SoGLImage();
     }
     else {
-      THIS->changecnt++;
+      tls->changecnt++;
     }
-    THIS->glimagediv[idx] = div;
+    tls->glimagediv[idx] = div;
 
     uint32_t flags = this->getFlags();
     flags |= NO_MIPMAP;
@@ -410,47 +434,49 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
         flags |= LINEAR_MIN_FILTER|LINEAR_MAG_FILTER;
       }
     }
-    THIS->glimagearray[idx]->setFlags(flags);
+    tls->glimagearray[idx]->setFlags(flags);
 
-    SbVec2s actualsize(THIS->glimagesize[0]/div,
-                       THIS->glimagesize[1]/div);
+    SbVec2s actualsize(tls->glimagesize[0]/div,
+                       tls->glimagesize[1]/div);
     if (bytes) {
       int numbytes = actualsize[0]*actualsize[1]*numcomponents;
-      if (numbytes > THIS->tmpbufsize) {
-        delete[] THIS->tmpbuf;
-        THIS->tmpbuf = new unsigned char[numbytes];
-        THIS->tmpbufsize = numbytes;
+      if (numbytes > tls->tmpbufsize) {
+        delete[] tls->tmpbuf;
+        tls->tmpbuf = new unsigned char[numbytes];
+        tls->tmpbufsize = numbytes;
       }
 
-      if (THIS->glimagesize == THIS->imagesize) {
-        THIS->copySubImage(idx,
+      if (tls->glimagesize == tls->imagesize) {
+        THIS->copySubImage(tls,
+                           idx,
                            bytes,
                            size,
                            numcomponents,
-                           THIS->tmpbuf, div, level);
+                           tls->tmpbuf, div, level);
       }
       else {
-        THIS->copyResizeSubImage(idx,
+        THIS->copyResizeSubImage(tls,
+                                 idx,
                                  bytes,
                                  size,
                                  numcomponents,
-                                 THIS->tmpbuf,
+                                 tls->tmpbuf,
                                  actualsize);
       }
-      THIS->myimage.setValuePtr(actualsize, numcomponents, THIS->tmpbuf);
+      tls->myimage->setValuePtr(actualsize, numcomponents, tls->tmpbuf);
     }
-    else THIS->myimage.setValuePtr(SbVec2s(0,0), 0, NULL);
-    THIS->glimagearray[idx]->setData(&THIS->myimage,
-                                     SoGLImage::CLAMP_TO_EDGE,
-                                     SoGLImage::CLAMP_TO_EDGE,
-                                     quality,
-                                     0, state);
+    else tls->myimage->setValuePtr(SbVec2s(0,0), 0, NULL);
+    tls->glimagearray[idx]->setData(tls->myimage,
+                                    SoGLImage::CLAMP_TO_EDGE,
+                                    SoGLImage::CLAMP_TO_EDGE,
+                                    quality,
+                                    0, state);
   }
-
-  SoGLDisplayList * dl = THIS->glimagearray[idx]->getGLDisplayList(state);
+  
+  SoGLDisplayList * dl = tls->glimagearray[idx]->getGLDisplayList(state);
   assert(dl);
-  THIS->glimageage[idx] = 0;
-  SoGLImage::tagImage(state, THIS->glimagearray[idx]);
+  tls->glimageage[idx] = 0;
+  SoGLImage::tagImage(state, tls->glimagearray[idx]);
   dl->call(state);
 }
 
@@ -462,27 +488,37 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 SbBool 
 SoGLBigImage::exceededChangeLimit(void)
 {
-  return THIS->changecnt >= CHANGELIMIT;
+  return THIS->getTls()->changecnt >= CHANGELIMIT;
+}
+
+// needed for cc_storage_apply_to_all() callback
+typedef struct {
+  uint32_t maxage;
+  SoState * state;
+} soglbigimage_unrefolddl_data;
+
+// cc_storage_apply_to_all() callback
+static void
+soglbigimage_unrefolddl_cb(void * tls, void * closure)
+{
+  soglbigimage_unrefolddl_data * data = 
+    (soglbigimage_unrefolddl_data *) closure;
+  
+  SoGLBigImageP::unrefOldDL((SoGLBigImageTls*)tls, data->state, data->maxage);
 }
 
 // Documented in superclass. Overridden to handle age on subimages.
 void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {
-  const int numimages = THIS->currentdim[0] * THIS->currentdim[1];
-  for (int i = 0; i < numimages; i++) {
-    if (THIS->glimagearray[i]) {
-      if (THIS->glimageage[i] >= maxage) {
-#if COIN_DEBUG && 0 // debug
-        SoDebugError::postInfo("SoGLBigImage::unrefOldDL",
-                               "Killed image because of old age.");
-#endif // debug
-        THIS->glimagearray[i]->unref(state);
-        THIS->glimagearray[i] = NULL;
-      }
-      else THIS->glimageage[i] += 1;
-    }
-  }
+#ifdef COIN_THREADSAFE
+  soglbigimage_unrefolddl_data data;
+  data.maxage = maxage;
+  data.state = state;
+  cc_storage_apply_to_all(THIS->storage, soglbigimage_unrefolddl_cb, &data);
+#else // COIN_THREADSAFE
+  SoGLBigImageP::unrefOldDL(&THIS->storagedata, state, maxage);
+#endif // ! COIN_THREADSAFE
   this->incAge();
 }
 
@@ -490,10 +526,35 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 
 #ifndef DOXYGEN_SKIP_THIS
 
+SoGLBigImageP::SoGLBigImageP(void) :
+  cache(NULL),
+  cachesize(NULL),
+  numcachelevels(0) 
+{   
+#ifdef COIN_THREADSAFE
+  this->storage = cc_storage_construct_etc(sizeof(SoGLBigImageTls),
+                                           soglbigimagetls_construct,
+                                           soglbigimagetls_destruct);
+#else // COIN_THREADSAFE
+  soglbigimagetls_construct(&this->storagedata);
+#endif // !COIN_THREADSAFE 
+}
+
+SoGLBigImageP::~SoGLBigImageP() 
+{
+  this->resetCache();
+#ifdef COIN_THREADSAFE
+  cc_storage_destruct(this->storage);
+#else // COIN_THREADSAFE
+  soglbigimagetls_destruct(&this->storagedata);
+#endif // !COIN_THREADSAFE
+}
+
 //  The method copySubImage() handles the downsampling. It averages 
 //  the full-resolution pixels to create the low resolution image.  
 void
-SoGLBigImageP::copySubImage(const int idx,
+SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
+                            const int idx,
                             const unsigned char * src,
                             const SbVec2s & fsize,
                             const int nc,
@@ -502,7 +563,7 @@ SoGLBigImageP::copySubImage(const int idx,
                             const int level)
 {  
   if ((div == 1) || (this->cache && level < this->numcachelevels && this->cache[level])) {
-    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+    SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
     
     // FIXME: investigate if it's possible to set the pixel transfer
     // mode so that we don't have to copy the data into a temporary
@@ -514,22 +575,22 @@ SoGLBigImageP::copySubImage(const int idx,
     const unsigned char * datasrc;
 
     if (div == 1) { // use original image
-      origin[0] = pos[0] * this->imagesize[0];
-      origin[1] = pos[1] * this->imagesize[1];
+      origin[0] = pos[0] * tls->imagesize[0];
+      origin[1] = pos[1] * tls->imagesize[1];
     
       fullsize[0] = fsize[0];
       fullsize[1] = fsize[1];
-      w = this->imagesize[0];
-      h = this->imagesize[1];
+      w = tls->imagesize[0];
+      h = tls->imagesize[1];
       datasrc = src;
     }
     else { // use cache image
-      origin[0] = pos[0] * (this->imagesize[0] >> level);
-      origin[1] = pos[1] * (this->imagesize[1] >> level);    
+      origin[0] = pos[0] * (tls->imagesize[0] >> level);
+      origin[1] = pos[1] * (tls->imagesize[1] >> level);    
       fullsize[0] = this->cachesize[level][0];
       fullsize[1] = this->cachesize[level][1];
-      w = this->imagesize[0] >> level;
-      h = this->imagesize[1] >> level;
+      w = tls->imagesize[0] >> level;
+      h = tls->imagesize[1] >> level;
       datasrc = this->cache[level];
     }
       
@@ -560,18 +621,18 @@ SoGLBigImageP::copySubImage(const int idx,
     }
   }
   else {
-    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+    SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
     
     int origin[2];
-    origin[0] = pos[0] * this->imagesize[0];
-    origin[1] = pos[1] * this->imagesize[1];
+    origin[0] = pos[0] * tls->imagesize[0];
+    origin[1] = pos[1] * tls->imagesize[1];
     
     int fullsize[2];
     fullsize[0] = fsize[0];
     fullsize[1] = fsize[1];
     
-    int w = this->imagesize[0];
-    int h = this->imagesize[1];
+    int w = tls->imagesize[0];
+    int h = tls->imagesize[1];
         
     unsigned int mask = (unsigned int) div-1;
 
@@ -588,8 +649,8 @@ SoGLBigImageP::copySubImage(const int idx,
       }
     }
 
-    memset(this->averagebuf, 0, w*h*nc*sizeof(int)/div);
-    unsigned int * aptr = this->averagebuf;
+    memset(tls->averagebuf, 0, w*h*nc*sizeof(int)/div);
+    unsigned int * aptr = tls->averagebuf;
     int y;
     for (y = 0; y < h; y++) {
       unsigned int * tmpaptr = aptr;
@@ -605,10 +666,10 @@ SoGLBigImageP::copySubImage(const int idx,
       if ((y+1) & mask) aptr = tmpaptr;
     }
     
-    aptr = this->averagebuf;    
+    aptr = tls->averagebuf;    
     int mydiv = div * div;
 
-    int lineadd = this->imagesize[0] - w;
+    int lineadd = tls->imagesize[0] - w;
     
     lineadd /= div;
     w /= div;
@@ -628,21 +689,22 @@ SoGLBigImageP::copySubImage(const int idx,
 }
 
 void
-SoGLBigImageP::copyResizeSubImage(const int idx,
+SoGLBigImageP::copyResizeSubImage(SoGLBigImageTls * tls,
+                                  const int idx,
                                   const unsigned char * src,
                                   const SbVec2s & fullsize,
                                   const int nc,
                                   unsigned char * dst,
                                   const SbVec2s & targetsize)
 {
-  SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+  SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
 
   SbVec2s origin;
-  origin[0] = pos[0] * this->imagesize[0];
-  origin[1] = pos[1] * this->imagesize[1];
+  origin[0] = pos[0] * tls->imagesize[0];
+  origin[1] = pos[1] * tls->imagesize[1];
 
-  int incy = ((this->imagesize[1]<<8) / targetsize[1]);
-  int incx = ((this->imagesize[0]<<8) / targetsize[0]);
+  int incy = ((tls->imagesize[1]<<8) / targetsize[1]);
+  int incx = ((tls->imagesize[0]<<8) / targetsize[0]);
 
   const int w = targetsize[0];
   const int h = targetsize[1];
@@ -798,6 +860,76 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, cons
   this->cachesize[0] = SbVec2s(0, 0);
 }
 
+void 
+SoGLBigImageP::resetCache(void) 
+{
+  for (int i = 0; i < this->numcachelevels; i++) {
+    delete[] this->cache[i];
+  }
+  delete[] this->cache;
+  delete[] this->cachesize;
+  this->cache = NULL;
+  this->cachesize = NULL;
+  this->numcachelevels = 0;
+}
+
+void 
+SoGLBigImageP::reset(SoGLBigImageTls * tls, SoState * state) 
+{
+  const int n = tls->currentdim[0] * tls->currentdim[1];
+  for (int i = 0; i < n; i++) {
+    if (tls->glimagearray[i]) {
+      tls->glimagearray[i]->unref(state);
+      tls->glimagearray[i] = NULL;
+    }
+  }
+  delete[] tls->glimagearray;
+  delete[] tls->glimageage;
+  delete[] tls->glimagediv;
+  delete[] tls->averagebuf;
+  tls->glimagearray = NULL;
+  tls->glimageage = NULL;
+  tls->glimagediv = NULL;
+  tls->averagebuf = NULL;
+  tls->currentdim.setValue(0,0);
+}
+
+void 
+SoGLBigImageP::unrefOldDL(SoGLBigImageTls * tls, SoState * state, const uint32_t maxage)
+{
+  const int numimages = tls->currentdim[0] * tls->currentdim[1];
+  for (int i = 0; i < numimages; i++) {
+    if (tls->glimagearray[i]) {
+      if (tls->glimageage[i] >= maxage) {
+#if COIN_DEBUG && 0 // debug
+        SoDebugError::postInfo("SoGLBigImageP::unrefOldDL",
+                               "Killed image because of old age.");
+#endif // debug
+        tls->glimagearray[i]->unref(state);
+        tls->glimagearray[i] = NULL;
+      }
+      else tls->glimageage[i] += 1;
+    }
+  }
+}
+
+// cc_storage_apply_to_all callback used by resetAllTls()
+static void
+soglbigimage_resetall_cb(void * tls, void * closure)
+{
+  // simply call SoGLBigImageP::reset()
+  SoGLBigImageP::reset((SoGLBigImageTls*) tls, (SoState*) closure);
+}
+
+void
+SoGLBigImageP::resetAllTls(SoState * state)
+{
+#ifdef COIN_THREADSAFE
+  cc_storage_apply_to_all(this->storage, SoGLBigImageP::reset, state);
+#else // COIN_THREADSAFE
+  SoGLBigImageP::reset(&this->storagedata, state);
+#endif // ! COIN_THREADSAFE
+}
 
 #endif // DOXYGEN_SKIP_THIS
 
