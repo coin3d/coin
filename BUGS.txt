@@ -3482,3 +3482,41 @@ end
     than just our own niord.trh.sim.no
 
 =====================================================================
+
+127 Linux/GCC/SoFieldContainer::get(SbString) bug
+
+    The following code will on Linux with GCC (verified on 2.95.3 and
+    3.2.3) produce bogus output - the output intended for strMat will
+    be produced in both strings.
+
+    Reported by Roberto Martinez.
+
+    20040804 larsa
+
+
+    #include <iostream>
+    #include <Inventor/SoDB.h>
+    #include <Inventor/SbString.h>
+    #include <Inventor/VRMLnodes/SoVRMLMaterial.h>
+    #include <Inventor/VRMLnodes/SoVRMLTransform.h>
+
+    using namespace std;
+    
+    int main ()
+    {
+       SoDB::init ();
+       SoVRMLMaterial * mat = new SoVRMLMaterial;
+       mat->diffuseColor.setValue(SbColor (1.0f, 0.0f, 0.0f));
+       SoVRMLTransform * trans = new SoVRMLTransform;
+       SbString strTrans;
+       SbString strMat;
+
+       trans->get(strTrans);
+       mat->get(strMat);
+
+       cout << "BOF" << endl << strMat.getString () << endl << "EOF" << endl;
+       cout << "BOF" << endl << strTrans.getString () << endl << "EOF" << endl;
+       return 0;
+    }
+
+=====================================================================
