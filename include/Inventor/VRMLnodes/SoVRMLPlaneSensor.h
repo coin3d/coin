@@ -31,7 +31,7 @@
 
 class COIN_DLL_API SoVRMLPlaneSensor : public SoVRMLDragSensor
 {
-  typedef SoNode inherited;
+  typedef SoVRMLDragSensor inherited;
   SO_NODE_HEADER(SoVRMLPlaneSensor);
 
 public:
