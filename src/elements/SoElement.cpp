@@ -262,6 +262,7 @@
 */
 
 #include <Inventor/elements/SoElements.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
 #include <Inventor/elements/SoTextureScalePolicyElement.h> // internal element
@@ -438,6 +439,8 @@ SoElement::initElements(void)
   SoListenerGainElement::initClass();
 
   SoSoundElement::initClass();
+
+  SoTextureUnitElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
