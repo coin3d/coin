@@ -99,6 +99,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
+#include "../tidbits.h" // coin_atexit()
 #include <assert.h>
 #include "../misc/simage_wrapper.h"
 
@@ -160,8 +161,8 @@ SoVRMLImageTexture::initClass(void) // static
   imagedata_maxage = 30;
 
 #ifdef HAVE_THREADS
-  imagetexture_scheduler = cc_sched_construct(1);
-  atexit(imagetexture_cleanup);
+  imagetexture_scheduler = cc_sched_construct(2);
+  coin_atexit((coin_atexit_f*) imagetexture_cleanup);
 #endif // HAVE_THREADS
 }
 

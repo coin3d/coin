@@ -175,6 +175,7 @@
 #include <Inventor/misc/SoProto.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "../tidbits.h" // coin_atexit()
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -418,7 +419,7 @@ SoNode::initClass(void)
 
   // initialize the compatibility dict
   SoNode::compatibilitydict = new SbDict;
-  atexit(SoNode::cleanupClass);
+  coin_atexit((coin_atexit_f*)SoNode::cleanupClass);
 
   SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
                                 SO_FROM_INVENTOR_1);

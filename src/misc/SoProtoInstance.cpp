@@ -38,6 +38,7 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include "../tidbits.h"
 #include <stdlib.h>
 #include <assert.h>
 
@@ -89,7 +90,7 @@ SoProtoInstance::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   protoinstance_dict = new SbDict;
-  atexit(SoProtoInstance::cleanupClass);
+  coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass);
 }
 
 void

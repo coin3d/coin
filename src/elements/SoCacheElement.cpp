@@ -30,6 +30,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/caches/SoCache.h>
+#include "../tidbits.h" // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
@@ -74,7 +75,7 @@ SoCacheElement::initClass(void)
 #ifdef HAVE_THREADS
   invalidated_storage = new SbTypedStorage <SbBool*> (sizeof(SbBool));
   *(invalidated_storage->get()) = FALSE;
-  atexit(cacheelement_cleanup);
+  coin_atexit((coin_atexit_f*) cacheelement_cleanup);
 #endif // HAVE_THREADS
 }
 
