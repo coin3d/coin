@@ -29,6 +29,7 @@
 #include <Inventor/engines/SoEngines.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <stdlib.h>
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
@@ -229,19 +230,21 @@ SoEngine::notify(SoNotList *list)
   if (!this->isNotifying() && this->isNotifyEnabled()) {
     this->stateflags.isnotifying = 1;
     this->inputChanged(list->getLastField());
-    SoFieldList flist;
-    SoEngineOutputList olist;
-    int numOutputs = this->getOutputs(olist);
     
-    if (numOutputs > 0) {
-      for (int j = 0; j < numOutputs; j++) {
-        if (olist[j]->isEnabled()) {
-          olist[j]->getForwardConnections(flist);
+    SoEngineOutput *output;
+    SoField *field;
+    const SoEngineOutputData *outputs = this->getOutputData();
+    int numOutputs = outputs->getNumOutputs();
+    int numConnections;
+
+    for (int i = 0; i < numOutputs; i++) {
+      output = outputs->getOutput(this, i);
+      if (output->isEnabled()) {
+        numConnections = output->getNumConnections();
+        for (int j = 0; j < numConnections; j++) {
+          field = (*output)[j];
+          if (!field->getDirty()) field->notify(list);
         }
-      }
-      for (int i = 0; i < flist.getLength(); i++) {
-        if (!flist[i]->getDirty())
-          flist[i]->notify(list);
       }
     }
     this->stateflags.isnotifying = 0;
@@ -249,13 +252,22 @@ SoEngine::notify(SoNotList *list)
 }
 
 /*!
-  Simply calls the evaluate() method.
+  Triggers an engine evaluation.
 */
 void
 SoEngine::evaluateWrapper(void)
 {
   if (this->stateflags.dirty) {
+    const SoEngineOutputData *outputs = this->getOutputData();
+    SoEngineOutput *output; 
+    int i, n = outputs->getNumOutputs();
+    for (i = 0; i < n; i++) {
+      outputs->getOutput(this, i)->prepareToWrite();
+    }
     this->evaluate();
+    for (i = 0; i < n; i++) {
+      outputs->getOutput(this, i)->doneWriting();
+    }
     this->stateflags.dirty = 0;
   }
 }
