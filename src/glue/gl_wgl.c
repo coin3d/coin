@@ -34,6 +34,7 @@
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/tidbits.h>
 
+/* ********************************************************************** */
 
 #ifndef HAVE_WGL
 
@@ -44,49 +45,84 @@ SbBool wglglue_context_make_current(void * ctx) { assert(FALSE); return FALSE; }
 void wglglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
 void wglglue_context_destruct(void * ctx) { assert(FALSE); }
 
+/* ********************************************************************** */
+
 #else /* HAVE_WGL */
 
 struct wglglue_contextdata;
 static SbBool (* wglglue_context_create)(struct wglglue_contextdata * context) = NULL;
 
-/* FIXME: is this the proper way to declare the handle? 20031106 tamer. */
-DECLARE_HANDLE(HPBUFFERARB);
+/* ********************************************************************** */
 
-typedef HPBUFFERARB (WINAPI * COIN_PFNWGLCREATEPBUFFERARBPROC)(HDC hDC,
+/* Declared in the same manner as in the OpenGL ARB document for the
+   pbuffer extension, but with a different name to avoid clashes upon
+   static binding.
+
+   Note that I couldn't find any documentation on the DECLARE_HANDLE
+   thinga-majingy, so I would appreciate it if someone could confirm
+   that this is correct. mortene.
+*/
+DECLARE_HANDLE(WGLGLUE_HPBUFFER);
+
+/* The following are from either the WGL_ARB_pbuffer or the
+   WGL_EXT_pbuffer extensions: */
+
+typedef WGLGLUE_HPBUFFER (WINAPI * COIN_PFNWGLCREATEPBUFFERPROC)(HDC hDC,
                                                                int iPixelFormat,
                                                                int iWidth,
                                                                int iHeight,
                                                                const int * piAttribList);
-typedef HDC (WINAPI * COIN_PFNWGLGETPBUFFERDCARBPROC)(HPBUFFERARB hPbuffer);
-typedef int (WINAPI * COIN_PFNWGLRELEASEPBUFFERDCARBPROC)(HPBUFFERARB hPbuffer,
+typedef HDC (WINAPI * COIN_PFNWGLGETPBUFFERDCPROC)(WGLGLUE_HPBUFFER hPbuffer);
+typedef int (WINAPI * COIN_PFNWGLRELEASEPBUFFERDCPROC)(WGLGLUE_HPBUFFER hPbuffer,
                                                           HDC hDC);
-typedef BOOL (WINAPI * COIN_PFNWGLDESTROYPBUFFERARBPROC)(HPBUFFERARB hPbuffer);
-typedef BOOL (WINAPI * COIN_PFNWGLQUERYPBUFFERARBPROC)(HPBUFFERARB hPbuffer,
+typedef BOOL (WINAPI * COIN_PFNWGLDESTROYPBUFFERPROC)(WGLGLUE_HPBUFFER hPbuffer);
+typedef BOOL (WINAPI * COIN_PFNWGLQUERYPBUFFERPROC)(WGLGLUE_HPBUFFER hPbuffer,
                                                        int iAttribute,
                                                        int * piValue);
-typedef BOOL (WINAPI * COIN_PFNWGLCHOOSEPIXELFORMATARBPROC)(HDC hdc,
+
+static COIN_PFNWGLCREATEPBUFFERPROC wglglue_wglCreatePbuffer = NULL;
+static COIN_PFNWGLGETPBUFFERDCPROC wglglue_wglGetPbufferDC = NULL;
+static COIN_PFNWGLRELEASEPBUFFERDCPROC wglglue_wglReleasePbufferDC = NULL;
+static COIN_PFNWGLDESTROYPBUFFERPROC wglglue_wglDestroyPbuffer = NULL;
+static COIN_PFNWGLQUERYPBUFFERPROC wglglue_wglQueryPbuffer = NULL;
+
+/* The following is from either the WGL_ARB_pixel_format or the
+   WGL_EXT_pixel_format extensions: */
+
+typedef BOOL (WINAPI * COIN_PFNWGLCHOOSEPIXELFORMATPROC)(HDC hdc,
                                                             const int * piAttribIList,
                                                             const FLOAT * pfAttribFList,
                                                             UINT nMaxFormats,
                                                             int * piFormats,
                                                             UINT * nNumFormats);
 
-static COIN_PFNWGLCREATEPBUFFERARBPROC wglglue_wglCreatePbufferARB;
-static COIN_PFNWGLGETPBUFFERDCARBPROC wglglue_wglGetPbufferDCARB;
-static COIN_PFNWGLRELEASEPBUFFERDCARBPROC wglglue_wglReleasePbufferDCARB;
-static COIN_PFNWGLDESTROYPBUFFERARBPROC wglglue_wglDestroyPbufferARB;
-static COIN_PFNWGLQUERYPBUFFERARBPROC wglglue_wglQueryPbufferARB;
-static COIN_PFNWGLCHOOSEPIXELFORMATARBPROC wglglue_wglChoosePixelFormatARB;
+static COIN_PFNWGLCHOOSEPIXELFORMATPROC wglglue_wglChoosePixelFormat = NULL;
+
+/* ********************************************************************** */
 
 #ifdef HAVE_DYNAMIC_LINKING
-
 #define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
+
+/* The OpenGL library's WGL part which we dynamically pick up symbols
+   from /could/ have these defined. For the code below which tries to
+   dynamically resolve the methods, we will assume that they are
+   defined. By doing this little "trick", can we use the same code
+   below for resolving stuff dynamically as we need anyway to resolve
+   in a static manner. */
+
+#define WGL_ARB_pixel_format 1
+#define WGL_EXT_pixel_format 1
+
+#define WGL_ARB_pbuffer 1
+#define WGL_EXT_pbuffer 1
 
 #else /* static binding */
 
 #define PROC(_func_) (&_func_)
 
 #endif /* static binding */
+
+/* ********************************************************************** */
 
 void *
 coin_wgl_getprocaddress(const char * fname)
@@ -139,8 +175,7 @@ coin_wgl_getprocaddress(const char * fname)
   return ptr;
 }
 
-
-/*** WGL offscreen contexts **************************************************/
+/*** WGL offscreen contexts ***********************************************/
 
 struct wglglue_contextdata {
   unsigned int width, height;
@@ -152,35 +187,72 @@ struct wglglue_contextdata {
   HGLRC storedcontext;
   HDC storeddc;
 
-  HPBUFFERARB hpbuffer;
+  WGLGLUE_HPBUFFER hpbuffer;
   SbBool noappglcontextavail;
 };
 
 static SbBool
+wglglue_pbuffer_symbols_resolved(void)
+{
+  return (wglglue_wglCreatePbuffer && wglglue_wglGetPbufferDC &&
+          wglglue_wglReleasePbufferDC && wglglue_wglDestroyPbuffer &&
+          wglglue_wglQueryPbuffer);
+}
+
+static SbBool
 wglglue_resolve_symbols(struct wglglue_contextdata * context)
 {
-  /* short circuit out if symbols have already been resolved */
-  if (wglglue_wglCreatePbufferARB && wglglue_wglGetPbufferDCARB &&
-      wglglue_wglReleasePbufferDCARB && wglglue_wglDestroyPbufferARB &&
-      wglglue_wglQueryPbufferARB && wglglue_wglChoosePixelFormatARB) {
-    return TRUE;
-  }
+  const char * exts;
 
+  /* short circuit out if symbols have already been resolved */
+  if (wglglue_pbuffer_symbols_resolved()) { return TRUE; }
+
+  /* we need a(ny) current context to resolve symbols */
   if (!wglglue_context_make_current(context)) { return FALSE; }
 
-  /* resolve the symbols */
-  if ((wglglue_wglCreatePbufferARB = (COIN_PFNWGLCREATEPBUFFERARBPROC)PROC(wglCreatePbufferARB)) &&
-      (wglglue_wglGetPbufferDCARB = (COIN_PFNWGLGETPBUFFERDCARBPROC)PROC(wglGetPbufferDCARB)) &&
-      (wglglue_wglReleasePbufferDCARB = (COIN_PFNWGLRELEASEPBUFFERDCARBPROC)PROC(wglReleasePbufferDCARB)) &&
-      (wglglue_wglDestroyPbufferARB = (COIN_PFNWGLDESTROYPBUFFERARBPROC)PROC(wglDestroyPbufferARB)) &&
-      (wglglue_wglQueryPbufferARB = (COIN_PFNWGLQUERYPBUFFERARBPROC)PROC(wglQueryPbufferARB)) &&
-      (wglglue_wglChoosePixelFormatARB = (COIN_PFNWGLCHOOSEPIXELFORMATARBPROC)PROC(wglChoosePixelFormatARB))) {
-    wglglue_context_reinstate_previous(context);
-    return TRUE;
+  exts = glGetString(GL_EXTENSIONS);
+
+  /* attempt to resolve the symbols */
+
+#ifdef WGL_ARB_pixel_format
+  if (coin_glglue_extension_available(exts, "WGL_ARB_pixel_format")) {
+    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatARB);
   }
+#endif /* WGL_ARB_pixel_format */
+
+#ifdef WGL_EXT_pixel_format
+  if (coin_glglue_extension_available(exts, "WGL_EXT_pixel_format")) {
+    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatEXT);
+  }
+#endif /* WGL_EXT_pixel_format */
+
+#ifdef WGL_ARB_pbuffer
+  if (wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
+      coin_glglue_extension_available(exts, "WGL_ARB_pbuffer")) {
+    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferARB);
+    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCARB);
+    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCARB);
+    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(wglDestroyPbufferARB);
+    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(wglQueryPbufferARB);
+  }
+#endif /* WGL_ARB_pbuffer */
+
+#ifdef WGL_EXT_pbuffer
+  if (!wglglue_pbuffer_symbols_resolved() &&
+      wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
+      coin_glglue_extension_available(exts, "WGL_EXT_pbuffer")) {
+    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferEXT);
+    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCEXT);
+    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCEXT);
+    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(wglDestroyPbufferEXT);
+    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(wglQueryPbufferEXT);
+  }
+#endif /* WGL_EXT_pbuffer */
+
 
   wglglue_context_reinstate_previous(context);
-  return FALSE;
+
+  return wglglue_pbuffer_symbols_resolved();
 }
 
 static struct wglglue_contextdata *
@@ -215,15 +287,14 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
   if (ctx->oldbitmap) { (void)SelectObject(ctx->memorydc, ctx->bitmap); }
   if (ctx->bitmap) { DeleteObject(ctx->bitmap); }
   if (ctx->hpbuffer) {
-    wglglue_wglReleasePbufferDCARB(ctx->hpbuffer, ctx->memorydc);
-    wglglue_wglDestroyPbufferARB(ctx->hpbuffer);
+    wglglue_wglReleasePbufferDC(ctx->hpbuffer, ctx->memorydc);
+    wglglue_wglDestroyPbuffer(ctx->hpbuffer);
   }
   if (ctx->memorydc && ctx->noappglcontextavail) { 
     DeleteDC(ctx->memorydc);
   }
 
   free(ctx);
-  ctx = NULL;
 }
 
 static SbBool
@@ -494,18 +565,18 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     };
 
     /* choose pixel format */
-    if (!wglglue_wglChoosePixelFormatARB(context->memorydc, attrs, fAttribList, 1,
+    if (!wglglue_wglChoosePixelFormat(context->memorydc, attrs, fAttribList, 1,
                                          &pixformat, &numFormats)) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "wglChoosePixelFormatARB() failed");
+                                "wglChoosePixelFormat() failed");
       return FALSE;
     }
         
     /* create the pbuffer */
-    context->hpbuffer = wglglue_wglCreatePbufferARB(context->memorydc, pixformat, context->width, context->height, NULL);
+    context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, pixformat, context->width, context->height, NULL);
     if (!context->hpbuffer) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "wglCreatePbufferARB(..., %d, %d, %d, ...) failed",
+                                "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
                                 pixformat, context->width, context->height);
       wglglue_contextdata_cleanup(context);
       return FALSE;
@@ -513,7 +584,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
 
     /* delete device context in case we created it ourselves */
     if (context->noappglcontextavail) { DeleteDC(context->memorydc); }
-    context->memorydc = wglglue_wglGetPbufferDCARB(context->hpbuffer);
+    context->memorydc = wglglue_wglGetPbufferDC(context->hpbuffer);
     if (!context->memorydc) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "Couldn't create pbuffer's device context.");
@@ -532,7 +603,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     }
     
     /* set and output the actual pBuffer dimensions */
-    if (!wglglue_wglQueryPbufferARB(context->hpbuffer, 
+    if (!wglglue_wglQueryPbuffer(context->hpbuffer, 
                                     WGL_PBUFFER_WIDTH_ARB, 
                                     &(context->width))) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
@@ -541,7 +612,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
       return FALSE;
     }
 
-    if (!wglglue_wglQueryPbufferARB(context->hpbuffer,
+    if (!wglglue_wglQueryPbuffer(context->hpbuffer,
                                     WGL_PBUFFER_HEIGHT_ARB,
                                     &(context->height))) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
@@ -554,6 +625,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
   return TRUE;
 }
 
+/* ********************************************************************** */
 
 /* Create and return a handle to an offscreen OpenGL buffer.
 
@@ -561,7 +633,10 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
    standard offscreen WGL context, as it should render much faster
    (due to hardware acceleration).
 
-   See: http://www.oss.sgi.com/projects/ogl-sample/registry/ARB/wgl_pbuffer.txt
+   See:
+     http://www.oss.sgi.com/projects/ogl-sample/registry/ARB/wgl_pbuffer.txt
+   Or the older version:
+     http://www.oss.sgi.com/projects/ogl-sample/registry/EXT/wgl_pbuffer.txt
 */
 void *
 wglglue_context_create_offscreen(unsigned int width, unsigned int height)
@@ -574,7 +649,7 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
   }
 
   swctx = wglglue_contextdata_init(width, height);
-  if (swctx == NULL) { return NULL; }
+  assert(swctx);
 
   if (wglglue_context_create != NULL) {
     if (wglglue_context_create(swctx)) { return swctx; }
@@ -595,15 +670,17 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
   /* ok, so we can at least use a non-pbuffer offscreen context */
   wglglue_context_create = wglglue_context_create_software;
 
-  /* next, check if pbuffer support is available in the OpenGL
-     library image */
+  /* developer or user can force pbuffer support off with this envvar */
   {
     const char * env = coin_getenv("COIN_WGLGLUE_NO_PBUFFERS");
     if (env && atoi(env) > 0) { return swctx; }
   }
 
+  /* next, check if pbuffer support is available in the OpenGL
+     library image */
+
   pbctx = wglglue_contextdata_init(width, height);
-  if (pbctx == NULL) { return swctx; }
+  assert(pbctx);
 
   /* attempt to create a pbuffer */
   if (!wglglue_context_create_pbuffer(pbctx)) {
@@ -664,3 +741,5 @@ wglglue_context_destruct(void * ctx)
 }
 
 #endif /* HAVE_WGL */
+
+/* ********************************************************************** */

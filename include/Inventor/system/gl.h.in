@@ -547,6 +547,10 @@
 #define WGL_PBUFFER_HEIGHT_ARB 0x2035
 #endif /* WGL_PBUFFER_HEIGHT_ARB */
 
+/* Note: the above also exists in *_EXT variants. They have the same
+   values. So we only bother with the *_ARB names, as they can be used
+   in place of the *_EXT names. */
+
 /*** WGL enums, end ***************************************************/
 /**********************************************************************/
 
