@@ -54,6 +54,14 @@ public:
                        const int border = 0,
                        SoState * createinstate = NULL);
 
+  virtual void setData(const SbImage * image,
+                       const Wrap wraps = REPEAT,
+                       const Wrap wrapt = REPEAT,
+                       const Wrap wrapr = REPEAT,
+                       const float quality = 0.5f,
+                       const int border = 0,
+                       SoState * createinstate = NULL);
+
   int initSubImages(SoState * state, const SbVec2s & subimagesize) const;
   void handleSubImage(const int idx, SbVec2f & start, SbVec2f & end,
                       SbVec2f & tcmul);

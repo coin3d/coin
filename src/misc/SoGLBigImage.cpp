@@ -186,6 +186,19 @@ SoGLBigImage::setData(const SbImage * image,
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
+void 
+SoGLBigImage::setData(const SbImage * image,
+                      const Wrap wraps,
+                      const Wrap wrapt,
+                      const Wrap wrapr,
+                      const float quality,
+                      const int border,
+                      SoState * createinstate)
+{
+  assert(0 && "3D images not supported yet.");
+}
+
+
 SoGLDisplayList *
 SoGLBigImage::getGLDisplayList(SoState * state)
 {
