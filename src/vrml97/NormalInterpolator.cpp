@@ -20,6 +20,36 @@
 /*!
   \class SoVRMLNormalInterpolator SoVRMLNormalInterpolator.h Inventor/VRMLnodes/SoVRMLNormalInterpolator.h
   \brief The SoVRMLNormalInterpolator class is used to interpolate normals.
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  NormalInterpolator {
+    eventIn      SFFloat set_fraction       # (-inf, inf)
+    exposedField MFFloat key           []   # (-inf, inf)
+    exposedField MFVec3f keyValue      []   # (-inf, inf)
+    eventOut     MFVec3f value_changed
+  }
+  \endverbatim
+
+  The NormalInterpolator node interpolates among a list of normal
+  vector sets specified by the keyValue field. The output vector,
+  value_changed, shall be a set of normalized vectors.  Values in the
+  keyValue field shall be of unit length. The number of normals in the
+  keyValue field shall be an integer multiple of the number of
+  keyframes in the key field. That integer multiple defines how many
+  normals will be contained in the value_changed events.  Normal
+  interpolation shall be performed on the surface of the unit sphere.
+  That is, the output values for a linear interpolation from a point P
+  on the unit sphere to a point Q also on the unit sphere shall lie
+  along the shortest arc (on the unit sphere) connecting points P and
+  Q. Also, equally spaced input fractions shall result in arcs of
+  equal length. The results are undefined if P and Q are diagonally
+  opposite.  A more detailed discussion of interpolators is provided
+  in 4.6.8, Interpolator nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8).
+  
 */
 
 /*!

@@ -20,6 +20,21 @@
 /*!
   \class SoVRMLNormal SoVRMLNormal.h Inventor/VRMLnodes/SoVRMLNormal.h
   \brief The SoVRMLNormal class is used to bind normals to geometry.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Normal {
+    exposedField MFVec3f vector  []   # (-,)
+  }
+  \endverbatim
+
+  This node defines a set of 3D surface normal vectors to be used in
+  the vector field of some geometry nodes (e.g., SoVRMLIndexedFaceSet
+  and SoVRMLElevationGrid). This node contains one multiple-valued
+  field that contains the normal vectors. Normals shall be of unit
+  length.
 */
 
 /*!
@@ -62,7 +77,7 @@ SoVRMLNormal::~SoVRMLNormal()
 // Doc in parent
 void
 SoVRMLNormal::doAction(SoAction * action)
-{  
+{
   SoNormalElement::set(action->getState(), this,
                        this->vector.getNum(), this->vector.getValues(0));
 }
@@ -99,4 +114,3 @@ SoVRMLNormal::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoVRMLNormal::doAction((SoAction*) action);
 }
-

@@ -20,6 +20,32 @@
 /*!
   \class SoVRMLSwitch SoVRMLSwitch.h Inventor/VRMLnodes/SoVRMLSwitch.h
   \brief The SoVRMLSwitch class is a group node for traversing selected children.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Switch {
+    exposedField    MFNode  choice      []
+    exposedField    SFInt32 whichChoice -1    # [-1, inf)
+  }
+  \endverbatim
+
+  The Switch grouping node traverses zero or one of the nodes
+  specified in the choice field.  4.6.5, Grouping and children nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  describes details on the types of nodes that are legal values for
+  choice.  
+
+  The \e whichChoice field specifies the index of the child to
+  traverse, with the first child having index 0. If whichChoice is
+  less than zero or greater than the number of nodes in the choice
+  field, nothing is chosen.  All nodes under a Switch continue to
+  receive and send events regardless of the value of whichChoice. For
+  example, if an active SoVRMLTimeSensor is contained within an
+  inactive choice of an Switch, the SoVRMLTimeSensor sends events
+  regardless of the Switch's state.
+
 */
 
 /*!
@@ -202,7 +228,7 @@ SoVRMLSwitch::replaceChoice(int idx,
 
 /*!
   Find \a old, and replace it with \a choice.
-*/ 
+*/
 void
 SoVRMLSwitch::replaceChoice(SoNode * old,
                             SoNode * choice)
@@ -488,7 +514,3 @@ SoVRMLSwitch::getChildren(void) const
   }
   return SoGroup::children;
 }
-
-
-
-

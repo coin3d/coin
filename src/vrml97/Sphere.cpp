@@ -20,6 +20,35 @@
 /*!
   \class SoVRMLSphere SoVRMLSphere.h Inventor/VRMLnodes/SoVRMLSphere.h
   \brief The SoVRMLSphere class is used to represent a spherical 3D object.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Sphere {
+    field SFFloat radius  1    # (0, inf)
+  }
+  \endverbatim
+  
+  The Sphere node specifies a sphere centred at (0, 0, 0) in the local
+  coordinate system. The radius field specifies the radius of the
+  sphere and shall be greater than zero. Figure 6.15 depicts the
+  fields of the Sphere node.
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/sphere.gif">
+  Figure 6.15 -- Sphere node
+  </center>
+
+  When a texture is applied to a sphere, the texture covers the entire
+  surface, wrapping counterclockwise from the back of the sphere
+  (i.e., longitudinal arc intersecting the -Z-axis) when viewed from
+  the top of the sphere. The texture has a seam at the back where the
+  X=0 plane intersects the sphere and Z values are
+  negative. TextureTransform affects the texture coordinates of the
+  Sphere.  The Sphere node's geometry requires outside faces
+  only. When viewed from the inside the results are undefined.  
+
 */
 
 /*!

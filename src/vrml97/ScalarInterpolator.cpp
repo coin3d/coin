@@ -20,6 +20,25 @@
 /*!
   \class SoVRMLScalarInterpolator SoVRMLScalarInterpolator.h Inventor/VRMLnodes/SoVRMLScalarInterpolator.h
   \brief The SoVRMLScalarInterpolator class is used to interpolate scalar values.
+  \ingroup VRMLnodes
+  
+  \verbatim
+  ScalarInterpolator {
+    eventIn      SFFloat set_fraction         # (-inf, inf)
+    exposedField MFFloat key           []     # (-inf, inf)
+    exposedField MFFloat keyValue      []     # (-inf, inf)
+    eventOut     SFFloat value_changed
+  }
+  \endverbatim
+
+  This node linearly interpolates among a list of SFFloat values. This
+  interpolator is appropriate for any parameter defined using a single
+  floating point value. Examples include width, radius, and intensity
+  fields. The keyValue field shall contain exactly as many numbers as
+  there are keyframes in the key field.  A more detailed discussion of
+  interpolators is available in 4.6.8, Interpolator nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8).
+   
 */
 
 /*!

@@ -20,6 +20,38 @@
 /*!
   \class SoVRMLPointSet SoVRMLPointSet.h Inventor/VRMLnodes/SoVRMLPointSet.h
   \brief The SoVRMLPointSet class is used to represent a set of 3D points.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  PointSet {
+    exposedField  SFNode  color      NULL
+    exposedField  SFNode  coord      NULL
+  }
+  \endverbatim
+  
+  The PointSet node specifies a set of 3D points, in the local
+  coordinate system, with associated colours at each point. The coord
+  field specifies a SoVRMLCoordinate node (or instance of a Coordinate
+  node). The results are undefined if the coord field specifies any
+  other type of node. PointSet uses the coordinates in order. If the
+  coord field is NULL, the point set is considered empty.  PointSet
+  nodes are not lit, not texture-mapped, nor do they participate in
+  collision detection. The size of each point is implementation-
+  dependent.  If the color field is not NULL, it shall specify a
+  SoVRMLColor node that contains at least the number of points
+  contained in the coord node. The results are undefined if the color
+  field specifies any other type of node. Colours shall be applied to
+  each point in order. The results are undefined if the number of
+  values in the Color node is less than the number of values specified
+  in the Coordinate node.  If the color field is NULL and there is a
+  SoVRMLMaterial node defined for the SoVRMLAppearance node affecting
+  this PointSet node, the emissiveColor of the Material node shall be
+  used to draw the points. More details on lighting equations can be
+  found in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+
 */
 
 #include <Inventor/VRMLnodes/SoVRMLPointSet.h>

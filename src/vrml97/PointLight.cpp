@@ -20,6 +20,48 @@
 /*!
   \class SoVRMLPointLight SoVRMLPointLight.h Inventor/VRMLnodes/SoVRMLPointLight.h
   \brief The SoVRMLPointLight class is used to represent a point light.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  PointLight {
+    exposedField SFFloat ambientIntensity  0       # [0,1]
+    exposedField SFVec3f attenuation       1 0 0   # [0, inf)
+    exposedField SFColor color             1 1 1   # [0,1]
+    exposedField SFFloat intensity         1       # [0,1]
+    exposedField SFVec3f location          0 0 0   # (-inf, inf)
+    exposedField SFBool  on                TRUE
+    exposedField SFFloat radius            100     # [0, inf)
+  }
+  \endverbatim
+
+  The PointLight node specifies a point light source at a 3D location
+  in the local coordinate system. A point light source emits light
+  equally in all directions; that is, it is
+  omnidirectional. PointLight nodes are specified in the local
+  coordinate system and are affected by ancestor transformations.
+  Subclause 4.6.6, Light sources
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.6),
+  contains a detailed description of the ambientIntensity, color, and
+  intensity fields.
+
+  A PointLight node illuminates geometry within radius metres of its
+  location. Both \e radius and \e location are affected by ancestors'
+  transformations (scales affect \e radius and transformations affect
+  \e location). 
+  
+  The \e radius field shall be greater than or equal to zero.
+  PointLight node's illumination falls off with distance as specified
+  by three attenuation coefficients. The attenuation factor is 1/
+  max(attenuation[0] + attenuation[1]×r + attenuation[2]×r2, 1), where
+  r is the distance from the light to the surface being illuminated.
+  The default is no attenuation. An attenuation value of (0, 0, 0) is
+  identical to (1, 0, 0). Attenuation values shall be greater than or
+  equal to zero. A detailed description of VRML's lighting equations
+  is contained in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+
 */
 
 /*!

@@ -20,6 +20,119 @@
 /*!
   \class SoVRMLSpotLight SoVRMLSpotLight.h Inventor/VRMLnodes/SoVRMLSpotLight.h
   \brief The SoVRMLSpotLight class defines a spot light source.
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  SpotLight {
+    exposedField SFFloat ambientIntensity  0         # [0,1]
+    exposedField SFVec3f attenuation       1 0 0     # [0,inf)
+    exposedField SFFloat beamWidth         1.570796  # (0,pi/2]
+    exposedField SFColor color             1 1 1     # [0,1]
+    exposedField SFFloat cutOffAngle       0.785398  # (0,pi/2]
+    exposedField SFVec3f direction         0 0 -1    # (-inf, inf)
+    exposedField SFFloat intensity         1         # [0,1]
+    exposedField SFVec3f location          0 0 0     # (-inf, inf)
+    exposedField SFBool  on                TRUE
+    exposedField SFFloat radius            100       # [0, inf)
+  }
+  \endverbatim
+
+  The SpotLight node defines a light source that emits light from a specific
+  point along a specific direction vector and constrained within a solid angle.
+  Spotlights may illuminate geometry nodes that respond to light sources and
+  intersect the solid angle defined by the SpotLight. Spotlight nodes are
+  specified in the local coordinate system and are affected by ancestors'
+  transformations.
+
+  A detailed description of ambientIntensity, color, intensity, and
+  VRML's lighting equations is provided in 4.6.6, Light sources
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.6).
+  More information on lighting concepts can be found in 4.14, Lighting
+  model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  including a detailed description of the VRML lighting equations.
+
+  The \e location field specifies a translation offset of the centre
+  point of the light source from the light's local coordinate system
+  origin.  This point is the apex of the solid angle which bounds
+  light emission from the given light source. 
+
+  The \e direction field
+  specifies the direction vector of the light's central axis defined
+  in the local coordinate system.  
+
+  The \e on field specifies whether the
+  light source emits light. If on is TRUE, the light source is
+  emitting light and may illuminate geometry in the scene. If on is
+  FALSE, the light source does not emit light and does not illuminate
+  any geometry.  
+
+  The \e radius field specifies the radial extent of the
+  solid angle and the maximum distance from location that may be
+  illuminated by the light source. The light source does not emit
+  light outside this radius.  The radius shall be greater than or
+  equal to zero.  
+
+  Both \e radius and \e location are affected by ancestors'
+  transformations (scales affect radius and transformations affect
+  location).  
+
+  The \e cutOffAngle field specifies the outer bound of the
+  solid angle.  The light source does not emit light outside of this
+  solid angle. 
+
+  The \e beamWidth field specifies an inner solid angle in
+  which the light source emits light at uniform full intensity. The
+  light source's emission intensity drops off from the inner solid
+  angle (beamWidth) to the outer solid angle (cutOffAngle) as
+  described in the following equations: 
+  
+  \verbatim
+  angle = the angle between the Spotlight's direction vector 
+          and the vector from the Spotlight location to the point 
+          to be illuminated 
+
+  if (angle >= cutOffAngle):
+    multiplier = 0 
+  else if (angle <= beamWidth): 
+    multiplier = 1 
+  else:
+    multiplier = (angle - cutOffAngle) / (beamWidth - cutOffAngle)
+
+  intensity(angle) = SpotLight.intensity × multiplier 
+  \endverbatim
+  
+  If the beamWidth
+  is greater than the cutOffAngle, beamWidth is defined to be equal to
+  the cutOffAngle and the light source emits full intensity within the
+  entire solid angle defined by cutOffAngle.  Both beamWidth and
+  cutOffAngle shall be greater than 0.0 and less than or equal to
+  pi/2. 
+
+  Figure 6.16 depicts the beamWidth, cutOffAngle, direction, location,
+  and radius fields of the SpotLight node.
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/spotlight.gif">
+  Figure 6.16 -- SpotLight node 
+  </center>
+  
+  SpotLight illumination falls off with distance as specified by three
+  attenuation coefficients. The attenuation factor is
+  
+  \verbatim
+  1/max(attenuation[0] + attenuation[1]×r + attenuation[2]×r^2 , 1),
+  \endverbatim
+
+  where r is the distance from the light to the surface being
+  illuminated. The default is no attenuation. An attenuation value of
+  (0, 0, 0) is identical to (1, 0, 0). Attenuation values shall be
+  greater than or equal to zero. A detailed description of VRML's
+  lighting equations is contained in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+
 */
 
 /*!

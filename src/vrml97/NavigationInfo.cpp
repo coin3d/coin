@@ -36,11 +36,11 @@
   }
   \endverbatim
  
-//    The NavigationInfo node contains information describing the physical
-//    characteristics of the viewer's avatar and viewing
-//    model. NavigationInfo node is a bindable node (see 4.6.10, Bindable
-//    children nodes:
-  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11).
+  The NavigationInfo node contains information describing the physical
+  characteristics of the viewer's avatar and viewing
+  model. NavigationInfo node is a bindable node (see 4.6.10, Bindable
+  children nodes:
+  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
   Thus, there exists a NavigationInfo node stack in which the top-most
   NavigationInfo node on the stack is the currently bound
   NavigationInfo node. The current NavigationInfo node is considered
@@ -63,16 +63,20 @@
   NavigationInfo node from the stack, results in an isBound FALSE
   event, and pops to the next entry in the stack which shall be
   re-parented to the current Viewpoint node. 4.6.10, Bindable children
-  nodes, has more details on binding stacks.  The type field specifies
-  an ordered list of navigation paradigms that specify a combination
-  of navigation types and the initial navigation type. The navigation
-  type of the currently bound NavigationInfo node determines the user
-  interface capabilities of the browser. For example, if the currently
-  bound NavigationInfo node's type is "WALK", the browser shall
-  present a WALK navigation user interface paradigm (see below for
-  description of WALK). Browsers shall recognize and support at least
-  the following navigation types: "ANY", "WALK", "EXAMINE", "FLY", and
-  "NONE".  If "ANY" does not appear in the type field list of the
+  nodes, has more details on binding stacks
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+
+  The type field specifies an ordered list of navigation paradigms
+  that specify a combination of navigation types and the initial
+  navigation type. The navigation type of the currently bound
+  NavigationInfo node determines the user interface capabilities of
+  the browser. For example, if the currently bound NavigationInfo
+  node's type is "WALK", the browser shall present a WALK navigation
+  user interface paradigm (see below for description of
+  WALK). Browsers shall recognize and support at least the following
+  navigation types: "ANY", "WALK", "EXAMINE", "FLY", and "NONE".
+
+  If "ANY" does not appear in the type field list of the
   currently bound NavigationInfo, the browser's navigation user
   interface shall be restricted to the recognized navigation types
   specified in the list. In this case, browsers shall not present a
@@ -82,87 +86,107 @@
   navigation interface, and allow the user to change the navigation
   type dynamically. Furthermore, the first recognized type in the list
   shall be the initial navigation type presented by the browser's user
-  interface.  ANY navigation specifies that the browser may choose the
+  interface.  
+
+  ANY navigation specifies that the browser may choose the
   navigation paradigm that best suits the content and provide a user
   interface to allow the user to change the navigation paradigm
   dynamically. The results are undefined if the currently bound
   NavigationInfo's type value is "ANY" and Viewpoint transitions (see
-  6.53, Viewpoint) are triggered by the Anchor node (see 6.2, Anchor)
+  SoVRMLViewpoint) are triggered by the Anchor node (see SoVRMLAnchor)
   or the loadURL()scripting method (see 4.12.10, Browser script
-  interface).  WALK navigation is used for exploring a virtual world
+  interface: 
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+
+  WALK navigation is used for exploring a virtual world
   on foot or in a vehicle that rests on or hovers above the ground. It
   is strongly recommended that WALK navigation define the up vector in
   the +Y direction and provide some form of terrain following and
   gravity in order to produce a walking or driving experience. If the
   bound NavigationInfo's type is "WALK", the browser shall strictly
-  support collision detection (see 6.8, Collision).  FLY navigation is
-  similar to WALK except that terrain following and gravity may be
-  disabled or ignored. There shall still be some notion of "up"
-  however. If the bound NavigationInfo's type is "FLY", the browser
-  shall strictly support collision detection (see 6.8, Collision).
+  support collision detection (see SoVRMLCollision).  
+
+  FLY navigation is similar to WALK except that terrain following and
+  gravity may be disabled or ignored. There shall still be some notion
+  of "up" however. If the bound NavigationInfo's type is "FLY", the
+  browser shall strictly support collision detection (see 6.8,
+  Collision).  
+
   EXAMINE navigation is used for viewing individual objects and often
   includes (but does not require) the ability to spin around the
-  object and move the viewer closer or further away.  NONE navigation
-  disables and removes all browser-specific navigation user interface
-  forcing the user to navigate using only mechanisms provided in the
-  scene, such as Anchor nodes or scripts that include loadURL().  If
-  the NavigationInfo type is "WALK", "FLY", "EXAMINE", or "NONE" or a
-  combination of these types (i.e., "ANY" is not in the list),
-  Viewpoint transitions (see 6.53, Viewpoint) triggered by the Anchor
-  node (see 6.2, Anchor) or the loadURL()scripting method (see
-  4.12.10, Browser script interface) shall be implemented as a jump
-  cut from the old Viewpoint to the new Viewpoint with transition
-  effects that shall not trigger events besides the exit and enter
-  events caused by the jump.  Browsers may create browser-specific
-  navigation type extensions. It is recommended that extended type
-  names include a unique suffix (e.g., HELICOPTER_mydomain.com) to
-  prevent conflicts. Viewpoint transitions (see 6.53, Viewpoint)
-  triggered by the Anchor node (see 6.2, Anchor) or the
-  loadURL()scripting method (see 4.12.10, Browser script interface)
-  are undefined for extended navigation types. If none of the types
-  are recognized by the browser, the default "ANY" is used. These
-  strings values are case sensitive ("any" is not equal to "ANY").
-  The speed field specifies the rate at which the viewer travels
-  through a scene in metres per second. Since browsers may provide
-  mechanisms to travel faster or slower, this field specifies the
-  default, average speed of the viewer when the NavigationInfo node is
-  bound. If the NavigationInfo type is EXAMINE, speed shall not affect
-  the viewer's rotational speed. Scaling in the transformation
-  hierarchy of the currently bound Viewpoint node (see above) scales
-  the speed; parent translation and rotation transformations have no
-  effect on speed. Speed shall be non-negative. Zero speed indicates
-  that the avatar's position is stationary, but its orientation and
-  field of view may still change. If the navigation type is "NONE",
-  the speed field has no effect.  The avatarSize field specifies the
-  user's physical dimensions in the world for the purpose of collision
-  detection and terrain following.  It is a multi-value field allowing
-  several dimensions to be specified. The first value shall be the
-  allowable distance between the user's position and any collision
-  geometry (as specified by a Collision node ) before a collision is
-  detected. The second shall be the height above the terrain at which
-  the browser shall maintain the viewer. The third shall be the height
-  of the tallest object over which the viewer can move. This allows
-  staircases to be built with dimensions that can be ascended by
-  viewers in all browsers. The transformation hierarchy of the
-  currently bound Viewpoint node scales the avatarSize. Translations
-  and rotations have no effect on avatarSize.  For purposes of terrain
-  following, the browser maintains a notion of the down direction
-  (down vector), since gravity is applied in the direction of the down
-  vector. This down vector shall be along the negative Y-axis in the
-  local coordinate system of the currently bound Viewpoint node (i.e.,
-  the accumulation of the Viewpoint node's ancestors' transformations,
-  not including the Viewpoint node's orientation field).  Geometry
-  beyond the visibilityLimit may not be rendered. A value of 0.0
-  indicates an infinite visibility limit. The visibilityLimit field is
-  restricted to be greater than or equal to zero.  The speed,
-  avatarSize and visibilityLimit values are all scaled by the
-  transformation being applied to the currently bound Viewpoint
+  object and move the viewer closer or further away.
+
+  NONE navigation disables and removes all browser-specific navigation
+  user interface forcing the user to navigate using only mechanisms
+  provided in the scene, such as Anchor nodes or scripts that include
+  loadURL().
+
+  If the NavigationInfo type is "WALK", "FLY", "EXAMINE", or "NONE" or
+  a combination of these types (i.e., "ANY" is not in the list),
+  Viewpoint transitions (see SoVRMLViewpoint) triggered by the Anchor
+  node (see SoVRMLAnchor) or the loadURL() scripting method shall be
+  implemented as a jump cut from the old Viewpoint to the new
+  Viewpoint with transition effects that shall not trigger events
+  besides the exit and enter events caused by the jump.  
+
+  Browsers may create browser-specific navigation type extensions. It
+  is recommended that extended type names include a unique suffix
+  (e.g., HELICOPTER_mydomain.com) to prevent conflicts.
+
+  Viewpoint transitions (see SoVRMLViewpoint) triggered by the Anchor
+  node (see SoVRMLAnchor) or the loadURL() scripting method are
+  undefined for extended navigation types. If none of the types are
+  recognized by the browser, the default "ANY" is used. These strings
+  values are case sensitive ("any" is not equal to "ANY").
+
+  The speed field specifies the rate at which the viewer
+  travels through a scene in metres per second. Since browsers may
+  provide mechanisms to travel faster or slower, this field specifies
+  the default, average speed of the viewer when the NavigationInfo
+  node is bound. If the NavigationInfo type is EXAMINE, speed shall not affect the
+  viewer's rotational speed. Scaling in the transformation hierarchy
+  of the currently bound Viewpoint node (see above) scales the speed;
+  parent translation and rotation transformations have no effect on
+  speed. Speed shall be non-negative. Zero speed indicates that the
+  avatar's position is stationary, but its orientation and field of
+  view may still change. If the navigation type is "NONE", the speed
+  field has no effect.  
+
+  The avatarSize field specifies the user's physical dimensions in the
+  world for the purpose of collision detection and terrain following.
+  It is a multi-value field allowing several dimensions to be
+  specified. The first value shall be the allowable distance between
+  the user's position and any collision geometry (as specified by a
+  Collision node ) before a collision is detected. The second shall be
+  the height above the terrain at which the browser shall maintain the
+  viewer. The third shall be the height of the tallest object over
+  which the viewer can move. This allows staircases to be built with
+  dimensions that can be ascended by viewers in all browsers. The
+  transformation hierarchy of the currently bound Viewpoint node
+  scales the avatarSize. Translations and rotations have no effect on
+  avatarSize.
+
+  For purposes of terrain following, the browser maintains a notion of
+  the down direction (down vector), since gravity is applied in the
+  direction of the down vector. This down vector shall be along the
+  negative Y-axis in the local coordinate system of the currently
+  bound Viewpoint node (i.e., the accumulation of the Viewpoint node's
+  ancestors' transformations, not including the Viewpoint node's
+  orientation field).
+
+  Geometry beyond the visibilityLimit may not be rendered. A value of
+  0.0 indicates an infinite visibility limit. The visibilityLimit
+  field is restricted to be greater than or equal to zero.
+
+  The speed, avatarSize and visibilityLimit values are all scaled by
+  the transformation being applied to the currently bound Viewpoint
   node. If there is no currently bound Viewpoint node, the values are
   interpreted in the world coordinate system.  This allows these
   values to be automatically adjusted when binding to a Viewpoint node
   that has a scaling transformation applied to it without requiring a
   new NavigationInfo node to be bound as well. The results are
   undefined if the scale applied to the Viewpoint node is non-uniform.
+
   The headlight field specifies whether a browser shall turn on a
   headlight. A headlight is a directional light that always points in
   the direction the user is looking. Setting this field to TRUE allows
@@ -170,14 +194,17 @@
   controls to turn it on and off. Scenes that enlist precomputed
   lighting (e.g., radiosity solutions) can turn the headlight off. The
   headlight shall have intensity = 1, color = (1 1 1),
-  ambientIntensity = 0.0, and direction = (0 0 -1).  It is recommended
-  that the near clipping plane be set to one-half of the collision
-  radius as specified in the avatarSize field (setting the near plane
-  to this value prevents excessive clipping of objects just above the
-  collision volume, and also provides a region inside the collision
-  volume for content authors to include geometry intended to remain
-  fixed relative to the viewer). Such geometry shall not be occluded
-  by geometry outside of the collision volume.  */
+  ambientIntensity = 0.0, and direction = (0 0 -1).  
+
+  It is recommended that the near clipping plane be set to one-half of
+  the collision radius as specified in the avatarSize field (setting
+  the near plane to this value prevents excessive clipping of objects
+  just above the collision volume, and also provides a region inside
+  the collision volume for content authors to include geometry
+  intended to remain fixed relative to the viewer). Such geometry
+  shall not be occluded by geometry outside of the collision volume.
+
+*/
 
 /*!
   \var SoMFString SoVRMLNavigationInfo::type

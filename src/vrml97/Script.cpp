@@ -20,6 +20,102 @@
 /*!
   \class SoVRMLScript SoVRMLScript.h Inventor/VRMLnodes/SoVRMLScript.h
   \brief The SoVRMLScript class is used to control the scene using scripts.
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Script {
+    exposedField MFString url           []
+    field        SFBool   directOutput  FALSE
+    field        SFBool   mustEvaluate  FALSE
+    # And any number of:
+    eventIn      eventType eventName
+    field        fieldType fieldName initialValue
+    eventOut     eventType eventName
+  }
+  \endverbatim
+ 
+  The Script node is used to program behaviour in a scene. Script nodes
+  typically
+
+  - signify a change or user action;
+  - receive events from other nodes;
+  - contain a program module that performs some computation;
+  - effect change somewhere else in the scene by sending events.
+
+  Each Script node has associated programming language code,
+  referenced by the url field, that is executed to carry out the
+  Script node's function. That code is referred to as the "script" in
+  the rest of this description. Details on the url field can be found
+  in 4.5, VRML and the World Wide Web
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+
+  Browsers are not required to support any specific language. Detailed
+  information on scripting languages is described in 4.12, Scripting
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.12).
+
+  Browsers supporting a scripting language for which a language
+  binding is specified shall adhere to that language binding.
+  Sometime before a script receives the first event it shall be
+  initialized (any language-dependent or user-defined initialize() is
+  performed).
+
+  The script is able to receive and process events that are sent to
+  it. Each event that can be received shall be declared in the Script
+  node using the same syntax as is used in a prototype definition:
+  
+  \verbatim
+  eventIn type name 
+  \endverbatim
+
+  The type can be any of the standard VRML fields
+  (as defined in 5, Field and event reference). Name shall be an
+  identifier that is unique for this Script node.
+
+  The Script node is able to generate events in response to the
+  incoming events. Each event that may be generated shall be declared
+  in the Script node using the following syntax: 
+
+  \verbatim
+  eventOut type name
+  \endverbatim
+  
+  With the exception of the url field, exposedFields are not allowed
+  in Script nodes.
+
+  If the Script node's \e mustEvaluate field is FALSE, the browser may
+  delay sending input events to the script until its outputs are
+  needed by the browser. If the \e mustEvaluate field is TRUE, the
+  browser shall send input events to the script as soon as possible,
+  regardless of whether the outputs are needed. The \e mustEvaluate
+  field shall be set to TRUE only if the Script node has effects that
+  are not known to the browser (such as sending information across the
+  network). Otherwise, poor performance may result.
+
+  Once the script has access to a VRML node (via an SoSFNode or
+  SoMFNode value either in one of the Script node's fields or passed
+  in as an eventIn), the script is able to read the contents of that
+  node's exposed fields.
+
+  If the Script node's \e directOutput field is TRUE, the script may
+  also send events directly to any node to which it has access, and
+  may dynamically establish or break routes.
+
+  If directOutput is FALSE (the default), the script may only
+  affect the rest of the world via events sent through its
+  eventOuts. The results are undefined if directOutput is FALSE and
+  the script sends events directly to a node to which it has access.
+
+  A script is able to communicate directly with the VRML browser to
+  get information such as the current time and the current world
+  URL. This is strictly defined by the API for the specific scripting
+  language being used.  The location of the Script node in the scene
+  graph has no affect on its operation. For example, if a parent of a
+  Script node is a Switch node with whichChoice set to "-1" (i.e.,
+  ignore its children), the Script node continues to operate as
+  specified (i.e., it receives and sends events).
+
 */
 
 #include <Inventor/VRMLnodes/SoVRMLScript.h>

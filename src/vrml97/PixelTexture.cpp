@@ -20,6 +20,49 @@
 /*!
   \class SoVRMLPixelTexture SoVRMLPixelTexture.h Inventor/VRMLnodes/SoVRMLPixelTexture.h
   \brief The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  PixelTexture {
+    exposedField SFImage  image      0 0 0    # see SoSFImage
+    field        SFBool   repeatS    TRUE
+    field        SFBool   repeatT    TRUE
+  }
+  \endverbatim
+  
+  The PixelTexture node defines a 2D image-based texture map as an
+  explicit array of pixel values (image field) and parameters
+  controlling tiling repetition of the texture onto geometry.  Texture
+  maps are defined in a 2D coordinate system (s, t) that ranges from
+  0.0 to 1.0 in both directions. The bottom edge of the pixel image
+  corresponds to the S-axis of the texture map, and left edge of the
+  pixel image corresponds to the T-axis of the texture map. The
+  lower-left pixel of the pixel image corresponds to s=0.0, t=0.0, and
+  the top-right pixel of the image corresponds to s = 1.0, t = 1.0.
+  See 4.6.11, Texture maps
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
+  for a general description of texture
+  maps. Figure 6.13 depicts an example PixelTexture.  
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/PixelTexture.gif">
+  Figure 6.13 -- PixelTexture node 
+  </center>
+
+  See 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  for a description of how the texture values interact with the
+  appearance of the geometry.  SoSFImage, describes the
+  specification of an image.  The repeatS and repeatT fields specify
+  how the texture wraps in the S and T directions. If repeatS is TRUE
+  (the default), the texture map is repeated outside the 0-to-1
+  texture coordinate range in the S direction so that it fills the
+  shape. If repeatS is FALSE, the texture coordinates are clamped in
+  the S direction to lie within the 0.0 to 1.0 range. The repeatT
+  field is analogous to the repeatS field.
+
 */
 
 /*!
@@ -170,5 +213,3 @@ SoVRMLPixelTexture::notify(SoNotList * list)
   this->glimagevalid = FALSE;
   SoNode::notify(list);
 }
-
-
