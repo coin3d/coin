@@ -101,7 +101,10 @@
 /*! \defgroup events Event classes */
 /*! \defgroup fields Field classes */
 /*! \defgroup general General classes */
-/*! \defgroup hardcopy Support for vectorized printing */
+/*!  \defgroup hardcopy Support for vectorized printing
+
+  See \ref hardcopy_overview for an overview of this functionality.
+*/
 /*! \defgroup manips Manipulators */
 /*! \defgroup nodekits Node Kits */
 /*! \defgroup nodes Nodes */

@@ -61,6 +61,9 @@
   One important note about the use of SoType to register class
   information: super classes must be registered before any of their
   derived classes are.
+
+  See also \ref dynload_overview for some additional SoType-related
+  information.
 */
 
 /*!
