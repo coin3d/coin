@@ -139,6 +139,27 @@ AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
 
 coin_build_dir=`pwd`
 
+# *******************************************************************
+# set up configure options for "make distcheck" mode - we want to
+# ensure that all options that can be turned on works...
+
+AC_MSG_CHECKING([for distcheck mode])
+case "$prefix:$coin_build_dir" in
+*/=inst:*/=build )
+  enable_threads=yes
+  enable_threadsafe=yes
+  enable_vrml97=yes
+  enable_html=yes
+  enable_man=yes
+  enable_3ds_import=yes
+  enable_debug=no
+  AC_MSG_RESULT([yes])
+  ;;
+* )
+  AC_MSG_RESULT([no])
+  ;;
+esac
+
 # **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
 #  in tests. The configure script will automatically terminate if
@@ -215,12 +236,11 @@ SIM_AC_MAC_CPP_ADJUSTMENTS
 # See if we should build with 3ds import capabilities.
 
 sim_ac_enable_3ds_import=false
-
 AC_ARG_ENABLE(
   [3ds-import],
   AC_HELP_STRING([--enable-3ds-import], [enable 3ds import capabilities]), [
   case $enableval in
-    yes) sim_ac_enable_3ds_import=true ;;
+    yes | true) sim_ac_enable_3ds_import=true ;;
     *) ;;
   esac])
 
@@ -246,7 +266,7 @@ AC_ARG_ENABLE(
   [vrml97],
   AC_HELP_STRING([--enable-vrml97], [enable VRML97 support]), [
   case $enableval in
-    yes) sim_ac_enable_vrml97=true ;;
+    yes | true) sim_ac_enable_vrml97=true ;;
     *) ;;
   esac])
 
