@@ -97,7 +97,7 @@ create_memnode(cc_memalloc * allocator)
 static void *
 alloc_from_memnode(cc_memalloc * allocator)
 {
-  int blocksize, unitsize;
+  int unitsize;
   void * ret = NULL;
 
   unitsize = allocator->allocated_size;
