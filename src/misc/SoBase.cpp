@@ -168,8 +168,6 @@ sobase_cleanup_auditordict(void)
     sobase_auditordict->applyToAll(sobase_auditordict_cb);
     delete sobase_auditordict;
     sobase_auditordict = NULL;
-
-    CC_MUTEX_DESTRUCT(sobase_mutex);
   }
 }
 
@@ -406,6 +404,8 @@ SoBase::initClass(void)
   SoBase::name2obj = new SbDict;
   SoBase::obj2name = new SbDict;
   SoBase::refwriteprefix = new SbString("+");
+  
+  CC_MUTEX_CONSTRUCT(sobase_mutex);
 }
 
 // Clean up all commonly allocated resources before application
@@ -425,6 +425,8 @@ SoBase::cleanClass(void)
 
   delete writerefs;
   delete SoBase::refwriteprefix;
+  
+  CC_MUTEX_DESTRUCT(sobase_mutex);
 #endif // COIN_DEBUG
 }
 
@@ -487,7 +489,9 @@ SoBase::ref(void) const
   int32_t currentrefcount = base->objdata.referencecount;
 #endif // COIN_DEBUG
 
+  CC_MUTEX_LOCK(sobase_mutex);
   base->objdata.referencecount++;
+  CC_MUTEX_UNLOCK(sobase_mutex);
 
 #if COIN_DEBUG
   if (base->objdata.referencecount < currentrefcount) {
@@ -534,7 +538,10 @@ SoBase::unref(void) const
 
   // Cast away constness.
   SoBase * base = (SoBase *)this;
+  CC_MUTEX_LOCK(sobase_mutex);
   base->objdata.referencecount--;
+  CC_MUTEX_UNLOCK(sobase_mutex);
+
 #if COIN_DEBUG
   if (SoBase::tracerefs) {
     SoDebugError::postInfo("SoBase::unref",
@@ -632,7 +639,9 @@ SoBase::getName(void) const
   assert(SoBase::obj2name);
 
   void * value;
+  CC_MUTEX_LOCK(sobase_mutex);
   SbBool found = SoBase::obj2name->find((unsigned long)this, value);
+  CC_MUTEX_UNLOCK(sobase_mutex);
   return found ? SbName((const char *)value) : SbName();
 }
 
@@ -695,6 +704,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 {
   SbPList * l;
   void * t;
+  CC_MUTEX_LOCK(sobase_mutex);
   if (!SoBase::name2obj->find((unsigned long)name, t)) {
     // name not used before, create new list
     l = new SbPList;
@@ -709,6 +719,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 
   // set name of object. SbDict::enter() will overwrite old name
   SoBase::obj2name->enter((unsigned long)b, (void *)name);
+  CC_MUTEX_UNLOCK(sobase_mutex);
 }
 
 /*!
@@ -717,6 +728,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
+  CC_MUTEX_LOCK(sobase_mutex);
   void * t;
   SbBool found = SoBase::name2obj->find((unsigned long)name, t);
   assert(found);
@@ -727,6 +739,7 @@ SoBase::removeName(SoBase * const b, const char * const name)
   list->remove(i);
 
   SoBase::obj2name->remove((unsigned long)b);
+  CC_MUTEX_UNLOCK(sobase_mutex);
 }
 
 /*!
@@ -848,10 +861,6 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
-  if (sobase_mutex == NULL) {
-    CC_MUTEX_CONSTRUCT(sobase_mutex);
-  }
-
   CC_MUTEX_LOCK(sobase_mutex);
 
   if (sobase_auditordict == NULL) {
@@ -952,15 +961,19 @@ SoBase::decrementCurrentWriteCounter(void)
 SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
+  CC_MUTEX_LOCK(sobase_mutex);
   void * t;
   if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
     SbPList * l = (SbPList *)t;
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
-      if (b->isOfType(type)) return b;
+      if (b->isOfType(type)) {
+        CC_MUTEX_UNLOCK(sobase_mutex);
+        return b;
+      }
     }
   }
-
+  CC_MUTEX_UNLOCK(sobase_mutex);
   return NULL;
 }
 
@@ -973,6 +986,8 @@ SoBase::getNamedBase(const SbName & name, SoType type)
 int
 SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 {
+  CC_MUTEX_LOCK(sobase_mutex);
+
   int matches = 0;
 
   void * t;
@@ -986,6 +1001,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
       }
     }
   }
+  CC_MUTEX_UNLOCK(sobase_mutex);
 
   return matches;
 }
