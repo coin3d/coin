@@ -80,6 +80,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoShape.h>
@@ -257,6 +258,12 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
   SO_ENABLE(SoCallbackAction, SoLazyElement);
   SO_ENABLE(SoCallbackAction, SoCacheElement);
+  
+  // view frustum culling is normally not used for this action, but
+  // the application programmer can manually add any number of culling
+  // planes to optimize callback action traversal. This is used by the
+  // SoExtSelection node.
+  SO_ENABLE(SoCallbackAction, SoCullElement);
 }
 
 #undef THIS

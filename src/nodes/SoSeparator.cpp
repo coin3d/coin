@@ -333,9 +333,15 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoSeparator::callback(SoCallbackAction * action)
 {
-  action->getState()->push();
-  SoGroup::callback(action);
-  action->getState()->pop();
+  SoState * state = action->getState();
+  state->push();
+  // culling planes should normally not be set, but can be set
+  // manually by the application programmer to optimize callback
+  // action traversal.
+  if (!this->cullTest(state)) {
+    SoGroup::callback(action);
+  }
+  state->pop();
 }
 
 // Doc from superclass.
