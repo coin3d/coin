@@ -115,9 +115,10 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
     packed = rgba.getPackedValue();
   }
   else if (this->packedColors) {
-    packed = this->packedColors[realindex] | uint32_t(alpha * 255);
+    packed = this->packedColors[realindex];
   }
   // FIXME: "else {"? Warning? Assert? 20020119 mortene.
+
 
   if (this->packedRGBA != packed) {
     this->updategl(packed);
