@@ -25,6 +25,7 @@ RegularSources = \
 	SbDict.cpp \
 	SbDPLine.cpp \
 	SbDPMatrix.cpp \
+	SbDPPlane.cpp \
 	SbDPRotation.cpp \
 	SbHeap.cpp \
 	SbImage.cpp \
@@ -65,10 +66,11 @@ PrivateHeaders = \
 	../../include/Inventor/SbColor4f.h \
 	../../include/Inventor/SbCylinder.h \
 	../../include/Inventor/SbDict.h \
-	../../include/Inventor/SbPLine.h \
-	../../include/Inventor/SbPLinear.h \
-	../../include/Inventor/SbPMatrix.h \
-	../../include/Inventor/SbPRotation.h \
+	../../include/Inventor/SbDPLine.h \
+	../../include/Inventor/SbDPLinear.h \
+	../../include/Inventor/SbDPMatrix.h \
+	../../include/Inventor/SbDPPlane.h \
+	../../include/Inventor/SbDPRotation.h \
 	../../include/Inventor/SbHeap.h \
 	../../include/Inventor/SbImage.h \
 	../../include/Inventor/SbLine.h \

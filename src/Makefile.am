@@ -121,6 +121,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbDPLine.h \
 	../include/Inventor/SbDPLinear.h \
 	../include/Inventor/SbDPMatrix.h \
+	../include/Inventor/SbDPPlane.h \
 	../include/Inventor/SbDPRotation.h \
 	../include/Inventor/SbHeap.h \
 	../include/Inventor/SbImage.h \
