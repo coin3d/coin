@@ -36,3 +36,7 @@ projects:
   of templates to look at.
 
 * Do the work needed for being compatible with 64-bit systems.
+
+* Profiling and optimalization of rendering and other action
+  traversals. Implement rendercaching and render- and pickculling, for
+  instance.
