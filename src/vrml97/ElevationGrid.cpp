@@ -274,7 +274,9 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
-
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#endif // COIN_THREADSAFE
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -282,12 +284,39 @@ class SoVRMLElevationGridP {
 public:
   SoVRMLElevationGridP(void)
     : dirty(TRUE),
+#ifdef COIN_THREADSAFE
+      mutex(SbRWMutex::READ_PRECEDENCE),
+#endif // COIN_THREADSAFE
       ngen(TRUE)
   { }
 
   SbBool dirty;
+#ifdef COIN_THREADSAFE
+  SbRWMutex mutex;
+#endif // COIN_THREADSAFE
   SoNormalGenerator ngen;
   SoVRMLElevationGrid::Binding nbind;
+
+  void readLockNormalCache(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.readLock();
+#endif // COIN_THREADSAFE
+  }
+  void readUnlockNormalCache(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.readUnlock();
+#endif // COIN_THREADSAFE
+  }
+  void writeLockNormalCache(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.writeLock();
+#endif // COIN_THREADSAFE
+  }
+  void writeUnlockNormalCache(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.writeUnlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -576,6 +605,8 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
     }
     glEnd();
   }
+
+  if (normalcache) THIS->readUnlockNormalCache();
 }
 
 // Doc in parent
@@ -659,6 +690,8 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
     SoVRMLNormal * nnode = (SoVRMLNormal*) this->normal.getValue();
     if (nnode) normals = nnode->vector.getValues(0);
     if (normals == NULL) {
+      // updateNormalCache will readLock the normal cache. We unlock
+      // at the end of this function.
       normals = this->updateNormalCache(nbind);
       normalcache = TRUE;
     }
@@ -801,6 +834,8 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
     cnt++;
   }
   this->endShape();
+
+  if (normalcache) THIS->readUnlockNormalCache();
 }
 
 //
@@ -853,10 +888,13 @@ SoVRMLElevationGrid::notify(SoNotList * list)
 const SbVec3f *
 SoVRMLElevationGrid::updateNormalCache(Binding & nbind)
 {
+  THIS->readLockNormalCache();
+
   if (THIS->dirty) {
+    THIS->readUnlockNormalCache();
+    THIS->writeLockNormalCache();
     // FIXME: optimize by using a specialized algorithm for
     // calculating the normals.
-    THIS->dirty = FALSE;
     THIS->ngen.reset(this->ccw.getValue());
 
     const int xdim = this->xDimension.getValue();
@@ -897,8 +935,12 @@ SoVRMLElevationGrid::updateNormalCache(Binding & nbind)
       THIS->nbind = PER_VERTEX;
       THIS->ngen.generate(this->creaseAngle.getValue());
     }
+    THIS->dirty = FALSE;
+    THIS->writeUnlockNormalCache();
+    THIS->readLockNormalCache();
   }
 
+  // cache is read locked when we get here
   nbind = THIS->nbind;
   return THIS->ngen.getNormals();
 }
