@@ -60,10 +60,12 @@ SoBaseList::SoBaseList(const SoBaseList &l)
   : SbPList(l)
 {
   this->doRef = l.doRef;
-//   const int n = l.getLength();
-//   for (int i = 0; i < n; i++) {
-//     this->append(l.get(i));
-//   }
+  if (this->doRef) {
+    const int n = this->getLength();
+    for (int i = 0; i < n; i++) {
+      this->get(i)->ref();
+    }
+  }
 }
 
 /*!
@@ -72,7 +74,7 @@ SoBaseList::SoBaseList(const SoBaseList &l)
 
 SoBaseList::~SoBaseList(void)
 {
-  truncate(0);
+  truncate(0); // will handle unref
 }
 
 /*!
@@ -104,8 +106,8 @@ SoBaseList::insert(SoBase * const ptr, const int addBefore)
 void
 SoBaseList::remove(const int which)
 {
-  //Check if get(which) exists.
-  if (this->doRef) this->get(which)->unref();
+  assert(which >= 0 && which < this->getLength());
+  if (this->doRef && this->get(which) != NULL) this->get(which)->unref();
   SbPList::remove(which);
 }
 
@@ -116,11 +118,10 @@ SoBaseList::remove(const int which)
 void
 SoBaseList::truncate(const int start)
 {
-  const int n = this->getLength();
-  //Check if get(which) exists.
   if (this->doRef) {
+    const int n = this->getLength();
     for (int i = start; i < n; i++) {
-      this->get(i)->unref();
+      if (this->get(i) != NULL) this->get(i)->unref();
     }
   }
   SbPList::truncate(start);
@@ -133,14 +134,14 @@ SoBaseList::truncate(const int start)
 void
 SoBaseList::copy(const SoBaseList &l)
 {
-  SbPList::copy(l);
-  this->doRef = l.doRef;
+  if (this == &l) return;
 
-//   truncate(0);
-//   this->doRef = l.doRef;
-//   const int n = l.getLength();
-//   for (int i = 0; i < n; i++)
-//     this->append(l.get(i));
+  this->truncate(0);
+
+  this->doRef = l.doRef;
+  const int n = l.getLength();
+  for (int i = 0; i < n; i++)
+    this->append(l.get(i)); // wil handle ref'ing
 }
 
 /*!
@@ -162,7 +163,7 @@ SoBaseList::operator =(const SoBaseList &l)
 SoBase *
 SoBaseList::operator [](const int i) const
 {
-  return (SoBase *)((*(const SbPList *)this)[i]);
+  return (SoBase*) SbPList::operator[](i);
 }
 
 /*!
@@ -172,7 +173,23 @@ SoBaseList::operator [](const int i) const
 void
 SoBaseList::addReferences(const SbBool flag)
 {
+  if (flag == this->doRef) return; // no change
   this->doRef = flag;
+
+  // this method should probably never be called when there are items in
+  // the list, but I think the code below should handle that case also.
+  // If refing changes from on to off, all items are unref'ed, since
+  // they were ref'ed when inserted. If state changes from off to on, all
+  // items are ref'ed, since they will be unref'ed when removed from list.
+
+  const int n = this->getLength();
+  for (int i = 0; i < n; i++) {
+    SoBase *item = this->get(i);
+    if (item) {
+      if (flag) item->ref();
+      else item->unref();
+    }
+  }
 }
 
 /*!
@@ -182,7 +199,10 @@ SoBaseList::addReferences(const SbBool flag)
 void
 SoBaseList::set(const int i, SoBase * const ptr)
 {
-  if (this->doRef) this->get(i)->unref();
+  if (this->doRef) {
+    ptr->ref();
+    if (this->get(i)) this->get(i)->unref();
+  }
   SbPList::set(i, (void*)ptr);
 }
 

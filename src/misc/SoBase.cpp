@@ -379,7 +379,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 
 /*!
   Removes a name<->object mapping from the global dictionary.
- */
+*/
 void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
@@ -397,25 +397,26 @@ SoBase::removeName(SoBase * const b, const char * const name)
 
 /*!
   FIXME: write doc
- */
+*/
 void
 SoBase::startNotify(void)
 {
-  // FIXME: What else should be put here? kintel.
-  SoNotList list;
-
-  this->notify(&list);
 }
 
 /*!
   FIXME: write doc
- */
+*/
 void
 SoBase::notify(SoNotList * list)
 {
   // FIXME: What else should be put here? kintel.
+
+#if 1 // FIXME: investigate if it is possible to use the faster code below
   SoAuditorList al = this->getAuditors();
   al.notify(list);
+#else // faster code, but is it safe?
+  this->auditors.notify(list);
+#endif // faster code
 }
 
 /*!
@@ -435,7 +436,7 @@ SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
   notified whenever any updates are made to this object.
 
   \sa addAuditor()
- */
+*/
 void
 SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 {
@@ -446,7 +447,7 @@ SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
   Returns list of objects auditing this object.
 
   \sa addAuditor(), removeAuditor()
- */
+*/
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
@@ -456,7 +457,7 @@ SoBase::getAuditors(void) const
 /*!
   This method is used during the first write pass of a write action to
   count the number of references to this object in the scene graph.
- */
+*/
 void
 SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
 {
@@ -479,7 +480,7 @@ SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
 
   This method will return a valid result only during the second pass of
   write actions.
- */
+*/
 SbBool
 SoBase::shouldWrite(void)
 {
@@ -488,7 +489,7 @@ SoBase::shouldWrite(void)
 
 /*!
   FIXME: write doc
- */
+*/
 void
 SoBase::incrementCurrentWriteCounter(void)
 {

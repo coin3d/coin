@@ -138,10 +138,9 @@ SoPath::initClass(void)
 */
 
 SoPath::SoPath(const int approxLength)
-  : nodes(approxLength), indices(approxLength)
+  : nodes(approxLength), indices(approxLength),
+    numPublic(0), minNumPublic(0), doAuditors(FALSE)
 {
-  numPublic = minNumPublic = 0;
-  doAuditors = FALSE;
 }
 
 /*!
@@ -150,9 +149,9 @@ SoPath::SoPath(const int approxLength)
 */
 
 SoPath::SoPath(SoNode * const head)
-  : nodes(1), indices(1)
+  : nodes(1), indices(1), doAuditors(FALSE)
 {
-  setHead(head);
+  this->setHead(head);
 }
 
 /*!
@@ -176,10 +175,12 @@ SoPath::SoPath(const SoPath & rhs)
 SoPath &
 SoPath::operator = (const SoPath & rhs)
 {
-  truncate(0);
-  const int length = rhs.getLength();
-  for (int i = 0; i < length; i++) {
-    append((SoNode *) rhs.nodes[i], rhs.indices[i]);
+  if (this != &rhs) {
+    truncate(0);
+    const int length = rhs.getLength();
+    for (int i = 0; i < length; i++) {
+      append((SoNode *) rhs.nodes[i], rhs.indices[i]);
+    }
   }
   return *this;
 }
@@ -190,7 +191,7 @@ SoPath::operator = (const SoPath & rhs)
 
 SoPath::~SoPath(void)
 {
-  truncate(0); // to unref() the nodes.
+  this->truncate(0); // to unref() the nodes.
 }
 
 /*!
@@ -201,8 +202,8 @@ SoPath::~SoPath(void)
 void
 SoPath::setHead(SoNode * const node)
 {
-  truncate(0);
-  append(node, 0);
+  this->truncate(0);
+  this->append(node, 0);
   this->numPublic = 1;
   this->minNumPublic = 1;
 }
@@ -252,7 +253,7 @@ SoPath::append(const int childIndex)
   SoNode * node = (*children)[childIndex];
   assert(node);
 
-  append(node, childIndex);
+  this->append(node, childIndex);
 }
 
 /*!
@@ -331,7 +332,7 @@ SoPath::append(const SoPath * const fromPath)
   for (int kid = 0; kid < kids; kid++) {
     SoNode * child = (*tailchildren)[kid];
     if (child == head) {
-      append(head, kid);
+      this->append(head, kid);
       const int length = fromPath->getLength();
       for (int i = 1; i < length; i++) {
         append((SoNode *) fromPath->nodes[i], fromPath->indices[i]);
@@ -355,9 +356,8 @@ SoPath::append(const SoPath * const fromPath)
 void
 SoPath::append(SoNode * const node, const int index)
 {
-    this->nodes.append(node);
-    this->indices.append(index);
-    node->ref();
+  this->nodes.append(node);
+  this->indices.append(index);
 }
 
 /*!
@@ -424,7 +424,7 @@ SoPath::getNodeFromTail(const int index) const
 #if COIN_DEBUG
   if (index < 0 || index >= this->nodes.getLength()) {
     SoDebugError::postWarning("SoPath::getNodeFromTail()",
-      "index is out of bounds.\n");
+                              "index is out of bounds.\n");
     assert(0);
   }
 #endif // COIN_DEBUG
@@ -459,7 +459,7 @@ SoPath::getIndexFromTail(const int index) const
 #if COIN_DEBUG
   if (index < 0 || index >= this->indices.getLength()) {
     SoDebugError::postWarning("SoPath::getIndexFromTail()",
-      "index is out of bounds.\n");
+                              "index is out of bounds.\n");
     assert(0);
   }
 #endif // COIN_DEBUG
@@ -512,8 +512,6 @@ SoPath::truncate(const int length, const SbBool /*doNotify*/)
     assert(0);
   }
 #endif // COIN_DEBUG
-  for (int i = this->nodes.getLength() - 1; i >= length; i--)
-    this->nodes[i]->unref();
   this->nodes.truncate(length);
   this->indices.truncate(length);
 }

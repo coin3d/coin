@@ -78,7 +78,6 @@ SoChildList::append(SoNode * const node)
 {
   SoNodeList::append(node);
   this->parent->startNotify();
-//    node->ref();
 }
 
 /*!
@@ -89,7 +88,6 @@ SoChildList::insert(SoNode * const node, const int addBefore)
 {
   SoNodeList::insert(node, addBefore);
   this->parent->startNotify();
-//    ptr->ref();
 }
 
 /*!
@@ -98,7 +96,6 @@ SoChildList::insert(SoNode * const node, const int addBefore)
 void
 SoChildList::remove(const int index)
 {
-//    if ((*this)[which] != NULL) (*this)[which]->unref();
   SoNodeList::remove(index);
   this->parent->startNotify();
 }
@@ -109,10 +106,11 @@ SoChildList::remove(const int index)
 void
 SoChildList::truncate(const int length)
 {
-//   for (int i = length; i < getLength(); i++) {
-//     if ((*this)[i] != NULL) (*this)[i]->unref();
-//   }
-  if (length != this->getLength()) {
+  const int n = this->getLength();
+  if (length != n) {
+    for (int i = length; i < n; i++) {
+      if (this->get(i) != NULL) this->get(i)->removeAuditor(this->parent, SoNotRec::PARENT);
+    }
     SoNodeList::truncate(length);
     this->parent->startNotify();
   }
@@ -124,9 +122,10 @@ SoChildList::truncate(const int length)
 void
 SoChildList::copy(const SoChildList & list)
 {
+  if (this == &list) return;
   this->truncate(0);
-  const int max = list.getLength();
-  for (int i = 0; i < max; i++) {
+  const int n = list.getLength();
+  for (int i = 0; i < n; i++) {
     this->append((SoNode *) list.get(i));
   }
   this->auditors = list.auditors;
@@ -141,7 +140,6 @@ SoChildList::set(const int index, SoNode * const node)
 {
   SoBaseList::set(index, (SoBase *)node);
   this->parent->startNotify();
-//    node->ref();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

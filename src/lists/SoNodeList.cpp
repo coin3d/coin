@@ -100,6 +100,5 @@ SoNodeList::operator =(const SoNodeList & l)
 void
 SoNodeList::insert(SoNode * const ptr, const int addBefore)
 {
-  //  if (this->doRef) ptr->ref();
   SoBaseList::insert((SoBase *)ptr, addBefore);
 }
