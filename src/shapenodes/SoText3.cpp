@@ -273,8 +273,8 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   // check profiles and extend bounding box if necessary
   float profsize = 0;
-  float minz = -1.0f, maxz = 0.0f;
-
+  float minz = 0.0f, maxz = 0.0f;
+  
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
   if ( numprofiles > 0) {
@@ -325,18 +325,16 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       minz = 0.0f;
     }
   }
-  
-  minx -= profsize;
-  maxx += profsize;
-  miny -= profsize;
-  maxy += profsize;
-  
+ 
   box.setBounds(SbVec3f(minx, miny, minz), SbVec3f(maxx, maxy, maxz));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
   box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1) * fontspec.size, 0));
   box.extendBy(PRIVATE(this)->maxglyphbbox);
 
+  box.extendBy(SbVec3f(box.getMax()[0] + profsize, box.getMax()[1] + profsize, 0));
+  box.extendBy(SbVec3f(box.getMin()[0] - profsize, box.getMin()[1] - profsize, 0));
+    
   center = box.getCenter();
 
   cc_fontspec_clean(&fontspec);
@@ -1153,7 +1151,6 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
         }
       }
 
-      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
       xpos += advancex * fontspec->size;
@@ -1229,9 +1226,10 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
               
       if (strcharidx > 0) 
-        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);      
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
       
+ 
       stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
 
