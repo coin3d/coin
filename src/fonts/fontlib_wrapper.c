@@ -56,7 +56,21 @@
 
 static void * flw_global_lock = NULL;
 
-#if 0 /* Debug: enable this in case code hangs waiting for a lock. */
+
+/* Debug: enable this in case code hangs waiting for a lock.  A hang
+   will typically happen for one out of two reasons:
+
+   1) The mutex is locked but not released. To check whether or not
+      this is the cause, look for multiple exit points (return
+      statements) in a function.
+
+   2) A cc_flw_*() function locks the global mutex, then calls another
+      cc_flw_*() function, which when attempting to lock the same
+      mutex will simply hang.
+
+  -- mortene.
+*/
+#if 0
 
 #define FLW_MUTEX_LOCK(m) \
   do { \
