@@ -1079,6 +1079,7 @@ coin_atexit_cleanup(void)
   }
   cc_list_destruct(atexit_list);
   atexit_list = NULL;
+  if (debug) { cc_debugerror_postinfo("coin_atexit_cleanup", "fini"); }
 }
 
 /*
