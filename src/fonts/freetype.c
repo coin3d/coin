@@ -104,6 +104,7 @@ static void flwft_addTessVertex(double * vertex);
 static void flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph);
 static void flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
 static void flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flwft_cleanupMallocList(void);
 
 static int flwft_calctessellatorsteps(float complexity);
 
@@ -153,6 +154,7 @@ typedef struct flwft_tessellator_t {
   cc_list * vertexlist;
   cc_list * faceindexlist;
   cc_list * edgeindexlist;
+  cc_list * malloclist; /* to free temporary integers/memory */
 } flwft_tessellator_t;
 
 static flwft_tessellator_t flwft_tessellator;
@@ -445,6 +447,7 @@ cc_flwft_initialize(void)
   flwft_tessellator.vertexlist = NULL;
   flwft_tessellator.faceindexlist = NULL;
   flwft_tessellator.edgeindexlist = NULL;
+  flwft_tessellator.malloclist = NULL;
 
   /* set up font2glyph hash */
   cc_flwft_globals.font2glyphhash = cc_hash_construct(50, 0.75); 
@@ -1011,6 +1014,9 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
      flwft_tessellator.faceindexlist = cc_list_construct();
   if ( flwft_tessellator.edgeindexlist == NULL)
      flwft_tessellator.edgeindexlist = cc_list_construct();
+  if (flwft_tessellator.malloclist == NULL) {
+    flwft_tessellator.malloclist = cc_list_construct();
+  }
 
   /* FreeType callbacks */
   outline_funcs.move_to = (FT_Outline_MoveToFunc) flwft_moveToCallback;
@@ -1065,6 +1071,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flwft_buildVertexList(new_vector_glyph);
   flwft_buildFaceIndexList(new_vector_glyph);
   flwft_buildEdgeIndexList(new_vector_glyph);
+  flwft_cleanupMallocList();
 
   gs = (struct cc_flwft_glyph*) malloc(sizeof(struct cc_flwft_glyph));
   gs->bitmap = NULL;
@@ -1074,6 +1081,10 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   unused = cc_hash_put(glyphhash, (unsigned long)glyph, gs);
   assert(unused);
   
+  /* clean up glyph in Freetype */
+  tmp = (FT_Glyph) g;
+  cc_ftglue_FT_Done_Glyph(tmp);
+
   return new_vector_glyph; 
 
 }
@@ -1092,8 +1103,10 @@ flwft_addTessVertex(double * vertex)
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
 
   counter = (int *) malloc(sizeof(int));
+  cc_list_append(flwft_tessellator.malloclist, counter); /* to avoid mem leaks */
   counter[0] = flwft_tessellator.vertex_counter++;
   GLUWrapper()->gluTessVertex(flwft_tessellator.tessellator_object, vertex, counter);
+
 
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
   
@@ -1362,7 +1375,6 @@ flwft_endCallback(void)
 static void 
 flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
-
   int * ret;  
   float * point;
 
@@ -1370,14 +1382,13 @@ flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4
   point[0] = flwft_tessellator.vertex_scale * ((float) coords[0]) / 64.0f;
   point[1] = flwft_tessellator.vertex_scale * ((float) coords[1]) / 64.0f;
 
-
   cc_list_append(flwft_tessellator.vertexlist, point);
 
   ret = (int*) malloc(sizeof(int));
+  cc_list_append(flwft_tessellator.malloclist, ret); /* to avoid mem leaks */
   ret[0] = flwft_tessellator.vertex_counter++;
   
   *dataOut = ret;
-
 }
 
 static void 
@@ -1385,6 +1396,19 @@ flwft_errorCallback(GLenum error_code)
 {
 }
 
+static void
+flwft_cleanupMallocList(void)
+{
+  int i, n;
+  if (flwft_tessellator.malloclist) {
+    n = cc_list_get_length(flwft_tessellator.malloclist);
+    for (i = 0; i < n; i++) {
+      free(cc_list_get(flwft_tessellator.malloclist, i));
+    }
+    cc_list_destruct(flwft_tessellator.malloclist);
+    flwft_tessellator.malloclist = NULL;
+  }
+}
 
 static void
 flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
