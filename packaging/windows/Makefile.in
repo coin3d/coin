@@ -38,7 +38,7 @@ unix2dos.sed: Makefile
 	@echo -e "s/\$$/\r/;\np;" >unix2dos.sed
 
 LICENSE.TXT: extract.sed unix2dos.sed
-	@cp $(top_srcdir)/LICENSE.LGPL LICENSE.TXT;
+	@cp $(top_srcdir)/LICENSE.GPL LICENSE.TXT;
 	@for process in extract unix2dos; do \
 	  sed -n -f $${process}.sed <LICENSE.TXT >LICENSE.TMP; \
 	  rm -f LICENSE.TXT; \
