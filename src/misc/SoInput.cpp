@@ -52,8 +52,20 @@
   }
   \endcode
 
-  \sa SoOutput, SoDB
- */
+  This class supports one environment variable called
+  COIN_SOINPUT_SEARCH_GLOBAL_DICT.  When set to "1", the global dictionary
+  is searched after the current file dictionary when resolving USE
+  keywords. This makes it possible to reference nodes in other
+  files. The reason for introducing this feature is that the SoFile
+  node reareads the file whenever the name field changes.  The first
+  time the file is read, it's possible to reference nodes in the
+  parent file, using the USE keyword. But, when the file is reread
+  this is no longer possible, since the reading now starts at the File
+  node, with an empty dictionary.
+
+  \sa SoOutput, SoDB 
+
+*/
 
 // METADON doc:
 /*¡
@@ -68,6 +80,8 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
+#include <Inventor/nodes/SoNode.h>
+#include <stdlib.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -1043,6 +1057,16 @@ SoInput::findReference(const SbName & name) const
   if (this->refdict.find((unsigned long)name.getString(), base))
     return (SoBase *) base;
 
+  static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
+  if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
+    char * env = getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
+    if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
+    else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
+  }
+  
+  if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
+    return SoBase::getNamedBase(name, SoNode::getClassTypeId());
+  }
   return NULL;
 }
 
