@@ -241,7 +241,7 @@ SoGLDisplayList::call(SoState * state, int index)
 }
 
 /*!
-  Create a dependency on the displat list.
+  Create a dependency on the display list.
 */
 void
 SoGLDisplayList::addDependency(SoState * state)
