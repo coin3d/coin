@@ -452,7 +452,7 @@ SoVRMLBackgroundP::buildGeometry()
 
   float sphereradius = 1.5;
   SbList <float> angles;
-  const int slices = 30;
+  const int slices = 30; // Number of slices, i.e. vertical resolution of the spheres.
   
   this->rootnode = new SoSeparator;
   this->rootnode->ref();
@@ -494,7 +494,7 @@ SoVRMLBackgroundP::buildGeometry()
     }
     else { // No angles specified. Creating list based on number of colors.
       int num = PUBLIC(this)->skyColor.getNum();
-      if(num == 1) ++num; // Special case
+      if (num == 1) ++num; // Special case for one-colored sky.
       for (int i=0;i<=num;++i) 
         angles.append((M_PI/num)*i);
     }
@@ -584,13 +584,13 @@ SoVRMLBackgroundP::buildGeometry()
         } 
         angles.append(angle);
       }
-      if(angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
+      if (angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
         angles.append(angle);
 
     }
     else {
       int num = PUBLIC(this)->groundColor.getNum();
-      if(num == 1) ++num;
+      if (num == 1) ++num;
       for (int i=0;i<num;++i)
         angles.append((M_PI/(num))*i);
     }
