@@ -144,6 +144,9 @@ public:
                         GL_UNSIGNED_BYTE,
                         this->buffersize[0],
                         this->buffersize[1]);
+#if HAVE_OSMESAPIXELSTORE
+      OSMesaPixelStore(OSMESA_Y_UP, 0); // Draw top-to-bottom
+#endif // HAVE_OSMESAPIXELSTORE
       return TRUE;
     }
     return FALSE;
@@ -222,7 +225,7 @@ public:
                                 "Couldn't get RGBA X11 visual.");
       return;
     }
-    
+
     this->context = glXCreateContext(this->display, this->visinfo,
                                      0, GL_FALSE);
     if (!this->context) {
@@ -236,20 +239,20 @@ public:
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->display) XCloseDisplay(this->display);
-    
+
     delete this->buffer;
   }
-  
+
   virtual void setBufferSize(const SbVec2s & size) {
     SoOffscreenInternalData::setBufferSize(size);
-    
+
     delete this->buffer;
     this->buffer =
       new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-    
+
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
-    
+
     if (this->context) {
       this->pixmap = XCreatePixmap(this->display,
                                    DefaultRootWindow(this->display),
@@ -267,7 +270,7 @@ public:
                                     "Couldn't create GLX Pixmap.");
         }
       }
-      
+
     }
   }
 

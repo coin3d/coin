@@ -171,6 +171,17 @@ AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
 
 if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
   AC_DEFINE(HAVE_OSMESACREATECONTEXT)
+
+  AC_CACHE_CHECK([whether Mesa pixelstore format should be set],
+    sim_cv_func_osmesapixelstore_avail,
+    [AC_TRY_LINK([#include <GL/osmesa.h>],
+                 [OSMesaPixelStore(OSMESA_Y_UP, 0);],
+                 sim_cv_func_osmesapixelstore_avail=yes,
+                 sim_cv_func_osmesapixelstore_avail=no)])
+
+  if test x"$sim_cv_func_osmesapixelstore_avail" = xyes; then
+    AC_DEFINE(HAVE_OSMESAPIXELSTORE)
+  fi
 fi
 
 
