@@ -25,6 +25,7 @@
 #include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/fields/SoSFNode.h> 
 #include <Inventor/fields/SoSFEnum.h> 
+#include <Inventor/fields/SoSFImage.h>
 
 #if VEC_I32_SUPPORT
 #include <Inventor/fields/SoSFVec2i32.h>
@@ -35,7 +36,7 @@
 #include <Inventor/fields/SoMFVec4i32.h>
 #endif
 
-#include <Inventor/nodes/SoGLShaderParameter.h>
+#include "SoGLShaderParameter.h"
 #include "SoShaders.h"
 
 class SoGLShaderObject;
@@ -46,7 +47,7 @@ class SoGLShaderObject;
 
 class SoUniformShaderParameter;
 
-class SoShaderParameter : public SoNode {
+class UMDSOSHADER_EXPORT SoShaderParameter : public SoNode {
   
   SO_NODE_ABSTRACT_HEADER(SoShaderParameter);
   
@@ -66,7 +67,7 @@ public: // protected:
  * ***                         SoUniformShaderParameter                   ***
  * **************************************************************************/
 
-class SoUniformShaderParameter : public SoShaderParameter {
+class UMDSOSHADER_EXPORT SoUniformShaderParameter : public SoShaderParameter {
   
   SO_NODE_ABSTRACT_HEADER(SoUniformShaderParameter);
   
@@ -515,6 +516,28 @@ protected:
   CGGLenum getTransform(MatrixTransform tform);
 };
 #endif /* SO_CG_SHADER_SUPPORT */
+
+/* **************************************************************************
+ * ***                      SoShaderParameterSampler2D                    ***
+ * **************************************************************************/
+
+class SoShaderParameterSampler2D : public SoUniformShaderParameter {
+  
+  SO_NODE_HEADER(SoShaderParameterSampler2D);
+  
+public:
+  SoSFString filename;
+  SoSFImage  image;
+
+  SoShaderParameterSampler2D();
+  
+SoINTERNAL public:
+  static void initClass();
+  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  
+protected:
+  virtual ~SoShaderParameterSampler2D();
+};
 
 /*--------------------------------------------------------------------------*/
 

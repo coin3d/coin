@@ -18,7 +18,7 @@
 class SoGLShaderObject;
 class SoGLShaderProgram;
 
-class SoShaderObject : public SoGroup {
+class UMDSOSHADER_EXPORT SoShaderObject : public SoGroup {
     
   SO_NODE_ABSTRACT_HEADER(SoShaderObject);
   
