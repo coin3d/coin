@@ -456,7 +456,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   int matnr = 0;
   int normnr = 0;
 
-  while (viptr + 4 < viendptr) {
+  while (viptr + 3 < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
