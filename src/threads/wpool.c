@@ -258,7 +258,7 @@ cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
   wpool_lock(pool);
   n = cc_list_get_length(pool->idlepool);
   if (n < numworkersneeded) {
-    wpoll_wait(numworkersneeded);
+    wpool_wait(pool, numworkersneeded);
   }
 }
 
