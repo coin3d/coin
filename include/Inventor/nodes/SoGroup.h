@@ -68,6 +68,8 @@ protected:
 
   // -- clean out this
   virtual SoNode * copy(void);
+
+  friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
 };
 
 #endif // !__SOGROUP_H__

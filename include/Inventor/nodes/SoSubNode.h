@@ -25,43 +25,53 @@
 #include <Inventor/SoType.h>
 
 
-#define SO_NODE_ABSTRACT_HEADER(_class_) \
+
+#define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \
+public: \
+  static SoType getClassTypeId(void); \
+  virtual SoType getTypeId(void) const; \
 private: \
-  static unsigned int classinstances; \
-  static SoType classTypeId; \
-  static const SoFieldData ** parentclassfielddata; \
-  static SoFieldData * classfielddata; \
+  static SoType classTypeId
+
+
+
+// FIXME: document. 20000103 mortene.
+#define SO_NODE_ABSTRACT_HEADER(_class_) \
+  PRIVATE_NODE_TYPESYSTEM_HEADER(); \
 protected: \
   static const SoFieldData ** getFieldDataPtr(void); \
   virtual const SoFieldData * getFieldData(void) const; \
-public: \
-  static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const
+private: \
+  static const SoFieldData ** parentclassfielddata; \
+  static SoFieldData * classfielddata; \
+  /* Counts number of instances of subclasses aswell as "direct" */ \
+  /* instances from non-abstract classes. */ \
+  static unsigned int classinstances
 
 
+
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_HEADER(_class_) \
   SO_NODE_ABSTRACT_HEADER(_class_); \
 private: \
   static void * createInstance(void)
 
 
-#define SO_NODE_ABSTRACT_SOURCE(_class_) \
-unsigned int _class_::classinstances = 0; \
+
+#define PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_) \
 SoType _class_::classTypeId = SoType::badType(); \
+SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+SoType _class_::getTypeId(void) const { return _class_::classTypeId; }
+
+
+
+// FIXME: document. 20000103 mortene.
+#define SO_NODE_ABSTRACT_SOURCE(_class_) \
+PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_); \
+ \
+unsigned int _class_::classinstances = 0; \
 const SoFieldData ** _class_::parentclassfielddata = NULL; \
 SoFieldData * _class_::classfielddata = NULL; \
- \
-SoType \
-_class_::getClassTypeId(void) \
-{ \
-  return _class_::classTypeId; \
-} \
- \
-SoType \
-_class_::getTypeId(void) const \
-{ \
-  return _class_::classTypeId; \
-} \
  \
 const SoFieldData ** \
 _class_::getFieldDataPtr(void) \
@@ -77,6 +87,7 @@ _class_::getFieldData(void) const \
 
 
 
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_SOURCE(_class_) \
 SO_NODE_ABSTRACT_SOURCE(_class_); \
  \
@@ -87,10 +98,14 @@ _class_::createInstance(void) \
 }
 
 
+
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_IS_FIRST_INSTANCE() \
   (classinstances == 1)
 
 
+
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_CONSTRUCTOR(_class_) \
   do { \
     _class_::classinstances++; \
@@ -109,6 +124,7 @@ _class_::createInstance(void) \
   } while (0)
 
 
+
 #if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
@@ -116,6 +132,7 @@ _class_::createInstance(void) \
     this->isBuiltIn = TRUE; \
   } while (0)
 #endif // INTERNAL macro definition
+
 
 
 #define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
@@ -137,6 +154,7 @@ _class_::createInstance(void) \
   } while (0)
 
 
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
@@ -154,6 +172,7 @@ _class_::createInstance(void) \
 
 
 
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
@@ -170,6 +189,7 @@ _class_::createInstance(void) \
 #endif // INTERNAL macro definition
 
 
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
   do { \
     if (SO_NODE_IS_FIRST_INSTANCE()) \
@@ -181,6 +201,7 @@ _class_::createInstance(void) \
   } while (0)
 
 
+// FIXME: document. 20000103 mortene.
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
     if (SO_NODE_IS_FIRST_INSTANCE()) \

@@ -27,9 +27,17 @@
 class SoUnknownNode : public SoNode {
   typedef SoNode inherited;
 
-  // FIXME: needs dynamic SoFieldData instances to store the fields?
-  // 20000102 mortene.
-  SO_NODE_HEADER(SoUnknownNode);
+  // The following definitions are used instead of SO_NODE_HEADER() to
+  // let SoUnknownNodes have dynamic handling of SoFieldData objects.
+
+  PRIVATE_NODE_TYPESYSTEM_HEADER();
+protected:
+  virtual const SoFieldData * getFieldData(void) const;
+private:
+  SoFieldData * classfielddata;
+  static void * createInstance(void);
+
+  // Node definition starts "proper".
 
 public:
   static void initClass(void);
