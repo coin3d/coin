@@ -5381,8 +5381,10 @@ if test x"$enable_warnings" = x"yes"; then
     ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
     ##       this warning to avoid all the output clutter when compiling
     ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
+    ## 1169: External/internal linkage conflicts with a previous declaration.
+    ##       We get this for the "friend operators" in SbString.h
 
-    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
+    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506,1169"
 
     if test x"$CC" = xcc || test x"$CC" = xCC; then
       SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
