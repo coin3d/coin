@@ -57,6 +57,12 @@ public:
     CLAMP_TO_EDGE
   };
 
+  void setPBuffer(SoState * state,
+                  void * context,
+                  const Wrap wraps = REPEAT,
+                  const Wrap wrapt = REPEAT,
+                  const float quality = 0.5f);
+  
   void setData(const unsigned char * bytes,
                const SbVec2s & size,
                const int numcomponents,

@@ -582,11 +582,13 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
+  void reallyBindPBuffer(SoState *state);
   void resizeImage(SoState * state, unsigned char *&imageptr,
                    uint32_t &xsize, uint32_t &ysize, uint32_t &zsize);
   SbBool shouldCreateMipmap(void);
   void applyFilter(const SbBool ismipmap);
 
+  void * pbuffer;
   const SbImage *image;
   SbImage dummyimage;
   SbVec3s glsize;
@@ -766,15 +768,57 @@ SoGLImage::isOfType(SoType type) const
 }
 
 /*!
+  Sets the pbuffer for this texture. Experimental code, use with care.
+*/
+void
+SoGLImage::setPBuffer(SoState * state,
+                      void * pbuffer,
+                      const Wrap wraps,
+                      const Wrap wrapt,
+                      const float quality)
+  
+{
+  if (PRIVATE(this)->pbuffer && state) {
+    // bind texture before releasing pbuffer
+    this->getGLDisplayList(state)->call(state);
+    cc_glglue_context_release_pbuffer(PRIVATE(this)->pbuffer);
+  }
+
+  if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
+  PRIVATE(this)->unrefDLists(state);
+  PRIVATE(this)->init(); // init to default values
+
+  if (pbuffer) {
+    PRIVATE(this)->pbuffer = pbuffer;
+    PRIVATE(this)->wraps = wraps;
+    PRIVATE(this)->wrapt = wrapt;
+    
+    PRIVATE(this)->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
+    PRIVATE(this)->needtransparencytest = TRUE;
+    PRIVATE(this)->hastransparency = FALSE;
+    PRIVATE(this)->usealphatest = FALSE;
+    PRIVATE(this)->quality = quality;
+    
+    
+    if (PRIVATE(this)->pbuffer && !PRIVATE(this)->isregistered && 
+        !(this->getFlags() & INVINCIBLE)) {
+      PRIVATE(this)->isregistered = TRUE;
+      SoGLImage::registerImage(this);
+    }
+  }
+}
+
+
+/*!
   Convenience 2D wrapper function around the 3D setData().
 */
 void
-SoGLImage::setData(const SbImage *image,
+SoGLImage::setData(const SbImage * image,
                    const Wrap wraps,
                    const Wrap wrapt,
                    const float quality,
                    const int border,
-                   SoState *createinstate)
+                   SoState * createinstate)
 
 {
   this->setData(image, wraps, wrapt, (Wrap)PRIVATE(this)->wrapr,
@@ -1002,6 +1046,7 @@ SoGLImage::~SoGLImage()
 void
 SoGLImage::unref(SoState *state)
 {
+  if (PRIVATE(this)->pbuffer) this->setPBuffer(state, NULL);
   PRIVATE(this)->unrefDLists(state);
   delete this;
 }
@@ -1167,6 +1212,7 @@ SoGLImageP::init(void)
 {
   this->isregistered = FALSE;
   this->image = NULL;
+  this->pbuffer = NULL;
   this->glsize.setValue(0,0,0);
   this->glcomp = 0;
   this->wraps = SoGLImage::CLAMP;
@@ -1368,7 +1414,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
   unsigned char *bytes =
     this->image ? this->image->getValue(size, numcomponents) : NULL;
 
-  if (!bytes) return NULL;
+  if (!this->pbuffer && !bytes) return NULL;
 
   uint32_t xsize = size[0];
   uint32_t ysize = size[1];
@@ -1376,7 +1422,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   // these might change if image is resized
   unsigned char *imageptr = (unsigned char *) bytes;
-  this->resizeImage(state, imageptr, xsize, ysize, zsize);
+  if (imageptr) this->resizeImage(state, imageptr, xsize, ysize, zsize);
 
   SbBool mipmap = this->shouldCreateMipmap();
 
@@ -1385,11 +1431,18 @@ SoGLImageP::createGLDisplayList(SoState *state)
                                             1, mipmap);
   dl->ref();
   dl->open(state);
-  this->reallyCreateTexture(state, imageptr, numcomponents,
-                            xsize, ysize, zsize,
-                            dl->getType() == SoGLDisplayList::DISPLAY_LIST,
-                            mipmap,
-                            this->border);
+
+
+  if (this->pbuffer) {
+    this->reallyBindPBuffer(state);
+  } 
+  else {
+    this->reallyCreateTexture(state, imageptr, numcomponents,
+                              xsize, ysize, zsize,
+                              dl->getType() == SoGLDisplayList::DISPLAY_LIST,
+                              mipmap,
+                              this->border);
+  }
   dl->close(state);
   return dl;
 }
@@ -1453,6 +1506,27 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
   const cc_glglue * glw = sogl_glue_instance(state);
   if (cc_glglue_has_texture_edge_clamp(glw)) return (GLenum) GL_CLAMP_TO_EDGE;
   return (GLenum) GL_CLAMP;
+}
+
+void
+SoGLImageP::reallyBindPBuffer(SoState * state)
+{
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                  translate_wrap(state, this->wraps));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+                  translate_wrap(state, this->wrapt));
+
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  SbBool mipmap = FALSE;
+
+  if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "SGIS_generate_mipmap")) {
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+    glHint(GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
+    mipmap = TRUE;
+  }
+  this->applyFilter(mipmap);
+  cc_glglue_context_bind_pbuffer(this->pbuffer);
 }
 
 void
