@@ -921,16 +921,19 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
 }
 
 /*!
-  Not part of the Coin API. It is supposed to create the SoNodekitParts
-  class instance. Since this class can only be used by SoBaseKit
-  (all members are private, with SoBaseKit as friend), we decided
-  to not support this class, and solve the problem of recording
-  which parts are created in another way.
+  Not part of the Coin API.
+
+  It is supposed to create the SoNodekitParts class instance. Since
+  this class can only be used by SoBaseKit (all members are private,
+  with SoBaseKit as friend), we decided to not support this class, and
+  solve the problem of recording which parts are created in an
+  alternative way.
 */
 void
 SoBaseKit::createNodekitPartsList(void)
 {
-  COIN_STUB();
+  assert(0 &&
+         "SoBaseKit::createNodekitPartsList() should not be used with Coin");
 }
 
 /*!
