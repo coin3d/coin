@@ -30,3 +30,7 @@ C RESOURCES
 * There are sourcecode examples for many basic ADTs in C in the book
   "C Interfaces And Implementations", referenced from the table of
   contents: <URL:http://www.cs.princeton.edu/software/cii/>.
+
+* Programming techniques with ISO C89 to get OO design:
+  <URL:http://ldeniau.home.cern.ch/ldeniau/html/oopc/oopc.html>
+  ("Object Oriented Programming In C" by Laurent Deniau).
