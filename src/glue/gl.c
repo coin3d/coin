@@ -1798,16 +1798,15 @@ cc_glglue_instance(int contextid)
       GLfloat vals[2];
       glGetFloatv(GL_POINT_SIZE_RANGE, vals);
 
-      // Matthias Koenig reported on coin-discuss that the OpenGL
-      // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
-      // lowest pointsize, but it will still set the return value of
-      // glGetError() to GL_INVALID_VALUE if this size is attempted
-      // used. So the boundary range fix in the next line of code is a
-      // workaround for that OpenGL implementation bug.
-      //
-      // 0.0f and lower values are explicitly disallowed, according to
-      // the OpenGL 1.3 specification, Chapter 3.3.
-
+      /* Matthias Koenig reported on coin-discuss that the OpenGL
+         implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+         lowest pointsize, but it will still set the return value of
+         glGetError() to GL_INVALID_VALUE if this size is attempted
+         used. So the boundary range fix in the next line of code is a
+         workaround for that OpenGL implementation bug.
+         
+         0.0f and lower values are explicitly disallowed, according to
+         the OpenGL 1.3 specification, Chapter 3.3. */
       if (vals[0] <= 0.0f) { 
         vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
       }
@@ -1818,11 +1817,11 @@ cc_glglue_instance(int contextid)
       GLfloat vals[2];
       glGetFloatv(GL_LINE_WIDTH_RANGE, vals);
 
-      // Matthias Koenig reported on coin-discuss that the OpenGL
-      // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
-      // lowest linewidth, but it will still set the return value of
-      // glGetError() to GL_INVALID_VALUE if this size is attempted
-      // used. This is a workaround for what looks like an OpenGL bug.
+      /* Matthias Koenig reported on coin-discuss that the OpenGL
+         implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+         lowest linewidth, but it will still set the return value of
+         glGetError() to GL_INVALID_VALUE if this size is attempted
+         used. This is a workaround for what looks like an OpenGL bug. */
       
       if (vals[0] <= 0.0f) { 
         vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
@@ -3892,7 +3891,7 @@ compute_log(int value)
   return i;
 }
 
-// proxy mipmap creation
+/*  proxy mipmap creation */
 static SbBool
 proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipmap)
 {
@@ -3921,7 +3920,7 @@ proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipma
   return TRUE;
 }
 
-// proxy mipmap creation. 3D version.
+/* proxy mipmap creation. 3D version. */
 static SbBool
 proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const int nc, 
                 GLenum format, SbBool mipmap)
@@ -3988,7 +3987,7 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, int
       return TRUE;
     }
   }
-  else { // 3D textures
+  else { /*  3D textures */
     if (cc_glglue_has_3d_textures(glw)) {
       if (COIN_MAXIMUM_TEXTURE3_SIZE > 0) {
         if (xsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
@@ -4006,7 +4005,7 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, int
                            "3D not supported with this OpenGL driver");
         first = FALSE;
       }
-#endif // COIN_DEBUG
+#endif /*  COIN_DEBUG */
       return FALSE;
     }
   }
