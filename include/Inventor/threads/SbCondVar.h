@@ -27,8 +27,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/C/threads/condvar.h>
-
-class SbMutex;
+#include <Inventor/threads/SbMutex.h>
 
 class SbCondVar {
 public:
