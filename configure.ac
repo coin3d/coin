@@ -1055,10 +1055,9 @@ AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
 # suspect to stem from this. <mortene@sim.no>.
 
 AC_LANG_PUSH(C)
-SIM_AC_MATHLIB_READY_IFELSE([], [
-  SIM_AC_CHECK_MATHLIB(
-    [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
-    [SIM_AC_ERROR([no-math-library])])])
+SIM_AC_CHECK_MATHLIB(
+  [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
+  [SIM_AC_ERROR([no-math-library])])
 AC_LANG_POP(C)
 
 AC_LANG_PUSH(C++)
