@@ -46,6 +46,8 @@ private:
   unsigned char * buffer;
   AGLDrawable drawable;
   AGLContext context;
+  AGLContext storedcontext;
+  AGLDrawable storeddrawable;
   AGLPixelFormat pixformat;
   Rect bounds;
 };
@@ -92,12 +94,13 @@ SoOffscreenAGLData::~SoOffscreenAGLData()
   delete[] this->buffer;
 }
 
+// Pixels-pr-mm.
 SbVec2f
 SoOffscreenAGLData::getResolution(void)
 {
-  // FIXME: implement proper check. 20020524 mortene.
-  COIN_STUB();
-  return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
+  SInt16 hr, vr;
+  ScreenRes(&hr, &vr); 
+  return SbVec2f((float)hr / 25.4f, (float)vr / 25.4f);
 }
 
 void 
@@ -137,6 +140,8 @@ SoOffscreenAGLData::makeContextCurrent(uint32_t contextid)
 {
   assert(this->buffer);
   if (this->context && this->drawable) {
+    this->storedcontext = aglGetCurrentContext();
+    this->storeddrawable = aglGetDrawable(storedcontext);
     PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)drawable);
     aglSetOffScreen(context, bounds.right-bounds.left, 
                     bounds.bottom-bounds.top,
@@ -164,10 +169,15 @@ SoOffscreenAGLData::postRender(void)
                  this->buffer);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
     
-    // FIXME: GLX version saves old context and drawable, and
-    // restores it after use, should i do that as well? kyrah
-    // 20020223 UPDATE: yes, see comment above the GLX version of
-    // postRender(). 20020401 mortene.
+    // The previous context is stored and reset to make it possible
+    // to use an SoOffscreenRenderer from for instance an SoCallback
+    // node callback during SoGLRenderAction traversal, without the
+    // need for any extra book-keeping on the application side.
+    
+    if (this->storedcontext && this->storeddrawable) {
+      aglSetDrawable(storedcontext, storeddrawable);
+      aglSetCurrentContext(storedcontext);
+    }
   }
 }
 

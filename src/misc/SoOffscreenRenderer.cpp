@@ -49,6 +49,15 @@
   means that the maximum resolution is 32 bits, 8 bits for each of the
   R/G/B/A components.
 */
+
+// As first mentioned to me by Kyrah, the functionality of this class
+// should really have been outside the core Coin library, seeing how
+// it makes heavy use of window-system specifics. To be SGI Inventor
+// compatible we need it to be part of the Coin API, though.
+//
+// mortene.
+
+
 // FIXME: include the following in documentation about how to use the
 // SoOffscreenRenderer to write movies:
 //
