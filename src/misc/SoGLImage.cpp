@@ -1169,7 +1169,7 @@ SoGLImageP::applyFilter(SbBool ismipmap)
 //
 
 static SbList <SoGLImage*> * glimage_reglist;
-static uint32_t glimage_maxage = 5;
+static uint32_t glimage_maxage = 60;
 
 static void
 regimage_cleanup(void)
@@ -1263,7 +1263,7 @@ SoGLImage::freeAllImages(SoState * state)
 /*!
   Set the maximum age for a texture object/display list.  The age
   of an image is the number of frames since it has been used.
-  Default maximum age is 5.
+  Default maximum age is 60.
 */
 void
 SoGLImage::setDisplayListMaxAge(const uint32_t maxage)
