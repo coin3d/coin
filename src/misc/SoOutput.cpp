@@ -1153,6 +1153,9 @@ SoOutput::padHeader(const SbString & inString)
   return h;
 }
 
+//
+// Used only by SoBase::writeHeader().
+//
 void 
 SoOutput::removeSoBase2IdRef(const SoBase * base)
 {
