@@ -1498,6 +1498,16 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       THIS->pickedpath->unref();
       THIS->pickedpath = NULL;
     }
+    THIS->surrogatename = "";
+    if (THIS->surrogateownerpath) {
+      THIS->surrogateownerpath->unref();
+      THIS->surrogateownerpath = NULL;
+    }
+    if (THIS->surrogatepath) {
+      THIS->surrogatepath->unref();
+      THIS->surrogatepath = NULL;
+    }
+
     THIS->finishCB.invokeCallbacks(this);
     THIS->draggercache->truncatePath();
   }
