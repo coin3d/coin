@@ -99,7 +99,7 @@ cc_list_insert(cc_list * list, void * item, unsigned int pos)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(insertbefore >= 0 && insertbefore <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     if (this->numitems == this->itembuffersize) this->grow();
 
     for (int i = this->numitems; i > insertbefore; i--)
@@ -113,7 +113,7 @@ cc_list_remove(cc_list * list, const int index)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     this->numitems--;
     for (int i = index; i < this->numitems; i++)
       this->itembuffer[i] = this->itembuffer[i + 1];
@@ -125,7 +125,7 @@ cc_list_remove_item(cc_list * list,void * item)
     int idx = this->find(item);
 #ifdef COIN_EXTRA_DEBUG
     assert(idx != -1);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     this->remove(idx);
 }
 
@@ -134,7 +134,7 @@ cccist_remove_fast(cc_list * list, const int index)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     this->itembuffer[index] = this->itembuffer[--this->numitems];
 }
 
@@ -163,7 +163,7 @@ cc_list_truncate(cc_list * list, const int length)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(length <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     this->numitems = length;
   }
 
@@ -172,7 +172,7 @@ cc_list_truncate_fit(cc_list * list, const int length)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(length <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     this->numitems = length;
     this->fit();
   }
@@ -200,7 +200,7 @@ cc_list_pop(cc_list * list)
 {
 #ifdef COIN_EXTRA_DEBUG
     assert(this->numitems > 0);
-#endif // COIN_EXTRA_DEBUG
+#endif /* COIN_EXTRA_DEBUG */
     return this->itembuffer[--this->numitems];
 }
 

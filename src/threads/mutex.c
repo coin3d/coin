@@ -19,7 +19,8 @@
  *
 \**************************************************************************/
 
-// define to use the Win32 mutex object, undefine to use critical_sections (which has a trylock bug)
+/* define to use the Win32 mutex object, undefine to use
+   critical_sections (which has a trylock bug) */
 #define USE_W32_MUTEX 1
 
 #include <Inventor/C/threads/mutex.h>

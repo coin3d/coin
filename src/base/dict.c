@@ -68,7 +68,7 @@ default_hash(unsigned long key)
   return key;
 }
 
-// *************************************************************************
+/* ********************************************************************** */
 
 cc_dict *
 cc_dict_construct_sized(unsigned int entries)
@@ -299,4 +299,3 @@ cc_dict_set_hashing(cc_dict * dict, unsigned long (*hash)(unsigned long key))
 //   printf("\n\n\n");
 // }
 #endif
-

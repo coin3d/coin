@@ -25,7 +25,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "../tidbits.h" // snprintf() and vsnprintf() definitions.
+#include "../tidbits.h" /* snprintf() and vsnprintf() definitions. */
 
 #include <assert.h>
 #include <string.h>
@@ -83,7 +83,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
     */
     return;
   }
-#endif // COIN_DEBUG
+#endif /* COIN_DEBUG */
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
 } /* cc_string_remove_substring() */
 
@@ -219,7 +219,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
     start=0;
     end=-1;
   }
-#endif // COIN_DEBUG
+#endif /* COIN_DEBUG */
 
   /* if new substring fits in internal buffer, freeing allocated
      buffer will not happen - should this be changed? */
@@ -445,7 +445,7 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
 
 
     if ( expand )
-      cc_string_expand_buffer(me, 1024); // increase linearly in 1Kb intervals
+      cc_string_expand_buffer(me, 1024); /* increase linearly in 1Kb intervals */
   } while ( expand );
 } /* cc_string_vsprintf() */
 
