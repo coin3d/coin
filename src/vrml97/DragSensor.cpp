@@ -67,6 +67,7 @@
   \COININTERNAL
 
   Called when dragger is selected (picked) by the user.
+*/
 /*!
   \fn void SoVRMLDragSensor::drag(void)
 
