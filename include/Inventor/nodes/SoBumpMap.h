@@ -58,8 +58,6 @@ public:
   virtual void callback(SoCallbackAction * action);
   virtual void rayPick(SoRayPickAction * action);
 
-  static SbBool readImage(const SbString & fname, int & w, int & h, int & nc,
-                          unsigned char *& bytes);
 protected:
   virtual ~SoBumpMap();
 
