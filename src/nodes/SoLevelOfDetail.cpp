@@ -141,6 +141,10 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
@@ -169,7 +173,21 @@ SoLevelOfDetail_cleanup_func(void)
 
 // *************************************************************************
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoLevelOfDetailP {
+public:
+  SoBoundingBoxCache * bboxcache;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+
 SO_NODE_SOURCE(SoLevelOfDetail);
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Default constructor.
@@ -197,6 +215,9 @@ SoLevelOfDetail::SoLevelOfDetail(int numchildren)
 void
 SoLevelOfDetail::commonConstructor(void)
 {
+  THIS = new SoLevelOfDetailP;
+  THIS->bboxcache = NULL;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfDetail);
 
   SO_NODE_ADD_FIELD(screenArea, (0));
@@ -207,6 +228,8 @@ SoLevelOfDetail::commonConstructor(void)
 */
 SoLevelOfDetail::~SoLevelOfDetail()
 {
+  if (THIS->bboxcache) THIS->bboxcache->unref();
+  delete THIS;
 }
 
 // Documented in superclass.
@@ -257,16 +280,28 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (complexity == 1.0f) { idx = 0; goto traverse; }
   if (this->screenArea.getNum() == 0) { idx = 0; goto traverse; }
 
-  if (!bboxAction) {
-    // The viewport region will be replaced every time the action is
-    // used, so we can just feed it a dummy here.
-    bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
-    coin_atexit((coin_atexit_f *)SoLevelOfDetail_cleanup_func);
-  }
+  if (!THIS->bboxcache || !THIS->bboxcache->isValid(state)) {
+    if (!bboxAction) {
+      // The viewport region will be replaced every time the action is
+      // used, so we can just feed it a dummy here.
+      bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
+      coin_atexit((coin_atexit_f *)SoLevelOfDetail_cleanup_func);
+    }
 
-  bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
-  bboxAction->apply(this); // find bbox of all children
-  bbox = bboxAction->getBoundingBox();
+    bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
+    // FIXME: add a bounding box cache in this node. pederb, 2002-07-01
+    
+    // need to apply on the current path, not on the node, since we
+    // might need coordinates from the state. Also, we need to set the
+    // reset path so that we get the local bounding box for the nodes
+    // below this node.
+    bboxAction->setResetPath(action->getCurPath());
+    bboxAction->apply((SoPath*) action->getCurPath()); // find bbox of all children
+    bbox = bboxAction->getBoundingBox();
+  }
+  else {
+    bbox = THIS->bboxcache->getProjectedBox();
+  }
   SoShape::getScreenSize(state, bbox, size);
 
   // The multiplication factor from the complexity setting is
@@ -289,9 +324,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   // (fall through to traverse:)
 
  traverse:
-  state->push();
   this->getChildren()->traverse(action, idx);
-  state->pop();
   return;
 }
 
@@ -314,4 +347,101 @@ void
 SoLevelOfDetail::rayPick(SoRayPickAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
+}
+
+void 
+SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoState * state = action->getState();
+
+  SbXfBox3f childrenbbox;
+  SbBool childrencenterset;
+  SbVec3f childrencenter;
+
+  SbBool iscaching = TRUE;
+
+  switch (action->getCurPathCode()) {
+  case SoAction::OFF_PATH:
+  case SoAction::IN_PATH:
+    // can't cache if we're not traversing all children
+    iscaching = FALSE;
+    break;
+    return; // no need to do any more work
+  case SoAction::BELOW_PATH:
+  case SoAction::NO_PATH:
+    // check if this is a normal traversal
+    if (action->isInCameraSpace()) iscaching = FALSE;
+    break;
+  default:
+    iscaching = FALSE;
+    assert(0 && "unknown path code");
+    break;
+  }
+
+  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+
+  if (iscaching && validcache) {
+    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
+    childrenbbox = THIS->bboxcache->getBox();
+    childrencenterset = THIS->bboxcache->isCenterSet();
+    childrencenter = THIS->bboxcache->getCenter();
+    if (THIS->bboxcache->hasLinesOrPoints()) {
+      SoBoundingBoxCache::setHasLinesOrPoints(state);
+    }
+  }
+  else {
+
+    SbBool storedinvalid = FALSE;
+    if (iscaching) {
+      storedinvalid = SoCacheElement::setInvalid(FALSE);
+
+      state->push(); // push to create cache dependencies
+
+      // if we get here, we know bbox cache is not created or is invalid
+      if (THIS->bboxcache) THIS->bboxcache->unref();
+      THIS->bboxcache = new SoBoundingBoxCache(state);
+      THIS->bboxcache->ref();
+      // set active cache to record cache dependencies
+      SoCacheElement::set(state, THIS->bboxcache);
+    }
+
+    SoLocalBBoxMatrixElement::makeIdentity(state);
+    action->getXfBoundingBox().makeEmpty();
+    inherited::getBoundingBox(action);
+
+    childrenbbox = action->getXfBoundingBox();
+    childrencenterset = action->isCenterSet();
+    if (childrencenterset) childrencenter = action->getCenter();
+
+    if (iscaching) {
+      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+    }
+    if (iscaching) {
+      state->pop(); // we pushed before opening the cache
+      SoCacheElement::setInvalid(storedinvalid);
+    }
+  }
+  
+  if (!childrenbbox.isEmpty()) {
+    action->extendBy(childrenbbox);
+    if (childrencenterset) {
+      // FIXME: shouldn't this assert() hold up? Investigate. 19990422 mortene.
+#if 0 // disabled
+      assert(!action->isCenterSet());
+#else
+      action->resetCenter();
+#endif
+      action->setCenter(childrencenter, TRUE);
+    }
+  }
+}
+
+// Doc from superclass.
+void
+SoLevelOfDetail::notify(SoNotList * nl)
+{
+  if (nl->getLastField() != &this->screenArea) {
+    if (THIS->bboxcache) THIS->bboxcache->invalidate();
+  }
+  inherited::notify(nl);
 }

@@ -28,6 +28,8 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
 
+class SoLevelOfDetailP;
+
 class COIN_DLL_API SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;
 
@@ -45,12 +47,17 @@ public:
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+
+  virtual void notify(SoNotList * nl);
 
 protected:
   virtual ~SoLevelOfDetail();
 
 private:
   void commonConstructor(void);
+
+  SoLevelOfDetailP * pimpl;
 };
 
 #endif // !COIN_SOLEVELOFDETAIL_H
