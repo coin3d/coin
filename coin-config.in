@@ -18,12 +18,9 @@ Options:
 
 version="@COIN_VERSION@"
 
-# NOTE: If the first argument is changed in the following variables, it is
-# also necessary to update configure.in, since that argument is shifted off.
-
-cppflags="-I@includedir@ @COIN_EXTRA_CPPFLAGS@"
-ldflags="-L@libdir@ @COIN_EXTRA_LDFLAGS@"
-libs="@COIN_LIBNAME@ @COIN_EXTRA_LIBS@"
+cppflags="@COIN_EXTRA_CPPFLAGS@"
+ldflags="@COIN_EXTRA_LDFLAGS@"
+libs="@COIN_EXTRA_LIBS@"
 
 datadir="@datadir@"
 
@@ -56,4 +53,3 @@ do
 done
 
 exit 0
-

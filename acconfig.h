@@ -1,8 +1,3 @@
-#undef COIN_MAJOR_VERSION
-#undef COIN_MINOR_VERSION
-#undef COIN_MICRO_VERSION
-#undef COIN_VERSION
-
 #undef HAVE_LIBSIMAGE
 #undef HAVE_OPENGL
 #undef HAVE_GLX
@@ -18,7 +13,6 @@
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
 #undef HAVE_NETINET_IN_H
-#undef HAVE_CTYPE_H
 #undef HAVE_DLFCN_H
 #undef HAVE_DL_LIB
 

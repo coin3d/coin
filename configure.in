@@ -1,14 +1,19 @@
 #  This can be any file in the package.
 AC_INIT(src/misc/SoDB.cpp)
 
-#  Used for the SoCalculator expression parser.
-# AC_PROG_LEX
-# AC_PROG_YACC
-# FIXME: tmp disabled -- I'm not sure how fond Automake is of the
-# mixing and matching of lex and yacc sources, and the pre-generated
-# C-files. 20000416 mortene.
+# **************************************************************************
+# If the Microsoft Visual C++ cl.exe compiler is available, set us up for
+# compiling with it and to generate an MSWindows .dll file.
 
+sim_ac_macro_dir=${srcdir}/conf-macros
+coin_build_with_msvc=false
+if test -z "$CC" && test -z "$CXX" && $sim_ac_macro_dir/msvccc >/dev/null 2>&1; then
+  CC=$sim_ac_macro_dir/msvccc
+  CXX=$CC
+  coin_build_with_msvc=true
+fi
 
+# **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
 #  in tests. The configure script will automatically terminate if
 #  it doesn't find a C++ compiler.
@@ -18,49 +23,174 @@ AC_LANG_CPLUSPLUS
 SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the "$CXX" C++ compiler is not capable of compiling Coin))
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
-# *******************************************************************
-# * Library version control.
-
-#  Making releases:
-#    COIN_MICRO_VERSION += 1;
-#    COIN_INTERFACE_AGE += 1;
-#    COIN_BINARY_AGE += 1;
-#  if any functions have been added, set COIN_INTERFACE_AGE to 0.
-#  if backwards compatibility has been broken,
-#  set COIN_BINARY_AGE _and_ COIN_INTERFACE_AGE to 0.
+# **************************************************************************
+# *******  MAKING RELEASES  ************************************************
+# **************************************************************************
+#
+# Library versioning
+# ==================
+#
+# When making releases, follow these rules:
+#
+#  * if there has been made any incompatible changes to the ABI¹:
+#    COIN_MAJOR_VERSION += 1, COIN_MINOR_VERSION = 0,
+#    COIN_MICRO_VERSION = 0.
+#
+#    (If you don't know if the changes that have been made since last
+#    release is binary incompatible with the last ABI, you shouldn't
+#    be making releases.)
+#
+#  * if there has been made additions to the API², but the ABI
+#    is still backwards compatible: COIN_MAJOR_VERSION unchanged,
+#    COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
+#
+#  * for bugfix releases and other changes which do not change the interface
+#    at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
+#    and COIN_MICRO_VERSION += 1.
+#
+# Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
+# the idea of library versioning applied by Libtool. According to Libtool,
+# libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
+# Here CURRENT is supposed to be increased by 1 each time the API changes,
+# and AGE increased by 1 along with CURRENT each time the API changes in a
+# way which keeps the ABI backwards compatible. If compatibility is broken,
+# AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
+# number has the same semantics as our MICRO number.
+#
+# To cooperate in a painless way with Libtool, we choose to "convert" our
+# MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
+#
+#    * Libtool's CURRENT number is increased when our MAJOR number is
+#      increased.
+#
+#    * Libtool's AGE number is always kept at 0 (i.e. we will never make
+#      ABI compatible releases where we increase the MAJOR number).
+#
+#    * Libtool's REVISION number will be a combination of our MINOR and
+#      MICRO number, like this: REVISION = MINOR * 100 + MICRO, so we get
+#      a REVISION number monotonically increasing in the way we want.
+#
+#      Note that this little "simplification" has two important
+#      ramifications: 1) we can't make more than 99 bugfix-releases of
+#      the library unless a MINOR or MAJOR version increase has happened,
+#      2) we need to keep a release history log to map from Libtool numbers
+#      back to our "native" MACRO.MINOR.MICRO versioning, as Libtool encodes
+#      the filename of the library with it's own CURRENT.AGE.REVISION scheme.
+#      This way it'll still be easy for us to find out which version a
+#      bugreport belongs to: we must tell the user to check out the full
+#      filename of the library, then we can just look up the MAJOR.MINOR.MICRO
+#      number from the release history log below.
+#
+#
+# **************************************************************************
+# CVS maintenance
+# ===============
+#
+# When making a release from the HEAD branch, increase the MAJOR number
+# and make a new branch as follows (from the HEAD):
+#
+#   $ cd [coin_srcdir_HEADbranch]
+#   $ cvs tag -b coin-MAJOR-0
+#
+# (The explicit mention of "coin" in the branch name is necessary
+# because we also tag this name onto all included CVS modules.)
+#
+# Note that new releases from the HEAD branch should only happen when
+# there has been incompatible interface changes.
+#
+#
+# When adding new functionality while keeping backward ABI compatibility,
+# increase the MINOR number and make a new branch as follows:
+#
+#   $ cd [coin_srcdir_MAJORbranch]
+#   $ cvs tag -b coin-MAJOR-MINOR
+#
+# (Where MINOR>0 always).
+#
+#
+# Bugfix releases should be handled by setting a tag on the
+# coin-MAJOR-MINOR with the latest MAJOR.MINOR.x release,
+# like this:
+#
+#   $ cd [coin_srcdir_MAJORMINORbranch]
+#   $ cvs tag coin-MAJOR-MINOR-MICRO
+#
+# (Where MICRO>0 always).
+#
+# **************************************************************************
+# Distribution binaries
+# =====================
+#
+#  * MSWindows SDK: this is constructed as a self-extracting InstallShield
+#    package. Run ``configure'' and ``make install'' on an MSWin-box with
+#    the correct setup (latest Cygwin, MSVC++ v6.0 and InstallShield Express
+#    v2.12), then execute
+#
+#         $ cd [coin_builddir]
+#         $ IsxBuild.exe build/coin.iwz -E -O
+#
+#    A self-extracting executable SETUPEX.EXE with the InstallShield install
+#    should then be available under [coin_builddir]/build/coin/. Move
+#    to <ftp://ftp.sim.no/pub/coin/bin/win32/coin-sdk-@COIN_VERSION@.exe>.
+#
+#  * RPM packages: follow the instructions at the top of the
+#    build/coin.spec.in file, make one package for each major platform
+#    version we have access to (RedHat v5, v6, v7, Mandrake?, SuSE, etc)
+#    for the architectures we want (i386, ...). Place packages under
+#    <ftp://ftp.sim.no/pub/coin/bin/[platform]/[arch]/>.
+#
+# **************************************************************************
+# Release history
+# ===============
+#
+# Release version     | Libtool version   |                 |
+# (MAJOR.MINOR.MICRO) | (CURRENT.AGE.REV) | CVS Branch name | Tag name
+# --------------------+-------------------+-----------------+-----------------
+#     0.9.99          |     0.0.999       |      HEAD       | coin-0-9-99
+#
+#
+# **************************************************************************
+# Footnotes
+# =========
+#
+# ¹ Application Binary Interface. This covers any publicly exposed
+#   functions, function signatures, structures (and classes for C++
+#   code). If any functions has been removed or changed, or if any
+#   structures/classes has been modified in any way, the ABI has
+#   most likely been made incompatible with earlier releases.
+#
+# ² Application Programmer's Interface. This is the functions and data
+#   structures/classes exposed to the application programmer for
+#   interaction with the library.
+#
+# **************************************************************************
 
 COIN_MAJOR_VERSION=0
 COIN_MINOR_VERSION=9
-COIN_MICRO_VERSION=0
-COIN_INTERFACE_AGE=0
-COIN_BINARY_AGE=0
+COIN_MICRO_VERSION=99
 COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION
+VERSION=$COIN_VERSION
 
 AC_SUBST(COIN_MAJOR_VERSION)
 AC_SUBST(COIN_MINOR_VERSION)
 AC_SUBST(COIN_MICRO_VERSION)
 AC_SUBST(COIN_VERSION)
-AC_SUBST(COIN_INTERFACE_AGE)
-AC_SUBST(COIN_BINARY_AGE)
 
-#  libtool versioning
-LT_RELEASE=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION
-LT_CURRENT=`expr $COIN_MICRO_VERSION - $COIN_INTERFACE_AGE`
-LT_REVISION=$COIN_INTERFACE_AGE
-LT_AGE=`expr $COIN_BINARY_AGE - $COIN_INTERFACE_AGE`
-AC_SUBST(LT_RELEASE)
+# Libtool versioning
+LT_CURRENT=$COIN_MAJOR_VERSION
+LT_AGE=0
+LT_REVISION=`expr $COIN_MINOR_VERSION \* 100 + $COIN_MICRO_VERSION`
+
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 
-VERSION=$COIN_VERSION
-
 #  These are for include/Inventor/SbBasic.h.
 
-AC_DEFINE_UNQUOTED(COIN_MAJOR_VERSION, $COIN_MAJOR_VERSION)
-AC_DEFINE_UNQUOTED(COIN_MINOR_VERSION, $COIN_MINOR_VERSION)
-AC_DEFINE_UNQUOTED(COIN_MICRO_VERSION, $COIN_MICRO_VERSION)
-AC_DEFINE_UNQUOTED(COIN_VERSION, "$COIN_VERSION")
+AC_DEFINE_UNQUOTED(COIN_MAJOR_VERSION, $COIN_MAJOR_VERSION, [define this to the libCoin major version number])
+AC_DEFINE_UNQUOTED(COIN_MINOR_VERSION, $COIN_MINOR_VERSION, [define this to the libCoin minor version number])
+AC_DEFINE_UNQUOTED(COIN_MICRO_VERSION, $COIN_MICRO_VERSION, [define this to the libCoin release version number])
+AC_DEFINE_UNQUOTED(COIN_VERSION, "$COIN_VERSION", [define this to the full libCoin major.minor.micro version number])
 
 # *******************************************************************
 # Miscellaneous options and initializations.
@@ -93,21 +223,15 @@ AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
 
 
-# Check if linking should be done MSWin-style ("libname.lib") or
-# Unix-style ("-llibname").
-SIM_AC_CHECK_LINKSTYLE
-
-if test x"$sim_ac_linking_style" = xmswin; then
-  COIN_LIBNAME="coin$COIN_VERSION.lib"
+# FIXME: do proper check for linking code with ntohs() and ntohl().
+# 20001024 mortene.
+if $coin_build_with_msvc; then
   # wsock32.lib is needed on MSWin for the ntohs() and ntohl() calls used
   # in SoInput.cpp. FIXME: we should probably avoid using those calls
   # (they don't seem very "64bit-clean", for instance). 20000609 mortene.
   LIBS="wsock32.lib $LIBS"
   COIN_EXTRA_LIBS="wsock32.lib $COIN_EXTRA_LIBS"
-else
-  COIN_LIBNAME=-lCoin
 fi
-AC_SUBST(COIN_LIBNAME)
 
 
 # *******************************************************************
@@ -157,9 +281,9 @@ fi
 # *******************************************************************
 
 SIM_COMPILE_DEBUG([
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1"
+  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0"
+  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"
 ])
 
 SIM_AC_DEBUGSYMBOLS
@@ -184,7 +308,7 @@ CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 # VisualC++ compiler (the configure script will pick the GCC
 # preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
 
-SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h netinet/in.h ctype.h)
+SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h netinet/in.h)
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF
@@ -404,19 +528,6 @@ AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
 # *******************************************************************
-# * Do we want libtool to use some other depmode? (makedep, cpp, etc)
-# * 
-# * By default, dependencies are not made for Solaris, for example...
-# *******************************************************************
-
-AC_ARG_WITH(depmode,
-  AC_HELP_STRING([--with-depmode=MODE], [override dependency mode setting]),
-  CCDEPMODE="depmode=${withval}" CXXDEPMODE="depmode=${withval}")
-
-# FIXME: should do a check for whether or not the compilers can
-# actually use the given depmode. 20000525 mortene.
-
-# *******************************************************************
 # * Do we want to build the example programs?
 # *******************************************************************
 
@@ -438,56 +549,64 @@ AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
 
 SIM_EXPAND_DIR_VARS
 
-
-coin_src_dir=$srcdir
-coin_include_dir=$includedir
-coin_lib_dir=$libdir
-
-if test x"$sim_ac_linking_style" = xmswin; then
-  # Slashes need to be '\' in project files and makefiles to humour
-  # the Microsoft VisualC++ environment.
-  SIM_AC_DOBACKSLASH(coin_build_dir, $coin_build_dir)
-  SIM_AC_DOBACKSLASH(coin_src_dir, $srcdir)
-  SIM_AC_DOBACKSLASH(coin_include_dir, $includedir)
-  SIM_AC_DOBACKSLASH(coin_lib_dir, $libdir)
-fi
-
-AC_SUBST(coin_build_dir)
-AC_SUBST(coin_src_dir)
-AC_SUBST(coin_include_dir)
-AC_SUBST(coin_lib_dir)
-
-# For the coin.spec RPM specification file.
-SIM_AC_ISO8601_DATE(coin_configure_date)
-AC_SUBST(coin_configure_date)
+# FIXME: not in use anymore. 20001024 mortene.
+#coin_src_dir=$srcdir
+#coin_include_dir=$includedir
+#coin_lib_dir=$libdir
+#
+#if test x"$sim_ac_linking_style" = xmswin; then
+#  # Slashes need to be '\' in project files and makefiles to humour
+#  # the Microsoft VisualC++ environment.
+#  SIM_AC_DOBACKSLASH(coin_build_dir, $coin_build_dir)
+#  SIM_AC_DOBACKSLASH(coin_src_dir, $srcdir)
+#  SIM_AC_DOBACKSLASH(coin_include_dir, $includedir)
+#  SIM_AC_DOBACKSLASH(coin_lib_dir, $libdir)
+#fi
+#
+#AC_SUBST(coin_build_dir)
+#AC_SUBST(coin_src_dir)
+#AC_SUBST(coin_include_dir)
+#AC_SUBST(coin_lib_dir)
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
-# We add the first argument ourselves to shift it off because it's added
-# again inside coin-config.in
 
 SIM_AC_UNIQIFY_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir $COIN_EXTRA_CPPFLAGS)
-set : $COIN_EXTRA_CPPFLAGS
-shift
-shift
-COIN_EXTRA_CPPFLAGS=$@
-
 SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LDFLAGS, -L$libdir $COIN_EXTRA_LDFLAGS)
-set : $COIN_EXTRA_LDFLAGS
-shift
-shift
-COIN_EXTRA_LDFLAGS=$@
-
-SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LIBS, $COIN_LIBNAME $COIN_EXTRA_LIBS)
-set : $COIN_EXTRA_LIBS
-shift
-shift
-COIN_EXTRA_LIBS=$@
-
-# We don't have to do shift magic on these:
+SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LIBS, $COIN_EXTRA_LIBS)
 SIM_AC_UNIQIFY_LIST(CPPFLAGS, $CPPFLAGS)
 SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
 SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
+
+# **************************************************************************
+# Remaining setup based on platform.
+
+if $coin_build_with_msvc; then
+  CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
+
+  # We use a version suffix on the .dll-file, so several incompatible
+  # (major) versions can be installed on a system.
+  #
+  # BTW, when linking DLLs, the 3rd-party .lib files will be
+  # linked into the .dll file. I believe it is still advisable to
+  # list all libs used upon `coin-config --libs`, as we can then
+  # also use them from "parent" code (remember that their interfaces
+  # is not exposed from the DLL) without any fuss.
+  COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION $COIN_EXTRA_LIBS"
+
+  # These are for the .iwz InstallShield Express file under build/.
+#  win_includedir=`cygpath -w $includedir`
+#  AC_SUBST(win_includedir)
+#  win_libdir=`cygpath -w $libdir`
+#  AC_SUBST(win_libdir)
+
+else
+  COIN_EXTRA_LIBS="-lCoin $COIN_EXTRA_LIBS"
+
+  # For the build/coin.spec RPM specification file.
+  SIM_AC_ISO8601_DATE(coin_configure_date)
+  AC_SUBST(coin_configure_date)
+fi
 
 # **************************************************************************
 
@@ -524,10 +643,6 @@ AC_OUTPUT([
         examples/advanced/Makefile
         examples/advanced/elements/Makefile
         build/Makefile
-        build/coin.dsp
-        build/coin.mak
-        build/coin_dll.dsp
-        build/coin_dll.mak
         build/CoinSDK.iwz
         build/SoCoinSDK.iwz.in
         build/coin.spec
@@ -536,15 +651,6 @@ AC_OUTPUT([
 	chmod a+x coin-config
 ])
 
-if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz build/SoCoinSDK.iwz.in; do
-    mv $sim_ac_winfile $sim_ac_winfile.bak
-    echo "(Win)DOS-ifying $sim_ac_winfile"
-    sed -e 's/$/
-/' < $sim_ac_winfile.bak > $sim_ac_winfile
-    rm $sim_ac_winfile.bak
-  done
-fi
 
 # *******************************************************************
 # * Platform-specific stuff.
@@ -569,6 +675,11 @@ case "$host_os" in
     case "$host_cpu" in
       i?86)
         ac_coin_unknown_platform=no ;;
+    esac
+    ;;
+  cygwin*)
+    case "$CXX" in
+      *msvccc) ac_coin_unknown_platform=no ;;
     esac
     ;;
   beos)
@@ -615,27 +726,5 @@ case "$host_os" in
     echo ;;
 esac
 
-# FIXME: should detect MSVC properly, not just rely on mswin==MSVC.
-# (The same test is used at a lot of other places aswell.) 20000609 mortene.
-if test x"$sim_ac_linking_style" = xmswin; then
-    # Stuff done to please the Installshield script we use to package up
-    # the SDK.
-    cat ${srcdir}/info.cvs | sed -e 's/$/
-/' > info.txt
-    cat ${srcdir}/LICENSE.LGPL | sed -e 's/$/
-/' > freelicense.txt
-    
-    # Info to the developer brave enough to download the sourcecode.
-    echo ""
-    echo " Detected MSVC++. There are some hints regarding this compiler"
-    echo " in the file "
-    echo ""
-    echo "           ${srcdir}/README.MSVC"
-    echo ""
-    echo " Please take a look if this is your first time building with"
-    echo " MSVC++."
-else # Only on UNIX systems.
-    echo
-    echo "Now, run 'make install' to build and install Coin."
-fi
-
+echo ""
+echo "Now, run 'make install' to build and install Coin."

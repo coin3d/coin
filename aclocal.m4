@@ -1,14 +1,15 @@
-dnl aclocal.m4 generated automatically by aclocal 1.4a
+# aclocal.m4 generated automatically by aclocal 1.4a
 
-dnl Copyright (C) 1994, 1995-9, 2000 Free Software Foundation, Inc.
-dnl This file is free software; the Free Software Foundation
-dnl gives unlimited permission to copy and/or distribute it,
-dnl with or without modifications, as long as this notice is preserved.
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Free Software Foundation, Inc.
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
 
-dnl This program is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
-dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-dnl PARTICULAR PURPOSE.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
 # Usage:
 #   SIM_COMPILER_INLINE_FOR( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
@@ -133,7 +134,7 @@ AC_DEFUN([AM_INIT_AUTOMAKE],
 [dnl We require 2.13 because we rely on SHELL being computed by configure.
 AC_REQUIRE([AC_PROG_INSTALL])dnl
 # test to see if srcdir already configured
-if test "`CDPATH=: && cd $srcdir && pwd`" != "`pwd`" &&
+if test "`CDPATH=:; cd $srcdir && pwd`" != "`pwd`" &&
    test -f $srcdir/config.status; then
   AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
 fi
@@ -241,7 +242,7 @@ AC_SUBST(install_sh)])
 # If it does, set am_missing_run to use it, otherwise, to nothing.
 AC_DEFUN([AM_MISSING_HAS_RUN], [
 test x"${MISSING+set}" = xset || \
-  MISSING="\${SHELL} `CDPATH=: && cd $ac_aux_dir && pwd`/missing"
+  MISSING="\${SHELL} `CDPATH=:; cd $ac_aux_dir && pwd`/missing"
 # Use eval to expand $SHELL
 if eval "$MISSING --run :"; then
   am_missing_run="$MISSING --run "
@@ -880,43 +881,6 @@ else
   $1_TRUE='#'
   $1_FALSE=
 fi])
-
-# Usage:
-#   SIM_AC_CHECK_LINKSTYLE
-#
-# Description:
-#
-#   Detect how to link against external libraries; UNIX-style
-#   ("-llibname") or MSWin-style ("libname.lib"). As a side-effect of
-#   running this macro, the shell variable sim_ac_linking_style will be
-#   set to either "mswin" or "unix".
-#
-# Author:
-#   Marius B. Monsen <mariusbu@sim.no>
-
-AC_DEFUN([SIM_AC_CHECK_LINKSTYLE], [
-
-sim_ac_save_ldflags=$LDFLAGS
-LDFLAGS="$LDFLAGS version.lib"
-
-AC_CACHE_CHECK(
-  [if linking should be done "MSWin-style"],
-  sim_cv_mswin_linking,
-  AC_TRY_COMPILE([#include <windows.h>
-#include <version.h>],
-                 [(void)GetFileVersionInfoSize(0L, 0L);],
-                 [sim_cv_mswin_linking=yes],
-                 [sim_cv_mswin_linking=no])
-)
-
-LDFLAGS=$sim_ac_save_ldflags
-
-if test x"$sim_cv_mswin_linking" = x"yes"; then
-  sim_ac_linking_style=mswin
-else
-  sim_ac_linking_style=unix
-fi
-])
 
 # Usage:
 #  SIM_AC_DOXYGEN_TOOL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -2192,21 +2156,16 @@ AC_ARG_WITH(
   [],
   [with_mesa=yes])
 
-if test x"$sim_ac_linking_style" = xmswin; then
-  sim_ac_gl_glname=opengl32.lib
-  # FIXME: is this name correct? Probably not. 20000602 mortene.
-  sim_ac_gl_mesaglname=mesagl.lib
-else
-  sim_ac_gl_glname=-lGL
-  sim_ac_gl_mesaglname=-lMesaGL
-fi
+# It's usually libGL.so on UNIX systems and opengl32.lib on MSWindows.
+sim_ac_gl_glnames="-lGL -lopengl32"
+sim_ac_gl_mesaglnames=-lMesaGL
 
 if test "x$with_mesa" = "xyes"; then
-  sim_ac_gl_first=$sim_ac_gl_mesaglname
-  sim_ac_gl_second=$sim_ac_gl_glname
+  sim_ac_gl_first=$sim_ac_gl_mesaglnames
+  sim_ac_gl_second=$sim_ac_gl_glnames
 else
-  sim_ac_gl_first=$sim_ac_gl_glname
-  sim_ac_gl_second=$sim_ac_gl_mesaglname
+  sim_ac_gl_first=$sim_ac_gl_glnames
+  sim_ac_gl_second=$sim_ac_gl_mesaglnames
 fi
 
 AC_ARG_WITH(
@@ -2245,9 +2204,9 @@ if test x"$with_opengl" != xno; then
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         AC_TRY_LINK([
-#ifdef _WIN32
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#endif
+#endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
 ],
                     [
@@ -2335,22 +2294,17 @@ unset sim_ac_glu_ldflags
 unset sim_ac_glu_libs
 sim_ac_glu_avail=no
 
-if test x"$sim_ac_linking_style" = xmswin; then
-  sim_ac_glu_name=glu32.lib
-  # FIXME: is this name correct? Probably not. 20000928 mortene.
-  sim_ac_glu_mesaname=mesaglu.lib
-else
-  sim_ac_glu_name=-lGLU
-  sim_ac_glu_mesaname=-lMesaGLU
-fi
+# It's usually libGLU.so on UNIX systems and glu32.lib on MSWindows.
+sim_ac_glu_names="-lGLU -lglu32"
+sim_ac_glu_mesanames=-lMesaGLU
 
 # with_mesa is set from the SIM_AC_CHECK_OPENGL macro.
 if test "x$with_mesa" = "xyes"; then
-  sim_ac_glu_first=$sim_ac_glu_mesaname
-  sim_ac_glu_second=$sim_ac_glu_name
+  sim_ac_glu_first=$sim_ac_glu_mesanames
+  sim_ac_glu_second=$sim_ac_glu_names
 else
-  sim_ac_glu_first=$sim_ac_glu_name
-  sim_ac_glu_second=$sim_ac_glu_mesaname
+  sim_ac_glu_first=$sim_ac_glu_names
+  sim_ac_glu_second=$sim_ac_glu_mesanames
 fi
 
 AC_ARG_WITH(
@@ -2380,13 +2334,13 @@ if test x"$with_glu" != xno; then
 
     # Some platforms (like BeOS) have the GLU functionality in the GL
     # library (and no GLU library present).
-    for sim_ac_glu_libcheck in "" "$sim_ac_glu_first"  "$sim_ac_glu_second"; do
+    for sim_ac_glu_libcheck in "" $sim_ac_glu_first $sim_ac_glu_second; do
       if test "x$sim_cv_lib_glu" = "xUNRESOLVED"; then
         LIBS="$sim_ac_glu_libcheck $sim_ac_save_libs"
         AC_TRY_LINK([
-#ifdef _WIN32
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#endif
+#endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
 #include <GL/glu.h>
 ],
@@ -2424,7 +2378,7 @@ AC_DEFUN([SIM_AC_GLU_READY_IFELSE],
   [sim_cv_glu_ready],
   [AC_TRY_LINK(
     [
-#ifdef HAVE_WINDOWS_H
+#if HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
@@ -2463,11 +2417,12 @@ AC_CACHE_CHECK(
   [sim_cv_func_glu_nurbsobject=NONE
    for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
     if test "$sim_cv_func_glu_nurbsobject" = NONE; then
-      AC_TRY_LINK([#ifdef _WIN32
-                  #include <windows.h>
-                  #endif
-                  #include <GL/gl.h>
-                  #include <GL/glu.h>],
+      AC_TRY_LINK([
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#include <GL/gl.h>
+#include <GL/glu.h>],
                   [$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
                    gluDeleteNurbsRenderer(hepp)],
                   [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
@@ -2578,46 +2533,6 @@ infodir="`eval echo $infodir`"
 mandir="`eval echo $mandir`"
 ])
 
-# Convenience macros SIM_AC_DEBACKSLASH and SIM_AC_DOBACKSLASH for
-# converting to and from MSWin/MS-DOS style paths.
-#
-# Example use:
-#
-#     SIM_AC_DEBACKSLASH(my_ac_reversed, "C:\\mydir\\bin")
-#
-# will give a shell variable $my_ac_reversed with the value "C:/mydir/bin").
-# Vice versa for SIM_AC_DOBACKSLASH.
-#
-# Author: Marius Bugge Monsen <mariusbu@sim.no>
-#         Lars Jørgen Aas <larsa@sim.no>
-#         Morten Eriksen <mortene@sim.no>
-
-AC_DEFUN([SIM_AC_DEBACKSLASH], [
-eval "$1=\"`echo $2 | sed -e 's%\\\\%\\/%g'`\""
-])
-
-AC_DEFUN([SIM_AC_DOBACKSLASH], [
-eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\%g'`\""
-])
-
-AC_DEFUN([SIM_AC_DODOUBLEBACKSLASH], [
-eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\\\\\\\\\\\\\%g'`\""
-])
-
-
-# Usage:
-#  SIM_AC_ISO8601_DATE(variable)
-#
-# Description:
-#   This macro sets the given variable to a strings representing
-#   the current date in the ISO8601-compliant format YYYYMMDD.
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-
-AC_DEFUN(SIM_AC_ISO8601_DATE, [
-  eval "$1=\"`date +%Y%m%d`\""
-])
-
 # **************************************************************************
 # SIM_AC_UNIQIFY_LIST( VARIABLE, LIST )
 #
@@ -2648,4 +2563,17 @@ done
 $1=$sim_ac_uniqued_list
 ]) # SIM_AC_UNIQIFY_LIST
 
+
+# Usage:
+#  SIM_AC_ISO8601_DATE(variable)
+#
+# Description:
+#   This macro sets the given variable to a strings representing
+#   the current date in the ISO8601-compliant format YYYYMMDD.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_ISO8601_DATE, [
+  eval "$1=\"`date +%Y%m%d`\""
+])
 

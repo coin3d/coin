@@ -1,9 +1,4 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
-#undef COIN_MAJOR_VERSION
-#undef COIN_MINOR_VERSION
-#undef COIN_MICRO_VERSION
-#undef COIN_VERSION
-
 #undef HAVE_LIBSIMAGE
 #undef HAVE_OPENGL
 #undef HAVE_GLX
@@ -19,12 +14,23 @@
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
 #undef HAVE_NETINET_IN_H
-#undef HAVE_CTYPE_H
 #undef HAVE_DLFCN_H
 #undef HAVE_DL_LIB
 
 #undef SIMAGE_RUNTIME_LINKING
 #undef GLU_RUNTIME_LINKING
+
+/* define this to the libCoin major version number */
+#undef COIN_MAJOR_VERSION
+
+/* define this to the libCoin release version number */
+#undef COIN_MICRO_VERSION
+
+/* define this to the libCoin minor version number */
+#undef COIN_MINOR_VERSION
+
+/* define this to the full libCoin major.minor.micro version number */
+#undef COIN_VERSION
 
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */
