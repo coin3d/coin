@@ -27,6 +27,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <math.h>
 
 SO_KIT_SOURCE(SoScale2UniformDragger);
 
