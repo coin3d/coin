@@ -33,13 +33,49 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/flwfreetype.h>
 #include <Inventor/C/base/string.h>
-
 #include <ft2build.h>
 /* FIXME: FT build macros don't work for MSVC dsp builds. preng 2003-03-11
  * #include FT_FREETYPE_H
  * #include FT_GLYPH_H */
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
+
+/* workaround for freetype < 2.1 */
+#if FREETYPE_MAJOR == 2 && FREETYPE_MINOR < 1
+
+#ifndef FT_ENC_TAG
+#define FT_ENC_TAG( value, a, b, c, d )         \
+          value = ( ( (FT_UInt32)(a) << 24 ) |  \
+                    ( (FT_UInt32)(b) << 16 ) |  \
+                    ( (FT_UInt32)(c) <<  8 ) |  \
+                      (FT_UInt32)(d)         )
+
+#endif /* FT_ENC_TAG */
+
+enum Coin_FT_Encoding {
+  FT_ENC_TAG( FT_ENCODING_NONE, 0, 0, 0, 0 ),
+  
+  FT_ENC_TAG( FT_ENCODING_MS_SYMBOL,  's', 'y', 'm', 'b' ),
+  FT_ENC_TAG( FT_ENCODING_UNICODE,    'u', 'n', 'i', 'c' ),
+  
+  FT_ENC_TAG( FT_ENCODING_MS_SJIS,    's', 'j', 'i', 's' ),
+  FT_ENC_TAG( FT_ENCODING_MS_GB2312,  'g', 'b', ' ', ' ' ),
+  FT_ENC_TAG( FT_ENCODING_MS_BIG5,    'b', 'i', 'g', '5' ),
+  FT_ENC_TAG( FT_ENCODING_MS_WANSUNG, 'w', 'a', 'n', 's' ),
+  FT_ENC_TAG( FT_ENCODING_MS_JOHAB,   'j', 'o', 'h', 'a' ),
+
+  FT_ENC_TAG( FT_ENCODING_ADOBE_STANDARD, 'A', 'D', 'O', 'B' ),
+  FT_ENC_TAG( FT_ENCODING_ADOBE_EXPERT,   'A', 'D', 'B', 'E' ),
+  FT_ENC_TAG( FT_ENCODING_ADOBE_CUSTOM,   'A', 'D', 'B', 'C' ),
+  FT_ENC_TAG( FT_ENCODING_ADOBE_LATIN_1,  'l', 'a', 't', '1' ),
+  
+  FT_ENC_TAG( FT_ENCODING_LATIN_2, 'l', 'a', 't', '2' ),
+  
+  FT_ENC_TAG( FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n' )
+  
+};
+
+#endif /* FREETYPE_VERSION < 2.1 */
 
 static FT_Library library;
 
@@ -152,31 +188,30 @@ cc_flwft_get_charmap_name(void * font, int charmap)
   charmapname = cc_string_construct_new();
   if (charmap < face->num_charmaps) {
     switch (face->charmaps[charmap]->encoding) {
-      /* FIXME: disabled 2003-03-25. Does not compile on my system. Freetype 2.0.9 */ 
-/*     case FT_ENCODING_UNICODE:	 */
-/*       name = "unicode"; break; */
-/*     case FT_ENCODING_MS_SYMBOL: */
-/*       name = "symbol"; break; */
-/*     case FT_ENCODING_MS_SJIS:	 */
-/*       name = "sjis"; break; */
-/*     case FT_ENCODING_MS_GB2312: */
-/*       name = "gb2312"; break; */
-/*     case FT_ENCODING_MS_BIG5:	 */
-/*       name = "big5"; break; */
-/*     case FT_ENCODING_MS_WANSUNG:	 */
-/*       name = "wansung"; break; */
-/*     case FT_ENCODING_MS_JOHAB:	 */
-/*       name = "johab"; break; */
-/*     case FT_ENCODING_ADOBE_STANDARD: */
-/*       name = "adobe_standard"; break; */
-/*     case FT_ENCODING_ADOBE_EXPERT: */
-/*       name = "adobe_expert"; break; */
-/*     case FT_ENCODING_ADOBE_CUSTOM: */
-/*       name = "adobe_custom"; break; */
-/*     case FT_ENCODING_ADOBE_LATIN_1:	  */
-/*       name = "latin_1"; break;  */
-/*     case FT_ENCODING_APPLE_ROMAN: */
-/*       name = "apple_roman"; break; */
+    case FT_ENCODING_UNICODE:
+      name = "unicode"; break;
+    case FT_ENCODING_MS_SYMBOL:
+      name = "symbol"; break;
+    case FT_ENCODING_MS_SJIS:
+      name = "sjis"; break;
+    case FT_ENCODING_MS_GB2312:
+      name = "gb2312"; break;
+    case FT_ENCODING_MS_BIG5:
+      name = "big5"; break;
+    case FT_ENCODING_MS_WANSUNG:
+      name = "wansung"; break;
+    case FT_ENCODING_MS_JOHAB:
+      name = "johab"; break;
+    case FT_ENCODING_ADOBE_STANDARD:
+      name = "adobe_standard"; break;
+    case FT_ENCODING_ADOBE_EXPERT:
+      name = "adobe_expert"; break;
+    case FT_ENCODING_ADOBE_CUSTOM:
+      name = "adobe_custom"; break;
+    case FT_ENCODING_ADOBE_LATIN_1:
+      name = "latin_1"; break;
+    case FT_ENCODING_APPLE_ROMAN:
+      name = "apple_roman"; break;
     default:
       if (cc_freetype_debug()) {
         cc_debugerror_postwarning("cc_flwft_get_charmap_name",
