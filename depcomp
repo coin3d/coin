@@ -122,20 +122,25 @@ sgi)
     exit $stat
   fi
   rm -f "$depfile" 
-  echo "$object : \\" > "$depfile"
 
-  # Clip off the initial element (the dependent). Don't try to be
-  # clever and replace this with sed code, as IRIX sed won't handle
-  # lines with more than 8192 characters.
-  tr ' ' '
+  if test -f "$tmpdepfile"; then
+    echo "$object : \\" > "$depfile"
+
+    # Clip off the initial element (the dependent). Don't try to be
+    # clever and replace this with sed code, as IRIX sed won't handle
+    # lines with more than 8192 characters.
+    tr ' ' '
 ' < "$tmpdepfile" | tail +2 | tr '
 ' ' ' >> $depfile
 
-  tr ' ' '
+    tr ' ' '
 ' < "$tmpdepfile" | \
 ## Some versions of the HPUX 10.20 sed can't process this invocation
 ## correctly.  Breaking it into two sed invocations is a workaround.
-    sed -e 's/^\\$//' -e '/^$/d' -e '/:$/d' | sed -e 's/$/ :/' >> "$depfile"
+      sed -e 's/^\\$//' -e '/^$/d' -e '/:$/d' | sed -e 's/$/ :/' >> "$depfile"
+  else
+    echo "#dummy" > "$depfile"
+  fi
   rm -f "$tmpdepfile"
   ;;
 
