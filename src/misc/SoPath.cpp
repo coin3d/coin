@@ -31,13 +31,6 @@
   how the file format is.
 */
 
-// FIXME:
-/*¡
-  <ul>
-  <li>implement change notification
-  </ul>
-*/
-
 #include <Inventor/SoPath.h>
 
 #include <Inventor/SbString.h>
@@ -98,6 +91,17 @@ SoPath::operator=(const SoPath & rhs)
   this->isauditing = rhs.isauditing;
   this->nodes = rhs.nodes;
   this->indices = rhs.indices;
+
+  // Add ourself as an auditor to the children lists of the path.
+  if (this->isauditing) {
+    for (int i = 0; i < this->getLength(); i++) {
+      SoChildList * cl = this->nodes[i]->getChildren();
+      if (cl) cl->addPathAuditor(this);
+    }
+  }
+
+  this->startNotify();
+
   return *this;
 }
 
@@ -109,9 +113,9 @@ SoPath::operator=(const SoPath & rhs)
 */
 SoPath::~SoPath(void)
 {
-  // The nodelist will automatically destruct, as it is part of SoPath
-  // objects by value (not by pointer). As the nodelist destructs, the
-  // nodes in the list will also be unref()'ed.
+  // Explicitly truncate() so the SoChildList::removePathAuditor()
+  // calls are made.
+  this->truncate(0);
 }
 
 /*!
@@ -271,6 +275,14 @@ SoPath::append(SoNode * const node, const int index)
   }
   this->nodes.append(node);
   this->indices.append(index);
+
+  // Add ourself as an auditor to the node's list of children.
+  if (this->isauditing) {
+    SoChildList * cl = node->getChildren();
+    if (cl) cl->addPathAuditor(this);
+  }
+
+  this->startNotify();
 }
 
 /*!
@@ -409,10 +421,9 @@ SoPath::truncate(const int length)
   this->truncate(length, TRUE);
 }
 
-// This method truncates the path to the given length.  FIXME: the
-// donotify flag is currently ignored.
+// This method truncates the path to the given length.
 void
-SoPath::truncate(const int length, const SbBool /*donotify*/)
+SoPath::truncate(const int length, const SbBool donotify)
 {
 #if COIN_DEBUG
   if (length < 0 || length > this->nodes.getLength()) {
@@ -420,10 +431,21 @@ SoPath::truncate(const int length, const SbBool /*donotify*/)
     return;
   }
 #endif // COIN_DEBUG
+
+  // Remove ourself as an auditor to the nodes' children lists.
+  if (this->isauditing) {
+    for (int i = length; i < this->getLength(); i++) {
+      SoChildList * cl = this->nodes[i]->getChildren();
+      if (cl) cl->removePathAuditor(this);
+    }
+  }
+
   this->nodes.truncate(length);
   this->indices.truncate(length);
 
   if (length <= this->firsthidden) this->setFirstHidden();
+
+  if (donotify) this->startNotify();
 }
 
 // *************************************************************************
@@ -453,9 +475,7 @@ int
 SoPath::findNode(const SoNode * const node) const
 {
   const int len = this->nodes.getLength();
-  for (int i = 0; i < len; i++) {
-    if (this->nodes[i] == node) return i;
-  }
+  for (int i = 0; i < len; i++) if (this->nodes[i] == node) return i;
   return -1;
 }
 
@@ -590,40 +610,43 @@ SoPath::getByName(const SbName name, SoPathList & l)
 
 /*!
   This method is called when a node in the path chain has a child
-  added, to update the index of it's child. \a newindex is the index
-  of the new child.
+  added, to update the index of it's child.
+
+  \a newindex is the index of the child which was inserted. If \a
+  newindex is lower than the index value of the child node stored in
+  the path, the path is updated accordingly.
 */
 void
 SoPath::insertIndex(SoNode * const parent, const int newindex)
 {
-  int pos = this->findNode(parent) + 1;
-  assert(pos > 0); // shouldn't be notified if parent is not in path
-  if (pos < this->nodes.getLength()) {
-    if (newindex <= this->indices[pos]) {
-      this->indices[pos] = this->indices[pos] + 1;
-    }
-  }
+  if (parent == this->getTail()) return;
+
+  int pos = this->findNode(parent);
+  assert(pos != -1); // shouldn't be notified if parent is not in path
+  pos++;
+  if (newindex <= this->indices[pos]) this->indices[pos]++;
 }
 
 /*!
   This method is called when a node in the path chain has a child
-  removed, to update the index of it's child. \a oldindex was the
-  index of the removed child.
+  removed, to update the index of it's child.
+
+  \a oldindex was the index of the removed child. If \a oldindex is
+  lower than or equal to the index value of the child node stored in
+  the path, the path is updated accordingly.
 */
 void
 SoPath::removeIndex(SoNode * const parent, const int oldindex)
 {
-  int pos = this->findNode(parent) + 1;
-  assert(pos > 0); // shouldn't be notified if parent is not in path
-  if (pos < this->nodes.getLength()) {
-    if (oldindex < this->indices[pos]) {
-      this->indices[pos] = this->indices[pos] - 1;
-    }
-    else if (oldindex == this->indices[pos]) {
-      // if node in path is removed, we have to truncate path
-      this->truncate(pos);
-    }
-  }
+  if (parent == this->getTail()) return;
+
+  int pos = this->findNode(parent);
+  assert(pos != -1); // shouldn't be notified if parent is not in path
+  pos++;
+
+  if (oldindex < this->indices[pos]) this->indices[pos]--;
+  // if node in path is removed, we have to truncate path
+  else if (oldindex == this->indices[pos]) this->truncate(pos);
 }
 
 /*!
@@ -634,16 +657,18 @@ void
 SoPath::replaceIndex(SoNode * const parent, const int index,
                      SoNode * const /*newchild*/)
 {
-  int pos = this->findNode(parent) + 1;
-  assert(pos > 0); // shouldn't be notified if parent is not in path
-  if (pos < this->nodes.getLength()) {
-    if (index == this->indices[pos]) {
-      // FIXME: not sure about this one. I don't think we should
-      // use newchild in the path, since the path beyond newchild will
-      // not be correct. I think it is best to truncate the path after
-      // the parent node. pederb 2000-01-10
-      this->truncate(pos);
-    }
+  if (parent == this->getTail()) return;
+
+  int pos = this->findNode(parent);
+  assert(pos != -1); // shouldn't be notified if parent is not in path
+  pos++;
+
+  if (index == this->indices[pos]) {
+    // FIXME: not sure about this one. I don't think we should
+    // use newchild in the path, since the path beyond newchild will
+    // not be correct. I think it is best to truncate the path after
+    // the parent node. pederb 2000-01-10
+    this->truncate(pos);
   }
 }
 
@@ -777,6 +802,7 @@ SoPath::isRelevantNotification(SoNotList * const l) const
 void
 SoPath::auditPath(const SbBool flag)
 {
+  assert(this->getLength() == 0); // Don't change value in a "running" SoPath.
   this->isauditing = flag;
 }
 
