@@ -1631,3 +1631,76 @@
     to change for Coin-2. This is a known libtool problem, and is
     fixed in libtool-1.4.3 and libtool-1.5, according to Fink
     developer Peter O'Gorman.
+
+=====================================================================
+
+066 Viewer "view all" functionality not 100% correct.
+
+    See the VRML1 file below containing 5 line segments as separate
+    linesets.  Using this file, the viewAll button in the examiner
+    viewer only _almost_ zooms out the camera enough: parts of the
+    model is outside the view.
+
+    To reproduce:
+
+    o Open model in an examiner viewer.
+    o Resize the window so height ~= 2* width.
+    o Rotate the model so you get minimal total height in the view.
+    o Press viewall. If my problems doesn't show, rotate around the up
+      axis and press viewall repeatedly until error occurs.
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #VRML V1.0 ascii
+    
+    Separator {
+      Separator {
+        Coordinate3 {
+          point [ 372031 7.20114e+06    32.4351, 372031 7.20114e+06   -465.843 ]
+        }
+        IndexedLineSet { 
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 386603 7.19641e+06    32.1387, 386603 7.19641e+06   -348.644 ]
+        }
+        IndexedLineSet { 
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 384767 7.19186e+06    25.2236, 384767 7.19186e+06   -285.863 ]
+        }
+        IndexedLineSet { 
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 377824 7.20872e+06    32.4382, 377824 7.20872e+06   -329.9802 ]
+        }
+        IndexedLineSet { 
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 383236 7.18857e+06    40.1396, 383236 7.18857e+06   -371.016 ]
+        }
+        IndexedLineSet { 
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    I tried the model in the SoGuiExamples/engines/computexfbbox
+    example, and the bounding box gets calculated correctly. I guess
+    that means there's a bug in either SoCamera::viewAll() or in
+    SoGuiViewer::viewAll() -- most likely the latter.
+
+    20030507 mortene, reported by kintel.
+
+=====================================================================
