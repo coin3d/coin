@@ -207,6 +207,7 @@ SoCube::rayPick(SoRayPickAction * action)
             SoCubeDetail * detail = new SoCubeDetail();
             detail->setPart(translation[cnt]);
             pp->setDetail(detail, this);
+            pp->setMaterialIndex(translation[cnt]);
             pp->setObjectNormal(norm);
             i1 = textranslation[i][0];
             i2 = textranslation[i][1];
@@ -214,7 +215,7 @@ SoCube::rayPick(SoRayPickAction * action)
             float t = isect[i2] + size[i2];
             if (size[i1]) s /= (size[i1]*2.0f);
             if (size[i2]) t /= (size[i2]*2.0f);
-            switch (i) { 
+            switch (i) {
             default: // just to avoid warnings
             case 0:
               if (j < 0) t = 1.0f - t;
