@@ -277,7 +277,7 @@ SoVRMLProximitySensor::doAction(SoAction * action)
     }
     SbRotation newrot(vm);
     if (!wasactive || newrot != oldrot) {
-      this->orientation_changed = newrot;
+      this->orientation_changed = newrot.inverse();
     }
     if (!wasactive || viewer != oldpos) {
       this->position_changed = viewer;
