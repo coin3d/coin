@@ -989,6 +989,12 @@ SoExtSelection::draw(SoGLRenderAction *action)
 	  vpo[1], vpo[0]+vps[1]-1,
 	  -1, 1);
 
+
+  // Because Mesa 4 cant properly push & pop GL_CURRENT_BIT, we have to
+  // save the current color for later. 
+  GLfloat currentColor[4];
+  glGetFloatv(GL_CURRENT_COLOR,currentColor);
+
   // attributes
   glPushAttrib(GL_LIGHTING_BIT|
 	       GL_FOG_BIT|
@@ -1012,7 +1018,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 
   // --- RECTANGLE ---
 
-  if (PRIVATE(this)->selectionstate == SoExtSelectionP::RECTANGLE) {
+  if(PRIVATE(this)->selectionstate == SoExtSelectionP::RECTANGLE) {
     assert(PRIVATE(this)->coords.getLength() >= 2);
     SbVec2s c1 = PRIVATE(this)->coords[0];
     SbVec2s c2 = PRIVATE(this)->coords[1];
@@ -1026,7 +1032,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 
   // --- LASSO ---
 
-  else if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
+  else if(PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < PRIVATE(this)->coords.getLength(); i++) {
       SbVec2s temp = PRIVATE(this)->coords[i];
@@ -1040,7 +1046,12 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
+
+  // Due to a Mesa 4 bug
+  glColor3fv(currentColor);
+
   glPopAttrib();
+
 }
 
 // Documented in superclass.
