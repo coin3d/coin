@@ -261,7 +261,8 @@ SoShape::getComplexityValue(SoAction * action)
   case SoComplexityTypeElement::OBJECT_SPACE:
     return SoComplexityElement::get(state);
   case SoComplexityTypeElement::BOUNDING_BOX:
-    assert(0 && "should never get here");
+    // return default value. We might get here when generating
+    // primitives, not when rendering.
     return 0.5f;
   default:
     assert(0 && "unknown complexity type");
