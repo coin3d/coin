@@ -1,3 +1,6 @@
+#ifndef COIN_SOOFFSCREENRENDERER_H
+#define COIN_SOOFFSCREENRENDERER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOOFFSCREENRENDERER_H
-#define COIN_SOOFFSCREENRENDERER_H
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbColor.h>
@@ -93,6 +93,5 @@ private:
   class SoOffscreenInternalData * internaldata;
   unsigned char * buffer;
 };
-
 
 #endif // !COIN_SOOFFSCREENRENDERER_H

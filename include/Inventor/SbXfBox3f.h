@@ -1,3 +1,6 @@
+#ifndef COIN_SBXFBOX3F_H
+#define COIN_SBXFBOX3F_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBXFBOX3F_H
-#define COIN_SBXFBOX3F_H
 
 #include <stdio.h>
 #include <Inventor/SbBox3f.h>

@@ -1,3 +1,6 @@
+#ifndef COIN_SBCOLOR4F_H
+#define COIN_SBCOLOR4F_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBCOLOR4F_H
-#define COIN_SBCOLOR4F_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbColor.h>

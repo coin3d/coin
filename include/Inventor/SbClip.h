@@ -1,3 +1,6 @@
+#ifndef COIN_SBCLIP_H
+#define COIN_SBCLIP_H
+ 
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBCLIP_H
-#define COIN_SBCLIP_H
- 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
 #include <stddef.h>
@@ -74,6 +74,4 @@ private:
 };
 
 
-#endif // COIN_SBCLIP_H
-
-
+#endif // !COIN_SBCLIP_H

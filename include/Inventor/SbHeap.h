@@ -1,3 +1,6 @@
+#ifndef COIN_SBHEAP_H
+#define COIN_SBHEAP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBHEAP_H
-#define COIN_SBHEAP_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
@@ -65,4 +65,4 @@ private:
   void heapify(const int idx);
 };
 
-#endif // COIN_SBHEAP_H
+#endif // !COIN_SBHEAP_H

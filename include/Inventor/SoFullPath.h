@@ -1,3 +1,6 @@
+#ifndef COIN_SOFULLPATH_H
+#define COIN_SOFULLPATH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFULLPATH_H
-#define COIN_SOFULLPATH_H
-
 #include <Inventor/SoPath.h>
-
 
 class COIN_DLL_API SoFullPath : public SoPath {
   typedef SoPath inherited;

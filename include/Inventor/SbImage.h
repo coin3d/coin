@@ -1,3 +1,6 @@
+#ifndef COIN_SBIMAGE_H
+#define COIN_SBIMAGE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBIMAGE_H
-#define COIN_SBIMAGE_H
 
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
@@ -86,4 +86,4 @@ public:
                           const int numdirectories = 0);
 };
 
-#endif // COIN_SBIMAGE_H
+#endif // !COIN_SBIMAGE_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SBVEC3D_H
+#define COIN_SBVEC3D_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBVEC3D_H
-#define COIN_SBVEC3D_H
 
 #include <stdio.h>
 #include <Inventor/SbBasic.h>
@@ -91,6 +91,5 @@ SbVec3d::operator [](const int i) const
 {
   return this->vec[i];
 }
-
 
 #endif // !COIN_SBVEC3D_H

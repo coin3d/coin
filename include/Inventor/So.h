@@ -1,3 +1,6 @@
+#ifndef COIN_SO_H
+#define COIN_SO_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SO_H
-#define COIN_SO_H
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>

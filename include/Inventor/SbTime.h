@@ -1,3 +1,6 @@
+#ifndef COIN_SBTIME_H
+#define COIN_SBTIME_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SBTIME_H
-#define COIN_SBTIME_H
 
 // FIXME: the following system testing and conditional header file
 // inclusion is a mess. Sort it out properly (with configure checks,
