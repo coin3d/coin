@@ -214,10 +214,10 @@ enum Coin_FT_Encoding {
 };
 
 #ifndef FT_IMAGE_TAG
-#define FT_IMAGE_TAG( value, _x1, _x2, _x3, _x4 ) \
-          value = (((unsigned long)_x1 << 24 ) | \
-                   ((unsigned long)_x2 << 16 ) | \
-                   ((unsigned long)_x3 << 8  ) | \
+#define FT_IMAGE_TAG(value, _x1, _x2, _x3, _x4) \
+          value = (((unsigned long)_x1 << 24) | \
+                   ((unsigned long)_x2 << 16) | \
+                   ((unsigned long)_x3 << 8 ) | \
                     (unsigned long)_x4 )
 #endif /* FT_IMAGE_TAG */
 
