@@ -115,6 +115,29 @@
 /* Copy the first part of user declarations.  */
 
 
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2004 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
+
 /*
  * Syntax analyzer for SoCalculator expressions.
  *
@@ -373,12 +396,12 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    75,    75,    77,    80,    81,    82,    85,    86,    87,
-      89,    93,    94,    97,    99,   101,   104,   105,   106,   107,
-     108,   109,   111,   114,   115,   116,   117,   118,   120,   121,
-     122,   123,   125,   127,   129,   133,   135,   137,   140,   141,
-     142,   143,   144,   145,   148,   149,   150,   153,   154,   155,
-     156,   160,   161,   162,   163,   164,   165,   166,   167,   168
+       0,    98,    98,   100,   103,   104,   105,   108,   109,   110,
+     112,   116,   117,   120,   122,   124,   127,   128,   129,   130,
+     131,   132,   134,   137,   138,   139,   140,   141,   143,   144,
+     145,   146,   148,   150,   152,   156,   158,   160,   163,   164,
+     165,   166,   167,   168,   171,   172,   173,   176,   177,   178,
+     179,   183,   184,   185,   186,   187,   188,   189,   190,   191
 };
 #endif
 
