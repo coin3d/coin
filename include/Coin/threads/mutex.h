@@ -22,8 +22,8 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>         /* COIN_DLL_API */
-#include <Inventor/threads/common.h>  /* cc_mutex */
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Coin/threads/common.h>  /* cc_mutex */
 
 #ifdef __cplusplus
 extern "C" {

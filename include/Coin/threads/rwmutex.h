@@ -22,8 +22,8 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>         /* COIN_DLL_API */
-#include <Inventor/threads/common.h>  /* cc_rwmutex, cc_precedence */
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Coin/threads/common.h>  /* cc_rwmutex, cc_precedence */
 
 #ifdef __cplusplus
 extern "C" {

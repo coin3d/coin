@@ -22,7 +22,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
 
 #ifdef __cplusplus
 extern "C" {
