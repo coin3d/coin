@@ -96,13 +96,12 @@ void
 SoVRMLVertexLine::GLRender(SoGLRenderAction * action)
 {
   SoNode * node;
-
+  
   node = this->coord.getValue();
   if (node) node->GLRender(action);
-
+  
   node = this->color.getValue();
   if (node) node->GLRender(action);
-
 }
 
 // Doc in parent
@@ -116,14 +115,14 @@ SoVRMLVertexLine::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVRMLVertexLine::callback(SoCallbackAction * action)
 {
-  SoVRMLVertexLine::doAction((SoAction*) action);
+  inherited::callback(action);
 }
 
 // Doc in parent
 void
 SoVRMLVertexLine::pick(SoPickAction * action)
 {
-  SoVRMLVertexLine::doAction((SoAction*) action);
+  inherited::pick(action);
 }
 
 // Doc in parent

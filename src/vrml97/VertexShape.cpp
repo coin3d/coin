@@ -220,14 +220,13 @@ SoVRMLVertexShape::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVRMLVertexShape::callback(SoCallbackAction * action)
 {
-  SoVRMLVertexShape::doAction((SoAction*) action);
   inherited::callback(action);
 }
 
 void
 SoVRMLVertexShape::pick(SoPickAction * action)
 {
-  SoVRMLVertexShape::doAction((SoAction*) action);
+  inherited::pick(action);
 }
 
 void
