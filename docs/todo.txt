@@ -216,6 +216,9 @@ STUFF TO FIX IN COIN
   information (note: there is probably more elaborate descriptions
   available elsewhere).
 
+  Also, check out the GL_ARB_texture_compression extension:
+  <URL:http://oss.sgi.com/projects/ogl-sample/registry/ARB/texture_compression.txt>.
+
 
 * Font specification
   2001-11-28  Morten Eriksen  <mortene@sim.no>
@@ -319,5 +322,3 @@ STUFF TO FIX IN COIN
   Investigate if all static writable data can be avoided so Coin can be run
   from ROM (important for embedded systems).  This is just an idea - didn't
   find a more appropriate place to put it.
-
-
