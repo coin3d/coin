@@ -326,6 +326,8 @@ EXTRA_DIST = \
 	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
 	packaging/macosx/inst-dmg-files/.DS_Store \
 	packaging/macosx/inst-dmg-files/background.png \
+	packaging/macosx/inst-dmg-files/Desktop_DB \
+	packaging/macosx/inst-dmg-files/Desktop_DF \
 	packaging/macosx/License.rtfd/TXT.rtf \
 	packaging/macosx/makecoinpkg.sh.in \
 	packaging/macosx/makecointoolspkg.sh.in \
@@ -335,6 +337,8 @@ EXTRA_DIST = \
 	packaging/macosx/makenoinstdmg.sh.in \
 	packaging/macosx/noinst-dmg-files/.DS_Store \
 	packaging/macosx/noinst-dmg-files/background.png \
+	packaging/macosx/noinst-dmg-files/Desktop_DB \
+	packaging/macosx/noinst-dmg-files/Desktop_DF \
 	packaging/macosx/README.txt.in \
 	packaging/macosx/uninstall-coin.pl \
 	packaging/redhat/coin.spec.in \
@@ -791,10 +795,14 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-recursive
 
 
+# FIXME: These files should really be added instead of the ones
+#        containing '_' instead of ' '. If this is fixed, also
+#        update packaging/macosx/make*dmg.sh.in (kintel 20040119)
 #	packaging/macosx/inst-dmg-files/Desktop DB \
 #	packaging/macosx/inst-dmg-files/Desktop DF \
 #	packaging/macosx/noinst-dmg-files/Desktop DB \
 #	packaging/macosx/noinst-dmg-files/Desktop DF \
+#
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
