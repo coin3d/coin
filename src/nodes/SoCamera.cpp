@@ -130,6 +130,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/tidbits.h>
 #include <float.h> // for FLT_EPSILON
 
 
@@ -618,120 +619,10 @@ void
 SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
                  SbVec3f & jitteramount) const
 {
-  // jitter values from OpenGL Programming Guide
-  static float jitter2[] = {
-    0.25f, 0.77f,
-    0.75f, 0.25f
-  };
-  static float jitter3[] = {
-    0.5033922635f, 0.8317967229f,
-    0.7806016275f, 0.2504380877f,
-    0.2261828938f, 0.4131553612f
-  };
-  static float jitter4[] = {
-    0.375f, 0.25f,
-    0.125f, 0.75f,
-    0.875f, 0.25f,
-    0.625f, 0.75f
-  };
-  static float jitter5[] = {
-    0.5f, 0.5f,
-    0.3f, 0.1f,
-    0.7f, 0.9f,
-    0.9f, 0.3f,
-    0.1f, 0.7f
-  };
-  static float jitter6[] = {
-    0.4646464646f, 0.4646464646f,
-    0.1313131313f, 0.7979797979f,
-    0.5353535353f, 0.8686868686f,
-    0.8686868686f, 0.5353535353f,
-    0.7979797979f, 0.1313131313f,
-    0.2020202020f, 0.2020202020f
-  };
-  static float jitter8[] = {
-    0.5625f, 0.4375f,
-    0.0625f, 0.9375f,
-    0.3125f, 0.6875f,
-    0.6875f, 0.8125f,
-    0.8125f, 0.1875f,
-    0.9375f, 0.5625f,
-    0.4375f, 0.0625f,
-    0.1875f, 0.3125f
-  };
-  static float jitter9[] = {
-    0.5f, 0.5f,
-    0.1666666666f, 0.9444444444f,
-    0.5f, 0.1666666666f,
-    0.5f, 0.8333333333f,
-    0.1666666666f, 0.2777777777f,
-    0.8333333333f, 0.3888888888f,
-    0.1666666666f, 0.6111111111f,
-    0.8333333333f, 0.7222222222f,
-    0.8333333333f, 0.0555555555f
-  };
-  static float jitter12[] = {
-    0.4166666666f, 0.625f,
-    0.9166666666f, 0.875f,
-    0.25f, 0.375f,
-    0.4166666666f, 0.125f,
-    0.75f, 0.125f,
-    0.0833333333f, 0.125f,
-    0.75f, 0.625f,
-    0.25f, 0.875f,
-    0.5833333333f, 0.375f,
-    0.9166666666f, 0.375f,
-    0.0833333333f, 0.625f,
-    0.583333333f, 0.875f
-  };
-  static float jitter16[] = {
-    0.375f, 0.4375f,
-    0.625f, 0.0625f,
-    0.875f, 0.1875f,
-    0.125f, 0.0625f,
-    0.375f, 0.6875f,
-    0.875f, 0.4375f,
-    0.625f, 0.5625f,
-    0.375f, 0.9375f,
-    0.625f, 0.3125f,
-    0.125f, 0.5625f,
-    0.125f, 0.8125f,
-    0.375f, 0.1875f,
-    0.875f, 0.9375f,
-    0.875f, 0.6875f,
-    0.125f, 0.3125f,
-    0.625f, 0.8125f
-  };
-
-  static float * jittertab[] = {
-    jitter2,
-    jitter3,
-    jitter4,
-    jitter5,
-    jitter6,
-    jitter8,
-    jitter8,
-    jitter9,
-    jitter12,
-    jitter12,
-    jitter12,
-    jitter16,
-    jitter16,
-    jitter16,
-    jitter16
-  };
-
-  // FIXME: support more rendering passes by generating jitter tables
-  // using some clever algorithm. pederb, 2001-02-21
-  if (numpasses > 16) numpasses = 16;
-  if (curpass >= numpasses) curpass = numpasses - 1;
-
-  float * jittab = jittertab[numpasses-2];
-
-  SbVec2s vpsize = vpreg.getViewportSizePixels();
-  jitteramount[0] = jittab[curpass*2] * 2.0f / float(vpsize[0]);
-  jitteramount[1] = jittab[curpass*2+1] * 2.0f / float(vpsize[1]);
-  jitteramount[2] = 0.0f;
+  int vpsize[2];
+  vpsize[0] = vpreg.getViewportSizePixels()[0];
+  vpsize[1] = vpreg.getViewportSizePixels()[1];
+  coin_viewvolume_jitter(numpasses, curpass, vpsize, (float*) jitteramount.getValue());
 }
 
 // Documented in superclass. Overridden to set up the viewing and
