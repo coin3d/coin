@@ -511,8 +511,18 @@ SbString::sprintf(const char * formatstr, ...)
 {
   va_list args;
   va_start(args, formatstr);
-  while (vsnprintf(this->sstring, this->storagesize, formatstr, args) == -1)
-    this->expand(1024); // increase linearly in 1Kb intervals
+
+  SbBool expand;
+  do {
+    int length = vsnprintf(this->sstring, this->storagesize, formatstr, args);
+    // At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
+    // (as documented in the snprintf(3) man-page) when we can't fit
+    // the constructed string within the given buffer, but rather the
+    // number of characters needed.
+    expand = (length == -1) || (length > this->storagesize);
+    if (expand) this->expand(1024); // increase linearly in 1Kb intervals
+  } while (expand);
+
   va_end(args);
   return *this;
 }
@@ -529,8 +539,17 @@ SbString::sprintf(const char * formatstr, ...)
 SbString &
 SbString::vsprintf(const char * formatstr, va_list args)
 {
-  while (vsnprintf(this->sstring, this->storagesize, formatstr, args) == -1)
-    this->expand(1024); // increase linearly in 1Kb intervals
+  SbBool expand;
+  do {
+    int length = vsnprintf(this->sstring, this->storagesize, formatstr, args);
+    // At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
+    // (as documented in the snprintf(3) man-page) when we can't fit
+    // the constructed string within the given buffer, but rather the
+    // number of characters needed.
+    expand = (length == -1) || (length > this->storagesize);
+    if (expand) this->expand(1024); // increase linearly in 1Kb intervals
+  } while (expand);
+
   return *this;
 }
 
