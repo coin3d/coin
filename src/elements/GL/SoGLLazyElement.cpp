@@ -233,16 +233,13 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
       SbBool enabled =
         SoGLTextureEnabledElement::get(this->state) ||
         SoGLTexture3EnabledElement::get(this->state);
-#ifdef HAVE_THREADS
-      // if threads is enabled, the image is loaded on demand, and we
-      // should trigger an image load by just attempting to fetch the
-      // data from the image.
+      // image data might be loaded on demand (SoVRMLImageTexture).
+      // We trigger a load here by attempting to fetch the image data.
       if (!enabled && glimage->getImage()) {
         SbVec3s size;
         int nc;
         (void) glimage->getImage()->getValue(size, nc);
       }
-#endif // HAVE_THREADS
       if (enabled) {
         SoGLDisplayList * dl = glimage->getGLDisplayList(this->state);
         if (dl) {
