@@ -158,11 +158,6 @@ sofieldcontainer_get_copydict(void)
 #ifdef COIN_THREADSAFE
   return (sofieldcontainer_copydict*) sofieldcontainer_copydictstorage->get();
 #else // COIN_THREADSAFE
-  if (sofieldcontainer_staticcopydict == NULL) {
-    // FIXME: global mem leak, pederb 2004-03-11
-    sofieldcontainer_staticcopydict = new sofieldcontainer_copydict;
-    sofieldcontainer_construct_copydict((void*)sofieldcontainer_staticcopydict);
-  }
   return sofieldcontainer_staticcopydict;
 #endif // !COIN_THREADSAFE
 }
@@ -750,9 +745,6 @@ void
 SoFieldContainer::addCopy(const SoFieldContainer * orig,
                           const SoFieldContainer * copy)
 {
-  // assert(copiedinstancestack);
-  // assert(contentscopiedstack);
-
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
 
@@ -786,7 +778,6 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
 SoFieldContainer *
 SoFieldContainer::checkCopy(const SoFieldContainer * orig)
 {
-//   assert(copiedinstancestack);
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
 
@@ -817,8 +808,6 @@ SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * orig,
                            const SbBool copyconnections)
 {
-  // assert(copiedinstancestack);
-  // assert(contentscopiedstack);
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
 
@@ -910,8 +899,6 @@ fieldcontainer_unref_node(unsigned long key, void * value)
 void
 SoFieldContainer::copyDone(void)
 {
-//   assert(copiedinstancestack);
-//   assert(contentscopiedstack);
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
   
