@@ -57,7 +57,7 @@
 #include <coindefs.h> // COIN_OBSOLETED
 
 // define this to debug path traversal
-// #define COIN_DEBUG_PATH_TRAVERAL 1
+// #define COIN_DEBUG_PATH_TRAVERSAL 1
 
 // *************************************************************************
 
