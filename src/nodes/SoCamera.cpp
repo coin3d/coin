@@ -62,6 +62,7 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SbColor4f.h>
 #include <float.h> // for FLT_EPSILON
 
 #ifdef HAVE_CONFIG_H
@@ -800,7 +801,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
     SoDiffuseColorElement::getInstance(state);
-  elem->sendOneColor(SbVec4f(0.8f, 0.8f, 0.8f, 1.0f));
+  elem->sendOneColor(SbColor4f(0.8f, 0.8f, 0.8f, 1.0f));
 
   SbVec2s origin = newvp.getViewportOriginPixels();
   SbVec2s size = newvp.getViewportSizePixels();
