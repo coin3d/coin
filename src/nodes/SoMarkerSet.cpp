@@ -1420,7 +1420,8 @@ static char marker_char_bitmaps[] =
   //"#"
 };
 
-void convert_bitmaps(void)
+static void
+convert_bitmaps(void)
 {
   int img, l, x;
   int rpos,wpos;
@@ -1428,31 +1429,29 @@ void convert_bitmaps(void)
 	
   rpos = 0;
   wpos = 0;
-  for (img=0;img<90;img++)
-    {
-      for (l=8;l>=0;l--)
-        {
-          v1 = v2 = 0;
-          //if (marker_char_bitmaps[rpos        ] == '#') return;
-          // glBitmap = upside down.....
-          if (marker_char_bitmaps[(l*9)+rpos  ] == 'x') v1 += 0x80;
-          if (marker_char_bitmaps[(l*9)+rpos+1] == 'x') v1 += 0x40;
-          if (marker_char_bitmaps[(l*9)+rpos+2] == 'x') v1 += 0x20;
-          if (marker_char_bitmaps[(l*9)+rpos+3] == 'x') v1 += 0x10;
-          if (marker_char_bitmaps[(l*9)+rpos+4] == 'x') v1 += 0x08;
-          if (marker_char_bitmaps[(l*9)+rpos+5] == 'x') v1 += 0x04;
-          if (marker_char_bitmaps[(l*9)+rpos+6] == 'x') v1 += 0x02;
-          if (marker_char_bitmaps[(l*9)+rpos+7] == 'x') v1 += 0x01;
-          if (marker_char_bitmaps[(l*9)+rpos+8] == 'x') v2 += 0x80;
-          markerimages[wpos  ] = v1;
-          markerimages[wpos+1] = v2;
-          markerimages[wpos+2] = 0;
-          markerimages[wpos+3] = 0;
-          //rpos += 9;
-          wpos += 4;
-        }
-      rpos += (9*9);
+  for (img=0;img<90;img++) {
+    for (l=8;l>=0;l--) {
+      v1 = v2 = 0;
+      //if (marker_char_bitmaps[rpos        ] == '#') return;
+      // glBitmap = upside down.....
+      if (marker_char_bitmaps[(l*9)+rpos  ] == 'x') v1 += 0x80;
+      if (marker_char_bitmaps[(l*9)+rpos+1] == 'x') v1 += 0x40;
+      if (marker_char_bitmaps[(l*9)+rpos+2] == 'x') v1 += 0x20;
+      if (marker_char_bitmaps[(l*9)+rpos+3] == 'x') v1 += 0x10;
+      if (marker_char_bitmaps[(l*9)+rpos+4] == 'x') v1 += 0x08;
+      if (marker_char_bitmaps[(l*9)+rpos+5] == 'x') v1 += 0x04;
+      if (marker_char_bitmaps[(l*9)+rpos+6] == 'x') v1 += 0x02;
+      if (marker_char_bitmaps[(l*9)+rpos+7] == 'x') v1 += 0x01;
+      if (marker_char_bitmaps[(l*9)+rpos+8] == 'x') v2 += 0x80;
+      markerimages[wpos  ] = v1;
+      markerimages[wpos+1] = v2;
+      markerimages[wpos+2] = 0;
+      markerimages[wpos+3] = 0;
+      //rpos += 9;
+      wpos += 4;
     }
+    rpos += (9*9);
+  }
 }
 
 
@@ -1558,8 +1557,7 @@ SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 int
 SoMarkerSet::getNumDefinedMarkers(void)
 {
-  //COIN_STUB();
-  //return 0;
+  // FIXME: this shouldn't really be hardcoded. 20000904 skei.
   return 90;
 }
 
