@@ -29,8 +29,9 @@ DEF rotateCylindricalRotatorActive Separator {
 
 # Feedback line.
 
-DEF ROTATECYLINDRICAL_FEEDBACK_MARKER Group {
+DEF ROTATECYLINDRICAL_FEEDBACK_MARKER Separator {
    USE ROTATECYLINDRICAL_FEEDBACK_MATERIAL
+   PickStyle { style UNPICKABLE }
    DrawStyle { lineWidth 2 }
    Coordinate3 { point [ 0 1.1 0, 0 -1.1 0 ] }
    IndexedLineSet { coordIndex [ 0, 1, -1 ] }
