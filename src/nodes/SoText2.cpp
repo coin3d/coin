@@ -19,10 +19,20 @@
 
 /*!
   \class SoText2 SoText2.h Inventor/nodes/SoText2.h
-  \brief The SoText2 class ...
+  \brief The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.
   \ingroup nodes
 
-  FIXME: write class doc
+  SoText2 text is not scaled according to the distance from the
+  camera, and is not influenced by rotation or scaling as 3D
+  primitives are. If these are properties that you want the text to
+  have, you should instead use an SoText3 or SoAsciiText node.
+
+  Note that even though the size of the 2D text is not influenced by
+  the distance from the camera, the text is still subject to the usual
+  rules with regard to the depthbuffer, so it \e will be obscured by
+  graphics laying in front of it.
+
+  \sa SoFont, SoFontStyle, SoText3, SoAsciiText
 */
 
 // FIXME -- FIXME -- FIXME
@@ -116,7 +126,7 @@ SO_NODE_SOURCE(SoText2);
 /*!
   Constructor.
 */
-SoText2::SoText2()
+SoText2::SoText2(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
@@ -160,14 +170,14 @@ static Display * d = NULL;
 static XFontStruct *
 tryFont(const char * fs)
 {
-#if COIN_DEBUG && 0
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("tryFont", "'%s'", fs);
-#endif // COIN_DEBUG
+#endif // debug
   XFontStruct * font = XLoadQueryFont(d, fs);
   // FIXME: match call with XFreeFont. 19990418 mortene.
-#if COIN_DEBUG && 0
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("tryFont", "%s", font ? "hit!" : "miss...");
-#endif // COIN_DEBUG
+#endif // debug
   return font;
 }
 
@@ -192,18 +202,18 @@ setFont(SbName fontname, int fontsize)
   if ((fstruc = tryFont(fontname.getString()))) return fstruc;
 
   // Try with the full fontname and size setting with non-italic style.
-  SbString fs("*");
+  SbString fs("-*-");
   fs += fontname;
-  fs += "*-r-*-*-";
+  fs += "-*-r-*-*-";
   fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
   if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
   // Try with the full fontname and size setting -- any style.
-  fs = "*";
+  fs = "-*-";
   fs += fontname;
-  fs += "*-";
+  fs += "-*-*-*-*-";
   fs.addIntString(fontsize);
   fs += "-*-*-*-*-*-*-*";
 
