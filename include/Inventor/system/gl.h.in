@@ -87,6 +87,26 @@
 #define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
 #endif /* !GL_UNPACK_SKIP_IMAGES */
 
+/* OpenGL multitexture defines. For now we just define for maximum four units */
+#ifndef GL_TEXTURE0
+#define GL_TEXTURE0                       ((GLenum)0x84C0)
+#endif /* !GL_TEXTURE0 */
+#ifndef GL_TEXTURE1
+#define GL_TEXTURE1                       ((GLenum)0x84C1)
+#endif /* !GL_TEXTURE1 */
+#ifndef GL_TEXTURE2
+#define GL_TEXTURE2                       ((GLenum)0x84C2)
+#endif /* !GL_TEXTURE2 */
+#ifndef GL_TEXTURE3
+#define GL_TEXTURE3                       ((GLenum)0x84C3)
+#endif /* !GL_TEXTURE3 */
+#ifndef GL_MAX_TEXTURE_UNITS
+#define GL_MAX_TEXTURE_UNITS              ((GLenum)0x84E2)
+#endif /* !GL_MAX_TEXTURE_UNITS */
+#ifndef GL_ACTIVE_TEXTURE
+#define GL_ACTIVE_TEXTURE                 ((Glenum)0x84E0)
+#endif /* !GL_ACTIVE_TEXTURE */
+
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
 
