@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -53,7 +53,7 @@
 /*!
   \var SoWWWAnchor::Mapping SoWWWAnchor::POINT
   The position of the picked node is mapped to the URL as object space
-  coordinates, adding a parameter string to the end of the URL. To 
+  coordinates, adding a parameter string to the end of the URL. To
   assure that the URL works with all browsers, the coordinates are
   divided by commas sent as the hex representation.
 
@@ -85,11 +85,9 @@ class SoWWWAnchorP {
   SoWWWAnchorP(SoWWWAnchor * owner) {
     this->owner = owner;
     this->fullname = "";
-    this->name = "";
   }
   SoWWWAnchor * owner;
   SbString fullname;
-  SbString name;
 
   static SoWWWAnchorCB * fetchfunc;
   static void * fetchdata;
@@ -107,8 +105,9 @@ void * SoWWWAnchorP::highlightdata;
 
 SO_NODE_SOURCE(SoWWWAnchor);
 
-#undef THIS
-#define THIS this->pimpl
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
+
 
 /*!
   Constructor.
@@ -117,7 +116,7 @@ SoWWWAnchor::SoWWWAnchor()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWAnchor);
 
-  THIS = new SoWWWAnchorP(this);
+  PRIVATE(this) = new SoWWWAnchorP(this);
 
   SO_NODE_ADD_FIELD(name, ("<Undefined URL>"));
   SO_NODE_ADD_FIELD(description, (""));
@@ -133,7 +132,7 @@ SoWWWAnchor::SoWWWAnchor()
 */
 SoWWWAnchor::~SoWWWAnchor()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -153,27 +152,27 @@ SoWWWAnchor::initClass(void)
 void
 SoWWWAnchor::setFullURLName(const SbString & url)
 {
-  THIS->fullname = url;
+  PRIVATE(this)->fullname = url;
 }
 
 /*!
-  Returns the full URL if its set by SoWWWAnchor::setFullURLName(). Otherwise
-  the contents of SoWWWAnchor::name is returned.
+  Returns the full URL if it's set by
+  SoWWWAnchor::setFullURLName(). Otherwise the contents of
+  SoWWWAnchor::name is returned.
 
   \sa SoWWWAnchor::setFullURLName()
  */
 const SbString &
 SoWWWAnchor::getFullURLName(void)
 {
-  if (THIS->fullname.getLength() > 0) {
-    return THIS->fullname;
-  } 
-  
-  this->name.get(THIS->name);
-  return THIS->name;
+  if (PRIVATE(this)->fullname.getLength() > 0) {
+    return PRIVATE(this)->fullname;
+  }
+
+  return this->name.getValue();
 }
 
-// doc from parent
+// documented in superclass
 void
 SoWWWAnchor::handleEvent(SoHandleEventAction * action)
 {
@@ -181,12 +180,9 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
   if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
       SoWWWAnchorP::fetchfunc) {
     const SoMouseButtonEvent * mbevent = (SoMouseButtonEvent*)event;
-    if (SoMouseButtonEvent::isButtonPressEvent(mbevent, 
+    if (SoMouseButtonEvent::isButtonPressEvent(mbevent,
                                                SoMouseButtonEvent::BUTTON1)) {
-      SbString s = THIS->fullname;
-      if (s.getLength() == 0) {
-        this->name.get(s);
-      }
+      SbString s = this->getFullURLName();
       if (this->map.getValue() == POINT) {
         const SoPickedPoint * pp = action->getPickedPoint();
         const SbVec3f point = pp->getObjectPoint(NULL);
@@ -194,7 +190,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
         temp.sprintf("?%g%%2c%g%%2c%g", point[0], point[1], point[2]);
         s.operator+=(temp);
       }
-      
+
       SoWWWAnchorP::fetchfunc(s, SoWWWAnchorP::fetchdata, this);
     }
   }
@@ -203,7 +199,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
 
 /*!
   Sets the callback function \a f that is called when a SoWWWAnchor node is
-  clicked on. This callback can among other things be used to provide a 
+  clicked on. This callback can among other things be used to provide a
   browser with the URL of this node.
 
   The callback will be called with the URL, \a userData and a pointer to
@@ -233,20 +229,16 @@ SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData)
 }
 
 /*!
-  Reimplemented from SoLocateHighlight.
-
-  Calls the highlight callback. 
- */
+  Calls the highlight callback set up with
+  SoWWWAnchor::setHighlightURLCallBack().
+*/
 void
 SoWWWAnchor::redrawHighlighted(SoAction * act, SbBool isNowHighlighting)
 {
   inherited::redrawHighlighted(act, isNowHighlighting);
-  SbString s = THIS->fullname;
-  if (s.getLength() == 0) {
-    this->name.get(s);
-  }
+
   if (SoWWWAnchorP::highlightfunc) {
-    SoWWWAnchorP::highlightfunc(s, SoWWWAnchorP::highlightdata, this);  
+    SbString s = this->getFullURLName();
+    SoWWWAnchorP::highlightfunc(s, SoWWWAnchorP::highlightdata, this);
   }
 }
-
