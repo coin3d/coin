@@ -17958,10 +17958,9 @@ fi
 
 
 
-sim_ac_gl_cppflags=
-sim_ac_gl_ldflags=
-sim_ac_gl_libs=
-sim_ac_gl_avail=no
+sim_ac_ogl_cppflags=
+sim_ac_ogl_ldflags=
+sim_ac_ogl_libs=
 
 
 # Check whether --with-mesa or --without-mesa was given.
@@ -17973,15 +17972,15 @@ else
 fi;
 
 
-sim_ac_gl_glnames="-lGL -lopengl32"
-sim_ac_gl_mesaglnames=-lMesaGL
+sim_ac_ogl_glnames="-lGL -lopengl32"
+sim_ac_ogl_mesaglnames=-lMesaGL
 
 if test "x$with_mesa" = "xyes"; then
-  sim_ac_gl_first=$sim_ac_gl_mesaglnames
-  sim_ac_gl_second=$sim_ac_gl_glnames
+  sim_ac_ogl_first=$sim_ac_ogl_mesaglnames
+  sim_ac_ogl_second=$sim_ac_ogl_glnames
 else
-  sim_ac_gl_first=$sim_ac_gl_glnames
-  sim_ac_gl_second=$sim_ac_gl_mesaglnames
+  sim_ac_ogl_first=$sim_ac_ogl_glnames
+  sim_ac_ogl_second=$sim_ac_ogl_mesaglnames
 fi
 
 
@@ -17994,6 +17993,20 @@ else
 fi;
 
 if test x"$with_opengl" != xno; then
+
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_ogl_ldflags=-I$with_opengl/lib
+    # $sim_ac_ogl_cppflags is set up in the SIM_AC_CHECK_HEADER_GL
+    # invocation further below.
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_ogl_ldflags=-I$sim_ac_gl_hpux/lib
+    fi
+  fi
+
   sim_ac_use_framework_option=false;
   case $host_os in
   darwin*)
@@ -18072,16 +18085,16 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
   if $sim_ac_use_framework_option; then
     # hopefully, this is the default behavior and not needed. 20011005 larsa
-    # sim_ac_gl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
-    sim_ac_gl_ldflags="-Wl,-framework,OpenGL"
+    # sim_ac_ogl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
+    sim_ac_ogl_ldflags="-Wl,-framework,OpenGL"
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
   sim_ac_save_ldflags=$LDFLAGS
   sim_ac_save_libs=$LIBS
 
-  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
+  CPPFLAGS="$CPPFLAGS $sim_ac_ogl_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_ogl_ldflags"
 
   sim_ac_gl_header_avail=false
 echo "$as_me:$LINENO: checking how to include gl.h" >&5
@@ -18091,6 +18104,13 @@ if test x"$with_opengl" != x"no"; then
   if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+    fi
   fi
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -18183,102 +18203,7 @@ fi
 
 
 
-  sim_ac_gl_hpux=/opt/graphics/OpenGL
-  if test x$sim_ac_gl_header_avail = xfalse && test -d $sim_ac_gl_hpux; then
-    sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
-    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <GL/gl.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_gl_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_cv_header_GL_gl_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_gl_h = yes; then
-
-      sim_ac_gl_header_avail=true
-      sim_ac_gl_header=GL/gl.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GL_H 1
-_ACEOF
-
-
-else
-
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <OpenGL/gl.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_OpenGL_gl_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_cv_header_OpenGL_gl_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_OpenGL_gl_h = yes; then
-
-        sim_ac_gl_header_avail=true
-        sim_ac_gl_header=OpenGL/gl.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENGL_GL_H 1
-_ACEOF
-
-
-fi
-
-
-
-
-fi
-
-
-
-  fi
   CPPFLAGS="$sim_ac_gl_save_CPPFLAGS"
   if $sim_ac_gl_header_avail; then
     if test x"$sim_ac_gl_cppflags" = x""; then
@@ -18289,19 +18214,23 @@ echo "${ECHO_T}#include <$sim_ac_gl_header>" >&6
 echo "${ECHO_T}$sim_ac_gl_cppflags, #include <$sim_ac_gl_header>" >&6
     fi
 
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+
   else
     echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-    { { echo "$as_me:$LINENO: error: could not find gl.h" >&5
-echo "$as_me: error: could not find gl.h" >&2;}
-   { (exit 1); exit 1; }; }
+
+    { echo "$as_me:$LINENO: WARNING: could not find gl.h" >&5
+echo "$as_me: WARNING: could not find gl.h" >&2;}
+
   fi
 else
   echo "$as_me:$LINENO: result: disabled" >&5
 echo "${ECHO_T}disabled" >&6
-  { { echo "$as_me:$LINENO: error: could not find gl.h" >&5
-echo "$as_me: error: could not find gl.h" >&2;}
-   { (exit 1); exit 1; }; }
+
+    { echo "$as_me:$LINENO: WARNING: could not find gl.h" >&5
+echo "$as_me: WARNING: could not find gl.h" >&2;}
+
 fi
 
 
@@ -18313,9 +18242,9 @@ else
   sim_cv_lib_gl=UNRESOLVED
 
     # Mac OS X uses nada, which is why "" was set first
-    for sim_ac_gl_libcheck in "" $sim_ac_gl_first $sim_ac_gl_second; do
+    for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
-        LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
+        LIBS="$sim_ac_ogl_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -18361,10 +18290,10 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-          if test x"$sim_ac_gl_libcheck" = x""; then
-            sim_cv_lib_gl="$sim_ac_gl_ldflags"
+          if test x"$sim_ac_ogl_libcheck" = x""; then
+            sim_cv_lib_gl="$sim_ac_ogl_ldflags"
           else
-            sim_cv_lib_gl="$sim_ac_gl_libcheck"
+            sim_cv_lib_gl="$sim_ac_ogl_libcheck"
           fi
 else
   echo "$as_me: failed program was:" >&5
@@ -18378,19 +18307,18 @@ fi
 echo "$as_me:$LINENO: result: $sim_cv_lib_gl" >&5
 echo "${ECHO_T}$sim_cv_lib_gl" >&6
 
-  LIBS="$sim_ac_save_libs"
-
   case $sim_cv_lib_gl in
   -Wl,-framework,OpenGL)
-    sim_ac_gl_libs=
-    sim_ac_gl_ldflags="$sim_cv_lib_gl"
+    sim_ac_ogl_libs=
+    sim_ac_ogl_ldflags="$sim_cv_lib_gl"
     ;;
   -l*)
-    sim_ac_gl_libs="$sim_cv_lib_gl"
+    sim_ac_ogl_libs="$sim_cv_lib_gl"
     ;;
   *)
     { echo "$as_me:$LINENO: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&5
 echo "$as_me: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&2;}
+    LIBS="$sim_ac_save_libs"
 
 
 
@@ -18469,8 +18397,8 @@ echo "${ECHO_T}$sim_cv_lib_pthread_avail" >&6
   if $sim_cv_lib_pthread_avail; then
     sim_ac_pthread_avail=yes
 
-      sim_ac_gl_cppflags="$sim_ac_gl_cppflags $sim_ac_pthread_cppflags"
-      sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"
+      sim_ac_ogl_cppflags="$sim_ac_ogl_cppflags $sim_ac_pthread_cppflags"
+      sim_ac_ogl_ldflags="$sim_ac_ogl_ldflags $sim_ac_pthread_ldflags"
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
@@ -18489,9 +18417,9 @@ if test "${sim_cv_lib_gl_pthread+set}" = set; then
 else
   sim_cv_lib_gl_pthread=UNRESOLVED
 
-        for sim_ac_gl_libcheck in $sim_ac_gl_first $sim_ac_gl_second; do
+        for sim_ac_ogl_libcheck in $sim_ac_ogl_first $sim_ac_ogl_second; do
           if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
-            LIBS="$sim_ac_gl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
+            LIBS="$sim_ac_ogl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
             cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -18532,7 +18460,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_lib_gl_pthread="$sim_ac_gl_libcheck"
+  sim_cv_lib_gl_pthread="$sim_ac_ogl_libcheck"
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
@@ -18546,43 +18474,27 @@ echo "$as_me:$LINENO: result: $sim_cv_lib_gl_pthread" >&5
 echo "${ECHO_T}$sim_cv_lib_gl_pthread" >&6
 
       if test "x$sim_cv_lib_gl_pthread" != "xUNRESOLVED"; then
-        sim_ac_gl_libs="$sim_cv_lib_gl_pthread $sim_ac_pthread_libs"
+        sim_ac_ogl_libs="$sim_cv_lib_gl_pthread $sim_ac_pthread_libs"
       fi
     fi
     ;;
   esac
 
 
-  # MacOS will have empty sim_ac_gl_libs, so don't check if it is empty...
+  # MacOS will have empty sim_ac_ogl_libs, so don't check if it is empty...
   if test x"$sim_cv_gl_libs" != x"UNRESOLVED"; then
-    sim_ac_gl_avail=yes
+    LIBS="$sim_ac_ogl_libs $sim_ac_save_libs"
+
 
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENGL 1
 _ACEOF
 
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
-  COIN_EXTRA_CFLAGS="$COIN_EXTRA_CFLAGS $sim_ac_gl_cflags"
-  COIN_EXTRA_CXXFLAGS="$COIN_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-  CFLAGS="$CFLAGS $sim_ac_gl_cflags"
-  CXXFLAGS="$CXXFLAGS $sim_ac_gl_cxxflags"
-  LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
-  LIBS="$sim_ac_gl_libs $LIBS"
 
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-
-  fi
-fi
-
-
-if test x"$sim_ac_gl_avail" = xyes; then
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_ogl_libs $COIN_EXTRA_LIBS"
 
   sim_ac_glext_header_avail=false
 echo "$as_me:$LINENO: checking how to include glext.h" >&5
@@ -19847,7 +19759,12 @@ fi
     fi
   fi
 
-else # couldn't link with OpenGL
+  else
+    CPPFLAGS="$sim_ac_save_cppflags"
+    LDFLAGS="$sim_ac_save_ldflags"
+    LIBS="$sim_ac_save_libs"
+    # OpenGL-linkage ok, end of block
+   # Couldn't link with OpenGL:
   # Don't stop the configure process if we seem to be configuring to build
   # the documentation (I don't care to install an OpenGL development system
   # on our webserver). 20000703 mortene.
@@ -19911,7 +19828,10 @@ echo "$as_me: error: aborting" >&2;}
    { (exit 1); exit 1; }; }
 
   fi
+
+  fi
 fi
+
 
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
