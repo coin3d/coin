@@ -79,6 +79,7 @@ protected:
   SoChildList * children;
 
 private:
+  int currAxis;
   void attachSensors(const SbBool onoff);
 
 };

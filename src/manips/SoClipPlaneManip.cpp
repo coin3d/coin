@@ -132,6 +132,9 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -194,6 +197,8 @@ SoClipPlaneManip::SoClipPlaneManip(void)
 
   SoJackDragger * dragger = new SoJackDragger;
   this->setDragger(dragger);
+  // needed to track the JackDragger main axis
+  this->currAxis = 0;
 }
 
 /*!
@@ -217,6 +222,9 @@ SoClipPlaneManip::~SoClipPlaneManip()
 void
 SoClipPlaneManip::setDragger(SoDragger * newdragger)
 {
+  // needed to track the JackDragger main axis
+  this->currAxis = 0;
+
   SoDragger * olddragger = this->getDragger();
   if (olddragger) {
     olddragger->removeValueChangedCallback(SoClipPlaneManip::valueChangedCB, this);
@@ -443,6 +451,27 @@ SoClipPlaneManip::getMatrix(SoGetMatrixAction * action)
 void
 SoClipPlaneManip::handleEvent(SoHandleEventAction * action)
 {
+  // check for ctrl key here. If a JackDragger is used to drag the
+  // clipping plane, it's possible to push the ctrl key to change the
+  // major axis of the dragger.  FIXME: consider adding a function in
+  // SoJackDragger that returns the current axis. pederb, 2005-02-04
+  const SoEvent * event = action->getEvent();
+  if (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) ||
+      SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL)) {
+    const SoPickedPoint * pp = action->getPickedPoint();
+    if (pp) {
+      SoFullPath * path = (SoFullPath *)pp->getPath();
+      for (int i = 0; i < path->getLength(); i++) {
+        SoNode * node = path->getNode(i);
+        if (node->isOfType(SoDragPointDragger::getClassTypeId())) {
+          this->currAxis--;
+          if (this->currAxis < 0) this->currAxis = 2;
+          SoClipPlaneManip::valueChangedCB(this, this->getDragger());
+          break;
+        }
+      }
+    }
+  }
   SoClipPlaneManip::doAction(action);
   SoClipPlane::handleEvent(action);
 }
@@ -484,13 +513,23 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
 
   SbMatrix matrix = dragger->getMotionMatrix();
 
+  SbRotation rot = SbRotation::identity();
+  if (thisp->currAxis == 2)
+    rot.setValue(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2);
+  if (thisp->currAxis == 1) {
+    rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), M_PI/2);
+  }
+  SbVec3f tt, s;
+  SbRotation r, so;
+  matrix.getTransform(tt, r, s, so);
+  rot *= r;
+  matrix.setTransform(tt, rot, s, so);
+
   SbPlane plane(SbVec3f(0.0f, 1.0f, 0.0f), 0.0f);
   // transform plane so that it matches the dragger geometry
   plane.transform(matrix);
   // extract the translation-part of the matrix
   SbVec3f t = SbVec3f(matrix[3][0], matrix[3][1], matrix[3][2]);
-
-  SbVec3f n = plane.getNormal();
 
   thisp->attachSensors(FALSE);
   if (thisp->plane.getValue() != plane) {
