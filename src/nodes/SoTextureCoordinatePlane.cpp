@@ -93,6 +93,8 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -161,15 +163,7 @@ SoTextureCoordinatePlane::generate(void * userdata,
 void
 SoTextureCoordinatePlane::doAction(SoAction * action)
 {
-  this->gencache.s = this->directionS.getValue();
-  this->gencache.t = this->directionT.getValue();
-  float lens = this->gencache.s.length();
-  float lent = this->gencache.t.length();
-  this->gencache.mul_s = 1.0f / lens;
-  this->gencache.mul_t = 1.0f / lent;
-  this->gencache.s /= lens;
-  this->gencache.t /= lent;
-
+  this->setupGencache();
   SoTextureCoordinateElement::setFunction(action->getState(), this,
                                           SoTextureCoordinatePlane::generate,
                                           this);
@@ -179,13 +173,26 @@ SoTextureCoordinatePlane::doAction(SoAction * action)
 void
 SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 {
-  SoTextureCoordinatePlane::doAction((SoAction *)action);
-  SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this,
-                                          SoTextureCoordinatePlane::handleTexgen,
-                                          this,
-                                          SoTextureCoordinatePlane::generate,
-                                          this);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  if (unit == 0) {
+    SoTextureCoordinatePlane::doAction((SoAction *)action);
+    SoGLTextureCoordinateElement::setTexGen(action->getState(),
+                                            this,
+                                            SoTextureCoordinatePlane::handleTexgen,
+                                            this,
+                                            SoTextureCoordinatePlane::generate,
+                                            this);
+  }
+  else {
+    this->setupGencache();
+    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                                 this, unit,
+                                                 SoTextureCoordinatePlane::handleTexgen,
+                                                 this,
+                                                 SoTextureCoordinatePlane::generate,
+                                                 this);
+  }
 }
 
 // doc from parent
@@ -234,3 +241,17 @@ SoTextureCoordinatePlane::handleTexgen(void *data)
   glTexGenfv(GL_R, GL_OBJECT_PLANE, plane);
   glTexGenfv(GL_Q, GL_OBJECT_PLANE, plane);
 }
+
+void 
+SoTextureCoordinatePlane::setupGencache(void)
+{
+  this->gencache.s = this->directionS.getValue();
+  this->gencache.t = this->directionT.getValue();
+  float lens = this->gencache.s.length();
+  float lent = this->gencache.t.length();
+  this->gencache.mul_s = 1.0f / lens;
+  this->gencache.mul_t = 1.0f / lent;
+  this->gencache.s /= lens;
+  this->gencache.t /= lent;
+}
+

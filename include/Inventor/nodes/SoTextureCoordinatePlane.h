@@ -66,6 +66,8 @@ private:
   } gencache_t;
 
   gencache_t gencache;
+
+  void setupGencache(void);
 };
 
 #endif // !COIN_SOTEXTURECOORDINATEPLANE_H
