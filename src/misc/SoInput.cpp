@@ -114,9 +114,6 @@
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
 
-/* FIXME: the following snippet also duplicated in flwfreetype.c --
-   should collect common code. 20030604 mortene. */
-
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.
 #ifndef S_ISDIR
@@ -625,7 +622,7 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
     }
     else {
       SoDebugError::postWarning("SoInput::setBuffer",
-                                "Bufferseems to be in gzip format, but zlib support is "
+                                "Buffer seems to be in gzip format, but zlib support is "
                                 "not available.");
     }
   }

@@ -405,7 +405,7 @@ SoOutput::closeFile(void)
   compression is disabled.
   
   \sa getAvailableCompressionMethods()
-  \since 2003-06-10
+  \since Coin 2.1
  */
 SbBool
 SoOutput::setCompression(const SbName & compmethod, const float level)
@@ -440,7 +440,7 @@ SoOutput::setCompression(const SbName & compmethod, const float level)
   of elements in the array will be stored in \a num.
 
   \sa setCompression()
-  \since 2003-06-10
+  \since Coin 2.1
  */
 const SbName * 
 SoOutput::getAvailableCompressionMethods(unsigned int & num)
