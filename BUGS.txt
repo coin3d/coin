@@ -1769,6 +1769,32 @@
 
     20030916 mortene.
 
+    UPDATE 20040714 mortene: an external Coin user (Nigel Murry) had
+    an ingenious way to use a texture multiple times with varying
+    complexity settings, which now fails -- so there are indeed
+    practical uses for this. So we should really consider this a bug,
+    and a fairly high priority item aswell, as this is a regression
+    versus older Coin versions.
+
+    From Murry's bug report on coin-discuss:
+
+        I have been using textures to show how some parameter (like
+        say temperature) varies over the surface of an
+        object. Sometimes I would like to see distinct color bands and
+        other times I would like to see a continuous variation of
+        color. So I have a SoTexture2 defined using 8 or 16 color
+        levels. Then I change bewteen a "banded" and a continuous
+        display using a SoComplexity node with textureQuality set to
+        0.00001 for a banded display.
+
+        That normally works fine, but when the texture is used more
+        than once there appears to be some confusion as to how the
+        textureQuality is used. In the attached little iv file, if the
+        switch at line 7 is off (whichChild=-1) then the second
+        (legend) use is correct. If the switch at line 7 is on
+        (whichChild=-3) then the second use shows a continuous
+        texture.
+
 =====================================================================
 
 074 SoComplexity::textureQuality changes must be made before
