@@ -23,13 +23,19 @@
 
 /*!
   \class SoAnnotation SoAnnotation.h Inventor/nodes/SoAnnotation.h
-  \brief The SoAnnotation node draws all its children geometry on top of other geometry.
+  \brief The SoAnnotation node draws all its child geometry on top of other geometry.
   \ingroup nodes
 
-  FIXME: write class doc
+  This group-type node uses delayed rendering in combination with
+  Z-buffer disabling to let it's children transparently render their
+  geometry on top of the other geometry in the scene.
+
+  Since the Z-buffer needs to be disabled, the childrens' geometry
+  will not be rendered back-to-front sorted, but rather in the order
+  they are present in the scenegraph.
 */
 
-// FIXME: consider adding a lazy GL depth buffer element.
+// FIXME: consider adding a lazy GL depth buffer element. 200YMMDD pederb.
 
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -60,16 +66,14 @@ SoAnnotation::~SoAnnotation()
 {
 }
 
-// doc in super
+// Doc in superclass.
 void
 SoAnnotation::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoAnnotation::GLRender(SoGLRenderAction * action)
 {
@@ -87,9 +91,7 @@ SoAnnotation::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -105,9 +107,7 @@ SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
@@ -123,9 +123,7 @@ SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoAnnotation::GLRenderOffPath(SoGLRenderAction *)
 {
