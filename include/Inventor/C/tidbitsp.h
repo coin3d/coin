@@ -51,7 +51,7 @@ FILE * coin_get_stderr(void);
 
 typedef void coin_atexit_f(void);
 
-void coin_atexit(coin_atexit_f *, uint32_t priority);
+void coin_atexit(coin_atexit_f *, int32_t priority);
 void coin_atexit_cleanup(void);
 SbBool coin_is_exiting(void);
 

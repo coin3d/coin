@@ -984,7 +984,7 @@ static SbBool isexiting = FALSE;
 
 typedef struct {
   coin_atexit_f * func;
-  uint32_t priority;
+  int32_t priority;
   uint32_t cnt;
 } tb_atexit_data;
 
@@ -1043,6 +1043,10 @@ coin_atexit_cleanup(void)
   Callbacks with higher priority will be called first. On equal
   priority callbacks will be made last-in-first-out ("LIFO").
 
+  For this function a higher number is a higher priority.  An atexit
+  function with priority 2 will trigger before an atexit function with
+  priority 1.
+
   Functions passed to this method should be cast to the apropriate
   method signature (coin_atexit_f), so the OSF1/cxx compiler can
   accept a C++ function as it's input argument. (Problem reported by
@@ -1050,7 +1054,7 @@ coin_atexit_cleanup(void)
 */
 
 void
-coin_atexit(coin_atexit_f * f, uint32_t priority)
+coin_atexit(coin_atexit_f * f, int32_t priority)
 {
   tb_atexit_data * data;
 
