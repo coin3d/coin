@@ -4614,4 +4614,22 @@ Separator {
 
     20041207 mortene, reported by christt.
 
+    UPDATE 20041207 mortene: looking at a call-stack backtrace, the
+    crash happens within strftime().
+
+    With GNU C (on e.g. Linux), the code will not crash.
+
+=====================================================================
+
+177 Libtool is buggy on 64-bit Linux.
+
+    The fairly old version of Libtool we are currently using for
+    bootstrapping, version 1.5, has known bugs on 64-bit Linux systems
+    with GCC.
+
+    Should upgrade to latest if there are no known showstoppers.
+    (Lars, any info on this?)
+
+    20041208 mortene.
+
 =====================================================================
