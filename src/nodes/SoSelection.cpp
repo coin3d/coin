@@ -19,10 +19,17 @@
 
 /*!
   \class SoSelection SoSelection.h Inventor/nodes/SoSelection.h
-  \brief The SoSelection class ...
+  \brief The SoSelection class manages a list of selected nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Inserting an SoSelection node in your scene graph enables you to let
+  the user pick to select/deselect objects.
+
+  This node is not initialized in SoDB::init(), since it is part of
+  the interaction kit. Before using this node, you must either call 
+  SoInteraction::initClass() or SoSelection::initClass() directly.
+  If you're using one of the GUI-toolkits, SoInteraction::initClass()
+  will be called for you.
 */
 
 
@@ -36,25 +43,28 @@
 
 /*!
   \enum SoSelection::Policy
-  FIXME: write documentation for enum
+  Enum for different pick policies.
 */
 /*!
   \var SoSelection::Policy SoSelection::SINGLE
-  FIXME: write documentation for enum definition
+  Only one object can be selected at any time. When the user picks a
+  new object, the previous selection will be unselected. If the user
+  picks on nothing, the current selection will be unselected.
 */
 /*!
   \var SoSelection::Policy SoSelection::TOGGLE
-  FIXME: write documentation for enum definition
+  Picking an object toggles its selection state.
 */
 /*!
   \var SoSelection::Policy SoSelection::SHIFT
-  FIXME: write documentation for enum definition
+  Same as SINGLE, but when shift key is pressed the selection policy
+  will be changed to TOGGLE.
 */
 
 
 /*!
   \var SoSFEnum SoSelection::policy
-  FIXME: write documentation for field
+  Field for selection policy. Default value is SHIFT.
 */
 
 
@@ -131,11 +141,7 @@ SoSelection::~SoSelection()
   if (this->mouseDownPickPath) this->mouseDownPickPath->unref();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSelection class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoSelection::initClass(void)
 {
@@ -145,8 +151,8 @@ SoSelection::initClass(void)
 
 
 /*!
-  FIXME: write doc
- */
+  Constructor which takes the expected number of children as argument.
+*/
 SoSelection::SoSelection(const int nChildren)
   : inherited(nChildren)
 {
@@ -183,7 +189,7 @@ SoSelection::init(void)
 }
 
 /*!
-  FIXME: write doc
+  Adds \a path to the list of selected objects.
  */
 void
 SoSelection::select(const SoPath * path)
@@ -197,7 +203,9 @@ SoSelection::select(const SoPath * path)
 }
 
 /*!
-  FIXME: write doc
+  Adds \a node to the list of selected objects. The scene graph
+  below the Selection node will be searched, and the path to
+  \a node will be added if found.
  */
 void
 SoSelection::select(SoNode * node)
@@ -211,8 +219,8 @@ SoSelection::select(SoNode * node)
 }
 
 /*!
-  FIXME: write doc
- */
+  Remove \a path from the list of selected objects.
+*/
 void
 SoSelection::deselect(const SoPath * path)
 {
@@ -221,8 +229,8 @@ SoSelection::deselect(const SoPath * path)
 }
 
 /*!
-  FIXME: write doc
- */
+  Remove objects \a which from the list of selected objects.
+*/
 void
 SoSelection::deselect(const int which)
 {
@@ -230,8 +238,10 @@ SoSelection::deselect(const int which)
 }
 
 /*!
-  FIXME: write doc
- */
+  Remove \a node from the list of selected objects. The scene graph
+  below the Selection node will be searched, and the path to
+  \a node will be removed if found.
+*/
 void
 SoSelection::deselect(SoNode * node)
 {
@@ -244,8 +254,9 @@ SoSelection::deselect(SoNode * node)
 }
 
 /*!
-  FIXME: write doc
- */
+  If \a path is not already selected, add \a path to the list of selected
+  objects. Otherwise remove \a path from the list of selected objects.
+*/
 void
 SoSelection::toggle(const SoPath * path)
 {
@@ -256,8 +267,9 @@ SoSelection::toggle(const SoPath * path)
 
 
 /*!
-  FIXME: write doc
- */
+  If \a node is not already selected, add \a path to the list of selected
+  objects. Otherwise remove \a node from the list of selected objects.
+*/
 void
 SoSelection::toggle(SoNode * node)
 {
@@ -270,8 +282,8 @@ SoSelection::toggle(SoNode * node)
 }
 
 /*!
-  FIXME: write doc
- */
+  Return \e TRUE if \a path is in the list of selected objects.
+*/
 SbBool
 SoSelection::isSelected(const SoPath * path) const
 {
@@ -279,8 +291,8 @@ SoSelection::isSelected(const SoPath * path) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Return \e TRUE if the path to \a node is in the list of selected objects.
+*/
 SbBool
 SoSelection::isSelected(SoNode * node) const
 {
@@ -295,8 +307,8 @@ SoSelection::isSelected(SoNode * node) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Clears the selection list.
+*/
 void
 SoSelection::deselectAll(void)
 {
@@ -304,8 +316,8 @@ SoSelection::deselectAll(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the number of selected objects.
+*/
 int
 SoSelection::getNumSelected(void) const
 {
@@ -313,8 +325,8 @@ SoSelection::getNumSelected(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the list of selected objects.
+*/
 const SoPathList *
 SoSelection::getList(void) const
 {
@@ -322,8 +334,8 @@ SoSelection::getList(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the \a index'th selected objects.
+*/
 SoPath *
 SoSelection::getPath(const int index) const
 {
@@ -331,8 +343,8 @@ SoSelection::getPath(const int index) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Operator for accessing selected objects.
+*/
 SoPath *
 SoSelection::operator[](const int i) const
 {
@@ -340,8 +352,11 @@ SoSelection::operator[](const int i) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Adds a callback which will be called every time an
+  object is selected.
+
+  \sa removeSelectionCallback()
+*/
 void
 SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
@@ -349,8 +364,10 @@ SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Removes one of the selection callbacks.
+
+  \sa addSelectionCallback()
+*/
 void
 SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
@@ -358,8 +375,11 @@ SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Adds a callback which will be called every time an
+  object is deselected.
+
+  \sa removeDeselectionCallback()
+*/
 void
 SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
@@ -367,8 +387,10 @@ SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Removes one of the deselection callbacks.
+
+  \sa addDeselctionCallback()
+*/
 void
 SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
@@ -376,8 +398,14 @@ SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Adds a callback which will be invoked when the user start an interactive
+  change to the list of selected objects.
+  
+  This callback is useful for storing the old selection list for undo/redo
+  functionality.
+
+  \sa addFinishCallback()
+*/
 void
 SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 {
@@ -385,8 +413,10 @@ SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Removes \a f from the list of start callbacks.
+
+  \sa addStartCallback()
+*/
 void
 SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 {
@@ -394,8 +424,12 @@ SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Adds a callback which will be invoked when the user has finished
+  an interactive change to the list of selected objects.
+
+
+  \sa addStartCallback()
+*/
 void
 SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 {
@@ -403,8 +437,10 @@ SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Removes \a f from the list og finish callbacks.
+  
+  \sa addFinishCallback()
+*/
 void
 SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 {
@@ -412,8 +448,24 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the pick filter callback. This callback will be called when a
+  path is about to be added to or removed from the list of selected
+  objects. The callback function should return a replacement path that
+  should be used instead of the picked path. If no callback is set
+  (the default), the picked path will be used for
+  selecting/deselecting.
+
+  Possible return values from the callback:
+
+  - NULL -- simulate that nothing was picked. This will clear the selection 
+           for the SINGLE policy. The handle event action will be halted. 
+  - A path -- the path will be selected/deselected. The handle event action will be halted.
+  - A path containing only the Selection node -- Same as NULL, but action will not be halted.
+  - An empty path or a path not containing the Selection node -- the pick will be ignored.
+
+  if \a callOnlyIfSelectable is \e TRUE, the callback will only be called if the
+  Selection node is in the picked path.
+*/
 void
 SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
                                    void * userData,
@@ -424,9 +476,11 @@ SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
   this->callPickCBOnlyIfSelectable = callOnlyIfSelectable;
 }
 
-/*!
-  FIXME: write doc
- */
+/*!  
+  When \a pickMatching is \e TRUE (the default), the mouse button
+  release pick must match the mouse button press pick before object is
+  selected/deselected.
+*/
 void
 SoSelection::setPickMatching(const SbBool pickMatching)
 {
@@ -434,8 +488,10 @@ SoSelection::setPickMatching(const SbBool pickMatching)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns \e TRUE if pick matching is enabled.
+
+  \sa setPickMatching()
+*/
 SbBool
 SoSelection::isPickMatching(void) const
 {
@@ -443,8 +499,10 @@ SoSelection::isPickMatching(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns \e TRUE if pick matching is enabled.
+
+  \sa setPickMatching()
+*/
 SbBool
 SoSelection::getPickMatching(void) const
 {
@@ -452,8 +510,9 @@ SoSelection::getPickMatching(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal.
+  Used by render area to receive notification when the selection list changes.
+*/
 void
 SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 {
@@ -461,15 +520,17 @@ SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+  Used by render area to receive notification when the selection list changes.
+*/
 void
 SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
 {
   this->changeCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
+
 /*!
-  FIXME: write doc
+  \internal
 */
 void
 SoSelection::invokeSelectionPolicy(SoPath * path,
@@ -485,8 +546,8 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 void
 SoSelection::performSingleSelection(SoPath * path)
 {
@@ -497,8 +558,8 @@ SoSelection::performSingleSelection(SoPath * path)
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 void
 SoSelection::performToggleSelection(SoPath * path)
 {
@@ -514,8 +575,8 @@ SoSelection::performToggleSelection(SoPath * path)
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 SoPath *
 SoSelection::copyFromThis(const SoPath * path) const
 {
@@ -530,8 +591,8 @@ SoSelection::copyFromThis(const SoPath * path) const
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 void
 SoSelection::addPath(SoPath * path)
 {
@@ -541,8 +602,8 @@ SoSelection::addPath(SoPath * path)
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 void
 SoSelection::removePath(const int which)
 {
@@ -555,8 +616,8 @@ SoSelection::removePath(const int which)
 }
 
 /*!
-  FIXME: write doc
- */
+  \internal
+*/
 int
 SoSelection::findPath(const SoPath * path) const
 {
@@ -577,8 +638,8 @@ SoSelection::findPath(const SoPath * path) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Overloaded to do selection picking.
+*/
 void
 SoSelection::handleEvent(SoHandleEventAction * action)
 {
@@ -602,7 +663,7 @@ SoSelection::handleEvent(SoHandleEventAction * action)
   else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     SbBool ignorepick = FALSE;
     SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
-    
+
     if (haltaction) action->setHandled();
 
     if (!ignorepick) {
@@ -634,6 +695,9 @@ SoSelection::searchNode(SoNode * node) const
   return searchAction->getPath();
 }
 
+//
+// Returns the pick selection path. Considers pick filter callback.
+//
 SoPath *
 SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
                               SbBool & haltaction)
