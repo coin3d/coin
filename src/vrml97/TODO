@@ -20,3 +20,14 @@ Unsupported features
 - Lights should affect all nodes in the current coordinate system,
   also nodes that precedes them in the children field.
 
+------------------------------------------------------------------------
+
+UPDATE 2003-01-30 mortene: looks like a whole bunch of new nodes has
+been added to the standard, see
+
+  <URL:http://www.web3d.org/technicalinfo/specifications/ISO_IEC_14772-All/part1/nodesRef.html>
+
+How the heck can they do that? Isn't this supposed to be a _standard_?
+We should really look closer into this and get it explained.
+
+------------------------------------------------------------------------
