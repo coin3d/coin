@@ -929,6 +929,15 @@ STUFF TO FIX IN COIN
     from within Coin, and thereby avoid the simage dependency. (Either
     that, or add DirectX import / export support to simage.)
 
+    UPDATE 2004-10-08: kyrah recommends not using DirectX, for two
+    reaons: inter-version incompabilities, and number of output
+    formats not matching number of input formats.
+
+    kyrah and thammer recommends using GDI+ instead (binding
+    dynamically to it), as it is available on all WinXP systems by
+    default, and is a simple download and install for other Windows
+    versions.
+
 
 035 Clean up SoBase write code.
     2003-05-28  Morten Eriksen  <mortene@sim.no>
