@@ -21,6 +21,10 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_NODE_SOURCE(SoTransformerManip);
 
 
@@ -36,7 +40,7 @@ SoTransformerManip::SoTransformerManip(void)
 
   SoTransformerDragger *dragger = new SoTransformerDragger;
   this->setDragger(dragger);
-
+  
   SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
   ss->numNodesUpToContainer = 4;
   ss->numNodesUpToReset = 3;
@@ -51,11 +55,13 @@ SbBool
 SoTransformerManip::isLocateHighlighting(void)
 {
   SoDragger *dragger = this->getDragger();
-  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+  if (dragger && dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
     return ((SoTransformerDragger*)dragger)->isLocateHighlighting();
   }
-  // FIXME: temporary hack -- don't know what the correct measure
-  // is. Peder?  20000222 mortene.
+#if COIN_DEBUG
+  SoDebugError::postWarning("SoTransformerManip::isLocateHighlighting",
+                            "Not a valid dragger in manipulator");
+#endif // debug
   return FALSE;
 }
 
@@ -63,8 +69,14 @@ void
 SoTransformerManip::setLocateHighlighting(SbBool onoff)
 {
   SoDragger *dragger = this->getDragger();
-  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+  if (dragger && dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
     ((SoTransformerDragger*)dragger)->setLocateHighlighting(onoff);
+  }
+  else {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoTransformerManip::setLocateHighlighting",
+                              "Not a valid dragger in manipulator");
+#endif // debug
   }
 }
 
@@ -72,7 +84,13 @@ void
 SoTransformerManip::unsquishKnobs(void)
 {
   SoDragger *dragger = this->getDragger();
-  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+  if (dragger && dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
     ((SoTransformerDragger*)dragger)->unsquishKnobs();
+  }
+  else {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoTransformerManip::setLocateHighlighting",
+                              "Not a valid dragger in manipulator");
+#endif // debug
   }
 }
