@@ -146,14 +146,17 @@ SbVec4f
 SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
 {
 
+  // FIXME: This way of mapping will always lead to artifacts in the
+  // change between 360 and 0 degrees around the Y-axis. This is
+  // unavoidable as the callback cannot predict when the last vertex
+  // will be received, and therefore be able to patch up the
+  // transition. (20040127 handegar)
  
-  SbVec3f ray = point - this->origo;
-  ray.normalize();
-  
-  double s = asin(ray[0])/(M_PI/2) + 0.5f;
-  double t = asin(ray[1])/(M_PI/2) + 0.5f;
+  SbVec4f tc((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5),
+             (float) (atan2(point[1], sqrt(point[0]*point[0] + point[2]*point[2])) * (1.0/M_PI) + 0.5),
+             0.0f, 1.0f);
 
-  return SbVec4f((float) s, (float) t, 0.0f, 1.0f);
+  return tc;
  
 }
 
