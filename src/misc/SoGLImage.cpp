@@ -101,6 +101,22 @@
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
+// MS Windows often has very old gl.h files, so we just define these
+// value here if not defined. Run-time checks are used to determine
+// which feature to use.
+
+#ifndef GL_CLAMP_TO_EDGE
+#define GL_CLAMP_TO_EDGE 0x812F
+#endif // GL_CLAMP_TO_EDGE
+
+#ifndef GL_CLAMP_TO_EDGE_EXT
+#define GL_CLAMP_TO_EDGE_EXT 0x812F
+#endif // GL_CLAMP_TO_EDGE_EXT
+
+#ifndef GL_CLAMP_TO_EDGE_SGIS
+#define GL_CLAMP_TO_EDGE_SGIS 0x812F
+#endif // GL_CLAMP_TO_EDGE_SGIS 
+
 #include <simage_wrapper.h>
 
 #if COIN_DEBUG
@@ -896,28 +912,22 @@ translate_wrap(SoState * state, const SoGLImage::Wrap wrap)
 {
   if (wrap == SoGLImage::REPEAT) return GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
-#if GL_VERSION_1_2
     int major, minor;
     SoGLCacheContextElement::getOpenGLVersion(state, major, minor);
     if (major > 1 || minor >= 2) return GL_CLAMP_TO_EDGE;
-#endif // GL_VERSION_1_2
 
-#if GL_EXT_texture_edge_clamp
     static int texture_clamp_ext = -1;
     if (texture_clamp_ext == -1) {
       texture_clamp_ext = SoGLCacheContextElement::getExtID("GL_EXT_texture_edge_clamp");
     }
     if (SoGLCacheContextElement::extSupported(state, texture_clamp_ext))
       return GL_CLAMP_TO_EDGE_EXT;
-#endif // GL_EXT_texture_edge_clamp
-#if GL_SGIS_texture_edge_clamp
     static int texture_clamp_sgis = -1;
     if (texture_clamp_sgis == -1) {
       texture_clamp_sgis = SoGLCacheContextElement::getExtID("SGIS_texture_edge_clamp");
     }
     if (SoGLCacheContextElement::extSupported(state, texture_clamp_sgis))
       return GL_CLAMP_TO_EDGE_SGIS;
-#endif // GL_SGIS_texture_edge_clamp
   }
   return GL_CLAMP;
 }
