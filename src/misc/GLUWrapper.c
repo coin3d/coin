@@ -114,13 +114,13 @@ GLUWrapper_set_version(const GLubyte * versionstr)
     if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
     if (COIN_DEBUG_GLU_INFO) {
       cc_debugerror_postinfo("gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)\n",
-                             GLU_instance->gluGetString(GLU_VERSION),
+                             (const char *) GLU_instance->gluGetString(GLU_VERSION),
                              GLU_instance->version.major,
                              GLU_instance->version.minor,
                              GLU_instance->version.release);
 
       cc_debugerror_postinfo("gluGetString(GLU_EXTENSIONS)=='%s'\n",
-                             GLU_instance->gluGetString(GLU_EXTENSIONS));
+                             (const char *) GLU_instance->gluGetString(GLU_EXTENSIONS));
     }
   }
 }
@@ -227,9 +227,9 @@ GLUWrapper(void)
      necessary for this file to be compatible with C++ compilers. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
       gi->_funcname_ = (_funcsig_)cc_dl_sym(GLU_libhandle, SO__QUOTE(_funcname_))
-      
+
 #elif defined(GLUWRAPPER_ASSUME_GLU) /* !GLU_RUNTIME_LINKING */
-      
+
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
       gi->_funcname_ = (_funcsig_)_funcname_
@@ -241,7 +241,7 @@ GLUWrapper(void)
       gi->_funcname_ = NULL
 
 #endif /* !GLUWRAPPER_ASSUME_GLU */
-      
+
   GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
   GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
   GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
@@ -263,14 +263,14 @@ GLUWrapper(void)
 #else /* !gluNurbsCallbackData */
   gi->gluNurbsCallbackData = NULL;
 #endif /* !gluNurbsCallbackData */
-      
+
   /* "Backup" functions, makes it easier to be robust even when no GLU
      library can be loaded. */
   if (gi->gluScaleImage == NULL)
     gi->gluScaleImage = GLUWrapper_gluScaleImage;
   if (gi->gluGetString == NULL) /* Was missing in GLU v1.0. */
     gi->gluGetString = GLUWrapper_gluGetString;
-      
+
   /* Parse the version string once and expose the version numbers
      through the GLUWrapper API. */
   GLUWrapper_set_version(gi->gluGetString(GLU_VERSION));
