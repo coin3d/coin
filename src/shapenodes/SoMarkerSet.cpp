@@ -62,6 +62,8 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/C/tidbitsp.h>
@@ -1159,6 +1161,8 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+  const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
+                                 SoProjectionMatrixElement::get(state));
   SbVec2s vpsize = vp.getViewportSizePixels();
 
   glMatrixMode(GL_MODELVIEW);
@@ -1193,8 +1197,6 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 
     if (this->markerIndex[midx] == NONE) { continue; }
 
-    mat.multVecMatrix(point, point);  // to wcs
-
     // OpenGL's glBitmap() will not be clipped against anything but
     // the near and far planes. We want markers to also be clipped
     // against other clipping planes, to behave like the SoPointSet
@@ -1206,19 +1208,15 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     // the same time.  20031219 mortene.
     if (SoCullElement::cullTest(state, bbox, FALSE)) { continue; }
 
-    vv.projectToScreen(point, point); // normalized screen coordinates
-    point[0] = point[0] * float(vpsize[0]); // screen pixel position
-    point[1] = point[1] * float(vpsize[1]);
-    // change z range from [0,1] to [-1,1]
-    point[2] *= 2.0f;
-    point[2] -= 1.0f;
-
-    so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
+    projmatrix.multVecMatrix(point, point);
+    point[0] = (point[0] + 1.0f) * 0.5f * vpsize[0];
+    point[1] = (point[1] + 1.0f) * 0.5f * vpsize[1];      
 
     // To have the exact center point of the marker drawn at the
     // projected 3D position.  (FIXME: I haven't actually checked that
     // this is what TGS' implementation of the SoMarkerSet node does
     // when rendering, but it seems likely. 20010823 mortene.)
+    so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
     point[0] = point[0] - (tmp->width - 1) / 2;
     point[1] = point[1] - (tmp->height - 1) / 2;
 

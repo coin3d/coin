@@ -98,6 +98,8 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -265,19 +267,16 @@ SoText2::GLRender(SoGLRenderAction * action)
     mb.sendFirst();
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
-    mat.multVecMatrix(nilpoint, nilpoint);
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    // this function will also modify the z-value of nilpoint
-    // according to the view matrix
-    vv.projectToScreen(nilpoint, nilpoint);
-    // change z-range from [0,1] to [-1,1]
-    nilpoint[2] *= 2.0f;
-    nilpoint[2] -= 1.0f;
-
+    const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
+                                   SoProjectionMatrixElement::get(state));
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vpsize = vp.getViewportSizePixels();
-    nilpoint[0] = nilpoint[0] * float(vpsize[0]);
-    nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+
+    projmatrix.multVecMatrix(nilpoint, nilpoint);
+    nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
+    nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];      
+ 
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
