@@ -392,6 +392,9 @@ THE WISH LIST
     [...]
   };
 
+  (BTW, the name for this function is crap -- should think of
+  something better.)
+
 * SoNode::setOverride() should be made persistent
   2001-07-03  Marius Kintel <kintel@sim.no>
   (write-up by mortene)
@@ -559,3 +562,44 @@ THE WISH LIST
   Method does not need to be virtual (no ABI problems) since it only forwards
   to three other virtual methods.
 
+* SbFile
+  2001-09-26  Morten Eriksen  <mortene@sim.no>
+  [upwards compatible extension, internal design cleanup]
+
+  Problem: there's now a fair deal of code spread around in the
+  library for doing misc "low-level" file operations which may or may
+  not be OS-dependent. Examples: stat() operations (function is named
+  differently on UNIX and MSWin systems) for testing presence of files
+  or file sizes, path / basename splitting (different for UNIX and
+  MSWin), etc etc.
+
+  These operations should be abstracted into a common class to handle
+  certain file and directory operations, because it would clean up the
+  design and make the chance for bugs slimmer by collecting all the
+  different OS-specific code in a common place.
+
+  A couple of advices for any designer and / or implementer of this
+  class:
+
+     0) I _think_ it'd be wise to use a single class for both the
+        "file" abstraction and the "directory" abstraction -- like all
+        UNIX systems do (ie; directories are just files with other
+        files in them). So we only need a "SbFile", not a
+        "SbDirectory".
+
+     1) Please check the design of available software units of this
+        type before starting the implementation -- I've at least heard
+        good things about the abstractions employed in the Common Lisp
+        specification.  There's no point in reinventing the wheel
+        _completely_ from scratch, and constructing something which is
+        capable of working on the more obscure platforms out there
+        also is not as trivial as it may seem.
+
+     2) It would IMO be preferrable to have this class implemented in
+        "pure" C, for easier duplication into any other project /
+        library, plus because we'd like to re-write many of the Sb*
+        classes, So*Error classes and some other Coin classes in C
+        some time in the future for various reasons.
+
+  (If #2 is heeded, "SbFile" should be just a wrapper C++ class around
+  the C struct(s) and functions of the "real" implementation.)
