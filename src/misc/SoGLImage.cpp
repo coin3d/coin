@@ -276,8 +276,8 @@ SoGLImage::createHandle(void)
 {
   int xsize = this->size[0];
   int ysize = this->size[1];
-  int newx = (int)nearest_power_of_two(xsize);
-  int newy = (int)nearest_power_of_two(ysize);
+  unsigned int newx = (unsigned int)nearest_power_of_two(xsize);
+  unsigned int newy = (unsigned int)nearest_power_of_two(ysize);
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
