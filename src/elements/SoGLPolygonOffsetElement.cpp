@@ -160,13 +160,18 @@ SoGLPolygonOffsetElement::updategl()
     if (currentStyle & POINTS)
       glEnable(GL_POLYGON_OFFSET_POINT);
 
-    glPolygonOffset(this->currentOffsetunits, this->currentOffsetfactor);
+    glPolygonOffset(this->currentOffsetfactor,
+                    this->currentOffsetunits);
 #elif GL_EXT_polygon_offset
     if (SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
       // FIXME: this value (0.0000001) a hack to make it look
       // ok on old SGI HW
+
+      // try to detect if user attempted to specify a bias, and not units
+      SbBool isbias = this->currentOffsetunits > 0.0f && this->currentOffsetunits < 0.01f;
       if (currentStyle & FILLED) {
-        glPolygonOffsetEXT(this->currentOffsetunits, 0.000001);
+        glPolygonOffsetEXT(this->currentOffsetfactor,
+                           isbias ? this->currentOffsetunits : 0.000001);
         glEnable(GL_POLYGON_OFFSET_EXT);
       }
     }
