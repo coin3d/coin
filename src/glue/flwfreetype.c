@@ -272,7 +272,13 @@ flwftGetGlyph(FLWfont font, unsigned int charidx)
   /* disabled 2003-03-17, pederb. Triggers too often for my taste. The
    documentation states that NULL should be returned if glyph is not
    found */
+
+  /* update 20030317 mortene: the assert() isn't really too strict,
+     it's the caller(s) that should avoid trying to get a glyph out of
+     a non-existent font. Reenable assert when code paths are fixed. */
+
   /*  assert(face != NULL); */
+  if (face == NULL) { return 0; }
 
   return FT_Get_Char_Index(face, charidx);
 }
