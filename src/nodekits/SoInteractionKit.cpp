@@ -46,7 +46,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h>
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #include <stdlib.h>
 #include "../tidbits.h" // coin_getenv()
@@ -177,7 +177,7 @@ SoInteractionKit::SoInteractionKit(void)
   SO_KIT_INIT_INSTANCE();
 
   THIS->connectedseparator = NULL;
-  THIS->fieldsensor = new SoFieldSensor(SoInteractionKitP::sensorCB, THIS);
+  THIS->fieldsensor = new SoFieldSensor(SoInteractionKit::fieldSensorCB, THIS);
   THIS->fieldsensor->setPriority(0);
 
   this->setUpConnections(TRUE, TRUE);
@@ -672,6 +672,26 @@ SoInteractionKit::setPart(const SbName & partname, SoNode * from)
   // call SoInteractionKit::setPart(int, SoNode *). Cheeessssh.
   // <pederb>.
   return inherited::setPart(partname, from);
+}
+
+/*! \internal */
+void
+SoInteractionKit::fieldSensorCB(void * d, SoSensor * s)
+{
+  SoInteractionKitP::sensorCB(d, s);
+}
+
+/*!
+  Obsoleted in Coin.
+*/
+void
+SoInteractionKit::connectSeparatorFields(SoSeparator * dest, SbBool onOff)
+{
+  COIN_OBSOLETED();
+  SoDebugError::postWarning("SoInteractionKit::connectSeparatorFields",
+                            "SoSeparator* input argument ignored, "
+                            "using topSeparator");
+  THIS->connectFields(onOff);
 }
 
 #undef THIS
