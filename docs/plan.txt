@@ -262,8 +262,8 @@ Inventor. We've got a bucket full of ideas here.
 REFERENCES:
 ===========
 
-[1] <URL:http://www.troll.no> XXX complete path to Qt
-[2] <URL:http://www.be.com> XXX complete path to BeOS
-[3] <URL:http://www.sgi.com/Technology/Inventor/> XXX check validity
-[4] <URL:http://www.sim.no> XXX complete path to RR
-[5] <URL:http://www.tgs.com/Products/openinv-index.html> XXX check validity
+[1] <URL:http://www.troll.no/products/qt.html>
+[2] <URL:http://www.be.com>
+[3] <URL:http://www.sgi.com/Technology/Inventor/>
+[4] <URL:http://www.sim.no/reducer_frontpage.html>
+[5] <URL:http://www.tgs.com/Products/openinv-index.html>
