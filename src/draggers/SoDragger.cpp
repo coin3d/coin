@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -63,11 +63,49 @@
   can be seen from the usage example in the SoSurroundScale class
   documentation.
 
-  FIXME: more class doc! The general concept of draggers should be
-  explained in more detail here -- just refering to the Inventor
-  Mentor is a cop-out. And include at least one general usage example
-  and some screenshots.  20011219 mortene.
+  One common way of using only \e parts of a dragger is to replace /
+  disable the geometry that you don't want the end-user to interact
+  with. The following code example shows how to remove the translation
+  functionality of the SoTransformBoxDragger:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/draggers/SoTransformBoxDragger.h>
+  #include <Inventor/nodes/SoSeparator.h>
+
+
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * window = SoQt::init(argv[0]);
+
+    SoTransformBoxDragger * dragger = new SoTransformBoxDragger;
+
+    SbString str;
+    for (int i = 1; i <= 6; i++) {
+      str.sprintf("translator%d.translator", i);
+      dragger->setPart(str.getString(), new SoSeparator);
+    }
+
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+    viewer->setSceneGraph(dragger);
+    viewer->show();
+    SoQt::show(window);
+
+    SoQt::mainLoop();
+
+    delete viewer;
+    return 0;
+  }
+  \endcode
+}
+
 */
+//   FIXME: more class doc! The general concept of draggers should be
+//   explained in more detail here -- just refering to the Inventor
+//   Mentor is a cop-out. And include at least one general usage example
+//   and some screenshots.  20011219 mortene.
 
 
 /*!
@@ -76,7 +114,7 @@
 */
 
 /*!
-  \enum SoDragger::ProjectorFrontSetting 
+  \enum SoDragger::ProjectorFrontSetting
 
   Holds various settings for projectors, which might affect
   cylindrical and spherical based draggers.  Specifies whether
@@ -334,7 +372,7 @@ SoDragger::initClasses(void)
 
 // Private method that sets some elements to default (for our
 // draggers) values.
-void 
+void
 SoDragger::updateElements(SoState * state)
 {
   if (state->isElementEnabled(SoShapeHintsElement::getClassStackIndex())) {
@@ -382,7 +420,7 @@ SoDragger::updateElements(SoState * state)
     SoLinePatternElement::set(state, this, SoLinePatternElement::getDefault());
   }
   if (state->isElementEnabled(SoCreaseAngleElement::getClassStackIndex())) {
-    // set to 0.5, which is the value we like 
+    // set to 0.5, which is the value we like
     SoCreaseAngleElement::set(state, this, 0.5f);
   }
   if (state->isElementEnabled(SoComplexityElement::getClassStackIndex())) {
@@ -412,7 +450,7 @@ SoDragger::callback(SoCallbackAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
@@ -424,7 +462,7 @@ SoDragger::GLRender(SoGLRenderAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::getMatrix(SoGetMatrixAction * action)
 {
   // no need to update any elements here
@@ -433,7 +471,7 @@ SoDragger::getMatrix(SoGetMatrixAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::rayPick(SoRayPickAction * action)
 {
   SoState * state = action->getState();
@@ -445,7 +483,7 @@ SoDragger::rayPick(SoRayPickAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::search(SoSearchAction * action)
 {
   // no need to update any elements here
@@ -454,7 +492,7 @@ SoDragger::search(SoSearchAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::write(SoWriteAction * action)
 {
   // no need to update any elements here
@@ -463,7 +501,7 @@ SoDragger::write(SoWriteAction * action)
 
 // Doc in superclass. Overridden to initialize some elements before
 // traversing children.
-void 
+void
 SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoState * state = action->getState();
@@ -744,19 +782,19 @@ SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalm
   SoPath * path = (SoPath *)this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis);
   assert(path);
   pathtothis->unref();
-  
+
   path->ref();
   SoGetMatrixAction action(THIS->viewport);
   action.apply(path);
   SbMatrix p2w = action.getMatrix();
   SbMatrix w2p = action.getInverse();
   path->unref();
-  
+
   // premultiply with matrix to/from this dragger to remove
   // contributions before the dragger.
   parttolocalmatrix = p2w;
   parttolocalmatrix.multRight(this->getWorldToLocalMatrix());
-  
+
   localtopartmatrix = this->getLocalToWorldMatrix();
   localtopartmatrix.multRight(w2p);
 
@@ -1201,7 +1239,7 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   return res.multLeft(transform);
 }
 
-/*!  
+/*!
   Appends \a rot, around \a rotcenter, to \a matrix. If \a conversion
   is != \c NULL, this is used to move the rotation into that
   coordinate systems before appending the rotation.
@@ -1337,7 +1375,7 @@ void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
-  
+
   if (this->isActive.getValue() || this->getActiveChildDragger()) {
     if (!action->getGrabber())
       this->updateDraggerCache(action->getCurPath());
@@ -1443,7 +1481,7 @@ SoDragger::transferMotion(SoDragger * child)
   child->setMotionMatrix(SbMatrix::identity());
   child->transformMatrixLocalToWorld(childmatrix, childmatrix);
   this->transformMatrixWorldToLocal(childmatrix, childmatrix);
-  
+
   SbMatrix matrix = this->getStartMotionMatrix();
   matrix.multLeft(childmatrix);
   this->setMotionMatrix(matrix);
