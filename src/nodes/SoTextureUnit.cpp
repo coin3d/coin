@@ -39,6 +39,9 @@
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/errors/SoDebugError.h>
 
 /*!
   \var SoSFInt32 SoTextureUnit::unit
@@ -87,6 +90,17 @@ void
 SoTextureUnit::GLRender(SoGLRenderAction * action)
 {
   SoTextureUnit::doAction((SoAction*)action);
+
+  SoState * state = action->getState();
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  
+  if (this->unit.getValue() >= maxunits) {
+    SoDebugError::postWarning("SoTextureUnit::GLRender",
+                              "Texture unit %d (counting from 0) requested. "
+                              "Your system only supports %d texture units.", 
+                              this->unit.getValue(), maxunits);
+  }
 }
 
 // Doc from superclass.

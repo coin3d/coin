@@ -463,6 +463,8 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 
   float quality = SoTextureQualityElement::get(state);
 
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+
   LOCK_GLIMAGE(this);
 
   if (!PRIVATE(this)->glimagevalid) {
@@ -511,7 +513,6 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     this->model.getValue();
   
   if (glmodel == SoTextureImageElement::REPLACE) {
-    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     if (!cc_glglue_glversion_matches_at_least(glue, 1, 1, 0)) {
       static int didwarn = 0;
       if (!didwarn) {
@@ -528,6 +529,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   }
   
   int unit = SoTextureUnitElement::get(state);
+  int maxunits = cc_glglue_max_texture_units(glue);
   if (unit == 0) {
     SoGLTextureImageElement::set(state, this,
                                  PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
@@ -542,7 +544,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       SoTextureOverrideElement::setImageOverride(state, TRUE);
     }
   }
-  else {
+  else if (unit < maxunits) {
     SoGLMultiTextureImageElement::set(state, this, unit,
                                       PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
                                       glmodel,
@@ -551,6 +553,11 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     SoGLMultiTextureEnabledElement::set(state, this, unit,
                                         PRIVATE(this)->glimagevalid &&
                                         quality > 0.0f);
+  }
+  else {
+    // we already warned in SoTextureUnit. I think it's best to just
+    // ignore the texture here so that all texture for non-supported
+    // units will be ignored. pederb, 2003-11-04
   }
 }
 
