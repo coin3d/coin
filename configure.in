@@ -487,16 +487,29 @@ fi
 if $sim_ac_build_library; then
 
 # *******************************************************************
-# * Test to see if dynamic linking through the dl library is
-# * available.
+# * Test to see if dynamic linking through either the (Linux/IRIX/...)
+# * dl library or the Win32 LoadLibrary() call is available.
 # *******************************************************************
+
+coin_can_do_runtime_linking=false
 
 SIM_AC_CHECK_DL([
   AC_DEFINE_UNQUOTED([HAVE_DL_LIB],, [define if you have the dl library])
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
   COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
+  coin_can_do_runtime_linking=true
 ])
+
+if $coin_can_do_runtime_linking; then
+  :
+else
+  SIM_AC_CHECK_LOADLIBRARY([
+    AC_DEFINE_UNQUOTED([HAVE_WINDLL_RUNTIME_BINDING],,
+                       [define if the Win32 LoadLibrary method is available])
+    coin_can_do_runtime_linking=true
+  ])
+fi
 
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
@@ -507,13 +520,13 @@ AC_ARG_ENABLE([dl-simage],
   AC_HELP_STRING([--enable-dl-simage],
                  [use runtime dynamic linking for libsimage if possible [[default=yes]]]),
   [case "${enableval}" in
-    yes | true) enable_dl_simage=yes ;;
-    no | false) enable_dl_simage=no ;;
+    yes | true) enable_dl_simage=true ;;
+    no | false) enable_dl_simage=false ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-simage) ;;
   esac],
-  [enable_dl_simage=yes])
+  [enable_dl_simage=true])
 
-if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_simage" = xyes; then
+if $enable_dl_simage && $coin_can_do_runtime_linking; then
   AC_DEFINE_UNQUOTED([SIMAGE_RUNTIME_LINKING],,
     [define for runtime linking with simage])
   SIM_AC_CONFIGURATION_SETTING([simage linkage], [runtime])

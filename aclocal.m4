@@ -1,4 +1,4 @@
-# aclocal.m4 generated automatically by aclocal 1.4g
+# aclocal.m4 generated automatically by aclocal 1.4e
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
 # Free Software Foundation, Inc.
@@ -243,7 +243,7 @@ AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])
 # Autoconf 2.50 wants to disallow AM_ names.  We explicitly allow
 # the ones we care about.
 ifdef([m4_pattern_allow],
-      [m4_pattern_allow([^AM_[A-Z]+FLAGS])])dnl
+      [m4_pattern_allow([^AM_(C|CPP|CXX|OBJC|F|R|GCJ)FLAGS])])dnl
 
 # Some tools Automake needs.
 AC_REQUIRE([AM_SANITY_CHECK])dnl
@@ -296,7 +296,6 @@ if (
       # -L didn't work.
       set X `ls -t $srcdir/configure conftest.file`
    fi
-   rm -f conftest.file
    if test "$[*]" != "X $srcdir/configure conftest.file" \
       && test "$[*]" != "X conftest.file $srcdir/configure"; then
 
@@ -317,6 +316,7 @@ else
    AC_MSG_ERROR([newly created file is older than distributed files!
 Check your system clock])
 fi
+rm -f conftest*
 AC_MSG_RESULT(yes)])
 
 
@@ -357,7 +357,7 @@ AC_DEFUN([AM_MISSING_HAS_RUN],
 [test x"${MISSING+set}" = xset ||
   MISSING="\${SHELL} `CDPATH=:; cd $ac_aux_dir && pwd`/missing"
 # Use eval to expand $SHELL
-if eval "$MISSING --run true"; then
+if eval "$MISSING --run :"; then
   am_missing_run="$MISSING --run "
 else
   am_missing_run=
@@ -392,16 +392,55 @@ am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
 
 # One issue with vendor `install' (even GNU) is that you can't
 # specify the program used to strip binaries.  This is especially
-# annoying in cross-compiling environments, where the build's strip
+# annoying in cross=compiling environments, where the build's strip
 # is unlikely to handle the host's binaries.
-# Fortunately install-sh will honor a STRIPPROG variable, so we
-# always use install-sh in `make install-strip', and initialize
-# STRIPPROG with the value of the STRIP variable (set by the user).
+# Fortunately install-sh will honor a STRIPPROG variable, so if we ever
+# need to use a non standard strip, we just have to make sure we use
+# install-sh with the STRIPPROG variable set.
 AC_DEFUN([AM_PROG_INSTALL_STRIP],
-[AC_REQUIRE([AM_MISSING_INSTALL_SH])dnl
-_am_dirpart="`echo $install_sh | sed -e 's,//*[[^/]]*$,,'`"
-INSTALL_STRIP_PROGRAM="\${SHELL} \`CDPATH=: && cd $_am_dirpart && pwd\`/install-sh -c -s"
-AC_SUBST([INSTALL_STRIP_PROGRAM])])
+[AC_REQUIRE([AM_MISSING_INSTALL_SH])
+dnl Don't test for $cross_compiling = yes, it might be `maybe'...
+# We'd like to do this but we can't because it will unconditionally
+# require config.guess.  One way would be if autoconf had the capability
+# to let us compile in this code only when config.guess was already
+# a possibility.
+#if test "$cross_compiling" != no; then
+#  # since we are cross-compiling, we need to check for a suitable `strip'
+#  AM_PROG_STRIP
+#  if test -z "$STRIP"; then
+#    AC_MSG_WARN([strip missing, install-strip will not strip binaries])
+#  fi
+#fi
+
+# If $STRIP is defined (either by the user, or by AM_PROG_STRIP),
+# instruct install-strip to use install-sh and the given $STRIP program.
+# Otherwise, just use ${INSTALL}: the idea is to use the vendor install
+# as much as possible, because it's faster.
+if test -z "$STRIP"; then
+  # The top level make will set INSTALL_PROGRAM=$(INSTALL_STRIP_PROGRAM)
+  # and the double dolard below is there to make sure that ${INSTALL}
+  # is substitued in the sub-makes, not at the top-level; this is
+  # needed if ${INSTALL} is a relative path (ajusted in each subdirectory
+  # by config.status).
+  INSTALL_STRIP_PROGRAM='$${INSTALL} -s'
+  INSTALL_STRIP_PROGRAM_ENV=''
+else
+  _am_dirpart="`echo $install_sh | sed -e 's,//*[[^/]]*$,,'`"
+  INSTALL_STRIP_PROGRAM="\${SHELL} \`CDPATH=: && cd $_am_dirpart && pwd\`/install-sh -c -s"
+  INSTALL_STRIP_PROGRAM_ENV="STRIPPROG='\$(STRIP)'"
+fi
+AC_SUBST([STRIP])
+AC_SUBST([INSTALL_STRIP_PROGRAM])
+AC_SUBST([INSTALL_STRIP_PROGRAM_ENV])])
+
+#AC_DEFUN([AM_PROG_STRIP],
+#[# Check for `strip', unless the installer
+# has set the STRIP environment variable.
+# Note: don't explicitly check for -z "$STRIP" here because
+# that will cause problems if AC_CANONICAL_* is AC_REQUIREd after
+# this macro, and anyway it doesn't have an effect anyway.
+#AC_CHECK_TOOL([STRIP],[strip])
+#])
 
 # serial 3
 
@@ -419,7 +458,6 @@ AC_SUBST([INSTALL_STRIP_PROGRAM])])
 AC_DEFUN([AM_DEPENDENCIES],
 [AC_REQUIRE([AM_SET_DEPDIR])dnl
 AC_REQUIRE([AM_OUTPUT_DEPENDENCY_COMMANDS])dnl
-am_compiler_list=
 ifelse([$1], CC,
        [AC_REQUIRE([AC_PROG_][CC])dnl
 AC_REQUIRE([AC_PROG_][CPP])
@@ -429,22 +467,16 @@ depcpp="$CPP"],
 AC_REQUIRE([AC_PROG_][CXXCPP])
 depcc="$CXX"
 depcpp="$CXXCPP"],
-       [$1], OBJC, [am_compiler_list='gcc3 gcc'
-depcc="$OBJC"
-depcpp=""],
-       [$1], GCJ,  [am_compiler_list='gcc3 gcc'
-depcc="$GCJ"
-depcpp=""],
+       [$1], OBJC, [am_cv_OBJC_dependencies_compiler_type=gcc],
        [AC_REQUIRE([AC_PROG_][$1])dnl
 depcc="$$1"
 depcpp=""])
 
 AC_REQUIRE([AM_MAKE_INCLUDE])
-AC_REQUIRE([AM_DEP_TRACK])
 
 AC_CACHE_CHECK([dependency style of $depcc],
                [am_cv_$1_dependencies_compiler_type],
-[if test -z "$AMDEP_TRUE" && test -f "$am_depcomp"; then
+[if test -z "$AMDEP"; then
   # We make a subdir and do the tests there.  Otherwise we can end up
   # making bogus files that we don't know about and never remove.  For
   # instance it was reported that on HP-UX the gcc test will end up
@@ -457,10 +489,7 @@ AC_CACHE_CHECK([dependency style of $depcc],
   cd confdir
 
   am_cv_$1_dependencies_compiler_type=none
-  if test "$am_compiler_list" = ""; then
-     am_compiler_list="`sed -n ['s/^#*\([a-zA-Z0-9]*\))$/\1/p'] < ./depcomp`"
-  fi
-  for depmode in $am_compiler_list; do
+  for depmode in `sed -n ['s/^#*\([a-zA-Z0-9]*\))$/\1/p'] < "./depcomp"`; do
     # We need to recreate these files for each test, as the compiler may
     # overwrite some of them when testing with obscure command lines.
     # This happens at least with the AIX C compiler.
@@ -526,11 +555,22 @@ AC_DEFUN([AM_DEP_TRACK],
 [AC_ARG_ENABLE(dependency-tracking,
 [  --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors])
-if test "x$enable_dependency_tracking" != xno; then
+if test "x$enable_dependency_tracking" = xno; then
+  AMDEP="#"
+else
   am_depcomp="$ac_aux_dir/depcomp"
-  AMDEPBACKSLASH='\'
+  if test ! -f "$am_depcomp"; then
+    AMDEP="#"
+  else
+    AMDEP=
+  fi
 fi
-AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
+AC_SUBST(AMDEP)
+if test -z "$AMDEP"; then
+  AMDEPBACKSLASH='\'
+else
+  AMDEPBACKSLASH=
+fi
 pushdef([subst], defn([AC_SUBST]))
 subst(AMDEPBACKSLASH)
 popdef([subst])
@@ -547,7 +587,7 @@ popdef([subst])
 # need in order to bootstrap the dependency handling code.
 AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],[
 AC_OUTPUT_COMMANDS([
-test x"$AMDEP_TRUE" != x"" ||
+test x"$AMDEP" != x"" ||
 for mf in $CONFIG_FILES; do
   case "$mf" in
   Makefile) dirpart=.;;
@@ -584,7 +624,7 @@ for mf in $CONFIG_FILES; do
     echo '# dummy' > "$dirpart/$file"
   done
 done
-], [AMDEP_TRUE="$AMDEP_TRUE"
+], [AMDEP="$AMDEP"
 ac_aux_dir="$ac_aux_dir"])])
 
 # AM_MAKE_INCLUDE()
@@ -592,6 +632,7 @@ ac_aux_dir="$ac_aux_dir"])])
 # Check to see how make treats includes.
 AC_DEFUN([AM_MAKE_INCLUDE],
 [am_make=${MAKE-make}
+# BSD make uses .include
 cat > confinc << 'END'
 doit:
 	@echo done
@@ -599,61 +640,17 @@ END
 # If we don't find an include directive, just comment out the code.
 AC_MSG_CHECKING([for style of include used by $am_make])
 _am_include='#'
-_am_quote=
-_am_result=none
-# First try GNU make style include.
-echo "include confinc" > confmf
-# We grep out `Entering directory' and `Leaving directory'
-# messages which can occur if `w' ends up in MAKEFLAGS.
-# In particular we don't look at `^make:' because GNU make might
-# be invoked under some other name (usually "gmake"), in which
-# case it prints its new name instead of `make'.
-if test "`$am_make -s -f confmf 2> /dev/null | fgrep -v 'ing directory'`" = "done"; then
-   _am_include=include
-   _am_quote=
-   _am_result=GNU
-fi
-# Now try BSD make style include.
-if test "$_am_include" = "#"; then
-   echo '.include "confinc"' > confmf
-   if test "`$am_make -s -f confmf 2> /dev/null`" = "done"; then
-      _am_include=.include
-      _am_quote='"'
-      _am_result=BSD
+for am_inc in include .include; do
+   echo "$am_inc confinc" > confmf
+   if test "`$am_make -f confmf 2> /dev/null`" = "done"; then
+      _am_include=$am_inc
+      break
    fi
-fi
+done
 AC_SUBST(_am_include)
-AC_SUBST(_am_quote)
-AC_MSG_RESULT($_am_result)
+AC_MSG_RESULT($_am_include)
 rm -f confinc confmf
 ])
-
-# serial 3
-
-# AM_CONDITIONAL(NAME, SHELL-CONDITION)
-# -------------------------------------
-# Define a conditional.
-#
-# FIXME: Once using 2.50, use this:
-# m4_match([$1], [^TRUE\|FALSE$], [AC_FATAL([$0: invalid condition: $1])])dnl
-AC_DEFUN([AM_CONDITIONAL],
-[ifelse([$1], [TRUE],
-        [errprint(__file__:__line__: [$0: invalid condition: $1
-])dnl
-m4exit(1)])dnl
-ifelse([$1], [FALSE],
-       [errprint(__file__:__line__: [$0: invalid condition: $1
-])dnl
-m4exit(1)])dnl
-AC_SUBST([$1_TRUE])
-AC_SUBST([$1_FALSE])
-if $2; then
-  $1_TRUE=
-  $1_FALSE='#'
-else
-  $1_TRUE='#'
-  $1_FALSE=
-fi])
 
 
 # serial 40 AC_PROG_LIBTOOL
@@ -1087,6 +1084,33 @@ AC_DEFUN([AM_MAINTAINER_MODE],
   AC_SUBST(MAINT)dnl
 ]
 )
+
+# serial 3
+
+# AM_CONDITIONAL(NAME, SHELL-CONDITION)
+# -------------------------------------
+# Define a conditional.
+#
+# FIXME: Once using 2.50, use this:
+# m4_match([$1], [^TRUE\|FALSE$], [AC_FATAL([$0: invalid condition: $1])])dnl
+AC_DEFUN([AM_CONDITIONAL],
+[ifelse([$1], [TRUE],
+        [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+ifelse([$1], [FALSE],
+       [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+AC_SUBST([$1_TRUE])
+AC_SUBST([$1_FALSE])
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi])
 
 # Usage:
 #   SIM_AC_COMPILER_INLINE_FOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
@@ -1926,8 +1950,8 @@ else
 fi
 ])
 
-# Usage:
-#  SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# ----------------------------------------------------------
 #
 #  Try to find the dynamic link loader library. If it is found, these
 #  shell variables are set:
@@ -1937,9 +1961,6 @@ fi
 #    $sim_ac_dl_libs     (link libraries the linker needs for dl lib)
 #
 #  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-#  In addition, the variable $sim_ac_dl_avail is set to "yes" if
-#  the dynamic link loader library is found.
-#
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 
@@ -1951,8 +1972,6 @@ AC_ARG_WITH(
     [include support for the dynamic link loader library [default=yes]])],
   [],
   [with_dl=yes])
-
-sim_ac_dl_avail=no
 
 if test x"$with_dl" != xno; then
   if test x"$with_dl" != xyes; then
@@ -1985,7 +2004,6 @@ if test x"$with_dl" != xno; then
                  [sim_cv_lib_dl_avail=no])])
 
   if test x"$sim_cv_lib_dl_avail" = xyes; then
-    sim_ac_dl_avail=yes
     ifelse([$1], , :, [$1])
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -1996,6 +2014,46 @@ if test x"$with_dl" != xno; then
 fi
 ])
 
+# SIM_AC_CHECK_LOADLIBRARY([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# -------------------------------------------------------------------
+#
+#  Try to use the Win32 dynamic link loader methods LoadLibrary(),
+#  GetProcAddress() and FreeLibrary().
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_LOADLIBRARY], [
+AC_ARG_WITH(
+  [loadlibrary],
+  [AC_HELP_STRING(
+    [--with-loadlibrary],
+    [always use run-time link bindings under Win32 [default=yes]])],
+  [],
+  [with_loadlibrary=yes])
+
+if test x"$with_loadlibrary" != xno; then
+  # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
+  # HAVE_DLFCN_H symbol set up in config.h automatically.
+  AC_CHECK_HEADERS([windows.h])
+
+  AC_CACHE_CHECK([whether the Win32 LoadLibrary() method is available],
+    sim_cv_lib_loadlibrary_avail,
+    [AC_TRY_LINK([
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+],
+                 [(void)LoadLibrary(0L); (void)GetProcAddress(0L, 0L); (void)FreeLibrary(0L); ],
+                 [sim_cv_lib_loadlibrary_avail=yes],
+                 [sim_cv_lib_loadlibrary_avail=no])])
+
+  if test x"$sim_cv_lib_loadlibrary_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+fi
+])
 
 # **************************************************************************
 # configuration_summary.m4
