@@ -66,6 +66,7 @@ protected: \
   static const SoFieldData ** getFieldDataPtr(void); \
   virtual const SoFieldData * getFieldData(void) const; \
 private: \
+  static void atexit_cleanup(void); \
   static const SoFieldData ** parentFieldData; \
   static SoFieldData * fieldData; \
   /* Counts number of instances of subclasses aswell as "direct" */ \
@@ -106,8 +107,14 @@ const SoFieldData * \
 _class_::getFieldData(void) const \
 { \
   return _class_::fieldData; \
+} \
+ \
+void \
+_class_::atexit_cleanup(void) \
+{ \
+  delete _class_::fieldData; \
+  _class_::fieldData = NULL; \
 }
-
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_SOURCE(_class_) \
@@ -118,7 +125,6 @@ _class_::createInstance(void) \
 { \
   return new _class_; \
 }
-
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_IS_FIRST_INSTANCE() \
