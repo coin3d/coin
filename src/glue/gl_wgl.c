@@ -497,10 +497,11 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
 
   /* make that the pixel format of the device context: */
 
-  SetLastError(0); /* I've seen a driver where SetPixelFormat() failed
-                      but didn't set GetLastError(), resulting in a
-                      nonsensical error message, so we reset this
-                      first. mortene. */
+  /* I've seen a driver (3Dlabs GLINT R3 PT, 1.1.28) where
+     SetPixelFormat() failed but didn't set GetLastError(), resulting
+     in a nonsensical error message, so we reset this
+     first. -mortene. */
+  SetLastError(0);
 
   if (!SetPixelFormat(context->memorydc, pixelformat, &pfd)) {
     DWORD dwError = GetLastError();
@@ -510,6 +511,28 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
     cc_string_sprintf(&str, "SetPixelFormat(%p, %d, ...)", context->memorydc, pixelformat);
     cc_win32_print_error("wglglue_context_create_context", cc_string_get_text(&str), dwError);
     cc_string_clean(&str);
+
+    /* We have had an external error report about this, plus I've been
+       able to reproduce it locally on ASK (Win NT 4, 3Dlabs 1.1.28):
+       just set the display to "Truecolor" (instead of "256 colors" or
+       "65536 colors" in the system display settings panel) and the
+       SetPixelFormat() above will fail. Changing the display settings
+       to a lower color resolution fixes it. (Using a lower screen
+       resolution makes no difference, so it doesn't seem to be
+       related to lack of memory resources.)
+
+       I tried to make less demanding requirements for the pixel
+       format in the above PIXELFORMATDESCRIPTOR, but that didn't help
+       either.
+
+       So, this seems very much like a system / driver bug. 
+    */
+
+    cc_debugerror_post("wglglue_context_create_context",
+                       "This is most likely a bug with your system. "
+                       "Try changing display settings (to e.g. 16-bit, "
+                       "24-bit or 32-bit truecolor display) and re-run.");
+
     return FALSE;
   }
 
