@@ -4,6 +4,9 @@ Todo
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
 
+* [mortene:19990924] check for simage in the --prefix installation
+  directory.
+
 * [mortene:19990912] get rid of Inventor/system/inttypes.h.
 
 * [mortene:19990912] get rid of Inventor/system/kosher.h. (Needs to
