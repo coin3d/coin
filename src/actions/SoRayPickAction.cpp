@@ -93,25 +93,25 @@ public:
   double rayfar;
   float radiusinpixels;
 
-  float currentPickDistance;
-
   SbLine wsline;
   SbMatrix obj2world;
   SbMatrix world2obj;
   SbMatrix extramatrix;
 
   SoPickedPointList pickedpointlist;
+  SbList <float> ppdistance;
 
   unsigned int flags;
 
   enum {
-    WS_RAY_SET =      0x0001, // ray set by ::setRay
-    WS_RAY_COMPUTED = 0x0002, // ray computed in ::computeWorldSpaceRay
-    PICK_ALL =        0x0004, // return all picked objects, or just closest
-    NORM_POINT =      0x0008, // is normalized vppoint calculated
-    CLIP_NEAR =       0x0010, // clip ray at near plane?
-    CLIP_FAR =        0x0020, // clip ray at far plane?
-    EXTRA_MATRIX =    0x0040 // is extra matrix supplied in ::setObjectSpace
+    WS_RAY_SET =        0x0001, // ray set by ::setRay
+    WS_RAY_COMPUTED =   0x0002, // ray computed in ::computeWorldSpaceRay
+    PICK_ALL =          0x0004, // return all picked objects, or just closest
+    NORM_POINT =        0x0008, // is normalized vppoint calculated
+    CLIP_NEAR =         0x0010, // clip ray at near plane?
+    CLIP_FAR =          0x0020, // clip ray at far plane?
+    EXTRA_MATRIX =      0x0040, // is extra matrix supplied in ::setObjectSpace
+    PPLIST_IS_SORTED =  0x0080  // did we sort pickedpointslist ?
   };
 
 private:
@@ -279,6 +279,34 @@ SoRayPickAction::isPickAll(void) const
 const SoPickedPointList &
 SoRayPickAction::getPickedPointList(void) const
 {
+  int n = THIS->pickedpointlist.getLength();
+  if (!THIS->isFlagSet(SoRayPickActionP::PPLIST_IS_SORTED) && n > 1) {
+    SoPickedPoint ** pparray = (SoPickedPoint**) THIS->pickedpointlist.getArrayPtr();
+    float * darray = (float*) THIS->ppdistance.getArrayPtr();
+    
+    int i, j, distance;
+    SoPickedPoint * pptmp;
+    float dtmp;
+    
+    // shell sort algorithm (O(nlog(n))
+    for (distance = 1; distance <= n/9; distance = 3*distance + 1);
+    for (; distance > 0; distance /= 3) {
+      for (i = distance; i < n; i++) {
+        dtmp = darray[i];
+        pptmp = pparray[i];
+        j = i;
+        while (j >= distance && darray[j-distance] > dtmp) {
+          darray[j] = darray[j-distance];
+          pparray[j] = pparray[j-distance];
+          j -= distance;
+        }
+        darray[j] = dtmp;
+        pparray[j] = pptmp;
+      }
+    }
+    THIS->setFlag(SoRayPickActionP::PPLIST_IS_SORTED);
+  }
+  
   return THIS->pickedpointlist;
 }
 
@@ -291,7 +319,7 @@ SoRayPickAction::getPickedPoint(const int index) const
 {
   assert(index >= 0);
   if (index < THIS->pickedpointlist.getLength()) {
-    return THIS->pickedpointlist[index];
+    return this->getPickedPointList()[index];
   }
   return NULL;
 }
@@ -586,24 +614,23 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
 {
   SbVec3f worldpoint;
   THIS->obj2world.multVecMatrix(objectspacepoint, worldpoint);
-
-  if (THIS->pickedpointlist.getLength() && !THIS->isFlagSet(SoRayPickActionP::PICK_ALL)) {
+  float dist = THIS->nearplane.getDistance(worldpoint);
+  
+  if (!THIS->isFlagSet(SoRayPickActionP::PICK_ALL) && THIS->pickedpointlist.getLength()) {
     // got to test if new candidate is closer than old one
-    float dist = THIS->nearplane.getDistance(worldpoint);
-    if (dist >= THIS->currentPickDistance) return NULL; // farther
-
+    if (dist >= THIS->ppdistance[0]) return NULL; // farther
     // remove old point
     delete THIS->pickedpointlist[0];
     THIS->pickedpointlist.truncate(0);
+    THIS->ppdistance.truncate(0);
   }
 
-  if (!THIS->isFlagSet(SoRayPickActionP::PICK_ALL)) {
-    THIS->currentPickDistance = THIS->nearplane.getDistance(worldpoint);
-  }
   // create the new picked point
   SoPickedPoint * pp = new SoPickedPoint(this->getCurPath(),
                                          this->state, objectspacepoint);
   THIS->pickedpointlist.append(pp);
+  THIS->ppdistance.append(dist);
+  THIS->clearFlag(SoRayPickActionP::PPLIST_IS_SORTED);
   return pp;
 }
 
@@ -651,6 +678,8 @@ SoRayPickActionP::cleanupPickedPoints(void)
     delete this->pickedpointlist[i];
   }
   this->pickedpointlist.truncate(0);
+  this->ppdistance.truncate(0);
+  this->clearFlag(PPLIST_IS_SORTED);
 }
 
 void
