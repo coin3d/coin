@@ -1,8 +1,36 @@
-This document contains a list of ideas for student's projects or
-summer interns:
+This document contains a list of ideas for interns' or student's
+projects:
 
 
 * A regression test system for the classes under Coin/src/base.
 
 * Profiling and optimalization of the base classes. Should depend on a
   good regression test suite having been implemented first.
+
+* Work with the documentation to improve it (add example code
+  snippets, screenshots, elaborate on the important parts, ...).
+
+* Write many more examples, covering the functionality offered by
+  Coin.
+
+* Write a tutorial.
+
+* Implement fontloaders for various platforms and font format types to
+  improve the SoText3 and SoText2 nodes.
+
+* Write a NURBS-library covering all the necessary functionality we
+  need within the nurbs-based node classes. A good starting point
+  would probably be the newly released OpenGL library from SGI (which
+  contains a separate libnurbs module, it seems).
+
+* The SoWin GUI-glue library.
+
+* The IVF (MFC-based) GUI-glue library.
+
+* Do the work necessary to configure, build and package a Coin SDK for
+  MSWindows developers.
+
+* Make simple routines for packaging up Coin for RedHat Linux (.rpm),
+  Suse Linux (.rpm), Debian (.pkg), HP-UX (depot), SGI IRIX
+  (something), etc.  Check out the Samba distribution, there are lots
+  of templates to look at.
