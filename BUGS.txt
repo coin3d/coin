@@ -4682,3 +4682,19 @@ Separator {
     20050103 sit.
 
 =====================================================================
+
+186 SoExtSelection warnings upon user input.
+
+    To reproduce, run the SoGuiExamples/nodes/extselection with any
+    iv-file. With the default SoExtSelection policy settings of the
+    example, double click anywhere in the canvas, and a bunch of
+    warning messages will come out:
+
+        Coin warning in SbPlane::SbPlane(): The three points defining the plane cannot be coincident.
+        Coin warning in SbPlane::SbPlane(): The three points defining the plane cannot be on line.
+        Coin warning in SbVec3f::normalize(): The length of the vector should be > 0.0f to be able to normalize.
+        [repeated many times]
+
+    20050106 mortene.
+
+=====================================================================
