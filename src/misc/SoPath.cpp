@@ -746,7 +746,14 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
   pos++;
 
   if (index == this->indices[pos]) {
-    this->nodes.set(pos, newchild);
+    // The path below the replacement will not be correct -- so let's
+    // truncate the path here. Truncating will also remove us as
+    // auditors from the SoChildList instances we're watching.
+    this->truncate(pos);
+
+    // Append replacement.
+    this->indices.append(index);
+    this->nodes.append(newchild);
 
     // This is unnecessary and a bit silly, but it simplifies the code
     // as we don't have to do anything special to check whether or not
@@ -755,11 +762,6 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
     // on the isauditing flag).
     SoChildList * cl = newchild->getChildren();
     if (cl && this->isauditing) cl->addPathAuditor(this);
-
-    // If the newchild node is a node _not_ at the tail, the remaining
-    // set of indices will not be correct -- so let's truncate the
-    // path here.
-    if (pos < (this->getFullLength() - 1)) this->truncate(pos);
   }
 
 #if COIN_DEBUG && 0 // debug
