@@ -102,9 +102,11 @@ ALLSOURCES = \
 	SoCalculator.cpp SoCalculator.h \
 	SoComposeMatrix.cpp SoComposeMatrix.h \
 	SoComposeRotation.cpp SoComposeRotation.h \
+	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
 	SoComposeVec2f.cpp SoComposeVec2f.h \
 	SoComposeVec3f.cpp SoComposeVec3f.h \
 	SoComposeVec4f.cpp SoComposeVec4f.h \
+	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
 	SoConcatenate.cpp SoConcatenate.h \
 	SoConvertAll.cpp SoConvertAll.h \
 	SoCounter.cpp SoCounter.h \
@@ -128,6 +130,8 @@ ALLSOURCES = \
 	SoOneShot.cpp SoOneShot.h \
         SoOutputData.cpp SoOutputData.h \
 	SoSelectOne.cpp SoSelectOne.h \
+	SoTimeCounter.cpp SoTimeCounter.h \
+	SoTransformVec3f.cpp SoTransformVec3f.h \
 	SoTriggerAny.cpp SoTriggerAny.h \
 	evaluator.c evaluator.h \
 	evaluator.tab.c
@@ -141,9 +145,11 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoCompose.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeRotation.h \
+	$(top_srcdir)/include/Inventor/engines/SoComposeRotationFromTo.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec2f.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec4f.h \
+	$(top_srcdir)/include/Inventor/engines/SoComputeBoundingBox.h \
 	$(top_srcdir)/include/Inventor/engines/SoConcatenate.h \
 	$(top_srcdir)/include/Inventor/engines/SoCounter.h \
 	$(top_srcdir)/include/Inventor/engines/SoDecomposeMatrix.h \
@@ -167,6 +173,8 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoOneShot.h \
 	$(top_srcdir)/include/Inventor/engines/SoOutputData.h \
 	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h \
+	$(top_srcdir)/include/Inventor/engines/SoTimeCounter.h \
+	$(top_srcdir)/include/Inventor/engines/SoTransformVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
 
@@ -205,28 +213,30 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libengines_la_LDFLAGS = 
 libengines_la_LIBADD = 
 am_libengines_la_OBJECTS =  SoBoolOperation.lo SoCalculator.lo \
-SoComposeMatrix.lo SoComposeRotation.lo SoComposeVec2f.lo \
-SoComposeVec3f.lo SoComposeVec4f.lo SoConcatenate.lo SoConvertAll.lo \
-SoCounter.lo SoDecomposeMatrix.lo SoDecomposeRotation.lo \
-SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoFieldConverter.lo \
-SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
-SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
-SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
-SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+SoComposeMatrix.lo SoComposeRotation.lo SoComposeRotationFromTo.lo \
+SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
+SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
+SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
+SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo \
+SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
+SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
+SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
+SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libengines_la_OBJECTS =  $(am_libengines_la_OBJECTS)
 libenginesLINKHACK_la_LDFLAGS = 
 libenginesLINKHACK_la_LIBADD = 
 am_libenginesLINKHACK_la_OBJECTS =  SoBoolOperation.lo SoCalculator.lo \
-SoComposeMatrix.lo SoComposeRotation.lo SoComposeVec2f.lo \
-SoComposeVec3f.lo SoComposeVec4f.lo SoConcatenate.lo SoConvertAll.lo \
-SoCounter.lo SoDecomposeMatrix.lo SoDecomposeRotation.lo \
-SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoFieldConverter.lo \
-SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
-SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
-SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
-SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+SoComposeMatrix.lo SoComposeRotation.lo SoComposeRotationFromTo.lo \
+SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
+SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
+SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
+SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo \
+SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
+SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
+SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
+SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libenginesLINKHACK_la_OBJECTS =  $(am_libenginesLINKHACK_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -251,8 +261,9 @@ GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBoolOperation.Plo \
 $(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
-$(DEPDIR)/SoComposeRotation.Plo $(DEPDIR)/SoComposeVec2f.Plo \
-$(DEPDIR)/SoComposeVec3f.Plo $(DEPDIR)/SoComposeVec4f.Plo \
+$(DEPDIR)/SoComposeRotation.Plo $(DEPDIR)/SoComposeRotationFromTo.Plo \
+$(DEPDIR)/SoComposeVec2f.Plo $(DEPDIR)/SoComposeVec3f.Plo \
+$(DEPDIR)/SoComposeVec4f.Plo $(DEPDIR)/SoComputeBoundingBox.Plo \
 $(DEPDIR)/SoConcatenate.Plo $(DEPDIR)/SoConvertAll.Plo \
 $(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
 $(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
@@ -264,7 +275,8 @@ $(DEPDIR)/SoInterpolateFloat.Plo $(DEPDIR)/SoInterpolateRotation.Plo \
 $(DEPDIR)/SoInterpolateVec2f.Plo $(DEPDIR)/SoInterpolateVec3f.Plo \
 $(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
 $(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
-$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTriggerAny.Plo \
+$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
+$(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
 $(DEPDIR)/evaluator.Plo $(DEPDIR)/evaluator.tab.Plo
 SOURCES = $(libengines_la_SOURCES) $(libenginesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libengines_la_OBJECTS) $(am_libenginesLINKHACK_la_OBJECTS)
@@ -401,9 +413,11 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoCalculator.Plo
 @AMDEP@include $(DEPDIR)/SoComposeMatrix.Plo
 @AMDEP@include $(DEPDIR)/SoComposeRotation.Plo
+@AMDEP@include $(DEPDIR)/SoComposeRotationFromTo.Plo
 @AMDEP@include $(DEPDIR)/SoComposeVec2f.Plo
 @AMDEP@include $(DEPDIR)/SoComposeVec3f.Plo
 @AMDEP@include $(DEPDIR)/SoComposeVec4f.Plo
+@AMDEP@include $(DEPDIR)/SoComputeBoundingBox.Plo
 @AMDEP@include $(DEPDIR)/SoConcatenate.Plo
 @AMDEP@include $(DEPDIR)/SoConvertAll.Plo
 @AMDEP@include $(DEPDIR)/SoCounter.Plo
@@ -427,6 +441,8 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoOneShot.Plo
 @AMDEP@include $(DEPDIR)/SoOutputData.Plo
 @AMDEP@include $(DEPDIR)/SoSelectOne.Plo
+@AMDEP@include $(DEPDIR)/SoTimeCounter.Plo
+@AMDEP@include $(DEPDIR)/SoTransformVec3f.Plo
 @AMDEP@include $(DEPDIR)/SoTriggerAny.Plo
 @AMDEP@include $(DEPDIR)/evaluator.Plo
 @AMDEP@include $(DEPDIR)/evaluator.tab.Plo

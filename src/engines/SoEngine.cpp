@@ -72,7 +72,6 @@ void
 SoEngine::initClasses(void)
 {
   SoBoolOperation::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
   SoCalculator::initClass();
   SoComposeVec2f::initClass();
   SoComposeVec3f::initClass();
@@ -81,13 +80,11 @@ SoEngine::initClasses(void)
   SoDecomposeVec3f::initClass();
   SoDecomposeVec4f::initClass();
   SoComposeRotation::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoComposeRotationFromTo::initClass();
+  SoComposeRotationFromTo::initClass();
   SoDecomposeRotation::initClass();
   SoComposeMatrix::initClass();
   SoDecomposeMatrix::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoComputeBoundingBox::initClass();
+  SoComputeBoundingBox::initClass();
   SoConcatenate::initClass();
   SoCounter::initClass();
   SoElapsedTime::initClass();
@@ -102,10 +99,8 @@ SoEngine::initClasses(void)
   SoOnOff::initClass();
   SoOneShot::initClass();
   SoSelectOne::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoTimeCounter::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoTransformVec3f::initClass();
+  SoTimeCounter::initClass();
+  SoTransformVec3f::initClass();
   SoTriggerAny::initClass();
 }
 

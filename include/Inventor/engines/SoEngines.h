@@ -29,19 +29,16 @@
 #include <Inventor/engines/SoDecomposeVec3f.h>
 #include <Inventor/engines/SoDecomposeVec4f.h>
 #include <Inventor/engines/SoComposeRotation.h>
-// FIXME: not made yet. 19990406 mortene.
-//  #include <Inventor/engines/SoComposeRotationFromTo.h>
+#include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoDecomposeRotation.h>
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
-// FIXME: not made yet. 19990406 mortene.
-//  #include <Inventor/engines/SoComputeBoundingBox.h>
+#include <Inventor/engines/SoComputeBoundingBox.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/engines/SoCounter.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/engines/SoGate.h>
-// FIXME: why not SoInterpolate.h? 19990407 mortene.
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/engines/SoInterpolateFloat.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
@@ -51,10 +48,8 @@
 #include <Inventor/engines/SoOnOff.h>
 #include <Inventor/engines/SoOneShot.h>
 #include <Inventor/engines/SoSelectOne.h>
-// FIXME: not made yet. 19990406 mortene.
-//  #include <Inventor/engines/SoTimeCounter.h>
-// FIXME: not made yet. 19990406 mortene.
-//  #include <Inventor/engines/SoTransformVec3f.h>
+#include <Inventor/engines/SoTimeCounter.h>
+#include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoTriggerAny.h>
 
 #endif // !COIN_SOENGINES_H

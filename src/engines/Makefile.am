@@ -6,9 +6,11 @@ ALLSOURCES = \
 	SoCalculator.cpp SoCalculator.h \
 	SoComposeMatrix.cpp SoComposeMatrix.h \
 	SoComposeRotation.cpp SoComposeRotation.h \
+	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
 	SoComposeVec2f.cpp SoComposeVec2f.h \
 	SoComposeVec3f.cpp SoComposeVec3f.h \
 	SoComposeVec4f.cpp SoComposeVec4f.h \
+	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
 	SoConcatenate.cpp SoConcatenate.h \
 	SoConvertAll.cpp SoConvertAll.h \
 	SoCounter.cpp SoCounter.h \
@@ -32,6 +34,8 @@ ALLSOURCES = \
 	SoOneShot.cpp SoOneShot.h \
         SoOutputData.cpp SoOutputData.h \
 	SoSelectOne.cpp SoSelectOne.h \
+	SoTimeCounter.cpp SoTimeCounter.h \
+	SoTransformVec3f.cpp SoTransformVec3f.h \
 	SoTriggerAny.cpp SoTriggerAny.h \
 	evaluator.c evaluator.h \
 	evaluator.tab.c
@@ -45,9 +49,11 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoCompose.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeRotation.h \
+	$(top_srcdir)/include/Inventor/engines/SoComposeRotationFromTo.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec2f.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec4f.h \
+	$(top_srcdir)/include/Inventor/engines/SoComputeBoundingBox.h \
 	$(top_srcdir)/include/Inventor/engines/SoConcatenate.h \
 	$(top_srcdir)/include/Inventor/engines/SoCounter.h \
 	$(top_srcdir)/include/Inventor/engines/SoDecomposeMatrix.h \
@@ -71,6 +77,8 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoOneShot.h \
 	$(top_srcdir)/include/Inventor/engines/SoOutputData.h \
 	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h \
+	$(top_srcdir)/include/Inventor/engines/SoTimeCounter.h \
+	$(top_srcdir)/include/Inventor/engines/SoTransformVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
 ##$ BEGIN TEMPLATE Make-Common(engines)
