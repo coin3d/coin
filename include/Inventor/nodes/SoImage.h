@@ -74,13 +74,12 @@ protected:
   int getReadStatus(void);
   void setReadStatus(SbBool flag);
 
-protected:
+private:
   SbVec2s getSize(void) const;
   static SbVec3f getNilpoint(SoState *state);
   void getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
                SbVec3f &v2, SbVec3f &v3);
 
-private:
   const unsigned char * getImage(SbVec2s & size, int & nc);
   SbBool loadFilename(void);
   SbBool readstatus;
