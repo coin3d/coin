@@ -688,12 +688,12 @@ just one rule which is an absolute must:
           know when the API was extended -- in case they want to
           support a range of older versions of the library, for
           instance. Valid parameters to "\since" are:
-          * COIN-x.y     - What Coin version it first occured in.
-          * TGS-x.y[.z]  - What TGS OIV version it first occured in.
-          * SGI-x.y[.z]  - What SGI OIV version it first occured in.
-          * YYYY-MM-DD   - What date it was added to Coin. Will be 
-                           converted to the correct COIN-x.y for each 
-                           Coin release.
+          * Coin x.y              - What Coin version it first occured in.
+          * TGS Inventor x.y[.z]  - What TGS OIV version it first occured in.
+          * Inventor x.y[.z]      - What SGI OIV version it first occured in.
+          * YYYY-MM-DD            - What date it was added to Coin. Will be 
+                                    converted to the correct COIN-x.y for each 
+                                    Coin release.
           Use ',' as a separator if more than one implementation supports
           the extension. If an extension is introduced in two branches of 
           Coin, tag both in cases as (COIN-1.1, COIN-2.1) but only once if 
@@ -721,10 +721,10 @@ A few hints:
         * We do not force a third-person vs an imperative style, or
           vice versa. Use the same style as "nearby" documentation.
 
-        * Make sure as *all* important aspects of a class or a
-          function is documented properly -- _don't_ expect the
-          application programmer to ever having to resort to the
-          header files or implementation sourcecode.
+        * Make sure *all* important aspects of a class or a function
+          is documented properly -- _don't_ expect the application
+          programmer to ever having to resort to the header files or
+          implementation sourcecode.
 
 
 ==============================================================================
