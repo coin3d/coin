@@ -67,18 +67,6 @@ if $sim_ac_try_msvc; then
     *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
     esac
   ])
-  if $BUILD_WITH_MSVC; then
-    SIM_AC_SETUP_MSVCRT([
-      CPPFLAGS="$CPPFLAGS $sim_ac_msvcrt_CPPFLAGS"
-      CFLAGS="$CFLAGS $sim_ac_msvcrt_CFLAGS"
-      CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
-      LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
-      LIBS="$LIBS $sim_ac_msvcrt_LIBS"
-      # sim_ac_msvcrt_LIBLIBS is set up at the end
-      # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
-      AC_SUBST([COIN_MSVC_LIBC], [$sim_ac_msvcrt])
-    ])
-  fi
 fi
 
 
@@ -126,6 +114,23 @@ AC_LANG_CPLUSPLUS
 # AC_EXEEXT
 
 # **************************************************************************
+# NOTE: if we touch CFLAGS/CXXFLAGS before AC_PROG_CC is invoked, the -g
+# flag will be lost  20020104 larsa
+
+if $BUILD_WITH_MSVC; then
+  SIM_AC_SETUP_MSVCRT([
+    CPPFLAGS="$CPPFLAGS $sim_ac_msvcrt_CPPFLAGS"
+    CFLAGS="$CFLAGS $sim_ac_msvcrt_CFLAGS"
+    CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
+    LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
+    LIBS="$LIBS $sim_ac_msvcrt_LIBS"
+    # sim_ac_msvcrt_LIBLIBS is set up at the end
+    # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
+    AC_SUBST([COIN_MSVC_LIBC], [$sim_ac_msvcrt])
+  ])
+fi
+
+# **************************************************************************
 
 AM_INIT_AUTOMAKE(Coin, $VERSION)
 
@@ -137,16 +142,11 @@ AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
 
 if $BUILD_WITH_MSVC; then
-  RANLIB=true
+  RANLIB=:
   export RANLIB
 fi
 
 #  Initialize libtool
-
-if $BUILD_WITH_MSVC; then
-  RANLIB=:
-fi
-
 AC_PROG_LIBTOOL
 
 #  These are used for constructing the coin-config file.
