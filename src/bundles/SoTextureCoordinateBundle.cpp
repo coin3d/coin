@@ -109,6 +109,9 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (setUpDefault) {
     assert(0 && "FIXME: implement default texture coordinates (pederb)");
   }
+  if (forRendering && (glElt == NULL)) {
+    this->flags &= ~FLAG_NEEDCOORDS;
+  }
   
   if (forRendering) this->flags |= FLAG_FOR_RENDERING;
 }

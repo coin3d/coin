@@ -144,7 +144,7 @@ public:
 private:
   
   void splitBox(const SbBox3f &box, SbBox3f *destarray) const;
-  void splitNode(const SbBox3f &nodesize, const SbOctTreeFuncs &funcs);
+  SbBool splitNode(const SbBox3f &nodesize, const SbOctTreeFuncs &funcs);
   
   SbOctTreeNode *children[8];
   SbList <void*> items;
@@ -190,8 +190,12 @@ SbOctTreeNode::addItem(void * const item,
     }
   }
   else if (this->items.getLength() >= maxitems) { // node is full
-    splitNode(nodesize, itemfuncs);
-    addItem(item, itemfuncs, maxitems, nodesize); // try again
+    if (splitNode(nodesize, itemfuncs)) {
+      addItem(item, itemfuncs, maxitems, nodesize); // try again
+    }
+    else {
+      this->items.append(item);
+    }
   }
   else {
     this->items.append(item);
@@ -352,7 +356,7 @@ SbOctTreeNode::splitBox(const SbBox3f &box, SbBox3f *dest) const
   }
 }
 
-void 
+SbBool 
 SbOctTreeNode::splitNode(const SbBox3f &nodesize,
 			 const SbOctTreeFuncs &itemfuncs)
 {
@@ -372,7 +376,21 @@ SbOctTreeNode::splitNode(const SbBox3f &nodesize,
       }
     }
   }
-  this->items.clear(1);
+  for (i = 0; i < 8; i++) {
+    if (children[i]->items.getLength() == n) break;
+  }
+  if (i < 8) {
+    for (i = 0; i < 8; i++) {
+      delete children[i];
+      children[i] = NULL;
+    }
+    return FALSE;
+  }
+  else {
+    this->items.clear(1);
+    return TRUE;
+  }
+  return TRUE;
 }
 
 
