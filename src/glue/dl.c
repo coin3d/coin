@@ -179,26 +179,11 @@ cc_dl_open(const char * filename)
 
     if (cc_dl_debugging()) {
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
-      char *libpath;
-      DWORD retval;
-
-      libpath = (char *)malloc(512);
-      retval = GetModuleFileName(h->nativehnd, libpath, 512);
-      libpath[511] = 0;
-      if (retval>0) {
-        cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", libpath);
-      } else {
-        DWORD lasterr;
-        cc_string errstr;
-        
-        cc_string_construct(&errstr);
-        cc_dl_get_win32_err(&lasterr, &errstr);
-        cc_debugerror_post("cc_dl_open", "GetModuleFileName() failed with: '%s'",
-                           cc_string_get_text(&errstr));
-        cc_string_clean(&errstr);
-        cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", cc_string_get_text(&h->libname));
-      }
-      free (libpath);
+      char libpath[512];
+      DWORD retval = GetModuleFileName(h->nativehnd, libpath, sizeof(libpath));
+      assert(retval > 0 && "GetModuleFileName() failed");
+      libpath[sizeof(libpath) - 1] = 0;
+      cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
 #elif defined (HAVE_DL_LIB)
       cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", cc_string_get_text(&h->libname));
 #endif
