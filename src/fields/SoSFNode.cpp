@@ -105,7 +105,9 @@ SoSFNode::~SoSFNode(void)
 void
 SoSFNode::setValue(SoNode * newval)
 {
-  SoNode * oldptr = this->getValue();
+  // don;t use getValue() to find oldptr, since this might trigger a
+  // field/engine evaluation if the field is connected..
+  SoNode * oldptr = this->value;
   if (oldptr == newval) return;
 
   if (oldptr) {
