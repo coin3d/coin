@@ -29,10 +29,12 @@ if BUILD_WITH_THREADS
 THREADSDIR = extensions/threads
 THREADSLIBADD = $(THREADSDIR)/libthreads.la
 THREADSLSTADD = $(THREADSDIR)/threads.lst
+THREADSINCLUDES = -I$(top_srcdir)/$(THREADSDIR)
 else
 THREADSDIR =
 THREADSLIBADD =
 THREADSLSTADD =
+THREADSINCLUDES =
 endif
 
 # **************************************************************************
@@ -42,7 +44,7 @@ SUBDIRS = \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors .
 
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/include $(THREADSINCLUDES)
 
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib

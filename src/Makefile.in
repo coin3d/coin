@@ -151,6 +151,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @BUILD_WITH_THREADS_FALSE@THREADSLIBADD = 
 @BUILD_WITH_THREADS_TRUE@THREADSLSTADD = $(THREADSDIR)/threads.lst
 @BUILD_WITH_THREADS_FALSE@THREADSLSTADD = 
+@BUILD_WITH_THREADS_TRUE@THREADSINCLUDES = -I$(top_srcdir)/$(THREADSDIR)
+@BUILD_WITH_THREADS_FALSE@THREADSINCLUDES = 
 
 
 # **************************************************************************
@@ -160,7 +162,7 @@ SUBDIRS = \
 	projectors sensors .
 
 
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/include $(THREADSINCLUDES)
 
 @BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la

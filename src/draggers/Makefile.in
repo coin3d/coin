@@ -191,7 +191,10 @@ PrivateHeaders =
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions -I$(top_builddir)
+@BUILD_WITH_THREADS_TRUE@THREADSINCLUDES = -I$(top_srcdir)/src/extensions/threads
+@BUILD_WITH_THREADS_FALSE@THREADSINCLUDES = 
+
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions $(THREADSINCLUDES) -I$(top_builddir)
 
 libdraggers_la_SOURCES = $(BuildSources)
 EXTRA_libdraggers_la_SOURCES = \
