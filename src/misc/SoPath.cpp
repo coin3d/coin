@@ -481,22 +481,29 @@ SoPath::truncate(const int length, const SbBool donotify)
          "invalid truncation length");
 
 #if COIN_DEBUG
-  // We have inserted this check here to run through the full path
-  // list and detect dangling node pointers (by using the
-  // SoBase::assertAlive() debugging helper function). This should
-  // help us cause an early break-down for certain types of major
-  // internal consistency problems in the library, which could
-  // otherwise cause silent memory corruption and mysterious crashes
-  // at unrelated locations.
-  //
-  // mortene -- the paranoid android.
-  SoFullPath * fp = (SoFullPath *)this;
-  for (int l = 0; l < fp->getLength(); l++) {
-    SoNode * n = fp->getNode(l);
-    // FIXME: are there actually conditions where we can "legally" get
-    // a NULL pointer here? Or would that be an indication of an
-    // internal error? 20020928 mortene.
-    if (n) { n->assertAlive(); }
+  // Don't run this alive test if the node list is not referencing.
+  // SoTempPath (used by actions to minimize overhead while
+  // traversing) does not reference count the node pointers, so it
+  // might leave dangling node pointers in the path.  This is ok
+  // though, so we should not assert.  pederb, 2002-10-01
+  if (this->nodes.isReferencing()) {
+    // We have inserted this check here to run through the full path
+    // list and detect dangling node pointers (by using the
+    // SoBase::assertAlive() debugging helper function). This should
+    // help us cause an early break-down for certain types of major
+    // internal consistency problems in the library, which could
+    // otherwise cause silent memory corruption and mysterious crashes
+    // at unrelated locations.
+    //
+    // mortene -- the paranoid android.
+    SoFullPath * fp = (SoFullPath *)this;
+    for (int l = 0; l < fp->getLength(); l++) {
+      SoNode * n = fp->getNode(l);
+      // FIXME: are there actually conditions where we can "legally" get
+      // a NULL pointer here? Or would that be an indication of an
+      // internal error? 20020928 mortene.
+      if (n) { n->assertAlive(); }
+    }
   }
 #endif // COIN_DEBUG
 
