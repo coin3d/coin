@@ -38,7 +38,17 @@
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
-  FIXME: write documentation for field
+
+  If you set the vertexProperty field, it should be with a coordinate
+  node. Otherwise it will simply be ignored. Nodetypes inheriting
+  SoVertexShape will then get their coordinate data from the
+  vertexProperty node instead of from the global traversal state.
+
+  The vertexProperty field of SoVertexShape-derived nodes breaks
+  somewhat with the basic design of Open Inventor, as its contents are
+  not passed to the global state. This is done to provide a simple
+  path to highly optimized rendering of vertexbased shapes.
+
 */
 
 
