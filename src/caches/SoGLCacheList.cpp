@@ -83,7 +83,7 @@ public:
     int n = thisp->itemlist.getLength();
     while (i < n) {
       if (thisp->itemlist[i]->getCacheContext() == (int) context) {
-        delete thisp->itemlist[i];
+        thisp->itemlist[i]->unref();
         thisp->itemlist.remove(i);
         n--;
       }
