@@ -110,10 +110,19 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/errors/SoDebugError.h>
 
+class SoSFImageP {
+public:
+  SoSFImageP(void) { this->image = new SbImage; }
+  ~SoSFImageP() { delete this->image; }
+
+  SbImage * image;
+};
+
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
 PRIVATE_TYPEID_SOURCE(SoSFImage);
 PRIVATE_EQUALITY_SOURCE(SoSFImage);
-
 
 // (Declarations hidden in macro in SoSFImage.h, so don't use Doxygen
 // commenting.)
@@ -121,14 +130,14 @@ PRIVATE_EQUALITY_SOURCE(SoSFImage);
 
 /* Constructor, initializes fields to represent an empty image. */
 SoSFImage::SoSFImage(void)
-  : image(new SbImage)
 {
+  PRIVATE(this) = new SoSFImageP;
 }
 
 /* Free all resources associated with the image. */
 SoSFImage::~SoSFImage()
 {
-  delete this->image;
+  delete PRIVATE(this);
 }
 
 /* Copy the image of \a field into this field. */
@@ -137,7 +146,7 @@ SoSFImage::operator=(const SoSFImage & field)
 {
   int nc = 0;
   SbVec2s size(0,0);
-  unsigned char * bytes = field.image->getValue(size, nc);
+  unsigned char * bytes = PRIVATE(&field)->image->getValue(size, nc);
 
   this->setValue(size, nc, bytes);
   return *this;
@@ -187,14 +196,14 @@ SoSFImage::readValue(SoInput * in)
 #endif // debug
 
   if (!buffersize) {
-    this->image->setValue(SbVec2s(0,0), 0, NULL);
+    PRIVATE(this)->image->setValue(SbVec2s(0,0), 0, NULL);
     this->valueChanged();
     return TRUE;
   }
 
   // allocate image data and get new pointer back
-  this->image->setValue(size, nc, NULL);
-  unsigned char * pixblock = this->image->getValue(size, nc);
+  PRIVATE(this)->image->setValue(size, nc, NULL);
+  unsigned char * pixblock = PRIVATE(this)->image->getValue(size, nc);
 
   // The binary image format of 2.1 and later tries to be less
   // wasteful when storing images.
@@ -229,7 +238,7 @@ SoSFImage::writeValue(SoOutput * out) const
 {
   int nc;
   SbVec2s size;
-  unsigned char * pixblock = this->image->getValue(size, nc);
+  unsigned char * pixblock = PRIVATE(this)->image->getValue(size, nc);
 
   out->write(size[0]);
   if (!out->isBinary()) out->write(' ');
@@ -285,7 +294,7 @@ SoSFImage::writeValue(SoOutput * out) const
 int
 SoSFImage::operator==(const SoSFImage & field) const
 {
-  return (*this->image) == (*field.image);
+  return (*PRIVATE(this)->image) == (*(PRIVATE(&field)->image));
 }
 
 
@@ -296,7 +305,7 @@ SoSFImage::operator==(const SoSFImage & field) const
 const unsigned char *
 SoSFImage::getValue(SbVec2s & size, int & nc) const
 {
-  return this->image->getValue(size, nc);
+  return PRIVATE(this)->image->getValue(size, nc);
 }
 
 /*!
@@ -331,7 +340,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
                               "If you need this functionality, get in touch.");
   }
 
-  this->image->setValue(size, nc, pixels);
+  PRIVATE(this)->image->setValue(size, nc, pixels);
   this->valueChanged();
 }
 
@@ -345,7 +354,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 unsigned char *
 SoSFImage::startEditing(SbVec2s & size, int & nc)
 {
-  return this->image->getValue(size, nc);
+  return PRIVATE(this)->image->getValue(size, nc);
 }
 
 /*!

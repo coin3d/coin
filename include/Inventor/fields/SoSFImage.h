@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbVec2s.h>
 
+
 class COIN_DLL_API SoSFImage : public SoSField {
   typedef SoSField inherited;
 
@@ -68,7 +69,7 @@ private:
   virtual SbBool readValue(SoInput * in);
   virtual void writeValue(SoOutput * out) const;
 
-  class SbImage * image;
+  class SoSFImageP * pimpl;
 };
 
 #endif // !COIN_SOSFIMAGE_H
