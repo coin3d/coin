@@ -21,6 +21,7 @@
 
 #include <Inventor/misc/SoByteStream.h>
 #include <coindefs.h> // COIN_STUB
+#include <stdlib.h>
 
 
 SoByteStream::SoByteStream(void)

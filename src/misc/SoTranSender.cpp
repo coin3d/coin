@@ -21,6 +21,7 @@
 
 #include <Inventor/misc/SoTranSender.h>
 #include <coindefs.h> // COIN_STUB
+#include <stdlib.h>
 
 SoTranSender::SoTranSender(SoOutput * output)
 {
