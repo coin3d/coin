@@ -114,9 +114,8 @@ SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
 void * SoWWWInline::fetchurlcbdata;
 SbColor * SoWWWInline::bboxcolor;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
-// FIXME: shouldn't this have an explicit init value? (Check what TGS
-// Inventor is using.) 20010816 mortene.
-SbBool SoWWWInline::readassofile;
+
+SbBool SoWWWInline::readassofile = TRUE;
 
 void
 SoWWWInline::cleanup(void)
