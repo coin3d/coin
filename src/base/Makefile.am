@@ -2,14 +2,15 @@
 ## 19990904 mortene.
 
 if BUILD_WITH_THREADS
-ThreadsDependentSources = \
-	base.c \
-	debug.c
+# None yet.
+ThreadsDependentSources = 
 else
 ThreadsDependentSources =
 endif
 
 RegularSources = \
+	base.c \
+	debug.c \
 	memalloc.c \
 	time.c \
 	SbBSPTree.cpp \
