@@ -75,7 +75,7 @@ mytesselator.endPolygon();
   (Another option for tesselating polygons is the tesselator of the
   GLU library. It has some features not part of SbTesselator (like
   handling hulls), but the GLU library is known to have bugs in various
-  implementations and doesn't do Delaunay triangluation.)
+  implementations and doesn't do Delaunay triangulation.)
 */
 
 
