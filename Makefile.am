@@ -129,6 +129,9 @@ install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	fi
 endif
 
+cvs-update:
+	@cd $(top_srcdir) && cvs update -dP
+
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 

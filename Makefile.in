@@ -604,6 +604,9 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
 @BUILD_LIBRARY_TRUE@	fi
 
+cvs-update:
+	@cd $(top_srcdir) && cvs update -dP
+
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 
