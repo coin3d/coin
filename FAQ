@@ -11,6 +11,9 @@ FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
 For answers to common qquestions regarding the SoQt library, see the FAQ
 in the SoQt source archive.
 
+The most up-to-date version of this file can always be found at
+http://source.coin3d.org/Coin/FAQ
+
 
 Index
 =====
@@ -55,7 +58,7 @@ Index
 
   Q6: Why can't any of the transparency modes be perfect?
 
-3: More Whys
+3: Other Hows and Whys
   Q1: Why is the .so-version 20 for Coin 1.0?
 
 
@@ -142,8 +145,8 @@ Section 1. Extensions and Ports
 
 Q1.1:   Are there plans for making Coin multi-thread safe?
 
-A:      Yes.  The wheels are in motion on this one.  It is probably not going
-        to happen in the Coin 1.* branch though.
+A:      Yes.  The wheels are in motion on this one.  It is not happening
+        for the Coin 1.* branch though.
 
 
 Q1.2:   Can Coin do multi-pipe rendering?
@@ -157,7 +160,7 @@ Q1.3:   Can I do volume rendering with Coin?
 
 A:      There are no volume rendering extensions for Coin yet.  Support for
         3D textures, which is a prerequisite for proper volume rendering
-        support, was just recently implemented in the Coin development branch
+        support, was recently implemented in the Coin development branch
         and will be available from release 2.0 of Coin.
 
         Exactly when fullblown volume rendering is going to be implemented
@@ -349,8 +352,8 @@ A:      (First of all, read the documentation on
         rendering would probably be worthwhile for many users.
 
 
-Section 3. Other Whys
-=====================
+Section 3. Other Hows and Whys
+==============================
 
 Q3.1:   Why is the .so-version 20 for Coin 1.0?
 
