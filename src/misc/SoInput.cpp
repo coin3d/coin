@@ -1265,8 +1265,8 @@ SoInput::getLocationString(SbString & str) const
 
   // FIXME: hack to cast away constness. Ugly. 19990713 mortene.
   if (((SoInput *)this)->isBinary()) {
-    str.sprintf("\tOccurred at position %d in binary file %s",
-                this->getTopOfStack()->getNumBytesParsedSoFar(),
+    str.sprintf("\tOccurred at position %lu in binary file %s",
+                (unsigned long int) this->getTopOfStack()->getNumBytesParsedSoFar(),
                 filename ? filename : "<memory>");
   }
   else {
