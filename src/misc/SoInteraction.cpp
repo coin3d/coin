@@ -97,11 +97,9 @@ void
 SoInteraction::init(void)
 {
   if (SoInteraction::isinitialized) return;
-  SoInteraction::isinitialized = TRUE;
 
   if (!SoDB::isInitialized()) SoDB::init();
   SoNodeKit::init();
-
 
   SoAntiSquish::initClass();
   SoSelection::initClass();
@@ -124,4 +122,6 @@ SoInteraction::init(void)
   SoTrackballManip::initClass();
   SoTransformBoxManip::initClass();
   SoTransformerManip::initClass();
+
+  SoInteraction::isinitialized = TRUE;
 }

@@ -61,7 +61,6 @@ void
 SoNodeKit::init(void)
 {
   if (SoNodeKit::isinitialized) return;
-  SoNodeKit::isinitialized = TRUE;
 
   if (!SoDB::isInitialized()) SoDB::init();
 
@@ -75,4 +74,6 @@ SoNodeKit::init(void)
   SoSeparatorKit::initClass();
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
+
+  SoNodeKit::isinitialized = TRUE;
 }
