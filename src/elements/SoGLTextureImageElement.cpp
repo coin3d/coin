@@ -94,6 +94,9 @@ SoGLTextureImageElement::push(SoState * state)
   this->glblendcolor = prev->glblendcolor;
   this->glalphatest = prev->glalphatest;
   this->state = state;
+  this->image = NULL;
+  this->dlist = NULL;
+  this->didapply = FALSE;
 }
 
 
