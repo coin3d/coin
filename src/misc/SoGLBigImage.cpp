@@ -80,6 +80,9 @@
 // on an image, as only few textures are changed each frame.
 #define CHANGELIMIT 4
 
+// the texturequality limit when linear filtering will be used
+#define LINEAR_LIMIT 0.1f
+
 typedef struct {
   SbVec2s imagesize;
   SbVec2s glimagesize;
@@ -410,7 +413,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 
     if (flags & USE_QUALITY_VALUE) {
       flags &= ~USE_QUALITY_VALUE;
-      if (quality >= 0.5f) {
+      if (quality >= LINEAR_LIMIT) {
         flags |= LINEAR_MIN_FILTER|LINEAR_MAG_FILTER;
       }
     }
@@ -913,3 +916,8 @@ SoGLBigImageP::resetAllTls(SoState * state)
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+#undef CHANGELIMIT
+#undef LINEAR_LIMIT
+
+
