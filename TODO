@@ -6,9 +6,6 @@ TODO:
 
 *** RENDERING ITEMS ***
 
-* [mortene:1999????] add support for rendering 3D text, as used by
-  SoText3 and other node types.
-
 * [mortene:1999????] make a library with the necessary functionality
   for doing nurbs curves and nurbs surfaces. Could perhaps start off
   with the code in Brian Paul's MIT-relicensed Mesa (if MesaGLU is
@@ -33,10 +30,6 @@ TODO:
 
 * [mortene:19991107] example programs and tools shouldn't be compiled
   with the COIN_INTERNAL define set.
-
-* [mortene:19990926] add configure option to enable crash (and
-  subsequent core dump, of course) on SoDebugError::postWarning() and
-  SoDebugError::post().
 
 * [mortene:19990912] get rid of Inventor/system/inttypes.h. Check to
   see if we can use the AC_COMPILE_CHECK_SIZEOF macro from the
