@@ -68,6 +68,9 @@ public:
              float nearval, float farval);
   void perspective(float fovy, float aspect,
                    float nearval, float farval);
+  void frustum(float left, float right,
+               float bottom, float top,
+               float nearval, float farval);
   void rotateCamera(const SbRotation& q);
   void translateCamera(const SbVec3f& v);
   SbVec3f zVector(void) const;

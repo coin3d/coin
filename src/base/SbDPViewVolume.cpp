@@ -803,6 +803,32 @@ SbDPViewVolume::perspective(double fovy, double aspect,
   this->ulf.setValue(left, top, -nearval);
 }
 
+/*! 
+  Set up the frustum for perspective projection. This is an
+  alternative to perspective() that lets you specify any kind of view
+  volumes (e.g. off center volumes). It has the same arguments and
+  functionality as the corresponding OpenGL glFrustum() function.
+
+  \since 2002-07-16
+
+  \sa perspective() 
+*/
+void 
+SbDPViewVolume::frustum(double left, double right,
+                        double bottom, double top,
+                        double nearval, double farval)
+{
+  this->type = SbDPViewVolume::PERSPECTIVE;
+  this->projPoint.setValue(0.0f, 0.0f, 0.0f);
+  this->projDir.setValue(0.0f, 0.0f, -1.0f);
+  this->nearDist = nearval;
+  this->nearToFar = farval - nearval;
+
+  this->llf.setValue(left, bottom, -nearval);
+  this->lrf.setValue(right, bottom, -nearval);
+  this->ulf.setValue(left, top, -nearval);
+}
+
 /*!
   Rotate the direction which the camera is pointing in.
 

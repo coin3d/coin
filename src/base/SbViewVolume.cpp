@@ -444,6 +444,25 @@ SbViewVolume::perspective(float fovy, float aspect,
 }
 
 /*!
+  Set up the frustum for perspective projection. This is an
+  alternative to perspective() that lets you specify any kind of view
+  volumes (e.g. off center volumes). It has the same arguments and
+  functionality as the corresponding OpenGL glFrustum() function.
+
+  \since 2002-07-16
+
+  \sa perspective()
+*/
+void 
+SbViewVolume::frustum(float left, float right,
+                      float bottom, float top,
+                      float nearval, float farval)
+{
+  this->dpvv.frustum(left, right, bottom, top, nearval, farval);
+  this->dpvv.copyValues(*this);
+}
+
+/*!
   Rotate the direction which the camera is pointing in.
 
   \sa translateCamera().
