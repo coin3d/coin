@@ -479,11 +479,10 @@ SoBase::startNotify(void)
   SoNotRec rec(this);
   l.append(&rec);
   l.setLastType(SoNotRec::CONTAINER);
-  this->notify(&l);
 
-  // Process zero-priority sensors after notification has been done.
-  SoSensorManager * sm = SoDB::getSensorManager();
-  if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+  SoDB::startNotify();
+  this->notify(&l);
+  SoDB::endNotify();
 }
 
 /*!

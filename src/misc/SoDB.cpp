@@ -890,15 +890,6 @@ SoDB::endNotify(void)
     SoSensorManager * sm = SoDB::getSensorManager();
     if (sm->isDelaySensorPending()) sm->processImmediateQueue();
   }
-  else {
-    SoSensorManager * sm = SoDB::getSensorManager();
-    if (sm->isDelaySensorPending()) {
-#if COIN_DEBUG && 1
-      SoDebugError::postInfo("SoDB::endNotify",
-                             "delaying immediate processing.");
-#endif // debug
-    }
-  }
 }
 
 /*!

@@ -109,8 +109,7 @@ SoSFTrigger::operator!=(const SoSFTrigger & trigger) const
 void
 SoSFTrigger::startNotify(void)
 {
-  SoNotList l;
-  this->notify(&l);
+  inherited::startNotify();
 }
 
 void
