@@ -434,7 +434,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n && !action->hasTerminated(); i++) {
       if (action->abortNow()) {
         // only cache if we do a full traversal
         SoCacheElement::invalidate(state);
@@ -493,13 +493,46 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderInPath(SoGLRenderAction * action)
 {
-  int numIndices;
+  int numindices;
   const int * indices;
-  action->getPathCode(numIndices, indices);
-
-  action->getState()->push();
-  this->children->traverse(action, 0, indices[numIndices-1]);
-  action->getState()->pop();
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    SoState * state = action->getState();
+    SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
+    state->push();
+    int childidx = 0;
+    for (int i = 0; i < numindices; i++) {
+      SoAction::PathCode pathcode = action->getCurPathCode(); 
+      for (; childidx < indices[i] && !action->hasTerminated(); childidx++) {
+        SoNode * offpath = childarray[childidx];
+        if (offpath->affectsState()) {
+          action->pushCurPath(childidx, offpath);
+          if (!action->abortNow()) {
+            offpath->GLRenderOffPath(action);
+          }
+          else {
+            SoCacheElement::invalidate(state);
+          }
+          action->popCurPath(pathcode);
+        }
+      }
+      SoNode * inpath = childarray[childidx];
+      action->pushCurPath(childidx, inpath);
+      if (!action->abortNow()) {
+        inpath->GLRenderInPath(action);
+      }
+      else {
+        SoCacheElement::invalidate(state);
+      }
+      action->popCurPath(pathcode);
+      childidx++;
+    }
+    state->pop();
+  }
+  else {
+    // we got to the end of the path
+    assert(action->getCurPathCode() == SoAction::BELOW_PATH);
+    this->GLRenderBelowPath(action);
+  }
 }
 
 // Doc from superclass.

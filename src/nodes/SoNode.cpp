@@ -46,6 +46,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <assert.h>
 
 #if HAVE_CONFIG_H
@@ -487,7 +488,12 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
   if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
       node->affectsState()) {
-    node->GLRender((SoGLRenderAction*)action);
+    if (((SoGLRenderAction*)action)->abortNow()) {
+      SoCacheElement::invalidate(action->getState());
+    }
+    else {
+      node->GLRender((SoGLRenderAction*)action);
+    }
   }
 #if COIN_DEBUG
   int err = glGetError();

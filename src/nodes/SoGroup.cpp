@@ -42,6 +42,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -334,7 +335,42 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoGroup::GLRender(SoGLRenderAction * action)
 {
-  SoGroup::doAction(action);
+  int numindices;
+  const int * indices;
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+
+  SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
+  SoState * state = action->getState();
+
+  if (pathcode == SoAction::IN_PATH) {
+    int lastchild = indices[numindices - 1];
+    for (int i = 0; i <= lastchild && !action->hasTerminated(); i++) {
+      SoNode * child = childarray[i];
+      action->pushCurPath(i, child);
+      if (action->getCurPathCode() != SoAction::OFF_PATH ||
+          child->affectsState()) {
+        if (!action->abortNow()) {
+          child->GLRender(action);
+        }
+        else {
+          SoCacheElement::invalidate(state);
+        }
+      }
+    }
+  }
+  else {
+    int n = this->children->getLength();
+    for (int i = 0; i < n && !action->hasTerminated(); i++) {
+      if (action->abortNow()) {
+        // only cache if we do a full traversal
+        SoCacheElement::invalidate(state);
+        break;
+      }
+      action->pushCurPath(i, childarray[i]);
+      childarray[i]->GLRender(action);
+      action->popCurPath(pathcode);
+    }
+  }
 }
 
 // Doc from superclass.

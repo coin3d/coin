@@ -493,6 +493,33 @@ SoAction::traverse(SoNode * const node)
 }
 
 /*!
+  Internal Coin method used to optimize rendering traversal.
+*/
+void
+SoAction::pushCurPath(const int childindex, SoNode * node)
+{
+  if (node) this->currentpath.append(node, childindex);
+  else this->currentpath.append(childindex);
+  if (this->currentpathcode == SoAction::IN_PATH) {
+    // test if we're in a new state
+    int idx = this->currentpath.getFullLength();
+    int nodeidx = this->currentpath.getIndexFromTail(0);
+    if (this->applieddata.path->getIndex(idx - 1) != nodeidx) {
+      this->currentpathcode = SoAction::OFF_PATH;
+    }
+    else { // either in or below path
+      if (idx == this->applieddata.path->getFullLength()) {
+        this->currentpathcode = SoAction::BELOW_PATH;
+      }
+      else {
+        assert(idx < this->applieddata.path->getFullLength());
+        assert(node->getChildren());
+      }
+    }
+  }
+}
+
+/*!
   Returns \c TRUE if the action was prematurely terminated.
 
   Note that the termination flag will be \c FALSE if the action simply

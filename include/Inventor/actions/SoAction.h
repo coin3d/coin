@@ -172,13 +172,6 @@ SoAction::getCurPathCode(void) const
 }
 
 inline void
-SoAction::pushCurPath(const int childindex, SoNode * node)
-{
-  if (node) this->currentpath.append(node, childindex);
-  else this->currentpath.append(childindex);
-}
-
-inline void
 SoAction::popCurPath(const PathCode prevpathcode)
 {
   this->currentpath.pop();
