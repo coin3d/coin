@@ -12,6 +12,7 @@ PublicHeaders = \
 	SoBumpMapCoordinateElement.h \
 	SoBumpMapMatrixElement.h \
 	SoCacheElement.h \
+	SoCacheHintElement.h \
 	SoClipPlaneElement.h \
 	SoComplexityElement.h \
 	SoComplexityTypeElement.h \

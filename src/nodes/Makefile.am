@@ -12,6 +12,7 @@ RegularSources = \
 	SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp \
 	SoCallback.cpp \
+	SoCacheHint.cpp \
 	SoCamera.cpp \
 	SoClipPlane.cpp \
 	SoColorIndex.cpp \

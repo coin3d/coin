@@ -15,6 +15,7 @@ RegularSources = \
 	SoBumpMapMatrixElement.cpp \
 	SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp \
+	SoCacheHintElement.cpp \
 	SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp \
 	SoComplexityTypeElement.cpp \

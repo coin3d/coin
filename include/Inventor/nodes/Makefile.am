@@ -9,6 +9,7 @@ PublicHeaders = \
 	SoBumpMap.h \
 	SoBumpMapCoordinate.h \
 	SoBumpMapTransform.h \
+	SoCacheHint.h \
 	SoCallback.h \
 	SoCamera.h \
 	SoClipPlane.h \

@@ -32,6 +32,7 @@
 #include "SoBumpMapMatrixElement.cpp"
 #include "SoBumpMappingPropertyElement.cpp"
 #include "SoCacheElement.cpp"
+#include "SoCacheHintElement.cpp"
 #include "SoClipPlaneElement.cpp"
 #include "SoComplexityElement.cpp"
 #include "SoComplexityTypeElement.cpp"

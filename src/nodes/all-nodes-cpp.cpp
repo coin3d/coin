@@ -30,6 +30,7 @@
 #include "SoBumpMapCoordinate.cpp"
 #include "SoBumpMapTransform.cpp"
 #include "SoBumpMappingProperty.cpp"
+#include "SoCacheHint.cpp"
 #include "SoCallback.cpp"
 #include "SoCamera.cpp"
 #include "SoClipPlane.cpp"
