@@ -1198,7 +1198,6 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/vrml97/Normal.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/NormalInterpolator.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/OrientationInterpolator.cpp \
-                         @path_tag@@coin_src_dir@/src/vrml97/OutputData.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Parent.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/PixelTexture.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/PlaneSensor.cpp \
