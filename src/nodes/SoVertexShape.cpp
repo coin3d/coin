@@ -36,8 +36,13 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #include <coindefs.h> // COIN_STUB()
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
@@ -74,7 +79,7 @@ SoVertexShape::SoVertexShape(void)
 */
 SoVertexShape::~SoVertexShape()
 {
-  delete this->normalcache;
+  if (this->normalcache) this->normalcache->unref();
 }
 
 // doc from superclass
@@ -84,11 +89,14 @@ SoVertexShape::initClass(void)
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape);
 }
 
-// doc from superclass
+/*!
+  Overloaded to invalidate caches.
+*/
 void
 SoVertexShape::notify(SoNotList * nl)
 {
-  // FIXME: cache(s) need invalidation. 19990327 mortene.
+  if (this->normalcache) this->normalcache->invalidate();
+  inherited::notify(nl);
 }
 
 /*!
@@ -200,9 +208,10 @@ SoVertexShape::setNormalCache(SoState * const state,
                               const int num,
                               const SbVec3f * normals)
 {
-  if (this->normalcache == NULL) {
-    this->normalcache = new SoNormalCache(state);
-  }
+  if (this->normalcache) this->normalcache->unref();
+  // create new normal cache with no dependencies
+  this->normalcache = new SoNormalCache(state);
+  this->normalcache->ref();
   this->normalcache->set(num, normals);
 }
 
@@ -221,10 +230,13 @@ SoVertexShape::getNormalCache(void) const
 void
 SoVertexShape::generateNormals(SoState * const state)
 {
-  if (this->normalcache == NULL) {
-    this->normalcache = new SoNormalCache(state);
-  }
+  SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
 
+  if (this->normalcache) this->normalcache->unref();
+  state->push(); // need to push for cache dependencies
+  this->normalcache = new SoNormalCache(state);
+  this->normalcache->ref();
+  SoCacheElement::set(state, this->normalcache);
   //
   // See if the node supports the Coin-way of generating normals
   //
@@ -237,6 +249,13 @@ SoVertexShape::generateNormals(SoState * const state)
       // FIXME: what now?
     }
   }
+  // FIXME: check if cache has been invalidated. If it has been
+  // we should probably unref the cache and set it to NULL?
+  // pederb, 20000604
+
+  state->pop(); // don't forget this pop
+
+  SoCacheElement::setInvalid(storeinvalid);
 }
 
 /*!
