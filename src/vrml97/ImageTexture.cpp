@@ -98,6 +98,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -332,6 +333,10 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
                                     imagetexture_translate_wrap(this->repeatS.getValue()),
                                     imagetexture_translate_wrap(this->repeatT.getValue()),
                                     quality);
+  }
+
+  if (PRIVATE(this)->glimage && PRIVATE(this)->glimage->getTypeId() == SoGLBigImage::getClassTypeId()) {
+    SoCacheElement::invalidate(state);
   }
 
   UNLOCK_GLIMAGE(this);

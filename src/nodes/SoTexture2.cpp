@@ -105,6 +105,7 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -401,6 +402,10 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                              quality);
       THIS->glimagevalid = TRUE;
     }
+  }
+
+  if (THIS->glimage && THIS->glimage->getTypeId() == SoGLBigImage::getClassTypeId()) {
+    SoCacheElement::invalidate(state);
   }
 
   UNLOCK_GLIMAGE(this);
