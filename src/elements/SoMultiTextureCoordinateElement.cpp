@@ -477,12 +477,20 @@ SoMultiTextureCoordinateElement::copyMatchInfo(void) const
 /*!
   Returns the per-unit data for this element.
 */
+SoMultiTextureCoordinateElement::UnitData & 
+SoMultiTextureCoordinateElement::getUnitData(const int unit)
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  return PRIVATE(this)->unitdata[unit];
+}
+
 const SoMultiTextureCoordinateElement::UnitData & 
 SoMultiTextureCoordinateElement::getUnitData(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(this)->unitdata[unit];
 }
+
 
 
 #undef MAX_UNITS

@@ -100,6 +100,7 @@ public:
   SoElement * copyMatchInfo(void) const;
 
 protected:
+  UnitData & getUnitData(const int unit);
   const UnitData & getUnitData(const int unit) const;
   SbVec2f convert2;
   SbVec3f convert3;
@@ -110,4 +111,3 @@ private:
 };
 
 #endif // !COIN_SOMULTITEXTURECOORDINATEELEMENT_H
-
