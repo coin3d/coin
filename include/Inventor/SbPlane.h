@@ -46,6 +46,8 @@ public:
 
   void print(FILE * file) const;
 
+  SbBool intersect(const SbPlane & pl, SbLine & line);
+
 private:
   SbVec3f normal;
   float distance;

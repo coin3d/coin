@@ -40,7 +40,10 @@
 
 
 #include <Inventor/projectors/SbProjector.h>
-
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbPlane.h>
+#include <assert.h>
 
 /*!
   \fn SbProjector::~SbProjector()
@@ -150,3 +153,64 @@ SbProjector::getWorkingLine(const SbVec2f & point) const
   this->worldToWorking.multLineMatrix(l, l);
   return l;
 }
+
+/*!  
+  Finds the unit cube vanishing distance for the current projector
+  view volume.  The view volume must be a perspective view
+  volume.  
+  
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 1.1.0
+*/
+float 
+SbProjector::findVanishingDistance(void) const
+{
+  const SbViewVolume & vv = this->viewVol;
+
+  // FIXME: find a proper algorithm to calculate the vanishing
+  // distance. Now we just use an incremental algorithm to detect when
+  // the projected box is less than one pixel on a screen with height
+  // = 1024 pixels. pederb, 2001-10-11
+  assert(vv.getProjectionType() == SbViewVolume::PERSPECTIVE);
+  float depth = vv.getDepth();
+  
+  // used to break out if we get too many iterations. Will probably
+  // never happen, but it's here just in case something bad happens.
+  int cnt = 0; 
+  SbBox3f box(-0.5f, -0.5f, depth, 0.5f, 0.5f, depth);
+  SbVec2f siz = vv.projectBox(box);
+  while (cnt < 32 && (siz[1] > (1.0f / 1024.0f))) {
+    depth *= 2.0f;
+    box.getMin()[2] = depth;
+    box.getMax()[2] = depth;
+    siz = vv.projectBox(box);
+    cnt++;
+  }
+  return depth;
+}
+
+/*! 
+  Verifies that \a projpt is a valid projection for the current view
+  volume. For perspective view volumes, it does this by checking that
+  the projection point is in front of the eye plane. For orthographic
+  projections, this method always returns \e TRUE.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 1.1.0
+*/
+SbBool 
+SbProjector::verifyProjection(const SbVec3f & projpt) const
+{
+  if (this->viewVol.getProjectionType() == SbViewVolume::PERSPECTIVE) {
+    SbPlane eyeplane = this->viewVol.getPlane(0.0f); 
+    SbVec3f wrld;
+    this->workingToWorld.multVecMatrix(projpt, wrld);
+    if (eyeplane.isInHalfSpace(wrld)) return FALSE;
+  }
+  return TRUE;
+}
+

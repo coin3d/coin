@@ -100,13 +100,52 @@ SbPlaneProjector::project(const SbVec2f & point)
 
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
-  if (!this->plane.intersect(projline, projpt)) {
+
+  SbBool ortho = this->viewVol.getProjectionType() == SbViewVolume::ORTHOGRAPHIC;
+
+  SbBool ok = this->plane.intersect(projline, projpt);
+
+  SbBool valid = ok;
+  if (ok && !ortho) valid = this->verifyProjection(projpt);
+
+  if (!valid && !ortho) {
+    SbPlane wrldplane = this->plane;
+    SbLine wrldline;
+    this->workingToWorld.multLineMatrix(projline, wrldline);
+
+    wrldplane.transform(this->workingToWorld);
+
+    SbPlane farplane =
+      this->viewVol.getPlane(SbProjector::findVanishingDistance());
+    SbLine farline;
+
+    if (farplane.intersect(wrldplane, farline)) {
+      SbVec3f dummy;
+      if (wrldline.getClosestPoints(farline, dummy, projpt)) {
+        this->worldToWorking.multVecMatrix(projpt, projpt);
+        valid = TRUE;
+      }
+    }
+  }
+  if (!valid) {
+    // this can happen for instance with orthographic view volumes,
+    // when the plane is perpendicular to the view.
 #if COIN_DEBUG
-    SoDebugError::postWarning("SbPlaneProjector::project",
-                              "working line is parallel to plane.");
+    static int first = 1;
+    if (first) {
+      SoDebugError::post("SbPlaneProjector::project",
+                         "Unable to find projection point. "
+                         "Setting result to middle of view volume.");
+      first = 0;
+    }
 #endif // COIN_DEBUG
-    // set to (0, 0, 0) to avoid crazy rotations
-    projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    float depth = this->viewVol.getNearDist() + this->viewVol.getDepth() * 0.5f;
+    SbLine worldline;
+    this->workingToWorld.multLineMatrix(projline, worldline);
+    SbVec3f ptonline = worldline.getPosition() + worldline.getDirection() * depth;
+    this->worldToWorking.multVecMatrix(ptonline, ptonline);
+    // project this point into plane.
+    projpt = ptonline - this->plane.getNormal() * this->plane.getDistance(ptonline);
   }
   return projpt;
 }

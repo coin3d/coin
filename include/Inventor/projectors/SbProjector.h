@@ -45,6 +45,9 @@ protected:
 
   SbViewVolume viewVol;
   SbMatrix worldToWorking, workingToWorld;
+  
+  float findVanishingDistance(void) const;
+  SbBool verifyProjection(const SbVec3f & projpt) const;
 };
 
 #endif // !COIN_SBPROJECTOR_H
