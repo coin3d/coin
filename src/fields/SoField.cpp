@@ -760,6 +760,7 @@ SoField::isConnectedFromEngine(void) const
 SbBool
 SoField::getConnectedField(SoField *& master) const
 {
+  if (!this->hasExtendedStorage()) return FALSE;
   int nr = this->storage->getNumFieldConnections();
   if (nr) master = this->storage->getFieldConnection(nr - 1);
   return nr ? TRUE : FALSE;
@@ -777,6 +778,7 @@ SoField::getConnectedField(SoField *& master) const
 SbBool
 SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
 {
+  if (!this->hasExtendedStorage()) return FALSE;
   int nr = this->storage->getNumVRMLInterpConnections();
   if (nr) master = this->storage->getVRMLInterpConnection(nr - 1);
   return nr ? TRUE : FALSE;
@@ -792,6 +794,7 @@ SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
 SbBool
 SoField::getConnectedEngine(SoEngineOutput *& master) const
 {
+  if (!this->hasExtendedStorage()) return FALSE;
   int nr = this->storage->getNumEngineConnections();
   if (nr) master = this->storage->getEngineConnection(nr - 1);
   return nr ? TRUE : FALSE;
