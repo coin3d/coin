@@ -25,6 +25,9 @@ m4_define([COIN_ABI_CURRENT], [m4_eval((COIN_MAJOR*20)+COIN_MINOR)])
 m4_define([COIN_ABI_REVISION], [COIN_MICRO])
 m4_define([COIN_ABI_AGE], [COIN_MINOR])
 
+# only used on Linux for debian packages
+m4_define([SO_NUMBER], [m4_eval(COIN_MAJOR*20)])
+
 # For Mac OS X Compiler Frameworks:
 m4_define([MAC_FRAMEWORK_NAME_DEFAULT], [Inventor])
 m4_define([MAC_FRAMEWORK_PREFIX_DEFAULT], [/Library/Frameworks])
@@ -167,6 +170,8 @@ SIM_AC_CONFIGURATION_SETTING([Library version], [$COIN_VERSION])
 AC_SUBST([LT_CURRENT], [COIN_ABI_CURRENT])
 AC_SUBST([LT_REVISION], [COIN_ABI_REVISION])
 AC_SUBST([LT_AGE], [COIN_ABI_AGE])
+
+AC_SUBST([COIN_SO_VERSION], [SO_NUMBER])
 
 #  These are for include/Inventor/C/basic.h.
 
