@@ -84,6 +84,16 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <stddef.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLAppearanceP {
+public:
+  SoChildList * childlist;
+  SbBool childlistvalid;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#define PRIVATE(thisp) ((thisp)->pimpl)
+
 SO_NODE_SOURCE(SoVRMLAppearance);
 
 // doc in parent
@@ -98,13 +108,15 @@ SoVRMLAppearance::initClass(void)
 */
 SoVRMLAppearance::SoVRMLAppearance(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);
+  PRIVATE(this) = new SoVRMLAppearanceP;
+  PRIVATE(this)->childlist = new SoChildList(this);
+  PRIVATE(this)->childlistvalid = FALSE;
 
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);
+  
   SO_VRMLNODE_ADD_EXPOSED_FIELD(material, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(texture, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(textureTransform, (NULL));
-  this->childlist = new SoChildList(this);
-  this->childlistvalid = FALSE;
 }
 
 /*!
@@ -112,7 +124,8 @@ SoVRMLAppearance::SoVRMLAppearance(void)
 */
 SoVRMLAppearance::~SoVRMLAppearance()
 {
-  delete this->childlist;
+  delete PRIVATE(this)->childlist;
+  delete PRIVATE(this);
 }
 
 // doc in parent
@@ -198,12 +211,12 @@ SoVRMLAppearance::search(SoSearchAction * action)
 SoChildList *
 SoVRMLAppearance::getChildren(void) const
 {
-  if (!this->childlistvalid) {
+  if (!PRIVATE(this)->childlistvalid) {
     SoVRMLAppearance * thisp = (SoVRMLAppearance*) this;
-    SoVRMLParent::updateChildList(thisp, *thisp->childlist);
-    thisp->childlistvalid = TRUE;
+    SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
+    PRIVATE(thisp)->childlistvalid = TRUE;
   }
-  return this->childlist;
+  return PRIVATE(this)->childlist;
 }
 
 // doc in parent
@@ -212,7 +225,7 @@ SoVRMLAppearance::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
-    this->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
 }
@@ -223,6 +236,9 @@ SoVRMLAppearance::copyContents(const SoFieldContainer * from,
                                SbBool copyConn)
 {
   inherited::copyContents(from, copyConn);
-  this->childlistvalid = FALSE;
-  this->childlist->truncate(0);
+  PRIVATE(this)->childlistvalid = FALSE;
+  PRIVATE(this)->childlist->truncate(0);
 }
+
+#undef PRIVATE
+

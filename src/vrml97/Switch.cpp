@@ -89,6 +89,15 @@
 #endif // COIN_DEBUG
 #include <stddef.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLSwitchP {
+public:
+  SbBool childlistvalid;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#define PRIVATE(thisp) ((thisp)->pimpl)
+
 SO_NODE_SOURCE(SoVRMLSwitch);
 
 // Doc in parent
@@ -120,11 +129,13 @@ SoVRMLSwitch::SoVRMLSwitch(int choices)
 void
 SoVRMLSwitch::commonConstructor(void)
 {
+  PRIVATE(this) = new SoVRMLSwitchP;
+  PRIVATE(this)->childlistvalid = FALSE;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLSwitch);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(whichChoice, (SO_SWITCH_NONE));
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(choice);
-  this->childlistvalid = FALSE;
 }
 
 /*!
@@ -132,6 +143,7 @@ SoVRMLSwitch::commonConstructor(void)
 */
 SoVRMLSwitch::~SoVRMLSwitch(void)
 {
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -398,7 +410,7 @@ void
 SoVRMLSwitch::addChild(SoNode * child)
 {
   this->choice.addNode(child);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -406,7 +418,7 @@ void
 SoVRMLSwitch::insertChild(SoNode * child, int idx)
 {
   this->choice.insertNode(child, idx);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -435,7 +447,7 @@ void
 SoVRMLSwitch::removeChild(int idx)
 {
   this->choice.removeNode(idx);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -443,7 +455,7 @@ void
 SoVRMLSwitch::removeChild(SoNode * child)
 {
   this->choice.removeNode(child);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -452,7 +464,7 @@ SoVRMLSwitch::removeAllChildren(void)
 {
   this->choice.removeAllNodes();
   SoGroup::children->truncate(0);
-  this->childlistvalid = TRUE;
+  PRIVATE(this)->childlistvalid = TRUE;
 }
 
 // Doc in parent
@@ -460,7 +472,7 @@ void
 SoVRMLSwitch::replaceChild(int idx, SoNode * child)
 {
   this->choice.replaceNode(idx, child);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -469,7 +481,7 @@ SoVRMLSwitch::replaceChild(SoNode * old,
                            SoNode * child)
 {
   this->choice.replaceNode(old, child);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -478,7 +490,7 @@ SoVRMLSwitch::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f == &this->choice) {
-    this->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
 }
@@ -492,7 +504,7 @@ SoVRMLSwitch::readInstance(SoInput * in,
   SbBool oldnot = this->choice.enableNotify(FALSE);
   SbBool ret = inherited::readInstance(in, flags);
   if (oldnot) this->choice.enableNotify(TRUE);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
   return ret;
 }
 
@@ -503,18 +515,20 @@ SoVRMLSwitch::copyContents(const SoFieldContainer * from,
 {
   SoGroup::children->truncate(0);
   SoNode::copyContents(from, copyConn);
-  this->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
 SoChildList *
 SoVRMLSwitch::getChildren(void) const
 {
-  if (!this->childlistvalid) {
+  if (!PRIVATE(this)->childlistvalid) {
     SoVRMLParent::updateChildList(this->choice.getValues(0),
                                   this->choice.getNum(),
                                   *SoGroup::children);
-    ((SoVRMLSwitch*)this)->childlistvalid = TRUE;
+    PRIVATE(this)->childlistvalid = TRUE;
   }
   return SoGroup::children;
 }
+
+#undef PRIVATE

@@ -129,6 +129,16 @@
 
 #include <Inventor/system/gl.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLLODP {
+public:
+  SbBool childlistvalid;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 SO_NODE_SOURCE(SoVRMLLOD);
 
 // Doc in parent
@@ -151,6 +161,7 @@ SoVRMLLOD::SoVRMLLOD(void)
 */
 SoVRMLLOD::~SoVRMLLOD() // virtual, protected
 {
+  delete THIS;
 }
 
 /*!
@@ -165,12 +176,14 @@ SoVRMLLOD::SoVRMLLOD(int levels)
 void
 SoVRMLLOD::commonConstructor(void)
 {
+  THIS = new SoVRMLLODP;
+  THIS->childlistvalid = FALSE;
+  
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLLOD);
 
   SO_VRMLNODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EMPTY_MFIELD(range);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(level);
-  this->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -436,7 +449,7 @@ void
 SoVRMLLOD::addChild(SoNode * child)
 {
   this->level.addNode(child);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -444,7 +457,7 @@ void
 SoVRMLLOD::insertChild(SoNode * child, int idx)
 {
   this->level.insertNode(child, idx);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -473,7 +486,7 @@ void
 SoVRMLLOD::removeChild(int idx)
 {
   this->level.removeNode(idx);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -481,7 +494,7 @@ void
 SoVRMLLOD::removeChild(SoNode * child)
 {
   this->level.removeNode(child);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -490,7 +503,7 @@ SoVRMLLOD::removeAllChildren(void)
 {
   this->level.removeAllNodes();
   SoGroup::children->truncate(0);
-  this->childlistvalid = TRUE;
+  THIS->childlistvalid = TRUE;
 }
 
 // Doc in parent
@@ -498,7 +511,7 @@ void
 SoVRMLLOD::replaceChild(int idx, SoNode * child)
 {
   this->level.replaceNode(idx, child);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -507,7 +520,7 @@ SoVRMLLOD::replaceChild(SoNode * old,
                            SoNode * child)
 {
   this->level.replaceNode(old, child);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -516,7 +529,7 @@ SoVRMLLOD::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f == &this->level) {
-    this->childlistvalid = FALSE;
+    THIS->childlistvalid = FALSE;
   }
   inherited::notify(list);
 }
@@ -530,7 +543,7 @@ SoVRMLLOD::readInstance(SoInput * in,
   SbBool oldnot = this->level.enableNotify(FALSE);
   SbBool ret = inherited::readInstance(in, flags);
   if (oldnot) this->level.enableNotify(TRUE);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
   return ret;
 }
 
@@ -541,7 +554,7 @@ SoVRMLLOD::copyContents(const SoFieldContainer * from,
 {
   SoGroup::children->truncate(0);
   SoNode::copyContents(from, copyConn);
-  this->childlistvalid = FALSE;
+  THIS->childlistvalid = FALSE;
 }
 
 /*!
@@ -576,11 +589,13 @@ SoVRMLLOD::whichToTraverse(SoAction * action)
 SoChildList *
 SoVRMLLOD::getChildren(void) const
 {
-  if (!this->childlistvalid) {
+  if (!THIS->childlistvalid) {
     SoVRMLParent::updateChildList(this->level.getValues(0),
                                   this->level.getNum(),
                                   *SoGroup::children);
-    ((SoVRMLLOD*)this)->childlistvalid = TRUE;
+    ((SoVRMLLOD*)this)->pimpl->childlistvalid = TRUE;
   }
   return SoGroup::children;
 }
+
+#undef THIS

@@ -28,6 +28,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 
+class SoVRMLAppearanceP;
+
 class COIN_DLL_API SoVRMLAppearance : public SoNode
 {
   typedef SoNode inherited;
@@ -41,11 +43,11 @@ public:
   SoSFNode material;
   SoSFNode texture;
   SoSFNode textureTransform;
-
-  virtual void doAction( SoAction * action );
-  virtual void callback( SoCallbackAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void search( SoSearchAction * action );
+  
+  virtual void doAction(SoAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void search(SoSearchAction * action);
 
   virtual SoChildList * getChildren(void) const;
   virtual void notify(SoNotList * list);
@@ -55,8 +57,7 @@ protected:
   virtual ~SoVRMLAppearance();
 
 private:
-  SoChildList * childlist;
-  SbBool childlistvalid;
+  SoVRMLAppearanceP * pimpl;
 }; // class SoVRMLAppearance
 
 #endif // ! COIN_SOVRMLAPPEARANCE_H

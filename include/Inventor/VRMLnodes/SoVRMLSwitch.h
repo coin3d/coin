@@ -38,6 +38,8 @@
 #define SO_SWITCH_INHERIT  (-2)
 #define SO_SWITCH_ALL      (-3)
 
+class SoVRMLSwitchP;
+
 class COIN_DLL_API SoVRMLSwitch : public SoGroup
 {
   typedef SoGroup inherited;
@@ -95,9 +97,7 @@ protected:
 
 private:
   void commonConstructor(void);
-  SbBool childlistvalid;
-
-
+  SoVRMLSwitchP * pimpl;
 }; // class SoVRMLSwitch
 
 #endif // ! COIN_SOVRMLSWITCH_H

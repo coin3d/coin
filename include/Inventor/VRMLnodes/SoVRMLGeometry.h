@@ -27,7 +27,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoSubNode.h>
 
-class SoChildList;
+class SoVRMLGeometryP;
 
 class COIN_DLL_API SoVRMLGeometry : public SoShape
 {
@@ -49,8 +49,8 @@ protected:
   virtual SoChildList * getChildren(void) const;
   virtual void notify(SoNotList * list);
 
-  SoChildList * childlist;
-  SbBool childlistvalid;
+private:
+  SoVRMLGeometryP * pimpl;
 };
 
 #endif // ! COIN_SOVRMLGEOMETRY_H

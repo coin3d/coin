@@ -35,6 +35,16 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLGeometryP {
+public:  
+  SoChildList * childlist;
+  SbBool childlistvalid;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#define PRIVATE(thisp) ((thisp)->pimpl)
+
 SO_NODE_ABSTRACT_SOURCE(SoVRMLGeometry);
 
 // Doc in parent
@@ -48,10 +58,11 @@ SoVRMLGeometry::initClass(void)
   Constructor.
 */
 SoVRMLGeometry::SoVRMLGeometry(void)
-  : childlist(NULL), childlistvalid(FALSE)
 {
+  PRIVATE(this) = new SoVRMLGeometryP;
+  PRIVATE(this)->childlist = new SoChildList(this);
+  PRIVATE(this)->childlistvalid = FALSE;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLGeometry);
-  this->childlist = new SoChildList(this);
 }
 
 /*!
@@ -59,7 +70,8 @@ SoVRMLGeometry::SoVRMLGeometry(void)
 */
 SoVRMLGeometry::~SoVRMLGeometry()
 {
-  delete this->childlist;
+  delete PRIVATE(this)->childlist;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -82,13 +94,12 @@ SoVRMLGeometry::setupShapeHints(SoState * state, const SbBool ccw, const SbBool 
 SoChildList *
 SoVRMLGeometry::getChildren(void) const
 {
-  if (!this->childlistvalid) {
+  if (!PRIVATE(this)->childlistvalid) {
     SoVRMLGeometry * thisp = (SoVRMLGeometry*) this;
-    if (thisp->childlist == NULL) thisp->childlist = new SoChildList(thisp);
-    SoVRMLParent::updateChildList(thisp, *thisp->childlist);
-    thisp->childlistvalid = TRUE;
+    SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
+    PRIVATE(thisp)->childlistvalid = TRUE;
   }
-  return this->childlist;
+  return PRIVATE(this)->childlist;
 }
 
 // Doc in parent
@@ -114,7 +125,7 @@ SoVRMLGeometry::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
-    this->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
 }
@@ -125,6 +136,8 @@ SoVRMLGeometry::copyContents(const SoFieldContainer * from,
                              SbBool copyConn)
 {
   inherited::copyContents(from, copyConn);
-  this->childlistvalid = FALSE;
-  this->childlist->truncate(0);
+  PRIVATE(this)->childlistvalid = FALSE;
+  PRIVATE(this)->childlist->truncate(0);
 }
+
+#undef PRIVATE
