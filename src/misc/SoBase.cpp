@@ -55,6 +55,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "../upgraders/SoUpgrader.h"
 #include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <string.h>
@@ -1379,8 +1380,21 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
                          const SbName & refname, SoBase *& base)
 {
   SbBool retval = TRUE;
+  SbBool needupgrade = FALSE;
 
-  if ((base = SoBase::createInstance(in, classname))) {
+  // first, try creating an upgradable node, based on the version of
+  // the input file.
+  base = SoUpgrader::tryCreateNode(classname, in->getIVVersion());
+  if (base) {
+    // we need to upgrade the node after reading it
+    needupgrade = TRUE;
+  }
+  else {
+    // create normal Coin node
+    base = SoBase::createInstance(in, classname);
+  }
+
+  if (base) {
     if (!(!refname)) {
       // Set up new entry in reference hash -- with full name.
       in->addReference(refname, base);
@@ -1412,6 +1426,13 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
       base->ref();
       base->unref();
       base = NULL;
+    }
+    else if (needupgrade) {
+      SoBase * oldbase = base;
+      oldbase->ref();
+      base = SoUpgrader::createUpgrade(oldbase);
+      assert(base && "should never happen (since needupgrade == TRUE)");
+      oldbase->unref();
     }
   }
   else {
