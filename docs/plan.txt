@@ -195,6 +195,9 @@ Additional development necessary versus milestone 2:
 
 * support stereo mode viewing.
 
+* add example programs to show off most of the available features in
+  the library.
+	
 * improve the documentation so it properly covers the functionality of
   all components in the Coin library in a satisfactory manner.
 
