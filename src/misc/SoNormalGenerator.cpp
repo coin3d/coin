@@ -249,8 +249,9 @@ SoNormalGenerator::setNumNormals(const int /* num */)
 const SbVec3f *
 SoNormalGenerator::getNormals() const
 {
-  assert(this->vertexNormals.getLength());
-  return this->vertexNormals.getArrayPtr();
+  if (this->vertexNormals.getLength()) 
+    return this->vertexNormals.getArrayPtr();
+  return NULL;
 }
 
 /*!
