@@ -890,32 +890,32 @@ background_vrmltexturechangeCB(void * data, SoSensor * sensor)
   faceset->textureCoordIndex.setValues(0, 5, tindices);
   
   if (sensor == pimpl->fronturlsensor) {
-    const int vindices[] = {4, 5, 6, 7, -1};
+    const int32_t vindices[] = {4, 5, 6, 7, -1};
     pimpl->modifyCubeFace(pimpl->master->frontUrl, pimpl->frontface, vindices);
   }
 
   else if (sensor == pimpl->backurlsensor) {
-    const int vindices[] = {3, 2, 1, 0, -1};
+    const int32_t vindices[] = {3, 2, 1, 0, -1};
     pimpl->modifyCubeFace(pimpl->master->backUrl, pimpl->backface, vindices);
   }
   
   else if (sensor == pimpl->lefturlsensor) {
-    const int vindices[] = {0, 1, 5, 4, -1};
+    const int32_t vindices[] = {0, 1, 5, 4, -1};
     pimpl->modifyCubeFace(pimpl->master->leftUrl, pimpl->leftface, vindices);
   }
 
   else if (sensor == pimpl->righturlsensor) {
-    const int vindices[] = {7, 6, 2, 3, -1};
+    const int32_t vindices[] = {7, 6, 2, 3, -1};
     pimpl->modifyCubeFace(pimpl->master->rightUrl, pimpl->rightface, vindices);
   }
 
   else if (sensor == pimpl->topurlsensor) {
-    const int vindices[] = {2, 6, 5, 1, -1};
+    const int32_t vindices[] = {2, 6, 5, 1, -1};
     pimpl->modifyCubeFace(pimpl->master->topUrl, pimpl->topface, vindices);
   }
 
   else if (sensor == pimpl->bottomurlsensor) {
-    const int vindices[] = {7, 3, 0, 4, -1};
+    const int32_t vindices[] = {7, 3, 0, 4, -1};
     pimpl->modifyCubeFace(pimpl->master->bottomUrl, pimpl->bottomface, vindices);
   }
   
