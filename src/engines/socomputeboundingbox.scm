@@ -63,8 +63,6 @@ Separator { \
 (-> (-> text 'string) 'connectfrom (-> computebbox 'objectcenter))
 
 ;; Modify the sphere to see that notification works.
-;; FIXME: SoEngine::notify() gets _two_ invocations on
-;; this. Investigate. 20000925 mortene.
 (-> (-> sphere 'radius) 'setvalue 1)
 ;; Modify the sphere transform to see that notification works.
 (-> (-> spheretrans 'scalefactor) 'setvalue 1 1 1)
