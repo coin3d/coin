@@ -136,6 +136,10 @@ public:
   SbVec2s startlocaterpos;
   SoDragger * activechilddragger;
   SbBool isgrabbing;
+
+  SbName surrogatename;
+  SoPath * surrogateownerpath;
+  SoPath * surrogatepath;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -171,6 +175,8 @@ SoDragger::SoDragger(void)
   THIS->draggercache = NULL;
   THIS->isgrabbing = FALSE;
   THIS->activechilddragger = NULL;
+  THIS->surrogateownerpath = NULL;
+  THIS->surrogatepath = NULL;
 }
 
 /*!
@@ -179,6 +185,8 @@ SoDragger::SoDragger(void)
 SoDragger::~SoDragger()
 {
   if (THIS->pickedpath) THIS->pickedpath->unref();
+  if (THIS->surrogateownerpath) THIS->surrogateownerpath->unref();
+  if (THIS->surrogatepath) THIS->surrogatepath->unref();
   delete THIS->draggercache;
   delete this->pimpl;
 }
@@ -1061,7 +1069,30 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     const SoPickedPoint * pp = action->getPickedPoint();
 
-    if (pp && this->isPicked(pp->getPath())) {
+    SbBool didpick = FALSE;
+
+    if (pp && this->isPicked(pp->getPath())) didpick = TRUE;
+    else if (pp) { // check surrogate paths
+      SoPath * owner, * path;
+      SbName name;
+      if (this->isPathSurrogateInMySubgraph(pp->getPath(), owner, name, path)) {
+        owner->ref();
+        path->ref();
+        if (this->shouldGrabBasedOnSurrogate(pp->getPath(), path)) {
+          if (THIS->surrogateownerpath) THIS->surrogateownerpath->unref();
+          THIS->surrogateownerpath = owner;
+          THIS->surrogateownerpath->ref();
+          if (THIS->surrogatepath) THIS->surrogatepath->unref();
+          THIS->surrogatepath = path;
+          THIS->surrogatepath->ref();
+          THIS->surrogatename = name;
+          didpick = TRUE;
+        }
+        owner->unref();
+        path->unref();
+      }
+    }
+    if (didpick) {
       this->isActive = TRUE;
       this->setCameraInfo(action);
       this->setStartingPoint(pp);
@@ -1076,21 +1107,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       this->saveStartParameters();
       THIS->startCB.invokeCallbacks(this);
     }
-#if 0 // soon to come
-    else if (pp) { // check surrogate paths
-      SoPath * owner, * path;
-      SbName name;
-      if (this->isPathSurrogateInMySubgraph(pp->getPath(), owner, name, path)) {
-        owner->ref();
-        surrogate->ref();
-        if (this->shouldGrabBasedOnSurrogate(pp->getPath(), path)) {
-          // ???
-        }
-        owner->unref();
-        path->unref();
-      }
-    }
-#endif
   }
   else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     this->isActive = FALSE;
@@ -1116,7 +1132,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     THIS->currentevent = event;
     THIS->otherEventCB.invokeCallbacks(this);
   }
-
   if (!action->isHandled())
     inherited::handleEvent(action);
 }
