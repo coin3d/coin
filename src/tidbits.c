@@ -833,7 +833,7 @@ coin_geq_power_of_two(uint32_t x)
 void
 coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * jitter)
 {
-  // jitter values from OpenGL Programming Guide
+  /* jitter values from OpenGL Programming Guide */
   static float jitter2[] = {
     0.25f, 0.77f,
     0.75f, 0.25f

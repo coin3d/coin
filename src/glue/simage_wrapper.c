@@ -360,8 +360,8 @@ simage_wrapper(void)
       }
       else {
 #if 0
-        // 20021018 thammer. I might want to use these later instead
-        // of setting all of them to NULL
+        /* 20021018 thammer. I might want to use these later instead
+           of setting all of them to NULL */
         si->s_params_set = simage_wrapper_s_params_set;
         si->s_params_get = simage_wrapper_s_params_get;
         si->s_stream_open = simage_wrapper_s_stream_open;
