@@ -30,6 +30,7 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 
+#include <data/draggerDefaults/handleBoxDragger.h>
 
 #include <coindefs.h> // COIN_STUB()
 
@@ -146,7 +147,9 @@ SoHandleBoxDragger::SoHandleBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(arrow6, SoSeparator, TRUE, arrow6Switch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("handleBoxDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("handleBoxDragger.iv",
+                                       draggergeometry,
+                                       sizeof(draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
