@@ -112,6 +112,9 @@ SoMatrixTransform::callback(SoCallbackAction * action)
 void
 SoMatrixTransform::getMatrix(SoGetMatrixAction * action)
 {
+  // FIXME: shouldn't we check for the isIgnored flag, like in
+  // doAction()? 20040217 mortene.
+
   SbMatrix m = this->matrix.getValue();
   action->getMatrix().multLeft(m);
 
