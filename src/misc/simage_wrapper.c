@@ -67,7 +67,18 @@
 
 #endif  /* static binding */
 
-/* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
+/* FIXME: support HP-UX shn_load()?
+
+   Some versions of HP-UX have dlopen(). Although according to a
+   discussion on the libtool mailinglist it has been buggy in an
+   official release, needing a patch to function properly. This is of
+   course a good reason to try to use shn_load() *first*, then
+   dlopen() on HP-UX.
+
+   Note also that it looks like dlopen() might reside in a library
+   "svld" instead of "ld".
+
+   20010626 mortene. */
 
 static simage_wrapper_t * simage_instance = NULL;
 static LIBHANDLE_T simage_libhandle = NULL;
