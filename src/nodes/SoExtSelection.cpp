@@ -204,27 +204,27 @@ public:
   SoExtSelectionP(SoExtSelection * master) {
     this->master = master;
   }
-
+  
   SbColor lassocolor;
   float lassowidth;
   SbBool lassopatternanimate;
   unsigned short lassopattern;
-
+  
   enum SelectionState {
     NONE,
     RECTANGLE,
     LASSO
   };
-
+  
   SelectionState selectionstate;
   SbBool isDragging;  // 0=no, 1=currently dragging a new point (mouse = last pos)
-
+  
   SbVec2s previousmousecoords;
-
+  
   SbList <SbVec2s> coords;
   SoTimerSensor * timersensor;
   SoCallbackAction * cbaction;
-
+  
   const SbList <SbVec2s> & getCoords(void) const {
     return coords;
   }
@@ -719,7 +719,8 @@ SoExtSelection::~SoExtSelection()
   if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
   delete PRIVATE(this)->timersensor;
   delete PRIVATE(this)->cbaction;
-
+  delete PRIVATE(this)->visitedshapepaths;
+  delete PRIVATE(this);
 }
 
 // doc in parent
