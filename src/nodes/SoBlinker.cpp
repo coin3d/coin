@@ -35,7 +35,6 @@
 #include <Inventor/nodes/SoBlinker.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/engines/SoTimeCounter.h>
 #include <Inventor/misc/SoChildList.h>
