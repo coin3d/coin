@@ -531,14 +531,20 @@ SbBool
 SoVRMLInline::readInstance(SoInput * in,
                            unsigned short flags)
 {
+  SbBool ret = TRUE;
+
+  THIS->urlsensor->detach();
   if (sovrmlinline_readassofile) {
     THIS->fullurlname.makeEmpty();
-    THIS->urlsensor->detach();
-    SbBool result = inherited::readInstance(in, flags);
-    THIS->urlsensor->attach(&this->url);
-    return result && this->readLocalFile(in);
+    ret = inherited::readInstance(in, flags);
+    ret = ret && this->readLocalFile(in);
   }
-  return inherited::readInstance(in, flags);
+  else {
+    ret = inherited::readInstance(in, flags);
+  }
+  THIS->urlsensor->attach(&this->url);
+
+  return ret; 
 }
 
 // Doc in parent
@@ -616,5 +622,7 @@ SoVRMLInline::urlFieldModified(void * userdata, SoSensor * sensor)
   SoVRMLInline * thisp = (SoVRMLInline *)userdata;
   SoInput in;
   thisp->pimpl->fullurlname.makeEmpty();
-  (void)thisp->readLocalFile(&in);
+  if (sovrmlinline_readassofile) {
+    (void)thisp->readLocalFile(&in);
+  }
 }
