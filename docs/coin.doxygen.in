@@ -851,6 +851,20 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
                          @path_tag@@coin_src_dir@/src/nodekits/SoInteractionKit.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoInteractionKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoSeparatorKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSeparatorKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoShapeKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoWrapperKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoAppearanceKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoAppearanceKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoCameraKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoCameraKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoLightKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoLightKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoSceneKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSceneKit.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoDragger.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragger.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoCenterballDragger.cpp \
