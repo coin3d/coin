@@ -24,6 +24,12 @@
 // 	$ coin-config --build glutiv glutiv.cpp -lglut
 //
 // (or -lglut32 if you're on MSWindows with Cygwin).
+//
+// Note that to compile on Mac OS X, you have to link against the
+// GLUT framework, like so:
+// 
+//  $ export LDFLAGS="-framework GLUT -lobjc"
+//  $ coin-config --build glutiv glutiv.cpp 
 
 
 // Note that there are some limitations to this example:
