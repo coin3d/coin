@@ -23,10 +23,31 @@
 
 /*!
   \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
-  \brief The SoTrackballDragger class is (FIXME: doc)
+  \brief The SoTrackballDragger is used to provide the end-user with rotation and scaling interaction possibilities.
   \ingroup draggers
 
-  FIXME: document class
+  The dragger has three "bands" around a transparent sphere, which
+  when clicked and dragged will rotate around the three principal
+  axes. In addition, the user can define his own rotation axis by
+  holding down a SHIFT key while clicking with the left mouse button
+  and dragging. A new, distinctively colored axis and dragger band
+  will be then be added.
+
+  Free-form rotation on the sphere can be done by clicking and
+  dragging \e outside the pre-defined "rotation bands".
+
+  Scale operations are made available by holding down a CTRL key when
+  clicking when the left mouse button. The dragger is then in scaling
+  mode, and dragging while holding down the mouse button will \e
+  uniformly scale the trackball sphere.
+
+  For the application programmer's convenience, the Coin library also
+  provides a manipulator class SoTrackballManip, which wraps the
+  SoTrackballDragger into the necessary mechanisms for making direct
+  insertion of this dragger into a scenegraph possible with very
+  little effort.
+
+  \sa SoTrackballManip
 */
 
 #include <Inventor/draggers/SoTrackballDragger.h>
@@ -45,6 +66,30 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 
 #include <data/draggerDefaults/trackballDragger.h>
+
+/*!
+  \var SoSFRotation SoTrackballDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  dragger's trackball.
+*/
+
+/*!
+  \var SoSFVec3f SoTrackballDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes. The three components will always be equal, as
+  this dragger only support uniform scale operations.
+*/
+
+/*!
+  \var SoFieldSensor * SoTrackballDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTrackballDragger::scaleFieldSensor
+  \internal
+*/
 
 // don't change these values!
 #define WHATKIND_NONE          0
@@ -274,16 +319,30 @@ SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*!
+  Whether or not the trackball will start a spin animation after a
+  quick drag-and-release.
+
+  Note: this feature is not supported yet in the Coin library, so even
+  though if \c TRUE is returned, spin animations will not be possible
+  to trigger.
+*/
 SbBool
 SoTrackballDragger::isAnimationEnabled(void)
 {
   return THIS->animationEnabled;
 }
 
+/*!
+  Set a flag which will decide whether or not the trackball will start
+  a spin animation after a quick drag-and-release.
+  
+  Note: this feature is not supported yet in the Coin library.
+*/
 void
 SoTrackballDragger::setAnimationEnabled(SbBool newval)
 {
-  THIS->animationEnabled = FALSE;
+  THIS->animationEnabled = newval;
 }
 
 // Invalidate surround scale node, if it exists.
@@ -525,6 +584,7 @@ SoTrackballDragger::dragFinish(void)
   SoTrackballDragger_invalidate_surroundscale(this);
 }
 
+// private
 void
 SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
 {
@@ -539,6 +599,12 @@ SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
                                                rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
+/*!
+  If the input argument is \c TRUE, all the geometry parts of the
+  dragger will become highligthed, as when active.
+
+  Used internally during scaling operations and free-form rotations.
+*/
 void
 SoTrackballDragger::setAllPartsActive(SbBool onoroff)
 {
@@ -587,6 +653,7 @@ SoTrackballDragger::metaKeyChangeCB(void *, SoDragger *)
   //
 }
 
+// private
 SoNode *
 SoTrackballDragger::getNodeFieldNode(const char *fieldname)
 {
@@ -597,6 +664,7 @@ SoTrackballDragger::getNodeFieldNode(const char *fieldname)
   return ((SoSFNode*)field)->getValue();
 }
 
+// private
 void
 SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
 {

@@ -21,6 +21,19 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTrackballManip SoTrackballManip.h Inventor/manips/SoTrackballManip.h
+  \brief The SoTrackballManip wraps an SoTrackballDragger for convenience.
+  \ingroup manips
+
+  The manipulator class takes care of wrapping up the
+  SoTrackballDragger in a simple and convenient API for the
+  application programmer, making it automatically surround the
+  geometry it influences and taking care of the book-keeping routines
+  for it's interaction with the relevant fields of an SoTransformation
+  node.
+*/
+
 #include <Inventor/manips/SoTrackballManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -36,6 +49,10 @@ SoTrackballManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTrackballManip);
 }
 
+/*!
+  Default constructor. Allocates an SoTrackballDragger and an
+  SoSurroundScale node to surround the geometry.
+*/
 SoTrackballManip::SoTrackballManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTrackballManip);
@@ -48,7 +65,9 @@ SoTrackballManip::SoTrackballManip(void)
   ss->numNodesUpToReset = 3;
 }
 
-
+/*!
+  Destructor.
+*/
 SoTrackballManip::~SoTrackballManip()
 {
 }

@@ -30,6 +30,9 @@
   graph with the manipulator. Draggers are used to to manipulate the
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
+
+  The SoTransformManip class is an abstract class which should not be
+  used directly -- use one of it's subclasses.
 */
 
 /*!

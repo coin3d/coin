@@ -21,6 +21,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTransformerManip SoTransformerManip.h Inventor/manips/SoTransformerManip.h
+  \brief The SoTransformerManip FIXME: doc
+  \ingroup manips
+
+  FIXME: doc
+*/
+
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
