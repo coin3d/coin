@@ -1314,11 +1314,11 @@ Qt_FromMatrix(HMatrix mat)
   tr = mat[X][X] + mat[Y][Y]+ mat[Z][Z];
   if (tr >= 0.0) {
     s = sqrt(tr + mat[W][W]);
-    qu.w = s*0.5;
+    qu.w = ((float)s)*0.5f;
     s = 0.5 / s;
-    qu.x = (mat[Z][Y] - mat[Y][Z]) * s;
-    qu.y = (mat[X][Z] - mat[Z][X]) * s;
-    qu.z = (mat[Y][X] - mat[X][Y]) * s;
+    qu.x = (float)((mat[Z][Y] - mat[Y][Z]) * s);
+    qu.y = (float)((mat[X][Z] - mat[Z][X]) * s);
+    qu.z = (float)((mat[Y][X] - mat[X][Y]) * s);
   }
   else {
     int h = X;
@@ -1328,18 +1328,18 @@ Qt_FromMatrix(HMatrix mat)
 #define caseMacro(i, j, k, I, J, K) \
 	    case I:\
 		s = sqrt((mat[I][I] - (mat[J][J]+mat[K][K])) + mat[W][W]);\
-		qu.i = s*0.5;\
+		qu.i = ((float)s)*0.5f;\
 		s = 0.5 / s;\
-		qu.j = (mat[I][J] + mat[J][I]) * s;\
-		qu.k = (mat[K][I] + mat[I][K]) * s;\
-		qu.w = (mat[K][J] - mat[J][K]) * s;\
+		qu.j = (float)((mat[I][J] + mat[J][I]) * s);\
+		qu.k = (float)((mat[K][I] + mat[I][K]) * s);\
+		qu.w = (float)((mat[K][J] - mat[J][K]) * s);\
 		break
       caseMacro(x, y, z, X, Y, Z);
       caseMacro(y, z, x, Y, Z, X);
       caseMacro(z, x, y, Z, X, Y);
     }
   }
-  if (mat[W][W] != 1.0) qu = Qt_Scale(qu, 1/sqrt(mat[W][W]));
+  if (mat[W][W] != 1.0f) qu = Qt_Scale(qu, 1.0f/(float)(sqrt(mat[W][W])));
   return (qu);
 }
 
@@ -1355,8 +1355,8 @@ mat_norm(HMatrix M, int tpose)
   float sum, max;
   max = 0.0;
   for (i=0; i<3; i++) {
-    if (tpose) sum = fabs(M[0][i])+fabs(M[1][i])+fabs(M[2][i]);
-    else sum = fabs(M[i][0])+fabs(M[i][1])+fabs(M[i][2]);
+    if (tpose) sum = (float)(fabs(M[0][i])+fabs(M[1][i])+fabs(M[2][i]));
+    else sum = (float)(fabs(M[i][0])+fabs(M[i][1])+fabs(M[i][2]));
     if (max<sum) max = sum;
   }
   return max;
@@ -1383,10 +1383,10 @@ find_max_col(HMatrix M)
 static void
 make_reflector(float * v, float * u)
 {
-  float s = sqrt(vdot(v, v));
+  float s = (float)sqrt(vdot(v, v));
   u[0] = v[0]; u[1] = v[1];
   u[2] = v[2] + ((v[2]<0.0) ? -s : s);
-  s = sqrt(2.0/vdot(u, u));
+  s = (float)sqrt(2.0/vdot(u, u));
   u[0] = u[0]*s; u[1] = u[1]*s; u[2] = u[2]*s;
 }
 
@@ -1446,11 +1446,11 @@ do_rank2(HMatrix M, HMatrix MadjT, HMatrix Q)
   make_reflector(v2, v2); reflect_rows(M, v2);
   w = M[0][0]; x = M[0][1]; y = M[1][0]; z = M[1][1];
   if (w*z>x*y) {
-    c = z+w; s = y-x; d = sqrt(c*c+s*s); c = c/d; s = s/d;
+    c = z+w; s = y-x; d = (float)sqrt(c*c+s*s); c = c/d; s = s/d;
     Q[0][0] = Q[1][1] = c; Q[0][1] = -(Q[1][0] = s);
   }
   else {
-    c = z-w; s = y+x; d = sqrt(c*c+s*s); c = c/d; s = s/d;
+    c = z-w; s = y+x; d = (float)sqrt(c*c+s*s); c = c/d; s = s/d;
     Q[0][0] = -(Q[1][1] = c); Q[0][1] = Q[1][0] = s;
   }
   Q[0][2] = Q[2][0] = Q[1][2] = Q[2][1] = 0.0; Q[2][2] = 1.0;
@@ -1480,9 +1480,9 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     det = vdot(Mk[0], MadjTk[0]);
     if (det==0.0) {do_rank2(Mk, MadjTk, Mk); break;}
     MadjT_one = norm_one(MadjTk); MadjT_inf = norm_inf(MadjTk);
-    gamma = sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
-    g1 = gamma*0.5;
-    g2 = 0.5/(gamma*det);
+    gamma = (float)sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
+    g1 = gamma*0.5f;
+    g2 = 0.5f/(gamma*det);
     mat_copy(Ek, =, Mk, 3);
     mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
     mat_copy(Ek, -=, Mk, 3);
@@ -1492,7 +1492,7 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
   mat_tpose(Q, =, Mk, 3); mat_pad(Q);
   mat_mult(Mk, M, S);	 mat_pad(S);
   for (i=0; i<3; i++) for (j=i; j<3; j++)
-    S[i][j] = S[j][i] = 0.5*(S[i][j]+S[j][i]);
+    S[i][j] = S[j][i] = 0.5f*(S[i][j]+S[j][i]);
   return (det);
 }
 
@@ -1515,7 +1515,7 @@ spect_decomp(HMatrix S, HMatrix U)
   Diag[X] = S[X][X]; Diag[Y] = S[Y][Y]; Diag[Z] = S[Z][Z];
   OffD[X] = S[Y][Z]; OffD[Y] = S[Z][X]; OffD[Z] = S[X][Y];
   for (sweep=20; sweep>0; sweep--) {
-    float sm = fabs(OffD[X])+fabs(OffD[Y])+fabs(OffD[Z]);
+    float sm = (float)(fabs(OffD[X])+fabs(OffD[Y])+fabs(OffD[Z]));
     if (sm==0.0) break;
     for (i=Z; i>=X; i--) {
       int p = nxt[i]; int q = nxt[p];
@@ -1541,13 +1541,14 @@ spect_decomp(HMatrix S, HMatrix U)
         OffD[p] += s*(OffDq   - tau*OffD[p]);
         for (j=Z; j>=X; j--) {
           a = U[j][p]; b = U[j][q];
-          U[j][p] -= s*(b + tau*a);
-          U[j][q] += s*(a - tau*b);
+          U[j][p] -= (float)(s*(b + tau*a));
+          U[j][q] += (float)(s*(a - tau*b));
         }
       }
     }
   }
-  kv.x = Diag[X]; kv.y = Diag[Y]; kv.z = Diag[Z]; kv.w = 1.0;
+  kv.x = (float)Diag[X]; kv.y = (float)Diag[Y]; kv.z = (float)Diag[Z];
+  kv.w = 1.0f;
   return (kv);
 }
 
@@ -1563,7 +1564,7 @@ spect_decomp(HMatrix S, HMatrix U)
 static Quat
 snuggle(Quat q, HVect * k)
 {
-#define SQRTHALF (0.7071067811865475244)
+#define SQRTHALF (0.7071067811865475244f)
 #define sgn(n, v)    ((n)?-(v):(v))
 #define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
 #define cycle(a, p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
@@ -1578,14 +1579,14 @@ snuggle(Quat q, HVect * k)
     Quat qtoz, qp;
     unsigned neg[3], win;
     double mag[3], t;
-    static Quat qxtoz = {0, SQRTHALF, 0, SQRTHALF};
-    static Quat qytoz = {SQRTHALF, 0, 0, SQRTHALF};
-    static Quat qppmm = { 0.5, 0.5, -0.5, -0.5};
-    static Quat qpppp = { 0.5, 0.5, 0.5, 0.5};
-    static Quat qmpmm = {-0.5, 0.5, -0.5, -0.5};
-    static Quat qpppm = { 0.5, 0.5, 0.5, -0.5};
-    static Quat q0001 = { 0.0, 0.0, 0.0, 1.0};
-    static Quat q1000 = { 1.0, 0.0, 0.0, 0.0};
+    static Quat qxtoz = {0.0f, SQRTHALF, 0.0f, SQRTHALF};
+    static Quat qytoz = {SQRTHALF, 0.0f, 0.0f, SQRTHALF};
+    static Quat qppmm = { 0.5f, 0.5f, -0.5f, -0.5f};
+    static Quat qpppp = { 0.5f, 0.5f, 0.5f, 0.5f};
+    static Quat qmpmm = {-0.5f, 0.5f, -0.5f, -0.5f};
+    static Quat qpppm = { 0.5f, 0.5f, 0.5f, -0.5f};
+    static Quat q0001 = { 0.0f, 0.0f, 0.0f, 1.0f};
+    static Quat q1000 = { 1.0f, 0.0f, 0.0f, 0.0f};
     switch (turn) {
     default: return (Qt_Conj(q));
     case X: q = Qt_Mul(q, qtoz = qxtoz); swap(ka, X, Z) break;
@@ -1606,7 +1607,7 @@ snuggle(Quat q, HVect * k)
     }
     qp = Qt_Mul(q, p);
     t = sqrt(mag[win]+0.5);
-    p = Qt_Mul(p, Qt_(0.0, 0.0, -qp.z/t, qp.w/t));
+    p = Qt_Mul(p, Qt_(0.0, 0.0, -qp.z/(float)t, qp.w/(float)t));
     p = Qt_Mul(qtoz, Qt_Conj(p));
   }
   else {
@@ -1631,9 +1632,9 @@ snuggle(Quat q, HVect * k)
     big = qa[hi];
     if (all>two) {
       if (all>big) {/*all*/
-        {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5);}
+        {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5f);}
         cycle(ka, par)
-          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
     }
     else {
       if (two>big) {/*two*/
@@ -1641,7 +1642,7 @@ snuggle(Quat q, HVect * k)
         if (lo>hi) {hi ^= lo; lo ^= hi; hi ^= lo;}
         if (hi==W) {hi = "\001\002\000"[lo]; lo = 3-hi-lo;}
         swap(ka, hi, lo)
-          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
     }
     p.x = -pa[0]; p.y = -pa[1]; p.z = -pa[2]; p.w = pa[3];
   }
