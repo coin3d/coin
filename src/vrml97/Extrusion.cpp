@@ -482,9 +482,11 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
 
   if (doTextures) {
-    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
-                                     PRIVATE(this)->tcoord.getArrayPtr());
-
+    if (SoTextureCoordinateElement::getType(state) !=
+        SoTextureCoordinateElement::FUNCTION) {
+      SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                       PRIVATE(this)->tcoord.getArrayPtr());
+    }
     int lastenabled = -1;
     const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
     if (lastenabled >= 1) {
@@ -572,6 +574,16 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
   const int32_t * iptr = PRIVATE(this)->idx.getArrayPtr();
   const int32_t * endptr = iptr + PRIVATE(this)->idx.getLength();
 
+  SoState * state = action->getState();
+  state->push();
+
+  if (SoTextureCoordinateElement::getType(state) !=
+      SoTextureCoordinateElement::FUNCTION) {
+    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                     PRIVATE(this)->tcoord.getArrayPtr());
+  }
+
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   SoPrimitiveVertex vertex;
 
   int idx;
@@ -579,14 +591,21 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
   while (iptr < endptr) {
     idx = *iptr++;
     while (idx >= 0) {
-      vertex.setNormal(*normals++);
-      vertex.setTextureCoords(tcoords[idx]);
+      vertex.setNormal(*normals);
       vertex.setPoint(coords[idx]);
+      if (tb.isFunction()) {
+        vertex.setTextureCoords(tb.get(coords[idx], *normals));
+      }
+      else {
+        vertex.setTextureCoords(tcoords[idx]);
+      }
       this->shapeVertex(&vertex);
       idx = *iptr++;
+      normals++;
     }
   }
   this->endShape();
+  state->pop();
   PRIVATE(this)->readUnlock();
 }
 
