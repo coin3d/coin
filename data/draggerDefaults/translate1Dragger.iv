@@ -1,0 +1,35 @@
+#Inventor V2.1 ascii
+
+DEF TRANSLATE1_GEOM Separator {
+   # Line connecting the cones.
+   DrawStyle { lineWidth 4 }
+   Coordinate3 { point [ -1 0 0, 1 0 0 ] }
+   LineSet { }
+
+   # First cone.
+   Separator {
+      Translation { translation 1.25 0 0 }
+      RotationXYZ { axis Z  angle -1.5708 }
+      Cone { height 0.5  bottomRadius 0.125 }
+   }
+
+   # Second cone.
+   Separator {
+      Translation { translation -1.25 0 0 }
+      RotationXYZ { axis Z  angle 1.5708 }
+      Cone { height 0.5  bottomRadius 0.125 }
+   }
+}
+
+DEF translate1Translator Separator {
+   Material { diffuseColor 0 0 0.4  emissiveColor 0 0 0.4 }
+   USE TRANSLATE1_GEOM
+}
+
+DEF translate1TranslatorActive Separator {
+   Material { diffuseColor 0 0.4 0  emissiveColor 0 0.4 0 }
+   USE TRANSLATE1_GEOM
+}
+
+DEF translate1Feedback Separator { }
+DEF translate1FeedbackActive Separator { }

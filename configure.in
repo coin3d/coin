@@ -248,6 +248,8 @@ test -d include/Inventor  || mkdir include/Inventor
 AC_OUTPUT([
         coin-config
         Makefile
+        data/Makefile
+        data/draggerDefaults/Makefile
         src/Makefile
         src/coindev/Makefile
         src/base/Makefile

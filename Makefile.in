@@ -100,7 +100,7 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 @BUILD_TOOLS_TRUE@TOOLDIR = @BUILD_TOOLS_TRUE@tools
 @BUILD_TOOLS_FALSE@TOOLDIR = 
 
-SUBDIRS = src $(TOOLDIR) $(EXAMPLEDIR)
+SUBDIRS = data src $(TOOLDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
@@ -130,7 +130,7 @@ mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
-DIST_SUBDIRS =  src tools examples
+DIST_SUBDIRS =  data src tools examples
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 

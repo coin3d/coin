@@ -31,6 +31,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <data/draggerDefaults/translate1Dragger.h>
+
+
 SO_KIT_SOURCE(SoTranslate1Dragger);
 
 
@@ -52,7 +55,9 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("translate1Dragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("translate1Dragger.iv",
+                                       draggergeometry,
+                                       sizeof(draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -71,7 +76,7 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   SoInteractionKit::setSwitchValue(sw, 0);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
-  
+
   // setup projector
   this->lineProj = new SbLineProjector();
   this->addStartCallback(SoTranslate1Dragger::startCB);
@@ -79,10 +84,10 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   this->addFinishCallback(SoTranslate1Dragger::finishCB);
 
   this->addValueChangedCallback(SoTranslate1Dragger::valueChangedCB);
-  
+
   this->fieldSensor = new SoFieldSensor(SoTranslate1Dragger::fieldSensorCB, this);
   this->fieldSensor->setPriority(0);
- 
+
   this->setUpConnections(TRUE, TRUE);
 }
 
@@ -99,12 +104,12 @@ SoTranslate1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
 
   SbBool oldval = this->connectionsSetUp;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoTranslate1Dragger::fieldSensorCB(this, NULL);
-    
+
     if (this->fieldSensor->getAttachedField() != &this->translation) {
       this->fieldSensor->attach(&this->translation);
     }
@@ -143,7 +148,7 @@ SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
   t[0] = matrix[3][0];
   t[1] = matrix[3][1];
   t[2] = matrix[3][2];
-  
+
   thisp->fieldSensor->detach();
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;
@@ -202,7 +207,7 @@ SoTranslate1Dragger::drag(void)
 
   SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
   SbVec3f startPt = this->getLocalStartingPoint();
-  SbVec3f motion = projPt - startPt;  
+  SbVec3f motion = projPt - startPt;
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 

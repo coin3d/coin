@@ -3655,8 +3655,8 @@ else
 fi
 
 
-if test "x$enable_warnings" = "xyes"; then
-  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+if test x"$enable_warnings" = xyes; then
+  if test x"$GXX" = xyes || test x"$GCC" = xyes; then
     
 
 echo $ac_n "checking whether $CXX accepts -Wno-multichar... $ac_c" 1>&6
@@ -3689,11 +3689,78 @@ unset _accept_result _save_cxxflags
 
     CFLAGS="$CFLAGS $_warn_flags"
     CXXFLAGS="$CXXFLAGS $_warn_flags"
+  else
+    case $host in
+    *-*-irix*) 
+      if test x"$CC" = xcc || test x"$CXX" = xCC; then
+        _warn_flags=
+        # Turn on all warnings.
+        
 
-    unset _warn_flags
+echo $ac_n "checking whether $CXX accepts -fullwarn... $ac_c" 1>&6
+echo "configure:3702: checking whether $CXX accepts -fullwarn" 1>&5
+_save_cxxflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS -fullwarn"
+cat >conftest.$ac_ext <<EOF
+#line 3706 "configure"
+#include "confdefs.h"
+
+int main() {
+
+; return 0; }
+EOF
+if { (eval echo configure:3713: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  _accept_result=yes _warn_flags="$_warn_flags -fullwarn"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  _accept_result=no 
+fi
+rm -f conftest*
+echo "$ac_t""$_accept_result" 1>&6
+CXXFLAGS=$_save_cxxflags
+unset _accept_result _save_cxxflags
+
+        # Turn off warnings on unused variables.
+        
+
+echo $ac_n "checking whether $CXX accepts -woff 3262... $ac_c" 1>&6
+echo "configure:3731: checking whether $CXX accepts -woff 3262" 1>&5
+_save_cxxflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS -woff 3262"
+cat >conftest.$ac_ext <<EOF
+#line 3735 "configure"
+#include "confdefs.h"
+
+int main() {
+
+; return 0; }
+EOF
+if { (eval echo configure:3742: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  _accept_result=yes _warn_flags="$_warn_flags -woff 3262"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  _accept_result=no 
+fi
+rm -f conftest*
+echo "$ac_t""$_accept_result" 1>&6
+CXXFLAGS=$_save_cxxflags
+unset _accept_result _save_cxxflags
+
+
+        CFLAGS="$CFLAGS $_warn_flags"
+        CXXFLAGS="$CXXFLAGS $_warn_flags"
+      fi
+    ;;
+    esac
   fi
 else
-  if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then
+  if test x"$GXX" != xyes && test x"$GCC" != xyes; then
     echo "configure: warning: --enable-warnings only has effect when using GNU gcc or g++" 1>&2
   fi
 fi
@@ -3706,17 +3773,17 @@ for ac_header in unistd.h io.h
 do
 ac_ac_Header=`echo "ac_cv_header_$ac_header" | $ac_tr_sh`
 echo $ac_n "checking for $ac_header... $ac_c" 1>&6
-echo "configure:3710: checking for $ac_header" 1>&5
+echo "configure:3777: checking for $ac_header" 1>&5
 if eval "test \"\${$ac_ac_Header+set}\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3715 "configure"
+#line 3782 "configure"
 #include "confdefs.h"
 #include <$ac_header>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3720: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3787: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3743,12 +3810,12 @@ for ac_func in vsnprintf _vsnprintf snprintf _snprintf
 do
 ac_ac_var=`echo "ac_cv_func_$ac_func" | $ac_tr_sh`
 echo $ac_n "checking for $ac_func... $ac_c" 1>&6
-echo "configure:3747: checking for $ac_func" 1>&5
+echo "configure:3814: checking for $ac_func" 1>&5
 if eval "test \"\${$ac_ac_var+set}\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3752 "configure"
+#line 3819 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -3775,7 +3842,7 @@ f = $ac_func;
 
 ; return 0; }
 EOF
-if { (eval echo configure:3779: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3846: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "$ac_ac_var=yes"
 else
@@ -3970,16 +4037,17 @@ cat >$CONFIG_STATUS <<EOF
 
 # Files that config.status was made for.
 config_files="\\
-    coin-config Makefile src/Makefile src/coindev/Makefile src/base/Makefile
-    src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile
-    src/caches/Makefile src/details/Makefile src/draggers/Makefile
-    src/elements/Makefile src/engines/Makefile src/errors/Makefile
-    src/events/Makefile src/fields/Makefile src/manips/Makefile
-    src/misc/Makefile src/lists/Makefile src/nodekits/Makefile
-    src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile
-    src/system/Makefile tools/Makefile tools/ivcat/Makefile
-    tools/ivhierarchy/Makefile tools/ivNodeKitStructure/Makefile
-    tools/renderos/Makefile examples/Makefile examples/advanced/Makefile
+    coin-config Makefile data/Makefile data/draggerDefaults/Makefile
+    src/Makefile src/coindev/Makefile src/base/Makefile src/VRMLnodes/Makefile
+    src/actions/Makefile src/bundles/Makefile src/caches/Makefile
+    src/details/Makefile src/draggers/Makefile src/elements/Makefile
+    src/engines/Makefile src/errors/Makefile src/events/Makefile
+    src/fields/Makefile src/manips/Makefile src/misc/Makefile
+    src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile
+    src/projectors/Makefile src/sensors/Makefile src/system/Makefile
+    tools/Makefile tools/ivcat/Makefile tools/ivhierarchy/Makefile
+    tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
+    examples/Makefile examples/advanced/Makefile
     examples/advanced/elements/Makefile"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
@@ -4026,6 +4094,8 @@ do
   # Handling of arguments.
   'coin-config' ) CONFIG_FILES="\$CONFIG_FILES coin-config" ;;
   'Makefile' ) CONFIG_FILES="\$CONFIG_FILES Makefile" ;;
+  'data/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/Makefile" ;;
+  'data/draggerDefaults/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/draggerDefaults/Makefile" ;;
   'src/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Makefile" ;;
   'src/coindev/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/coindev/Makefile" ;;
   'src/base/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/base/Makefile" ;;
