@@ -64,7 +64,10 @@ private:
   void handle_triangle(SoState * state,
                        SoPrimitiveVertex * v1,
                        SoPrimitiveVertex * v2,
-                       SoPrimitiveVertex * v3);
+                       SoPrimitiveVertex * v3,
+                       const int wrap[2],
+                       const int transs, 
+                       const int transt);
   
   SbList <SoPrimitiveVertex*> vertexlist;
   
