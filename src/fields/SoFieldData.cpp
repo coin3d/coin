@@ -643,13 +643,6 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       return FALSE; \
     }
 
-#define READ_NAME(n) \
-    if (!in->read(n, TRUE)) { \
-      SoReadError::post(in, "Premature end of file"); \
-      return FALSE; \
-    }
-
-
   char c;
   if (!in->isBinary()) {
     READ_CHAR(c);
@@ -659,9 +652,21 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
   }
 
+
   for (int j=0; !in->isBinary() || (j < numdescriptionsexpected); j++) {
+
+    if (!in->isBinary()) {
+      READ_CHAR(c);
+      if (c == CLOSE_BRACE_CHAR) return TRUE;
+      else in->putBack(c);
+    }
+
+
     SbName fieldtype;
-    READ_NAME(fieldtype);
+    if (!in->read(fieldtype, TRUE)) {
+      SoReadError::post(in, "Couldn't read name of field type");
+      return FALSE;
+    }
 
     SoType type = SoType::fromName(fieldtype.getString());
     if ((type == SoType::badType()) ||
@@ -676,7 +681,11 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
 
     SbName fieldname;
-    READ_NAME(fieldname);
+    if (!in->read(fieldname, TRUE)) {
+      SoReadError::post(in, "Couldn't read name of field");
+      return FALSE;
+    }
+
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
@@ -699,23 +708,13 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 
     if (!in->isBinary()) {
       READ_CHAR(c);
-
-      if (c == VALUE_SEPARATOR_CHAR) {
-        READ_CHAR(c);
-        if (c == CLOSE_BRACE_CHAR) return TRUE;
-        else in->putBack(c);
-      }
-      else if (c == CLOSE_BRACE_CHAR) return TRUE;
-      else {
-        SoReadError::post(in, "Expected '%c' or '%c', got '%c'",
-                          VALUE_SEPARATOR_CHAR, CLOSE_BRACE_CHAR, c);
-        return FALSE;
-      }
+      if (c != VALUE_SEPARATOR_CHAR) in->putBack(c);
+      // (Allow missing value separators (i.e. no "," character
+      // between two field descriptions)).
     }
   }
 
 #undef READ_CHAR
-#undef READ_NAME
 
   return TRUE;
 }
