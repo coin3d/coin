@@ -58,7 +58,7 @@
 SbBool cc_flww32_initialize(void) { return FALSE; }
 void cc_flww32_exit(void) { }
 
-void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle) { assert(FALSE); return NULL; }
+void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity) { assert(FALSE); return NULL; }
 void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
@@ -165,7 +165,6 @@ static struct cc_flww32_globals_s cc_flww32_globals = {
 struct cc_flww32_glyph {
   struct cc_flw_bitmap * bitmap;
   struct cc_flw_vector_glyph * vector;
-  int fontid;
 };
 
 /* Callback functions for cleaning up kerninghash table */
@@ -330,9 +329,8 @@ cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure)
    Returns NULL on error.
 */
 void *
-cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle)
+cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity)
 {
-  
   int i;
   DWORD nrkpairs, ret;
   KERNINGPAIR * kpairs;
@@ -347,6 +345,9 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle)
   */
   cc_hash * glyphhash;
 
+  if (complexity >= 0.0f) {
+    sizey = flww32_font3dsize = flww32_calcfontsize(complexity);
+  }
 
   HFONT wfont = CreateFont(-sizey, /* Using a negative
                                       'sizey'. Otherwise leads to less
@@ -704,10 +705,6 @@ cc_flww32_done_glyph(void * font, int glyph)
     free(glyphstruct->vector->faceindices);
     free(glyphstruct->vector->edgeindices);
     free(glyphstruct->vector);
-
-    if (glyphstruct->fontid >= 0) {
-      cc_flw_unref_font(glyphstruct->fontid);
-    }
   }
 
   free(glyphstruct);
@@ -840,7 +837,6 @@ cc_flww32_get_bitmap(void * font, int glyph)
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
   glyphstruct->bitmap = bm;
   glyphstruct->vector = NULL;
-  glyphstruct->fontid = -1;
   unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
   assert(unused);
 
@@ -944,9 +940,6 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   HDC screendc;
   TCHAR string[1];
   struct cc_flw_vector_glyph * new_vector_glyph;
-  cc_string * fontname = NULL;
-  int newfontid;
-  void * oldfont = font;
   
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
@@ -969,21 +962,6 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   }
 
  
-  /* Due to the way W32 handles the fonts, a new font object must be 
-     created if size is to be changed. */
-  /* FIXME: the cc_flww32_done_glyph() should have been implemented 
-     and called here to prevent possible accumulation of glyphs. 
-     (20030912 handegar) */
-  fontname = cc_string_construct_new();
-  cc_flww32_get_font_name(font, fontname);
-  flww32_font3dsize = flww32_calcfontsize(complexity);
-  newfontid = cc_flw_get_font_id(cc_string_get_text(fontname), 
-                                 flww32_font3dsize, 
-                                 flww32_font3dsize, 
-                                 0.0f, 0.5f);
-  font = cc_flw_get_font_handle(newfontid);
-  cc_string_destruct(fontname);
-
   /* FIXME: we're being unnecessary robust for much of the code below
      calling into Win32 API functions. For most or all of the calls we
      should just wrap the Win32 API calls in the glue/C/win32api.h
@@ -1106,13 +1084,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
   glyphstruct->bitmap = NULL;
   glyphstruct->vector = new_vector_glyph;
-  glyphstruct->fontid = -1;
   
-  if (oldfont != font) {
-    glyphstruct->fontid = newfontid;
-    cc_flw_ref_font(newfontid);
-  }
-
   unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
   assert(unused);
 

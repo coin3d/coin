@@ -30,22 +30,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
   /* This is the glue between the FLW and the Win32 API. */
-  
+
   SbBool cc_flww32_initialize(void);
   void cc_flww32_exit(void);
 
-  void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle);
+  void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity);
   void cc_flww32_get_font_name(void * font, cc_string * str);
   void cc_flww32_done_font(void * font);
-  
+
   int cc_flww32_get_glyph(void * font, unsigned int charidx);
   void cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y);
   void cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y);
   void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y);
   void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
-  void cc_flww32_done_glyph(void * font, int glyph);  
+  void cc_flww32_done_glyph(void * font, int glyph);
 
   struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph);
   struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity);
