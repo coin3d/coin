@@ -240,6 +240,7 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
       cp->copyFrom(*f);
       cp->fixCopy(TRUE);
     }
+    cp->setDefault(f->isDefault());
   }
   SoFieldContainer::copyDone();
 }
