@@ -27,18 +27,70 @@
   \ingroup nodes
 
   This node uses the coordinates in order, either from the state or
-  from the vertexProperty node, to construct a quadrilateral mesh. The
-  quads are generated in row major order, using the two field
-  verticesPerColumn and verticesPerRow to specify the mesh. E.g. if
-  verticesPerColumn is 3 and verticesPerRow is 2, two quads will be
-  generated, the first one using (in order) coordinates 0, 1, 3 and 2,
-  the second one using coordinates 2, 3, 5 and 4 (you get three rows
-  of vertices; the first row uses vertices 0 and 1, the second row 2
-  and 3, and the third row 4 and 5).
+  from the SoQuadMesh::vertexProperty node, to construct a
+  quadrilateral mesh.
 
-  Normals and materials can be bound PER_PART (per row), PER_FACE,
-  PER_VERTEX and OVERALL. The default material binding is OVERALL. The
-  default normal binding is PER_VERTEX.
+  The quads are generated in row major order, using the two fields
+  SoQuadMesh::verticesPerColumn and SoQuadMesh::verticesPerRow to
+  specify the mesh. E.g. if SoQuadMesh::verticesPerColumn is 3 and
+  SoQuadMesh::verticesPerRow is 2, two quads will be generated with
+  the first one using (in order) coordinates 0, 1, 3 and 2, the second
+  one using coordinates 2, 3, 5 and 4 (you get three rows of vertices;
+  the first row uses vertices 0 and 1, the second row 2 and 3, and the
+  third row 4 and 5).
+
+  Here's a quick and simple usage example code snippet:
+
+  \code
+  // Vertices for the Quad mesh.
+  static float vertices[25][3] = {
+    // Row 1
+    {-11, 0, 1}, {0, 11, 1}, {11, 0, 1}, {0, -11, 1}, {-11, 0, 1},
+    // Row 2
+    {-9, 0, 1}, {0, 9, 1}, {9, 0, 1}, {0, -9, 1}, {-9, 0, 1},
+    // Row 3
+    {-9, 0, -1}, {0, 9, -1}, {9, 0, -1}, {0, -9, -1}, {-9, 0, -1},
+    // Row 4
+    {-11, 0, -1}, {0, 11, -1}, {11, 0, -1}, {0, -11, -1}, {-11, 0, -1},
+    // Row 5
+    {-11, 0, 1}, {0, 11, 1}, {11, 0, 1}, {0, -11, 1}, {-11, 0, 1}
+  };
+  
+  // This function generate an object by using the SoQuadMesh node
+  // Return:
+  //  SoSeparator *
+  static SoSeparator *
+  quadMesh(void) 
+  {
+    SoSeparator * qm = new SoSeparator;
+    
+    // Define coordinates
+    SoCoordinate3 * coords = new SoCoordinate3;
+    coords->point.setValues(0, 30, vertices);
+    qm->addChild(coords);
+    
+    // QuadMesh
+    SoQuadMesh * mesh = new SoQuadMesh;
+    mesh->verticesPerRow = 5;
+    mesh->verticesPerColumn = 5;
+    qm->addChild(mesh);
+  
+    return qm;
+  }
+  \endcode
+
+  The quadmesh geometry resulting from this code looks like this:<br>
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/quadmesh.png">
+  </center>
+
+
+  For SoQuadMesh, normals and materials can be bound PER_PART (per
+  row), PER_FACE, PER_VERTEX and OVERALL. The default material binding
+  is OVERALL. The default normal binding is PER_VERTEX.
+
+  \sa SoTriangleStripSet SoIndexedTriangleStripSet
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
@@ -98,14 +150,14 @@ SoQuadMesh::~SoQuadMesh()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoQuadMesh::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -541,7 +593,7 @@ static void sogl_qmesh_m3_n3_t1
 
 // -----
 
-// doc from parent
+// Documented in superclass.
 void
 SoQuadMesh::GLRender(SoGLRenderAction * action)
 {
@@ -703,7 +755,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   if (didpush) state->pop();
 }
 
-// doc from parent
+// Documented in superclass.
 SbBool
 SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
@@ -750,7 +802,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -760,16 +812,15 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
                           this->verticesPerColumn.getValue());
 }
 
-/*!
-  Overloaded to return FALSE. Normals are genereted in normal cache.
- */
+// Documented in superclass. Overridden to return FALSE. Normals are
+// generated in normal cache.
 SbBool
 SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb */)
 {
   return FALSE;
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoQuadMesh::generatePrimitives(SoAction *action)
 {
