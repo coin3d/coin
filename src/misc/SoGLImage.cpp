@@ -243,6 +243,8 @@ fast_mipmap(int width, int height, const int nc,
 
 class SoGLImageP {
 public:
+  static SoType classTypeId;
+
 
   SoGLDisplayList * createGLDisplayList(SoState * state);
   void checkTransparency(void);
@@ -294,6 +296,7 @@ public:
 
   void init(void);
 };
+SoType SoGLImageP::classTypeId;
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -357,19 +360,17 @@ SoGLImage::SoGLImage(void)
   }
 }
 
-static SoType classTypeId;
-
 /*!
   Returns the type id for this class.
 */
 SoType
 SoGLImage::getClassTypeId(void)
 {
-  if (classTypeId.isBad()) {
-    classTypeId = SoType::createType(SoType::badType(),
-                                     SbName("GLImage"));
+  if (SoGLImageP::classTypeId.isBad()) {
+    SoGLImageP::classTypeId = SoType::createType(SoType::badType(),
+                                                 SbName("GLImage"));
   }
-  return classTypeId;
+  return SoGLImageP::classTypeId;
 }
 
 /*!

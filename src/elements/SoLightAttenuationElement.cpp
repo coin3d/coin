@@ -32,7 +32,8 @@
 // handle static constructors.
 static SbVec3f * defaultattenuation = NULL;
 
-static void cleanup_func(void)
+static void
+SoLightAttenuationElement_cleanup_func(void)
 {
   delete defaultattenuation;
 }
@@ -56,7 +57,7 @@ SoLightAttenuationElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
   defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
-  atexit(cleanup_func);
+  (void)atexit(SoLightAttenuationElement_cleanup_func);
 }
 
 /*!

@@ -58,7 +58,14 @@
   of the SoFile node.
 */
 
-static const char UNDEFINED_FILE[] = "<Undefined file>";
+// *************************************************************************
+
+class SoFileP {
+public:
+  static const char UNDEFINED_FILE[];
+};
+
+const char SoFileP::UNDEFINED_FILE[] = "<Undefined file>";
 
 // *************************************************************************
 
@@ -71,7 +78,7 @@ SoFile::SoFile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFile);
 
-  SO_NODE_ADD_FIELD(name, (UNDEFINED_FILE));
+  SO_NODE_ADD_FIELD(name, (SoFileP::UNDEFINED_FILE));
 
   this->namesensor = new SoFieldSensor(SoFile::nameFieldModified, this);
   this->namesensor->setPriority(0); // immediate sensor
@@ -150,7 +157,7 @@ SbBool
 SoFile::readNamedFile(SoInput * in)
 {
   if (this->name.getValue().getLength() == 0 ||
-      strcmp(this->name.getValue().getString(), UNDEFINED_FILE) == 0) {
+      strcmp(this->name.getValue().getString(), SoFileP::UNDEFINED_FILE) == 0) {
     // We handle this different than Inventor, where the read process
     // fails upon an unspecified filename.
     SoReadError::post(in, "Undefined filename in SoFile");

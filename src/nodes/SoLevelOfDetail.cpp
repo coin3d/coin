@@ -40,7 +40,7 @@
 static SoGetBoundingBoxAction * bboxAction = NULL;
 
 static void
-cleanup_func(void)
+SoLevelOfDetail_cleanup_func(void)
 {
   delete bboxAction;
   bboxAction = NULL;
@@ -137,7 +137,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (!bboxAction) {
     SbViewportRegion dummy;
     bboxAction = new SoGetBoundingBoxAction(dummy);
-    atexit(cleanup_func);
+    (void)atexit(SoLevelOfDetail_cleanup_func);
   }
   bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
   bboxAction->apply(this); // find bbox of all children

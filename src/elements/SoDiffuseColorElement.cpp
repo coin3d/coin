@@ -34,7 +34,7 @@
 static SbColor * defaultdiffusecolor = NULL;
 
 static void 
-cleanup_func(void)
+SoDiffuseColorElement_cleanup_func(void)
 {
   delete defaultdiffusecolor;
 }
@@ -70,7 +70,7 @@ SoDiffuseColorElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
   defaultdiffusecolor = new SbColor;
   defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
-  atexit(cleanup_func);
+  (void)atexit(SoDiffuseColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.

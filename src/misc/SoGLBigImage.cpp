@@ -61,6 +61,9 @@ public:
     assert(this->glimagearray == NULL);
     delete[] this->tmpbuf;
   }
+
+  static SoType classTypeId;
+
   SbVec2s imagesize;
   SbVec2s remain;
   SbVec2s dim;
@@ -99,6 +102,8 @@ public:
   }
 };
 
+SoType SoGLBigImageP::classTypeId;
+
 #endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
@@ -128,19 +133,17 @@ SoGLBigImage::unref(SoState * state)
   inherited::unref(state);
 }
 
-static SoType classTypeId;
-
 /*!
   Returns the type id for this class.
 */
 SoType
 SoGLBigImage::getClassTypeId(void)
 {
-  if (classTypeId.isBad()) {
-    classTypeId = SoType::createType(SoGLImage::getClassTypeId(),
-                                     SbName("GLBigImage"));
+  if (SoGLBigImageP::classTypeId.isBad()) {
+    SoGLBigImageP::classTypeId =
+      SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
   }
-  return classTypeId;
+  return SoGLBigImageP::classTypeId;
 }
 
 /*!

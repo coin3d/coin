@@ -34,7 +34,8 @@
 // handle static constructors.
 static SbColor * defaultemissivecolor = NULL;
 
-static void cleanup_func(void)
+static void
+SoEmissiveColorElement_cleanup_func(void)
 {
   delete defaultemissivecolor;
 }
@@ -64,7 +65,7 @@ SoEmissiveColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
   defaultemissivecolor = new SbColor;
   defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
-  atexit(cleanup_func);
+  (void)atexit(SoEmissiveColorElement_cleanup_func);
 }
 
 /*!

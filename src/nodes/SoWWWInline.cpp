@@ -126,7 +126,12 @@ class SoWWWInlineP {
   SbBool readChildren(SoInput * in = NULL);
   SbString fullname;
   SbBool didrequest;
+
+  static const char UNDEFINED_FILE[];
 };
+
+const char SoWWWInlineP::UNDEFINED_FILE[] = "<Undefined file>";
+
 
 // FIXME: this is temporary code. We forgot about this class before
 // locking the Coin 1.0 ABI, so we had to use an SbDict to store
@@ -167,8 +172,6 @@ SO_NODE_SOURCE(SoWWWInline);
 #define THIS (get_private_data(this))
 
 
-static const char UNDEFINED_FILE[] = "<Undefined file>";
-
 /*!
   Constructor.
 */
@@ -180,7 +183,7 @@ SoWWWInline::SoWWWInline()
   THIS->children = new SoChildList(this);
   THIS->didrequest = FALSE;
 
-  SO_NODE_ADD_FIELD(name, (UNDEFINED_FILE));
+  SO_NODE_ADD_FIELD(name, (SoWWWInlineP::UNDEFINED_FILE));
   SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(bboxSize, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(alternateRep, (NULL));
@@ -662,7 +665,7 @@ SbBool
 SoWWWInlineP::readChildren(SoInput * in)
 {
   if (in && SoWWWInline::readassofile &&
-      this->owner->name.getValue() != UNDEFINED_FILE) {
+      this->owner->name.getValue() != SoWWWInlineP::UNDEFINED_FILE) {
     if (!this->readNamedFile(in)) {
       if (this->owner->alternateRep.getValue()) {
 #if COIN_DEBUG

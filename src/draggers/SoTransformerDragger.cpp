@@ -456,11 +456,16 @@ SoTransformerDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Convenience method used to call setDefault on similar fields.
 //
-// convenience method used to call setDefault on similar field
+// Note: keep the function name prefix to avoid name clashes with
+// other dragger .cpp files for "--enable-compact" builds.
 //
+// FIXME: should collect these methods in a common method visible to
+// all draggers implementing the exact same functionality. 20010826 mortene.
 static void
-set_default(SoDragger * dragger, const char * fmt, int minval, int maxval)
+SoTransformerDragger_set_default(SoDragger * dragger, const char * fmt,
+                                 int minval, int maxval)
 {
   SbString str;
   for (int i = minval; i <= maxval; i++) {
@@ -480,9 +485,9 @@ SoTransformerDragger::setDefaultOnNonWritingFields(void)
   this->axisFeedbackLocation.setDefault(TRUE);
   this->translateBoxFeedbackRotation.setDefault(TRUE);
 
-  set_default(this, "translator%dLocateGroup", 1, 6);
-  set_default(this, "rotator%dLocateGroup", 1, 6);
-  set_default(this, "scale%dLocateGroup", 1, 6);
+  SoTransformerDragger_set_default(this, "translator%dLocateGroup", 1, 6);
+  SoTransformerDragger_set_default(this, "rotator%dLocateGroup", 1, 6);
+  SoTransformerDragger_set_default(this, "scale%dLocateGroup", 1, 6);
 
   inherited::setDefaultOnNonWritingFields();
 }

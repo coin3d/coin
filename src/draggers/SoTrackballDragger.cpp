@@ -265,9 +265,15 @@ SoTrackballDragger::setAnimationEnabled(SbBool newval)
   THIS->animationEnabled = FALSE;
 }
 
-// invalidate surround scale node, if it exists
+// Invalidate surround scale node, if it exists.
+//
+// Note: keep the function name prefix to avoid name clashes with
+// other dragger .cpp files for "--enable-compact" builds.
+//
+// FIXME: should collect these methods in a common method visible to
+// all draggers implementing the exact same functionality. 20010826 mortene.
 static void
-invalidate_surroundscale(SoBaseKit * kit)
+SoTrackballDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
   SoSurroundScale * ss = (SoSurroundScale*)
     kit->getPart("surroundScale", FALSE);
@@ -277,7 +283,7 @@ invalidate_surroundscale(SoBaseKit * kit)
 void
 SoTrackballDragger::dragStart(void)
 {
-  invalidate_surroundscale(this);
+  SoTrackballDragger_invalidate_surroundscale(this);
 
   if (THIS->timerSensor->isScheduled()) {
     THIS->timerSensor->unschedule();
@@ -485,7 +491,7 @@ SoTrackballDragger::dragFinish(void)
     THIS->timerSensor->setInterval(SbTime(1.0/50.0));
     THIS->timerSensor->schedule();
   }
-  invalidate_surroundscale(this);
+  SoTrackballDragger_invalidate_surroundscale(this);
 }
 
 void

@@ -33,7 +33,8 @@
 // handle static constructors.
 static SbColor * defaultspecularcolor = NULL;
 
-static void cleanup_func(void)
+static void
+SoSpecularColorElement_cleanup_func(void)
 {
   delete defaultspecularcolor;
 }
@@ -63,7 +64,7 @@ SoSpecularColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
   defaultspecularcolor = new SbColor;
   defaultspecularcolor->setValue(0.0f, 0.0f, 0.0f);
-  atexit(cleanup_func);
+  (void)atexit(SoSpecularColorElement_cleanup_func);
 }
 
 /*!

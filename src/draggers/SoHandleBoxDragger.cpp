@@ -353,9 +353,15 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
   }
 }
 
-// invalidate surround scale node, if it exists
+// Invalidate surround scale node, if it exists.
+//
+// Note: keep the function name prefix to avoid name clashes with
+// other dragger .cpp files for "--enable-compact" builds.
+//
+// FIXME: should collect these methods in a common method visible to
+// all draggers implementing the exact same functionality. 20010826 mortene.
 static void 
-invalidate_surroundscale(SoBaseKit * kit)
+SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
   SoSurroundScale * ss = (SoSurroundScale*) 
     kit->getPart("surroundScale", FALSE);
@@ -365,7 +371,7 @@ invalidate_surroundscale(SoBaseKit * kit)
 void
 SoHandleBoxDragger::dragStart(void)
 {
-  invalidate_surroundscale(this);
+  SoHandleBoxDragger_invalidate_surroundscale(this);
 
   static const char translatorname[] = "translator";
   static const char extrudername[] = "extruder";
@@ -558,7 +564,7 @@ SoHandleBoxDragger::dragFinish(void)
   this->whatkind = WHATKIND_NONE;
   this->setAllPartsActive(FALSE);
 
-  invalidate_surroundscale(this);
+  SoHandleBoxDragger_invalidate_surroundscale(this);
 }
 
 void

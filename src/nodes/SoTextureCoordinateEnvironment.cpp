@@ -42,12 +42,21 @@
 #include <GL/gl.h>
 #include <float.h>
 
-static SbVec4f * dummy_texcoords = NULL;
+// *************************************************************************
 
-static void cleanup_func(void)
+class SoTextureCoordinateEnvironmentP {
+public:
+  static SbVec4f * dummy_texcoords;
+  static void cleanup_func(void);
+};
+
+SbVec4f * SoTextureCoordinateEnvironmentP::dummy_texcoords = NULL;
+
+void
+SoTextureCoordinateEnvironmentP::cleanup_func(void)
 {
-  delete dummy_texcoords;
-} 
+  delete SoTextureCoordinateEnvironmentP::dummy_texcoords;
+}
 
 // *************************************************************************
 
@@ -111,13 +120,14 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   // in case an empty normal was supplied
   if (fabs(m) <= FLT_EPSILON) m = 1.0f;
 
-  if (dummy_texcoords == NULL) {
-    dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-    atexit(cleanup_func);
+  if (SoTextureCoordinateEnvironmentP::dummy_texcoords == NULL) {
+    SoTextureCoordinateEnvironmentP::dummy_texcoords =
+      new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+    (void)atexit(SoTextureCoordinateEnvironmentP::cleanup_func);
   }
-  (*dummy_texcoords)[0] = r[0] / m + 0.5f;
-  (*dummy_texcoords)[1] = r[1] / m + 0.5f;
-  return *dummy_texcoords;
+  (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[0] = r[0] / m + 0.5f;
+  (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[1] = r[1] / m + 0.5f;
+  return *SoTextureCoordinateEnvironmentP::dummy_texcoords;
 }
 
 /*!

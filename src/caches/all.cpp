@@ -20,5 +20,7 @@
 #include "SoBoundingBoxCache.cpp"
 #include "SoCache.cpp"
 #include "SoConvexDataCache.cpp"
+#include "SoGLCacheList.cpp"
+#include "SoGLRenderCache.cpp"
 #include "SoNormalCache.cpp"
 #include "SoTextureCoordinateCache.cpp"

@@ -21,6 +21,7 @@
 #include "SbBox2f.cpp"
 #include "SbBox2s.cpp"
 #include "SbBox3f.cpp"
+#include "SbClip.cpp"
 #include "SbColor.cpp"
 #include "SbColor4f.cpp"
 #include "SbCylinder.cpp"
