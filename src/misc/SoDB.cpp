@@ -156,8 +156,13 @@ SoDB::init(void)
   assert(sizeof(uint32_t) == 4);
   assert(sizeof(int32_t) == 4);
 #else
-  SoDebugError::postWarning("SoDB::init",
-                            "fixed bitwidth types are not correct");
+  if (sizeof(uint16_t) != 2 ||
+      sizeof(int16_t) != 2 ||
+      sizeof(uint32_t) != 4 ||
+      sizeof(uint32_t) != 4) {
+    SoDebugError::postWarning("SoDB::init",
+                              "fixed bitwidth types are not correct");
+  }
 #endif
 
 
@@ -172,9 +177,11 @@ SoDB::init(void)
   // and export code. 20010308 mortene.
   assert(sizeof(int) == 4);
 #else
-  SoDebugError::postWarning("SoDB::init",
-                            "sizeof(int) != 4 "
-                            "(Coin not tested on this platform)");
+  if (sizeof(int) != 4) {
+    SoDebugError::postWarning("SoDB::init",
+                              "sizeof(int) != 4 "
+                              "(Coin not tested on this platform)");
+  }
 #endif
 
   // Sanity check: if this breaks, the binary format import and export
@@ -187,9 +194,11 @@ SoDB::init(void)
   // and export code. 20010308 mortene.
   assert(sizeof(short) == 2);
 #else
-  SoDebugError::postWarning("SoDB::init",
-                            "sizeof(short) != 2 "
-                            "(Coin not tested on this platform)");
+  if (sizeof(short) != 2) {
+    SoDebugError::postWarning("SoDB::init",
+                              "sizeof(short) != 2 "
+                              "(Coin not tested on this platform)");
+  }
 #endif
 
 
@@ -205,11 +214,12 @@ SoDB::init(void)
 #if 0
   assert(sizeof(int) == sizeof(long));
 #else
-  SoDebugError::postWarning("SoDB::init",
-                            "sizeof(int) != sizeof(long) "
-                            "(Coin not tested on this platform)");
+  if (sizeof(int) != sizeof(long)) {
+    SoDebugError::postWarning("SoDB::init",
+                              "sizeof(int) != sizeof(long) "
+                              "(Coin not tested on this platform)");
+  }
 #endif
-
 
   // Allocate our static members.
   SoDB::headerlist = new SbList<SoDB_HeaderInfo *>;
