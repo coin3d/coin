@@ -1520,11 +1520,16 @@ SoGLImageP::reallyBindPBuffer(SoState * state)
 
   SbBool mipmap = FALSE;
 
+#if 0 
+  // disabled, we probably need to allocate space for the mipmaps in
+  // the pbuffer pederb, 2003-11-27
   if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "SGIS_generate_mipmap")) {
     glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     glHint(GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
     mipmap = TRUE;
   }
+#endif // disabled
+
   this->applyFilter(mipmap);
   cc_glglue_context_bind_pbuffer(this->pbuffer);
 }
