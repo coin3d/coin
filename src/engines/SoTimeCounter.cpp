@@ -214,6 +214,18 @@ SoTimeCounter::inputChanged(SoField *which)
     this->starttime = this->timeIn.getValue().getValue();
     this->setOutputValue(this->min.getValue());
   }
+
+  // FIXME: the testing for valid min and max settings means they have
+  // to be set in the correct order (i.e., if for instance min=max=-1,
+  // if you try to set first min=0, then max=1 you end up with min=-1
+  // and max=1). It seems bogus to me that we doesn't handle this any
+  // better.
+  // 
+  // Wouldn't it be better if we just reversed the sign of the step
+  // value if min > max? Or just "freeze" the engine?
+  //
+  // 20000906 mortene.
+
   else if (which == &this->max) {
     if (this->max.getValue() < this->min.getValue()) {
       short tmp = this->max.getValue();
