@@ -50,7 +50,7 @@ cc_win32_print_error(const char * callerfuncname, const char * apifuncname,
                               NULL,
                               lasterror,
                               0,
-                              buffer,
+                              (LPTSTR)&buffer,
                               0,
                               NULL);
   if (!result) {
