@@ -22,20 +22,20 @@
 \**************************************************************************/
 
 /*!
-  \class SoSFImage SoSFImage.h Inventor/fields/SoSFImage.h
-  \brief The SoSFImage class is used to store pixel images.
+  \class SoSFImage3 SoSFImage3.h Inventor/fields/SoSFImage3.h
+  \brief The SoSFImage3 class is used to store 3D (volume) images.
   \ingroup fields
 
-  The SoSFImage class provides storage for inline 2D image
-  maps. Images in Coin are mainly used for texture mapping support.
+  The SoSFImage3 class provides storage for inline 3D image
+  maps. 3D images in Coin are mainly used for 3D texture mapping support.
 
-  SoSFImage instances can be exported and imported as any other field
+  SoSFImage3 instances can be exported and imported as any other field
   class in Coin.
 
-  The components of an SoSFImage is: its image dimensions (width and
-  height), the number of bytes used for describing each pixel and an
+  The components of an SoSFImage3 is: its image dimensions (width, height and
+  depth), the number of bytes used for describing each pixel and an
   associated pixel buffer. The size of the pixel buffer will be
-  width * height * bytesperpixel.
+  width * height * depth * bytesperpixel.
 
   For texture maps, the bytes per pixel setting translates to: 1 byte
   means a grayscale imagemap, 2 bytes is grayscale + opacity
@@ -43,43 +43,43 @@
   (aka RGB) and 4 bytes per pixel means 3 bytes for RGB + 1 byte
   opacity value (aka RGBA).
 
-  \sa SoTexture2, SoSFImage3
+  \since 2001-11-20
+
+  \sa SoTexture3, SoSFImage
 */
 
-#include <Inventor/fields/SoSFImage.h>
+#include <Inventor/fields/SoSFImage3.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
 
+PRIVATE_TYPEID_SOURCE(SoSFImage3);
+PRIVATE_EQUALITY_SOURCE(SoSFImage3);
 
-PRIVATE_TYPEID_SOURCE(SoSFImage);
-PRIVATE_EQUALITY_SOURCE(SoSFImage);
-
-
-// (Declarations hidden in macro in SoSFImage.h, so don't use Doxygen
+// (Declarations hidden in macro in SoSFImage3.h, so don't use Doxygen
 // commenting.)
 #ifndef DOXYGEN_SKIP_THIS
 
 /* Constructor, initializes fields to represent an empty image. */
-SoSFImage::SoSFImage(void)
+SoSFImage3::SoSFImage3(void)
   : image(new SbImage)
 {
 }
 
 /* Free all resources associated with the image. */
-SoSFImage::~SoSFImage()
+SoSFImage3::~SoSFImage3()
 {
   delete this->image;
 }
 
 /* Copy the image of \a field into this field. */
-const SoSFImage &
-SoSFImage::operator=(const SoSFImage & field)
+const SoSFImage3 &
+SoSFImage3::operator=(const SoSFImage3 & field)
 {
   int nc = 0;
-  SbVec2s size(0,0);
+  SbVec3s size(0,0,0);
   unsigned char * bytes = field.image->getValue(size, nc);
 
   this->setValue(size, nc, bytes);
@@ -91,46 +91,47 @@ SoSFImage::operator=(const SoSFImage & field)
 
 // Override from parent class.
 void
-SoSFImage::initClass(void)
+SoSFImage3::initClass(void)
 {
-  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFImage);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFImage3);
 }
 
 SbBool
-SoSFImage::readValue(SoInput * in)
+SoSFImage3::readValue(SoInput * in)
 {
-  SbVec2s size;
+  SbVec3s size;
   int nc;
-  if (!in->read(size[0]) || !in->read(size[1]) ||
+  if (!in->read(size[0]) || !in->read(size[1]) || !in->read(size[2]) ||
       !in->read(nc)) {
-    SoReadError::post(in, "Premature end of file");
+    SoReadError::post(in, "Premature end of file reading images dimensions");
     return FALSE;
   }
 
   // Note: empty images (dimensions 0x0x0) are allowed.
 
-  if (size[0] < 0 || size[1] < 0 || nc < 0 || nc > 4) {
-    SoReadError::post(in, "Invalid image specification %dx%dx%d",
-                      size[0], size[1], nc);
+  if (size[0] < 0 || size[1] < 0 || size[2] < 0 || nc < 0 || nc > 4) {
+    SoReadError::post(in, "Invalid image specification %dx%dx%dx%d",
+                      size[0], size[1], size[2], nc);
     return FALSE;
   }
 
-  int buffersize = int(size[0]) * int(size[1]) * nc;
+  int buffersize = int(size[0]) * int(size[1]) * int(size[2]) * nc;
 
   if (buffersize == 0 &&
-      (size[0] != 0 || size[1] != 0 || nc != 0)) {
-    SoReadError::post(in, "Invalid image specification %dx%dx%d",
-                      size[0], size[1], nc);
+      (size[0] != 0 || size[1] != 0 || size[2] != 0 || nc != 0)) {
+    SoReadError::post(in, "Invalid image specification %dx%dx%dx%d",
+                      size[0], size[1], size[2], nc);
     return FALSE;
   }
 
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSFImage::readValue", "image dimensions: %dx%dx%d",
-                         size[0], size[1], nc);
+  SoDebugError::postInfo("SoSFImage3::readValue", 
+                         "image dimensions: %dx%dx%dx%d",
+                         size[0], size[1], size[2], nc);
 #endif // debug
 
   if (!buffersize) {
-    this->image->setValue(SbVec2s(0,0), 0, NULL);
+    this->image->setValue(SbVec3s(0,0,0), 0, NULL);
     this->valueChanged();
     return TRUE;
   }
@@ -143,17 +144,17 @@ SoSFImage::readValue(SoInput * in)
   // wasteful when storing images.
   if (in->isBinary() && in->getIVVersion() >= 2.1f) {
     if (!in->readBinaryArray(pixblock, buffersize)) {
-      SoReadError::post(in, "Premature end of file");
+      SoReadError::post(in, "Premature end of file reading images data");
       return FALSE;
     }
   }
   else {
     int byte = 0;
-    int numpixels = int(size[0]) * int(size[1]);
+    int numpixels = int(size[0]) * int(size[1]) * int(size[2]);
     for (int i = 0; i < numpixels; i++) {
       uint32_t l;
       if (!in->read(l)) {
-        SoReadError::post(in, "Premature end of file");
+        SoReadError::post(in, "Premature end of file reading images data");
         return FALSE;
       }
       for (int j = 0; j < nc; j++) {
@@ -168,20 +169,22 @@ SoSFImage::readValue(SoInput * in)
 }
 
 void
-SoSFImage::writeValue(SoOutput * out) const
+SoSFImage3::writeValue(SoOutput * out) const
 {
   int nc;
-  SbVec2s size;
+  SbVec3s size;
   unsigned char * pixblock = this->image->getValue(size, nc);
 
   out->write(size[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(size[1]);
   if (!out->isBinary()) out->write(' ');
+  out->write(size[2]);
+  if (!out->isBinary()) out->write(' ');
   out->write(nc);
 
   if (out->isBinary()) {
-    int buffersize = int(size[0]) * int(size[1]) * nc;
+    int buffersize = int(size[0]) * int(size[1]) * int(size[2]) * nc;
     if (buffersize) { // in case of an empty image
       out->writeBinaryArray(pixblock, buffersize);
       int padsize = ((buffersize + 3) / 4) * 4 - buffersize;
@@ -195,7 +198,7 @@ SoSFImage::writeValue(SoOutput * out) const
     out->write('\n');
     out->indent();
 
-    int numpixels = int(size[0]) * int(size[1]);
+    int numpixels = int(size[0]) * int(size[1]) * int(size[2]);
     for (int i = 0; i < numpixels; i++) {
       uint32_t data = 0;
       for (int j = 0; j < nc; j++) {
@@ -216,7 +219,7 @@ SoSFImage::writeValue(SoOutput * out) const
 
 
 /*!
-  \fn int SoSFImage::operator!=(const SoSFImage & field) const
+  \fn int SoSFImage3::operator!=(const SoSFImage3 & field) const
   Compare image of \a field with the image in this field and
   return \c FALSE if they are equal.
 */
@@ -226,18 +229,17 @@ SoSFImage::writeValue(SoOutput * out) const
   return \c TRUE if they are equal.
 */
 int
-SoSFImage::operator==(const SoSFImage & field) const
+SoSFImage3::operator==(const SoSFImage3 & field) const
 {
   return (*this->image) == (*field.image);
 }
-
 
 /*!
   Return pixel buffer, set \a size to contain the image dimensions and
   \a nc to the number of components in the image.
 */
 const unsigned char *
-SoSFImage::getValue(SbVec2s & size, int & nc) const
+SoSFImage3::getValue(SbVec3s & size, int & nc) const
 {
   return this->image->getValue(size, nc);
 }
@@ -252,8 +254,8 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
   try it).
 */
 void
-SoSFImage::setValue(const SbVec2s & size, const int nc,
-                    const unsigned char * bytes)
+SoSFImage3::setValue(const SbVec3s & size, const int nc,
+                     const unsigned char * bytes)
 {
   this->image->setValue(size, nc, bytes);
   this->valueChanged();
@@ -267,7 +269,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
   until you call finishEditing().
 */
 unsigned char *
-SoSFImage::startEditing(SbVec2s & size, int & nc)
+SoSFImage3::startEditing(SbVec3s & size, int & nc)
 {
   return this->image->getValue(size, nc);
 }
@@ -277,7 +279,7 @@ SoSFImage::startEditing(SbVec2s & size, int & nc)
   modified.
 */
 void
-SoSFImage::finishEditing(void)
+SoSFImage3::finishEditing(void)
 {
   this->valueChanged();
 }

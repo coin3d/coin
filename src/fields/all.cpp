@@ -53,6 +53,7 @@
 #include "SoSFEnum.cpp"
 #include "SoSFFloat.cpp"
 #include "SoSFImage.cpp"
+#include "SoSFImage3.cpp"
 #include "SoSFInt32.cpp"
 #include "SoSFMatrix.cpp"
 #include "SoSFName.cpp"

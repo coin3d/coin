@@ -34,6 +34,7 @@ RegularSources = \
 	SoSFEnum.cpp \
 	SoSFFloat.cpp \
 	SoSFImage.cpp \
+	SoSFImage3.cpp \
 	SoSFInt32.cpp \
 	SoSFMatrix.cpp \
 	SoSFName.cpp \
@@ -92,6 +93,7 @@ PublicHeaders = \
 	../../include/Inventor/fields/SoSFEnum.h \
 	../../include/Inventor/fields/SoSFFloat.h \
 	../../include/Inventor/fields/SoSFImage.h \
+	../../include/Inventor/fields/SoSFImage3.h \
 	../../include/Inventor/fields/SoSFInt32.h \
 	../../include/Inventor/fields/SoSFLong.h \
 	../../include/Inventor/fields/SoSFMatrix.h \

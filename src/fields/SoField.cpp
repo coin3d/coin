@@ -1886,6 +1886,7 @@ SoField::initClasses(void)
   SoSFEnum::initClass();
   SoSFBitMask::initClass();
   SoSFImage::initClass();
+  SoSFImage3::initClass();
   SoSFName::initClass();
   SoSFNode::initClass();
   SoSFPath::initClass();

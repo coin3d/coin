@@ -32,6 +32,7 @@
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFImage.h>
+#include <Inventor/fields/SoSFImage3.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/fields/SoSFName.h>
