@@ -218,6 +218,17 @@ AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
 dnl *******************************************************************
+dnl * Do we want libtool to use some other depmode? (makedep, cpp, etc)
+dnl * 
+dnl * By default, dependencies are not made for Solaris, for example...
+dnl *******************************************************************
+
+AC_ARG_WITH(depmode,
+  AC_HELP_STRING([--with-depmode=MODE], [override dependency mode setting]),
+  CCDEPMODE="depmode=${withval}" CXXDEPMODE="depmode=${withval}")
+
+
+dnl *******************************************************************
 dnl * Do we want to build the tools?
 dnl *******************************************************************
 
