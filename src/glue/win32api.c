@@ -21,13 +21,16 @@
  *
 \**************************************************************************/
 
+/* See comment block at top of win32api.h header file for the
+   rationale behind this wrapper. */
+
+/*************************************************************************/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-/* FIXME: this should really test a configure check for the presence
-   of the Win32 API. 20030530 mortene. */
-#ifdef _WIN32
+#ifdef HAVE_WIN32_API
 
 #include <assert.h>
 #include <stdlib.h>
@@ -147,4 +150,4 @@ cc_win32(void)
   return instance;
 }
 
-#endif /* _WIN32 */
+#endif /* HAVE_WIN32_API */

@@ -36,16 +36,18 @@
 /*************************************************************************/
 
 #ifndef COIN_INTERNAL
-#error Only for internal use.
+#error this is a private header file
 #endif /* COIN_INTERNAL */
 
-/* FIXME: this should really test a configure check for the presence
-   of the Win32 API. 20030530 mortene. */
-#ifndef _WIN32
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#ifndef HAVE_WIN32_API
 /* Just in case we can get in trouble for declaring functions that are
    not implemented. */
 #error Do not include this file unless the contents will actually be used.
-#endif /* _WIN32 */
+#endif /* HAVE_WIN32_API */
 
 /*************************************************************************/
 
