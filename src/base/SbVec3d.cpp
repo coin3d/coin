@@ -91,15 +91,6 @@ SbVec3d::SbVec3d(const double x, const double y, const double z)
   this->vec[2] = z;
 }
 
-/*!  
-  Constructs an SbVec3d instance with initial values from the
-  single precision vector \a v.  
-*/
-SbVec3d::SbVec3d(const SbVec3f & v)
-{
-  this->setValue(v);
-}
-
 /*!
   Returns the result of taking the cross product of this vector and \a v.
 */

@@ -37,7 +37,6 @@ public:
   SbVec3f(const float v[3]);
   SbVec3f(const float x, const float y, const float z);
   SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2);
-  SbVec3f(const SbVec3d & v);
   SbVec3f cross(const SbVec3f & v) const;
   float dot(const SbVec3f & v) const;
   SbBool equals(const SbVec3f & v, const float tolerance) const;

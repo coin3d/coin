@@ -187,19 +187,6 @@ SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
   this->vec[2] = x[2];
 }
 
-/*!  
-  Constructs an SbVec3f instance with initial values from the
-  double precision vector \a v.  
-
-  This is a Coin extension.
-
-  \since Coin 2.0
-*/
-SbVec3f::SbVec3f(const SbVec3d & v)
-{
-  this->setValue(v);
-}
-
 /*!
   Returns the result of taking the cross product of this vector and \a v.
 */
