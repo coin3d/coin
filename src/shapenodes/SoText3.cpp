@@ -214,7 +214,9 @@ private:
   SoText3 * master;
 };
 
+#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 // *************************************************************************
