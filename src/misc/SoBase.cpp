@@ -453,14 +453,14 @@ SoBase::assertAlive(void) const
 {
   if (this->objdata.alive != ALIVE_PATTERN) {
     SoDebugError::post("SoBase::assertAlive",
-                       "Detected an attempt to access an instance of an "
+                       "Detected an attempt to access an instance (%p) of an "
                        "SoBase-derived class after it was destructed!  "
                        "This is most likely to be the result of some grave "
                        "programming error in the application / client "
                        "code (or less likely: internal library code), "
                        "causing premature destruction of a reference "
                        "counted object instance. This check was called "
-                       "from a dangling reference to it.");
+                       "from a dangling reference to it.", this);
     assert(FALSE && "SoBase-object no longer alive!");
   }
 }
