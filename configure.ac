@@ -1395,8 +1395,18 @@ SIM_AC_CHECK_OPENGL(
   ])
 
   # *******************************************************************
-  # ** Check what OpenGL->windowsystem bindings are available.
-  # *******************************************************************
+  # Check what OpenGL->windowsystem bindings are available.
+  # 
+  # If WGL is available, we don't want AGL nor GLX, as that has the
+  # potential to cause harm: e.g. while we at one place in the code
+  # might use WGL to create a context, other places we might use GLX to
+  # make that same context current -- *kaboom*.
+  #
+  # (It is at least possible that both AGL and GLX are available at the
+  # same time, or WGL and GLX, since X11 is a portable window system.)
+  #
+  # This is why the tests below are nested, so we're guaranteed that only
+  # one of HAVE_AGL, HAVE_WGL and HAVE_GLX will be set:
 
   SIM_AC_HAVE_WGL_IFELSE([
     AC_DEFINE([HAVE_WGL], 1, [define if you have WGL Win32 OpenGL bindings])
@@ -1407,6 +1417,10 @@ SIM_AC_CHECK_OPENGL(
       AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
       LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
       COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+      SIM_AC_HAVE_AGL_PBUFFER([
+        AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
+                           [define if AGL pBuffers are available on the system])
+      ])
     ], [
       SIM_AC_HAVE_GLX_IFELSE([
         AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])
@@ -1416,11 +1430,7 @@ SIM_AC_CHECK_OPENGL(
     ])
   ])
 
-  SIM_AC_HAVE_AGL_PBUFFER([
-    AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
-                       [define if AGL pBuffers are available on the system])
-  ])
-
+  # *******************************************************************
 
   if $enable_superglu; then
     SIM_AC_CONFIGURATION_SETTING([GLU linkage], [superglu])

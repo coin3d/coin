@@ -174,25 +174,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-/* If AGL is available, we don't want WGL nor GLX, as that has the
-   potential to cause harm: e.g. while we at one place in the code
-   might use AGL to create a context, other places we might use GLX to
-   make that same context current -- *kaboom*.
-
-   (It is at least possible that both AGL and GLX are available at the
-   same time, since X11 is a portable window system.) */
-#ifdef HAVE_AGL
-#undef HAVE_WGL
-#undef HAVE_GLX
-#endif /* HAVE_AGL */
-
-/* If WGL is available, we don't want AGL nor GLX. See above
-   comments. */
-#ifdef HAVE_WGL
-#undef HAVE_AGL
-#undef HAVE_GLX
-#endif /* HAVE_AGL */
-
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
