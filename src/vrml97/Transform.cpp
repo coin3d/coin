@@ -458,6 +458,13 @@ SoVRMLTransform::rayPick(SoRayPickAction * action)
 
 // Doc in parent
 void
+SoVRMLTransform::audioRender(SoAudioRenderAction * action)
+{
+  SoVRMLTransform::doAction((SoAction*)action);
+}
+
+// Doc in parent
+void
 SoVRMLTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoState * state = action->getState();

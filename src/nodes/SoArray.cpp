@@ -411,6 +411,13 @@ SoArray::handleEvent(SoHandleEventAction *action)
   inherited::handleEvent(action);
 }
 
+// Doc in superclass
+void
+SoArray::audioRender(SoAudioRenderAction * action)
+{
+  SoArray::doAction((SoAction*)action);
+}
+
 // Doc in superclass.
 void
 SoArray::getMatrix(SoGetMatrixAction *action)

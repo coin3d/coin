@@ -642,6 +642,13 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
   SoSeparator::doAction(action);
 }
 
+// Doc from superclass.
+void
+SoSeparator::audioRender(SoAudioRenderAction * action)
+{
+  SoSeparator::doAction((SoAction*)action);
+}
+
 // compute object space ray and test for intersection
 static SbBool
 ray_intersect(SoRayPickAction * action, const SbBox3f &box)

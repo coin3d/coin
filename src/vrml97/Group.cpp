@@ -489,6 +489,13 @@ SoVRMLGroup::write(SoWriteAction * action)
 
 // Doc in parent
 void
+SoVRMLGroup::audioRender(SoAudioRenderAction * action)
+{
+  SoVRMLGroup::doAction((SoAudioRenderAction*)action);
+}
+
+// Doc in parent
+void
 SoVRMLGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoState * state = action->getState();

@@ -67,6 +67,7 @@ public:
   virtual void search(SoSearchAction * action);
   virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
