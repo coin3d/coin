@@ -79,7 +79,8 @@ PrivateHeaders = \
 	SoGLqmeshpreciselightingTemplate.icc \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
-	SoOffscreenWGLData.icc
+	SoOffscreenWGLData.icc \
+	cppmangle.icc
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************
