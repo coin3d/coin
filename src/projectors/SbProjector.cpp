@@ -35,6 +35,9 @@
   convenient and natural way of interacting with the 3D geometry of
   scenes.
 
+  For a usage example, see the class documentation for
+  SbSphereSheetProjector.
+
   The application programmer should normally not need to care about
   the projector classes, unless there are special needs in the
   application.

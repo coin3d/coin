@@ -503,7 +503,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         break;
       }
       for (int i2 = 0; i2 < strwidth; i2++) {
-        if (s[i2] >= 32) { // just in case?
+        if ( (s[i2] >= 32) /*&& (s[i2] <= 127)*/ ) { // just in case?
           glRasterPos3f(xpos, ypos, -nilpoint[2]);
           glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont 
                    + 12 * coin_default2dfont_isolatin1_mapping[s[i2]]);

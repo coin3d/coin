@@ -295,6 +295,10 @@ SoRayPickAction::setNormalizedPoint(const SbVec2f & normpoint)
 /*!
   Sets the radius of the picking ray, in screen pixels.  Default value
   is 5.0.
+
+  The radius of the intersection ray will only influence the pick
+  operation's behavior versus lines and points, and has no effect on
+  picking of shapes / polygons.
 */
 void
 SoRayPickAction::setRadius(const float radiusinpixels)
@@ -357,8 +361,9 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 }
 
 /*!
-  Lets you decide whether only the closest object or all the objects
-  the ray intersects with should be picked.
+  Lets you decide whether or not all the objects the ray intersects
+  with should be picked. If not, only the intersection point of the
+  object closest to the camera will be picked.
 
   Default value of the "pick all" flag is \c FALSE.
 */
@@ -372,6 +377,8 @@ SoRayPickAction::setPickAll(const SbBool flag)
 /*!
   Returns whether only the closest object or all the objects the ray
   intersects with is picked.
+
+  \sa setPickAll()
 */
 SbBool
 SoRayPickAction::isPickAll(void) const

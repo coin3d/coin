@@ -86,6 +86,9 @@ SoLocalBBoxMatrixElement::push(SoState * state)
   // avoid cache dependencies by using the state getElement method
   const SoModelMatrixElement * modelelem = (const SoModelMatrixElement*)
     state->getConstElement(SoModelMatrixElement::getClassStackIndex());
+  // FIXME: is this really sensible caching? If push() is called more
+  // often than set() (the only place where it's actually used), I
+  // guess not. 20020905 mortene.
   this->modelInverseMatrix = modelelem->getModelMatrix().inverse();
 }
 
@@ -94,10 +97,10 @@ SoLocalBBoxMatrixElement::push(SoState * state)
 SbBool
 SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   SoDebugError::postInfo("SoLocalBBoxMatrixElement::matches",
                          "This method should never be called for this element.");
-#endif // debug
+#endif // COIN_DEBUG
   return TRUE;
 }
 
@@ -106,10 +109,10 @@ SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 SoElement *
 SoLocalBBoxMatrixElement::copyMatchInfo(void) const
 {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   SoDebugError::postInfo("SoLocalBBoxMatrixElement::copyMatchInfo",
                          "This method should never be called for this element.");
-#endif // debug
+#endif // COIN_DEBUG
   return NULL;
 }
 

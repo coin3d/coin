@@ -501,7 +501,7 @@ SoType::canCreateInstance(void) const
 
   This is not harmful if you only call SoType::createInstance() on
   types for reference counted class-types, though. These include all
-  nodes, engines, paths, nodekits, dragger and manipulators.
+  nodes, engines, paths, nodekits, draggers and manipulators.
 */
 void *
 SoType::createInstance(void) const

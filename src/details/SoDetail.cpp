@@ -40,6 +40,8 @@ SoType SoDetail::classTypeId;
 /*!
   \fn SoDetail * SoDetail::copy(void) const
   Return a deep copy of ourself.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 
 // Note: the following documentation for getTypeId() will also be

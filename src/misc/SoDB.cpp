@@ -583,6 +583,9 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 
   \code
   // [snip]
+  SoInput in;
+  if (!in.openFile(filename)) { exit(1); }
+
   SoSeparator * root = SoDB::readAll(&input); 
   if (!root) { exit(1); }
 

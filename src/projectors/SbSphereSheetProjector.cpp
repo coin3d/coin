@@ -25,6 +25,63 @@
   \class SbSphereSheetProjector SbSphereSheetProjector.h Inventor/projectors/SbSphereSheetProjector.h
   \brief The SbSphereSheetProjector class projects 2D points to 3D points on a sheet covering a spherical shape.
   \ingroup projectors
+
+  The following stand-alone example shows how screen space coordinates
+  projects into 3D when mapped with an SbSphereSheetProjector. It
+  outputs the resulting projections as an SoPointSet in a
+  Inventor-file on stdout:
+
+  \code
+  #include <stdio.h>
+  #include <Inventor/SbLinear.h>
+  #include <Inventor/projectors/SbSphereSheetProjector.h>
+  #include <Inventor/SoDB.h>
+  
+  int
+  main(void)
+  {
+    SoDB::init();
+  
+    const float START = 0.0f;
+    const float END = 1.0f;
+    const float STEPS = 50.0f;
+    const float STEPSIZE = ((END - START) / STEPS);
+  
+    SbSphere s(SbVec3f(0, 0, 0), 0.8);
+    SbSphereSheetProjector ssp(s, TRUE); // last argument is orientToEye
+  
+    SbViewVolume volume;
+    volume.ortho(-1, 1, -1, 1, -1, 1);
+    ssp.setViewVolume(volume);
+  
+    (void)fprintf(stdout, "#Inventor V2.1 ascii\n\n"
+                  "Separator {\n"
+                  "  Coordinate3 {\n"
+                  "    point [\n");
+  
+    for (float i=START; i <= END; i += STEPSIZE) {
+      for (float j=START; j <= END; j += STEPSIZE) {
+        SbVec3f v = ssp.project(SbVec2f(j, i));
+        (void)fprintf(stdout, "\t%f %f %f,\n", v[0], v[1], v[2]);
+      }
+    }
+  
+    (void)fprintf(stdout, "      ]\n"
+                  "    }\n"
+                  "  DrawStyle { pointSize 2 }\n"
+                  "  PointSet { }\n"
+                  "}\n");
+  
+    return 0;
+  }
+  \endcode
+
+  The projections to 3D points in the resulting Inventor-file looks
+  like this:
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/projectors/spheresheet.png">
+  </center>
  */
 
 #include <Inventor/projectors/SbSphereSheetProjector.h>

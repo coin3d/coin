@@ -37,6 +37,10 @@
   way around) is legal, but the third texture coordinate component will
   be ignored (set to 0.0).
 
+  <center>
+  <img src="http://doc.coin3d.org/images/SoGuiExamples/nodes/texture3.png">
+  </center>
+
   \since 2002-01-10
   \since TGS Inventor 2.6
 */

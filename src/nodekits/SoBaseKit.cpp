@@ -1717,8 +1717,8 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   if (childlist->find(node) >= 0) {
     // FIXME: should really allow this, but since it's a bit complex
     // (we need to somehow keep better track of which SoGroup child
-    // indicies belong to which catalog parts), we just disallow it
-    // for now. 20020808 mortene.
+    // indices belong to which catalog parts), we just disallow it for
+    // now. 20020808 mortene.
     SoDebugError::postWarning("SoBaseKit::setPart",
                               "Node pointer (%p) is already used under the same group node in the catalog "
                               "as a child of %s -- this is not allowed",
