@@ -117,6 +117,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbTime.h \
 	../include/Inventor/SbVec2f.h \
 	../include/Inventor/SbVec2s.h \
+	../include/Inventor/SbVec3d.h \
 	../include/Inventor/SbVec3f.h \
 	../include/Inventor/SbVec4f.h \
 	../include/Inventor/SbViewVolume.h \

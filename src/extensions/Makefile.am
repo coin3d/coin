@@ -5,11 +5,11 @@ else
 SUPERGLUDIR =
 endif
 
-if BUILD_VRML97
-VRML97DIR = vrml97/src
-else
+## if BUILD_VRML97
+## VRML97DIR = vrml97/src
+## else
 VRML97DIR =
-endif
+## endif
 
 SUBDIRS = $(SUPERGLUDIR) $(VRML97DIR)
 

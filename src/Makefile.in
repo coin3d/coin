@@ -147,9 +147,9 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 # **************************************************************************
 SUBDIRS = \
-	actions base bundles caches details draggers elements \
+	extensions actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors $(VRML97DIR) $(SUPERGLUDIR) .
+	projectors sensors .
 
 
 INCLUDES = -I$(top_srcdir)/include
@@ -234,6 +234,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbTime.h \
 	../include/Inventor/SbVec2f.h \
 	../include/Inventor/SbVec2s.h \
+	../include/Inventor/SbVec3d.h \
 	../include/Inventor/SbVec3f.h \
 	../include/Inventor/SbVec4f.h \
 	../include/Inventor/SbViewVolume.h \
@@ -444,9 +445,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
-DIST_SUBDIRS = actions base bundles caches details draggers elements \
-	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors extensions/vrml97/src extensions/superglu .
+DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES)
 
 all: all-recursive
@@ -673,7 +672,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	for subdir in $(DIST_SUBDIRS); do \
+	for subdir in $(SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
