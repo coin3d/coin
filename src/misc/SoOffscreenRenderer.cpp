@@ -36,6 +36,7 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/SbVec2f.h>
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -49,7 +50,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <simage_wrapper.h>
-
+#include <math.h> // for ceil()
 
 /*!
   \enum SoOffscreenRenderer::Components
@@ -842,9 +843,9 @@ SoOffscreenRenderer::convertBuffer(void)
       unsigned char * native = nativebuffer;
       unsigned char * local = this->buffer;
       for (int i=0; i < pixels; i++) {
-        int val = (int(*native++) + int(*native++) + int(*native++)) / 3;
-        *local++ = (unsigned char)val;
-        native++;
+        uint32_t val = 76*native[0]+155*native[1]+26*native[2];
+        *local++ = (unsigned char)(val>>8);
+        native += 4;
       }
     }
     break;
@@ -967,6 +968,87 @@ SoOffscreenRenderer::writeToRGB(const char * filename) const
   return result;
 }
 
+static int
+encode_ascii85(const unsigned char * in, unsigned char * out)
+{
+  uint32_t data =
+    (uint32_t(in[0])<<24) |
+    (uint32_t(in[1])<<16) |
+    (uint32_t(in[2])<< 8) |
+    (uint32_t(in[3]));
+
+  if (data == 0) {
+    out[0] = 'z';
+    return 1;
+  }
+  out[4] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[3] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[2] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[1] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[0] = (unsigned char) (data%85 + '!');
+  return 5;
+}
+
+static void
+output_ascii85(FILE * fp,
+               const unsigned char val,
+               unsigned char * tuple,
+               unsigned char * linebuf,
+               int & tuplecnt, int & linecnt,
+               const int rowlen,
+               const SbBool flush = FALSE)
+{
+  int i;
+  if (flush) {
+    // fill up tuple
+    for (i = tuplecnt; i < 4; i++) tuple[i] = 0;
+  }
+  else {
+    tuple[tuplecnt++] = val;
+  }
+  if (flush || tuplecnt == 4) {
+    if (tuplecnt) {
+      int add = encode_ascii85(tuple, linebuf + linecnt);
+      if (flush) {
+        if (add == 1) {
+          for (i = 0; i < 5; i++) linebuf[linecnt+i] = '!';
+        }
+        linecnt += tuplecnt + 1;
+      }
+      else linecnt += add;
+      tuplecnt = 0;
+    }
+    if (linecnt >= rowlen) {
+      unsigned char store = linebuf[rowlen];
+      linebuf[rowlen] = 0;
+      fprintf(fp, "%s\n", linebuf);
+      linebuf[rowlen] = store;
+      for (i = rowlen; i < linecnt; i++) {
+        linebuf[i-rowlen] = linebuf[i];
+      }
+      linecnt -= rowlen;
+    }
+    if (flush && linecnt) {
+      linebuf[linecnt] = 0;
+      fprintf(fp, "%s\n", linebuf);
+    }
+  }
+}
+
+static void
+flush_ascii85(FILE * fp,
+              unsigned char * tuple,
+              unsigned char * linebuf,
+              int & tuplecnt, int & linecnt,
+              const int rowlen)
+{
+  output_ascii85(fp, 0, tuple, linebuf, tuplecnt, linecnt, rowlen, TRUE);
+}
+
 /*!
   Writes the buffer in Postscript format by appending it to the
   already open file. Returns \c FALSE if writing fails.
@@ -979,7 +1061,103 @@ SoOffscreenRenderer::writeToRGB(const char * filename) const
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp) const
 {
-  COIN_STUB();
+  if (this->internaldata) {
+    const SbVec2s size = this->internaldata->getSize();
+    const int nc = this->getComponents();
+    const float defaultdpi = 72.0f; // we scale against this value 
+    const float dpi = this->getScreenPixelsPerInch();
+    const SbVec2f inchsize(8.5f, 11.0f); // FIXME: ok to use this page size?
+    const SbVec2s pixelsize((short)(inchsize[0]*defaultdpi),
+                            (short)(inchsize[1]*defaultdpi));
+    
+    const unsigned char * src = this->buffer;
+    const int chan = nc <= 2 ? 1 : 3;
+    const SbVec2s scaledsize((short) ceil(size[0]*defaultdpi/dpi),
+                             (short) ceil(size[1]*defaultdpi/dpi));
+    
+    fprintf(fp, "%%!PS-Adobe-2.0 EPSF-1.2\n");
+    fprintf(fp, "%%%%Pages: 1\n");
+    fprintf(fp, "%%%%PageOrder: Ascend\n");
+    fprintf(fp, "%%%%BoundingBox: 0 %d %d %d\n", 
+            pixelsize[1]-scaledsize[1], 
+            scaledsize[0],
+            pixelsize[1]);
+    fprintf(fp, "%%%%Creator: Coin <http://www.coin3d.org\n");
+    fprintf(fp, "%%%%EndComments\n");
+
+    fprintf(fp, "\n");
+    fprintf(fp, "/origstate save def\n");
+    fprintf(fp, "\n");
+    fprintf(fp, "%% workaround for bug in some PS interpreters\n"); 
+    fprintf(fp, "%% which doesn't skip the ASCII85 EOD marker.\n");     
+    fprintf(fp, "/~ {currentfile read pop pop} def\n\n");
+    fprintf(fp, "/image_wd %d def\n", size[0]);
+    fprintf(fp, "/image_ht %d def\n", size[1]);
+    fprintf(fp, "/pos_wd %d def\n", size[0]);
+    fprintf(fp, "/pos_ht %d def\n", size[1]);
+    fprintf(fp, "/image_dpi %g def\n", dpi);
+    fprintf(fp, "/image_scale %g image_dpi div def\n", defaultdpi);
+    fprintf(fp, "/image_chan %d def\n", chan);
+    fprintf(fp, "/xpos_offset 0 image_scale mul def\n");
+    fprintf(fp, "/ypos_offset 0 image_scale mul def\n");
+    fprintf(fp, "/pix_buf_size %d def\n\n", size[0]*chan);
+    fprintf(fp, "/page_ht %g %g mul def\n", inchsize[1], defaultdpi);
+    fprintf(fp, "/page_wd %g %g mul def\n", inchsize[0], defaultdpi);
+    fprintf(fp, "/image_xpos 0 def\n");
+    fprintf(fp, "/image_ypos page_ht pos_ht image_scale mul sub def\n");
+    fprintf(fp, "image_xpos xpos_offset add image_ypos ypos_offset add translate\n");
+    fprintf(fp, "\n");
+    fprintf(fp, "/pix pix_buf_size string def\n");
+    fprintf(fp, "image_wd image_scale mul image_ht image_scale mul scale\n");
+    fprintf(fp, "\n");
+    fprintf(fp, "image_wd image_ht 8\n");
+    fprintf(fp, "[image_wd 0 0 image_ht 0 0]\n");
+    fprintf(fp, "currentfile\n");
+    fprintf(fp, "/ASCII85Decode filter\n");
+    // fprintf(fp, "/RunLengthDecode filter\n"); // FIXME: add later
+    if (chan == 3) fprintf(fp, "false 3\ncolorimage\n");
+    else fprintf(fp,"image\n");
+
+    const int rowlen = 72;
+    int num = size[0] * size[1];
+    unsigned char tuple[4];
+    unsigned char linebuf[rowlen+5];
+    int tuplecnt = 0;
+    int linecnt = 0;
+    int cnt = 0;
+    while (cnt < num) {
+      switch (nc) {
+      default: // avoid warning
+      case 1:
+        output_ascii85(fp, src[cnt], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        break;
+      case 2:
+        output_ascii85(fp, src[cnt*2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        break;
+      case 3:
+        output_ascii85(fp, src[cnt*3], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        output_ascii85(fp, src[cnt*3+1], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        output_ascii85(fp, src[cnt*3+2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        break;
+      case 4:
+        output_ascii85(fp, src[cnt*4], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        output_ascii85(fp, src[cnt*4+1], tuple, linebuf, tuplecnt, linecnt,rowlen);
+        output_ascii85(fp, src[cnt*4+2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+        break;
+      }
+      cnt++;
+    }
+
+    // flush data in ascii85 encoder
+    flush_ascii85(fp, tuple, linebuf, tuplecnt, linecnt, rowlen);
+
+    fprintf(fp, "~>\n\n"); // ASCII85 EOD marker
+    fprintf(fp, "origstate restore\n");
+    fprintf(fp, "\n");
+    fprintf(fp, "%%%%Trailer\n");
+    fprintf(fp, "\n");
+    fprintf(fp, "%%%%EOF\n");
+  }
   return FALSE;
 }
 
