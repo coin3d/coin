@@ -172,9 +172,11 @@ public:
 // *************************************************************************
 
 #ifdef COIN_THREADSAFE
+#define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
 #define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
 #define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
 #else // COIN_THREADSAFE
+#define TRY_LOCK_BBOX(_thisp_) TRUE
 #define LOCK_BBOX(_thisp_)
 #define UNLOCK_BBOX(_thisp_)
 #endif // COIN_THREADSAFE
@@ -325,8 +327,13 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  LOCK_BBOX(this);
-  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+  // we need to use TRY_LOCK_BBOX here since it's possible that
+  // several bbox actions are used to traverse the scene graph at the
+  // same time (by the same thread). For example,
+  // SoSurroundScale::getBoundingBox() applies a new bbox action to
+  // the scene graph.
+  if (iscaching) iscaching = TRY_LOCK_BBOX(this);
+  SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
     SoCacheElement::addCacheDependency(state, THIS->bboxcache);
@@ -372,7 +379,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
-  UNLOCK_BBOX(this);
+  if (iscaching) UNLOCK_BBOX(this);
 
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
