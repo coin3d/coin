@@ -64,6 +64,14 @@
     //     [ "Peder", <undefined>, "Lars", <undefined>, <undefined>,
     //       "Eriksen", "Blekken", "Aas" ]
 
+    // Note also that the setValues() call will *not* truncate a field
+    // container if you use it to change a subset at the start:
+    SbString n[4] = { "Dixon", "Adams", "Bould", "Winterburn" };
+    textnode->string.setValues(0, sizeof(n), n);
+    // Full contents of the SoMFString is now:
+    //     [ "Dixon", "Adams", "Bould", "Winterburn", <undefined>,
+    //       "Eriksen", "Blekken", "Aas" ]
+
 
     // Inspecting multi-field values. //////////////////////////
 
@@ -106,6 +114,40 @@
   for instance in advance of using the startEditing() and
   finishEditing() methods. The field values will be uninitialized
   after expanding the field with the setNum() call.
+
+  Be aware that your application code must be careful to not do silly
+  things during a setValues()-triggered notification. If you have code
+  that looks for instance like this:
+
+  \code
+    // update set of coordinate indices at the start of e.g.
+    // an SoIndexedFaceSet's coordIndex field..
+    ifs->coordIndex.setValues(0, runner->numIndices, runner->indices);
+    // ..then truncate to make sure it's the correct size.
+    ifs->coordIndex.setNum(runner->numIndices);
+  \endcode
+
+  As setValues() might leave some elements at the end of the array
+  that typically can be invalid indices after the first statement is
+  executed, something can go wrong during notification if you have
+  application code monitoring changes, and the application code then
+  for instance triggers an action or something that tries to use the
+  coordIndex field before it's updated to it's correct size with the
+  setNum() call.
+
+  (Notification can in this case, as always, be temporarily disabled
+  to be on the safe side:
+
+  \code
+  somefield.enableNotify(FALSE);
+  somefield.setValues(...);
+  somefield.setNum(...);
+  somefield.enableNotify(TRUE);
+  somefield.touch();
+  \endcode
+
+  This will guarantee that the setValues() and setNum() pair will be
+  executed as an atomic operation.)
 
 
   When nodes, engines or other types of field containers are written
