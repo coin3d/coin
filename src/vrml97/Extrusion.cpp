@@ -463,7 +463,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
                       NULL,
                       &mb,
                       NULL,
-                      NULL, /* &tb */
+                      &tb,
                       THIS->idx.getArrayPtr(),
                       3, /* SoIndexedFaceSet::PER_VERTEX */
                       0,
