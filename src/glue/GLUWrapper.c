@@ -43,7 +43,7 @@
 
 #ifdef HAVE_SUPERGLU
 #define GLUWRAPPER_ASSUME_GLU 1
-#endif /* HAVE_GLU */
+#endif /* HAVE_SUPERGLU */
 
 static GLUWrapper_t * GLU_instance = NULL;
 static cc_libhandle GLU_libhandle = NULL;
@@ -110,17 +110,37 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 
   { /* Run-time help for debugging GLU problems on remote sites. */
     int COIN_DEBUG_GLU_INFO = 0;
+#ifdef HAVE_SUPERGLU
+    const SbBool superglu = TRUE;
+#else
+    const SbBool superglu = FALSE;
+#endif /* !HAVE_SUPERGLU */
+#ifdef GLU_RUNTIME_LINKING
+    const SbBool runtime = TRUE;
+#else
+    const SbBool runtime = FALSE;
+#endif /* !GLU_RUNTIME_LINKING */
     const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
     if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
     if (COIN_DEBUG_GLU_INFO) {
-      cc_debugerror_postinfo("gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)\n",
+      cc_debugerror_postinfo("GLUWrapper_set_version",
+                             "gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)",
                              (const char *) GLU_instance->gluGetString(GLU_VERSION),
                              GLU_instance->version.major,
                              GLU_instance->version.minor,
                              GLU_instance->version.release);
 
-      cc_debugerror_postinfo("gluGetString(GLU_EXTENSIONS)=='%s'\n",
+      cc_debugerror_postinfo("GLUWrapper_set_version",
+                             "gluGetString(GLU_EXTENSIONS)=='%s'",
                              (const char *) GLU_instance->gluGetString(GLU_EXTENSIONS));
+
+      cc_debugerror_postinfo("GLUWrapper_set_version",
+                             "%susing embedded SuperGLU",
+                             superglu ? "" : "not ");
+
+      cc_debugerror_postinfo("GLUWrapper_set_version",
+                             "linking with GLU at %s",
+                             runtime ? "run-time" : "build-time ");
     }
   }
 }
