@@ -131,7 +131,8 @@ class SoOffscreenGLXData : public SoOffscreenInternalData {
 public:
   SoOffscreenGLXData(void)
     // set everything to NULL first to gracefully handle error conditions
-    : display(NULL), visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0)
+    : display(NULL), visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0),
+      storedcontext(NULL)
   {
     this->buffer = NULL;
 
@@ -241,6 +242,10 @@ public:
   virtual SbBool makeContextCurrent(void) {
     assert(this->buffer);
     if (this->context && this->glxpixmap) {
+      this->storedcontext = glXGetCurrentContext();
+      if (this->storedcontext) {
+        this->storeddrawable = glXGetCurrentDrawable();
+      }
       glXMakeCurrent(this->display, this->glxpixmap, this->context);
       return TRUE;
     }
@@ -259,6 +264,14 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
+      
+      if (this->storedcontext && this->storeddrawable) {
+        (void) glXMakeCurrent(this->display, this->storeddrawable, 
+                              this->storedcontext);
+      }
+      else {
+        (void) glXMakeCurrent(this->display, 0, 0);
+      }
     }
   }
 
@@ -280,6 +293,10 @@ private:
   GLXContext context;
   Pixmap pixmap;
   GLXPixmap glxpixmap;
+
+  Display * storeddisplay;
+  GLXDrawable storeddrawable;
+  GLXContext storedcontext;
 };
 
 #endif // HAVE_GLX
@@ -295,12 +312,12 @@ public:
     this->devicecontext = NULL;
     this->bitmap = NULL;
     this->oldbitmap = NULL;
+    this->storedcontext = NULL;
   }
 
   virtual ~SoOffscreenWGLData() {
     this->cleanupWGL();
     delete[] this->buffer;
-
   }
 
   virtual void setBufferSize(const SbVec2s & size) {
@@ -316,6 +333,10 @@ public:
   virtual SbBool makeContextCurrent(void) {
     assert(this->buffer);
     if (this->context && this->bitmap) {
+      this->storedcontext = wglGetCurrentContext();
+      if (this->storedcontext) {
+        this->storeddc = wglGetCurrentDC();
+      }
       wglMakeCurrent(this->devicecontext, this->context);
       return TRUE;
     }
@@ -334,6 +355,14 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
+      
+      if (this->storedcontext && this->storeddc) {
+        wglMakeCurrent(this->storeddc, this->storedcontext);
+        this->storedcontext = NULL;
+      }
+      else {
+        wglMakeCurrent(NULL, NULL);
+      }
     }
   }
 
@@ -485,6 +514,9 @@ private:
   HDC devicecontext;
   HBITMAP bitmap;
   HBITMAP oldbitmap;
+
+  HGLRC storedcontext;
+  HDC storeddc;
 };
 
 #endif // HAVE_WGL
@@ -699,7 +731,6 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
 
     this->internaldata->postRender();
     this->convertBuffer();
-
     return TRUE;
   }
   return FALSE;
