@@ -54,18 +54,18 @@
   SoInput in;
   in.setBuffer((void*) myproto, strlen(myproto));
   SoVRMLGroup * protoroot = SoDB::readAllVRML(&in);
-  
+
   \endcode
 
   Now you can create new instances of the ColorCube proto using
   SoProto::findProto() and SoProto::createProtoInstance(). If you want
   to insert proto instances into your scene graph, you should insert
   the node returned from SoProtoInstance::getRootNode().
-  
+
   See
   http://www.web3d.org/technicalinfo/specifications/ISO_IEC_14772-All/part1/concepts.html#4.8
-  for more information about PROTOs in VRML97.  
-  
+  for more information about PROTOs in VRML97.
+
 */
 
 
@@ -781,11 +781,7 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
     return PRIVATE(this)->extprotonode->createInstanceRoot(inst);
   }
 
-  SoNode * root;
-  if (PRIVATE(this)->defroot->getNumChildren() == 1)
-    root = PRIVATE(this)->defroot->getChild(0);
-  else root = PRIVATE(this)->defroot;
-
+  SoNode * root = PRIVATE(this)->defroot;
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
