@@ -296,11 +296,12 @@ SoMaterial::doAction(SoAction * action)
     if (this->isOverride()) {
       SoOverrideElement::setTransparencyOverride(state, this, TRUE);
     }
-    // if we don't know if material is transparent, run through all values and test
+    // if we don't know if material is transparent, run through all
+    // values and test
     if (THIS->transparencyflag < 0) {
       int i, n = this->transparency.getNum();
       const float * p = this->transparency.getValues(0);
-      for (int i = 0; i < n; i++) {
+      for (i = 0; i < n; i++) {
         if (p[i] > 0.0f) {
           istransparent = TRUE;
           break;
