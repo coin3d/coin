@@ -590,6 +590,12 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 // UPDATE 20030408 mortene: that wouldn't be sufficient, as
 // e.g. changes to SoFont and SoFontStyle nodes in the scene graph can
 // also have an influence on which glyphs to render.
+//
+// The best solution would be to create a new cache; SoGlyphCache or
+// something. This cache would automatically store SoFont and
+// SoFontStyle elements and be marked as invalid when they change
+// (that's what caches are for). pederb, 2003-04-08
+
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
