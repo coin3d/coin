@@ -1,5 +1,9 @@
 # **************************************************************************
 # Process this file with automake to generate Makefile.in.
+# **************************************************************************
+
+# **************************************************************************
+# Extensions which might be present.
 
 if BUILD_VRML97
 VRML97DIR = extensions/vrml97/src
@@ -11,10 +15,22 @@ VRML97LIBADD =
 VRML97LSTADD =
 endif
 
+if BUILD_WITH_SUPERGLU
+SUPERGLUDIR = extensions/superglu
+SUPERGLULIBADD = $(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
+SUPERGLULSTADD = $(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
+else
+SUPERGLUDIR =
+SUPERGLULIBADD =
+SUPERGLULSTADD =
+endif
+
+# **************************************************************************
+
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors $(VRML97DIR) .
+	projectors sensors $(VRML97DIR) $(SUPERGLUDIR) .
 
 INCLUDES = -I$(top_srcdir)/include
 
@@ -34,7 +50,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la $(VRML97LIBADD)
+	manips/libmanips.la $(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
@@ -47,7 +63,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst $(VRML97LSTADD)
+	manips/manips.lst $(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	tidbits.c tidbits.h

@@ -31,7 +31,12 @@
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
+
 #ifdef HAVE_GLU /* In case we're _not_ doing runtime linking. */
+#define GLUWRAPPER_ASSUME_GLU 1
+#endif /* HAVE_GLU */
+
+#ifdef HAVE_SUPERGLU
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_GLU */
 
