@@ -42,6 +42,7 @@
 
 struct cc_libhandle_struct {
   void * nativehnd;
+  cc_string libname;
 };
 
 /* Return value of COIN_DEBUG_DL environment variable. */
@@ -104,7 +105,18 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
+  /* FIXME: should probably do GetModuleHandle(filename) first, to see
+     if the module/library is already loaded. 20021015 mortene. */
+
+  /* FIXME: if filename==NULL, could we use Module32First() and
+     Module32Next() to cycle through the loaded modules, to "fake"
+     what happens on dlopen(NULL) on UNIX-systems? That would still
+     not work on NT4, which is missing the Tool Help API. Check in a
+     Win32-API related Usenet group if there is any other way to
+     resolve symbols in the current process image. 20021015 mortene. */
+
   h->nativehnd = LoadLibrary(filename);
+
   /* FIXME: If the return value is NULL, we should call GetLastError() to 
      get extended error information and report this error. 20021015 thammer. */
 
@@ -113,6 +125,10 @@ cc_dl_open(const char * filename)
   if (h->nativehnd == NULL) {
     free(h);
     h = NULL;
+  }
+  else {
+    cc_string_construct(&h->libname);
+    cc_string_set_text(&h->libname, filename ? filename : "(null)");
   }
 
   return h;
@@ -130,7 +146,10 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 
   if (cc_dl_debugging()) {
     const char * e = dlerror();
-    if (e) { cc_debugerror_post("cc_dl_sym", "dlsym() failed with: '%s'", e); }
+    if (e) {
+      cc_debugerror_post("cc_dl_sym", "dlsym(\"%s\", \"%s\") failed with: '%s'",
+                         cc_string_get_text(&handle->libname), symbolname, e);
+    }
   }
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
@@ -151,7 +170,10 @@ cc_dl_close(cc_libhandle handle)
 
   if (cc_dl_debugging() && (result != 0)) {
     const char * e = dlerror();
-    if (e) { cc_debugerror_post("cc_dl_close", "dlclose() failed with: '%s'", e); }
+    if (e) {
+      cc_debugerror_post("cc_dl_close", "dlclose(\"%s\") failed with: '%s'",
+                         cc_string_get_text(&handle->libname), e);
+    }
   }
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
@@ -159,6 +181,8 @@ cc_dl_close(cc_libhandle handle)
   /* FIXME: If the return value is NULL, we should call GetLastError() to 
      get extended error information and report this error. 20021015 thammer. */
 #endif /* HAVE_DL_LIB */
+
+  cc_string_clean(&handle->libname);
   
   free(handle);
 }
