@@ -319,14 +319,14 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                    NULL);
       glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_2D, 0, 
                                GL_TEXTURE_WIDTH, &w);
-      if (w==0) return false;
-      return true;
+      if (w==0) return FALSE;
+      return TRUE;
     }
     else {
       // Falls back to using the old method
       int maxsize = SoGLTextureImageElement::getMaxGLTextureSize();
-      if (xsize > maxsize || ysize > maxsize) return false;
-      return true;
+      if (xsize > maxsize || ysize > maxsize) return FALSE;
+      return TRUE;
     }
   }
   else { // 3D textures
@@ -338,10 +338,10 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                    NULL);
       glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_3D, 0, 
                                GL_TEXTURE_WIDTH, &w);
-      if (w==0) return false;
-      return true;
+      if (w==0) return FALSE;
+      return TRUE;
     }
-    return false; // 3D textured not supported
+    return FALSE; // 3D textured not supported
   }
 }
 
