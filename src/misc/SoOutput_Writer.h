@@ -123,7 +123,23 @@ public:
 };
 #endif // HAVE_ZLIB
 
+#ifdef HAVE_BZIP2
+// class for bzip2 writing
+class SoOutput_BZ2FileWriter : public SoOutput_Writer {
+public:
+  SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose);
+  virtual ~SoOutput_BZ2FileWriter();
 
+  virtual size_t bytesInBuf(void);
+  virtual WriterType getType(void) const;
+  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+
+public:
+  BZFILE * bzfp;
+  FILE * fp;
+  uint32_t writecounter;
+};
+#endif // HAVE_BZIP2
 
 
 #endif // COIN_SOOUTPUT_WRITER_H

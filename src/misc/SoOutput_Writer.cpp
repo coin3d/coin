@@ -219,3 +219,74 @@ SoOutput_GZFileWriter::bytesInBuf(void)
   return 0;
 }
 
+
+
+//
+// bzip2 writer
+//
+
+SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose)
+{
+  this->fp = shouldclose ? fp : NULL;
+  this->writecounter = 0;
+
+  int bzerror = BZ_OK;
+  // FIXME: add compression level parameter. Don't just use 5.
+  // pederb, 2003-05-09
+  this->bzfp = BZ2_bzWriteOpen(&bzerror, fp, 5, 0, 0);
+  if (this->bzfp && (bzerror != BZ_OK)) {
+    SoDebugError::postWarning("SoOutput_BZ2FileWriter::SoOutput_BZF2ileWriter", 
+                              "Unable to open file for writing.");    
+    BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+    this->bzfp = NULL;
+  }
+}
+
+SoOutput_BZ2FileWriter::~SoOutput_BZ2FileWriter()
+{
+  if (this->bzfp) {
+    int bzerror = BZ_OK;
+    BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+    if (bzerror != BZ_OK) {
+      SoDebugError::postWarning("SoOutput_BZ2FileWriter::write", 
+                                "Error when closing bzip2 file.");    
+      
+    }
+  }
+  if (this->fp) fclose(fp);
+}
+
+
+SoOutput_Writer::WriterType
+SoOutput_BZ2FileWriter::getType(void) const
+{
+  return BZ2FILE;
+}
+
+size_t
+SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+{
+  if (this->bzfp) {
+    int bzerror = BZ_OK;
+    BZ2_bzWrite(&bzerror, this->bzfp, (void*) buf, numbytes);
+    
+    if (bzerror != BZ_OK) {
+      assert(bzerror == BZ_IO_ERROR);
+      SoDebugError::postWarning("SoOutput_BZ2FileWriter::write", 
+                                "I/O error while writing.");    
+      BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+      this->bzfp = NULL;
+      return 0;
+    }
+    this->writecounter += numbytes;
+    return numbytes;
+  }
+  return 0;
+}
+
+size_t 
+SoOutput_BZ2FileWriter::bytesInBuf(void)
+{
+  return this->writecounter;
+}
+
