@@ -49,7 +49,7 @@ private:
   const SoAudioDevice & operator=(const SoAudioDevice &);
 
   SoAudioDeviceP *pimpl;
-  friend SoAudioDeviceP;
+  friend class SoAudioDeviceP;
 };
 
 #endif // !COIN_SOAUDIODEVICE_H
