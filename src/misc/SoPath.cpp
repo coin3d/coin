@@ -640,6 +640,10 @@ operator!=(const SoPath & lhs, const SoPath & rhs)
   This method returns a copy of the path starting at \a
   startfromnodeindex with length \a numnodes.  If \a numnodes is 0
   (default) the path will be copied to the end.
+
+  The returned SoPath instance will have an initial reference count of
+  0. It is the caller's responsibility to ref() and unref() it
+  according to use.
 */
 SoPath *
 SoPath::copy(const int startfromnodeindex, int numnodes) const
