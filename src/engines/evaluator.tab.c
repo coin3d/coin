@@ -955,7 +955,7 @@ case 20:
     break;}
 case 21:
 #line 108 "evaluator.y"
-{ fprintf(stderr,"heck!\n"); yyval.node = so_eval_create_unary(ID_NEG, yyvsp[0].node); ;
+{ yyval.node = so_eval_create_unary(ID_NEG, yyvsp[0].node); ;
     break;}
 case 22:
 #line 109 "evaluator.y"

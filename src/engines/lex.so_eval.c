@@ -503,15 +503,34 @@ char *yytext;
 #line 1 "evaluator.l"
 #define INITIAL 0
 #line 2 "evaluator.l"
+/**************************************************************************\
+ *
+ *  Copyright (C) 1998-2000 by Systems in Motion.  All rights reserved.
+ *
+ *  This file is part of the Coin library.
+ *
+ *  This file may be distributed under the terms of the Q Public License
+ *  as defined by Troll Tech AS of Norway and appearing in the file
+ *  LICENSE.QPL included in the packaging of this file.
+ *
+ *  If you want to use Coin in applications not covered by licenses
+ *  compatible with the QPL, you can contact SIM to aquire a
+ *  Professional Edition license for Coin.
+ *
+ *  Systems in Motion AS, Prof. Brochs gate 6, N-7030 Trondheim, NORWAY
+ *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
+ *
+\**************************************************************************/
+
 /*
  * Lexical scanner for SoCalculator
  */
 
-#include "SbBasic.h"
+#include <Inventor/SbBasic.h>
 #include <float.h>
 #include <stdlib.h>
 #include "evaluator.h"
-#line 515 "lex.so_eval.c"
+#line 534 "lex.so_eval.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -662,9 +681,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 19 "evaluator.l"
+#line 38 "evaluator.l"
 
-#line 668 "lex.so_eval.c"
+#line 687 "lex.so_eval.c"
 
 	if ( yy_init )
 		{
@@ -749,280 +768,280 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "evaluator.l"
+#line 39 "evaluator.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "evaluator.l"
+#line 40 "evaluator.l"
 { yylval.id = ID_LEQ; return LEX_COMPARE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "evaluator.l"
+#line 41 "evaluator.l"
 { yylval.id = ID_GEQ; return LEX_COMPARE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 23 "evaluator.l"
+#line 42 "evaluator.l"
 { yylval.id = ID_LT; return LEX_COMPARE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "evaluator.l"
+#line 43 "evaluator.l"
 { yylval.id = ID_GT; return LEX_COMPARE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 25 "evaluator.l"
+#line 44 "evaluator.l"
 return LEX_EQ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "evaluator.l"
+#line 45 "evaluator.l"
 return LEX_NEQ;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "evaluator.l"
+#line 46 "evaluator.l"
 return LEX_AND;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 28 "evaluator.l"
+#line 47 "evaluator.l"
 return LEX_OR;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 29 "evaluator.l"
+#line 48 "evaluator.l"
 return '-';
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 30 "evaluator.l"
+#line 49 "evaluator.l"
 return(yytext[0]);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 31 "evaluator.l"
+#line 50 "evaluator.l"
 { yylval.value = FLT_MAX; return LEX_VALUE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 32 "evaluator.l"
+#line 51 "evaluator.l"
 { yylval.value = FLT_MIN; return LEX_VALUE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 33 "evaluator.l"
+#line 52 "evaluator.l"
 { yylval.value = (float)M_E; return LEX_VALUE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 34 "evaluator.l"
+#line 53 "evaluator.l"
 { yylval.value = (float)M_LOG2E; return LEX_VALUE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 35 "evaluator.l"
+#line 54 "evaluator.l"
 { yylval.value = (float)M_LOG10E; return LEX_VALUE; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 36 "evaluator.l"
+#line 55 "evaluator.l"
 { yylval.value = (float)M_LN2; return LEX_VALUE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 37 "evaluator.l"
+#line 56 "evaluator.l"
 { yylval.value = (float)M_PI; return LEX_VALUE; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 38 "evaluator.l"
+#line 57 "evaluator.l"
 { yylval.value = (float)M_SQRT2; return LEX_VALUE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 39 "evaluator.l"
+#line 58 "evaluator.l"
 { yylval.value = (float)M_SQRT1_2; return LEX_VALUE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 40 "evaluator.l"
+#line 59 "evaluator.l"
 { yylval.id = ID_COS; return LEX_FLTFUNC; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 41 "evaluator.l"
+#line 60 "evaluator.l"
 { yylval.id = ID_SIN; return LEX_FLTFUNC; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 42 "evaluator.l"
+#line 61 "evaluator.l"
 { yylval.id = ID_TAN; return LEX_FLTFUNC; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 43 "evaluator.l"
+#line 62 "evaluator.l"
 { yylval.id = ID_ACOS; return LEX_FLTFUNC; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 44 "evaluator.l"
+#line 63 "evaluator.l"
 { yylval.id = ID_ASIN; return LEX_FLTFUNC; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 45 "evaluator.l"
+#line 64 "evaluator.l"
 { yylval.id = ID_ATAN; return LEX_FLTFUNC; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 46 "evaluator.l"
+#line 65 "evaluator.l"
 { yylval.id = ID_ATAN2; return LEX_FLTFUNC; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 47 "evaluator.l"
+#line 66 "evaluator.l"
 { yylval.id = ID_COSH; return LEX_FLTFUNC; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 48 "evaluator.l"
+#line 67 "evaluator.l"
 { yylval.id = ID_SINH; return LEX_FLTFUNC; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 49 "evaluator.l"
+#line 68 "evaluator.l"
 { yylval.id = ID_TANH; return LEX_FLTFUNC; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 50 "evaluator.l"
+#line 69 "evaluator.l"
 { yylval.id = ID_SQRT; return LEX_FLTFUNC; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 51 "evaluator.l"
+#line 70 "evaluator.l"
 return LEX_POW;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 52 "evaluator.l"
+#line 71 "evaluator.l"
 { yylval.id = ID_EXP; return LEX_FLTFUNC; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 53 "evaluator.l"
+#line 72 "evaluator.l"
 { yylval.id = ID_LOG; return LEX_FLTFUNC; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 54 "evaluator.l"
+#line 73 "evaluator.l"
 { yylval.id = ID_LOG10; return LEX_FLTFUNC; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 55 "evaluator.l"
+#line 74 "evaluator.l"
 { yylval.id = ID_CEIL; return LEX_FLTFUNC; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 56 "evaluator.l"
+#line 75 "evaluator.l"
 { yylval.id = ID_FLOOR; return LEX_FLTFUNC; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 57 "evaluator.l"
+#line 76 "evaluator.l"
 { yylval.id = ID_FABS; return LEX_FLTFUNC; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 58 "evaluator.l"
+#line 77 "evaluator.l"
 return LEX_FMOD;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 59 "evaluator.l"
+#line 78 "evaluator.l"
 { yylval.id = ID_RAND; return LEX_FLTFUNC; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 60 "evaluator.l"
+#line 79 "evaluator.l"
 { return LEX_CROSS; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 61 "evaluator.l"
+#line 80 "evaluator.l"
 { return LEX_DOT; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 62 "evaluator.l"
+#line 81 "evaluator.l"
 { return LEX_LEN; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 63 "evaluator.l"
+#line 82 "evaluator.l"
 { return LEX_NORMALIZE; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 64 "evaluator.l"
+#line 83 "evaluator.l"
 { return LEX_VEC3F; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 65 "evaluator.l"
+#line 84 "evaluator.l"
 { yylval.value = atof(yytext); return LEX_VALUE; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 66 "evaluator.l"
+#line 85 "evaluator.l"
 { yylval.value = atof(yytext); return LEX_VALUE; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 67 "evaluator.l"
+#line 86 "evaluator.l"
 { yylval.reg = yytext[1]; return LEX_TMP_FLT_REG; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 68 "evaluator.l"
+#line 87 "evaluator.l"
 { yylval.reg = yytext[1]; return LEX_OUT_FLT_REG; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 69 "evaluator.l"
+#line 88 "evaluator.l"
 { yylval.reg = yytext[0]; return LEX_IN_FLT_REG; } 
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 70 "evaluator.l"
+#line 89 "evaluator.l"
 { yylval.reg = yytext[1]; return LEX_TMP_VEC_REG; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 71 "evaluator.l"
+#line 90 "evaluator.l"
 { yylval.reg = yytext[1]; return LEX_OUT_VEC_REG; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 72 "evaluator.l"
+#line 91 "evaluator.l"
 { yylval.reg = yytext[0]; return LEX_IN_VEC_REG; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 73 "evaluator.l"
+#line 92 "evaluator.l"
 { return LEX_ERROR; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 74 "evaluator.l"
+#line 93 "evaluator.l"
 ECHO;
 	YY_BREAK
-#line 1026 "lex.so_eval.c"
+#line 1045 "lex.so_eval.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1908,5 +1927,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 74 "evaluator.l"
+#line 93 "evaluator.l"
 

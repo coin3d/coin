@@ -22,7 +22,7 @@
  * Lexical scanner for SoCalculator
  */
 
-#include "SbBasic.h"
+#include <Inventor/SbBasic.h>
 #include <float.h>
 #include <stdlib.h>
 #include "evaluator.h"

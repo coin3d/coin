@@ -105,7 +105,7 @@ fltstatement  : boolstatement '?' fltstatement ':' fltstatement
               | LEX_FMOD '(' fltstatement ',' fltstatement ')' 
               { $$ = so_eval_create_binary(ID_FMOD, $3, $5); }
 
-              | '-' fltstatement %prec UNARY { fprintf(stderr,"heck!\n"); $$ = so_eval_create_unary(ID_NEG, $2); }
+              | '-' fltstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG, $2); }
               | '(' fltstatement ')' { $$ = $2; }
               | LEX_FLTFUNC '(' fltstatement ')' { $$ = so_eval_create_unary($1, $3);}
               | LEX_LEN '(' vecstatement ')' { $$ = so_eval_create_unary(ID_LEN, $3);}
