@@ -8094,7 +8094,7 @@ fi
 # *******************************************************************
 # Headers we might want to use
 
-for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h io.h windows.h winsock2.h
+for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h io.h windows.h winsock2.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
 echo "$as_me:8100: checking for $ac_header" >&5
