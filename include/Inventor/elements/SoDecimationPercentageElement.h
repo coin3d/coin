@@ -1,3 +1,6 @@
+#ifndef COIN_SODECIMATIONPERCENTAGEELEMENT_H
+#define COIN_SODECIMATIONPERCENTAGEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SODECIMATIONPERCENTAGEELEMENT_H
-#define COIN_SODECIMATIONPERCENTAGEELEMENT_H
-
 #include <Inventor/elements/SoFloatElement.h>
-
 
 class COIN_DLL_API SoDecimationPercentageElement : public SoFloatElement {
   typedef SoFloatElement inherited;

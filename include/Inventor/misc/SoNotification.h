@@ -1,3 +1,6 @@
+#ifndef COIN_SONOTIFICATION_H
+#define COIN_SONOTIFICATION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SONOTIFICATION_H
-#define COIN_SONOTIFICATION_H
-
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 #include <stdio.h>
 
 class SoBase;
-
 
 class COIN_DLL_API SoNotRec {
 public:

@@ -1,3 +1,6 @@
+#ifndef COIN_SOVIEWINGMATRIXELEMENT_H
+#define COIN_SOVIEWINGMATRIXELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOVIEWINGMATRIXELEMENT_H
-#define COIN_SOVIEWINGMATRIXELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbMatrix.h>
-
 
 class COIN_DLL_API SoViewingMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

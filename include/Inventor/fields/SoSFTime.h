@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFTIME_H
+#define COIN_SOSFTIME_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSFTIME_H
-#define COIN_SOSFTIME_H
-
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbTime.h>
-
 
 class COIN_DLL_API SoSFTime : public SoSField {
   typedef SoSField inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOLAZYELEMENT_H
+#define COIN_SOLAZYELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOLAZYELEMENT_H
-#define COIN_SOLAZYELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
@@ -190,5 +190,4 @@ public:
   void reallocate(const int32_t /*size*/) {}
 };
 
-
-#endif // COIN_SOLAZYELEMENT_H
+#endif // !COIN_SOLAZYELEMENT_H

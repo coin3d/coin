@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBNODE_H
+#define COIN_SOSUBNODE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBNODE_H
-#define COIN_SOSUBNODE_H
-
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
@@ -36,7 +36,6 @@ public: \
   virtual SoType getTypeId(void) const; \
 private: \
   static SoType classTypeId
-
 
 
 // FIXME: document. 20000103 mortene.
@@ -53,13 +52,11 @@ private: \
   static unsigned int classinstances
 
 
-
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_HEADER(_class_) \
   SO_NODE_ABSTRACT_HEADER(_class_); \
 private: \
   static void * createInstance(void)
-
 
 
 #define PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_) \
@@ -68,7 +65,6 @@ SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 /* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
 /* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
 SoType _class_::classTypeId
-
 
 
 // FIXME: document. 20000103 mortene.
@@ -92,7 +88,6 @@ _class_::getFieldData(void) const \
 }
 
 
-
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_SOURCE(_class_) \
 SO_NODE_ABSTRACT_SOURCE(_class_); \
@@ -104,11 +99,9 @@ _class_::createInstance(void) \
 }
 
 
-
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_IS_FIRST_INSTANCE() \
   (classinstances == 1)
-
 
 
 // FIXME: document. 20000103 mortene.
@@ -128,7 +121,6 @@ _class_::createInstance(void) \
        the Right Thing. */ \
     this->isBuiltIn = FALSE; \
   } while (0)
-
 
 
 #define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
@@ -159,14 +151,12 @@ _class_::createInstance(void) \
   } while (0)
 
 
-
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, NULL, _parentclass_); \
   } while (0)
-
 
 
 // FIXME: document. 20000103 mortene.
@@ -187,6 +177,5 @@ _class_::createInstance(void) \
       fieldData->addEnumValue(SO__QUOTE(_enumname_), \
                               SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
-
 
 #endif // !COIN_SOSUBNODE_H

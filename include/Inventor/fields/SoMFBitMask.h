@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFBITMASK_H
+#define COIN_SOMFBITMASK_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFBITMASK_H
-#define COIN_SOMFBITMASK_H
-
 #include <Inventor/fields/SoMFEnum.h>
-
 
 class COIN_DLL_API SoMFBitMask : public SoMFEnum {
   typedef SoMFEnum inherited;

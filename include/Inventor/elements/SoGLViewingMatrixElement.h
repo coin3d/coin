@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLVIEWINGMATRIXELEMENT_H
+#define COIN_SOGLVIEWINGMATRIXELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLVIEWINGMATRIXELEMENT_H
-#define COIN_SOGLVIEWINGMATRIXELEMENT_H
-
 #include <Inventor/elements/SoViewingMatrixElement.h>
-
 
 class COIN_DLL_API SoGLViewingMatrixElement : public SoViewingMatrixElement {
   typedef SoViewingMatrixElement inherited;

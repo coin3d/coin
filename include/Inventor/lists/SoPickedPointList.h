@@ -1,3 +1,6 @@
+#ifndef COIN_SOPICKEDPOINTLIST_H
+#define COIN_SOPICKEDPOINTLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPICKEDPOINTLIST_H
-#define COIN_SOPICKEDPOINTLIST_H
-
 #include <Inventor/lists/SbList.h>
 
 class SoPickedPoint;
-
 
 class SoPickedPointList : public SbList<SoPickedPoint *> {
 public:

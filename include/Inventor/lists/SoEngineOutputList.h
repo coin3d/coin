@@ -1,3 +1,6 @@
+#ifndef COIN_SOENGINEOUTPUTLIST_H
+#define COIN_SOENGINEOUTPUTLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOENGINEOUTPUTLIST_H
-#define COIN_SOENGINEOUTPUTLIST_H
-
 #include <Inventor/lists/SbList.h>
 
 class SoEngineOutput;
-
 
 class SoEngineOutputList : public SbList<SoEngineOutput *> {
 public:

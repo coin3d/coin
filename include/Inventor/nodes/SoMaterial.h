@@ -1,3 +1,6 @@
+#ifndef COIN_SOMATERIAL_H
+#define COIN_SOMATERIAL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMATERIAL_H
-#define COIN_SOMATERIAL_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
-
 
 class COIN_DLL_API SoMaterial : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOBYTESTREAM_H
+#define COIN_SOBYTESTREAM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOBYTESTREAM_H
-#define COIN_SOBYTESTREAM_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
@@ -58,4 +58,4 @@ private:
   void * pimpl;
 };
 
-#endif // COIN_SOBYTESTREAM_H
+#endif // !COIN_SOBYTESTREAM_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSHAPE_H
+#define COIN_SOSHAPE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSHAPE_H
-#define COIN_SOSHAPE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2s.h>
@@ -37,7 +37,6 @@ class SoState;
 class SoTextureCoordinateElement;
 class SbVec2f;
 class SoMaterialBundle;
-
 
 class COIN_DLL_API SoShape : public SoNode {
   typedef SoNode inherited;

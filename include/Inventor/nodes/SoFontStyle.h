@@ -1,3 +1,6 @@
+#ifndef COIN_SOFONTSTYLE_H
+#define COIN_SOFONTSTYLE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFONTSTYLE_H
-#define COIN_SOFONTSTYLE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
-
 
 class COIN_DLL_API SoFontStyle : public SoFont {
   typedef SoFont inherited;

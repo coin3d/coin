@@ -1,3 +1,6 @@
+#ifndef COIN_SOFONTNAMEELEMENT_H
+#define COIN_SOFONTNAMEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFONTNAMEELEMENT_H
-#define COIN_SOFONTNAMEELEMENT_H
-
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoReplacedElement.h>
-
 
 class COIN_DLL_API SoFontNameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

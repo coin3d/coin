@@ -1,3 +1,6 @@
+#ifndef COIN_SONORMALELEMENT_H
+#define COIN_SONORMALELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SONORMALELEMENT_H
-#define COIN_SONORMALELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
 #include <assert.h>
-
 
 class COIN_DLL_API SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

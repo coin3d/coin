@@ -1,3 +1,6 @@
+#ifndef COIN_SOPICKRAYELEMENT_H
+#define COIN_SOPICKRAYELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPICKRAYELEMENT_H
-#define COIN_SOPICKRAYELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbViewVolume.h>
-
 
 class COIN_DLL_API SoPickRayElement : public SoElement {
   typedef SoElement inherited;

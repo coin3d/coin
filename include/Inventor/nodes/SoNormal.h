@@ -1,3 +1,6 @@
+#ifndef COIN_SONORMAL_H
+#define COIN_SONORMAL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SONORMAL_H
-#define COIN_SONORMAL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>

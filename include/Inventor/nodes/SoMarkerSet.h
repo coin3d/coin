@@ -1,3 +1,6 @@
+#ifndef COIN_SOMARKERSET_H
+#define COIN_SOMARKERSET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMARKERSET_H
-#define COIN_SOMARKERSET_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/fields/SoMFInt32.h>
-
 
 class COIN_DLL_API SoMarkerSet : public SoPointSet {
   typedef SoPointSet inherited;

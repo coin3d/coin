@@ -1,3 +1,6 @@
+#ifndef COIN_SOPATHSWITCH_H
+#define COIN_SOPATHSWITCH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPATHSWITCH_H
-#define COIN_SOPATHSWITCH_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoSFPath.h>
-
 
 class COIN_DLL_API SoPathSwitch : public SoGroup {
   typedef SoGroup inherited;

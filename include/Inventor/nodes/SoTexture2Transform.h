@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEXTURE2TRANSFORM_H
+#define COIN_SOTEXTURE2TRANSFORM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEXTURE2TRANSFORM_H
-#define COIN_SOTEXTURE2TRANSFORM_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFFloat.h>
 
 class SbMatrix;
-
 
 class COIN_DLL_API SoTexture2Transform : public SoNode {
   typedef SoNode inherited;
@@ -57,7 +56,5 @@ protected:
 private:
   void makeMatrix(SbMatrix & mat);
 };
-
-
 
 #endif // !COIN_SOTEXTURE2TRANSFORM_H

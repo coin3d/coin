@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEXTURECOORDINATEENVIRONMENT_H
+#define COIN_SOTEXTURECOORDINATEENVIRONMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEXTURECOORDINATEENVIRONMENT_H
-#define COIN_SOTEXTURECOORDINATEENVIRONMENT_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 #include <Inventor/SbVec4f.h>
-
 
 class COIN_DLL_API SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;

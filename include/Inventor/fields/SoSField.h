@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFIELD_H
+#define COIN_SOSFIELD_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSFIELD_H
-#define COIN_SOSFIELD_H
-
 #include <Inventor/fields/SoField.h>
-
 
 class COIN_DLL_API SoSField : public SoField {
   typedef SoField inherited;

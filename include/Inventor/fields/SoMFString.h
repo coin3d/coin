@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFSTRING_H
+#define COIN_SOMFSTRING_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFSTRING_H
-#define COIN_SOMFSTRING_H
-
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbString.h>
-
 
 class COIN_DLL_API SoMFString : public SoMField {
   typedef SoMField inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSPHERE_H
+#define COIN_SOSPHERE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSPHERE_H
-#define COIN_SOSPHERE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
-
 
 class COIN_DLL_API SoSphere : public SoShape {
   typedef SoShape inherited;

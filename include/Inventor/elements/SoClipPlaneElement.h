@@ -1,3 +1,6 @@
+#ifndef COIN_SOCLIPPLANEELEMENT_H
+#define COIN_SOCLIPPLANEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCLIPPLANEELEMENT_H
-#define COIN_SOCLIPPLANEELEMENT_H
-
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbPlane.h>
-
 
 class so_plane_data // internal
 {

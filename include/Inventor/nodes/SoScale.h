@@ -1,3 +1,6 @@
+#ifndef COIN_SOSCALE_H
+#define COIN_SOSCALE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSCALE_H
-#define COIN_SOSCALE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransformation.h>
-
 
 class COIN_DLL_API SoScale : public SoTransformation {
   typedef SoTransformation inherited;

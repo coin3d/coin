@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBFIELD_H
+#define COIN_SOSUBFIELD_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSUBFIELD_H
-#define COIN_SOSUBFIELD_H
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
@@ -466,7 +466,5 @@ _class_::allocValues(int number) \
 #define SO_MFIELD_DERIVED_SOURCE(_class_, _valtype_, _valref_) \
   SO_MFIELD_REQUIRED_SOURCE(_class_); \
   SO_MFIELD_DERIVED_CONSTRUCTOR_SOURCE(_class_)
-
-
 
 #endif // !COIN_SOSUBFIELD_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCOORDINATEELEMENT_H
+#define COIN_SOCOORDINATEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCOORDINATEELEMENT_H
-#define COIN_SOCOORDINATEELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
-
 
 class COIN_DLL_API SoCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOFILE_H
+#define COIN_SOFILE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFILE_H
-#define COIN_SOFILE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
 
 class SoFieldSensor;
 class SoGroup;
 class SoSensor;
-
 
 class COIN_DLL_API SoFile : public SoNode {
   typedef SoNode inherited;

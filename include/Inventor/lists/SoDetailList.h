@@ -1,3 +1,6 @@
+#ifndef COIN_SODETAILLIST_H
+#define COIN_SODETAILLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SODETAILLIST_H
-#define COIN_SODETAILLIST_H
-
 #include <Inventor/lists/SbList.h>
 
 class SoDetail;
-
 
 class SoDetailList : public SbList<SoDetail *> {
 public:

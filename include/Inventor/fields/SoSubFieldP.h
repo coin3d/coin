@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBFIELDP_H
+#define COIN_SOSUBFIELDP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBFIELDP_H
-#define COIN_SOSUBFIELDP_H
-
 // The macro definitions in this file is used internally by Coin
 // classes, and mirrors some of the public macros available in
 // SoSubField.h with a few modifications so they are suited for the
@@ -46,6 +46,5 @@
 
 #define SO_MFIELD_INTERNAL_INIT_CLASS(_class_) \
   SO_SFIELD_INTERNAL_INIT_CLASS(_class_)
-
 
 #endif // !COIN_SOSUBFIELDP_H

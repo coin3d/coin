@@ -1,3 +1,6 @@
+#ifndef COIN_SOGL_H
+#define COIN_SOGL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOGL_H
-#define COIN_SOGL_H
 
 //
 // This file contains GL code which is shared between two or more nodes.
@@ -158,4 +158,4 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
                      int32_t numpts,
                      int32_t idx);
 
-#endif // COIN_SOGL_H
+#endif // !COIN_SOGL_H

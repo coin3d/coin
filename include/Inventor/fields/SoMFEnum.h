@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFENUM_H
+#define COIN_SOMFENUM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFENUM_H
-#define COIN_SOMFENUM_H
-
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
-
 
 class COIN_DLL_API SoMFEnum : public SoMField {
   typedef SoMField inherited;
@@ -51,7 +50,6 @@ protected:
   SbName * enumNames;
 };
 
-
 // Macro definitions. See comment in SoSFEnum.h.
 
 #include <Inventor/fields/SoSFEnum.h> // PRIVATE_SOENUM_SET_TYPE()
@@ -61,6 +59,5 @@ protected:
 
 #define SO_NODE_SET_MF_ENUM_TYPE(_fieldname_, _enumtype_) \
   PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, fieldData)
-
 
 #endif // !COIN_SOMFENUM_H

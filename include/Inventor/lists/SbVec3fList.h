@@ -1,3 +1,6 @@
+#ifndef COIN_SBVEC3FLIST_H
+#define COIN_SBVEC3FLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBVEC3FLIST_H
-#define COIN_SBVEC3FLIST_H
-
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
-
 
 class SbVec3fList : public SbList<SbVec3f *> {
 public:

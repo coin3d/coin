@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDFACESET_H
+#define COIN_SOINDEXEDFACESET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINDEXEDFACESET_H
-#define COIN_SOINDEXEDFACESET_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
 #define SO_END_FACE_INDEX (-1)
-
 
 class SoConvexDataCache;
 
@@ -48,7 +47,6 @@ public:
                                         SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
-
 
 protected:
   virtual ~SoIndexedFaceSet();

@@ -1,3 +1,6 @@
+#ifndef COIN_SOPACKEDCOLOR_H
+#define COIN_SOPACKEDCOLOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPACKEDCOLOR_H
-#define COIN_SOPACKEDCOLOR_H
-
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/nodes/SoSubNode.h>
 
-
 class COIN_DLL_API SoPackedColor : public SoNode {
-    typedef SoNode inherited;
+  typedef SoNode inherited;
 
   SO_NODE_HEADER(SoPackedColor);
 

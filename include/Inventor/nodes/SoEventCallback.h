@@ -1,3 +1,6 @@
+#ifndef COIN_SOEVENTCALLBACK_H
+#define COIN_SOEVENTCALLBACK_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOEVENTCALLBACK_H
-#define COIN_SOEVENTCALLBACK_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/lists/SbList.h>
 
@@ -32,7 +32,6 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #endif // !COIN_INTERNAL
 
-
 class SoEventCallback;
 class SoPath;
 class SoEvent;
@@ -40,7 +39,6 @@ class SoPickedPoint;
 class SoHandleEventAction;
 
 typedef void SoEventCallbackCB(void * userdata, SoEventCallback * node);
-
 
 class COIN_DLL_API SoEventCallback : public SoNode {
   typedef SoNode inherited;

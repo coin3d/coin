@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLDIFFUSECOLORELEMENT_H
+#define COIN_SOGLDIFFUSECOLORELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLDIFFUSECOLORELEMENT_H
-#define COIN_SOGLDIFFUSECOLORELEMENT_H
-
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/SbVec4f.h>
-
 
 class COIN_DLL_API SoGLDiffuseColorElement : public SoDiffuseColorElement {
   typedef SoDiffuseColorElement inherited;
@@ -46,8 +45,6 @@ public:
   void send(const int index);
   void sendOnePacked(const uint32_t packedcol);
   void sendOneColor(const SbVec4f & color);
-
-protected:
 
 private:
   void updategl(const uint32_t col);

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCLIPPLANE_H
+#define COIN_SOCLIPPLANE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCLIPPLANE_H
-#define COIN_SOCLIPPLANE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFPlane.h>
 #include <Inventor/fields/SoSFBool.h>
-
 
 class COIN_DLL_API SoClipPlane : public SoNode {
   typedef SoNode inherited;

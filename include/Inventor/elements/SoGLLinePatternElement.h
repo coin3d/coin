@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLLINEPATTERNELEMENT_H
+#define COIN_SOGLLINEPATTERNELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLLINEPATTERNELEMENT_H
-#define COIN_SOGLLINEPATTERNELEMENT_H
-
 #include <Inventor/elements/SoLinePatternElement.h>
-
 
 class COIN_DLL_API SoGLLinePatternElement : public SoLinePatternElement {
   typedef SoLinePatternElement inherited;

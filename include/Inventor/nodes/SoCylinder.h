@@ -1,3 +1,6 @@
+#ifndef COIN_SOCYLINDER_H
+#define COIN_SOCYLINDER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCYLINDER_H
-#define COIN_SOCYLINDER_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
-
 
 class COIN_DLL_API SoCylinder : public SoShape {
   typedef SoShape inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SODRAWSTYLE_H
+#define COIN_SODRAWSTYLE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SODRAWSTYLE_H
-#define COIN_SODRAWSTYLE_H
-
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/nodes/SoSubNode.h>
-
 
 class COIN_DLL_API SoDrawStyle : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCALLBACKLIST_H
+#define COIN_SOCALLBACKLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOCALLBACKLIST_H
-#define COIN_SOCALLBACKLIST_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include Inventor/misc/SoCallbackList.h internally (use Inventor/lists/SoCallbackList.h)."

@@ -1,3 +1,6 @@
+#ifndef COIN_SOMULTIPLECOPY_H
+#define COIN_SOMULTIPLECOPY_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMULTIPLECOPY_H
-#define COIN_SOMULTIPLECOPY_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFMatrix.h>
-
 
 class COIN_DLL_API SoMultipleCopy : public SoGroup {
   typedef SoGroup inherited;

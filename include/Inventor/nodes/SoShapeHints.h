@@ -1,3 +1,6 @@
+#ifndef COIN_SOSHAPEHINTS_H
+#define COIN_SOSHAPEHINTS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSHAPEHINTS_H
-#define COIN_SOSHAPEHINTS_H
-
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoSubNode.h>
-
 
 class COIN_DLL_API SoShapeHints : public SoNode {
   typedef SoNode inherited;
@@ -59,7 +58,6 @@ public:
   SoSFEnum shapeType;
   SoSFEnum faceType;
   SoSFFloat creaseAngle;
-
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

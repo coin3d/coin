@@ -1,3 +1,6 @@
+#ifndef COIN_SOENGINELIST_H
+#define COIN_SOENGINELIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOENGINELIST_H
-#define COIN_SOENGINELIST_H
-
 #include <Inventor/lists/SoBaseList.h>
 
 class SoEngine;
-
 
 class COIN_DLL_API SoEngineList : public SoBaseList {
   typedef SoBaseList inherited;

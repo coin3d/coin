@@ -1,3 +1,6 @@
+#ifndef COIN_SOANNOTATION_H
+#define COIN_SOANNOTATION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOANNOTATION_H
-#define COIN_SOANNOTATION_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
-
 
 class COIN_DLL_API SoAnnotation : public SoSeparator {
   typedef SoSeparator inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOPROFILE_H
+#define COIN_SOPROFILE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPROFILE_H
-#define COIN_SOPROFILE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -31,7 +31,6 @@
 
 class SbVec2f;
 class SoState;
-
 
 class COIN_DLL_API SoProfile : public SoNode {
   typedef SoNode inherited;

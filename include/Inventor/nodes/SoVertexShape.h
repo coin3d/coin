@@ -1,3 +1,6 @@
+#ifndef COIN_SOVERTEXSHAPE_H
+#define COIN_SOVERTEXSHAPE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOVERTEXSHAPE_H
-#define COIN_SOVERTEXSHAPE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFNode.h>
@@ -32,13 +32,11 @@
  #include <Inventor/nodes/SoVertexProperty.h>
 #endif // !COIN_INTERNAL
 
-
 class SoNormalCache;
 class SoNormalBundle;
 class SbVec3f;
 class SoTextureCoordinateElement;
 class SoCoordinateElement;
-
 
 class COIN_DLL_API SoVertexShape : public SoShape {
   typedef SoShape inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SODIRECTIONALLIGHT_H
+#define COIN_SODIRECTIONALLIGHT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SODIRECTIONALLIGHT_H
-#define COIN_SODIRECTIONALLIGHT_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
-
 
 class COIN_DLL_API SoDirectionalLight : public SoLight {
   typedef SoLight inherited;

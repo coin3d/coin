@@ -1,3 +1,6 @@
+#ifndef COIN_SOUNKNOWNNODE_H
+#define COIN_SOUNKNOWNNODE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOUNKNOWNNODE_H
-#define COIN_SOUNKNOWNNODE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 
 class SoChildList;
-
 
 class COIN_DLL_API SoUnknownNode : public SoNode {
   typedef SoNode inherited;

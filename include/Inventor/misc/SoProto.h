@@ -1,3 +1,6 @@
+#ifndef COIN_SOPROTO_H
+#define COIN_SOPROTO_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOPROTO_H
-#define COIN_SOPROTO_H
 
 #include <Inventor/misc/SoBase.h>
 
@@ -73,4 +73,4 @@ private:
   void connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const;
 };
 
-#endif // COIN_SOPROTO_H
+#endif // !COIN_SOPROTO_H

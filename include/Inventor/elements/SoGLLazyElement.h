@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLLAZYELEMENT_H
+#define COIN_SOGLLAZYELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOGLLAZYELEMENT_H
-#define COIN_SOGLLAZYELEMENT_H
 
 #include <Inventor/elements/SoLazyElement.h>
 
@@ -82,4 +82,4 @@ public:
                       uint32_t checkGLFlag);
 };
 
-#endif // COIN_SOGLLAZYELEMENT_H
+#endif // !COIN_SOGLLAZYELEMENT_H

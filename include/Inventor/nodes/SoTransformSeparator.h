@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANSFORMSEPARATOR_H
+#define COIN_SOTRANSFORMSEPARATOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTRANSFORMSEPARATOR_H
-#define COIN_SOTRANSFORMSEPARATOR_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
-
 
 class COIN_DLL_API SoTransformSeparator : public SoGroup {
   typedef SoGroup inherited;

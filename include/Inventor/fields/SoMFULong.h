@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFULONG_H
+#define COIN_SOMFULONG_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOMFULONG_H
-#define COIN_SOMFULONG_H
 
 #if defined(IV_STRICT)
 #error "SoMFULong has been obsoleted. Use SoMFUInt32 instead."

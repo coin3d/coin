@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLYPH_H
+#define COIN_SOGLYPH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOGLYPH_H
-#define COIN_SOGLYPH_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbBox2f.h>
@@ -73,5 +73,4 @@ private:
   } flags;
 };
 
-
-#endif // COIN_SOGLYPH_H
+#endif // !COIN_SOGLYPH_H

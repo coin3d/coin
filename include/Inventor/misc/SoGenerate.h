@@ -1,3 +1,6 @@
+#ifndef COIN_SOGENERATE_H
+#define COIN_SOGENERATE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -24,9 +27,6 @@
 //
 // reuseable code for generatePrimitives (OpenInventor, VRML and VRML2)
 //
-
-#ifndef COIN_SOGENERATE_H
-#define COIN_SOGENERATE_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
@@ -69,5 +69,4 @@ void sogen_generate_cube(const float width,
                          SoShape * const shape,
                          SoAction * const action);
 
-
-#endif // COIN_SOGENERATE_H
+#endif // !COIN_SOGENERATE_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLDRAWSTYLEELEMENT_H
+#define COIN_SOGLDRAWSTYLEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLDRAWSTYLEELEMENT_H
-#define COIN_SOGLDRAWSTYLEELEMENT_H
-
 #include <Inventor/elements/SoDrawStyleElement.h>
-
 
 class COIN_DLL_API SoGLDrawStyleElement : public SoDrawStyleElement {
   typedef SoDrawStyleElement inherited;

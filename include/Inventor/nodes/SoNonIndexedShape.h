@@ -1,3 +1,6 @@
+#ifndef COIN_SONONINDEXEDSHAPE_H
+#define COIN_SONONINDEXEDSHAPE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SONONINDEXEDSHAPE_H
-#define COIN_SONONINDEXEDSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoVertexShape.h>
@@ -50,7 +50,5 @@ protected:
                               int32_t *dummyarray) const;
 
 };
-
-
 
 #endif // !COIN_SONONINDEXEDSHAPE_H

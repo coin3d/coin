@@ -1,3 +1,6 @@
+#ifndef COIN_SOPICKSTYLE_H
+#define COIN_SOPICKSTYLE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPICKSTYLE_H
-#define COIN_SOPICKSTYLE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/elements/SoPickStyleElement.h>
-
 
 class COIN_DLL_API SoPickStyle : public SoNode {
   typedef SoNode inherited;

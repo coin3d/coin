@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLCACHECONTEXTELEMENT_H
+#define COIN_SOGLCACHECONTEXTELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOGLCACHECONTEXTELEMENT_H
-#define COIN_SOGLCACHECONTEXTELEMENT_H
 
 #include <Inventor/elements/SoSubElement.h>
 
@@ -114,5 +114,4 @@ private:
   SbBool mipmap;
 };
 
-
-#endif // COIN_SOGLCACHECONTEXTELEMENT_H
+#endif // !COIN_SOGLCACHECONTEXTELEMENT_H

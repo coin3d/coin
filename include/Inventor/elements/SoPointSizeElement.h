@@ -1,3 +1,6 @@
+#ifndef COIN_SOPOINTSIZEELEMENT_H
+#define COIN_SOPOINTSIZEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPOINTSIZEELEMENT_H
-#define COIN_SOPOINTSIZEELEMENT_H
-
 #include <Inventor/elements/SoFloatElement.h>
-
 
 class COIN_DLL_API SoPointSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOENABLEDELEMENTSLIST_H
+#define COIN_SOENABLEDELEMENTSLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOENABLEDELEMENTSLIST_H
-#define COIN_SOENABLEDELEMENTSLIST_H
-
 #include <Inventor/lists/SoTypeList.h>
-
 
 class COIN_DLL_API SoEnabledElementsList {
 public:

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCAMERA_H
+#define COIN_SOCAMERA_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOCAMERA_H
-#define COIN_SOCAMERA_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbViewportRegion.h>
@@ -48,7 +48,6 @@
 #define SO_ASPECT_VISTAVISION   2.301
 
 class SoPath;
-
 
 class COIN_DLL_API SoCamera : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCOLORINDEX_H
+#define COIN_SOCOLORINDEX_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCOLORINDEX_H
-#define COIN_SOCOLORINDEX_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFInt32.h>
-
 
 class COIN_DLL_API SoColorIndex : public SoNode {
   typedef SoNode inherited;

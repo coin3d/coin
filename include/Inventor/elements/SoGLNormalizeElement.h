@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLNORMALIZEELEMENT_H
+#define COIN_SOGLNORMALIZEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLNORMALIZEELEMENT_H
-#define COIN_SOGLNORMALIZEELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
-
 
 class COIN_DLL_API SoGLNormalizeElement : public SoElement {
   typedef SoElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOFONT_H
+#define COIN_SOFONT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFONT_H
-#define COIN_SOFONT_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSFFloat.h>
-
 
 class COIN_DLL_API SoFont : public SoNode {
   typedef SoNode inherited;

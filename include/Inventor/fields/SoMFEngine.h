@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFENGINE_H
+#define COIN_SOMFENGINE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFENGINE_H
-#define COIN_SOMFENGINE_H
-
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
 
 class SoEngine;
-
 
 class COIN_DLL_API SoMFEngine : public SoMField {
   typedef SoMField inherited;

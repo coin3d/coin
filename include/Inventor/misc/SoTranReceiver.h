@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANRECEIVER_H
+#define COIN_SOTRANRECEIVER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTRANRECEIVER_H
-#define COIN_SOTRANRECEIVER_H
-
 #include <Inventor/SbBasic.h>
 
 class SoGroup;
 class SoInput;
-
 
 class COIN_DLL_API SoTranReceiver {
 
@@ -45,4 +44,4 @@ private:
   void * pimpl;
 };
 
-#endif // COIN_SOTRANRECEIVER_H
+#endif // !COIN_SOTRANRECEIVER_H

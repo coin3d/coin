@@ -1,3 +1,6 @@
+#ifndef COIN_SOORTHOGRAPHICCAMERA_H
+#define COIN_SOORTHOGRAPHICCAMERA_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOORTHOGRAPHICCAMERA_H
-#define COIN_SOORTHOGRAPHICCAMERA_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoCamera.h>
-
 
 class COIN_DLL_API SoOrthographicCamera : public SoCamera {
   typedef SoCamera inherited;

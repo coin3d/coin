@@ -1,3 +1,6 @@
+#ifndef COIN_SOPOLYGONOFFSET_H
+#define COIN_SOPOLYGONOFFSET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPOLYGONOFFSET_H
-#define COIN_SOPOLYGONOFFSET_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/elements/SoPolygonOffsetElement.h>
-
 
 class COIN_DLL_API SoPolygonOffset : public SoNode {
   typedef SoNode inherited;

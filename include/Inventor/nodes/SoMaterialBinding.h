@@ -1,3 +1,6 @@
+#ifndef COIN_SOMATERIALBINDING_H
+#define COIN_SOMATERIALBINDING_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMATERIALBINDING_H
-#define COIN_SOMATERIALBINDING_H
-
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoSubNode.h>
-
 
 class COIN_DLL_API SoMaterialBinding : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SONODE_H
+#define COIN_SONODE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SONODE_H
-#define COIN_SONODE_H
-
 #include <Inventor/fields/SoFieldContainer.h>
 
 class SoAction;
@@ -41,7 +41,6 @@ class SoPickAction;
 class SoRayPickAction;
 class SoSearchAction;
 class SoWriteAction;
-
 
 class COIN_DLL_API SoNode : public SoFieldContainer {
   typedef SoFieldContainer inherited;

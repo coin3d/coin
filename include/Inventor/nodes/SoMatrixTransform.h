@@ -1,3 +1,6 @@
+#ifndef COIN_SOMATRIXTRANSFORM_H
+#define COIN_SOMATRIXTRANSFORM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMATRIXTRANSFORM_H
-#define COIN_SOMATRIXTRANSFORM_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/nodes/SoTransformation.h>
-
 
 class COIN_DLL_API SoMatrixTransform : public SoTransformation {
   typedef SoTransformation inherited;

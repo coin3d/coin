@@ -1,3 +1,6 @@
+#ifndef COIN_SOLIGHT_H
+#define COIN_SOLIGHT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLIGHT_H
-#define COIN_SOLIGHT_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
-
 
 class COIN_DLL_API SoLight : public SoNode {
   typedef SoNode inherited;

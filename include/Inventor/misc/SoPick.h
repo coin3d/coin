@@ -1,3 +1,6 @@
+#ifndef COIN_SOPICK_H
+#define COIN_SOPICK_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -24,9 +27,6 @@
 //
 // reusable code for picking
 //
-
-#ifndef COIN_SOPICK_H
-#define COIN_SOPICK_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
@@ -64,5 +64,4 @@ void sopick_pick_cube(const float width,
                       SoShape * const shape,
                       SoRayPickAction * const action);
 
-
-#endif // COIN_SOPICK_H
+#endif // !COIN_SOPICK_H

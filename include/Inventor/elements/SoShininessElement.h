@@ -1,3 +1,6 @@
+#ifndef COIN_SOSHININESSELEMENT_H
+#define COIN_SOSHININESSELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSHININESSELEMENT_H
-#define COIN_SOSHININESSELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
-
 
 class COIN_DLL_API SoShininessElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

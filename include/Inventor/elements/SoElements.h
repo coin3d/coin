@@ -1,3 +1,6 @@
+#ifndef COIN_SOELEMENTS_H
+#define COIN_SOELEMENTS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOELEMENTS_H
-#define COIN_SOELEMENTS_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoAccumulatedElement.h>

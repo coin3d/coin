@@ -1,3 +1,6 @@
+#ifndef COIN_SOCHILDLIST_H
+#define COIN_SOCHILDLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCHILDLIST_H
-#define COIN_SOCHILDLIST_H
-
 #include <Inventor/lists/SoNodeList.h>
 
 class SoPath;
 class SoAction;
-
 
 class COIN_DLL_API SoChildList : public SoNodeList {
   typedef SoNodeList inherited;

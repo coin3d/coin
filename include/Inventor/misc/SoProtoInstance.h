@@ -1,3 +1,6 @@
+#ifndef COIN_SOPROTOINSTANCE_H
+#define COIN_SOPROTOINSTANCE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOPROTOINSTANCE_H
-#define COIN_SOPROTOINSTANCE_H
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
@@ -69,4 +69,4 @@ private:
   class SoProtoInstanceP * pimpl;
 };
 
-#endif // COIN_SOPROTOINSTANCE_H
+#endif // !COIN_SOPROTOINSTANCE_H

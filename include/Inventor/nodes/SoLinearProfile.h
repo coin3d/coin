@@ -1,3 +1,6 @@
+#ifndef COIN_SOLINEARPROFILE_H
+#define COIN_SOLINEARPROFILE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLINEARPROFILE_H
-#define COIN_SOLINEARPROFILE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
-
 
 class COIN_DLL_API SoLinearProfile : public SoProfile {
   typedef SoProfile inherited;

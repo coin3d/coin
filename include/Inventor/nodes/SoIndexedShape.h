@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDSHAPE_H
+#define COIN_SOINDEXEDSHAPE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINDEXEDSHAPE_H
-#define COIN_SOINDEXEDSHAPE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
 class SoTextureCoordinateElement;
 class SoCoordinateElement;
-
 
 class COIN_DLL_API SoIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
@@ -78,6 +77,5 @@ private:
   int32_t * nIndices;
   int32_t * mIndices;
 };
-
 
 #endif // !COIN_SOINDEXEDSHAPE_H

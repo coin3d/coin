@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEMPPATH_H
+#define COIN_SOTEMPPATH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEMPPATH_H
-#define COIN_SOTEMPPATH_H
-
 #include <Inventor/SoFullPath.h>
 
 class COIN_DLL_API SoTempPath : public SoFullPath {
@@ -31,4 +31,4 @@ public:
   SoTempPath(const int approxlength);
 };
 
-#endif // COIN_SOTEMPPATH_H
+#endif // !COIN_SOTEMPPATH_H

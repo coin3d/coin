@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFVEC4F_H
+#define COIN_SOSFVEC4F_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSFVEC4F_H
-#define COIN_SOSFVEC4F_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>

@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLSHADEMODELELEMENT_H
+#define COIN_SOGLSHADEMODELELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLSHADEMODELELEMENT_H
-#define COIN_SOGLSHADEMODELELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
-
 
 class COIN_DLL_API SoGLShadeModelElement : public SoElement {
   typedef SoElement inherited;

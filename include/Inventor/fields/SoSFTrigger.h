@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFTRIGGER_H
+#define COIN_SOSFTRIGGER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSFTRIGGER_H
-#define COIN_SOSFTRIGGER_H
-
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 
 class SoNotList;
-
 
 class COIN_DLL_API SoSFTrigger : public SoSField {
   typedef SoSField inherited;

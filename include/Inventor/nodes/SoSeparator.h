@@ -1,3 +1,6 @@
+#ifndef COIN_SOSEPARATOR_H
+#define COIN_SOSEPARATOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSEPARATOR_H
-#define COIN_SOSEPARATOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -49,7 +49,6 @@ public:
   SoSFEnum renderCulling;
   SoSFEnum pickCulling;
 
-
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
@@ -69,14 +68,12 @@ public:
   static int getNumRenderCaches(void);
   virtual SbBool affectsState(void) const;
 
-
 protected:
   virtual ~SoSeparator();
 
   virtual SbBool cullTest(SoState * state);
   virtual SbBool cullTest(SoGLRenderAction * action, int & cullresults);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-
 
 private:
   void commonConstructor(void);

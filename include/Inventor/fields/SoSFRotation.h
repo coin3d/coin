@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFROTATION_H
+#define COIN_SOSFROTATION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSFROTATION_H
-#define COIN_SOSFROTATION_H
-
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbRotation.h>
-
 
 class COIN_DLL_API SoSFRotation : public SoSField {
   typedef SoSField inherited;

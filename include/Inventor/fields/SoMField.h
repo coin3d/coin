@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFIELD_H
+#define COIN_SOMFIELD_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFIELD_H
-#define COIN_SOMFIELD_H
-
 #include <Inventor/fields/SoField.h>
 
 class SoInput;
 class SoOutput;
-
 
 class COIN_DLL_API SoMField : public SoField {
   typedef SoField inherited;
@@ -85,6 +84,5 @@ SoMField::getNum(void) const
   this->evaluate();
   return this->num;
 }
-
 
 #endif // !COIN_SOMFIELD_H

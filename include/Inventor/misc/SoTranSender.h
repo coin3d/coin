@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANSENDER_H
+#define COIN_SOTRANSENDER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOTRANSENDER_H
-#define COIN_SOTRANSENDER_H
 
 #include <Inventor/SbBasic.h>
 
@@ -51,4 +51,4 @@ private:
   void * pimpl;
 };
 
-#endif // COIN_SOTRANSENDER_H
+#endif // !COIN_SOTRANSENDER_H

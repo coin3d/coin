@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDLINESET_H
+#define COIN_SOINDEXEDLINESET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINDEXEDLINESET_H
-#define COIN_SOINDEXEDLINESET_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
 #define SO_END_LINE_INDEX (-1)
-
 
 class COIN_DLL_API SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;

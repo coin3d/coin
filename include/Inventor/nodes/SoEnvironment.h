@@ -1,3 +1,6 @@
+#ifndef COIN_SOENVIRONMENT_H
+#define COIN_SOENVIRONMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOENVIRONMENT_H
-#define COIN_SOENVIRONMENT_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
-
 
 class COIN_DLL_API SoEnvironment : public SoNode {
   typedef SoNode inherited;

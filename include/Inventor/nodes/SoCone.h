@@ -1,3 +1,6 @@
+#ifndef COIN_SOCONE_H
+#define COIN_SOCONE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCONE_H
-#define COIN_SOCONE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoShape.h>
-
 
 class COIN_DLL_API SoCone : public SoShape {
   typedef SoShape inherited;

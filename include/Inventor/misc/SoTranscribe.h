@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANSCRIBE_H
+#define COIN_SOTRANSCRIBE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTRANSCRIBE_H
-#define COIN_SOTRANSCRIBE_H
-
 #ifdef COIN_INTERNAL
 #error Do not include this file in internal code.
 #endif // COIN_INTERNAL
@@ -35,4 +35,4 @@
 #include <Inventor/misc/SoTranSender.h>
 #include <Inventor/misc/SoTranReceiver.h>
 
-#endif // COIN_SOTRANSCRIBE_H
+#endif // !COIN_SOTRANSCRIBE_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOREPLACEDELEMENT_H
+#define COIN_SOREPLACEDELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOREPLACEDELEMENT_H
-#define COIN_SOREPLACEDELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
-
 
 class COIN_DLL_API SoReplacedElement : public SoElement {
   typedef SoElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEXTUREQUALITYELEMENT_H
+#define COIN_SOTEXTUREQUALITYELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEXTUREQUALITYELEMENT_H
-#define COIN_SOTEXTUREQUALITYELEMENT_H
-
 #include <Inventor/elements/SoFloatElement.h>
-
 
 class COIN_DLL_API SoTextureQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
@@ -47,6 +46,6 @@ public:
 
 #ifndef COIN_INTERNAL
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#endif // COIN_INTERNAL
+#endif // !COIN_INTERNAL
 
 #endif // !COIN_SOTEXTUREQUALITYELEMENT_H

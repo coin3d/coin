@@ -1,3 +1,6 @@
+#ifndef COIN_SOARRAY_H
+#define COIN_SOARRAY_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOARRAY_H
-#define COIN_SOARRAY_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFShort.h>
 #include <Inventor/fields/SoSFVec3f.h>
-
 
 class COIN_DLL_API SoArray : public SoGroup {
     typedef SoGroup inherited;

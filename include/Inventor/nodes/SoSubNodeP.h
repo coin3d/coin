@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBNODEP_H
+#define COIN_SOSUBNODEP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBNODEP_H
-#define COIN_SOSUBNODEP_H
-
 // The macro definitions in this file is used internally by Coin
 // classes, and mirrors some of the public macros available in
 // SoSubNode.h with a few modifications so they are suited for the
@@ -31,7 +31,6 @@
 //
 // The macros in this file are not made visible for use by the
 // application programmer.
-
 
 #ifndef COIN_INTERNAL
 #error Only for use during library build.

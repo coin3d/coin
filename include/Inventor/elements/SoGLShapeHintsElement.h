@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLSHAPEHINTSELEMENT_H
+#define COIN_SOGLSHAPEHINTSELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLSHAPEHINTSELEMENT_H
-#define COIN_SOGLSHAPEHINTSELEMENT_H
-
 #include <Inventor/elements/SoShapeHintsElement.h>
-
 
 class COIN_DLL_API SoGLShapeHintsElement : public SoShapeHintsElement {
   typedef SoShapeHintsElement inherited;

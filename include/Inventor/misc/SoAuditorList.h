@@ -1,3 +1,6 @@
+#ifndef COIN_MISC_SOAUDITORLIST_H
+#define COIN_MISC_SOAUDITORLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_MISC_SOAUDITORLIST_H
-#define COIN_MISC_SOAUDITORLIST_H
 
 // NB: make sure the ifdef-test above wrapping this includefile is
 // _not_ checking on and setting the same define-string as the other

@@ -1,3 +1,6 @@
+#ifndef COIN_SOLEVELOFDETAIL_H
+#define COIN_SOLEVELOFDETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLEVELOFDETAIL_H
-#define COIN_SOLEVELOFDETAIL_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
-
 
 class COIN_DLL_API SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;

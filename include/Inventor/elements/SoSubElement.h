@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBELEMENT_H
+#define COIN_SOSUBELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSUBELEMENT_H
-#define COIN_SOSUBELEMENT_H
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
@@ -98,6 +98,5 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
 
 #define SO_ELEMENT_INIT_CLASS(_class_, _parent_) \
   PRIVATE_SOELEMENT_INIT(_class_, _parent_, &_class_::createInstance)
-
 
 #endif // !COIN_SOSUBELEMENT_H

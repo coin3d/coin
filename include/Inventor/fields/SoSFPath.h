@@ -1,3 +1,6 @@
+#ifndef COIN_SOSFPATH_H
+#define COIN_SOSFPATH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSFPATH_H
-#define COIN_SOSFPATH_H
-
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 
 class SoPath;
 class SoNotList;
 class SoNode;
-
 
 class COIN_DLL_API SoSFPath : public SoSField {
   typedef SoSField inherited;

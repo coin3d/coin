@@ -1,3 +1,6 @@
+#ifndef COIN_SOANTISQUISH_H
+#define COIN_SOANTISQUISH_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOANTISQUISH_H
-#define COIN_SOANTISQUISH_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/SbMatrix.h>
-
 
 class COIN_DLL_API SoAntiSquish : public SoTransformation {
   typedef SoTransformation inherited;

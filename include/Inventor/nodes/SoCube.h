@@ -1,3 +1,6 @@
+#ifndef COIN_SOCUBE_H
+#define COIN_SOCUBE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,18 +24,14 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCUBE_H
-#define COIN_SOCUBE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoShape.h>
 
 class SoIndexedFaceSet;
 
-
 class COIN_DLL_API SoCube : public SoShape {
-    typedef SoShape inherited;
+  typedef SoShape inherited;
 
   SO_NODE_HEADER(SoCube);
 

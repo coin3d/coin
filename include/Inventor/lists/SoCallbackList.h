@@ -1,3 +1,6 @@
+#ifndef COIN_LISTS_SOCALLBACKLIST_H
+#define COIN_LISTS_SOCALLBACKLIST_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_LISTS_SOCALLBACKLIST_H
-#define COIN_LISTS_SOCALLBACKLIST_H
-
 // NB: make sure the ifdef-test above wrapping this includefile is
 // _not_ checking on and setting the same define-string as the other
 // SoCallbackList.h file in misc/.
@@ -31,7 +31,6 @@
 #include <Inventor/lists/SbPList.h>
 
 typedef void SoCallbackListCB(void * userdata, void * callbackdata);
-
 
 class COIN_DLL_API SoCallbackList {
 public:

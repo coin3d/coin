@@ -1,3 +1,6 @@
+#ifndef COIN_SOPROFILECOORDINATE3_H
+#define COIN_SOPROFILECOORDINATE3_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPROFILECOORDINATE3_H
-#define COIN_SOPROFILECOORDINATE3_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
-
 
 class COIN_DLL_API SoProfileCoordinate3 : public SoNode {
   typedef SoNode inherited;

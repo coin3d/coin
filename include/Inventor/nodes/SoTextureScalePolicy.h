@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEXTURESCALEPOLICY_H
+#define COIN_SOTEXTURESCALEPOLICY_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEXTURESCALEPOLICY_H
-#define COIN_SOTEXTURESCALEPOLICY_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
-
 
 class COIN_DLL_API SoTextureScalePolicy : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOLOD_H
+#define COIN_SOLOD_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLOD_H
-#define COIN_SOLOD_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
-
 
 class COIN_DLL_API SoLOD : public SoGroup {
   typedef SoGroup inherited;

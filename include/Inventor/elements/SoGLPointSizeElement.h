@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLPOINTSIZEELEMENT_H
+#define COIN_SOGLPOINTSIZEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLPOINTSIZEELEMENT_H
-#define COIN_SOGLPOINTSIZEELEMENT_H
-
 #include <Inventor/SbVec2f.h>
 #include <Inventor/elements/SoPointSizeElement.h>
-
 
 class COIN_DLL_API SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;

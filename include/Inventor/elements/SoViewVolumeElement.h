@@ -1,3 +1,6 @@
+#ifndef COIN_SOVIEWVOLUMEELEMENT_H
+#define COIN_SOVIEWVOLUMEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOVIEWVOLUMEELEMENT_H
-#define COIN_SOVIEWVOLUMEELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbViewVolume.h>
-
 
 class COIN_DLL_API SoViewVolumeElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

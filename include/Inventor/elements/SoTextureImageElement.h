@@ -1,3 +1,6 @@
+#ifndef COIN_SOTEXTUREIMAGEELEMENT_H
+#define COIN_SOTEXTUREIMAGEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTEXTUREIMAGEELEMENT_H
-#define COIN_SOTEXTUREIMAGEELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbColor.h>
 
 class SoState;
-
 
 class COIN_DLL_API SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

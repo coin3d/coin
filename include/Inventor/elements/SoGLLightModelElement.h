@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLLIGHTMODELELEMENT_H
+#define COIN_SOGLLIGHTMODELELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLLIGHTMODELELEMENT_H
-#define COIN_SOGLLIGHTMODELELEMENT_H
-
 #include <Inventor/elements/SoLightModelElement.h>
-
 
 class COIN_DLL_API SoGLLightModelElement : public SoLightModelElement {
   typedef SoLightModelElement inherited;

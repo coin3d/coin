@@ -1,3 +1,6 @@
+#ifndef COIN_SOWWWANCHOR_H
+#define COIN_SOWWWANCHOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOWWWANCHOR_H
-#define COIN_SOWWWANCHOR_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFEnum.h>
-
 
 class SoWWWAnchor;
 

@@ -1,3 +1,6 @@
+#ifndef COIN_SOCALLBACK_H
+#define COIN_SOCALLBACK_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCALLBACK_H
-#define COIN_SOCALLBACK_H
-
 #include <Inventor/nodes/SoSubNode.h>
-
 
 typedef void SoCallbackCB(void * userdata, SoAction * action);
 

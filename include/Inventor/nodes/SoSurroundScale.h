@@ -1,3 +1,6 @@
+#ifndef COIN_SOSURROUNDSCALE_H
+#define COIN_SOSURROUNDSCALE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSURROUNDSCALE_H
-#define COIN_SOSURROUNDSCALE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/SbVec3f.h>
 
 class SbMatrix;
-
 
 class COIN_DLL_API SoSurroundScale : public SoTransformation {
   typedef SoTransformation inherited;

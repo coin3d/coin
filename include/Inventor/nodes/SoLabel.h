@@ -1,3 +1,6 @@
+#ifndef COIN_SOLABEL_H
+#define COIN_SOLABEL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLABEL_H
-#define COIN_SOLABEL_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFName.h>
-
 
 class COIN_DLL_API SoLabel : public SoNode {
   typedef SoNode inherited;

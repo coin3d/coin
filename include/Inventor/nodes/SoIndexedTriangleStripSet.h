@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDTRIANGLESTRIPSET_H
+#define COIN_SOINDEXEDTRIANGLESTRIPSET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINDEXEDTRIANGLESTRIPSET_H
-#define COIN_SOINDEXEDTRIANGLESTRIPSET_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 #ifndef COIN_INTERNAL
  // For Open Inventor compatibility.
  #include <Inventor/nodes/SoVertexProperty.h>
 #endif // !COIN_INTERNAL
-
 
 class COIN_DLL_API SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOBASIC_H
+#define COIN_SOBASIC_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOBASIC_H
-#define COIN_SOBASIC_H
-
 #ifdef COIN_INTERNAL
 #error Do not include Inventor/misc/SoBasic.h internally.
 #endif // COIN_INTERNAL
-
 
 // This file is present just for compatibility with Open Inventor. The
 // macros originally provided here (SO__QUOTE and SO__CONCAT), has
@@ -35,6 +34,5 @@
 // the findings of the configure process.  -mortene.
 
 #include <Inventor/SbBasic.h>
-
 
 #endif // !COIN_SOBASIC_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLEMISSIVECOLORELEMENT_H
+#define COIN_SOGLEMISSIVECOLORELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLEMISSIVECOLORELEMENT_H
-#define COIN_SOGLEMISSIVECOLORELEMENT_H
-
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/SbColor.h>
-
 
 class COIN_DLL_API SoGLEmissiveColorElement : public SoEmissiveColorElement {
   typedef SoEmissiveColorElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOPROFILECOORDINATEELEMENT_H
+#define COIN_SOPROFILECOORDINATEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPROFILECOORDINATEELEMENT_H
-#define COIN_SOPROFILECOORDINATEELEMENT_H
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -33,7 +33,6 @@
  * TODO
  * - conversion between coord2 and coord3 (done in Inventor)
  */
-
 
 class COIN_DLL_API SoProfileCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSELECTION_H
+#define COIN_SOSELECTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSELECTION_H
-#define COIN_SOSELECTION_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -37,7 +37,6 @@ class SoCallbackList;
 typedef void SoSelectionPathCB(void * data, SoPath * path);
 typedef void SoSelectionClassCB(void * data, SoSelection * sel);
 typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick);
-
 
 class COIN_DLL_API SoSelection : public SoSeparator {
   typedef SoSeparator inherited;
@@ -123,7 +122,6 @@ private:
   SoPath *searchNode(SoNode * node) const;
   SoPath *getSelectionPath(SoHandleEventAction *action,
                            SbBool &ignorepick, SbBool &haltaction);
-
 };
 
 #endif // !COIN_SOSELECTION_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANSPARENCYTYPE_H
+#define COIN_SOTRANSPARENCYTYPE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTRANSPARENCYTYPE_H
-#define COIN_SOTRANSPARENCYTYPE_H
-
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-
 
 class COIN_DLL_API SoTransparencyType : public SoNode {
   typedef SoNode inherited;

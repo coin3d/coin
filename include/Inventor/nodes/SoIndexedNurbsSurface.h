@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDNURBSSURFACE_H
+#define COIN_SOINDEXEDNURBSSURFACE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINDEXEDNURBSSURFACE_H
-#define COIN_SOINDEXEDNURBSSURFACE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
-
 
 class COIN_DLL_API SoIndexedNurbsSurface : public SoShape {
     typedef SoShape inherited;

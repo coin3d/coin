@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLUPDATEAREAELEMENT_H
+#define COIN_SOGLUPDATEAREAELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLUPDATEAREAELEMENT_H
-#define COIN_SOGLUPDATEAREAELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
-
 
 class COIN_DLL_API SoGLUpdateAreaElement : public SoElement {
   typedef SoElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOINT32ELEMENT_H
+#define COIN_SOINT32ELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINT32ELEMENT_H
-#define COIN_SOINT32ELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
-
 
 class COIN_DLL_API SoInt32Element : public SoElement {
   typedef SoElement inherited;

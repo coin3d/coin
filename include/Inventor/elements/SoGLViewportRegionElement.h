@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLVIEWPORTREGIONELEMENT_H
+#define COIN_SOGLVIEWPORTREGIONELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLVIEWPORTREGIONELEMENT_H
-#define COIN_SOGLVIEWPORTREGIONELEMENT_H
-
 #include <Inventor/elements/SoViewportRegionElement.h>
-
 
 class COIN_DLL_API SoGLViewportRegionElement : public SoViewportRegionElement {
   typedef SoViewportRegionElement inherited;

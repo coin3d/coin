@@ -1,3 +1,6 @@
+#ifndef COIN_SORESETTRANSFORM_H
+#define COIN_SORESETTRANSFORM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SORESETTRANSFORM_H
-#define COIN_SORESETTRANSFORM_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFBitMask.h>
-
 
 class COIN_DLL_API SoResetTransform : public SoTransformation {
   typedef SoTransformation inherited;

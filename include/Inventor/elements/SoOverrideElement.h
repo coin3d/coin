@@ -1,3 +1,6 @@
+#ifndef COIN_SOOVERRIDEELEMENT_H
+#define COIN_SOOVERRIDEELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOOVERRIDEELEMENT_H
-#define COIN_SOOVERRIDEELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
 
 class SoType; // lame doxygen "fix"
-
 
 class COIN_DLL_API SoOverrideElement : public SoElement {
   typedef SoElement inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOLOCALBBOXMATRIXELEMENT_H
+#define COIN_SOLOCALBBOXMATRIXELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLOCALBBOXMATRIXELEMENT_H
-#define COIN_SOLOCALBBOXMATRIXELEMENT_H
-
 #include <Inventor/elements/SoModelMatrixElement.h>
-
 
 class COIN_DLL_API SoLocalBBoxMatrixElement : public SoElement {
   typedef SoElement inherited;

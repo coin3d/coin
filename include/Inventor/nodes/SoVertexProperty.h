@@ -1,3 +1,6 @@
+#ifndef COIN_SOVERTEXPROPERTY_H
+#define COIN_SOVERTEXPROPERTY_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOVERTEXPROPERTY_H
-#define COIN_SOVERTEXPROPERTY_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoSFEnum.h>
-
 
 class COIN_DLL_API SoVertexProperty : public SoNode {
   typedef SoNode inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOACCUMULATEDELEMENT_H
+#define COIN_SOACCUMULATEDELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOACCUMULATEDELEMENT_H
-#define COIN_SOACCUMULATEDELEMENT_H
-
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/lists/SbList.h>
-
 
 class COIN_DLL_API SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;

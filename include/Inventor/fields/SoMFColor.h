@@ -1,3 +1,6 @@
+#ifndef COIN_SOMFCOLOR_H
+#define COIN_SOMFCOLOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMFCOLOR_H
-#define COIN_SOMFCOLOR_H
-
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbColor.h>
-
 
 class COIN_DLL_API SoMFColor : public SoMField {
     typedef SoMField inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOWWWINLINE_H
+#define COIN_SOWWWINLINE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOWWWINLINE_H
-#define COIN_SOWWWINLINE_H
-
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFNode.h>
-
 
 class SbColor;
 class SoGroup;

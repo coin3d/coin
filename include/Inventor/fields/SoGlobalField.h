@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLOBALFIELD_H
+#define COIN_SOGLOBALFIELD_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOGLOBALFIELD_H
-#define COIN_SOGLOBALFIELD_H
-
 #include <Inventor/fields/SoFieldContainer.h>
-
 
 class SoGlobalField : public SoFieldContainer {
   typedef SoFieldContainer inherited;

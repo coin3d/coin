@@ -1,3 +1,6 @@
+#ifndef COIN_SOCOMPLEXITYELEMENT_H
+#define COIN_SOCOMPLEXITYELEMENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCOMPLEXITYELEMENT_H
-#define COIN_SOCOMPLEXITYELEMENT_H
-
 #include <Inventor/elements/SoFloatElement.h>
-
 
 class COIN_DLL_API SoComplexityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
