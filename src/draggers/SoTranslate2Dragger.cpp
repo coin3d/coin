@@ -56,8 +56,8 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("translate2Dragger.iv",
-                                       draggergeometry,
-                                       sizeof(draggergeometry));
+                                       TRANSLATE2DRAGGER_draggergeometry,
+                                       sizeof(TRANSLATE2DRAGGER_draggergeometry));
   }
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();

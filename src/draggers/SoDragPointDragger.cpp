@@ -92,8 +92,8 @@ SoDragPointDragger::SoDragPointDragger(void)
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("dragPointDragger.iv",
-                                       draggergeometry,
-                                       sizeof(draggergeometry));
+                                       DRAGPOINTDRAGGER_draggergeometry,
+                                       sizeof(DRAGPOINTDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
