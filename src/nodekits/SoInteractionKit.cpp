@@ -751,4 +751,4 @@ SoInteractionKitP::sensorCB(void * data, SoSensor *)
   }
 }
 
-#endif DOXYGEN_SKIP_THIS
+#endif // DOXYGEN_SKIP_THIS
