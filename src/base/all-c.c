@@ -25,10 +25,12 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include "dynarray.c"
 #include "hash.c"
 #include "heap.c"
 #include "list.c"
 #include "memalloc.c"
+#include "namemap.c"
 #include "rbptree.c"
 #include "string.c"
 #include "time.c"
