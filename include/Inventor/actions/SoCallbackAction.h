@@ -24,6 +24,8 @@
  *
 \**************************************************************************/
 
+// FIXME: Support getTextureFilename[s]() ? (kintel 20011205)
+
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
