@@ -83,8 +83,10 @@ SbPlaneProjector::project(const SbVec2f & point)
   if (!this->plane.intersect(projline, projpt)) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SbPlaneProjector::project",
-                              "working line is paralell to plane.");
+                              "working line is parallel to plane.");
 #endif // COIN_DEBUG
+    // set to (0,0,0) to avoid crazy rotations
+    projpt = SbVec3f(0.0f, 0.0f, 0.0f);
   }
   return projpt;
 }

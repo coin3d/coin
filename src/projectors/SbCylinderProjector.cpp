@@ -194,9 +194,10 @@ SbCylinderProjector::intersectCylinderFront(const SbLine &line,
 {
   SbVec3f i0, i1;
   SbBool isect = this->cylinder.intersect(line, i0, i1);
-  // should probably use isPointInFront instead?
-  // this seems to work though, 19991207, pederb
-  if (isect) result = this->intersectFront ? i0 : i1;
+  if (isect) {
+    if (this->isPointInFront(i0)) result = i0;
+    else result = i1;
+  }
   return isect;
 }
 

@@ -52,6 +52,9 @@ protected:
   SbLine planeLine;
   float planeDist;
   SbPlane tolPlane;
+
+private:
+  float sqrTolDist;
 };
 
 #endif // !__SBCYLINDERSECTIONPROJECTOR_H__

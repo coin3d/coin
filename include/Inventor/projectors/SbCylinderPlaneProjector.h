@@ -27,18 +27,20 @@ class SbCylinderPlaneProjector : public SbCylinderSectionProjector
   typedef SbCylinderSectionProjector inherited;
 
 public:
-  SbCylinderPlaneProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
-  SbCylinderPlaneProjector(const SbCylinder & cyl, float edgeTol = 0.9f,
-                           SbBool orientToEye = TRUE);
+  SbCylinderPlaneProjector(const float edgeTol = 0.9f, 
+                           const SbBool orientToEye = TRUE);
+  SbCylinderPlaneProjector(const SbCylinder & cyl, 
+                           const float edgeTol = 0.9f,
+                           const SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
                                  const SbVec3f & point2);
-
+  
 protected:
-  SbRotation getRotation(const SbVec3f & point1, SbBool tol1,
-                         const SbVec3f & point2, SbBool tol2);
+  SbRotation getRotation(const SbVec3f & point1, const SbBool tol1,
+                         const SbVec3f & point2, const SbBool tol2);
 };
 
 #endif // !__SBCYLINDERPLANEPROJECTOR_H__
