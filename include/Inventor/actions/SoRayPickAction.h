@@ -99,6 +99,7 @@ protected:
 
 private:
 
+  void cleanupPickedPoints(void);
   void setFlag(const unsigned int flag);
   void clearFlag(const unsigned int flag);
   SbBool isFlagSet(const unsigned int flag) const;

@@ -198,6 +198,7 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
 
 SoRayPickAction::~SoRayPickAction(void)
 {
+  this->cleanupPickedPoints();
 }
 
 /*!
@@ -594,6 +595,7 @@ SoRayPickAction::addIntersection(const SbVec3f &objectSpacePoint)
 void
 SoRayPickAction::beginTraversal(SoNode *node)
 {
+  this->cleanupPickedPoints();
   this->getState()->push();
   SoViewportRegionElement::set(this->getState(), this->vpRegion);
   inherited::beginTraversal(node);
@@ -651,4 +653,15 @@ SoRayPickAction::calcRayRadius(const float radiusInPixels)
   float ysize = float(size[1]);
 
   return float(radiusInPixels / sqrt(xsize*xsize + ysize*ysize));
+}
+
+void
+SoRayPickAction::cleanupPickedPoints(void)
+{
+  int n = this->pickedPointList.getLength();
+
+  for (int i = 0; i < n; i++) {
+    delete this->pickedPointList[i];
+  }
+  this->pickedPointList.truncate(0);
 }
