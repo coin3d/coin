@@ -232,7 +232,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
-      xpos = -currwidth + longeststring;
+      xpos = -currwidth;
       break;
     case SoAsciiText::CENTER:
       xpos = -currwidth * 0.5f;
@@ -473,7 +473,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
-      xpos = -currwidth + longeststring;
+      xpos = -currwidth;
       break;
     case SoAsciiText::CENTER:
       xpos = - currwidth * 0.5f;
