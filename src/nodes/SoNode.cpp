@@ -48,9 +48,12 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <assert.h>
 
-#ifndef COIN_DEBUG
+#if COIN_DEBUG
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 #include <GL/gl.h> // glGetError
-#endif
+#endif // COIN_DEBUG
 
 /*!
   \var uint32_t SoNode::uniqueId
@@ -436,6 +439,11 @@ SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNode::GLRenderS",
+                         "nodetype: %s", node->getTypeId().getName().getString());
+#endif // debug
+
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId()));
   SoGLRenderAction * const renderAction = (SoGLRenderAction *)(action);

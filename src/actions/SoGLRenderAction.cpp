@@ -53,8 +53,6 @@
  */
 
 #include <Inventor/actions/SoGLRenderAction.h>
-
-#include <GL/gl.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -79,6 +77,11 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <coindefs.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
+#include <GL/gl.h>
 
 // *************************************************************************
 
