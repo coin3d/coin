@@ -100,6 +100,12 @@ public:
   void drawNoShapeBox(const SoPath * path);
 };
 
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
+
+
 // used to render non-shape nodes (usually SoGroup or SoSeparator). 
 void 
 SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
@@ -176,11 +182,6 @@ SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
 #endif // DOXYGEN_SKIP_THIS
 
 SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
-
-#undef PRIVATE
-#define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
-#define PUBLIC(p) ((p)->master)
 
 // Overridden from parent class.
 void
