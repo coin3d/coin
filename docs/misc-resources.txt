@@ -221,28 +221,6 @@ THE LINKS
   A Free Software TrueType/PostScript/... font editor:
   http://pfaedit.sourceforge.net/
 
-* Volume rendering resources:
-
-  - ACM publications / papers: <URL:http://www.sigchi.acm.org/pubs/>
-
-  - SGI's OpenGL Volumizer:
-    <URL:http://www.sgi.com/software/volumizer/> (check out the API,
-    check whitepapers, check out the sorucecode for importers, check
-    sample code for Inventor integration (SoVolumeShape))
-
-  - http://www.sdsc.edu/~nadeau, homepage of David Nadeau, with misc
-    research papers
-
-  - Research papers on doing volume rendering on PC hardware. Page
-    also contains many datasets, plus source code under a GNU license:
-      http://www9.informatik.uni-erlangen.de/Persons/Rezk/Research/VolRen
-
-  - The Seismic Unix project <URL:http://www.cwp.mines.edu/cwpcodes>
-    Tools for loading and processing seismic data, including support
-    for SEGY import.
-
-  - OpenDX (at www.opendx.org) has volume rendering capabilities.
-
 * OpenGL and ActiveX:
 
   - Working demo code:
