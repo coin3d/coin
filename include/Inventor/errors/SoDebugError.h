@@ -22,26 +22,19 @@
 
 #include <Inventor/errors/SoError.h>
 
+// Avoid problem with Microsoft Win32 API headers (yes, they actually
+// #define ERROR -- in wingdi.h).
+#if defined(ERROR)
+#define SODEBUGERROR_STORE_ERROR_DEF ERROR
+#undef ERROR
+#endif /* ERROR */
+
 
 class SoDebugError : public SoError {
   typedef SoError inherited;
 
 public:
-  enum Severity {
-    // FIXME: improve this code. Use #undef and then redefine or
-    // something. 19991226 mortene.
-#if defined(ERROR) // Avoid problem with MS Visual C++ v5.0 (at later, probably)
-    SERROR = 0,
-#else
-    ERROR = 0,
-#endif
-#if defined(WARNING) // FIXME: not sure if this is necessary. 19990808 mortene.
-    SWARNING = 1,
-#else
-    WARNING = 1,
-#endif
-    INFO = 2
-  };
+  enum Severity { ERROR, WARNING, INFO };
 
   static void setHandlerCallback(SoErrorCB * const function,
                                  void * const data);
@@ -72,5 +65,11 @@ private:
   static size_t strbuffersize;
   Severity severity;
 };
+
+// Avoid problem with Microsoft Win32 API headers (see above).
+#if defined(SODEBUGERROR_STORE_ERROR_DEF)
+#define ERROR SODEBUGERROR_STORE_ERROR_DEF
+#undef SODEBUGERROR_STORE_ERROR_DEF
+#endif /* SODEBUGERROR_STORE_ERROR_DEF */
 
 #endif // !__SODEBUGERROR_H__
