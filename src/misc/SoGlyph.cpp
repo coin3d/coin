@@ -95,6 +95,7 @@ public:
 
   int bitmapwidth;
   int bitmapheight;
+  cc_flw_bitmap * bitmap;
 
   struct {
     unsigned int didcalcbbox : 1;
@@ -133,7 +134,7 @@ SoGlyph::SoGlyph(void)
 
   PRIVATE(this)->bitmapwidth = 0;
   PRIVATE(this)->bitmapheight = 0;
-
+  PRIVATE(this)->bitmap = NULL;
 }
 
 /*!
@@ -644,12 +645,15 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
-  struct cc_flw_bitmap * bm = cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
+  if (PRIVATE(this)->bitmap == NULL) {
+    PRIVATE(this)->bitmap = cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
+  }
+  struct cc_flw_bitmap * bm = PRIVATE(this)->bitmap;
   assert(bm);
-
+  
   PRIVATE(this)->bitmapwidth = bm->width;
   PRIVATE(this)->bitmapheight = bm->rows;
-
+  
   size[0] = bm->pitch * 8;
   size[1] = bm->rows;
   pos[0] = bm->bearingX;
