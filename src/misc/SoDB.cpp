@@ -1827,7 +1827,67 @@ SoDB::writeunlock(void)
 #endif // COIN_THREADSAFE
 }
 
-/* *********************************************************************** */
+// *************************************************************************
+
+/*!
+  Create a connection from one VRML97 node field to another.
+
+  ("Routes" are what field-to-field connections are called for the
+  VRML97 standard.)
+
+  Connections made in this manner will be persistent upon file export.
+
+  \sa SoDB::removeRoute()
+  \sa SoField::connectFrom(SoField*)
+
+  \since Coin 2.4
+  \since TGS Inventor 2.6
+*/
+void
+SoDB::createRoute(SoNode * from, const char * eventout,
+                  SoNode * to, const char * eventin)
+{
+  assert(from && to && eventout && eventin);
+  SoField * out = from->getEventOut(eventout);
+  SoField * in = to->getEventIn(eventin);
+
+  if (out == NULL) {
+    SoDebugError::postWarning("SoDB::createRoute",
+                              "no eventout field named '%s' for '%s'",
+                              eventout, from->getTypeId().getName().getString());
+    return;
+  }
+  if (in == NULL) {
+    SoDebugError::postWarning("SoDB::createRoute",
+                              "no eventin field named '%s' for '%s'",
+                              eventin, to->getTypeId().getName().getString());
+    return;
+  }
+
+  in->connectFrom(out);
+}
+
+/*!
+  Removes a field-to-field connection.
+
+  \sa SoDB::createRoute()
+  \sa SoField::disconnect(SoField*)
+
+  \since Coin 2.4
+  \since TGS Inventor 2.6
+*/
+void
+SoDB::removeRoute(SoNode * from, const char * eventout,
+                  SoNode * to, const char * eventin)
+{
+  assert(from && to && eventout && eventin);
+  SoField * out = from->getEventOut(eventout);
+  SoField * in = to->getEventIn(eventin);
+  assert(out && in);
+  in->disconnect(out);
+}
+
+// *************************************************************************
 
 #if defined(HAVE_WINDLL_RUNTIME_BINDING) && defined(HAVE_TLHELP32_H)
 

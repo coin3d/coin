@@ -104,6 +104,11 @@ public:
   static void writelock(void);
   static void writeunlock(void);
 
+  static void createRoute(SoNode * from, const char * eventout,
+                          SoNode * to, const char * eventin);
+  static void removeRoute(SoNode * from, const char * eventout,
+                          SoNode * to, const char * eventin);
+
 private:
   static SoGroup * readAllWrapper(SoInput * in, const SoType & grouptype);
 };
