@@ -197,6 +197,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/SoDB.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -458,6 +459,7 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
+  SoDB::readlock();
   // need to store these in case action is re-applied
   AppliedCode storedcode = THIS->appliedcode;
   SoActionP::AppliedData storeddata = THIS->applieddata;
@@ -531,6 +533,7 @@ SoAction::apply(SoNode * root)
   THIS->appliedcode = storedcode;
   THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
+  SoDB::readunlock();
 }
 
 /*!
@@ -542,6 +545,7 @@ SoAction::apply(SoNode * root)
 void
 SoAction::apply(SoPath * path)
 {
+  SoDB::readlock();
   // need to store these in case action in reapplied
   AppliedCode storedcode = THIS->appliedcode;
   SoActionP::AppliedData storeddata = THIS->applieddata;
@@ -591,6 +595,7 @@ SoAction::apply(SoPath * path)
   THIS->appliedcode = storedcode;
   THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
+  SoDB::readunlock();
 }
 
 /*!
@@ -607,6 +612,7 @@ SoAction::apply(SoPath * path)
 void
 SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
+  SoDB::readlock();
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -686,6 +692,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   THIS->appliedcode = storedcode;
   THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
+  SoDB::readunlock();
 }
 
 /*!
