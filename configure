@@ -9739,6 +9739,7 @@ cat >>confdefs.h <<\EOF
 #define HAVE_WGL
 EOF
 
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
   else
     LIBS=$sim_ac_save_libs
   fi

@@ -599,6 +599,7 @@ if test x"$sim_ac_gl_avail" = xyes; then
 
   if test x"$sim_cv_func_wgl_avail" = xyes; then
     AC_DEFINE([HAVE_WGL],, [define if you have WGL])
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
   else
     LIBS=$sim_ac_save_libs
   fi
