@@ -76,6 +76,7 @@ SoChildList::~SoChildList()
 void
 SoChildList::append(SoNode * const node)
 {
+  node->addAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::append(node);
   this->parent->startNotify();
 }
@@ -86,6 +87,8 @@ SoChildList::append(SoNode * const node)
 void
 SoChildList::insert(SoNode * const node, const int addBefore)
 {
+  assert(addBefore <= this->getLength());
+  node->addAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::insert(node, addBefore);
   this->parent->startNotify();
 }
@@ -96,6 +99,8 @@ SoChildList::insert(SoNode * const node, const int addBefore)
 void
 SoChildList::remove(const int index)
 {
+  assert(index < this->getLength());
+  this->get(index)->removeAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::remove(index);
   this->parent->startNotify();
 }
@@ -109,7 +114,7 @@ SoChildList::truncate(const int length)
   const int n = this->getLength();
   if (length != n) {
     for (int i = length; i < n; i++) {
-      if (this->get(i) != NULL) this->get(i)->removeAuditor(this->parent, SoNotRec::PARENT);
+      this->get(i)->removeAuditor(this->parent, SoNotRec::PARENT);
     }
     SoNodeList::truncate(length);
     this->parent->startNotify();
@@ -138,6 +143,9 @@ SoChildList::copy(const SoChildList & list)
 void
 SoChildList::set(const int index, SoNode * const node)
 {
+  assert(index < this->getLength());
+  this->get(index)->removeAuditor(this->parent, SoNotRec::PARENT);
+  node->addAuditor(this->parent, SoNotRec::PARENT);
   SoBaseList::set(index, (SoBase *)node);
   this->parent->startNotify();
 }

@@ -970,7 +970,8 @@ SoNode::grabEventsCleanup(void)
 void
 SoNode::startNotify(void)
 {
-  inherited::startNotify();
+  SoNotList list; // FIXME: what should be added to this list? pederb, 19991214
+  this->notify(&list);
 }
 
 /*!

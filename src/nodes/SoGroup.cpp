@@ -231,8 +231,6 @@ SoGroup::addChild(SoNode * const node)
 {
   assert(node != NULL);
   this->children->append(node);
-
-  node->addAuditor(this, SoNotRec::PARENT);
 }
 
 /*!
@@ -242,8 +240,6 @@ void
 SoGroup::insertChild(SoNode * const child, const int newChildIndex)
 {
   this->children->insert(child, newChildIndex);
-
-  child->addAuditor(this, SoNotRec::PARENT);
 }
 
 /*!
@@ -252,8 +248,6 @@ SoGroup::insertChild(SoNode * const child, const int newChildIndex)
 void
 SoGroup::removeChild(const int childIndex)
 {
-  (*this->children)[childIndex]->removeAuditor(this, SoNotRec::PARENT);
-
   this->children->remove(childIndex);
 }
 
