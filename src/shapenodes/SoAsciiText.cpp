@@ -422,7 +422,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
     static SbBool first = TRUE;
     if (first) {
       first = FALSE;
-      SoDebugError::postWarning("SoAsciiText::GLRender",
+      SoDebugError::postWarning("SoAsciiText::generatePrimitives",
                                 "3D-textures not properly supported for this node type yet.");
     }
   }
