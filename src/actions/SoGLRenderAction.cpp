@@ -285,18 +285,31 @@
   rendering order. It is the only transparency type rendering mode
   which is guaranteed to do so.
 
-  The current implementation of this mode is heavily based on OpenGL
-  extensions which are only available on NVIDIA chipsets (GeForce3 and
-  above, except GeForce4 MX). These extensions are \c
+  There are currently two separate code paths for this mode. Both
+  paths are heavily based on OpenGL extensions. The first method is
+  based on extensions which are only available on NVIDIA chipsets
+  (GeForce3 and above, except GeForce4 MX). These extensions are \c
   GL_NV_texture_shader, \c GL_NV_texture_rectangle, \c
   GL_NV_register_combiners, \c GL_ARB_shadow and \c
-  GL_ARB_depth_texture. 
+  GL_ARB_depth_texture.
+  Please note that this transparency type occupy all four texture
+  units on the NVIDIA card for all the rendering passes, except the
+  first. Textured surfaces will therefore only be textured if they
+  are not occluded by another transparent surface.
 
-  A second method is added which utilize the \c GL_ARB_fragment_program
-  extension. This extension is currently only supported by the
-  GeForceFX family and the Radeon 9500 and above. This technique is
-  faster than the pure NVIDIA method and will automatically be chosen
-  if possible.
+  The second method utilise the \c GL_ARB_fragment_program
+  extension. This extension is currently supported by the GeForceFX
+  family and the Radeon 9500 and above. This technique is faster than
+  the pure NVIDIA method. The fragment program method will
+  automatically be chosen if possible.   
+  Please note that one should beware not to place the near-plane too
+  close to the camera due to the lack of floating point precision
+  control in fragment programs. Doing so may lead to loss of precision
+  around the edges and 'jaggedness' of the transparent geometry.
+
+  Setting the environment variable COIN_SORTED_LAYERS_USE_NVIDIA_RC to
+  '1' will force the use of former code path instead of the latter,
+  even if it is available.
 
   A rendering context with >= 24 bits depth buffer and 8 bits alpha
   channel must be the current rendering context for this blending mode
@@ -311,7 +324,7 @@
   To be able to render correct transparency independent of object
   order, one have to render in multiple passes. This technique is
   based on depth-peeling which strips away depth layers with each
-  successive pass. The number of passes is therefore an indication on
+  successive pass. The number of passes is therefore an indication of
   how deep into the scene transparent surfaces will be rendered with
   transparency. A higher number will lead to a lower framerate but
   higher quality for scenes with a lot of transparent surfaces. The
@@ -326,21 +339,14 @@
   "Interactive Order-Independent Transparency"
   http:://developer.nvidia.com/object/order_independent_transparency.html
 
-  Please note that this transparency type occupy all four texture
-  units on the NVIDIA card for all the rendering passes, except the
-  first. Textured surfaces will therefore only be textured if they
-  are not occluded by another transparent surface.
-
   \since Coin 2.2
   \since TGS Inventor 4.0
 */
 
 // FIXME: 
 //  todo: - Add debug printout info concerning choosen blend method. 
-//        - Add a mechanism for choosing method specifically using an envvar.
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
-//        - Support texturing in every pass (will probably need fragment programming).
 //        - Investigate whether the TGS method using only EXT_texture_env_combine is a 
 //          feasible method (especially when it comes to speed and number of required 
 //          texture units). [If more than two units are needed, then
@@ -428,6 +434,7 @@ public:
   SbBool sortedlayersblendinitialized;
   SbMatrix sortedlayersblendprojectionmatrix;
   int sortedlayersblendcounter;
+  SbBool usenvidiaregistercombiners;
 
   void setupSortedLayersBlendTextures(const SoState * state);
   void doSortedLayersBlendRendering(const SoState * state, SoNode * node);
@@ -539,6 +546,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->viewportwidth = 0;
   THIS->sortedlayersblendinitialized = FALSE;
   THIS->sortedlayersblendcounter = 0;
+  THIS->usenvidiaregistercombiners = FALSE;
 
 }
 
@@ -878,14 +886,12 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     THIS->sortedlayersblendprojectionmatrix = SoProjectionMatrixElement::get(this->getState());
 
     if (!SoTextureEnabledElement::get(state)) {
-      if (glue->has_arb_fragment_program) {
+      if (glue->has_arb_fragment_program && !THIS->usenvidiaregistercombiners) {
         THIS->setupFragmentProgram();
       }
       else {
         THIS->setupRegisterCombinersNV();
       }
-
-
     } 
 
     // Must always return FALSE as everything must be rendered to the
@@ -1434,7 +1440,7 @@ SoGLRenderActionP::doSortedLayersBlendRendering(const SoState * state, SoNode * 
   }
 
   // Blend together the aquired RGBA layers
-  if (glue->has_arb_fragment_program)
+  if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners)
     renderSortedLayersFP(state);
   else
     renderSortedLayersNV(state);
@@ -1492,14 +1498,14 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
   // stays correct.
   GLfloat clearcolor[4];
   glGetFloatv(GL_COLOR_CLEAR_VALUE, clearcolor);
-  if (glue->has_arb_fragment_program)
+  if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners)
     glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 0.0f);
   else
     glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
 
-  // Clear all error before traversal, just in case.
+  // Clear all errors before traversal, just in case.
   GLenum glerror = glGetError();
   while (glerror) {
     SoDebugError::postWarning("renderOneBlendLayer", 
@@ -1511,7 +1517,7 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
   this->action->beginTraversal(node);
 
   if(peel) { 
-    if (glue->has_arb_fragment_program) { 
+    if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) { 
       // Fragment program clean-up      
       glDisable(GL_FRAGMENT_PROGRAM_ARB);    
       glDisable(GL_TEXTURE_RECTANGLE_EXT);   
@@ -1543,17 +1549,14 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
       glDisable(GL_ALPHA_TEST);
 
     }
-
   }
 
-  if (!glue->has_arb_fragment_program) 
+  if (!glue->has_arb_fragment_program || this->usenvidiaregistercombiners) 
     glDisable(GL_TEXTURE_SHADER_NV);
 
-
-  // FIXME: Wouldn't it be a smart thing to use PBuffers for the RGBA
-  // layers instead of copying from the framebuffer? The copying seems
-  // to be a huge performance hit for large canvases. (20031127
-  // handegar)
+  // FIXME: It might be a smart thing to use PBuffers for the RGBA
+  // layers instead of copying from the framebuffer. The copying seems
+  // to be a performance hit for large canvases. (20031127 handegar)
 
   // copy the RGBA of the layer to a texture
   glEnable(GL_TEXTURE_RECTANGLE_EXT);
@@ -1586,11 +1589,14 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
   if (envcoin && (atoi(envcoin) > 0))
     this->sortedlayersblendpasses = atoi(envcoin);
   
+  const char * envusenvidiarc = coin_getenv("COIN_SORTED_LAYERS_USE_NVIDIA_RC");
+  if (envusenvidiarc && (atoi(envusenvidiarc) > 0))
+    this->usenvidiaregistercombiners = TRUE;
+
   this->rgbatextureids = new GLuint[this->sortedlayersblendpasses];
 
-
   const cc_glglue * glue = sogl_glue_instance(state);  
-  if (glue->has_arb_fragment_program) {
+  if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
   
     // Initialize fragment program
     glue->glGenProgramsARB(1, &sortedlayersblendprogramid);
@@ -1829,13 +1835,14 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
   
     glGenTextures(1, &this->depthtextureid);
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);      
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_DEPTH_COMPONENT24, canvassize[0], canvassize[1],                  0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_DEPTH_COMPONENT24, canvassize[0], canvassize[1],
+                 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
-    if (glue->has_arb_fragment_program) {
+    if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
       // Not disabled as default by NVIDIA when using fragment programs (according to spec.)
       glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_MODE, GL_NONE); 
     }
@@ -1844,7 +1851,8 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
       glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
     }
     
-    if (!glue->has_arb_fragment_program) { // The "register combiner"-way if FP is unavailable.
+    // The "register combiner"-way if explicitly choosen or FP is unavailable 
+    if(this->usenvidiaregistercombiners) { 
       // HILO texture setup
       GLushort HILOtexture[] = {0, 0};
       glGenTextures(1, &this->hilotextureid);
@@ -1880,7 +1888,6 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
 void
 SoGLRenderActionP::renderSortedLayersFP(const SoState * state)
 {
-
 
   const cc_glglue * glue = sogl_glue_instance(state);  
 
@@ -1952,7 +1959,7 @@ SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
   glClear(GL_COLOR_BUFFER_BIT);
 
   
-  // Got to make sure that the GL_CULL_FACE state is preserved if the scene
+  // Must make sure that the GL_CULL_FACE state is preserved if the scene
   // contains both solid and non-solid shapes.
   SbBool cullface = glIsEnabled(GL_CULL_FACE);  
   glDisable(GL_CULL_FACE);
