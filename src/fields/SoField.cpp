@@ -1426,18 +1426,19 @@ SoField::countWriteRefs(SoOutput * out) const
 void
 SoField::evaluate(void) const
 {
-  // Cast away the const. evaluate() must be const, since we're using
-  // evaluate() from getValue().
+  if (this->getDirty() == FALSE) return;
+  if (this->isConnected() == FALSE) return;
+  if (this->statusflags.isevaluating == 1) return;
+
+  // Cast away the const. (evaluate() must be const, since we're using
+  // evaluate() from getValue().)
   SoField * f = (SoField *)this;
 
-  if (f->getDirty() && f->statusflags.isevaluating == FALSE) {
-    if (f->isConnected()) {
-      f->statusflags.isevaluating = TRUE;
-      f->evaluateConnection();
-      f->statusflags.isevaluating = FALSE;
-    }
-    f->setDirty(FALSE);
-  }
+  f->statusflags.isevaluating = TRUE;
+  f->evaluateConnection();
+  f->statusflags.isevaluating = FALSE;
+
+  f->setDirty(FALSE);
 }
 
 /*!
