@@ -26,7 +26,13 @@
   \brief The SoTabPlaneDragger class is a dragger you can translate and scale within a plane.
   \ingroup draggers
 
-  FIXME: write class doc
+  For translation, click anywhere inside the dragger's plane and move
+  it about in 2D.
+
+  For non-uniform scaling operations, click and drag any of the 4 side
+  tabs. For uniform scaling, click and drag any of the 4 corner tabs.
+
+  \sa SoTabBoxDragger
 */
 
 
@@ -51,9 +57,25 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SbRotation.h>
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 #include <data/draggerDefaults/tabPlaneDragger.h>
+
+
+/*!
+  \var SoSFVec3f SoTabPlaneDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+*/
+
+/*!
+  \var SoSFVec3f SoTabPlaneDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes. The Z component will always be 1.0.
+*/
 
 #define WHATKIND_NONE      0
 #define WHATKIND_SCALE     1
@@ -252,9 +274,7 @@ SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
-/*!
-  Adjusts tabs and renders dragger geometry.
-*/
+// Doc in superclass.
 void
 SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
 {
@@ -382,6 +402,20 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
     coords[15].setValue(-1.0f+sizex, 1.0f, Z_OFFSET);
   }
   coordnode->point.finishEditing();
+}
+
+/*!
+  Not implemented.
+*/
+void
+SoTabPlaneDragger::getXYScreenLengths(SbVec2f & lengths,
+                                      const SbMatrix & localtoscreen,
+                                      const SbVec2s & winsize)
+{
+  // FIXME: I found this method just defined in the header file, but
+  // not implemented (!). We should obviously implement it if it's
+  // useful. 20011127 mortene.
+  COIN_STUB();
 }
 
 /*! \internal
