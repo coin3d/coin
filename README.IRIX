@@ -7,7 +7,23 @@ hit by the problem:
    "Argument list too long", you need to increase the kernel setting
    of memory allocated to argument parsing in the shells.
 
-   Log in as root, or do this through your sysadmin:
+   SGI IRIX have a default setting on the buffer available for
+   shell-argument parsing at an extremely low 20kB. (Other common
+   platforms like Linux, Solaris og HPUX11 have a default buffer of =>
+   1MB.)
+
+   Combined with the peculiar technique of IRIX ld to extract all .o
+   object-files from ar-archives before linking up a main library from
+   sub-libraries, this makes the final link command when building Coin
+   become way too large under many IRIX platforms.
+
+   (For more information, see the documentation of the "ncargs" kernel
+   variable in "Appendix A: Kernel tunable parameters" in «IRIX 6.5
+   Admin: System Configuration and Operation», available online at
+   <URL:http://techpubs.sgi.com>.)
+
+   You can fix this problem once and for all by doing this as root
+   (ask your sysadmin):
 
       # systune -i
       > ncargs 81920

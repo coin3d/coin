@@ -10,6 +10,9 @@ AIX platforms:
    which on AIX, unlike other operating systems like Linux or SGI
    IRIX, can _not_ be tuned.
 
+   For further information about this, see also the item on this in
+   the README.IRIX file.
+
 
  2 There have been a report on the configure and build process not
    being able to find the correct linker and/or combination of linker
