@@ -229,3 +229,20 @@ SoTabBoxDragger::initTransformNodes(void)
   tf->translation = SbVec3f(0.0f, -1.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
 }
+
+/*!
+  Signals the dragger to recalculate the size of its tabs.
+
+  Simply calls SoTabPlaneDragger::adjustScaleTabSize() for all 6
+  planes this dragger consists of.
+*/
+void
+SoTabBoxDragger::adjustScaleTabSize(void)
+{
+  SO_GET_ANY_PART(this, "tabPlane1", SoTabPlaneDragger)->adjustScaleTabSize();
+  SO_GET_ANY_PART(this, "tabPlane2", SoTabPlaneDragger)->adjustScaleTabSize();
+  SO_GET_ANY_PART(this, "tabPlane3", SoTabPlaneDragger)->adjustScaleTabSize();
+  SO_GET_ANY_PART(this, "tabPlane4", SoTabPlaneDragger)->adjustScaleTabSize();
+  SO_GET_ANY_PART(this, "tabPlane5", SoTabPlaneDragger)->adjustScaleTabSize();
+  SO_GET_ANY_PART(this, "tabPlane6", SoTabPlaneDragger)->adjustScaleTabSize();
+}

@@ -61,6 +61,8 @@ public:
   SoSFVec3f translation;
   SoSFVec3f scaleFactor;
 
+  void adjustScaleTabSize(void);
+
 protected:
   ~SoTabBoxDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
