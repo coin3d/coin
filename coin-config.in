@@ -1,49 +1,56 @@
 #! /bin/sh
+# **************************************************************************
+# coin-config -- a utility for retrieving configuration information about
+# the installed Coin library.
 
-usage()
-{
-cat <<EOF
-Usage: coin-config [OPTIONS]
+me=`echo $0 | sed 's,^.*[/\\],,g'`
+
+usage="\
+Usage: $me [OPTIONS]
 Options:
   --cppflags
   --ldflags
   --libs
   --datadir
+  --build <program> <sourcefile> [<sourcefile>]...
   --version
-  --usage | --help
-EOF
-  exit $1
-}
+  --usage | --help"
 
-###### MAIN ###############################################################
+version="@COIN_VERSION@"
 
-while test $# -gt 0; do
+# NOTE: If the first argument is changed in the following variables, it is
+# also necessary to update configure.in, since that argument is shifted off.
+
+cppflags="-I@includedir@ @COIN_EXTRA_CPPFLAGS@"
+ldflags="-L@libdir@ @COIN_EXTRA_LDFLAGS@"
+libs="@COIN_LIBNAME@ @COIN_EXTRA_LIBS@"
+
+datadir="@datadir@"
+
+while test $# -gt 0
+do
   case $1 in
-    --cppflags)
-      # NOTE: If the first includedir argument is changed in the future,
-      # we need to update configure.in as well, since the argument is
-      # shifted off.
-      echo -I@includedir@ @COIN_EXTRA_CPPFLAGS@
-      ;;
-    --ldflags)
-      echo -L@libdir@ @COIN_EXTRA_LDFLAGS@
-      ;;
-    --libs)
-      echo @COIN_LIBNAME@ @COIN_EXTRA_LIBS@
-      ;;
-    --datadir)
-      echo @datadir@
-      ;;
-    --version)
-      echo @COIN_VERSION@
-      ;;
-    --help | --usage)
-      usage 0
-      ;;
-    *)
-      echo "Unknown option: \"$1\""
-      usage 1 1>&2
-      ;;
+  --help | --usage)  echo "$usage"    ;;
+  --version)         echo "$version"  ;;
+  --cppflags)        echo "$cppflags" ;;
+  --ldflags)         echo "$ldflags"  ;;
+  --libs)            echo "$libs"     ;;
+  --datadir)         echo "$datadir"  ;;
+  --build)
+    shift
+    program=$1
+    shift
+    exec @CXX@ \
+      $CPPFLAGS $cppflags \
+      $LDFLAGS $ldflags \
+      -o $program $@ \
+      $LIBS $libs
+    ;;
+  *)
+    echo "$me: Invalid option: \"$1\""
+    echo "$usage" >&2
+    exit 1
+    ;;
   esac
   shift
 done
