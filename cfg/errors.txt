@@ -6,6 +6,22 @@ on the screen by the configure script.
 Versions of the Qt library older than version 2.0.0 is not supported.
 You must upgrade to be able to build and use this software package.
 
+!no-moc
+Found no manner in which the Qt ''moc'' utility could be run. Make
+sure Qt is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
+!no-uic
+Found no manner in which the Qt ''uic'' utility could be run. Make
+sure Qt is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
 !no-qt
 Could not find any way to build against the Qt library. If you
 are sure Qt is properly installed on your system, see the file
@@ -196,6 +212,11 @@ default on Mac OS X is not to use X11, you have to specify the
 !smallchange-unavailable
 Could not build against the SmallChange library. If you are sure
 SmallChange is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+!simvoleon-unavailable
+Could not build against the SimVoleon library. If you are sure
+SimVoleon is properly installed on your system, see the file
 config.log to find out what went wrong.
 
 !end

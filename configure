@@ -23299,33 +23299,6 @@ fi;
 # placed in a macro, so they can be easily used from other src-code
 # modules aswell. 20021218 mortene.
 
-echo "$as_me:$LINENO: checking if this is a source release" >&5
-echo $ECHO_N "checking if this is a source release... $ECHO_C" >&6
-if test x"$COIN_BETA_VERSION" = x""; then
-  echo "$as_me:$LINENO: result: actual release" >&5
-echo "${ECHO_T}actual release" >&6
-  sim_ac_source_release=true
-else
-  echo "$as_me:$LINENO: result: inbetween releases" >&5
-echo "${ECHO_T}inbetween releases" >&6
-  sim_ac_source_release=false
-fi
-
-echo "$as_me:$LINENO: checking if you are a Coin developer" >&5
-echo $ECHO_N "checking if you are a Coin developer... $ECHO_C" >&6
-case "`hostname -d 2>/dev/null || domainname 2>/dev/null || hostname`" in
-*.sim.no | sim.no )
-  echo "$as_me:$LINENO: result: probably" >&5
-echo "${ECHO_T}probably" >&6
-  sim_ac_coin_developer=true
-  ;;
-* )
-  echo "$as_me:$LINENO: result: probably not" >&5
-echo "${ECHO_T}probably not" >&6
-  sim_ac_coin_developer=false
-  ;;
-esac
-
 
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
@@ -23345,1310 +23318,6 @@ fi;
 if $enable_debug; then
   DSUFFIX=d
 
-  if test x"$GCC" = x"yes"; then
-    # no auto string.h-functions
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -fno-builtin" >&5
-echo $ECHO_N "checking whether $CC accepts -fno-builtin... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -fno-builtin"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -fno-builtin" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -fno-builtin"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -fno-builtin" >&5
-echo $ECHO_N "checking whether $CXX accepts -fno-builtin... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -fno-builtin"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -fno-builtin" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -fno-builtin"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-    # disallow non-standard scoping of for()-variables
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -fno-for-scoping" >&5
-echo $ECHO_N "checking whether $CXX accepts -fno-for-scoping... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -fno-for-scoping"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -fno-for-scope" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -fno-for-scope"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -finline-functions" >&5
-echo $ECHO_N "checking whether $CC accepts -finline-functions... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -finline-functions"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -finline-functions" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -finline-functions"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -finline-functions" >&5
-echo $ECHO_N "checking whether $CXX accepts -finline-functions... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -finline-functions"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -finline-functions" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -finline-functions"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-    if $sim_ac_coin_developer; then
-      if $sim_ac_source_release; then :; else
-      # break build on warnings, except for in official source code releases
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -Werror" >&5
-echo $ECHO_N "checking whether $CC accepts -Werror... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Werror"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -Werror" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -Werror"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -Werror" >&5
-echo $ECHO_N "checking whether $CXX accepts -Werror... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Werror"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -Werror" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -Werror"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-      fi
-    fi
-
-    # warn on missing return-value
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -Wreturn-type" >&5
-echo $ECHO_N "checking whether $CC accepts -Wreturn-type... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wreturn-type"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -Wreturn-type" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -Wreturn-type"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -Wreturn-type" >&5
-echo $ECHO_N "checking whether $CXX accepts -Wreturn-type... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wreturn-type"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -Wreturn-type" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -Wreturn-type"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -Wchar-subscripts" >&5
-echo $ECHO_N "checking whether $CC accepts -Wchar-subscripts... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wchar-subscripts"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -Wchar-subscripts" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -Wchar-subscripts"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -Wchar-subscripts" >&5
-echo $ECHO_N "checking whether $CXX accepts -Wchar-subscripts... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wchar-subscripts"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -Wchar-subscripts" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -Wchar-subscripts"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts -Wparentheses" >&5
-echo $ECHO_N "checking whether $CC accepts -Wparentheses... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wparentheses"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -Wparentheses" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -Wparentheses"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -Wparentheses" >&5
-echo $ECHO_N "checking whether $CXX accepts -Wparentheses... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wparentheses"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -Wparentheses" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -Wparentheses"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-  else
-    case $CXX in
-    *wrapmsvc* )
-      if $sim_ac_coin_developer; then
-        if $sim_ac_source_release; then :; else
-          # break build on warnings, except for in official source code releases
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts /WX" >&5
-echo $ECHO_N "checking whether $CC accepts /WX... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /WX"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS /WX" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS /WX"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts /WX" >&5
-echo $ECHO_N "checking whether $CXX accepts /WX... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /WX"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS /WX" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS /WX"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-        fi
-      fi
-
-      # warning level 3
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts /W3" >&5
-echo $ECHO_N "checking whether $CC accepts /W3... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /W3"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS /W3" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS /W3"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts /W3" >&5
-echo $ECHO_N "checking whether $CXX accepts /W3... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /W3"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS /W3" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS /W3"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-      # disable bool type
-
-
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CC accepts /noBool" >&5
-echo $ECHO_N "checking whether $CC accepts /noBool... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /noBool"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS /noBool" or .
-if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS /noBool"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts /noBool" >&5
-echo $ECHO_N "checking whether $CXX accepts /noBool... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS /noBool"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS /noBool" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS /noBool"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-      ;;
-    esac
-  fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 
 else
@@ -25386,6 +24055,1382 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
   ;;
   esac
 fi
+
+
+echo "$as_me:$LINENO: checking for project release status" >&5
+echo $ECHO_N "checking for project release status... $ECHO_C" >&6
+case $VERSION in
+*[a-z]* )
+  echo "$as_me:$LINENO: result: beta / inbetween releases" >&5
+echo "${ECHO_T}beta / inbetween releases" >&6
+  sim_ac_source_release=false
+  :
+  ;;
+* )
+  echo "$as_me:$LINENO: result: release version" >&5
+echo "${ECHO_T}release version" >&6
+  sim_ac_source_release=true
+  :
+  ;;
+esac
+
+
+echo "$as_me:$LINENO: checking if user is simian" >&5
+echo $ECHO_N "checking if user is simian... $ECHO_C" >&6
+case `hostname -d 2>/dev/null || domainname 2>/dev/null || hostname` in
+*.sim.no | sim.no )
+  echo "$as_me:$LINENO: result: probably" >&5
+echo "${ECHO_T}probably" >&6
+  sim_ac_simian=true
+  :
+  ;;
+* )
+  echo "$as_me:$LINENO: result: probably not" >&5
+echo "${ECHO_T}probably not" >&6
+  sim_ac_simian=false
+  :
+  ;;
+esac
+
+
+
+
+
+
+
+# Check whether --enable-debug or --disable-debug was given.
+if test "${enable_debug+set}" = set; then
+  enableval="$enable_debug"
+  case "${enableval}" in
+    yes) enable_debug=true ;;
+    no)  enable_debug=false ;;
+    true | false) enable_debug=${enableval} ;;
+    *) { { echo "$as_me:$LINENO: error: bad value \"${enableval}\" for --enable-debug" >&5
+echo "$as_me: error: bad value \"${enableval}\" for --enable-debug" >&2;}
+   { (exit 1); exit 1; }; } ;;
+  esac
+else
+  enable_debug=true
+fi;
+
+if $enable_debug; then
+  DSUFFIX=d
+
+  if test x"$GCC" = x"yes"; then
+    # no auto string.h-functions
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -fno-builtin" >&5
+echo $ECHO_N "checking whether $CC accepts -fno-builtin... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -fno-builtin"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -fno-builtin" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -fno-builtin"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -fno-builtin" >&5
+echo $ECHO_N "checking whether $CXX accepts -fno-builtin... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -fno-builtin"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-builtin" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-builtin"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+    # disallow non-standard scoping of for()-variables
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -fno-for-scoping" >&5
+echo $ECHO_N "checking whether $CXX accepts -fno-for-scoping... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -fno-for-scoping"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-for-scope" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-for-scope"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -finline-functions" >&5
+echo $ECHO_N "checking whether $CC accepts -finline-functions... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -finline-functions"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -finline-functions" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -finline-functions"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -finline-functions" >&5
+echo $ECHO_N "checking whether $CXX accepts -finline-functions... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -finline-functions"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -finline-functions" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -finline-functions"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+    if $sim_ac_simian; then
+      if $sim_ac_source_release; then :; else
+      # break build on warnings, except for in official source code releases
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -Werror" >&5
+echo $ECHO_N "checking whether $CC accepts -Werror... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Werror"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Werror" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Werror"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -Werror" >&5
+echo $ECHO_N "checking whether $CXX accepts -Werror... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Werror"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Werror" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Werror"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+      fi
+    fi
+
+    # warn on missing return-value
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -Wreturn-type" >&5
+echo $ECHO_N "checking whether $CC accepts -Wreturn-type... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wreturn-type"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wreturn-type" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wreturn-type"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -Wreturn-type" >&5
+echo $ECHO_N "checking whether $CXX accepts -Wreturn-type... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wreturn-type"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wreturn-type" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wreturn-type"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -Wchar-subscripts" >&5
+echo $ECHO_N "checking whether $CC accepts -Wchar-subscripts... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wchar-subscripts"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wchar-subscripts" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wchar-subscripts"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -Wchar-subscripts" >&5
+echo $ECHO_N "checking whether $CXX accepts -Wchar-subscripts... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wchar-subscripts"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wchar-subscripts" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wchar-subscripts"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts -Wparentheses" >&5
+echo $ECHO_N "checking whether $CC accepts -Wparentheses... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wparentheses"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wparentheses" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wparentheses"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts -Wparentheses" >&5
+echo $ECHO_N "checking whether $CXX accepts -Wparentheses... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -Wparentheses"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wparentheses" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wparentheses"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+  else
+    case $CXX in
+    *wrapmsvc* )
+      if $sim_ac_simian; then
+        if $sim_ac_source_release; then :; else
+          # break build on warnings, except for in official source code releases
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts /WX" >&5
+echo $ECHO_N "checking whether $CC accepts /WX... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /WX"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts /WX" >&5
+echo $ECHO_N "checking whether $CXX accepts /WX... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /WX"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+        fi
+      fi
+
+      # warning level 3
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts /W3" >&5
+echo $ECHO_N "checking whether $CC accepts /W3... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /W3"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /W3" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /W3"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts /W3" >&5
+echo $ECHO_N "checking whether $CXX accepts /W3... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /W3"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /W3" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /W3"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+      # disable bool type
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts /noBool" >&5
+echo $ECHO_N "checking whether $CC accepts /noBool... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /noBool"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /noBool" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /noBool"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts /noBool" >&5
+echo $ECHO_N "checking whether $CXX accepts /noBool... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /noBool"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /noBool" or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /noBool"
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+      ;;
+    esac
+  fi
+
+else
+  DSUFFIX=
+  CPPFLAGS="$CPPFLAGS -DNDEBUG"
+  :
+fi
+
+
+
+:
+
 
 
 #  Yep, this is important in case we want to add code to make
@@ -32453,6 +32498,14 @@ SIM_INCLUDE_GLU_H=$sim_include_glu_h
 
 SIM_INCLUDE_GLEXT_H=$sim_include_glext_h
 
+
+# **************************************************************************
+
+# append compiler flags detected earlier, now that all configure tests
+# are done...
+
+CFLAGS="$CFLAGS $sim_ac_compiler_CFLAGS"
+CXXFLAGS="$CXXFLAGS $sim_ac_compiler_CXXFLAGS"
 
 # **************************************************************************
 # Remaining setup based on platform.
