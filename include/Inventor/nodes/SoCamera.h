@@ -71,6 +71,7 @@ public:
   SoSFFloat focalDistance;
 
   void pointAt(const SbVec3f & targetpoint);
+  void pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector);
   virtual void scaleHeight(float scalefactor) = 0;
   virtual SbViewVolume getViewVolume(float useaspectratio = 0.0f) const = 0;
   void viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
@@ -121,6 +122,7 @@ private:
                         const SbViewportRegion & oldvp,
                         const SbViewportRegion & newvp);
 
+  void lookAt(const SbVec3f & dir, const SbVec3f & up);
 
   StereoMode stereomode;
   float stereoadjustment;
