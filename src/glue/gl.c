@@ -997,6 +997,16 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_1 */
 
+
+#if defined(GL_VERSION_1_2)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) {
+    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);
+  } else {
+    w->glDrawRangeElements = NULL;
+  }
+#endif /* GL_VERSION_1_2 */
+
+
   /* Appeared in OpenGL v1.4 (but also in GL_EXT_multi_draw_array extension */
   w->glMultiDrawArrays = NULL;
   w->glMultiDrawElements = NULL;
@@ -2393,8 +2403,8 @@ cc_glglue_glColorPointer(const cc_glglue * glue,
 }
 
 void
-cc_glglue_glIndexPointer (const cc_glglue * glue,
-                          GLenum type, GLsizei stride, const GLvoid * pointer)
+cc_glglue_glIndexPointer(const cc_glglue * glue,
+                         GLenum type, GLsizei stride, const GLvoid * pointer)
 {
   assert(glue->glIndexPointer);
   glue->glIndexPointer(type, stride, pointer);
@@ -2437,6 +2447,15 @@ cc_glglue_glDrawElements(const cc_glglue * glue,
 {
   assert(glue->glDrawElements);
   glue->glDrawElements(mode, count, type, indices);
+}
+
+void
+cc_glglue_glDrawRangeElements(const cc_glglue * glue,
+                              GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type,
+                              const GLvoid * indices)
+{
+  assert(glue->glDrawRangeElements);
+  glue->glDrawRangeElements(mode, start, end, count, type, indices);
 }
 
 void
