@@ -146,7 +146,6 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     const SbVec4f & tmp = vp[i]->getTextureCoords();
     v.bumpcoord = SbVec2f(tmp[0], tmp[1]);
     v.texcoord0 = tmp;
-    v.texcoord1 = tmp;
     v.texcoordidx = -1;
     
     int midx = vp[i]->getMaterialIndex();

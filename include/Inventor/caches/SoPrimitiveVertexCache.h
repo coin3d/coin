@@ -47,7 +47,6 @@ public:
     SbVec3f vertex;
     SbVec3f normal;
     SbVec4f texcoord0;
-    SbVec4f texcoord1;
     SbVec2f bumpcoord;
     uint8_t rgba[4];
     int texcoordidx;
@@ -61,7 +60,7 @@ public:
                    const SoPrimitiveVertex * v1,
                    const SoPrimitiveVertex * v2,
                    const int * pointdetailidx = NULL);
-  
+
   int getNumVertices(void) const;
   int getNumIndices(void) const;
   const Vertex * getVertices(void) const;
