@@ -848,7 +848,10 @@ SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translatio
 {
   SbMatrix transform;
   transform.setTranslate(translation);
-  if (conversion) transform.multRight(*conversion);
+  if (conversion) {
+    transform.multRight(*conversion);
+    transform.multLeft(conversion->inverse());
+  }
   SbMatrix res = matrix;
   return res.multLeft(transform);
 }
@@ -877,7 +880,10 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   tmp.setTranslate(scalecenter);
   transform.multRight(tmp);
 
-  if (conversion) transform.multRight(*conversion);
+  if (conversion) {
+    transform.multRight(*conversion);
+    transform.multLeft(conversion->inverse());
+  }
   SbMatrix res = matrix;
   return res.multLeft(transform);
 }
@@ -891,8 +897,10 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
   transform.multRight(tmp);
   tmp.setTranslate(-rotcenter);
   transform.multRight(tmp);
-
-  if (conversion) transform.multRight(*conversion);
+  if (conversion) {
+    transform.multRight(*conversion);
+    transform.multLeft(conversion->inverse());
+  }
   SbMatrix res = matrix;
   return res.multLeft(transform);
 }
