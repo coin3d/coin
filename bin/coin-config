@@ -155,9 +155,9 @@ do
   --header)
     shift
     classname=$1
-    for header in `find ${prefix}/include/Inventor -type f | xargs grep -n "^class COIN_DLL_API ${classname}" | cut -d: -f1`; do
-      echo ${header}
-      cat ${header}
+    for header in `find ${prefix}/include/Inventor -type f | xargs grep -n "^class COIN_DLL_API ${classname}\>" | cut -d: -f1`; do
+      echo "FILE: ${header}"
+      cat "${header}"
     done
     exit 0
     ;;
