@@ -817,7 +817,8 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
                           coordIndex.getValues(0),
                           coordIndex.getNum(),
                           this->creaseAngle.getValue(),
-                          NULL,
+                          NULL, // face normals
+                          0,    // num face normals
                           this->ccw.getValue());
     break;
   case PER_FACE:
