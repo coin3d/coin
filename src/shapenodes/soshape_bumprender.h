@@ -23,14 +23,14 @@ public:
   ~soshape_bumprender();
 
   void init(SoState * state);
-  void renderBump(const SoPrimitiveVertexCache * cache, 
+  void renderBump(const SoPrimitiveVertexCache * cache,
                   SoLight * light, const SbMatrix & toobjectspace);
   void renderNormal(const SoPrimitiveVertexCache * cache);
 
 private:
   SoState * state;
   const cc_glglue * glglue;
-  
+
   void initLight(SoLight * light, const SbMatrix & m);
   void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
   SbVec3f getLightVec(const SbVec3f & v) const;

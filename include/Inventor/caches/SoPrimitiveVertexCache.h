@@ -31,6 +31,7 @@
 
 class SoPrimitiveVertexCacheP;
 class SoPrimitiveVertex;
+class SoPointDetail;
 
 // FIXME: evaluate the design of this class, pederb 2003-11-17
 
@@ -45,7 +46,7 @@ public:
     SbVec3f vertex;
     SbVec3f normal;
     SbVec4f texcoord0;
-    SbVec2f texcoord1;
+    SbVec4f texcoord1;
     SbVec2f bumpcoord;
     uint8_t rgba[4];
     int texcoordidx;
@@ -57,8 +58,9 @@ public:
 
   void addTriangle(const SoPrimitiveVertex * v0,
                    const SoPrimitiveVertex * v1,
-                   const SoPrimitiveVertex * v2);
-
+                   const SoPrimitiveVertex * v2,
+                   const int * pointdetailidx = NULL);
+  
   int getNumVertices(void) const;
   int getNumIndices(void) const;
   const Vertex * getVertices(void) const;

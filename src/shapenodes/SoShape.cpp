@@ -872,7 +872,11 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       shapedata->currentbigtexture->triangle(action->getState(), v1, v2, v3);
     }
     else if (shapedata->is_doing_pvcache_rendering) {
-      PRIVATE(this)->pvcache->addTriangle(v1, v2, v3);
+      int pdidx[3];
+      pdidx[0] = shapedata->primdata->getPointDetailIndex(v1);
+      pdidx[1] = shapedata->primdata->getPointDetailIndex(v2);
+      pdidx[2] = shapedata->primdata->getPointDetailIndex(v3);
+      PRIVATE(this)->pvcache->addTriangle(v1, v2, v3, pdidx);
     }
     else {
       glBegin(GL_TRIANGLES);

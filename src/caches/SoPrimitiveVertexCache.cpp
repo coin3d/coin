@@ -32,8 +32,12 @@
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoBumpMapCoordinateElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <stddef.h>
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -47,6 +51,17 @@ public:
 
   const SbBool * enabledunits;
   int maxenabled;
+  const SbVec2f * bumpcoords;
+  int numbumpcoords;
+
+  const uint32_t * packedptr;
+  const SbColor * diffuseptr;
+  const float * transpptr;
+
+  const SoLazyElement * lazyelement;
+  int numdiffuse;
+  int numtransp;
+  int prevfaceidx;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -63,9 +78,29 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 {
   PRIVATE(this) = new SoPrimitiveVertexCacheP;
 
-  PRIVATE(this)->enabledunits = 
+  PRIVATE(this)->enabledunits =
     SoMultiTextureEnabledElement::getEnabledUnits(state,
                                                   PRIVATE(this)->maxenabled);
+  const SoBumpMapCoordinateElement * belem =
+    SoBumpMapCoordinateElement::getInstance(state);
+
+  PRIVATE(this)->numbumpcoords = belem->getNum();
+  PRIVATE(this)->bumpcoords = belem->getArrayPtr();
+
+  SoLazyElement * lelem = SoLazyElement::getInstance(state);
+
+  PRIVATE(this)->numdiffuse = lelem->getNumDiffuse();
+  PRIVATE(this)->numtransp = lelem->getNumTransparencies();
+  if (lelem->isPacked()) {
+    PRIVATE(this)->packedptr = lelem->getPackedPointer();
+    PRIVATE(this)->diffuseptr = NULL;
+    PRIVATE(this)->transpptr = NULL;
+  }
+  else {
+    PRIVATE(this)->packedptr = NULL;
+    PRIVATE(this)->diffuseptr = lelem->getDiffusePointer();
+    PRIVATE(this)->transpptr = lelem->getTransparencyPointer();
+  }
 }
 
 /*!
@@ -76,10 +111,11 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
   delete PRIVATE(this);
 }
 
-void 
+void
 SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
                                     const SoPrimitiveVertex * v1,
-                                    const SoPrimitiveVertex * v2)
+                                    const SoPrimitiveVertex * v2,
+                                    const int * pointdetailidx)
 {
   const SoPrimitiveVertex *vp[3] = { v0,v1,v2 };
 
@@ -90,60 +126,80 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     const SbVec4f & tmp = vp[i]->getTextureCoords();
     v.bumpcoord = SbVec2f(tmp[0], tmp[1]);
     v.texcoord0 = tmp;
-    v.texcoord1 = SbVec2f(tmp[0], tmp[1]);
+    v.texcoord1 = tmp;
     v.texcoordidx = -1;
-
-    // FIXME: fetch vertex color from SoLazyElement, pederb 2003-11-17
-    v.rgba[0] = 0xcc;
-    v.rgba[1] = 0xcc;
-    v.rgba[2] = 0xcc;
-    v.rgba[3] = 0xff;
-
-    const SoDetail * d = vp[i]->getDetail();
-    if (d && d->isOfType(SoPointDetail::getClassTypeId())) {
-      // FIXME: fetch texture coordinates from
-      // SoBumpMapCoordinateElement and update bc
-      // pederb 2003-11-17
-    }
-
-    int32_t idx;
-    if (!PRIVATE(this)->vhash.get(v, idx)) {
-      idx = PRIVATE(this)->vertices.getLength();
-      PRIVATE(this)->vhash.put(v, idx);
-      PRIVATE(this)->vertices.append(v);
-      PRIVATE(this)->indices.append(idx);
+    
+    int midx = vp[i]->getMaterialIndex();
+    uint32_t col;
+    if (PRIVATE(this)->packedptr) {
+      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
     }
     else {
-      PRIVATE(this)->indices.append(idx);
+      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
+      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+      col = tmpc.getPackedValue(tmpt);
+    }
+    
+    v.rgba[0] = col>>24;
+    v.rgba[1] = (col>>16)&0xff;
+    v.rgba[2] = (col>>8)&0xff;
+    v.rgba[3] = col&0xff;
+    
+    SoDetail * d = (SoDetail*) vp[i]->getDetail();
+
+    if (d && d->isOfType(SoFaceDetail::getClassTypeId())) {
+      SoFaceDetail * fd = (SoFaceDetail*) d;
+      assert(pointdetailidx != NULL);
+      assert(pointdetailidx[i] < fd->getNumPoints());
+      
+      SoPointDetail * pd = (SoPointDetail*) 
+        fd->getPoint(pointdetailidx[i]);
+      
+      int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
+      v.texcoordidx = tidx;
+            
+      if (PRIVATE(this)->numbumpcoords) {
+        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+      }
+      int32_t idx;
+      if (!PRIVATE(this)->vhash.get(v, idx)) {
+        idx = PRIVATE(this)->vertices.getLength();
+        PRIVATE(this)->vhash.put(v, idx);
+        PRIVATE(this)->vertices.append(v);
+        PRIVATE(this)->indices.append(idx);
+      }
+      else {
+        PRIVATE(this)->indices.append(idx);
+      }
     }
   }
 }
 
-int 
+int
 SoPrimitiveVertexCache::getNumVertices(void) const
 {
   return PRIVATE(this)->vertices.getLength();
 }
 
-int 
+int
 SoPrimitiveVertexCache::getNumIndices(void) const
 {
   return PRIVATE(this)->indices.getLength();
 }
 
-const SoPrimitiveVertexCache::Vertex * 
+const SoPrimitiveVertexCache::Vertex *
 SoPrimitiveVertexCache::getVertices(void) const
 {
   return PRIVATE(this)->vertices.getArrayPtr();
 }
 
-const int32_t * 
+const int32_t *
 SoPrimitiveVertexCache::getIndices(void) const
 {
   return PRIVATE(this)->indices.getArrayPtr();
 }
 
-const SoPrimitiveVertexCache::Vertex & 
+const SoPrimitiveVertexCache::Vertex &
 SoPrimitiveVertexCache::getVertex(const int idx) const
 {
   return PRIVATE(this)->vertices[idx];
@@ -169,8 +225,9 @@ SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
   return key;
 }
 
-int 
+int
 SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v) const
 {
   return memcmp(this, &v, sizeof(Vertex)) == 0;
 }
+
