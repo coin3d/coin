@@ -85,7 +85,16 @@ SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
   this->capture(state);
-  this->updategl();
+  // we can't simply use updategl() since we need the reset matrix
+  SbMatrix mat = this->viewingMatrix;
+  if (!this->mmidentity) {
+    // first eliminate model matrix part of matrix
+    mat.multRight(this->modelmatrix);
+    // then move geometry to account for the transformations prior to
+    // the camera
+    mat.multLeft(this->modelmatrix.inverse());
+  }
+  glLoadMatrixf((float*)mat);
 }
 
 /*!
