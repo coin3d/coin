@@ -94,6 +94,8 @@ Separator {
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 
@@ -156,8 +158,18 @@ SoTextureCoordinate2::doAction(SoAction * action)
 void
 SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
 {
-  SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
-  SoTextureCoordinate2::doAction((SoAction *)action);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  if (unit == 0) {
+    SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
+    SoTextureCoordinate2::doAction((SoAction *)action);
+  }
+  else {
+    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
+    SoMultiTextureCoordinateElement::set2(action->getState(), this, unit,
+                                          point.getNum(),
+                                          point.getValues(0));
+  }
 }
 
 // Documented in superclass.
