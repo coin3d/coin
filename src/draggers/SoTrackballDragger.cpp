@@ -226,9 +226,20 @@ SoTrackballDragger::setAnimationEnabled(SbBool newval)
   this->animationEnabled = FALSE;
 }
 
+// invalidate surround scale node, if it exists
+static void 
+invalidate_surroundscale(SoBaseKit * kit)
+{
+  SoSurroundScale * ss = (SoSurroundScale*) 
+    kit->getPart("surroundScale", FALSE);
+  if (ss) ss->invalidate();
+}
+
 void
 SoTrackballDragger::dragStart(void)
 {
+  invalidate_surroundscale(this);
+  
   if (this->timerSensor->isScheduled()) {
     this->timerSensor->unschedule();
   }
@@ -435,6 +446,7 @@ SoTrackballDragger::dragFinish(void)
     this->timerSensor->setInterval(SbTime(1.0/50.0));
     this->timerSensor->schedule();
   }
+  invalidate_surroundscale(this);
 }
 
 void

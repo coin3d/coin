@@ -155,7 +155,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     child->setPartAsDefault("scalerActive", "transformBoxScalerScalerActive");
     child->setPartAsDefault("feedback", "transformBoxScalerFeedback");
     child->setPartAsDefault("feedbackActive", "transformBoxScalerFeedbackActive");
-    this->registerChildDragger(child);
+    this->addChildDragger(child);
 
     for (i = 1; i <= 3; i++) {
       str.sprintf("rotator%d", i);
@@ -164,7 +164,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       child->setPartAsDefault("rotatorActive", "transformBoxRotatorRotatorActive");
       child->setPartAsDefault("feedback", "transformBoxRotatorFeedback");
       child->setPartAsDefault("feedbackActive", "transformBoxRotatorFeedbackActive");
-      this->registerChildDragger(child);
+      this->addChildDragger(child);
     }
 
     for (i = 1; i <= 6; i++) {
@@ -174,7 +174,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       child->setPartAsDefault("translatorActive", "transformBoxTranslatorTranslatorActive");
       child->setPartAsDefault("xAxisFeedback", "transformBoxTranslatorXAxisFeedback");
       child->setPartAsDefault("yAxisFeedback", "transformBoxTranslatorYAxisFeedback");
-      this->registerChildDragger(child);
+      this->addChildDragger(child);
     }
     if (this->translFieldSensor->getAttachedField() != &this->translation) {
       this->translFieldSensor->attach(&this->translation);
@@ -187,16 +187,16 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     }
   }
   else {
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("scaler", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator1", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator2", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator3", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator1", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator2", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator3", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator4", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator5", FALSE));
-    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator6", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("scaler", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator1", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator2", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator3", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator1", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator2", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator3", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator4", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator5", FALSE));
+    this->removeChildDragger((SoDragger*)this->getAnyPart("translator6", FALSE));
 
     if (this->translFieldSensor->getAttachedField() != NULL) {
       this->translFieldSensor->detach();
@@ -273,10 +273,26 @@ SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+void 
+SoTransformBoxDragger::addChildDragger(SoDragger * child)
+{
+  child->addStartCallback(invalidateSurroundScaleCB, this);
+  child->addFinishCallback(invalidateSurroundScaleCB, this);
+  this->registerChildDragger(child);
+}
+
+void 
+SoTransformBoxDragger::removeChildDragger(SoDragger * child)
+{
+  child->removeStartCallback(invalidateSurroundScaleCB, this);
+  child->removeFinishCallback(invalidateSurroundScaleCB, this);
+  this->unregisterChildDragger(child);
+}
+
 void
 SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 {
-  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*) d;
-  SoSurroundScale *surround = SO_GET_ANY_PART(thisp, "surroundScale", SoSurroundScale);
-  surround->invalidate();
+  SoTransformBoxDragger * thisp = (SoTransformBoxDragger*) d;
+  SoSurroundScale * surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
+  if (surround) surround->invalidate();
 }

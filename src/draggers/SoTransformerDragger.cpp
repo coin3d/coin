@@ -65,7 +65,6 @@ int SoTransformerDragger::colinearThreshold = 3; // FIXME: find default value fr
 // o some feedback is missing (mostly crosshair)
 // o detect if disc or cylinder rotator should be used (disc-only right now)
 // o not possible to go from free rotate to disc/cylinder rotate.
-// o when translating, the positive-y face is always "active". weird...
 //
 // Also the translation feedback is a bit different from OIV. Coin
 // always places the feedback axes at the center of the face being
@@ -421,7 +420,7 @@ SoTransformerDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 //
 // convenience method used to call setDefault on similar field
 //
-static void 
+static void
 set_default(SoDragger * dragger, const char * fmt, int minval, int maxval)
 {
   SbString str;
@@ -604,9 +603,20 @@ SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
   }
 }
 
+// invalidate surround scale node, if it exists
+static void 
+invalidate_surroundscale(SoBaseKit * kit)
+{
+  SoSurroundScale * ss = (SoSurroundScale*) 
+    kit->getPart("surroundScale", FALSE);
+  if (ss) ss->invalidate();
+}
+
 void
 SoTransformerDragger::dragStart(void)
 {
+  invalidate_surroundscale(this);
+
   int i;
   const SoPath *pickpath = this->getPickPath();
   const SoEvent *event = this->getEvent();
@@ -1138,6 +1148,7 @@ SoTransformerDragger::dragFinish(void)
           s[0], s[1], s[2],
           sox[0], sox[1], sox[2], soa);
 #endif // debug code
+  invalidate_surroundscale(this);
 }
 
 void

@@ -345,9 +345,20 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
   }
 }
 
+// invalidate surround scale node, if it exists
+static void 
+invalidate_surroundscale(SoBaseKit * kit)
+{
+  SoSurroundScale * ss = (SoSurroundScale*) 
+    kit->getPart("surroundScale", FALSE);
+  if (ss) ss->invalidate();
+}
+
 void
 SoHandleBoxDragger::dragStart(void)
 {
+  invalidate_surroundscale(this);
+
   static const char translatorname[] = "translator";
   static const char extrudername[] = "extruder";
   static const char uniformname[] = "uniform";
@@ -538,6 +549,8 @@ SoHandleBoxDragger::dragFinish(void)
   this->constraintState = CONSTRAINT_OFF;
   this->whatkind = WHATKIND_NONE;
   this->setAllPartsActive(FALSE);
+
+  invalidate_surroundscale(this);
 }
 
 void

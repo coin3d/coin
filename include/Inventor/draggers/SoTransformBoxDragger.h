@@ -85,6 +85,10 @@ protected:
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * translFieldSensor;
   SoFieldSensor * scaleFieldSensor;
+
+private:
+  void addChildDragger(SoDragger * child);
+  void removeChildDragger(SoDragger * child);
 };
 
 #endif // !COIN_SOTRANSFORMBOXDRAGGER_H
