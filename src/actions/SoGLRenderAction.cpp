@@ -388,26 +388,8 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     inherited::beginTraversal(node);
     return;
   }
-
-  static SbBool first = TRUE;
-  if (first) {
-    first = FALSE;
-    // Check and remember various GL implementation details and
-    // limits.
-    sogl_global_init();
-  }
-
   if (this->firstrender) {
     this->firstrender = FALSE;
-    glDisable(GL_FOG);
-    glDisable(GL_TEXTURE_1D);
-    glDisable(GL_LINE_STIPPLE);
-    glDisable(GL_POLYGON_STIPPLE);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_BLEND);
-    glDisable(GL_LOGIC_OP);
-    glDisable(GL_STENCIL_TEST);
     glDisable(GL_CLIP_PLANE0);
     glDisable(GL_CLIP_PLANE1);
     glDisable(GL_CLIP_PLANE2);
@@ -426,63 +408,12 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glDisable(GL_TEXTURE_GEN_T);
     glDisable(GL_TEXTURE_GEN_R);
     glDisable(GL_TEXTURE_GEN_Q);
-    glDisable(GL_MAP1_VERTEX_3);
-    glDisable(GL_MAP1_VERTEX_4);
-    glDisable(GL_MAP1_COLOR_4);
-    glDisable(GL_MAP1_INDEX);
-    glDisable(GL_MAP1_NORMAL);
-    glDisable(GL_MAP1_TEXTURE_COORD_1);
-    glDisable(GL_MAP1_TEXTURE_COORD_2);
-    glDisable(GL_MAP1_TEXTURE_COORD_3);
-    glDisable(GL_MAP1_TEXTURE_COORD_4);
-    glDisable(GL_MAP2_VERTEX_3);
-    glDisable(GL_MAP2_VERTEX_4);
-    glDisable(GL_MAP2_COLOR_4);
-    glDisable(GL_MAP2_INDEX);
-    glDisable(GL_MAP2_NORMAL);
-    glDisable(GL_MAP2_TEXTURE_COORD_1);
-    glDisable(GL_MAP2_TEXTURE_COORD_2);
-    glDisable(GL_MAP2_TEXTURE_COORD_3);
-    glDisable(GL_MAP2_TEXTURE_COORD_4);
-    glDisable(GL_POINT_SMOOTH);
-    glDisable(GL_LINE_SMOOTH);
-    glDisable(GL_SCISSOR_TEST);
-    glDisable(GL_COLOR_MATERIAL);
-    glDisable(GL_AUTO_NORMAL);
 
-    // FIXME (pederb) (fix what? -- 20000305 mortene)
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    // light model
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE); // GL_TRUE for higher quality
-
-    // no texturing unless textures in model
-    glDisable(GL_TEXTURE_2D);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-
-    glEnable(GL_NORMALIZE);
-
-    glDisable(GL_CULL_FACE);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-    glFrontFace(GL_CCW);
-    glShadeModel(GL_SMOOTH);
-
-    // only useful while using GL_COLOR_MATERIAL
+    // we are always using GL_COLOR_MATERIAL
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
     this->disableBlend(TRUE);
   }
-
   this->currentpass = 0;
   this->didhavetransparent = FALSE;
   this->disableBlend(); // just in case
@@ -623,7 +554,7 @@ SoGLRenderAction::getCurPass(void) const
 }
 
 /*!
-  Returns \c TRUE if the render action should abort now based on user 
+  Returns \c TRUE if the render action should abort now based on user
   callback.
 
   \sa setAbortCallback()

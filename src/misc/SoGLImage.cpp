@@ -24,6 +24,7 @@
 
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,7 +76,8 @@ SoGLImage::setData(const unsigned char * bytes,
                    const SbBool clamps,
                    const SbBool clampt,
                    const float quality,
-                   void * context)
+                   void * context,
+                   const SbBool createhandlenow)
 {
   this->bytes = bytes;
   this->size = size;
@@ -87,6 +89,12 @@ SoGLImage::setData(const unsigned char * bytes,
   this->flags |= FLAG_INVALIDHANDLE;
   this->quality = quality;
   this->context = context;
+  
+  if (createhandlenow) {
+    if (this->handle) sogl_free_texture(this->handle);
+    this->handle = this->createHandle();
+    this->flags &= ~FLAG_INVALIDHANDLE;
+  }
 }
 
 /*!
@@ -291,7 +299,7 @@ SoGLImage::createHandle(void)
   }
 
   // downscale to legal GL size (implementation dependant)
-  unsigned long maxsize = sogl_max_texture_size();
+  unsigned long maxsize = SoGLTextureImageElement::getMaxGLTextureSize();
   while (newx > maxsize) newx >>= 1;
   while (newy > maxsize) newy >>= 1;
 

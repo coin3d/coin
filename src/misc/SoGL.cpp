@@ -86,8 +86,6 @@ extension_supported(char *extension)
 }
 #endif // extension support check
 
-static SbBool isInitialized = FALSE;
-
 #if GL_VERSION_1_1
 #elif GL_EXT_polygon_offset
 static int polygonOffsetEXT;
@@ -101,11 +99,13 @@ static int textureObjectEXT;
 static int vertexArrayEXT;
 #endif
 
-void
-sogl_global_init()
+static SbBool extIsChecked = FALSE;
+
+static void
+sogl_check_extensions(void)
 {
-  if (isInitialized) return;
-  isInitialized = TRUE;
+  if (extIsChecked) return;
+  extIsChecked = TRUE;
 
 #if GL_VERSION_1_1
 #elif GL_EXT_polygon_offset
@@ -121,45 +121,6 @@ sogl_global_init()
 #elif GL_EXT_vertex_array
   vertexArrayEXT = extension_supported("GL_EXT_vertex_array");
 #endif
-
-#if 0 // debug
-  static int maxTextureSize;
-  static int maxLights;
-  static int maxClipPlanes;
-  static int maxModelviewStackDepth;
-  static int maxProjectionStackDepth;
-  static int maxTextureStackDepth;
-
-  GLint tmp;
-
-  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &tmp);
-  maxTextureSize = tmp;
-  glGetIntegerv(GL_MAX_LIGHTS, &tmp);
-  maxLights = tmp;
-  glGetIntegerv(GL_MAX_CLIP_PLANES, &tmp);
-  maxClipPlanes = tmp;
-  glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH, &tmp);
-  maxModelviewStackDepth = tmp;
-  glGetIntegerv(GL_MAX_PROJECTION_STACK_DEPTH, &tmp);
-  maxProjectionStackDepth = tmp;
-  glGetIntegerv(GL_MAX_TEXTURE_STACK_DEPTH, &tmp);
-  maxTextureStackDepth = tmp;
-
-  SoDebugError::postInfo("sogl_global_init", "\n"
-                         "max texure size: %d\n"
-                         "max modelview matrix depth: %d\n"
-                         "max lights: %d\n"
-                         "max projection matrix depth: %d\n"
-                         "max texture stack depth: %d\n"
-                         "max clip planes: %d\n",
-                         maxTextureSize,
-                         maxModelviewStackDepth,
-                         maxLights,
-                         maxProjectionStackDepth,
-                         maxTextureStackDepth,
-                         maxClipPlanes);
-#endif // debug
-
 }
 
 
@@ -577,80 +538,18 @@ sogl_render_cube(const float width,
   glEnd();
 }
 
-
-// limit functions
-
-// FIXME: avoid most of these by using corresponding methods in
-// SoGL*Element classes. 19990405 mortene.
-int
-sogl_max_texture_size()
-{
-  assert(isInitialized);
-
-  // FIXME: move this code to a static method in
-  // SoGLTextureImageElement? Not the case with OIV, but seems to be
-  // better design. 19990405 mortene.
-  static GLint value = -1;
-  if (value == -1) glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
-  return value;
-}
-
-int
-sogl_max_lights()
-{
-  // TODO: implement.
-  assert(isInitialized);
-  assert(0);
-  return 0;
-}
-
-int
-sogl_max_clip_planes()
-{
-  // TODO: implement.
-  assert(isInitialized);
-  assert(0);
-  return 0;
-}
-
-int
-sogl_max_modelview_stack_depth()
-{
-  // TODO: implement.
-  assert(isInitialized);
-  assert(0);
-  return 0;
-}
-
-int
-sogl_max_projection_stack_depth()
-{
-  // TODO: implement.
-  assert(isInitialized);
-  assert(0);
-  return 0;
-}
-
-int
-sogl_max_texture_stack_depth()
-{
-  // TODO: implement.
-  assert(isInitialized);
-  assert(0);
-  return 0;
-}
-
-SbBool
+static SbBool
 sogl_texture_object_ext()
 {
 #ifdef GL_VERSION_1_1
   return FALSE;
 #elif GL_EXT_texture_object
+  if (!extIsChecked) sogl_check_extensions();
   return (SbBool) textureObjectEXT;
 #endif
 }
 
-SbBool
+static SbBool
 sogl_polygon_offset_ext()
 {
 #ifdef GL_VERSION_1_1
@@ -660,7 +559,7 @@ sogl_polygon_offset_ext()
 #endif
 }
 
-SbBool
+static SbBool
 sogl_vertex_array_ext()
 {
 #ifdef GL_VERSION_1_1

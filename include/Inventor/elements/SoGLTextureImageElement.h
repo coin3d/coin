@@ -45,6 +45,7 @@ public:
                   const SbColor &blendColor);
 
   virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
+  static int32_t getMaxGLTextureSize(void);
 
 protected:
   virtual SbBool hasTransparency(void) const;

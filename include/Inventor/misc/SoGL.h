@@ -36,22 +36,6 @@ class SoTextureCoordinateBundle;
 class SbVec3f;
 class SbVec2f;
 
-
-void sogl_global_init();
-
-// limit functions
-int sogl_max_texture_size();
-int sogl_max_lights();
-int sogl_max_clip_planes();
-int sogl_max_modelview_stack_depth();
-int sogl_max_projection_stack_depth();
-int sogl_max_texture_stack_depth();
-
-// extension queries
-SbBool sogl_texture_object_ext();
-SbBool sogl_polygon_offset_ext();
-SbBool sogl_vertex_array_ext();
-
 // flags for cone, cylinder and cube
 
 #define SOGL_RENDER_SIDE       0x01
@@ -112,7 +96,7 @@ void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 
 void sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
                              void * nurbsrenderer,
-                             const int numctrlpts, 
+                             const int numctrlpts,
                              const float * knotvec,
                              const int numknots,
                              const SbBool glrender,

@@ -35,7 +35,8 @@ public:
                const SbBool clamps,
                const SbBool clampt,
                const float quality,
-               void * context);
+               void * context,
+               const SbBool createhandlenow = FALSE);
 
   const unsigned char * getDataPtr(void) const;
   SbVec2s getSize(void) const;

@@ -212,3 +212,16 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
     else glDisable(GL_ALPHA_TEST);
   }
 }
+
+int32_t
+SoGLTextureImageElement::getMaxGLTextureSize(void)
+{
+  static int32_t maxGLTextureSize = -1;
+  if (maxGLTextureSize == -1) {
+    GLint val;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+    maxGLTextureSize = (int32_t)val;
+  }
+  return maxGLTextureSize;
+}
+
