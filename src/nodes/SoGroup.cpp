@@ -419,14 +419,14 @@ SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    inherited::write(action);
+    this->addWriteReference(out);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
     if (!this->hasMultipleWriteRefs()) SoGroup::doAction((SoAction *)action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
-    this->writeInstance(out);
+    this->getFieldData()->write(out, this);
     if (out->isBinary()) out->write(this->getNumChildren());
     SoGroup::doAction((SoAction *)action);
     this->writeFooter(out);

@@ -51,7 +51,8 @@
 #include <Inventor/fields/SoMFPath.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFPath.h>
-
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/nodes/SoNode.h>
@@ -300,9 +301,25 @@ SoMFPath::read1Value(SoInput * in, int index)
 void
 SoMFPath::write1Value(SoOutput * out, int idx) const
 {
-  SoSFPath sfpath;
-  sfpath.setValue((*this)[idx]);
-  sfpath.writeValue(out);
+  // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
+  // That's why we check for the base type before writing.
+
+  SoBase * base = (SoBase*) this->values[idx];
+  if (base) {
+    if (base->isOfType(SoNode::getClassTypeId())) {
+      ((SoNode*)base)->writeInstance(out);
+    }
+    else if (base->isOfType(SoPath::getClassTypeId())) {
+      SoWriteAction wa(out);
+      wa.continueToApply((SoPath*)base);
+    }
+    else if (base->isOfType(SoEngine::getClassTypeId())) {
+      ((SoEngine*)base)->writeInstance(out);
+    }
+  }
+  else {
+    out->write("NULL");
+  }
 }
 
 #endif // DOXYGEN_SKIP_THIS

@@ -59,6 +59,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/SoOutput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -177,11 +178,12 @@ SoSFNode::readValue(SoInput * in)
 void
 SoSFNode::writeValue(SoOutput * out) const
 {
+  // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
+  // That's why we check for the base type before writing.
   SoBase * base = this->getValue();
   if (base) {
     if (base->isOfType(SoNode::getClassTypeId())) {
-      SoWriteAction wa(out);
-      wa.continueToApply((SoNode *)base);
+      ((SoNode*)base)->writeInstance(out);
     }
     else if (base->isOfType(SoPath::getClassTypeId())) {
       SoWriteAction wa(out);

@@ -1015,7 +1015,7 @@ SoNode::write(SoWriteAction * action)
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, FALSE, FALSE)) return;
-    this->writeInstance(out);
+    this->getFieldData()->write(out, this);
     this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
@@ -1081,8 +1081,8 @@ SoNode::getNodeId(void) const
 void
 SoNode::writeInstance(SoOutput * out)
 {
-  // Fields are written from SoFieldContainer.
-  inherited::writeInstance(out);
+  SoWriteAction wa(out);
+  wa.continueToApply(this);
 }
 
 /*!
