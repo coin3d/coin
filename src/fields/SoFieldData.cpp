@@ -239,16 +239,16 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
   for (int i = 0; i < num; i++) {
     SoField * field0 = fd0->getField(to, i);
     SoField * field1 = fd1->getField(from, i);
-    // copy value only if necessary
+    // copy value only if necessary (note how SoTexture2::filename and
+    // SoTexture2::image would affect each other without this test)
     if ( !field0->isDefault() || !field1->isDefault() ) {
-      // note how SoTexture2::filename and SoTexture2::image would
-      // affect each other without this test
       field0->copyFrom(*field1);
       field0->setDefault(field1->isDefault());
     }
     // copy flags
     field0->setIgnored(field1->isIgnored());
     field0->enableNotify(field1->isNotifyEnabled());
+    field0->setFieldType(field1->getFieldType());
     
     // fix complex fields (node, engine, and path fields)
     field0->fixCopy(copyconnections);
