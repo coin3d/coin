@@ -26,12 +26,32 @@
   \brief The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.
   \ingroup actions
 
+  This action is used for converting a scene graph of VRML1/Coin nodes
+  to a new scene graph using only VRML97/VRML2 nodes.
+
+  Due to the basic differences between VRML1/Coin and VRML2 (the
+  latter does not really have a traversal state) the new scene graph
+  will typically be somewhat larger. To minimize this effect the
+  action tries to re-use nodes when possible.
+
+  VRML1 nodes will be converted to its direct equivalent VRML2 node,
+  while Coin nodes with no VRML2 equivalent are converted to
+  IndexedFaceSet. If the DrawStyle is POINTS, all geometry will be
+  built using PointSet; if it is LINES IndexedLineSet is used.
+
+  Note: if VRML97 support is not present in the Coin library, this
+  action does nothing and getVRML2SceneGraph always returns NULL.
+
   FIXME: more class doc, describe the basics of how the conversion is
   done. (And what happens when VRML97 support is not present in the
   library..) 20020730 mortene.
 
-  \sa SoToVRMLAction
-*/
+  FIXME: SoComplexity::BOUNDING_BOX are not supported. For
+  DrawStyle::LINES quads are not handled correctly (will always draw
+  triangles). SoArray and SoMultipleCopy are not supported.
+  20020805 kristian.
+
+  \sa SoToVRMLAction */
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoToVRML2Action.h>
@@ -139,6 +159,7 @@ public:
     this->coloridx = NULL;
 
     recentTex2 = NULL;
+    do_post_primitives = FALSE;
       
     this->vrmlcoords = new SbList <SoVRMLCoordinate *>;
     this->vrmlnormals = new SbList <SoVRMLNormal *>;
@@ -174,6 +195,7 @@ public:
   SbList <int32_t> * coloridx;
 
   SoTexture2 * recentTex2;
+  SbBool do_post_primitives;
 
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
   
@@ -189,6 +211,7 @@ public:
   SoVRMLCoordinate * get_or_create_coordinate(const SbVec4f *, int32_t num);
   SoVRMLCoordinate * get_or_create_coordinate(const SbVec3f *, int32_t num);
   SoVRMLNormal * get_or_create_normal(const SbVec3f *, int32_t num);
+  SoVRMLColor * get_or_create_color(const uint32_t * packedColor, int32_t num);
   SoVRMLColor * get_or_create_color(const SbColor *, int32_t num);
   SoVRMLTextureCoordinate * get_or_create_texcoordinate(const SbVec2f *, int32_t num);
   void insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom);    
@@ -208,6 +231,7 @@ public:
   static SoCallbackAction::Response soinfo_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response somattrans_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sorotation_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response sorotationxyz_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response soscale_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sotransform_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sotranslation_cb(void *, SoCallbackAction *, const SoNode *);
@@ -257,22 +281,26 @@ SoToVRML2Action::SoToVRML2Action(void)
   PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::unsupported_cb, PRIVATE(this))
 #define ADD_TRIANGLE_CB(_node_) \
   PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, PRIVATE(this))
-#define ADD_SO_TO_IFS(_node_) ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
+#define ADD_SHAPE_CB(_node_, _cb_) \
+  ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
+#define ADD_SO_TO_IFS(_node_) \
+  ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
 
   // Shape nodes
-  ADD_PRE_CB(SoAsciiText, soasciitext_cb);
-  ADD_PRE_CB(SoCone, socone_cb);
-  ADD_PRE_CB(SoCube, socube_cb);
-  ADD_PRE_CB(SoCylinder, socylinder_cb);
-  ADD_PRE_CB(SoIndexedFaceSet, soifs_cb);
-  ADD_PRE_CB(SoIndexedLineSet, soils_cb);
-  ADD_PRE_CB(SoPointSet, sopointset_cb);
-  ADD_PRE_CB(SoSphere, sosphere_cb);
+  ADD_SHAPE_CB(SoAsciiText, soasciitext_cb);
+  ADD_SHAPE_CB(SoCone, socone_cb);
+  ADD_SHAPE_CB(SoCube, socube_cb);
+  ADD_SHAPE_CB(SoCylinder, socylinder_cb);
+  ADD_SHAPE_CB(SoIndexedFaceSet, soifs_cb);
+  ADD_SHAPE_CB(SoIndexedLineSet, soils_cb);
+  ADD_SHAPE_CB(SoPointSet, sopointset_cb);
+  ADD_SHAPE_CB(SoSphere, sosphere_cb);
 
   // Property nodes
   ADD_PRE_CB(SoInfo, soinfo_cb);
   ADD_PRE_CB(SoMatrixTransform, somattrans_cb);
   ADD_PRE_CB(SoRotation, sorotation_cb);
+  ADD_PRE_CB(SoRotationXYZ, sorotationxyz_cb);
   ADD_PRE_CB(SoScale, soscale_cb);
   ADD_PRE_CB(SoTransform, sotransform_cb);
   ADD_PRE_CB(SoTranslation, sotranslation_cb);
@@ -294,7 +322,7 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_PRE_CB(SoWWWInline, sowwwinl_cb);
 
   // Coin nodes
-  ADD_PRE_CB(SoLineSet, solineset_cb);
+  ADD_SHAPE_CB(SoLineSet, solineset_cb);
   ADD_SO_TO_IFS(SoIndexedTriangleStripSet);
   ADD_SO_TO_IFS(SoFaceSet);
   ADD_SO_TO_IFS(SoQuadMesh);
@@ -305,7 +333,7 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_SO_TO_IFS(SoIndexedNurbsCurve);
   ADD_SO_TO_IFS(SoIndexedNurbsSurface);
 
-  ADD_SO_TO_IFS(SoProfile); // Should this be here?
+  ADD_SO_TO_IFS(SoProfile); // FIXME: Should this be here? 20020805 kristian.
 
 #undef ADD_PRE_CB
 #undef ADD_POST_CB
@@ -442,6 +470,18 @@ SoToVRML2ActionP::get_or_create_normal(const SbVec3f * normal, int32_t num)
 }
 
 SoVRMLColor *
+SoToVRML2ActionP::get_or_create_color(const uint32_t * packedColor, int32_t num)
+{
+  // Convert to SbColors
+  SbColor color[num];
+  float f;
+  for (int i=num-1; i >= 0; i--) {
+    color[i].setPackedValue(packedColor[i], f);
+  }
+  return get_or_create_color(color, num);
+}
+
+SoVRMLColor *
 SoToVRML2ActionP::get_or_create_color(const SbColor * color, int32_t num)
 {
   // Search for a matching VRMLColor
@@ -490,73 +530,82 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
   // Create appearance
   SoVRMLAppearance * appearance = new SoVRMLAppearance;
   shape->appearance = appearance;
-    
+
   SoVRMLMaterial * mat = new SoVRMLMaterial;
+  appearance->material = mat;
 
   // Get values from current state
   SbColor ambient, diffuse, specular, emissions;
   float shin, transp;
   action->getMaterial(ambient, diffuse, specular, emissions, shin, transp);
-
-  if (mat->diffuseColor.getValue() != diffuse) mat->diffuseColor = diffuse;
-
-  float ambientIntensity = ambient.getValue()[0] / diffuse.getValue()[0];
-  if (mat->ambientIntensity.getValue() != ambientIntensity)
-    mat->ambientIntensity = ambientIntensity;
+  
+  if (!geom->isOfType(SoVRMLPointSet::getClassTypeId())) {
+    if (mat->diffuseColor.getValue() != diffuse) mat->diffuseColor = diffuse;
     
-  if (mat->specularColor.getValue() != specular) mat->specularColor = specular;    
-  if (mat->emissiveColor.getValue() != emissions) mat->emissiveColor = emissions;
-  if (mat->shininess.getValue() != shin) mat->shininess = shin;
-  if (mat->transparency.getValue() != transp) mat->transparency = transp;
-  appearance->material = mat;
-
-  // Texture
-  if (this->recentTex2 == NULL) {
-    this->recentTex2 = (SoTexture2 *) search_for_recent_node(action, SoTexture2::getClassTypeId());
-  }
-
-  if (this->recentTex2 != NULL) {
-    SbVec2s size;
-    int numComponents;
-    const unsigned char * image = this->recentTex2->image.getValue(size, numComponents);
-    if (size[0] > 0 && size[1] > 0) {
-      SoVRMLTexture * tex;
-      if (!this->recentTex2->filename.isDefault()) {
-        tex = new SoVRMLImageTexture;
-        SbString url = this->master->getUrlName();
-        url += this->recentTex2->filename.getValue();
-        ((SoVRMLImageTexture *)tex)->url.setValue(url);
-      } else {
-        tex = new SoVRMLPixelTexture;
-        ((SoVRMLPixelTexture *)tex)->image.setValue(size, numComponents, image);
-      }
-      tex->repeatS = this->recentTex2->wrapS.getValue() == SoTexture2::REPEAT;
-      tex->repeatT = this->recentTex2->wrapT.getValue() == SoTexture2::REPEAT;
-      appearance->texture = tex;
-      
-      // Texture transform
-      const SbMatrix * matrix = &action->getTextureMatrix();
-
-      if (!matrix->equals(SbMatrix::identity(), 0.0f)) {
-        SbVec3f translation, scaleFactor;
-        SbRotation rotation, scaleOrientation;
-        matrix->getTransform(translation, rotation, scaleFactor, scaleOrientation);
-
-        SoVRMLTextureTransform * textrans = new SoVRMLTextureTransform;
-        textrans->translation = SbVec2f(translation[0], translation[1]);
-
-        SbVec3f axis;
-        float radians;
-        rotation.getValue(axis, radians);
-        if (axis[2] < 0) radians = 2.0f*(float)M_PI - radians;
-        textrans->rotation = radians;
-            
-        textrans->scale = SbVec2f(scaleFactor[0], scaleFactor[1]);
-      
-        appearance->textureTransform = textrans;
-      }
+    // Convert to grayscale for calculating the ambient intensity
+    float ambientGray = ambient[0] * 77 + ambient[1] * 150 + ambient[2] * 29;
+    float diffuseGray = diffuse[0] * 77 + diffuse[1] * 150 + diffuse[2] * 29;
+    if (ambientGray != 0 && diffuseGray != 0) {
+      float ambientIntensity = ambientGray / diffuseGray;
+      if (mat->ambientIntensity.getValue() != ambientIntensity);
+      mat->ambientIntensity = ambientIntensity;
     }
-    this->recentTex2 = NULL;
+    
+    if (mat->specularColor.getValue() != specular) mat->specularColor = specular;    
+    if (mat->emissiveColor.getValue() != emissions) mat->emissiveColor = emissions;
+    if (mat->shininess.getValue() != shin) mat->shininess = shin;
+    if (mat->transparency.getValue() != transp) mat->transparency = transp;
+  
+    // Texture
+    if (this->recentTex2 == NULL) {
+      this->recentTex2 = (SoTexture2 *) search_for_recent_node(action, SoTexture2::getClassTypeId());
+    }
+    
+    if (this->recentTex2 != NULL) {
+      SbVec2s size;
+      int numComponents;
+      const unsigned char * image = this->recentTex2->image.getValue(size, numComponents);
+      if (size[0] > 0 && size[1] > 0) {
+        SoVRMLTexture * tex;
+        if (!this->recentTex2->filename.isDefault()) {
+          tex = new SoVRMLImageTexture;
+          SbString url = this->master->getUrlName();
+          url += this->recentTex2->filename.getValue();
+          ((SoVRMLImageTexture *)tex)->url.setValue(url);
+        } else {
+          tex = new SoVRMLPixelTexture;
+          ((SoVRMLPixelTexture *)tex)->image.setValue(size, numComponents, image);
+        }
+        tex->repeatS = this->recentTex2->wrapS.getValue() == SoTexture2::REPEAT;
+        tex->repeatT = this->recentTex2->wrapT.getValue() == SoTexture2::REPEAT;
+        appearance->texture = tex;
+      
+        // Texture transform
+        const SbMatrix * matrix = &action->getTextureMatrix();
+
+        if (!matrix->equals(SbMatrix::identity(), 0.0f)) {
+          SbVec3f translation, scaleFactor;
+          SbRotation rotation, scaleOrientation;
+          matrix->getTransform(translation, rotation, scaleFactor, scaleOrientation);
+
+          SoVRMLTextureTransform * textrans = new SoVRMLTextureTransform;
+          textrans->translation = SbVec2f(translation[0], translation[1]);
+
+          SbVec3f axis;
+          float radians;
+          rotation.getValue(axis, radians);
+          if (axis[2] < 0) radians = 2.0f*(float)M_PI - radians;
+          textrans->rotation = radians;
+            
+          textrans->scale = SbVec2f(scaleFactor[0], scaleFactor[1]);
+      
+          appearance->textureTransform = textrans;
+        }
+      }
+      this->recentTex2 = NULL;
+    }
+  } else {
+    if (mat->emissiveColor.getValue() != diffuse) mat->emissiveColor = diffuse;
   }
     
   get_current_tail()->addChild(shape);
@@ -653,12 +702,13 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
   } while (grp->getTypeId() != SoVRMLSwitch::getClassTypeId());
 
   SoVRMLSwitch * sw = (SoVRMLSwitch *) grp;
-  if (sw->whichChoice.getValue() != SO_SWITCH_ALL &&
-      sw->whichChoice.getValue() != SO_SWITCH_NONE) {
+  int wc = sw->whichChoice.getValue() == SO_SWITCH_INHERIT ?
+    action->getSwitch() : sw->whichChoice.getValue();
+  if (wc != SO_SWITCH_ALL && wc != SO_SWITCH_NONE) {
     // Move the last child (which is the selected child) to its correct position
     SoNode * n = sw->getChild(sw->getNumChildren()-1);
     sw->removeChild(sw->getNumChildren()-1);
-    sw->insertChild(n, sw->whichChoice.getValue());
+    sw->insertChild(n, wc);
   }
     
   THISP(closure)->dict.enter((unsigned long)node, grp);  
@@ -719,20 +769,26 @@ SoToVRML2ActionP::unsupported_cb(void * closure, SoCallbackAction * action, cons
 SoCallbackAction::Response
 SoToVRML2ActionP::soasciitext_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoVRMLText * text = new SoVRMLText;
   const SoAsciiText * oldtext = (const SoAsciiText*) node;
 
   text->string = oldtext->string;
   text->length = oldtext->width;
-  // FIXME, FontStyle
+  // FIXME: FontStyle. 20020805 kristian.
   
   THISP(closure)->insert_shape(action, text);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response 
 SoToVRML2ActionP::socube_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoVRMLBox * box = new SoVRMLBox;
   const SoCube * cube = (const SoCube*) node;
   if (box->size.getValue()[0] != cube->width.getValue() ||
@@ -741,12 +797,15 @@ SoToVRML2ActionP::socube_cb(void * closure, SoCallbackAction * action, const SoN
     box->size.setValue(cube->width.getValue(), cube->height.getValue(), cube->depth.getValue());
   }
   THISP(closure)->insert_shape(action, box);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response 
 SoToVRML2ActionP::socone_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoVRMLCone * cone = new SoVRMLCone;
   const SoCone * oldcone = (const SoCone*) node;
   
@@ -760,12 +819,15 @@ SoToVRML2ActionP::socone_cb(void * closure, SoCallbackAction * action, const SoN
   if (side != cone->side.getValue()) cone->side = side;
   
   THISP(closure)->insert_shape(action, cone);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
 SoToVRML2ActionP::socylinder_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoVRMLCylinder * cyl = new SoVRMLCylinder;
   const SoCylinder * oldcyl = (const SoCylinder*) node;
 
@@ -782,12 +844,15 @@ SoToVRML2ActionP::socylinder_cb(void * closure, SoCallbackAction * action, const
   if (bottom != cyl->bottom.getValue()) cyl->bottom = bottom;
 
   THISP(closure)->insert_shape(action, cyl);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
 SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   const SoIndexedFaceSet * oldifs = (const SoIndexedFaceSet*) node;
   
   if (oldifs->coordIndex.getNum() == 0 ||
@@ -821,23 +886,30 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
     }
   }
 
-  const SoNormalElement * normalElem = SoNormalElement::getInstance(action->getState());
-  if (coordElem->getNum() > 0) {
-    ifs->normal = thisp->get_or_create_normal(normalElem->getArrayPtr(),
-                                              normalElem->getNum());
-    if (action->getNormalBinding() == SoNormalBinding::PER_FACE_INDEXED ||
-        action->getNormalBinding() == SoNormalBinding::PER_FACE) {
-      ifs->normalPerVertex = FALSE;
+  if (action->getNormalBinding() != SoNormalBinding::OVERALL) {
+    const SoNormalElement * normalElem = SoNormalElement::getInstance(action->getState());
+    if (coordElem->getNum() > 0) {
+      ifs->normal = thisp->get_or_create_normal(normalElem->getArrayPtr(),
+                                                normalElem->getNum());
+      if (action->getNormalBinding() != SoNormalBinding::PER_VERTEX_INDEXED &&
+          action->getNormalBinding() != SoNormalBinding::PER_VERTEX) {
+        ifs->normalPerVertex = FALSE;
+      }
     }
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
     const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
     if (colorElem->getNum() > 1) {
-      ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                              colorElem->getNum());
-      if (action->getMaterialBinding() == SoMaterialBinding::PER_FACE_INDEXED ||
-          action->getMaterialBinding() == SoMaterialBinding::PER_FACE) {
+      if (colorElem->isPacked()) {
+        ifs->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                colorElem->getNum());
+      } else {
+        ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                colorElem->getNum());
+      }
+      if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX_INDEXED &&
+          action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
         ifs->colorPerVertex = FALSE;
       }
     }
@@ -870,12 +942,15 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   }
 
   THISP(closure)->insert_shape(action, ifs);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
 SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   
   const SoIndexedLineSet * oldils = (const SoIndexedLineSet*) node;
@@ -914,20 +989,21 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
     const SoDiffuseColorElement * colorElem =
       SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 1) {
-      ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                              colorElem->getNum());
-      if (action->getMaterialBinding() == SoMaterialBinding::PER_FACE_INDEXED ||
-          action->getMaterialBinding() == SoMaterialBinding::PER_FACE) {
+    if (colorElem->getNum() > 0) {
+      if (colorElem->isPacked()) {
+        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                colorElem->getNum());
+      } else {
+        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                colorElem->getNum());
+      }
+      if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX_INDEXED &&
+          action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
         ils->colorPerVertex = FALSE;
       }
     }
   }
 
-  if (oldils->vertexProperty.getValue() != NULL) {
-    action->getState()->pop();
-  }
-  
   if (thisp->nodefuse && coordElem->getNum() > 0) {
     SbBSPTree bsp;
     int n = oldils->coordIndex.getNum();
@@ -957,26 +1033,82 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     newcoord->point.setValues(0, bsp.numPoints(),
                               bsp.getPointsArrayPtr());
 
-    if (coordElem->getArrayPtr3() == NULL) delete c;
+    if (coordElem->getArrayPtr3() == NULL) delete[] c;
     
   }
   else {
     ils->coordIndex.setValues(0, oldils->coordIndex.getNum(),
                               oldils->coordIndex.getValues(0));
   }
-  
-  if (oldils->materialIndex.getNum()) {
+
+  if (action->getMaterialBinding() == SoMaterialBinding::PER_VERTEX_INDEXED ||
+      action->getMaterialBinding() == SoMaterialBinding::PER_FACE_INDEXED) {
     ils->colorIndex.setValues(0, oldils->materialIndex.getNum(),
                               oldils->materialIndex.getValues(0));
   }
+  else if (action->getMaterialBinding() == SoMaterialBinding::PER_PART_INDEXED ||
+           action->getMaterialBinding() == SoMaterialBinding::PER_PART) {
 
+    // Color per segment, convert to per vertex
+    SbList <int32_t> coordIdx;
+    SbBSPTree bsp;
+    int colidx = 0;
+    SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
+    int n = ils->coordIndex.getNum()-1;
+    for (int i = 0; i < n; i++) {
+      SbVec3f curcol, nextcol;
+      if (action->getMaterialBinding() == SoMaterialBinding::PER_PART_INDEXED) {
+        curcol = color->color[oldils->materialIndex[colidx]];
+        if (i != n-1)
+          nextcol = color->color[oldils->materialIndex[colidx+1]];
+      }
+      else {
+        curcol = color->color[colidx];
+        if (i != n-1)
+          nextcol = color->color[colidx+1];
+      }
+      colidx++;
+
+      coordIdx.append(bsp.addPoint(curcol));
+
+      if (i == n-1 || ils->coordIndex[i+2] == -1) {
+        // Current polyline is done
+        coordIdx.append(coordIdx[coordIdx.getLength()-1]);
+        coordIdx.append(-1);
+        i += 2;
+      }
+      else if (curcol != nextcol) {
+        // Create a new vertex to avoid color interpolation
+        ils->coordIndex.insertSpace(i+1, 1);
+        ils->coordIndex.set1Value(i+1, ils->coordIndex[i+2]);
+        coordIdx.append(bsp.addPoint(curcol));
+        i++; n++;
+      }
+    }
+
+    ils->color = thisp->get_or_create_color((const SbColor *)bsp.getPointsArrayPtr(),
+                                            bsp.numPoints());
+
+    ils->colorIndex.setValues(0, coordIdx.getLength(),
+                              coordIdx.getArrayPtr());
+    
+    ils->colorPerVertex = TRUE;
+  }
+
+  if (oldils->vertexProperty.getValue() != NULL) {
+    action->getState()->pop();
+  }
+  
   THISP(closure)->insert_shape(action, ils);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
 SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   
   const SoLineSet * oldls = (const SoLineSet*) node;
@@ -1005,39 +1137,89 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 1) {
-      ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                              colorElem->getNum());
-      if (action->getMaterialBinding() == SoMaterialBinding::PER_FACE) {
+    const SoDiffuseColorElement * colorElem =
+      SoDiffuseColorElement::getInstance(action->getState());
+    if (colorElem->getNum() > 0) {
+      if (colorElem->isPacked()) {
+        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                colorElem->getNum());
+      } else {
+        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                colorElem->getNum());
+      }
+      if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
         ils->colorPerVertex = FALSE;
       }
     }
+  }
+  
+  int n = oldls->numVertices.getNum();
+  int curidx = 0;
+  SbList <int> l;
+  for (int i = 0; i < n; i++) {
+    for (int j = oldls->numVertices[i]-1; j >= 0; j--) {
+      l.append(curidx++);
+    }
+    l.append(-1);
+  }
+  ils->coordIndex.setValues(0, l.getLength(),
+                            l.getArrayPtr());
+
+  if (action->getMaterialBinding() == SoMaterialBinding::PER_PART) {
+    // Color per segment, convert to per vertex
+    SbList <int32_t> coordIdx;
+    SbBSPTree bsp;
+    int colidx = 0;
+    SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
+    int n = ils->coordIndex.getNum()-1;
+    for (int i = 0; i < n; i++) {
+      SbVec3f curcol, nextcol;
+      
+      curcol = color->color[colidx];
+      if (i != n-1)
+        nextcol = color->color[colidx+1];
+      colidx++;
+      
+      coordIdx.append(bsp.addPoint(curcol));
+
+      if (i == n-1 || ils->coordIndex[i+2] == -1) {
+        // Current polyline is done
+        coordIdx.append(coordIdx[coordIdx.getLength()-1]);
+        coordIdx.append(-1);
+        i += 2;
+      }
+      else if (curcol != nextcol) {
+        // Create a new vertex to avoid color interpolation
+        ils->coordIndex.insertSpace(i+1, 1);
+        ils->coordIndex.set1Value(i+1, ils->coordIndex[i+2]);
+        coordIdx.append(bsp.addPoint(curcol));
+        i++; n++;
+      }
+    }
+
+    ils->color = thisp->get_or_create_color((const SbColor *)bsp.getPointsArrayPtr(),
+                                            bsp.numPoints());
+
+    ils->colorIndex.setValues(0, coordIdx.getLength(),
+                              coordIdx.getArrayPtr());
+    
+    ils->colorPerVertex = TRUE;
   }
 
   if (oldls->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
-
-  int n = oldls->numVertices.getNum();
-    int curidx = 0;
-    SbList <int> l;
-    for (int i = 0; i < n; i++) {
-      for (int j = oldls->numVertices[i]-1; j >= 0; j--) {
-        l.append(curidx++);
-      }
-      l.append(-1);
-    }
-    ils->coordIndex.setValues(0, l.getLength(),
-                              l.getArrayPtr());
-
-    THISP(closure)->insert_shape(action, ils);
-    return SoCallbackAction::CONTINUE;
-  }
+  
+  THISP(closure)->insert_shape(action, ils);
+  return SoCallbackAction::PRUNE;
+}
 
 SoCallbackAction::Response
 SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
 
   const SoPointSet * oldps = (const SoPointSet*) node;
@@ -1055,18 +1237,26 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   if (coordElem->getNum() > 0) {
     if (coordElem->getArrayPtr3() != NULL) {
       ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr3(),
-                                                  coordElem->getNum());
+                                                  SbMin(coordElem->getNum(),
+                                                        oldps->numPoints.getValue()));
     } else {
       ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr4(),
-                                                  coordElem->getNum());
+                                                  SbMin(coordElem->getNum(),
+                                                        oldps->numPoints.getValue()));
     } 
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
     const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 1) {
-      ps->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                             colorElem->getNum());
+    int n = ((SoVRMLCoordinate*)ps->coord.getValue())->point.getNum();
+    if (colorElem->getNum() >= n) {
+      if (colorElem->isPacked()) {
+        ps->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                               n);
+      } else {
+        ps->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                               n);
+      }
     }
   }
 
@@ -1075,18 +1265,21 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   }
 
   THISP(closure)->insert_shape(action, ps);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
 SoToVRML2ActionP::sosphere_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
+  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
+      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+  }
   SoVRMLSphere * sphere = new SoVRMLSphere;
   const SoSphere * oldsphere = (const SoSphere*) node;
   if (oldsphere->radius != sphere->radius)
     sphere->radius = oldsphere->radius.getValue();
   THISP(closure)->insert_shape(action, sphere);
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE;
 }
 
 // Property nodes
@@ -1125,6 +1318,17 @@ SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * action, const
   const SoRotation * oldt = (const SoRotation*) node;
   SoVRMLTransform * newt = new SoVRMLTransform;
   newt->rotation = oldt->rotation.getValue();
+  THISP(closure)->get_current_tail()->addChild(newt);
+  THISP(closure)->vrml2path->append(newt);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response 
+SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  const SoRotationXYZ * oldt = (const SoRotationXYZ*) node;
+  SoVRMLTransform * newt = new SoVRMLTransform;
+  newt->rotation = oldt->getRotation();
   THISP(closure)->get_current_tail()->addChild(newt);
   THISP(closure)->vrml2path->append(newt);
   return SoCallbackAction::CONTINUE;
@@ -1185,7 +1389,7 @@ SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * action, const
   dl->on = olddl->on.getValue();
   dl->intensity = olddl->intensity.getValue();
   dl->color = olddl->color.getValue();
-  // FIXME: SoDirectionalLight seems to not support this?
+  // FIXME: SoDirectionalLight seems to not support this? 20020805 kristian.
   //dl->ambientIntensity = ambient.getValue()[0] / diffuse.getValue()[0];
   
   THISP(closure)->get_current_tail()->addChild(dl);
@@ -1232,6 +1436,8 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
     thisp->bsptreetex = new SbBSPTree;
     thisp->texidx = new SbList <int>;
   }
+  
+  thisp->do_post_primitives = TRUE;
 
   return SoCallbackAction::CONTINUE;
 }
@@ -1268,59 +1474,130 @@ SoCallbackAction::Response
 SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-
-  SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
-
-  // Set the values from the current ShapeHints
-  ifs->creaseAngle = action->getCreaseAngle();
-  if (node->isOfType(SoVertexShape::getClassTypeId())) {
-    ifs->ccw = action->getVertexOrdering() != SoShapeHints::CLOCKWISE;
-  } else {
-    ifs->ccw = TRUE;
-  }
-  ifs->solid = SoShapeHintsElement::getShapeType(action->getState()) == SoShapeHintsElement::SOLID;
-  ifs->convex = action->getFaceType() == SoShapeHints::CONVEX;
-
-  ifs->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
-                                               thisp->bsptree->numPoints());
+  if (!thisp->do_post_primitives) return SoCallbackAction::CONTINUE;
+  thisp->do_post_primitives = FALSE;
   
-  ifs->normal = thisp->get_or_create_normal(thisp->bsptreenormal->getPointsArrayPtr(),
-                                            thisp->bsptreenormal->numPoints());
+  SoVRMLGeometry * is;
+  if (action->getDrawStyle() == SoDrawStyle::POINTS) {
+    SoVRMLPointSet * ps = new SoVRMLPointSet;
+    is = ps;
 
-  if (thisp->coloridx) {
-    // Copy the colors from the state
-    const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-    ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                            colorElem->getNum());
-
-    // Index
-    ifs->colorIndex.setValues(0, thisp->coloridx->getLength(),
-                              thisp->coloridx->getArrayPtr());
-
-  }
-
-  if (thisp->texidx) {
-    // Copy texture coordinates
-    SoVRMLTextureCoordinate * tex = new SoVRMLTextureCoordinate;
-    int n = thisp->bsptreetex->numPoints();
-    tex->point.setNum(n);
-    SbVec2f * ptr = tex->point.startEditing();
-    for (int i = 0; i < n; i++) {
-      SbVec3f p = thisp->bsptreetex->getPoint(i);
-      ptr[i] = SbVec2f(p[0], p[1]);
+    ps->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
+                                                thisp->bsptree->numPoints());
+      
+    if (thisp->coloridx) {
+      // Copy the colors from the state
+      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+      if (colorElem->getNum() == thisp->bsptree->numPoints()) {
+        if (colorElem->isPacked()) {
+          ps->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                 colorElem->getNum());
+        } else {
+          ps->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                 colorElem->getNum());
+        }
+      }
     }
-    tex->point.finishEditing();
-    ifs->texCoord = tex;
 
-    // Index
-    ifs->texCoordIndex.setValues(0, thisp->texidx->getLength(),
-                                 thisp->texidx->getArrayPtr());
+  } else
+  if (action->getDrawStyle() == SoDrawStyle::LINES) {
+    SoVRMLIndexedLineSet * ils = new SoVRMLIndexedLineSet;
+    is = ils;
+
+    ils->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
+                                                 thisp->bsptree->numPoints());
+
+    if (thisp->coloridx) {
+      // Copy the colors from the state
+      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+      if (colorElem->isPacked()) {
+        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                colorElem->getNum());
+      } else {
+        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                colorElem->getNum());
+      }
+      
+      // Index
+      ils->colorIndex.setValues(0, thisp->coloridx->getLength(),
+                                thisp->coloridx->getArrayPtr());  
+    }
+
+    int n = thisp->coordidx->getLength();
+    const int * a = thisp->coordidx->getArrayPtr();
+    SbList <int> l;
+    int p = a[0];
+    for (int i = 0; i < n; i++) {
+      if (a[i] == -1) {
+        l.append(p);
+        if (i < n-1) p = a[i+1];
+      }
+      l.append(a[i]);
+    }
+    ils->coordIndex.setValues(0, l.getLength(),
+                              l.getArrayPtr());
+    
+  } else {
+    SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
+    is = ifs;
+
+    // Set the values from the current ShapeHints
+    ifs->creaseAngle = action->getCreaseAngle();
+    if (node->isOfType(SoVertexShape::getClassTypeId())) {
+      ifs->ccw = action->getVertexOrdering() != SoShapeHints::CLOCKWISE;
+    } else {
+      ifs->ccw = TRUE;
+    }
+    ifs->solid = SoShapeHintsElement::getShapeType(action->getState()) == SoShapeHintsElement::SOLID;
+    ifs->convex = action->getFaceType() == SoShapeHints::CONVEX;
+
+    ifs->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
+                                                thisp->bsptree->numPoints());
+  
+    ifs->normal = thisp->get_or_create_normal(thisp->bsptreenormal->getPointsArrayPtr(),
+                                             thisp->bsptreenormal->numPoints());
+
+    if (thisp->coloridx) {
+      // Copy the colors from the state
+      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+      if (colorElem->isPacked()) {
+        ifs->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+                                                colorElem->getNum());
+      } else {
+        ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+                                                colorElem->getNum());
+      }
+
+      // Index
+      ifs->colorIndex.setValues(0, thisp->coloridx->getLength(),
+                               thisp->coloridx->getArrayPtr());
+
+    }
+
+    if (thisp->texidx) {
+      // Copy texture coordinates
+      SoVRMLTextureCoordinate * tex = new SoVRMLTextureCoordinate;
+      int n = thisp->bsptreetex->numPoints();
+      tex->point.setNum(n);
+      SbVec2f * ptr = tex->point.startEditing();
+      for (int i = 0; i < n; i++) {
+        SbVec3f p = thisp->bsptreetex->getPoint(i);
+        ptr[i] = SbVec2f(p[0], p[1]);
+      }
+      tex->point.finishEditing();
+      ifs->texCoord = tex;
+
+      // Index
+      ifs->texCoordIndex.setValues(0, thisp->texidx->getLength(),
+                                  thisp->texidx->getArrayPtr());
+    }
+
+    ifs->coordIndex.setValues(0, thisp->coordidx->getLength(),
+                             thisp->coordidx->getArrayPtr());
+    ifs->normalIndex.setValues(0, thisp->normalidx->getLength(),
+                              thisp->normalidx->getArrayPtr());
+
   }
-
-  ifs->coordIndex.setValues(0, thisp->coordidx->getLength(),
-                            thisp->coordidx->getArrayPtr());
-  ifs->normalIndex.setValues(0, thisp->normalidx->getLength(),
-                             thisp->normalidx->getArrayPtr());
 
   delete thisp->bsptree; thisp->bsptree = NULL;
   delete thisp->bsptreetex; thisp->bsptreetex = NULL;
@@ -1331,7 +1608,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
   delete thisp->texidx; thisp->texidx = NULL;
   delete thisp->coloridx; thisp->coloridx = NULL;
 
-  thisp->insert_shape(action, ifs);
+  thisp->insert_shape(action, is);
   return SoCallbackAction::CONTINUE;
 }
 
