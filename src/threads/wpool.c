@@ -102,7 +102,7 @@ wpool_get_idle_worker(cc_wpool * pool)
 cc_wpool * 
 cc_wpool_construct(int numworkers)
 {
-  cc_wpool * pool = malloc(sizeof(cc_wpool));
+  cc_wpool * pool = (cc_wpool*) malloc(sizeof(cc_wpool));
 
   pool->mutex = cc_mutex_construct();
   pool->waitcond = cc_condvar_construct();

@@ -117,7 +117,7 @@ worker_stop_thread(cc_worker * worker)
 cc_worker * 
 cc_worker_construct(void)
 {
-  cc_worker * worker = malloc(sizeof(cc_worker));
+  cc_worker * worker = (cc_worker*) malloc(sizeof(cc_worker));
   assert(worker);
 
   worker->mutex = cc_mutex_construct();
@@ -166,6 +166,7 @@ cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
   cc_mutex_lock(worker->mutex);
   cc_condvar_wake_one(worker->cond);
   cc_mutex_unlock(worker->mutex);
+  return TRUE;
 }
 
 SbBool 
