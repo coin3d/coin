@@ -19,9 +19,10 @@ PublicHeaders = \
 	../../include/Inventor/caches/SoGLCacheList.h \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
-	../../include/Inventor/caches/SoTextureCoordinateCache.h \
+	../../include/Inventor/caches/SoTextureCoordinateCache.h
+
+PrivateHeaders = \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h
-PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(caches, caches)
 # **************************************************************************

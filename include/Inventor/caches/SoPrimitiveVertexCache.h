@@ -34,7 +34,7 @@ class SoPrimitiveVertex;
 
 // FIXME: evaluate the design of this class, pederb 2003-11-17
 
-class COIN_DLL_API SoPrimitiveVertexCache : public SoCache {
+class SoPrimitiveVertexCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoPrimitiveVertexCache(SoState * state);
