@@ -172,12 +172,6 @@ SoAction::initClasses(void)
   SoPickAction::initClass();
   SoRayPickAction::initClass();
   SoSearchAction::initClass();
-  SoSimplifyAction::initClass();
-  SoGlobalSimplifyAction::initClass();
-  SoReorganizeAction::initClass();
-  SoShapeSimplifyAction::initClass();
-  SoToVRMLAction::initClass();
-  SoToVRML2Action::initClass();
   SoWriteAction::initClass();
 }
 

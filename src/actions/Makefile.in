@@ -98,44 +98,19 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 ALLSOURCES = \
-	SoAction.cpp \
-	SoAction.h \
-	SoBoxHighlightRenderAction.cpp \
-	SoBoxHighlightRenderAction.h \
-	SoCallbackAction.cpp \
-	SoCallbackAction.h \
-	SoGLRenderAction.cpp \
-	SoGLRenderAction.h \
-	SoGetBoundingBoxAction.cpp \
-	SoGetBoundingBoxAction.h \
-	SoGetMatrixAction.cpp \
-	SoGetMatrixAction.h \
-	SoGetPrimitiveCountAction.cpp \
-	SoGetPrimitiveCountAction.h \
-	SoGlobalSimplifyAction.cpp \
-	SoGlobalSimplifyAction.h \
-	SoHandleEventAction.cpp \
-	SoHandleEventAction.h \
-	SoLineHighlightRenderAction.cpp \
-	SoLineHighlightRenderAction.h \
-	SoPickAction.cpp \
-	SoPickAction.h \
-	SoRayPickAction.cpp \
-	SoRayPickAction.h \
-	SoReorganizeAction.cpp \
-	SoReorganizeAction.h \
-	SoSearchAction.cpp \
-	SoSearchAction.h \
-	SoShapeSimplifyAction.cpp \
-	SoShapeSimplifyAction.h \
-	SoSimplifyAction.cpp \
-	SoSimplifyAction.h \
-	SoToVRML2Action.cpp \
-	SoToVRML2Action.h \
-	SoToVRMLAction.cpp \
-	SoToVRMLAction.h \
-	SoWriteAction.cpp \
-	SoWriteAction.h
+	SoAction.cpp SoAction.h \
+	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
+	SoCallbackAction.cpp SoCallbackAction.h \
+	SoGLRenderAction.cpp SoGLRenderAction.h \
+	SoGetBoundingBoxAction.cpp SoGetBoundingBoxAction.h \
+	SoGetMatrixAction.cpp SoGetMatrixAction.h \
+	SoGetPrimitiveCountAction.cpp SoGetPrimitiveCountAction.h \
+	SoHandleEventAction.cpp SoHandleEventAction.h \
+	SoLineHighlightRenderAction.cpp SoLineHighlightRenderAction.h \
+	SoPickAction.cpp SoPickAction.h \
+	SoRayPickAction.cpp SoRayPickAction.h \
+	SoSearchAction.cpp SoSearchAction.h \
+	SoWriteAction.cpp SoWriteAction.h
 
 
 ALLINSTHEADERS = \
@@ -148,17 +123,11 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoGetBoundingBoxAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoGlobalSimplifyAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoHandleEventAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoLineHighlightRenderAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoPickAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoRayPickAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoReorganizeAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoSearchAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoShapeSimplifyAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoSimplifyAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoToVRML2Action.h \
-	$(top_srcdir)/include/Inventor/actions/SoToVRMLAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoWriteAction.h
 
 
@@ -199,22 +168,17 @@ libactions_la_LIBADD =
 am_libactions_la_OBJECTS =  SoAction.lo SoBoxHighlightRenderAction.lo \
 SoCallbackAction.lo SoGLRenderAction.lo SoGetBoundingBoxAction.lo \
 SoGetMatrixAction.lo SoGetPrimitiveCountAction.lo \
-SoGlobalSimplifyAction.lo SoHandleEventAction.lo \
-SoLineHighlightRenderAction.lo SoPickAction.lo SoRayPickAction.lo \
-SoReorganizeAction.lo SoSearchAction.lo SoShapeSimplifyAction.lo \
-SoSimplifyAction.lo SoToVRML2Action.lo SoToVRMLAction.lo \
-SoWriteAction.lo
+SoHandleEventAction.lo SoLineHighlightRenderAction.lo SoPickAction.lo \
+SoRayPickAction.lo SoSearchAction.lo SoWriteAction.lo
 libactions_la_OBJECTS =  $(am_libactions_la_OBJECTS)
 libactionsLINKHACK_la_LDFLAGS = 
 libactionsLINKHACK_la_LIBADD = 
 am_libactionsLINKHACK_la_OBJECTS =  SoAction.lo \
 SoBoxHighlightRenderAction.lo SoCallbackAction.lo SoGLRenderAction.lo \
 SoGetBoundingBoxAction.lo SoGetMatrixAction.lo \
-SoGetPrimitiveCountAction.lo SoGlobalSimplifyAction.lo \
-SoHandleEventAction.lo SoLineHighlightRenderAction.lo SoPickAction.lo \
-SoRayPickAction.lo SoReorganizeAction.lo SoSearchAction.lo \
-SoShapeSimplifyAction.lo SoSimplifyAction.lo SoToVRML2Action.lo \
-SoToVRMLAction.lo SoWriteAction.lo
+SoGetPrimitiveCountAction.lo SoHandleEventAction.lo \
+SoLineHighlightRenderAction.lo SoPickAction.lo SoRayPickAction.lo \
+SoSearchAction.lo SoWriteAction.lo
 libactionsLINKHACK_la_OBJECTS =  $(am_libactionsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -241,12 +205,10 @@ DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAction.Plo \
 $(DEPDIR)/SoBoxHighlightRenderAction.Plo $(DEPDIR)/SoCallbackAction.Plo \
 $(DEPDIR)/SoGLRenderAction.Plo $(DEPDIR)/SoGetBoundingBoxAction.Plo \
 $(DEPDIR)/SoGetMatrixAction.Plo $(DEPDIR)/SoGetPrimitiveCountAction.Plo \
-$(DEPDIR)/SoGlobalSimplifyAction.Plo $(DEPDIR)/SoHandleEventAction.Plo \
+$(DEPDIR)/SoHandleEventAction.Plo \
 $(DEPDIR)/SoLineHighlightRenderAction.Plo $(DEPDIR)/SoPickAction.Plo \
-$(DEPDIR)/SoRayPickAction.Plo $(DEPDIR)/SoReorganizeAction.Plo \
-$(DEPDIR)/SoSearchAction.Plo $(DEPDIR)/SoShapeSimplifyAction.Plo \
-$(DEPDIR)/SoSimplifyAction.Plo $(DEPDIR)/SoToVRML2Action.Plo \
-$(DEPDIR)/SoToVRMLAction.Plo $(DEPDIR)/SoWriteAction.Plo
+$(DEPDIR)/SoRayPickAction.Plo $(DEPDIR)/SoSearchAction.Plo \
+$(DEPDIR)/SoWriteAction.Plo
 SOURCES = $(libactions_la_SOURCES) $(libactionsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libactions_la_OBJECTS) $(am_libactionsLINKHACK_la_OBJECTS)
 
@@ -385,17 +347,11 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoGetBoundingBoxAction.Plo
 @AMDEP@include $(DEPDIR)/SoGetMatrixAction.Plo
 @AMDEP@include $(DEPDIR)/SoGetPrimitiveCountAction.Plo
-@AMDEP@include $(DEPDIR)/SoGlobalSimplifyAction.Plo
 @AMDEP@include $(DEPDIR)/SoHandleEventAction.Plo
 @AMDEP@include $(DEPDIR)/SoLineHighlightRenderAction.Plo
 @AMDEP@include $(DEPDIR)/SoPickAction.Plo
 @AMDEP@include $(DEPDIR)/SoRayPickAction.Plo
-@AMDEP@include $(DEPDIR)/SoReorganizeAction.Plo
 @AMDEP@include $(DEPDIR)/SoSearchAction.Plo
-@AMDEP@include $(DEPDIR)/SoShapeSimplifyAction.Plo
-@AMDEP@include $(DEPDIR)/SoSimplifyAction.Plo
-@AMDEP@include $(DEPDIR)/SoToVRML2Action.Plo
-@AMDEP@include $(DEPDIR)/SoToVRMLAction.Plo
 @AMDEP@include $(DEPDIR)/SoWriteAction.Plo
 
 mostlyclean-depend:

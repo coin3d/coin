@@ -2,44 +2,19 @@
 ## 19990904 mortene.
 
 ALLSOURCES = \
-	SoAction.cpp \
-	SoAction.h \
-	SoBoxHighlightRenderAction.cpp \
-	SoBoxHighlightRenderAction.h \
-	SoCallbackAction.cpp \
-	SoCallbackAction.h \
-	SoGLRenderAction.cpp \
-	SoGLRenderAction.h \
-	SoGetBoundingBoxAction.cpp \
-	SoGetBoundingBoxAction.h \
-	SoGetMatrixAction.cpp \
-	SoGetMatrixAction.h \
-	SoGetPrimitiveCountAction.cpp \
-	SoGetPrimitiveCountAction.h \
-	SoGlobalSimplifyAction.cpp \
-	SoGlobalSimplifyAction.h \
-	SoHandleEventAction.cpp \
-	SoHandleEventAction.h \
-	SoLineHighlightRenderAction.cpp \
-	SoLineHighlightRenderAction.h \
-	SoPickAction.cpp \
-	SoPickAction.h \
-	SoRayPickAction.cpp \
-	SoRayPickAction.h \
-	SoReorganizeAction.cpp \
-	SoReorganizeAction.h \
-	SoSearchAction.cpp \
-	SoSearchAction.h \
-	SoShapeSimplifyAction.cpp \
-	SoShapeSimplifyAction.h \
-	SoSimplifyAction.cpp \
-	SoSimplifyAction.h \
-	SoToVRML2Action.cpp \
-	SoToVRML2Action.h \
-	SoToVRMLAction.cpp \
-	SoToVRMLAction.h \
-	SoWriteAction.cpp \
-	SoWriteAction.h
+	SoAction.cpp SoAction.h \
+	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
+	SoCallbackAction.cpp SoCallbackAction.h \
+	SoGLRenderAction.cpp SoGLRenderAction.h \
+	SoGetBoundingBoxAction.cpp SoGetBoundingBoxAction.h \
+	SoGetMatrixAction.cpp SoGetMatrixAction.h \
+	SoGetPrimitiveCountAction.cpp SoGetPrimitiveCountAction.h \
+	SoHandleEventAction.cpp SoHandleEventAction.h \
+	SoLineHighlightRenderAction.cpp SoLineHighlightRenderAction.h \
+	SoPickAction.cpp SoPickAction.h \
+	SoRayPickAction.cpp SoRayPickAction.h \
+	SoSearchAction.cpp SoSearchAction.h \
+	SoWriteAction.cpp SoWriteAction.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \
@@ -51,17 +26,11 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoGetBoundingBoxAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoGlobalSimplifyAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoHandleEventAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoLineHighlightRenderAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoPickAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoRayPickAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoReorganizeAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoSearchAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoShapeSimplifyAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoSimplifyAction.h \
-	$(top_srcdir)/include/Inventor/actions/SoToVRML2Action.h \
-	$(top_srcdir)/include/Inventor/actions/SoToVRMLAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoWriteAction.h
 
 ##$ BEGIN TEMPLATE Make-Common(actions)

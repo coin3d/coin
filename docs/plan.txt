@@ -80,7 +80,7 @@ State of library when milestone is met:
 	  SoCallbackAction, SoGetMatrixAction, SoSearchAction,
 	  SoGetPrimitiveCountAction.
 
-  [Estimate for remaining work: < 1 man-week.]
+  [Done.]
 
 * complete support for image textures on all 3D objects which are
   supposed to support them.

@@ -20,7 +20,6 @@
 #ifndef COIN_SOACTIONS_H
 #define COIN_SOACTIONS_H
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
@@ -32,12 +31,6 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoSimplifyAction.h>
-#include <Inventor/actions/SoGlobalSimplifyAction.h>
-#include <Inventor/actions/SoReorganizeAction.h>
-#include <Inventor/actions/SoShapeSimplifyAction.h>
-#include <Inventor/actions/SoToVRMLAction.h>
-#include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
 
 #endif // !COIN_SOACTIONS_H
