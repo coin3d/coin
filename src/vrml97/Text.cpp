@@ -26,7 +26,61 @@
   \brief The SoVRMLText class is used to represent text in a scene.
   \ingroup VRMLnodes
 
-  FIXME: implement and document
+  \WEB3DCOPYRIGHT
+
+  Important note: currently, the implementation of this node is not
+  complete, and some of the features mentioned in the documentation
+  below may not be working yet.
+
+  \WEB3DCOPYRIGHT
+  
+  \verbatim
+  Text { 
+    exposedField  MFString string    []
+    exposedField  SFNode   fontStyle NULL
+    exposedField  MFFloat  length    []      # [0,)
+    exposedField  SFFloat  maxExtent 0.0     # [0,)
+  }
+  \endverbatim
+
+  The Text node specifies a two-sided, flat text string object
+  positioned in the Z=0 plane of the local coordinate system based on
+  values defined in the fontStyle field (see SoVRMLFontStyle).
+  Text nodes may contain multiple text strings specified using the
+  UTF-8 encoding as specified by ISO 10646-1:1993 (see
+  <http://www.web3d.org/technicalinfo/specifications/vrml97/part1/references.html#[UTF8]>).
+  The text strings are stored in the order in which the text mode
+  characters are to be produced as defined by the parameters in the
+  FontStyle node.
+
+  The text strings are contained in the string field. The fontStyle
+  field contains one FontStyle node that specifies the font size, font
+  family and style, direction of the text strings, and any specific
+  language rendering techniques used for the text.
+
+  The maxExtent field limits and compresses all of the text strings if
+  the length of the maximum string is longer than the maximum extent,
+  as measured in the local coordinate system. If the text string with
+  the maximum length is shorter than the maxExtent, then there is no
+  compressing. The maximum extent is measured horizontally for
+  horizontal text (FontStyle node: horizontal=TRUE) and vertically for
+  vertical text (FontStyle node: horizontal=FALSE). The maxExtent
+  field shall be greater than or equal to zero.
+
+  The length field contains an MFFloat value that specifies the length
+  of each text string in the local coordinate system. If the string is
+  too short, it is stretched (either by scaling the text or by adding
+  space between the characters). If the string is too long, it is
+  compressed (either by scaling the text or by subtracting space
+  between the characters). If a length value is missing (for example,
+  if there are four strings but only three length values), the missing
+  values are considered to be 0. The length field shall be greater
+  than or equal to zero.
+
+  Specifying a value of 0 for both the maxExtent and length fields
+  indicates that the string may be any length.
+
+  \sa SoVRMLFontStyle
 */
 
 /*!
@@ -49,27 +103,28 @@
   Maximum object space extent of longest string.
 */
 
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SoGlyph.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/details/SoTextDetail.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
-#include <float.h> // FLT_MIN
-
-#include <stddef.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#include <float.h> // FLT_MIN
+#include <stddef.h>
+
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoTextDetail.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/system/gl.h>
 
 
