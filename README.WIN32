@@ -7,6 +7,23 @@ Section 01 -- Basic build instructions.
         * Cygwin[1], latest release
         * Microsoft Visual C++ v6.x
 
+  First, make sure Microsoft Visual C++ is accessible from the Cygwin
+  shell.  If you can run ``cl.exe'' from the bash command line,
+  everything is probably set up for you already. If not, you need to
+  add something like this to .bashrc and .bash_profile:
+
+    # the Cygwin path to the Microsoft Visual Studio directory...
+    MSVS_HOME="/cygdrive/c/Program Files/Microsoft Visual Studio"
+    win_MSVS_HOME=`cygpath -w "$MSVS_HOME"`
+
+    PATH="$PATH:$MSVS_HOME/VC98/Bin:$MSVS_HOME/VC98/Lib"
+    PATH="$PATH:$MSVS_HOME/Common/MSDev98/Bin"
+    LIB="$win_MSVS_HOME\\VC98\\Lib"
+    INCLUDE="$win_MSVS_HOME\\VC98\\Include"
+
+    export PATH LIB INCLUDE
+
+
   Configure and build the same way as you would on UNIX-based systems,
   i.e.
 
