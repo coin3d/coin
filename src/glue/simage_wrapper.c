@@ -105,25 +105,25 @@ simage_wrapper_save_image(const char * jada,
   return 0;
 }
 
-const char *
+static const char *
 simage_wrapper_get_saver_extensions(void * handle)
 {
   return "";
 }
 
-const char *
+static const char *
 simage_wrapper_get_saver_fullname(void * handle)
 {
   return NULL;
 }
 
-const char *
+static const char *
 simage_wrapper_get_saver_description(void * handle)
 {
   return NULL;
 }
 
-unsigned char *
+static unsigned char *
 simage_wrapper_resize3d(unsigned char * imagedata,
                         int width, int height,
                         int numcomponents,
@@ -135,45 +135,45 @@ simage_wrapper_resize3d(unsigned char * imagedata,
   return NULL;
 }
 
-s_params *
+static s_params *
 simage_wrapper_s_params_create(void)
 {
   return NULL;
 }
 
-void
+static void
 simage_wrapper_s_params_destroy(s_params *params)
 {
   return;
 }
 
-void
+static void
 simage_wrapper_s_params_set(s_params * params, ...)
 {
   return;
 }
 
-int
+static int
 simage_wrapper_s_params_get(s_params * params, ...)
 {
   return 0;
 }
 
-s_stream *
+static s_stream *
 simage_wrapper_s_stream_open(const char * filename,
               s_params * params /* | NULL */)
 {
   return NULL;
 }
 
-s_stream *
+static s_stream *
 simage_wrapper_s_stream_create(const char * filename,
                 s_params * params /* | NULL */)
 {
   return NULL;
 }
 
-void *
+static void *
 simage_wrapper_s_stream_get_buffer(s_stream * stream,
                     void * prealloc /* | NULL */,
                     int *size /* | NULL */,
@@ -182,26 +182,26 @@ simage_wrapper_s_stream_get_buffer(s_stream * stream,
   return NULL;
 }
 
-int
+static int
 simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer,
                     int size, s_params * params /* | NULL */)
 {
   return 0;
 }
 
-void
+static void
 simage_wrapper_s_stream_close(s_stream * stream)
 {
   return;
 }
 
-void
+static void
 simage_wrapper_s_stream_destroy(s_stream * stream)
 {
   return;
 }
 
-s_params *
+static s_params *
 simage_wrapper_s_stream_params(s_stream * stream)
 {
   return NULL;

@@ -112,7 +112,7 @@
 SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
 void * SoWWWInline::fetchurlcbdata;
 SbColor * SoWWWInline::bboxcolor;
-SoColorPacker * wwwinline_colorpacker = NULL;
+static SoColorPacker * wwwinline_colorpacker = NULL;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
 
 SbBool SoWWWInline::readassofile = TRUE;

@@ -301,7 +301,7 @@ SoGLLazyElement::sendBackfaceCulling(const SbBool onoff) const
   ((SoGLLazyElement*)this)->cachebitmask |= CULLING_MASK;
 }
 
-inline void
+static inline void
 send_gl_material(GLenum pname, const SbColor & color)
 {
   GLfloat col[4];

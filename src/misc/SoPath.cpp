@@ -314,7 +314,7 @@ SoPath::append(const SoPath * const frompath)
 // children.  It would probably be a good idea to move this method to
 // SoNode.
 //
-inline SbBool
+static inline SbBool
 has_hidden_children(SoNode * node)
 {
   return (node->getChildren() != NULL) &&

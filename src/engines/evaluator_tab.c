@@ -67,9 +67,9 @@ typedef union
 
   static char * get_regname(char reg, int regtype);
   enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
-  so_eval_node *root_node;
-  int so_evalerror(char *);
-  int so_evallex(void);
+  static so_eval_node *root_node;
+  static int so_evalerror(char *);
+  static int so_evallex(void);
 #include <stdio.h>
 
 

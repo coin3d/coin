@@ -441,7 +441,7 @@ set_callback_data_idx(SbList<SoCallbackData *> & list, const int idx,
   else list[idx]->append(new SoCallbackData(func, data));
 }
 
-void
+static void
 set_callback_data(SbList<SoCallbackData *> & list, const SoType type,
                   void * func, void * data)
 {

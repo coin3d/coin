@@ -428,7 +428,7 @@ SoFieldContainer::set(const char * fielddata, SoInput * in)
 }
 
 // Used from get()'s SoOutput if the initial buffer is too small.
-void *
+static void *
 realloc_buffer(void * buffer, size_t newsize)
 {
   return realloc(buffer, newsize);

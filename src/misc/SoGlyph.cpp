@@ -346,7 +346,8 @@ public:
 static SbList <coin_glyph_info> * activeGlyphs = NULL;
 static void * SoGlyph_mutex = NULL;
 
-void SoGlyph_cleanup(void)
+static void
+SoGlyph_cleanup(void)
 {
   delete activeGlyphs;
   CC_MUTEX_DESTRUCT(SoGlyph_mutex);

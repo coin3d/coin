@@ -245,7 +245,7 @@ SoDebugError::getSeverity(void) const
 
 #if COIN_DEBUG
 
-inline void
+static inline void
 check_breakpoints(const char * source)
 {
   for (int i = 0; i < num_breakpoints; i++) {
@@ -257,7 +257,7 @@ check_breakpoints(const char * source)
 
 #else // COIN_DEBUG
 
-inline void
+static inline void
 check_breakpoints(const char *)
 {
   // should be empty
