@@ -28,6 +28,9 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* Define if you have the <dlfcn.h> header file. */
+#undef HAVE_DLFCN_H
+
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
 

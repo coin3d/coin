@@ -1679,7 +1679,7 @@ if test x"$with_dl" != xno; then
 
   # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
   # HAVE_DLFCN_H symbol set up in config.h automatically.
-  SIM_AC_CHECK_HEADERS([dlfcn.h])
+  AC_CHECK_HEADERS([dlfcn.h])
 
   AC_CACHE_CHECK([whether the dynamic link loader library is available],
     sim_cv_lib_dl_avail,
@@ -1703,46 +1703,6 @@ if test x"$with_dl" != xno; then
   fi
 fi
 ])
-
-
-# SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
-# --------------------------------------------------------------------------
-# Modified AC_CHECK_HEADER to use AC_TRY_COMPILE instead of AC_TRY_CPP,
-# as we can get false positives and/or false negatives when running under
-# Cygwin, using the Microsoft Visual C++ compiler (the configure script will
-# pick the GCC preprocessor).
-
-AC_DEFUN([SIM_AC_CHECK_HEADER], [
-AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
-AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>])
-AC_CACHE_CHECK(
-  [for $1],
-  ac_Header,
-  [AC_TRY_COMPILE([#include <$1>],
-    [],
-    [AC_VAR_SET([ac_Header], yes)],
-    [AC_VAR_SET([ac_Header], no)])])
-if test AC_VAR_GET(ac_Header) = yes; then
-  ifelse([$2], , :, [$2])
-else
-  ifelse([$3], , :, [$3])
-fi
-AC_VAR_POPDEF([ac_Header])
-])# SIM_AC_CHECK_HEADER
-
-
-# SIM_AC_CHECK_HEADERS(HEADER-FILE...
-#                  [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
-# ----------------------------------------------------------
-AC_DEFUN([SIM_AC_CHECK_HEADERS],
-[for ac_header in $1
-do
-SIM_AC_CHECK_HEADER(
-  [$ac_header],
-  [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
-  [$3])
-done
-])# SIM_AC_CHECK_HEADERS
 
 
 # Usage:
