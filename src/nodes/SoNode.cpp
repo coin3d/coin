@@ -1398,6 +1398,8 @@ init_action_methods(void)
                                  SoAction::nullAction);
   SoAudioRenderAction::addMethod(SoListener::getClassTypeId(),       
                                  SoNode::audioRenderS);
+  SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(),       
+                                 SoNode::audioRenderS);
   SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),          
                                  SoAudioRenderAction::callDoAction);
   SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),         
@@ -1405,7 +1407,5 @@ init_action_methods(void)
   SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),           
                                  SoAudioRenderAction::callDoAction);
   SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
-                                 SoAudioRenderAction::callDoAction);
-  SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(), 
                                  SoAudioRenderAction::callDoAction);
 }
