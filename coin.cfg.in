@@ -10,6 +10,7 @@ libs="@COIN_EXTRA_LIBS@"
 msvcrt="@COIN_MSVC_LIBC@"
 datadir="@datadir@"
 includedir="@includedir@"
+frameworkdir="@frameworkdir@"
 compiler="@COIN_COMPILER@"
 objext="@OBJEXT@"
 have_3ds_import=@HAVE_3DS_IMPORT_CAPABILITIES@

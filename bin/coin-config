@@ -30,6 +30,7 @@ Options:
   --libs
   --msvcrt
   --includedir
+  --frameworkdir
   --datadir
   --have-feature <featurename>
   --compile <sourcefile> [<sourcefile>]...
@@ -63,16 +64,17 @@ fi
 while test $# -gt 0
 do
   case $1 in
-  --usage | --help)  echo "$usage"       ;;
-  --version)         echo "$version"     ;;
-  --cppflags)        echo "$cppflags"    ;;
-  --cflags)          echo "$cflags"      ;;
-  --cxxflags)        echo "$cxxflags"    ;;
-  --ldflags)         echo "$ldflags"     ;;
-  --libs)            echo "$libs"        ;;
-  --datadir)         echo "$datadir"     ;;
-  --includedir)      echo "$includedir"  ;;
-  --msvcrt)          echo "$msvcrt"      ;;
+  --usage | --help)  echo "$usage"         ;;
+  --version)         echo "$version"       ;;
+  --cppflags)        echo "$cppflags"      ;;
+  --cflags)          echo "$cflags"        ;;
+  --cxxflags)        echo "$cxxflags"      ;;
+  --ldflags)         echo "$ldflags"       ;;
+  --libs)            echo "$libs"          ;;
+  --datadir)         echo "$datadir"       ;;
+  --includedir)      echo "$includedir"    ;;
+  --frameworkdir)    echo "$frameworkdir"  ;;
+  --msvcrt)          echo "$msvcrt"        ;;
   --have-feature)
     exitcode=1
     feature="`echo $2 | tr '-' '_'`"
