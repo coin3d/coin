@@ -229,7 +229,7 @@ if $sim_ac_enable_vrml97 ; then
 else
   HAVE_VRML97=0
   VRML97MAKEFILE=
-  SIM_AC_CONFIGURATION_SETTING([VRML97 support], [No])
+  SIM_AC_CONFIGURATION_SETTING([VRML97 support], [No  (enable with --enable-vrml97)])
 fi
 AC_SUBST(HAVE_VRML97)
 
@@ -318,6 +318,7 @@ fi
 HAVE_THREADS=1
 if test "$sim_ac_threads_api" = "none"; then
   HAVE_THREADS=0
+  sim_ac_threads_api="none  (enable with --enable-threads)"
 else
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
 fi
@@ -1069,16 +1070,6 @@ fi
 AM_CONFIG_HEADER(include/config.h)
 
 # **************************************************************************
-
-# ATTENTION [20011120 larsa]
-# The Makefile list is now automatically patched by bootstrap before
-# Autoconf is run for a second time.  Make sure the bootstrap process works
-# without any error messages before you commit changes to this part.
-
-vrml97makefile=src/vrml97/Makefile
-if $sim_ac_enable_vrml97; then :; else
-  vrml97makefile=
-fi
 
 AC_CONFIG_FILES([
         Makefile

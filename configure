@@ -8777,9 +8777,9 @@ else
   HAVE_VRML97=0
   VRML97MAKEFILE=
   if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="VRML97 support:No"
+  sim_ac_configuration_settings="VRML97 support:No  (enable with --enable-vrml97)"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|VRML97 support:No"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|VRML97 support:No  (enable with --enable-vrml97)"
 fi
 
 fi
@@ -9045,6 +9045,7 @@ fi
 HAVE_THREADS=1
 if test "$sim_ac_threads_api" = "none"; then
   HAVE_THREADS=0
+  sim_ac_threads_api="none  (enable with --enable-threads)"
 else
 
 cat >>confdefs.h <<\_ACEOF
@@ -20020,16 +20021,6 @@ fi
 
 
 # **************************************************************************
-
-# ATTENTION [20011120 larsa]
-# The Makefile list is now automatically patched by bootstrap before
-# Autoconf is run for a second time.  Make sure the bootstrap process works
-# without any error messages before you commit changes to this part.
-
-vrml97makefile=src/vrml97/Makefile
-if $sim_ac_enable_vrml97; then :; else
-  vrml97makefile=
-fi
 
 ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
 
