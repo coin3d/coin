@@ -20,6 +20,9 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991209] switch to latest release version of libtool
+  (v1.3.4 as of today).
+
 * [mortene:19991113] is it possible to get the make process to print
   out which dependency causes recompilation of a file? That would be a
   nice feature.
