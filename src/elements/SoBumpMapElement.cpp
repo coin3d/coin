@@ -95,7 +95,7 @@ SoBumpMapElement::set(SoState * state, SoNode * node,
 //! FIXME: write doc.
 
 SoGLImage *
-SoBumpMapElement::get(SoState * state)
+SoBumpMapElement::get(SoState * const state)
 {
   SoBumpMapElement * elem = (SoBumpMapElement *)
     state->getConstElement(classStackIndex);
