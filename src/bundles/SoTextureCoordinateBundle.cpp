@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -88,7 +89,9 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (vp && vp->texCoord.getNum() > 0) {
     this->state->push();
     this->flags |= FLAG_DIDPUSH;
-    if (forRendering) {
+    // this call is needed to clear GL texgen when explicit
+    // coordinates are set.
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
       SoGLTextureCoordinateElement::setTexGen(this->state,
                                               vp, NULL);
     }
