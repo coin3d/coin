@@ -41,22 +41,49 @@
   within their own code as a convenient way of debugging application
   code, replacing the usual cascades of fprintf() calls.
 
+  Coin supports an environment varaible to set conditional
+  breakpoints.  The COIN_DEBUG_BREAK environment variable can be set
+  to any number of functions (separated by a comma or a space), and if
+  a debug message is posted from one of those functions, your program
+  will be stopped (using assert(0)). This can be useful if you want to
+  get core-dumps whenever for instance a warning is posted from some
+  function (e.g. SbVec3f::normalize). This feature is only enabled in
+  the debug version of Coin.  
 */
 
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
+#include <Inventor/lists/SbList.h>
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <assert.h>
+#include <string.h>
 
 SoType SoDebugError::classTypeId;
 SoErrorCB * SoDebugError::callback = SoError::defaultHandlerCB;
 void * SoDebugError::callbackData = NULL;
 
+#if COIN_DEBUG
+
+// varaibles for run-time breakpoints
+static int num_breakpoints = -1;
+static char ** breakpoints = NULL;
+
+static void
+debug_break_cleanup(void)
+{
+  for (int i = 0; i < num_breakpoints; i++) {
+    delete[] breakpoints[i];
+  }
+  delete[] breakpoints;
+  breakpoints = NULL;
+}
+
+#endif // COIN_DEBUG
 
 /*!
   \enum SoDebugError::Severity
@@ -73,6 +100,45 @@ SoDebugError::initClass(void)
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
     SoType::createType(SoError::getClassTypeId(), "DebugError");
+
+#if COIN_DEBUG
+  // parse breakpoints only the first time we get here.
+  if (num_breakpoints < 0) {
+    num_breakpoints = 0;
+    char * env = getenv("COIN_DEBUG_BREAK");
+    if (env) {
+      num_breakpoints = 1;
+      char * ptr = env;
+      while (*ptr) {
+        if (*ptr == ' ' || *ptr == ',') num_breakpoints++;
+        ptr++;
+      }
+      breakpoints = new char*[num_breakpoints];
+      atexit(debug_break_cleanup);
+      char * cpy = new char[strlen(env)+1];
+      strcpy(cpy, env);
+      ptr = cpy;
+      char * end = strchr(ptr, ' ');
+      char * tst = strchr(ptr, ',');
+      if (end == NULL || (tst && tst < end)) end = tst;
+      if (end == NULL) end = strchr(ptr, 0);
+      int i = 0;
+      while (end && i < num_breakpoints) {
+        *end = 0;
+        breakpoints[i] = new char[strlen(ptr)+1];
+        strcpy(breakpoints[i], ptr);
+        i++;
+        ptr = end+1;
+        end = strchr(ptr, ' ');
+        tst = strchr(ptr, ',');
+        if (end == NULL || (tst && tst < end)) end = tst;
+        if (end == NULL) end = strchr(ptr, 0);
+      }
+      num_breakpoints = i; // just in case parsing failed for some reason
+      delete[] cpy;
+    }
+  }
+#endif // COIN_DEBUG
 }
 
 // Documented for parent class.
@@ -126,6 +192,28 @@ SoDebugError::getSeverity(void) const
   return this->severity;
 }
 
+#if COIN_DEBUG
+
+inline void
+check_breakpoints(const char * source)
+{
+  for (int i = 0; i < num_breakpoints; i++) {
+    if (strcmp(breakpoints[i], source) == 0) {
+      assert(0 && "Coin debug break");
+    }
+  }
+}
+
+#else // COIN_DEBUG
+
+inline void
+check_breakpoints(const char *)
+{
+  // should be empty
+}
+
+#endif // ! COIN_DEBUG
+
 
 #define SODEBUGERROR_POST(SEVERITY, TYPE) \
   va_list args; \
@@ -142,7 +230,8 @@ SoDebugError::getSeverity(void) const
   error.appendToDebugString(source); \
   error.appendToDebugString("(): "); \
   error.appendToDebugString(s.getString()); \
-  error.handleError()
+  error.handleError(); \
+  check_breakpoints(source)
 
 
 /*!
