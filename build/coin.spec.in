@@ -375,6 +375,7 @@ make doxygen-doc
 @includedir@/Inventor/fields/SoSFEnum.h
 @includedir@/Inventor/fields/SoSFFloat.h
 @includedir@/Inventor/fields/SoSFImage.h
+@includedir@/Inventor/fields/SoSFImage3.h
 @includedir@/Inventor/fields/SoSFInt32.h
 @includedir@/Inventor/fields/SoSFLong.h
 @includedir@/Inventor/fields/SoSFMatrix.h
@@ -792,6 +793,7 @@ make doxygen-doc
 @mandir@/man3/SoSFEnum.3
 @mandir@/man3/SoSFFloat.3
 @mandir@/man3/SoSFImage.3
+@mandir@/man3/SoSFImage3.3
 @mandir@/man3/SoSFInt32.3
 @mandir@/man3/SoSFMatrix.3
 @mandir@/man3/SoSFName.3
@@ -922,7 +924,7 @@ rm SoPickedPointList.3 SoPointLight.3 SoPointSet.3 SoPolygonOffset.3 SoPrimitive
 rm SoProfile.3 SoProfileCoordinate2.3 SoProfileCoordinate3.3 SoQuadMesh.3
 rm SoRayPickAction.3 SoReadError.3 SoResetTransform.3 SoRotation.3 SoRotationXYZ.3
 rm SoRotor.3 SoSFBitMask.3 SoSFBool.3 SoSFColor.3 SoSFEngine.3 SoSFEnum.3
-rm SoSFFloat.3 SoSFImage.3 SoSFInt32.3 SoSFMatrix.3 SoSFName.3 SoSFNode.3
+rm SoSFFloat.3 SoSFImage.3 SoSFImage3.3 SoSFInt32.3 SoSFMatrix.3 SoSFName.3 SoSFNode.3
 rm SoSFPath.3 SoSFPlane.3 SoSFRotation.3 SoSFShort.3 SoSFString.3 SoSFTime.3
 rm SoSFTrigger.3 SoSFUInt32.3 SoSFUShort.3 SoSFVec2f.3 SoSFVec3f.3 SoSFVec4f.3
 rm SoSField.3 SoScale.3 SoSceneManager.3 SoSearchAction.3 SoSelection.3
