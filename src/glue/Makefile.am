@@ -15,13 +15,13 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
 PrivateHeaders = \
+	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
 	../../include/Inventor/C/glue/gl_nsgl.h \
 	../../include/Inventor/C/glue/GLUWrapper.h \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h
-
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************
