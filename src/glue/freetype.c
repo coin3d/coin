@@ -139,6 +139,7 @@ ftglue_init(void)
       };
       possiblelibnames[0] = coin_getenv("COIN_FREETYPE2_LIBNAME");
       idx = possiblelibnames[0] ? 0 : 1;
+
       while (!freetype_libhandle && possiblelibnames[idx]) {
         freetype_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;
@@ -180,7 +181,7 @@ ftglue_init(void)
                           !fi->FT_Done_FreeType)) {
       /* something is seriously wrong */
       cc_debugerror_post("freetype glue",
-                         "Loaded freetype DLL ok, but couldn't resolve some symbols.");
+                         "Loaded freetype DLL ok, but couldn't resolve basic symbols.");
       fi->available = 0;
       freetype_failed_to_load = 1;
       freetype_instance = fi;
@@ -201,11 +202,6 @@ ftglue_init(void)
 
       /* Do this late, so we can detect recursive calls to this function. */
       freetype_instance = fi;
-
-      if (!fi->available) {
-        cc_debugerror_post("ftglue_init",
-                           "Failed to initialize freetype glue.");
-      }
     }
   }
   CC_SYNC_END(ftglue_init);

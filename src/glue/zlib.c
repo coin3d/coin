@@ -257,11 +257,6 @@ zlibglue_init(void)
         
         /* Do this late, so we can detect recursive calls to this function. */
         zlib_instance = zi;
-        
-        if (!zi->available) {
-          cc_debugerror_post("zlibglue_init",
-                             "Failed to initialize zlib glue.");
-        }
       }
     }
   }

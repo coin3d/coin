@@ -202,11 +202,6 @@ bzglue_init(void)
         
         /* Do this late, so we can detect recursive calls to this function. */
         bzlib_instance = bi;
-        
-        if (!bi->available) {
-          cc_debugerror_post("bzglue_init",
-                             "Failed to initialize libbzip2 glue.");
-        }
       }
     }
   }
