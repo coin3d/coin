@@ -391,8 +391,14 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
 
   font = NULL;
   
-  if (win32api) { font = cc_flww32_get_font(fontname, sizex, sizey); }
-  else if (freetypelib) { font = cc_flwft_get_font(fontname); }
+  /* FIXME: due to the stupid hack used when setting up a defaultFont,
+     we need to check for it here -- otherwise the Win32 CreateFont()
+     method will find it's best match anyway. Fix by getting rid of
+     the original hack for setting up the defaultFont. 20030530 mortene. */
+  if (strcmp(fontname, "defaultFont") != 0) {
+    if (win32api) { font = cc_flww32_get_font(fontname, sizex, sizey); }
+    else if (freetypelib) { font = cc_flwft_get_font(fontname); }
+  }
 
   if (font) {
     fs = fontstruct_new(font);
