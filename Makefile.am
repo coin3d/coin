@@ -15,10 +15,13 @@ endif
 SUBDIRS = src $(TOOLDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
-
 BUILT_SOURCES = coin-config
-
 coin-config: coin-config.in
+
+EXTRA_DIST = conf-macros/coin.m4
+
+m4datadir = $(datadir)/aclocal
+m4data_DATA = conf-macros/coin.m4
 
 
 doxygen-doc:

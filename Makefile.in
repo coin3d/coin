@@ -103,8 +103,12 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 SUBDIRS = src $(TOOLDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
-
 BUILT_SOURCES = coin-config
+
+EXTRA_DIST = conf-macros/coin.m4
+
+m4datadir = $(datadir)/aclocal
+m4data_DATA = conf-macros/coin.m4
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -113,11 +117,14 @@ CONFIG_CLEAN_FILES =  coin-config
 SCRIPTS =  $(bin_SCRIPTS)
 
 DIST_SOURCES = 
-DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS TODO acconfig.h aclocal.m4 coin-config.in \
-config.guess config.h.in config.sub configure configure.in depcomp \
-include/Inventor/SbBasic.h.in include/Inventor/stamp-h2.in install-sh \
-ltconfig ltmain.sh missing mkinstalldirs
+DATA =  $(m4data_DATA)
+
+DIST_COMMON =  README $(m4data_DATA) ./stamp-h1.in AUTHORS COPYING \
+ChangeLog INSTALL Makefile.am Makefile.in NEWS TODO acconfig.h \
+aclocal.m4 coin-config.in config.guess config.h.in config.sub configure \
+configure.in depcomp include/Inventor/SbBasic.h.in \
+include/Inventor/stamp-h2.in install-sh ltconfig ltmain.sh missing \
+mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -218,6 +225,24 @@ uninstall-binSCRIPTS:
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
 	  rm -f $(DESTDIR)$(bindir)/$$f; \
+	done
+
+install-m4dataDATA: $(m4data_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(m4datadir)
+	@list='$(m4data_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(m4datadir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(m4datadir)/$$f; \
+	done
+
+uninstall-m4dataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(m4data_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(m4datadir)/$$f"; \
+	  rm -f $(DESTDIR)$(m4datadir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -364,7 +389,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/include/Inventor
+	$(mkinstalldirs) $(distdir)/conf-macros $(distdir)/include/Inventor
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -398,21 +423,21 @@ all-recursive-am: config.h
 install-exec-am: install-binSCRIPTS
 install-exec: install-exec-recursive
 
-install-data-am:
+install-data-am: install-m4dataDATA
 install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-recursive
-uninstall-am: uninstall-binSCRIPTS
+uninstall-am: uninstall-binSCRIPTS uninstall-m4dataDATA
 uninstall: uninstall-recursive
-all-am: Makefile $(SCRIPTS) config.h
+all-am: Makefile $(SCRIPTS) $(DATA) config.h
 all-redirect: all-recursive-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs)  $(DESTDIR)$(bindir)
+	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(m4datadir)
 
 
 mostlyclean-generic:
@@ -449,12 +474,12 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f config.status
 
 .PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
-uninstall-binSCRIPTS install-binSCRIPTS install-recursive \
-uninstall-recursive install-data-recursive uninstall-data-recursive \
-install-exec-recursive uninstall-exec-recursive installdirs-recursive \
-uninstalldirs-recursive all-recursive check-recursive \
-installcheck-recursive info-recursive dvi-recursive \
-mostlyclean-recursive distclean-recursive clean-recursive \
+uninstall-binSCRIPTS install-binSCRIPTS uninstall-m4dataDATA \
+install-m4dataDATA install-recursive uninstall-recursive \
+install-data-recursive uninstall-data-recursive install-exec-recursive \
+uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
+all-recursive check-recursive installcheck-recursive info-recursive \
+dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
 maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
 distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
 dvi-am dvi check check-am installcheck-am installcheck all-recursive-am \
@@ -463,7 +488,6 @@ install uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs-am installdirs mostlyclean-generic distclean-generic \
 clean-generic maintainer-clean-generic clean mostlyclean distclean \
 maintainer-clean
-
 
 coin-config: coin-config.in
 
