@@ -707,7 +707,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   if (is3dsFile(in)) {
     SoSeparator * b = (SoSeparator *)rootnode;
     SbBool ok = read3dsFile(in, b);
-    base = b;
+    baseptr = b;
     return ok;
   }
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
