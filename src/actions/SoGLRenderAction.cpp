@@ -65,6 +65,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoShape.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -623,15 +624,30 @@ SoGLRenderAction::addTransPath(SoPath * path)
   // zero refcount for the bboxaction apply()).
   THIS->transpobjpaths.append(path);
 
-  if (THIS->bboxaction == NULL) {
-    THIS->bboxaction =
-      new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
+  SoNode * tail = ((SoFullPath*)path)->getTail();
+  float dist;
+  
+  // test if we can calculate bbox using SoShape::computeBBox. This is
+  // the common case, and quite a lot faster than using an
+  // SoGetBoundingBoxAction
+  if (tail->isOfType(SoShape::getClassTypeId()) && 
+      *(this->getCurPath()) == *path) { // common case
+    SbBox3f dummy;
+    SbVec3f center;
+    ((SoShape*)tail)->computeBBox(this, dummy, center);
+    SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
+    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);    
   }
-  THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
-  THIS->bboxaction->apply(path);
-  SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
-  SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
-  float dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
+  else {
+    if (THIS->bboxaction == NULL) {
+      THIS->bboxaction =
+        new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
+    }
+    THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
+    THIS->bboxaction->apply(path);
+    SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
+    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
+  }
   THIS->transpobjdistances.append(dist);
 }
 
@@ -848,4 +864,3 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
