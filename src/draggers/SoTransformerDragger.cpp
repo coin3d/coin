@@ -23,10 +23,44 @@
 
 /*!
   \class SoTransformerDragger SoTransformerDragger.h Inventor/draggers/SoTransformerDragger.h
-  \brief The SoTransformerDragger class is (FIXME: doc)
+  \brief The SoTransformerDragger provides geometry for translation, scaling and rotations.
   \ingroup draggers
 
-  FIXME: document class
+  Translate the dragger by clicking and dragging any of the
+  (invisible) sides. Translation will default be done in the plane of
+  the side the end-user selected. The user can hold down a \c SHIFT
+  key to lock translation to a single of the axes in the plane. By
+  holding down a \c CTRL key instead, translation can be done along
+  the plane's normal vector.
+
+  Scaling is done by dragging the corner cubes. By default, uniform
+  scaling will be done. Hold down \c SHIFT before selecting any of the
+  corners to do non-uniform scaling. Uniform scaling towards a
+  corner-point can be accomplished by holding down \c CTRL before
+  clicking and dragging one of the cubes.
+
+  Rotation is done by dragging any of the 6 end-markers of the axis
+  cross. The initial drag direction decides which orientation the
+  rotation will be done in. Hold down \c SHIFT to do free-form
+  rotation around the sphere instead.
+
+
+  This is a big and complex dragger which needs a fair amount of
+  proper documentation when provided in end-user applications. If what
+  you are trying to accomplish in your application does not really
+  demand most of the features of this dragger, you are advised to
+  investigate whether or not any of the less complex draggers can
+  fulfill your requirements -- so you can provide an as simple as
+  possible user interface to your end-users.
+
+
+  For the application programmer's convenience, the Coin library also
+  provides a manipulator class called SoTransformBoxManip, which wraps
+  the SoTransformBoxDragger into the necessary mechanisms for making
+  direct insertion of this dragger into a scenegraph possible with
+  very little effort.
+
+  \sa SoTransformerManip
 */
 
 
@@ -55,6 +89,74 @@
 
 #include <coindefs.h> // COIN_STUB() & COIN_OBSOLETED()
 
+// FIXME, bugs or missing features (pederb, 20000224):
+// o when appending a rotation and scale is not uniform, the cube
+//   is sometimes sheared. Seems to be a scaleorientation problem.
+// o some feedback is missing (mostly crosshair)
+// o detect if disc or cylinder rotator should be used (disc-only right now)
+// o not possible to go from free rotate to disc/cylinder rotate (marked
+//   by COIN_STUB())
+//
+// Also the translation feedback is a bit different from OIV. Coin
+// always places the feedback axes at the center of the face being
+// translated. OIV places them at the picked point. I think our
+// strategy is better, since when switching between constrained
+// translations and unconstrained translation, the OIV feedback axes
+// can easily be positioned outside the face being dragged.
+
+// FIXME: one additional bug I found which is not mentioned above;
+// when doing uniform scaling towards a cornerpoint (holding CTRL),
+// the dragger jumps back to it's initial centerposition when CTRL is
+// released. This basically renders this feature unusable. 20011208 mortene.
+
+/*!
+  \enum SoTransformerDragger::State
+
+  The various possible states the dragger might be in at any given
+  time. That is: either SoTransformerDragger::INACTIVE if there's no
+  interaction, or any of the other values to indicate what operation
+  the end-user is currently executing.
+*/
+
+/*!
+  \var SoSFRotation SoTransformerDragger::rotation
+
+  This field is continuously updated to contain the orientation of the
+  dragger.
+*/
+/*!
+  \var SoSFVec3f SoTransformerDragger::translation
+
+  The dragger's offset position from the local origo.
+*/
+/*!
+  \var SoSFVec3f SoTransformerDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+*/
+
+// FIXME: can't see what this is for -- investigate. 20011208 mortene.
+//  /*!
+//    \var SoSFFloat SoTransformerDragger::minDiscRotDot
+//  */
+
+/*!
+  \var SoFieldSensor * SoTransformerDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTransformerDragger::scaleFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTransformerDragger::rotateFieldSensor
+  \internal
+*/
+/*!
+  \var SoNodeList SoTransformerDragger::antiSquishList
+  \internal
+*/
 
 #define WHATKIND_NONE      0
 #define WHATKIND_SCALE     1
@@ -69,20 +171,6 @@
 
 #define KNOB_DISTANCE 1.25f   // distance from center to rotate-knobs
 
-// FIXME, bugs or missing features (pederb, 20000224):
-// o when appending a rotation and scale is not uniform, the cube
-//   is sometimes sheared. Seems to be a scaleorientation problem.
-// o some feedback is missing (mostly crosshair)
-// o detect if disc or cylinder rotator should be used (disc-only right now)
-// o not possible to go from free rotate to disc/cylinder rotate.
-//
-// Also the translation feedback is a bit different from OIV. Coin
-// always places the feedback axes at the center of the face being
-// translated. OIV places them at the picked point. I think our
-// strategy is better, since when switching between constrained
-// translations and unconstrained translation, the OIV feedback axes
-// can easily be positioned outside the face being dragged.
-//
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -319,6 +407,8 @@ SoTransformerDragger::SoTransformerDragger(void)
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
+  // FIXME: it doesn't look like this field is actually used or set
+  // anywhere else but here. Investigate. 20011208 mortene.
   SO_KIT_ADD_FIELD(minDiscRotDot, (0.025f));
 
   SO_KIT_INIT_INSTANCE();
@@ -395,6 +485,8 @@ SoTransformerDragger::SoTransformerDragger(void)
 
   this->state = INACTIVE;
   THIS->constraintState = CONSTRAINT_OFF;
+  // FIXME: according to SGI classdoc, this flag is supposed to be
+  // default TRUE?  Investigate. 20011208 mortene.
   THIS->locateHighlighting = FALSE;
   THIS->whatkind = WHATKIND_NONE;
   THIS->whatnum = -1;
@@ -548,6 +640,11 @@ SoTransformerDragger::valueChangedCB(void *, SoDragger * d)
   thisp->rotateFieldSensor->attach(&thisp->rotation);
 }
 
+/*!
+  Returns an indicator for the current operation executed on the
+  dragger by the end-user -- or SoTransformerDragger::INACTIVE if
+  none.
+*/
 SoTransformerDragger::State
 SoTransformerDragger::getCurrentState(void)
 {
@@ -569,6 +666,8 @@ SoTransformerDragger::isLocateHighlighting(void)
 void
 SoTransformerDragger::setLocateHighlighting(SbBool onoff)
 {
+  // FIXME: I can't see that this flag is actually used anywhere..?
+  // 20011208 mortene.
   THIS->locateHighlighting = onoff;
 }
 
@@ -1099,6 +1198,10 @@ SoTransformerDragger::dragRotate(void)
     this->setStartingPoint(THIS->prevWorldHitPt);
   }
   else if (!event->wasShiftDown() && THIS->constraintState == CONSTRAINT_OFF) {
+    // FIXME: functionality of dragger is incomplete. This stub is
+    // called up whenever SHIFT is used for free-form rotation and
+    // then SHIFT is released before the mousebutton drag. This
+    // _really_ need to be fixed. 20011208 mortene.
     COIN_STUB();
   }
 
@@ -1233,7 +1336,7 @@ void
 SoTransformerDragger::updateAntiSquishList(void)
 {
   if (this->antiSquishList.getLength() == 0) {
-    SoSeparator *top = SO_GET_ANY_PART(this,"topSeparator", SoSeparator);
+    SoSeparator *top = SO_GET_ANY_PART(this, "topSeparator", SoSeparator);
     assert(top);
 
     SoSearchAction sa;

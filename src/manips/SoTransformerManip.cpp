@@ -23,10 +23,15 @@
 
 /*!
   \class SoTransformerManip SoTransformerManip.h Inventor/manips/SoTransformerManip.h
-  \brief The SoTransformerManip FIXME: doc
+  \brief The SoTransformerManip wraps an SoTransformerDragger for convenience.
   \ingroup manips
 
-  FIXME: doc
+  The manipulator class takes care of wrapping up the
+  SoTransformerDragger in a simple and convenient API for the
+  application programmer, making it automatically surround the
+  geometry it influences and taking care of the book-keeping routines
+  for it's interaction with the relevant fields of an SoTransformation
+  node.
 */
 
 #include <Inventor/manips/SoTransformerManip.h>
@@ -48,6 +53,11 @@ SoTransformerManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTransformerManip);
 }
 
+/*!
+  Default constructor. Allocates an SoTransformerDragger and an
+  SoSurroundScale node to surround the geometry within our part of the
+  scenegraph.
+*/
 SoTransformerManip::SoTransformerManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformerManip);
@@ -60,11 +70,18 @@ SoTransformerManip::SoTransformerManip(void)
   ss->numNodesUpToReset = 3;
 }
 
-
+/*!
+  Destructor.
+*/
 SoTransformerManip::~SoTransformerManip()
 {
 }
 
+/*!
+  Convenience function to use the
+  SoTransformDragger::isLocateHighlighting() method of the embedded
+  dragger. See documentation of that method.
+*/
 SbBool
 SoTransformerManip::isLocateHighlighting(void)
 {
@@ -79,6 +96,11 @@ SoTransformerManip::isLocateHighlighting(void)
   return FALSE;
 }
 
+/*!
+  Convenience function to use the
+  SoTransformDragger::setLocateHighlighting() method of the embedded
+  dragger. See documentation of that method.
+*/
 void
 SoTransformerManip::setLocateHighlighting(SbBool onoff)
 {
@@ -94,6 +116,10 @@ SoTransformerManip::setLocateHighlighting(SbBool onoff)
   }
 }
 
+/*!
+  Convenience function to use the SoTransformDragger::unsquishKnobs()
+  method of the embedded dragger. See documentation of that method.
+*/
 void
 SoTransformerManip::unsquishKnobs(void)
 {
