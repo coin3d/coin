@@ -205,7 +205,7 @@ cc_thread_init(void)
 */
 
 /*!
-  \fn static SbThread * SbThread::create(void (*func)(void *), void * closure)
+  \fn static SbThread * SbThread::create(void *(*func)(void *), void * closure)
 
   This function creates a new thread, or returns NULL on failure.
 */
