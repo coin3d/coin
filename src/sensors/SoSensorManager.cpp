@@ -80,9 +80,9 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 
 #include <assert.h>
 
@@ -144,12 +144,12 @@ public:
   uint32_t alive;
   static void assertAlive(SoSensorManagerP * that);
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   SbMutex timermutex;
   SbMutex delaymutex;
   SbMutex immediatemutex;
   SbMutex reschedulemutex;
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 };
 
 void
@@ -166,7 +166,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
   }
 }
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 
 #define LOCK_TIMER_QUEUE(_mgr_) \
   _mgr_->pimpl->timermutex.lock();
@@ -192,7 +192,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 #define UNLOCK_RESCHEDULE_LIST(_mgr_) \
   _mgr_->pimpl->immediatemutex.unlock();
 
-#else // HAVE_THREADS
+#else // COIN_THREADSAFE
 
 #define LOCK_TIMER_QUEUE(_mgr_)
 #define UNLOCK_TIMER_QUEUE(_mgr_)
@@ -203,7 +203,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 #define LOCK_RESCHEDULE_LIST(_mgr_)
 #define UNLOCK_RESCHEDULE_LIST(_mgr_)
 
-#endif // ! HAVE_THREADS
+#endif // ! COIN_THREADSAFE
 
 #undef THIS
 #define THIS this->pimpl
