@@ -218,6 +218,56 @@ STUFF TO FIX IN COIN
   MSVC++ project files (.dsw or .dsp) instead of the configure-based
   setup.
 
-  It would be possible for us to make the configure script generate
-  such files automatically, along with a valid MSWin config.h,
-  inttypes.h etc.
+  It should be possible for us to make the configure script generate
+  such files automatically.
+
+  There are basically two ways to do this: a) either demand that
+  ``configure'' still be run on the client side to generate the .dsp,
+  or b) provide the MSVC++ .dsp with no requirements for Cygwin
+  installation and fiddling at all. The former option would be more
+  flexible, the latter option would be more convenient for our
+  users. The latter option may not be feasible, though.
+
+  It would perhaps be a good idea to implement a) first, and then look
+  into the extra hassle of doing b), as a) seems to be a pre-requisite
+  for b) anyhow.
+
+  Here are a few ideas of how to solve some of the problems that will
+  come up:
+
+        * If we go for the b) alternative mentioned above (no Cygwin
+          or configure run necessary), we will need "static"
+          MSWin-valid versions of these three configure-generated
+          files: config.h, inttypes.h and SbBasic.h.
+
+          I suggest we either run ``configure'' on a "minimum",
+          bare-bones MSWin box and add them to the Coin repository
+          proper, for instance with "win32-" prefixes, or perhaps in
+          their own "win32" directory.
+
+        * We absolutely need to be able to re-generate the .dsp file
+          from a template that automatically includes all the correct
+          sourcecode files, include paths, link options, etc without
+          any manual intervention. Manual intervention means that
+          things will eventually get out of sync, with the headaches
+          that follow.
+
+          I assume we can use a ``configure'' run to generate the
+          dsp-file from a .dsp.in file. It seems probable that we also
+          need some kind of additional processing during the
+          generation -- configure's substitution mechanism may not be
+          enough. We will for instance need to set up lists of which
+          files to compile in a format that are not
+          "substitution-friendly" for configure. We should strive to
+          use the common configure mechanisms to solve our problems as
+          far as it's possible, though.
+
+        * We will need a complete list of which files to compile.
+
+          The *.lst-generation mechanism now used in all sourcecode
+          sub-directories can probably be applied again.
+
+   I think it could also be worth looking into the ability to generate
+   client application project files automatically in the same manner,
+   for instance in the SoGuiExamples module. That would lower the bar
+   on entry for many MSWin / MSVC++ programmers.
