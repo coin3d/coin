@@ -223,15 +223,17 @@ AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
 
 
-# FIXME: do proper check for linking code with ntohs() and ntohl().
-# 20001024 mortene.
-if $coin_build_with_msvc; then
-  # wsock32.lib is needed on MSWin for the ntohs() and ntohl() calls used
-  # in SoInput.cpp. FIXME: we should probably avoid using those calls
-  # (they don't seem very "64bit-clean", for instance). 20000609 mortene.
-  LIBS="wsock32.lib $LIBS"
-  COIN_EXTRA_LIBS="wsock32.lib $COIN_EXTRA_LIBS"
-fi
+# Do not use AC_CHECK_HEADERS, as we can get false positives and/or
+# false negatives when running under Cygwin, using the Microsoft
+# VisualC++ compiler (the configure script will pick the GCC
+# preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
+
+SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h winsock2.h netinet/in.h)
+
+# Test for ntohl() etc.
+SIM_AC_BYTEORDER_CONVERSION(
+  [COIN_EXTRA_LIBS="$sim_ac_byteorder_conversion_libs $COIN_EXTRA_LIBS"],
+  [AC_MSG_ERROR([could not find network conversion functions])])
 
 
 # *******************************************************************
@@ -302,13 +304,6 @@ SIM_COMPILER_WARNINGS
 # "inefficient including"  internally.
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
-
-# Do not use AC_CHECK_HEADERS, as we can get false positives and/or
-# false negatives when running under Cygwin, using the Microsoft
-# VisualC++ compiler (the configure script will pick the GCC
-# preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
-
-SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h netinet/in.h)
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF

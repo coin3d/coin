@@ -76,9 +76,9 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
+#if HAVE_WINSOCK2_H
+#include <winsock2.h> // ntohl(), ntohs()
+#endif // HAVE_WINSOCK2_H
 #if HAVE_NETINET_IN_H
 #include <netinet/in.h> // ntohl(), ntohs()
 #endif // HAVE_NETINET_IN_H
