@@ -13,40 +13,27 @@ wd=`echo "$0" | sed 's,/[^/]*$,,'`
 # wd=`cd "$wd"; pwd`
 prefix=`cd "$wd/.."; pwd`
 
-debug=false
+alternate=default
 for arg
 do
   case $arg in
-  --debug) debug=true ;;
+  --alternate=*) alternate=`echo $arg | cut -d= -f2-` ;;
   esac
 done
 
-case $debug in
-true)
-  if test -f $prefix/share/Coin/conf/coin-debug.cfg; then
-    . $prefix/share/Coin/conf/coin-debug.cfg
-  elif test -f $prefix/share/Coin/conf/coin.cfg; then
-    . $prefix/share/Coin/conf/coin.cfg
-  else
-    echo >&2 "$me: no Coin config available"
-    exit 1
-  fi
-  ;;
-false)
-  if test -f $prefix/share/Coin/conf/coin.cfg; then
-    . $prefix/share/Coin/conf/coin.cfg
-  elif test -f $prefix/share/Coin/conf/coin-debug.cfg; then
-    . $prefix/share/Coin/conf/coin-debug.cfg
-  else
-    echo >&2 "$me: no Coin config available"
-    exit 1
-  fi
-  ;;
-esac
+if test -f $prefix/share/Coin/conf/coin-$alternate.cfg; then
+  . $prefix/share/Coin/conf/coin-$alternate.cfg
+elif test -f $prefix/share/Coin/conf/coin-default.cfg; then
+  . $prefix/share/Coin/conf/coin-default.cfg
+else
+  echo >&2 "$me: no default Coin config available"
+  exit 1
+fi
 
 usage="\
 Usage: $me [OPTIONS]
 Options:
+  --alternate=<string>
   --cppflags
   --ldflags
   --libs
@@ -75,7 +62,7 @@ do
       $LIBS $libs
     ;;
   # ignore some options
-  --debug) ;;
+  --alternate=*) ;;
   *)
     echo >&2 "$me: Invalid option: \"$1\""
     echo >&2 "$usage"

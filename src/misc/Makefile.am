@@ -58,11 +58,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libmisc_gLINKHACK.la
-else
-lib_LTLIBRARIES = libmiscLINKHACK.la
-endif
+lib_LTLIBRARIES = libmisc@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libmisc.la
 endif
@@ -74,8 +70,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libmisc_la_SOURCES = $(ALLSOURCES)
-libmiscLINKHACK_la_SOURCES = $(ALLSOURCES)
-libmisc_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libmisc@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libmiscincdir = $(includedir)/Inventor/misc
 libmiscinc_HEADERS = $(ALLINSTHEADERS)

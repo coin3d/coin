@@ -70,7 +70,6 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
-COIN_DEBUG_BUILD = @COIN_DEBUG_BUILD@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -81,6 +80,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
+CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLFLAGS = @DLLFLAGS@
@@ -96,6 +96,7 @@ MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
@@ -165,7 +166,6 @@ uninstall-thisincHEADERS:
 # (1) if the variable is set in `config.status', edit `config.status'
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
-
 all-recursive install-data-recursive install-exec-recursive \
 installdirs-recursive install-recursive uninstall-recursive  \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
@@ -342,18 +342,33 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY:  all all-am all-recursive all-redirect check check-am \
-check-recursive clean clean-generic clean-recursive clean-tags \
-distclean distclean-generic distclean-recursive distclean-tags distdir \
-dvi dvi-am dvi-recursive info info-am info-recursive install install-am \
-install-data install-data-am install-data-recursive install-exec \
-install-exec-am install-exec-recursive install-recursive install-strip \
-install-thisincHEADERS installcheck installcheck-am \
-installcheck-recursive installdirs installdirs-am installdirs-recursive \
-maintainer-clean maintainer-clean-generic maintainer-clean-recursive \
-maintainer-clean-tags mostlyclean mostlyclean-generic \
-mostlyclean-recursive mostlyclean-tags tags tags-recursive uninstall \
-uninstall-am uninstall-recursive uninstall-thisincHEADERS
+.PHONY:   all all all-am all-am all-recursive all-recursive \
+all-recursive-am all-redirect all-redirect check check check-am \
+check-am check-recursive check-recursive clean clean clean-generic \
+clean-generic clean-hdr clean-recursive clean-recursive clean-tags \
+clean-tags distclean distclean distclean-generic distclean-generic \
+distclean-hdr distclean-recursive distclean-recursive distclean-tags \
+distclean-tags distdir distdir dvi dvi dvi-am dvi-am dvi-recursive \
+dvi-recursive info info info-am info-am info-recursive info-recursive \
+install install install-am install-am install-binSCRIPTS install-data \
+install-data install-data-am install-data-am install-data-recursive \
+install-data-recursive install-exec install-exec install-exec-am \
+install-exec-am install-exec-recursive install-exec-recursive \
+install-m4dataDATA install-recursive install-recursive install-strip \
+install-strip install-thisincHEADERS installcheck installcheck \
+installcheck-am installcheck-am installcheck-recursive \
+installcheck-recursive installdirs installdirs installdirs-am \
+installdirs-am installdirs-recursive installdirs-recursive \
+maintainer-clean maintainer-clean maintainer-clean-generic \
+maintainer-clean-generic maintainer-clean-hdr \
+maintainer-clean-recursive maintainer-clean-recursive \
+maintainer-clean-tags maintainer-clean-tags mostlyclean mostlyclean \
+mostlyclean-generic mostlyclean-generic mostlyclean-hdr \
+mostlyclean-recursive mostlyclean-recursive mostlyclean-tags \
+mostlyclean-tags tags tags tags-recursive tags-recursive uninstall \
+uninstall uninstall-am uninstall-am uninstall-binSCRIPTS \
+uninstall-m4dataDATA uninstall-recursive uninstall-recursive \
+uninstall-thisincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -121,11 +121,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libfields_gLINKHACK.la
-else
-lib_LTLIBRARIES = libfieldsLINKHACK.la
-endif
+lib_LTLIBRARIES = libfields@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libfields.la
 endif
@@ -137,8 +133,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libfields_la_SOURCES = $(ALLSOURCES)
-libfieldsLINKHACK_la_SOURCES = $(ALLSOURCES)
-libfields_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libfields@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libfieldsincdir = $(includedir)/Inventor/fields
 libfieldsinc_HEADERS = $(ALLINSTHEADERS)

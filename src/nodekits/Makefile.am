@@ -42,11 +42,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libnodekits_gLINKHACK.la
-else
-lib_LTLIBRARIES = libnodekitsLINKHACK.la
-endif
+lib_LTLIBRARIES = libnodekits@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libnodekits.la
 endif
@@ -58,8 +54,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libnodekits_la_SOURCES = $(ALLSOURCES)
-libnodekitsLINKHACK_la_SOURCES = $(ALLSOURCES)
-libnodekits_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS = $(ALLINSTHEADERS)

@@ -49,11 +49,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libprojectors_gLINKHACK.la
-else
-lib_LTLIBRARIES = libprojectorsLINKHACK.la
-endif
+lib_LTLIBRARIES = libprojectors@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libprojectors.la
 endif
@@ -65,8 +61,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libprojectors_la_SOURCES = $(ALLSOURCES)
-libprojectorsLINKHACK_la_SOURCES = $(ALLSOURCES)
-libprojectors_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libprojectors@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libprojectorsincdir = $(includedir)/Inventor/projectors
 libprojectorsinc_HEADERS = $(ALLINSTHEADERS)

@@ -13,8 +13,7 @@ doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 install-exec-hook: coin.cfg
-	@target=coin.cfg; \
-	@COIN_DEBUG_BUILD@ && target=coin-debug.cfg; \
+	@target=coin-@CONFIG@.cfg; \
 	echo "Installing $$target"; \
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/Coin/conf && \
 	  $(INSTALL_DATA) coin.cfg $(DESTDIR)$(datadir)/Coin/conf/$$target;

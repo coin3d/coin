@@ -40,11 +40,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libsensors_gLINKHACK.la
-else
-lib_LTLIBRARIES = libsensorsLINKHACK.la
-endif
+lib_LTLIBRARIES = libsensors@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libsensors.la
 endif
@@ -56,8 +52,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libsensors_la_SOURCES = $(ALLSOURCES)
-libsensorsLINKHACK_la_SOURCES = $(ALLSOURCES)
-libsensors_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libsensors@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS = $(ALLINSTHEADERS)

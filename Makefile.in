@@ -70,7 +70,6 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
-COIN_DEBUG_BUILD = @COIN_DEBUG_BUILD@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -81,6 +80,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
+CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLFLAGS = @DLLFLAGS@
@@ -96,6 +96,7 @@ MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
@@ -233,7 +234,6 @@ uninstall-m4dataDATA:
 # (1) if the variable is set in `config.status', edit `config.status'
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
-
 all-recursive install-data-recursive install-exec-recursive \
 installdirs-recursive install-recursive uninstall-recursive  \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
@@ -487,8 +487,7 @@ doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 install-exec-hook: coin.cfg
-	@target=coin.cfg; \
-	@COIN_DEBUG_BUILD@ && target=coin-debug.cfg; \
+	@target=coin-@CONFIG@.cfg; \
 	echo "Installing $$target"; \
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/Coin/conf && \
 	  $(INSTALL_DATA) coin.cfg $(DESTDIR)$(datadir)/Coin/conf/$$target;

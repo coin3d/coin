@@ -40,11 +40,7 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
-if COIN_DEBUG_BUILD
-lib_LTLIBRARIES = libmanips_gLINKHACK.la
-else
-lib_LTLIBRARIES = libmanipsLINKHACK.la
-endif
+lib_LTLIBRARIES = libmanips@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libmanips.la
 endif
@@ -56,8 +52,7 @@ LIBS =
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libmanips_la_SOURCES = $(ALLSOURCES)
-libmanipsLINKHACK_la_SOURCES = $(ALLSOURCES)
-libmanips_gLINKHACK_la_SOURCES = $(ALLSOURCES)
+libmanips@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libmanipsincdir = $(includedir)/Inventor/manips
 libmanipsinc_HEADERS = $(ALLINSTHEADERS)
