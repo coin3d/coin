@@ -432,7 +432,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   // the bbox cache (based on the number of primitives in the shape)
   // pederb, 2002-09-11
 
-//    if (THIS) {
+//    if (!state->isCacheOpen() && THIS) {
 //      LOCK_BBOX(this);
 //      if (THIS->bboxcache && THIS->bboxcache->isValid(state)) {
 //        if (!SoCullElement::completelyInside(state)) {
