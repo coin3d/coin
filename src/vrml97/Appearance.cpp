@@ -238,7 +238,7 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->lock();
     PRIVATE(this)->fakecolor = 0xffffff00 | alpha;
     PRIVATE(this)->unlock();
-    SoLazyElement::setPacked(state, this, 1, &PRIVATE(this)->fakecolor);
+    SoLazyElement::setPacked(state, this, 1, &PRIVATE(this)->fakecolor, alpha != 255);
   }
 }
 
