@@ -464,6 +464,7 @@ SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
 {
   if (this->internaldata && this->internaldata->makeContextCurrent()) {
+    glEnable(GL_DEPTH_TEST);
     glClearColor(this->backgroundcolor[0],
                  this->backgroundcolor[1],
                  this->backgroundcolor[2],
