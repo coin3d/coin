@@ -24,7 +24,9 @@
  *
 \**************************************************************************/
 
-#include "SoShaderObject.h"
+#include <Inventor/nodes/SoShaderObject.h>
+
+// *************************************************************************
 
 class COIN_DLL_API SoFragmentShader : public SoShaderObject {
 

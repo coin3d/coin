@@ -1,39 +1,55 @@
-/* ***-*-c++-*-***************************************************************
- * 
- * ***************************************************************************/
+#ifndef  COIN_SOSHADERPROGRAMELEMENT_H
+#define  COIN_SOSHADERPROGRAMELEMENT_H
 
-#ifndef  _SO_SHADER_PROGRAM_ELEMENT_
-#define  _SO_SHADER_PROGRAM_ELEMENT_
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
 
 #include <Inventor/elements/SoReplacedElement.h>
 
-#include <Inventor/nodes/SoGLShaderProgram.h>
+class SoGLShaderProgram;
 
-class SoGLShaderProgramElement : public SoReplacedElement {
-typedef SoReplacedElement inherited;
-  
+// *************************************************************************
+
+class COIN_DLL_API SoGLShaderProgramElement : public SoReplacedElement {
+  typedef SoReplacedElement inherited;
   SO_ELEMENT_HEADER(SoGLShaderProgramElement);
-  
+
 public:
-  // Initializes element.
-  virtual void init(SoState *state);
-  
-  // Sets the current shader in the state.
-  static void set(SoState *const state, SoNode *const node, 
-		  SoGLShaderProgram *program);
-  static SoGLShaderProgram* get(SoState *state);
- 
-  // handle push()/pop()
+  virtual void init(SoState * state);
+
+  static void set(SoState *const state, SoNode *const node,
+		  SoGLShaderProgram * program);
+  static SoGLShaderProgram * get(SoState * state);
+
   virtual void push(SoState *);
-  virtual void pop(SoState *state, const SoElement *prevTopElement);
-  
+  virtual void pop(SoState * state, const SoElement *prevTopElement);
+
 SoINTERNAL public:
-  // Initializes the classes.
-  static void initClass();  
+  static void initClass(void);
   SoGLShaderProgram *shaderProgram;
 
 private:
-  // Destructor
   virtual ~SoGLShaderProgramElement();
 };
-#endif /* _SO_SHADER_PROGRAM_ELEMENT_ */
+
+#endif /* ! COIN_SOSHADERPROGRAMELEMENT_H */

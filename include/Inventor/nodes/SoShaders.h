@@ -1,26 +1,37 @@
-#ifndef __SO_SHADERS_H__
-#define __SO_SHADERS_H__
+#ifndef COIN_SOSHADERS_H
+#define COIN_SOSHADERS_H
 
-// DLL export macro definition
-#ifdef WIN32
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
 
-#ifdef UMDSOSHADER_EXPORTS
-// Use the UMDSOSHADER_EXPORT macro to export classes and functions
-#define UMDSOSHADER_EXPORT __declspec(dllexport)
-#else
-// If included by external modules, exported symbols are declared as import symbols
-#define UMDSOSHADER_EXPORT __declspec(dllimport)
-#endif
-
-#else
-// No export declarations are necessary for non-Windows systems
-#define UMDSOSHADER_EXPORT
+#ifndef COIN_INTERNAL
+#error this is a private header file
 #endif
 
 class SoShaders
 {
- public:
-  static void init();
+public:
+  static void init(void);
 };
 
-#endif /* __SO_SHADERS_H__ */
+#endif /* ! COIN_SOSHADERS_H */

@@ -1,13 +1,29 @@
-/* ***-*-c++-*-***************************************************************
+#ifndef COIN_SOSHADERPARAMETER_H
+#define COIN_SOSHADERPARAMETER_H
+
+/**************************************************************************\
  *
- * ***************************************************************************/
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
 
-#define VEC_I32_SUPPORT 0
-
-#ifndef _SO_SHADER_PARAMETER_H_
-#define _SO_SHADER_PARAMETER_H_
-
-#include <Inventor/SbBasic.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
@@ -27,6 +43,7 @@
 #include <Inventor/fields/SoSFEnum.h> 
 #include <Inventor/fields/SoSFImage.h>
 
+#define VEC_I32_SUPPORT 0 // FIXME: what's this? 20050120 mortene.
 #if VEC_I32_SUPPORT
 #include <Inventor/fields/SoSFVec2i32.h>
 #include <Inventor/fields/SoSFVec3i32.h>
@@ -37,9 +54,12 @@
 #endif
 
 #include "SoGLShaderParameter.h"
-#include "SoShaders.h"
 
 class SoGLShaderObject;
+
+// *************************************************************************
+
+// FIXME: split to one header file for each class. 20050120 mortene.
 
 /* **************************************************************************
  * ***                             SoShaderParameter                      ***
@@ -47,7 +67,7 @@ class SoGLShaderObject;
 
 class SoUniformShaderParameter;
 
-class UMDSOSHADER_EXPORT SoShaderParameter : public SoNode {
+class COIN_DLL_API SoShaderParameter : public SoNode {
   
   SO_NODE_ABSTRACT_HEADER(SoShaderParameter);
   
@@ -67,7 +87,7 @@ public: // protected:
  * ***                         SoUniformShaderParameter                   ***
  * **************************************************************************/
 
-class UMDSOSHADER_EXPORT SoUniformShaderParameter : public SoShaderParameter {
+class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
   
   SO_NODE_ABSTRACT_HEADER(SoUniformShaderParameter);
   
@@ -92,7 +112,7 @@ protected:
  * ***                           SoShaderParameter1f                      ***
  * **************************************************************************/
 
-class UMDSOSHADER_EXPORT SoShaderParameter1f : public SoUniformShaderParameter {
+class COIN_DLL_API SoShaderParameter1f : public SoUniformShaderParameter {
   
   SO_NODE_HEADER(SoShaderParameter1f);
   
@@ -132,7 +152,7 @@ protected:
  * ***                           SoShaderParameter2f                      ***
  * **************************************************************************/
 
-class UMDSOSHADER_EXPORT SoShaderParameter2f : public SoUniformShaderParameter {
+class COIN_DLL_API SoShaderParameter2f : public SoUniformShaderParameter {
   
   SO_NODE_HEADER(SoShaderParameter2f);
   
@@ -174,7 +194,7 @@ protected:
  * ***                           SoShaderParameter3f                      ***
  * **************************************************************************/
 
-class UMDSOSHADER_EXPORT SoShaderParameter3f : public SoUniformShaderParameter {
+class COIN_DLL_API SoShaderParameter3f : public SoUniformShaderParameter {
   
   SO_NODE_HEADER(SoShaderParameter3f);
   
@@ -218,7 +238,7 @@ protected:
  * ***                           SoShaderParameter4f                      ***
  * **************************************************************************/
 
-class UMDSOSHADER_EXPORT SoShaderParameter4f : public SoUniformShaderParameter {
+class COIN_DLL_API SoShaderParameter4f : public SoUniformShaderParameter {
   
   SO_NODE_HEADER(SoShaderParameter4f);
   
@@ -481,7 +501,7 @@ protected:
 
 #if defined(SO_CG_SHADER_SUPPORT)
 #include <Cg/cgGL.h>
-class UMDSOSHADER_EXPORT SoShaderStateMatrixParameter : public SoUniformShaderParameter {
+class COIN_DLL_API SoShaderStateMatrixParameter : public SoUniformShaderParameter {
   
   SO_NODE_HEADER(SoShaderStateMatrixParameter);
   
@@ -541,5 +561,4 @@ protected:
 
 /*--------------------------------------------------------------------------*/
 
-#endif /*_SO_SHADER_PARAMETER_H_*/
-
+#endif /* ! COIN_SOSHADERPARAMETER_H */
