@@ -576,6 +576,11 @@ if test x"$sim_ac_x11_avail" = xyes; then
   SIM_AC_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
 fi
 
+## We need this extra, final X11 check to set up the HAVE_X11_AVAILABLE
+## define -- the X_DISPLAY_MISSING define provided by the built-in
+## Autoconf X11 check is not strict enough.
+SIM_AC_CHECK_X11_READY([AC_DEFINE([HAVE_X11_AVAILABLE],,
+                          [define if it is possible to build against X11])])
 
 # *******************************************************************
 # * Test for installation of Mesa or OpenGL development system.

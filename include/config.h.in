@@ -184,6 +184,9 @@
 /* Define if you have the <winsock2.h> header file. */
 #undef HAVE_WINSOCK2_H
 
+/* define if it is possible to build against X11 */
+#undef HAVE_X11_AVAILABLE
+
 /* define if _snprintf() is available */
 #undef HAVE__SNPRINTF
 
