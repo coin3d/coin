@@ -28,15 +28,20 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif // HAVE_CONFIG_H
+#endif /* HAVE_CONFIG_H */
 
 #ifdef COIN_THREADSAFE
 
 #include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
 #include <Inventor/C/threads/sync.h>
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_) \
-  _mymutex_ = (void*) cc_mutex_construct()
+  cc_mutex_global_lock(); \
+  if (_mymutex_ == NULL) { \
+    _mymutex_ = (void*) cc_mutex_construct(); \
+  } \
+  cc_mutex_global_unlock()
 
 #define CC_MUTEX_DESTRUCT(_mymutex_) \
   cc_mutex_destruct((cc_mutex*) _mymutex_)
@@ -48,10 +53,10 @@
   cc_mutex_unlock((cc_mutex*) _mymutex_)
 
 #define CC_SYNC_BEGIN(_myid_) \
-  void * mydummysyncptr = cc_sync_begin((void*) _myid_)
+  void * coin_mydummysyncptr = cc_sync_begin((void*) _myid_)
 
 #define CC_SYNC_END(_myid_) \
-  cc_sync_end(mydummysyncptr)
+  cc_sync_end(coin_mydummysyncptr)
 
 #else /* HAVE_THREADS */
 
