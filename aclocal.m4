@@ -1482,10 +1482,10 @@ AC_ARG_WITH(
 
 if test "x$sim_ac_simage_desired" != "xno"; then
   sim_ac_path=$PATH
-  test -z $sim_ac_simage_extrapath ||
+  test -z "$sim_ac_simage_extrapath" ||
     sim_ac_path=$sim_ac_simage_extrapath/bin:$sim_ac_path
-  test x"$exec_prefix" = xNONE ||
-    sim_ac_path=$sim_ac_path:$exec_prefix/bin
+  test x"$prefix" = xNONE ||
+    sim_ac_path=$sim_ac_path:$prefix/bin
 
   AC_PATH_PROG(sim_ac_simage_configcmd, simage-config, false, $sim_ac_path)
 
