@@ -76,9 +76,6 @@ protected:
 private:
   int constraintState;
 
-  SbVec3f lastmotion;
-  SbVec3f extramotion;
-
   class SoTranslate2DraggerP * pimpl;
 };
 

@@ -84,6 +84,8 @@
 
 class SoTranslate2DraggerP {
 public:
+  SbVec3f lastmotion;
+  SbVec3f extramotion;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -173,6 +175,7 @@ SoTranslate2Dragger::~SoTranslate2Dragger()
 {
   delete this->planeProj;
   delete this->fieldSensor;
+  delete this->pimpl;
 }
 
 // doc in superclass
@@ -294,7 +297,7 @@ SoTranslate2Dragger::dragStart(void)
     this->constraintState = CONSTRAINT_WAIT;
   }
 
-  this->extramotion = SbVec3f(0, 0, 0);
+  THIS->extramotion = SbVec3f(0, 0, 0);
 }
 
 /*! \COININTERNAL
@@ -318,7 +321,7 @@ SoTranslate2Dragger::drag(void)
     SbVec3f worldProjPt;
     this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
     this->setStartingPoint(worldProjPt);
-    this->extramotion += this->lastmotion;
+    THIS->extramotion += THIS->lastmotion;
     
     SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
@@ -366,9 +369,9 @@ SoTranslate2Dragger::drag(void)
     motion[1] += projPt[1] - localrestartpt[1];
     break;
   }
-  this->lastmotion = motion;
+  THIS->lastmotion = motion;
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(),
-                                                this->extramotion+motion));
+                                                THIS->extramotion+motion));
 }
 
 /*! \COININTERNAL
