@@ -41,6 +41,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoInput.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -99,6 +100,10 @@ SoBaseKit::SoBaseKit(void)
                                       SoType::badType(),
                                       SoType::badType(),
                                       FALSE);
+
+    // set rayPick method
+    SoType type = SoBaseKit::getClassTypeId();
+    SoRayPickAction::addMethod(type, SoNode::rayPickS);
   }
 
 

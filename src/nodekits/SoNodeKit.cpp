@@ -30,7 +30,6 @@
 
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
@@ -72,7 +71,4 @@ SoNodeKit::init(void)
   SoSeparatorKit::initClass();
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
-
-  SoType type = SoBaseKit::getClassTypeId();
-  SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }
