@@ -36,6 +36,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
+#include <Inventor/lists/SbList.h>
 #include <assert.h>
 #include <string.h>
 #if HAVE_CONFIG_H
@@ -105,6 +106,7 @@ public:
   int nextreferenceid;
   uint32_t annotationbits;
   SbDict * defnames;
+  SbList <SoProto*> protostack;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -1011,6 +1013,40 @@ SoOutput::removeDEFNode(SbName name)
   if (THIS->defnames) THIS->defnames->remove((unsigned long)name.getString());
 }
 
+/*!
+  \internal
+
+  \since 2002-05-27
+*/
+void 
+SoOutput::pushProto(SoProto * proto)
+{
+  THIS->protostack.push(proto);
+}
+
+/*!
+  \internal
+
+  \since 2002-05-27
+*/
+SoProto * 
+SoOutput::getCurrentProto(void) const
+{
+  assert(THIS->protostack.getLength());
+  return THIS->protostack[THIS->protostack.getLength()-1];
+}
+
+/*!
+  \internal
+
+  \since 2002-05-27
+*/
+void 
+SoOutput::popProto(void)
+{
+  assert(THIS->protostack.getLength());
+  THIS->protostack.pop();
+}
 
 /*!
   Convert the short integer in \a s to most-significant-byte first format

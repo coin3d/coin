@@ -33,6 +33,7 @@ class SbDict;
 class SbName;
 class SoBase;
 class SoOutputP;
+class SoProto;
 
 typedef void * SoOutputReallocCB(void * ptr, size_t newSize);
 
@@ -100,6 +101,10 @@ public:
   void addDEFNode(SbName name);
   SbBool lookupDEFNode(SbName name);
   void removeDEFNode(SbName name);
+
+  void pushProto(SoProto * proto);
+  SoProto * getCurrentProto(void) const;
+  void popProto(void);
 
 protected:
   SbBool isToBuffer(void) const;
