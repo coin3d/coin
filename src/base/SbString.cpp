@@ -153,41 +153,16 @@ SbString::SbString(const int digits)
 }
 
 /*!
-  Constructs a string from the given integer (e.g. intToString(42) creates
-  the string "42"), and adds this to the contents of the string.
+  Constructs a string from the given integer (e.g. intToString(42)
+  creates the string "42"), and adds this to the contents of the
+  string.
 */
 void
 SbString::addIntString(const int value)
 {
-  // Find storage size we need for the supplied integer value.
-  int w = 1;
-  if (value < 0) w++;
-  int tmp = value;
-  // FIXME: Cheesus, this is lame. Use log10 instead. 19991216 mortene.
-  while (tmp >= 10) {
-    tmp /= 10;
-    w++;
-  }
-
-  this->expand(w);
-
-  tmp = value;
-  if (tmp < 0) {
-    tmp = -tmp;
-    *this += '-';
-    w--;
-  }
-
-  int f = 1;
-  for (int i=0; i < w-1; i++) f *= 10;
-  while (w) {
-    int s = tmp / f;
-    tmp = tmp % f;
-    f /= 10;
-    w--;
-
-    *this += (char)s + 0x30;
-  }
+  SbString s;
+  (void)s.sprintf("%d", value);
+  *this += s;
 }
 
 /*!
