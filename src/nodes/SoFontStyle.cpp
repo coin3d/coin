@@ -88,8 +88,6 @@
 
 SO_NODE_SOURCE(SoFontStyle);
 
-static SbBool fontstyle_messageflag = TRUE;
-
 /*!
   Constructor.
 */
@@ -136,12 +134,13 @@ SoFontStyle::getFontName(void) const
   SbString fontname(this->name.getValue().getString());
 
 #if COIN_DEBUG
-  if((fontstyle_messageflag) && (fontname.getString() != NULL)) {
+  static SbBool messageflag = TRUE;
+  if((messageflag) && (fontname.getString() != NULL)) {
     SoDebugError::postWarning("SoFontStyle::getFontName",
                               "Font name ('%s') is ignored when using FontStyle nodes. "
                               "Use the 'family' and 'style' fields instead.", 
                               fontname.getString());    
-    fontstyle_messageflag = FALSE; // Only display this message once.
+    messageflag = FALSE; // Only display this message once.
   }
 #endif
 
