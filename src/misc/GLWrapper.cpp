@@ -218,15 +218,21 @@ GLWrapper_set_glVersion(GLWrapper_t * wrapper)
   instance. Returns 1 on success, 0 on failure (which means the variables
   are not set.
 */
-static int
+static void
 GLWrapper_set_glxVersion(GLWrapper_t * gi)
 {
 #ifdef HAVE_GLX
-  int major, minor;
+  static SbBool first = TRUE;
+  if (!first) { return; }
+  first = FALSE;
+
+  gi->glxVersion.major = 0;
+  gi->glxVersion.minor = 0;
 
   Display * display = XOpenDisplay(NULL);
   Bool ok = False;
 
+  int major, minor;
   if (display) {
     ok = glXQueryVersion(display, &major, &minor);
     XCloseDisplay(display);
@@ -240,11 +246,7 @@ GLWrapper_set_glxVersion(GLWrapper_t * gi)
 
   gi->glxVersion.major = major;
   gi->glxVersion.minor = minor;
-
-  return ok ? 1 : 0;
-#else
-  return 0;
-#endif
+#endif // HAVE_GLX
 }
 
 int
