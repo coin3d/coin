@@ -35,11 +35,11 @@
 (-> viewer-copy 'show)
 (-> viewer-copy 'setscenegraph (-> root 'copy 1))
 
-;; Export scenegraph with SoShuttle.
+;; Export scenegraph with SoTexture2.
 (define writeaction (new-sowriteaction))
 (-> writeaction 'apply (-> viewer 'getscenegraph))
 
-;; Read scenegraph with SoShuttle in it.
+;; Read scenegraph with SoTexture2 in it.
 (let ((buffer "#Inventor V2.1 ascii\n\nSeparator { Texture2 {
  	 image 8 6 3
 	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
