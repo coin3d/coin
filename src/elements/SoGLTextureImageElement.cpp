@@ -225,7 +225,7 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
     elem->glalphatest = elem->alphatest;
     if (elem->alphatest) {
       // draw everything with alpha != 0.0
-      glAlphaFunc(GL_NOTEQUAL, 0.0f);
+      glAlphaFunc(GL_GREATER, 0.5f);
       glEnable(GL_ALPHA_TEST);
     }
     else glDisable(GL_ALPHA_TEST);
