@@ -21,16 +21,27 @@
  *
 \**************************************************************************/
 
-/*!
-  \class SoFontLib include/Inventor/misc/SoFontLib.h
-  \brief The SoFontLib class is an interface between Coin and the font library wrapper.
-
-  This is an internal class.
-*/
+// The SoFontLib class is an interface between Coin and the font
+// library wrapper.
+//
+// It's main purpose is to map between Inventor's SoFont-type font
+// names and the actual system font (or font-file) names.
+//
+// This is an internal class.
+//
+// FIXME: it seems a bit unnecessary to add this extra layer on top of
+// src/glue/fontlib_wrapper.c -- would moving the functionality of
+// this class down into fontlib_wrapper (or up into the next layer
+// above) clean up the code design a bit? Investigate. 20030526 mortene.
+//
+// FIXME: the mutex locking looks excessive. Audit & fix. 20030526 mortene.
+//
+// FIXME: most of the functions looks overly robust -- should probably
+// replace all "if(font>=0)" with asserts. 20030526 mortene.
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#endif // HAVE_CONFIG_H
 
 #include <stdio.h>
 #include <string.h>
@@ -38,18 +49,15 @@
 
 #include <Inventor/misc/SoFontLib.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbVec2s.h>
 #include <Inventor/SbString.h>
-#include <Inventor/lists/SbStringList.h>
+#include <Inventor/SbVec2s.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbStringList.h>
 
 /*************************************************************************/
 
@@ -67,20 +75,6 @@ SbDict * SoFontLibP::openfonts = NULL;
 
 /*************************************************************************/
 
-/*!
-  Constructor.
-*/
-SoFontLib::SoFontLib(void)
-{
-}
-
-/*!
-  Destructor.
-*/
-SoFontLib::~SoFontLib()
-{
-}
-
 void
 SoFontLib::initialize(void)
 {
@@ -96,14 +90,19 @@ SoFontLib::initialize(void)
     SoInput::addEnvDirectoriesLast("COIN_FONT_PATH", NULL);
   }
 
-#ifdef HAVE_WINDOWS_H
+  // FIXME: bad #ifdef, should ideally be a run-time check for
+  // MSWindows. 20030526 mortene.
+#ifdef _WIN32
   const char * windir = coin_getenv("WINDIR");
   if (windir) {
     SbString winfontpath = windir;
     winfontpath += "/Fonts";
+    // FIXME: $WINDIR/Fonts might not exist, so either check that
+    // SoInput is robust when adding non-existing directory, or add a
+    // stat() call to see if $WINDIR/Fonts exists. 20030526 mortene.
     SoInput::addDirectoryLast(winfontpath.getString());
   }
-#endif
+#endif // _WIN32
 
   // Built-in mappings from font name to font file name.
   // NB! Prepend font names with ' ' to separate them from file names.
@@ -147,7 +146,7 @@ SoFontLib::initialize(void)
 }
 
 void
-SoFontLib::exit()
+SoFontLib::exit(void)
 {
   int i;
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
@@ -172,7 +171,8 @@ SoFontLib::exit()
 }
 
 int
-SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size)
+SoFontLib::createFont(const SbName & fontname, const SbName & stylename,
+                      const SbVec2s & size)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbString path, *strptr;
@@ -182,6 +182,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   SbStringList emptylist;
   fileidx = -1;
   int font = -1;
+
   // Check if we already know the requestname for this fontname
   if (SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)strptr)) {
     path = *strptr;
@@ -323,7 +324,7 @@ SoFontLib::setCharmap(const int font, const int charmap)
 void
 SoFontLib::setDefaultCharmap(const int font)
 {
-  assert (font >= 0);
+  assert(font >= 0);
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   const char * str;
   const char * name;

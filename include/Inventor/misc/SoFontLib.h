@@ -51,11 +51,9 @@ public:
   static unsigned char * getBitmap(const int font, const int glyph, SbVec2s & size, SbVec2s & pos, const SbBool antialiased);
   static int getOutline(const int font, const int glyph);
 
-protected:
-  SoFontLib(void);
-  ~SoFontLib();
-
 private:
+  SoFontLib(void) { }
+  ~SoFontLib() { }
   SoFontLibP * pimpl;
 };
 
