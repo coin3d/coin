@@ -264,7 +264,8 @@
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
-#include <Inventor/elements/SoTextureScalePolicyElement.h> // future element
+#include <Inventor/elements/SoTextureScalePolicyElement.h> // internal element
+#include <Inventor/elements/SoTextureScaleQualityElement.h> // internal  element
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/C/tidbitsp.h>
@@ -429,6 +430,7 @@ SoElement::initElements(void)
   SoGLCacheContextElement::initClass();
 
   SoTextureScalePolicyElement::initClass();
+  SoTextureScaleQualityElement::initClass();
 
   SoListenerPositionElement::initClass();
   SoListenerOrientationElement::initClass();
