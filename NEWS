@@ -1,4 +1,6 @@
-NEWS
-====
-
-(Not in use until after v1.0 release.)
+New in Coin 1.0 final beta (2001-07-22):
+- beta release made for the Web3D SDK CD, for SIGGRAPH 2001 distribution
+* full Open Inventor 2.1 source code compatibility
+* miscellaneous extensions:
+  - SoPolygonOffset node
+  - and more [to be mapped down later]
