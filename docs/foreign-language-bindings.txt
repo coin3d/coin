@@ -6,6 +6,11 @@ C# / .NET
 
     <URL:http://people.cs.uchicago.edu/~songyanf/code/papers/mspaper.htm>
 
+  * There's something called swigsharp as well. Don't know how swigsharp
+    compares to swigcsharp (mentioned in the article above) though.
+
+    <URL:https://savannah.nongnu.org/projects/swigsharp/>
+
 ========================================================================
 Java
 ====
