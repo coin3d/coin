@@ -409,3 +409,7 @@ THE WISH LIST
   versions and TGS / SGI Inventor versions of the file format, so it
   is unlikely that we will do anything about this until we'd made our
   own additional file export / import format from scratch.
+
+  Update 2001-07-03 pederb: It would also be nice if setOverride()
+  could be done field-by-field, and not just for the entire node.
+
