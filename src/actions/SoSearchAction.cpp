@@ -268,6 +268,10 @@ SoSearchAction::getInterest(void) const
   If the \a searchall flag is \c TRUE, even nodes considered "hidden"
   by other actions are searched (like for instance the disabled
   children of SoSwitch nodes).
+
+  SoBaseKit::setSearchingChildren() must be used to search for nodes
+  under node kits.
+
 */
 void
 SoSearchAction::setSearchingAll(const SbBool searchallarg)
