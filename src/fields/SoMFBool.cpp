@@ -275,7 +275,7 @@ SoMFBool::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFBool::classTypeId =
-    SoType::createType(SoMFBool::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFBool", &SoMFBool::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

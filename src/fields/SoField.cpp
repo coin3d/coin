@@ -1742,4 +1742,23 @@ SoField::initClasses(void)
 #if !defined(COIN_EXCLUDE_SOMFVEC4F)
   SoMFVec4f::initClass();
 #endif // !COIN_EXCLUDE_SOMFVEC4F
+
+  // Create these obsoleted types for backwards compatibility. They
+  // are typedef'ed to the types which obsoleted them, but this is
+  // needed so it will also be possible to use SoType::fromName() with
+  // the old names and create instances in that manner.
+  //
+  // FIXME: SoType::fromName("oldname") == SoType::fromName("newname")
+  // will fail, but this can be solved with a hack in
+  // SoType::operator==(). Do we _want_ to implement this hack,
+  // though? It'd be ugly as hell.  19991109 mortene.
+
+  SoType::createType(SoSField::getClassTypeId(), "SFLong",
+		     &SoSFInt32::createInstance);
+  SoType::createType(SoSField::getClassTypeId(), "SFULong",
+		     &SoSFUInt32::createInstance);
+  SoType::createType(SoMField::getClassTypeId(), "MFLong",
+		     &SoMFInt32::createInstance);
+  SoType::createType(SoMField::getClassTypeId(), "MFULong",
+		     &SoMFUInt32::createInstance);
 }

@@ -276,7 +276,7 @@ SoMFRotation::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFRotation::classTypeId =
-    SoType::createType(SoMFRotation::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFRotation", &SoMFRotation::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

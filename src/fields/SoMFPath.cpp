@@ -264,7 +264,7 @@ SoMFPath::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFPath::classTypeId =
-    SoType::createType(SoMFPath::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFPath", &SoMFPath::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

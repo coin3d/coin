@@ -266,7 +266,7 @@ SoMFTime::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFTime::classTypeId =
-    SoType::createType(SoMFTime::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFTime", &SoMFTime::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

@@ -161,7 +161,7 @@ SoSFImage::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFImage::classTypeId =
-    SoType::createType(SoSFImage::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFImage", &SoSFImage::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

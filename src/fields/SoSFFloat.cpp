@@ -199,7 +199,7 @@ SoSFFloat::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFFloat::classTypeId =
-    SoType::createType(SoSFFloat::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFFloat", &SoSFFloat::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

@@ -185,7 +185,7 @@ SoSFMatrix::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFMatrix::classTypeId =
-    SoType::createType(SoSFMatrix::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFMatrix", &SoSFMatrix::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

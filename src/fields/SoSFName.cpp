@@ -182,7 +182,7 @@ SoSFName::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFName::classTypeId =
-    SoType::createType(SoSFName::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFName", &SoSFName::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

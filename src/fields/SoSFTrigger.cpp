@@ -85,7 +85,7 @@ SoSFTrigger::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFTrigger::classTypeId =
-    SoType::createType(SoSFTrigger::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFTrigger", &SoSFTrigger::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

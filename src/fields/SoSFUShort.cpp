@@ -200,7 +200,7 @@ SoSFUShort::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFUShort::classTypeId =
-    SoType::createType(SoSFUShort::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFUShort", &SoSFUShort::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

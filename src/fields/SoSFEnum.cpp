@@ -158,7 +158,7 @@ SoSFEnum::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFEnum::classTypeId =
-    SoType::createType(SoSFEnum::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFEnum", &SoSFEnum::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

@@ -137,7 +137,7 @@ SoSFBitMask::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFBitMask::classTypeId =
-    SoType::createType(SoSFBitMask::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFBitMask", &SoSFBitMask::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

@@ -181,7 +181,7 @@ SoSFPlane::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFPlane::classTypeId =
-    SoType::createType(SoSFPlane::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFPlane", &SoSFPlane::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

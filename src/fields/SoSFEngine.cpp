@@ -154,7 +154,7 @@ SoSFEngine::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFEngine::classTypeId =
-    SoType::createType(SoSFEngine::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFEngine", &SoSFEngine::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

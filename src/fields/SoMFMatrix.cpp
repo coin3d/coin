@@ -274,7 +274,7 @@ SoMFMatrix::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFMatrix::classTypeId =
-    SoType::createType(SoMFMatrix::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFMatrix", &SoMFMatrix::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

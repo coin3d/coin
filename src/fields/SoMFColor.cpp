@@ -265,7 +265,7 @@ SoMFColor::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFColor::classTypeId =
-    SoType::createType(SoMFColor::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFColor", &SoMFColor::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

@@ -186,7 +186,7 @@ SoSFVec3f::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFVec3f::classTypeId =
-    SoType::createType(SoSFVec3f::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFVec3f", &SoSFVec3f::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

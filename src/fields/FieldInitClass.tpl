@@ -5,5 +5,5 @@
   assert(inherited::getClassTypeId() != SoType::badType());
 
   So##_fieldname_::classTypeId =
-    SoType::createType(So##_fieldname_::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "_fieldname_", &So##_fieldname_::createInstance);

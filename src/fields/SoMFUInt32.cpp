@@ -275,7 +275,7 @@ SoMFUInt32::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoMFUInt32::classTypeId =
-    SoType::createType(SoMFUInt32::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "MFUInt32", &SoMFUInt32::createInstance);
 //$ END TEMPLATE FieldInitClass
 }

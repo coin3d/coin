@@ -170,7 +170,7 @@ SoSFString::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSFString::classTypeId =
-    SoType::createType(SoSFString::getClassTypeId(),
+    SoType::createType(inherited::getClassTypeId(),
                        "SFString", &SoSFString::createInstance);
 //$ END TEMPLATE FieldInitClass
 }
