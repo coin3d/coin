@@ -1546,8 +1546,8 @@ SoField::referencesCopy(void) const
     SoEngineOutput * eout = masterengineouts[i];
     SbBool isengine = ! eout->isNodeEngineOutput();
     SoFieldContainer * fc = isengine ? 
-      eout->getContainer() : 
-      eout->getNodeContainer();    
+      (SoFieldContainer*) eout->getContainer() : 
+      (SoFieldContainer*) eout->getNodeContainer();    
     if (SoFieldContainer::checkCopy(fc)) return TRUE;
     if (isengine || (fc->isOfType(SoEngine::getClassTypeId()) &&
                      ((SoEngine*)fc)->shouldCopy())) return TRUE;
