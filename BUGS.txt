@@ -1520,3 +1520,30 @@
     20021219 mortene.
 
 =====================================================================
+
+050 We can't read files where DEF-names includes "[" and "]" chars.
+
+    Here's a simple file to reproduce with (load with
+    SoDB::readAll()):
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #Inventor V2.1 ascii
+
+    DEF test[0] Separator { }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    This results in the following error messages, and a terminated
+    import operation:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    Coin read error: Premature end of file after DEF
+            Occurred at line   3 in <ivfile>
+    Coin read error: Invalid definition of test
+            Occurred at line   3 in <ivfile>
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    SGI Inventor handles the same file with no problems.
+
+    20021220 mortene.
+
+=====================================================================
