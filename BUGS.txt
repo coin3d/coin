@@ -625,3 +625,37 @@
     20020916 larsa.
 
 =====================================================================
+
+028 So[SM]FString I/O problem
+    " characters in strings aren't backslash-quoted when exported to
+    file.  This causes the fields to get another value when it is
+    read in again.
+
+    This indicates that there is a general problem with not backslash-
+    quoting string characters that need quoting, or maybe octal
+    representation (if that is a valid string character representation).
+
+    Related to this, the string reader doesn't jump in and out of
+    quoted-string-mode when it encounters unquoted "-characters that
+    open or close strings in the middle of the string.  I'm not sure
+    if what's the correct behaviour is specified in any file format
+    specification though - maybe the VRML1/VRML97 specs?.  If not,
+    SGI Inventor would serve as the reference implementation on this
+    issue.
+
+    SoAsciiText * text = new SoAsciiText;
+    text->string.set1Value(0, "\"quoted string\"");
+    writeaction.apply(text);
+
+    When read in again, this is read in as the two strings "quoted" and
+    "string\"\"," - the last , coming from the multi-field separator,
+    I guess.
+
+    I would expect the last to be just "string" if the quoted-string-mode
+    switching worked like in the Bourne shell where you can write
+    h""ey" yo"u to produce the string "hey you".  The C string syntax
+    would perhaps be more natural to compare with - there this kind of
+    stuff isn't allowed at all.
+    
+    20020923 larsa.
+
