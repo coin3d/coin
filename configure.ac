@@ -949,7 +949,7 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements engines \
-    errors events fields manips misc lists nodekits nodes projectors \
+    errors events fields glue manips misc lists nodekits nodes projectors \
     sensors upgraders; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"

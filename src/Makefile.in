@@ -17,9 +17,6 @@
 # Process this file with automake to generate Makefile.in.
 # **************************************************************************
 
-# **************************************************************************
-# Extensions which might be present.
-
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -142,6 +139,13 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
+CLEANFILES = \
+  coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb coin@COIN_MAJOR_VERSION@@SUFFIX@.dll
+
+
+
+# **************************************************************************
+# Extensions which might be present.
 @BUILD_VRML97_TRUE@VRML97DIR = vrml97
 @BUILD_VRML97_FALSE@VRML97DIR = 
 @BUILD_VRML97_TRUE@VRML97LIBADD = $(VRML97DIR)/libvrml97.la
@@ -932,6 +936,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
