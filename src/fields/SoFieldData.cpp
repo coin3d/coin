@@ -805,7 +805,7 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
     out->write("fields [ ");
   }
 
-  SbBool extnode = !this->getIsBuiltIn();
+  SbBool extnode = !object->getIsBuiltIn();
 
   SbBool atleastonewritten = FALSE;
   for (int i = 0; i < this->getNumFields(); i++) {
