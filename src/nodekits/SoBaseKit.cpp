@@ -997,11 +997,8 @@ SoBaseKit::createDefaultParts(void)
 const SoNodekitParts *
 SoBaseKit::getNodekitPartsList(void) const
 {
-#if COIN_DEBUG
-  SoDebugError::post("SoBaseKit::getNodekitPartsList",
-                     "OIV method not supported by Coin (returns private "
-                     "class)");
-#endif // COIN_DEBUG
+  assert(0 &&
+         "SoBaseKit::getNodekitPartsList() obsoleted in Coin");
   return NULL;
 }
 
