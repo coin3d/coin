@@ -121,12 +121,30 @@ fi
 AC_LANG_SAVE
 AC_LANG_C
 
+dnl ************************************************************************
+dnl * Check if linker needs -lm for math functions.
+dnl ************************************************************************
+
+save=$LIBS
+LIBS=
+AC_MSG_CHECKING(whether we must explicitly link with the math library)
+AC_TRY_LINK([#include <math.h>], [fmod(1.0f, 1.0f)], mathlib=no, mathlib=yes )
+AC_MSG_RESULT($mathlib)
+LIBS=$save
+
+MATHLIB=""
+if test $mathlib = yes; then
+  MATHLIB="-lm"
+fi
+
+dnl ************************************************************************
+
 AC_SEARCH_LIBS(glAccum, $GL_search_list, , AC_MSG_ERROR([
 *** Needs an OpenGL-compatible development installation to compile Coin!]),
-               -lm)
+               $MATHLIB)
 AC_SEARCH_LIBS(gluBeginCurve, $GLU_search_list, , AC_MSG_ERROR([
 *** Needs the GLU library to compile Coin!]),
-               -lm)
+               $MATHLIB)
 
 AC_LANG_RESTORE
 
@@ -315,19 +333,14 @@ if test "x$want_simage" = "xyes"; then
   AC_MSG_RESULT($simage_dev)
 
   if test "x$simage_dev" = "xyes"; then
-    AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz -lm)
+    AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz $MATHLIB)
   fi
   if test "$simage_dev" = no; then
     AC_MSG_WARN(libsimage development system not found -- no simage texture support)
   fi
 fi
 
-dnl *******************************************************************
-dnl FIXME: quick hack until we do proper libm detection. 19991019 mortene.
-dnl *******************************************************************
-
-LIBS="$LIBS -lm"
-
+LIBS="$LIBS $MATHLIB"
 
 dnl *******************************************************************
 dnl * List all files configure shall generate.
