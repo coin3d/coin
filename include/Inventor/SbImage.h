@@ -53,6 +53,8 @@ public:
   static SbString searchForFile(const SbString & basename,
                                 const SbString * const * dirlist,
                                 const int numdirs);
+  
+  SbBool hasData(void) const;
 
 private:
 

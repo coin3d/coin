@@ -182,7 +182,7 @@ SbImage::readUnlock(void) const
 
   \sa setValue()
 
-  \since 2001-11-06 
+  \since 2001-11-06
 */
 void
 SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
@@ -415,6 +415,23 @@ SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
   }
   THIS->writeUnlock();
   return len > 0;
+}
+
+/*!
+  Returns \a TRUE if the image is not empty. This can be useful, since
+  getValue() will start loading the image if scheduleReadFile() has
+  been used to set the image data.
+
+  \since 2001-11-08
+*/
+SbBool 
+SbImage::hasData(void) const
+{
+  SbBool ret;
+  this->readLock();
+  ret = THIS->bytes != NULL;
+  this->readUnlock();
+  return ret;
 }
 
 
