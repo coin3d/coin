@@ -73,9 +73,6 @@ typedef struct {
   SbVec4f k;    /* Stretch factors        */
   float f;      /* Sign of determinant    */
 } AffineParts;
-static float polar_decomp(HMatrix M, HMatrix Q, HMatrix S);
-static SbVec4f spect_decomp(HMatrix S, HMatrix U);
-static SbRotation snuggle(SbRotation q, SbVec4f & k);
 static void decomp_affine(HMatrix A, AffineParts * parts);
 
 static const SbMat IDENTITYMATRIX = {
@@ -1454,7 +1451,7 @@ spect_decomp(HMatrix S, HMatrix U)
 {
   SbVec4f kv;
   double Diag[3], OffD[3]; /* OffD is off-diag (by omitted index) */
-  double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq, a, b;
+  double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq;
   static char nxt[] = {Y, Z, X};
   int sweep, i, j;
   mat_copy(U, =, mat_id, 4);
@@ -1486,9 +1483,74 @@ spect_decomp(HMatrix S, HMatrix U)
         OffD[q] -= s*(OffD[p] + tau*OffD[q]);
         OffD[p] += s*(OffDq   - tau*OffD[p]);
         for (j=Z; j>=X; j--) {
-          a = U[j][p]; b = U[j][q];
+          // FIXME: this is a very peculiar problem.. if the code in
+          // the #else part is activated, Valgrind 1.9.3 reports "Use
+          // of uninitialised value of size 8" in this code, when
+          // built with g++ 2.95.4. The code under the #if runs
+          // without any warnings, even though the only change is some
+          // *seemingly* irrelevant casting.
+          //
+          // (And even more strange: by inserting any call to external
+          // code (for instance a line of ''(void)atoi("0");'') below,
+          // the Valgrind error vanishes. Could it be some sort of
+          // optimalization bug related to stack overwriting or some
+          // such?)
+          //
+          // We also have a report about a crash assumed to be in this
+          // code with Coin built with MSVC6.0 with /O2 optimalization
+          // (very suspect that there's a problem with both g++ and
+          // MSVC++), for the following stand-alone example:
+          //
+          // ----8<----- [snip] ---------8<----- [snip] -----
+          //  #include <Inventor/SoDB.h>
+          //  #include <Inventor/SbLinear.h>
+          //
+          //  int
+          //  main( int argc, char** argv )
+          //  { 
+          //    SoDB::init();
+          //
+          //    SbVec3f translation, scale, axis;
+          //    SbRotation rot, scaleRot;
+          //    SbMatrix matrix (5.96046e-008f,  1.00000f,       -2.98023e-008f, 0.000000f,
+          //                     -2.98023e-008f, 5.96046e-008f,  1.00000f,       0.000000f,
+          //                     1.00000f,       -2.98023e-008f, 5.96046e-008f,  0.000000f,
+          //                     -162.929f,      -56.2217f,      197.110f,       1.00000f 
+          //                     );
+          //    matrix.getTransform ( translation, rot, scale, scaleRot );
+          //    translation.print(stdout); printf(" <- translation\n");
+          //    scale.print(stdout); printf(" <- scale\n");
+          //    rot.print(stdout); printf(" <- rot\n");
+          //    scaleRot.print(stdout); printf(" <- scaleRot\n");
+          //
+          //    return 0;
+          //  }
+          // ----8<----- [snip] ---------8<----- [snip] -----
+          //
+          // I was not able to reproduce the crash, so I got stuck in
+          // debugging this.
+          //
+          // Mailed a patch with the casting changes back to the
+          // original reporter of the problem (Tore K at HitecO), and
+          // he reports that the crash bug is then also gone! That's
+          // the damndest thing.. really weird.
+          //
+          // It does seem extremely likely to be a compiler problem,
+          // although it's very fishy that it mucks something up for
+          // both GNU GCC (with -O2) and MS's VisualC++ (with /O2).
+          //
+          // I'll buy a beer for anyone who can figure out this one
+          // and explain it to me.
+          //
+          // 20030214 mortene.
+          float a = U[j][p], b = U[j][q];
+#if 1
+          U[j][p] -= float(s)*(b + float(tau)*a);
+          U[j][q] += float(s)*(a - float(tau)*b);
+#else
           U[j][p] -= (float)(s*(b + tau*a));
           U[j][q] += (float)(s*(a - tau*b));
+#endif
         }
       }
     }
