@@ -22,6 +22,7 @@
 
   // This is the same code as in SoGLCoordinateElement::send().
   // It is inlined here for speed (~15% speed increase).
+#undef SEND_VERTEX
 #define SEND_VERTEX(_idx_) \
   if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
   else glVertex4fv((const GLfloat*) (coords4d + _idx_));

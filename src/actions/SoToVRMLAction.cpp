@@ -192,8 +192,11 @@ public:
 #endif // DOXYGEN_SKIP_THIS
 
 
+#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
+#undef PUBLIC
 #define PUBLIC(p) (p->master)
+#undef THISP
 #define THISP(p) ((SoToVRMLActionP*)p)
 
 // *************************************************************************
