@@ -351,6 +351,12 @@ SoNode::SoNode(void)
 */
 SoNode::~SoNode()
 {
+  // check if this is an SoProtoInstance root node.
+  SoProtoInstance * inst = SoProtoInstance::findProtoInstance(this);
+  if (inst) {
+    // unref the instance
+    inst->unref();
+  }
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNode::~SoNode", "%p", this);
 #endif // debug

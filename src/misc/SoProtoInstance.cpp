@@ -54,14 +54,12 @@ public:
   SoProtoInstanceP() :
     fielddata(NULL),
     protodef(NULL),
-    root(NULL),
-    rootsensor(NULL)
+    root(NULL)
   { }
 
   SoFieldData * fielddata;
   SoProto * protodef;
   SoNode * root;
-  SoNodeSensor * rootsensor;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -115,8 +113,6 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
   THIS = new SoProtoInstanceP;
   THIS->fielddata = new SoFieldData;
   THIS->protodef = proto;
-  THIS->rootsensor = new SoNodeSensor;
-  THIS->rootsensor->setDeleteCallback(sensorCB, this);
   if (proto) proto->ref();
   this->copyFieldData(deffielddata);
 }
@@ -127,7 +123,6 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
 SoProtoInstance::~SoProtoInstance()
 {
   this->setRootNode(NULL);
-  delete THIS->rootsensor;
   const int n = THIS->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
     delete THIS->fielddata->getField(this, i);
@@ -179,11 +174,9 @@ SoProtoInstance::setRootNode(SoNode * root)
   CC_MUTEX_LOCK(protoinstance_mutex);
   if (THIS->root) {
     protoinstance_dict->remove((unsigned long) THIS->root);
-    THIS->rootsensor->detach();
   }
   THIS->root = root;
   if (root) {
-    THIS->rootsensor->attach(root);
     protoinstance_dict->enter((unsigned long) root, (void*) this);
   }
   CC_MUTEX_UNLOCK(protoinstance_mutex);
@@ -266,6 +259,7 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
 void
 SoProtoInstance::sensorCB(void * data, SoSensor *)
 {
+  // not used anymore. ProtoInstance is unref'ed from SoNode destructor
   SoProtoInstance * thisp = (SoProtoInstance*) data;
   thisp->setRootNode(NULL);
   thisp->unref();
