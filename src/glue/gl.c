@@ -550,6 +550,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GLX_EXT_import_context */
 
+  /* FIXME: does this exist in OpenGL as a non-extension? 20021202 mortene. */
 #ifdef GL_ARB_texture_compression
   if (cc_glglue_glext_supported(w,"GL_ARB_texture_compression")) {
     w->glCompressedTexImage3DARB = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DARBPROC)PROC(glCompressedTexImage3DARB);
@@ -562,6 +563,8 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_ARB_texture_compression */
 
+  /* FIXME: also possible that this exists in OpenGL as a
+     non-extension. 20021202 mortene. */
 #ifdef GL_EXT_paletted_texture
   if (cc_glglue_glext_supported(w,"GL_EXT_paletted_texture")) {
     w->glColorTableEXT = (COIN_PFNGLCOLORTABLEEXTPROC)PROC(glColorTableEXT);
@@ -1336,7 +1339,7 @@ cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 {
   assert(glue->glBlendEquation || glue->glBlendEquationEXT);
 
-  if (glBlendEquation) glue->glBlendEquation(mode);
+  if (glue->glBlendEquation) glue->glBlendEquation(mode);
   else glue->glBlendEquationEXT(mode);
 }
 
