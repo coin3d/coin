@@ -3,6 +3,10 @@ be eligible for inclusion in Coin if we should ever need it.
 
 mortene.
 
+There's now a fifo implementation in threads/ - void * based, not
+template based.
+
+larsa
 
 --- /dev/null	Tue May  5 22:32:27 1998
 +++ include/Inventor/SbFIFO.h	Mon May 13 18:51:45 2002
