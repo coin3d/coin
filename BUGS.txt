@@ -4008,23 +4008,6 @@ diff -u -r1.9 selection.cpp.in
 
 =====================================================================
 
-112 SoSpotLightDragger assert on normal interaction.
-
-    Start interaction with a translation (i.e. click and drag one of
-    the two small cylinders sticking out of the sphere) and we get an
-    assert failure (due to scene graph being modified during
-    traversal).
-
-    pederb suggests fixing it by taking away the assert (as
-    usual). ;-)
-
-    Should at least first check to see if the SoSpotLightDragger code
-    does something stupid.
-
-    20040506 mortene.
-
-=====================================================================
-
 113 SoBlinker import bug.
 
     The scene graph with the SoBlinker below will not behave as
