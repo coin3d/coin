@@ -236,3 +236,46 @@
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
 =====================================================================
+
+009 The CenterballDragger is FUBAR: click and hold on the invisible
+    ball with LMB and voilently drag around a bit -- the yellow axis
+    markers flips out completely and we'll quickly get an
+    assert. Nasty.
+
+    mortene 20020624.
+
+=====================================================================
+
+010 The DirectionalLightDragger has a nasty "up-down" translation bug.
+    Load the simplest scene with it in an examinerviewer:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    DirectionalLightDragger { }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    Don't move the camera from it's default position before switching
+    to "scenegraph interact" mode (by e.g. 'ESC'), then click and drag
+    with LMB on the "up-marker" above the sphere -- the dragger
+    translates completely wrong.
+
+    mortene 20020624.
+
+=====================================================================
+
+011 The SoTranslate2Dragger's behavior on
+
+       hold SHIFT -> LMB-drag -> release SHIFT -> continue drag
+
+    is both non-intuitive and wrong versus SGI Inventor: the dragger
+    should immediately stay and continue from the same position after
+    releasing SHIFT.
+
+    (Note: after attempting a fix for this bug, make sure the
+    SoTranslate2Dragger also works as expected when it's embedded into
+    other dragger classes.)
+
+    mortene 20020624.
+
+=====================================================================
