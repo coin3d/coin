@@ -465,7 +465,7 @@ SoImage::readInstance(SoInput * in, unsigned short flags)
   this->setReadStatus(readOK);
   if (readOK && !filename.isDefault()) {
     if (!this->loadFilename()) {
-      SoReadError::post(in, "Could not read texture file %s",
+      SoReadError::post(in, "Could not read image file '%s'",
                         filename.getValue().getString());
       this->setReadStatus(FALSE);
     }
@@ -784,7 +784,7 @@ SoImage::filenameSensorCB(void * data, SoSensor *)
   if (thisp->filename.getValue().getLength() &&
       !thisp->loadFilename()) {
     SoDebugError::postWarning("SoImage::filenameSensorCB",
-                              "Image file could not be read: %s",
+                              "could not read image file '%s'",
                               thisp->filename.getValue().getString());
     thisp->setReadStatus(FALSE);
   }

@@ -413,38 +413,55 @@ SbImage::readFile(const SbString & filename,
                   const SbString * const * searchdirectories,
                   const int numdirectories)
 {
+  // simage is the only provider of import capabilities.
+  if (!simage_wrapper()->available) {
+    SoDebugError::postWarning("SbImage::readFile",
+                              "The simage library is not available, "
+                              "can not import any images from disk.");
+    return FALSE;
+  }
+
+  if (filename.getLength() == 0) {
+    // This is really an internal error, should perhaps assert. <mortene>.
+    SoDebugError::post("SbImage::readFile",
+                       "attempted to read file from empty filename.");
+    return FALSE;
+  }
+
   // FIXME: Add 3D image support when that is added to simage (kintel 20011118)
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
-  if (finalname.getLength()) {
-    int w, h, nc;
-    unsigned char * simagedata = NULL;
+  assert(finalname.getLength() > 0);
 
-    if (simage_wrapper()->available && simage_wrapper()->simage_read_image) {
-      simagedata = simage_wrapper()->simage_read_image(finalname.getString(), 
-                                                       &w, &h, &nc);
-#if COIN_DEBUG
-      if (!simagedata) {
-        SoDebugError::post("SbImage::readFile", "(%s) %s",
-                           filename.getString(),
-                           simage_wrapper()->simage_get_last_error ?
-                           simage_wrapper()->simage_get_last_error() :
-                           "Unknown error");
-      }
-#endif // COIN_DEBUG
-    }
-    
-    if (simagedata) {
-      //FIXME: Add 3'rd dimension (kintel 20011110)
-      this->setValuePtr(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
-      // NB, this is a trick. We use setValuePtr() to set the size
-      // and data pointer, and then we change the data type to simage
-      // peder, 2002-03-22
-      THIS->datatype = SbImageP::SIMAGE_DATA;
-      return TRUE;
-    }
+  assert(simage_wrapper()->simage_read_image);
+  int w, h, nc;
+  unsigned char * simagedata =
+    simage_wrapper()->simage_read_image(finalname.getString(), 
+                                        &w, &h, &nc);
+  if (simagedata) {
+    //FIXME: Add 3'rd dimension (kintel 20011110)
+    this->setValuePtr(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
+    // NB, this is a trick. We use setValuePtr() to set the size
+    // and data pointer, and then we change the data type to simage
+    // peder, 2002-03-22
+    THIS->datatype = SbImageP::SIMAGE_DATA;
+    return TRUE;
   }
-
+#if COIN_DEBUG
+  else {
+    SoDebugError::post("SbImage::readFile", "(%s) %s",
+                       filename.getString(),
+                       // FIXME: "getlasterror" is a crap strategy, as
+                       // it places extra burden on the client to
+                       // lock. Should keep a single entry-lock within
+                       // simage_wrapper() to work around
+                       // this. 20020628 mortene.
+                       simage_wrapper()->simage_get_last_error ?
+                       simage_wrapper()->simage_get_last_error() :
+                       "Unknown error");
+  }
+#endif // COIN_DEBUG
+    
   this->setValue(SbVec3s(0,0,0), 0, NULL);
   return FALSE;
 }
