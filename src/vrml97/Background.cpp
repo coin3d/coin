@@ -154,6 +154,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SoDB.h>
@@ -183,6 +184,7 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
@@ -276,6 +278,9 @@ static void background_geometrychangeCB(void * data, SoSensor * sensor);
 static void background_vrmltexturechangeCB(void * data, SoSensor * sensor);
 static void background_bindingchangeCB(void * data, SoSensor * sensor);
 
+static float vrmlbackground_viewup[] = {0.0f, 1.0f, 0.0f};
+static SbBool vrmlbackground_viewup_set = FALSE;
+
 // *************************************************************************
 
 class SoVRMLBackgroundP {
@@ -349,6 +354,20 @@ SoVRMLBackground::initClass(void) // static
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLBackground, SO_VRML97_NODE_TYPE);
   SoGetBoundingBoxAction::addMethod(SoVRMLBackground::getClassTypeId(), 
                                     background_bbfix);
+
+  const char * env = coin_getenv("COIN_VIEWUP");
+  if (env) {
+    float data[3];
+    int n = sscanf(env, "%f%f%f", &data[0], &data[1], &data[2]);
+    if (n == 3) {
+      SbVec3f v(data[0], data[1], data[2]);
+      v.normalize();
+      vrmlbackground_viewup[0] = v[0];
+      vrmlbackground_viewup[1] = v[1];
+      vrmlbackground_viewup[2] = v[2];
+      vrmlbackground_viewup_set = TRUE;
+    }
+  }
 }
 
 /*!
@@ -469,8 +488,21 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 
   const SbMatrix & tmp = SoViewingMatrixElement::get(state);
   SbRotation rot(tmp);
+
+  if (vrmlbackground_viewup_set) {
+    // create a rotation from the positive Y axis to the new view up
+    SbRotation r2(SbVec3f(0.0f, 1.0f, 0.0f), 
+                  SbVec3f(vrmlbackground_viewup[0],
+                          vrmlbackground_viewup[1],
+                          vrmlbackground_viewup[2]));
+    r2 *= rot;
+    PRIVATE(this)->camera->orientation = r2.inverse();
+  }
+  else {
+    PRIVATE(this)->camera->orientation = rot.inverse();
+  }
+
   // rotate background camera so that it matches the current camera
-  PRIVATE(this)->camera->orientation = rot.inverse();
 
   // set to identity before rendering subgraph
   SoModelMatrixElement::makeIdentity(state, this);  
