@@ -417,6 +417,7 @@ static void
 field_mutex_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(sofield_mutex);
+  sofield_mutex = NULL;
 }
 
 /*!
@@ -1079,8 +1080,9 @@ field_buffer_realloc(void * bufptr, size_t size)
 void
 SoField::get(SbString & valuestring)
 {
-  CC_MUTEX_LOCK(sofield_mutex); // need to lock since a static array is used
-
+  if (sofield_mutex) {
+    CC_MUTEX_LOCK(sofield_mutex); // need to lock since a static array is used
+  }
   // Note: this code has an almost verbatim copy in SoMField::get1(),
   // so remember to update both places if any fixes are done.
 
@@ -1119,7 +1121,9 @@ SoField::get(SbString & valuestring)
     (void) field_buffer_realloc(field_buffer, STARTSIZE);
   }
 
-  CC_MUTEX_UNLOCK(sofield_mutex);
+  if (sofield_mutex) {
+    CC_MUTEX_UNLOCK(sofield_mutex);
+  }
 }
 
 /*!
