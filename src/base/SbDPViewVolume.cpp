@@ -821,8 +821,6 @@ SbDPViewVolume::perspective(double fovy, double aspect,
   volumes (e.g. off center volumes). It has the same arguments and
   functionality as the corresponding OpenGL glFrustum() function.
 
-  \since 2002-07-16
-
   \sa perspective() 
 */
 void 
