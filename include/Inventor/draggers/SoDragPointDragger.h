@@ -75,7 +75,7 @@ public:
   static void initClass(void);
   SoDragPointDragger(void);
 
-  void setJumpLimit(float limit);
+  void setJumpLimit(const float limit);
   float getJumpLimit(void) const;
   void showNextDraggerSet(void);
 
@@ -98,6 +98,13 @@ protected:
   static void valueChangedCB(void * f, SoDragger * d);
 
   SoFieldSensor * fieldSensor;
+
+private:
+  void registerDragger(SoDragger *dragger);
+  void unregisterDragger(const char *name);
+  void updateSwitchNodes();
+  int currAxis;
+  float jumpLimit;
 };
 
 #endif // !COIN_SODRAGPOINTDRAGGER_H
