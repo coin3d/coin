@@ -34,6 +34,13 @@
 //  represented by OpenGL texture coordinates, and some unimplemented magic
 //  should be done with them.
 //
+//
+//  All loaded models are centered and normalized to size 10 by
+//  default.
+//
+//  If loading fails during reading 3ds file, file pointer position is
+//  undefined.
+//
 //  TODO list:
 //
 //  - incomplete texture implementation - in 3ds files there is possible to
@@ -43,13 +50,18 @@
 //    right.
 //
 //  - unimplemented lights
+//
 //  - per-vertex normals generation
+//
 //  - investigate the color of material-less objects
+//
 //  - ?environment? (ambient light, fog,...)
+//
 //  - ?emissiveColor? (I am really confused how to get this from 3ds.)
+//
 //  - maybe some animations?
 //
-
+//
 
 
 #include <Inventor/SbPlane.h>

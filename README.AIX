@@ -40,8 +40,8 @@ platforms when trying to configure and build Coin. If you bump into
 any other problems, please let us know.
 
 Note that we do not have an AIX platform to test on, so we can't
-reproduce and fix this problem. We would be grateful for any further
-input provided from people using Coin on AIX.
+reproduce and fix these problems yet. We would be grateful for any
+further input provided from people using Coin on AIX.
 
 --
 mortene@sim.no

@@ -146,7 +146,7 @@ static const char PROTO_KEYWORD[] = "PROTO";
 static const char EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
 
 // Reference id if no DEF instance of a node is written yet
-static const int REFID_FIRSTWRITE = -1; 
+static const int REFID_FIRSTWRITE = -1;
 // Reference id if we don't need to add a suffix to the node name
 static const int REFID_NOSUFFIX = -2;
 
@@ -201,7 +201,7 @@ dont_mangle_output_names(const SoBase *base)
   static int COIN_DONT_MANGLE_OUTPUT_NAMES = -1;
 
   // Always unmangle node names in VRML1 and VRML2
-  if (base->isOfType(SoNode::getClassTypeId()) && 
+  if (base->isOfType(SoNode::getClassTypeId()) &&
       (((SoNode *)base)->getNodeType()==SoNode::VRML1 ||
        ((SoNode *)base)->getNodeType()==SoNode::VRML2)) return TRUE;
 
@@ -311,9 +311,9 @@ SoBase::~SoBase()
 static void
 sobase_sensor_add_cb(void * auditor, void * type, void * closure)
 {
-  SbList<SoDataSensor *> * auditingsensors = 
+  SbList<SoDataSensor *> * auditingsensors =
     (SbList<SoDataSensor*> *) closure;
-  
+
   // use a temporary variable, since some compilers can't cast
   // directly from void * to SoNotRec::Type
   uint32_t tmp = (int) type;
@@ -328,7 +328,7 @@ sobase_sensor_add_cb(void * auditor, void * type, void * closure)
   case SoNotRec::PARENT:
     // FIXME: should any of these get special treatment? 20000402 mortene.
     break;
-    
+
   default:
     assert(0 && "Unknown auditor type");
   }
@@ -403,7 +403,7 @@ SoBase::initClass(void)
   SoBase::name2obj = new SbDict;
   SoBase::obj2name = new SbDict;
   SoBase::refwriteprefix = new SbString("+");
-  
+
   CC_MUTEX_CONSTRUCT(sobase_mutex);
 }
 
@@ -424,7 +424,7 @@ SoBase::cleanClass(void)
 
   delete writerefs;
   delete SoBase::refwriteprefix;
-  
+
   CC_MUTEX_DESTRUCT(sobase_mutex);
 #endif // COIN_DEBUG
 }
@@ -773,7 +773,7 @@ typedef struct {
 //
 // Callback from cc_rbptree_traverse().
 //
-void 
+void
 SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
 {
   sobase_notify_data * data = (sobase_notify_data*) closure;
@@ -781,7 +781,7 @@ SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
 
   // gcc will not allow direct cast from void * to SoNotRec::Type
   uint32_t tmptype = (uint32_t) type;
-  
+
   if (data->notified.find(auditor) < 0) {
     if (data->cnt == 0) {
       data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
@@ -807,13 +807,13 @@ SoBase::notify(SoNotList * l)
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::notify", "base %p, list %p", this, l);
 #endif // debug
- 
+
   sobase_notify_data notdata;
   notdata.cnt = cc_rbptree_size(&this->auditortree);
   notdata.list = l;
   notdata.thisp = this;
-  
-  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::rbptree_notify_cb, &notdata);  
+
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::rbptree_notify_cb, &notdata);
   assert(notdata.cnt == 0);
 }
 
@@ -848,7 +848,7 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
   SoAuditorList * list = (SoAuditorList*) closure;
   uint32_t tmp = (uint32_t) type;
 
-  
+
   list->append(pointer, (SoNotRec::Type) tmp);
 }
 
@@ -866,7 +866,7 @@ SoBase::getAuditors(void) const
     sobase_auditordict = new SbDict();
     coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict);
   }
-  
+
   SoAuditorList * list = NULL;
   void * tmp;
   if (sobase_auditordict->find((unsigned long) this, tmp)) {
@@ -1025,13 +1025,12 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   nodes of a group has been read. Check if the next character in the
   stream is a '}' to detect the latter case.
 
-  3. A child was given as the "NULL" keyword. This can happen when
+  3. A child was given as the \c NULL keyword. This can happen when
   reading the contents of SoSFNode or SoMFNode fields.
 
-  If \c TRUE is returned and \a base is non-NULL upon return,
-  the instance was allocated and initialized according the what
-  was read from the \a in stream.
-
+  If \c TRUE is returned and \a base is not \c NULL upon return, the
+  instance was allocated and initialized according to what was read
+  from the \a in stream.
 */
 SbBool
 SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
@@ -1178,13 +1177,13 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
   SbBool multiref = this->hasMultipleWriteRefs();
 
   // Find what node name to write
-  SbString writename; 
+  SbString writename;
   if (dont_mangle_output_names(this)) {
     //
     // Try to keep the original node names as far as possible.
-    // Weaknesses (FIXME kintel 20020429): 
+    // Weaknesses (FIXME kintel 20020429):
     //  o We should try to reuse refid's as well.
-    //  o We should try to let "important" (=toplevel?) nodes 
+    //  o We should try to let "important" (=toplevel?) nodes
     //    keep their original node names before some subnode "captures" it.
     //
 
@@ -1222,7 +1221,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
        b2->setName(SbName("MyName"));
        b4->setName(SbName("MyName"));
        c0->setName(SbName("MyName"));
-  
+
        root->addChild(n0);
        root->addChild(n0);
        root->addChild(a0);
@@ -1264,13 +1263,13 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
            DEF MyName Separator {
            }
            DEF MyName+1 Separator {
-           }  
+           }
          }
          USE MyName
          Separator {
            DEF MyName Separator {
            }
-           USE MyName+1  
+           USE MyName+1
          }
          USE MyName+1
          DEF MyName Separator {
@@ -1284,7 +1283,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
            }
            DEF MyName+3 Separator {
            }
-           USE MyName  
+           USE MyName
          }
        }
     */
@@ -1307,7 +1306,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
         if (multiref) out->addDEFNode(name);
         out->setReference(this, REFID_NOSUFFIX);
       }
-      else { 
+      else {
         // Node name is already DEF'ed or an unnamed multiref => use a suffix.
         writename += SoBase::refwriteprefix->getString();
         writename.addIntString(out->addReference(this));
@@ -1752,7 +1751,7 @@ find_field(SoNode * node, const SbName & fieldname)
       int len = str.getLength();
       const char CHANGED[] = "_changed";
       const int changedsize = sizeof(CHANGED) - 1;
-      
+
       if (len > changedsize && strcmp(str.getString()+len-changedsize,
                                       CHANGED) == 0) {
         SbString substr = str.getSubString(0, len-(changedsize+1));
@@ -1830,7 +1829,7 @@ SoBase::connectRoute(SoInput * in,
           return FALSE;
         }
       }
-      
+
       SbBool ok;
       if (from) ok = to->connectFrom(from, notnotify, append);
       else ok = to->connectFrom(output, notnotify, append);
@@ -1846,7 +1845,7 @@ SoBase::connectRoute(SoInput * in,
 
 /*!
   \COININTERNAL
-  
+
   Reads a (VRML97) ROUTE. We decided to also add support for routes in
   Coin, as a generic feature, since we think it is nicer than setting
   up field connections inside the nodes.
@@ -1934,7 +1933,7 @@ SoBase::readRoute(SoInput * in)
 //
 // private method that sends a notify to auditor based on type
 //
-void 
+void
 SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 {
   switch (type) {
@@ -1945,7 +1944,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
       obj->notify(l);
     }
     break;
-    
+
   case SoNotRec::SENSOR:
     {
       SoDataSensor * obj = (SoDataSensor *)auditor;
@@ -1957,7 +1956,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
       obj->schedule();
     }
     break;
-    
+
   case SoNotRec::FIELD:
   case SoNotRec::ENGINE:
     {
@@ -1971,11 +1970,8 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
       ((SoField *)auditor)->notify(l);
     }
     break;
-    
+
   default:
     assert(0 && "Unknown auditor type");
   }
 }
-
-
-

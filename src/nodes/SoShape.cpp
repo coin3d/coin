@@ -114,6 +114,9 @@
   SoGetBoundingBoxAction. It is invoked from
   SoShape::getBoundingBox(). (Subclasses should \e not override
   SoNode::getBoundingBox().)
+
+  The \a box parameter sent in is guaranteed to be an empty box, while
+  \a center is undefined upon function entry.
 */
 
 /*!

@@ -332,6 +332,9 @@ SoSceneManager::redraw(void)
       // demand. 20000316 mortene.
       SoField * realtime = SoDB::getGlobalField("realTime");
       if (realtime && (realtime->getTypeId() == SoSFTime::getClassTypeId())) {
+        // Note that this should not get in the way of a
+        // app-programmer controlled realTime field, as
+        // enableRealTimeUpdate(FALSE) should then have been called.
         ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
       }
     }

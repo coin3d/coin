@@ -620,6 +620,14 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
   Sets the OpenGL cache context key, which is used for deciding when
   to share OpenGL display lists.
 
+  Each SoGLRenderAction has a cache context id. This can be set using
+  SoGLRenderAction::setCacheContext(). The cache context id must be
+  unique, so that different texture objects and display lists are
+  created for uncompatible GL contexts. For instance, when
+  SoGLRenderAction traverses an SoTexture2 node, the node checks if it
+  has a texture object created for the cache context. If not, a new
+  texture object will be created and used when rendering.
+
   \sa SoGLCacheContextElement::getUniqueCacheContext()
 */
 void

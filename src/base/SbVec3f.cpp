@@ -323,7 +323,32 @@ SbVec3f::negate(void)
   length of the vector before normalization.
 
   If the vector is the null vector, no attempt at normalization will
-  be done.
+  be done, and if the Coin library was built in a debug version, this
+  error message will then be shown:
+
+  \verbatim
+    Coin warning in SbVec3f::normalize(): The length of the vector
+    should be > 0.0f to be able to normalize.
+  \endverbatim
+
+  We've made Coin spit out a warning when an attempt at normalizing a
+  null-vector is made, as that seems to always be a symptom caused by
+  some graver programming error somewhere else -- either internally in
+  Coin code, or in application code.
+
+  If this happens, you should run the application in a debugger and see
+  how the call-stack backtrace looks when it hits. An easy way of
+  getting a debugger break at the warning spot is to set the following
+  debugging environment variable which will make the code assert:
+
+  \verbatim
+    COIN_DEBUG_BREAK="SbVec3f::normalize"
+  \endverbatim
+
+  If you from the backtrace analysis strongly suspects an internal Coin
+  bug, please report the call-stack to us at \e coin-support@coin3d.org
+  and we'll look into it. Example code that triggers the bug would
+  then also be very helpful.
 */
 float
 SbVec3f::normalize(void)

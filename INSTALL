@@ -1,7 +1,7 @@
 
                          Install Instructions
 
-               Copyright 2001-2002   Systems in Motion
+               Copyright 2001-2003   Systems in Motion
 
                         http://www.coin3d.org/
 
@@ -137,7 +137,7 @@ Configuration Options
 
 --disable-msvc
 
-  Whe nusing the cygwin environment, the default is to search for the
+  When using the cygwin environment, the default is to search for the
   Microsoft Visual C++ compiler.  The configure script aborts if it is
   not found.  If you know what you are doing, and really want to use
   gcc instead, you can then disable the search for VC++ and consequently

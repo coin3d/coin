@@ -56,7 +56,7 @@
 
   <ul>
   <li>move camera to correct position for frame</li>
-  <li>update the realTime global field (see explanation below)</li>
+  <li>update the \c realTime global field (see explanation below)</li>
   <li>invoke the SoOffscreenRenderer</li>
   <li>dump rendered scene to file</li>
   </ul>
@@ -65,15 +65,31 @@
   file, for instance in MPEG format, from the set of files dumped to
   disk from the iterative process above.
 
-  The code would go something like this (pseudo-code style):
+  The code would go something like the following (pseudo-code
+  style). First we need to stop the Coin library itself from doing any
+  automatic updating of the \c realTime field, so your application
+  initialization for Coin should look something like:
+
 
   \code
+   [...] = SoQt::init([...]); // or SoWin::init() or SoDB::init()
+   // ..and then immediately:
+
    // Control realTime field ourselves, so animations within the scene
    // follows "movie-time" and not "wallclock-time".
-   SoSFTime * realtime = SoDB::getGlobalField("realTime");
    SoDB::enableRealTimeSensor(FALSE);
+   SoSceneManager::enableRealTimeUpdate(FALSE);
+   SoSFTime * realtime = SoDB::getGlobalField("realTime");
    realtime->setValue(0.0);
+  \endcode
 
+  Note that it is important that the \c realTime field is initialized
+  to \e your start-time \e before setting up any engines or other
+  entities in the system that uses the \c realTime field.
+
+  Then for the rendering loop, something like:
+
+  \code
    for (int i=0; i < NRFRAMES; i++) {
      // [...reposition camera here, if necessary...]
 
@@ -85,23 +101,25 @@
      framefile.sprintf("frame%06d.rgb", i);
      offscreenrend->writeToRGB(framefile);
 
-     // advance "current time" by the FPS value
+     // advance "current time" by the frames-per-second value, which
+     // is 24 fps in this example
      realtime->setValue(realtime.getValue() + 1/24.0);
    }
   \endcode
 
   When making movies you need to write your application control code
   to take care of moving the camera along the correct trajectory
-  yourself, and to explicitly control the global "realTime" field.
+  yourself, and to explicitly control the global \c realTime field.
   The latter is so you're able to "step" with appropriate time units
   for each render operation (e.g. if you want a movie that has a 24
-  FPS refresh rate first render with realTime=0.0, then add 1/24s to
-  the realTime field, render again to a new frame, add another 1/24s
-  to the realTime field, render, and so on).
+  FPS refresh rate, first render with \c realTime=0.0, then add 1/24s
+  to the \c realTime field, render again to a new frame, add another
+  1/24s to the \c realTime field, render, and so on).
 
-  For further information about how to control the realTime field, see
-  documentation of SoDB::getGlobalField() and
-  SoDB::enableRealTimeSensor().
+  For further information about how to control the \c realTime field,
+  see documentation of SoDB::getGlobalField(),
+  SoDB::enableRealTimeSensor(), and
+  SoSceneManager::enableRealTimeUpdate().
 */
 
 // As first mentioned to me by Kyrah, the functionality of this class
