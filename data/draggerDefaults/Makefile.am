@@ -26,10 +26,8 @@ BUILT_SOURCES = \
 	transformerDragger.h \
 	transformBoxDragger.h
 
-# This is necessary to include so the headers are actually built.
-noinst_HEADERS = $(BUILT_SOURCES)
-
-EXTRA_DIST = \
+draggerdefdatadir = $(datadir)/Coin/draggerDefaults
+dist_draggerdefdata_DATA = \
 	translate1Dragger.iv \
 	translate2Dragger.iv \
 	centerballDragger.iv \
@@ -52,90 +50,74 @@ EXTRA_DIST = \
 	transformerDragger.iv \
 	transformBoxDragger.iv
 
-draggerdefdatadir = $(datadir)/Coin/draggerDefaults
+dist_noinst_SCRIPTS = \
+	$(srcdir)/iv2h.sh
 
-draggerdefdata_DATA =	translate1Dragger.iv \
-			translate2Dragger.iv \
-			centerballDragger.iv \
-			tabPlaneDragger.iv \
-			tabBoxDragger.iv \
-			dragPointDragger.iv \
-			pointLightDragger.iv \
-			directionalLightDragger.iv \
-			spotLightDragger.iv \
-			handleBoxDragger.iv \
-			jackDragger.iv \
-			trackballDragger.iv \
-			scaleUniformDragger.iv \
-			scale2UniformDragger.iv \
-			scale1Dragger.iv \
-			scale2Dragger.iv \
-			rotateCylindricalDragger.iv \
-			rotateSphericalDragger.iv \
-			rotateDiscDragger.iv \
-			transformerDragger.iv \
-			transformBoxDragger.iv
+# This is necessary to include so the headers are actually built.
+Makefile: $(BUILT_SOURCES)
 
+# **************************************************************************
 
-translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv > translate1Dragger.h
+translate1Dragger.h: $(srcdir)/translate1Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/translate1Dragger.iv > translate1Dragger.h
 
-translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv > translate2Dragger.h
+translate2Dragger.h: $(srcdir)/translate2Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/translate2Dragger.iv > translate2Dragger.h
 
-centerballDragger.h: $(top_srcdir)/data/draggerDefaults/centerballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/centerballDragger.iv > centerballDragger.h
+centerballDragger.h: $(srcdir)/centerballDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/centerballDragger.iv > centerballDragger.h
 
-tabPlaneDragger.h: $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv > tabPlaneDragger.h
+tabPlaneDragger.h: $(srcdir)/tabPlaneDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/tabPlaneDragger.iv > tabPlaneDragger.h
 
-tabBoxDragger.h: $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv > tabBoxDragger.h
+tabBoxDragger.h: $(srcdir)/tabBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/tabBoxDragger.iv > tabBoxDragger.h
 
-dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv > dragPointDragger.h
+dragPointDragger.h: $(srcdir)/dragPointDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/dragPointDragger.iv > dragPointDragger.h
 
-pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
+pointLightDragger.h: $(srcdir)/pointLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/pointLightDragger.iv > pointLightDragger.h
 
-directionalLightDragger.h: $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv > directionalLightDragger.h
+directionalLightDragger.h: $(srcdir)/directionalLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/directionalLightDragger.iv > directionalLightDragger.h
 
-spotLightDragger.h: $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv > spotLightDragger.h
+spotLightDragger.h: $(srcdir)/spotLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/spotLightDragger.iv > spotLightDragger.h
 
-handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
+handleBoxDragger.h: $(srcdir)/handleBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/handleBoxDragger.iv > handleBoxDragger.h
 
-jackDragger.h: $(top_srcdir)/data/draggerDefaults/jackDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/jackDragger.iv > jackDragger.h
+jackDragger.h: $(srcdir)/jackDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/jackDragger.iv > jackDragger.h
 
-trackballDragger.h: $(top_srcdir)/data/draggerDefaults/trackballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/trackballDragger.iv > trackballDragger.h
+trackballDragger.h: $(srcdir)/trackballDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/trackballDragger.iv > trackballDragger.h
 
-scaleUniformDragger.h: $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv > scaleUniformDragger.h
+scaleUniformDragger.h: $(srcdir)/scaleUniformDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scaleUniformDragger.iv > scaleUniformDragger.h
 
-scale2UniformDragger.h: $(top_srcdir)/data/draggerDefaults/scale2UniformDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale2UniformDragger.iv > scale2UniformDragger.h
+scale2UniformDragger.h: $(srcdir)/scale2UniformDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale2UniformDragger.iv > scale2UniformDragger.h
 
-scale1Dragger.h: $(top_srcdir)/data/draggerDefaults/scale1Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale1Dragger.iv > scale1Dragger.h
+scale1Dragger.h: $(srcdir)/scale1Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale1Dragger.iv > scale1Dragger.h
 
-scale2Dragger.h: $(top_srcdir)/data/draggerDefaults/scale2Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale2Dragger.iv > scale2Dragger.h
+scale2Dragger.h: $(srcdir)/scale2Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale2Dragger.iv > scale2Dragger.h
 
-rotateCylindricalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
+rotateCylindricalDragger.h: $(srcdir)/rotateCylindricalDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
 
-rotateSphericalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateSphericalDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateSphericalDragger.iv > rotateSphericalDragger.h
+rotateSphericalDragger.h: $(srcdir)/rotateSphericalDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateSphericalDragger.iv > rotateSphericalDragger.h
 
-rotateDiscDragger.h: $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv > rotateDiscDragger.h
+rotateDiscDragger.h: $(srcdir)/rotateDiscDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateDiscDragger.iv > rotateDiscDragger.h
 
-transformerDragger.h: $(top_srcdir)/data/draggerDefaults/transformerDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformerDragger.iv > transformerDragger.h
+transformerDragger.h: $(srcdir)/transformerDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/transformerDragger.iv > transformerDragger.h
 
-transformBoxDragger.h: $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv > transformBoxDragger.h
+transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/transformBoxDragger.iv > transformBoxDragger.h
+

@@ -1,219 +1,112 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
-if HACKING_COMPACT_BUILD
-ALLSOURCES = all.cpp
-else
-ALLSOURCES = \
+RegularSources = \
 	SoAnnotation.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
 	SoAntiSquish.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 	SoArray.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoArray.h \
 	SoAsciiText.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoAsciiText.h \
 	SoBaseColor.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
 	SoBlinker.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoBlinker.h \
 	SoCallback.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCallback.h \
 	SoCamera.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCamera.h \
 	SoClipPlane.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoClipPlane.h \
 	SoColorIndex.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoColorIndex.h \
 	SoComplexity.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoComplexity.h \
 	SoCone.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCone.h \
 	SoCoordinate3.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCoordinate3.h \
 	SoCoordinate4.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h \
 	SoCube.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCube.h \
 	SoCylinder.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
 	SoDirectionalLight.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoDirectionalLight.h \
 	SoDrawStyle.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h \
 	SoEnvironment.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoEnvironment.h \
 	SoEventCallback.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoEventCallback.h \
 	SoExtSelection.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoExtSelection.h \
 	SoFaceSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoFaceSet.h \
 	SoFile.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoFile.h \
 	SoFont.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoFont.h \
 	SoFontStyle.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoFontStyle.h \
 	SoGroup.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoGroup.h \
 	SoImage.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoImage.h \
 	SoIndexedFaceSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedFaceSet.h \
 	SoIndexedLineSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedLineSet.h \
 	SoIndexedNurbsCurve.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsCurve.h \
 	SoIndexedNurbsSurface.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsSurface.h \
 	SoIndexedShape.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedShape.h \
 	SoIndexedTriangleStripSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoIndexedTriangleStripSet.h \
 	SoInfo.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoInfo.h \
 	SoLOD.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLOD.h \
 	SoLabel.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLabel.h \
 	SoLevelOfDetail.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
 	SoLight.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLight.h \
 	SoLightModel.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
 	SoLineSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLineSet.h \
 	SoLinearProfile.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h \
 	SoLocateHighlight.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoLocateHighlight.h \
 	SoMarkerSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoMarkerSet.h \
 	SoMaterial.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoMaterial.h \
 	SoMaterialBinding.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h \
 	SoMatrixTransform.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h \
 	SoMultipleCopy.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoMultipleCopy.h \
 	SoNode.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNode.h \
 	SoNonIndexedShape.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNonIndexedShape.h \
 	SoNormal.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNormal.h \
 	SoNormalBinding.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h \
 	SoNurbsCurve.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h \
 	SoNurbsProfile.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h \
 	SoNurbsSurface.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
 	SoOrthographicCamera.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoOrthographicCamera.h \
 	SoPackedColor.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 	SoPathSwitch.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
 	SoPendulum.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPendulum.h \
 	SoPerspectiveCamera.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPerspectiveCamera.h \
 	SoPickStyle.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
 	SoPointLight.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
 	SoPointSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
 	SoPolygonOffset.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
 	SoProfile.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoProfile.h \
 	SoProfileCoordinate2.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
 	SoProfileCoordinate3.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
 	SoQuadMesh.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \
 	SoResetTransform.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoResetTransform.h \
 	SoRotation.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoRotation.h \
 	SoRotationXYZ.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h \
 	SoRotor.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoRotor.h \
 	SoScale.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoScale.h \
 	SoSelection.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSelection.h \
 	SoSeparator.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
 	SoShape.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoShape.h \
 	SoShapeHints.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
 	SoShuttle.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoShuttle.h \
 	SoSphere.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSphere.h \
 	SoSpotLight.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSpotLight.h \
 	SoSurroundScale.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h \
 	SoSwitch.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoSwitch.h \
 	SoText2.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoText2.h \
 	SoText3.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoText3.h \
 	SoTexture2.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTexture2.h \
 	SoTexture2Transform.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTexture2Transform.h \
 	SoTextureCoordinate2.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinate2.h \
 	SoTextureCoordinateBinding.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateBinding.h \
 	SoTextureCoordinateDefault.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateDefault.h \
 	SoTextureCoordinateEnvironment.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
 	SoTextureCoordinateFunction.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	SoTextureCoordinatePlane.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	SoTransform.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTransform.h \
 	SoTransformSeparator.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTransformSeparator.h \
 	SoTransformation.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
 	SoTranslation.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTranslation.h \
 	SoTriangleStripSet.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoTriangleStripSet.h \
 	SoUnits.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoUnits.h \
 	SoUnknownNode.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
 	SoVertexProperty.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoVertexProperty.h \
 	SoVertexShape.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoVertexShape.h \
 	SoWWWAnchor.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h \
-	SoWWWInline.cpp \
-	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h \
-	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
-	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h
-endif
-
-ALLINSTHEADERS = \
+	SoWWWInline.cpp
+LinkHackSources = \
+	all.cpp
+PublicHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoNodes.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
@@ -317,11 +210,20 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoVertexShape.h \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
+PrivateHeaders = \
+	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
+	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)
 
 # Everything below is autogenerated from a macro, so don't modify
 # within the Makefile.am itself. 19991201 mortene.
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+else
+BuildSources = $(RegularSources)
+endif
 
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libnodes@SUFFIX@LINKHACK.la
@@ -335,10 +237,15 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libnodes_la_SOURCES = $(ALLSOURCES)
-libnodes@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
+libnodes_la_SOURCES = $(BuildSources)
+EXTRA_libnodes_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+libnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 libnodesincdir = $(includedir)/Inventor/nodes
-libnodesinc_HEADERS = $(ALLINSTHEADERS)
+libnodesinc_HEADERS = $(PublicHeaders)
 
 ##$ END TEMPLATE Make-Common
