@@ -124,11 +124,11 @@ SoFontLib::initialize(void)
   }
 
   cc_flw_initialize();
-  
+    
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   // Create default font
   SoFontLib::createFont(SbName("defaultFont"), SbName(""), SbVec2s(12, 12));
-  
-  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
+
 }
 
 void
