@@ -154,7 +154,16 @@ cc_dl_open(const char * filename)
      resolving symbols.
   */
 
-  h->nativehnd = LoadLibrary(filename);
+  if (filename != NULL)
+    h->nativehnd = LoadLibrary(filename);
+  else
+    return NULL;
+
+  /*
+    We don't want to call LoadLibrary(NULL) because this causes a 
+    crash on some Windows platforms (Crashes on Windows2000 has 
+    been reported). 20021101 thammer
+   */
 
   if (cc_dl_debugging() && (h->nativehnd == NULL)) {
     DWORD lasterr;
