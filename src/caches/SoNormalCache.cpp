@@ -31,6 +31,10 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 //
 // fixme: add test to shrink normalArray.
@@ -387,7 +391,30 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
         tmpvec = (coords[v0] - coords[v1]).cross(coords[v2] - coords[v1]);
       else
         tmpvec = (coords[v2] - coords[v1]).cross(coords[v0] - coords[v1]);
-      tmpvec.normalize();
+
+      // Be robust when it comes to erroneously specified triangles.
+      float len = tmpvec.length();
+#if COIN_DEBUG
+      if(len <= 0.0f) {
+        static uint32_t normgenerrors = 0;
+        if (normgenerrors < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                    "Erroneous triangle specification in model "
+                                    "(indices= [%d, %d, %d], "
+                                    "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>)",
+                                    v0, v1, v2,
+                                    coords[v0][0], coords[v0][1], coords[v0][2],
+                                    coords[v1][0], coords[v1][1], coords[v1][2],
+                                    coords[v2][0], coords[v2][1], coords[v2][2]);
+          SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                    "This warning will be printed only once, "
+                                    "but there might be more of these errors");
+        }
+        normgenerrors++;
+      }
+#endif // !COIN_DEBUG
+      if (len > 0.0f) tmpvec.normalize();
+      else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
       this->normalArray.append(tmpvec);
       cind += 4; // goto next triangle/polygon
     }
