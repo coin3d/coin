@@ -114,8 +114,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
   SbLine horizLine;
   {
     SbVec3f dir = this->cylinder.getAxis().getDirection().cross(this->planeDir);
-    horizLine = SbLine(this->cylinder.getAxis().getPosition(),
-                       this->cylinder.getAxis().getPosition() + dir);
+    horizLine = SbLine(this->planeLine.getPosition(),
+                       this->planeLine.getPosition() + dir);
   }
 
   //
@@ -191,5 +191,5 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
 
   if (axis.dot(this->cylinder.getAxis().getDirection()) > 0.0f)
     return SbRotation(this->cylinder.getAxis().getDirection(), angle);
-  return SbRotation(this->cylinder.getAxis().getDirection(), angle);
+  return SbRotation(this->cylinder.getAxis().getDirection(), -angle);
 }
