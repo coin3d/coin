@@ -118,12 +118,20 @@ SoGLLineWidthElement::updategl()
   if (SoGLLineWidthElement::sizerange[0] < 0.0f) {
     GLfloat vals[2];
     glGetFloatv(GL_LINE_WIDTH_RANGE, vals);
+
+    // Matthias Koenig reported on coin-discuss that the OpenGL
+    // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+    // lowest linewidth, but it will still set the return value of
+    // glGetError() to GL_INVALID_VALUE if this size is attempted
+    // used. This is a workaround for what looks like an OpenGL bug.
+    if (vals[0] < 1.0f) vals[0] = SbMin(1.0f, vals[1]);
+
     SoGLLineWidthElement::sizerange[0] = vals[0];
     SoGLLineWidthElement::sizerange[1] = vals[1];
   }
 
   float useval = this->current;
-  // FIXME: spit out a warning? 990314 mortene.
+
   if (useval < SoGLLineWidthElement::sizerange[0])
     useval = SoGLLineWidthElement::sizerange[0];
   if (useval > SoGLLineWidthElement::sizerange[1])

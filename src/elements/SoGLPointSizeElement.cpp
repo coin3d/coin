@@ -114,15 +114,23 @@ SoGLPointSizeElement::evaluate() const
 void
 SoGLPointSizeElement::updategl()
 {
-  if (SoGLPointSizeElement::sizerange[0] < 0.0f) {
+  if (SoGLPointSizeElement::sizerange[1] < 0.0f) {
     GLfloat vals[2];
     glGetFloatv(GL_POINT_SIZE_RANGE, vals);
+
+    // Matthias Koenig reported on coin-discuss that the OpenGL
+    // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+    // lowest pointsize, but it will still set the return value of
+    // glGetError() to GL_INVALID_VALUE if this size is attempted
+    // used. This is a workaround for what looks like an OpenGL bug.
+    if (vals[0] < 1.0f) vals[0] = SbMin(1.0f, vals[1]);
+
     SoGLPointSizeElement::sizerange[0] = vals[0];
     SoGLPointSizeElement::sizerange[1] = vals[1];
   }
 
   float useval = this->current;
-  // FIXME: spit out a warning? 990314 mortene.
+
   if (useval < SoGLPointSizeElement::sizerange[0])
     useval = SoGLPointSizeElement::sizerange[0];
   if (useval > SoGLPointSizeElement::sizerange[1])
