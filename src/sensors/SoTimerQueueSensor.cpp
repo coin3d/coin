@@ -26,14 +26,63 @@
   \brief The SoTimerQueueSensor class is the abstract base class for sensors triggering on certain timer events.
   \ingroup sensors
 
-  Timer sensors triggers upon specific points in time. If a timer
-  sensor can not trigger at the exact moment it has been scheduled
-  (due to other activity in Coin, a task suspended or heavy load from
-  other applications on the system), it will be triggered at the first
-  opportunity after the scheduled time has passed.
+  Timer sensors triggers upon specific points in time.
 
-  See the documentation of the subclasses for information on what ways
-  there are to specify times, intervals, etc.
+  This class is an abstract superclass which collects the common
+  interface of the various non-abstract timer sensor classes. See the
+  documentation of the subclasses for information on what ways there
+  are to specify base times, intervals, alarm-style single triggering,
+  repeated triggers, etc.
+
+  Note that Coin timer sensors should in no way be considered "hard
+  real-time". That is, you can \e not expect a timer to always trigger
+  at the exact moment it was set up for. Delays in triggering could be
+  due to other activities in Coin, a task suspended, or heavy load
+  from other applications on the system. These situations could all
+  cause the processing of sensor queues (from SoQt / SoWin / SoXt /
+  whatever) to be slightly delayed, thereby causing delays in timer
+  sensor triggering.
+
+  On modern system, a timer will usually trigger within a few
+  milliseconds of it's designated time, though.
+
+  If a timer sensor can not trigger at the exact moment it has been
+  scheduled, it will be triggered at the first opportunity after the
+  scheduled time has passed.
+
+  Here's a simple usage example. It's a stand-alone example, which
+  only demonstrates how to set up a repeating timer sensor with a
+  callback:
+
+  \code
+  #include <Inventor/Xt/SoXt.h>
+  #include <Inventor/sensors/SoTimerSensor.h>
+  #include <stdio.h>
+  
+  static void
+  timeSensorCallback(void * data, SoSensor * sensor)
+  {
+    SbTime time = SbTime::getTimeOfDay();
+    SbString string = time.format("%S.%i");
+    (void)printf("%s\n", string.getString());
+  }
+  
+  
+  int
+  main(int argc, char ** argv)
+  { 
+    SoXt::init("test");
+  
+    SoTimerSensor * timeSensor = new SoTimerSensor;
+    timeSensor->setFunction(timeSensorCallback);
+    timeSensor->setBaseTime(SbTime::getTimeOfDay());
+    timeSensor->setInterval(1.0f);
+    timeSensor->schedule();
+  
+    SoXt::mainLoop();
+    return 0;
+  }
+  \endcode
 */
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
