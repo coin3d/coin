@@ -1,23 +1,21 @@
 #Inventor V2.1 ascii
 
 DEF TRANSLATE1_GEOM Separator {
-   # Line connecting the cones.
-   DrawStyle { lineWidth 4 }
-   Coordinate3 { point [ -1 0 0, 1 0 0 ] }
-   LineSet { }
+   # "Line" connecting the cones.
+   Cube { width 2  height 0.1  depth 0.1 } # Horizontal
 
    # First cone.
    Separator {
       Translation { translation 1.25 0 0 }
       RotationXYZ { axis Z  angle -1.5708 }
-      Cone { height 0.5  bottomRadius 0.125 }
+      DEF TRANSLATE1_ARROWHEAD Cone { height 0.5  bottomRadius 0.25 }
    }
 
    # Second cone.
    Separator {
       Translation { translation -1.25 0 0 }
       RotationXYZ { axis Z  angle 1.5708 }
-      Cone { height 0.5  bottomRadius 0.125 }
+      USE TRANSLATE1_ARROWHEAD
    }
 }
 
