@@ -123,7 +123,18 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
       // will close it
       if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd);
       if (fd >= 0) {
-        void * gzfp = cc_zlibglue_gzdopen(fd, "rb");
+        void * gzfp = 0;
+#ifdef HAVE_GZDOPEN
+        gzfp = cc_zlibglue_gzdopen(fd, "rb");
+#else // gzdopen() after reading from the compressed file does not work on Mac OS X
+        if (fullname.getLength()) {
+          gzfp = cc_zlibglue_gzopen(fullname.getString(), "rb");
+        } else {
+          SoDebugError::postWarning("SoInput_Reader::createReader",
+                                    "Passing FILE* for gzipped files on Mac "
+                                    "OS X not allowed, unable to open.");
+        }
+#endif
         if (gzfp) {
           reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
         }

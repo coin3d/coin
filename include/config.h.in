@@ -142,6 +142,9 @@
 /* define if the GL header should be included as GL/gl.h */
 #undef HAVE_GL_GL_H
 
+/* Define to use gzdopen() */
+#undef HAVE_GZDOPEN
+
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
 

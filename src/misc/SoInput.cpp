@@ -351,6 +351,9 @@ SoInput::checkISReference(SoFieldContainer * container,
   or forth to DLLs is dangerous and will most likely cause a
   crash. This is an intrinsic limitation for MSWindows DLLs.
 
+  Note that it is not allowed to pass a FILE* to a gzip-compressed
+  file under Mac OS X.
+
   \sa openFile(), closeFile()
 */
 void

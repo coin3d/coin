@@ -1272,6 +1272,12 @@ else
   ])
 fi
 
+# Bug in gzdopen() on Mac OS X -> use gzopen() instead...
+case $host_os in
+  darwin* ) ;;
+  * ) AC_DEFINE([HAVE_GZDOPEN], 1, [Define to use gzdopen()])
+esac
+
 # *******************************************************************
 
 AC_ARG_ENABLE([dl-libbzip2],
