@@ -239,6 +239,9 @@ aglglue_context_reinstate_previous(void * ctx)
 void
 aglglue_context_destruct(void * ctx) 
 {
+  /* FIXME: needs to call into the (as of yet unimplemented)
+     "destructing GL context" handler. 20030310 mortene. */
+
   struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
 
   if (coin_glglue_debug()) {
