@@ -19,6 +19,7 @@
 
 
 #include <Inventor/engines/SoCalculator.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoType.h>
 #include <assert.h>
 
@@ -31,59 +32,58 @@
 /*!
   \class SoCalculator Inventor/engines/SoCalculator.h
   \brief General purpose calculator for floats and 3D float vectors.
-
 */
 
-SO_ENGINE_SOURCE( SoCalculator );
+SO_ENGINE_SOURCE(SoCalculator);
 
-SoCalculator::SoCalculator(
-    void )
+SoCalculator::SoCalculator(void)
 {
-    SO_ENGINE_CONSTRUCTOR( SoCalculator );
+  SO_ENGINE_CONSTRUCTOR(SoCalculator);
 
-    SO_ENGINE_ADD_INPUT( a, (0.0f) );
-    SO_ENGINE_ADD_INPUT( b, (0.0f) );
-    SO_ENGINE_ADD_INPUT( c, (0.0f) );
-    SO_ENGINE_ADD_INPUT( d, (0.0f) );
-    SO_ENGINE_ADD_INPUT( e, (0.0f) );
-    SO_ENGINE_ADD_INPUT( f, (0.0f) );
-    SO_ENGINE_ADD_INPUT( g, (0.0f) );
-    SO_ENGINE_ADD_INPUT( h, (0.0f) );
-    SO_ENGINE_ADD_INPUT( A, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( B, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( C, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( D, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( E, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( F, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( G, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( H, (SbVec3f(0.0f,0.0f,0.0f)) );
-    SO_ENGINE_ADD_INPUT( expression, ("") );
+  SO_ENGINE_ADD_INPUT(a, (0.0f));
+  SO_ENGINE_ADD_INPUT(b, (0.0f));
+  SO_ENGINE_ADD_INPUT(c, (0.0f));
+  SO_ENGINE_ADD_INPUT(d, (0.0f));
+  SO_ENGINE_ADD_INPUT(e, (0.0f));
+  SO_ENGINE_ADD_INPUT(f, (0.0f));
+  SO_ENGINE_ADD_INPUT(g, (0.0f));
+  SO_ENGINE_ADD_INPUT(h, (0.0f));
+  SO_ENGINE_ADD_INPUT(A, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(B, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(C, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(D, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(E, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(F, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(G, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(H, (SbVec3f(0.0f, 0.0f, 0.0f)));
+  SO_ENGINE_ADD_INPUT(expression, (""));
 
-    SO_ENGINE_ADD_OUTPUT( oa, SoMFFloat ); 
-    SO_ENGINE_ADD_OUTPUT( ob, SoMFFloat ); 
-    SO_ENGINE_ADD_OUTPUT( oc, SoMFFloat ); 
-    SO_ENGINE_ADD_OUTPUT( od, SoMFFloat ); 
-    SO_ENGINE_ADD_OUTPUT( oA, SoMFVec3f );
-    SO_ENGINE_ADD_OUTPUT( oB, SoMFVec3f );
-    SO_ENGINE_ADD_OUTPUT( oC, SoMFVec3f );
-    SO_ENGINE_ADD_OUTPUT( oD, SoMFVec3f );
-} /* SoCalculator() */
+  SO_ENGINE_ADD_OUTPUT(oa, SoMFFloat); 
+  SO_ENGINE_ADD_OUTPUT(ob, SoMFFloat); 
+  SO_ENGINE_ADD_OUTPUT(oc, SoMFFloat); 
+  SO_ENGINE_ADD_OUTPUT(od, SoMFFloat); 
+  SO_ENGINE_ADD_OUTPUT(oA, SoMFVec3f);
+  SO_ENGINE_ADD_OUTPUT(oB, SoMFVec3f);
+  SO_ENGINE_ADD_OUTPUT(oC, SoMFVec3f);
+  SO_ENGINE_ADD_OUTPUT(oD, SoMFVec3f);
+}
 
-SoCalculator::~SoCalculator( // virtual
-    void )
+SoCalculator::~SoCalculator(void)
 {
-} /* ~SoCalculator() */
+}
 
 void
-SoCalculator::initClass(
-    void )
+SoCalculator::initClass(void)
 {
-    SO_ENGINE_INIT_CLASS( SoCalculator, SoEngine, "Engine" );
-} /* initClass() */
+  SO_ENGINE_INIT_CLASS(SoCalculator, SoEngine, "Engine");
+}
 
 void
-SoCalculator::evaluate(
-    void )
+SoCalculator::evaluate(void)
 {
-} /* evaluate() */
+}
 
+void
+SoCalculator::inputChanged(SoField * which)
+{
+}

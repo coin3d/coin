@@ -49,10 +49,9 @@ public:
 
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
-  virtual void inputCVhanged(SoField * whichInput);
+  virtual void inputChanged(SoField * which);
   virtual ~SoCalculator(void);
 
 private:

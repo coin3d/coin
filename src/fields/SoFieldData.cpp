@@ -303,7 +303,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 
       SbBool foundName;
       if (!this->read(in, object, fieldName, foundName)) return FALSE;
-#if 1 // debug
+#if 0 // debug
       SoDebugError::postInfo("SoFieldData::read",
 			     "fieldname: '%s'", fieldName.getString());
 #endif // debug

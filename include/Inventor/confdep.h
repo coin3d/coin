@@ -63,6 +63,12 @@
 // ** SOF ******************************************************************
 
 
+// FIXME: exclusion mechanisms are temporarily disabled while the
+// conversion to autoconf-based build is in progress. 19990912 mortene.
+#if 1
+#define COIN_EXCLUDE_NOTHING 1
+#endif
+
 // Don't use the configuration dependency setup if we're compiling our
 // minimalist version of the library.
 #if defined(__SOLIB_MAKEASBASE__)

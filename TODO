@@ -1,0 +1,33 @@
+===============================================================================
+Todo
+====
+
+(format is: "* [author:conceived-date] item", listed in approx
+prioritized order)
+
+* [mortene:19990912] include check in configure.in for OpenGL/Mesa.
+
+* [mortene:19990912] include check in configure.in for simage.
+
+* [mortene:19990912] make version settings in SbBasic.h automatically
+  follow the definitions made in configure.in.
+
+* [mortene:19990912] get rid of inttypes.h and kosher.h.
+
+* [mortene:19990912] add configure options for turning compilation
+  with debug information on or off.
+
+* [mortene:19990912] add configure options for turning compilation
+  with profiling information on or off.
+
+* [mortene:19990912] add options in configure for compiling slimmed
+  versions of Coin.
+
+===============================================================================
+Done
+====
+
+(format is: "* [author:conceived-date][implementer:finished-date] item")
+
+
+===============================================================================

@@ -1,0 +1,76 @@
+dnl  This can be any file in the package.
+AC_INIT(include/Inventor/SbBasic.h)
+
+dnl  Locate C++ compiler.
+AC_PROG_CXX
+
+dnl *******************************************************************
+dnl * Library version control.
+dnl *******************************************************************
+
+dnl  Making releases:
+dnl    COIN_MICRO_VERSION += 1;
+dnl    COIN_INTERFACE_AGE += 1;
+dnl    COIN_BINARY_AGE += 1;
+dnl  if any functions have been added, set COIN_INTERFACE_AGE to 0.
+dnl  if backwards compatibility has been broken,
+dnl  set COIN_BINARY_AGE _and_ COIN_INTERFACE_AGE to 0.
+dnl 
+COIN_MAJOR_VERSION=0
+COIN_MINOR_VERSION=6
+COIN_MICRO_VERSION=0
+COIN_INTERFACE_AGE=0
+COIN_BINARY_AGE=0
+COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION
+
+AC_SUBST(COIN_MAJOR_VERSION)
+AC_SUBST(COIN_MINOR_VERSION)
+AC_SUBST(COIN_MICRO_VERSION)
+AC_SUBST(COIN_VERSION)
+AC_SUBST(COIN_INTERFACE_AGE)
+AC_SUBST(COIN_BINARY_AGE)
+
+dnl  libtool versioning
+LT_RELEASE=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION
+LT_CURRENT=`expr $COIN_MICRO_VERSION - $COIN_INTERFACE_AGE`
+LT_REVISION=$COIN_INTERFACE_AGE
+LT_AGE=`expr $COIN_BINARY_AGE - $COIN_INTERFACE_AGE`
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+VERSION=$COIN_VERSION
+
+
+dnl *******************************************************************
+dnl * Miscellaneous options and initializations.
+dnl *******************************************************************
+
+AM_INIT_AUTOMAKE(libCoin, $VERSION)
+
+dnl  File to cram the configure tests into.
+AM_CONFIG_HEADER(config.h)
+
+dnl  Default to not building a static library.
+dnl  Can be overridden by the user with --enable-static.
+AM_DISABLE_STATIC
+
+dnl  Turn off default maintainer make-rules -- use ./autogen.sh instead.
+AM_MAINTAINER_MODE
+
+dnl Initialize libtool
+AM_PROG_LIBTOOL
+
+
+dnl *******************************************************************
+dnl * List all files configure shall generate.
+dnl *******************************************************************
+
+AC_OUTPUT(Makefile src/Makefile \
+	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
+	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
+	src/errors/Makefile src/events/Makefile src/fields/Makefile \
+	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
+	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
+	src/system/Makefile)

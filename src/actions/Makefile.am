@@ -1,0 +1,97 @@
+## Process this file with automake to generate Makefile.in.
+## 19990904 mortene.
+
+noinst_LTLIBRARIES = libactions.la
+
+INCLUDES = -I$(top_srcdir)/include/
+
+## All source files used when building this submodule, including all
+## headers.
+
+libactions_la_SOURCES = \
+	SoAction.cpp \
+	SoAction.h \
+	SoBoxHighlightRenderAction.cpp \
+	SoBoxHighlightRenderAction.h \
+	SoCallbackAction.cpp \
+	SoCallbackAction.h \
+	SoGLRenderAction.cpp \
+	SoGLRenderAction.h \
+	SoGetBoundingBoxAction.cpp \
+	SoGetBoundingBoxAction.h \
+	SoGetMatrixAction.cpp \
+	SoGetMatrixAction.h \
+	SoGetPrimitiveCountAction.cpp \
+	SoGetPrimitiveCountAction.h \
+	SoGlobalSimplifyAction.cpp \
+	SoGlobalSimplifyAction.h \
+	SoHandleEventAction.cpp \
+	SoHandleEventAction.h \
+	SoLineHighlightRenderAction.cpp \
+	SoLineHighlightRenderAction.h \
+	SoPickAction.cpp \
+	SoPickAction.h \
+	SoRayPickAction.cpp \
+	SoRayPickAction.h \
+	SoReorganizeAction.cpp \
+	SoReorganizeAction.h \
+	SoSearchAction.cpp \
+	SoSearchAction.h \
+	SoShapeSimplifyAction.cpp \
+	SoShapeSimplifyAction.h \
+	SoSimplifyAction.cpp \
+	SoSimplifyAction.h \
+	SoToVRML2Action.cpp \
+	SoToVRML2Action.h \
+	SoToVRMLAction.cpp \
+	SoToVRMLAction.h \
+	SoWriteAction.cpp \
+	SoWriteAction.h
+
+## Installation information.
+
+libactionsincdir = $(includedir)/Inventor/actions
+
+libactionsinc_HEADERS = \
+	$(top_srcdir)/include/Inventor/actions/SoAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoBoxHighlightRenderAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoCallbackAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoGLRenderAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoGetBoundingBoxAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoGlobalSimplifyAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoHandleEventAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoLineHighlightRenderAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoPickAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoRayPickAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoReorganizeAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoSearchAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoShapeSimplifyAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoSimplifyAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoToVRML2Action.h \
+	$(top_srcdir)/include/Inventor/actions/SoToVRMLAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoWriteAction.h
+
+
+## FIXME: this is a temporary workaround for a bug in Automake. The
+## bug is fixed in the latest Automake CVS, but not in any "official"
+## release (?). Last checked with Automake 1.4a. 19990912 mortene.
+
+install-libactionsincHEADERS: $(libactionsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
+	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; \
+	done
+
+uninstall-libactionsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
+	done
