@@ -22,10 +22,12 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoFields.h>
+#include <assert.h>
+#include <Inventor/engines/SoSubEngineP.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <assert.h>
 
 // FIXME: should perhaps use SbTime::parseDate() for So[SM]FString ->
 // So[SM]FTime conversion? 20000331 mortene.
@@ -34,9 +36,40 @@
 SbDict * SoConvertAll::converter_dict = NULL;
 
 
-// SoConvertAll doesn't have a createInstance() method (because it
-// doesn't have a default constructor), so use the ABSTRACT macros.
-SO_ENGINE_ABSTRACT_SOURCE(SoConvertAll);
+// SoConvertAll uses a dynamic list for each instance with information
+// about input fields and engine outputs, not like the other engines
+// (which have a single static list for each class).
+//
+// Because of this, we can't use the SO_ENGINE_ABSTRACT_SOURCE macro.
+
+PRIVATE_ENGINE_TYPESYSTEM_SOURCE(SoConvertAll);
+unsigned int SoConvertAll::classinstances = 0;
+const SoFieldData ** SoConvertAll::parentinputdata = NULL;
+const SoEngineOutputData ** SoConvertAll::parentoutputdata = NULL;
+
+const SoFieldData *
+SoConvertAll::getFieldData(void) const
+{
+  return this->inputdata_instance;
+}
+
+const SoEngineOutputData *
+SoConvertAll::getOutputData(void) const
+{
+  return this->outputdata_instance;
+}
+
+// These are unused, but we list them here since they are part of the
+// SO_ENGINE_ABSTRACT_HEADER macro, which we are using for
+// convenience.
+SoFieldData * SoConvertAll::inputdata = (SoFieldData *)0x1;
+SoEngineOutputData * SoConvertAll::outputdata = (SoEngineOutputData *)0x1;
+const SoFieldData ** SoConvertAll::getInputDataPtr(void) { return NULL; }
+const SoEngineOutputData ** SoConvertAll::getOutputDataPtr(void) { return NULL; }
+
+
+
+
 
 
 // Defines function for converting SoSFXXX -> SoMFXXX.
@@ -814,8 +847,6 @@ SoConvertAll::initClass(void)
 
 SoConvertAll::SoConvertAll(const SoType from, const SoType to)
 {
-  SO_ENGINE_CONSTRUCTOR(SoConvertAll);
-
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoConvertAll::SoConvertAll",
                          "from: %s, to: %s",
@@ -823,11 +854,34 @@ SoConvertAll::SoConvertAll(const SoType from, const SoType to)
                          to.getName().getString());
 #endif // debug
 
+  // This code is instead of SO_ENGINE_CONSTRUCTOR(), which we can't
+  // use due to the fact that we need dynamic lists of input fields
+  // and engine outputs.
+  { // SO_ENGINE_CONSTRUCTOR replacement start
+    SoConvertAll::classinstances++;
+    /* Catch attempts to use an engine class which has not been initialized. */
+    assert(SoConvertAll::classTypeId != SoType::badType());
+
+    this->inputdata_instance =
+      new SoFieldData(SoConvertAll::parentinputdata ?
+                      *SoConvertAll::parentinputdata : NULL);
+
+    this->outputdata_instance =
+      new SoEngineOutputData(SoConvertAll::parentoutputdata ?
+                             *SoConvertAll::parentoutputdata : NULL);
+
+    /* SoConvertAll is not considered native (doesn't really matter
+       one way or the other). */
+    this->isBuiltIn = FALSE;
+  } // SO_ENGINE_CONSTRUCTOR replacement end
+
+
+
   this->input = (SoField *)from.createInstance();
 
   this->input->setContainer(this);
   this->output.setContainer(this);
-  SoConvertAll::outputdata->addOutput(this, "output", &this->output, to);
+  this->outputdata_instance->addOutput(this, "output", &this->output, to);
 
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
   void * ptr;

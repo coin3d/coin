@@ -32,9 +32,6 @@ class SoConvertAll : public SoFieldConverter {
   SO_ENGINE_ABSTRACT_HEADER(SoConvertAll);
 
 public:
-  SoField * input;
-  SoEngineOutput output;
-
   static void initClass(void);
   SoConvertAll(const SoType from, const SoType to);
 
@@ -51,6 +48,12 @@ private:
 
   static SbDict * converter_dict;
   converter_func * convertvalue;
+
+  SoField * input;
+  SoEngineOutput output;
+
+  SoFieldData * inputdata_instance;
+  SoEngineOutputData * outputdata_instance;
 };
 
 #endif // !COIN_SOCONVERTALL_H
