@@ -184,7 +184,7 @@ public:
   static SoGLRenderAction::AbortCode subscreenAbortCallback(void *userData);
   SbBool renderFromBase(SoBase * base);
   void convertBuffer(void);
-  void convertSubscreenBuffer(int renderpass);
+  void convertSubscreenBuffer(void);
   void setSubscreenCameraPosition(int renderpass, SoCamera *cam);
   void setupSubscreens(SbVec2s totalSize);
   void pasteSubscreen(int renderpass);
@@ -666,7 +666,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       else assert(FALSE && "impossible");
       
       this->internaldata->postRender();
-      this->convertSubscreenBuffer(this->currentsubscreen);
+      this->convertSubscreenBuffer();
       this->pasteSubscreen(this->currentsubscreen);
 
       ++this->currentsubscreen;
@@ -701,16 +701,15 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 // Convert from RGBA format to the application programmer's requested
 // format.
 void
-SoOffscreenRendererP::convertSubscreenBuffer(int renderpass)
+SoOffscreenRendererP::convertSubscreenBuffer(void)
 {
-  SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
   int pixels = subscreensize[0]*subscreensize[1];
   int depth = PUBLIC(this)->getComponents();
 
   unsigned char * local = this->subscreen;
   unsigned char * native = this->internaldata->getBuffer();
 
-  switch (master->getComponents()) {
+  switch (depth) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
     memcpy(local, native, pixels * depth);
     break;
@@ -760,14 +759,13 @@ SoOffscreenRendererP::convertBuffer(void)
   SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
   int pixels = dims[0] * dims[1];
   int depth = PUBLIC(this)->getComponents();
-  unsigned char * nativebuffer = this->internaldata->getBuffer();
 
-  unsigned char * native = nativebuffer;
+  unsigned char * native = this->internaldata->getBuffer();
   unsigned char * local = this->buffer;
  
-  switch (master->getComponents()) {
+  switch (depth) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
-    memcpy(local, nativebuffer, pixels * depth);
+    memcpy(local, native, pixels * depth);
     break;
 
   case SoOffscreenRenderer::RGB:
