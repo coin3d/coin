@@ -13488,7 +13488,7 @@ if test "${sim_cv_byteorder_conversion_libs+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   sim_cv_byteorder_conversion_libs=UNRESOLVED
-  for sim_ac_byc_libcheck in "" -lwsock32; do
+  for sim_ac_byc_libcheck in "" -lws2_32 -lwsock32; do
     if test "x$sim_cv_byteorder_conversion_libs" = "xUNRESOLVED"; then
       LIBS="$sim_ac_byc_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
@@ -19930,6 +19930,60 @@ esac
 
 
 # **************************************************************************
+# setup for <Inventor/system/gl.h>
+
+/* include windows.h? */
+if test x"$ac_cv_header_windows_h" = x"no"; then
+  sim_include_windows_h="/* #include <windows.h> - not needed on system */"
+else
+  sim_include_windows_h="#include <windows.h>"
+fi
+
+/* how to include gl.h */
+if test x"$ac_cv_header_GL_gl_h" = x"no"; then
+  if test x"$ac_cv_header_OpenGL_gl_h" = x"no"; then
+    sim_include_gl_h="#error \"don't know how to include gl.h header\""
+  else
+    sim_include_gl_h="#include <OpenGL/gl.h>"
+  fi
+else
+  sim_include_gl_h="#include <GL/gl.h>"
+fi
+
+if test x"$ac_cv_header_superglu_h" = x"no"; then
+  if test x"$ac_cv_header_GL_glu_h" = x"no"; then
+    if test x"$ac_cv_header_OpenGL_glu_h" = x"no"; then
+      sim_include_glu_h="/* #include <GL/glu.h> - not found on system */"
+    else
+      sim_include_glu_h="#include <OpenGL/glu.h>"
+    fi
+  else
+    sim_include_glu_h="#include <GL/glu.h>"
+  fi
+else
+  sim_include_glu_h="#include <superglu/include/superglu.h>"
+fi
+
+if test x"$ac_cv_header_GL_glext_h" = x"no"; then
+  if test x"$ac_cv_header_OpenGL_glext_h" = x"no"; then
+    sim_include_glext_h="/* #include <GL/glext.h> - not founc on system */"
+  else
+    sim_include_glext_h="#include <OpenGL/glext.h>"
+  fi
+else
+  sim_include_glext_h="#include <GL/glext.h>"
+fi
+
+SIM_INCLUDE_WINDOWS_H=$sim_include_windows_h
+
+SIM_INCLUDE_GL_H=$sim_include_gl_h
+
+SIM_INCLUDE_GLU_H=$sim_include_glu_h
+
+SIM_INCLUDE_GLEXT_H=$sim_include_glext_h
+
+
+# **************************************************************************
 # Remaining setup based on platform.
 
 
@@ -20794,6 +20848,10 @@ s,@COIN_HACKING_LIBDIRS@,$COIN_HACKING_LIBDIRS,;t t
 s,@coin_build_dir@,$coin_build_dir,;t t
 s,@coin_src_dir@,$coin_src_dir,;t t
 s,@LIBFLAGS@,$LIBFLAGS,;t t
+s,@SIM_INCLUDE_WINDOWS_H@,$SIM_INCLUDE_WINDOWS_H,;t t
+s,@SIM_INCLUDE_GL_H@,$SIM_INCLUDE_GL_H,;t t
+s,@SIM_INCLUDE_GLU_H@,$SIM_INCLUDE_GLU_H,;t t
+s,@SIM_INCLUDE_GLEXT_H@,$SIM_INCLUDE_GLEXT_H,;t t
 s,@BUILD_WITH_MSVC_TRUE@,$BUILD_WITH_MSVC_TRUE,;t t
 s,@BUILD_WITH_MSVC_FALSE@,$BUILD_WITH_MSVC_FALSE,;t t
 s,@COIN_COMPILER@,$COIN_COMPILER,;t t

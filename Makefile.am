@@ -31,6 +31,7 @@ SUBDIRS = . $(BINDIR) include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 BUILT_SOURCES = \
 	include/Inventor/C/basic.h \
 	include/Inventor/SbBasic.h \
+	include/Inventor/system/gl.h \
 	include/Inventor/system/inttypes.h \
 	coin-@CONFIG@.cfg
 
@@ -86,6 +87,9 @@ include/Inventor/C/basic.h: $(srcdir)/include/Inventor/C/basic.h.in config.statu
 
 include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in config.status
 	@./config.status --header=$@
+
+include/Inventor/system/gl.h: $(srcdir)/include/Inventor/system/gl.h.in config.status
+	@./config.status --file=$@
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
 	@./config.status --header=$@

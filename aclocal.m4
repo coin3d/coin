@@ -5053,7 +5053,7 @@ AC_CACHE_CHECK(
   [network byteorder conversion],
   sim_cv_byteorder_conversion_libs,
   [sim_cv_byteorder_conversion_libs=UNRESOLVED
-  for sim_ac_byc_libcheck in "" -lwsock32; do
+  for sim_ac_byc_libcheck in "" -lws2_32 -lwsock32; do
     if test "x$sim_cv_byteorder_conversion_libs" = "xUNRESOLVED"; then
       LIBS="$sim_ac_byc_libcheck $sim_ac_save_libs"
       AC_TRY_LINK([
