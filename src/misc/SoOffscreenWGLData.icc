@@ -186,9 +186,9 @@ SoOffscreenWGLData::initWGL(void)
   bmi.bmiHeader.biClrUsed  = 0;
   bmi.bmiHeader.biClrImportant = 0;
   bmi.bmiColors[0].rgbBlue = 0;
-  bmi.bmiColors[0].rgbGreen;
-  bmi.bmiColors[0].rgbRed;
-  bmi.bmiColors[0].rgbReserved;
+  bmi.bmiColors[0].rgbGreen = 0;
+  bmi.bmiColors[0].rgbRed = 0;
+  bmi.bmiColors[0].rgbReserved = 0;
   
   // make a bitmap to draw to
   void *pvBits;
