@@ -1182,6 +1182,14 @@ SoField::setContainer(SoFieldContainer * cont)
   // This might seem strange, but it looks like it is necessary to do
   // it this way to be compatible with Open Inventor.
   this->setDefault(TRUE);
+
+  // SoSFTrigger should not notify its container (only fields/engines
+  // connected to it). Set flag here to avoid type-test in
+  // notify(). FIXME: consider/test if we should do the same for
+  // VRML97 eventOut fields, pederb 2004-11-24
+  if (this->isOfType(SoSFTrigger::getClassTypeId())) {
+    this->setStatusBits(FLAG_DONT_NOTIFY_CONTAINER);
+  }
 }
 
 /*!
@@ -1378,8 +1386,12 @@ SoField::notify(SoNotList * nlist)
   if (nlist->getFirstRec()) this->setDirty(TRUE);
 
   if (this->isNotifyEnabled()) {
+    SoFieldContainer * container = 
+      this->getStatus(FLAG_DONT_NOTIFY_CONTAINER) ? 
+      (SoFieldContainer*) NULL :
+      this->getContainer();
     this->setStatusBits(FLAG_ISNOTIFIED);
-    SoNotRec rec(this->getContainer());
+    SoNotRec rec(container);
     nlist->append(&rec, this);
     nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
 
@@ -1391,15 +1403,15 @@ SoField::notify(SoNotList * nlist)
     if (this->hasExtendedStorage() && this->storage->auditors.getLength()) {
       // need to copy list first if we're going to notify the auditors
       SoNotList listcopy(*nlist);
-      if (this->getContainer()) this->getContainer()->notify(nlist);
+      if (container) container->notify(nlist);
       this->notifyAuditors(&listcopy);
     }
     else {
-      if (this->getContainer()) this->getContainer()->notify(nlist);
+      if (container) container->notify(nlist);
     }
     this->clearStatusBits(FLAG_ISNOTIFIED);
   }
-
+  
 #if COIN_DEBUG && 0 // debug
   if (this != SoDB::getGlobalField("realTime")) {
     SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- done",
@@ -2470,16 +2482,6 @@ SoField::initClasses(void)
                      &SoMFUInt32::createInstance);
 }
 
-#undef FLAG_TYPEMASK
-#undef FLAG_ISDEFAULT
-#undef FLAG_IGNORE
-#undef FLAG_EXTSTORAGE
-#undef FLAG_ENABLECONNECTS
-#undef FLAG_NEEDEVALUATION
-#undef FLAG_READONLY
-#undef FLAG_DONOTIFY
-#undef FLAG_ISDESTRUCTING
-#undef FLAG_ISEVALUATING
-#undef FLAG_ISNOTIFIED
+#undef FLAG_ALIVE_PATTERN
 #undef SOFIELD_RECLOCK
 #undef SOFIELD_RECUNLOCK
