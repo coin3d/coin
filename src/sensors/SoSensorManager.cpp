@@ -71,6 +71,14 @@
 #include <Inventor/SbDict.h>
 #include <coindefs.h> // COIN_STUB()
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbMutex.h>
+#endif // HAVE_THREADS
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -117,9 +125,55 @@ public:
   void * queueChangedCBData;
 
   SbTime delaysensortimeout;
+
+#ifdef HAVE_THREADS
+  SbMutex timermutex;
+  SbMutex delaymutex;
+  SbMutex immediatemutex;
+  SbMutex reschedulemutex;
+#endif // HAVE_THREADS
 };
 
 #endif // DOXYGEN_SKIP_THIS 
+
+#ifdef HAVE_THREADS
+
+#define LOCK_TIMER_QUEUE(_mgr_) \
+  _mgr_->pimpl->timermutex.lock();
+
+#define UNLOCK_TIMER_QUEUE(_mgr_) \
+  _mgr_->pimpl->timermutex.unlock();
+
+#define LOCK_DELAY_QUEUE(_mgr_) \
+  _mgr_->pimpl->delaymutex.lock();
+
+#define UNLOCK_DELAY_QUEUE(_mgr_) \
+  _mgr_->pimpl->delaymutex.unlock();
+
+#define LOCK_IMMEDIATE_QUEUE(_mgr_) \
+  _mgr_->pimpl->immediatemutex.lock();
+
+#define UNLOCK_IMMEDIATE_QUEUE(_mgr_) \
+  _mgr_->pimpl->immediatemutex.unlock();
+
+#define LOCK_RESCHEDULE_LIST(_mgr_) \
+  _mgr_->pimpl->immediatemutex.lock();
+
+#define UNLOCK_RESCHEDULE_LIST(_mgr_) \
+  _mgr_->pimpl->immediatemutex.unlock();
+
+#else // HAVE_THREADS
+
+#define LOCK_TIMER_QUEUE(_mgr_)
+#define UNLOCK_TIMER_QUEUE(_mgr_)
+#define LOCK_DELAY_QUEUE(_mgr_)
+#define UNLOCK_DELAY_QUEUE(_mgr_)
+#define LOCK_IMMEDIATE_QUEUE(_mgr_)
+#define UNLOCK_IMMEDIATE_QUEUE(_mgr_)
+#define LOCK_RESCHEDULE_LIST(_mgr_)
+#define UNLOCK_RESCHEDULE_LIST(_mgr_)
+
+#endif // ! HAVE_THREADS
 
 #undef THIS
 #define THIS this->pimpl
@@ -203,6 +257,8 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
   assert(newentry);
 
   SbList <SoTimerQueueSensor *> & timerqueue = THIS->timerqueue;
+  
+  LOCK_TIMER_QUEUE(this);
   int i = 0;
   while (i < timerqueue.getLength() &&
          ((SoSensor*)timerqueue[i])->isBefore(newentry)) {
@@ -210,6 +266,8 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
   }
   timerqueue.insert(newentry, i);
   
+  UNLOCK_TIMER_QUEUE(this);
+
 #if DEBUG_TIMER_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::insertTimerSensor",
                          "inserted timer sensor #%d -- %p "
@@ -234,14 +292,18 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 void
 SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 {
+  LOCK_DELAY_QUEUE(this);
   // Check "real" queue first..
   int idx = THIS->delayqueue.find(entry);
   if (idx != -1) THIS->delayqueue.remove(idx);
-  
+  UNLOCK_DELAY_QUEUE(this);
+
   // ..then the immediate queue.
   if (idx == -1) {
+    LOCK_IMMEDIATE_QUEUE(this);
     idx = THIS->immediatequeue.find(entry);
     if (idx != -1) THIS->immediatequeue.remove(idx);
+    UNLOCK_IMMEDIATE_QUEUE(this);
   }
   // ..then the reinsert list
   if (idx == -1) {
@@ -266,17 +328,20 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 {
+  LOCK_TIMER_QUEUE(this);
   int idx = THIS->timerqueue.find(entry);
   if (idx != -1) {
     THIS->timerqueue.remove(idx);
+    UNLOCK_TIMER_QUEUE(this);
     this->notifyChanged();
   }
+  else {
+    UNLOCK_TIMER_QUEUE(this);
 #if COIN_DEBUG
-  if (idx == -1) {
     SoDebugError::postWarning("SoSensorManager::removeTimerSensor",
                               "trying to remove element not in list");
-  }
 #endif // COIN_DEBUG
+  }
 }
 
 /*!
@@ -296,6 +361,8 @@ SoSensorManager::processTimerQueue(void)
   assert(THIS->reschedulelist.getLength() == 0);
   THIS->processingtimerqueue = TRUE;
 
+  LOCK_TIMER_QUEUE(this);
+
   SbTime currenttime = SbTime::getTimeOfDay();
   while (THIS->timerqueue.getLength() > 0 &&
          THIS->timerqueue[0]->getTriggerTime() <= currenttime) {
@@ -306,8 +373,12 @@ SoSensorManager::processTimerQueue(void)
 #endif // debug
     SoSensor * sensor = THIS->timerqueue[0];
     THIS->timerqueue.remove(0);
+    UNLOCK_TIMER_QUEUE(this);
     sensor->trigger();
+    LOCK_TIMER_QUEUE(this);
   }
+
+  UNLOCK_TIMER_QUEUE(this);
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
@@ -315,6 +386,7 @@ SoSensorManager::processTimerQueue(void)
                          THIS->timerqueue.getLength());
 #endif // debug
 
+  LOCK_RESCHEDULE_LIST(this);
   int n = THIS->reschedulelist.getLength();
   if (n) {
     SbTime time = SbTime::getTimeOfDay();
@@ -323,6 +395,7 @@ SoSensorManager::processTimerQueue(void)
     }
     THIS->reschedulelist.truncate(0);
   }
+  UNLOCK_RESCHEDULE_LIST(this);
 
   THIS->processingtimerqueue = FALSE;
 
@@ -385,6 +458,8 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // again, etc...
   THIS->triggerdict.clear();
 
+  LOCK_DELAY_QUEUE(this);
+
   // Sensors with higher priorities are triggered first.
   while (THIS->delayqueue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING // debug
@@ -395,6 +470,8 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 
     SoDelayQueueSensor * sensor = THIS->delayqueue[0];
     THIS->delayqueue.remove(0);
+    UNLOCK_DELAY_QUEUE(this);
+
     if (!isidle && sensor->isIdleOnly()) {
       // move sensor to another temporary list. It will be reinserted
       // at the end of this function. We do this to be able to always
@@ -413,7 +490,10 @@ SoSensorManager::processDelayQueue(SbBool isidle)
         (void) THIS->reinsertdict.enter((unsigned long) sensor, (void*) sensor);
       }
     }
+    LOCK_DELAY_QUEUE(this);
   }
+  UNLOCK_DELAY_QUEUE(this);
+
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
@@ -449,6 +529,8 @@ SoSensorManager::processImmediateQueue(void)
   // immediate sensors are processed. pederb, 2002-01-30
   int triggercnt = 0;
 
+  LOCK_IMMEDIATE_QUEUE(this);
+
   while (THIS->immediatequeue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
     SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
@@ -456,7 +538,11 @@ SoSensorManager::processImmediateQueue(void)
 #endif // debug
     SoSensor * sensor = THIS->immediatequeue[0];
     THIS->immediatequeue.remove(0);
+    UNLOCK_IMMEDIATE_QUEUE(this);
+
     sensor->trigger();
+
+    LOCK_IMMEDIATE_QUEUE(this);
     triggercnt++;
     if (triggercnt > 10000) break;
   }
@@ -466,6 +552,8 @@ SoSensorManager::processImmediateQueue(void)
                               "Infinite loop detected. Breaking out.");
 #endif // COIN_DEBUG
   }
+  UNLOCK_IMMEDIATE_QUEUE(this);
+
   THIS->processingimmediatequeue = FALSE;
 }
 
@@ -475,7 +563,9 @@ SoSensorManager::processImmediateQueue(void)
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 {
+  LOCK_RESCHEDULE_LIST(this);
   THIS->reschedulelist.append(s);
+  UNLOCK_RESCHEDULE_LIST(this);
 }
 
 /*!
@@ -484,11 +574,14 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 {
+  LOCK_RESCHEDULE_LIST(this);
   int idx = THIS->reschedulelist.find((SoTimerSensor*)s);
   if (idx >= 0) {
     THIS->reschedulelist.remove(idx);
+    UNLOCK_RESCHEDULE_LIST(this);
   }
   else {
+    UNLOCK_RESCHEDULE_LIST(this);
     this->removeTimerSensor(s);
   }
 }
@@ -513,11 +606,14 @@ SoSensorManager::isDelaySensorPending(void)
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
 {
+  LOCK_TIMER_QUEUE(this);
   if (THIS->timerqueue.getLength() > 0) {
     tm = THIS->timerqueue[0]->getTriggerTime();
+    UNLOCK_TIMER_QUEUE(this);
     return TRUE;
   }
 
+  UNLOCK_TIMER_QUEUE(this);
   return FALSE;
 }
 
