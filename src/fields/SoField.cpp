@@ -1042,16 +1042,23 @@ void
 SoField::notify(SoNotList * nlist)
 {
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
-                         this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+  if (this != SoDB::getGlobalField("realTime")) {
+    SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
+                           this,
+                           this->getTypeId().getName().getString(),
+                           this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
+                           this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+  }
 #endif // debug
 
   // If we're not the originator of the notification process, we need
   // to be marked dirty, as it means something we're connected to as a
   // slave has changed and our value needs to be updated.
+  //
+  // Note: don't try to "optimize" code here by moving the setDirty()
+  // call down into the isNotifyEnabled() check, as setDirty()
+  // _should_ happen if we're not the originator -- no matter what the
+  // status of the notification enable flag is.
   if (nlist->getFirstRec()) this->setDirty(TRUE);
 
   if (this->isNotifyEnabled()) {
@@ -1068,11 +1075,13 @@ SoField::notify(SoNotList * nlist)
   }
 
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- done",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
-                         this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+  if (this != SoDB::getGlobalField("realTime")) {
+    SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- done",
+                           this,
+                           this->getTypeId().getName().getString(),
+                           this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
+                           this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+  }
 #endif // debug
 }
 

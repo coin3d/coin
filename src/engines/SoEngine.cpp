@@ -266,6 +266,11 @@ SoEngine::inputChanged(SoField * which)
 void
 SoEngine::notify(SoNotList * nl)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::notify", "%p - %s, start",
+                         this, this->getTypeId().getName().getString());
+#endif // debug
+
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
   this->stateflags.isnotifying = 1;
@@ -286,6 +291,11 @@ SoEngine::notify(SoNotList * nl)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
   this->stateflags.isnotifying = 0;
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::notify", "%p - %s, done",
+                         this, this->getTypeId().getName().getString());
+#endif // debug
 }
 
 /*!
