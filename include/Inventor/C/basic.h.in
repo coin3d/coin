@@ -179,15 +179,15 @@ typedef int SbBool;
    doubleprecision counterparts. This is done to be consistent with
    SbBasic.h in Open Inventor (application programmers might rely on
    the float-versions being set up from the Inventor SbBasic.h). */
-#define cosf cos
-#define sinf sin
-#define tanf tan
-#define powf pow
-#define sqrtf sqrt
-#define acosf acos
-#define asinf asin
-#define atanf atan
-#define atan2f atan2
+#define cosf(x) ((float)cos(x))
+#define sinf(x) ((float)sin(x))
+#define tanf(x) ((float)tan(x))
+#define powf(x, y) ((float)pow(x, y))
+#define sqrtf(x) ((float)sqrt(x))
+#define acosf(x) ((float)acos(x))
+#define asinf(x) ((float)asin(x))
+#define atanf(x) ((float)atan(x))
+#define atan2f(x, y) ((float)atan2(x, y))
 #endif /* HAVE_SINGLEPRECISION_MATH */
 
 
@@ -261,6 +261,9 @@ typedef int SbBool;
 #  endif /* COIN_MAKE_DLL */
 # else /* !COIN_INTERNAL */
 #  ifdef COIN_DLL
+#   ifdef COIN_NOT_DLL
+#     error Define _either_ COIN_DLL _or_ COIN_NOT_DLL as appropriate for your linkage -- not both at the same time! See Inventor/C/basic.h for further instructions.
+#   endif /* COIN_NOT_DLL */
 #   define COIN_DLL_API __declspec(dllimport)
 #  else /* !COIN_DLL */
 #   ifndef COIN_NOT_DLL
