@@ -36,7 +36,7 @@ SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy threads mpeg $(VRML97DIR) .
+	3ds collision hardcopy threads mpeg shaders $(VRML97DIR) .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
@@ -65,7 +65,8 @@ libCoin@SUFFIX@_la_LIBADD = \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 	manips/libmanips.la upgraders/libupgraders.la \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-	threads/libthreads.la mpeg/libmpeg.la $(VRML97LIBADD) $(SUPERGLULIBADD)
+	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
+	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
@@ -83,7 +84,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
-	threads/threads.lst mpeg/mpeg.lst $(VRML97LSTADD) $(SUPERGLULSTADD)
+	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
+	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	tidbits.c \

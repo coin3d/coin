@@ -179,6 +179,7 @@ case "$prefix:$coin_build_dir" in
   enable_html=yes
   enable_man=yes
   enable_3ds_import=yes
+  enable_shaders=yes
   enable_debug=no
   AC_MSG_RESULT([yes])
   ;;
@@ -347,6 +348,32 @@ if $sim_ac_enable_java_wrapper; then
 else
   SIM_AC_CONFIGURATION_SETTING([Generate Java wrapper], [No (default)])
 fi
+
+# *******************************************************************
+# Optional Shader support
+
+sim_ac_enable_shaders=false
+AC_ARG_ENABLE(
+  [shaders],
+  AC_HELP_STRING([--enable-shaders], [enable shaders]), [
+  case $enableval in
+    yes | true) sim_ac_enable_shaders=true ;;
+    *) ;;
+  esac])
+
+HAVE_SHADERS=1
+
+if $sim_ac_enable_shaders ; then
+  AC_DEFINE([HAVE_SHADERS],, [define to enable shader support])
+  SIM_AC_CONFIGURATION_SETTING([shaders], [Yes (warning: experimental)])
+else
+  HAVE_SHADERS=0
+  SIM_AC_CONFIGURATION_SETTING([shaders], [No  (enable with --enable-shaders)])
+fi
+AC_SUBST(HAVE_SHADERS)
+
+AM_CONDITIONAL([BUILD_SHADERS], [$sim_ac_enable_shaders])
+
 
 # *******************************************************************
 # See if we should build with 3ds import capabilities.
@@ -1599,7 +1626,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors upgraders hardcopy collision mpeg 3ds:format3ds; \
+    sensors shaders upgraders hardcopy collision mpeg 3ds:format3ds; \
   do
     case $dir in
     *:* )
@@ -1934,6 +1961,7 @@ AC_CONFIG_FILES([
         src/vrml97/Makefile
         src/hardcopy/Makefile
         src/mpeg/Makefile
+        src/shaders/Makefile
 ])
 
 AC_OUTPUT

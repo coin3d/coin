@@ -1,4 +1,122 @@
-
+if BUILD_SHADERS
+PublicHeaders = \
+	SoSubElement.h \
+	SoElements.h \
+	SoAccumulatedElement.h \
+	SoAmbientColorElement.h \
+	SoAnnoText3CharOrientElement.h \
+	SoAnnoText3FontSizeHintElement.h \
+	SoAnnoText3RenderPrintElement.h \
+	SoBBoxModelMatrixElement.h \
+	SoBumpMapElement.h \
+	SoBumpMapCoordinateElement.h \
+	SoBumpMapMatrixElement.h \
+	SoCacheElement.h \
+	SoCacheHintElement.h \
+	SoClipPlaneElement.h \
+	SoComplexityElement.h \
+	SoComplexityTypeElement.h \
+	SoCoordinateElement.h \
+	SoCreaseAngleElement.h \
+	SoCullElement.h \
+	SoDecimationPercentageElement.h \
+	SoDecimationTypeElement.h \
+	SoDiffuseColorElement.h \
+	SoDrawStyleElement.h \
+	SoElement.h \
+	SoEmissiveColorElement.h \
+	SoEnvironmentElement.h \
+	SoFloatElement.h \
+	SoFocalDistanceElement.h \
+	SoFontNameElement.h \
+	SoFontSizeElement.h \
+	SoGLCacheContextElement.h \
+	SoGLClipPlaneElement.h \
+	SoGLColorIndexElement.h \
+	SoGLCoordinateElement.h \
+	SoGLDisplayList.h \
+	SoGLDrawStyleElement.h \
+	SoGLEnvironmentElement.h \
+	SoGLLazyElement.h \
+	SoGLLightIdElement.h \
+	SoGLLinePatternElement.h \
+	SoGLLineWidthElement.h \
+	SoGLModelMatrixElement.h \
+	SoGLMultiTextureCoordinateElement.h \
+	SoGLMultiTextureEnabledElement.h \
+	SoGLMultiTextureMatrixElement.h \
+	SoGLMultiTextureImageElement.h \
+	SoGLNormalElement.h \
+	SoGLNormalizeElement.h \
+	SoGLPointSizeElement.h \
+	SoGLPolygonOffsetElement.h \
+	SoGLProjectionMatrixElement.h \
+	SoGLRenderPassElement.h \
+	SoGLShapeHintsElement.h \
+	SoGLShadeModelElement.h \
+	SoGLTextureCoordinateElement.h \
+	SoGLTextureEnabledElement.h \
+	SoGLTexture3EnabledElement.h \
+	SoGLTextureImageElement.h \
+	SoGLTextureMatrixElement.h \
+	SoGLUpdateAreaElement.h \
+	SoGLViewingMatrixElement.h \
+	SoGLViewportRegionElement.h \
+	SoInt32Element.h \
+	SoLazyElement.h \
+	SoLightAttenuationElement.h \
+	SoLightElement.h \
+	SoLightModelElement.h \
+	SoLinePatternElement.h \
+	SoLineWidthElement.h \
+	SoLocalBBoxMatrixElement.h \
+	SoLongElement.h \
+	SoMaterialBindingElement.h \
+	SoModelMatrixElement.h \
+	SoMultiTextureCoordinateElement.h \
+	SoMultiTextureEnabledElement.h \
+	SoMultiTextureMatrixElement.h \
+	SoMultiTextureImageElement.h \
+	SoNormalBindingElement.h \
+	SoNormalElement.h \
+	SoOverrideElement.h \
+	SoPickRayElement.h \
+	SoPickStyleElement.h \
+	SoPointSizeElement.h \
+	SoPolygonOffsetElement.h \
+	SoProfileCoordinateElement.h \
+	SoProfileElement.h \
+	SoProjectionMatrixElement.h \
+	SoReplacedElement.h \
+	SoShapeHintsElement.h \
+	SoShapeStyleElement.h \
+	SoShininessElement.h \
+	SoSpecularColorElement.h \
+	SoSwitchElement.h \
+	SoTextOutlineEnabledElement.h \
+	SoTextureCombineElement.h \
+	SoTextureCoordinateBindingElement.h \
+	SoTextureCoordinateElement.h \
+	SoTextureEnabledElement.h \
+	SoTexture3EnabledElement.h \
+	SoTextureImageElement.h \
+	SoTextureMatrixElement.h \
+	SoTextureOverrideElement.h \
+	SoTextureQualityElement.h \
+	SoTextureUnitElement.h \
+	SoTransparencyElement.h \
+	SoUnitsElement.h \
+	SoViewVolumeElement.h \
+	SoViewingMatrixElement.h \
+	SoViewportRegionElement.h \
+	SoWindowElement.h \
+	SoListenerPositionElement.h \
+	SoListenerOrientationElement.h \
+	SoListenerGainElement.h \
+	SoListenerDopplerElement.h \
+	SoSoundElement.h \
+	SoGLShaderProgramElement.h
+else
 PublicHeaders = \
 	SoSubElement.h \
 	SoElements.h \
@@ -115,6 +233,7 @@ PublicHeaders = \
 	SoListenerGainElement.h \
 	SoListenerDopplerElement.h \
 	SoSoundElement.h
+endif
 PrivateHeaders = \
 	SoTextureScalePolicyElement.h \
 	SoTextureScaleQualityElement.h
