@@ -112,7 +112,9 @@
 #ifdef COIN_DEBUG
       SoDebugError::postWarning("[faceset]::GLRender",
                                 "Polygon with less than three vertices detected. "
-                                "Rendering aborted for current shape.");
+                                "(First 3 indices are: <%d, %d, %d, ...>.) "
+                                "Rendering aborted for current shape.",
+                                v1, v2, v3);
 #endif // COIN_DEBUG
       break;
     }
