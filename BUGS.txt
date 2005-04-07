@@ -1680,6 +1680,12 @@ Now, for the list of known bugs in the core Coin library:
 
     20031011 mortene.
 
+    I just bumped into this issue and verified it being a bug by rendering
+    my geometry in the opposite order (lines first, then polygons)
+    and that worked as it should.
+
+    20050407 kintel.
+
 =====================================================================
 
 082 Configure/build problem: we need to demand X11 when using GLX.
