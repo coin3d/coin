@@ -725,7 +725,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
     // Convert to grayscale for calculating the ambient intensity
     float ambientGray = ambient[0] * 77 + ambient[1] * 150 + ambient[2] * 29;
     if (ambientGray >  0) {
-      float ambientIntensity = fminf(1.0f, ambientGray / 256.0f);
+      float ambientIntensity = SbMin(1.0f, ambientGray / 256.0f);
       if (mat->ambientIntensity.getValue() != ambientIntensity)
         mat->ambientIntensity = ambientIntensity;
     }
