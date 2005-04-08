@@ -31,6 +31,7 @@
   whenever a highlight state changes.
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -43,6 +44,8 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
+
+// *************************************************************************
 
 /*!
   \enum SoLocateHighlight::Modes
@@ -75,21 +78,27 @@
 
 /*!
   \var SoSFColor SoLocateHighlight::color
-  The color used for highlighting.
+
+  The color used for highlighting. Default is [0.3, 0.3, 0.3], a dark
+  gray.
 */
 
 /*!
   \var SoSFEnum SoLocateHighlight::style
-  The highlight style.
+
+  The highlight style. Default is SoLocateHighlight::EMISSIVE.
 */
 /*!
   \var SoSFEnum SoLocateHighlight::mode
-  The highlight mode.
+
+  The highlight mode. Default is SoLocateHighlight::AUTO.
 */
+
+// *************************************************************************
 
 SoFullPath * SoLocateHighlight::currenthighlight = NULL;
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoLocateHighlightP {
 public:
@@ -97,22 +106,21 @@ public:
   SoColorPacker colorpacker;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
-
-#undef THIS
-#define THIS this->pimpl
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
 
 SO_NODE_SOURCE(SoLocateHighlight);
+
+// *************************************************************************
 
 /*!
   Constructor.
 */
 SoLocateHighlight::SoLocateHighlight()
 {
-  THIS = new SoLocateHighlightP;
+  PRIVATE(this) = new SoLocateHighlightP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLocateHighlight);
 
   SO_NODE_ADD_FIELD(color, (SbColor(0.3f, 0.3f, 0.3f)));
@@ -128,7 +136,7 @@ SoLocateHighlight::SoLocateHighlight()
   SO_NODE_DEFINE_ENUM_VALUE(Modes, OFF);
   SO_NODE_SET_SF_ENUM_TYPE(mode, Modes);
 
-  THIS->highlighted = FALSE;
+  PRIVATE(this)->highlighted = FALSE;
 }
 
 /*!
@@ -136,7 +144,7 @@ SoLocateHighlight::SoLocateHighlight()
 */
 SoLocateHighlight::~SoLocateHighlight()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // doc from parent
@@ -165,18 +173,18 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
     if (event->isOfType(SoLocation2Event::getClassTypeId())) {
       const SoPickedPoint * pp = action->getPickedPoint();
       if (pp && pp->getPath()->containsPath(action->getCurPath())) {
-        if (!THIS->highlighted) {
+        if (!PRIVATE(this)->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
           SoLocateHighlight::currenthighlight = (SoFullPath*)
             action->getCurPath()->copy();
           SoLocateHighlight::currenthighlight->ref();
-          THIS->highlighted = TRUE;
+          PRIVATE(this)->highlighted = TRUE;
           this->touch(); // force scene redraw
           this->redrawHighlighted(action, TRUE);
         }
       }
       else {
-        if (THIS->highlighted) {
+        if (PRIVATE(this)->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
         }
       }
@@ -191,7 +199,7 @@ SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  if (THIS->highlighted || this->mode.getValue() == ON) {
+  if (PRIVATE(this)->highlighted || this->mode.getValue() == ON) {
     this->setOverride(action);
   }
   inherited::GLRenderBelowPath(action);
@@ -204,7 +212,7 @@ SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  if (THIS->highlighted || this->mode.getValue() == ON) {
+  if (PRIVATE(this)->highlighted || this->mode.getValue() == ON) {
     this->setOverride(action);
   }
   inherited::GLRenderInPath(action);
@@ -234,7 +242,7 @@ SoLocateHighlight::setOverride(SoGLRenderAction * action)
   if (mystyle == SoLocateHighlight::EMISSIVE_DIFFUSE) {
     SoLazyElement::setDiffuse(state, this,
                                1, &this->color.getValue(),
-                              &THIS->colorpacker);
+                              &PRIVATE(this)->colorpacker);
     SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
   }
 }
@@ -258,4 +266,4 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
   }
 }
 
-#undef THIS
+#undef PRIVATE
