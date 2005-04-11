@@ -820,11 +820,15 @@ sogl_render_cube(const float width,
     if (flags & SOGL_MATERIAL_PER_PART)
       material->send(i, TRUE);
     for (int j = 0; j < 4; j++) {
-      if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2fv(&sogl_cube_texcoords[j<<1]);
-      }
-      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      if (flags & SOGL_NEED_3DTEXCOORDS) {
+#if 0 // FIXME: Don't know if this is compatible with TGS Inventor
         glTexCoord3fv(sogl_cube_3dtexcoords[*iptr]);
+#else // looks much better with a SoTextureCubeMap, at least
+        glTexCoord3fv((const GLfloat*)&varray[*iptr]);
+#endif // pederb, 2005-04-11
+      }
+      else if (flags & SOGL_NEED_TEXCOORDS) {
+        glTexCoord2fv(&sogl_cube_texcoords[j<<1]);
       }
       if (flags & SOGL_NEED_MULTITEXCOORDS) {
         for (u = 1; u <= maxunit; u++) {
