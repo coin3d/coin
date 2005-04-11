@@ -140,7 +140,16 @@ SoCube::GLRender(SoGLRenderAction * action)
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;
-  if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+  if (doTextures) {
+    switch (SoGLTextureEnabledElement::getMode(state)) {
+    default:
+      flags |= SOGL_NEED_TEXCOORDS;
+      break;
+    case SoGLTextureEnabledElement::CUBEMAP:
+      flags |= SOGL_NEED_3DTEXCOORDS;
+      break;
+    }
+  }
   else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
 
