@@ -743,6 +743,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
   SoPointDetail pointDetail;
 
   vertex.setDetail(&pointDetail);
+  vertex.setNormal(*currnormal);
 
   while (ptr < end) {
     n = *ptr++;
