@@ -182,6 +182,7 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -189,6 +190,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/tidbitsp.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -334,17 +336,24 @@ public:
   SbBool glimagevalid;
   SoFieldSensor * filenamesensor;
 #ifdef COIN_THREADSAFE
-  SbMutex mutex;
+  static SbMutex * mutex;
+  static void cleanup(void) {
+    delete mutex;
+    mutex = NULL;
+  }
 #endif // COIN_THREADSAFE
 };
 
+#ifdef COIN_THREADSAFE
+SbMutex * SoTexture2P::mutex;
+#endif // COIN_THREADSAFE
 
 #undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
 #ifdef COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex.lock())
-#define UNLOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex.unlock())
+#define LOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex->lock())
+#define UNLOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex->unlock())
 #else // COIN_THREADSAFE
 #define LOCK_GLIMAGE(_thisp_)
 #define UNLOCK_GLIMAGE(_thisp_)
@@ -414,14 +423,24 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
   SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
 
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
+
   SO_ENABLE(SoCallbackAction, SoTextureImageElement);
   SO_ENABLE(SoCallbackAction, SoTextureEnabledElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureEnabledElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureImageElement);
   SO_ENABLE(SoCallbackAction, SoTexture3EnabledElement);
 
   SO_ENABLE(SoRayPickAction, SoTextureImageElement);
   SO_ENABLE(SoRayPickAction, SoTextureEnabledElement);
   SO_ENABLE(SoRayPickAction, SoTexture3EnabledElement);
-
+  SO_ENABLE(SoRayPickAction, SoMultiTextureEnabledElement);
+  SO_ENABLE(SoRayPickAction, SoMultiTextureImageElement);
+#ifdef COIN_THREADSAFE
+  SoTexture2P::mutex = new SbMutex;
+  coin_atexit(SoTexture2P::cleanup, 0);
+#endif // COIN_THREADSAFE
 }
 
 
@@ -457,8 +476,9 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 {
   // FIXME: consider sharing textures among contexts, pederb
   SoState * state = action->getState();
-
-  if (SoTextureOverrideElement::getImageOverride(state))
+  int unit = SoTextureUnitElement::get(state);
+  
+  if ((unit == 0) && SoTextureOverrideElement::getImageOverride(state))
     return;
 
   float quality = SoTextureQualityElement::get(state);
@@ -534,7 +554,6 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     }
   }
   
-  int unit = SoTextureUnitElement::get(state);
   int maxunits = cc_glglue_max_texture_units(glue);
   if (unit == 0) {
     SoGLTextureImageElement::set(state, this,
@@ -573,42 +592,58 @@ SoTexture2::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  int unit = SoTextureUnitElement::get(state);
+  if ((unit == 0) && SoTextureOverrideElement::getImageOverride(state))
     return;
 
   int nc;
   SbVec2s size;
   const unsigned char * bytes = this->image.getValue(size, nc);
-
-  SoTexture3EnabledElement::set(state, this, FALSE);
-
-  if (size != SbVec2s(0,0)) {
-    SoTextureImageElement::set(state, this,
-                               size, nc, bytes,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
-    SoTextureEnabledElement::set(state, this, TRUE);
-  }
+  
   // if a filename has been set, but the file has not been loaded, supply
   // a dummy texture image to make sure texture coordinates are generated.
-  else if (this->image.isDefault() && this->filename.getValue().getLength()) {
+  if ((size == SbVec2s(0,0)) &&
+      this->image.isDefault() && 
+      this->filename.getValue().getLength()) {
     static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff};
-    SoTextureImageElement::set(state, this,
-                               SbVec2s(2,2), 1, dummytex,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
-    SoTextureEnabledElement::set(state, this, TRUE);
+    bytes = dummytex;
+    size = SbVec2s(2,2);
+    nc = 1;
+  }
+
+  if (unit == 0) {
+    SoTexture3EnabledElement::set(state, this, FALSE);
+    if (size != SbVec2s(0,0)) {
+      SoTextureImageElement::set(state, this,
+                                 size, nc, bytes,
+                                 (int)this->wrapT.getValue(),
+                                 (int)this->wrapS.getValue(),
+                                 (SoTextureImageElement::Model) model.getValue(),
+                                 this->blendColor.getValue());
+      SoTextureEnabledElement::set(state, this, TRUE); 
+    }
+    else {
+      SoTextureImageElement::setDefault(state, this);
+      SoTextureEnabledElement::set(state, this, FALSE);
+    }
+    if (this->isOverride()) {
+      SoTextureOverrideElement::setImageOverride(state, TRUE);
+    }
   }
   else {
-    SoTextureImageElement::setDefault(state, this);
-    SoTextureEnabledElement::set(state, this, FALSE);
-  }
-  if (this->isOverride()) {
-    SoTextureOverrideElement::setImageOverride(state, TRUE);
+    if (size != SbVec2s(0,0)) {
+      SoMultiTextureImageElement::set(state, this, unit,
+                                      size, nc, bytes,
+                                      (SoTextureImageElement::Wrap)this->wrapT.getValue(),
+                                      (SoTextureImageElement::Wrap)this->wrapS.getValue(),
+                                      (SoTextureImageElement::Model) model.getValue(),
+                                      this->blendColor.getValue());
+      SoMultiTextureEnabledElement::set(state, this, unit, TRUE); 
+    }
+    else {
+      SoMultiTextureImageElement::setDefault(state, this, unit);
+      SoMultiTextureEnabledElement::set(state, this, unit, FALSE);
+    }
   }
 }
 

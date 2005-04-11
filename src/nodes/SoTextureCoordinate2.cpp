@@ -108,12 +108,12 @@ Separator {
   empty set.
 
   Texture coordinates are usually specified in normalized coordinates,
-  ie in the range [0, 1]. (0, 0) is the lower left corner, while 
+  ie in the range [0, 1]. (0, 0) is the lower left corner, while
   (1, 1) is the upper right corner of the texture image. Coordinates
   outside the [0, 1] range can be used to repeat the texture across a
   surface.
 
-  \sa SoTexure2::wrapS, SoTexture2::wrapT 
+  \sa SoTexure2::wrapS, SoTexture2::wrapT
 */
 
 // *************************************************************************
@@ -144,16 +144,30 @@ SoTextureCoordinate2::initClass(void)
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureCoordinateElement);
+
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureCoordinateElement);
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinate2::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::set2(action->getState(), this,
-                                   point.getNum(),
-                                   point.getValues(0));
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  
+  if (unit == 0) {
+    SoTextureCoordinateElement::set2(action->getState(), this,
+                                     this->point.getNum(),
+                                     this->point.getValues(0));
+  }
+  else {
+    SoMultiTextureCoordinateElement::set2(action->getState(), this, unit,
+                                          this->point.getNum(),
+                                          this->point.getValues(0));
+  }
 }
 
 // Documented in superclass.
@@ -170,7 +184,7 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
   else {
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
-    
+
     if (unit < maxunits) {
       SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
       SoMultiTextureCoordinateElement::set2(action->getState(), this, unit,

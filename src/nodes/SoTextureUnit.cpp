@@ -37,6 +37,13 @@
   \since Coin 2.2
 */
 
+
+// FIXME, FIXME, FIXME:
+// We realy need to override the getMatrix() method as well (and
+// enable SoTextureUnitElement for SoGetMatrixAction). Otherwise
+// we might risk getting the wrong texture matrix. 
+// pederb, 2005-02-28
+
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
@@ -115,6 +122,8 @@ SoTextureUnit::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureUnit, SO_FROM_COIN_2_2);
 
   SO_ENABLE(SoGLRenderAction, SoTextureUnitElement);
+  SO_ENABLE(SoCallbackAction, SoTextureUnitElement);
+  SO_ENABLE(SoPickAction, SoTextureUnitElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
@@ -126,7 +135,7 @@ void
 SoTextureUnit::GLRender(SoGLRenderAction * action)
 {
   SoTextureUnit::doAction((SoAction*)action);
-
+  
   SoState * state = action->getState();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
@@ -159,10 +168,7 @@ SoTextureUnit::doAction(SoAction * action)
 void
 SoTextureUnit::callback(SoCallbackAction * action)
 {
-  // So far only SoGLRenderAction supports SoTextureUnitElement.  We
-  // may never support multiple texture units for SoCallbackAction,
-  // but we reimplement the method just in case
-  inherited::callback(action);
+  SoTextureUnit::doAction(action);
 }
 
 // Doc from superclass.

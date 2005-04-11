@@ -125,9 +125,9 @@ SoTextureCoordinateCylinder::SoTextureCoordinateCylinder(void)
   PRIVATE(this) = new SoTextureCoordinateCylinderP(this);
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateCylinder);
 
-  pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcylinder_data),
-                                             so_texcoordcylinder_construct_data, 
-                                             so_texcoordcylinder_destruct_data);
+  PRIVATE(this)->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcylinder_data),
+                                                     so_texcoordcylinder_construct_data, 
+                                                     so_texcoordcylinder_destruct_data);
 }
 
 /*!
@@ -245,14 +245,29 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(SbVec3f point, SbVec3f 
 // Documented in superclass.
 void
 SoTextureCoordinateCylinder::doAction(SoAction * action)
-{  
+{
+  so_texcoordcylinder_data * data = pimpl->so_texcoord_get_data();
+
+  data->currentstate = action->getState();      
+  data->currentshape = NULL;  
+  
+  int unit = SoTextureUnitElement::get(data->currentstate);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(data->currentstate, 
+                                            this, textureCoordinateCylinderCallback, 
+                                            PRIVATE(this));
+  } 
+  else {
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateCylinderCallback,
+                                                 PRIVATE(this));
+  }  
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinateCylinder::GLRender(SoGLRenderAction * action)
-{
-  
+{  
   so_texcoordcylinder_data * data = pimpl->so_texcoord_get_data();
 
   data->currentstate = action->getState();      

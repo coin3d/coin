@@ -51,6 +51,11 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/C/glue/gl.h>
 
 /*!
   \var SoMFVec3f SoTextureCoordinate3::point
@@ -92,7 +97,6 @@ SoTextureCoordinate3::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate3, SO_FROM_INVENTOR_2_6|SO_FROM_COIN_2_0);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
-
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
 }
 
@@ -100,17 +104,43 @@ SoTextureCoordinate3::initClass(void)
 void
 SoTextureCoordinate3::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::set3(action->getState(), this,
-                                   point.getNum(),
-                                   point.getValues(0));
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  
+  if (unit == 0) {
+    SoTextureCoordinateElement::set3(action->getState(), this,
+                                     this->point.getNum(),
+                                     this->point.getValues(0));
+  }
+  else {
+    SoMultiTextureCoordinateElement::set3(action->getState(), this, unit,
+                                          this->point.getNum(),
+                                          this->point.getValues(0));
+  }
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
 {
-  SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
-  SoTextureCoordinate3::doAction((SoAction *)action);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+
+  if (unit == 0) {
+    SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
+    SoTextureCoordinate3::doAction((SoAction *)action);
+  }
+  else {
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    int maxunits = cc_glglue_max_texture_units(glue);
+
+    if (unit < maxunits) {
+      SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
+      SoMultiTextureCoordinateElement::set3(action->getState(), this, unit,
+                                            this->point.getNum(),
+                                            this->point.getValues(0));
+    }
+  }
 }
 
 // Documented in superclass.

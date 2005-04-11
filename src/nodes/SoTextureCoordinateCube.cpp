@@ -258,14 +258,29 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
 void
 SoTextureCoordinateCube::doAction(SoAction * action)
 {
+  so_texcoordcube_data * data = PRIVATE(this)->so_texcoord_get_data();
+  
+  data->currentstate = action->getState();
+  data->currentshape = NULL;
+
+  int unit = SoTextureUnitElement::get(data->currentstate);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(data->currentstate,
+                                            this, textureCoordinateCubeCallback,
+                                            PRIVATE(this));
+  }
+  else {
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateCubeCallback,
+                                                 PRIVATE(this));
+  }
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 {
-
-  so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
+  so_texcoordcube_data * data = PRIVATE(this)->so_texcoord_get_data();
 
   data->currentstate = action->getState();
   data->currentshape = NULL;

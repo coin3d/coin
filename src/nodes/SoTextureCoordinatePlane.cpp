@@ -166,9 +166,18 @@ void
 SoTextureCoordinatePlane::doAction(SoAction * action)
 {
   this->setupGencache();
-  SoTextureCoordinateElement::setFunction(action->getState(), this,
-                                          SoTextureCoordinatePlane::generate,
-                                          this);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(action->getState(), this,
+                                            SoTextureCoordinatePlane::generate,
+                                            this);
+  }
+  else {
+    SoMultiTextureCoordinateElement::setFunction(action->getState(), this, unit,
+                                                 SoTextureCoordinatePlane::generate,
+                                                 this);
+  }
 }
 
 // doc from parent

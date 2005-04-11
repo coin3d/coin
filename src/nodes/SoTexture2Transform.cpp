@@ -103,6 +103,10 @@ SoTexture2Transform::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
   SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
   SO_ENABLE(SoPickAction, SoTextureMatrixElement);
+
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureMatrixElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureMatrixElement);
 }
 
 
@@ -139,8 +143,16 @@ SoTexture2Transform::doAction(SoAction *action)
 {
   SbMatrix mat;
   this->makeMatrix(mat);
-  SoTextureMatrixElement::mult(action->getState(), this,
-                               mat);
+
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state); 
+  if (unit == 0) {
+    SoTextureMatrixElement::mult(action->getState(), this,
+                                 mat);
+  }
+  else {
+    SoMultiTextureMatrixElement::mult(state, this, unit, mat);
+  }
 }
 
 // Documented in superclass.
