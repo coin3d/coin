@@ -173,12 +173,15 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -226,7 +229,11 @@ public:
   void readimage_cleanup(void);
   SbBool isdestructing;
 #ifdef COIN_THREADSAFE
-  SbMutex glimagemutex;
+  static SbMutex * glimagemutex;
+  static void cleanup(void) {
+    delete glimagemutex;
+    glimagemutex = NULL;
+  }
 #endif // COIN_THREADSAFE
   SbStringList searchdirs;
 
@@ -247,8 +254,13 @@ public:
 };
 
 #ifdef COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.lock()
-#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.unlock()
+SbMutex * SoVRMLImageTextureP::glimagemutex;
+#endif // COIN_THREADSAFE
+
+
+#ifdef COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex->lock()
+#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex->unlock()
 #else // COIN_THREADSAFE
 #define LOCK_GLIMAGE(_thisp_)
 #define UNLOCK_GLIMAGE(_thisp_)
@@ -277,6 +289,8 @@ SoVRMLImageTexture::initClass(void) // static
 #ifdef COIN_THREADSAFE
   imagetexture_scheduler = cc_sched_construct(1);
   coin_atexit((coin_atexit_f*) imagetexture_cleanup, 0);
+  SoVRMLImageTextureP::glimagemutex = new SbMutex;
+  coin_atexit((coin_atexit_f*) SoVRMLImageTextureP::cleanup, 0);
 #endif // COIN_THREADSAFE
 }
 
@@ -373,44 +387,60 @@ void
 SoVRMLImageTexture::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-
-  if (SoTextureOverrideElement::getImageOverride(state))
+  int unit = SoTextureUnitElement::get(state);
+  
+  if ((unit == 0) && SoTextureOverrideElement::getImageOverride(state))
     return;
 
-  SoTexture3EnabledElement::set(state, this, FALSE);
+  int nc;
+  SbVec2s size;
+  const unsigned char * bytes = PRIVATE(this)->image.getValue(size, nc);
+  
   if (!PRIVATE(this)->image.hasData()) {
     if (this->url.getNum()) {
       // texture has not been loaded yet. Supply a dummy image and
       // enable SoTextureImageElement so that texture coordinates are
       // generated in generatePrimitives()
-      SoTextureEnabledElement::set(state, this, TRUE);    
       static unsigned char dummydata[] = { 0xff, 0xff, 0xff, 0xff };
-      SoTextureImageElement::set(state, this,
-                                 SbVec2s(2,2), 1, dummydata,
-                                 imagetexture_translate_wrap(this->repeatS.getValue()),
-                                 imagetexture_translate_wrap(this->repeatT.getValue()),                                                           
-                                 SoTextureImageElement::MODULATE,
-                                 SbColor(1.0f, 1.0f, 1.0f));
-      
+      bytes = dummydata;
+      size = SbVec2s(2,2);
+      nc = 1;
+    }
+  }
+
+  if (unit == 0) {
+    SoTexture3EnabledElement::set(state, this, FALSE);
+    if (size == SbVec2s(0,0)) {
+      SoTextureEnabledElement::set(state, this, FALSE);    
     }
     else {
-      SoTextureEnabledElement::set(state, this, FALSE);    
-    }    
+      SoTextureEnabledElement::set(state, this, TRUE);    
+      SoTextureImageElement::set(state, this,
+                                 size, nc, bytes,
+                                 imagetexture_translate_wrap(this->repeatS.getValue()),
+                                 imagetexture_translate_wrap(this->repeatT.getValue()),
+                                 SoTextureImageElement::MODULATE,
+                                 SbColor(1.0f, 1.0f, 1.0f));      
+    }
+    if (this->isOverride()) {
+      SoTextureOverrideElement::setImageOverride(state, TRUE);
+    }
   }
   else {
-    int nc;
-    SbVec2s size;
-    const unsigned char * bytes = PRIVATE(this)->image.getValue(size, nc);
-    SoTextureImageElement::set(state, this,
-                               size, nc, bytes,
-                               imagetexture_translate_wrap(this->repeatS.getValue()),
-                               imagetexture_translate_wrap(this->repeatT.getValue()),                                                           
-                               SoTextureImageElement::MODULATE,
-                               SbColor(1.0f, 1.0f, 1.0f));
-    SoTextureEnabledElement::set(state, this, TRUE);
-  }
-  if (this->isOverride()) {
-    SoTextureOverrideElement::setImageOverride(state, TRUE);
+    if (size == SbVec2s(0,0)) {
+      SoMultiTextureEnabledElement::set(state, this, unit, FALSE);    
+    }
+    else {
+      SoMultiTextureEnabledElement::set(state, this, unit, TRUE);    
+      SoMultiTextureImageElement::set(state, this, unit,
+                                      size, nc, bytes,
+                                      (SoTextureImageElement::Wrap)
+                                      imagetexture_translate_wrap(this->repeatS.getValue()),
+                                      (SoTextureImageElement::Wrap)
+                                      imagetexture_translate_wrap(this->repeatT.getValue()),
+                                      SoTextureImageElement::MODULATE,
+                                      SbColor(1.0f, 1.0f, 1.0f));      
+    }
   }
 }
 
@@ -467,6 +497,8 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
                                     imagetexture_translate_wrap(this->repeatS.getValue()),
                                     imagetexture_translate_wrap(this->repeatT.getValue()),
                                     quality);
+    PRIVATE(this)->glimage->setEndFrameCallback(glimage_callback, this);
+
     // don't cache while creating a texture object
     SoCacheElement::setInvalid(TRUE);
     if (state->isCacheOpen()) {
@@ -654,10 +686,6 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
 {
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&PRIVATE(thisp)->image == image);
-  assert(PRIVATE(thisp)->glimage);
-  if (!PRIVATE(thisp)->glimage) {
-    return FALSE;
-  }
   
   // start a timer sensor that triggers each second and tests if the
   // thread that loads images has finished loading this image.
@@ -727,7 +755,6 @@ SoVRMLImageTexture::readImage(const SbString & filename)
     retval = default_prequalify_cb(filename, NULL, this); 
   }
   if (PRIVATE(this)->glimage) {
-    PRIVATE(this)->glimage->setEndFrameCallback(glimage_callback, this);
     PRIVATE(this)->glimagevalid = FALSE;
   }
   // set flag that timer sensor will test. 
