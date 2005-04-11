@@ -219,8 +219,9 @@ SoMultiTextureCoordinateElement::get(const int unit,
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
-
-  assert(ud.whatKind == SoTextureCoordinateElement::FUNCTION && ud.funcCB);
+  
+  assert((ud.whatKind == SoTextureCoordinateElement::FUNCTION ||
+          ud.whatKind == SoTextureCoordinateElement::TEXGEN) && ud.funcCB);
   return (*(ud.funcCB))(ud.funcCBData, point, normal);
 }
 

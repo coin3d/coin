@@ -167,7 +167,10 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
   if (unit == 0) {
     SoTextureCoordinateEnvironment::doAction((SoAction *)action);
     SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                            this, handleTexgen);
+                                            this, handleTexgen,
+                                            NULL,
+                                            generate,
+                                            action->getState());
   }
   else {
     SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
@@ -175,7 +178,10 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
                                                  generate,
                                                  action->getState());
     SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
-                                                 this, unit, handleTexgen);
+                                                 this, unit, handleTexgen, 
+                                                 NULL,
+                                                 generate,
+                                                 action->getState());
 
   }
 }

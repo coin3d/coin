@@ -261,7 +261,7 @@ const SbVec4f &
 SoTextureCoordinateElement::get(const SbVec3f & point,
                                 const SbVec3f & normal) const
 {
-  assert(this->whatKind == FUNCTION && this->funcCB);
+  assert((this->whatKind == FUNCTION || this->whatKind == TEXGEN) && this->funcCB);
   return (*(this->funcCB))(this->funcCBData, point, normal);
 }
 
