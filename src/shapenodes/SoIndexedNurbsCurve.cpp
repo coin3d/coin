@@ -218,6 +218,7 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
     SoGLCacheContextElement::shouldAutoCache(state,
                                              SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
   }
 }
 

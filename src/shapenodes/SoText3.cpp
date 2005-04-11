@@ -486,9 +486,10 @@ SoText3::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->render(state, fontspec, SoText3::BACK);
   }
   
-  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
-
+    SoGLCacheContextElement::incNumShapes(state);
+  }
   PRIVATE(this)->unlock();
 }
 

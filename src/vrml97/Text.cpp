@@ -489,8 +489,10 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   glEnd();
   PRIVATE(this)->unlock();
 
-  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
+  }
 }
 
 
