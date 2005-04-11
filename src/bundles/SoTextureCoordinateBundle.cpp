@@ -390,19 +390,12 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     this->flags |= FLAG_3DTEXTURES;
     this->defaultdim0 = 0;
     this->defaultdim1 = 1;
-    
-    // disable texture coordinate generation if empty or one
-    // dimensional bounding box.
-    if (size[2] <= 0.0f) {
-      this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
-      return;
-    }
-    
+        
     this->defaultorigo[2] = origo[2];
     this->defaultsize[2] = size[2];
-    assert(this->defaultsize[2] > 0.0f);
   }
   else { // 2D textures
+    this->defaultsize[2] = 1.0f;
     this->flags &= ~FLAG_3DTEXTURES;
     // find the two biggest dimensions
     int smallest = 0;
@@ -438,18 +431,18 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     }
   }    
 
-  // disable texture coordinate generation if empty or one
-  // dimensional bounding box.
-  if (size[this->defaultdim0] <= 0.0f ||
-      size[this->defaultdim1] <= 0.0f) {
-    this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
-    return;
-  }
-
   this->defaultorigo[0] = origo[this->defaultdim0];
   this->defaultorigo[1] = origo[this->defaultdim1];
   this->defaultsize[0] = size[this->defaultdim0];
   this->defaultsize[1] = size[this->defaultdim1];
+
+  // if bbox is empty in one dimension we just want to set it to
+  // 0.0. The size should be set to 1.0 to avoid division by zero.
+  for (int i = 0; i < 3; i++) {
+    if (this->defaultsize[i] <= 0.0f) {
+      this->defaultsize[i] = 1.0f;
+    }
+  }
 
   this->dummyInstance[2] = 0.0f;
   this->dummyInstance[3] = 1.0f;
