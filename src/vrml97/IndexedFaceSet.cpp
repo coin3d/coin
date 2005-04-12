@@ -430,10 +430,10 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 3 || this->coord.getValue() == NULL) return;
   SoState * state = action->getState();
 
-  if (!this->shouldGLRender(action)) return;
-
   // update state with coordinates, normals and texture information
   SoVRMLVertexShape::GLRender(action);
+
+  if (!this->shouldGLRender(action)) return;
 
   Binding mbind = this->findMaterialBinding(state);
 

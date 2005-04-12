@@ -145,9 +145,9 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
 
-  if (!this->shouldGLRender(action)) return;
-
   SoVRMLVertexPoint::GLRender(action);
+
+  if (!this->shouldGLRender(action)) return;
 
   const SoCoordinateElement * coords;
   coords = SoCoordinateElement::getInstance(state);

@@ -237,10 +237,10 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
 
+  SoVRMLVertexLine::GLRender(action);
+
   if (!this->shouldGLRender(action)) 
     return;
-
-  SoVRMLVertexLine::GLRender(action);
 
   // If the coordIndex field is invalid by not including the
   // terminating -1, fix the field by adding it.
