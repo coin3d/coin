@@ -43,6 +43,31 @@
   small compared to the world model. The element simply records all
   planes to be culled against, and the graph is not culled until it is
   completely outside one of the planes.
+
+  SoCullElement is not active for other actions than SoGLRenderAction.
+  It's possible to enable it for SoCallbackAction by updating it in
+  a post camera callback though. Do something like this:
+
+  \verbatim
+
+  static SoCallbackAction::Response 
+  camera_cb(void * data, SoCallbackAction * action, const SoNode * node)
+  {
+    SoState * state = action->getState();
+    SoCullElement::setViewVolume(state, SoViewVolumeElement::get(state));
+    return SoCallbackAction::CONTINUE;
+  }
+
+  [...]
+  SoCallbackAction cba(myviewport);
+  cba.addPostCallback(SoCamera::getClassTypeId(), camera_cb, NULL);
+
+  \endverbatim
+
+  When the view volume is set in SoCullElement in the post camera
+  callback, SoCallbackAction will perform culling on Separators and
+  other nodes in the same way as SoGLRenderAction.
+  
 */
 
 #include <Inventor/elements/SoCullElement.h>
