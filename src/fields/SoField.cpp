@@ -943,6 +943,13 @@ SoField::disconnect(SoField * master)
                          this, master);
 #endif // debug
 
+  const int idx = this->storage->masterfields.find(master);
+  if (idx == -1) {
+    SoDebugError::post("SoField::disconnect",
+                       "can't disconnect from a field which we're not connected to!");
+    return;
+  }
+
   this->evaluate();
 
   SbBool containerisconverter = this->getContainer() &&
@@ -953,7 +960,7 @@ SoField::disconnect(SoField * master)
 
   // Remove bookkeeping material.
   if (!containerisconverter) master->storage->slaves.removeItem(this);
-  this->storage->masterfields.removeItem(master);
+  this->storage->masterfields.remove(idx);
 
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
