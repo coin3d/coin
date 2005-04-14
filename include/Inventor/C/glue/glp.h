@@ -488,6 +488,15 @@ typedef void (APIENTRY * COIN_PFNGLUNIFORM1FVARBPROC)(COIN_GLhandle, GLsizei, co
 typedef void (APIENTRY * COIN_PFNGLUNIFORM2FVARBPROC)(COIN_GLhandle, GLsizei, const GLfloat *);
 typedef void (APIENTRY * COIN_PFNGLUNIFORM3FVARBPROC)(COIN_GLhandle, GLsizei, const GLfloat *);
 typedef void (APIENTRY * COIN_PFNGLUNIFORM4FVARBPROC)(COIN_GLhandle, GLsizei, const GLfloat *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM1IARBPROC)(COIN_GLhandle, const GLint);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM2IARBPROC)(COIN_GLhandle, const GLint, GLint);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM3IARBPROC)(COIN_GLhandle, const GLint, GLint, GLint);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM4IARBPROC)(COIN_GLhandle, const GLint, GLint, GLint, GLint);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM1IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM2IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM3IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM4IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -702,8 +711,15 @@ struct cc_glglue {
   COIN_PFNGLUNIFORM2FVARBPROC glUniform2fvARB;
   COIN_PFNGLUNIFORM3FVARBPROC glUniform3fvARB;  
   COIN_PFNGLUNIFORM4FVARBPROC glUniform4fvARB;
-  
-
+  COIN_PFNGLUNIFORM1IARBPROC glUniform1iARB;
+  COIN_PFNGLUNIFORM2IARBPROC glUniform2iARB;
+  COIN_PFNGLUNIFORM3IARBPROC glUniform3iARB;  
+  COIN_PFNGLUNIFORM4IARBPROC glUniform4iARB;
+  COIN_PFNGLUNIFORM1IVARBPROC glUniform1ivARB;
+  COIN_PFNGLUNIFORM2IVARBPROC glUniform2ivARB;
+  COIN_PFNGLUNIFORM3IVARBPROC glUniform3ivARB;  
+  COIN_PFNGLUNIFORM4IVARBPROC glUniform4ivARB;
+ 
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
