@@ -27,17 +27,13 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFImage.h>
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
 class SoFieldSensor;
 class SoSensor;
 class SoTextureCubeMapP;
-
-// NB: the API for this node will probably change to be compatible
-// with TGS Inventor 5.0.
-
 
 class COIN_DLL_API SoTextureCubeMap : public SoNode {
   typedef SoNode inherited;
@@ -60,19 +56,14 @@ public:
     CLAMP = SoTextureImageElement::CLAMP
   };
 
-  SoSFString posXfilename;
-  SoSFString negXfilename;
-  SoSFString posYfilename;
-  SoSFString negYfilename;
-  SoSFString posZfilename;
-  SoSFString negZfilename;
+  SoMFString filenames;
 
-  SoSFImage posXimage;
-  SoSFImage negXimage;
-  SoSFImage posYimage;
-  SoSFImage negYimage;
-  SoSFImage posZimage;
-  SoSFImage negZimage;
+  SoSFImage imagePosX;
+  SoSFImage imageNegX;
+  SoSFImage imagePosY;
+  SoSFImage imageNegY;
+  SoSFImage imagePosZ;
+  SoSFImage imageNegZ;
 
   SoSFEnum wrapS;
   SoSFEnum wrapT;
@@ -95,8 +86,9 @@ protected:
   void setReadStatus(int s);
 
 private:
-  SbBool loadFilename(SoSFString * filename, SoSFImage * image);
+  SbBool loadFilename(const SbString & filename, SoSFImage * image);
   static void filenameSensorCB(void *, SoSensor *);
+  SoSFImage * getImageField(const int idx);
 
   SoTextureCubeMapP * pimpl;
 };

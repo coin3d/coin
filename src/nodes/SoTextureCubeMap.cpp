@@ -132,74 +132,45 @@
 
 
 /*!
-  \var SoSFString SoTextureCubeMap::posXfilename
+  \var SoSFString SoTextureCubeMap::filenames
 
-  The pos-x filename.
+  The filenames in this order: negx, posx, negy, posy, negz, posz.
 */
 
 /*!
-  \var SoSFImage SoTextureCubeMap::posXimage
+  \var SoSFImage SoTextureCubeMap::imagePosX
 
   The pos-x image.
 */
 
 /*!
-  \var SoSFString SoTextureCubeMap::negXfilename
-
-  The neg-x filename.
-*/
-
-/*!
-  \var SoSFImage SoTextureCubeMap::negXimage
+  \var SoSFImage SoTextureCubeMap::imageNegX
 
   The neg-x image.
 */
 
-/*!
-  \var SoSFString SoTextureCubeMap::posYfilename
 
-  The pos-y filename.
+/*!
+  \var SoSFImage SoTextureCubeMap::imagePosY
+
+  The neg-y image.
 */
 
+
 /*!
-  \var SoSFImage SoTextureCubeMap::posYimage
+  \var SoSFImage SoTextureCubeMap::imageNegY
 
   The neg-y image.
 */
 
 /*!
-  \var SoSFString SoTextureCubeMap::negYfilename
-
-  The neg-y filename.
-
-*/
-
-/*!
-  \var SoSFImage SoTextureCubeMap::negYimage
-
-  The neg-y image.
-*/
-
-/*!
-  \var SoSFString SoTextureCubeMap::posZfilename
-
-  The pos-z filename.
-*/
-
-/*!
-  \var SoSFImage SoTextureCubeMap::posZimage
+  \var SoSFImage SoTextureCubeMap::imagePosZ
   
   The pos-z image.
 */
 
 /*!
-  \var SoSFString SoTextureCubeMap::negZfilename
-
-  The neg-z filename.
-*/
-
-/*!
-  \var SoSFImage SoTextureCubeMap::negZimage
+  \var SoSFImage SoTextureCubeMap::imageNegZ
 
   The neg-z image.
 */
@@ -243,12 +214,7 @@ public:
   int readstatus;
   SoGLCubeMapImage * glimage;
   SbBool glimagevalid;
-  SoFieldSensor * posx_sensor;
-  SoFieldSensor * negx_sensor;
-  SoFieldSensor * posy_sensor;
-  SoFieldSensor * negy_sensor;
-  SoFieldSensor * posz_sensor;
-  SoFieldSensor * negz_sensor;
+  SoFieldSensor * filenames_sensor;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
@@ -278,18 +244,13 @@ SoTextureCubeMap::SoTextureCubeMap(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCubeMap);
 
-  SO_NODE_ADD_FIELD(posXfilename, (""));
-  SO_NODE_ADD_FIELD(negXfilename, (""));
-  SO_NODE_ADD_FIELD(posYfilename, (""));
-  SO_NODE_ADD_FIELD(negYfilename, (""));
-  SO_NODE_ADD_FIELD(posZfilename, (""));
-  SO_NODE_ADD_FIELD(negZfilename, (""));
-  SO_NODE_ADD_FIELD(posXimage, (SbVec2s(0, 0), 0, NULL));
-  SO_NODE_ADD_FIELD(negXimage, (SbVec2s(0, 0), 0, NULL));
-  SO_NODE_ADD_FIELD(posYimage, (SbVec2s(0, 0), 0, NULL));
-  SO_NODE_ADD_FIELD(negYimage, (SbVec2s(0, 0), 0, NULL));
-  SO_NODE_ADD_FIELD(posZimage, (SbVec2s(0, 0), 0, NULL));
-  SO_NODE_ADD_FIELD(negZimage, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(filenames, (""));
+  SO_NODE_ADD_FIELD(imagePosX, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(imageNegX, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(imagePosY, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(imageNegY, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(imagePosZ, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(imageNegZ, (SbVec2s(0, 0), 0, NULL));
   SO_NODE_ADD_FIELD(wrapS, (REPEAT));
   SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
@@ -307,6 +268,9 @@ SoTextureCubeMap::SoTextureCubeMap(void)
   SO_NODE_DEFINE_ENUM_VALUE(Model, REPLACE);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
+  this->filenames.setNum(0);
+  this->filenames.setDefault(0);
+
   PRIVATE(this)->glimage = NULL;
   PRIVATE(this)->glimagevalid = FALSE;
   PRIVATE(this)->readstatus = 1;
@@ -314,29 +278,10 @@ SoTextureCubeMap::SoTextureCubeMap(void)
   // use field sensor for filename since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
-  PRIVATE(this)->posx_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->posx_sensor->setPriority(0);
-  PRIVATE(this)->posx_sensor->attach(&this->posXfilename);
+  PRIVATE(this)->filenames_sensor = new SoFieldSensor(filenameSensorCB, this);
+  PRIVATE(this)->filenames_sensor->setPriority(0);
+  PRIVATE(this)->filenames_sensor->attach(&this->filenames);
 
-  PRIVATE(this)->negx_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->negx_sensor->setPriority(0);
-  PRIVATE(this)->negx_sensor->attach(&this->negXfilename);
-
-  PRIVATE(this)->posy_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->posy_sensor->setPriority(0);
-  PRIVATE(this)->posy_sensor->attach(&this->posYfilename);
-
-  PRIVATE(this)->negy_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->negy_sensor->setPriority(0);
-  PRIVATE(this)->negy_sensor->attach(&this->negYfilename);
-
-  PRIVATE(this)->posz_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->posz_sensor->setPriority(0);
-  PRIVATE(this)->posz_sensor->attach(&this->posZfilename);
-
-  PRIVATE(this)->negz_sensor = new SoFieldSensor(filenameSensorCB, this);
-  PRIVATE(this)->negz_sensor->setPriority(0);
-  PRIVATE(this)->negz_sensor->attach(&this->negZfilename);
 }
 
 /*!
@@ -346,12 +291,7 @@ SoTextureCubeMap::SoTextureCubeMap(void)
 SoTextureCubeMap::~SoTextureCubeMap()
 {
   if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
-  delete PRIVATE(this)->posx_sensor;
-  delete PRIVATE(this)->negx_sensor;
-  delete PRIVATE(this)->posy_sensor;
-  delete PRIVATE(this)->negy_sensor;
-  delete PRIVATE(this)->posz_sensor;
-  delete PRIVATE(this)->negz_sensor;
+  delete PRIVATE(this)->filenames_sensor;
   delete PRIVATE(this);
 }
 
@@ -377,44 +317,35 @@ SoTextureCubeMap::initClass(void)
 SbBool
 SoTextureCubeMap::readInstance(SoInput * in, unsigned short flags)
 {
-  PRIVATE(this)->posx_sensor->detach();
-  PRIVATE(this)->posy_sensor->detach();
-  PRIVATE(this)->posy_sensor->detach();
-  PRIVATE(this)->negy_sensor->detach();
-  PRIVATE(this)->posz_sensor->detach();
-  PRIVATE(this)->negz_sensor->detach();
+  PRIVATE(this)->filenames_sensor->detach();
 
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
   if (readOK) {
-    for (int i = 0; i < 6; i++) {
-      SoSFString * fn;
+    for (int i = 0; i < this->filenames.getNum(); i++) {
+      const SbString & fn = this->filenames[i];
       SoSFImage * img;
-
       switch (i) {
       default:
-      case 0: fn = &this->posXfilename; img = &this->posXimage; break;
-      case 1: fn = &this->negXfilename; img = &this->negXimage; break;
-      case 2: fn = &this->posYfilename; img = &this->posYimage; break;
-      case 3: fn = &this->negYfilename; img = &this->negYimage; break;
-      case 4: fn = &this->posZfilename; img = &this->posZimage; break;
-      case 5: fn = &this->negZfilename; img = &this->negZimage; break;
+      case 0: img = &this->imageNegX; break;
+      case 1: img = &this->imagePosX; break;
+      case 2: img = &this->imageNegY; break;
+      case 3: img = &this->imagePosY; break;
+      case 4: img = &this->imageNegZ; break;
+      case 5: img = &this->imagePosZ; break;
       }
-      if (!fn->isDefault() && fn->getValue() != "") {
+      // only load if filename is set last (no image data is saved to
+      // the image field)
+      if (img->isDefault() && fn.getLength()) {
         if (!this->loadFilename(fn, img)) {
           SoReadError::post(in, "Could not read texture file '%s'",
-                            fn->getValue().getString());
+                            fn.getString());
           this->setReadStatus(FALSE);
         }
       }
     }
   }
-  PRIVATE(this)->posx_sensor->attach(&this->posXfilename);
-  PRIVATE(this)->negx_sensor->attach(&this->negXfilename);
-  PRIVATE(this)->posy_sensor->attach(&this->posYfilename);
-  PRIVATE(this)->negy_sensor->attach(&this->negYfilename);
-  PRIVATE(this)->posz_sensor->attach(&this->posZfilename);
-  PRIVATE(this)->negz_sensor->attach(&this->negZfilename);
+  PRIVATE(this)->filenames_sensor->attach(&this->filenames);
   return readOK;
 }
 
@@ -439,16 +370,7 @@ SoTextureCubeMap::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->glimage = new SoGLCubeMapImage();
     
     for (int i = 0; i < 6; i++) {
-      SoSFImage * img;
-      switch (i) {
-      default:
-      case 0: img = &this->posXimage; break;
-      case 1: img = &this->negXimage; break;
-      case 2: img = &this->posYimage; break;
-      case 3: img = &this->negYimage; break;
-      case 4: img = &this->posZimage; break;
-      case 5: img = &this->negZimage; break;
-      }
+      SoSFImage * img = this->getImageField(i);
 
       SbVec2s size;
       int nc;
@@ -622,49 +544,31 @@ void
 SoTextureCubeMap::notify(SoNotList * l)
 {
   SoField * f = l->getLastField();
-  if (f == &this->posXimage) {
-    PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->posXfilename.setDefault(TRUE);
-    this->posXimage.setDefault(FALSE);
+  if (f == &this->imagePosX) {
+    PRIVATE(this)->glimagevalid = FALSE;    
+    this->imagePosX.setDefault(FALSE);
   }
-  else if (f == &this->negXimage) {
+  else if (f == &this->imageNegX) {
     PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->negXfilename.setDefault(TRUE);
-    this->negXimage.setDefault(FALSE);
+    this->imageNegX.setDefault(FALSE);
   }
-
-  else if (f == &this->posYimage) {
+  
+  else if (f == &this->imagePosY) {
     PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->posYfilename.setDefault(TRUE);
-    this->posYimage.setDefault(FALSE);
+    this->imagePosY.setDefault(FALSE);
   }
-  else if (f == &this->negYimage) {
-    PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->negYfilename.setDefault(TRUE);
-    this->negYimage.setDefault(FALSE);
+  else if (f == &this->imageNegY) {
+    PRIVATE(this)->glimagevalid = FALSE;    
+    this->imageNegY.setDefault(FALSE);
   }
-
-  else if (f == &this->posZimage) {
+  
+  else if (f == &this->imagePosZ) {
     PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->posZfilename.setDefault(TRUE);
-    this->posZimage.setDefault(FALSE);
+    this->imagePosZ.setDefault(FALSE);
   }
-  else if (f == &this->negZimage) {
+  else if (f == &this->imageNegZ) {
     PRIVATE(this)->glimagevalid = FALSE;
-    
-    // write image, not filename
-    this->negZfilename.setDefault(TRUE);
-    this->negZimage.setDefault(FALSE);
+    this->imageNegZ.setDefault(FALSE);
   }
 
   else if (f == &this->wrapS || f == &this->wrapT) {
@@ -678,13 +582,13 @@ SoTextureCubeMap::notify(SoNotList * l)
 // filename field.
 //
 SbBool 
-SoTextureCubeMap::loadFilename(SoSFString * filename, SoSFImage * image)
+SoTextureCubeMap::loadFilename(const SbString & filename, SoSFImage * image)
 {
   SbBool retval = FALSE;
-  if (filename->getValue().getLength()) {
+  if (filename.getLength()) {
     SbImage tmpimage;
     const SbStringList & sl = SoInput::getDirectories();
-    if (tmpimage.readFile(filename->getValue(),
+    if (tmpimage.readFile(filename,
                           sl.getArrayPtr(), sl.getLength())) {
       int nc;
       SbVec2s size;
@@ -712,46 +616,37 @@ SoTextureCubeMap::filenameSensorCB(void * data, SoSensor * s)
 
   thisp->setReadStatus(1);
 
-  SoSFString * filename;
-  SoSFImage * image;
 
-  if (s == PRIVATE(thisp)->posx_sensor) {
-    filename = &thisp->posXfilename;
-    image = &thisp->posXimage;
-  }
-  else if (s == PRIVATE(thisp)->negx_sensor) {
-    filename = &thisp->negXfilename;
-    image = &thisp->negXimage;
-
-  }
-  else if (s == PRIVATE(thisp)->posy_sensor) {
-    filename = &thisp->posYfilename;
-    image = &thisp->posYimage;
-
-  }
-  else if (s == PRIVATE(thisp)->negy_sensor) {
-    filename = &thisp->negYfilename;
-    image = &thisp->negYimage;
-
-  }
-  else if (s == PRIVATE(thisp)->posz_sensor) {
-    filename = &thisp->posZfilename;
-    image = &thisp->posZimage;
-
-  }
-  else {
-    filename = &thisp->negZfilename;
-    image = &thisp->negZimage;
-  }
-
-  if (filename->getValue().getLength() &&
-      !thisp->loadFilename(filename, image)) {
-    SoDebugError::postWarning("SoTextureCubeMap::filenameSensorCB",
-                              "Image file '%s' could not be read",
-                              filename->getValue().getString());
-    thisp->setReadStatus(0);
+  for (int i = 0; i < thisp->filenames.getNum(); i++) {
+    const SbString & fn = thisp->filenames[i];
+    SoSFImage * img = thisp->getImageField(i);
+    
+    if (fn.getLength() &&
+        !thisp->loadFilename(fn, img)) {
+      SoDebugError::postWarning("SoTextureCubeMap::filenameSensorCB",
+                                "Image file '%s' could not be read",
+                                fn.getString());
+      thisp->setReadStatus(0);
+    }
   }
 }
+
+SoSFImage * 
+SoTextureCubeMap::getImageField(const int idx)
+{
+  SoSFImage * img = NULL;
+  switch (idx) {
+  default:
+  case 0: img = &this->imageNegX; break;
+  case 1: img = &this->imagePosX; break;
+  case 2: img = &this->imageNegY; break;
+  case 3: img = &this->imagePosY; break;
+  case 4: img = &this->imageNegZ; break;
+  case 5: img = &this->imagePosZ; break;
+  }
+  return img;
+}
+
 
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
