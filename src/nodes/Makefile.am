@@ -87,6 +87,9 @@ RegularSources = \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp \
 	SoTextureCoordinatePlane.cpp \
+	SoTextureCoordinateNormalMap.cpp \
+	SoTextureCoordinateReflectionMap.cpp \
+	SoTextureCoordinateObject.cpp \
 	SoTextureCubeMap.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTextureUnit.cpp \

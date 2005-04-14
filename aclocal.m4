@@ -8374,12 +8374,10 @@ AC_ARG_ENABLE(
   esac],
   [enable_symbols=yes])
 
-# FIXME: don't mangle options like -fno-gnu-linker and -fvolatile-global
-# 20020104 larsa
+# weird seds to don't mangle options like -fno-gnu-linker and -fvolatile-global
 if test x"$enable_symbols" = x"no"; then
-  # CPPFLAGS="`echo $CPPFLAGS | sed 's/-g\>//'`"
-  CFLAGS="`echo $CFLAGS | sed 's/ -g //' | sed 's/^-g //' | sed 's/ -g$//'`"
-  CXXFLAGS="`echo $CXXFLAGS | sed 's/ -g //' | sed 's/^-g //' | sed 's/ -g$//'`"
+  CFLAGS="`echo $CFLAGS | sed 's/ -g //g' | sed 's/^-g //g' | sed 's/ -g$//g' | sed 's/^-g$//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/ -g //g' | sed 's/^-g //g' | sed 's/ -g$//g' | sed 's/^-g$//'`"
 fi
 ]) # SIM_AC_DEBUGSYMBOLS
 
