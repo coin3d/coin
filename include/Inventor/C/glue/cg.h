@@ -114,7 +114,9 @@ typedef enum {
   CG_SAMPLER2D = 1066,
   CG_SAMPLER3D = 1067,
   CG_SAMPLERRECT = 1068,
-  CG_SAMPLERCUBE = 1069
+  CG_SAMPLERCUBE = 1069,
+  CG_INT = 1093,
+  CG_INT1 = 1094
 } CGtype;
 
 typedef int CGbool;
