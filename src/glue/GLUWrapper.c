@@ -144,8 +144,10 @@ GLUWrapper_set_version(const GLubyte * versionstr)
         GLU_instance->gluGetString(GLU_EXTENSIONS);
 
       cc_debugerror_postinfo("GLUWrapper_set_version",
-                             "gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)",
+                             "gluGetString(GLU_VERSION)=='%s', "
+                             "input arg: '%s' (=> %d.%d.%d)",
                              (const char *) GLU_instance->gluGetString(GLU_VERSION),
+                             versionstr,
                              GLU_instance->version.major,
                              GLU_instance->version.minor,
                              GLU_instance->version.release);
@@ -335,8 +337,14 @@ GLUWrapper(void)
     gi->gluGetString = GLUWrapper_gluGetString;
 
   /* Parse the version string once and expose the version numbers
-     through the GLUWrapper API. */
-  GLUWrapper_set_version(gi->gluGetString(GLU_VERSION));
+     through the GLUWrapper API.
+     
+     The debug override possibility is useful for testing what happens
+     when an older GLU DLL is installed on a system.
+  */
+  const char * versionstr = coin_getenv("COIN_DEBUG_GLU_VERSION");
+  if (!versionstr) { versionstr = gi->gluGetString(GLU_VERSION); }
+  GLUWrapper_set_version(versionstr);
 
 wrapperexit:
   CC_SYNC_END(GLUWrapper);
