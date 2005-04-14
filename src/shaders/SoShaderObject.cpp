@@ -225,6 +225,7 @@ SoShaderObjectP::SoShaderObjectP(SoShaderObject * ownerptr)
 {
   this->owner = ownerptr;
   this->sensor = new SoNodeSensor(SoShaderObjectP::sensorCB, this);
+  this->sensor->setPriority(0);
   this->sensor->attach(ownerptr);
 
   this->glShaderObject = NULL;
@@ -568,14 +569,19 @@ SoShaderObjectP::getSourceHint(void) const
 #endif
 
 void
-SoShaderObjectP::sensorCB(void *data, SoSensor *)
+SoShaderObjectP::sensorCB(void *data, SoSensor *sensor)
 {
   SoShaderObjectP * thisp = (SoShaderObjectP*) data;
+  SoField * field = ((SoNodeSensor *)sensor)->getTriggerField();
 
+  if (field == &thisp->owner->sourceProgram || 
+      field == &thisp->owner->sourceType) {
+    thisp->glShaderShouldLoad = TRUE;
+  }
+  
   if (!thisp->didSetSearchDirectories) {
     thisp->setSearchDirectories(SoInput::getDirectories());
   }
-  thisp->glShaderShouldLoad = TRUE;
 }
 
 void 

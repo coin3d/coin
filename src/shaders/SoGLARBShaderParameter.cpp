@@ -129,6 +129,37 @@ SoGLARBShaderParameter::setMatrixArray(const SoGLShaderObject *, const int,
   // FIXME not implemented yet -- 20050128 martin
 }
 
+void
+SoGLARBShaderParameter::set1i(const SoGLShaderObject * shader,
+			      const int32_t value, const char * name, 
+			      const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
+void
+SoGLARBShaderParameter::set2i(const SoGLShaderObject * shader,
+			      const int32_t * value, const char * name,
+			      const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
+void
+SoGLARBShaderParameter::set3i(const SoGLShaderObject * shader,
+			      const int32_t * value, const char * name,
+			      const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
+void
+SoGLARBShaderParameter::set4i(const SoGLShaderObject * shader,
+			      const int32_t * value, const char * name,
+			      const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
 
 //FIXME: no type checking implemented 20050128 martin
 SbBool 

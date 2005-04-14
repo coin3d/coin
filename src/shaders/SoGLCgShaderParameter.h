@@ -57,6 +57,11 @@ public: // satisfy SoGLShaderParameter protocol interface
   virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);  
   virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
 
+  virtual void set1i(const SoGLShaderObject * shader, const int32_t value, const char * name, const int id);
+  virtual void set2i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
+  virtual void set3i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
+  virtual void set4i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
+
 public: // additional support for state matrices (only defined in Cg)
   void setState(const SoGLShaderObject * shader, CGGLenum matrix, CGGLenum transform, const char* name);
 

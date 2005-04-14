@@ -26,3 +26,25 @@ mortene ("x" means "done"):
 
         -> copy to Coin-2 (for 2.4.0 release)
         -> example program(s) and/or iv-files
+
+martin:
+  - array/matrix parameter
+     - GLSL: seems not to work properly
+     - ARB: not supported yet
+
+
+some ideas by martin:
+  - improving support of samplers
+
+  - "stand alone" SoShaderParameter, e.g.
+
+     Separator {
+      SoShaderProgram { ... init shader and params here ... }
+      SoCube {} # some geometry
+      SoShaderParameter1f { ... assign new value to params ... }
+      SoCube {} # more geometry
+     }
+
+  - "stand alone" SoShaderObject, i.e. the same as above
+    -> especially useful in GLSL, where one could dynamically exchange 
+      shader-subfunctions (due to the compile/link paradigm)

@@ -53,6 +53,12 @@ public:
   virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id) = 0;
   virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id) = 0;
 
+  virtual void set1i(const SoGLShaderObject * shader, const int32_t value, const char * name, const int id) = 0;
+  virtual void set2i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) = 0;
+  virtual void set3i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) = 0;
+  virtual void set4i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) = 0;
+
+
   virtual SoShader::Type shaderType(void) const = 0;
 
 public: 

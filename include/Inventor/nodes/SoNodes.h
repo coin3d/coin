@@ -137,5 +137,10 @@
 #include <Inventor/nodes/SoTextureCoordinateSphere.h>
 #include <Inventor/nodes/SoTextureCoordinateCylinder.h>
 #include <Inventor/nodes/SoTextureCubeMap.h>
+#include <Inventor/nodes/SoShaderObject.h>
+#include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/nodes/SoShaderProgram.h>
+#include <Inventor/nodes/SoFragmentShader.h>
+#include <Inventor/nodes/SoVertexShader.h>
 
 #endif // !COIN_SONODES_H

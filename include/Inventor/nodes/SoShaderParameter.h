@@ -126,7 +126,7 @@ protected:
 /* **************************************************************************
  * *** SoShaderParameter1i ***
  * **************************************************************************/
-#if 0 // not implemented
+
 class COIN_DLL_API SoShaderParameter1i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter1i);
@@ -142,7 +142,6 @@ public:
 protected:
   virtual ~SoShaderParameter1i();
 };
-#endif // not implemented
 
 /* **************************************************************************
  * *** SoShaderParameter2f ***

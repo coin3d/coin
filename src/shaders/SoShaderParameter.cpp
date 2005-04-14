@@ -547,3 +547,38 @@ void SoShaderParameterMatrixArray::updateParameter(SoGLShaderObject *shader)
 
   if (buffer) delete[] buffer;
 }
+
+
+/* **************************************************************************
+ * *** SoShaderParameter1i ***
+ * **************************************************************************/
+
+
+SO_NODE_SOURCE(SoShaderParameter1i);
+
+void SoShaderParameter1i::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter1i,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
+}
+
+SoShaderParameter1i::SoShaderParameter1i(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter1i);
+  SO_NODE_ADD_FIELD(value, (0));
+}
+
+SoShaderParameter1i::~SoShaderParameter1i()
+{ 
+}
+
+void
+SoShaderParameter1i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->parameter->set1i(shader,
+                         this->value.getValue(),
+                         this->name.getValue().getString(),
+                         this->identifier.getValue());
+}
+

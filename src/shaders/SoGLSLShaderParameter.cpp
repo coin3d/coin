@@ -132,6 +132,40 @@ SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *,
   // FIXME not implemented yet -- 20050128 martin
 }
 
+void
+SoGLSLShaderParameter::set1i(const SoGLShaderObject * shader,
+			     const int32_t value, const char * name, const int)
+{
+  if (this->isValid(shader, name, GL_INT))
+    shader->GLContext()->glUniform1iARB(this->location, value);
+}
+
+void
+SoGLSLShaderParameter::set2i(const SoGLShaderObject * shader,
+			     const int32_t * value, const char * name,
+			     const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC2_ARB))
+    shader->GLContext()->glUniform2iARB(this->location, value[0], value[1]);
+}
+
+void
+SoGLSLShaderParameter::set3i(const SoGLShaderObject * shader,
+			     const int32_t * v, const char * name,
+			     const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC3_ARB))
+    shader->GLContext()->glUniform3iARB(this->location, v[0], v[1], v[2]);
+}
+
+void
+SoGLSLShaderParameter::set4i(const SoGLShaderObject * shader,
+			     const int32_t * v, const char * name,
+			     const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC4_ARB))
+    shader->GLContext()->glUniform4iARB(this->location, v[0], v[1], v[2], v[3]);
+}
 
 SbBool
 SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
@@ -174,8 +208,24 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
   this->cacheName = name;
 
   if (this->location == -1) return FALSE;
-  if (this->cacheType != type) return FALSE;
-  
+
+  if (type == GL_INT) {
+    switch (this->cacheType) {
+    case GL_INT:
+    case GL_SAMPLER_1D_ARB:
+    case GL_SAMPLER_2D_ARB:
+    case GL_SAMPLER_3D_ARB:
+    case GL_SAMPLER_CUBE_ARB:
+    case GL_SAMPLER_1D_SHADOW_ARB:
+    case GL_SAMPLER_2D_SHADOW_ARB:
+    case GL_SAMPLER_2D_RECT_ARB:
+    case GL_SAMPLER_2D_RECT_SHADOW_ARB: break;
+    default: return FALSE;
+    }
+  }  
+  else if (this->cacheType != type)
+    return FALSE;
+
   if (num) { // assume: ARRAY
     if (this->cacheSize < *num) {
       // FIXME: better error handling - 20050128 martin

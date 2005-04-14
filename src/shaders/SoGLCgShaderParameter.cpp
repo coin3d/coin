@@ -160,6 +160,38 @@ SoGLCgShaderParameter::setMatrixArray(const SoGLShaderObject * shader,
   }
 }
 
+void
+SoGLCgShaderParameter::set1i(const SoGLShaderObject * shader,
+			     const int32_t value, const char * name, const int)
+{
+  if (this->isValid(shader, name, CG_INT))
+    glue_cgGLSetParameter1f(this->cgParameter, (float)value);
+}
+
+void
+SoGLCgShaderParameter::set2i(const SoGLShaderObject * shader,
+			     const int32_t * value, const char * name,
+			     const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
+void
+SoGLCgShaderParameter::set3i(const SoGLShaderObject * shader,
+			     const int32_t * value, const char * name,
+			     const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
+void
+SoGLCgShaderParameter::set4i(const SoGLShaderObject * shader,
+			     const int32_t * value, const char * name,
+			     const int)
+{
+  // FIXME not implemented yet -- 20050222 martin
+}
+
 SbBool
 SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
 {
@@ -167,8 +199,26 @@ SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
     return TRUE;
   else if (type1 == CG_FLOAT1 && type2 == CG_FLOAT)
     return TRUE;
+  else if (type1 == CG_INT && type2 == CG_INT1)
+    return TRUE;
+  else if (type1 == CG_INT1 && type2 == CG_INT)
+    return TRUE;
+
+  if (type2 == CG_INT) {
+    switch (type1) {
+    case CG_SAMPLER1D:
+    case CG_SAMPLER2D:
+    case CG_SAMPLER3D:
+    case CG_SAMPLERRECT:
+    case CG_SAMPLERCUBE: return TRUE;
+    default: break;
+    }
+  }
   else
     return (type1 == type2);
+
+  assert(FALSE && "uncovered case");
+  return FALSE; // avoid compiler warning
 }
 
 SbBool 
