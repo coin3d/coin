@@ -1516,6 +1516,11 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
   // just initialize some variables, and trust that the user has a
   // sensible scene graph so that shapes are culled in the separators.
   // ????-??-?? pederb.
+  //
+  // FIXME: I believe what pederb mention above would be a _very_
+  // important optimization -- especially when using VISIBLE_SHAPES
+  // with a small rectangle/polygon selection in a huge scene.
+  // 20050309 mortene.
 
   this->primcbdata.fulltest = full;
   this->primcbdata.projmatrix = projmatrix;

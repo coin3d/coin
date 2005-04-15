@@ -134,7 +134,7 @@ socontexthandler_cleanup(void)
     // Can't use SoDebugError here, as SoError et al might have been
     // "cleaned up" already.
     (void)printf("Coin debug: socontexthandler_cleanup(): %d context-bound "
-                 "resources not free'd before exit.", len);
+                 "resources not free'd before exit.\n", len);
   }
 #endif // COIN_DEBUG  
   delete socontexthandler_hashlist;

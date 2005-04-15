@@ -491,6 +491,9 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       if (len <= 0.0f) {
         static uint32_t normgenerrors_face = 0;
         if (normgenerrors_face < 1) {
+          // FIXME: this is too pedantic. Wrap within a check for a
+          // run-time "pedantic" getenv() variable? Note: there are
+          // many more like this in this file. 20050407 mortene.
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
                                     "Erroneous triangle specification in model "
                                     "(indices= [%d, %d, %d], "

@@ -60,6 +60,9 @@ SoPathList::SoPathList(const int size)
 /*!
   Copy constructor.
 
+  Does a shallow copy of the SoPath pointer values, but updates
+  reference count.
+
   \sa SoBaseList::SoBaseList(const SoBaseList &)
 */
 SoPathList::SoPathList(const SoPathList & pl)
@@ -99,7 +102,7 @@ SoPathList::operator[](const int i) const
 }
 
 /*!
-  Copy contents of list \a pl to this list.
+  Shallow copy of contents of list \a pl to this list.
 
   \sa SoBaseList::operator=()
 */

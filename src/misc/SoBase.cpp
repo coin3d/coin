@@ -476,9 +476,12 @@ SoBase::cleanClass(void)
       for (unsigned int i=0; i < len; i++) {
         SoBase * base = (SoBase *)keys[i];
         const SbName name = base->getName();
-        (void)printf("\t%s (%s)\n",
+        SbString s;
+        s.sprintf("\"%s\"", name.getString());
+        (void)printf("\t%p %s (%s)\n",
+                     base,
                      base->getTypeId().getName().getString(),
-                     name == "" ? "no name" : name.getString());
+                     name == "" ? "no name" : s.getString());
       }
       (void)printf("\n");
     }

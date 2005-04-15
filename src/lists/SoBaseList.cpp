@@ -59,8 +59,10 @@ SoBaseList::SoBaseList(const int size)
 }
 
 /*!
-  Copy constructor. Copy the items of \a l into this list, adding to
-  the item reference counts if the reference flag of \a l is \c TRUE.
+  Copy constructor.
+
+  Shallow copy the items of \a l into this list, adding to the item
+  reference counts if the reference flag of \a l is \c TRUE.
 
   \sa SbPList::SbPList(const SbPList &)
 */
@@ -162,8 +164,8 @@ SoBaseList::truncate(const int length)
 }
 
 /*!
-  Copy the item pointers of \a l list into this one, first removing
-  all items in this list.
+  Shallow copy of the item pointers of \a l list into this one, first
+  removing all items in this list.
 */
 void
 SoBaseList::copy(const SoBaseList & l)
@@ -178,7 +180,8 @@ SoBaseList::copy(const SoBaseList & l)
 }
 
 /*!
-  Copy \a l list into this one, returning a pointer to ourself.
+  Shallow copy of the SoBase pointers from \a l into this one,
+  returning a pointer to ourself.
 
   \sa copy()
 */
