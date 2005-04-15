@@ -4225,6 +4225,56 @@ cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue)
 
 /*** </Anisotropic filtering> *************************************************/
 
+/* Convert an OpenGL enum error code to a textual representation. */
+const char *
+coin_glerror_string(GLenum errorcode)
+{
+  static const char INVALID_VALUE[] = "GL_INVALID_VALUE";
+  static const char INVALID_ENUM[] = "GL_INVALID_ENUM";
+  static const char INVALID_OPERATION[] = "GL_INVALID_OPERATION";
+  static const char STACK_OVERFLOW[] = "GL_STACK_OVERFLOW";
+  static const char STACK_UNDERFLOW[] = "GL_STACK_UNDERFLOW";
+  static const char OUT_OF_MEMORY[] = "GL_OUT_OF_MEMORY";
+  static const char unknown[] = "Unknown OpenGL error";
+
+  switch (errorcode) {
+  case GL_INVALID_VALUE:
+    return INVALID_VALUE;
+  case GL_INVALID_ENUM:
+    return INVALID_ENUM;
+  case GL_INVALID_OPERATION:
+    return INVALID_OPERATION;
+  case GL_STACK_OVERFLOW:
+    return STACK_OVERFLOW;
+  case GL_STACK_UNDERFLOW:
+    return STACK_UNDERFLOW;
+  case GL_OUT_OF_MEMORY:
+    return OUT_OF_MEMORY;
+  default:
+    return unknown;
+  }
+  return NULL; /* avoid compiler warning */
+}
+
+/* Simple utility function for dumping the current set of error codes
+   returned from glGetError(). Returns number of errors reported by
+   OpenGL. */
+
+unsigned int
+coin_catch_gl_errors(cc_string * str)
+{
+  unsigned int errs = 0;
+  GLenum glerr = glGetError();
+  while (glerr != GL_NO_ERROR) {
+    if (errs > 0) { cc_string_append_char(str, ' '); }
+    cc_string_append_text(str, coin_glerror_string(glerr));
+    errs++;
+    glerr = glGetError();
+  }
+  return errs;
+}
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -36,6 +36,7 @@
 
 #include <Inventor/system/gl.h>
 #include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/string.h>
 
 /* ********************************************************************** */
 
@@ -756,6 +757,13 @@ struct cc_glglue {
   int max_texture_size;
   cc_hash * glextdict;
 };
+
+/* ********************************************************************** */
+
+/* Scanning for and printing info about current set of glGetError()s. */
+unsigned int coin_catch_gl_errors(cc_string *);
+/* Convert OpenGL glGetError() error code to string. */
+const char * coin_glerror_string(GLenum errorcode);
 
 /* ********************************************************************** */
 
