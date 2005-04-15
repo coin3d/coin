@@ -184,6 +184,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/C/glue/glp.h>
 #include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
@@ -535,13 +536,16 @@ SoGroup::GLRender(SoGLRenderAction * action)
       // node caused the error.
       static SbBool chkglerr = sogl_glerror_debugging();
       if (chkglerr) {
-        int err = glGetError();
-        if (err != GL_NO_ERROR) {
-          SoDebugError::postInfo("SoGroup::GLRenderBelowPath",
-                                 "GL error: %s, nodetype: %s",
-                                 sogl_glerror_string(err).getString(),
-                                 (*this->getChildren())[i]->getTypeId().getName().getString());
+        cc_string str;
+        cc_string_construct(&str);
+        const unsigned int errs = coin_catch_gl_errors(&str);
+        if (errs > 0) {
+          SoDebugError::post("SoGroup::GLRenderBelowPath",
+                             "glGetError()s => '%s', nodetype: '%s'",
+                             cc_string_get_text(&str),
+                             (*this->getChildren())[i]->getTypeId().getName().getString());
         }
+        cc_string_clean(&str);
       }
 #endif // COIN_DEBUG
 

@@ -707,7 +707,15 @@ SoGLRenderAction::getTransparencyType(void) const
 /*!
   Sets (or unsets) smoothing. If the smoothing flag is \c on, Coin
   will try to use built-in features from the OpenGL implementation to
-  smooth the appearance of otherwise jagged borders.
+  smooth the appearance of otherwise jagged line and point primitives,
+  calling
+
+  \verbatim
+      glEnable(GL_POINT_SMOOTH);
+      glEnable(GL_LINE_SMOOTH);
+  \endverbatim
+
+  ...before rendering the scene.
 
   This is a simple (and computationally non-intensive) way of doing
   anti-aliasing.
@@ -734,7 +742,8 @@ SoGLRenderAction::isSmoothing(void) const
 
 /*!
   Sets the number of rendering passes.  Default is 1, anything greater
-  will enable antialiasing.
+  will enable antialiasing through the use of an OpenGL accumulation
+  buffer.
 */
 void
 SoGLRenderAction::setNumPasses(const int num)
@@ -875,7 +884,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     SoDebugError::postWarning("SoGLRenderAction::beginTraversal",
                               "GL error %s initialization: %s",
                               (err_before_init != GL_NO_ERROR) ? "before" : "after",
-                              sogl_glerror_string(err).getString());
+                              coin_glerror_string(err));
   }
 
   THIS->render(node);
@@ -1318,6 +1327,9 @@ SoGLRenderActionP::renderMulti(SoNode * node)
   this->renderSingle(node);
   if (this->action->hasTerminated()) return;
 
+  // FIXME: this generates GL_INVALID_OPERATION if there is no
+  // accumulation buffer for the GL context. Shouldn't we check this
+  // before using the function? 20050413 mortene.
   glAccum(GL_LOAD, fraction);
 
   for (int i = 1; i < this->numpasses; i++) {

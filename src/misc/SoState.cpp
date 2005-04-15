@@ -84,10 +84,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#include <Inventor/system/gl.h> // for glGetError() debugging
 
-
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 // Internal class used to store which elements are pushed for a depth.
 // This makes it possible to avoid searching through all elements
@@ -111,10 +109,10 @@ public:
   class sostate_pushstore * pushstore;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 #undef THIS
 #define THIS this->pimpl
+
+// *************************************************************************
 
 /*!
   The constructor.  The \a theAction argument is the action object the state

@@ -2620,22 +2620,6 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
 =====================================================================
 
-100 Wrong use of glGetError().
-
-    According to the glGetError man pages, this function should always
-    be called in a loop, until it returns GL_NO_ERROR. This is not
-    done everywhere in the Coin source code. Should audit and fix.
-
-    Low priority item, as the consequences of these errors are
-    unlikely to be very serious.
-
-    Should perhaps be fixed by making a "cc_glglue_dump_errors()"
-    function for the internal OpenGL wrapping?
-
-    20040123 mortene.
-
-=====================================================================
-
 102 Lack of control over OffscreenRenderer context setup
 
     There is currently no way to enable stencil-buffer and other GL
@@ -4631,5 +4615,14 @@ Aborted
     Bug #188 may be the same problem as this.
 
     20050317 mortene.
+
+    UPDATE 20050413 mortene: even this will cause a crash (seems to be
+    the same bug):
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Translation { translation 5 }
+----8<-------------- [snip] -------8<-------------- [snip] -------------
 
 =====================================================================

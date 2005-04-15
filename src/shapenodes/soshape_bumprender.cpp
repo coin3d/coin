@@ -309,7 +309,7 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
     GLint errorPos;
     GLenum err = glGetError();
 
-    if (err) {
+    if (err != GL_NO_ERROR) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
@@ -323,7 +323,7 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
                               strlen(normalrenderingvpprogram), normalrenderingvpprogram);
     err = glGetError();
 
-    if (err) {
+    if (err != GL_NO_ERROR) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
@@ -368,7 +368,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     // should be a part of GLUE... (20031204 handegar)
     GLint errorPos;
     GLenum err = glGetError();
-    if (err) {
+    if (err != GL_NO_ERROR) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in fragment program! (byte pos: %d) '%s'.\n",
@@ -382,7 +382,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
                               strlen(directionallightvpprogram), directionallightvpprogram);
 
     err = glGetError();
-    if (err) {
+    if (err != GL_NO_ERROR) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in directional light vertex program! "
@@ -397,7 +397,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
                               strlen(pointlightvpprogram), pointlightvpprogram);
 
     err = glGetError();
-    if (err) {
+    if (err != GL_NO_ERROR) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in point light vertex program! (byte pos: %d) '%s'.\n",

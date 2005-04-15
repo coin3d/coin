@@ -114,6 +114,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLLOD.h>
+
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
@@ -128,22 +129,26 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
-
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 #include "../nodes/SoSoundElementHelper.h"
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
+
 class SoVRMLLODP  : public SoSoundElementHelper
 {
 public:
   SbBool childlistvalid;
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLLOD);
+
+// *************************************************************************
 
 // Doc in parent
 void
@@ -197,6 +202,8 @@ SoVRMLLOD::commonConstructor(void)
   delete this->SoGroup::children;
   this->SoGroup::children = new SoChildList(NULL);
 }
+
+// *************************************************************************
 
 // Doc in parent
 SbBool
@@ -416,13 +423,16 @@ SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
       // node caused the error.
       static SbBool chkglerr = sogl_glerror_debugging();
       if (chkglerr) {
-        int err = glGetError();
-        if (err != GL_NO_ERROR) {
-          SoDebugError::postInfo("SoVRMLLOD::GLRenderBelowPath",
-                                 "GL error: %s, nodetype: %s",
-                                 sogl_glerror_string(err).getString(),
-                                 (*this->getChildren())[idx]->getTypeId().getName().getString());
+        cc_string str;
+        cc_string_construct(&str);
+        const unsigned int errs = coin_catch_gl_errors(&str);
+        if (errs > 0) {
+          SoDebugError::post("SoVRMLLOD::GLRenderBelowPath",
+                             "glGetError()s => '%s', nodetype: '%s'",
+                             cc_string_get_text(&str),
+                             (*this->getChildren())[idx]->getTypeId().getName().getString());
         }
+        cc_string_clean(&str);
       }
 #endif // COIN_DEBUG
       action->popCurPath();

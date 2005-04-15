@@ -63,6 +63,7 @@
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/threads/SbStorage.h>
 
 // *************************************************************************
@@ -2046,6 +2047,21 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
           (!glrender && GLUWrapper()->versionMatchesAtLeast(1, 3, 0))) &&
          "NURBS tessellator requires GLU 1.3.");
 
+  // We check for glGetError() at the end of this function, so we
+  // should "clean out" at the start.
+  if (glrender) {
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      SoDebugError::post("sogl_render_nurbs_surface",
+                         "pre GLU-calls, glGetError()s => '%s'",
+                         cc_string_get_text(&str));
+    }
+    cc_string_clean(&str);
+  }
+
+
   SoState * state = action->getState();
 
   const SoCoordinateElement * coords =
@@ -2240,14 +2256,20 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
   if (glrender) {
-    SbBool err = FALSE;
-    while (glGetError() == GL_INVALID_VALUE) err = TRUE; 
-    if (err) {
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      SoDebugError::post("sogl_render_nurbs_surface",
+                         "post GLU-calls, glGetError()s => '%s'",
+                         cc_string_get_text(&str));
+
       // this is even uglier. Don't cache if there's an error. I
       // haven't got time to fix this properly right now.
       // pederb, 2003-07-10
       SoCacheElement::invalidate(state);
     }
+    cc_string_clean(&str);
   }
 }
 
@@ -2270,6 +2292,21 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   assert((glrender ||
           (!glrender && GLUWrapper()->versionMatchesAtLeast(1, 3, 0))) &&
          "NURBS tessellator requires GLU 1.3.");
+
+  // We check for glGetError() at the end of this function, so we
+  // should "clean out" at the start.
+  if (glrender) {
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      SoDebugError::post("sogl_render_nurbs_curve",
+                         "pre GLU-calls, glGetError()s => '%s'",
+                         cc_string_get_text(&str));
+    }
+    cc_string_clean(&str);
+  }
+
 
   SoState * state = action->getState();
 
@@ -2342,9 +2379,25 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
                               (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
 
   GLUWrapper()->gluEndCurve(nurbsrenderer);
+
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
-  if (glrender) { while (glGetError() == GL_INVALID_VALUE); }
+  if (glrender) {
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      SoDebugError::post("sogl_render_nurbs_curve",
+                         "post GLU-calls, glGetError()s => '%s'",
+                         cc_string_get_text(&str));
+
+      // this is even uglier. Don't cache if there's an error. I
+      // haven't got time to fix this properly right now.
+      // pederb, 2003-07-10
+      SoCacheElement::invalidate(state);
+    }
+    cc_string_clean(&str);
+  }
 }
 
 
@@ -4215,37 +4268,6 @@ sogl_glerror_debugging(void)
     COIN_GLERROR_DEBUGGING = str ? atoi(str) : 0;
   }
   return (COIN_GLERROR_DEBUGGING == 0) ? FALSE : TRUE;
-}
-
-// Convert an OpenGL enum error code to a textual representation.
-SbString
-sogl_glerror_string(int err)
-{
-  SbString errorstring;
-  switch (err) {
-  case GL_INVALID_VALUE:
-    errorstring = "GL_INVALID_VALUE";
-    break;
-  case GL_INVALID_ENUM:
-    errorstring = "GL_INVALID_ENUM";
-    break;
-  case GL_INVALID_OPERATION:
-    errorstring = "GL_INVALID_OPERATION";
-    break;
-  case GL_STACK_OVERFLOW:
-    errorstring = "GL_STACK_OVERFLOW";
-    break;
-  case GL_STACK_UNDERFLOW:
-    errorstring = "GL_STACK_UNDERFLOW";
-    break;
-  case GL_OUT_OF_MEMORY:
-    errorstring = "GL_OUT_OF_MEMORY";
-    break;
-  default:
-    errorstring = "Unknown GL error";
-    break;
-  }
-  return errorstring;
 }
 
 static int SOGL_AUTOCACHE_REMOTE_MIN = 500;

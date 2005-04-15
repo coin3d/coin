@@ -109,10 +109,10 @@ public:
 
   ~SoNurbsSurfaceP()
   {
-    if (this->offscreenctx) { cc_glglue_context_destruct(this->offscreenctx); }
     if (this->nurbsrenderer) {
       GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
     }
+    if (this->offscreenctx) { cc_glglue_context_destruct(this->offscreenctx); }
   }
 
   void * offscreenctx;

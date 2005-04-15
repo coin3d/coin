@@ -38,6 +38,9 @@
 
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <stdlib.h> // strtol(), rand()
+#include <limits.h> // LONG_MIN, LONG_MAX
+
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -59,8 +62,7 @@
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/C/tidbits.h> // coin_getenv()
-#include <stdlib.h> // strtol(), rand()
-#include <limits.h> // LONG_MIN, LONG_MAX
+#include <Inventor/C/glue/glp.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -643,13 +645,16 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       // node caused the error.
       static SbBool chkglerr = sogl_glerror_debugging();
       if (chkglerr) {
-        GLenum err = glGetError();
-        if (err != GL_NO_ERROR) {
+        cc_string str;
+        cc_string_construct(&str);
+        const unsigned int errs = coin_catch_gl_errors(&str);
+        if (errs > 0) {
           SoDebugError::post("SoSeparator::GLRenderBelowPath",
-                             "GL error: %s, nodetype: %s",
-                             sogl_glerror_string(err).getString(),
+                             "GL error: '%s', nodetype: %s",
+                             cc_string_get_text(&str),
                              (*this->children)[i]->getTypeId().getName().getString());
         }
+        cc_string_clean(&str);
       }
 #endif // COIN_DEBUG
     }

@@ -44,6 +44,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 // *************************************************************************
 
@@ -211,7 +212,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
                                "An OpenGL error (%s) was detected after a "
                                "renderlist invocation. This shouldn't happen, "
                                "low-level debugging is needed.",
-                               sogl_glerror_string(err).getString());
+                               coin_glerror_string(err));
           }
         }
 
@@ -225,7 +226,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
         // #Inventor V2.1 ascii
         //
         //  Separator {
-        //   renderCaching OFF
+        //   # renderCaching OFF
         //
         //   Coordinate3 {
         //      point [ 903.23315 -292.8786 -261.79764,
@@ -394,7 +395,12 @@ SoGLCacheList::call(SoGLRenderAction * action)
         //      vKnotVector [ 0, 0, 0, 0,
         //       871.44604, 1419.9783, 1419.9783, 1419.9783,
         //       1419.9783 ]
+        //   }
+        // }
         // -----8<---- [snip] ------------------8<---- [snip] -------------
+        //
+        // UPDATE: the above now works without errors on my Linux dev
+        // machine with NVidia v 61.11 drivers. 20050309 mortene.
 
 #endif // COIN_DEBUG
 

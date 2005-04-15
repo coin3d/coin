@@ -118,9 +118,10 @@
   The bounding box size hint. Default value is (-1, -1, -1).
 */
 
+#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
+
 #include <math.h>
 
-#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -137,10 +138,14 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
-
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/glp.h>
+
+// *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLBillboard);
+
+// *************************************************************************
 
 // Doc in parent
 void
@@ -175,6 +180,8 @@ SoVRMLBillboard::SoVRMLBillboard(int numchildren)
 SoVRMLBillboard::~SoVRMLBillboard()
 {
 }
+
+// *************************************************************************
 
 // Doc in parent
 void
@@ -278,13 +285,16 @@ SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
     // node caused the error.
     static SbBool chkglerr = sogl_glerror_debugging();
     if (chkglerr) {
-      int err = glGetError();
-      if (err != GL_NO_ERROR) {
-        SoDebugError::postInfo("SoVRMLBillboard::GLRenderBelowPath",
-                               "GL error: %s, nodetype: %s",
-                               sogl_glerror_string(err).getString(),
-                               (*this->getChildren())[i]->getTypeId().getName().getString());
+      cc_string str;
+      cc_string_construct(&str);
+      const unsigned int errs = coin_catch_gl_errors(&str);
+      if (errs > 0) {
+        SoDebugError::post("SoVRMLBillboard::GLRenderBelowPath",
+                           "GL error: '%s', nodetype: %s",
+                           cc_string_get_text(&str),
+                           (*this->getChildren())[i]->getTypeId().getName().getString());
       }
+      cc_string_clean(&str);
     }
 #endif // COIN_DEBUG
   }

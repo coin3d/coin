@@ -177,6 +177,7 @@
 
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
@@ -883,17 +884,20 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
     // If you're seeing notifications about GL-errors from this place,
     // the first thing to do is to enable those debugging checks too
     // by setting COIN_GLERROR_DEBUGGING to "1".
-    int err = glGetError();
-    if (err != GL_NO_ERROR) {
-      SbBool extradebug = sogl_glerror_debugging();
-      SoDebugError::postWarning("SoNode::GLRenderS",
-                                "GL error: %s, nodetype: %s %s",
-                                sogl_glerror_string(err).getString(),
-                                node->getTypeId().getName().getString(),
-                                extradebug ? "" :
-                                "(set envvar COIN_GLERROR_DEBUGGING=1 "
-                                "and re-run to get more information)");
+    cc_string str;
+    cc_string_construct(&str);
+    const unsigned int errs = coin_catch_gl_errors(&str);
+    if (errs > 0) {
+      const SbBool extradebug = sogl_glerror_debugging();
+      SoDebugError::post("SoNode::GLRenderS",
+                         "GL error: '%s', nodetype: %s %s",
+                         cc_string_get_text(&str),
+                         node->getTypeId().getName().getString(),
+                         extradebug ? "" :
+                         "(set envvar COIN_GLERROR_DEBUGGING=1 "
+                         "and re-run to get more information)");
     }
+    cc_string_clean(&str);
   }
 }
 
