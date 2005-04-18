@@ -29,7 +29,7 @@
 class COIN_DLL_API SoButtonEvent : public SoEvent {
   typedef SoEvent inherited;
 
-  SO_EVENT_HEADER(SoButtonEvent);
+  SO_EVENT_HEADER();
 
 public:
   enum State {

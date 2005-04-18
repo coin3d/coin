@@ -35,7 +35,7 @@
 class COIN_DLL_API SoMouseButtonEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
-  SO_EVENT_HEADER(SoMouseButtonEvent);
+  SO_EVENT_HEADER();
 
 public:
   enum Button {

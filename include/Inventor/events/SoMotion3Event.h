@@ -31,7 +31,7 @@
 class COIN_DLL_API SoMotion3Event : public SoEvent {
   typedef SoEvent inherited;
 
-  SO_EVENT_HEADER(SoMotion3Event);
+  SO_EVENT_HEADER();
 
 public:
   SoMotion3Event(void);

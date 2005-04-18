@@ -44,7 +44,7 @@
 class COIN_DLL_API SoKeyboardEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
-  SO_EVENT_HEADER(SoKeyboardEvent);
+  SO_EVENT_HEADER();
 
 public:
   enum Key {
