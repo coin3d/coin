@@ -648,7 +648,9 @@ SoNode::initClasses(void)
   SoTextureCombine::initClass();
   SoCacheHint::initClass();
   SoTextureCubeMap::initClass();
-
+  SoTextureCoordinateNormalMap::initClass();
+  SoTextureCoordinateReflectionMap::initClass();
+  SoTextureCoordinateObject::initClass();
 }
 
 /*!

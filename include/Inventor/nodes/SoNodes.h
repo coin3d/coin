@@ -142,5 +142,8 @@
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/nodes/SoTextureCoordinateNormalMap.h>
+#include <Inventor/nodes/SoTextureCoordinateReflectionMap.h>
+#include <Inventor/nodes/SoTextureCoordinateObject.h>
 
 #endif // !COIN_SONODES_H
