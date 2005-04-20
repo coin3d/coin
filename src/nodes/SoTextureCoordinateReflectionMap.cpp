@@ -177,34 +177,6 @@ SoTextureCoordinateReflectionMap::pick(SoPickAction * action)
 void
 SoTextureCoordinateReflectionMap::handleTexgen(void * data)
 {
-#if 0 // FIXME: testing, pederb, 2005-04-15
-  SoGLRenderAction * action = (SoGLRenderAction*)  data;
-
-  SbMatrix m = SoViewingMatrixElement::get(action->getState());
- 
-  m = m.inverse();
-
-  float s_plane[4];
-  float t_plane[4];
-  float r_plane[4];
-  float q_plane[] = {0.0f, 0.0f, 0.0f, 1.0f};
-
-  for (int i = 0; i < 3; i++) {
-    s_plane[i] = m[0][i];
-    t_plane[i] = m[1][i];
-    r_plane[i] = m[2][i];
-  }
-  
-  s_plane[3] = t_plane[3] = r_plane[3] = 0.0f;
-  
-  glPushMatrix();
-  glLoadIdentity();
-  glTexGenfv(GL_S, GL_EYE_PLANE, s_plane);
-  glTexGenfv(GL_T, GL_EYE_PLANE, t_plane);
-  glTexGenfv(GL_R, GL_EYE_PLANE, r_plane);
-  glTexGenfv(GL_Q, GL_EYE_PLANE, q_plane);
-  glPopMatrix();
-#endif // testing
   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);  
   glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
