@@ -56,6 +56,7 @@
 #include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 #include <string.h>
+#include <float.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -351,7 +352,7 @@ SbDPMatrix::inverse(void) const
 {
   double det = this->det4();
 #if COIN_DEBUG
-  if (det == 0.0f) {
+  if (fabs(det) < FLT_EPSILON) {
     SoDebugError::postWarning("SbDPMatrix::inverse",
                               "Determinant of matrix is zero.");
     return *this;

@@ -585,7 +585,7 @@ SbMatrix::inverse(void) const
 
   float det = this->det4();
 #if COIN_DEBUG
-  if (det == 0.0f) {
+  if (fabs(det) < FLT_EPSILON) {
     SoDebugError::postWarning("SbMatrix::inverse",
                               "Determinant of matrix is zero.");
     return *this;
