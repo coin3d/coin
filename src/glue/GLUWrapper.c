@@ -274,7 +274,7 @@ GLUWrapper(void)
       GLU_failed_to_load = 1;
       goto wrapperexit;
     }
-  } 
+  }
 
 #endif /* !GLU_IS_PART_OF_GL */
 
@@ -338,13 +338,15 @@ GLUWrapper(void)
 
   /* Parse the version string once and expose the version numbers
      through the GLUWrapper API.
-     
+
      The debug override possibility is useful for testing what happens
      when an older GLU DLL is installed on a system.
   */
-  const char * versionstr = coin_getenv("COIN_DEBUG_GLU_VERSION");
-  if (!versionstr) { versionstr = gi->gluGetString(GLU_VERSION); }
-  GLUWrapper_set_version(versionstr);
+  {
+    const char * versionstr = coin_getenv("COIN_DEBUG_GLU_VERSION");
+    if (!versionstr) { versionstr = gi->gluGetString(GLU_VERSION); }
+    GLUWrapper_set_version(versionstr);
+  }
 
 wrapperexit:
   CC_SYNC_END(GLUWrapper);
