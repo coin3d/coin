@@ -44,6 +44,10 @@ extern "C" {
 
 /* ********************************************************************** */
 
+void coin_init_tidbits(void);
+
+/* ********************************************************************** */
+
 FILE * coin_get_stdin(void);
 FILE * coin_get_stdout(void);
 FILE * coin_get_stderr(void);

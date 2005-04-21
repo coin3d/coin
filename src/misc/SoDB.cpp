@@ -478,6 +478,8 @@ SoDB::init(void)
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
 
+  coin_init_tidbits();
+
   // Allocate our static members.
   SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDBP::sensormanager = new SoSensorManager;

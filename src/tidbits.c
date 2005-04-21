@@ -150,6 +150,18 @@ static cc_mutex * atexit_list_monitor = NULL;
 
 /* ********************************************************************** */
 
+/* Called from SoDB::init() exactly once, a call which is guaranteed
+   free from race conditions. */
+void
+coin_init_tidbits(void)
+{
+#ifdef COIN_THREADSAFE
+  atexit_list_monitor = cc_mutex_construct();
+#endif /* COIN_THREADSAFE */
+}
+
+/* ********************************************************************** */
+
 /*
   coin_vsnprintf() wrapper. Returns -1 if resultant string will be
   longer than n.
@@ -1096,7 +1108,7 @@ coin_atexit_cleanup(void)
   isexiting = FALSE;
 
 #ifdef COIN_THREADSAFE
-  if (atexit_list_monitor != NULL) { cc_mutex_destruct(atexit_list_monitor); }
+  cc_mutex_destruct(atexit_list_monitor);
   atexit_list_monitor = NULL;
 #endif /* COIN_THREADSAFE */
 
@@ -1133,12 +1145,6 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
      problems when constructing SoNode-derived classes in parallel
      threads. So for that extra bit of undocumented, unofficial,
      under-the-table mt-safety, this should take care of it. */
-  if (!atexit_list_monitor) {
-    /* extra locking to avoid that two threads create the mutex */
-    cc_mutex_global_lock();
-    if (atexit_list_monitor == NULL) { atexit_list_monitor = cc_mutex_construct(); }
-    cc_mutex_global_unlock();
-  }
   cc_mutex_lock(atexit_list_monitor);
 #endif /* COIN_THREADSAFE */
 
