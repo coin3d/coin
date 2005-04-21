@@ -142,6 +142,14 @@ extern "C" {
 
 /* ********************************************************************** */
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
+static cc_mutex * atexit_list_monitor = NULL;
+#endif /* COIN_THREADSAFE */
+
+/* ********************************************************************** */
+
 /*
   coin_vsnprintf() wrapper. Returns -1 if resultant string will be
   longer than n.
@@ -182,7 +190,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
      _vsnprintf() is specified to return -1 on overruns. (To match
      C99, one would expect Microsoft to change this, though. Perhaps
      done for MSVC++ v7?)
-  
+
 
      For reference, here's a simple test example which checks the
      behavior of snprintf() / vsnprintf(), when trying to fit 26
@@ -190,7 +198,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
 
      -----8<----------- [snip] ---------------8<----------- [snip] ---------
      #include <stdio.h>
-     
+
      int
      main(void)
      {
@@ -1086,6 +1094,12 @@ coin_atexit_cleanup(void)
   cc_list_destruct(atexit_list);
   atexit_list = NULL;
   isexiting = FALSE;
+
+#ifdef COIN_THREADSAFE
+  if (atexit_list_monitor != NULL) { cc_mutex_destruct(atexit_list_monitor); }
+  atexit_list_monitor = NULL;
+#endif /* COIN_THREADSAFE */
+
   if (debug) { cc_debugerror_postinfo("coin_atexit_cleanup", "fini"); }
 }
 
@@ -1114,7 +1128,19 @@ coin_atexit_cleanup(void)
 void
 coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 {
-  tb_atexit_data * data;
+#ifdef COIN_THREADSAFE
+  /* This function being not mt-safe seemed to be the only cause of
+     problems when constructing SoNode-derived classes in parallel
+     threads. So for that extra bit of undocumented, unofficial,
+     under-the-table mt-safety, this should take care of it. */
+  if (!atexit_list_monitor) {
+    /* extra locking to avoid that two threads create the mutex */
+    cc_mutex_global_lock();
+    if (atexit_list_monitor == NULL) { atexit_list_monitor = cc_mutex_construct(); }
+    cc_mutex_global_unlock();
+  }
+  cc_mutex_lock(atexit_list_monitor);
+#endif /* COIN_THREADSAFE */
 
   assert(!isexiting && "tried to attach an atexit function while exiting");
 
@@ -1137,13 +1163,21 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
     /* (void)atexit(coin_atexit_cleanup); */
   }
 
-  data = (tb_atexit_data*) malloc(sizeof(tb_atexit_data));
-  data->name = strdup(name);
-  data->func = f;
-  data->priority = priority;
-  data->cnt = cc_list_get_length(atexit_list);
+  {
+    tb_atexit_data * data;
 
-  cc_list_append(atexit_list, data);
+    data = (tb_atexit_data*) malloc(sizeof(tb_atexit_data));
+    data->name = strdup(name);
+    data->func = f;
+    data->priority = priority;
+    data->cnt = cc_list_get_length(atexit_list);
+
+    cc_list_append(atexit_list, data);
+  }
+
+#ifdef COIN_THREADSAFE
+  cc_mutex_unlock(atexit_list_monitor);
+#endif /* COIN_THREADSAFE */
 }
 
 /*
