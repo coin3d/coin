@@ -93,17 +93,18 @@
   only use an examiner viewer to view the two extension nodes in
   action.
 
-  Only a limited set of C++ compilers are supported as of yet.
-  This is because, to initialize the extension node, it is necessary
-  to know something about how the C++ compiler mangles the initClass
+  Only a limited set of C++ compilers are supported as of yet.  This
+  is because, to initialize the extension node, it is necessary to
+  know something about how the C++ compiler mangles the initClass
   symbol.  If we don't know that, there is no way to locate the
-  initClass method in the library.
+  initClass method in the library, which means the extension node can
+  \e not make itself known to the type system.
 
   If your C++ compiler is not supported, the source file to add
-  support for a new compiler in is src/misc/cppmangle.cpp.  It
-  is fairly trivial to add support for new compilers, but if you
-  don't understand how, just ask us about it.  Patches with support
-  for new compilers are of course very welcome.
+  support for a new compiler in is src/misc/cppmangle.icc.  It is
+  fairly trivial to add support for new compilers, but if you don't
+  understand how, just ask us about it.  Patches with support for new
+  compilers are of course very welcome.
 
   \sa SoType
   
@@ -181,11 +182,9 @@ SbDict * SoType::moduledict = NULL;
 void
 SoType::init(void)
 {
-#if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
   coin_atexit((coin_atexit_f *)SoType::clean, 0);
-#endif // COIN_DEBUG
 
   // If any of these assert fails, it is probably because
   // SoType::init() has been called for a second time. --mortene
@@ -202,7 +201,6 @@ SoType::init(void)
 void
 SoType::clean(void)
 {
-#if COIN_DEBUG
   // clean SoType::typedatalist (first delete structures)
   const int num = SoType::typedatalist->getLength();
   for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
@@ -212,7 +210,6 @@ SoType::clean(void)
   SoType::typedict = NULL;
   delete SoType::moduledict;
   SoType::moduledict = NULL;
-#endif // COIN_DEBUG
 }
 
 /*!
