@@ -58,6 +58,17 @@ General guidelines:
 Concrete tasks:
 ===============
 
+        * File-based SoTexture2 objects are often pointing to the same
+          file on disk as other SoTexture2 objects.  These should be shared
+          in memory as long as possible (until users start using startEditing()
+          and similar things), and also be allocated/reused as the same
+          GL texture objects during render traversals.  This is probably a
+          man-week task to implement some kind of "centralized" SoImage/
+          SoSFImage management system...  This will have huge impact on
+          rendering speed, memory usage, and programmer convenience for
+          the cases where textures are often reused but not "organized
+          properly" in the scene graph.
+
         * From a quick peek at the code, it looks like
           SoMField-derived classes calls (or may call) valueChanged()
           multiple times from certain functions.
