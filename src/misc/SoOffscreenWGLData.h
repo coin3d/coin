@@ -24,9 +24,16 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+// *************************************************************************
+
 #include "SoOffscreenInternalData.h"
 #include <Inventor/SbVec2f.h>
 
+// *************************************************************************
 
 class SoOffscreenWGLData : public SoOffscreenInternalData {
 public:
@@ -45,5 +52,6 @@ private:
   void * context;
 };
 
+// *************************************************************************
 
 #endif // !COIN_SOOFFSCREENWGLDATA_H

@@ -24,12 +24,19 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+// *************************************************************************
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoContextHandler.h>
 
+// *************************************************************************
 
 class SoOffscreenInternalData {
 public:
@@ -158,5 +165,7 @@ protected:
 private:
   SbList<uint32_t> contextidused;
 };
+
+// *************************************************************************
 
 #endif // !COIN_SOOFFSCREENINTERNALDATA_H
