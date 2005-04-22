@@ -69,6 +69,9 @@ Concrete tasks:
           the cases where textures are often reused but not "organized
           properly" in the scene graph.
 
+          This is listed as item #118 in Coin/BUGS.txt, see that file
+          for additional information.
+
         * From a quick peek at the code, it looks like
           SoMField-derived classes calls (or may call) valueChanged()
           multiple times from certain functions.
