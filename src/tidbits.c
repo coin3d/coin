@@ -1145,7 +1145,14 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
      problems when constructing SoNode-derived classes in parallel
      threads. So for that extra bit of undocumented, unofficial,
      under-the-table mt-safety, this should take care of it. */
-  cc_mutex_lock(atexit_list_monitor);
+
+  /*
+    Need this test, since the thread system calls coin_atexit
+    before tidbits is initialized.
+  */
+  if (atexit_list_monitor) {
+    cc_mutex_lock(atexit_list_monitor);
+  }
 #endif /* COIN_THREADSAFE */
 
   assert(!isexiting && "tried to attach an atexit function while exiting");
@@ -1182,7 +1189,9 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
   }
 
 #ifdef COIN_THREADSAFE
-  cc_mutex_unlock(atexit_list_monitor);
+  if (atexit_list_monitor) {
+    cc_mutex_unlock(atexit_list_monitor);
+  }
 #endif /* COIN_THREADSAFE */
 }
 
