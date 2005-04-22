@@ -321,9 +321,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
@@ -381,6 +378,8 @@ static SbRWMutex * sodb_globalmutex = NULL;
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
 #include "../3ds/3dsLoader.h"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
+
+#include "CoinStaticObjectInDLL.h"
 
 #include "systemsanity.icc"
 
@@ -737,6 +736,8 @@ SoDB::init(void)
   // been initialized.
   env = coin_getenv("COIN_DEBUG_LISTMODULES");
   if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
+
+  CoinStaticObjectInDLL::init();
 
   SoDBP::isinitialized = TRUE;
 
@@ -1996,114 +1997,5 @@ SoDBP::listWin32ProcessModules(void)
 }
 
 #endif // !HAVE_WINDLL_RUNTIME_BINDING || !HAVE_TLHELP32_H
-
-/* *********************************************************************** */
-
-#ifdef HAVE_WIN32_API
-
-// FIXME: this check should be possible to turn off with an envvar, as
-// it is sometimes not an indication of a problem to have multiple
-// Coin instances in the same process -- for instance if Coin is part
-// of a browser plug-in (or several plug-ins).  20041021 mortene.
-//
-// UPDATE 20041108 mortene: an idea for improvement, from kyrah: if
-// each built Coin library had a unique key / ID, we could incorporate
-// that into the check. That would be an improvement, as most errors
-// of "multiple-instance-inclusion" is very likely that a debug build
-// and a release build of Coin is loaded at the same time, typically
-// because e.g. SoWin or SoQt was linked against coin2d.dll, while the
-// app links against coin2.dll.
-
-// FIXME: a problem recognized by kintel with the approach below:
-//
-// ----8<---- [snip] ------------8<---- [snip] ------------8<---- [snip] -
-// Just some more input on the multiple instances problem:
-// 
-// Part of Vispo is an IE plugin based on Coin/SoQt.  Coin, Qt, SoQt
-// etc. are built statically and linked with the plugin into one
-// ActiveX DLL (the plugin).
-// 
-// So, no matter how many browser windows are opened, there is only
-// one Coin instance since the DLL will be reused between the Windows
-// (I don't know all the details here though). In this case is that
-// Coin will be init()'ed once each time the plugin is run (->
-// multiple times).  This is another issue that is probably best
-// handled in app space at this point.
-// 
-// Anyway, the following happens:
-// 
-// IE is free to unload the DLL at any point in time. When this DLL is
-// reloaded at some later point in time, Coin's check for multiple
-// instances will trigger.
-// ----8<---- [snip] ------------8<---- [snip] ------------8<---- [snip] -
-//
-// This can likely be fixed by doing adding a destructor to the
-// StaticObjectInDLL class, with a ReleaseMutex() call. kintel tried
-// that, but reported that MS Internet Explorer would crash on the
-// ReleaseMutex() call.  20041022 mortene.
-
-class StaticObjectInDLL {
-public:
-  StaticObjectInDLL(void)
-  {
-    if (StaticObjectInDLL::AlreadyPresent()) {
-      MessageBox(NULL,
-                 "Detected two instances of the Coin library in the same\n"
-                 "process image!!\n\n"
-
-                 "Application can not continue without errors, and\n"
-                 "will exit when you quit this dialog box.\n\n"
-
-                 "This is an indication of a serious problem with the\n"
-                 "settings in your project configuration.\n\n"
-
-                 "One likely cause of this error is that a different\n"
-                 "configuration of the Coin library was linked with\n"
-                 "the GUI-binding library (e.g. SoWin or SoQt) than\n"
-                 "for the application's linker settings. Try for instance\n"
-                 "to check if there is a mismatch between debug and release\n"
-                 "libraries.\n\n"
-
-                 "The depends.exe program that comes with VisualC++ is a\n"
-                 "good tool for tracking things like this down. Make sure\n"
-                 "you inspect the complete path of each loaded dll.\n\n"
-
-                 "If you are completely lost as how to find and fix\n"
-                 "this problem on your own, try the\n"
-                 "<coin-discuss@coin3d.org> mailing list (or the support\n"
-                 "address <coin-support@coin3d.org> if you hold a Coin\n"
-                 "Professional Edition License).\n",
-                 
-
-                 "Fatal error!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-      exit(1);
-    }
-  }
-
-  static SbBool AlreadyPresent(void)
-  {
-    (void)CreateMutex(NULL, TRUE, StaticObjectInDLL::mutexName().getString());
-    // The mutex is automatically destructed by the operating system
-    // when the process exits.
-    return (GetLastError() == ERROR_ALREADY_EXISTS) ? TRUE : FALSE;
-  }
-
-private:
-  static SbString mutexName(void)
-  {
-    SbString s;
-    s.sprintf("COIN_LIBRARY_PROCESS_%d", GetCurrentProcessId());
-    return s;
-  }
-};
-
-// Only one of these objects should be allocated for the process. If
-// two or more of them are it means that multiple instances of the
-// Coin library is loaded for the same process image -- and we'll
-// throw up the error message box.
-
-static StaticObjectInDLL dllobject;
-
-#endif // HAVE_WIN32_API
 
 /* *********************************************************************** */

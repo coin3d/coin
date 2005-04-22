@@ -32,7 +32,8 @@ RegularSources = \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp
+	AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp
 LinkHackSources = \
 	all-misc-cpp.cpp
 PublicHeaders =
@@ -51,6 +52,7 @@ PrivateHeaders = \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
+	CoinStaticObjectInDLL.h \
 	cppmangle.icc \
 	systemsanity.icc
 ObsoleteHeaders =
