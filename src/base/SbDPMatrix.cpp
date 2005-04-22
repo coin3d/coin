@@ -230,12 +230,12 @@ void
 SbDPMatrix::makeIdentity(void)
 {
   this->matrix[0][0]=this->matrix[1][1]=
-    this->matrix[2][2]=this->matrix[3][3] = 1.0f;
+    this->matrix[2][2]=this->matrix[3][3] = 1.0;
 
   this->matrix[0][1]=this->matrix[0][2]=this->matrix[0][3]=
     this->matrix[1][0]=this->matrix[1][2]=this->matrix[1][3]=
     this->matrix[2][0]=this->matrix[2][1]=this->matrix[2][3]=
-    this->matrix[3][0]=this->matrix[3][1]=this->matrix[3][2] = 0.0f;
+    this->matrix[3][0]=this->matrix[3][1]=this->matrix[3][2] = 0.0;
 }
 
 /*!
@@ -269,12 +269,12 @@ void
 SbDPMatrix::operator/=(const double v)
 {
 #if COIN_DEBUG
-  if (v==0.0f)
+  if (v == 0.0)
     SoDebugError::postWarning("SbDPMatrix::operator/=",
                               "Division by zero.");
 #endif // COIN_DEBUG
 
-  this->operator*=(1.0f/v);
+  this->operator*=(1.0/v);
 }
 
 /*!
@@ -332,7 +332,7 @@ SbDPMatrix::det3(void) const
 double
 SbDPMatrix::det4(void) const
 {
-  double det = 0.0f;
+  double det = 0.0;
   det += this->matrix[0][0] * det3(1, 2, 3, 1, 2, 3);
   det -= this->matrix[1][0] * det3(0, 2, 3, 1, 2, 3);
   det += this->matrix[2][0] * det3(0, 1, 3, 1, 2, 3);
@@ -454,14 +454,14 @@ SbDPMatrix::inverse(void) const
     result = *this;
     
     for (k = 0; k < 4; k++) { 
-      max = 0.0f;
+      max = 0.0;
       p[k] = 0;
       
       for (i = k; i < 4; i++) { 
-        sum = 0.0f;
+        sum = 0.0;
         for (j = k; j < 4; j++)
           sum += SbAbs(dst[i][j]);
-        if (sum > 0.0f) {
+        if (sum > 0.0) {
           tmp = SbAbs(dst[i][k]) / sum;
           if (tmp > max) { 
             max = tmp;  
@@ -486,7 +486,7 @@ SbDPMatrix::inverse(void) const
         }
       }
       
-      inv_pivot = 1.0f / dst[k][k];
+      inv_pivot = 1.0 / dst[k][k];
       for (j = 0; j < 4; j++) {
         if (j != k) {
           dst[k][j] = - dst[k][j] * inv_pivot;
@@ -522,9 +522,9 @@ SbBool
 SbDPMatrix::equals(const SbDPMatrix & m, double tolerance) const
 {
 #if COIN_DEBUG
-  if (tolerance<0.0f)
+  if (tolerance < 0.0)
     SoDebugError::postWarning("SbDPMatrix::equals",
-                              "tolerance should be >=0.0f.");
+                              "tolerance should be >=0.0.");
 #endif // COIN_DEBUG
 
   for (int i=0; i < 4; i++) {
@@ -872,15 +872,15 @@ SbDPMatrix::getTransform(SbVec3d & t, SbDPRotation & r, SbVec3d & s,
 
   decomp_affine(hmatrix, &parts);
 
-  double mul = 1.0f;
-  if (parts.t[W] != 0.0f) mul = 1.0f / parts.t[W];
+  double mul = 1.0;
+  if (parts.t[W] != 0.0) mul = 1.0 / parts.t[W];
   t[0] = parts.t[X] * mul;
   t[1] = parts.t[Y] * mul;
   t[2] = parts.t[Z] * mul;
 
   r = parts.q;
-  mul = 1.0f;
-  if (parts.k[W] != 0.0f) mul = 1.0f / parts.k[W];
+  mul = 1.0;
+  if (parts.k[W] != 0.0) mul = 1.0 / parts.k[W];
   // mul be sign of determinant to support negative scales.
   mul *= parts.f;
   s[0] = parts.k[X] * mul;
@@ -957,13 +957,13 @@ SbDPMatrix::LUDecomposition(int index[4], double & d)
 {
     int i;
     for (i = 0; i < 4; i++) index[i] = i;
-    d = 1.0f;
+    d = 1.0;
 
     const double MINIMUM_PIVOT = 1e-6f; // Inventor fix...
 
     for (int row = 1; row < 4; row++) {
         int swap_row = row;
-        double max_pivot = 0.0f;
+        double max_pivot = 0.0;
         for (int test_row = row; test_row < 4; test_row++) {
             const double test_pivot = SbAbs(matrix[test_row][row]);
             if (test_pivot > max_pivot) {
@@ -981,7 +981,7 @@ SbDPMatrix::LUDecomposition(int index[4], double & d)
         }
 
         double pivot = matrix[row][row];
-        if (matrix[row][row] == 0.0f) {
+        if (matrix[row][row] == 0.0) {
 //            return FALSE;
             // instead of returning FALSE on singulars...
             matrix[row][row] = pivot = MINIMUM_PIVOT;
@@ -1027,7 +1027,7 @@ SbDPMatrix::LUBackSubstitution(int index[4], double b[4]) const
     // forward substitution on L (Ly = b)
     double y[4];
     for (i = 0; i < 4; i++) {
-        double sum = 0.0f;
+        double sum = 0.0;
         for (int j = 0; j < i; j++)
             sum += matrix[i][j] * y[j];
         y[i] = b[i] - sum;
@@ -1036,13 +1036,13 @@ SbDPMatrix::LUBackSubstitution(int index[4], double b[4]) const
     // backwards substitution on U (Ux = y)
     double x[4];
     for (i = 3; i >= 0; i--) {
-        double sum = 0.0f;
+        double sum = 0.0;
         for (int j = i + 1; j < 4; j++)
              sum += matrix[i][j] * x[j];
-        if (matrix[i][i] != 0.0f)
+        if (matrix[i][i] != 0.0)
             x[i] = (y[i] - sum) / matrix[i][i];
         else
-            x[i] = 0.0f;
+            x[i] = 0.0;
     }
 
     // de-permute x[]?  doesn't look like it
@@ -1484,8 +1484,8 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     if (det==0.0) {do_rank2(Mk, MadjTk, Mk); break;}
     MadjT_one = norm_one(MadjTk); MadjT_inf = norm_inf(MadjTk);
     gamma = (double)sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
-    g1 = gamma*0.5f;
-    g2 = 0.5f/(gamma*det);
+    g1 = gamma*0.5;
+    g2 = 0.5/(gamma*det);
     mat_copy(Ek, =, Mk, 3);
     mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
     mat_copy(Ek, -=, Mk, 3);
@@ -1495,7 +1495,7 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
   mat_tpose(Q, =, Mk, 3); mat_pad(Q);
   mat_mult(Mk, M, S);    mat_pad(S);
   for (i=0; i<3; i++) for (j=i; j<3; j++)
-    S[i][j] = S[j][i] = 0.5f*(S[i][j]+S[j][i]);
+    S[i][j] = S[j][i] = 0.5*(S[i][j]+S[j][i]);
   return (det);
 }
 
@@ -1551,7 +1551,7 @@ spect_decomp(HMatrix S, HMatrix U)
     }
   }
   kv[X] = (double)Diag[X]; kv[Y] = (double)Diag[Y]; kv[Z] = (double)Diag[Z];
-  kv[W] = 1.0f;
+  kv[W] = 1.0;
   return (kv);
 }
 
@@ -1593,14 +1593,14 @@ snuggle(SbDPRotation q, SbVec4d & k)
     SbDPRotation qtoz, qp;
     unsigned neg[3], win;
     double mag[3], t;
-    static SbDPRotation qxtoz(0.0f, SQRTHALF, 0.0f, SQRTHALF);
-    static SbDPRotation qytoz(SQRTHALF, 0.0f, 0.0f, SQRTHALF);
-    static SbDPRotation qppmm(0.5f, 0.5f, -0.5f, -0.5f);
-    static SbDPRotation qpppp(0.5f, 0.5f, 0.5f, 0.5f);
-    static SbDPRotation qmpmm(-0.5f, 0.5f, -0.5f, -0.5f);
-    static SbDPRotation qpppm(0.5f, 0.5f, 0.5f, -0.5f);
-    static SbDPRotation q0001(0.0f, 0.0f, 0.0f, 1.0f);
-    static SbDPRotation q1000(1.0f, 0.0f, 0.0f, 0.0f);
+    static SbDPRotation qxtoz(0.0, SQRTHALF, 0.0, SQRTHALF);
+    static SbDPRotation qytoz(SQRTHALF, 0.0, 0.0, SQRTHALF);
+    static SbDPRotation qppmm(0.5, 0.5, -0.5, -0.5);
+    static SbDPRotation qpppp(0.5, 0.5, 0.5, 0.5);
+    static SbDPRotation qmpmm(-0.5, 0.5, -0.5, -0.5);
+    static SbDPRotation qpppm(0.5, 0.5, 0.5, -0.5);
+    static SbDPRotation q0001(0.0, 0.0, 0.0, 1.0);
+    static SbDPRotation q1000(1.0, 0.0, 0.0, 0.0);
     switch (turn) {
     default: return SbDPRotation(q).invert();
     case X: q = (qtoz = qxtoz) * q; swap(ka, X, Z) break;
@@ -1646,10 +1646,10 @@ snuggle(SbDPRotation q, SbVec4d & k)
     big = qa[hi];
     if (all>two) {
       if (all>big) {/*all*/
-        {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5f);}
+        {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5);}
         cycle(ka, par);
       }
-      else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
+      else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
     }
     else {
       if (two>big) {/*two*/
@@ -1657,7 +1657,7 @@ snuggle(SbDPRotation q, SbVec4d & k)
         if (lo>hi) {hi ^= lo; lo ^= hi; hi ^= lo;}
         if (hi==W) {hi = "\001\002\000"[lo]; lo = 3-hi-lo;}
         swap(ka, hi, lo)
-          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
     }
     // FIXME: p = conjugate(pa)? 20010114 mortene.
     p.setValue(-pa[0], -pa[1], -pa[2], pa[3]);
