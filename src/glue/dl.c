@@ -791,18 +791,6 @@ cc_dl_coin_handle(void)
 #define DYNAMIC_LIBRARY_EXTENSION ".so"
 #endif
 
-  /* FIXME: this next line has been seen to cause problems under
-     Windows; the SoDB.cpp check for multiple Coin instances in
-     process memory will trigger if the Coin DLL we load is different
-     from the actual in-memory DLL (as may happen if the
-     COIN_SYSTEM_LIBRARY_NAME is not correct, or if the system PATH
-     changes).
-
-     Probably best fixed by making the check for multiple Coin
-     instances in SoDB.cpp controllable and more flexible -- at least
-     make it possible to temporarily turn it off.
-
-     20050309 mortene. */
   cc_libhandle hnd = cc_dl_open(COIN_SYSTEM_LIBRARY_NAME);
 
   if (hnd) {
