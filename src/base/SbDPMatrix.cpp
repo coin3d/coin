@@ -350,37 +350,166 @@ SbDPMatrix::det4(void) const
 SbDPMatrix
 SbDPMatrix::inverse(void) const
 {
-  double det = this->det4();
-#if COIN_DEBUG
-  if (fabs(det) < FLT_EPSILON) {
-    SoDebugError::postWarning("SbDPMatrix::inverse",
-                              "Determinant of matrix is zero.");
-    return *this;
-  }
-#endif // COIN_DEBUG
+  // check for identity matrix
+  if (SbDPMatrix_isIdentity(this->matrix)) { return SbMatrix::identity(); }
 
   SbDPMatrix result;
 
-  // FIXME: we should be using an optimized way of calculating the
-  // inverse matrix. 20010114 mortene.
-  result.matrix[0][0] = this->det3(1, 2, 3, 1, 2, 3);
-  result.matrix[1][0] = -this->det3(1, 2, 3, 0, 2, 3);
-  result.matrix[2][0] = this->det3(1, 2, 3, 0, 1, 3);
-  result.matrix[3][0] = -this->det3(1, 2, 3, 0, 1, 2);
-  result.matrix[0][1] = -this->det3(0, 2, 3, 1, 2, 3);
-  result.matrix[1][1] = this->det3(0, 2, 3, 0, 2, 3);
-  result.matrix[2][1] = -this->det3(0, 2, 3, 0, 1, 3);
-  result.matrix[3][1] = this->det3(0, 2, 3, 0, 1, 2);
-  result.matrix[0][2] = this->det3(0, 1, 3, 1, 2, 3);
-  result.matrix[1][2] = -this->det3(0, 1, 3, 0, 2, 3);
-  result.matrix[2][2] = this->det3(0, 1, 3, 0, 1, 3);
-  result.matrix[3][2] = -this->det3(0, 1, 3, 0, 1, 2);
-  result.matrix[0][3] = -this->det3(0, 1, 2, 1, 2, 3);
-  result.matrix[1][3] = this->det3(0, 1, 2, 0, 2, 3);
-  result.matrix[2][3] = -this->det3(0, 1, 2, 0, 1, 3);
-  result.matrix[3][3] = this->det3(0, 1, 2, 0, 1, 2);
+  // use local pointers for speed
+  double (*dst)[4];
+  dst = (double (*)[4]) result.matrix[0];
+  double (*src)[4];
+  src = (double (*)[4]) this->matrix[0];
 
-  result /= det;
+  // check for affine matrix (common case)
+  if (src[0][3] == 0.0 && src[1][3] == 0.0 &&
+      src[2][3] == 0.0 && src[3][3] == 1.0) {
+    
+    // More or less directly from:
+    // Kevin Wu, "Fast Matrix Inversion",  Graphics Gems II
+    double det_1;
+    double pos, neg, temp;
+
+#define ACCUMULATE     \
+    if (temp >= 0.0)  \
+      pos += temp;     \
+    else               \
+      neg += temp
+
+    /*
+     * Calculate the determinant of submatrix A and determine if the
+     * the matrix is singular as limited by floating-point data 
+     * representation.
+     */
+    pos = neg = 0.0;
+    temp =  src[0][0] * src[1][1] * src[2][2];
+    ACCUMULATE;
+    temp =  src[0][1] * src[1][2] * src[2][0];
+    ACCUMULATE;
+    temp =  src[0][2] * src[1][0] * src[2][1];
+    ACCUMULATE;
+    temp = -src[0][2] * src[1][1] * src[2][0];
+    ACCUMULATE;
+    temp = -src[0][1] * src[1][0] * src[2][2];
+    ACCUMULATE;
+    temp = -src[0][0] * src[1][2] * src[2][1];
+    ACCUMULATE;
+    det_1 = pos + neg;
+
+#undef ACCUMULATE
+
+    /* Is the submatrix A singular? */
+    if ((det_1 == 0.0) || (SbAbs(det_1 / (pos - neg)) < DBL_EPSILON)) {
+      /* Matrix M has no inverse */
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbMatrix::inverse",
+                                "Matrix is singular.");
+#endif // COIN_DEBUG
+      return *this;
+    }
+    else {
+      /* Calculate inverse(A) = adj(A) / det(A) */
+      det_1 = 1.0 / det_1;
+      dst[0][0] = (src[1][1] * src[2][2] -
+                   src[1][2] * src[2][1]) * det_1;
+      dst[1][0] = - (src[1][0] * src[2][2] -
+                     src[1][2] * src[2][0]) * det_1;
+      dst[2][0] = (src[1][0] * src[2][1] -
+                   src[1][1] * src[2][0]) * det_1;
+      dst[0][1] = - (src[0][1] * src[2][2] -
+                     src[0][2] * src[2][1]) * det_1;
+      dst[1][1] = (src[0][0] * src[2][2] -
+                   src[0][2] * src[2][0]) * det_1;
+      dst[2][1] = - (src[0][0] * src[2][1] -
+                     src[0][1] * src[2][0]) * det_1;
+      dst[0][2] =  (src[0][1] * src[1][2] -
+                    src[0][2] * src[1][1]) * det_1;
+      dst[1][2] = - (src[0][0] * src[1][2] -
+                     src[0][2] * src[1][0]) * det_1;
+      dst[2][2] =  (src[0][0] * src[1][1] -
+                    src[0][1] * src[1][0]) * det_1;
+      
+      /* Calculate -C * inverse(A) */
+      dst[3][0] = - (src[3][0] * dst[0][0] +
+                     src[3][1] * dst[1][0] +
+                     src[3][2] * dst[2][0]);
+      dst[3][1] = - (src[3][0] * dst[0][1] +
+                     src[3][1] * dst[1][1] +
+                     src[3][2] * dst[2][1]);
+      dst[3][2] = - (src[3][0] * dst[0][2] +
+                     src[3][1] * dst[1][2] +
+                     src[3][2] * dst[2][2]);
+      
+      /* Fill in last column */
+      dst[0][3] = dst[1][3] = dst[2][3] = 0.0;
+      dst[3][3] = 1.0;
+    }
+  }
+  else { // non-affine matrix
+    double max, sum, tmp, inv_pivot;
+    int p[4];
+    int i, j, k;
+
+    // algorithm from: Schwarz, "Numerische Mathematik"
+    result = *this;
+    
+    for (k = 0; k < 4; k++) { 
+      max = 0.0f;
+      p[k] = 0;
+      
+      for (i = k; i < 4; i++) { 
+        sum = 0.0f;
+        for (j = k; j < 4; j++)
+          sum += SbAbs(dst[i][j]);
+        if (sum > 0.0f) {
+          tmp = SbAbs(dst[i][k]) / sum;
+          if (tmp > max) { 
+            max = tmp;  
+            p[k] = i;
+          }
+        }
+      }
+      
+      if (max == 0.0) {
+#if COIN_DEBUG
+        SoDebugError::postWarning("SbMatrix::inverse",
+                                  "Matrix is singular.");
+#endif // COIN_DEBUG
+        return *this;
+      }
+      
+      if (p[k] != k) {
+        for (j = 0; j < 4; j++) {
+          tmp = dst[k][j];  
+          dst[k][j] = dst[p[k]][j];  
+          dst[p[k]][j] = tmp;
+        }
+      }
+      
+      inv_pivot = 1.0f / dst[k][k];
+      for (j = 0; j < 4; j++) {
+        if (j != k) {
+          dst[k][j] = - dst[k][j] * inv_pivot;
+          for (i = 0; i < 4; i++) {
+            if (i != k) dst[i][j] += dst[i][k] * dst[k][j];
+          }
+        }
+      }
+      
+      for (i = 0; i < 4; i++) dst[i][k] *= inv_pivot;
+      dst[k][k] = inv_pivot;
+    }
+    
+    for (k = 2; k >= 0; k--) {
+      if (p[k] != k) {
+        for (i = 0; i < 4; i++) {
+          tmp = dst[i][k];
+          dst[i][k] = dst[i][p[k]]; 
+          dst[i][p[k]] = tmp;
+        }
+      }
+    }
+  }
   return result;
 }
 
