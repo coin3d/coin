@@ -287,7 +287,8 @@ RegularSources = \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp
+	AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp
 
 LinkHackSources = \
 	all-misc-cpp.cpp
@@ -308,6 +309,7 @@ PrivateHeaders = \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
+	CoinStaticObjectInDLL.h \
 	cppmangle.icc \
 	systemsanity.icc
 
@@ -383,7 +385,8 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp all-misc-cpp.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
+	all-misc-cpp.cpp
 am__objects_1 = all-misc-cpp.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoContextHandler.$(OBJEXT) SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
@@ -399,7 +402,8 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoOffscreenAGLData.$(OBJEXT) SoOffscreenGLXData.$(OBJEXT) \
 	SoOffscreenWGLData.$(OBJEXT) SoVertexArrayIndexer.$(OBJEXT) \
 	SoGenerate.$(OBJEXT) SoLockManager.$(OBJEXT) \
-	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT)
+	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT) \
+	CoinStaticObjectInDLL.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
@@ -410,8 +414,9 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h cppmangle.icc \
-	systemsanity.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
+	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
 	SoGLCubeMapImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
@@ -422,7 +427,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -439,7 +444,8 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp all-misc-cpp.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
+	all-misc-cpp.cpp
 am__objects_6 = all-misc-cpp.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoGLImage.lo SoGLCubeMapImage.lo SoGLBigImage.lo SoGlyph.lo \
@@ -450,7 +456,8 @@ am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoSceneManager.lo SoType.lo SoOffscreenRenderer.lo \
 	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
 	SoOffscreenWGLData.lo SoVertexArrayIndexer.lo SoGenerate.lo \
-	SoLockManager.lo SoAudioDevice.lo AudioTools.lo
+	SoLockManager.lo SoAudioDevice.lo AudioTools.lo \
+	CoinStaticObjectInDLL.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
@@ -461,8 +468,9 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h cppmangle.icc \
-	systemsanity.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
+	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
 	SoGLCubeMapImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
@@ -473,7 +481,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -488,7 +496,8 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp all-misc-cpp.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
+	all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
@@ -497,8 +506,9 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h cppmangle.icc \
-	systemsanity.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
+	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
 	SoGLCubeMapImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
@@ -509,13 +519,15 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp
+	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/AudioTools.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/AudioTools.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/CoinStaticObjectInDLL.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/CoinStaticObjectInDLL.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAudioDevice.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAudioDevice.Po ./$(DEPDIR)/SoBase.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBase.Po ./$(DEPDIR)/SoChildList.Plo \
@@ -659,6 +671,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AudioTools.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AudioTools.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinStaticObjectInDLL.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinStaticObjectInDLL.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAudioDevice.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAudioDevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBase.Plo@am__quote@
