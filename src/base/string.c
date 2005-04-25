@@ -75,29 +75,50 @@ cc_string_remove_substring(cc_string * me, int start, int end)
   }
 #endif /* COIN_DEBUG */
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
-} /* cc_string_remove_substring() */
+}
 
 static void
 cc_string_grow_buffer(cc_string * me, int newsize)
 {
   char * newbuf;
+  static int debug = -1;
+
+  if (debug == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_STRING_GROW");
+    debug = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+
+  /* Can not use cc_debugerror_* interface(), as that could cause an
+     infinite recursion. */
+  if (debug) {
+    printf("cc_string_grow_buffer: "
+           "me->bufsize==%d, me->pointer==%p, me->buffer==%p => "
+           "newsize==%d\n",
+           me->bufsize, me->pointer, me->buffer, newsize);
+  }
+                         
 
   if (newsize <= me->bufsize) { return; }
+
+  /* FIXME: should first try the vastly more efficient realloc().
+     20050425 mortene. */
   newbuf = (char *) malloc(newsize);
+  if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
   assert(newbuf != NULL);
+
   (void) strcpy(newbuf, me->pointer);
-  if ( me->pointer != me->buffer )
-    free(me->pointer);
+
+  if (me->pointer != me->buffer) { free(me->pointer); }
   me->pointer = newbuf;
   me->bufsize = newsize;
-} /* cc_string_grow_buffer() */
+}
 
 static void
 cc_string_expand(cc_string * me, int additional)
 {
   int newsize = strlen(me->pointer) + additional + 1;
   cc_string_grow_buffer(me, newsize);
-} /* cc_string_expand() */
+}
 
 /* ********************************************************************** */
 

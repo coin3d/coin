@@ -175,6 +175,12 @@ coin_common_vsnprintf(func_vsnprintf * func,
                       const char * fmtstr, va_list args)
 {
   int length;
+  static int debug = -1;
+
+  if (debug == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_NPRINTF");
+    debug = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
 
   /* Note: subtract one from n as the buffer size, because libDCE on
      HP-UX has a vsnprintf() implementation which will otherwise
@@ -184,7 +190,13 @@ coin_common_vsnprintf(func_vsnprintf * func,
   assert(n > 1);
   n -= 1;
 
+  /* Can not use cc_debugerror_* interface(), as that could cause an
+     infinite recursion. */
+  if (debug) { printf("dst==%p, n==%u, fmtstr=='%s'\n", dst, n, fmtstr); }
+
   length = (*func)(dst, (size_t)n, fmtstr, args);
+
+  if (debug) { printf("==> length==%d\n", length); }
 
   /* Not all vsnprintf() implementations returns -1 upon failure (this
      is what vsnprintf() from GNU libc is documented to do).
