@@ -2715,29 +2715,6 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
 =====================================================================
 
-106 Warning about multiple instances of Coin in SoDB
-
-    In StaticObjectInDLL, we warn (and exit) about multiple coin's
-    (both dlls and statically linked!) in the same process image. BUT
-    in some cases, having multiple instances of Coin in the same
-    process image is perfectly OK - for instance if Coin is used in
-    two or more _plugins_ (dlls) to a (usually non-Coin-based)
-    application, and Coin is linked statically with these plugins, and
-    (!) no Coin-related datastructures are passed between the
-    plugins.
-
-    A similar problem would occur if an application loaded a dll using
-    coin, then unloaded it, and then loaded it again.
-
-    I have observed this for the Vispo browser (IE) plugin.
-
-    The correct fix is probably to only do the test in
-    StaticObjectInDLL for dll versions of Coin.
-
-    20040304 thammer
-
-=====================================================================
-
 108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
     with SoOffscreenRenderer.
 
