@@ -3799,6 +3799,15 @@ SOURCE=..\..\src\misc\AudioTools.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\CoinStaticObjectInDLL.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\lists\SbList.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\lists"
@@ -4835,6 +4844,33 @@ SOURCE=..\..\src\nodes\SoTextureCoordinateFunction.cpp
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinatePlane.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\nodes"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoTextureCoordinateNormalMap.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\nodes"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\nodes"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoTextureCoordinateObject.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
@@ -8859,6 +8895,18 @@ SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinateFunction.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinatePlane.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinateNormalMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinateObject.h
 # End Source File
 # Begin Source File
 

@@ -581,6 +581,9 @@ copy ..\..\include\Inventor\nodes\SoTextureCoordinateDefault.h %COINDIR%\include
 copy ..\..\include\Inventor\nodes\SoTextureCoordinateEnvironment.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateEnvironment.h >nul:
 copy ..\..\include\Inventor\nodes\SoTextureCoordinateFunction.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateFunction.h >nul:
 copy ..\..\include\Inventor\nodes\SoTextureCoordinatePlane.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinatePlane.h >nul:
+copy ..\..\include\Inventor\nodes\SoTextureCoordinateNormalMap.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateNormalMap.h >nul:
+copy ..\..\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h >nul:
+copy ..\..\include\Inventor\nodes\SoTextureCoordinateObject.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateObject.h >nul:
 copy ..\..\include\Inventor\nodes\SoTextureCubeMap.h %COINDIR%\include\Inventor\nodes\SoTextureCubeMap.h >nul:
 copy ..\..\include\Inventor\nodes\SoTextureScalePolicy.h %COINDIR%\include\Inventor\nodes\SoTextureScalePolicy.h >nul:
 copy ..\..\include\Inventor\nodes\SoTextureUnit.h %COINDIR%\include\Inventor\nodes\SoTextureUnit.h >nul:

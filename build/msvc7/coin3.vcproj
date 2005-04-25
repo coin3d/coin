@@ -461,6 +461,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\misc\CoinStaticObjectInDLL.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\vrml97\Collision.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1133,30 +1157,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\fonts\freetype.c">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						ObjectFile=".\Debug\fonts/"
-						ProgramDataBaseFileName="Debug\fonts/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile=".\Release\fonts/"
-						ProgramDataBaseFileName="Release\fonts/"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\glue\freetype.c">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1178,6 +1178,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\glue/"
 						ProgramDataBaseFileName="Release\glue/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\fonts\freetype.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\fonts/"
+						ProgramDataBaseFileName="Debug\fonts/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\fonts/"
+						ProgramDataBaseFileName="Release\fonts/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -15029,7 +15053,79 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\nodes\SoTextureCoordinateNormalMap.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\nodes/"
+						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\nodes/"
+						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\nodes\SoTextureCoordinateObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\nodes/"
+						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\nodes/"
+						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\nodes\SoTextureCoordinatePlane.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\nodes/"
+						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\nodes/"
+						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -19146,7 +19242,16 @@
 				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateFunction.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateNormalMap.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateObject.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinatePlane.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateSphere.h">
