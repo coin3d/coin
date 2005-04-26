@@ -4614,3 +4614,15 @@ Translation { translation 5 }
     20050426 mortene.
 
 =====================================================================
+
+192 SoExtSelection "thin area" rectangle selection doesn't work as
+    expected.
+
+    When in rectangle-mode, selecting a thin, one-pixel dimension area
+    by starting and stopping the rectangle selection at the same pixel
+    in either x or y, should be a valid selection operation. As it is
+    now, the selection attempt is just ignored.
+
+    20050426 mortene.
+
+=====================================================================
