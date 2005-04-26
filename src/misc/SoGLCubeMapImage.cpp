@@ -90,6 +90,8 @@ static GLenum get_gltarget(SoGLCubeMapImage::Target target)
   return ret;
 }
 
+#undef MIRROR
+
 class SoGLCubeMapImageP {
 public:
   SoGLCubeMapImageP(void) { 
@@ -191,6 +193,11 @@ SoGLCubeMapImage::~SoGLCubeMapImage()
 void
 SoGLCubeMapImage::unref(SoState * state)
 {
+  int n = PRIVATE(this)->dlists.getLength();
+  for (int i = 0; i < n; i++) {
+    PRIVATE(this)->dlists[i].dlist->unref(state);
+  }
+  PRIVATE(this)->dlists.truncate(0);
   inherited::unref(state);
 }
 
@@ -297,6 +304,7 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
     dl = new SoGLDisplayList(state,
                              SoGLDisplayList::TEXTURE_OBJECT);
     if (dl) {
+      dl->ref();
       dl->setTextureTarget((int) GL_TEXTURE_CUBE_MAP);
 
       const cc_glglue * glue = sogl_glue_instance(state);
