@@ -1043,7 +1043,8 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   PRIVATE(this)->wasshiftdown = action->getEvent()->wasShiftDown();
 
   // Behave as SoSelection when lassoType==NOLASSO.
-  if (this->lassoType.getValue() == NOLASSO) {
+  if ((PRIVATE(this)->selectionstate == SoExtSelectionP::NONE) &&
+      (this->lassoType.getValue() == SoExtSelection::NOLASSO)) {
     inherited::handleEvent(action);
     return;
   }
@@ -1052,16 +1053,25 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   SoSeparator::handleEvent(action);
   if (action->isHandled()) { return; }
 
-  switch (this->lassoType.getValue()) {
+  // The lassoType field could have changed as a result of a callback
+  // from the above SoSeparator::handleEvent() call, so we need to
+  // check for this before proceeding.
+  if (this->lassoType.getValue() == SoExtSelection::NOLASSO) { return; }
 
-  case SoExtSelection::RECTANGLE:
-    PRIVATE(this)->handleEventRectangle(action);
+  switch (PRIVATE(this)->selectionstate) {
+    // No selection mode has been activated yet, so decide from the
+    // lassoType field value where to go:
+  case SoExtSelectionP::NONE:
+    switch (this->lassoType.getValue()) {
+    case SoExtSelection::RECTANGLE: PRIVATE(this)->handleEventRectangle(action); break;
+    case SoExtSelection::LASSO: PRIVATE(this)->handleEventLasso(action); break;
+    default: assert(FALSE); break;
+    }
     break;
 
-  case SoExtSelection::LASSO:
-    PRIVATE(this)->handleEventLasso(action);
-    break;
-
+    // A selection mode is already "in action", so continue with that:
+  case SoExtSelectionP::RECTANGLE: PRIVATE(this)->handleEventRectangle(action); break;
+  case SoExtSelectionP::LASSO: PRIVATE(this)->handleEventLasso(action); break;
   default: assert(FALSE); break;
   }
 }
