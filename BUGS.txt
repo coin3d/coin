@@ -4603,3 +4603,14 @@ Translation { translation 5 }
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
 
 =====================================================================
+
+191 SoExtSelection "point selection" doesn't work as expected.
+
+    When in rectangle-mode, selecting an empty area by starting and
+    stopping the rectangle selection at the same pixel (e.g. by just
+    clicking), selection should work like SoExtSelection NOLASSO
+    (which is the same as SoSelection).
+
+    20050426 mortene.
+
+=====================================================================
