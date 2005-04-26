@@ -51,10 +51,16 @@
 
 // *************************************************************************
 
+#include <Inventor/nodes/SoExtSelection.h>
+
 #include <float.h>
 #include <math.h>
 #include <limits.h>
 #include <string.h> // memset()
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h> // coin_getenv()
@@ -91,16 +97,11 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h> // COIN_OBSOLETED()
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 // *************************************************************************
 
@@ -214,6 +215,8 @@
 //
 //#define COLORBITS 3
 
+// *************************************************************************
+
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -252,6 +255,9 @@ public:
   SbViewportRegion curvp;
 
   static SbBool debug(void);
+
+  void handleEventRectangle(SoHandleEventAction * action);
+  void handleEventLasso(SoHandleEventAction * action);
 
   void addTriangleToOffscreenBuffer(SoCallbackAction * action,
                                     const SoPrimitiveVertex * v1,
@@ -650,8 +656,11 @@ poly_projbox_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
+// *************************************************************************
 
 SO_NODE_SOURCE(SoExtSelection);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -755,13 +764,16 @@ SoExtSelection::~SoExtSelection()
   delete PRIVATE(this);
 }
 
-// doc in parent
+// *************************************************************************
+
+// doc in superclass
 void
 SoExtSelection::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoExtSelection, SO_FROM_INVENTOR_1);
 }
 
+// *************************************************************************
 
 /*!
   Specifies whether the overlay planes should be used to render the
@@ -805,6 +817,8 @@ SoExtSelection::getOverlaySceneGraph(void)
   return NULL;
 }
 
+// *************************************************************************
+
 /*!
   Obsoleted in Coin, use SoExtSelection::setLassoColor() instead.
 */
@@ -826,6 +840,8 @@ SoExtSelection::getOverlayLassoColorIndex(void)
   return 0;
 }
 
+// *************************************************************************
+
 /*!
   Sets the lasso/rectangle line color. Default value is (1.0, 1.0,
   1.0).
@@ -845,6 +861,8 @@ SoExtSelection::getLassoColor(void)
   return PRIVATE(this)->lassocolor;
 }
 
+// *************************************************************************
+
 /*!
   Sets the lasso line width. Default value is 1.0.
 */
@@ -863,6 +881,8 @@ SoExtSelection::getLassoWidth(void)
   return PRIVATE(this)->lassowidth;
 }
 
+// *************************************************************************
+
 /*!
   Sets the lasso line pattern. Default value is 0xf0f0.
 */
@@ -880,6 +900,8 @@ SoExtSelection::getOverlayLassoPattern(void)
 {
   return PRIVATE(this)->lassopattern;
 }
+
+// *************************************************************************
 
 /*!
   Sets whether the lasso should be animated by scrolling
@@ -900,137 +922,151 @@ SoExtSelection::isOverlayLassoAnimated(void)
   return PRIVATE(this)->lassopatternanimate;
 }
 
+// *************************************************************************
+
+void
+SoExtSelectionP::handleEventRectangle(SoHandleEventAction * action)
+{
+  // Make sure the new coord is inside the viewport
+  const SbViewportRegion & vpr = action->getViewportRegion();
+  const SbVec2s vprsize = vpr.getWindowSize();
+  const SoEvent * event = action->getEvent();
+
+  SbVec2s mousecoords = event->getPosition();
+  mousecoords[0] = mousecoords[0] < vprsize[0] ? mousecoords[0] : vprsize[0];
+  mousecoords[1] = mousecoords[1] < vprsize[1] ? mousecoords[1] : vprsize[1];
+  // FIXME: this doesn't look entirely correct -- shouldn't
+  // SbViewportRegion::getOrigin() be the lower bound? 20050104 mortene.
+  mousecoords[0] = mousecoords[0] < 0 ? 0 : mousecoords[0];
+  mousecoords[1] = mousecoords[1] < 0 ? 0 : mousecoords[1];
+
+  // mouse click
+  if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
+    this->isDragging = TRUE;
+    this->selectionstate = SoExtSelectionP::RECTANGLE;
+    this->coords.truncate(0);
+    this->coords.append(mousecoords);
+    this->coords.append(mousecoords);
+    if (!this->timersensor->isScheduled()) this->timersensor->schedule();
+  }
+  // mouse release
+  else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
+    // This has been reported to be called when the sensor is not
+    // scheduled, which is a bug..? Wasn't able to find a way to
+    // reproduce the bug locally, however. I just left a note here
+    // in case someone else stumbles over this problem.
+    //
+    // 20041217 mortene.
+    this->timersensor->unschedule();
+    this->isDragging = FALSE;
+    this->selectionstate = SoExtSelectionP::NONE;
+
+    if ((SbAbs(mousecoords[0] - this->previousmousecoords[0]) > 1) &&
+        (SbAbs(mousecoords[1] - this->previousmousecoords[1]) > 1))
+      this->performSelection(action);
+  }
+  // mouse move
+  else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
+    if (this->isDragging == TRUE) {
+      assert(this->coords.getLength() >= 2);
+      this->coords[1] = mousecoords;
+      PUBLIC(this)->touch();
+    }
+  }
+
+  // FIXME: shouldn't we call action->setHandled(TRUE) when
+  // appropriate within this function? 20050426 mortene.
+}
+
+void
+SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
+{
+  const SoEvent * event = action->getEvent();
+  SbVec2s mousecoords = event->getPosition();
+
+  // mouse click
+  if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
+    if ((SbAbs(mousecoords[0] - this->previousmousecoords[0]) > 2) ||
+        (SbAbs(mousecoords[1] - this->previousmousecoords[1]) > 2)) {
+      if (this->selectionstate == SoExtSelectionP::NONE) {
+        this->coords.truncate(0);
+        this->coords.append(mousecoords);
+        this->selectionstate = SoExtSelectionP::LASSO;
+      }
+      this->previousmousecoords = mousecoords;
+      this->isDragging = TRUE;
+      this->coords.append(mousecoords);
+      if (!this->timersensor->isScheduled()) this->timersensor->schedule();
+      PUBLIC(this)->touch();
+    }
+    else { // clicked twice on same coord (double click) -> end selection
+      if (this->timersensor->isScheduled()) this->timersensor->unschedule();
+      this->previousmousecoords = SbVec2s(32767, 32767);
+      if (this->selectionstate == SoExtSelectionP::LASSO) {
+        this->coords.append(mousecoords);
+        this->performSelection(action);
+      }
+      this->isDragging = FALSE;
+      this->selectionstate = SoExtSelectionP::NONE;
+      this->coords.truncate(0);
+    }
+  }
+  // mouse move
+  else if ( ( event->isOfType( SoLocation2Event::getClassTypeId() ) ) ) {
+    if (this->isDragging == TRUE) {
+      assert(this->coords.getLength());
+      this->coords[this->coords.getLength()-1] = mousecoords;
+      PUBLIC(this)->touch();
+    }
+  }
+  // end selection with right-click
+  else if (SO_MOUSE_PRESS_EVENT(event,BUTTON2)) {
+    if (this->timersensor->isScheduled()) this->timersensor->unschedule();
+    if (this->selectionstate == SoExtSelectionP::LASSO) {
+      this->performSelection(action);
+    }
+    this->isDragging = FALSE;
+    if (this->timersensor->isScheduled()) this->timersensor->unschedule();
+    this->selectionstate = SoExtSelectionP::NONE;
+    this->previousmousecoords = SbVec2s(32767, 32767);
+    this->coords.truncate(0);
+  }
+
+  // FIXME: shouldn't we call action->setHandled(TRUE) when
+  // appropriate within this function? 20050426 mortene.
+}
+
 // Documented in superclass.
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
   PRIVATE(this)->wasshiftdown = action->getEvent()->wasShiftDown();
 
-  // Overridden to handle lasso selection.
-
+  // Behave as SoSelection when lassoType==NOLASSO.
   if (this->lassoType.getValue() == NOLASSO) {
     inherited::handleEvent(action);
     return;
   }
-  SoSeparator::handleEvent(action);
-  if (action->isHandled()) return;
 
-  const SoEvent * event = action->getEvent();
-  SbVec2s mousecoords = event->getPosition();
+  // Let children have a chance at grabbing events, if they want them.
+  SoSeparator::handleEvent(action);
+  if (action->isHandled()) { return; }
 
   switch (this->lassoType.getValue()) {
 
-    // ---------- NO LASSO ----------
-
-  case SoExtSelection::NOLASSO:
-    // nothing to do here..
-    break;
-
-    // ---------- RECTANGLE ----------
-
   case SoExtSelection::RECTANGLE:
-    {
-      // Make sure the new coord is inside the viewport
-      const SbViewportRegion & vpr = action->getViewportRegion();
-      const SbVec2s vprsize = vpr.getWindowSize();
-      mousecoords[0] = mousecoords[0] < vprsize[0] ? mousecoords[0] : vprsize[0];
-      mousecoords[1] = mousecoords[1] < vprsize[1] ? mousecoords[1] : vprsize[1];
-      // FIXME: this doesn't look entirely correct -- shouldn't
-      // SbViewportRegion::getOrigin() be the lower bound? 20050104 mortene.
-      mousecoords[0] = mousecoords[0] < 0 ? 0 : mousecoords[0];
-      mousecoords[1] = mousecoords[1] < 0 ? 0 : mousecoords[1];
-    }
-
-    // mouse click
-    if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
-      PRIVATE(this)->isDragging = TRUE;
-      PRIVATE(this)->selectionstate = SoExtSelectionP::RECTANGLE;
-      PRIVATE(this)->coords.truncate(0);
-      PRIVATE(this)->coords.append(mousecoords);
-      PRIVATE(this)->coords.append(mousecoords);
-      if (!PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->schedule();
-    }
-    // mouse release
-    else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
-      // This has been reported to be called when the sensor is not
-      // scheduled, which is a bug..? Wasn't able to find a way to
-      // reproduce the bug locally, however. I just left a note here
-      // in case someone else stumbles over this problem.
-      //
-      // 20041217 mortene.
-      PRIVATE(this)->timersensor->unschedule();
-      PRIVATE(this)->isDragging = FALSE;
-      PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
-
-      if ((SbAbs(mousecoords[0] - PRIVATE(this)->previousmousecoords[0]) > 1) &&
-          (SbAbs(mousecoords[1] - PRIVATE(this)->previousmousecoords[1]) > 1))
-        PRIVATE(this)->performSelection(action);
-    }
-    // mouse move
-    else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
-      if (PRIVATE(this)->isDragging == TRUE) {
-        assert(PRIVATE(this)->coords.getLength() >= 2);
-        PRIVATE(this)->coords[1] = mousecoords;
-        this->touch();
-      }
-    }
-
+    PRIVATE(this)->handleEventRectangle(action);
     break;
-
-    // ---------- LASSO ----------
 
   case SoExtSelection::LASSO:
-    // mouse click
-    if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
-      if ((SbAbs(mousecoords[0] - PRIVATE(this)->previousmousecoords[0]) > 2) ||
-          (SbAbs(mousecoords[1] - PRIVATE(this)->previousmousecoords[1]) > 2)) {
-        if (PRIVATE(this)->selectionstate == SoExtSelectionP::NONE) {
-          PRIVATE(this)->coords.truncate(0);
-          PRIVATE(this)->coords.append(mousecoords);
-          PRIVATE(this)->selectionstate = SoExtSelectionP::LASSO;
-        }
-        PRIVATE(this)->previousmousecoords = mousecoords;
-        PRIVATE(this)->isDragging = TRUE;
-        PRIVATE(this)->coords.append(mousecoords);
-        if (!PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->schedule();
-        this->touch();
-      }
-      else { // clicked twice on same coord (double click) -> end selection
-        if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
-        PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
-        if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
-          PRIVATE(this)->coords.append(mousecoords);
-          PRIVATE(this)->performSelection(action);
-        }
-        PRIVATE(this)->isDragging = FALSE;
-        PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
-        PRIVATE(this)->coords.truncate(0);
-      }
-    }
-    // mouse move
-    else if ( ( event->isOfType( SoLocation2Event::getClassTypeId() ) ) ) {
-      if (PRIVATE(this)->isDragging == TRUE) {
-        assert(PRIVATE(this)->coords.getLength());
-        PRIVATE(this)->coords[PRIVATE(this)->coords.getLength()-1] = mousecoords;
-        this->touch();
-      }
-    }
-    // end selection with right-click
-    else if (SO_MOUSE_PRESS_EVENT(event,BUTTON2)) {
-      if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
-      if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
-        PRIVATE(this)->performSelection(action);
-      }
-      PRIVATE(this)->isDragging = FALSE;
-      if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
-      PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
-      PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
-      PRIVATE(this)->coords.truncate(0);
-    }
+    PRIVATE(this)->handleEventLasso(action);
     break;
-  }
 
+  default: assert(FALSE); break;
+  }
 }
+
+// *************************************************************************
 
 // internal method for drawing lasso
 void
