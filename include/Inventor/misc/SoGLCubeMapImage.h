@@ -39,12 +39,12 @@ public:
   virtual SoType getTypeId(void) const ;
 
   enum Target {
-    POSITIVE_X = 0,
-    NEGATIVE_X,
-    POSITIVE_Y,
+    NEGATIVE_X = 0,
+    POSITIVE_X,
     NEGATIVE_Y,
+    POSITIVE_Y,
+    NEGATIVE_Z,
     POSITIVE_Z,
-    NEGATIVE_Z
   };
 
   void setCubeMapImage(const Target target,
