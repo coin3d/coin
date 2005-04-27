@@ -760,6 +760,15 @@ struct cc_glglue {
 
 /* ********************************************************************** */
 
+/* Primarily used internally from functions that are badly designed,
+   lacking a cc_glglue* argument in the function signature.
+
+   Note: you should try to avoid using this function if possible! */
+
+void * coin_gl_current_context(void);
+
+/* ********************************************************************** */
+
 /* Scanning for and printing info about current set of glGetError()s. */
 unsigned int coin_catch_gl_errors(cc_string *);
 /* Convert OpenGL glGetError() error code to string. */

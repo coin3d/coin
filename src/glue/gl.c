@@ -202,6 +202,10 @@
 #include <OpenGL/CGLCurrent.h>  /* for CGLGetCurrentContext */
 #endif /* HAVE_AGL */
 
+#ifdef HAVE_GLX
+#include <GL/glx.h>
+#endif /* HAVE_GLX */
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
@@ -1821,24 +1825,24 @@ cc_glglue_instance(int contextid)
   found = cc_hash_get(gldict, (unsigned long) contextid, &ptr);
 
   if (!found) {
-    /* Internal consistency checking. */
-#ifdef HAVE_GLX
-    /* Disabled this assert because GLX in Mesa version 3.4.2
-       (GL_VENDOR "VA Linux Systems, Inc", GL_RENDERER "Mesa GLX
-       Indirect", GL_VERSION "1.2 Mesa 3.4.2") returns NULL even
-       though there really is a current context set up. (Reported by
-       kintel.) */
-/*     assert((glXGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue"); */
-#endif /* HAVE_GLX */
-#ifdef HAVE_WGL
-    assert((wglGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
-#endif /* HAVE_WGL */
-#ifdef HAVE_AGL
-    assert (CGLGetCurrentContext() != NULL);
-    /* Note: We cannot use aglGetCurrentContext() here, since that
-       only returns a value != NULL if the context has been set using
-       aglSetCurrentContext(). */
-#endif /* HAVE_AGL */
+    /* Internal consistency checking.
+
+       Make it possible to disabled this assert because GLX in Mesa
+       version 3.4.2 (GL_VENDOR "VA Linux Systems, Inc", GL_RENDERER
+       "Mesa GLX Indirect", GL_VERSION "1.2 Mesa 3.4.2") returns NULL
+       even though there really is a current context set up. (Reported
+       by kintel.)
+    */
+    static int chk = -1;
+    if (chk == -1) {
+      /* Note: don't change envvar name without updating the assert
+         text below. */
+      chk = coin_getenv("COIN_GL_NO_CURRENT_CONTEXT_CHECK") ? 0 : 1;
+    }
+    if (chk) {
+      const void * current_ctx = coin_gl_current_context();
+      assert(current_ctx && "Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
+    }
 
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
     /* clear to set all pointers and variables to NULL or 0 */
@@ -4272,6 +4276,31 @@ coin_catch_gl_errors(cc_string * str)
     glerr = glGetError();
   }
   return errs;
+}
+
+/* ********************************************************************** */
+
+void *
+coin_gl_current_context(void)
+{
+  void * ctx = NULL;
+
+#ifdef HAVE_GLX
+  ctx = glXGetCurrentContext();
+#endif /* HAVE_GLX */
+
+#ifdef HAVE_WGL
+  ctx = wglGetCurrentContext();
+#endif /* HAVE_WGL */
+
+#ifdef HAVE_AGL
+  /* Note: We cannot use aglGetCurrentContext() here, since that only
+     returns a value != NULL if the context has been set using
+     aglSetCurrentContext(). */
+  ctx = CGLGetCurrentContext();
+#endif /* HAVE_AGL */
+
+  return ctx;
 }
 
 /* ********************************************************************** */
