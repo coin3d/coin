@@ -78,7 +78,7 @@ private:
   void checkType(void); // sets cachedSourceType
   void readSource(void); // sets cachedSourceProgram depending on sourceType
 
-  SbBool isSupported(SoShaderObject::SourceType sourceType);
+  SbBool isSupported(SoShaderObject::SourceType sourceType, const cc_glglue * glue);
 
 #if defined(SOURCE_HINT)
   SbString getSourceHint(void) const;
@@ -275,12 +275,12 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     // if file could not be read
     if (this->cachedSourceType == SoShaderObject::FILENAME) return;
 
-    if (!this->isSupported(this->cachedSourceType)) {
+    if (!this->isSupported(this->cachedSourceType, glue)) {
       SbString s;
       switch (this->cachedSourceType) {
-      case SoShaderObject::ARB_PROGRAM: s = "ARB_PROGRAM "; break;
-      case SoShaderObject::CG_PROGRAM: s = "CG_PROGRAM "; break;
-      case SoShaderObject::GLSL_PROGRAM: s = "GLSL_PROGRAM "; break;
+      case SoShaderObject::ARB_PROGRAM: s = "ARB_PROGRAM"; break;
+      case SoShaderObject::CG_PROGRAM: s = "CG_PROGRAM"; break;
+      case SoShaderObject::GLSL_PROGRAM: s = "GLSL_PROGRAM"; break;
       default: assert(FALSE && "unknown shader");
       }
       SoDebugError::postWarning("SoShaderObjectP::GLRender",
@@ -455,12 +455,26 @@ SoShaderObjectP::readSource(void)
 }
 
 SbBool
-SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType)
+SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glglue * glue)
 {
-  if (this->owner->isVertexShader())
-    return SoVertexShader::isSupported(sourceType);
-  else
-    return SoFragmentShader::isSupported(sourceType);
+  // FIXME: Add support for detecting missing GLSL and Cg support
+  // aswell. (20050427 handegar)
+
+  SbBool supported = FALSE;
+  if (this->owner->isVertexShader()) {
+    supported = SoVertexShader::isSupported(sourceType);
+    if (sourceType == SoShaderObject::ARB_PROGRAM) {
+      supported = supported && cc_glglue_has_arb_vertex_program(glue);
+    }
+  }
+  else {
+    supported = SoFragmentShader::isSupported(sourceType);
+    if (sourceType == SoShaderObject::ARB_PROGRAM) {
+      supported = supported && cc_glglue_has_arb_fragment_program(glue);
+    }
+  }
+
+  return supported;
 }
 
 void
