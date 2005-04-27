@@ -416,7 +416,6 @@ SoShaderObjectP::readSource(void)
   else {
     if (this->cachedSourceType != SoShaderObject::FILENAME) {
 
-
       SbStringList subdirs;
       subdirs.append(new SbString("shader"));
       subdirs.append(new SbString("shaders"));
@@ -457,24 +456,12 @@ SoShaderObjectP::readSource(void)
 SbBool
 SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glglue * glue)
 {
-  // FIXME: Add support for detecting missing GLSL and Cg support
-  // aswell. (20050427 handegar)
-
-  SbBool supported = FALSE;
   if (this->owner->isVertexShader()) {
-    supported = SoVertexShader::isSupported(sourceType);
-    if (sourceType == SoShaderObject::ARB_PROGRAM) {
-      supported = supported && cc_glglue_has_arb_vertex_program(glue);
-    }
+    return SoVertexShader::isSupported(sourceType);    
   }
   else {
-    supported = SoFragmentShader::isSupported(sourceType);
-    if (sourceType == SoShaderObject::ARB_PROGRAM) {
-      supported = supported && cc_glglue_has_arb_fragment_program(glue);
-    }
+    return SoFragmentShader::isSupported(sourceType);
   }
-
-  return supported;
 }
 
 void
