@@ -3379,19 +3379,6 @@ main(int argc, char* argv[])
 
 =====================================================================
 
-137 SoExtSelection lasso (and rectangle?) selections can not be
-    aborted.
-
-    Useability issue: it should be possible to clear or abort a
-    selection in progress.
-
-    Suggestion from Hargrave on coin-discuss: break a selection when
-    the lassoType is detected to change.
-
-    20040902 mortene.
-
-=====================================================================
-
 138 SoExtSelection selection also catches the marker lines'
     SoIndexedLineSet?
 
