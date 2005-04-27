@@ -30,13 +30,6 @@
   polygon) or a rectangle on screen. When objects are selected, you'll
   receive the same callbacks as for the SoSelection node.
 
-  This node class is an extension versus the original SGI Inventor
-  v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
-  and we aim to be fully compatible with this node to enable users to
-  switch between using Coin and TGS Inventor.  Please contact us if
-  you find discrepancies between Coin's SoExtSelection and TGS's
-  SoExtSelection node.
-
   The application programmer interface of this class is somewhat
   complex, due to it's non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
@@ -44,6 +37,13 @@
   directory of Systems in Motion's SoGuiExamples CVS module. Further
   information and links for downloading and building this module
   should be available at <a href="http://www.coin3d.org">www.coin3d.org</a>.
+
+  This node class is an extension versus the original SGI Inventor
+  v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
+  and we aim to be fully compatible with this node to enable users to
+  switch between using Coin and TGS Inventor.  Please contact us if
+  you find discrepancies between Coin's SoExtSelection and TGS's
+  SoExtSelection node.
 
   \since TGS Inventor 2.5
   \since Coin 1.0
@@ -115,11 +115,15 @@
 */
 /*!
   \var SoExtSelection::LassoType SoExtSelection::LASSO
-  Selecti objects using a lasso.
+
+  Select objects using a lasso. Selections can be aborted by the
+  end-user by hitting the \c END key on the keyboard.
 */
 /*!
   \var SoExtSelection::LassoType SoExtSelection::RECTANGLE
-  Select objects using a rectangle.
+
+  Select objects using a rectangle. Selections can be aborted by the
+  end-user by hitting the \c END key on the keyboard.
 */
 
 /*!
@@ -160,7 +164,12 @@
 
 /*!
   \var SoSFEnum SoExtSelection::lassoType
-  Field for lasso type. Default value is NOLASSO.
+
+  Field for lasso type. Default value is SoExtSelection::NOLASSO.
+
+  Selections with type SoExtSelection::RECTANGLE or
+  SoExtSelection::LASSO can be aborted by the end-user by hitting the
+  \c END key on the keyboard.
 */
 /*!
   \var SoSFEnum SoExtSelection::lassoPolicy
@@ -1029,7 +1038,8 @@ SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
-  PRIVATE(this)->wasshiftdown = action->getEvent()->wasShiftDown();
+  const SoEvent * e = action->getEvent();
+  PRIVATE(this)->wasshiftdown = e->wasShiftDown();
 
   // Behave as SoSelection when lassoType==NOLASSO.
   if ((PRIVATE(this)->runningselection.mode == SoExtSelectionP::SelectionState::NONE) &&
@@ -1046,6 +1056,15 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   // from the above SoSeparator::handleEvent() call, so we need to
   // check for this before proceeding.
   if (this->lassoType.getValue() == SoExtSelection::NOLASSO) { return; }
+
+  // An option for the end-user to abort a selection.
+  if (SO_KEY_PRESS_EVENT(e, SoKeyboardEvent::END)) {
+    if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
+      PRIVATE(this)->runningselection.reset();
+      this->touch();
+      return;
+    }
+  }
 
   switch (PRIVATE(this)->runningselection.mode) {
     // No selection mode has been activated yet, so decide from the
