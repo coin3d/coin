@@ -965,7 +965,9 @@ SoExtSelectionP::handleEventRectangle(SoHandleEventAction * action)
 
   // mouse click
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
-    this->runningselection.start(SelectionState::RECTANGLE, mousecoords);
+    if (this->runningselection.mode == SelectionState::NONE) { // be robust vs two incoming press events without an intervening release
+      this->runningselection.start(SelectionState::RECTANGLE, mousecoords);
+    }
   }
 
   if (this->runningselection.mode == SelectionState::RECTANGLE) {
@@ -1052,11 +1054,6 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   SoSeparator::handleEvent(action);
   if (action->isHandled()) { return; }
 
-  // The lassoType field could have changed as a result of a callback
-  // from the above SoSeparator::handleEvent() call, so we need to
-  // check for this before proceeding.
-  if (this->lassoType.getValue() == SoExtSelection::NOLASSO) { return; }
-
   // An option for the end-user to abort a selection.
   if (SO_KEY_PRESS_EVENT(e, SoKeyboardEvent::END)) {
     if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
@@ -1065,6 +1062,11 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
       return;
     }
   }
+
+  // The lassoType field could have changed as a result of a callback
+  // from the above SoSeparator::handleEvent() call, so we need to
+  // check for this before proceeding.
+  if (this->lassoType.getValue() == SoExtSelection::NOLASSO) { return; }
 
   switch (PRIVATE(this)->runningselection.mode) {
     // No selection mode has been activated yet, so decide from the
