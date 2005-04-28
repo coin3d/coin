@@ -84,12 +84,12 @@ SoFragmentShader::isSupported(SourceType sourceType)
   const cc_glglue * glue = cc_glglue_instance_from_context_ptr(ptr);
   
   if (sourceType == ARB_PROGRAM) {
-    return TRUE && cc_glglue_has_arb_fragment_program(glue);
+    return cc_glglue_has_arb_fragment_program(glue);
   }
   else if (sourceType == GLSL_PROGRAM) {    
     // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
     // handegar)
-    return TRUE && cc_glglue_has_arb_shader_objects(glue);
+    return cc_glglue_has_arb_shader_objects(glue);
   } 
   // FIXME: Add support for detecting missing Cg support (20050427
   // handegar)
