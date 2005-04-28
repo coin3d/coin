@@ -1055,7 +1055,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   if (action->isHandled()) { return; }
 
   // An option for the end-user to abort a selection.
-  if (SO_KEY_PRESS_EVENT(e, SoKeyboardEvent::END)) {
+  if (SO_KEY_PRESS_EVENT(e, END)) {
     if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
       PRIVATE(this)->runningselection.reset();
       this->touch();
