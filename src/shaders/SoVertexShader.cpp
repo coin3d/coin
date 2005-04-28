@@ -76,8 +76,7 @@ SoVertexShader::isSupported(SourceType sourceType)
   // as we really need a guaranteed GL context for this.)  20050120 mortene.
 
   void * ptr = coin_gl_current_context();
-  assert(ptr && "No active OpenGL context found! Do not call");
-
+  assert(ptr && "No active OpenGL context found!");
   if (!ptr) return FALSE; // Always bail out. Even when compiled in 'release' mode.
   
   const cc_glglue * glue = cc_glglue_instance_from_context_ptr(ptr);
@@ -85,10 +84,13 @@ SoVertexShader::isSupported(SourceType sourceType)
   if (sourceType == ARB_PROGRAM) {
     return TRUE && cc_glglue_has_arb_vertex_program(glue);
   }
-
-  // FIXME: Add support for detecting missing GLSL and Cg support
-  // aswell. (20050427 handegar)
-  else if (sourceType == GLSL_PROGRAM) return TRUE;
+  else if (sourceType == GLSL_PROGRAM) {
+    // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
+    // handegar)
+    return TRUE && cc_glglue_has_arb_shader_objects(glue);
+  }
+  // FIXME: Add support for detecting missing Cg support
+  // (20050427 handegar)
   else if (sourceType == CG_PROGRAM) return TRUE;
 
   return FALSE;

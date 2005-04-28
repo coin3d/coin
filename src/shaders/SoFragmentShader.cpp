@@ -69,7 +69,6 @@ SoFragmentShader::isVertexShader(void) const
   <i>Beware:</i> To get a correct answer, a valid OpenGL context must
   be available.
 */
-
 SbBool
 SoFragmentShader::isSupported(SourceType sourceType)
 {
@@ -87,10 +86,13 @@ SoFragmentShader::isSupported(SourceType sourceType)
   if (sourceType == ARB_PROGRAM) {
     return TRUE && cc_glglue_has_arb_fragment_program(glue);
   }
-
-  // FIXME: Add support for detecting missing GLSL and Cg support
-  // aswell. (20050427 handegar)
-  else if (sourceType == GLSL_PROGRAM) return TRUE;
+  else if (sourceType == GLSL_PROGRAM) {    
+    // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
+    // handegar)
+    return TRUE && cc_glglue_has_arb_shader_objects(glue);
+  } 
+  // FIXME: Add support for detecting missing Cg support (20050427
+  // handegar)
   else if (sourceType == CG_PROGRAM) return TRUE;
 
   return FALSE;
