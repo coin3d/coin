@@ -4533,29 +4533,6 @@ WWWInline { alternateRep Group { BaseColor { rgb .2 .4 .6 } Cone { } } }
 
 =====================================================================
 
-191 SoExtSelection "point selection" doesn't work as expected.
-
-    When in rectangle-mode, selecting an empty area by starting and
-    stopping the rectangle selection at the same pixel (e.g. by just
-    clicking), selection should work like SoExtSelection NOLASSO
-    (which is the same as SoSelection).
-
-    20050426 mortene.
-
-=====================================================================
-
-192 SoExtSelection "thin area" rectangle selection doesn't work as
-    expected.
-
-    When in rectangle-mode, selecting a thin, one-pixel dimension area
-    by starting and stopping the rectangle selection at the same pixel
-    in either x or y, should be a valid selection operation. As it is
-    now, the selection attempt is just ignored.
-
-    20050426 mortene.
-
-=====================================================================
-
 193 Nasty crash bug on 64-bit Linux systems reported.
 
     We've had two external reports that the following stand-alone

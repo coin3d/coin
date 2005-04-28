@@ -2471,24 +2471,23 @@ SoExtSelectionP::selectAndReset(SoHandleEventAction * action)
 void
 SoExtSelectionP::performSelection(SoHandleEventAction * action)
 {
+  assert(this->runningselection.mode != SelectionState::NONE);
+
+  if (SoExtSelectionP::debug()) {
+    for (int i = 0; i < this->runningselection.coords.getLength(); i++) {
+      const SbVec2s & c = this->runningselection.coords[i];
+      SoDebugError::postInfo("SoExtSelectionP::performSelection",
+                             "coord[%d]==<%d, %d>", i, c[0], c[1]);
+    }
+  }
+
+  // convert the rectangle to a polygon
   if (this->runningselection.mode == SelectionState::RECTANGLE) {
     assert(this->runningselection.coords.getLength() == 2);
-    SbVec2s p0 = this->runningselection.coords[0];
-    SbVec2s p1 = this->runningselection.coords[1];
-    this->runningselection.coords.truncate(0);
 
-    // Is this actually a rectangle and not just a point or line?
-    //
-    // FIXME: point or line is a valid selection. 20050427 mortene.
-    if (((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
-        ((p0[0] == p1[0]) || (p0[1] == p1[1]))) {
-      master->touch();
-      return;
-    }
-
-    // convert the rectangle to a polygon
-    this->runningselection.coords.append(p0);
-    this->runningselection.coords.append(SbVec2s(p1[0], p0[1]));
+    const SbVec2s p0 = this->runningselection.coords[0];
+    const SbVec2s p1 = this->runningselection.coords[1];
+    this->runningselection.coords[1] = SbVec2s(p1[0], p0[1]);
     this->runningselection.coords.append(p1);
     this->runningselection.coords.append(SbVec2s(p0[0], p1[1]));
   }
