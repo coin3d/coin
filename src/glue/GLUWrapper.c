@@ -242,6 +242,7 @@ GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" *
                            GLint tOrder,
                            GLenum type)
 {
+  GLint i;
   cc_string s, tmp;
 
   cc_string_construct(&s);
@@ -259,7 +260,6 @@ GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" *
                     type);
 
   {
-    GLint i;
     cc_string_append_text(&s, "sKnots=='");
     for (i = 0; i < sKnotCount; i++) {
       if (i > 0) { cc_string_append_text(&s, ", "); }
@@ -269,7 +269,6 @@ GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" *
     cc_string_append_text(&s, "'\n");
   }
   {
-    GLint i;
     cc_string_append_text(&s, "tKnots=='");
     for (i = 0; i < tKnotCount; i++) {
       if (i > 0) { cc_string_append_text(&s, ", "); }
@@ -285,7 +284,6 @@ GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" *
   cc_string_append_string(&s, &tmp);
 
   {
-    GLint i;
     GLint nrofctrlpoints = (sKnotCount - sOrder) * (tKnotCount - tOrder);
     cc_string_append_text(&s, "controlpoints=='");
 #if 0 // dumping the full list is usually not what we want
@@ -466,7 +464,7 @@ GLUWrapper(void)
     const char * env = coin_getenv("COIN_DEBUG_GLUNURBSSURFACE");
     if (env && (atoi(env) > 0)) {
       gi->gluNurbsSurface_in_GLU = gi->gluNurbsSurface;
-      if (gi->gluNurbsSurface != NULL) { gi->gluNurbsSurface = GLUWrapper_gluNurbsSurface; }
+      if (gi->gluNurbsSurface != NULL) { gi->gluNurbsSurface = (gluNurbsSurface_t)GLUWrapper_gluNurbsSurface; }
     }
   }
 
