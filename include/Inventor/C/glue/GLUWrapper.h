@@ -140,6 +140,8 @@ typedef struct {
   gluDeleteTess_t gluDeleteTess;
   gluTessNormal_t gluTessNormal;
 
+  gluNurbsSurface_t gluNurbsSurface_in_GLU;
+
 } GLUWrapper_t;
 
 

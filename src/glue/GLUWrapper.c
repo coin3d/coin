@@ -62,10 +62,26 @@ extern "C" {
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_SUPERGLU */
 
+/* ******************************************************************** */
+
 static GLUWrapper_t * GLU_instance = NULL;
 static cc_libhandle GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
 
+/* ******************************************************************** */
+
+static SbBool
+debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
+/* ******************************************************************** */
 
 /* Cleans up at exit. */
 static void
@@ -79,6 +95,7 @@ GLUWrapper_cleanup(void)
   free(GLU_instance);
 }
 
+/* ******************************************************************** */
 
 /* Set the GLU version variables in the global GLUWrapper_t. */
 static void
@@ -126,7 +143,6 @@ GLUWrapper_set_version(const GLubyte * versionstr)
   }
 
   { /* Run-time help for debugging GLU problems on remote sites. */
-    int COIN_DEBUG_GLU_INFO = 0;
 #ifdef HAVE_SUPERGLU
     const SbBool superglu = TRUE;
 #else
@@ -137,9 +153,8 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 #else
     const SbBool runtime = FALSE;
 #endif /* !GLU_RUNTIME_LINKING */
-    const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
-    if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
-    if (COIN_DEBUG_GLU_INFO) {
+
+    if (debug()) {
       const char * extensions = (const char *)
         GLU_instance->gluGetString(GLU_EXTENSIONS);
 
@@ -208,6 +223,103 @@ GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * 
   return 0;
 }
 
+/* ******************************************************************** */
+/*
+  Wraps the GLU library's gluNurbsSurface() function, to provide
+  debugging facilities on the input parameters.
+*/
+
+static void
+GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" */
+                           GLint sKnotCount,
+                           GLfloat * sKnots,
+                           GLint tKnotCount,
+                           GLfloat * tKnots,
+                           GLint sStride,
+                           GLint tStride,
+                           GLfloat * control,
+                           GLint sOrder,
+                           GLint tOrder,
+                           GLenum type)
+{
+  cc_string s, tmp;
+
+  cc_string_construct(&s);
+  cc_string_construct(&tmp);
+
+  cc_string_sprintf(&s,
+                    "GLUnurbs*==%p, sKnotCount==%d, sKnots==%p, tKnotCount==%d, tKnots==%p, "
+                    "sStride==%d, tStride==%d, control==%p, sOrder==%d, tOrder==%d, type==0x%0x\n",
+                    nurb,
+                    sKnotCount, sKnots,
+                    tKnotCount, tKnots,
+                    sStride, tStride,
+                    control,
+                    sOrder, tOrder,
+                    type);
+
+  {
+    GLint i;
+    cc_string_append_text(&s, "sKnots=='");
+    for (i = 0; i < sKnotCount; i++) {
+      if (i > 0) { cc_string_append_text(&s, ", "); }
+      cc_string_sprintf(&tmp, "%f", sKnots[i]);
+      cc_string_append_string(&s, &tmp);
+    }
+    cc_string_append_text(&s, "'\n");
+  }
+  {
+    GLint i;
+    cc_string_append_text(&s, "tKnots=='");
+    for (i = 0; i < tKnotCount; i++) {
+      if (i > 0) { cc_string_append_text(&s, ", "); }
+      cc_string_sprintf(&tmp, "%f", tKnots[i]);
+      cc_string_append_string(&s, &tmp);
+    }
+    cc_string_append_text(&s, "'\n");
+  }
+
+  cc_string_sprintf(&tmp,
+                    "(sKnotCount - sOrder) × (tKnotCount - tOrder) => %d control points\n",
+                    (sKnotCount - sOrder) * (tKnotCount - tOrder));
+  cc_string_append_string(&s, &tmp);
+
+  {
+    GLint i;
+    GLint nrofctrlpoints = (sKnotCount - sOrder) * (tKnotCount - tOrder);
+    cc_string_append_text(&s, "controlpoints=='");
+#if 0 // dumping the full list is usually not what we want
+    for (i = 0; i < nrofctrlpoints; i++) {
+      if (i > 0) { printf(", "); }
+      cc_string_sprintf(&tmp, "%f %f %f", control[i*3 + 0], control[i*3 + 1], control[i*3 + 2]);
+      cc_string_append_string(&s, &tmp);
+    }
+#else // just dump the first and last entries
+    cc_string_sprintf(&tmp, "%f %f %f, ...suppressed..., %f %f %f",
+                      control[0], control[1], control[2],
+                      control[(nrofctrlpoints - 1) * 3 + 0],
+                      control[(nrofctrlpoints - 1) * 3 + 1],
+                      control[(nrofctrlpoints - 1) * 3 + 2]);
+    cc_string_append_string(&s, &tmp);
+#endif
+    cc_string_append_text(&s, "'\n");
+  }
+
+  cc_debugerror_postinfo("GLUWrapper_gluNurbsSurface", "%s", cc_string_get_text(&s));
+  cc_string_clean(&s);
+  cc_string_clean(&tmp);
+
+  GLUWrapper()->gluNurbsSurface_in_GLU(nurb,
+                                       sKnotCount, sKnots,
+                                       tKnotCount, tKnots,
+                                       sStride, tStride,
+                                       control,
+                                       sOrder, tOrder,
+                                       type);
+}
+
+/* ******************************************************************** */
+
 /* Implemented by using the singleton pattern. */
 const GLUWrapper_t *
 GLUWrapper(void)
@@ -274,6 +386,17 @@ GLUWrapper(void)
       GLU_failed_to_load = 1;
       goto wrapperexit;
     }
+
+    if (debug()) {
+      if (GLU_failed_to_load) {
+        cc_debugerror_postinfo("GLUWrapper", "found no GLU library on system");
+      }
+      else {
+        cc_debugerror_postinfo("GLUWrapper",
+                               "Dynamically loaded GLU library as '%s'.",
+                               possiblelibnames[idx-1]);
+      }
+    }
   }
 
 #endif /* !GLU_IS_PART_OF_GL */
@@ -335,6 +458,17 @@ GLUWrapper(void)
     gi->gluScaleImage = GLUWrapper_gluScaleImage;
   if (gi->gluGetString == NULL) /* Was missing in GLU v1.0. */
     gi->gluGetString = GLUWrapper_gluGetString;
+
+  /* Makes it possible to place a debugging "filter" in front of the
+     gluNurbsSurface() function to dump the input arguments as debug
+     output. Useful for debugging NURBS problems. */
+  {
+    const char * env = coin_getenv("COIN_DEBUG_GLUNURBSSURFACE");
+    if (env && (atoi(env) > 0)) {
+      gi->gluNurbsSurface_in_GLU = gi->gluNurbsSurface;
+      if (gi->gluNurbsSurface != NULL) { gi->gluNurbsSurface = GLUWrapper_gluNurbsSurface; }
+    }
+  }
 
   /* Parse the version string once and expose the version numbers
      through the GLUWrapper API.
