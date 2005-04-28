@@ -40,6 +40,8 @@
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -49,7 +51,9 @@
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/SbColor4f.h>
 #include <string.h>
 #include <assert.h>
 
@@ -83,7 +87,9 @@ class SoReorganizeActionP {
   SbList <SbBool> needtexcoords;
   int lastneeded;
   int numtriangles;
-  
+  SbBool hastexture;
+  SbColor4f diffusecolor;
+
   SoCallbackAction cbaction;
   SoSearchAction sa;
   SoPrimitiveVertexCache * pvcache;
@@ -287,6 +293,8 @@ SoReorganizeActionP::triangle_cb(void * userdata, SoCallbackAction * action,
     if (thisp->initShape(action)) {
       assert(thisp->pvcache == NULL);
       thisp->pvcache = new SoPrimitiveVertexCache(action->getState());
+      thisp->pvcache->ref();
+
     }
   }
 
@@ -302,8 +310,12 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
   SoState * state = action->getState();
   SbBool canrenderasvertexarray = TRUE;
 
+  unsigned int shapeflags = SoShapeStyleElement::get(state)->getFlags();
+
   SbBool texture0enabled =
     SoTextureEnabledElement::get(state) != FALSE;
+
+  this->hastexture = texture0enabled;
 
   int lastenabled;
   const SbBool * enabledunits = 
@@ -312,7 +324,16 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
   this->needtexcoords.truncate(0);
   this->needtexcoords.append(FALSE);
 
-  if (texture0enabled) {
+  if (shapeflags & 
+      (SoShapeStyleElement::BUMPMAP|
+       SoShapeStyleElement::BBOXCMPLX|
+       SoShapeStyleElement::INVISIBLE|
+       SoShapeStyleElement::BIGIMAGE)) {
+    canrenderasvertexarray = FALSE;
+  }
+
+
+  if (canrenderasvertexarray && texture0enabled) {
     const SoTextureCoordinateElement * celem =
       (const SoTextureCoordinateElement *) SoTextureCoordinateElement::getInstance(state);
     switch (celem->getType()) {
@@ -337,6 +358,12 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
     for (int i = 1; i <= lastenabled; i++) {
       this->needtexcoords.append(FALSE);
       if (enabledunits[i]) {
+        // FIXME: multitexturing is not supported yet, since it's not
+        // supported by SoVertexProperty. We might fix this later by
+        // inserting new nodes though. pederb, 2005-04-28
+        canrenderasvertexarray = FALSE; 
+
+        this->hastexture = TRUE;
         switch (melem->getType(i)) {
         case SoTextureCoordinateElement::DEFAULT:
         case SoTextureCoordinateElement::EXPLICIT:
@@ -355,14 +382,93 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
       }
     }
   }
+
+  if (canrenderasvertexarray) {
+    SbColor diffuse = SoLazyElement::getDiffuse(state, 0);
+    float transp = SoLazyElement::getTransparency(state, 0); 
+    this->diffusecolor = SbColor4f(diffuse, 1.0f - transp);
+  }
+
   return canrenderasvertexarray;
 }
 
 void 
 SoReorganizeActionP::replaceNode(SoFullPath * path)
 {
-  if (this->pvcache) {
+  if (this->pvcache == NULL) return;
+
+  if (this->pvcache->colorPerVertex()) {
+    // color-per-vertex not supported yet because of endian issues
     this->pvcache->unref();
     this->pvcache = NULL;
+    return;
   }
+
+  SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
+  SoVertexProperty * vp = new SoVertexProperty;
+  vp->normalBinding = SoVertexProperty::PER_VERTEX_INDEXED;
+  vp->materialBinding = SoVertexProperty::OVERALL;
+  vp->orderedRGBA = this->diffusecolor.getPackedValue();
+  ifs->ref();
+  ifs->vertexProperty = vp;
+  
+  int numv = this->pvcache->getNumVertices();
+
+  if (this->hastexture) {
+    vp->texCoord.setNum(numv);
+    SbVec2f * dst = vp->texCoord.startEditing();
+    const SbVec4f * src = this->pvcache->getTexCoordArray();
+    
+    for (int i = 0; i < numv; i++) {
+      SbVec4f tmp = src[i];
+      if (tmp[3] != 0.0f) {
+        tmp[0] /= tmp[3];
+        tmp[1] /= tmp[3];
+      }
+      dst[i][0] = tmp[0];
+      dst[i][1] = tmp[1];
+    }
+    vp->texCoord.finishEditing();
+  }
+
+  vp->materialBinding = SoVertexProperty::OVERALL;
+  vp->vertex.setValues(0, numv,
+                       this->pvcache->getVertexArray());
+  vp->normal.setValues(0, numv,
+                       this->pvcache->getNormalArray());
+  
+  ifs->normalIndex.setNum(0);
+  ifs->materialIndex.setNum(0);
+  ifs->textureCoordIndex.setNum(0);
+  
+  int numtri = this->pvcache->getNumIndices() / 3;
+  const int32_t * indices = this->pvcache->getIndices();
+  ifs->coordIndex.setNum(numtri * 4);
+  int32_t * ptr = ifs->coordIndex.startEditing();
+
+  for (int i = 0; i < numtri; i++) {
+    *ptr++ = indices[i*3];
+    *ptr++ = indices[i*3+1];
+    *ptr++ = indices[i*3+2];
+    *ptr++ = -1;
+  }
+  ifs->coordIndex.finishEditing();
+  
+  SoNode * parent = path->getNodeFromTail(1);
+  int idx = path->getIndexFromTail(0);
+    
+  path->pop();
+  if (parent->isOfType(SoGroup::getClassTypeId())) {
+    SoGroup * g = (SoGroup*)parent;
+    g->replaceChild(idx, ifs);
+  }
+  else if (parent->isOfType(SoVRMLShape::getClassTypeId())) {
+    SoVRMLShape * vs = (SoVRMLShape*) parent;
+    vs->geometry = ifs;
+  }
+  path->push(idx);
+  ifs->unrefNoDelete();
+
+  this->pvcache->unref();
+  this->pvcache = NULL;
 }
