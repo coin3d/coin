@@ -384,10 +384,9 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     v.rgba[3] = col&0xff;
 
     SoDetail * d = (SoDetail*) vp[i]->getDetail();
-
-    if (d && d->isOfType(SoFaceDetail::getClassTypeId())) {
+    
+    if (d && d->isOfType(SoFaceDetail::getClassTypeId()) && pointdetailidx) {
       SoFaceDetail * fd = (SoFaceDetail*) d;
-      assert(pointdetailidx != NULL);
       assert(pointdetailidx[i] < fd->getNumPoints());
 
       SoPointDetail * pd = (SoPointDetail*)
