@@ -272,6 +272,8 @@ SoBumpMap::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoBumpMap, SO_FROM_COIN_2_2);
 
   SO_ENABLE(SoGLRenderAction, SoBumpMapElement);
+  SO_ENABLE(SoCallbackAction, SoBumpMapElement);
+  SO_ENABLE(SoRayPickAction, SoBumpMapElement);
 }
 
 
@@ -353,7 +355,18 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
 void
 SoBumpMap::doAction(SoAction * action)
 {
-  // will be implemented when (if) more actions support SoBumpMap.
+  SoState * state = action->getState();
+
+  int nc;
+  SbVec2s size;
+  const unsigned char * bytes = this->image.getValue(size, nc);
+  
+  if (bytes && size != SbVec2s(0,0)) {
+    SoShapeStyleElement::setBumpmapEnabled(state, TRUE);
+  }
+  else {
+    SoShapeStyleElement::setBumpmapEnabled(state, FALSE);
+  }
 }
 
 // doc from parent
@@ -368,8 +381,7 @@ SoBumpMap::callback(SoCallbackAction * action)
 void
 SoBumpMap::rayPick(SoRayPickAction * action)
 {
-  // not supported for SoRayPickAction yet
-  // SoBumpMap::doAction(action);
+  SoBumpMap::doAction(action);
 }
 
 // Documented in superclass. Overridden to detect when fields change.

@@ -52,6 +52,8 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 
 
@@ -91,13 +93,16 @@ SoBumpMapCoordinate::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoBumpMapCoordinate, SO_FROM_COIN_2_2);
 
   SO_ENABLE(SoGLRenderAction, SoBumpMapCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoBumpMapCoordinateElement);
+  SO_ENABLE(SoPickAction, SoBumpMapCoordinateElement);
 }
 
 // Doc from superclass.
 void
 SoBumpMapCoordinate::doAction(SoAction * action)
 {
-  // only SoGLRenderAction has activated the element for now
+  SoBumpMapCoordinateElement::set(action->getState(), this,
+                                  point.getNum(), point.getValues(0));
 }
 
 // Doc from superclass.
