@@ -750,7 +750,6 @@ struct cc_glglue {
   SbBool has_arb_shader_objects;
   SbBool has_texture_env_combine;
 
-
   int max_lights;
   float line_width_range[2];
   float point_size_range[2];
@@ -786,6 +785,9 @@ int coin_glglue_extension_available(const char * extensions, const char * ext);
 void coin_apply_normalization_cube_map(const cc_glglue * glue);
 
 /* ********************************************************************** */
+
+/* ARB_shader_objects */
+SbBool cc_glglue_has_arb_shader_objects(const cc_glglue * glue);
 
 #ifdef __cplusplus
 }
