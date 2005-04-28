@@ -3187,6 +3187,14 @@ cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
   glue->glGetFinalCombinerInputParameterivNV(variable, pname, params);
 }
 
+/* ARB_shader_objects */
+SbBool
+cc_glglue_has_arb_shader_objects(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_arb_shader_objects;
+}
+
 
 /* ARB_fragment_program functions */
 SbBool
