@@ -38,6 +38,9 @@
 
 #include "CoinStaticObjectInDLL.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -46,9 +49,12 @@
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
 
+#include <Inventor/SbTime.h>
+
 // *************************************************************************
 
 void * CoinStaticObjectInDLL::mutexhandle = NULL;
+CoinStaticObjectInDLL * CoinStaticObjectInDLL::singleton = NULL;
 
 // *************************************************************************
 
@@ -88,8 +94,30 @@ static CoinStaticObjectInDLL dllobject;
 
 // *************************************************************************
 
+static SbBool
+debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = getenv("COIN_DEBUG_STATICOBJECT");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
+// *************************************************************************
+
 CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
 {
+  // Can't use SoDebugError, as nothing has been initialized yet.
+  if (debug()) {
+    printf("%p %f CoinStaticObjectInDLL constructor\n",
+           this, SbTime::getTimeOfDay().getValue());
+  }
+
+  assert(CoinStaticObjectInDLL::singleton == NULL);
+  CoinStaticObjectInDLL::singleton = this;
+
   if (!CoinStaticObjectInDLL::activateMutex()) {
     MessageBox(NULL,
                "Detected two instances of the Coin library in the same\n"
@@ -126,6 +154,11 @@ CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
 
 CoinStaticObjectInDLL::~CoinStaticObjectInDLL()
 {
+  if (debug()) {
+    printf("%p %f CoinStaticObjectInDLL destructor\n",
+           this, SbTime::getTimeOfDay().getValue());
+  }
+
   // Wrap in if-check, since the mutex would usually be deallocated
   // from CoinStaticObjectInDLL::init(). This doesn't always happen,
   // though, as a Coin DLL can be loaded and then unloaded without
@@ -135,12 +168,21 @@ CoinStaticObjectInDLL::~CoinStaticObjectInDLL()
   if (CoinStaticObjectInDLL::mutexhandle) {
     CoinStaticObjectInDLL::deactivateMutex();
   }
+
+  assert(CoinStaticObjectInDLL::singleton);
+  CoinStaticObjectInDLL::singleton = NULL;
 }
 
 // Called from SoDB::init().
 void
 CoinStaticObjectInDLL::init(void)
 {
+  if (debug()) {
+    printf("%p %f CoinStaticObjectInDLL::init()\n",
+           CoinStaticObjectInDLL::singleton,
+           SbTime::getTimeOfDay().getValue());
+  }
+
   // Program control has been handed over to actual program code at
   // this point, so we take away the mutex again -- the check should
   // have hit by now if two Coin DLLs were loaded.
@@ -160,6 +202,13 @@ CoinStaticObjectInDLL::init(void)
 SbBool
 CoinStaticObjectInDLL::activateMutex(void)
 {
+  if (debug()) {
+    printf("%p %f CoinStaticObjectInDLL::activateMutex(), mutexname=='%s'\n",
+           CoinStaticObjectInDLL::singleton,
+           SbTime::getTimeOfDay().getValue(),
+           CoinStaticObjectInDLL::mutexName().getString());
+  }
+
   assert(CoinStaticObjectInDLL::mutexhandle == NULL);
 
   SetLastError(0); // so we don't react to an old error for the check below
@@ -175,6 +224,13 @@ CoinStaticObjectInDLL::activateMutex(void)
 void
 CoinStaticObjectInDLL::deactivateMutex(void)
 {
+  if (debug()) {
+    printf("%p %f CoinStaticObjectInDLL::deactivateMutex(), handle==%p\n",
+           CoinStaticObjectInDLL::singleton,
+           SbTime::getTimeOfDay().getValue(),
+           CoinStaticObjectInDLL::mutexhandle);
+  }
+
   assert(CoinStaticObjectInDLL::mutexhandle);
 
   // FIXME: kintel has reported that he's seen ReleaseMutex() cause a

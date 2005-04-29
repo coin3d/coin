@@ -50,6 +50,7 @@ private:
   static void deactivateMutex(void);
   static SbString mutexName(void);
   static void * mutexhandle;
+  static CoinStaticObjectInDLL * singleton;
 };
 
 // *************************************************************************
