@@ -571,10 +571,10 @@ int
 SoWriterefCounter::addReference(const SoBase * base)
 {
   if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
-  int id = PRIVATE(this)->nextreferenceid++;
+  const int id = PRIVATE(this)->nextreferenceid++;
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
-  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)id);
+  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)(intptr_t)id);
   return id;
 }
 
@@ -599,7 +599,7 @@ void
 SoWriterefCounter::setReference(const SoBase * base, int refid)
 {
   if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
-  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)refid);
+  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)(intptr_t)refid);
 }
 
 void

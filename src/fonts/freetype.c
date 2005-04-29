@@ -1175,7 +1175,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
         
     cc_list_truncate(flwft_tessellator.edgeindexlist, 
                      cc_list_get_length(flwft_tessellator.edgeindexlist)-1);
-    cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.edge_start_vertex));
+    cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.edge_start_vertex);
   }
 
   GLUWrapper()->gluTessEndPolygon(flwft_tessellator.tessellator_object);  
@@ -1222,7 +1222,7 @@ flwft_addTessVertex(double * vertex)
   point[1] = flwft_tessellator.vertex_scale * ((float) vertex[1]) / 64.0f;
   cc_list_append(flwft_tessellator.vertexlist, point);
 
-  cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
+  cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.vertex_counter);
 
   counter = (int *) malloc(sizeof(int));
   cc_list_append(flwft_tessellator.malloclist, counter); /* to avoid mem leaks */
@@ -1230,7 +1230,7 @@ flwft_addTessVertex(double * vertex)
   GLUWrapper()->gluTessVertex(flwft_tessellator.tessellator_object, vertex, counter);
 
 
-  cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
+  cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.vertex_counter);
   
 }
 
@@ -1243,7 +1243,7 @@ flwft_moveToCallback(FT_Vector * to, void * user)
     GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);    
     cc_list_truncate(flwft_tessellator.edgeindexlist, 
                      cc_list_get_length(flwft_tessellator.edgeindexlist)-1);
-    cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.edge_start_vertex));
+    cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.edge_start_vertex);
   }
 
   flwft_tessellator.last_vertex.x = to->x;
@@ -1445,11 +1445,11 @@ flwft_vertexCallback(GLvoid * data)
        platform. A special cc_list for integers would be a good
        solution (Reported by mortene). (20030914 handegar) */
     cc_list_append(flwft_tessellator.faceindexlist, 
-                   (void *) flwft_tessellator.triangle_indices[0]);  
+                   (void *)(intptr_t)flwft_tessellator.triangle_indices[0]);
     cc_list_append(flwft_tessellator.faceindexlist, 
-                   (void *) flwft_tessellator.triangle_indices[1]);  
+                   (void *)(intptr_t)flwft_tessellator.triangle_indices[1]);
     cc_list_append(flwft_tessellator.faceindexlist, 
-                   (void *) flwft_tessellator.triangle_indices[2]);  
+                   (void *)(intptr_t)flwft_tessellator.triangle_indices[2]);
     
    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
       flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
