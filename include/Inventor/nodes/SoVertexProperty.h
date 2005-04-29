@@ -30,6 +30,8 @@
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoSFEnum.h>
 
+class SoVertexPropertyP;
+
 class COIN_DLL_API SoVertexProperty : public SoNode {
   typedef SoNode inherited;
 
@@ -70,8 +72,7 @@ protected:
   virtual void notify(SoNotList *list);
 
 private:
-  SbBool transparent;
-  SbBool checktransparent;
+  SoVertexPropertyP * pimpl;
 };
 
 #ifndef COIN_INTERNAL

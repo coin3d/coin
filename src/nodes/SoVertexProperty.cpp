@@ -176,6 +176,18 @@
   \sa SoMaterialBinding
 */
 
+class SoVertexPropertyP {
+ public:
+  SoVertexPropertyP(SoVertexProperty * master) : master(master) {
+    this->checktransparent = FALSE;
+    this->transparent = FALSE;
+  }
+  SoVertexProperty * master;
+  SbBool transparent;
+  SbBool checktransparent;
+};
+
+#define PRIVATE(obj) obj->pimpl
 
 SO_NODE_SOURCE(SoVertexProperty);
 
@@ -184,6 +196,8 @@ SO_NODE_SOURCE(SoVertexProperty);
 */
 SoVertexProperty::SoVertexProperty(void)
 {
+  PRIVATE(this) = new SoVertexPropertyP(this);
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
   SO_NODE_ADD_FIELD(vertex, (0));
@@ -202,6 +216,13 @@ SoVertexProperty::SoVertexProperty(void)
   this->normal.setNum(0);
   this->orderedRGBA.setNum(0);
 
+
+  this->vertex.setDefault(TRUE);
+  this->texCoord.setDefault(TRUE);
+  this->texCoord3.setDefault(TRUE);
+  this->normal.setDefault(TRUE);
+  this->orderedRGBA.setDefault(TRUE);
+
   SO_NODE_ADD_FIELD(normalBinding, (SoVertexProperty::PER_VERTEX_INDEXED));
   SO_NODE_ADD_FIELD(materialBinding, (SoVertexProperty::OVERALL));
 
@@ -216,8 +237,6 @@ SoVertexProperty::SoVertexProperty(void)
   SO_NODE_SET_SF_ENUM_TYPE(normalBinding, Binding);
   SO_NODE_SET_SF_ENUM_TYPE(materialBinding, Binding);
 
-  this->checktransparent = FALSE;
-  this->transparent = FALSE;
 }
 
 /*!
@@ -225,6 +244,7 @@ SoVertexProperty::SoVertexProperty(void)
 */
 SoVertexProperty::~SoVertexProperty()
 {
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -288,13 +308,13 @@ SoVertexProperty::doAction(SoAction *action)
 
   SbBool glrender = action->isOfType(SoGLRenderAction::getClassTypeId());
 
-  if (this->checktransparent) {
-    this->checktransparent = FALSE;
-    this->transparent = FALSE;
+  if (PRIVATE(this)->checktransparent) {
+    PRIVATE(this)->checktransparent = FALSE;
+    PRIVATE(this)->transparent = FALSE;
     int n = this->orderedRGBA.getNum();
     for (int i = 0; i < n; i++) {
       if ((this->orderedRGBA[i] & 0xff) != 0xff) {
-        this->transparent = TRUE;
+        PRIVATE(this)->transparent = TRUE;
         break;
       }
     }
@@ -345,7 +365,7 @@ SoVertexProperty::doAction(SoAction *action)
     
     SoLazyElement::setPacked(state, this, this->orderedRGBA.getNum(),
                              this->orderedRGBA.getValues(0),
-                             this->transparent);
+                             PRIVATE(this)->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -389,7 +409,7 @@ SoVertexProperty::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();
   if (f == &this->orderedRGBA) {
-    this->checktransparent = TRUE;
+    PRIVATE(this)->checktransparent = TRUE;
   }
   inherited::notify(list);
 }
