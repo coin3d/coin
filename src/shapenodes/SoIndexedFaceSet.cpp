@@ -519,7 +519,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     const cc_glglue * glue = sogl_glue_instance(state);
     
     cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
-                              (GLvoid*) coords->is3D() ? ((GLvoid*)coords->getArrayPtr3()) : ((GLvoid*)coords->getArrayPtr4()));
+                              coords->is3D() ? ((const GLvoid *)coords->getArrayPtr3()) : ((const GLvoid *)coords->getArrayPtr4()));
     cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
     
     const SoTextureCoordinateElement * telem = NULL;
