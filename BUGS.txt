@@ -4589,4 +4589,10 @@ main(void)
 
     20050427 mortene.
 
+    UPDATE 20050429 mortene: I know why it happens; the va_list
+    argument is attempted iterated over multiple times, without any
+    intervening "restart" (i.e. va_end() + va_start()) inbetween
+    va_arg() calls (which are made from vsnprintf(), called from
+    coin_vsnprintf, which again is called from cc_string_vsprintf()).
+
 =====================================================================
