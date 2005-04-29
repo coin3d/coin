@@ -413,3 +413,5 @@ SoVertexProperty::notify(SoNotList *list)
   }
   inherited::notify(list);
 }
+
+#undef PRIVATE
