@@ -314,12 +314,14 @@
   any of the other Coin classes.
 */
 
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <stdarg.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
-#include <stdlib.h>
-#include <assert.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
@@ -413,6 +415,8 @@ public:
 // Private data class.
 class SoDBP {
 public:
+  static void variableArgsSanityCheck(void);
+
   static void clean(void);
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
   static void listWin32ProcessModules(void);
@@ -447,6 +451,60 @@ int SoDBP::notificationcounter = 0;
 SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
 
 // *************************************************************************
+// A sanity check. Invoked from SoDB::init() below.
+//
+// This checks that the undefined behaviour of the system's
+// vsnprintf() works the way we need it to, even when the (C99)
+// va_copy() macro is not available on the system.
+
+static void
+forward_sprintf(char * dst, unsigned int realdstlen, const char * fmtstr, ...)
+{
+  va_list args;
+  va_start(args, fmtstr);
+
+  // This first call is just to get one invocation of va_arg() done
+  // from the system's vsnprintf().
+  int len = coin_vsnprintf(dst, strlen(fmtstr) - 1, fmtstr, args);
+  assert(len == -1);
+
+  // The next call is made to see whether or not additional
+  // invocations of vsnprintf() on the system without an intervening
+  // va_start()/va_end() pair will cause va_arg() to start picking up
+  // arguments after the end of the actual argument list.
+  len = coin_vsnprintf(dst, realdstlen, fmtstr, args);
+  assert(len != -1);
+
+  va_end(args);
+}
+
+void
+SoDBP::variableArgsSanityCheck(void)
+{
+  const char * fmtstr = "abc%s";
+  char block[128];
+
+  // Notice that there's only a single "%s" in the format string, but
+  // we pass in *two* string arguments to test whether or not the last
+  // will be erroneously used.
+  forward_sprintf(block, sizeof(block) - 1, fmtstr, "-XXX", "-YYY");
+
+  if (strcmp(block, "abc-XXX") == 0) { return; } // all ok
+
+  // Make sure the test itself is correct.
+  assert((strcmp(block, "abc-YYY") == 0) && "variable args sanity check bogus");
+
+  // SoDebugError not initialized yet, so use printf().
+  (void)printf("Coin " COIN_VERSION ": Sanity Check Report\n\n");
+  (void)printf("This system's vsnprintf() has a variable argument\n"
+               "invocation which is not working properly with Coin.\n\n"
+               "Application will continue to run, but be aware that this\n"
+               "problem could cause obscure bugs.\n\n"
+               "Please report this problem to <coin-support@coin3d.org>\n"
+               "for further assistance.\n\n");
+}
+
+// *************************************************************************
 
 /*!
   Initialize the Coin system. This needs to be done as the first
@@ -469,9 +527,14 @@ SoDB::init(void)
   // probable bug in the Intel compiler.
   assert(SoNode::getClassTypeId() == SoType::badType() && "Data init failed! Get in touch with maintainers at <coin-support@coin3d.org>");
 
-  // Sanity check: if anything here breaks, either
-  // include/Inventor/system/inttypes.h.in or the bitwidth define
-  // configure tests need fixing. Keep these tests around.
+  // If we have va_copy(), our variable argument handling in
+  // coin_vsnprintf() is not dependent on any undefined behaviour.
+#ifndef HAVE_VA_COPY_MACRO
+  // Sanity check. Must be done early, as e.g.  SoDebugError::post*()
+  // may fail if there are problems.
+  SoDBP::variableArgsSanityCheck();
+#endif // HAVE_VA_COPY_MACRO
+
 
 #ifdef HAVE_THREADS
   // initialize thread system first
@@ -499,15 +562,19 @@ SoDB::init(void)
   // inconsistencies are found.
   SoError::initClasses();
 
+
+  // OBSOLETED asserts for 1.0 release. We should be ok. FIXME: I can
+  // only think of possibilities for problems in the binary .iv import
+  // and export code. 20010308 mortene.
+#if 0
+  // Sanity checks: if anything here breaks, either
+  // include/Inventor/system/inttypes.h.in or the bitwidth define
+  // configure tests need fixing. Keep these tests around.
+
   // Sanity check: if the int type is not equal to 32 bits everything
   // probably goes to hell. FIXME: remove this check when we are no
   // longer dependent on using native C types where we need to have a
   // particular bitwidth.
-
-#if 0
-  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
-  // only think of possibilities for problems in the binary .iv import
-  // and export code. 20010308 mortene.
   assert(sizeof(int) == 4);
 
   if (sizeof(int) != 4) {
@@ -515,17 +582,10 @@ SoDB::init(void)
                               "sizeof(int) != 4 "
                               "(Coin not tested on this platform)");
   }
-#endif
-
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
   // to use the int16_t type, then we can remove this stoopid check.
-
-#if 0
-  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
-  // only think of possibilities for problems in the binary .iv import
-  // and export code. 20010308 mortene.
   assert(sizeof(short) == 2);
 
   if (sizeof(short) != 2) {
@@ -533,17 +593,9 @@ SoDB::init(void)
                               "sizeof(short) != 2 "
                               "(Coin not tested on this platform)");
   }
-#endif
-
 
   // Sanity check: if the int type is unequal to the long type, things
   // could break -- but probably not.
-
-  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
-  // only think of possibilities for problems in the binary .iv import
-  // and export code. 20010308 mortene.
-
-#if 0
   assert(sizeof(int) == sizeof(long));
 
   if (sizeof(int) != sizeof(long)) {
@@ -551,7 +603,7 @@ SoDB::init(void)
                               "sizeof(int) != sizeof(long) "
                               "(Coin not tested on this platform)");
   }
-#endif
+#endif // OBSOLETED sanity checks
 
   SoInput::init();
   SoBase::initClass();

@@ -874,10 +874,24 @@ SIM_AC_COMPILER_NOBOOL([
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 # **************************************************************************
+# Check for various system specifics.
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_AC_CHECK_NPRINTF
 
+# C99 va_copy() available?
+AC_MSG_CHECKING([for va_copy() stdarg macro])
+AC_TRY_LINK([#include <stdarg.h>
+             static void hepp(int dummy, ...) {
+             va_list l, c;
+             va_start(l, dummy); va_copy(c, l); va_end(c); va_end(l); }
+            ],
+            [hepp(0, 1, 2); ],
+  [AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_VA_COPY_MACRO], 1, [Define to use va_copy() when available])],
+  [AC_MSG_RESULT([no])])
+
+# How to string quote.
 SIM_AC_CHECK_MACRO_QUOTE([], [SIM_AC_ERROR([no-cpp-quoting])])
 if test x"$sim_ac_quote_hash" = xyes; then
   AC_DEFINE([HAVE_HASH_QUOTING],1,
@@ -1338,7 +1352,7 @@ AC_CACHE_CHECK([whether single-precision math functions are available],
 
 $sim_cv_func_singleprec_avail &&
   AC_DEFINE([HAVE_SINGLEPRECISION_MATH],1,
-    [define if single-precision math functions are avialable])
+    [define if single-precision math functions are available])
 
 
 
