@@ -233,16 +233,18 @@ CoinStaticObjectInDLL::deactivateMutex(void)
 
   assert(CoinStaticObjectInDLL::mutexhandle);
 
-  // FIXME: kintel has reported that he's seen ReleaseMutex() cause a
-  // crash with the previous code of this class, when running a Coin
-  // DLL inside an Internet Explorer plug-in. Should have this
-  // re-tested. (This function is invoked from SoDB::finish()).
-  // 20050422 mortene.
-
-  BOOL ok = ReleaseMutex((HANDLE)CoinStaticObjectInDLL::mutexhandle);
+  const BOOL ok = CloseHandle((HANDLE)CoinStaticObjectInDLL::mutexhandle);
   if (!ok) { // just in case
+    if (debug()) {
+      printf("%p %f CoinStaticObjectInDLL::deactivateMutex(), "
+             "ERROR: CloseHandle(%p) failed!\n",
+             CoinStaticObjectInDLL::singleton,
+             SbTime::getTimeOfDay().getValue(),
+             CoinStaticObjectInDLL::mutexhandle);
+    }
+
     MessageBox(NULL,
-               "ReleaseMutex() in CoinStaticObjectInDLL::deactivateMutex()\n"
+               "CloseHandle() in CoinStaticObjectInDLL::deactivateMutex()\n"
                "failed! Please report to <coin-support@coin3d.org>.\n",
                "Warning!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
   }
