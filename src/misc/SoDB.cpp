@@ -458,6 +458,10 @@ SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
 
+  // Releasing the mutex used for detecting multiple Coin instances in
+  // the process image.
+  CoinStaticObjectInDLL::init();
+
   // See systemsanity.icc
   SoDB_checkGCCBuiltinExpectSanity();
 
@@ -736,8 +740,6 @@ SoDB::init(void)
   // been initialized.
   env = coin_getenv("COIN_DEBUG_LISTMODULES");
   if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
-
-  CoinStaticObjectInDLL::init();
 
   SoDBP::isinitialized = TRUE;
 
