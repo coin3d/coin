@@ -504,26 +504,7 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
   SbBool expand;
 
   do {
-
-#ifdef HAVE_VA_COPY_MACRO
-   
-    /* The C99 va_copy() is available, so use that to help us "rewind"
-       the va_list between invocations. */
-
-    va_list argscopy;
-    va_copy(argscopy, args);
-    length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, argscopy);
-    va_end(argscopy);
-
-#else /* !HAVE_VA_COPY_MACRO */
-
-    /* No va_copy() available, so we just assume the system's
-       vsnprintf() to "rewind" the va_list after use. This assumption
-       is "sanity checked" from within SoDB::init(). */
     length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
-
-#endif /* !HAVE_VA_COPY_MACRO */
-
     expand = (length == -1);
     if ( expand ) {
       /* increase linearly in 1Kb intervals */

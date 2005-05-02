@@ -194,7 +194,21 @@ coin_common_vsnprintf(func_vsnprintf * func,
      infinite recursion. */
   if (debug) { printf("dst==%p, n==%u, fmtstr=='%s'\n", dst, n, fmtstr); }
 
+#ifdef HAVE_VA_COPY_MACRO
+  /* The C99 va_copy() is available, so use that to help us "rewind"
+     the va_list between invocations. */
+  {
+    va_list argscopy;
+    va_copy(argscopy, args);
+    length = (*func)(dst, (size_t)n, fmtstr, argscopy);
+    va_end(argscopy);
+  }
+#else /* !HAVE_VA_COPY_MACRO */
+  /* No va_copy() available, so we just assume the system's
+     vsnprintf() to "rewind" the va_list after use. This assumption is
+     "sanity checked" from within SoDB::init(). */
   length = (*func)(dst, (size_t)n, fmtstr, args);
+#endif /* !HAVE_VA_COPY_MACRO */
 
   if (debug) { printf("==> length==%d\n", length); }
 
@@ -335,9 +349,37 @@ nullfileptr(void)
 int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
-  int len = vfprintf(nullfileptr(), fmtstr, args);
+  int len;
+
+#ifdef HAVE_VA_COPY_MACRO
+
+  /* The C99 va_copy() is available, so use that to help us "rewind"
+     the va_list between invocations. */
+  {
+    va_list argscopy;
+
+    va_copy(argscopy, args);
+    len = vfprintf(nullfileptr(), fmtstr, argscopy);
+    va_end(argscopy);
+
+    if (((unsigned int) len + 1) > n) return -1;
+
+    va_copy(argscopy, args);
+    (void)vsprintf(dst, fmtstr, argscopy);
+    va_end(argscopy);
+  }
+
+#else /* !HAVE_VA_COPY_MACRO */
+
+  /* No va_copy() available, so we just assume the system's vfprintf()
+     to "rewind" the va_list after use. This assumption is "sanity
+     checked" from within SoDB::init(). */
+  len = vfprintf(nullfileptr(), fmtstr, args);
   if (((unsigned int) len + 1) > n) return -1;
   (void)vsprintf(dst, fmtstr, args);
+
+#endif /* !HAVE_VA_COPY_MACRO */
+
   return len;
 }
 #endif /* coin_vsnprintf() */

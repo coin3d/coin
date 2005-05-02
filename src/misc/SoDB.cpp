@@ -454,8 +454,9 @@ SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
 // A sanity check. Invoked from SoDB::init() below.
 //
 // This checks that the undefined behaviour of the system's
-// vsnprintf() works the way we need it to, even when the (C99)
-// va_copy() macro is not available on the system.
+// vsnprintf() works the way we need it to when the (C99) va_copy()
+// macro is not available on the system. See coin_vsnprintf() in
+// tidbits.c for more information.
 
 static void
 forward_sprintf(char * dst, unsigned int realdstlen, const char * fmtstr, ...)
@@ -527,13 +528,9 @@ SoDB::init(void)
   // probable bug in the Intel compiler.
   assert(SoNode::getClassTypeId() == SoType::badType() && "Data init failed! Get in touch with maintainers at <coin-support@coin3d.org>");
 
-  // If we have va_copy(), our variable argument handling in
-  // coin_vsnprintf() is not dependent on any undefined behaviour.
-#ifndef HAVE_VA_COPY_MACRO
   // Sanity check. Must be done early, as e.g.  SoDebugError::post*()
   // may fail if there are problems.
   SoDBP::variableArgsSanityCheck();
-#endif // HAVE_VA_COPY_MACRO
 
 
 #ifdef HAVE_THREADS
