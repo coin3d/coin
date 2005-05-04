@@ -507,6 +507,19 @@ SoDBP::variableArgsSanityCheck(void)
 
 // *************************************************************************
 
+// For sanity checking that our static variables in Coin has had a
+// chance to init themselves before the invocation of SoDB::init().
+//
+// At least under Windows, it is possible to force the compiler /
+// linker / system loader to init static application objects /
+// variables before the ones in DLLs. If this is done (as we have seen
+// with at least one external user), various hard-to-debug problems
+// may crop up.
+
+static uint32_t a_static_variable = 0xdeadbeef;
+
+// *************************************************************************
+
 /*!
   Initialize the Coin system. This needs to be done as the first
   thing before you start using the library, or you'll probably see an
@@ -515,6 +528,13 @@ SoDBP::variableArgsSanityCheck(void)
 void
 SoDB::init(void)
 {
+  // Sanity check that our static variables in Coin has had a chance
+  // to init themselves before the first invocation of this function
+  // happens. See above documentation on the variable for more
+  // information.
+  assert((a_static_variable == 0xdeadbeef) &&
+         "SoDB::init() called before Coin DLL initialization!");
+
   if (SoDB::isInitialized()) return;
 
   // Releasing the mutex used for detecting multiple Coin instances in
