@@ -2732,6 +2732,12 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
     20040427 mortene.
 
+    UPDATE 20050505 mortene: Colin Dunlop reported another effect of
+    this; fractured textures (i.e. SoTextureScalePolicy::policy set to
+    FRACTURE) will typically render in low quality. The fix outlined
+    above should also be the underpinning for taking care of this
+    problem.
+
 =====================================================================
 
 110 SoNodeKitListPart::getChildren()->truncate(0) causes mayhem.
