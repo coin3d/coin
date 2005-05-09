@@ -244,13 +244,13 @@ public:
     this->buffer = NULL;
     this->lastnodewasacamera = FALSE;
     
-    this->internaldata = NULL;
+    this->glcanvas = NULL;
 #ifdef HAVE_GLX
-    this->internaldata = new SoOffscreenGLXData();
+    this->glcanvas = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
-    this->internaldata = new SoOffscreenWGLData();
+    this->glcanvas = new SoOffscreenWGLData();
 #elif defined(HAVE_AGL)
-    this->internaldata = new SoOffscreenAGLData();
+    this->glcanvas = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
     if (glrenderaction) {
@@ -269,7 +269,7 @@ public:
   ~SoOffscreenRendererP()
   {
     if (this->didallocation) { delete this->renderaction; }
-    delete this->internaldata;
+    delete this->glcanvas;
   }
 
   static SbVec2s getMaxTileSize(void);
@@ -293,7 +293,7 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
-  class SoOffscreenInternalData * internaldata;
+  class SoOffscreenInternalData * glcanvas;
   unsigned char * buffer;
 
   int numsubscreens[2];
@@ -371,8 +371,8 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
-  if (PRIVATE(this)->internaldata) {
-    PRIVATE(this)->internaldata->destructingContext();
+  if (PRIVATE(this)->glcanvas) {
+    PRIVATE(this)->glcanvas->destructingContext();
   }
 
   delete[] PRIVATE(this)->buffer;
@@ -555,7 +555,7 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
 SbBool
 SoOffscreenRendererP::renderFromBase(SoBase * base)
 {
-  if (!this->internaldata) {
+  if (!this->glcanvas) {
     static SbBool first = TRUE;
     if (first) {
       SoDebugError::post("SoOffscreenRenderer::renderFromBase",
@@ -610,7 +610,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   const SbBool tiledrendering =
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
-  this->internaldata->setBufferSize(tiledrendering ? tilesize : regionsize);
+  this->glcanvas->setBufferSize(tiledrendering ? tilesize : regionsize);
 
   // contextid is the id used when rendering
   uint32_t contextid = this->renderaction->getCacheContext();
@@ -618,7 +618,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // is not allocated by us.
   const uint32_t oldcontext = contextid;
 
-  if (!this->internaldata->makeContextCurrent(oldcontext)) {
+  if (!this->glcanvas->makeContextCurrent(oldcontext)) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
                               "could not set up a current OpenGL context.");
     return FALSE;
@@ -715,7 +715,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 	 * UPDATE 2003-11-06 tamer: probably to keep me up for a whole night
          * debugging! *grmbl*
 	 */
-        if (!this->internaldata->makeContextCurrent(oldcontext)) {
+        if (!this->glcanvas->makeContextCurrent(oldcontext)) {
           SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
                                     "Could not set up a current OpenGL context.");
           return FALSE;
@@ -730,10 +730,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
         }
         
-        this->internaldata->postRender();
+        this->glcanvas->postRender();
 
-        const SbVec2s idsize = this->internaldata->getBufferSize();
-        const unsigned char * renderbuffer = this->internaldata->getBuffer();
+        const SbVec2s idsize = this->glcanvas->getBufferSize();
+        const unsigned char * renderbuffer = this->glcanvas->getBuffer();
 
         if (SoOffscreenRendererP::debug() &&
             SoOffscreenRendererP::debugTileOutputPrefix()) {
@@ -753,7 +753,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
 	 * as everything gets rendered the exact way as on the screen.
 	 * this should do the trick and is slightly more efficient:
-	 * this->pasteSubscreen(SbVec2s(x, y), this->internaldata->getBuffer());
+	 * this->pasteSubscreen(SbVec2s(x, y), this->glcanvas->getBuffer());
 	 * 20031106 tamer.
 	 */
         this->convertBuffer(renderbuffer, idsize[0], idsize[1],
@@ -788,30 +788,30 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
     }
     
-    this->internaldata->postRender();
+    this->glcanvas->postRender();
 
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
-    assert(dims[0] == this->internaldata->getBufferSize()[0]);
-    assert(dims[1] == this->internaldata->getBufferSize()[1]);
+    assert(dims[0] == this->glcanvas->getBufferSize()[0]);
+    assert(dims[1] == this->glcanvas->getBufferSize()[1]);
 
     /* FIXME: see FIXME above:
-     * memcpy(this->buffer, this->internaldata->getBuffer(),
+     * memcpy(this->buffer, this->glcanvas->getBuffer(),
      *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
      * or something more efficient. e.g. by using other opengl extensions
      * like render-to-texture. 20031106 tamer.
      */
-    this->convertBuffer(this->internaldata->getBuffer(), dims[0], dims[1],
+    this->convertBuffer(this->glcanvas->getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
   }
 
   // Restore old value.
   (void)SoGLBigImage::setChangeLimit(bigimagechangelimit);
 
-  this->internaldata->unmakeContextCurrent();
+  this->glcanvas->unmakeContextCurrent();
   // add contextid to the list of contextids used. If the user has set
   // the GLRenderAction, we might use several contextids in the same
   // context.
-  this->internaldata->addContextId(contextid);
+  this->glcanvas->addContextId(contextid);
 
   if (!this->didallocation) {
     this->renderaction->setCacheContext(oldcontext);
@@ -1015,7 +1015,7 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
 SbBool
 SoOffscreenRenderer::writeToRGB(FILE * fp) const
 {
-  if (!PRIVATE(this)->internaldata) { return FALSE; }
+  if (!PRIVATE(this)->glcanvas) { return FALSE; }
 
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
 
@@ -1095,7 +1095,7 @@ SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
-  if (!PRIVATE(this)->internaldata) { return FALSE;}
+  if (!PRIVATE(this)->glcanvas) { return FALSE;}
 
   const SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   const int nc = this->getComponents();
@@ -1425,7 +1425,7 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
     return FALSE;
   }
-  if (PRIVATE(this)->internaldata) {
+  if (PRIVATE(this)->glcanvas) {
     SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
     int comp = (int) this->getComponents();
     unsigned char * bytes = PRIVATE(this)->buffer;
