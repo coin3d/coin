@@ -33,7 +33,9 @@ RegularSources = \
 	SoLockManager.cpp \
 	SoAudioDevice.cpp \
 	AudioTools.cpp \
-	CoinStaticObjectInDLL.cpp
+	CoinStaticObjectInDLL.cpp \
+	CoinOffscreenGLCanvas.cpp
+
 LinkHackSources = \
 	all-misc-cpp.cpp
 PublicHeaders =
@@ -47,7 +49,7 @@ PrivateHeaders = \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
-	SoOffscreenInternalData.h \
+	CoinOffscreenGLCanvas.h \
 	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \

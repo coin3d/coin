@@ -1,5 +1,5 @@
-#ifndef COIN_SOOFFSCREENWGLDATA_H
-#define COIN_SOOFFSCREENWGLDATA_H
+#ifndef COIN_COINOFFSCREENGLCANVAS_H
+#define COIN_COINOFFSCREENGLCANVAS_H
 
 /**************************************************************************\
  *
@@ -30,28 +30,41 @@
 
 // *************************************************************************
 
-#include "CoinOffscreenGLCanvas.h"
-#include <Inventor/SbVec2f.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 // *************************************************************************
 
-class SoOffscreenWGLData : public CoinOffscreenGLCanvas {
+class CoinOffscreenGLCanvas {
 public:
-  SoOffscreenWGLData(void);
-  virtual ~SoOffscreenWGLData(); 
+  CoinOffscreenGLCanvas(void);
+  virtual ~CoinOffscreenGLCanvas();
 
-  static SbVec2f getResolution(void);
+  // Return FALSE if the necessary resources for rendering are not
+  // available.
+  virtual SbBool makeContextCurrent(uint32_t contextid) = 0;
+  virtual void unmakeContextCurrent(void) = 0;
+
+  virtual unsigned char * getBuffer(void) = 0;
+
   virtual void setBufferSize(const SbVec2s & size);
+  SbVec2s getBufferSize(void) const;
 
-  virtual SbBool makeContextCurrent(uint32_t contextid);
-  virtual void unmakeContextCurrent(void);
-  virtual unsigned char * getBuffer(void);
+  void addContextId(const uint32_t id);
+  void destructingContext(void);
+
+  void postRender(void);
+
+protected:
+  SbVec2s buffersize;
 
 private:
-  unsigned char * buffer;
-  void * context;
+  SbList<uint32_t> contextidused;
 };
 
 // *************************************************************************
 
-#endif // !COIN_SOOFFSCREENWGLDATA_H
+#endif // !COIN_COINOFFSCREENGLCANVAS_H

@@ -293,7 +293,7 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
-  class SoOffscreenInternalData * glcanvas;
+  class CoinOffscreenGLCanvas * glcanvas;
   unsigned char * buffer;
 
   int numsubscreens[2];

@@ -65,7 +65,7 @@ SoOffscreenWGLData::setBufferSize(const SbVec2s & size)
   // Avoid costly operations below if not really necessary.
   if (this->buffersize == size) { return; }
 
-  SoOffscreenInternalData::setBufferSize(size);
+  CoinOffscreenGLCanvas::setBufferSize(size);
   
   delete[] this->buffer;
   this->buffer =

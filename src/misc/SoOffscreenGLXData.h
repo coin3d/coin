@@ -30,13 +30,13 @@
 
 // *************************************************************************
 
-#include "SoOffscreenInternalData.h"
+#include "CoinOffscreenGLCanvas.h"
 #include <X11/Xlib.h>
 #include <Inventor/SbVec2f.h>
 
 // *************************************************************************
 
-class SoOffscreenGLXData : public SoOffscreenInternalData {
+class SoOffscreenGLXData : public CoinOffscreenGLCanvas {
 public:
   SoOffscreenGLXData(void);
   virtual ~SoOffscreenGLXData();
