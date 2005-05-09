@@ -29,20 +29,6 @@
 
 #include "SoOffscreenAGLData.h"
 
-
-SoOffscreenAGLData::SoOffscreenAGLData(void)
-{
-  this->buffer = NULL;
-  this->context = NULL;
-}
-
-SoOffscreenAGLData::~SoOffscreenAGLData() 
-{
-  if (this->context) cc_glglue_context_destruct(this->context);
-  delete[] this->buffer;
-}
-
-
 // Pixels-pr-mm.
 SbVec2f
 SoOffscreenAGLData::getResolution(void)
@@ -50,42 +36,6 @@ SoOffscreenAGLData::getResolution(void)
   SInt16 hr, vr;
   ScreenRes(&hr, &vr); 
   return SbVec2f((float)hr / 25.4f, (float)vr / 25.4f);
-}
-
-void 
-SoOffscreenAGLData::setBufferSize(const SbVec2s & size) 
-{
-  // Avoid costly operations below if not really necessary.
-  if (this->buffersize == size) { return; }
-
-  CoinOffscreenGLCanvas::setBufferSize(size);
-
-  delete[] this->buffer;
-  this->buffer =
-    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-
-  if (this->context) cc_glglue_context_destruct(this->context);
-  this->context = cc_glglue_context_create_offscreen(size[0], size[1]);
-}
-
-SbBool 
-SoOffscreenAGLData::makeContextCurrent(uint32_t contextid) 
-{
-  assert(this->buffer);
-  assert(this->context);
-  return cc_glglue_context_make_current(this->context);
-}
-
-unsigned char * 
-SoOffscreenAGLData::getBuffer(void) 
-{
-  return this->buffer;
-}
-
-void
-SoOffscreenAGLData::unmakeContextCurrent(void)
-{   
-  cc_glglue_context_reinstate_previous(this->context);
 }
 
 #endif // HAVE_AGL

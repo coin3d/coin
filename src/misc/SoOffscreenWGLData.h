@@ -31,25 +31,12 @@
 // *************************************************************************
 
 #include "CoinOffscreenGLCanvas.h"
-#include <Inventor/SbVec2f.h>
 
 // *************************************************************************
 
 class SoOffscreenWGLData : public CoinOffscreenGLCanvas {
 public:
-  SoOffscreenWGLData(void);
-  virtual ~SoOffscreenWGLData(); 
-
   static SbVec2f getResolution(void);
-  virtual void setBufferSize(const SbVec2s & size);
-
-  virtual SbBool makeContextCurrent(uint32_t contextid);
-  virtual void unmakeContextCurrent(void);
-  virtual unsigned char * getBuffer(void);
-
-private:
-  unsigned char * buffer;
-  void * context;
 };
 
 // *************************************************************************

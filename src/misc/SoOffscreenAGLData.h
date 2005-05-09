@@ -37,19 +37,8 @@
 // *************************************************************************
 
 class SoOffscreenAGLData : public CoinOffscreenGLCanvas {
-
 public:
-  SoOffscreenAGLData(void);
-  virtual ~SoOffscreenAGLData();
-  virtual void setBufferSize(const SbVec2s & size);
-  virtual SbBool makeContextCurrent(uint32_t contextid);
-  virtual void unmakeContextCurrent(void);
-  virtual unsigned char * getBuffer(void);
   static SbVec2f getResolution(void);
-
-private:
-  void * context;
-  unsigned char * buffer;
 };
 
 // *************************************************************************

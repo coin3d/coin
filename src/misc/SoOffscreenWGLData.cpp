@@ -29,19 +29,6 @@
 
 #include "SoOffscreenWGLData.h"
 
-
-SoOffscreenWGLData::SoOffscreenWGLData(void)
-{
-  this->buffer = NULL;
-  this->context = NULL;
-}
-
-SoOffscreenWGLData::~SoOffscreenWGLData() 
-{
-  if (this->context) cc_glglue_context_destruct(this->context);
-  delete[] this->buffer;
-}
-
 // Pixels-pr-mm.
 SbVec2f
 SoOffscreenWGLData::getResolution(void)
@@ -57,53 +44,6 @@ SoOffscreenWGLData::getResolution(void)
   (void)DeleteDC(devctx);
 
   return SbVec2f(resx / 25.4f, resy / 25.4f);
-}
-
-void 
-SoOffscreenWGLData::setBufferSize(const SbVec2s & size) 
-{
-  // Avoid costly operations below if not really necessary.
-  if (this->buffersize == size) { return; }
-
-  CoinOffscreenGLCanvas::setBufferSize(size);
-  
-  delete[] this->buffer;
-  this->buffer =
-    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-  
-  // just delete the old context. Don't create a new one yet.
-  if (this->context) {
-    cc_glglue_context_destruct(this->context);
-    this->context = NULL;
-  }
-}
-
-SbBool 
-SoOffscreenWGLData::makeContextCurrent(uint32_t contextid) 
-{
-  assert(this->buffer);
-  
-  if (this->context == NULL) {
-    this->context = cc_glglue_context_create_offscreen(this->buffersize[0], this->buffersize[1]);
-  }
-  if (this->context) {
-    return cc_glglue_context_make_current(this->context);
-  }
-  return FALSE;
-}
-
-unsigned char * 
-SoOffscreenWGLData::getBuffer(void) 
-{
-  return this->buffer;
-}
-
-void
-SoOffscreenWGLData::unmakeContextCurrent(void)
-{
-  if (this->context) {
-    cc_glglue_context_reinstate_previous(this->context);
-  }
 }
 
 #endif // HAVE_WGL

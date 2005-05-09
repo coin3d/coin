@@ -71,18 +71,6 @@ SoOffscreenGLXData::getDisplay(void)
   return SoOffscreenGLXData::display;
 }
 
-SoOffscreenGLXData::SoOffscreenGLXData(void)
-{
-  this->buffer = NULL;
-  this->context = NULL;
-}
-
-SoOffscreenGLXData::~SoOffscreenGLXData()
-{
-  if (this->context) cc_glglue_context_destruct(this->context);
-  delete[] this->buffer;
-}
-
 // Pixels-pr-mm.
 SbVec2f
 SoOffscreenGLXData::getResolution(void)
@@ -97,42 +85,6 @@ SoOffscreenGLXData::getResolution(void)
             ((float)DisplayHeight(d, s)) / ((float)DisplayHeightMM(d, s)));
 
   return r;
-}
-
-void
-SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
-{
-  // Avoid costly operations below if not really necessary.
-  if (this->buffersize == size) { return; }
-
-  CoinOffscreenGLCanvas::setBufferSize(size);
-
-  delete[] this->buffer;
-  this->buffer =
-    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-
-  if (this->context) cc_glglue_context_destruct(this->context);
-  this->context = cc_glglue_context_create_offscreen(size[0], size[1]);
-}
-
-SbBool
-SoOffscreenGLXData::makeContextCurrent(uint32_t contextid)
-{
-  assert(this->buffer);
-  assert(this->context);
-  return cc_glglue_context_make_current(this->context);
-}
-
-unsigned char *
-SoOffscreenGLXData::getBuffer(void)
-{
-  return this->buffer;
-}
-
-void
-SoOffscreenGLXData::unmakeContextCurrent(void)
-{
-  cc_glglue_context_reinstate_previous(this->context);
 }
 
 #endif // HAVE_GLX

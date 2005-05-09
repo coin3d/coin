@@ -43,14 +43,14 @@ public:
   CoinOffscreenGLCanvas(void);
   virtual ~CoinOffscreenGLCanvas();
 
-  // Return FALSE if the necessary resources for rendering are not
+  unsigned char * getBuffer(void) const;
+
+  // Returns FALSE if the necessary resources for rendering are not
   // available.
-  virtual SbBool makeContextCurrent(uint32_t contextid) = 0;
-  virtual void unmakeContextCurrent(void) = 0;
+  SbBool makeContextCurrent(uint32_t contextid);
+  void unmakeContextCurrent(void);
 
-  virtual unsigned char * getBuffer(void) = 0;
-
-  virtual void setBufferSize(const SbVec2s & size);
+  void setBufferSize(const SbVec2s & size);
   SbVec2s getBufferSize(void) const;
 
   void addContextId(const uint32_t id);
@@ -58,10 +58,11 @@ public:
 
   void postRender(void);
 
-protected:
-  SbVec2s buffersize;
-
 private:
+  SbVec2s buffersize;
+  void * context;
+  unsigned char * buffer;
+
   SbList<uint32_t> contextidused;
 };
 

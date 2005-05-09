@@ -28,10 +28,14 @@
 CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
 {
   this->buffersize = SbVec2s(0, 0);
+  this->buffer = NULL;
+  this->context = NULL;
 }
 
 CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 {
+  if (this->context) cc_glglue_context_destruct(this->context);
+  delete[] this->buffer;
 }
 
 // *************************************************************************
@@ -39,6 +43,9 @@ CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 void
 CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
 {
+  // Avoid costly operations below if not really necessary.
+  if (this->buffersize == size) { return; }
+
   if ((size[0] <= 0) || (size[1] <= 0)) {
     SoDebugError::post("CoinOffscreenGLCanvas::setBufferSize",
                        "invalid dimensions attempted set: <%d, %d> -- ignored",
@@ -47,12 +54,44 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
   }
 
   this->buffersize = size;
+
+  delete[] this->buffer;
+  this->buffer =
+    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+
+  if (this->context) cc_glglue_context_destruct(this->context);
+  this->context = NULL;
 }
+
 
 SbVec2s
 CoinOffscreenGLCanvas::getBufferSize(void) const
 {
   return this->buffersize;
+}
+
+// *************************************************************************
+
+SbBool 
+CoinOffscreenGLCanvas::makeContextCurrent(uint32_t contextid) 
+{
+  assert(this->buffer);
+  
+  if (this->context == NULL) {
+    this->context = cc_glglue_context_create_offscreen(this->buffersize[0],
+                                                       this->buffersize[1]);
+  }
+
+  if (this->context == NULL) { return FALSE; }
+
+  return cc_glglue_context_make_current(this->context);
+}
+
+void
+CoinOffscreenGLCanvas::unmakeContextCurrent(void)
+{
+  assert(this->context);
+  cc_glglue_context_reinstate_previous(this->context);
 }
 
 // *************************************************************************
@@ -83,6 +122,8 @@ CoinOffscreenGLCanvas::destructingContext(void)
     this->unmakeContextCurrent();
   }
 }
+
+// *************************************************************************
 
 void
 CoinOffscreenGLCanvas::postRender(void)
@@ -155,12 +196,19 @@ CoinOffscreenGLCanvas::postRender(void)
   // mortene.
 
   glFlush(); glFinish();
-  glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
-               this->getBuffer());
+  glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, this->buffer);
   glPixelStorei(GL_PACK_ALIGNMENT, 4);
   glFlush(); glFinish();
 
   glPopAttrib();
+}
+
+// *************************************************************************
+
+unsigned char *
+CoinOffscreenGLCanvas::getBuffer(void) const
+{
+  return this->buffer;
 }
 
 // *************************************************************************
