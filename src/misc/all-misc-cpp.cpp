@@ -40,6 +40,7 @@
 #include "SoOffscreenGLXData.cpp"
 #include "SoOffscreenAGLData.cpp"
 #include "SoOffscreenWGLData.cpp"
+#include "CoinOffscreenGLCanvas.cpp"
 #include "SoPath.cpp"
 #include "SoPickedPoint.cpp"
 #include "SoPrimitiveVertex.cpp"
