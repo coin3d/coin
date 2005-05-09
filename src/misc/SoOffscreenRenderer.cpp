@@ -231,17 +231,16 @@
 
 // *************************************************************************
 
-#define PRIVATE(p) (p->pimpl)
-#define PUBLIC(p) (p->master)
-
 class SoOffscreenRendererP {
 public:
-  SoOffscreenRendererP(SoOffscreenRenderer * masterptr) {
+  SoOffscreenRendererP(SoOffscreenRenderer * masterptr,
+                       const SbViewportRegion & vpr,
+                       SoGLRenderAction * glrenderaction = NULL)
+  {
     this->master = masterptr;
 
     this->backgroundcolor.setValue(0,0,0);
     this->components = SoOffscreenRenderer::RGB;
-    this->didallocaction = TRUE;
     this->buffer = NULL;
     this->lastnodewasacamera = FALSE;
     
@@ -253,9 +252,23 @@ public:
 #elif defined(HAVE_AGL)
     this->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
-  };
 
-  ~SoOffscreenRendererP() {
+    if (glrenderaction) {
+      this->renderaction = glrenderaction;
+    }
+    else {
+      this->renderaction = new SoGLRenderAction(vpr);
+      this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+      this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
+    }
+
+    this->didallocation = glrenderaction ? FALSE : TRUE;
+    this->viewport = vpr;
+  }
+
+  ~SoOffscreenRendererP()
+  {
+    if (this->didallocation) { delete this->renderaction; }
     delete this->internaldata;
   }
 
@@ -263,8 +276,6 @@ public:
 
   static SbBool debug(void);
   static const char * debugTileOutputPrefix(void);
-
-  SoOffscreenRenderer * master;
 
   static SoGLRenderAction::AbortCode GLRenderAbortCallback(void *userData);
   SbBool renderFromBase(SoBase * base);
@@ -281,7 +292,7 @@ public:
   SbColor backgroundcolor;
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
-  SbBool didallocaction;
+  SbBool didallocation;
   class SoOffscreenInternalData * internaldata;
   unsigned char * buffer;
 
@@ -296,7 +307,13 @@ public:
 
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
+
+private:
+  SoOffscreenRenderer * master;
 };
+
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
 
 // *************************************************************************
 
@@ -335,12 +352,7 @@ SoOffscreenRendererP::debugTileOutputPrefix(void)
 */
 SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion)
 {
-  PRIVATE(this) = new SoOffscreenRendererP(this);
-
-  PRIVATE(this)->renderaction = new SoGLRenderAction(viewportregion);
-  PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-  PRIVATE(this)->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
-  this->setViewportRegion(viewportregion);
+  PRIVATE(this) = new SoOffscreenRendererP(this, viewportregion);
 }
 
 /*!
@@ -350,14 +362,8 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 */
 SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 {
-  assert(action != NULL);
-
-  PRIVATE(this) = new SoOffscreenRendererP(this);
-
-  PRIVATE(this)->renderaction = action;
-  PRIVATE(this)->didallocaction = FALSE;
-
-  this->setViewportRegion(action->getViewportRegion());
+  PRIVATE(this) = new SoOffscreenRendererP(this, action->getViewportRegion(),
+                                           action);
 }
 
 /*!
@@ -370,8 +376,6 @@ SoOffscreenRenderer::~SoOffscreenRenderer()
   }
 
   delete[] PRIVATE(this)->buffer;
-
-  if (PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
 
   delete PRIVATE(this);
 }
@@ -494,9 +498,9 @@ SoOffscreenRenderer::getBackgroundColor(void) const
 void
 SoOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-  if (PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
+  if (PRIVATE(this)->didallocation) delete PRIVATE(this)->renderaction;
   PRIVATE(this)->renderaction = action;
-  PRIVATE(this)->didallocaction = FALSE;
+  PRIVATE(this)->didallocation = FALSE;
 }
 
 /*!
@@ -612,7 +616,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   uint32_t contextid = this->renderaction->getCacheContext();
   // oldcontext is used to restore the context id if the render action
   // is not allocated by us.
-  uint32_t oldcontext = this->renderaction->getCacheContext();
+  const uint32_t oldcontext = contextid;
 
   if (!this->internaldata->makeContextCurrent(oldcontext)) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
@@ -638,21 +642,29 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                this->backgroundcolor[2],
                0.0f);
 
-  if (!this->didallocaction) {
+  // FIXME: this is just bollocks. The cache context shouldn't be set
+  // or not upon whether we've allocated our own SoGLRenderAction or
+  // not -- it should be set to match the actual context we're
+  // rendering into. 20050509 mortene.
+  if (!this->didallocation) {
     contextid = SoGLCacheContextElement::getUniqueCacheContext();
     this->renderaction->setCacheContext(contextid);
   }
 
   // Make this large to get best possible quality on any "big-image"
   // textures (from using SoTextureScalePolicy).
+  //
+  // FIXME: this doesn't seem to be working, according to a report by
+  // Colin Dunlop. See bug item #108. 20050509 mortene.
   const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
 
-  // Deallocate old and allocate new target buffer.
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                         "fullsize==<%d, %d>", fullsize[0], fullsize[1]);
-#endif // debug
+  if (SoOffscreenRendererP::debug()) {
+    SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                           "fullsize==<%d, %d>, tilesize==<%d, %d>",
+                           fullsize[0], fullsize[1], tilesize[0], tilesize[1]);
+  }
 
+  // Deallocate old and allocate new target buffer.
   delete[] this->buffer;
   this->buffer = new unsigned char[fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents()];
 
@@ -801,7 +813,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // context.
   this->internaldata->addContextId(contextid);
 
-  if (!this->didallocaction) {
+  if (!this->didallocation) {
     this->renderaction->setCacheContext(oldcontext);
   }
 
