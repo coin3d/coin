@@ -207,6 +207,8 @@
 
 // *************************************************************************
 
+#include "CoinOffscreenGLCanvas.h"
+
 #ifdef HAVE_GLX
 #include "SoOffscreenGLXData.h"
 #endif // HAVE_GLX
@@ -244,14 +246,7 @@ public:
     this->buffer = NULL;
     this->lastnodewasacamera = FALSE;
     
-    this->glcanvas = NULL;
-#ifdef HAVE_GLX
-    this->glcanvas = new SoOffscreenGLXData();
-#elif defined(HAVE_WGL)
-    this->glcanvas = new SoOffscreenWGLData();
-#elif defined(HAVE_AGL)
-    this->glcanvas = new SoOffscreenAGLData();
-#endif // HAVE_AGL
+    this->glcanvas = new CoinOffscreenGLCanvas();
 
     if (glrenderaction) {
       this->renderaction = glrenderaction;
@@ -293,7 +288,7 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
-  class CoinOffscreenGLCanvas * glcanvas;
+  CoinOffscreenGLCanvas * glcanvas;
   unsigned char * buffer;
 
   int numsubscreens[2];
@@ -371,12 +366,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
-  if (PRIVATE(this)->glcanvas) {
-    PRIVATE(this)->glcanvas->destructingContext();
-  }
-
   delete[] PRIVATE(this)->buffer;
-
   delete PRIVATE(this);
 }
 
@@ -612,17 +602,17 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
   this->glcanvas->setBufferSize(tiledrendering ? tilesize : regionsize);
 
-  // contextid is the id used when rendering
-  uint32_t contextid = this->renderaction->getCacheContext();
-  // oldcontext is used to restore the context id if the render action
-  // is not allocated by us.
-  const uint32_t oldcontext = contextid;
+  // oldcontext is used to restore the previous context id, in case
+  // the render action is not allocated by us.
+  const uint32_t oldcontext = this->renderaction->getCacheContext();
 
-  if (!this->glcanvas->makeContextCurrent(oldcontext)) {
+  const uint32_t newcontext = this->glcanvas->activateGLContext();
+  if (newcontext == 0) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
-                              "could not set up a current OpenGL context.");
+                              "Could not activate an offscreen OpenGL context.");
     return FALSE;
   }
+  this->renderaction->setCacheContext(newcontext);
 
   if (SoOffscreenRendererP::debug()) {
     GLint colbits[4];
@@ -641,15 +631,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                this->backgroundcolor[1],
                this->backgroundcolor[2],
                0.0f);
-
-  // FIXME: this is just bollocks. The cache context shouldn't be set
-  // or not upon whether we've allocated our own SoGLRenderAction or
-  // not -- it should be set to match the actual context we're
-  // rendering into. 20050509 mortene.
-  if (!this->didallocation) {
-    contextid = SoGLCacheContextElement::getUniqueCacheContext();
-    this->renderaction->setCacheContext(contextid);
-  }
 
   // Make this large to get best possible quality on any "big-image"
   // textures (from using SoTextureScalePolicy).
@@ -708,20 +689,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         SbViewportRegion subviewport = SbViewportRegion(SbVec2s(this->subsize[0], this->subsize[1]));
         this->renderaction->setViewportRegion(subviewport); 
         
-#if 0   /* disabled next lines as they otherwise break usage of make_current() and
-	 * reinstate_previous() in the wgl implementation. 20031106 tamer.
-	 *
-	 * FIXME: investigate what the point of this is. 20030318 mortene.
-	 * UPDATE 2003-11-06 tamer: probably to keep me up for a whole night
-         * debugging! *grmbl*
-	 */
-        if (!this->glcanvas->makeContextCurrent(oldcontext)) {
-          SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
-                                    "Could not set up a current OpenGL context.");
-          return FALSE;
-        }
-#endif
-       
         if (base->isOfType(SoNode::getClassTypeId())) 
           this->renderaction->apply((SoNode *)base);
         else if (base->isOfType(SoPath::getClassTypeId()))
@@ -807,15 +774,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // Restore old value.
   (void)SoGLBigImage::setChangeLimit(bigimagechangelimit);
 
-  this->glcanvas->unmakeContextCurrent();
-  // add contextid to the list of contextids used. If the user has set
-  // the GLRenderAction, we might use several contextids in the same
-  // context.
-  this->glcanvas->addContextId(contextid);
-
-  if (!this->didallocation) {
-    this->renderaction->setCacheContext(oldcontext);
-  }
+  this->glcanvas->deactivateGLContext();
+  this->renderaction->setCacheContext(oldcontext); // restore old
 
   return TRUE;
 }

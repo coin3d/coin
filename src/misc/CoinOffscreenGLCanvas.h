@@ -30,11 +30,8 @@
 
 // *************************************************************************
 
-#include <Inventor/C/glue/gl.h>
 #include <Inventor/SbVec2s.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SbHash.h>
 
 // *************************************************************************
 
@@ -45,25 +42,22 @@ public:
 
   unsigned char * getBuffer(void) const;
 
-  // Returns FALSE if the necessary resources for rendering are not
-  // available.
-  SbBool makeContextCurrent(uint32_t contextid);
-  void unmakeContextCurrent(void);
+  uint32_t activateGLContext(void);
+  void deactivateGLContext(void);
 
   void setBufferSize(const SbVec2s & size);
   SbVec2s getBufferSize(void) const;
 
-  void addContextId(const uint32_t id);
-  void destructingContext(void);
-
   void postRender(void);
 
 private:
+  void destructContext(void);
+
   SbVec2s buffersize;
-  void * context;
   unsigned char * buffer;
 
-  SbList<uint32_t> contextidused;
+  void * context;
+  uint32_t renderid;
 };
 
 // *************************************************************************

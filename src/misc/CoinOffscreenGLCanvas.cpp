@@ -23,6 +23,11 @@
 
 #include "CoinOffscreenGLCanvas.h"
 
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+
 // *************************************************************************
 
 CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
@@ -34,7 +39,7 @@ CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
 
 CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 {
-  if (this->context) cc_glglue_context_destruct(this->context);
+  if (this->context) { this->destructContext(); }
   delete[] this->buffer;
 }
 
@@ -59,8 +64,7 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
 
-  if (this->context) cc_glglue_context_destruct(this->context);
-  this->context = NULL;
+  if (this->context) { this->destructContext(); }
 }
 
 
@@ -72,23 +76,32 @@ CoinOffscreenGLCanvas::getBufferSize(void) const
 
 // *************************************************************************
 
-SbBool 
-CoinOffscreenGLCanvas::makeContextCurrent(uint32_t contextid) 
+// Activates an offscreen GL context, and returns a guaranteed unique
+// id to use with SoGLRenderAction::setCacheContext().
+//
+// If the given context can not be made current (due to e.g. any error
+// condition resulting from the attempt at setting up the offscreen GL
+// context), 0 is returned.
+uint32_t 
+CoinOffscreenGLCanvas::activateGLContext(void) 
 {
   assert(this->buffer);
   
   if (this->context == NULL) {
     this->context = cc_glglue_context_create_offscreen(this->buffersize[0],
                                                        this->buffersize[1]);
+    if (this->context == NULL) { return 0; }
+
+    // Set up mapping from GL context to SoGLRenderAction context id.
+    this->renderid = SoGLCacheContextElement::getUniqueCacheContext();
   }
 
-  if (this->context == NULL) { return FALSE; }
-
-  return cc_glglue_context_make_current(this->context);
+  if (cc_glglue_context_make_current(this->context) == FALSE) { return 0; }
+  return this->renderid;
 }
 
 void
-CoinOffscreenGLCanvas::unmakeContextCurrent(void)
+CoinOffscreenGLCanvas::deactivateGLContext(void)
 {
   assert(this->context);
   cc_glglue_context_reinstate_previous(this->context);
@@ -96,35 +109,27 @@ CoinOffscreenGLCanvas::unmakeContextCurrent(void)
 
 // *************************************************************************
 
-// add an id to the list of id used for the current context
 void
-CoinOffscreenGLCanvas::addContextId(const uint32_t id)
+CoinOffscreenGLCanvas::destructContext(void)
 {
-  if (this->contextidused.find(id) == -1) {
-    this->contextidused.append(id);
-  }
-}
+  assert(this->context);
 
-// notify SoContextHandler about destruction
-void
-CoinOffscreenGLCanvas::destructingContext(void)
-{
-  if (this->contextidused.getLength()) {
-    // just use one of the context ids.
-    //
-    // FIXME: this seems bogus -- shouldn't the correct context be
-    // set when signalling a destruct? 20050509 mortene.
-    this->makeContextCurrent(this->contextidused[0]);
-    for (int i = 0; i < this->contextidused.getLength(); i++) {
-      SoContextHandler::destructingContext(this->contextidused[i]);
-    }
-    this->contextidused.truncate(0);
-    this->unmakeContextCurrent();
+  const uint32_t id = this->activateGLContext();
+  if (id == 0) {
+    SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
+                       "Couldn't activate context.");
   }
+  SoContextHandler::destructingContext(id);
+  this->deactivateGLContext();
+
+  cc_glglue_context_destruct(this->context);
+  this->context = NULL;
+  this->renderid = 0;
 }
 
 // *************************************************************************
 
+// Pushes the rendered pixels into the internal memory array.
 void
 CoinOffscreenGLCanvas::postRender(void)
 {
@@ -177,8 +182,7 @@ CoinOffscreenGLCanvas::postRender(void)
   // The flushing of the OpenGL pipeline before and after the
   // glReadPixels() call is done as a work-around for a reported
   // OpenGL driver bug: on a Win2000 system with ATI Radeon graphics
-  // card, the system would hang hard if the flushing was not
-  // done.
+  // card, the system would hang hard if the flushing was not done.
   //
   // This is obviously an OpenGL driver bug, but the workaround of
   // doing excessive flushing has no real ill effects, so we just do
@@ -187,7 +191,8 @@ CoinOffscreenGLCanvas::postRender(void)
   // around the bug (this was not established with the external
   // reporter), but again it shouldn't matter if we do.
   //
-  // For reference, the specific driver which was reported to fail:
+  // For reference, the specific driver which was reported to fail has
+  // the following characteristics:
   //
   // GL_VENDOR="ATI Technologies Inc."
   // GL_RENDERER="Radeon 9000 DDR x86/SSE2"
