@@ -246,8 +246,6 @@ public:
     this->buffer = NULL;
     this->lastnodewasacamera = FALSE;
     
-    this->glcanvas = new CoinOffscreenGLCanvas();
-
     if (glrenderaction) {
       this->renderaction = glrenderaction;
     }
@@ -264,8 +262,9 @@ public:
   ~SoOffscreenRendererP()
   {
     if (this->didallocation) { delete this->renderaction; }
-    delete this->glcanvas;
   }
+
+  static SbBool offscreenContextsNotSupported(void);
 
   static SbVec2s getMaxTileSize(void);
 
@@ -288,7 +287,7 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
-  CoinOffscreenGLCanvas * glcanvas;
+  CoinOffscreenGLCanvas glcanvas;
   unsigned char * buffer;
 
   int numsubscreens[2];
@@ -545,7 +544,7 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
 SbBool
 SoOffscreenRendererP::renderFromBase(SoBase * base)
 {
-  if (!this->glcanvas) {
+  if (SoOffscreenRendererP::offscreenContextsNotSupported()) {
     static SbBool first = TRUE;
     if (first) {
       SoDebugError::post("SoOffscreenRenderer::renderFromBase",
@@ -600,13 +599,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   const SbBool tiledrendering =
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
-  this->glcanvas->setBufferSize(tiledrendering ? tilesize : regionsize);
+  this->glcanvas.setBufferSize(tiledrendering ? tilesize : regionsize);
 
   // oldcontext is used to restore the previous context id, in case
   // the render action is not allocated by us.
   const uint32_t oldcontext = this->renderaction->getCacheContext();
 
-  const uint32_t newcontext = this->glcanvas->activateGLContext();
+  const uint32_t newcontext = this->glcanvas.activateGLContext();
   if (newcontext == 0) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
                               "Could not activate an offscreen OpenGL context.");
@@ -697,10 +696,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
         }
         
-        this->glcanvas->postRender();
+        this->glcanvas.postRender();
 
-        const SbVec2s idsize = this->glcanvas->getBufferSize();
-        const unsigned char * renderbuffer = this->glcanvas->getBuffer();
+        const SbVec2s idsize = this->glcanvas.getBufferSize();
+        const unsigned char * renderbuffer = this->glcanvas.getBuffer();
 
         if (SoOffscreenRendererP::debug() &&
             SoOffscreenRendererP::debugTileOutputPrefix()) {
@@ -720,7 +719,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
 	 * as everything gets rendered the exact way as on the screen.
 	 * this should do the trick and is slightly more efficient:
-	 * this->pasteSubscreen(SbVec2s(x, y), this->glcanvas->getBuffer());
+	 * this->pasteSubscreen(SbVec2s(x, y), this->glcanvas.getBuffer());
 	 * 20031106 tamer.
 	 */
         this->convertBuffer(renderbuffer, idsize[0], idsize[1],
@@ -755,26 +754,26 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
     }
     
-    this->glcanvas->postRender();
+    this->glcanvas.postRender();
 
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
-    assert(dims[0] == this->glcanvas->getBufferSize()[0]);
-    assert(dims[1] == this->glcanvas->getBufferSize()[1]);
+    assert(dims[0] == this->glcanvas.getBufferSize()[0]);
+    assert(dims[1] == this->glcanvas.getBufferSize()[1]);
 
     /* FIXME: see FIXME above:
-     * memcpy(this->buffer, this->glcanvas->getBuffer(),
+     * memcpy(this->buffer, this->glcanvas.getBuffer(),
      *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
      * or something more efficient. e.g. by using other opengl extensions
      * like render-to-texture. 20031106 tamer.
      */
-    this->convertBuffer(this->glcanvas->getBuffer(), dims[0], dims[1],
+    this->convertBuffer(this->glcanvas.getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
   }
 
   // Restore old value.
   (void)SoGLBigImage::setChangeLimit(bigimagechangelimit);
 
-  this->glcanvas->deactivateGLContext();
+  this->glcanvas.deactivateGLContext();
   this->renderaction->setCacheContext(oldcontext); // restore old
 
   return TRUE;
@@ -975,7 +974,7 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
 SbBool
 SoOffscreenRenderer::writeToRGB(FILE * fp) const
 {
-  if (!PRIVATE(this)->glcanvas) { return FALSE; }
+  if (SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE; }
 
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
 
@@ -1055,7 +1054,7 @@ SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
-  if (!PRIVATE(this)->glcanvas) { return FALSE;}
+  if (!SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE;}
 
   const SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   const int nc = this->getComponents();
@@ -1382,20 +1381,18 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
 SbBool
 SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
 {
-  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-    return FALSE;
-  }
-  if (PRIVATE(this)->glcanvas) {
-    SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
-    int comp = (int) this->getComponents();
-    unsigned char * bytes = PRIVATE(this)->buffer;
-    int ret = simage_wrapper()->simage_save_image(filename.getString(),
-                                                  bytes,
-                                                  int(size[0]), int(size[1]), comp,
-                                                  filetypeextension.getString());
-    return ret ? TRUE : FALSE;
-  }
-  return FALSE;
+  // FIXME: shouldn't there be warnings on these two? 20050510 mortene.
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) { return FALSE; }
+  if (SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE; }
+
+  SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
+  int comp = (int) this->getComponents();
+  unsigned char * bytes = PRIVATE(this)->buffer;
+  int ret = simage_wrapper()->simage_save_image(filename.getString(),
+                                                bytes,
+                                                int(size[0]), int(size[1]), comp,
+                                                filetypeextension.getString());
+  return ret ? TRUE : FALSE;
 }
 
 void
@@ -1598,6 +1595,33 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   fullname = fullname_s ? SbString(fullname_s) : SbString("");
   description = desc_s ? SbString(desc_s) : SbString("");
 }
+
+// *************************************************************************
+
+SbBool
+SoOffscreenRendererP::offscreenContextsNotSupported(void)
+{
+  // Returning FALSE means that offscreen rendering seems to be
+  // generally supported on the system.
+  //
+  // (It is however important to be robust and handle cases where it
+  // still fails, as this can happen due to e.g. lack of resources or
+  // other causes that may change during run-time.)
+
+#ifdef HAVE_GLX
+  return FALSE;
+#elif defined(HAVE_WGL)
+  return FALSE;
+#elif defined(HAVE_AGL)
+  return FALSE;
+#endif // HAVE_AGL
+
+  // No win-system GL binding was found, so we're sure that offscreen
+  // rendering can *not* be done.
+  return TRUE;
+}
+
+// *************************************************************************
 
 #undef PRIVATE
 #undef PUBLIC
