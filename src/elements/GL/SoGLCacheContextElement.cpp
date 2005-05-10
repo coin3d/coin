@@ -501,12 +501,14 @@ SoGLCacheContextElement::scheduleDeleteCallback(const uint32_t contextid,
 }
 
 /*!
-  Returns an unique cache context id. If you render the same scene graph
-  into two or different cache contexts, and you've not using display
-  list and texture object sharing among contexts, the cache context
-  id need to be unique for rendering to work.
+  Returns an unique cache context id, in the range [1, ->.
 
-  This method is an extension versus the Open Inventor API.
+  If you render the same scene graph into two or different cache
+  contexts, and you've not using display list and texture object
+  sharing among contexts, the cache context id need to be unique for
+  rendering to work.
+
+  \COIN_FUNCTION_EXTENSION
 
   \sa SoGLRenderAction::setCacheContext()
 */
