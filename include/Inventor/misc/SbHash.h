@@ -93,7 +93,7 @@ public:
     this->elements = 0;
   }
 
-  int put(const Key & key, const Type & obj) {
+  SbBool put(const Key & key, const Type & obj) {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i];
     while ( entry ) {
@@ -118,7 +118,7 @@ public:
     return TRUE;
   }
 
-  int get(const Key & key, Type & obj) const {
+  SbBool get(const Key & key, Type & obj) const {
     SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
@@ -132,7 +132,7 @@ public:
     return FALSE;
   }
 
-  int remove(const Key & key) {
+  SbBool remove(const Key & key) {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i], * next, * prev = NULL;
     while ( entry ) {
