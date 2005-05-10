@@ -27,6 +27,8 @@
 
 #ifdef HAVE_WGL
 
+#include <windows.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "SoOffscreenWGLData.h"
 
 // Pixels-pr-mm.
