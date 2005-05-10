@@ -339,7 +339,13 @@
 
   A rendering context with >= 24 bits depth buffer and 8 bits alpha
   channel must be the current rendering context for this blending mode
-  to be active.
+  to actually become activated. If the current rendering canvas does
+  not have these properties, Coin will fall back on a simpler
+  transparency handling mode. If you are using one of the
+  window-system binding libraries provided by Systems in Motion,
+  e.g. SoXt, SoQt or SoWin, you will need to explicitly enable this in
+  your viewer. See the API documentation of the \c setAlphaChannel()
+  method of either SoXtGLWidget, SoQtGLWidget or SoWinGLWidget.
 
   The detection of whether or not the SORTED_LAYERS_BLEND mode can be
   used will be done automatically by the Coin internals. If one or
