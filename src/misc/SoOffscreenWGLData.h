@@ -30,11 +30,11 @@
 
 // *************************************************************************
 
-#include "CoinOffscreenGLCanvas.h"
+#include <Inventor/SbVec2f.h>
 
 // *************************************************************************
 
-class SoOffscreenWGLData : public CoinOffscreenGLCanvas {
+class SoOffscreenWGLData {
 public:
   static SbVec2f getResolution(void);
 };

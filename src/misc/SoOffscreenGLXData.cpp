@@ -28,10 +28,9 @@
 #ifdef HAVE_GLX
 
 #include "SoOffscreenGLXData.h"
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 Display * SoOffscreenGLXData::display = NULL;
 
