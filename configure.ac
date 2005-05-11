@@ -2053,6 +2053,7 @@ case "$host_os" in
   solaris*)
     case $CXX in
     g++ ) ac_coin_untested_platform=false ;;
+    CC ) ac_coin_untested_platform=false ;;
     esac
     ;;
   hpux10.20)
