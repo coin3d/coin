@@ -2649,6 +2649,10 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     be a serious show-stopper for programmers wanting to use e.g. the
     stencil buffer, so I consider this a medium-to-high priority item.
 
+    UPDATE 20050510 mortene: something like this has been implemented
+    by TGS, with among others the SoGLGraphicConfigTemplate class.
+    Consider using the same design and API.
+
 =====================================================================
 
 103 Need more 'ivinfo' information
@@ -2737,6 +2741,15 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     FRACTURE) will typically render in low quality. The fix outlined
     above should also be the underpinning for taking care of this
     problem.
+
+    When this problem has been properly taken care of, remove the
+    following hack from src/misc/SoOffscreenRenderer (which doesn't
+    seem to work):
+
+      const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
+
+    (And check whether or not there are any similar hacks to also take
+    care of.)
 
 =====================================================================
 
