@@ -420,8 +420,7 @@
   \sa setAbortCallback()
 */
 
-
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoGLRenderActionP {
 public:
@@ -494,9 +493,11 @@ public:
   void addSortTransPath(SoPath * path);
 };
 
-#endif // DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 SO_ACTION_SOURCE(SoGLRenderAction);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -1023,6 +1024,28 @@ SbBool
 SoGLRenderAction::abortNow(void)
 {
   if (this->hasTerminated()) return TRUE;
+
+#if COIN_DEBUG // for dumping the scene graph during GLRender traversals
+  static int debug = -1;
+  if (debug == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_GLRENDER_TRAVERSAL");
+    debug = env && (atoi(env) > 0);
+  }
+  if (debug) {
+    const SoFullPath * p = (const SoFullPath *)this->getCurPath();
+    assert(p);
+    const int len = p->getLength();
+    for (int i=0; i < len; i++) { printf("  "); }
+    const SoNode * n = p->getTail();
+    // FIXME: n is often NULL, so an assert on that condition was
+    // disabled, and the printf was made robust. But is n==NULL really
+    // an indication of a bug? 20050510 mortene.
+    printf("%p %s (\"%s\")\n",
+           n, n ? n->getTypeId().getName().getString() : "",
+           n ? n->getName().getString() : "");
+  }
+#endif // debug
+
   SbBool abort = FALSE;
   if (THIS->abortcallback) {
     switch (THIS->abortcallback(THIS->abortcallbackdata)) {
@@ -1204,9 +1227,8 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
 
 #undef THIS
 
+// *************************************************************************
 // methods in SoGLRenderActionP
-#ifndef DOXYGEN_SKIP_THIS
-
 
 // Private function to save transparent paths that need to be sorted.
 // The transparent paths that don't need to be sorted are rendered 
@@ -2114,5 +2136,4 @@ SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
   
 }
 
-
-#endif // DOXYGEN_SKIP_THIS
+// *************************************************************************
