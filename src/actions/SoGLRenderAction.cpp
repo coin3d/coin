@@ -1025,7 +1025,7 @@ SoGLRenderAction::abortNow(void)
 {
   if (this->hasTerminated()) return TRUE;
 
-#if COIN_DEBUG // for dumping the scene graph during GLRender traversals
+#if COIN_DEBUG && 0 // for dumping the scene graph during GLRender traversals
   static int debug = -1;
   if (debug == -1) {
     const char * env = coin_getenv("COIN_DEBUG_GLRENDER_TRAVERSAL");
@@ -1035,14 +1035,12 @@ SoGLRenderAction::abortNow(void)
     const SoFullPath * p = (const SoFullPath *)this->getCurPath();
     assert(p);
     const int len = p->getLength();
-    for (int i=0; i < len; i++) { printf("  "); }
+    for (int i=1; i < len; i++) { printf("  "); }
     const SoNode * n = p->getTail();
-    // FIXME: n is often NULL, so an assert on that condition was
-    // disabled, and the printf was made robust. But is n==NULL really
-    // an indication of a bug? 20050510 mortene.
+    assert(n);
     printf("%p %s (\"%s\")\n",
-           n, n ? n->getTypeId().getName().getString() : "",
-           n ? n->getName().getString() : "");
+           n, n->getTypeId().getName().getString() : "",
+           n->getName().getString() : "");
   }
 #endif // debug
 
