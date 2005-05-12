@@ -117,10 +117,8 @@ Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
 A:      Yes.  We have now developed a system that uses the Autoconf/Automake
         build system to auto-generate a Microsoft Developer Studio project
         and workspace file for building the Coin library.  This setup
-        is included with the binary installer for Coin 2.0 and later.
-        It will be backported to Coin 1.* and ported to the GUI libraries
-        in a while.  You therefore no longer need Cygwin to compile Coin
-        if you use the win32 binary installer packages.
+        is included with the source code under the directory build/.
+        You therefore do not need Cygwin to build Coin any longer.
 
         If you want to generate the .dsp file directly from the source
         repository yourself, see the file INSTALL about the --with-msvcdsp
