@@ -502,8 +502,23 @@ SbOctTree::clear(void)
 void
 SbOctTree::addItem(void * const item)
 {
-  // FIXME: this can easily hit due to floating point
-  // inaccuracies. 20050512 mortene.
+  // Note that the assert() below can hit due to floating point
+  // inaccuracies.
+  //
+  // When that happens, an easy and fairly decent fix is usually to
+  // add a bit of slack on the caller side to the input bbox argument
+  // to SbOctTree::SbOctTree().
+
+  // FIXME: a better solution would be to not force an static bbox
+  // upon the SbOctTree through its constructor, but let it
+  // dynamically expand / re-structure itself as items are added.
+  //
+  // An easy, but a bit inefficient, way to do that would be to simply
+  // store a copy of all items in the octtree structure, destruct it,
+  // restore a new top-level node, and then re-add all items to let a
+  // new octtree structure build itself.
+  //
+  // 20050512 mortene.
   assert(this->itemfuncs.insideboxfunc(item, this->topnode->getBBox()) &&
          "bbox of item outside the octtree top-level bbox");
 
@@ -528,12 +543,28 @@ SbOctTree::removeItem(void * const item)
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
   your own postprocessing of the array of returned items.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 void
 SbOctTree::findItems(const SbVec3f & pos,
                      SbList <void*> & destarray,
                      const SbBool removeduplicates) const
 {
+  // FIXME: passing in an SbList is dangerous under MS Windows, as
+  // allocation and deallocation can then happen on different
+  // C-library's heaps. The other findItems() functions below have the
+  // same problem. 20050512 mortene.
+
+  // FIXME: should be straightforward to drop the removeduplicates
+  // argument -- it's a hack. We just need to optimize the
+  // add_to_array() function above to keep a _sorted_ array.
+  //
+  // This also goes for the other findItems() functions below, of
+  // course.
+  //
+  // 20050512 mortene.
+
   assert(this->itemfuncs.ptinsidefunc);
   topnode->findItems(pos, destarray, this->itemfuncs, removeduplicates);
 }
@@ -545,6 +576,8 @@ SbOctTree::findItems(const SbVec3f & pos,
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
   your own postprocessing of the array of returned items.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 void
 SbOctTree::findItems(const SbBox3f & box, SbList <void*> & destarray,
@@ -561,6 +594,8 @@ SbOctTree::findItems(const SbBox3f & box, SbList <void*> & destarray,
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
   your own postprocessing of the array of returned items.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 void
 SbOctTree::findItems(const SbSphere & sphere,
@@ -581,6 +616,8 @@ SbOctTree::findItems(const SbSphere & sphere,
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
   your own postprocessing of the array of returned items.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 void
 SbOctTree::findItems(const SbPlane * const planes,
