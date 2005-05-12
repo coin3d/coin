@@ -2751,6 +2751,44 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     (And check whether or not there are any similar hacks to also take
     care of.)
 
+    UPDATE 20050512 mortene: correction; fractured textures are not
+    scaled or otherwise prepared in separate threads, but gradually in
+    multiple render passes. The SoGLBigImage::setChangeLimit() is
+    there to make sure that all necessary preparations are made on the
+    first pass. This seems to work correctly upon some slight testing
+    with the following iv-file:
+
+-------------8<---------------- [snip] --------------------------
+#Inventor V2.1 ascii
+
+Separator {
+   DirectionalLight {
+      direction 1 -1 -10
+   }
+   PerspectiveCamera {
+      position -0.47643667 0.5896858 6
+      nearDistance 0.1
+      farDistance 100
+   }
+   Separator {
+      TextureScalePolicy {
+         policy FRACTURE
+      }
+      Texture2 {
+         filename "/tmp/M245-m040904.png"
+      }
+      Cube {
+      }
+   }
+}
+-------------8<---------------- [snip] --------------------------
+
+    I'm therefore not quite sure what the problem is at Colin's end,
+    so I've asked for more information. (My best guess is that it is
+    downscaling of tremendously large textures to not-so-large
+    offscreen pixmaps which may look bad, due to scaling algorithms
+    tuned for speed, not quality, in SoGLBigImage.)
+
 =====================================================================
 
 110 SoNodeKitListPart::getChildren()->truncate(0) causes mayhem.
