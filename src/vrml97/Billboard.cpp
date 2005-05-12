@@ -270,11 +270,11 @@ SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
 
   action->pushCurPath();
   for (int i = 0; i < n && !action->hasTerminated(); i++) {
+    action->popPushCurPath(i, childarray[i]);
     if (action->abortNow()) {
       // only cache if we do a full traversal
       break;
     }
-    action->popPushCurPath(i, childarray[i]);
     childarray[i]->GLRenderBelowPath(action);
 
 #if COIN_DEBUG

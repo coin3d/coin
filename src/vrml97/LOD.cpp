@@ -321,8 +321,8 @@ SoVRMLLOD::doAction(SoAction * action)
       this->getChildren()->traverse(action, idx);
       PRIVATE(this)->enableTraversingOfInactiveChildren();
       PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
-                                     this->getNumChildren(), 
-                                     this->getChildren());
+                                              this->getNumChildren(), 
+                                              this->getChildren());
     }
   }
 }
@@ -410,11 +410,10 @@ SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);
   if (idx >= 0) {
+    SoNode * child = (SoNode*) this->getChildren()->get(idx);
+    action->pushCurPath(idx, child);
     if (!action->abortNow()) {
-      SoNode * child = (SoNode*) this->getChildren()->get(idx);
-      action->pushCurPath(idx, child);
       child->GLRenderBelowPath(action);
-
 #if COIN_DEBUG
       // The GL error test is default disabled for this optimized
       // path.  If you get a GL error reporting an error in the
@@ -435,8 +434,8 @@ SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
         cc_string_clean(&str);
       }
 #endif // COIN_DEBUG
-      action->popCurPath();
     }
+    action->popCurPath();
   }
   // don't auto cache LOD nodes.
   SoGLCacheContextElement::shouldAutoCache(action->getState(),
@@ -452,12 +451,13 @@ SoVRMLLOD::GLRenderInPath(SoGLRenderAction * action)
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
 
   if (pathcode == SoAction::IN_PATH) {
-    for (int i = 0; i < numindices; i++) {
-      if (action->abortNow()) break;
+    for (int i = 0; (i < numindices) && !action->hasTerminated(); i++) {
       int idx = indices[i];
       SoNode * node = this->getChild(idx);
       action->pushCurPath(idx, node);
-      node->GLRenderInPath(action);
+      if (!action->abortNow()) {
+        node->GLRenderInPath(action);
+      }
       action->popCurPath(pathcode);
     }
   }
@@ -476,7 +476,9 @@ SoVRMLLOD::GLRenderOffPath(SoGLRenderAction * action)
     SoNode * node = this->getChild(idx);
     if (node->affectsState()) {
       action->pushCurPath(idx, node);
-      node->GLRenderOffPath(action);
+      if (!action->abortNow()) {
+        node->GLRenderOffPath(action);
+      }
       action->popCurPath();
     }
   }

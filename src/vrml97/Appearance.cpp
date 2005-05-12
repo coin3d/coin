@@ -211,12 +211,12 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     action->pushCurPath();
     int n = this->getChildren()->getLength();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
+      action->popPushCurPath(i, childarray[i]);
       if (action->abortNow()) {
         // only cache if we do a full traversal
         SoCacheElement::invalidate(state);
         break;
       }
-      action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRender(action);
     }
     action->popCurPath();
