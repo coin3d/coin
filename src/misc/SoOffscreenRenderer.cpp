@@ -524,16 +524,27 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
   SoOffscreenRendererP * thisp = (SoOffscreenRendererP *) userData;
   const SoFullPath * path = (const SoFullPath*) thisp->renderaction->getCurPath();
   SoNode * node = path->getTail();
-
+  assert(node);
 
   if (thisp->lastnodewasacamera) {
     thisp->setCameraViewvolForTile(thisp->visitedcamera);    
     thisp->lastnodewasacamera = FALSE;
   }
 
-  if (node && node->isOfType(SoCamera::getClassTypeId())) {
+  if (node->isOfType(SoCamera::getClassTypeId())) {
     thisp->visitedcamera = (SoCamera *) node;
     thisp->lastnodewasacamera = TRUE;
+
+    // FIXME: this is not really enitrely sufficient. If a camera is
+    // already within a cached list upon the first invocation of a
+    // render pass, we'll never get a callback upon encountering it.
+    //
+    // This would be a fairly obscure case, though, as the glcache
+    // would have to be set up in another context, compatible for
+    // sharing GL data with the one set up internally by the
+    // SoOffscreenRenderer -- which is very unlikely.
+    //
+    // 20050512 mortene.
     SoCacheElement::invalidate(thisp->renderaction->getState());
   }
 
