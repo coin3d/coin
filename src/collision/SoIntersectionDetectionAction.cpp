@@ -113,11 +113,20 @@
   \since TGS Inventor 2.4
 */
 
+// *************************************************************************
+
 // FIXME: intersection with lines not implemented yet. 20030507 mortene.
 //
 // UPDATE 20030815 mortene.: just noticed that there's line-line
 // intersection testing code in SoExtSelection. Check if that could be
 // used.
+
+// FIXME: I just noticed that there's an O(n^2) algorithm for removing
+// duplicates from SbOctTree::findItems() results in SbOctTree.cpp
+// (see the add_to_array() helper function). This may very well be a
+// serious bottleneck, should investigate. 20050512 mortene.
+
+// *************************************************************************
 
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
@@ -270,7 +279,7 @@ ida_debug(void)
 {
   static int dbg = -1;
   if (dbg == -1) {
-    const char * env = coin_getenv("COIN_IDA_DEBUG");
+    const char * env = coin_getenv("COIN_DEBUG_INTERSECTIONDETECTIONACTION");
     dbg = env && atoi(env) > 0;
   }
   return dbg == 0 ? FALSE : TRUE;
@@ -614,9 +623,8 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 void
 SoIntersectionDetectionAction::apply(SoNode * node)
 {
-  // Keep this around for now, for getting a stand-alone scene to work
-  // with from an invocation from the ToyotaViewer
-  // application. mortene.
+  // Keep this around, as it's handy for dumping a stand-alone scene
+  // to work with from an invocation within an application framework.
 #if 0 // disabled
   SoOutput out;
   SbBool ok = out.openFile("/tmp/assembly.wrl");
@@ -705,20 +713,33 @@ public:
 
   ~PrimitiveData()
   {
-    if (this->octtree) { delete this->octtree; }
+    delete this->octtree;
     for (unsigned int i = 0; i < this->numTriangles(); i++) { delete this->getTriangle(i); }
   }
 
 
   const SbOctTree * getOctTree(void) {
     if (this->octtree == NULL) {
-      SbOctTreeFuncs funcs = {
-        NULL /* bboxfunc */, NULL /* ptinsidefunc */,
+      const SbOctTreeFuncs funcs = {
+        NULL /* ptinsidefunc */,
         PrimitiveData::insideboxfunc,
-        NULL /* insidespherefunc */, NULL /* insideplanesfunc */
+        NULL /* insidespherefunc */,
+        NULL /* insideplanesfunc */
       };
 
-      this->octtree = new SbOctTree(this->getBoundingBox(), funcs);
+      SbBox3f b = this->getBoundingBox();
+      // Add a 1% slack to the bounding box, to avoid problems in
+      // SbOctTree due to floating point inaccuracies (see assert() in
+      // SbOctTree::addItem()).
+      //
+      // This may be just a temporary hack -- see the FIXME at the
+      // same place.
+      SbMatrix m;
+      m.setScale(1.01f);
+      b.transform(m);
+
+      this->octtree = new SbOctTree(b, funcs);
+
       if (ida_debug()) {
         SoDebugError::postInfo("PrimitiveData::getOctTree",
                                "made new octtree for PrimitiveData %p", this);
@@ -1115,13 +1136,25 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     
   }
 
-  SbOctTreeFuncs funcs = {
-    NULL /* bboxfunc */, NULL /* ptinsidefunc */,
+  const SbOctTreeFuncs funcs = {
+    NULL /* ptinsidefunc */,
     shapeinsideboxfunc,
-    NULL /* insidespherefunc */, NULL /* insideplanesfunc */
+    NULL /* insidespherefunc */,
+    NULL /* insideplanesfunc */
   };
 
-  SbOctTree shapetree(this->fullxfbbox.project(), funcs);
+  SbBox3f b = this->fullxfbbox.project();
+  // Add a 1% slack to the bounding box, to avoid problems in
+  // SbOctTree due to floating point inaccuracies (see assert() in
+  // SbOctTree::addItem()).
+  //
+  // This may be just a temporary hack -- see the FIXME at the
+  // same place.
+  SbMatrix m;
+  m.setScale(1.01f);
+  b.transform(m);
+
+  SbOctTree shapetree(b, funcs);
   for (int k = 0; k < this->shapedata.getLength(); k++) {
     ShapeData * shape = this->shapedata[k];
     if (shape->xfbbox.isEmpty()) { continue; }
