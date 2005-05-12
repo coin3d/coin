@@ -43,21 +43,15 @@
 
 /*!
   \struct SbOctTreeFuncs SbOctTree.h Inventor/SbOctTree.h
-  The SbOctTreeFuncs struct is used to specify callback functions for
-  items SbOcTree.
 
-  The only function that must be set is the \e bboxfunc. The other functions
-  must be set if you intend to use the corresponding find methods in
-  SbOctTree.
+  The SbOctTreeFuncs struct is used to specify callback functions for
+  working with items in an SbOctTree.
+
+  The only function pointer that \e must be set up is \c
+  insideboxfunc. The other functions must be set if you intend to use
+  the corresponding find methods in SbOctTree.
 */
 
-// FIXME: the doc above is faulty -- it's the insideboxfunc that's
-// needed. The bboxfunc is simply ignored. 20030328 mortene.
-
-/*!
-  \var SbOctTreeFuncs::bboxfunc
-  Should return the bounding box of the item.
- */
 /*!
   \var SbOctTreeFuncs::ptinsidefunc
   Should return whether a point is inside item.
@@ -146,40 +140,35 @@ box_inside_planes(const SbBox3f & box, const SbPlane * const planes,
 class SbOctTreeNode
 {
 public:
-
-  SbOctTreeNode(void);
+  SbOctTreeNode(const SbBox3f & b);
   ~SbOctTreeNode();
 
   void addItem(void * const item,
                const SbOctTreeFuncs & itemfuncs,
-               const int maxitems,
-               const SbBox3f &nodesize);
+               const int maxitems);
   void removeItem(void * const item,
-                  const SbOctTreeFuncs & itemfuncs,
-                  const SbBox3f &nodesize);
+                  const SbOctTreeFuncs & itemfuncs);
   void findItems(const SbVec3f &pos,
                  SbList <void*> &destarray,
                  const SbOctTreeFuncs &itemfuncs,
-                 const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
   void findItems(const SbBox3f &box,
                  SbList <void*> &destarray,
                  const SbOctTreeFuncs &itemfuncs,
-                 const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
   void findItems(const SbSphere &sphere,
                  SbList <void*> &destarray,
                  const SbOctTreeFuncs &itemfuncs,
-                 const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
   void findItems(const SbPlane * const planes,
                  const int numPlanes,
                  SbList <void*> &destarray,
                  const SbOctTreeFuncs &itemfuncs,
-                 const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
 
-  void debugTree(FILE *fp, const int indent, const SbBox3f & nodesize);
+  const SbBox3f & getBBox(void) const { return this->nodesize; }
+
+  void debugTree(FILE *fp, const int indent) const;
 
 private:
   SbBool isLeaf(void) const { return this->children[0] == NULL; }
@@ -187,11 +176,12 @@ private:
 
   unsigned int totalNumberOfItems(void) const;
 
-  static void splitBox(const SbBox3f & box, SbBox3f * destarray);
-  SbBool splitNode(const SbBox3f & nodesize, const SbOctTreeFuncs & funcs);
+  static void split3Way(const SbBox3f & box, SbBox3f * destarray);
+  SbBool splitNode(const SbOctTreeFuncs & funcs);
 
   SbOctTreeNode * children[8];
   SbList <void*> items;
+  SbBox3f nodesize;
 };
 
 // Returns all items of the node, including all items in child nodes
@@ -210,15 +200,15 @@ SbOctTreeNode::totalNumberOfItems(void) const
 }
 
 void 
-SbOctTreeNode::debugTree(FILE *fp, const int indent, const SbBox3f & nodesize)
+SbOctTreeNode::debugTree(FILE *fp, const int indent) const
 {
   (void)fprintf(fp, "%02d", indent - 1);
 
   int i;
   for (i = 0; i < indent; i++) { (void)fprintf(fp, "  "); }
 
-  const SbVec3f & vmin = nodesize.getMin();
-  const SbVec3f & vmax = nodesize.getMax();
+  const SbVec3f & vmin = this->nodesize.getMin();
+  const SbVec3f & vmax = this->nodesize.getMax();
 
   (void)fprintf(fp, "%s, %d items, ",
                 this->isLeaf() ? "Leaf" : "Group", this->totalNumberOfItems());
@@ -227,29 +217,26 @@ SbOctTreeNode::debugTree(FILE *fp, const int indent, const SbBox3f & nodesize)
   (void)fprintf(fp, "\n");
 
   if (this->isGroup()) {
-    SbBox3f childboxes[8];
-    SbOctTreeNode::splitBox(nodesize, childboxes);
-
     for (i = 0; i < 8; i++) {
-      this->children[i]->debugTree(fp, indent+1, childboxes[i]);
+      this->children[i]->debugTree(fp, indent+1);
     }
   }
 }
 
 static void
-add_to_array(SbList <void*> & array, void * ptr)
+add_to_array(SbList<void *> & array, void * ptr)
 {
-  int i, n= array.getLength();
-  for (i = 0; i < n; i++) {
-    if (array[i] == ptr) return;
-  }
-  array.append(ptr);
+  // FIXME: this is rather awful, resulting in n^2 algorithm time.
+  // Should change to using the array as a sorted set. 20050512 mortene.
+  if (array.find(ptr) == -1) { array.append(ptr); }
 }
 
-SbOctTreeNode::SbOctTreeNode(void)
+SbOctTreeNode::SbOctTreeNode(const SbBox3f & b)
 {
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < 8; i++) {
     this->children[i] = NULL;
+  }
+  this->nodesize = b;
 }
 
 SbOctTreeNode::~SbOctTreeNode()
@@ -262,24 +249,20 @@ SbOctTreeNode::~SbOctTreeNode()
 void
 SbOctTreeNode::addItem(void * const item,
                        const SbOctTreeFuncs & itemfuncs,
-                       const int maxitems,
-                       const SbBox3f & nodesize)
+                       const int maxitems)
 {
   if (this->isGroup()) { // node has been split
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (itemfuncs.insideboxfunc(item, childbox[i])) {
-        this->children[i]->addItem(item, itemfuncs,
-                                   maxitems, childbox[i]);
+      if (itemfuncs.insideboxfunc(item, this->children[i]->nodesize)) {
+        this->children[i]->addItem(item, itemfuncs, maxitems);
       }
     }
   }
   else if (this->items.getLength() >= maxitems) {
     // avoid trying a split too often by using a modulo
     if ((this->items.getLength() % (maxitems+1) == maxitems) &&
-        this->splitNode(nodesize, itemfuncs)) {
-      this->addItem(item, itemfuncs, maxitems, nodesize);
+        this->splitNode(itemfuncs)) {
+      this->addItem(item, itemfuncs, maxitems);
     }
     else {
       this->items.append(item);
@@ -291,17 +274,12 @@ SbOctTreeNode::addItem(void * const item,
 }
 
 void
-SbOctTreeNode::removeItem(void *const item,
-                          const SbOctTreeFuncs & itemfuncs,
-                          const SbBox3f & nodesize)
+SbOctTreeNode::removeItem(void * const item, const SbOctTreeFuncs & itemfuncs)
 {
   if (children[0]) {
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (itemfuncs.insideboxfunc(item, childbox[i])) {
-        this->children[i]->removeItem(item, itemfuncs,
-                                      childbox[i]);
+      if (itemfuncs.insideboxfunc(item, this->children[i]->nodesize)) {
+        this->children[i]->removeItem(item, itemfuncs);
       }
     }
   }
@@ -320,17 +298,13 @@ void
 SbOctTreeNode::findItems(const SbVec3f & pos,
                          SbList <void*> & destarray,
                          const SbOctTreeFuncs & itemfuncs,
-                         const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
   if (this->isGroup()) {
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (point_inside_box(pos, childbox[i])) {
-        children[i]->findItems(pos, destarray,
-                               itemfuncs, childbox[i],
-                               removeduplicates);
+      if (point_inside_box(pos, this->children[i]->nodesize)) {
+        this->children[i]->findItems(pos, destarray,
+                                     itemfuncs, removeduplicates);
       }
     }
   }
@@ -352,17 +326,13 @@ void
 SbOctTreeNode::findItems(const SbBox3f & box,
                          SbList <void*> & destarray,
                          const SbOctTreeFuncs & itemfuncs,
-                         const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
   if (this->isGroup()) {
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (intersect_box_box(box, childbox[i]))
+      if (intersect_box_box(box, this->children[i]->nodesize))
         this->children[i]->findItems(box, destarray,
-                                     itemfuncs, childbox[i],
-                                     removeduplicates);
+                                     itemfuncs, removeduplicates);
     }
   }
   else {
@@ -383,17 +353,13 @@ void
 SbOctTreeNode::findItems(const SbSphere & sphere,
                          SbList <void*> & destarray,
                          const SbOctTreeFuncs & itemfuncs,
-                         const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
   if (this->isGroup()) {
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (intersect_box_sphere(childbox[i],sphere))
+      if (intersect_box_sphere(this->children[i]->nodesize, sphere))
         this->children[i]->findItems(sphere, destarray,
-                                     itemfuncs, childbox[i],
-                                     removeduplicates);
+                                     itemfuncs, removeduplicates);
     }
   }
   else {
@@ -415,20 +381,13 @@ SbOctTreeNode::findItems(const SbPlane * const planes,
                          const int numplanes,
                          SbList <void*> & destarray,
                          const SbOctTreeFuncs & itemfuncs,
-                         const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
   if (this->isGroup()) {
-    SbBox3f childbox[8];
-    SbOctTreeNode::splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
-      if (box_inside_planes(childbox[i], planes, numplanes)) {
-        this->children[i]->findItems(planes,
-                                     numplanes,
-                                     destarray,
-                                     itemfuncs,
-                                     childbox[i],
-                                     removeduplicates);
+      if (box_inside_planes(this->children[i]->nodesize, planes, numplanes)) {
+        this->children[i]->findItems(planes, numplanes,
+                                     destarray, itemfuncs, removeduplicates);
       }
     }
   }
@@ -447,7 +406,7 @@ SbOctTreeNode::findItems(const SbPlane * const planes,
 }
 
 void
-SbOctTreeNode::splitBox(const SbBox3f & box, SbBox3f * dest)
+SbOctTreeNode::split3Way(const SbBox3f & box, SbBox3f * dest)
 {
   SbVec3f mid = (box.getMin() + box.getMax()) * 0.5f;
 
@@ -462,22 +421,21 @@ SbOctTreeNode::splitBox(const SbBox3f & box, SbBox3f * dest)
 }
 
 SbBool
-SbOctTreeNode::splitNode(const SbBox3f & nodesize,
-                         const SbOctTreeFuncs & itemfuncs)
+SbOctTreeNode::splitNode(const SbOctTreeFuncs & itemfuncs)
 {
-  int i;
-  for (i = 0; i < 8; i++)
-    this->children[i] = new SbOctTreeNode();
-
   SbBox3f childbox[8];
-  SbOctTreeNode::splitBox(nodesize, childbox);
+  SbOctTreeNode::split3Way(this->nodesize, childbox);
+  int i;
+  for (i = 0; i < 8; i++) {
+    this->children[i] = new SbOctTreeNode(childbox[i]);
+  }
 
   const int n = this->items.getLength();
   for (i = 0; i < n; i++) {
     void *item = this->items[i];
     for (int j = 0; j < 8; j++) {
       if (itemfuncs.insideboxfunc(item, childbox[j])) {
-        children[j]->items.append(item);
+        this->children[j]->items.append(item);
       }
     }
   }
@@ -486,18 +444,19 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
   // from the parent node (i.e. this node). If so, the split won't
   // gain us any in processing time (it will likely be hurtful), so
   // decide against splitting.
-  int cntnodes = 0;
+
   for (i = 0; i < 8; i++) {
-    const int len = children[i]->items.getLength();
-    if (len == n) cntnodes++;
-  }
-  if (cntnodes > 0) {
-    for (i = 0; i < 8; i++) {
-      delete children[i];
-      children[i] = NULL;
+    if (this->children[i]->items.getLength() == n) {
+      for (int j = 0; j < 8; j++) {
+        delete this->children[j];
+        this->children[j] = NULL;
+      }
+      return FALSE;
     }
-    return FALSE;
   }
+
+  // Box was indeed split, we're now a group node, so truncate our
+  // list of items and carry on with new tree structure.
 
   this->items.truncate(0, TRUE);
   return TRUE;
@@ -511,8 +470,7 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
 SbOctTree::SbOctTree(const SbBox3f & bbox,
                      const SbOctTreeFuncs & itemfuncs,
                      const int maxitems)
-  : boundingbox(bbox),
-    topnode(new SbOctTreeNode()),
+  : topnode(new SbOctTreeNode(bbox)),
     itemfuncs(itemfuncs),
     maxitemspernode(maxitems)
 {
@@ -533,8 +491,9 @@ SbOctTree::~SbOctTree()
 void
 SbOctTree::clear(void)
 {
+  SbBox3f bbox = this->topnode->getBBox();
   delete this->topnode;
-  this->topnode = new SbOctTreeNode();
+  this->topnode = new SbOctTreeNode(bbox);
 }
 
 /*!
@@ -545,12 +504,10 @@ SbOctTree::addItem(void * const item)
 {
   // FIXME: this can easily hit due to floating point
   // inaccuracies. 20050512 mortene.
-  assert(this->itemfuncs.insideboxfunc(item, this->boundingbox) &&
+  assert(this->itemfuncs.insideboxfunc(item, this->topnode->getBBox()) &&
          "bbox of item outside the octtree top-level bbox");
 
-  this->topnode->addItem(item, this->itemfuncs,
-                         this->maxitemspernode,
-                         this->boundingbox);
+  this->topnode->addItem(item, this->itemfuncs, this->maxitemspernode);
 }
 
 /*!
@@ -560,8 +517,7 @@ SbOctTree::addItem(void * const item)
 void
 SbOctTree::removeItem(void * const item)
 {
-  this->topnode->removeItem(item, this->itemfuncs,
-                            this->boundingbox);
+  this->topnode->removeItem(item, this->itemfuncs);
 }
 
 /*!
@@ -579,10 +535,7 @@ SbOctTree::findItems(const SbVec3f & pos,
                      const SbBool removeduplicates) const
 {
   assert(this->itemfuncs.ptinsidefunc);
-  topnode->findItems(pos, destarray,
-                     this->itemfuncs,
-                     this->boundingbox,
-                     removeduplicates);
+  topnode->findItems(pos, destarray, this->itemfuncs, removeduplicates);
 }
 
 /*!
@@ -598,10 +551,7 @@ SbOctTree::findItems(const SbBox3f & box, SbList <void*> & destarray,
                      const SbBool removeduplicates) const
 {
   assert(this->itemfuncs.insideboxfunc);
-  this->topnode->findItems(box, destarray,
-                           this->itemfuncs,
-                           this->boundingbox,
-                           removeduplicates);
+  this->topnode->findItems(box, destarray, this->itemfuncs, removeduplicates);
 }
 
 /*!
@@ -618,10 +568,7 @@ SbOctTree::findItems(const SbSphere & sphere,
                      const SbBool removeduplicates) const
 {
   assert(this->itemfuncs.insidespherefunc);
-  this->topnode->findItems(sphere, destarray,
-                           this->itemfuncs,
-                           this->boundingbox,
-                           removeduplicates);
+  this->topnode->findItems(sphere, destarray, this->itemfuncs, removeduplicates);
 }
 
 /*!
@@ -642,8 +589,7 @@ SbOctTree::findItems(const SbPlane * const planes,
                      const SbBool removeduplicates) const
 {
   assert(this->itemfuncs.insideplanesfunc);
-  this->topnode->findItems(planes, numplanes, destarray,
-                           this->itemfuncs, this->boundingbox,
+  this->topnode->findItems(planes, numplanes, destarray, this->itemfuncs,
                            removeduplicates);
 }
 
@@ -655,12 +601,12 @@ SbOctTree::findItems(const SbPlane * const planes,
 const SbBox3f &
 SbOctTree::getBoundingBox(void) const
 {
-  return this->boundingbox;
+  return this->topnode->getBBox();
 }
 
 void 
 SbOctTree::debugTree(FILE * fp)
 {
   fprintf(fp, "Oct Tree:\n");
-  if (this->topnode) this->topnode->debugTree(fp, 1, this->boundingbox);
+  if (this->topnode) { this->topnode->debugTree(fp, 1); }
 }

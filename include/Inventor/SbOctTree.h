@@ -33,9 +33,10 @@ class SbSphere;
 class SbOctTreeNode;
 class SbPlane;
 
+// *************************************************************************
+
 typedef struct
 {
-  void (*bboxfunc)(void * const item, SbBox3f & bbox);
   SbBool (*ptinsidefunc)(void * const item, const SbVec3f & pt);
   SbBool (*insideboxfunc)(void * const item, const SbBox3f & box);
   SbBool (*insidespherefunc)(void * const item, const SbSphere & sphere);
@@ -44,6 +45,7 @@ typedef struct
                              const int numplanes);
 } SbOctTreeFuncs;
 
+// *************************************************************************
 
 class COIN_DLL_API SbOctTree {
 public:
@@ -73,12 +75,11 @@ public:
   void debugTree(FILE * fp);
 
 private:
-  friend class SbOctTreeNode;
-  SbBox3f boundingbox;
   SbOctTreeNode * topnode;
   SbOctTreeFuncs itemfuncs;
   int maxitemspernode;
 };
 
+// *************************************************************************
 
 #endif // !COIN_SBOCTTREE_H
