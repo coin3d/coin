@@ -30,6 +30,10 @@
 
 // *************************************************************************
 
+// Stop Carbon from trying to use the CarbonSound.h header that was removed 
+// in QuickTime 7.0. We are not using CarbonSound, so we do not need that 
+// anyway. See http://www.cocoadev.com/index.pl?CarbonSound
+#define __CARBONSOUND__
 #include <Carbon/Carbon.h>
 #include <Inventor/SbVec2f.h>
 
