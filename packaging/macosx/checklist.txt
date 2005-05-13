@@ -35,6 +35,9 @@ o Build & package Coin
   ./Coin-$(VERSION)/configure
   make macosx-packages
 
+  Note: Do not manually unmount the volume after setting the
+  background image, it will be automatically unmounted!
+
 ---
 
 You should now have the following:
