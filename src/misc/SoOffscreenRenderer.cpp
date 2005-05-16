@@ -1065,7 +1065,7 @@ SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
-  if (!SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE;}
+  if (SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE;}
 
   const SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   const int nc = this->getComponents();
