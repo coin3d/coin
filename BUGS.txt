@@ -4589,3 +4589,33 @@ WWWInline { alternateRep Group { BaseColor { rgb .2 .4 .6 } Cone { } } }
     20050315 mortene.
 
 =====================================================================
+
+190 assert hits in FreeType font support.
+
+    An assert can be reproduced on my development machine (but seems
+    general enough that it should do so on other's aswell), by loading
+    the scene graph below into an examiner viewer, and as the first
+    thing setting "Still drawstyle" to "wireframe overlay".
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Separator {
+   Font { name "Courier New" }
+   AsciiText { string "3" }
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    The assert is
+
+        Coin/src/fonts/freetype.c:1204: cc_flwft_get_vector_glyph:
+        Assertion `unused' failed.
+
+    (In case it turns out to be relevant: the "Courier New" font spec
+    resolves on my system to
+    /usr/share/fonts/truetype/Courier_New.ttf, which is Microsoft's
+    TTF Courier New, version 2.82.)
+
+    20050516 mortene.
+
+=====================================================================
