@@ -72,10 +72,9 @@ SoFragmentShader::isVertexShader(void) const
 SbBool
 SoFragmentShader::isSupported(SourceType sourceType)
 {
-  // FIXME: return correct values, based on checking the actual
-  // capabilities of the GL driver. (Yes, this is part of the TGS
-  // Inventor API -- the function signature is not very well designed,
-  // as we really need a guaranteed GL context for this.)  20050120 mortene.
+  // The function signature is not very well designed, as we really
+  // need a guaranteed GL context for this. (We've chosen to be
+  // compatible with TGS Inventor, so don't change the signature.)
   
   void * ptr = coin_gl_current_context();
   assert(ptr && "No active OpenGL context found!");
