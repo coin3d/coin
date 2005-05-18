@@ -343,6 +343,18 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
   memory resources). The default is to copy image data from the \a
   pixels source into an internal copy.
 
+  \e Important \e note: if you call this with \a copypolicy as either
+  \c NO_COPY_AND_DELETE or \c NO_COPY_AND_FREE, and your application
+  is running on Mirosoft Windows, be aware that you will get
+  mysterious crashes if your application is not using the same C
+  library run-time as the Coin library.
+
+  The cause of this is that a memory block would then be allocated by
+  the application on the memory heap of one C library run-time (say,
+  for instance \c MSVCRT.LIB), but attempted deallocated in the memory
+  heap of another C library run-time (e.g. \c MSVCRTD.LIB), which
+  typically leads to hard-to-debug crashes.
+
   \since The CopyPolicy argument was added in Coin 2.0.
   \since CopyPolicy was added to TGS Inventor 3.0.
 */
@@ -370,6 +382,13 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
   case NO_COPY:
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);
     break;
+
+    // FIXME: as for the "multiple C run-times" problem mentioned in
+    // the API docs above, would it be possible to put in a check for
+    // whether or not the memory block is within the same C library
+    // heap as for the Coin library itself? I seem to remember that
+    // there is such a function in the Win32 API.  20050518 mortene.
+
   case NO_COPY_AND_DELETE:
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);
     PRIVATE(this)->deleteimage = (unsigned char*) pixels;
