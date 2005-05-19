@@ -525,7 +525,7 @@ SoGLRenderAction::initClass(void)
     COIN_GLBBOX = atoi(env);
   }
   else {
-    COIN_GLBBOX = 1;
+    COIN_GLBBOX = 0;
   }
 }
 
