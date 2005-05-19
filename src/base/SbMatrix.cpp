@@ -407,44 +407,6 @@ SbMatrix::det4(void) const
   return det;
 }
 
-
-static int 
-invert_mat(double ** mat, const int n, const int m)
-{
-  // Gauss-Jordan elimination
-  int i = 0;
-  int c, r;
-  for (int j = 0; j < n; j++) {
-    int k;
-    for (k = i; k < n; k++) {
-      if (mat[k][j] != 0.0f) break;
-    }
-    if (k < n) {
-      if (k != i) {
-        double * tmp = mat[i];
-        mat[i] = mat[k];
-        mat[k] = tmp;
-      }
-      double mul = 1.0f / mat[i][j];
-      for (c = 0; c < m; c++) {
-        mat[i][c] *= mul;
-      }
-      for (r = 0; r < n; r++) {
-        if (r != i) {
-          mul = -mat[r][j];
-          for (c = 0; c < m; c++) {
-            mat[r][c] += mul * mat[i][c]; 
-          }
-        }
-      }
-      i++;
-    }
-    else return 0;
-  }
-  return 1;
-}
-
-
 /*!
   Return a new matrix which is the inverse matrix of this.
 
@@ -455,39 +417,7 @@ invert_mat(double ** mat, const int n, const int m)
 SbMatrix
 SbMatrix::inverse(void) const
 {
-#if 0 // matrix reduction
-
-  double r0[8];
-  double r1[8];
-  double r2[8];
-  double r3[8];
-
-  double * m[] = {r0,r1,r2,r3};
-
-  int i, j;
-
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      m[i][j] = (*this)[j][i];
-      m[i][j+4] = i == j ? 1.0 : 0.0;
-    }
-  }
-  SbMatrix inv = (*this);
-  if (invert_mat(m, 4, 8)) {
-    for (i = 0; i < 4; i++) {
-      for (j = 0; j < 4; j++) {
-        inv[j][i] = m[i][j+4];
-      }
-    }
-  }
-  else {
-    fprintf(stderr,"failed to calc inverse\n");
-  }
-  return inv;
-
-
-
-#elif 1 // new optimized version
+#if 1 // new optimized version
 
   // check for identity matrix
   if (SbMatrixP::isIdentity(this->matrix)) { return SbMatrix::identity(); }
@@ -501,7 +431,7 @@ SbMatrix::inverse(void) const
   src = (float (*)[4]) this->matrix[0];
 
   // check for affine matrix (common case)
-  if (0 && src[0][3] == 0.0f && src[1][3] == 0.0f &&
+  if (src[0][3] == 0.0f && src[1][3] == 0.0f &&
       src[2][3] == 0.0f && src[3][3] == 1.0f) {
     
     // More or less directly from:
