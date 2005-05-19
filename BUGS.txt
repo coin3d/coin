@@ -4645,12 +4645,22 @@ Cube {
 
     20050519 mortene.
 
-    Yes. SoCamera will render a frame in the viewport when the 
-    viewport mapping is set to one of the CROP modes. To fix 
-    this we need a new element called SoFullViewportElement or
-    something to make it possible for SoCamera to detect that
-    the SoGLRenderAction is actually rendering a tile in the 
-    viewport, and not the entire viewport.
+    Yes. SoCamera will render a frame in the viewport when the
+    viewport mapping is set to one of the CROP modes. To fix this we
+    need a new element called SoViewportTile or something to make it
+    possible for SoCamera to detect that the SoGLRenderAction is
+    actually rendering a tile in the viewport, and not the entire
+    viewport. This is also needed to make other viewport-based
+    rendering nodes, such as legend, work.
+
+    I don't know if SoViewportTileElement is a good idea though, since
+    it will complicate the CROP rendering code in SoCamera quite a
+    bit. 
+
+    Another idea: Is it possible to use the WindowSize-parameter in
+    SbViewportRegion to specify the entire viewport? This must be done
+    _after_ the viewport is initialized in the GL context though, maybe
+    in a pre-camera callback or something.
 
     20050519 pederb
 
