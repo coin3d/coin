@@ -4644,13 +4644,11 @@ Separator {
 
 OrthographicCamera {
    viewportMapping CROP_VIEWPORT_NO_FRAME
-   position -50000 2180 2595
-   orientation 0 1 0 -1.5706
-   aspectRatio 1.5
-   nearDistance 25000
+   nearDistance 0.1
    farDistance 53000
-   focalDistance -50000
    height 6393.33333333333
+   position -15206.092773 9440.072266 17456.371094
+   orientation -0.536894 -0.843216 0.027043   0.798199
 }
 
 Cube {
@@ -4665,6 +4663,11 @@ Cube {
 
         COIN_OFFSCREENRENDERER_TILEWIDTH=512
         COIN_OFFSCREENRENDERER_TILEHEIGHT=512
+
+    It appears to have something to do with the SoOffscreenRenderer
+    camera view volume narrowing to not work correctly with the
+    cropped viewport, as commenting out the "viewportMapping" field of
+    the camera causes the bug to go away.
 
     20050519 mortene.
 
