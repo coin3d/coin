@@ -4104,39 +4104,8 @@ end
 
 =====================================================================
 
-166 Mem-leak when using PROTO with PositionInterpolator.
-
-    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
-    then run the examinerviewer example of SoGuiExamples on the
-    following wrl-file:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#VRML V2.0 utf8
-
-PROTO a [ eventOut SFVec3f o ] {
-   PositionInterpolator {
-      value_changed IS o
-   }
-}
-
-a { }
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    As can be seen from the debug output on application exit, various
-    PROTO-related VRML-stuff is not cleaned up.
-
-    Note that when switching the PositionInterpolator for e.g. a
-    Sphere, there is no longer a mem-leak.
-
-    After fixing this bug, try the same steps with
-    ~pederb/store/vrml97/sony_cam.wrl, and see if all leaks are gone,
-    or if there are other, similar bugs.
-
-    20041105 mortene.
-
-=====================================================================
-
 167 Memory read error for PROTO-based data in VRML97 scene.
+
 
     Valgrind reports
 
@@ -4144,6 +4113,11 @@ a { }
 
     for the local WRL file ~pederb/store/vrml97/sony_cam.wrl. The
     callstack backtrace at the point of the error is:
+
+    Update 2005-02-01 pederb:
+    
+      I believe this bug has been fixed now. 
+
 
 ----8<----- [snip] --------------------8<----- [snip] ----------------
 ==31646== Use of uninitialised value of size 4
