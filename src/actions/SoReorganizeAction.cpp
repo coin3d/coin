@@ -515,6 +515,8 @@ SoReorganizeActionP::replaceNode(SoFullPath * path)
     this->pvcache = NULL;
     return;
   }
+  this->pvcache->fit(); // needed to do optimize-sort of data
+
 
   SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
   SoVertexProperty * vp = new SoVertexProperty;

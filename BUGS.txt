@@ -4645,4 +4645,13 @@ Cube {
 
     20050519 mortene.
 
+    Yes. SoCamera will render a frame in the viewport when the 
+    viewport mapping is set to one of the CROP modes. To fix 
+    this we need a new element called SoFullViewportElement or
+    something to make it possible for SoCamera to detect that
+    the SoGLRenderAction is actually rendering a tile in the 
+    viewport, and not the entire viewport.
+
+    20050519 pederb
+
 =====================================================================
