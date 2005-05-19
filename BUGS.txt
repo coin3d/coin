@@ -4628,6 +4628,44 @@ Separator {
 
     Various code clean-up is necessary to take care of this.
 
+    This should be a high priority task.
+
     20050516 mortene.
+
+=====================================================================
+
+191 SoOffscreenRenderer bug with SoOrthographicCamera in multitile-mode.
+
+    The following iv-file results in a faulty image when fed to the
+    Ivtools/renderos/renderos example, using a tile size of 512x512:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+OrthographicCamera {
+   viewportMapping CROP_VIEWPORT_NO_FRAME
+   position -50000 2180 2595
+   orientation 0 1 0 -1.5706
+   aspectRatio 1.5
+   nearDistance 25000
+   farDistance 53000
+   focalDistance -50000
+   height 6393.33333333333
+}
+
+Cube {
+   width 500
+   height 100
+   depth 50000
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    To reproduce with a forced tile size of 512x512, set the following
+    envvars:
+
+        COIN_OFFSCREENRENDERER_TILEWIDTH=512
+        COIN_OFFSCREENRENDERER_TILEHEIGHT=512
+
+    20050519 mortene.
 
 =====================================================================
