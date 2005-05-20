@@ -2984,6 +2984,12 @@ Separator {
 
     20040705 mortene.
 
+    UPDATE 20050520 mortene: bug item #191 depends on this bug.
+
+    UPDATE 20050520 mortene: As a side effect of this fix, SoCamera
+    could then also do the view volume narrowing itself, removing the
+    need for the current ugly hack in SoOffscreenRenderer to do this.
+
 =====================================================================
 
 123 coin-config --setup uses hardcoded LD_LIBRARY_PATH variable name
@@ -4073,7 +4079,6 @@ PointSet { }
 
 =====================================================================
 
-
 165 Faulty error reporting upon reading bad file.
 
     Trying to read the file below with e.g. SoDB::readAll() correctly
@@ -4670,5 +4675,15 @@ Cube {
     in a pre-camera callback or something.
 
     20050519 pederb
+
+    UPDATE 20050520 mortene: after discussion with pederb, we consider
+    the Correct Fix for this to first take care of bug item #121. This
+    means the SoOffscreenRenderer adding an element to the state stack
+    upon traversal start which identifies the current tile to be
+    rendered (i.e. containing row and column index, and ditto
+    dimensions), and then leaving it to SoCamera to render the
+    viewport cropping correctly. (As a side effect, SoCamera could
+    then also do the view volume narrowing itself, removing the need
+    for the current ugly hack in SoOffscreenRenderer to do this.)
 
 =====================================================================
