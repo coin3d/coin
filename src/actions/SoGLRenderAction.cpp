@@ -874,8 +874,8 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     return;
   }
 
-  // always apply a bboxaction right before rendering to have valid
-  // bbox caches in the separators
+  // FIXME: this is for testing if it's a good idea to always apply an
+  // SoGetBoundingBoxAction before rendering. pederb, 2005-05-20
   if (COIN_GLBBOX) {
     THIS->bboxaction->apply(node);
   }
