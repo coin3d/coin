@@ -4118,6 +4118,10 @@ end
     
       I believe this bug has been fixed now. 
 
+    UPDATE 20050520 mortene: nope, I just confirmed that the problem
+    is still present. Tested with Valgrind 2.4.0.rc4, simply loading
+    the file into an SoQtExaminerViewer.
+
 
 ----8<----- [snip] --------------------8<----- [snip] ----------------
 ==31646== Use of uninitialised value of size 4
@@ -4251,6 +4255,9 @@ and
 ----8<----- [snip] --------------------8<----- [snip] ----------------
 
     20041105 mortene.
+
+    UPDATE 20050520 mortene: this bug may be fixed, at least I
+    couldn't reproduce it now (with Valgrind 2.4.0.rc4).
 
 =====================================================================
 
