@@ -4629,7 +4629,7 @@ Separator {
 #Inventor V2.1 ascii
 
 OrthographicCamera {
-   viewportMapping CROP_VIEWPORT_NO_FRAME
+   viewportMapping CROP_VIEWPORT_LINE_FRAME
    nearDistance 0.1
    farDistance 53000
    height 6393.33333333333
