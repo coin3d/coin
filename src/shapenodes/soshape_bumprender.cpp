@@ -411,7 +411,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     newstruct->dirlight = this->dirlightvertexprogramid;
     newstruct->pointlight = this->pointlightvertexprogramid;
 
-    (void) this->diffuseprogramdict->enter(contextid, (void *) newstruct);
+    (void) this->specularprogramdict->enter(contextid, (void *) newstruct);
 
   }
 
