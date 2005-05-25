@@ -24,11 +24,20 @@
  *
 \**************************************************************************/
 
+#include <stdarg.h>
+
 #include <Inventor/system/inttypes.h>
 #include <Inventor/C/base/string.h>
-#include <Inventor/lists/SbIntList.h>
 
-#include <stdarg.h>
+#ifdef COIN_INTERNAL
+ #define COIN_ALLOW_SBINTLIST
+ #include <Inventor/lists/SbIntList.h>
+ #undef COIN_ALLOW_SBINTLIST
+#else
+ #include <Inventor/lists/SbIntList.h>
+#endif // COIN_INTERNAL
+
+// *************************************************************************
 
 class COIN_DLL_API SbString {
 public:

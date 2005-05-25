@@ -24,15 +24,23 @@
  *
 \**************************************************************************/
 
+#include <stddef.h> // for NULL definition
 #include <Inventor/lists/SbList.h>
-#include <Inventor/lists/SbIntList.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBox3f.h>
-#include <stddef.h> // for NULL definition
+
+#ifdef COIN_INTERNAL
+ #define COIN_ALLOW_SBINTLIST
+ #include <Inventor/lists/SbIntList.h>
+ #undef COIN_ALLOW_SBINTLIST
+#else
+ #include <Inventor/lists/SbIntList.h>
+#endif // COIN_INTERNAL
 
 class SbSphere;
-
 class coin_bspnode;
+
+// *************************************************************************
 
 class COIN_DLL_API SbBSPTree {
 public:

@@ -26,23 +26,42 @@
 
 #include <Inventor/lists/SbPList.h>
 
+// *************************************************************************
+
 class  COIN_DLL_API SbIntList : public SbPList {
 public:
   SbIntList(void) : SbPList () { }
   SbIntList(const int sizehint) : SbPList(sizehint) { }
   
   void append(const int item) {
-    ((SbPList*)this)->append((void*)((unsigned long)item));
+    ((SbPList*)this)->append((void*)((uintptr_t)item));
   }
   int find(const int item) {
-    return ((SbPList*)this)->find((void *)((unsigned long)item));
+    return ((SbPList*)this)->find((void *)((uintptr_t)item));
   }
   void insert(const int item, const int addbefore) {
-    ((SbPList*)this)->insert((void *)((unsigned long)item), addbefore);
+    ((SbPList*)this)->insert((void *)((uintptr_t)item), addbefore);
   }
   int & operator[](const int idx) const {
     return (int&) ((*(const SbPList*)this)[idx]);
   }
 };
+
+// *************************************************************************
+
+// Internally, we should use the SbList template class, since it
+// provides a better interface than SbIntList, and since the interface
+// of SbIntList may have issues with casting type safety.
+//
+// This class is provided for two reasons: 1) to be compatible with
+// SGI/TGS Inventor, 2) there are a few places in the public API where
+// it is used (these are all our own doing, not from the original SGI
+// Inventor, and could be taken out for any new major release).
+
+#if defined(COIN_INTERNAL) && !defined(COIN_ALLOW_SBINTLIST)
+#error prefer SbList over SbIntList for internal code
+#endif // COIN_INTERNAL
+
+// *************************************************************************
 
 #endif // !COIN_SBINTLIST_H
