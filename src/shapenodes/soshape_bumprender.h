@@ -1,6 +1,29 @@
 #ifndef COIN_SOSHAPE_BUMPRENDER_H
 #define COIN_SOSHAPE_BUMPRENDER_H
 
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
+
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
@@ -8,13 +31,16 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/SbDict.h>
+
+// *************************************************************************
 
 class SoState;
 class SoLight;
 class SoGLImage;
 class SbMatrix;
 class SoPrimitiveVertexCache;
+
+// *************************************************************************
 
 // FIXME: inherit from SoCache to avoid regenerating everything every frame
 
@@ -43,6 +69,19 @@ private:
   void soshape_diffuseprogramdeletion(unsigned long key, void * value);
   void soshape_specularprogramdeletion(unsigned long key, void * value);
 
+  struct spec_programidx {
+    const cc_glglue * glue;
+    GLuint dirlight;
+    GLuint pointlight;
+    GLuint fragment;
+  };
+
+  struct diffuse_programidx {
+    const cc_glglue * glue;
+    GLuint pointlight; // Pointlight diffuse rendering not implemented as a program yet.
+    GLuint dirlight;
+    GLuint normalrendering;
+  };
 
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
@@ -50,8 +89,11 @@ private:
   SbVec3f lightvec;
   SbBool ispointlight;
 
-  SbDict * diffuseprogramdict; // Hash table holding the vertex/fragment program ids for each GL context.
-  SbDict * specularprogramdict;
+  typedef SbHash<struct diffuse_programidx *, int> ContextId2DiffuseStruct;
+  ContextId2DiffuseStruct diffuseprogramdict;
+
+  typedef SbHash<struct spec_programidx *, int> ContextId2SpecStruct;
+  ContextId2SpecStruct specularprogramdict;
 
   GLuint fragmentprogramid;
   GLuint dirlightvertexprogramid;
@@ -61,7 +103,6 @@ private:
   GLuint normalrenderingvertexprogramid;
   GLuint diffusebumpdirlightvertexprogramid;
   SbBool diffuseprogramsinitialized;
-
 };
 
 #endif // COIN_SOSHAPE_BUMPRENDER

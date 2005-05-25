@@ -31,22 +31,32 @@
 
 */
 
+// *************************************************************************
+
 #include "SoUpgrader.h"
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbDict.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SbString.h>
-#include <Inventor/C/tidbitsp.h>
-#include "SoPackedColorV20.h"
-#include "SoShapeHintsV10.h"
+
 #include <stddef.h> // for NULL
 #include <assert.h>
 
-// an upgrader lookup dict. FIXME: add a new method to SoType (other
-// than SoType::fromName), that checks if a type with a name is
-// registered _without_ attempting to load the type from a shared
-// object/dll.
-static SbDict * soupgrader_namedict = NULL;
+#include "SoPackedColorV20.h"
+#include "SoShapeHintsV10.h"
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SbHash.h>
+
+// *************************************************************************
+
+// an upgrader lookup dict.
+//
+// FIXME: add a new method to SoType (other than SoType::fromName),
+// that checks if a type with a name is registered _without_
+// attempting to load the type from a shared object/dll.  pederb.
+//
+// FIXME: replace this with a real set datatype abstraction. 20050524 mortene.
+typedef SbHash<void *, const char *> NameSet;
+static NameSet * soupgrader_namedict = NULL;
 
 static void
 soupgrader_cleanup(void)
@@ -60,9 +70,7 @@ static void
 soupgrader_add_to_namedict(const SbString & name)
 {
   assert(soupgrader_namedict);
-
-  void * ptr = (void*) SbName(name.getString()).getString();
-  soupgrader_namedict->enter((unsigned long)ptr, NULL);
+  soupgrader_namedict->put(name.getString(), NULL);
 
   // create lookup both with and without the "So" prefix
   SbString tmp;
@@ -73,17 +81,15 @@ soupgrader_add_to_namedict(const SbString & name)
     tmp = "So";
     tmp += name;
   }
-  ptr = (void*) SbName(tmp.getString()).getString();
-  soupgrader_namedict->enter((unsigned long)ptr, NULL);
+  soupgrader_namedict->put(tmp.getString(), NULL);
 }
 
 static SbBool 
 soupgrader_exists(const SbString & name) 
 {
   assert(soupgrader_namedict);
-  void * ptr = (void*) SbName(name.getString()).getString();
   void * dummy;
-  return soupgrader_namedict->find((unsigned long) ptr, dummy);
+  return soupgrader_namedict->get(name.getString(), dummy);
 }
 
 #define SOUPGRADER_ADD_TYPE(_class_) \
@@ -99,7 +105,7 @@ soupgrader_init_classes(void)
   static int first = 1;
   if (first) {
     first = 0;
-    soupgrader_namedict = new SbDict;
+    soupgrader_namedict = new NameSet;
     
     coin_atexit((coin_atexit_f*) soupgrader_cleanup, 0); 
     

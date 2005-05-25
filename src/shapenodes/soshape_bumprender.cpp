@@ -218,48 +218,38 @@ static const char * normalrenderingvpprogram =
 
 SbBool bumphack = TRUE;
 
-struct soshape_bumprender_spec_programidx {
-  const cc_glglue * glue;
-  GLuint dirlight;
-  GLuint pointlight;
-  GLuint fragment;
-};
-
-struct soshape_bumprender_diffuse_programidx {
-  const cc_glglue * glue;
-  GLuint pointlight; // Pointlight diffuse rendering not implemented as a program yet.
-  GLuint dirlight;
-  GLuint normalrendering;
-};
-
 // *************************************************************************
 
 static void
 soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)
 {
-  soshape_bumprender_diffuse_programidx * pidx = (soshape_bumprender_diffuse_programidx *) value;
+#if 0 // FIXME: clean-up routines not implemented yet (for no good
+      // reason, really). 20050524 mortene.
+  diffuse_programidx * pidx = (diffuse_programidx *) value;
   /* FIXME: There are no pointlight program initialized for diffuse
      rendering yet. Enable when implemented. (20040209 handegar) */
   //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->normalrendering);
+#endif // FIXME
 }
 
 static void
 soshape_bumprender_specularprogramdeletion(unsigned long key, void * value)
 {
-  soshape_bumprender_spec_programidx * pidx = (soshape_bumprender_spec_programidx *) value;
+#if 0 // FIXME: clean-up routines not implemented yet (for no good
+      // reason, really). 20050524 mortene.
+  spec_programidx * pidx = (spec_programidx *) value;
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->fragment);
+#endif // FIXME
 }
 
 soshape_bumprender::soshape_bumprender(void)
 {
   this->diffuseprogramsinitialized = FALSE;
   this->programsinitialized = FALSE;
-  this->diffuseprogramdict = new SbDict(4);
-  this->specularprogramdict = new SbDict(4);
 }
 
 soshape_bumprender::~soshape_bumprender()
@@ -268,13 +258,8 @@ soshape_bumprender::~soshape_bumprender()
   // FIXME: Cannot delete programs just yet, as we dont know if the
   // contex was valid or not. We must wait for new functionality to be
   // implemented for the context element code. (20040209 handegar)
-  //this->diffuseprogramdict->applyToAll(soshape_bumprender_diffuseprogramdeletion);
-  //this->specularprogramdict->applyToAll(soshape_bumprender_specularprogramdeletion);
-
-  this->diffuseprogramdict->clear();
-  this->specularprogramdict->clear();
-  delete this->diffuseprogramdict;
-  delete this->specularprogramdict;
+  //this->diffuseprogramdict.applyToAll(soshape_bumprender_diffuseprogramdeletion);
+  //this->specularprogramdict.applyToAll(soshape_bumprender_specularprogramdeletion);
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -292,11 +277,9 @@ inline void NORMALIZE(SbVec3f &v)
 void
 soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
 {
-
-  unsigned long contextid = SoGLCacheContextElement::get(state);
-  void * programstruct = NULL;
-  if (diffuseprogramdict->find(contextid, programstruct)) {
-    soshape_bumprender_diffuse_programidx * old = (soshape_bumprender_diffuse_programidx *) programstruct;
+  const int contextid = SoGLCacheContextElement::get(state);
+  diffuse_programidx * old;
+  if (this->diffuseprogramdict.get(contextid, old)) {
     this->diffusebumpdirlightvertexprogramid = old->dirlight;
     this->normalrenderingvertexprogramid = old->normalrendering;
   }
@@ -331,13 +314,13 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
 
     }
 
-    soshape_bumprender_diffuse_programidx * newstruct = new soshape_bumprender_diffuse_programidx;
+    diffuse_programidx * newstruct = new diffuse_programidx;
     newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
     newstruct->dirlight = this->diffusebumpdirlightvertexprogramid;
     newstruct->pointlight = 0; // Pointlight vertex program not implemented yet.
     newstruct->normalrendering = this->normalrenderingvertexprogramid;
 
-    (void) this->diffuseprogramdict->enter(contextid, (void *) newstruct);
+    (void) this->diffuseprogramdict.put(contextid, newstruct);
 
   }
 
@@ -347,19 +330,14 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
 void
 soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 {
-
-  unsigned long contextid = SoGLCacheContextElement::get(state);
-  void * programstruct = NULL;
-  if (specularprogramdict->find(contextid, programstruct)) {
-    soshape_bumprender_spec_programidx * old = (soshape_bumprender_spec_programidx *) programstruct;
-
+  const int contextid = SoGLCacheContextElement::get(state);
+  spec_programidx * old;
+  if (this->specularprogramdict.get(contextid, old)) {
     this->fragmentprogramid = old->fragment;
     this->dirlightvertexprogramid = old->dirlight;
     this->pointlightvertexprogramid = old->pointlight;
-
   }
   else {
-
     cc_glglue_glGenPrograms(glue, 1, &this->fragmentprogramid); // -- Fragment program
     cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
     cc_glglue_glProgramString(glue, GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
@@ -405,16 +383,14 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 
     }
 
-    soshape_bumprender_spec_programidx * newstruct = new soshape_bumprender_spec_programidx;
+    spec_programidx * newstruct = new spec_programidx;
     newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
     newstruct->fragment = this->fragmentprogramid;
     newstruct->dirlight = this->dirlightvertexprogramid;
     newstruct->pointlight = this->pointlightvertexprogramid;
 
-    (void) this->specularprogramdict->enter(contextid, (void *) newstruct);
-
+    (void) this->specularprogramdict.put(contextid, newstruct);
   }
-
 
   this->programsinitialized = TRUE;
 }

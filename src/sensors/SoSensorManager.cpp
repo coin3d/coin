@@ -70,6 +70,7 @@
   \sa SoPathSensor SoFieldSensor SoNodeSensor
 */
 
+// *************************************************************************
 
 #include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/sensors/SoDelayQueueSensor.h>
@@ -77,7 +78,7 @@
 #include <Inventor/sensors/SoAlarmSensor.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
-#include <Inventor/SbDict.h>
+#include <Inventor/misc/SbHash.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 
@@ -97,6 +98,7 @@
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
 
+// *************************************************************************
 
 // Keep these around. Even though the SoSensorManager code seems to be
 // working as it should now, a lot of other stuff around in the Coin
@@ -118,6 +120,7 @@
 // <mortene@sim.no>
 #define ALIVE_PATTERN 0x600dc0de /* spells "goodcode" */
 
+// *************************************************************************
 
 class SoSensorManagerP {
 public:
@@ -136,10 +139,14 @@ public:
   SbList <SoTimerQueueSensor *> timerqueue;
   SbList <SoTimerSensor*> reschedulelist;
 
-  // triggerdict - stores sensors that has been triggered in processDelayQueue().
-  // reinsertdict - temporary storage for idle sensors during processing
-  SbDict triggerdict;
-  SbDict reinsertdict;
+  // FIXME: from what I can see, the two dicts below are simply used
+  // as sets. Should implement a set datatype and use that
+  // instead. 20050520 mortene.
+
+  // stores sensors that has been triggered in processDelayQueue().
+  SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *> triggerdict;
+  // temporary storage for idle sensors during processing
+  SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *> reinsertdict;
 
   void (*queueChangedCB)(void *);
   void * queueChangedCBData;
@@ -382,7 +389,7 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
   }
   // ..then the reinsert list
   if (idx == -1) {
-    if (THIS->reinsertdict.remove((unsigned long) entry)) {
+    if (THIS->reinsertdict.remove(entry)) {
       idx = 0; // make sure notifyChanged() is called.
     }
   }
@@ -489,10 +496,12 @@ SoSensorManager::processTimerQueue(void)
 // callback from reinsertdict which will reinsert the sensor
 //
 static void
-reinsert_dict_cb(unsigned long, void * sensor, void * sensormanager)
+reinsert_dict_cb(SoDelayQueueSensor * const & key,
+                 SoDelayQueueSensor * const & sensor,
+                 void * closure)
 {
-  SoSensorManager * thisp = (SoSensorManager*) sensormanager;
-  thisp->insertDelaySensor((SoDelayQueueSensor*) sensor);
+  SoSensorManager * thisp = (SoSensorManager *)closure;
+  thisp->insertDelaySensor(sensor);
 }
 
 /*!
@@ -558,17 +567,17 @@ SoSensorManager::processDelayQueue(SbBool isidle)
       // at the end of this function. We do this to be able to always
       // remove the first list element. We avoid searching for the
       // first non-idle sensor.
-      (void) THIS->reinsertdict.enter((unsigned long) sensor, (void*) sensor);
+      (void) THIS->reinsertdict.put(sensor, sensor);
     }
     else {
       // only trigger sensor once per processing loop
-      if (THIS->triggerdict.enter((unsigned long) sensor, (void*) sensor)) {
+      if (THIS->triggerdict.put(sensor, sensor)) {
         sensor->trigger();
       }
       else {
         // Reuse the "reinsert" list to store the sensor. It will be
         // reinserted at the end of this function.
-        (void) THIS->reinsertdict.enter((unsigned long) sensor, (void*) sensor);
+        (void) THIS->reinsertdict.put(sensor, sensor);
       }
     }
     LOCK_DELAY_QUEUE(this);
@@ -578,7 +587,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
-  THIS->reinsertdict.applyToAll(reinsert_dict_cb, (void*) this);
+  THIS->reinsertdict.apply(reinsert_dict_cb, this);
   THIS->reinsertdict.clear();
   THIS->processingdelayqueue = FALSE;
 
