@@ -40,7 +40,8 @@ enum cc_string_constants {
 
 struct cc_string {
   char * pointer;
-  int bufsize;
+  int bufsize; /* FIXME: this is the wrong type -- should be size_t?
+                  20050525 mortene.*/
   char buffer[CC_STRING_MIN_SIZE];
 };
 

@@ -49,7 +49,7 @@ dict_get_index(cc_dict * ht, uintptr_t key)
   assert(ht != NULL);
   key = ht->hashfunc(key);
   key -= (key << 7); /* i.e. key = key * -127; */
-  return key & (ht->size-1);
+  return ((unsigned int)key) & (ht->size-1);
 }
 
 static void

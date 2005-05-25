@@ -187,7 +187,10 @@ static void
 sbdict_makeplist_cb(unsigned long key, void * value, void * closure)
 {
   sbdict_makeplist_data * data = (sbdict_makeplist_data*) closure;
-  data->keys->append((void*)key);
+  // Extra cast through uintptr_t to avoid a warning with MSVC 7 on
+  // 64-bit Windows.
+  const uintptr_t k = key;
+  data->keys->append((void *)k);
   data->values->append(value);
 }
 

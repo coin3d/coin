@@ -143,7 +143,7 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateCylindricalDragger.iv",
                                        ROTATECYLINDRICALDRAGGER_draggergeometry,
-                                       strlen(ROTATECYLINDRICALDRAGGER_draggergeometry));
+                                       (int)strlen(ROTATECYLINDRICALDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

@@ -197,7 +197,7 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("spotLightDragger.iv",
                                        SPOTLIGHTDRAGGER_draggergeometry,
-                                       strlen(SPOTLIGHTDRAGGER_draggergeometry));
+                                       (int)strlen(SPOTLIGHTDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

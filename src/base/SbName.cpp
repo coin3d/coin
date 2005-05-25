@@ -135,7 +135,7 @@ SbName::getLength(void) const
   // UPDATE 20030606 mortene: this can easily be done by storing an
   // extra value in the memory chunk allocated inside namemap.c, right
   // before the string itself.
-  return strlen(this->permaaddress);
+  return (int)strlen(this->permaaddress);
 }
 
 /*!

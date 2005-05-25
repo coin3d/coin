@@ -53,7 +53,7 @@ static const unsigned int NAME_TABLE_SIZE = 1999;
 struct NamemapMemChunk {
   char mem[CHUNK_SIZE];
   char * curbyte;
-  unsigned int bytesleft;
+  size_t bytesleft;
   struct NamemapMemChunk * next;
 };
 

@@ -237,7 +237,7 @@ SoCenterballDragger::SoCenterballDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("centerballDragger.iv",
                                        CENTERBALLDRAGGER_draggergeometry,
-                                       strlen(CENTERBALLDRAGGER_draggergeometry));
+                                       (int)strlen(CENTERBALLDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

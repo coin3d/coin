@@ -142,7 +142,7 @@ SoScale2Dragger::SoScale2Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("scale2Dragger.iv",
                                        SCALE2DRAGGER_draggergeometry,
-                                       strlen(SCALE2DRAGGER_draggergeometry));
+                                       (int)strlen(SCALE2DRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));

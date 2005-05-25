@@ -218,7 +218,7 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("tabPlaneDragger.iv",
                                        TABPLANEDRAGGER_draggergeometry,
-                                       strlen(TABPLANEDRAGGER_draggergeometry));
+                                       (int)strlen(TABPLANEDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

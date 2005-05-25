@@ -1699,7 +1699,8 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
     glue->glGenProgramsARB(1, &this->sortedlayersblendprogramid);
     glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->sortedlayersblendprogramid);
     glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(sortedlayersblendprogram), sortedlayersblendprogram);
+                             (GLsizei)strlen(sortedlayersblendprogram),
+                             sortedlayersblendprogram);
    
     // FIXME: Maybe a wrapper for catching fragment program errors
     // should be a part of GLUE... (20031204 handegar)

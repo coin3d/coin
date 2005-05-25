@@ -136,7 +136,7 @@ SoDebugError::initClass(void)
       }
       breakpoints = new char*[num_breakpoints];
       coin_atexit((coin_atexit_f *)debug_break_cleanup, 0);
-      const int envstrlen = strlen(env);
+      const size_t envstrlen = strlen(env);
       char * cpy = new char[envstrlen + 1];
       (void)strcpy(cpy, env);
       ptr = cpy;
@@ -146,7 +146,7 @@ SoDebugError::initClass(void)
       if (end == NULL) end = strchr(ptr, '\0');
       int i = 0;
       while (end && i < num_breakpoints) {
-        int len = end - ptr;
+        const ptrdiff_t len = end - ptr;
         breakpoints[i] = new char[len + 1];
         (void)memcpy(breakpoints[i], ptr, len);
         breakpoints[i][len] = '\0';

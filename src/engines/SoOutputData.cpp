@@ -59,7 +59,7 @@
 
 class SoOutputDataEntry {
 public:
-  SoOutputDataEntry(const char * n, SoType t, int offset)
+  SoOutputDataEntry(const char * n, SoType t, ptrdiff_t offset)
     : name(n), type(t), ptroffset(offset) { }
   SoOutputDataEntry(const SoOutputDataEntry * oe) { this->copy(oe); }
   SoOutputDataEntry(const SoOutputDataEntry & oe) { this->copy(&oe); }
@@ -75,7 +75,7 @@ public:
 
   SbName name;
   SoType type;
-  int ptroffset;
+  ptrdiff_t ptroffset;
 
 private:
   void copy(const SoOutputDataEntry * oe)
@@ -251,7 +251,8 @@ SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char 
 {
   char * vbase = (char *)base;
   char * voutput = (char *)output;
-  this->outputlist.append(new SoOutputDataEntry(name, type, voutput-vbase));
+  const ptrdiff_t range = voutput - vbase;
+  this->outputlist.append(new SoOutputDataEntry(name, type, range));
 
 #if COIN_DEBUG
   // FIXME: this is an ugly design flaw, which doesn't seem easily
@@ -289,7 +290,7 @@ SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngi
 {
   char * vbase = (char *)base;
   char * voutput = (char *)output;
-  int ptroffset = voutput - vbase;
+  const ptrdiff_t ptroffset = voutput - vbase;
 
   for (int i = 0; i < this->outputlist.getLength(); i++) {
     if (this->outputlist[i]->ptroffset == ptroffset) return i;

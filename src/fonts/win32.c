@@ -340,7 +340,6 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
   cc_dict * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
-  uintptr_t tmp;
 
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
@@ -453,8 +452,11 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     free(kpairs);
   } 
   
-  tmp = (uintptr_t) sizey;
-  (void) cc_dict_put(cc_flww32_globals.fontsizehash, (uintptr_t)wfont, (void*) sizey);
+  {
+    /* MSVC7 on 64-bit Windows wants this extra cast. */
+    const uintptr_t tmp = (uintptr_t)sizey;
+    (void) cc_dict_put(cc_flww32_globals.fontsizehash, (uintptr_t)wfont, (void *)tmp);
+  }
   
   return (void *)wfont;
 }
@@ -888,6 +890,7 @@ flww32_getVerticesFromPath(HDC hdc)
   LPPOINT p_points = NULL;
   LPBYTE p_types = NULL;
   int numpoints, i, lastmoveto;
+  uintptr_t tmp;
 
   if (FlattenPath(hdc) == 0) {
     cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
@@ -923,8 +926,9 @@ flww32_getVerticesFromPath(HDC hdc)
           GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);
           cc_list_truncate(flww32_tessellator.edgeindexlist, 
                            cc_list_get_length(flww32_tessellator.edgeindexlist)-1);
-          cc_list_append(flww32_tessellator.edgeindexlist, 
-                         (void *) (flww32_tessellator.edge_start_vertex));
+          /* MSVC7 on 64-bit Windows wants this extra cast. */
+          tmp = (uintptr_t)flww32_tessellator.edge_start_vertex;
+          cc_list_append(flww32_tessellator.edgeindexlist, (void *)tmp);
         }
 
         GLUWrapper()->gluTessBeginContour(flww32_tessellator.tessellator_object);
@@ -963,7 +967,6 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   SbBool unused;
   cc_dict * glyphhash;
   struct cc_flww32_glyph * glyphstruct;
-
   HDC memdc;
   HBITMAP membmp;
   HDC screendc;
@@ -971,6 +974,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   struct cc_flw_vector_glyph * new_vector_glyph;
   void * tmp;
   unsigned int size;
+  uintptr_t cast_aid;
   
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
@@ -1087,7 +1091,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);        
     cc_list_truncate(flww32_tessellator.edgeindexlist, 
                      cc_list_get_length(flww32_tessellator.edgeindexlist)-1);
-    cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.edge_start_vertex));
+    /* MSVC7 on 64-bit Windows wants this extra cast. */
+    cast_aid = (uintptr_t)flww32_tessellator.edge_start_vertex;
+    cc_list_append(flww32_tessellator.edgeindexlist, (void *)cast_aid);
   }
  
   GLUWrapper()->gluTessEndPolygon(flww32_tessellator.tessellator_object);  
@@ -1103,7 +1109,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 
   size = 200;
   if (cc_dict_get(cc_flww32_globals.fontsizehash, (uintptr_t)font, &tmp)) {
-    size = (int) tmp;
+    /* MSVC7 on 64-bit Windows wants this extra cast. */
+    cast_aid = (uintptr_t)tmp;
+    size = (int)cast_aid;
   }
 
   flww32_buildVertexList(new_vector_glyph, size);
@@ -1134,6 +1142,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 static void
 flww32_addTessVertex(double x, double y)
 {
+  uintptr_t cast_aid;
   int * counter = (int *)malloc(sizeof(int));
   float * point = (float *)malloc(sizeof(float)*2);
 
@@ -1141,7 +1150,9 @@ flww32_addTessVertex(double x, double y)
   point[1] = flww32_tessellator.vertex_scale * (float)y;
   cc_list_append(flww32_tessellator.vertexlist, point);
   
-  cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
+  /* MSVC7 on 64-bit Windows wants this extra cast. */
+  cast_aid = (uintptr_t)flww32_tessellator.vertex_counter;
+  cc_list_append(flww32_tessellator.edgeindexlist, (void *)cast_aid);
 
   counter[0] = flww32_tessellator.vertex_counter++;
   cc_list_append(flww32_tessellator.malloclist, counter);
@@ -1150,18 +1161,18 @@ flww32_addTessVertex(double x, double y)
     GLUWrapper()->gluTessVertex(flww32_tessellator.tessellator_object, v, counter);
   }
 
-  cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
+  /* MSVC7 on 64-bit Windows wants this extra cast. */
+  cast_aid = (uintptr_t)flww32_tessellator.vertex_counter;
+  cc_list_append(flww32_tessellator.edgeindexlist, (void *)cast_aid);
 }
-
-
 
 static void CALLBACK
 flww32_vertexCallback(GLvoid * data)
 {
-
+  uintptr_t cast_aid;
+  unsigned int i;
   int index;
   index = ((int *) data)[0];
-
 
   if ((flww32_tessellator.triangle_fan_root_index == -1) &&
       (flww32_tessellator.triangle_index_counter == 0)) {
@@ -1193,10 +1204,11 @@ flww32_vertexCallback(GLvoid * data)
       }
     }
     
-
-    cc_list_append(flww32_tessellator.faceindexlist, (void *) flww32_tessellator.triangle_indices[0]);  
-    cc_list_append(flww32_tessellator.faceindexlist, (void *) flww32_tessellator.triangle_indices[1]);  
-    cc_list_append(flww32_tessellator.faceindexlist, (void *) flww32_tessellator.triangle_indices[2]);  
+    for (i=0; i < 3; i++) {
+      /* MSVC7 on 64-bit Windows wants this extra cast. */
+      cast_aid = (uintptr_t)flww32_tessellator.triangle_indices[i];
+      cc_list_append(flww32_tessellator.faceindexlist, (void *)cast_aid);
+    }
 
     if (flww32_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
       flww32_tessellator.triangle_indices[1] = flww32_tessellator.triangle_indices[2];
@@ -1315,7 +1327,6 @@ cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 static void
 flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 {
-
   int i,len;
 
   assert(flww32_tessellator.edgeindexlist);
@@ -1323,12 +1334,15 @@ flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
   len = cc_list_get_length(flww32_tessellator.edgeindexlist);
   newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
 
-  for (i=0;i<len;++i) 
-    newglyph->edgeindices[i] = (int) cc_list_get(flww32_tessellator.edgeindexlist, i);
+  for (i=0;i<len;++i) {
+    /* MSVC7 on 64-bit Windows wants this extra cast. */
+    const uintptr_t cast_aid = (uintptr_t)
+      cc_list_get(flww32_tessellator.edgeindexlist, i);
+    newglyph->edgeindices[i] = (int)cast_aid;
+  }
 
   cc_list_destruct(flww32_tessellator.edgeindexlist);
   flww32_tessellator.edgeindexlist = NULL;
-
 }
 
 const int *
@@ -1348,8 +1362,12 @@ flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
   len = cc_list_get_length(flww32_tessellator.faceindexlist);
   newglyph->faceindices = (int *) malloc(sizeof(int)*len);
 
-  for (i=0;i<len;++i)
-    newglyph->faceindices[i] = (int) cc_list_get(flww32_tessellator.faceindexlist, i);
+  for (i=0;i<len;++i) {
+    /* MSVC7 on 64-bit Windows wants this extra cast. */
+    const uintptr_t cast_aid = (uintptr_t)
+      cc_list_get(flww32_tessellator.faceindexlist, i);
+    newglyph->faceindices[i] = (int)cast_aid;
+  }
  
   cc_list_destruct(flww32_tessellator.faceindexlist);
   flww32_tessellator.faceindexlist = NULL;

@@ -63,7 +63,7 @@ public:
 template <class Type, class Key>
 class SbHash {
 public:
-  typedef unsigned long SbHashFunc(const Key & key);
+  typedef uintptr_t SbHashFunc(const Key & key);
   typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
 
 public:
@@ -192,8 +192,8 @@ public:
   void setHashFunc(SbHashFunc * func) { this->hashfunc = func; }
 
 protected:
-  static unsigned long default_hash_func(const Key & key) {
-    return (unsigned long) key;
+  static uintptr_t default_hash_func(const Key & key) {
+    return (uintptr_t) key;
   }
 
   unsigned int getIndex(const Key & key) const {

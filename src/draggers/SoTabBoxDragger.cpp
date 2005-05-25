@@ -189,7 +189,7 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("tabBoxDragger.iv",
                                        TABBOXDRAGGER_draggergeometry,
-                                       strlen(TABBOXDRAGGER_draggergeometry));
+                                       (int)strlen(TABBOXDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

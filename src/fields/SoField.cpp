@@ -1664,7 +1664,7 @@ SoField::copyConnection(const SoField * fromfield)
     SoFieldContainer * masterfc = master->getContainer();
     SbName fieldname;
     (void) masterfc->getFieldName(master, fieldname);
-    int ptroffset = (char *)master - (char *)masterfc;
+    const ptrdiff_t ptroffset = (char *)master - (char *)masterfc;
     SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
     SoField * copyfield = copyfc->getField(fieldname);
     

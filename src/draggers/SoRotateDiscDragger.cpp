@@ -148,7 +148,7 @@ SoRotateDiscDragger::SoRotateDiscDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateDiscDragger.iv",
                                        ROTATEDISCDRAGGER_draggergeometry,
-                                       strlen(ROTATEDISCDRAGGER_draggergeometry));
+                                       (int)strlen(ROTATEDISCDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

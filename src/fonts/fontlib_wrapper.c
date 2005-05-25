@@ -255,7 +255,7 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph, int removefromdi
 static void 
 fontstruct_rmglyph_apply(uintptr_t key, void * val, void * closure)
 {
-  fontstruct_rmglyph((struct cc_flw_font*) closure, key, 0);
+  fontstruct_rmglyph((struct cc_flw_font *)closure, (unsigned int)key, 0);
 }
 
 static void

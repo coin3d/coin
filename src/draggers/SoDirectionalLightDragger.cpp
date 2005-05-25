@@ -160,7 +160,7 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("directionalLightDragger.iv",
                                        DIRECTIONALLIGHTDRAGGER_draggergeometry,
-                                       strlen(DIRECTIONALLIGHTDRAGGER_draggergeometry));
+                                       (int)strlen(DIRECTIONALLIGHTDRAGGER_draggergeometry));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

@@ -157,10 +157,10 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   // user-defined fields aswell.
   const char * ptr = strstr(multiname.getString(), "MF");
   assert(ptr != NULL && "invalid input field type");
-  unsigned int offset = ptr - multiname.getString();
-  SbString singlename = offset == 0 ? SbString("") : multiname.getSubString(0, offset-1);
+  const ptrdiff_t offset = ptr - multiname.getString();
+  SbString singlename = (offset == 0) ? SbString("") : multiname.getSubString(0, int(offset - 1));
   singlename += 'S';
-  singlename += multiname.getSubString(offset + 1);
+  singlename += multiname.getSubString(int(offset + 1));
 
   SoType outputtype = SoType::fromName(singlename);
   assert(outputtype != SoType::badType() &&

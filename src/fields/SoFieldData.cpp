@@ -207,7 +207,8 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
     
     char * vbase = (char *)base;
     char * vfield = (char *)field;
-    this->fields.append(new SoFieldEntry(name, vfield - vbase));
+    const ptrdiff_t offs = vfield - vbase;
+    this->fields.append(new SoFieldEntry(name, (int)offs));
   }
   CC_GLOBAL_UNLOCK;
 }
@@ -299,7 +300,7 @@ SoFieldData::getIndex(const SoFieldContainer * fc, const SoField * field) const
 {
   char * vbase = (char *)fc;
   char * vfield = (char *)field;
-  int ptroffset = vfield - vbase;
+  const ptrdiff_t ptroffset = vfield - vbase;
 
   for (int i=0; i < this->fields.getLength(); i++)
     if (this->fields[i]->ptroffset == ptroffset) return i;

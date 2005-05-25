@@ -62,8 +62,7 @@
 void
 cc_string_remove_substring(cc_string * me, int start, int end)
 {
-  int len;
-  len = strlen(me->pointer);
+  const int len = (int)strlen(me->pointer);
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG
@@ -78,7 +77,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
 }
 
 static void
-cc_string_grow_buffer(cc_string * me, int newsize)
+cc_string_grow_buffer(cc_string * me, size_t newsize)
 {
   char * newbuf;
   static int debug = -1;
@@ -98,7 +97,7 @@ cc_string_grow_buffer(cc_string * me, int newsize)
   }
                          
 
-  if (newsize <= me->bufsize) { return; }
+  if (newsize <= (size_t)me->bufsize) { return; }
 
   /* FIXME: should first try the vastly more efficient realloc() (if
      the current memory buffer is not the default static, of course).
@@ -111,13 +110,13 @@ cc_string_grow_buffer(cc_string * me, int newsize)
 
   if (me->pointer != me->buffer) { free(me->pointer); }
   me->pointer = newbuf;
-  me->bufsize = newsize;
+  me->bufsize = (int)newsize;
 }
 
 static void
-cc_string_expand(cc_string * me, int additional)
+cc_string_expand(cc_string * me, size_t additional)
 {
-  int newsize = strlen(me->pointer) + additional + 1;
+  const size_t newsize = strlen(me->pointer) + additional + 1;
   cc_string_grow_buffer(me, newsize);
 }
 
@@ -195,17 +194,17 @@ void
 cc_string_set_text(cc_string * me, const char * text)
 {
   static char emptystring[] = "";
-  int size;
+  size_t size;
   if ( text == NULL ) text = emptystring;
 
   if ( text >= me->pointer && text < (me->pointer + me->bufsize) ) {
     /* text is within own buffer */
-    cc_string_remove_substring(me, 0, text - me->pointer);
+    const ptrdiff_t range = text - me->pointer;
+    cc_string_remove_substring(me, 0, (int)range);
     return;
   }
   size = strlen(text) + 1;
-  if ( size > me->bufsize )
-    cc_string_grow_buffer(me, size);
+  if (size > (size_t)me->bufsize) { cc_string_grow_buffer(me, size); }
   (void) strcpy(me->pointer, text);
 } /* cc_string_set_text() */
 
@@ -218,8 +217,9 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
 {
   static const char * emptystring = "";
   int len, size;
+
   if ( text == NULL ) text = emptystring;
-  len = strlen(text);
+  len = (int)strlen(text);
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG
@@ -336,7 +336,7 @@ cc_string_append_integer(cc_string * me, const int digits)
 void
 cc_string_append_char(cc_string * me, const char c)
 {
-  int pos;
+  size_t pos;
   cc_string_expand(me, 1);
   pos = strlen(me->pointer);
   me->pointer[pos] = c;
@@ -353,8 +353,8 @@ unsigned int
 cc_string_length(const cc_string * me)
 {
   /* FIXME: should cache the length of the string. 20020513 mortene. */
-  return strlen(me->pointer);
-} /* cc_string_length() */
+  return (unsigned int)strlen(me->pointer);
+}
 
 /*!
   \relates cc_string

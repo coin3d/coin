@@ -254,6 +254,12 @@ SbTime::getValue(time_t & sec, long & usec) const
 void
 SbTime::getValue(struct timeval * tv) const
 {
+  // FIXME: the below gives a warning with MSVC 7 on 64-bit Windows,
+  // as the struct timeval::tv_sec value seems to be of type long
+  // there. Ditto for the tv_usec value further below.
+  //
+  // I guess we need a configure check to find the correct type to
+  // cast to here, but investigate. 20050525 mortene.
   tv->tv_sec = (time_t)(this->dtime);
   double us = fmod(this->dtime, 1.0) * 1000000.0;
   tv->tv_usec = (time_t)(us + (us < 0.0 ? -0.5 : 0.5));
@@ -494,7 +500,7 @@ SbTime::formatDate(const char * const fmt) const
 
   struct tm * ts = localtime(&secs);
 
-  int ret = strftime(bufferpt, currentsize, format, ts);
+  size_t ret = strftime(bufferpt, currentsize, format, ts);
   if ((ret == 0) || (ret == currentsize)) {
     bufferpt = NULL;
     // The resulting string was too large, so we will allocate

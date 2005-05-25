@@ -778,7 +778,7 @@ SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
   
   // a bit hackish. Stop xor'ing at bumpcoord
   const unsigned char * stop = (const unsigned char*) &this->bumpcoord;
-  int size = stop-ptr;
+  const ptrdiff_t size = stop-ptr;
   
   for (int i = 0; i < size; i++) {
     int shift = (i%4) * 8;
