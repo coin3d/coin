@@ -26,7 +26,6 @@
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbDict.h>
 #include <Inventor/lists/SbList.h>
 #include <stdio.h> // FILE
 #ifndef COIN_INTERNAL
@@ -34,6 +33,9 @@
  #include <Inventor/SoDB.h>
 #endif // COIN_INTERNAL
 
+// *************************************************************************
+
+class SbDict;
 class SoBase;
 class SbString;
 class SbTime;
@@ -44,6 +46,8 @@ class SoProto;
 class SoField;
 class SoFieldContainer;
 class SoInputP;
+
+// *************************************************************************
 
 class COIN_DLL_API SoInput {
 public:
@@ -180,7 +184,6 @@ private:
   SbList<SoInput_FileInfo *> filestack;
   SoInput_FileInfo * getTopOfStack(void) const;
 
-  SbDict refdict;
   SoInputP * pimpl;
 };
 

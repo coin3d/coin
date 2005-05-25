@@ -60,6 +60,8 @@
   \sa SoOutput::setCompression, SoOutput::getAvailableCompressionMethods
 */
 
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -76,18 +78,21 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbDict.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
-#include "SoOutput_Writer.h"
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/glue/bzip2.h>
+
+#include "SoOutput_Writer.h"
 #include "SoWriterefCounter.h"
+
+// *************************************************************************
 
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
@@ -119,6 +124,7 @@
   first invocation of any write method in the class.
 */
 
+// *************************************************************************
 
 // FIXME: need to fix EOL on other platforms? 19990621 mortene.
 static const char EOLSTR[] = "\n";
@@ -127,6 +133,8 @@ static const char EOLSTR[] = "\n";
 // Wouldn't that puck up cross-platform compatibility of binary files?
 // 19990627 mortene.
 static const int HOSTWORDSIZE = 4;
+
+// *************************************************************************
 
 // helper classes for storing ROUTEs
 class SoOutputROUTE {
@@ -143,6 +151,12 @@ public:
 
   void set(const int index, SoOutputROUTE item) { (*this)[index] = item; }
 };
+
+// *************************************************************************
+
+// FIXME: should use a real set datatype -- the object mapped to is
+// just a dummy. 20050524 mortene.
+typedef SbHash<void *, const char *> BogusSet;
 
 class SoOutputP {
 public:
@@ -164,7 +178,7 @@ public:
   SoOutput::Stage stage;
   uint32_t annotationbits;
   SbList <SoProto*> protostack;
-  SbList <SbDict*> defstack;
+  SbList <BogusSet *> defstack;
   SbList <SoOutputROUTEList *> routestack;
   SoWriterefCounter * counter;
 
@@ -203,9 +217,9 @@ public:
   void pushDefNames(const SbBool copyprev) {
     const int n = this->defstack.getLength();
     assert(n);
-    SbDict * prev = this->defstack[n-1];
+    BogusSet * prev = this->defstack[n-1];
     if (copyprev && prev) {
-      this->defstack.append(new SbDict(*prev));
+      this->defstack.append(new BogusSet(*prev));
     }
     else this->defstack.append(NULL);
   }
@@ -214,12 +228,12 @@ public:
     delete this->defstack[this->defstack.getLength()-1];
     this->defstack.pop();
   }
-  SbDict * getCurrentDefNames(const SbBool createifnull) {
+  BogusSet * getCurrentDefNames(const SbBool createifnull) {
     const int idx = this->defstack.getLength() - 1;
     assert(idx >= 0);
-    SbDict * dict = this->defstack[idx];
+    BogusSet * dict = this->defstack[idx];
     if (createifnull && dict == NULL) {
-      dict = new SbDict;
+      dict = new BogusSet;
       this->defstack[idx] = dict;
     }
     return dict;
@@ -242,6 +256,8 @@ private:
 };
 
 static SbList <SbName> * SoOutput_compmethods = NULL;
+
+// *************************************************************************
 
 static void
 SoOutput_compression_list_cleanup(void)
@@ -283,16 +299,16 @@ SoOutput::SoOutput(void)
 }
 
 /*!
-  Constructs an SoOutput which has a copy of the reference SbDict instance
-  from \a dictOut.
+  Constructs an SoOutput which has a copy of the set of named
+  references from \a dictOut.
 */
 SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
 
-  SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
-  PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
+  BogusSet * olddef = PRIVATE(dictOut)->getCurrentDefNames(FALSE);
+  PRIVATE(this)->defstack.append(olddef ? new BogusSet(*olddef) : NULL);
 
   SoWriterefCounter::create(this, dictOut);
   PRIVATE(this)->counter = SoWriterefCounter::instance(this);
@@ -1310,8 +1326,8 @@ void
 SoOutput::addDEFNode(SbName name)
 {
   void * value = NULL;
-  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
-  defnames->enter((unsigned long)name.getString(), value);
+  BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  defnames->put(name.getString(), value);
 }
 
 /*!
@@ -1322,8 +1338,8 @@ SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
   void * value;
-  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
-  return defnames->find((unsigned long)name.getString(), value);
+  BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  return defnames->get(name.getString(), value);
 }
 
 /*!
@@ -1334,13 +1350,13 @@ SoOutput::lookupDEFNode(SbName name)
 void
 SoOutput::removeDEFNode(SbName name)
 {
-  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
+  BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);
-#ifndef NDEBUG
-  SbBool ret = defnames->remove((unsigned long)name.getString());
+#if COIN_DEBUG
+  SbBool ret = defnames->remove(name.getString());
   assert(ret && "Tried to remove nonexisting DEFnode");
 #else
-  (void) defnames->remove((unsigned long)name.getString());
+  (void)defnames->remove(name.getString());
 #endif
 }
 

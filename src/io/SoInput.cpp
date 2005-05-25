@@ -100,16 +100,18 @@
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
 
+#include <Inventor/SoInput.h>
+
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/lists/SbStringList.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/threads/SbStorage.h>
@@ -144,6 +146,8 @@ class SoInputP {
 
   SoInput * owner;
   SbBool usingstdin;
+
+  SbHash<SoBase *, const char *> references;
 };
 
 // *************************************************************************
@@ -394,7 +398,7 @@ SoInput::SoInput(void)
 SoInput::SoInput(SoInput * dictIn)
 {
   this->constructorsCommon();
-  this->refdict = dictIn->refdict;
+  PRIVATE(this)->references = PRIVATE(dictIn)->references;
 }
 
 /*!
@@ -1636,7 +1640,7 @@ SoInput::addReference(const SbName & name, SoBase * base,
     proto->addReference(name, base);
   }
   else {
-    this->refdict.enter((unsigned long)name.getString(), (void *) base);
+    PRIVATE(this)->references.put(name.getString(), base);
   }
 }
 
@@ -1653,7 +1657,7 @@ SoInput::removeReference(const SbName & name)
     proto->removeReference(name);
   }
   else {
-    this->refdict.remove((unsigned long)name.getString());
+    PRIVATE(this)->references.remove(name.getString());
   }
 }
 
@@ -1677,10 +1681,9 @@ SoInput::findReference(const SbName & name) const
     return proto->findReference(name);
   }
   else {
-    void * base;
+    SoBase * base;
 
-    if (this->refdict.find((unsigned long)name.getString(), base))
-      return (SoBase *) base;
+    if (PRIVATE(this)->references.get(name.getString(), base)) { return base; }
 
     static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
