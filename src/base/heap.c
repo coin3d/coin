@@ -23,10 +23,12 @@
 
 #include <Inventor/C/base/heap.h>
 #include <Inventor/C/base/heapp.h>
-#include <Inventor/C/base/hash.h>
+
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <Inventor/C/base/dict.h>
 
 /* ********************************************************************** */
 /* private functions */
@@ -71,8 +73,8 @@ heap_heapify(cc_heap * h, uintptr_t i)
     h->array[i] = tmp;
 
     if (h->support_remove) {
-      cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
-      cc_hash_put(h->hash, (unsigned long) h->array[largest], (void *) largest);
+      cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
+      cc_dict_put(h->hash, (uintptr_t) h->array[largest], (void *) largest);
     }
 
     heap_heapify(h, largest);
@@ -114,7 +116,7 @@ cc_heap_construct(unsigned int size,
   h->support_remove = support_remove;
   h->hash = NULL;
   if (support_remove) {
-    h->hash = cc_hash_construct(size, 0.0f);
+    h->hash = cc_dict_construct(size, 0.0f);
   }
   return h;
 }
@@ -127,7 +129,7 @@ cc_heap_destruct(cc_heap * h)
 {
   cc_heap_clear(h);
   free(h->array);
-  if (h->hash) cc_hash_destruct(h->hash);
+  if (h->hash) cc_dict_destruct(h->hash);
   free(h);
 }
 
@@ -137,7 +139,7 @@ cc_heap_destruct(cc_heap * h)
 void cc_heap_clear(cc_heap * h)
 {
   h->elements = 0;
-  if (h->hash) cc_hash_clear(h->hash);
+  if (h->hash) cc_dict_clear(h->hash);
 }
 
 /*!
@@ -160,7 +162,7 @@ cc_heap_add(cc_heap * h, void * o)
     h->array[i] = h->array[HEAP_PARENT(i)];
 
     if (h->support_remove) {
-      cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
+      cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
     }
 
     i = HEAP_PARENT(i);
@@ -168,7 +170,7 @@ cc_heap_add(cc_heap * h, void * o)
   h->array[i] = o;
 
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long) o, (void *) i);
+    cc_dict_put(h->hash, (uintptr_t) o, (void *) i);
   }
 }
 
@@ -197,8 +199,8 @@ cc_heap_extract_top(cc_heap * h)
   h->array[0] = h->array[--h->elements];
 
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long) h->array[0], (void *) 0);
-    cc_hash_remove(h->hash, (unsigned long) top);
+    cc_dict_put(h->hash, (uintptr_t) h->array[0], (void *) 0);
+    cc_dict_remove(h->hash, (uintptr_t) top);
   }
 
   heap_heapify(h, 0);
@@ -221,7 +223,7 @@ cc_heap_remove(cc_heap * h, void * o)
 
   if (!h->support_remove) return FALSE;
 
-  if (!cc_hash_get(h->hash, (unsigned long) o, &tmp))
+  if (!cc_dict_get(h->hash, (uintptr_t) o, &tmp))
     return FALSE;
 
   i = (uintptr_t) tmp;
@@ -230,11 +232,11 @@ cc_heap_remove(cc_heap * h, void * o)
 
   h->array[i] = h->array[--h->elements];
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
+    cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
   }
   heap_heapify(h, i);
 
-  cc_hash_remove(h->hash, (unsigned long) o);
+  cc_dict_remove(h->hash, (uintptr_t) o);
 
   return TRUE;
 }

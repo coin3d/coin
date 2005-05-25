@@ -29,7 +29,7 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/threads/common.h>  /* cc_storage */
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -45,7 +45,7 @@ extern "C" {
     unsigned int size;
     void (*constructor)(void *);
     void (*destructor)(void *);
-    cc_hash * dict;
+    cc_dict * dict;
     cc_mutex * mutex;
   };
   

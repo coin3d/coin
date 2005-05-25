@@ -209,7 +209,7 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/namemap.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
@@ -473,13 +473,13 @@ returnpoint:
 
 /* Global dictionary which stores the mappings from the context IDs to
    actual cc_glglue instances. */
-static cc_hash * gldict = NULL;
+static cc_dict * gldict = NULL;
 
 static void
-free_glglue_instance(unsigned long key, void * value, void * closure)
+free_glglue_instance(uintptr_t key, void * value, void * closure)
 {
   cc_glglue * glue = (cc_glglue*) value;
-  cc_hash_destruct(glue->glextdict);
+  cc_dict_destruct(glue->glextdict);
   free(value);
 }
 
@@ -487,8 +487,8 @@ free_glglue_instance(unsigned long key, void * value, void * closure)
 static void
 glglue_cleanup(void)
 {
-  cc_hash_apply(gldict, free_glglue_instance, NULL);
-  cc_hash_destruct(gldict);
+  cc_dict_apply(gldict, free_glglue_instance, NULL);
+  cc_dict_destruct(gldict);
   if (gl_handle) cc_dl_close(gl_handle);
 }
 
@@ -635,15 +635,15 @@ done:
 int
 cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 {
-  unsigned long key = (unsigned long) cc_namemap_get_address(extension);
+  const uintptr_t key = (uintptr_t)cc_namemap_get_address(extension);
 
   void * result = NULL;
-  if (cc_hash_get(wrapper->glextdict, key, &result)) {
+  if (cc_dict_get(wrapper->glextdict, key, &result)) {
     return result != NULL;
   }
   result = coin_glglue_extension_available(wrapper->extensionsstr, extension) ?
     (void*) 1 : NULL;
-  cc_hash_put(wrapper->glextdict, key, result);
+  cc_dict_put(wrapper->glextdict, key, result);
 
   return result != NULL;
 }
@@ -1818,11 +1818,11 @@ cc_glglue_instance(int contextid)
   }
 
   if (!gldict) {  /* First invocation, do initializations. */
-    gldict = cc_hash_construct(16, 0.75f);
+    gldict = cc_dict_construct(16, 0.75f);
     coin_atexit((coin_atexit_f *)glglue_cleanup, 0);
   }
 
-  found = cc_hash_get(gldict, (unsigned long) contextid, &ptr);
+  found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
 
   if (!found) {
     /* Internal consistency checking.
@@ -1850,10 +1850,10 @@ cc_glglue_instance(int contextid)
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
     /* create dict that makes a quick lookup for GL extensions */
-    gi->glextdict = cc_hash_construct(256, 0.75f);
+    gi->glextdict = cc_dict_construct(256, 0.75f);
 
     ptr = gi;
-    cc_hash_put(gldict, (unsigned long) contextid, ptr);
+    cc_dict_put(gldict, (uintptr_t)contextid, ptr);
 
     if (!gl_handle && !glglue_tried_open_self) {
       gl_handle = cc_dl_handle_with_gl_symbols();

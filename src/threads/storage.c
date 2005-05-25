@@ -68,7 +68,7 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
   storage->size = size;
   storage->constructor = constructor;
   storage->destructor = destructor;
-  storage->dict = cc_hash_construct(8, 0.75f);
+  storage->dict = cc_dict_construct(8, 0.75f);
 #ifdef HAVE_THREADS
   storage->mutex = cc_mutex_construct();
 #endif /* HAVE_THREADS */
@@ -77,7 +77,7 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
 }
 
 static void
-cc_storage_hash_destruct_cb(unsigned long key, void * val, void * closure)
+cc_storage_hash_destruct_cb(uintptr_t key, void * val, void * closure)
 {
   cc_storage * storage = (cc_storage*) closure;
   
@@ -111,8 +111,8 @@ cc_storage_destruct(cc_storage * storage)
 {
   assert(storage != NULL);
 
-  cc_hash_apply(storage->dict, cc_storage_hash_destruct_cb, storage);
-  cc_hash_destruct(storage->dict);
+  cc_dict_apply(storage->dict, cc_storage_hash_destruct_cb, storage);
+  cc_dict_destruct(storage->dict);
 
 #ifdef HAVE_THREADS
   cc_mutex_destruct(storage->mutex);
@@ -138,12 +138,12 @@ cc_storage_get(cc_storage * storage)
   cc_mutex_lock(storage->mutex);
 #endif /* HAVE_THREADS */
 
-  if (!cc_hash_get(storage->dict, threadid, &val)) {
+  if (!cc_dict_get(storage->dict, threadid, &val)) {
     val = malloc(storage->size);
     if (storage->constructor) {
       storage->constructor(val);
     }
-    (void) cc_hash_put(storage->dict, threadid, val);
+    (void) cc_dict_put(storage->dict, threadid, val);
   }
 
 #ifdef HAVE_THREADS
@@ -153,16 +153,16 @@ cc_storage_get(cc_storage * storage)
   return val;
 }
 
-/* struct needed for cc_hash wrapper callback */
+/* struct needed for cc_dict wrapper callback */
 typedef struct {
   cc_storage_apply_func * func;
   void * closure;
 } cc_storage_hash_apply_data; 
 
-/* callback from cc_hash_apply. will simply call the function specified
+/* callback from cc_dict_apply. will simply call the function specified
    in cc_storage_apply_to_appl */
 static void 
-storage_hash_apply(unsigned long key, void * val, void * closure)
+storage_hash_apply(uintptr_t key, void * val, void * closure)
 {
   cc_storage_hash_apply_data * data = 
     (cc_storage_hash_apply_data*) closure;
@@ -174,7 +174,7 @@ cc_storage_apply_to_all(cc_storage * storage,
                         cc_storage_apply_func * func, 
                         void * closure)
 {
-  /* need to set up a struct to use cc_hash_apply */
+  /* need to set up a struct to use cc_dict_apply */
   cc_storage_hash_apply_data mydata;
   
   /* store func and closure in struct */
@@ -183,10 +183,10 @@ cc_storage_apply_to_all(cc_storage * storage,
 
 #ifdef HAVE_THREADS
   cc_mutex_lock(storage->mutex);
-  cc_hash_apply(storage->dict, storage_hash_apply, &mydata);
+  cc_dict_apply(storage->dict, storage_hash_apply, &mydata);
   cc_mutex_unlock(storage->mutex);
 #else /* ! HAVE_THREADS */
-  cc_hash_apply(storage->dict, storage_hash_apply, &mydata);
+  cc_dict_apply(storage->dict, storage_hash_apply, &mydata);
 #endif /* ! HAVE_THREADS */
 
 }

@@ -47,7 +47,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/base/hash.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>

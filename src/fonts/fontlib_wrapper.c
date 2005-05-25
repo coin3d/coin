@@ -35,7 +35,7 @@
 
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/string.h>
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
@@ -107,7 +107,7 @@ struct cc_flw_font {
   void * font;
   cc_string * fontname;
   cc_string * requestname;
-  cc_hash * glyphdict;
+  cc_dict * glyphdict;
   unsigned int sizex, sizey;
   float angle;
   SbBool defaultfont;
@@ -176,7 +176,7 @@ fontstruct_new(void * font)
   fs->sizey = 0;
   fs->angle = 0.0f;
   fs->defaultfont = FALSE;
-  fs->glyphdict = cc_hash_construct(256, 0.7f);
+  fs->glyphdict = cc_dict_construct(256, 0.7f);
   fs->fontindex = flw_global_font_index++;
   fs->refcount = 0;
   return fs;
@@ -222,7 +222,7 @@ flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
   void * tmp;
   struct cc_flw_glyph * gs = NULL;
   
-  if (cc_hash_get(fs->glyphdict, glyphidx, &tmp)) {
+  if (cc_dict_get(fs->glyphdict, glyphidx, &tmp)) {
     gs = (struct cc_flw_glyph *) tmp;
   }
   else {
@@ -246,17 +246,16 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph, int removefromdi
   free(gs);
 
   if (removefromdict) {
-    if (!cc_hash_remove(fs->glyphdict, glyph)) {
+    if (!cc_dict_remove(fs->glyphdict, glyph)) {
       assert(0 && "glyph to remove not found");
     }
   }
 }
 
 static void 
-fontstruct_rmglyph_apply(unsigned long key, void * val, void * closure)
+fontstruct_rmglyph_apply(uintptr_t key, void * val, void * closure)
 {
-  fontstruct_rmglyph((struct cc_flw_font*) closure,
-                     key, 0);
+  fontstruct_rmglyph((struct cc_flw_font*) closure, key, 0);
 }
 
 static void
@@ -277,8 +276,8 @@ fontstruct_rmfont(int font)
   if (fs->fontname) cc_string_destruct(fs->fontname);
   if (fs->requestname) cc_string_destruct(fs->requestname);
     
-  cc_hash_apply(fs->glyphdict, fontstruct_rmglyph_apply, fs);  
-  cc_hash_destruct(fs->glyphdict);
+  cc_dict_apply(fs->glyphdict, fontstruct_rmglyph_apply, fs);  
+  cc_dict_destruct(fs->glyphdict);
   free(fs);
   cc_dynarray_remove_idx(fontarray, arrayindex);
 }
@@ -638,7 +637,7 @@ cc_flw_get_glyph(int font, unsigned int charidx)
       gs->charidx = charidx;
       gs->fromdefaultfont = FALSE;
       fsid = gs->glyphindex;
-      if (!cc_hash_put(fs->glyphdict, fsid, gs)) {
+      if (!cc_dict_put(fs->glyphdict, fsid, gs)) {
         assert(0 && "glyph already exists");
       }
     }
@@ -674,7 +673,7 @@ cc_flw_get_glyph(int font, unsigned int charidx)
     gs->fromdefaultfont = TRUE;
     gs->charidx = charidx;
     fsid = gs->glyphindex;
-    if (!cc_hash_put(fs->glyphdict, fsid, gs)) {
+    if (!cc_dict_put(fs->glyphdict, fsid, gs)) {
       assert(0 && "glyph already exists");
     }
   }

@@ -29,8 +29,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include <Inventor/C/base/hash.h>
-#include <Inventor/C/base/hashp.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
@@ -59,7 +58,7 @@ struct cc_glyph2d {
   SbBool mono;
 };
 
-static cc_hash * glyph2d_fonthash = NULL;
+static cc_dict * glyph2d_fonthash = NULL;
 
 /*
   Mutex lock for the static ang global font hash
@@ -88,7 +87,7 @@ cc_glyph2d_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(glyph2d_fonthash_lock);
   glyph2d_fonthash_lock = NULL;
-  cc_hash_destruct(glyph2d_fonthash);
+  cc_dict_destruct(glyph2d_fonthash);
   glyph2d_fonthash = NULL;
 }
 
@@ -106,7 +105,7 @@ cc_glyph2d_initialize()
   }
   initialized = TRUE;
   
-  glyph2d_fonthash = cc_hash_construct(15, 0.75);
+  glyph2d_fonthash = cc_dict_construct(15, 0.75);
   coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, 0);
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
@@ -142,7 +141,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 
   /* Has the glyph been created before? */
-  if (cc_hash_get(glyph2d_fonthash, (unsigned long) character, &val)) {
+  if (cc_dict_get(glyph2d_fonthash, (uintptr_t)character, &val)) {
     glyphlist = (cc_list *) val;
     for (i = 0; i < cc_list_get_length(glyphlist); ++i) {
       glyph = (cc_glyph2d *) cc_list_get(glyphlist, i);
@@ -157,7 +156,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     /* No glyphlist for this character is found. Create one and
        add it to the hashtable. */
     glyphlist = cc_list_construct();
-    cc_hash_put(glyph2d_fonthash, (unsigned long) character, glyphlist);
+    cc_dict_put(glyph2d_fonthash, (uintptr_t)character, glyphlist);
   }
 
   assert(glyphlist);
@@ -230,7 +229,7 @@ cc_glyph2d_unref(cc_glyph2d * glyph)
     void * tmp;
     int i;
 
-    ret = cc_hash_get(glyph2d_fonthash, (unsigned long) glyph->character, &tmp);
+    ret = cc_dict_get(glyph2d_fonthash, (uintptr_t)glyph->character, &tmp);
     assert(ret);
     glyphlist = (cc_list*) tmp;
     
@@ -241,7 +240,7 @@ cc_glyph2d_unref(cc_glyph2d * glyph)
 
     cc_list_remove_fast(glyphlist, i);
     if (cc_list_get_length(glyphlist) == 0) {
-      (void) cc_hash_remove(glyph2d_fonthash, (unsigned long) glyph->character);
+      (void) cc_dict_remove(glyph2d_fonthash, (uintptr_t)glyph->character);
       cc_list_destruct(glyphlist);
     }
 

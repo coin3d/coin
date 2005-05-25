@@ -22,11 +22,13 @@
 \**************************************************************************/
 
 #include <Inventor/C/threads/sync.h>
+
+#include <stddef.h>
+
 #include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
-#include <Inventor/C/base/hash.h>
-#include <stddef.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/tidbitsp.h>
 
 /* ********************************************************************** */
@@ -35,10 +37,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-static cc_hash * sync_hash_table = NULL;
+static cc_dict * sync_hash_table = NULL;
 
 static void
-sync_hash_cb(unsigned long key, void * val, void * closure)
+sync_hash_cb(uintptr_t key, void * val, void * closure)
 {
   cc_mutex_destruct((cc_mutex*) val);
 }
@@ -46,8 +48,8 @@ sync_hash_cb(unsigned long key, void * val, void * closure)
 static void
 sync_cleanup(void)
 {
-  cc_hash_apply(sync_hash_table, sync_hash_cb, NULL);
-  cc_hash_destruct(sync_hash_table);
+  cc_dict_apply(sync_hash_table, sync_hash_cb, NULL);
+  cc_dict_destruct(sync_hash_table);
 }
 
 /*
@@ -61,7 +63,7 @@ cc_sync_init(void)
        normal cleanup function which might still use a cc_sync
        instance */
     coin_atexit((coin_atexit_f*) sync_cleanup, -100);
-    sync_hash_table = cc_hash_construct(256, 0.75f);    
+    sync_hash_table = cc_dict_construct(256, 0.75f);    
   }
 }
 
@@ -81,9 +83,9 @@ cc_sync_begin(void * id)
   if (sync_hash_table == NULL) {
     cc_sync_init();
   }
-  if (!cc_hash_get(sync_hash_table, (unsigned long) id, &mutex)) {
+  if (!cc_dict_get(sync_hash_table, (uintptr_t)id, &mutex)) {
     mutex = (void*) cc_mutex_construct();
-    (void) cc_hash_put(sync_hash_table, (unsigned long) id, mutex);
+    (void) cc_dict_put(sync_hash_table, (uintptr_t)id, mutex);
   }
 
   cc_mutex_global_unlock();
@@ -117,9 +119,9 @@ cc_sync_free(void * id)
   if (sync_hash_table == NULL) {
     cc_sync_init();
   }
-  if (cc_hash_get(sync_hash_table, (unsigned long) id, &mutex)) {
+  if (cc_dict_get(sync_hash_table, (uintptr_t)id, &mutex)) {
     cc_mutex_destruct((cc_mutex*) mutex);
-    cc_hash_remove(sync_hash_table, (unsigned long) id);
+    cc_dict_remove(sync_hash_table, (uintptr_t)id);
   }
   cc_mutex_global_unlock();
 }

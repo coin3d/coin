@@ -35,7 +35,7 @@
 /* ********************************************************************** */
 
 #include <Inventor/system/gl.h>
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/string.h>
 
 /* ********************************************************************** */
@@ -754,7 +754,7 @@ struct cc_glglue {
   float line_width_range[2];
   float point_size_range[2];
   int max_texture_size;
-  cc_hash * glextdict;
+  cc_dict * glextdict;
 };
 
 /* ********************************************************************** */

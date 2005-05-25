@@ -28,7 +28,7 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
-#include "hash.h"
+#include "dict.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,7 +41,7 @@ extern "C" {
     cc_heap_compare_cb * compare;
     void * compareclosure;
     int support_remove;
-    cc_hash * hash;
+    cc_dict * hash;
   };
 
 #ifdef __cplusplus

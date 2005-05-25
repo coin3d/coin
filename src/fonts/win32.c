@@ -106,7 +106,7 @@ static int flww32_calcfontsize(float complexity);
 #include <wingdi.h>
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
@@ -148,13 +148,13 @@ struct cc_flww32_globals_s {
      which each maps to a new hash. This hash then contains a set of
      glyph ids (i.e. which are the hash keys) which maps to struct
      cc_flw_bitmap instances. */
-  cc_hash * font2glyphhash;
+  cc_dict * font2glyphhash;
 
   /* This is a hash of hashes. Unique keys are HFONT instances. This again
      contains hashes for each glyph which contain a hash for its 
      pairing glyphs. This again contains the kerning value for that pair. */
-  cc_hash * font2kerninghash;
-  cc_hash * fontsizehash;
+  cc_dict * font2kerninghash;
+  cc_dict * fontsizehash;
 };
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
@@ -168,9 +168,9 @@ struct cc_flww32_glyph {
 };
 
 /* Callback functions for cleaning up kerninghash table */
-void cc_flww32_kerninghash_deleteCB1(unsigned long key, void * val, void * closure);
-void cc_flww32_kerninghash_deleteCB2(unsigned long key, void * val, void * closure);
-void cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure);
+void cc_flww32_kerninghash_deleteCB1(uintptr_t key, void * val, void * closure);
+void cc_flww32_kerninghash_deleteCB2(uintptr_t key, void * val, void * closure);
+void cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure);
 
 /* ************************************************************************* */
 
@@ -204,15 +204,14 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
   return 1; /* non-0 to continue enumeration */
 }
 
-static cc_hash *
+static cc_dict *
 get_glyph_hash(void * font)
 {
   void * val;
   SbBool found;
 
-  found = cc_hash_get(cc_flww32_globals.font2glyphhash,
-                      (unsigned long)font, &val);
-  return found ? ((cc_hash *)val) : NULL;
+  found = cc_dict_get(cc_flww32_globals.font2glyphhash, (uintptr_t)font, &val);
+  return found ? ((cc_dict *)val) : NULL;
 }
 
 static struct cc_flww32_glyph *
@@ -221,10 +220,10 @@ get_glyph_struct(void * font, int glyph)
   void * val;
   SbBool found;
 
-  cc_hash * ghash = get_glyph_hash(font);
+  cc_dict * ghash = get_glyph_hash(font);
   if (ghash == NULL) { return NULL; }
 
-  found = cc_hash_get(ghash, (unsigned long)glyph, &val);
+  found = cc_dict_get(ghash, (uintptr_t)glyph, &val);
   return found ? ((struct cc_flww32_glyph *)val) : NULL;
 }
 
@@ -260,9 +259,9 @@ cc_flww32_initialize(void)
     return FALSE;
   }
 
-  cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
-  cc_flww32_globals.font2kerninghash = cc_hash_construct(17, 0.75);
-  cc_flww32_globals.fontsizehash = cc_hash_construct(17, 0.75f);
+  cc_flww32_globals.font2glyphhash = cc_dict_construct(17, 0.75);
+  cc_flww32_globals.font2kerninghash = cc_dict_construct(17, 0.75);
+  cc_flww32_globals.fontsizehash = cc_dict_construct(17, 0.75f);
 
   /* Setup temporary glyph-struct used during for tessellation */
   flww32_tessellator.vertexlist = NULL;
@@ -290,9 +289,9 @@ cc_flww32_exit(void)
      one or more calls to cc_flww32_done_font() are missing. Should
      insert a check (plus dump) for that here. 20030610 mortene. */
   /* UPDATE: Ditto for the kerning hash. (20030930 handegar) */
-  cc_hash_destruct(cc_flww32_globals.font2glyphhash);
-  cc_hash_destruct(cc_flww32_globals.font2kerninghash);	
-  cc_hash_destruct(cc_flww32_globals.fontsizehash);
+  cc_dict_destruct(cc_flww32_globals.font2glyphhash);
+  cc_dict_destruct(cc_flww32_globals.font2kerninghash);	
+  cc_dict_destruct(cc_flww32_globals.fontsizehash);
 
   ok = DeleteDC(cc_flww32_globals.devctx);
   if (!ok) {
@@ -302,23 +301,23 @@ cc_flww32_exit(void)
 
 /* Callbacks for kerninghash delete */
 void 
-cc_flww32_kerninghash_deleteCB1(unsigned long key, void * val, void * closure)
+cc_flww32_kerninghash_deleteCB1(uintptr_t key, void * val, void * closure)
 {
-  cc_hash * khash;   
-  khash = (cc_hash *) val;
-  cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
-  cc_hash_destruct(khash);
+  cc_dict * khash;   
+  khash = (cc_dict *) val;
+  cc_dict_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
+  cc_dict_destruct(khash);
 }
 void 
-cc_flww32_kerninghash_deleteCB2(unsigned long key, void * val, void * closure)
+cc_flww32_kerninghash_deleteCB2(uintptr_t key, void * val, void * closure)
 {
-  cc_hash * khash;   
-  khash = (cc_hash *) val;
-  cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB3, NULL);
-  cc_hash_destruct(khash);
+  cc_dict * khash;   
+  khash = (cc_dict *) val;
+  cc_dict_apply(khash, cc_flww32_kerninghash_deleteCB3, NULL);
+  cc_dict_destruct(khash);
 }
 void 
-cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure)
+cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
 {
   float * kerning;   
   kerning = (float *) val;
@@ -337,17 +336,17 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
   int i;
   DWORD nrkpairs, ret;
   KERNINGPAIR * kpairs;
-  cc_hash * khash;
-  cc_hash * fontkerninghash;
+  cc_dict * khash;
+  cc_dict * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
-  unsigned long tmp;
+  uintptr_t tmp;
 
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
      upstream to that effect. 20030911 mortene.
   */
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
   HFONT wfont;
 
   if (complexity >= 0.0f) {
@@ -395,8 +394,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     return NULL;
   }
 
-  glyphhash = cc_hash_construct(127, 0.75);
-  cc_hash_put(cc_flww32_globals.font2glyphhash, (unsigned long)wfont, glyphhash);
+  glyphhash = cc_dict_construct(127, 0.75);
+  cc_dict_put(cc_flww32_globals.font2glyphhash, (uintptr_t)wfont, glyphhash);
 
 
   /* 
@@ -420,23 +419,23 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
       return NULL;
     }
 
-    if (!cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) wfont, &fontkerninghash)) {
-      fontkerninghash = cc_hash_construct(5, 0.75);
-      cc_hash_put(cc_flww32_globals.font2kerninghash, (unsigned long) wfont, fontkerninghash);
+    if (!cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t) wfont, &fontkerninghash)) {
+      fontkerninghash = cc_dict_construct(5, 0.75);
+      cc_dict_put(cc_flww32_globals.font2kerninghash, (uintptr_t) wfont, fontkerninghash);
     }
 
     for (i=0;i<(int) nrkpairs;++i) {
-      if (cc_hash_get(fontkerninghash, kpairs[i].wFirst, &khash)) {
+      if (cc_dict_get(fontkerninghash, kpairs[i].wFirst, &khash)) {
         
-        if (!cc_hash_get(khash, kpairs[i].wSecond, &khash)) {
+        if (!cc_dict_get(khash, kpairs[i].wSecond, &khash)) {
           kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
           kerningvalue[0] = (float) kpairs[i].iKernAmount;
-          cc_hash_put(khash, kpairs[i].wSecond, kerningvalue);
+          cc_dict_put(khash, kpairs[i].wSecond, kerningvalue);
         }
 
       } else {
         
-        khash = cc_hash_construct(127, 0.75);
+        khash = cc_dict_construct(127, 0.75);
         kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
         kerningvalue[0] = (float) kpairs[i].iKernAmount;
 
@@ -445,8 +444,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
            store the float, but that might cause problems later when we go from 32 to 64 bits.
            (20030929 handegar) */
 
-        cc_hash_put(khash, (unsigned long) kpairs[i].wSecond, kerningvalue);
-        cc_hash_put(fontkerninghash, (unsigned long) kpairs[i].wFirst, khash);
+        cc_dict_put(khash, (uintptr_t) kpairs[i].wSecond, kerningvalue);
+        cc_dict_put(fontkerninghash, (uintptr_t) kpairs[i].wFirst, khash);
         
       }
     }
@@ -454,8 +453,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     free(kpairs);
   } 
   
-  tmp = (unsigned long) sizey;
-  (void) cc_hash_put(cc_flww32_globals.fontsizehash, (unsigned long) wfont, (void*) tmp);
+  tmp = (uintptr_t) sizey;
+  (void) cc_dict_put(cc_flww32_globals.fontsizehash, (uintptr_t)wfont, (void*) sizey);
   
   return (void *)wfont;
 }
@@ -511,31 +510,29 @@ cc_flww32_done_font(void * font)
 {
   BOOL ok;
   SbBool found;
-  cc_hash * khash;	
-  cc_hash * glyphs;
+  cc_dict * khash;	
+  cc_dict * glyphs;
 
   glyphs = get_glyph_hash(font);
   assert(glyphs && "called with non-existent font");
 
-  found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
-                         (unsigned long)font);
+  found = cc_dict_remove(cc_flww32_globals.font2glyphhash, (uintptr_t)font);
   assert(found && "huh?");
 
-  found = cc_hash_remove(cc_flww32_globals.fontsizehash,
-                         (unsigned long)font);
+  found = cc_dict_remove(cc_flww32_globals.fontsizehash, (uintptr_t)font);
   assert(found && "huh?");
 
   /* FIXME: the hash should really be checked to see if it's empty or
      not, but the cc_flww32_done_glyph() method hasn't been
      implemented yet. 20030610 mortene. */
-  cc_hash_destruct(glyphs);
+  cc_dict_destruct(glyphs);
     
   /* Delete kerninghash for this font using apply-callbacks */
 
-  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {
-    cc_hash_remove(cc_flww32_globals.font2kerninghash, (unsigned long) font);
-    cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
-    cc_hash_destruct(khash);
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {
+    cc_dict_remove(cc_flww32_globals.font2kerninghash, (uintptr_t)font);
+    cc_dict_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
+    cc_dict_destruct(khash);
   }
 
   ok = DeleteObject((HFONT)font);
@@ -649,11 +646,11 @@ cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int *
 {
 
   float * kerning = NULL;
-  cc_hash * khash;	
+  cc_dict * khash;	
 
-  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {	 
-    if (cc_hash_get(khash, (unsigned long) glyph1, &khash)) {
-      if (cc_hash_get((cc_hash *) khash, (unsigned long) glyph2, &kerning)) {
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	 
+    if (cc_dict_get(khash, (uintptr_t)glyph1, &khash)) {
+      if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, &kerning)) {
         *x = (int) kerning[0];
         *y = 0;
         return;
@@ -672,7 +669,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
 {
 
   float * kerning = NULL;
-  cc_hash * khash;	
+  cc_dict * khash;	
   DWORD ret;
   DWORD size;
   LOGFONT lfont;
@@ -684,9 +681,9 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
     size = 1;
   }
 
-  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {	 
-    if (cc_hash_get(khash, (unsigned long) glyph1, &khash)) {
-      if (cc_hash_get((cc_hash *) khash, (unsigned long) glyph2, &kerning)) {
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	 
+    if (cc_dict_get(khash, (uintptr_t)glyph1, &khash)) {
+      if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, &kerning)) {
         *x = kerning[0] / size;
         *y = 0;
         return;
@@ -704,7 +701,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
 void
 cc_flww32_done_glyph(void * font, int glyph)
 {
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
 
   struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
   assert(glyphstruct);
@@ -726,7 +723,7 @@ cc_flww32_done_glyph(void * font, int glyph)
   free(glyphstruct);
 
   glyphhash = get_glyph_hash(font);
-  (void) cc_hash_remove(glyphhash, (unsigned long) glyph);
+  (void)cc_dict_remove(glyphhash, (uintptr_t)glyph);
 }
 
 /* Draws a bitmap for the given glyph. */
@@ -748,7 +745,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   uint8_t * w32bitmap = NULL;
   HFONT previousfont;
   SbBool unused;
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
   struct cc_flww32_glyph * glyphstruct;
 
   /* See if we can just return the bitmap from cached glyph. */
@@ -869,7 +866,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
   glyphstruct->bitmap = bm;
   glyphstruct->vector = NULL;
-  unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
+  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, glyphstruct);
   assert(unused);
 
  done: 
@@ -964,7 +961,7 @@ cc_flw_vector_glyph *
 cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 {
   SbBool unused;
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
   struct cc_flww32_glyph * glyphstruct;
 
   HDC memdc;
@@ -1105,7 +1102,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
   size = 200;
-  if (cc_hash_get(cc_flww32_globals.fontsizehash, (unsigned long) font, &tmp)) {
+  if (cc_dict_get(cc_flww32_globals.fontsizehash, (uintptr_t)font, &tmp)) {
     size = (int) tmp;
   }
 
@@ -1127,7 +1124,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   glyphstruct->bitmap = NULL;
   glyphstruct->vector = new_vector_glyph;
   
-  unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
+  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, glyphstruct);
   assert(unused);
 
   return new_vector_glyph;

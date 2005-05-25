@@ -90,7 +90,7 @@ struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FAL
 #include <wingdi.h>
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
@@ -106,7 +106,7 @@ struct cc_flww32_globals_s {
      which each maps to a new hash. This hash then contains a set of
      glyph ids (i.e. which are the hash keys) which maps to struct
      cc_flw_bitmap instances. */
-  cc_hash * font2glyphhash;
+  cc_dict * font2glyphhash;
 };
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
@@ -150,15 +150,14 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
   return 1; /* non-0 to continue enumeration */
 }
 
-static cc_hash *
+static cc_dict *
 get_glyph_hash(void * font)
 {
   void * val;
   SbBool found;
 
-  found = cc_hash_get(cc_flww32_globals.font2glyphhash,
-                      (unsigned long)font, &val);
-  return found ? ((cc_hash *)val) : NULL;
+  found = cc_dict_get(cc_flww32_globals.font2glyphhash, (uintptr_t)font, &val);
+  return found ? ((cc_dict *)val) : NULL;
 }
 
 static struct cc_flww32_glyph *
@@ -167,10 +166,10 @@ get_glyph_struct(void * font, int glyph)
   void * val;
   SbBool found;
 
-  cc_hash * ghash = get_glyph_hash(font);
+  cc_dict * ghash = get_glyph_hash(font);
   if (ghash == NULL) { return NULL; }
 
-  found = cc_hash_get(ghash, (unsigned long)glyph, &val);
+  found = cc_dict_get(ghash, (uintptr_t)glyph, &val);
   return found ? ((struct cc_flww32_glyph *)val) : NULL;
 }
 
@@ -204,7 +203,7 @@ cc_flww32_initialize(void)
     return FALSE;
   }
 
-  cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
+  cc_flww32_globals.font2glyphhash = cc_dict_construct(17, 0.75);
 
   return TRUE;
 }
@@ -217,7 +216,7 @@ cc_flww32_exit(void)
   /* FIXME: this hash should be empty at this point, or it means that
      one or more calls to cc_flww32_done_font() are missing. Should
      insert a check (plus dump) for that here. 20030610 mortene. */
-  cc_hash_destruct(cc_flww32_globals.font2glyphhash);
+  cc_dict_destruct(cc_flww32_globals.font2glyphhash);
 
   ok = DeleteDC(cc_flww32_globals.devctx);
   if (!ok) {
@@ -232,7 +231,7 @@ cc_flww32_exit(void)
 void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 {
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
   HFONT wfont = CreateFont(sizey,
                            /* FIXME: should we let width==0 instead of
                               sizex for better chance of getting a
@@ -269,8 +268,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
     return NULL;
   }
 
-  glyphhash = cc_hash_construct(127, 0.75);
-  cc_hash_put(cc_flww32_globals.font2glyphhash, (unsigned long)wfont, glyphhash);
+  glyphhash = cc_dict_construct(127, 0.75);
+  cc_dict_put(cc_flww32_globals.font2glyphhash, (uintptr_t)wfont, glyphhash);
 
   return (void *)wfont;
 }
@@ -314,17 +313,16 @@ cc_flww32_done_font(void * font)
   BOOL ok;
   SbBool found;
 
-  cc_hash * glyphs = get_glyph_hash(font);
+  cc_dict * glyphs = get_glyph_hash(font);
   assert(glyphs && "called with non-existent font");
 
-  found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
-                         (unsigned long)font);
+  found = cc_dict_remove(cc_flww32_globals.font2glyphhash, (uintptr_t)font);
   assert(found && "huh?");
 
   /* FIXME: the hash should really be checked to see if it's empty or
      not, but the cc_flww32_done_glyph() method hasn't been
      implemented yet. 20030610 mortene. */
-  cc_hash_destruct(glyphs);
+  cc_dict_destruct(glyphs);
   
 
   ok = DeleteObject((HFONT)font);
@@ -438,7 +436,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   uint8_t * w32bitmap = NULL;
   HFONT previousfont;
   SbBool unused;
-  cc_hash * glyphhash;
+  cc_dict * glyphhash;
   struct cc_flww32_glyph * glyphstruct;
 
   /* See if we can just return the bitmap from cached glyph. */
@@ -542,7 +540,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   glyphhash = get_glyph_hash(font);
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
   glyphstruct->bitmap = bm;
-  unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
+  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, glyphstruct);
   assert(unused);
 
  done:  
