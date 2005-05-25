@@ -53,6 +53,7 @@ protected:
 private:
   static void atexit_cleanup(void);
 
+  typedef void converter_func(SoField * from, SoField * to);
   converter_func * convertvalue;
 
   SoField * input;
