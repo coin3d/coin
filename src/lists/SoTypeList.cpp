@@ -63,7 +63,7 @@ SoTypeList::append(const SoType type)
 {
   // need a temporary variable since not all compilers will let you
   // cast directly from an int16 to a void *.
-  unsigned long tmp = (unsigned long) type.getKey();
+  const uintptr_t tmp = (uintptr_t)type.getKey();
   SbPList::append((void*) tmp);
 }
 
@@ -75,7 +75,7 @@ SoTypeList::find(const SoType type) const
 {
   // need a temporary variable since not all compilers will let you
   // cast directly from an int16 to a void *.
-  unsigned long tmp = (unsigned long) type.getKey();
+  const uintptr_t tmp = (uintptr_t)type.getKey();
   return SbPList::find((void*) tmp);
 }
 
@@ -87,7 +87,7 @@ SoTypeList::insert(const SoType type, const int insertbefore)
 {
   // need a temporary variable since not all compilers will let you
   // cast directly from an int16 to a void *.
-  unsigned long tmp = (unsigned long) type.getKey();
+  const uintptr_t tmp = (uintptr_t)type.getKey();
   SbPList::insert((void*) tmp, insertbefore);
 }
 
@@ -99,7 +99,7 @@ SoTypeList::operator[](const int idx) const
 {
   // need a temporary variable since not all compilers will let you
   // cast directly from a pointer to an int16.
-  unsigned long tmp = (unsigned long) SbPList::operator[](idx);
+  const uintptr_t tmp = (uintptr_t) SbPList::operator[](idx);
 
   return SoType::fromKey((int16_t) tmp);
 }
@@ -113,6 +113,6 @@ SoTypeList::set(const int index, const SoType item)
 {
   // need a temporary variable since not all compilers will let you
   // cast directly from an int16 to a void *.
-  unsigned long tmp = (unsigned long) item.getKey();
+  const uintptr_t tmp = (uintptr_t) item.getKey();
   SbPList::set(index, (void*) tmp);
 }

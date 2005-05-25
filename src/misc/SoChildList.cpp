@@ -313,8 +313,8 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   // all that.
   //
   // mortene.
-  unsigned long chksum = 0xdeadbeef;
-  for (i = first; i <= last; i++) { chksum ^= (unsigned long)(*this)[i]; }
+  uintptr_t chksum = 0xdeadbeef;
+  for (i = first; i <= last; i++) { chksum ^= (uintptr_t)(*this)[i]; }
   SbBool changedetected = FALSE;
 #endif // COIN_DEBUG
 
@@ -381,7 +381,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
 
 #if COIN_DEBUG
   if (!changedetected) {
-    for (i = last; i >= first; i--) { chksum ^= (unsigned long)(*this)[i]; }
+    for (i = last; i >= first; i--) { chksum ^= (uintptr_t)(*this)[i]; }
     if (chksum != 0xdeadbeef) changedetected = TRUE;
   }
   if (changedetected) {
