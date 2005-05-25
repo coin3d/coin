@@ -9,6 +9,7 @@ ThreadsDependentSources =
 endif
 
 RegularSources = \
+	dict.c \
 	hash.c \
 	heap.c \
         list.c \

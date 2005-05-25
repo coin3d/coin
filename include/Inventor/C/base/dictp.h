@@ -1,3 +1,6 @@
+#ifndef CC_DICTP_H
+#define CC_DICTP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,35 @@
  *
 \**************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
 
-#include "dict.c"
-#include "hash.c"
-#include "heap.c"
-#include "list.c"
-#include "memalloc.c"
-#include "namemap.c"
-#include "rbptree.c"
-#include "string.c"
-#include "time.c"
+#include <Inventor/C/base/memalloc.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+  struct cc_dict_entry {
+    uintptr_t key;
+    void * val;
+    struct cc_dict_entry * next;
+  };
+  typedef struct cc_dict_entry cc_dict_entry;
+
+  struct cc_dict {
+    unsigned int size;
+    unsigned int elements;
+    float loadfactor;
+    unsigned int threshold;
+    cc_dict_entry ** buckets;
+    cc_dict_hash_func * hashfunc;
+    cc_memalloc * memalloc;
+  };
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif /* ! CC_DICTP_H */

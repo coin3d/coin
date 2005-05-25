@@ -8,6 +8,8 @@ PublicHeaders = \
 	string.h \
 	list.h
 PrivateHeaders = \
+	dict.h \
+	dictp.h \
 	hashp.h \
 	heapp.h
 ObsoleteHeaders =
