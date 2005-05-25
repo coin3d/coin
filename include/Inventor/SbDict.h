@@ -27,12 +27,13 @@
 #include <stddef.h>
 #include <Inventor/SbBasic.h>
 
-#ifdef COIN_INTERNAL
- // To get around include protection of obsolete cc_hash ADT.
-#undef COIN_INTERNAL
+// FIXME: this hack did not work under windows (COIN_MAKE_DLL++ problems)
+//#ifdef COIN_INTERNAL
+// To get around include protection of obsolete cc_hash ADT.
+//#undef COIN_INTERNAL
 #include <Inventor/C/base/hash.h>
-#define COIN_INTERNAL
-#endif /* COIN_INTERNAL */
+//#define COIN_INTERNAL
+//#endif /* COIN_INTERNAL */
 
 class SbPList;
 

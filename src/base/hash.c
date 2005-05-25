@@ -31,10 +31,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#undef COIN_INTERNAL /* Hack to get around include protection in
-                        obsoleted ADT. */
+/* FIXME: this hack did not work under windows (COIN_MAKE_DLL++ problems) */
+// #undef COIN_INTERNAL /* Hack to get around include protection in
+//                        obsoleted ADT. */
 #include <Inventor/C/base/hash.h>
-#define COIN_INTERNAL
+/* #define COIN_INTERNAL */
 #include <Inventor/C/base/hashp.h>
 
 #include <Inventor/C/tidbits.h>
