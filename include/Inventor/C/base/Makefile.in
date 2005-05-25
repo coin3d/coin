@@ -261,6 +261,8 @@ PublicHeaders = \
 	list.h
 
 PrivateHeaders = \
+	dict.h \
+	dictp.h \
 	hashp.h \
 	heapp.h
 

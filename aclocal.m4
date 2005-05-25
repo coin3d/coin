@@ -7600,6 +7600,8 @@ AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 #
 
 AC_DEFUN([SIM_AC_COMPILE_DEBUG], [
+AC_REQUIRE([SIM_AC_CHECK_SIMIAN_IFELSE])
+
 AC_ARG_ENABLE(
   [debug],
   AC_HELP_STRING([--enable-debug], [compile in debug mode [[default=yes]]]),
@@ -7613,6 +7615,19 @@ AC_ARG_ENABLE(
 
 if $enable_debug; then
   DSUFFIX=d
+  if $sim_ac_simian; then
+    case $CXX in
+    *wrapmsvc* )
+      # uninitialized checks
+      SIM_AC_CC_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /RTCu"])
+      SIM_AC_CXX_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /RTCu"])
+      # stack frame checks
+      SIM_AC_CC_COMPILER_OPTION([/RTCs], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /RTCs"])
+      SIM_AC_CXX_COMPILER_OPTION([/RTCs], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /RTCs"])
+      ;;
+    esac
+  fi
+
   ifelse([$1], , :, [$1])
 else
   DSUFFIX=
@@ -7657,6 +7672,115 @@ else
   CFLAGS="`echo $CFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
   CXXFLAGS="`echo $CXXFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
 fi
+])
+
+#
+# SIM_AC_CHECK_SIMIAN_IFELSE( IF-SIMIAN, IF-NOT-SIMIAN )
+#
+# Sets $sim_ac_simian to true or false
+#
+
+AC_DEFUN([SIM_AC_CHECK_SIMIAN_IFELSE], [
+AC_MSG_CHECKING([if user is simian])
+case `hostname -d 2>/dev/null || domainname 2>/dev/null || hostname` in
+*.sim.no | sim.no )
+  sim_ac_simian=true
+  ;;
+* )
+  if grep -ls "domain.*sim\\.no" /etc/resolv.conf >/dev/null; then
+    sim_ac_simian=true
+    :
+  else
+    sim_ac_simian=false
+    :
+  fi
+  ;;
+esac
+
+if $sim_ac_simian; then
+  AC_MSG_RESULT([probably])
+  ifelse($1, [], :, $1)
+else
+  AC_MSG_RESULT([probably not])
+  ifelse($2, [], :, $2)
+fi])
+
+
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+
+# Usage:
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
+#
+
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
+if test $sim_ac_accept_result = yes; then
+  ifelse([$2], , :, [$2])
+else
+  ifelse([$3], , :, [$3])
+fi
+])
+
+AC_DEFUN([SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [$2], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 3 or arg 4.
+if test $sim_ac_accept_result = yes; then
+  ifelse([$3], , :, [$3])
+else
+  ifelse([$4], , :, [$4])
+fi
+])
+
+
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG(C)
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CC_COMPILER_BEHAVIOR_OPTION_QUIET], [
+AC_LANG_SAVE
+AC_LANG(C)
+SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG(C++)
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET], [
+AC_LANG_SAVE
+AC_LANG(C++)
+SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
+AC_LANG_RESTORE
 ])
 
 # Usage:
@@ -8028,83 +8152,6 @@ else
 fi
 ]) # SIM_AC_MAC_FRAMEWORK
 
-
-#   Use this file to store miscellaneous macros related to checking
-#   compiler features.
-
-# Usage:
-#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#
-# Description:
-#
-#   Check whether the current C or C++ compiler can handle a
-#   particular command-line option.
-#
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-#   * [mortene:19991218] improve macros by catching and analyzing
-#     stderr (at least to see if there was any output there)?
-#
-
-AC_DEFUN([SIM_AC_COMPILER_OPTION], [
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $1"
-AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
-AC_MSG_RESULT([$sim_ac_accept_result])
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
-if test $sim_ac_accept_result = yes; then
-  ifelse([$2], , :, [$2])
-else
-  ifelse([$3], , :, [$3])
-fi
-])
-
-AC_DEFUN([SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET], [
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $1"
-AC_TRY_COMPILE([], [$2], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in arg 3 or arg 4.
-if test $sim_ac_accept_result = yes; then
-  ifelse([$3], , :, [$3])
-else
-  ifelse([$4], , :, [$4])
-fi
-])
-
-
-AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG(C)
-AC_MSG_CHECKING([whether $CC accepts $1])
-SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CC_COMPILER_BEHAVIOR_OPTION_QUIET], [
-AC_LANG_SAVE
-AC_LANG(C)
-SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG(C++)
-AC_MSG_CHECKING([whether $CXX accepts $1])
-SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET], [
-AC_LANG_SAVE
-AC_LANG(C++)
-SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
-AC_LANG_RESTORE
-])
 
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -8679,6 +8726,10 @@ SIM_AC_COMPILE_DEBUG([
       # warning level 3
       SIM_AC_CC_COMPILER_OPTION([/W3], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /W3"])
       SIM_AC_CXX_COMPILER_OPTION([/W3], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /W3"])
+
+      # 64-bit porting warnings
+      SIM_AC_CC_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /Wp64"])
+      SIM_AC_CXX_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /Wp64"])
       ;;
     esac
   fi
@@ -8733,38 +8784,6 @@ case $VERSION in
   ;;
 esac
 ])
-
-
-#
-# SIM_AC_CHECK_SIMIAN_IFELSE( IF-SIMIAN, IF-NOT-SIMIAN )
-#
-# Sets $sim_ac_simian to true or false
-#
-
-AC_DEFUN([SIM_AC_CHECK_SIMIAN_IFELSE], [
-AC_MSG_CHECKING([if user is simian])
-case `hostname -d 2>/dev/null || domainname 2>/dev/null || hostname` in
-*.sim.no | sim.no )
-  sim_ac_simian=true
-  ;;
-* )
-  if grep -ls "domain.*sim\\.no" /etc/resolv.conf >/dev/null; then
-    sim_ac_simian=true
-    :
-  else
-    sim_ac_simian=false
-    :
-  fi
-  ;;
-esac
-
-if $sim_ac_simian; then
-  AC_MSG_RESULT([probably])
-  ifelse($1, [], :, $1)
-else
-  AC_MSG_RESULT([probably not])
-  ifelse($2, [], :, $2)
-fi])
 
 
 # Usage:
@@ -10196,12 +10215,15 @@ sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
 
 LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
 
+# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define 
+
 AC_CACHE_CHECK(
   [whether AGL is on the system],
   sim_cv_have_agl,
   AC_TRY_LINK(
     [#include <AGL/agl.h>
-#include <Carbon/Carbon.h>],
+     #define __CARBONSOUND__ 
+     #include <Carbon/Carbon.h>],
     [aglGetCurrentContext();],
     [sim_cv_have_agl=true],
     [sim_cv_have_agl=false]))
