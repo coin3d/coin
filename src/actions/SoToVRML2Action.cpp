@@ -99,44 +99,50 @@
   \since TGS Inventor 2.5
 */
 
+// *************************************************************************
+
 // FIXME: SoComplexity::BOUNDING_BOX are not supported. For
 // DrawStyle::LINES quads are not handled correctly (will always draw
 // triangles). SoArray and SoMultipleCopy are not supported.
 // Reusing of appearance and geometry nodes is not implemented.
 // 20020813 kristian.
 
-#include <Inventor/SbName.h>
+// *************************************************************************
+
 #include <Inventor/actions/SoToVRML2Action.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoSearchAction.h>
 
-#include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-
-#include <Inventor/errors/SoDebugError.h>
-
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/SbBSPTree.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/lists/SoPathList.h>
-#include <Inventor/lists/SoNodeList.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <Inventor/SbBSPTree.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoSwitchElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoNodeList.h>
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodes/SoTransform.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+// *************************************************************************
 
 SO_ACTION_SOURCE(SoToVRML2Action);
 
@@ -301,7 +307,7 @@ public:
   SbBool reuseAppearanceNodes;
   SbBool reusePropertyNodes;
   SbBool reuseGeometryNodes;
-  SbDict dict;
+  SbHash<SoGroup *, const SoNode *> dict;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
 
@@ -796,10 +802,10 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * prevgroup = THISP(closure)->get_current_tail();
 
-  void * vp;
-  if (THISP(closure)->dict.find((unsigned long)node, vp)) {
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
     // Re-use previous subgraph
-    prevgroup->addChild((SoNode*)vp);
+    prevgroup->addChild(vp);
     return SoCallbackAction::PRUNE;
   }
     
@@ -813,19 +819,19 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
 SoCallbackAction::Response 
 SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node) 
 {
-  void * vp;
-  if (THISP(closure)->dict.find((unsigned long)node, vp)) {
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
     return SoCallbackAction::CONTINUE;
   }
     
-  // Pop node from the tail of the path until an SoVRMLGroup has been poped
+  // Pop node from the tail of the path until an SoVRMLGroup has been popped
   SoGroup * grp;
   do {
     grp = THISP(closure)->get_current_tail();
     THISP(closure)->vrml2path->pop();
   } while (grp->getTypeId() != SoVRMLGroup::getClassTypeId());
 
-  THISP(closure)->dict.enter((unsigned long)node, grp);  
+  THISP(closure)->dict.put(node, grp);  
   return SoCallbackAction::CONTINUE;
 }
 
@@ -835,10 +841,10 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * prevgroup = THISP(closure)->get_current_tail();
 
-  void * vp;
-  if (THISP(closure)->dict.find((unsigned long)node, vp)) {
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
     // Re-use previous subgraph
-    prevgroup->addChild((SoNode*)vp);
+    prevgroup->addChild(vp);
     return SoCallbackAction::PRUNE;
   }
 
@@ -888,8 +894,8 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
 SoCallbackAction::Response 
 SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node) 
 {
-  void * vp;
-  if (THISP(closure)->dict.find((unsigned long)node, vp)) {
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
     return SoCallbackAction::CONTINUE;
   }
 
@@ -916,7 +922,7 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
     sw->whichChoice = 0;
   }
     
-  THISP(closure)->dict.enter((unsigned long)node, grp);  
+  THISP(closure)->dict.put(node, grp);  
   return SoCallbackAction::CONTINUE;
 }
 
@@ -926,10 +932,10 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * prevgroup = THISP(closure)->get_current_tail();
 
-  void * vp;
-  if (THISP(closure)->dict.find((unsigned long)node, vp)) {
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
     // Re-use previous subgraph
-    prevgroup->addChild((SoNode*)vp);
+    prevgroup->addChild(vp);
     return SoCallbackAction::PRUNE;
   }
 
@@ -949,7 +955,7 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
   }
 
   thisp->vrml2path->pop();
-  THISP(closure)->dict.enter((unsigned long)node, newlod);
+  THISP(closure)->dict.put(node, newlod);
   return SoCallbackAction::PRUNE;
 }
 

@@ -28,25 +28,35 @@
 // programmer -- so the API class definition header file is not
 // installed.
 
+// *************************************************************************
+
+#include <Inventor/engines/SoConvertAll.h>
+
 #include <assert.h>
 
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/C/tidbitsp.h>
+#include <Inventor/misc/SbHash.h>
+
+// *************************************************************************
 
 // FIXME: should perhaps use SbTime::parseDate() for So[SM]FString ->
 // So[SM]FTime conversion? 20000331 mortene.
 
+// *************************************************************************
 
-SbDict * SoConvertAll::converter_dict = NULL;
+typedef void convert_func(SoField * from, SoField * to);
+typedef SbHash<convert_func *, uint32_t> UInt32ToConverterFuncMap;
 
+static UInt32ToConverterFuncMap * convertfunc_dict = NULL;
+
+// *************************************************************************
 
 // SoConvertAll uses a dynamic list for each instance with information
 // about input fields and engine outputs, not like the other engines
@@ -628,27 +638,27 @@ static void to_and_from_sftrigger(SoField * from, SoField * to)
   to->setDirty(FALSE);
 }
 
-void
-SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
+static void
+register_convertfunc(convert_func * f, SoType from, SoType to)
 {
   SoDB::addConverter(from, to, SoConvertAll::getClassTypeId());
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  SbBool nonexist = SoConvertAll::converter_dict->enter(val, (void *)f);
+  SbBool nonexist = convertfunc_dict->put(val, f);
   assert(nonexist);
 }
 
 void
 SoConvertAll::atexit_cleanup(void)
 {
-  delete SoConvertAll::converter_dict;
-  SoConvertAll::converter_dict = NULL;
+  delete convertfunc_dict;
+  convertfunc_dict = NULL;
 }
 
 // doc in super
 void
 SoConvertAll::initClass(void)
 {
-  SoConvertAll::converter_dict = new SbDict;
+  convertfunc_dict = new UInt32ToConverterFuncMap;
   coin_atexit((coin_atexit_f*) SoConvertAll::atexit_cleanup, 0);
 
   // SoConvertAll doesn't have a createInstance() method (because it
@@ -656,7 +666,7 @@ SoConvertAll::initClass(void)
   SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
 
 #define SOCONVERTALL_ADDCONVERTER(_fromto_, _from_, _to_) \
-  SoConvertAll::register_converter(_fromto_, _from_::getClassTypeId(), _to_::getClassTypeId())
+  register_convertfunc(_fromto_, _from_::getClassTypeId(), _to_::getClassTypeId())
 
   SOCONVERTALL_ADDCONVERTER(SoSFBitMask_SoMFBitMask, SoSFBitMask, SoMFBitMask);
   SOCONVERTALL_ADDCONVERTER(SoMFBitMask_SoSFBitMask, SoMFBitMask, SoSFBitMask);
@@ -1058,12 +1068,12 @@ SoConvertAll::initClass(void)
   for (int i=0; i < nrfieldtypes; i++) {
     if (allfieldtypes[i].canCreateInstance() &&
         allfieldtypes[i] != SoSFTrigger::getClassTypeId()) {
-      SoConvertAll::register_converter(to_and_from_sftrigger,
-                                       SoSFTrigger::getClassTypeId(),
-                                       allfieldtypes[i]);
-      SoConvertAll::register_converter(to_and_from_sftrigger,
-                                       allfieldtypes[i],
-                                       SoSFTrigger::getClassTypeId());
+      register_convertfunc(to_and_from_sftrigger,
+                           SoSFTrigger::getClassTypeId(),
+                           allfieldtypes[i]);
+      register_convertfunc(to_and_from_sftrigger,
+                           allfieldtypes[i],
+                           SoSFTrigger::getClassTypeId());
     }
   }
 }
@@ -1107,9 +1117,9 @@ SoConvertAll::SoConvertAll(const SoType from, const SoType to)
   this->outputdata_instance->addOutput(this, "output", &this->output, to);
 
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  void * ptr;
-  if (!SoConvertAll::converter_dict->find(val, ptr)) assert(FALSE);
-  this->convertvalue = (converter_func *)ptr;
+  convert_func * ptr;
+  if (!convertfunc_dict->get(val, ptr)) assert(FALSE);
+  this->convertvalue = ptr;
 }
 
 SoConvertAll::~SoConvertAll()

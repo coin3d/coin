@@ -36,7 +36,6 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/SbDict.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -118,7 +117,7 @@ public:
   const SoMultiTextureCoordinateElement * multielem;
   SbList <SbVec4f> * multitexcoords;
   SoState * state;
-  SbDict vbodict;
+  SbHash<SoPrimitiveVertexCache_vboidx *, uint32_t> vbodict;
 
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
   void enableArrays(const cc_glglue * glue,
@@ -132,7 +131,7 @@ public:
                      const int lastenabled);
 
   void enableVBOs(const cc_glglue * glue,
-                  const unsigned long contextid,
+                  const uint32_t contextid,
                   const SbBool color, const SbBool normal,
                   const SbBool texture, const SbBool * enabled,
                   const int lastenabled);
@@ -143,12 +142,12 @@ public:
                    const int lastenabled);
 
   unsigned long countVBOSize(const cc_glglue * glue,
-                             const unsigned long contextid,
+                             const uint32_t contextid,
                              const SbBool color, const SbBool normal,
                              const SbBool texture, const SbBool * enabled,
                              const int lastenabled);
 
-  static void vbo_schedule(unsigned long key, void * value);
+  static void vbo_schedule(const uint32_t & key, SoPrimitiveVertexCache_vboidx * const & value, void * closure);
   static void vbo_delete(void * closure, uint32_t contextid);
   static void contextCleanup(uint32_t context, void * closure);
 };
@@ -241,7 +240,7 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
   SoContextHandler::removeContextDestructionCallback(SoPrimitiveVertexCacheP::contextCleanup, 
                                                      PRIVATE(this));
 
-  PRIVATE(this)->vbodict.applyToAll(SoPrimitiveVertexCacheP::vbo_schedule);
+  PRIVATE(this)->vbodict.apply(SoPrimitiveVertexCacheP::vbo_schedule, NULL);
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
@@ -263,7 +262,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   }
 
-  unsigned long contextid = (unsigned long) SoGLCacheContextElement::get(state);
+  const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance((int) contextid);
   
   float memcaching;
@@ -876,19 +875,16 @@ SoPrimitiveVertexCacheP::disableArrays(const cc_glglue * glue,
 
 void
 SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
-                                    unsigned long contextid,
+                                    uint32_t contextid,
                                     const SbBool color, const SbBool normal,
                                     const SbBool texture, const SbBool * enabled,
                                     const int lastenabled)
 {
-  void * tmp;
   SoPrimitiveVertexCache_vboidx * vbo;
-  if (!this->vbodict.find(contextid, tmp)) {
+  if (!this->vbodict.get(contextid, vbo)) {
     vbo = new SoPrimitiveVertexCache_vboidx;
     memset(vbo, 0, sizeof(SoPrimitiveVertexCache_vboidx));
-    (void) this->vbodict.enter(contextid, (void*) vbo);
-  } else {
-    vbo = (SoPrimitiveVertexCache_vboidx *) tmp;
+    (void) this->vbodict.put(contextid, vbo);
   }
 
   int i;
@@ -1001,21 +997,17 @@ SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
 
 unsigned long
 SoPrimitiveVertexCacheP::countVBOSize(const cc_glglue * glue,
-                                      unsigned long contextid,
+                                      const uint32_t contextid,
                                       const SbBool color, const SbBool normal,
                                       const SbBool texture, const SbBool * enabled,
                                       const int lastenabled)
 {
   unsigned long size = 0;
-  void * tmp;
   SoPrimitiveVertexCache_vboidx * vbo;
-  if (!this->vbodict.find(contextid, tmp)) {
+  if (!this->vbodict.get(contextid, vbo)) {
     vbo = new SoPrimitiveVertexCache_vboidx;
     memset(vbo, 0, sizeof(SoPrimitiveVertexCache_vboidx));
-    (void) this->vbodict.enter(contextid, (void*) vbo);
-  }
-  else {
-    vbo = (SoPrimitiveVertexCache_vboidx *) tmp;
+    (void) this->vbodict.put(contextid, vbo);
   }
 
   int i;
@@ -1051,11 +1043,11 @@ SoPrimitiveVertexCacheP::countVBOSize(const cc_glglue * glue,
 }
 
 void
-SoPrimitiveVertexCacheP::vbo_schedule(unsigned long key,
-                                      void * value)
+SoPrimitiveVertexCacheP::vbo_schedule(const uint32_t & key,
+                                      SoPrimitiveVertexCache_vboidx * const & value,
+                                      void * closure)
 {
-  SoGLCacheContextElement::scheduleDeleteCallback((uint32_t) key,
-                                                  vbo_delete, value);
+  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, value);
 }
 
 void
@@ -1097,8 +1089,8 @@ SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
 {
   SoPrimitiveVertexCacheP * thisp = (SoPrimitiveVertexCacheP*) closure;
 
-  void * tmp;
-  if (thisp->vbodict.find(context, tmp)) {
+  SoPrimitiveVertexCache_vboidx * tmp;
+  if (thisp->vbodict.get(context, tmp)) {
     SoPrimitiveVertexCacheP::vbo_delete(tmp, context);
     thisp->vbodict.remove(context);
   }
