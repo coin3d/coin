@@ -163,7 +163,6 @@ private:
   void clearStateFlags(const unsigned int bits);
   void setStateFlags(const unsigned int bits);
   SbBool getState(const unsigned int bits) const;
-  static SbDict * compatibilitydict;
   static void cleanupClass(void);
 };
 

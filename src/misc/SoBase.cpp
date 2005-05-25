@@ -61,7 +61,6 @@
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
-#include <Inventor/SbDict.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -77,6 +76,7 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/fields/SoGlobalField.h>
+#include <Inventor/misc/SbHash.h>
 #include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
@@ -153,41 +153,59 @@
 
 // *************************************************************************
 
+// FIXME: should implement and use a proper set-abstraction
+// datatype. 20050524 mortene.
+typedef SbHash<void *, const SoBase *> SoBaseSet;
+
 class SoBaseP {
 public:
-  static SbDict * auditordict;
   static void * mutex;
   static void * name2obj_mutex;
   static void * obj2name_mutex;
   static void * auditor_mutex;
   static void * global_mutex;
 
-  static void auditordict_cb(unsigned long key, void * value);
+  static SbHash<SoAuditorList *, const SoBase *> * auditordict;
+  static SbHash<SbPList *, const char *> * name2obj;
+  static SbHash<const char *, const SoBase *> * obj2name;
+
+  static void auditordict_cb(const SoBase * const & key, SoAuditorList * const & value, void * closure);
   static void cleanup_auditordict(void);
+
+  static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
 
   static SbBool trackbaseobjects;
   static void * allbaseobj_mutex;
-  static SbDict * allbaseobj; // maps from SoBase * to NULL
+  static SoBaseSet * allbaseobj; // maps from SoBase * to NULL
 };
 
-SbDict * SoBaseP::auditordict = NULL;
 void * SoBaseP::mutex = NULL;
 void * SoBaseP::name2obj_mutex = NULL;
 void * SoBaseP::obj2name_mutex = NULL;
 void * SoBaseP::auditor_mutex = NULL;
 void * SoBaseP::global_mutex = NULL;
 
+SbHash<SoAuditorList *, const SoBase *> * SoBaseP::auditordict = NULL;
+
+// Only a small number of SoBase derived objects will under usual
+// conditions have designated names, so we use a couple of static
+// dictionary objects to keep track of them. Since we avoid storing a
+// pointer for each and every object, we'll cut down on a decent
+// amount of memory use this way (SoBase should be kept as slim as
+// possible, as any dead weight is brought along in a lot of objects).
+SbHash<SbPList *, const char *> * SoBaseP::name2obj = NULL;
+SbHash<const char *, const SoBase *> * SoBaseP::obj2name = NULL;
+
 // This is used for debugging purposes: it stores a pointer to all
 // SoBase-derived objects that have been allocated and not
 // deallocated.
 SbBool SoBaseP::trackbaseobjects = FALSE;
 void * SoBaseP::allbaseobj_mutex = NULL;
-SbDict * SoBaseP::allbaseobj = NULL; // maps from SoBase * to NULL
+SoBaseSet * SoBaseP::allbaseobj = NULL; // maps from SoBase * to NULL
 
 void
-SoBaseP::auditordict_cb(unsigned long key, void * value)
+SoBaseP::auditordict_cb(const SoBase * const &, SoAuditorList * const & l, void *)
 {
-  SoAuditorList * l = (SoAuditorList*) value;
   delete l;
 }
 
@@ -195,7 +213,7 @@ void
 SoBaseP::cleanup_auditordict(void)
 {
   if (SoBaseP::auditordict) {
-    SoBaseP::auditordict->applyToAll(SoBaseP::auditordict_cb);
+    SoBaseP::auditordict->apply(SoBaseP::auditordict_cb, NULL);
     delete SoBaseP::auditordict;
     SoBaseP::auditordict = NULL;
   }
@@ -214,15 +232,6 @@ static const char ROUTE_KEYWORD[] = "ROUTE";
 
 static const char PROTO_KEYWORD[] = "PROTO";
 static const char EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
-
-// Only a small number of SoBase derived objects will under usual
-// conditions have designated names, so we use a couple of static
-// SbDict objects to keep track of them. Since we avoid storing a
-// pointer for each and every object, we'll cut down on a decent
-// amount of memory use this way (SoBase should be kept as slim as
-// possible, as any dead weight is brought along in a lot of objects).
-SbDict * SoBase::name2obj; // maps from char * to SbPList(SoBase)
-SbDict * SoBase::obj2name; // maps from SoBase * to char *
 
 SbString * SoBase::refwriteprefix = NULL;
 
@@ -300,8 +309,8 @@ SoBase::SoBase(void)
   if (SoBaseP::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
     void * dummy;
-    assert(!SoBaseP::allbaseobj->find((unsigned long)this, dummy));
-    SoBaseP::allbaseobj->enter((unsigned long)this, NULL);
+    assert(!SoBaseP::allbaseobj->get(this, dummy));
+    SoBaseP::allbaseobj->put(this, NULL);
     CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
   }
 #endif // COIN_DEBUG
@@ -325,10 +334,10 @@ SoBase::~SoBase()
   this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
   if (SoBaseP::auditordict) {
-    void * tmp;
-    if (SoBaseP::auditordict->find((unsigned long) this, tmp)) {
-      delete ((SoAuditorList*) tmp);
-      SoBaseP::auditordict->remove((unsigned long) this);
+    SoAuditorList * l;
+    if (SoBaseP::auditordict->get(this, l)) {
+      delete l;
+      SoBaseP::auditordict->remove(this);
     }
   }
   cc_rbptree_clean(&this->auditortree);
@@ -336,7 +345,7 @@ SoBase::~SoBase()
 #if COIN_DEBUG
   if (SoBaseP::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
-    const SbBool ok = SoBaseP::allbaseobj->remove((unsigned long)this);
+    const SbBool ok = SoBaseP::allbaseobj->remove(this);
     assert(ok && "something fishy going on in debug object tracking");
     CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
   }
@@ -439,10 +448,10 @@ SoBase::initClass(void)
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBase::name2obj = new SbDict;
-  SoBase::obj2name = new SbDict;
+  SoBaseP::name2obj = new SbHash<SbPList *, const char *>;
+  SoBaseP::obj2name = new SbHash<const char *, const SoBase *>();
   SoBase::refwriteprefix = new SbString("+");
-  SoBaseP::allbaseobj = new SbDict;
+  SoBaseP::allbaseobj = new SoBaseSet;
 
   CC_MUTEX_CONSTRUCT(SoBaseP::mutex);
   CC_MUTEX_CONSTRUCT(SoBaseP::obj2name_mutex);
@@ -465,8 +474,8 @@ SoBase::cleanClass(void)
 {
 #if COIN_DEBUG
   if (SoBaseP::trackbaseobjects) {
-    SbPList keys, values;
-    SoBaseP::allbaseobj->makePList(keys, values);
+    SbList<const SoBase *> keys;
+    SoBaseP::allbaseobj->makeKeyList(keys);
     const unsigned int len = keys.getLength();
     if (len > 0) {
       // Use printf()s, in case SoDebugError has been made defunct by
@@ -474,7 +483,7 @@ SoBase::cleanClass(void)
       (void)printf("\nSoBase-derived instances not deallocated:\n");
 
       for (unsigned int i=0; i < len; i++) {
-        SoBase * base = (SoBase *)keys[i];
+        const SoBase * base = keys[i];
         const SbName name = base->getName();
         SbString s;
         s.sprintf("\"%s\"", name.getString());
@@ -488,16 +497,16 @@ SoBase::cleanClass(void)
   }
 #endif // COIN_DEBUG
 
-  assert(SoBase::name2obj);
-  assert(SoBase::obj2name);
+  assert(SoBaseP::name2obj);
+  assert(SoBaseP::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  SoBase::name2obj->applyToAll(SoBase::freeLists);
+  SoBaseP::name2obj->apply(SoBaseP::emptyName2ObjHash, NULL);
 
   delete SoBaseP::allbaseobj; SoBaseP::allbaseobj = NULL;
 
-  delete SoBase::name2obj; SoBase::name2obj = NULL;
-  delete SoBase::obj2name; SoBase::obj2name = NULL;
+  delete SoBaseP::name2obj; SoBaseP::name2obj = NULL;
+  delete SoBaseP::obj2name; SoBaseP::obj2name = NULL;
 
   delete SoBase::refwriteprefix;
   SoBase::classTypeId STATIC_SOTYPE_INIT;
@@ -716,13 +725,13 @@ SoBase::getName(void) const
 {
   // If this assert fails, SoBase::initClass() has probably not been
   // called.
-  assert(SoBase::obj2name);
+  assert(SoBaseP::obj2name);
 
-  void * value;
+  const char * value;
   CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
-  SbBool found = SoBase::obj2name->find((unsigned long)this, value);
+  SbBool found = SoBaseP::obj2name->get(this, value);
   CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
-  return found ? SbName((const char *)value) : SbName();
+  return SbName(found ? value : "");
 }
 
 /*!
@@ -791,24 +800,20 @@ void
 SoBase::addName(SoBase * const b, const char * const name)
 {
   SbPList * l;
-  void * t;
   CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  if (!SoBase::name2obj->find((unsigned long)name, t)) {
+  if (!SoBaseP::name2obj->get(name, l)) {
     // name not used before, create new list
     l = new SbPList;
-    SoBase::name2obj->enter((unsigned long)name, l);
+    SoBaseP::name2obj->put(name, l);
   }
-  else {
-    // name is used before, find pointer to old list
-    l = (SbPList *)t;
-  }
+
   // append this to the list
   l->append(b);
   CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
 
   CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
-  // set name of object. SbDict::enter() will overwrite old name
-  SoBase::obj2name->enter((unsigned long)b, (void *)name);
+  // set name of object. SbHash::put() will overwrite old name
+  (void)SoBaseP::obj2name->put(b, name);
   CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
 }
 
@@ -819,19 +824,18 @@ void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
   CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  void * t;
-  SbBool found = SoBase::name2obj->find((unsigned long)name, t);
+  SbPList * l;
+  SbBool found = SoBaseP::name2obj->get(name, l);
   assert(found);
 
-  SbPList * list = (SbPList *) t;
-  int i = list->find(b);
+  const int i = l->find(b);
   assert(i >= 0);
-  list->remove(i);
+  l->remove(i);
 
   CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
 
   CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
-  SoBase::obj2name->remove((unsigned long)b);
+  SoBaseP::obj2name->remove(b);
   CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
 }
 
@@ -957,28 +961,26 @@ SoBase::getAuditors(void) const
   CC_MUTEX_LOCK(SoBaseP::auditor_mutex);
 
   if (SoBaseP::auditordict == NULL) {
-    SoBaseP::auditordict = new SbDict();
+    SoBaseP::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
     coin_atexit((coin_atexit_f*)SoBaseP::cleanup_auditordict, 0);
   }
 
-  SoAuditorList * list = NULL;
-  void * tmp;
-  if (SoBaseP::auditordict->find((unsigned long) this, tmp)) {
-    list = (SoAuditorList*) tmp;
+  SoAuditorList * l = NULL;
+  if (SoBaseP::auditordict->get(this, l)) {
     // empty list before copying in new values
-    for (int i = 0; i < list->getLength(); i++) {
-      list->remove(i);
+    for (int i = 0; i < l->getLength(); i++) {
+      l->remove(i);
     }
   }
   else {
-    list = new SoAuditorList;
-    SoBaseP::auditordict->enter((unsigned long) this, (void*) list);
+    l = new SoAuditorList;
+    SoBaseP::auditordict->put(this, l);
   }
-  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) list);
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) l);
 
   CC_MUTEX_UNLOCK(SoBaseP::auditor_mutex);
 
-  return *list;
+  return *l;
 }
 
 /*!
@@ -1059,9 +1061,8 @@ SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
   CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  void * t;
-  if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
-    SbPList * l = (SbPList *)t;
+  SbPList * l;
+  if (SoBaseP::name2obj->get((const char *)name, l)) {
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
       if (b->isOfType(type)) {
@@ -1087,9 +1088,8 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 
   int matches = 0;
 
-  void * t;
-  if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
-    SbPList * l = (SbPList *)t;
+  SbPList * l;
+  if (SoBaseP::name2obj->get((const char *)name, l)) {
     for (int i=0; i < l->getLength(); i++) {
       SoBase * b = (SoBase *)((*l)[i]);
       if (b->isOfType(type)) {
@@ -1415,9 +1415,9 @@ SoBase::getCurrentWriteCounter(void)
 
 // Used to free the SbPLists in the name<->object dict.
 void
-SoBase::freeLists(unsigned long, void * value)
+SoBaseP::emptyName2ObjHash(const char * const &, SbPList * const & l, void *)
 {
-  delete (SbPList *)value;
+  delete l;
 }
 
 // Reads the name of a reference after a "USE" keyword and finds the

@@ -68,30 +68,35 @@
 
 */
 
+// *************************************************************************
 
 #include <Inventor/misc/SoProto.h>
-#include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/lists/SoNodeList.h>
-#include <Inventor/SbDict.h>
-#include <Inventor/fields/SoField.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/engines/SoNodeEngine.h>
-#include <Inventor/fields/SoMFString.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/engines/SoEngineOutput.h>
+
+#include <string.h>
+
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <string.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoMFString.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoNodeList.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+// *************************************************************************
 
 static SoType soproto_type;
 
@@ -194,6 +199,10 @@ soproto_fetchextern_default_cb(SoInput * in,
   return NULL;
 }
 
+// *************************************************************************
+
+typedef SbHash<SoBase *, const char *> Name2SoBaseMap;
+
 class SoProtoP {
 public:
   SoProtoP() : fielddata(NULL), defroot(NULL) { }
@@ -204,11 +213,13 @@ public:
   SbList <SoNode*> isnodelist; // FIXME: consider using SoNodeList
   SbList <SbName> isfieldlist;
   SbList <SbName> isnamelist;
-  SbDict refdict;
+  Name2SoBaseMap refdict;
   SbList <SbName> routelist;
   SoMFString * externurl;
   SoProto * extprotonode;
 };
+
+// *************************************************************************
 
 // doc in parent
 SoType
@@ -590,7 +601,7 @@ SoProto::findISReference(const SoFieldContainer * container,
 void
 SoProto::addReference(const SbName & name, SoBase * base)
 {
-  PRIVATE(this)->refdict.enter((unsigned long)name.getString(), (void *) base);
+  PRIVATE(this)->refdict.put(name.getString(), base);
 }
 
 /*!
@@ -599,7 +610,7 @@ SoProto::addReference(const SbName & name, SoBase * base)
 void
 SoProto::removeReference(const SbName & name)
 {
-  PRIVATE(this)->refdict.remove((unsigned long)name.getString());
+  PRIVATE(this)->refdict.remove(name.getString());
 }
 
 /*!
@@ -608,10 +619,9 @@ SoProto::removeReference(const SbName & name)
 SoBase *
 SoProto::findReference(const SbName & name) const
 {
-  void * base;
+  SoBase * base;
 
-  if (PRIVATE(this)->refdict.find((unsigned long)name.getString(), base))
-    return (SoBase *) base;
+  if (PRIVATE(this)->refdict.get(name.getString(), base)) { return base; }
   return NULL;
 }
 

@@ -183,6 +183,7 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoProto.h>
@@ -285,8 +286,10 @@
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
 SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
-SbDict * SoNode::compatibilitydict = NULL;
 static void * sonode_mutex = NULL;
+
+typedef SbHash<uint32_t, int16_t> Int16ToUInt32Map;
+static Int16ToUInt32Map * compatibility_dict = NULL;
 
 static void init_action_methods(void);
 
@@ -505,7 +508,7 @@ SoNode::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   // initialize the compatibility dict
-  SoNode::compatibilitydict = new SbDict;
+  compatibility_dict = new Int16ToUInt32Map;
   coin_atexit((coin_atexit_f*)SoNode::cleanupClass, 0);
 
   SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
@@ -1448,13 +1451,11 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
 uint32_t
 SoNode::getCompatibilityTypes(const SoType & nodetype)
 {
-  assert(SoNode::compatibilitydict);
+  assert(compatibility_dict);
   assert(nodetype.isDerivedFrom(SoNode::getClassTypeId()));
 
-  void * tmp;
-  if (SoNode::compatibilitydict->find((unsigned long) nodetype.getKey(), tmp)) {
-    return (uint32_t)((long)tmp);
-  }
+  uint32_t tmp;
+  if (compatibility_dict->get(nodetype.getKey(), tmp)) { return tmp; }
   return SoNode::EXTENSION;
 }
 
@@ -1470,9 +1471,9 @@ SoNode::getCompatibilityTypes(const SoType & nodetype)
 void
 SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
 {
-  assert(SoNode::compatibilitydict);
+  assert(compatibility_dict);
   assert(nodetype.isDerivedFrom(SoNode::getClassTypeId()));
-  SoNode::compatibilitydict->enter((unsigned long) nodetype.getKey(), (void*) ((uintptr_t) bitmask));
+  compatibility_dict->put(nodetype.getKey(), bitmask);
 }
 
 //
@@ -1481,7 +1482,7 @@ SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
 void
 SoNode::cleanupClass(void)
 {
-  delete SoNode::compatibilitydict;
+  delete compatibility_dict;
   SoNode::classTypeId STATIC_SOTYPE_INIT;
   CC_MUTEX_DESTRUCT(sonode_mutex);
 }

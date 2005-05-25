@@ -111,23 +111,29 @@
   \since Coin 2.0
 */
 
-#include <Inventor/errors/SoDebugError.h>
+// *************************************************************************
 
+#include <Inventor/SoType.h>
+
+#include <assert.h>
+#include <stdlib.h> // NULL
+#include <string.h> // strcmp()
+
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoTypeList.h>
 // MSVC++ needs 'SbName.h' and 'SbString.h' to compile
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/lists/SbList.h>
-
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/dl.h>
-#include <assert.h>
-#include <stdlib.h> // NULL
-#include <string.h> // strcmp()
+#include <Inventor/misc/SbHash.h>
 
 #include "cppmangle.icc"
+
+// *************************************************************************
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
@@ -157,10 +163,17 @@ template class SbList<SoTypeData *>;
 // [...]
 #endif // obsoleted
 
+// *************************************************************************
 
 SbList<SoTypeData *> * SoType::typedatalist = NULL;
-SbDict * SoType::typedict = NULL;
-SbDict * SoType::moduledict = NULL;
+
+typedef SbHash<int16_t, const char *> Name2IdMap;
+static Name2IdMap * type_dict = NULL;
+
+typedef SbHash<cc_libhandle, const char *> Name2HandleMap;
+static Name2HandleMap * module_dict = NULL;
+
+// *************************************************************************
 
 /*!
   \typedef SoType::instantiationMethod
@@ -173,6 +186,8 @@ SbDict * SoType::moduledict = NULL;
   void-pointer to a newly allocated and initialized object of the
   class type.
 */
+
+// *************************************************************************
 
 /*!
   This static method initializes the type system.
@@ -191,10 +206,10 @@ SoType::init(void)
   assert(SoType::typedatalist == NULL);
 
   SoType::typedatalist = new SbList<SoTypeData *>;
-  SoType::typedict = new SbDict;
+  type_dict = new Name2IdMap;
 
   SoType::typedatalist->append(new SoTypeData(SbName("BadType")));
-  SoType::typedict->enter((unsigned long)SbName("BadType").getString(), 0);
+  type_dict->put(SbName("BadType").getString(), 0);
 }
 
 // Clean up internal resource usage.
@@ -206,10 +221,10 @@ SoType::clean(void)
   for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
   delete SoType::typedatalist;
   SoType::typedatalist = NULL;
-  delete SoType::typedict;
-  SoType::typedict = NULL;
-  delete SoType::moduledict;
-  SoType::moduledict = NULL;
+  delete type_dict;
+  type_dict = NULL;
+  delete module_dict;
+  module_dict = NULL;
 }
 
 /*!
@@ -236,8 +251,8 @@ SoType::createType(const SoType parent, const SbName name,
   // FIXME: We ought to factor out and expose this functionality - testing
   // if a class type is already loaded and registered - in the public API.
   // 20040831 larsa  (ref could-have-been-used-to-fix-upgrader-slowness-bug)
-  void * discard;
-  if (SoType::typedict->find((unsigned long)name.getString(), discard)) {
+  int16_t discard;
+  if (type_dict->get(name.getString(), discard)) {
     SoDebugError::post("SoType::createType",
                        "a type with name ``%s'' already created",
                        name.getString());
@@ -255,12 +270,8 @@ SoType::createType(const SoType parent, const SbName name,
   SoType::typedatalist->append(typeData);
 
   // add to dictionary for fast lookup
+  type_dict->put(name.getString(), newType.getKey());
 
-  // Cast needed to silence gcc3, which don't seem to like direct
-  // casting from int16_t to void*.
-  uint32_t mapval = (uint32_t)newType.getKey();
-
-  SoType::typedict->enter((unsigned long)name.getString(), (void *) ((uintptr_t) mapval));
   return newType;
 }
 
@@ -437,7 +448,7 @@ typedef void initClassFunction(void);
 SoType
 SoType::fromName(const SbName name)
 {
-  assert((SoType::typedict != NULL) && "SoType static class data not yet initialized");
+  assert((type_dict != NULL) && "SoType static class data not yet initialized");
 
   // It should be possible to specify a type name with the "So" prefix
   // and get the correct type id, even though the types in some type
@@ -446,10 +457,9 @@ SoType::fromName(const SbName name)
   if ( tmp.compareSubString("So") == 0 ) tmp = tmp.getSubString(2);
   SbName noprefixname(tmp);
 
-  void * temp = NULL;
-  // FIXME: we need to split SbDict into SbIntDict and SbPtrDict. 20030223 larsa
-  if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
-      !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
+  int16_t index = 0;
+  if (!type_dict->get(name.getString(), index) &&
+      !type_dict->get(noprefixname.getString(), index)) {
     if ( !SoDB::isInitialized() ) {
       return SoType::badType();
     }
@@ -471,8 +481,8 @@ SoType::fromName(const SbName name)
     }
     SbString mangled = manglefunc(name.getString());
 
-    if ( SoType::moduledict == NULL ) {
-      SoType::moduledict = new SbDict;
+    if ( module_dict == NULL ) {
+      module_dict = new Name2HandleMap;
     }
 
     // FIXME: should we search the application code for the initClass()
@@ -498,8 +508,8 @@ SoType::fromName(const SbName name)
       modulename.sprintf(modulenamepatterns[i], name.getString());
       SbName module(modulename.getString());
 
-      void * idx = NULL;
-      if ( SoType::moduledict->find((unsigned long) module.getString(), idx) ) {
+      cc_libhandle idx = NULL;
+      if ( module_dict->get(module.getString(), idx) ) {
         // Module has been loaded, but type is not yet finished initializing.
         // SoType::badType() is here the expected return value.  See below.
         return SoType::badType();
@@ -513,7 +523,7 @@ SoType::fromName(const SbName name)
         // We register the module so we don't recurse infinitely in the
         // initClass() function which calls SoType::fromName() on itself
         // which expects SoType::badType() in return.  See above.
-        SoType::moduledict->enter((unsigned long)module.getString(), handle);
+        module_dict->put(module.getString(), handle);
       }
     }
 
@@ -539,14 +549,13 @@ SoType::fromName(const SbName name)
 
     initClass();
 
-    // We run these tests to get the index into the temp pointer - that's
-    // what typedict stores as userdata in SoType::createType().
-    if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
-        !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
+    // We run these tests to get the index.
+    if (!type_dict->get(name.getString(), index) &&
+        !type_dict->get(noprefixname.getString(), index)) {
       assert(0 && "how did this happen?");
     }
   }
-  const intptr_t index = (intptr_t) temp;
+
   assert(index >= 0 && index < SoType::typedatalist->getLength());
   assert(((*SoType::typedatalist)[index]->name == name) ||
          ((*SoType::typedatalist)[index]->name == noprefixname));

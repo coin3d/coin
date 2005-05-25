@@ -29,25 +29,26 @@
   \sa SoProto
 */
 
+// *************************************************************************
+
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/fields/SoField.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/sensors/SoNodeSensor.h>
-#include <Inventor/SbDict.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/threads/threadsutilp.h>
+
 #include <stdlib.h>
 #include <assert.h>
 
-#if COIN_DEBUG
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/sensors/SoNodeSensor.h>
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoProtoInstanceP {
 public:
@@ -62,16 +63,21 @@ public:
   SoNode * root;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
+// *************************************************************************
 
 // The following code is used instead of SO_NODE_SOURCE() to let
 // SoUnknownNodes have dynamic handling of SoFieldData objects.
 
 PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
-static SbDict * protoinstance_dict;
+// *************************************************************************
+
+typedef SbHash<SoProtoInstance *, const SoNode *> SoNode2SoProtoInstanceMap;
+
+static SoNode2SoProtoInstanceMap * protoinstance_dict;
 static void * protoinstance_mutex;
+
+// *************************************************************************
 
 // doc in parent
 void
@@ -89,7 +95,7 @@ SoProtoInstance::initClass(void)
                        NULL,
                        SoNode::nextActionMethodIndex++);
 
-  protoinstance_dict = new SbDict;
+  protoinstance_dict = new SoNode2SoProtoInstanceMap;
   CC_MUTEX_CONSTRUCT(protoinstance_mutex);
   coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, 0);
 }
@@ -176,11 +182,11 @@ SoProtoInstance::setRootNode(SoNode * root)
 {
   CC_MUTEX_LOCK(protoinstance_mutex);
   if (THIS->root) {
-    protoinstance_dict->remove((unsigned long) THIS->root);
+    protoinstance_dict->remove(THIS->root);
   }
   THIS->root = root;
   if (root) {
-    protoinstance_dict->enter((unsigned long) root, (void*) this);
+    protoinstance_dict->put(root, this);
   }
   CC_MUTEX_UNLOCK(protoinstance_mutex);
 }
@@ -225,12 +231,9 @@ SoProtoInstance::getFileFormatName(void) const
 SoProtoInstance *
 SoProtoInstance::findProtoInstance(const SoNode * rootnode)
 {
-  SoProtoInstance * ret = NULL;
-  void * tmp;
+  SoProtoInstance * ret;
   CC_MUTEX_LOCK(protoinstance_mutex);
-  if (protoinstance_dict->find((unsigned long) rootnode, tmp)) {
-    ret = (SoProtoInstance*) tmp;
-  }
+  if (!protoinstance_dict->get(rootnode, ret)) { ret = NULL; }
   CC_MUTEX_UNLOCK(protoinstance_mutex);
   return ret;
 }

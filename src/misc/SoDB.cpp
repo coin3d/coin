@@ -340,6 +340,7 @@
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoProto.h>
@@ -412,6 +413,8 @@ public:
 
 // *************************************************************************
 
+typedef SbHash<int16_t, uint32_t> UInt32ToInt16Map;
+
 // Private data class.
 class SoDBP {
 public:
@@ -424,7 +427,7 @@ public:
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;
-  static SbDict * converters;
+  static UInt32ToInt16Map * converters;
   static int notificationcounter;
   static SbBool isinitialized;
 
@@ -445,7 +448,7 @@ public:
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
 SoTimerSensor * SoDBP::globaltimersensor = NULL;
-SbDict * SoDBP::converters = NULL;
+UInt32ToInt16Map * SoDBP::converters = NULL;
 SbBool SoDBP::isinitialized = FALSE;
 int SoDBP::notificationcounter = 0;
 SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
@@ -566,7 +569,7 @@ SoDB::init(void)
   // Allocate our static members.
   SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDBP::sensormanager = new SoSensorManager;
-  SoDBP::converters = new SbDict;
+  SoDBP::converters = new UInt32ToInt16Map;
 
   // NB! There are dependencies in the order of initialization of
   // components below.
@@ -1508,13 +1511,8 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
 void
 SoDB::addConverter(SoType from, SoType to, SoType converter)
 {
-  uint32_t linkid = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  // Cast needed to silence gcc3, which don't seem to like direct
-  // casting from int16_t to void*.
-  uint32_t convtype = (uint32_t)converter.getKey();
-
-  SbBool nonexist = SoDBP::converters->enter((unsigned long)linkid,
-                                            (void *) ((uintptr_t) convtype));
+  const uint32_t linkid = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  SbBool nonexist = SoDBP::converters->put(linkid, converter.getKey());
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",
@@ -1541,11 +1539,9 @@ SoType
 SoDB::getConverter(SoType from, SoType to)
 {
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
-  void * key;
-  if (!SoDBP::converters->find(val, key)) return SoType::badType();
-  // the extra intermediate "long" cast is needed by 64-bits IRIX CC
-  return SoType::fromKey((uint16_t)((uint32_t)((long)key)));
+  int16_t key;
+  if (!SoDBP::converters->get(val, key)) { return SoType::badType(); }
+  return SoType::fromKey(key);
 }
 
 /*!

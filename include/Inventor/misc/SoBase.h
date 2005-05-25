@@ -115,7 +115,6 @@ private:
   static void flushInput(SoInput * in);
 
   static void cleanClass(void);
-  static void freeLists(unsigned long, void * value);
 
   static SoType classTypeId;
 
@@ -129,9 +128,6 @@ private:
   void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
   static void rbptree_notify_cb(void * auditor, void * type, void * closure);
   cc_rbptree auditortree;
-
-  static SbDict * name2obj;
-  static SbDict * obj2name;
 
   static SbString * refwriteprefix;
 

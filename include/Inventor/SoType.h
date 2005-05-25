@@ -25,15 +25,27 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbDict.h>
 #include <stdlib.h> // For NULL definition.
+
+#ifndef COIN_INTERNAL
+// The next include for Open Inventor compatibility.
+//
+// FIXME: I haven't checked that this is actually required -- test vs
+// SGI Inventor. 20050524 mortene.
+#include <Inventor/SbDict.h>
+#endif // COIN_INTERNAL
+
+// *************************************************************************
 
 class SbName;
 class SoTypedObject;
 class SoTypeList;
 class SoFieldData;
+class SbDict;
 struct SoTypeData;
 template <class Type> class SbList;
+
+// *************************************************************************
 
 class COIN_DLL_API SoType {
 public:
@@ -86,8 +98,6 @@ private:
   int16_t index;
 
   static SbList<SoTypeData *> * typedatalist;
-  static SbDict * typedict;
-  static SbDict * moduledict;
 };
 
 /* inline methods ************************************************/

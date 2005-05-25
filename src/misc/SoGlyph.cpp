@@ -376,7 +376,7 @@ SoGlyph::setEdgeIndices(const int *indices, int numindices)
 //
 // static methods to handle glyph reusage.
 //
-// FIXME: use SbDict to look up glyphs a bit faster. pederb, 20000323
+// FIXME: use SbHash to look up glyphs a bit faster. pederb, 20000323
 //
 
 class coin_glyph_info {
