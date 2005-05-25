@@ -24,19 +24,23 @@
  *
 \**************************************************************************/
 
-// FIXME: do we really need two independent hash-implementations in
-// Coin? The cc_hash ADT should be sufficient. At least a C++ generic
-// hash implementation, like this, should be built on top of cc_hash
-// to avoid duplication of functionality. 20040707 mortene.
+// *************************************************************************
+// This class (SbHash<Type, Key>) is internal and must not be exposed
+// in the Coin API.
+
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <stddef.h> // NULL
 #include <string.h> // memset()
 
-#ifndef TRUE
-#define FALSE (0)
-#define TRUE  (!FALSE)
-#endif // !TRUE
+#include <Inventor/lists/SbList.h>
+
+// *************************************************************************
 
 // We usually implement inline functions below the class definition,
 // since we think that makes the file more readable. However, this is
@@ -44,8 +48,7 @@
 // happy about having functions declared as inline for a template
 // class.
 
-// This class (SbHash<Type, Key>) is internal and must not be exposed
-// in the Coin API.
+// *************************************************************************
 
 template <class Type, class Key>
 class SbHashEntry {
@@ -55,6 +58,8 @@ public:
   SbHashEntry<Type, Key> * next;
 };
 
+// *************************************************************************
+
 template <class Type, class Key>
 class SbHash {
 public:
@@ -62,25 +67,32 @@ public:
   typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
 
 public:
-  SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f) {
-    if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
-    unsigned int s = 1;
-    while ( s < sizearg ) { s <<= 1; } // power-of-two size
-    this->size = s;
-    this->elements = 0;
-    this->threshold = (unsigned int) (s * loadfactorarg);
-    this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry<Type, Key> * [this->size];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
-    this->hashfunc = default_hash_func;
+  SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f)
+  {
+    this->commonConstructor(sizearg, loadfactorarg);
   }
 
-  ~SbHash(void) {
+  SbHash(const SbHash & from)
+  {
+    this->commonConstructor(from.size, from.loadfactor);
+    this->operator=(from);
+  }
+
+  SbHash & operator=(const SbHash & from)
+  {
+    this->clear();
+    from.apply(SbHash::copy_data, this);
+    return *this;
+  }
+
+  ~SbHash()
+  {
     this->clear();
     delete [] this->buckets;
   }
 
-  void clear(void) {
+  void clear(void)
+  {
     unsigned int i;
     for ( i = 0; i < this->size; i++ ) {
       while ( this->buckets[i] ) {
@@ -93,7 +105,8 @@ public:
     this->elements = 0;
   }
 
-  SbBool put(const Key & key, const Type & obj) {
+  SbBool put(const Key & key, const Type & obj)
+  {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i];
     while ( entry ) {
@@ -118,7 +131,8 @@ public:
     return TRUE;
   }
 
-  SbBool get(const Key & key, Type & obj) const {
+  SbBool get(const Key & key, Type & obj) const
+  {
     SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
@@ -132,7 +146,8 @@ public:
     return FALSE;
   }
 
-  SbBool remove(const Key & key) {
+  SbBool remove(const Key & key)
+  {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i], * next, * prev = NULL;
     while ( entry ) {
@@ -154,7 +169,8 @@ public:
     return FALSE;
   }
 
-  void apply(SbHashApplyFunc * func, void * closure) {
+  void apply(SbHashApplyFunc * func, void * closure) const
+  {
     unsigned int i;
     SbHashEntry<Type, Key> * elem;
     for ( i = 0; i < this->size; i++ ) {
@@ -166,29 +182,14 @@ public:
     }
   }
 
+  void makeKeyList(SbList<Key> & l) const
+  {
+    this->apply(SbHash::add_to_list, &l);
+  }
+
   unsigned int getNumElements(void) const { return this->elements; }
 
   void setHashFunc(SbHashFunc * func) { this->hashfunc = func; }
-
-  void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max) {
-    unsigned int i;
-    buckets_used = 0, chain_length_max = 0;
-    for ( i = 0; i < this->size; i++ ) {
-      if ( this->buckets[i] ) {
-        unsigned int chain_l = 0;
-        SbHashEntry<Type, Key> * entry = this->buckets[i];
-        buckets_used++;
-        while ( entry ) {
-          chain_l++;
-          entry = entry->next;
-        }
-        if ( chain_l > chain_length_max ) { chain_length_max = chain_l; }
-      }
-    }
-    buckets = this->size;
-    elements = this->elements;
-    chain_length_avg = (float) this->elements / buckets_used;
-  }
 
 protected:
   static unsigned long default_hash_func(const Key & key) {
@@ -228,6 +229,53 @@ protected:
   }
 
 private:
+  void commonConstructor(unsigned int sizearg, float loadfactorarg)
+  {
+    if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
+    unsigned int s = 1;
+    while ( s < sizearg ) { s <<= 1; } // power-of-two size
+    this->size = s;
+    this->elements = 0;
+    this->threshold = (unsigned int) (s * loadfactorarg);
+    this->loadfactor = loadfactorarg;
+    this->buckets = new SbHashEntry<Type, Key> * [this->size];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
+    this->hashfunc = default_hash_func;
+  }
+
+  void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
+  {
+    unsigned int i;
+    buckets_used = 0, chain_length_max = 0;
+    for ( i = 0; i < this->size; i++ ) {
+      if ( this->buckets[i] ) {
+        unsigned int chain_l = 0;
+        SbHashEntry<Type, Key> * entry = this->buckets[i];
+        buckets_used++;
+        while ( entry ) {
+          chain_l++;
+          entry = entry->next;
+        }
+        if ( chain_l > chain_length_max ) { chain_length_max = chain_l; }
+      }
+    }
+    buckets = this->size;
+    elements = this->elements;
+    chain_length_avg = (float) this->elements / buckets_used;
+  }
+
+  static void copy_data(const Key & key, const Type & obj, void * closure)
+  {
+    SbHash * thisp = (SbHash *)closure;
+    thisp->put(key, obj);
+  }
+
+  static void add_to_list(const Key & key, const Type & obj, void * closure)
+  {
+    SbList<Key> * l = (SbList<Key> *)closure;
+    l->append(key);
+  }
+
   float loadfactor;
   unsigned int size;
   unsigned int elements;
@@ -235,7 +283,6 @@ private:
 
   SbHashEntry<Type, Key> ** buckets;
   SbHashFunc * hashfunc;
-
 };
 
 #endif // !COIN_SBHASH_H
