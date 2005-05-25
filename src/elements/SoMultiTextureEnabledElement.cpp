@@ -147,6 +147,7 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
     lastenabled = i;
     return PRIVATE(elem)->enabled;
   }
+  lastenabled = -1;
   return NULL;
 }
 
