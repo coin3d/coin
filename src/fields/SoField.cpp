@@ -158,7 +158,7 @@ class SoConnectStorage {
 public:
   SoConnectStorage(SoFieldContainer * c, SoType t)
     : container(c), fieldtype(t),
-      maptoconverter(13) // save about ~1kB vs default SbDict nr of buckets
+      maptoconverter(13) // save about ~1kB vs default nr of buckets
     {
     }
 
@@ -166,10 +166,7 @@ public:
   // Check that everything has been emptied.
   ~SoConnectStorage()
   {
-    SbPList keys, values;
-    maptoconverter.makePList(keys, values);
-    assert(keys.getLength() == 0);
-    assert(values.getLength() == 0);
+    assert(this->maptoconverter.getNumElements() == 0);
 
     assert(masterfields.getLength() == 0);
     assert(masterengineouts.getLength() == 0);
@@ -192,8 +189,7 @@ public:
   // Direct auditors of us.
   SoAuditorList auditors;
 
-  // Convenience functions for adding, removing and finding SbDict
-  // mappings.
+  // Convenience functions for adding, removing and finding mappings.
 
   void addConverter(const void * item, SoFieldConverter * converter)
   {
@@ -202,21 +198,20 @@ public:
     // FIXME: this probably hashes horribly bad, as the item value is
     // a pointer and is therefore address-aligned (lower 32 (?) bits
     // are all 0).  20010911 mortene.
-    this->maptoconverter.enter((unsigned long)item, converter);
+    this->maptoconverter.put(item, converter);
   }
 
   void removeConverter(const void * item)
   {
-    SbBool ok = this->maptoconverter.remove((unsigned long)item);
+    SbBool ok = this->maptoconverter.remove(item);
     assert(ok);
   }
 
   SoFieldConverter * findConverter(const void * item)
   {
-    void * val;
-    if (!this->maptoconverter.find((unsigned long)item, val))
-      return NULL;
-    return (SoFieldConverter *)val;
+    SoFieldConverter * val;
+    if (!this->maptoconverter.get(item, val)) { return NULL; }
+    return val;
   }
   
   // Provides us with a hack to get at a master field's type in code
@@ -231,7 +226,7 @@ public:
 
 private:
   // Dictionary of void* -> SoFieldConverter* mappings.
-  SbDict maptoconverter;
+  SbHash<SoFieldConverter *, const void *> maptoconverter;
 };
 
 // helper function. Used to check if field is in a vrml2 node

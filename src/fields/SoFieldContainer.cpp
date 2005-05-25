@@ -49,6 +49,7 @@
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -78,17 +79,17 @@
 SoType SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
 
 // used by setUserData() and getUserData()
-static cc_hash * sofieldcontainer_userdata_dict = NULL;
+typedef SbHash<void *, const SoFieldContainer *> UserDataMap;
+static UserDataMap * sofieldcontainer_userdata_dict = NULL;
 
-// cleanup-function for sofieldcontainer_userdata_dict
 static void
 sofieldcontainer_userdata_cleanup(void)
 {
-  if (sofieldcontainer_userdata_dict) {
-    cc_hash_destruct(sofieldcontainer_userdata_dict);
-    sofieldcontainer_userdata_dict = NULL;
-  }
+  delete sofieldcontainer_userdata_dict;
+  sofieldcontainer_userdata_dict = NULL;
 }
+
+// *************************************************************************
 
 #define FLAG_DONOTIFY      0x01
 #define FLAG_FIRSTINSTANCE 0x02
@@ -113,15 +114,19 @@ SoFieldContainer::~SoFieldContainer()
   // area that this destructed instance is placed at. So we must
   // remove our entry (if any -- we can just ignore the return value,
   // no harm is done if no data was set for this instance).
-  (void)cc_hash_remove(sofieldcontainer_userdata_dict, (unsigned long)this);
+  (void)sofieldcontainer_userdata_dict->remove(this);
 }
 
+// *************************************************************************
 // Use a stack of dictionaries when copying nodes to allow recursive
 // copying.
 
+typedef SbHash<const SoFieldContainer *, const SoFieldContainer *> SoFieldContainerCopyMap;
+typedef SbHash<SbBool, const SoFieldContainer *> ContentsCopiedMap;
+
 typedef struct {
-  SbList<SbDict*> * copiedinstancestack;
-  SbList<SbDict*> * contentscopiedstack;
+  SbList<SoFieldContainerCopyMap *> * copiedinstancestack;
+  SbList<ContentsCopiedMap *> * contentscopiedstack;
 } sofieldcontainer_copydict;
 
 static void
@@ -129,8 +134,8 @@ sofieldcontainer_construct_copydict(void * closure)
 {
   sofieldcontainer_copydict * data = (sofieldcontainer_copydict*) closure;
 
-  data->copiedinstancestack = new SbList<SbDict *>;
-  data->contentscopiedstack = new SbList<SbDict *>;
+  data->copiedinstancestack = new SbList<SoFieldContainerCopyMap *>;
+  data->contentscopiedstack = new SbList<ContentsCopiedMap *>;
 }
 
 static void
@@ -157,6 +162,7 @@ sofieldcontainer_get_copydict(void)
   return (sofieldcontainer_copydict*) sofieldcontainer_copydictstorage->get();
 }
 
+// *************************************************************************
 
 // Overridden from parent class.
 void
@@ -170,7 +176,7 @@ SoFieldContainer::initClass(void)
   SoFieldContainer::classTypeId =
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 
-  sofieldcontainer_userdata_dict = cc_hash_construct(64, 0.75f);
+  sofieldcontainer_userdata_dict = new UserDataMap;
   cc_coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup);
 
   sofieldcontainer_copydictstorage = 
@@ -740,8 +746,8 @@ SoFieldContainer::initCopyDict(void)
   // already existing copy dictionaries (if any).
 
   // Push on stack.
-  copydict->copiedinstancestack->insert(new SbDict, 0);
-  copydict->contentscopiedstack->insert(new SbDict, 0);
+  copydict->copiedinstancestack->insert(new SoFieldContainerCopyMap, 0);
+  copydict->contentscopiedstack->insert(new ContentsCopiedMap, 0);
 }
 
 
@@ -765,17 +771,15 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
   // draggers that triggers an assert when copied. pederb, 2003-06-30
   copy->ref();
   
-  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
-  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
+  SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
   
-  // FIXME: casting pointer to unsigned long is nasty. We badly need a
-  // better hash class. 20000115 mortene.
-  SbBool s = copiedinstances->enter((unsigned long)orig, (void *)copy);
+  SbBool s = copiedinstances->put(orig, copy);
   assert(s);
-  s = contentscopied->enter((unsigned long)orig, (void *)FALSE);
+  s = contentscopied->put(orig, FALSE);
   assert(s);
 }
 
@@ -790,12 +794,12 @@ SoFieldContainer::checkCopy(const SoFieldContainer * orig)
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
 
-  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   assert(copiedinstances);
 
-  void * fccopy;
-  return (copiedinstances->find((unsigned long)orig, fccopy) ?
-          (SoFieldContainer *)fccopy : NULL);
+  const SoFieldContainer * fccopy;
+  // FIXME: ugly constness cast. 20050520 mortene.
+  return (SoFieldContainer *)(copiedinstances->get(orig, fccopy) ? fccopy : NULL);
 }
 
 
@@ -820,8 +824,8 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
 
-  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
-  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
+  SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
@@ -863,10 +867,9 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   // Don't call copyContents for the proto instance root node, since
   // this is handled by the Proto node.
   if (!protoinst) {
-    void * tmp;
-    SbBool chk = contentscopied->find((unsigned long)orig, tmp);
+    SbBool copied;
+    SbBool chk = contentscopied->get(orig, copied);
     assert(chk);
-    SbBool copied = tmp ? TRUE : FALSE;
     
     if (!copied) {
       // we have to update the dictionary _before_ calling
@@ -878,7 +881,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       // }
       //
       // pederb, 2002-09-04
-      chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
+      chk = contentscopied->put(orig, TRUE);
       assert(!chk && "the key already exists");
       cp->copyContents(orig, copyconnections);
     }
@@ -890,12 +893,13 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 // Used to unref() copied instances (we ref() in addCopy()).
 //
 static void
-fieldcontainer_unref_node(unsigned long key, void * value)
+fieldcontainer_unref_node(const SoFieldContainer * const & key,
+                          const SoFieldContainer * const & fieldcontainer,
+                          void * closure)
 {
-  SoFieldContainer * fc = (SoFieldContainer*) value;
   // unref() (not unrefNoDelete()) so that unused nodes are
   // destructed (can happen during nodekit copy)
-  fc->unref();
+  fieldcontainer->unref();
 } 
 
 /*!
@@ -911,14 +915,14 @@ SoFieldContainer::copyDone(void)
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
   
-  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
-  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
+  SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
 
   // unref all copied instances. See comment in addCopy().
-  copiedinstances->applyToAll(fieldcontainer_unref_node);
+  copiedinstances->apply(fieldcontainer_unref_node, NULL);
 
   delete copiedinstances;
   delete contentscopied;
@@ -959,9 +963,7 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 void 
 SoFieldContainer::setUserData(void * userdata) const
 {
-  (void) cc_hash_put(sofieldcontainer_userdata_dict,
-                     (unsigned long) this,
-                     userdata);
+  (void)sofieldcontainer_userdata_dict->put(this, userdata);
 }
 
 /*!  
@@ -975,9 +977,7 @@ void *
 SoFieldContainer::getUserData(void) const
 {
   void * tmp = NULL;
-  if (cc_hash_get(sofieldcontainer_userdata_dict,
-                  (unsigned long) this,
-                  &tmp)) {
+  if (sofieldcontainer_userdata_dict->get(this, tmp)) {
     return tmp;
   }
   return NULL;  
@@ -985,5 +985,3 @@ SoFieldContainer::getUserData(void) const
 
 #undef FLAG_DONOTIFY
 #undef FLAG_FIRSTINSTANCE 
-
-

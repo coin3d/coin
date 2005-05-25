@@ -32,23 +32,29 @@
   scenegraph by using instances of this class.
 
   \sa SoEvent, SoButtonEvent, SoMouseButtonEvent, SoSpaceballButtonEvent
-  \sa SoEventCallback, SoHandleEventAction */
+  \sa SoEventCallback, SoHandleEventAction
+*/
+
+// *************************************************************************
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
 #include <Inventor/C/tidbitsp.h>
-#include <Inventor/SbDict.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>
 #include <assert.h>
+
+// *************************************************************************
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define DELETE somewhere in their header files).
 #undef DELETE
 
 
-/*¡
-  The keycode handling in SoKeyboardEvent is really terrible -- could
-  we improve it while still keeping Open Inventor API compatibility?
+/*
+  FIXME: The keycode handling in SoKeyboardEvent is really terrible --
+  could we improve it while still keeping Open Inventor API
+  compatibility?  -mortene.
 */
 
 
@@ -69,8 +75,8 @@
   given \c KEY.
 */
 
-static SbDict * converttoprintable = NULL;
-static SbDict * converttoprintable_shift = NULL;
+static SbHash<char, int> * converttoprintable = NULL;
+static SbHash<char, int> * converttoprintable_shift = NULL;
 
 static void
 sokeyboardevent_cleanup(void)
@@ -83,15 +89,15 @@ static void
 build_convert_dicts(void)
 {
   int i;
-  converttoprintable = new SbDict();
-  converttoprintable_shift = new SbDict();
+  converttoprintable = new SbHash<char, int>();
+  converttoprintable_shift = new SbHash<char, int>();
   coin_atexit((coin_atexit_f *)sokeyboardevent_cleanup, 0);
 
 #undef ADD_KEY // just in case
-#define ADD_KEY(x,y) d->enter((unsigned long)(SoKeyboardEvent::x), (void*)y)
+#define ADD_KEY(x,y) d->put(SoKeyboardEvent::x, y)
 
   // shift not down
-  SbDict * d = converttoprintable;
+  SbHash<char, int> * d = converttoprintable;
   ADD_KEY(NUMBER_0, '0');
   ADD_KEY(NUMBER_1, '1');
   ADD_KEY(NUMBER_2, '2');
@@ -134,7 +140,7 @@ build_convert_dicts(void)
   ADD_KEY(GRAVE,'`');
 
   for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->enter((unsigned long) i, (void *) ((uintptr_t) ('a' + i - (int) SoKeyboardEvent::A)));
+    d->put(i, ('a' + i - (int) SoKeyboardEvent::A));
   }
 
   // shift down
@@ -181,12 +187,16 @@ build_convert_dicts(void)
   ADD_KEY(GRAVE,'~');
 
   for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->enter((unsigned long) i, (void *) ((uintptr_t) ('A' + i - (int) SoKeyboardEvent::A)));
+    d->put(i, ('A' + i - (int) SoKeyboardEvent::A));
   }
 #undef ADD_KEY
 }
 
+// *************************************************************************
+
 SO_EVENT_SOURCE(SoKeyboardEvent);
+
+// *************************************************************************
 
 /*!
   Initialize the type information data.
@@ -320,14 +330,9 @@ SoKeyboardEvent::getPrintableCharacter(void) const
     build_convert_dicts();
   }
 
-  SbDict * dict =
+  SbHash<char, int> * dict =
     this->wasShiftDown() ? converttoprintable_shift : converttoprintable;
-  void * value;
-  if (dict->find((unsigned long) this->getKey(), value)) {
-    // the intermediate casting to long needed for 64-bits IRIX CC,
-    // the intermediate casting to int needed for 32-bits IRIX CC..
-    int tmp = (int)((long)value);
-    return (char) tmp;
-  }
+  char value;
+  if (dict->get(this->getKey(), value)) { return value; }
   return '.';
 }
