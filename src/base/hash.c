@@ -21,12 +21,22 @@
  *
 \**************************************************************************/
 
+/* OBSOLETE: the C data abstraction for a hash has been moved into
+   dict.c and renamed to cc_dict. This code is present here just to be
+   backwards API and ABI compatible on the Coin 2.x releases. */
+
+/* ********************************************************************** */
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
+#undef COIN_INTERNAL /* Hack to get around include protection in
+                        obsoleted ADT. */
 #include <Inventor/C/base/hash.h>
+#define COIN_INTERNAL
 #include <Inventor/C/base/hashp.h>
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 

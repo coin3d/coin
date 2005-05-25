@@ -21,11 +21,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbDict.h>
-#include <Inventor/lists/SbPList.h>
-#include <Inventor/C/base/memalloc.h>
-#include <assert.h>
-
 /*!
   \class SbDict SbDict.h Inventor/SbDict.h
   \brief The SbDict class organizes a dictionary of keys and values.
@@ -37,11 +32,21 @@
 
 // *************************************************************************
 
+#define COIN_ALLOW_SBDICT
+#include <Inventor/SbDict.h>
+#undef COIN_ALLOW_SBDICT
+
+#include <assert.h>
+#include <Inventor/lists/SbPList.h>
+#include <Inventor/C/base/memalloc.h>
+
+// *************************************************************************
+
 /*!
   Constructor with \a entries specifying the initial number of buckets
-  in the hash list -- so it need to be larger than 0. Other than
-	this, no special care needs to be taken in choosing the value since it is
-	always rounded up to the nearest power of two.
+  in the hash list -- so it need to be larger than 0. Other than this,
+  no special care needs to be taken in choosing the value since it is
+  always rounded up to the nearest power of two.
 */
 SbDict::SbDict(const int entries)
 {
@@ -67,7 +72,8 @@ SbDict::~SbDict()
 }
 
 /*!
-  Make a shallow copy of the contents of dictionary \a from into this dictionary.
+  Make a shallow copy of the contents of dictionary \a from into this
+  dictionary.
 */
 SbDict &
 SbDict::operator=(const SbDict & from)
@@ -215,4 +221,3 @@ SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
 {
   cc_hash_set_hash_func(this->hashtable, (cc_hash_func *)func);
 }
-
