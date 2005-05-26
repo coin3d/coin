@@ -37,6 +37,11 @@
 #undef COIN_ALLOW_SBDICT
 
 #include <assert.h>
+
+#define COIN_ALLOW_CC_HASH /* Hack to get around include protection
+                              for obsoleted ADT. */
+#include <Inventor/C/base/hash.h>
+#undef COIN_ALLOW_CC_HASH
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/C/base/memalloc.h>
 

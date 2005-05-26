@@ -24,16 +24,21 @@
  *
 \**************************************************************************/
 
+// *************************************************************************
+
+// Internally, we should use the SbHash template class, since it
+// provides a better interface than SbDict, and since the interface of
+// SbDict has issues on 64-bit platforms when keeping strict
+// compatibility with the original SbDict of SGI Inventor.
+
+#if defined(COIN_INTERNAL) && !defined(COIN_ALLOW_SBDICT)
+#error prefer SbHash over SbDict for internal code
+#endif // COIN_INTERNAL
+
+// *************************************************************************
+
 #include <stddef.h>
 #include <Inventor/SbBasic.h>
-
-// FIXME: this hack did not work under windows (COIN_MAKE_DLL++ problems)
-//#ifdef COIN_INTERNAL
-// To get around include protection of obsolete cc_hash ADT.
-//#undef COIN_INTERNAL
-#include <Inventor/C/base/hash.h>
-//#define COIN_INTERNAL
-//#endif /* COIN_INTERNAL */
 
 class SbPList;
 
@@ -60,20 +65,9 @@ public:
   void setHashingFunction(unsigned long (*func)(const unsigned long key));
 
 private:
-  cc_hash * hashtable;
+  struct cc_hash * hashtable;
   static void copyval(unsigned long key, void * value, void * data);
 };
-
-// *************************************************************************
-
-// Internally, we should use the SbHash template class, since it
-// provides a better interface than SbDict, and since the interface of
-// SbDict has issues on 64-bit platforms when keeping strict
-// compatibility with the original SbDict of SGI Inventor.
-
-#if defined(COIN_INTERNAL) && !defined(COIN_ALLOW_SBDICT)
-#error prefer SbHash over SbDict for internal code
-#endif // COIN_INTERNAL
 
 // *************************************************************************
 

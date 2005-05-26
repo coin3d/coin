@@ -27,13 +27,12 @@
 /* This interface is OBSOLETE -- please do not use it in your
    application code, as it will be removed from Coin 3 and onwards. */
 
-/* FIXME: COIN_INTERNAL hack did not work under Windows
- * #ifdef COIN_INTERNAL
- * #error this interface has been moved to cc_dict
- * #endif */
-
 #include <stdlib.h>
 #include <Inventor/C/basic.h>
+
+#if defined(COIN_INTERNAL) && !defined(COIN_ALLOW_CC_HASH)
+#error prefer cc_dict over cc_hash for internal code
+#endif /* COIN_INTERNAL */
 
 #ifdef __cplusplus
 extern "C" {
