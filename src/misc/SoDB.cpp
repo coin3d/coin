@@ -469,7 +469,7 @@ forward_sprintf(char * dst, unsigned int realdstlen, const char * fmtstr, ...)
 
   // This first call is just to get one invocation of va_arg() done
   // from the system's vsnprintf().
-  int len = coin_vsnprintf(dst, strlen(fmtstr) - 1, fmtstr, args);
+  int len = coin_vsnprintf(dst, (unsigned int)(strlen(fmtstr) - 1), fmtstr, args);
   assert(len == -1);
 
   // The next call is made to see whether or not additional

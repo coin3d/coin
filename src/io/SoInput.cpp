@@ -906,12 +906,12 @@ void
 SoInput::setStringArray(const char * strings[])
 {
   size_t bufsize = 0;
-  int i;
+  size_t i;
   for (i = bufsize = 0; strings[i] != NULL; i++ )
     bufsize += strlen(strings[i]);
   char * buf = new char [bufsize + 1];
   for (i = bufsize = 0; strings[i] != NULL; i++ ) {
-    const int len = strlen(strings[i]);
+    const size_t len = strlen(strings[i]);
     memcpy(buf+bufsize, strings[i], len);
     bufsize += len;
   }
@@ -1824,7 +1824,8 @@ SoInput::addEnvDirectoriesIdx(int startidx,
     const char * hit = strpbrk(p, separator);
 
     if (hit && hit != p) {
-      SbString add = SbString(p).getSubString(0, hit-p-1);
+      const ptrdiff_t offset = hit - p;
+      SbString add = SbString(p).getSubString(0, (int)(offset - 1));
       SoInput::addDirectoryIdx(startidx++, add.getString());
       p = hit+1;
     }
@@ -2104,8 +2105,9 @@ SoInput::searchForFile(const SbString & basename,
     }
   }
 
+  const ptrdiff_t offset = lastdelim - strptr;
   SbString base = lastdelim ?
-    basename.getSubString(lastdelim-strptr + 1, -1) :
+    basename.getSubString((int)(offset + 1), -1) :
     basename;
 
   for (i = 0; i < directories.getLength(); i++) {
@@ -2439,7 +2441,8 @@ SoInput::readDigits(char * str)
     }
   }
 
-  return s - str;
+  const ptrdiff_t offset = s - str;
+  return (int)offset;
 }
 
 /*!
@@ -2465,7 +2468,8 @@ SoInput::readHexDigits(char * str)
     }
   }
 
-  return s - str;
+  const ptrdiff_t offset = s - str;
+  return (int)offset;
 }
 
 /*!

@@ -132,7 +132,7 @@ static const char EOLSTR[] = "\n";
 // FIXME: I guess this should be modified on non-32 bit platforms? Or?
 // Wouldn't that puck up cross-platform compatibility of binary files?
 // 19990627 mortene.
-static const int HOSTWORDSIZE = 4;
+static const size_t HOSTWORDSIZE = 4;
 
 // *************************************************************************
 
@@ -769,9 +769,9 @@ SoOutput::write(const char c)
 void
 SoOutput::write(const char * s)
 {
-  int writelen = strlen(s);
-  if (this->isBinary()) this->write(writelen);
-  this->writeBytesWithPadding(s, writelen);
+  const size_t writelen = strlen(s);
+  if (this->isBinary()) { this->write((int)writelen); }
+  this->writeBytesWithPadding(s, (int)writelen);
 }
 
 /*!
@@ -972,6 +972,10 @@ SoOutput::write(const double d)
 void
 SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
 {
+  // Note: the "length" argument should really have been "size_t", but
+  // this is in the public API, so I've chosen to keep it as this (for
+  // now).  -mortene.
+
   if (PRIVATE(this)->disabledwriting) return;
 
   this->checkHeader();
@@ -1218,7 +1222,7 @@ SoOutput::makeRoomInBuf(size_t bytes)
 void
 SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
 {
-  this->writeBinaryArray((const unsigned char *)p, nr);
+  this->writeBinaryArray((const unsigned char *)p, (int)nr);
 
   // Pad binary writes to a 4-byte boundary if necessary.
   if (this->isBinary()) {
@@ -1227,13 +1231,13 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
-    int writeposition = this->bytesInBuf();
+    size_t writeposition = this->bytesInBuf();
     if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
       writeposition -= ((SoOutput_MemBufferWriter*)PRIVATE(this)->getWriter())->startoffset;
     }
-    int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
+    size_t padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
-    this->writeBinaryArray(padbytes, padsize);
+    this->writeBinaryArray(padbytes, (int)padsize);
   }
 }
 
@@ -1262,8 +1266,9 @@ SoOutput::checkHeader(void)
     // fact that the header identification line ends in "\n\n".
 
     // Write as char * to avoid the addition of any "s.
-    this->writeBinaryArray((const unsigned char *)h.getString(),
-                           strlen(h.getString()));
+    const unsigned char * str = (const unsigned char *)h.getString();
+    const size_t len = strlen(h.getString());
+    this->writeBinaryArray(str, (int)len);
   }
 }
 
@@ -1618,11 +1623,11 @@ SbString
 SoOutput::padHeader(const SbString & inString)
 {
   SbString h = inString;
-  const int EOLLEN = strlen(EOLSTR);
+  const size_t EOLLEN = strlen(EOLSTR);
   int hlen = h.getLength();
-  int pad = HOSTWORDSIZE - ((hlen + EOLLEN) % HOSTWORDSIZE);
+  size_t pad = HOSTWORDSIZE - ((hlen + EOLLEN) % HOSTWORDSIZE);
   pad = pad == HOSTWORDSIZE ? 0 : pad;
-  for (int i=0; i < pad; i++) h += ' ';
+  for (size_t i=0; i < pad; i++) h += ' ';
 
   return h;
 }

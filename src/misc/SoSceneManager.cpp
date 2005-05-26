@@ -908,7 +908,9 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
-  GLbitfield mask = (GLbitfield)((long)userdata);
+  // MSVC7 on 64-bit Window wants it to go through this cast.
+  const uintptr_t bitfield = (uintptr_t)userdata;
+  GLbitfield mask = (GLbitfield)bitfield;
 
 #if COIN_DEBUG && 0 // debug
   GLint view[4];

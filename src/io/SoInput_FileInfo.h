@@ -190,8 +190,8 @@ private:
   SbBool isbinary;
 
   char * readbuf;
-  int readbufidx;
-  int readbuflen;
+  size_t readbufidx;
+  size_t readbuflen;
   size_t totalread;
   SbList<char> backbuffer; // Used as a stack (SbList provides push() and pop()).
   int lastputback; // The last character put back into the stream.

@@ -134,14 +134,7 @@ SoAuditorList::getObject(const int index) const
 SoNotRec::Type
 SoAuditorList::getType(const int index) const
 {
-  // the temporary int is necessary since gcc 2.95.2
-  // does not allow a direct cast from void * to SoNotRec::Type
-  // pederb, 20000219
-  //
-  // the "intermediate" cast from void* to long is needed for the SGI
-  // MIPSPro 64-bits CC compiler to not complain
-  // mortene, 20020611
-  int tmp = (int)((long)SbPList::operator[](index*2+1));
+  const uintptr_t tmp = (uintptr_t)(SbPList::operator[](index*2+1));
   return (SoNotRec::Type)tmp;
 }
 

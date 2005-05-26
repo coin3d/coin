@@ -46,7 +46,7 @@ public:
 
   // must be overloaded to read data. Should return number of bytes
   // read or 0 if eof
-  virtual int readBuffer(char * buf, const size_t readlen) = 0;
+  virtual size_t readBuffer(char * buf, const size_t readlen) = 0;
 
   // should be overloaded to return filename. Default method returns
   // an empty string.
@@ -68,7 +68,7 @@ public:
   virtual ~SoInput_FileReader();
 
   virtual ReaderType getType(void) const;
-  virtual int readBuffer(char * buf, const size_t readlen);
+  virtual size_t readBuffer(char * buf, const size_t readlen);
 
   virtual const SbString & getFilename(void);
   virtual FILE * getFilePointer(void);
@@ -85,7 +85,7 @@ public:
   virtual ~SoInput_MemBufferReader();
 
   virtual ReaderType getType(void) const;
-  virtual int readBuffer(char * buf, const size_t readlen);
+  virtual size_t readBuffer(char * buf, const size_t readlen);
 
 public:
   char * buf;
@@ -99,7 +99,7 @@ public:
   virtual ~SoInput_GZMemBufferReader();
 
   virtual ReaderType getType(void) const;
-  virtual int readBuffer(char * buf, const size_t readlen);
+  virtual size_t readBuffer(char * buf, const size_t readlen);
 
 public:
   void * gzmfile;
@@ -113,7 +113,7 @@ public:
   virtual ~SoInput_GZFileReader();
 
   virtual ReaderType getType(void) const;
-  virtual int readBuffer(char * buf, const size_t readlen);
+  virtual size_t readBuffer(char * buf, const size_t readlen);
 
   virtual const SbString & getFilename(void);
 
@@ -128,7 +128,7 @@ public:
   virtual ~SoInput_BZ2FileReader();
 
   virtual ReaderType getType(void) const;
-  virtual int readBuffer(char * buf, const size_t readlen);
+  virtual size_t readBuffer(char * buf, const size_t readlen);
 
   virtual const SbString & getFilename(void);
 

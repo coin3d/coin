@@ -917,7 +917,7 @@ SoOffscreenRenderer::getBuffer(void) const
 //
 // avoid endian problems (little endian sucks, right? :)
 //
-static int
+static size_t
 write_short(FILE * fp, unsigned short val)
 {
   unsigned char tmp[2];
@@ -933,17 +933,17 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
 {
   // FIXME: add code to rle rows, pederb 2000-01-10
 
-  write_short(fp, 0x01da); // imagic
-  write_short(fp, 0x0001); // raw (no rle yet)
+  (void)write_short(fp, 0x01da); // imagic
+  (void)write_short(fp, 0x0001); // raw (no rle yet)
 
   if (nrcomponents == 1)
-    write_short(fp, 0x0002); // 2 dimensions (heightmap)
+    (void)write_short(fp, 0x0002); // 2 dimensions (heightmap)
   else
-    write_short(fp, 0x0003); // 3 dimensions
+    (void)write_short(fp, 0x0003); // 3 dimensions
 
-  write_short(fp, (unsigned short) w);
-  write_short(fp, (unsigned short) h);
-  write_short(fp, (unsigned short) nrcomponents);
+  (void)write_short(fp, (unsigned short) w);
+  (void)write_short(fp, (unsigned short) h);
+  (void)write_short(fp, (unsigned short) nrcomponents);
 
   unsigned char buf[500];
   (void)memset(buf, 0, 500);
@@ -1361,13 +1361,16 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   const char * curr = start;
   const char * end = strchr(curr, ',');
   while (end) {
-    SbString ext = allext.getSubString(curr-start, end-start-1);
+    const ptrdiff_t offset_start = curr - start;
+    const ptrdiff_t offset_end = end - start - 1;
+    SbString ext = allext.getSubString((int)offset_start, (int)offset_end);
     SbName extname(ext.getString());
     extlist.append((void*)extname.getString());
     curr = end+1;
     end = strchr(curr, ',');
   }
-  SbString ext = allext.getSubString(curr-start);
+  const ptrdiff_t offset = curr - start;
+  SbString ext = allext.getSubString((int)offset);
   SbName extname(ext.getString());
   extlist.append((void*)extname.getString());
   const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
@@ -1594,12 +1597,15 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   const char * curr = start;
   const char * end = strchr(curr, ',');
   while (end) {
-    SbString ext = allext.getSubString(curr-start, end-start-1);
+    const ptrdiff_t offset_start = curr - start;
+    const ptrdiff_t offset_end = end - start - 1;
+    SbString ext = allext.getSubString((int)offset_start, (int)offset_end);
     extlist.append(SbName(ext.getString()));
     curr = end+1;
     end = strchr(curr, ',');
   }
-  SbString ext = allext.getSubString(curr-start);
+  const ptrdiff_t offset = curr - start;
+  SbString ext = allext.getSubString((int)offset);
   extlist.append(SbName(ext.getString()));
   const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
   const char * desc_s = simage_wrapper()->simage_get_saver_description(saver);

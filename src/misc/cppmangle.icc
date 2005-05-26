@@ -33,7 +33,7 @@ SbString
 gcc2_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
-  int len = strlen(classname);
+  const size_t len = strlen(classname);
   SbString mangling;
   mangling.sprintf("initClass__%d%s", len, classname);
   return mangling;
@@ -49,7 +49,7 @@ SbString
 gcc3_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
-  int len = strlen(classname);
+  const size_t len = strlen(classname);
   SbString mangling;
   mangling.sprintf("_ZN%d%s9initClassEv", len, classname);
   return mangling;
@@ -81,7 +81,7 @@ SbString
 MIPSpro_CC_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
-  int len = strlen(classname);
+  const size_t len = strlen(classname);
   SbString mangling;
   mangling.sprintf("initClass__%d%sSGv", len, classname);
   return mangling;
@@ -99,7 +99,7 @@ SbString
 HPUX_aCC_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
-  int len = strlen(classname);
+  const size_t len = strlen(classname);
   SbString mangling;
   mangling.sprintf("initClass__%d%sSFv", len, classname);
   return mangling;

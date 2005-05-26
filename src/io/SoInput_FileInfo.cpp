@@ -270,13 +270,13 @@ SoInput_FileInfo::putBack(const char * const str)
 {
   assert(!this->isbinary);
 
-  int n = strlen(str);
+  const size_t n = strlen(str);
   if (!n) return;
 
   // Decrease line count if we put back any end-of-line
   // characters. This should take care of Unix-, MSDOS/MSWin- and
   // MacOS-style generated files. What a mess.
-  for (int i=0; i < n; i++) {
+  for (size_t i=0; i < n; i++) {
     if ((str[i] == '\r') || ((str[i] == '\n') &&
                              (this->lastputback != (int)'\r')))
       this->linenr--;
@@ -288,14 +288,14 @@ SoInput_FileInfo::putBack(const char * const str)
   if (n <= this->readbufidx && this->backbuffer.getLength() == 0) {
     this->readbufidx -= n;
 #if COIN_DEBUG
-    for (int i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
       assert(this->readbuf[this->readbufidx+i] == str[i]);
     }
 #endif // COIN_DEBUG
 
   }
   else
-    for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
+    for (size_t i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
 
   this->eof = FALSE;
 }
@@ -661,7 +661,8 @@ SoInput_FileInfo::readDigits(char * str)
       break;
     }
   }
-  return s - str;
+  const ptrdiff_t offset = s - str;
+  return (int)offset;
 }
 
 int 
@@ -676,5 +677,6 @@ SoInput_FileInfo::readHexDigits(char * str)
       break;
     }
   }
-  return s - str;
+  const ptrdiff_t offset = s - str;
+  return (int)offset;
 }

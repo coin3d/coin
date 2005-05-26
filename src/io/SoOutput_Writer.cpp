@@ -152,7 +152,7 @@ SoOutput_FileWriter::bytesInBuf(void)
 SoOutput_MemBufferWriter::SoOutput_MemBufferWriter(void * buffer,
                                                    const size_t len,
                                                    SoOutputReallocCB * reallocFunc,
-                                                   int32_t offsetarg)
+                                                   size_t offsetarg)
 {
   this->buf = (char*) buffer;
   this->bufsize = len;
@@ -174,7 +174,7 @@ size_t
 SoOutput_MemBufferWriter::write(const char * constc, size_t length, const SbBool binary)
 {
   // Needs a \0 at the end if we're writing in ASCII.
-  int writelen = binary ? length : length + 1;
+  const size_t writelen = binary ? length : length + 1;
 
   if (this->makeRoomInBuf(writelen)) {
     char * writeptr = this->buf + this->offset;
@@ -254,7 +254,10 @@ size_t
 SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
 {
   if (this->gzfp) {
-    return cc_zlibglue_gzwrite(this->gzfp, (void*)buf, numbytes);
+    // FIXME: the numbytes cast (as size_t can be 64 bits wide) is
+    // there to humour the interface of *gzwrite() -- should really be
+    // fixed in the interface instead. 20050526 mortene.
+    return cc_zlibglue_gzwrite(this->gzfp, (void*)buf, (int)numbytes);
   }
   return 0;
 }
@@ -315,7 +318,9 @@ SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool bi
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;
-    cc_bzglue_BZ2_bzWrite(&bzerror, this->bzfp, (void*) buf, numbytes);
+    // FIXME: about the cast; see note about the call to *gzmwrite()
+    // above. 20050526 mortene.
+    cc_bzglue_BZ2_bzWrite(&bzerror, this->bzfp, (void*) buf, (int)numbytes);
     
     if (bzerror != BZ_OK) {
       assert(bzerror == BZ_IO_ERROR);

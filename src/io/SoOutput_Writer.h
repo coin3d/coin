@@ -83,7 +83,7 @@ public:
   SoOutput_MemBufferWriter(void * buffer,
                            const size_t len,
                            SoOutputReallocCB * reallocFunc,
-                           int32_t offset);
+                           size_t offset);
   virtual ~SoOutput_MemBufferWriter();
 
   virtual size_t bytesInBuf(void);
@@ -97,8 +97,8 @@ public:
   char * buf;
   size_t bufsize;
   SoOutputReallocCB * reallocfunc;
-  int32_t offset;
-  int32_t startoffset;
+  size_t offset;
+  size_t startoffset;
 };
 
 // class for zlib writing
@@ -127,7 +127,7 @@ public:
 public:
   void * bzfp;
   FILE * fp;
-  uint32_t writecounter;
+  size_t writecounter;
 };
 
 #endif // COIN_SOOUTPUT_WRITER_H

@@ -139,14 +139,14 @@ compare_paths(const void * v0, const void * v1)
   SoFullPath * p0 = *((SoFullPath**)v0);
   SoFullPath * p1 = *((SoFullPath**)v1);
 
-  int diff = (char *)p0->getHead() - (char *)p1->getHead();
-  if (diff != 0) return diff;
+  const ptrdiff_t diff = (char *)p0->getHead() - (char *)p1->getHead();
+  if (diff != 0) { return (int)diff; }
 
   int n = SbMin(p0->getLength(), p1->getLength());
   int i;
   for (i = 1; i < n; i++) {
-    diff = p0->getIndex(i) - p1->getIndex(i);
-    if (diff != 0) return diff;
+    const int diff = p0->getIndex(i) - p1->getIndex(i);
+    if (diff != 0) { return (int)diff; }
   }
   // shortest path first
   return p0->getLength() - p1->getLength();

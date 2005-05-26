@@ -362,9 +362,9 @@ sobase_sensor_add_cb(void * auditor, void * type, void * closure)
   SbList<SoDataSensor *> * auditingsensors =
     (SbList<SoDataSensor*> *) closure;
 
-  // use a temporary variable, since some compilers can't cast
-  // directly from void * to SoNotRec::Type
-  uint32_t tmp = (int)((long)type);
+  // MSVC7 on 64-bit Windows wants to go through this type when
+  // casting from void*.
+  const uintptr_t tmp = (uintptr_t)type;
   switch ((SoNotRec::Type) tmp) {
   case SoNotRec::SENSOR:
     auditingsensors->append((SoDataSensor *)auditor);
@@ -877,8 +877,9 @@ SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
   sobase_notify_data * data = (sobase_notify_data*) closure;
   data->cnt--;
 
-  // gcc will not allow direct cast from void * to SoNotRec::Type
-  uint32_t tmptype = (uint32_t)((long)type);
+  // MSVC7 on 64-bit Windows wants to go through this type when
+  // casting from void*.
+  const uintptr_t tmptype = (uintptr_t)type;
 
   if (data->notified.find(auditor) < 0) {
     if (data->cnt == 0) {
@@ -924,7 +925,10 @@ SoBase::notify(SoNotList * l)
 void
 SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
 {
-  cc_rbptree_insert(&this->auditortree, auditor, (void*) type);
+  // MSVC7 on 64-bit Windows wants to go through this type before
+  // casting to void*.
+  const uintptr_t val = (uintptr_t)type;
+  cc_rbptree_insert(&this->auditortree, auditor, (void *)val);
 }
 
 /*!
@@ -943,11 +947,11 @@ SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 static void
 sobase_audlist_add(void * pointer, void * type, void * closure)
 {
-  SoAuditorList * list = (SoAuditorList*) closure;
-  uint32_t tmp = (uint32_t)((long)type);
-
-
-  list->append(pointer, (SoNotRec::Type) tmp);
+  SoAuditorList * l = (SoAuditorList*) closure;
+  // MSVC7 on 64-bit Windows wants to go through this type before
+  // casting to void*.
+  const uintptr_t tmp = (uintptr_t)type;
+  l->append(pointer, (SoNotRec::Type)tmp);
 }
 
 /*!
@@ -1445,9 +1449,9 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     // then we are in trouble, but so is Open Inventor.
     // This is due to the ability for "}" to be a character
     // in the name of a node.
-    size_t index = strcspn(refstr.getString(), ".");
-    SbString startstr = refstr.getSubString(0, index-1);
-    SbString endstr = refstr.getSubString(index);
+    const size_t index = strcspn(refstr.getString(), ".");
+    SbString startstr = refstr.getSubString(0, (int)(index - 1));
+    SbString endstr = refstr.getSubString((int)index);
     in->putBack(endstr.getString());
 
     refname = startstr;
@@ -1591,7 +1595,8 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
 
     if (occ != strp) { // They will be equal if the name is only a refcount.
-      if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
+      const ptrdiff_t offset = occ - strp - 1;
+      if (occ) instancename = instancename.getSubString(0, (int)offset);
       // Set name identifier for newly created SoBase instance.
       base->setName(instancename);
     }

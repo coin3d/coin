@@ -77,7 +77,7 @@ public:
     // a bit hackish. Stop xor'ing at idx
     const unsigned char * stop = (const unsigned char*) &this->idx;
     
-    int size = stop-ptr;
+    const ptrdiff_t size = stop - ptr;
     
     for (int i = 0; i < size; i++) {
       int shift = (i%4) * 8;

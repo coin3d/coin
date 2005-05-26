@@ -171,7 +171,7 @@ typedef int func_vsnprintf(char *, size_t, const char *, va_list);
 
 static int
 coin_common_vsnprintf(func_vsnprintf * func,
-                      char * dst, unsigned int n,
+                      char * dst, size_t n,
                       const char * fmtstr, va_list args)
 {
   int length;
@@ -200,14 +200,14 @@ coin_common_vsnprintf(func_vsnprintf * func,
   {
     va_list argscopy;
     va_copy(argscopy, args);
-    length = (*func)(dst, (size_t)n, fmtstr, argscopy);
+    length = (*func)(dst, n, fmtstr, argscopy);
     va_end(argscopy);
   }
 #else /* !HAVE_VA_COPY_MACRO */
   /* No va_copy() available, so we just assume the system's
      vsnprintf() to "rewind" the va_list after use. This assumption is
      "sanity checked" from within SoDB::init(). */
-  length = (*func)(dst, (size_t)n, fmtstr, args);
+  length = (*func)(dst, n, fmtstr, args);
 #endif /* !HAVE_VA_COPY_MACRO */
 
   if (debug) { printf("==> length==%d\n", length); }
@@ -1519,7 +1519,7 @@ static char *
 getcwd_wrapper(char * buf, size_t size)
 {
 #ifdef HAVE__GETCWD
-  return _getcwd(buf, size);
+  return _getcwd(buf, (int)size);
 #elif defined(HAVE_GETCWD)
   return getcwd(buf, size);
 #else /* HAVE_GETCWD */

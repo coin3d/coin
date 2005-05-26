@@ -106,7 +106,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
   if ( trycompression ) {
     unsigned char header[4];
     long offset = ftell(fp);
-    int siz = fread(header, 1, 4, fp);
+    size_t siz = fread(header, 1, 4, fp);
     (void) fseek(fp, offset, SEEK_SET);
     fflush(fp); // needed since we fetch the file descriptor later
 
@@ -204,7 +204,7 @@ SoInput_FileReader::getType(void) const
   return REGULAR_FILE;
 }
 
-int
+size_t
 SoInput_FileReader::readBuffer(char * buf, const size_t readlen)
 {
   return fread(buf, 1, readlen, this->fp);
@@ -243,7 +243,7 @@ SoInput_MemBufferReader::getType(void) const
   return MEMBUFFER;
 }
 
-int
+size_t
 SoInput_MemBufferReader::readBuffer(char * buffer, const size_t readlen)
 {
   size_t len = this->buflen - this->bufpos;
@@ -264,7 +264,10 @@ SoInput_MemBufferReader::readBuffer(char * buffer, const size_t readlen)
 
 SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize)
 {
-  this->gzmfile = cc_gzm_open((uint8_t *)bufPointer, bufSize);
+  // FIXME: the bufSize cast (as size_t can be 64 bits wide) is there
+  // to humour the interface of gzmemio -- should really be fixed
+  // in the interface instead. 20050525 mortene.
+  this->gzmfile = cc_gzm_open((uint8_t *)bufPointer, (uint32_t)bufSize);
   this->buf = bufPointer;
 }
 
@@ -279,10 +282,12 @@ SoInput_GZMemBufferReader::getType(void) const
   return GZMEMBUFFER;
 }
 
-int
+size_t
 SoInput_GZMemBufferReader::readBuffer(char * buffer, const size_t readlen)
 {
-  return cc_gzm_read(this->gzmfile, buffer, readlen);
+  // FIXME: about the cast; see note about the call to cc_gzm_open()
+  // above. 20050525 mortene.
+  return cc_gzm_read(this->gzmfile, buffer, (uint32_t)readlen);
 }
 
 //
@@ -307,10 +312,12 @@ SoInput_GZFileReader::getType(void) const
   return GZFILE;
 }
 
-int
+size_t
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-  return cc_zlibglue_gzread(this->gzfp, (void*) buf, readlen);
+  // FIXME: about the cast; see note about the call to cc_gzm_open()
+  // above. 20050525 mortene.
+  return cc_zlibglue_gzread(this->gzfp, (void*) buf, (uint32_t)readlen);
 }
 
 const SbString &
@@ -343,14 +350,16 @@ SoInput_BZ2FileReader::getType(void) const
   return BZ2FILE;
 }
 
-int
+size_t
 SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
 {
   if (this->bzfp == NULL) return -1;
 
   int bzerror = BZ_OK;
+  // FIXME: about the cast; see note about the call to cc_gzm_open()
+  // above. 20050525 mortene.
   int ret = cc_bzglue_BZ2_bzRead(&bzerror, this->bzfp,
-                                 buf, readlen);
+                                 buf, (uint32_t)readlen);
   if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
     ret = -1;
     cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
