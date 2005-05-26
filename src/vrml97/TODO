@@ -17,8 +17,12 @@ Unsupported features
 - Radius in PointLight is not supported
 - Radius or beamWidth in SpotLight is not supported.
 - The Text node
-- Lights should affect all nodes in the current coordinate system,
-  also nodes that precedes them in the children field.
+
+- SoVRMLPointLight and SoVRMLSpotLight should affect all geometry
+  within their radius, not only under their Group/Transform/Parent,
+  and including geometry that precedes them in the scene graph.
+
+  Note that this is /not/ the case for SoVRMLDirectionalLight.
 
 ------------------------------------------------------------------------
 

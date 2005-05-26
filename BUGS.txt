@@ -1,5 +1,9 @@
-There are additional buglists which may contain important bugs for the
-Coin satellite libraries, extensions and example programs at:
+There are additional buglists which may contain important bugs and
+unsupported features for Coin:
+
+        Coin/src/vrml97/TODO
+
+For the Coin satellite libraries, extensions and example programs:
 
         simage/BUGS.txt
         SoQt/BUGS.txt
@@ -301,6 +305,19 @@ Now, for the list of known bugs in the core Coin library:
     and abort the import process.
 
     20020911 mortene.
+
+    UPDATE 20050526 mortene: due to various fixes in SoInput-related
+    code, the status for this bug has changed. Import no longer hangs,
+    but fails -- as it should, but the first error message seems
+    bogus:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    embla:~/tmp$ ./examinerviewer bug.wrl
+    Coin read error: Expected '{'; got ']'
+            Occurred at line   6 in bug.wrl
+    Coin read error: Couldn't read value for field "children" of VRMLGroup
+            Occurred at line   6 in bug.wrl
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
 =====================================================================
 
@@ -1122,6 +1139,10 @@ Now, for the list of known bugs in the core Coin library:
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     20030204 mortene, reported by kintel.
+
+    UPDATE 20050526 mortene: I had expected the status of this bug to
+    change, as did item #025, but I just confirmed it's still the
+    same.
 
 =====================================================================
 
@@ -2155,10 +2176,10 @@ main(void)
 
 =====================================================================
 
-092 SoToVRMLAction outputs empty scene graph when given a Coin/inventor
+092 SoToVRMLAction outputs empty scene graph when given a Coin/Inventor
     scene graph.
 
-    SoToVRMLAction only supports VRML2 scene graphs, not Coin/inventor
+    SoToVRMLAction only supports VRML2 scene graphs, not Coin/Inventor
     scene graphs.
 
     20031126 kintel.
@@ -4110,7 +4131,6 @@ end
 =====================================================================
 
 167 Memory read error for PROTO-based data in VRML97 scene.
-
 
     Valgrind reports
 
