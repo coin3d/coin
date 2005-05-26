@@ -492,11 +492,11 @@ SbTime::formatDate(const char * const fmt) const
 
   if (strlen(format) == 0) return SbString("");
 
-  const int buffersize = 256;
+  const size_t buffersize = 256;
   char buffer[buffersize];
   char * bufferpt = buffer;
   time_t secs = (time_t)(this->dtime);
-  int currentsize = buffersize;
+  size_t currentsize = buffersize;
 
   struct tm * ts = localtime(&secs);
 
