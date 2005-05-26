@@ -91,13 +91,13 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
      infinite recursion. */
   if (debug) {
     printf("cc_string_grow_buffer: "
-           "me->bufsize==%d, me->pointer==%p, me->buffer==%p => "
+           "me->bufsize==%u, me->pointer==%p, me->buffer==%p => "
            "newsize==%d\n",
            me->bufsize, me->pointer, me->buffer, newsize);
   }
                          
 
-  if (newsize <= (size_t)me->bufsize) { return; }
+  if (newsize <= me->bufsize) { return; }
 
   /* FIXME: should first try the vastly more efficient realloc() (if
      the current memory buffer is not the default static, of course).
@@ -110,7 +110,7 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
 
   if (me->pointer != me->buffer) { free(me->pointer); }
   me->pointer = newbuf;
-  me->bufsize = (int)newsize;
+  me->bufsize = newsize;
 }
 
 static void
@@ -204,7 +204,7 @@ cc_string_set_text(cc_string * me, const char * text)
     return;
   }
   size = strlen(text) + 1;
-  if (size > (size_t)me->bufsize) { cc_string_grow_buffer(me, size); }
+  if (size > me->bufsize) { cc_string_grow_buffer(me, size); }
   (void) strcpy(me->pointer, text);
 } /* cc_string_set_text() */
 
@@ -216,7 +216,8 @@ void
 cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
 {
   static const char * emptystring = "";
-  int len, size;
+  int len;
+  size_t size;
 
   if ( text == NULL ) text = emptystring;
   len = (int)strlen(text);
