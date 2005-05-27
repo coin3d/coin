@@ -106,7 +106,7 @@
 
   Splits the texture into several subtextures, and clips the geometry
   into each subtexture. This makes it possible to have textures with
-  almost unlimted size (the only real limit is the amount on memory on
+  almost unlimited size (the only real limit is the amount on memory on
   the system, since the entire texture most fit into memory).
 
   Be aware that the rendering is quite slow if you have lots of
@@ -121,7 +121,7 @@
   used to decide if the texture should be scaled up or down.
   textureQuality >= 0.7 means scale up, while < 0.7 means scale
   down. Textures smaller than 256 pixels are never scaled down since
-  you loose too much information.
+  you lose too much information.
 */
 
 /*!
