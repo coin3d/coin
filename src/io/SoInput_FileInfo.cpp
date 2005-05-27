@@ -109,8 +109,8 @@ SoInput_FileInfo::sched_cb(void * closure)
   if (!thisp->threadeof) {
     int idx = thisp->threadreadidx;
     assert(thisp->threadbuflen[idx] == -1);
-    int len = thisp->getReader()->readBuffer(thisp->threadbuf[idx], READBUFSIZE);
-    if (len <= 0) {
+    size_t len = thisp->getReader()->readBuffer(thisp->threadbuf[idx], READBUFSIZE);
+    if (len == 0) {
       thisp->threadeof = TRUE;
       thisp->threadbuflen[idx] = 0;
     }
@@ -162,8 +162,8 @@ SoInput_FileInfo::doBufferRead(void)
 
 #else // HAVE_THREADS && SOINPUT_ASYNC_IO
 
-  int len = this->getReader()->readBuffer(this->readbuf, READBUFSIZE);
-  if (len <= 0) {
+  size_t len = this->getReader()->readBuffer(this->readbuf, READBUFSIZE);
+  if (len == 0) {
     this->readbufidx = 0;
     this->readbuflen = 0;
     this->eof = TRUE;

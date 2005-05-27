@@ -353,7 +353,7 @@ SoInput_BZ2FileReader::getType(void) const
 size_t
 SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
 {
-  if (this->bzfp == NULL) return -1;
+  if (this->bzfp == NULL) { return 0; }
 
   int bzerror = BZ_OK;
   // FIXME: about the cast; see note about the call to cc_gzm_open()

@@ -1229,7 +1229,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     // Static buffer filled with enough bytes of all-zero bits.
     static unsigned char padbytes[HOSTWORDSIZE] = "X";
     if (padbytes[0] == 'X')
-      for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
+      for (size_t i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
     size_t writeposition = this->bytesInBuf();
     if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
