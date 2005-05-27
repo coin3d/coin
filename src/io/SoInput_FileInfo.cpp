@@ -294,8 +294,11 @@ SoInput_FileInfo::putBack(const char * const str)
 #endif // COIN_DEBUG
 
   }
-  else
-    for (size_t i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
+  else {
+    for (size_t i = n; i > 0; i--) {
+      this->backbuffer.push(str[i - 1]);
+    }
+  }
 
   this->eof = FALSE;
 }
