@@ -29,13 +29,22 @@ SoDB_compileTimeAsserts(void)
   COIN_CT_ASSERT(sizeof(int64_t) == 8);
 #endif // HAVE_INT64_T
 
-  // Sanity check: if the unsigned long type is less than the pointer
-  // size (which could in theory happen on 64-bits machines), SbDict
-  // usage will fail all over the place where we cast pointers to
-  // SbDict keys. FIXME: remove this check when we are no longer
-  // dependent on using native C types where we need to have a
-  // particular bitwidth. 20020225 mortene.
+  // This now obsoleted sanity check used to be necessary because if
+  // the unsigned long type is less than the pointer size (which is
+  // known to be the case on 64-bits Windows, at least), SbDict usage
+  // failed all over the place where we were casting pointers to and
+  // from SbDict keys.
+  //
+  // We no longer use SbDict internally, since I switched all code to
+  // use the template-based SbHash class.
+  //
+  // For reference, here's some general information on porting code to 64-bit Windows:
+  //
+  //   http://msdn.microsoft.com/library/default.asp?url=/library/en-us/win64/win64/getting_ready_for_64_bit_windows.asp
+  //
+#if 0 // OBSOLETED
   COIN_CT_ASSERT(sizeof(unsigned long) >= sizeof(void *));
+#endif // OBSOLETED
 }
 
 // *************************************************************************
