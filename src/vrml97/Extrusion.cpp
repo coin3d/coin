@@ -417,7 +417,11 @@ public:
 #define PRIVATE(obj) (obj)->pimpl
 #define PUBLIC(obj) obj->master
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLExtrusion);
+
+// *************************************************************************
 
 // Doc in parent
 void
@@ -751,8 +755,8 @@ SoVRMLExtrusionP::generateCoords(void)
   this->tcoord.truncate(0);
   this->idx.truncate(0);
 
-  if (this->master->crossSection.getNum() == 0 ||
-      this->master->spine.getNum() == 0) return;
+  if (PUBLIC(this)->crossSection.getNum() == 0 ||
+      PUBLIC(this)->spine.getNum() == 0) return;
 
   SbMatrix matrix = SbMatrix::identity();
 
@@ -762,14 +766,14 @@ SoVRMLExtrusionP::generateCoords(void)
   int i, j, numcross;
   SbBool connected = FALSE;   // is cross section closed
   SbBool closed = FALSE;      // is spine closed
-  numcross = this->master->crossSection.getNum();
-  const SbVec2f * cross =  master->crossSection.getValues(0);
+  numcross = PUBLIC(this)->crossSection.getNum();
+  const SbVec2f * cross = PUBLIC(this)->crossSection.getValues(0);
   if (cross[0] == cross[numcross-1]) {
     connected = TRUE;
   }
 
-  int numspine = master->spine.getNum();
-  const SbVec3f * spine = master->spine.getValues(0);
+  int numspine = PUBLIC(this)->spine.getNum();
+  const SbVec3f * spine = PUBLIC(this)->spine.getValues(0);
   if (spine[0] == spine[numspine-1]) {
     closed = TRUE;
   }
@@ -819,11 +823,11 @@ SoVRMLExtrusionP::generateCoords(void)
     colinear = TRUE;
   }
 
-  int numorient = this->master->orientation.getNum();
-  const SbRotation * orient = this->master->orientation.getValues(0);
+  int numorient = PUBLIC(this)->orientation.getNum();
+  const SbRotation * orient = PUBLIC(this)->orientation.getValues(0);
 
-  int numscale = this->master->scale.getNum();
-  const SbVec2f * scale = this->master->scale.getValues(0);
+  int numscale = PUBLIC(this)->scale.getNum();
+  const SbVec2f * scale = PUBLIC(this)->scale.getValues(0);
 
   // calculate cross section bbox
   for (j = 0; j < numcross; j++) {
@@ -948,7 +952,7 @@ SoVRMLExtrusionP::generateCoords(void)
   SbVec2f crossboxsize = crossbox.getMax() - crossbox.getMin();
   
   // create beginCap polygon
-  if (this->master->beginCap.getValue() && !closed) {
+  if (PUBLIC(this)->beginCap.getValue() && !closed) {
     // create texcoords
     for (i = 0; i < numcross; i++) {
       SbVec2f c = cross[i];
@@ -962,7 +966,7 @@ SoVRMLExtrusionP::generateCoords(void)
       this->coord.append(coord[i]);
     }
 
-    if (this->master->convex.getValue()) {
+    if (PUBLIC(this)->convex.getValue()) {
       if (ALWAYS_CREATE_TRIANGLES) {
         for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
           ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
@@ -991,7 +995,7 @@ SoVRMLExtrusionP::generateCoords(void)
   }
 
   // create endCap polygon
-  if (this->master->endCap.getValue() && !closed) {
+  if (PUBLIC(this)->endCap.getValue() && !closed) {
     // just duplicate endcap coords to simplify texture coordinate handling
     for (i = 0; i < numcross; i++) {
       this->coord.append(coord[(numspine-1)*numcross+i]);
@@ -1007,7 +1011,7 @@ SoVRMLExtrusionP::generateCoords(void)
       this->tcoord.append(c);
     }
 
-    if (this->master->convex.getValue()) {
+    if (PUBLIC(this)->convex.getValue()) {
       if (ALWAYS_CREATE_TRIANGLES) {
         for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
           ADD_TRIANGLE(numspine+1, numcross-1,
@@ -1047,7 +1051,7 @@ SoVRMLExtrusionP::generateCoords(void)
 void
 SoVRMLExtrusionP::generateNormals(void)
 {
-  this->gen.reset(this->master->ccw.getValue());
+  this->gen.reset(PUBLIC(this)->ccw.getValue());
   const SbVec3f * c = this->coord.getArrayPtr();
   const int32_t * iptr = this->idx.getArrayPtr();
   const int32_t * endptr = iptr + this->idx.getLength();
@@ -1061,7 +1065,7 @@ SoVRMLExtrusionP::generateNormals(void)
     }
     this->gen.endPolygon();
   }
-  this->gen.generate(this->master->creaseAngle.getValue());
+  this->gen.generate(PUBLIC(this)->creaseAngle.getValue());
 }
 
 //
@@ -1071,9 +1075,9 @@ void
 SoVRMLExtrusionP::tess_callback(void * v0, void * v1, void * v2, void * data)
 {
   SoVRMLExtrusionP * thisp = (SoVRMLExtrusionP*) data;
-  thisp->idx.append((int)((long)v0));
-  thisp->idx.append((int)((long)v1));
-  thisp->idx.append((int)((long)v2));
+  thisp->idx.append((int32_t)((uintptr_t)v0));
+  thisp->idx.append((int32_t)((uintptr_t)v1));
+  thisp->idx.append((int32_t)((uintptr_t)v2));
   thisp->idx.append(-1);
 }
 

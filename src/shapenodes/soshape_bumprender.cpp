@@ -288,7 +288,8 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
     cc_glglue_glGenPrograms(glue, 1, &this->diffusebumpdirlightvertexprogramid);
     cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
     cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
+                              (GLsizei)strlen(diffusebumpdirlightvpprogram),
+                              diffusebumpdirlightvpprogram);
     GLint errorPos;
     GLenum err = glGetError();
 
@@ -303,7 +304,8 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
     cc_glglue_glGenPrograms(glue, 1, &this->normalrenderingvertexprogramid);
     cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
     cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              strlen(normalrenderingvpprogram), normalrenderingvpprogram);
+                              (GLsizei)strlen(normalrenderingvpprogram),
+                              normalrenderingvpprogram);
     err = glGetError();
 
     if (err != GL_NO_ERROR) {
@@ -341,7 +343,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     cc_glglue_glGenPrograms(glue, 1, &this->fragmentprogramid); // -- Fragment program
     cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
     cc_glglue_glProgramString(glue, GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              strlen(bumpspecfpprogram), bumpspecfpprogram);
+                              (GLsizei)strlen(bumpspecfpprogram), bumpspecfpprogram);
     // FIXME: Maybe a wrapper for catching fragment program errors
     // should be a part of GLUE... (20031204 handegar)
     GLint errorPos;
@@ -357,7 +359,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     cc_glglue_glGenPrograms(glue, 1, &this->dirlightvertexprogramid); // -- Directional light program
     cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
     cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              strlen(directionallightvpprogram), directionallightvpprogram);
+                              (GLsizei)strlen(directionallightvpprogram), directionallightvpprogram);
 
     err = glGetError();
     if (err != GL_NO_ERROR) {
@@ -372,7 +374,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     cc_glglue_glGenPrograms(glue, 1, &this->pointlightvertexprogramid); // -- Point light program
     cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
     cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              strlen(pointlightvpprogram), pointlightvpprogram);
+                              (GLsizei)strlen(pointlightvpprogram), pointlightvpprogram);
 
     err = glGetError();
     if (err != GL_NO_ERROR) {

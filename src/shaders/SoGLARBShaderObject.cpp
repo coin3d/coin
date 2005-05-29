@@ -49,7 +49,7 @@ SoGLARBShaderObject::isLoaded(void) const
 void
 SoGLARBShaderObject::load(const char * srcStr)
 {
-  int len = strlen(srcStr);
+  const size_t len = strlen(srcStr);
 
   this->target = isVertexShader() 
     ? GL_VERTEX_PROGRAM_ARB : GL_FRAGMENT_PROGRAM_ARB;
@@ -61,7 +61,7 @@ SoGLARBShaderObject::load(const char * srcStr)
   glEnable(this->target);
   cc_glglue_glGenPrograms(this->glctx, 1, &this->arbProgramID);
   cc_glglue_glBindProgram(this->glctx, this->target, this->arbProgramID);
-  cc_glglue_glProgramString(this->glctx, this->target, GL_PROGRAM_FORMAT_ASCII_ARB, len, srcStr);
+  cc_glglue_glProgramString(this->glctx, this->target, GL_PROGRAM_FORMAT_ASCII_ARB, (GLsizei)len, srcStr);
 
   if (glGetError() == GL_INVALID_OPERATION) {
     GLint errorPos;

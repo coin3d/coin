@@ -161,8 +161,8 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       }
 #if COIN_DEBUG
       else {
-        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
-        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
+        const ptrdiff_t faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
+        error_idx_out_of_bounds(this, (int)faultyidxpos, numcoords - 1);
         if (numcoords <= 1) break; // give only one error msg on missing coords
         // (the default state is that there's a default
         // SoCoordinateElement element with a single default
@@ -189,8 +189,8 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       }
 #if COIN_DEBUG
       else {
-        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
-        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
+        const ptrdiff_t faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
+        error_idx_out_of_bounds(this, (int)faultyidxpos, numcoords - 1);
         if (numcoords <= 1) break; // give only one error msg on missing coords
         // (the default state is that there's a default
         // SoCoordinateElement element with a single default

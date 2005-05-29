@@ -674,7 +674,8 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   if (action->canApproximateCount()) {
-    action->addNumTriangles((end-ptr)*3);
+    const ptrdiff_t diff = end - ptr;
+    action->addNumTriangles((int)(diff * 3));
   }
   else {
     int cnt = 0;
@@ -954,7 +955,8 @@ SoFaceSet::useConvexCache(SoAction * action)
     SoCacheElement::set(state, NULL); // close cache
     // create an index table to be able to use convex cache.
     // should be fast compared to the tessellation
-    SbList <int32_t> dummyidx((end-ptr)*4);
+    const ptrdiff_t diff = end - ptr;
+    SbList <int32_t> dummyidx((int)(diff * 4));
     const int32_t * tptr = ptr;
     while (tptr < end) {
       int num = *tptr++;

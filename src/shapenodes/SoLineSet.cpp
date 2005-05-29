@@ -679,7 +679,8 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   if (action->canApproximateCount()) {
-    action->addNumLines(end-ptr);
+    const ptrdiff_t diff = end - ptr;
+    action->addNumLines((int)diff);
   }
   else {
     int cnt = 0;

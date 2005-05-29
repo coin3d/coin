@@ -849,7 +849,7 @@ find_partname_length(const char * ptr)
 SbBool
 SoBaseKit::set(const char * namevaluepairliststring)
 {
-  int stringlen = strlen(namevaluepairliststring); // cache this value
+  const size_t stringlen = strlen(namevaluepairliststring); // cache this value
   const char * currptr = skip_spaces(namevaluepairliststring);
   SoInput memInput;
 
@@ -2171,12 +2171,14 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
 #endif // COIN_DEBUG
       return FALSE;
     }
-    firstpartname = partname.getSubString(0, startbracket-stringptr-1);
+    const ptrdiff_t endidx = startbracket - stringptr - 1;
+    firstpartname = partname.getSubString(0, (int)endidx);
     listidx = (int) listindex;
     islist = TRUE;
   }
   else if (periodptr) {
-    firstpartname = partname.getSubString(0, periodptr-stringptr-1);
+    const ptrdiff_t endidx = periodptr - stringptr - 1;
+    firstpartname = partname.getSubString(0, (int)endidx);
   }
   else firstpartname = partname;
 
@@ -2246,7 +2248,8 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
   else { // recurse
     SoNode * node = nodefield->getValue();
     if (node == NULL) return FALSE;
-    SbString newpartname = partname.getSubString(periodptr-stringptr+1);
+    const ptrdiff_t startidx = periodptr - stringptr + 1;
+    SbString newpartname = partname.getSubString((int)startidx);
     if (islist) {
       SoNodeKitListPart * list = (SoNodeKitListPart *) node;
       int numlistchildren = list->getNumChildren();

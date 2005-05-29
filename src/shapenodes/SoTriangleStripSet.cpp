@@ -716,18 +716,19 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
     }
   }
 
+  const ptrdiff_t range = end - start;
   switch (this->findNormalBinding(state)) {
   case OVERALL:
     gen->generateOverall();
     break;
   case PER_STRIP:
-    gen->generatePerStrip(start, end-start);
+    gen->generatePerStrip(start, (int)range);
     break;
   case PER_FACE:
     gen->generatePerFace();
     break;
   case PER_VERTEX:
-    gen->generate(SoCreaseAngleElement::get(state), start, end-start);
+    gen->generate(SoCreaseAngleElement::get(state), start, (int)range);
     break;
   }
   nc->set(gen);
@@ -743,13 +744,14 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-  if ((end-ptr == 1) && ptr[0] == 0) return;
+  const ptrdiff_t range = end - ptr;
+  if ((range == 1) && ptr[0] == 0) return;
   
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
   
   if (action->canApproximateCount()) {
     // this is a wild guess, disable? pederb, 20000131
-    action->addNumTriangles((end-ptr)*8);
+    action->addNumTriangles((int)(range * 8));
   }
   else {
     int cnt = 0;

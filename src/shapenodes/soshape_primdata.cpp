@@ -281,7 +281,8 @@ soshape_primdata::handleLineDetail(void)
 int 
 soshape_primdata::getPointDetailIndex(const SoPrimitiveVertex * v) const
 {
-  return v - this->vertsArray;
+  const ptrdiff_t d = v - this->vertsArray;
+  return (int)d;
 }
 
 SoDetail *
