@@ -116,6 +116,15 @@
 */
 
 /*!
+  \enum SoGLImage::ResizeReason
+
+  Sent as a parameter to SoGLImageResizeCB as a hint to why an image
+  is being resized. IMAGE means that a whole image is being initially
+  resized (e.g. a texture image). SUBIMAGE and MIPMAP are not in use and 
+  reserved for future use.
+*/
+
+/*!
   \enum SoGLImage::Flags
 
   Can be used to tune/optimize the GL texture handling. Normally the
@@ -127,6 +136,34 @@
   requirements on how the texture should be rendered, you can set the
   flags using the SoGLImage::setFlags() method.
 
+*/
+
+// FIXME: Support other reason values than IMAGE (kintel 20050531)
+/*!
+  \typedef bool SoGLImage::SoGLImageResizeCB(SoState * state,
+                                             const SbVec3s &newsize, 
+                                             unsigned char * destbuffer, 
+                                             SoGLImage::ResizeReason reason,
+                                             void * closure,
+                                             class SoGLImage * image)
+
+  Image resize callback type.
+  If registered using setResizeCallback(), this function will be called
+  whenever Coin needs to resize an image. The function will be called
+  both for 2D and 3D images.
+
+  \e state is the current state at the time of resizing.
+  \e newsize is the requested new image size. Note that the z size of a
+  2D image is 0.
+  \e destbuffer is a pre-allocated buffer big enough to hold the pixels 
+  for the resized image. The # of bytes per pixel is the same as for the 
+  original image.
+  \e reason is a hint about why the image is resized. At the moment, 
+  only IMAGE is supported.
+  \e image is the original image.
+
+  Return value: TRUE if the resize ahs been resized, FALSE if not.
+  If FALSE is returned, Coin will resize the image instead.
 */
 
 // *************************************************************************
@@ -614,14 +651,19 @@ public:
   SoGLDisplayList *findDL(SoState *state);
   void tagDL(SoState *state);
   void unrefOldDL(SoState *state, const uint32_t maxage);
-  SoGLImage *owner; // for debugging only
+  SoGLImage *owner;
   uint32_t glimageid;
   void init(void);
   static void contextCleanup(uint32_t context, void * closure);
+
+  static SoGLImage::SoGLImageResizeCB * resizecb;
+  static void * resizeclosure;
 };
 
 SoType SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
 uint32_t SoGLImageP::current_glimageid = 1;
+SoGLImage::SoGLImageResizeCB * SoGLImageP::resizecb = NULL;
+void * SoGLImageP::resizeclosure = NULL;
 #ifdef COIN_THREADSAFE
 SbMutex * SoGLImageP::mutex;
 #endif // COIN_THREADSAFE
@@ -664,7 +706,7 @@ SoGLImage::SoGLImage(void)
   PRIVATE(this) = new SoGLImageP;
   SoContextHandler::addContextDestructionCallback(SoGLImageP::contextCleanup, PRIVATE(this));
   PRIVATE(this)->init(); // init members to default values
-  PRIVATE(this)->owner = this; // for debugging
+  PRIVATE(this)->owner = this;
 
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
@@ -752,6 +794,9 @@ SoGLImage::cleanupClass(void)
   SoGLImageP::mutex = NULL;
 #endif // COIN_THREADSAFE
   SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
+
+  SoGLImageP::resizecb = NULL;
+  SoGLImageP::resizeclosure = NULL;
 }
 
 /*!
@@ -1355,77 +1400,90 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
     unsigned char * glimage_tmpimagebuffer = glimage_get_buffer(numbytes, FALSE);
 
-    // simage version 1.1.1 has a pretty high quality resize
-    // function. We prefer to use that to avoid using GLU, since
-    // there are lots of buggy GLU libraries out there.
-    if (zsize == 0) { // 2D image
-      // simage_resize and gluScaleImage can be pretty slow. Use
-      // fast_image_resize() if high quality isn't needed
-      if (SoTextureScaleQualityElement::get(state) < 0.5f) {
-        fast_image_resize(bytes, glimage_tmpimagebuffer,
-                          xsize, ysize, numcomponents,
-                          newx, newy);
-      }
-      else if (simage_wrapper()->available &&
-          simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
-          simage_wrapper()->simage_resize) {
-        
-        unsigned char *result =
-          simage_wrapper()->simage_resize((unsigned char*) bytes,
-                                          xsize, ysize, numcomponents,
-                                          newx, newy);
-        (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
-        simage_wrapper()->simage_free_image(result);
-      }
-      else if (GLUWrapper()->available) {
-        GLenum format;
-        switch (numcomponents) {
-        default: // avoid compiler warnings
-        case 1: format = GL_LUMINANCE; break;
-        case 2: format = GL_LUMINANCE_ALPHA; break;
-        case 3: format = GL_RGB; break;
-        case 4: format = GL_RGBA; break;
-        }
-
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-        glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-        glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-        glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-        glPixelStorei(GL_PACK_SKIP_ROWS, 0);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
-
-        // FIXME: ignoring the error code. Silly. 20000929 mortene.
-        (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
-                                          GL_UNSIGNED_BYTE, (void*) bytes,
-                                          newx, newy, GL_UNSIGNED_BYTE,
-                                          (void*)glimage_tmpimagebuffer);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-        glPixelStorei(GL_PACK_ALIGNMENT, 4);
-      }
-      else { // fall back to the internal low-quality resize function
-        fast_image_resize(bytes, glimage_tmpimagebuffer,
-                          xsize, ysize, numcomponents,
-                          newx, newy);
-      }
+    // First check if there is a custom resize function registered
+    bool customresizedone = FALSE;
+    if (SoGLImageP::resizecb) {
+      customresizedone = SoGLImageP::resizecb(state,
+                                              SbVec3s(newx, newy, newz), 
+                                              glimage_tmpimagebuffer,
+                                              SoGLImage::IMAGE,
+                                              SoGLImageP::resizeclosure,
+                                              this->owner);
     }
-    else { // (zsize > 0) => 3D image
-      if (simage_wrapper()->available &&
-          simage_wrapper()->versionMatchesAtLeast(1,3,0) &&
-          simage_wrapper()->simage_resize3d) {
-        unsigned char *result =
-          simage_wrapper()->simage_resize3d((unsigned char*) bytes,
-                                            xsize, ysize, numcomponents, zsize,
-                                            newx, newy, newz);
-        (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
-        simage_wrapper()->simage_free_image(result);
+
+    if (!customresizedone) {
+      // simage version 1.1.1 has a pretty high quality resize
+      // function. We prefer to use that to avoid using GLU, since
+      // there are lots of buggy GLU libraries out there.
+      if (zsize == 0) { // 2D image
+        // simage_resize and gluScaleImage can be pretty slow. Use
+        // fast_image_resize() if high quality isn't needed
+        if (SoTextureScaleQualityElement::get(state) < 0.5f) {
+          fast_image_resize(bytes, glimage_tmpimagebuffer,
+                            xsize, ysize, numcomponents,
+                            newx, newy);
+        }
+        else if (simage_wrapper()->available &&
+                 simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
+                 simage_wrapper()->simage_resize) {
+          
+          unsigned char *result =
+            simage_wrapper()->simage_resize((unsigned char*) bytes,
+                                            xsize, ysize, numcomponents,
+                                            newx, newy);
+          (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
+          simage_wrapper()->simage_free_image(result);
+        }
+        else if (GLUWrapper()->available) {
+          GLenum format;
+          switch (numcomponents) {
+          default: // avoid compiler warnings
+          case 1: format = GL_LUMINANCE; break;
+          case 2: format = GL_LUMINANCE_ALPHA; break;
+          case 3: format = GL_RGB; break;
+          case 4: format = GL_RGBA; break;
+          }
+          
+          glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+          glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+          glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+          glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+          glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+          glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+          glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+          glPixelStorei(GL_PACK_ALIGNMENT, 1);
+          
+          // FIXME: ignoring the error code. Silly. 20000929 mortene.
+          (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
+                                            GL_UNSIGNED_BYTE, (void*) bytes,
+                                            newx, newy, GL_UNSIGNED_BYTE,
+                                            (void*)glimage_tmpimagebuffer);
+          glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+          glPixelStorei(GL_PACK_ALIGNMENT, 4);
+        }
+        else { // fall back to the internal low-quality resize function
+          fast_image_resize(bytes, glimage_tmpimagebuffer,
+                            xsize, ysize, numcomponents,
+                            newx, newy);
+        }
       }
-      else {
-        // fall back to the internal low-quality resize function
-        fast_image_resize3d(bytes, glimage_tmpimagebuffer,
-                            xsize, ysize, numcomponents, zsize,
-                            newx, newy, newz);
+      else { // (zsize > 0) => 3D image
+        if (simage_wrapper()->available &&
+            simage_wrapper()->versionMatchesAtLeast(1,3,0) &&
+            simage_wrapper()->simage_resize3d) {
+          unsigned char *result =
+            simage_wrapper()->simage_resize3d((unsigned char*) bytes,
+                                              xsize, ysize, numcomponents, zsize,
+                                              newx, newy, newz);
+          (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
+          simage_wrapper()->simage_free_image(result);
+        }
+        else {
+          // fall back to the internal low-quality resize function
+          fast_image_resize3d(bytes, glimage_tmpimagebuffer,
+                              xsize, ysize, numcomponents, zsize,
+                              newx, newy, newz);
+        }
       }
     }
     imageptr = glimage_tmpimagebuffer;
@@ -2004,6 +2062,13 @@ SoGLImage::unregisterImage(SoGLImage *image)
     glimage_reglist->removeFast(idx);
   }
   UNLOCK_GLIMAGE;
+}
+
+void
+SoGLImage::setResizeCallback(SoGLImageResizeCB * f, void * closure)
+{
+  SoGLImageP::resizecb = f;
+  SoGLImageP::resizeclosure = closure;
 }
 
 // *************************************************************************

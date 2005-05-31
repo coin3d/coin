@@ -57,6 +57,19 @@ public:
     CLAMP_TO_EDGE
   };
 
+  enum ResizeReason {
+    IMAGE = 0,
+    SUBIMAGE,
+    MIPMAP
+  };
+
+  typedef bool SoGLImageResizeCB(SoState * state,
+                                 const SbVec3s &newsize, 
+                                 unsigned char * destbuffer, 
+                                 ResizeReason reason,
+                                 void * closure,
+                                 class SoGLImage * image);
+
   void setPBuffer(SoState * state,
                   void * context,
                   const Wrap wraps = REPEAT,
@@ -163,6 +176,7 @@ public:
 
 public:
   static void initClass(void);
+  static void setResizeCallback(SoGLImageResizeCB * f, void * closure);
 
 private:
   static void registerImage(SoGLImage * image);
