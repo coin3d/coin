@@ -774,10 +774,12 @@ SoDragger::unregisterChildDraggerMovingIndependently(SoDragger * child)
 SbMatrix
 SoDragger::getLocalToWorldMatrix(void)
 {
-  assert(THIS->draggercache);
-  SbMatrix m = THIS->draggercache->draggerToWorld;
-  m.multLeft(this->getMotionMatrix());
-  return m;
+  if (THIS->draggercache) {
+    SbMatrix m = THIS->draggercache->draggerToWorld;
+    m.multLeft(this->getMotionMatrix());
+    return m;
+  }
+  return SbMatrix::identity();
 }
 
 
@@ -787,10 +789,12 @@ SoDragger::getLocalToWorldMatrix(void)
 SbMatrix
 SoDragger::getWorldToLocalMatrix(void)
 {
-  assert(THIS->draggercache);
-  SbMatrix m = THIS->draggercache->worldToDragger;
-  m.multRight(this->getMotionMatrix().inverse());
-  return m;
+  if (THIS->draggercache) {
+    SbMatrix m = THIS->draggercache->worldToDragger;
+    m.multRight(this->getMotionMatrix().inverse());
+    return m;
+  }
+  return SbMatrix::identity();
 }
 
 /*!
