@@ -258,6 +258,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
+	spidermonkey.h \
 	cg.h \
 	dlp.h \
 	freetype.h \
