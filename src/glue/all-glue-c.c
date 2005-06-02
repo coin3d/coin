@@ -27,6 +27,7 @@
 #include "gl_agl.c"
 
 #include "cg.c"
+#include "spidermonkey.c"
 
 #include "dl.c"
 

@@ -1,5 +1,6 @@
 RegularSources = \
 	cg.c \
+	spidermonkey.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
