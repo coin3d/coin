@@ -81,32 +81,32 @@
 */
 
 /*!
-  \var SoSFColor SoVRMLMaterial:: diffuseColor
+  \var SoSFColor SoVRMLMaterial::diffuseColor
   The diffuse color component. Default value is (0.8, 0.8, 0.8).
 */
 
 /*!
-  \var SoSFFloat SoVRMLMaterial:: ambientIntensity
+  \var SoSFFloat SoVRMLMaterial::ambientIntensity
   The ambient intensity. Default value is 0.2.
 */
 
 /*!
-  \var SoSFColor SoVRMLMaterial:: specularColor
+  \var SoSFColor SoVRMLMaterial::specularColor
   The specular color component. Default value is (0, 0, 0).
 */
 
 /*!
-  \var SoSFColor SoVRMLMaterial:: emissiveColor
+  \var SoSFColor SoVRMLMaterial::emissiveColor
   The emissive color component.  Default value is (0, 0, 0).
 */
 
 /*!
-  \var SoSFFloat SoVRMLMaterial:: shininess
+  \var SoSFFloat SoVRMLMaterial::shininess
   The shininess value. A number between 0 and 1. Default value is 0.2.
 */
 
 /*!
-  \var SoSFFloat SoVRMLMaterial:: transparency
+  \var SoSFFloat SoVRMLMaterial::transparency
   The material transparency. Valid range is from 0.0 (completely opaque) to 1.0 (completely transparent).
   Default value is 0.0.
 */

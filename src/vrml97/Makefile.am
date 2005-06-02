@@ -1,6 +1,3 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
-
 ## Sources and installation headers.
 
 RegularSources = \

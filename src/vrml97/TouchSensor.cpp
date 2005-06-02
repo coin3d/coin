@@ -120,6 +120,46 @@
   and 4.6.7.5, Activating and manipulating sensors
   (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.7.5>).
 
+  \ENDWEB3D
+
+  Here is a small example which demonstrates use of the
+  SoVRMLTouchSensor. Click on the SoVRMLSphere to turn the
+  SoVRMLPointLight on:
+
+  \code
+  #VRML V2.0 utf8
+  
+  Group {
+     children [
+        Transform {
+           children [
+              DEF light PointLight {
+                 intensity 1
+                 on FALSE
+              }
+  
+              Transform {
+                 translation -2 0 -2
+                 children [
+                    Shape {
+                       appearance Appearance {
+                          material Material {
+                             diffuseColor 1 0 1
+                             specularColor 1 1 1
+                             shininess 0.9
+                          }
+                       }
+                       geometry Sphere { }
+                    }
+                    DEF touchsensor TouchSensor { }
+                 ]
+              }
+           ]
+        }
+     ]
+     ROUTE touchsensor.isActive TO light.set_on
+  }
+  \endcode
 */
 
 /*!
