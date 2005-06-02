@@ -155,7 +155,7 @@ spidermonkey(void)
           sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_funcname_)); \
           assert(sm->_funcname_)
 
-  /* Some functions in SipderMonkey may have a symbol name different
+  /* Some functions in SpiderMonkey may have a symbol name different
      from the API name. */
   #define REGISTER_FUNC_ALTERNATE(_funcname_, _altname_, _funcsig_) \
           sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_funcname_)); \
@@ -169,9 +169,7 @@ spidermonkey(void)
           assert(sm->_funcname_)
 
   #define REGISTER_FUNC_ALTERNATE(_funcname_, _altname_, _funcsig_) \
-          sm->_funcname_ = (_funcsig_)_funcname_; \
-          if (sm->_funcname_ == NULL) { sm->_funcname_ = (_funcsig_)_altname_; } \
-          assert(sm->_funcname_)
+          REGISTER_FUNC(_funcname_, _funcsig_)
 
 #else /* neither dynamic nor static linking */
 
@@ -181,9 +179,15 @@ spidermonkey(void)
           sm->_funcname_ = NULL
 
   #define REGISTER_FUNC_ALTERNATE(_funcname_, _altname_, _funcsig_) \
-          sm->_funcname_ = NULL
+          REGISTER_FUNC(_funcname_, _funcsig_)
 
 #endif /* done setting up REGISTER_FUNC */
+
+  REGISTER_FUNC(JS_GetImplementationVersion, JS_GetImplementationVersion_t);
+  if (debug() && sm->JS_GetImplementationVersion) {
+    const char * version = sm->JS_GetImplementationVersion();
+    cc_debugerror_postinfo("spidermonkey", "%s", version);
+  }
 
   REGISTER_FUNC(JS_EvaluateScript, JS_EvaluateScript_t);
   REGISTER_FUNC(JS_ValueToString, JS_ValueToString_t);

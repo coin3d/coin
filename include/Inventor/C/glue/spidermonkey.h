@@ -102,6 +102,7 @@ typedef void JSXDRState;
 typedef void JSString;
 typedef void JSErrorReport;
 typedef struct JSClass JSClass;
+typedef int JSVersion;
 
 #define JS_DLL_CALLBACK /* FIXME: set up this define properly. 20050601 mortene. */
 
@@ -160,52 +161,46 @@ typedef char * (* JS_GetStringBytes_t)(JSString *);
 typedef JSBool (* JS_SetProperty_t)(JSContext *, JSObject *, const char *, jsval *);
 typedef JSBool (* JS_GetProperty_t)(JSContext *, JSObject *, const char *, jsval *);
 typedef JSBool (* JS_CallFunctionName_t)(JSContext *, JSObject *, const char *, uintN, jsval *, jsval *);
-
 typedef JSRuntime * (* JS_NewRuntime_t)(uint32_t);
 typedef void (* JS_DestroyRuntime_t)(JSRuntime *);
 typedef JSContext * (* JS_NewContext_t)(JSRuntime *, size_t);
 typedef void (* JS_DestroyContext_t)(JSContext *);
 typedef void (* JS_ShutDown_t)(void);
-
 typedef JSObject * (* JS_NewObject_t)(JSContext *, JSClass *, JSObject *, JSObject *);
 typedef JSBool (* JS_InitStandardClasses_t)(JSContext *, JSObject *);
-
 typedef JSErrorReporter (* JS_SetErrorReporter_t)(JSContext *, JSErrorReporter);
-
 typedef JSBool (* JS_PropertyStub_t)(JSContext *, JSObject *, jsval, jsval *);
 typedef JSBool (* JS_EnumerateStub_t)(JSContext *, JSObject *);
 typedef JSBool (* JS_ResolveStub_t)(JSContext *, JSObject *, jsval);
 typedef JSBool (* JS_ConvertStub_t)(JSContext *, JSObject *, JSType, jsval *);
 typedef void (* JS_FinalizeStub_t)(JSContext *, JSObject *);
+typedef const char * (* JS_GetImplementationVersion_t)(void);
 
 /* Access interface. **************************************************** */
 
 typedef struct {
   int available;
 
-  JS_EvaluateScript_t JS_EvaluateScript;
-  JS_ValueToString_t JS_ValueToString;
-  JS_GetStringBytes_t JS_GetStringBytes;
-  JS_SetProperty_t JS_SetProperty;
-  JS_GetProperty_t JS_GetProperty;
   JS_CallFunctionName_t JS_CallFunctionName;
-
-  JS_NewRuntime_t JS_NewRuntime;
-  JS_DestroyRuntime_t JS_DestroyRuntime;
-  JS_NewContext_t JS_NewContext;
-  JS_DestroyContext_t JS_DestroyContext;
-  JS_ShutDown_t JS_ShutDown;
-
-  JS_SetErrorReporter_t JS_SetErrorReporter;
-
-  JS_PropertyStub_t JS_PropertyStub;
-  JS_EnumerateStub_t JS_EnumerateStub;
-  JS_ResolveStub_t JS_ResolveStub;
   JS_ConvertStub_t JS_ConvertStub;
+  JS_DestroyContext_t JS_DestroyContext;
+  JS_DestroyRuntime_t JS_DestroyRuntime;
+  JS_EnumerateStub_t JS_EnumerateStub;
+  JS_EvaluateScript_t JS_EvaluateScript;
   JS_FinalizeStub_t JS_FinalizeStub;
-
-  JS_NewObject_t JS_NewObject;
+  JS_GetImplementationVersion_t JS_GetImplementationVersion;
+  JS_GetProperty_t JS_GetProperty;
+  JS_GetStringBytes_t JS_GetStringBytes;
   JS_InitStandardClasses_t JS_InitStandardClasses;
+  JS_NewContext_t JS_NewContext;
+  JS_NewObject_t JS_NewObject;
+  JS_NewRuntime_t JS_NewRuntime;
+  JS_PropertyStub_t JS_PropertyStub;
+  JS_ResolveStub_t JS_ResolveStub;
+  JS_SetErrorReporter_t JS_SetErrorReporter;
+  JS_SetProperty_t JS_SetProperty;
+  JS_ShutDown_t JS_ShutDown;
+  JS_ValueToString_t JS_ValueToString;
 
 } SpiderMonkey_t;
 
