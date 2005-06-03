@@ -2064,6 +2064,11 @@ SoGLImage::unregisterImage(SoGLImage *image)
   UNLOCK_GLIMAGE;
 }
 
+/*!
+  Sets a custom image resize function.
+
+  \since 2005-06-03
+*/
 void
 SoGLImage::setResizeCallback(SoGLImageResizeCB * f, void * closure)
 {
