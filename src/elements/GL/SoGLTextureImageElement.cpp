@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h> // GL wrapper.
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/SbImage.h>
@@ -245,8 +246,10 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                                             int bytespertexel)
 {
   const cc_glglue * glw = sogl_glue_instance(this->state);
-  return cc_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
-                                         bytespertexel, TRUE);
+  SbBool compress = 
+    this->glimage ? this->glimage->getFlags() & SoGLImage::COMPRESSED : FALSE;
+  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
+                                           bytespertexel, TRUE, compress);
 }
 
 void 
