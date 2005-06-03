@@ -29,6 +29,7 @@
 #include <Inventor/fields/SoSFImage3.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
 class SoFieldSensor;
@@ -61,6 +62,7 @@ public:
   SoSFEnum wrapT;
   SoSFEnum model;
   SoSFColor blendColor;
+  SoSFBool enableCompressedTexture;
 
 #ifndef COIN_BETA_VERSION
 #error Consider adding the new field "enableCompressedTexture" from TGS OIV4.0 before next major release.

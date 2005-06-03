@@ -132,6 +132,18 @@
   Blend color. Used when SoTexture3::model is SoTexture3::BLEND.
 */
 
+/*!
+  \var SoSFBool SoTexture3::enableCompressedTexture
+
+  Hint to Coin that compressed textures should be used if this
+  is supported by the graphics hardware and OpenGL drivers.
+  Using compressed textures usually reduces texture memory usage
+  for a texture by 4-6 times.
+
+  \since 2005-06-03
+  \since TGS Inventor 4.0
+*/
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoTexture3);
@@ -150,6 +162,7 @@ SoTexture3::SoTexture3(void)
   SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(enableCompressedTexture, (FALSE));
 
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
@@ -257,6 +270,11 @@ SoTexture3::GLRender(SoGLRenderAction * action)
 //      }
     if (this->glimage) this->glimage->unref(state);
     this->glimage = new SoGLImage();
+
+    if (this->enableCompressedTexture.getValue()) {
+      this->glimage->setFlags(this->glimage->getFlags()|
+                              SoGLImage::COMPRESSED);
+    }
 
     if (bytes && size != SbVec3s(0,0,0)) {
       this->glimage->setData(bytes, size, nc,
