@@ -4103,22 +4103,28 @@ compute_log(int value)
 
 /*  proxy mipmap creation */
 static SbBool
-proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipmap)
+proxy_mipmap_2d(int width, int height, int numcomponents, 
+                SbBool mipmap, SbBool compress)
 {
   GLint w;
   int level;
   int levels = compute_log(cc_max(width, height));
-  
-  glTexImage2D(GL_PROXY_TEXTURE_2D, 0, nc, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+  GLint internalFormat = coin_glglue_get_internal_texture_format(numcomponents, 
+                                                                 compress);
+  GLenum format = coin_glglue_get_texture_format(numcomponents);
+
+  glTexImage2D(GL_PROXY_TEXTURE_2D, 0, internalFormat, width, height, 0,
+               format, GL_UNSIGNED_BYTE, NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                            GL_TEXTURE_WIDTH, &w);
+
   if (w == 0) return FALSE;
   if (!mipmap) return TRUE;
 
   for (level = 1; level <= levels; level++) {
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
-    glTexImage2D(GL_PROXY_TEXTURE_2D, level, nc, width,
+    glTexImage2D(GL_PROXY_TEXTURE_2D, level, internalFormat, width,
                  height, 0, format, GL_UNSIGNED_BYTE,
                  NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
@@ -4130,15 +4136,19 @@ proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipma
 
 /* proxy mipmap creation. 3D version. */
 static SbBool
-proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const int nc, 
-                GLenum format, SbBool mipmap)
+proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
+                int numcomponents, SbBool mipmap, SbBool compress)
 {
   GLint w;
   int level;
   int levels = compute_log(cc_max(cc_max(width, height), depth));
+  GLint internalFormat = coin_glglue_get_internal_texture_format(numcomponents, 
+                                                                 compress);
+  GLenum format = coin_glglue_get_texture_format(numcomponents);
 
-  cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, (GLenum) nc, width, height, depth,
-                         0, format, GL_UNSIGNED_BYTE, NULL);
+  cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, internalFormat, 
+                         width, height, depth, 0, format, GL_UNSIGNED_BYTE, 
+                         NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                            GL_TEXTURE_WIDTH, &w);
   if (w == 0) return FALSE;
@@ -4148,8 +4158,8 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const i
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     if (depth > 1) depth >>= 1;
-    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, (GLenum) nc, width,
-                           height, depth, 0, format, GL_UNSIGNED_BYTE,
+    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat, 
+                           width, height, depth, 0, format, GL_UNSIGNED_BYTE,
                            NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                              GL_TEXTURE_WIDTH, &w);
@@ -4162,25 +4172,22 @@ SbBool
 cc_glglue_is_texture_size_legal(const cc_glglue * glw,
                                 int xsize, int ysize, int zsize, 
                                 int bytespertexel, SbBool mipmap)
-{ 
-  GLenum format;
+{
+  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
+                                           bytespertexel, mipmap, FALSE);
+}
 
-  switch (bytespertexel) {
-  case 1:
-    format = GL_LUMINANCE;
-    break;
-  case 2:
-    format = GL_LUMINANCE_ALPHA;
-    break;
-  case 3:
-    format = GL_RGB;
-    break;
-  case 4:
-  default:
-    format = GL_RGBA;
-    break;
-  }
-  
+/*!
+  Note that the \e internalformat parameter corresponds to the \e 
+  internalFormat parameter to glTexImage2D; either the number of
+  components per texel or a constant specifying the internal texture format.
+ */
+SbBool
+coin_glglue_is_texture_size_legal(const cc_glglue * glw,
+                                  int xsize, int ysize, int zsize, 
+                                  int bytespertexel, SbBool mipmap,
+                                  SbBool compress)
+ { 
   if (zsize == 0) { /* 2D textures */
     if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
       if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
@@ -4188,7 +4195,7 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
       return TRUE;
     }
     if (cc_glglue_has_2d_proxy_textures(glw)) {
-      return proxy_mipmap_2d(xsize, ysize, bytespertexel, format, mipmap);
+      return proxy_mipmap_2d(xsize, ysize, bytespertexel, mipmap, compress);
     }
     else {
       if (xsize > glw->max_texture_size) return FALSE;
@@ -4204,7 +4211,8 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
         if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
         return TRUE;
       }
-      return proxy_mipmap_3d(glw, xsize, ysize, zsize, bytespertexel, format, mipmap);
+      return proxy_mipmap_3d(glw, xsize, ysize, zsize, bytespertexel, mipmap, 
+                             compress);
     }
     else {
 #if COIN_DEBUG
@@ -4218,6 +4226,62 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
       return FALSE;
     }
   }
+}
+
+/*
+  Convert from num components to internal texture format for use
+  in glTexImage*D's internalFormat parameter.
+*/
+GLint coin_glglue_get_internal_texture_format(int numcomponents,
+                                              SbBool compress)
+{
+  GLint format;
+  if (compress) {
+    switch (numcomponents) {
+    case 1:
+      format = GL_COMPRESSED_LUMINANCE_ARB;
+      break;
+    case 2:
+      format = GL_COMPRESSED_LUMINANCE_ALPHA_ARB;
+      break;
+    case 3:
+      format = GL_COMPRESSED_RGB_ARB;
+      break;
+    case 4:
+    default:
+      format = GL_COMPRESSED_RGBA_ARB;
+      break;
+    }
+  }
+  else {
+    format = numcomponents;
+  }
+  return format;
+}
+
+/*
+  Convert from num components to client texture format for use
+  in glTexImage*D's format parameter.
+*/
+GLenum coin_glglue_get_texture_format(int numcomponents)
+{
+  GLenum format;
+  switch (numcomponents) {
+  case 1:
+    format = GL_LUMINANCE;
+    break;
+  case 2:
+    format = GL_LUMINANCE_ALPHA;
+    break;
+  case 3:
+    format = GL_RGB;
+    break;
+  case 4:
+  default:
+    format = GL_RGBA;
+    break;
+  }
+  return format;
 }
 
 /*** </PROXY texture handling> ***********************************************/

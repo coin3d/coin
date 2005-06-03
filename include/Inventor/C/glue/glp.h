@@ -789,6 +789,19 @@ void coin_apply_normalization_cube_map(const cc_glglue * glue);
 /* ARB_shader_objects */
 SbBool cc_glglue_has_arb_shader_objects(const cc_glglue * glue);
 
+/* Moved from gl.h and added compressed parameter.
+   Original function is deprecated for internal use.
+*/
+SbBool coin_glglue_is_texture_size_legal(const cc_glglue * glw, 
+                                       int xsize, int ysize, int zsize, 
+                                       int bytespertexel, 
+                                       SbBool mipmap,
+                                       SbBool compressed);
+GLint coin_glglue_get_internal_texture_format(int numcomponents,
+                                            SbBool compress);
+
+GLenum coin_glglue_get_texture_format(int numcomponents);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
