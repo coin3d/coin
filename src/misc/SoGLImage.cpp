@@ -1401,7 +1401,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     unsigned char * glimage_tmpimagebuffer = glimage_get_buffer(numbytes, FALSE);
 
     // First check if there is a custom resize function registered
-    bool customresizedone = FALSE;
+    SbBool customresizedone = FALSE;
     if (SoGLImageP::resizecb) {
       customresizedone = SoGLImageP::resizecb(state,
                                               SbVec3s(newx, newy, newz), 
