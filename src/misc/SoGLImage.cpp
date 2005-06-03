@@ -181,6 +181,7 @@
 
 #include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
@@ -418,11 +419,13 @@ halve_image(const int width, const int height, const int depth, const int nc,
 
 // fast mipmap creation. no repeated memory allocations.
 static void
-fast_mipmap(SoState * state, int width, int height, const int nc,
-            const unsigned char *data, GLenum format,
-            const SbBool useglsubimage)
+fast_mipmap(SoState * state, int width, int height, int nc,
+            const unsigned char *data, const SbBool useglsubimage,
+            SbBool compress)
 {
   const cc_glglue * glw = sogl_glue_instance(state);
+  GLint internalFormat = coin_glglue_get_internal_texture_format(nc, compress);
+  GLenum format = coin_glglue_get_texture_format(nc);
   int levels = compute_log(width);
   int level = compute_log(height);
   if (level > levels) levels = level;
@@ -438,7 +441,7 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     }
   }
   else {
-    glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format,
                  GL_UNSIGNED_BYTE, data);
   }
   unsigned char *src = (unsigned char *) data;
@@ -455,7 +458,7 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
       }
     }
     else {
-      glTexImage2D(GL_TEXTURE_2D, level, nc, width,
+      glTexImage2D(GL_TEXTURE_2D, level, internalFormat, width,
                    height, 0, format, GL_UNSIGNED_BYTE,
                    (void *) src);
     }
@@ -464,11 +467,13 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
 
 // fast mipmap creation. no repeated memory allocations. 3D version.
 static void
-fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
-            const unsigned char *data, GLenum format,
-            const SbBool useglsubimage)
+fast_mipmap(SoState * state, int width, int height, int depth, 
+            int nc, const unsigned char *data, const SbBool useglsubimage,
+            SbBool compress)
 {
   const cc_glglue * glw = sogl_glue_instance(state);
+  GLint internalFormat = coin_glglue_get_internal_texture_format(nc, compress);
+  GLenum format = coin_glglue_get_texture_format(nc);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
@@ -484,8 +489,9 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   }
   else {
     if (cc_glglue_has_3d_textures(glw)) {
-      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, (GLenum) nc, width, height, depth,
-                             0, format, GL_UNSIGNED_BYTE, data);
+      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat, 
+                             width, height, depth, 0, format, 
+                             GL_UNSIGNED_BYTE, data);
     }
   }
   unsigned char *src = (unsigned char *) data;
@@ -504,9 +510,9 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
     }
     else {
       if (cc_glglue_has_3d_textures(glw)) {
-	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, (GLenum) nc, width,
-                               height, depth, 0, format, GL_UNSIGNED_BYTE,
-                               (void *) src);
+        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, internalFormat,
+                               width, height, depth, 0, format, 
+                               GL_UNSIGNED_BYTE, (void *) src);
       }
     }
   }
@@ -987,24 +993,21 @@ SoGLImage::setData(const SbImage *image,
       PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
       PRIVATE(this)->image = NULL; // data is temporary, and only for current context
       dl->call(createinstate);
-      GLenum format;
-      switch (nc) {
-      default: // avoid compiler warnings
-      case 1: format = GL_LUMINANCE; break;
-      case 2: format = GL_LUMINANCE_ALPHA; break;
-      case 3: format = GL_RGB; break;
-      case 4: format = GL_RGBA; break;
-      }
+
+      SbBool compress = 
+        (PRIVATE(this)->flags & COMPRESSED) &&
+        cc_glue_has_texture_compression(glw);
 
       if (dl->isMipMapTextureObject()) {
         if (is3D)
-          fast_mipmap(createinstate, size[0], size[1], size[2], nc,
-                      bytes, format, TRUE);
+          fast_mipmap(createinstate, size[0], size[1], size[2], nc, bytes, 
+                      TRUE, compress);
         else
-          fast_mipmap(createinstate, size[0], size[1], nc,
-                      bytes, format, TRUE);
+          fast_mipmap(createinstate, size[0], size[1], nc, bytes, 
+                      TRUE, compress);
       }
       else {
+        GLenum format = coin_glglue_get_texture_format(nc);
         if (is3D) {
           cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
                                     size[0], size[1], size[2],
@@ -1350,8 +1353,13 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   uint32_t orgsize[3] = { newx, newy, newz };
 #endif // COIN_DEBUG
   while (!sizeok) {
-    sizeok = cc_glglue_is_texture_size_legal(glw, newx, newy, newz, 
-                                             numcomponents, this->shouldCreateMipmap());
+    SbBool compressed = 
+      (this->flags & SoGLImage::COMPRESSED) ? TRUE : FALSE &&
+      cc_glue_has_texture_compression(glw);
+    sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz, 
+                                               numcomponents, 
+                                               this->shouldCreateMipmap(),
+                                               compressed);
     if (!sizeok) {
       unsigned int max = SbMax(newx, SbMax(newy, newz));
       if (max==newz) newz >>= 1;
@@ -1435,15 +1443,6 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
           simage_wrapper()->simage_free_image(result);
         }
         else if (GLUWrapper()->available) {
-          GLenum format;
-          switch (numcomponents) {
-          default: // avoid compiler warnings
-          case 1: format = GL_LUMINANCE; break;
-          case 2: format = GL_LUMINANCE_ALPHA; break;
-          case 3: format = GL_RGB; break;
-          case 4: format = GL_RGBA; break;
-          }
-          
           glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
           glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
           glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
@@ -1454,7 +1453,8 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
           glPixelStorei(GL_PACK_ALIGNMENT, 1);
           
           // FIXME: ignoring the error code. Silly. 20000929 mortene.
-          (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
+          (void)GLUWrapper()->gluScaleImage(coin_glglue_get_texture_format(numcomponents),
+                                            xsize, ysize,
                                             GL_UNSIGNED_BYTE, (void*) bytes,
                                             newx, newy, GL_UNSIGNED_BYTE,
                                             (void*)glimage_tmpimagebuffer);
@@ -1653,25 +1653,13 @@ SoGLImageP::reallyCreateTexture(SoState *state,
   this->glsize = SbVec3s((short) w, (short) h, (short) d);
   this->glcomp = numComponents;
 
-  GLenum glformat;
-  switch (numComponents) {
-  case 1:
-    glformat = GL_LUMINANCE;
-    break;
-  case 2:
-    glformat = GL_LUMINANCE_ALPHA;
-    break;
-  case 3:
-    glformat = GL_RGB;
-    break;
-  case 4:
-    glformat = GL_RGBA;
-    break;
-  default:
-    assert(0 && "illegal numComponents");
-    glformat = GL_RGB; // Unnecessary, but kills a compiler warning.
-  }
-
+  SbBool compress = 
+    (this->flags & SoGLImage::COMPRESSED) &&
+    cc_glue_has_texture_compression(glw);
+  GLint internalFormat = 
+    coin_glglue_get_internal_texture_format(numComponents, compress);
+  GLenum dataFormat = coin_glglue_get_texture_format(numComponents);
+  
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   //FIXME: Check cc_glglue capability as well? (kintel 20011129)
@@ -1688,8 +1676,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
     if (!mipmap) {
       if (cc_glglue_has_3d_textures(glw)) {
-        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, (GLenum) numComponents, w, h, d,
-                               border, glformat, GL_UNSIGNED_BYTE, texture);
+        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat, w, h, d,
+                               border, dataFormat, GL_UNSIGNED_BYTE, texture);
       }
     }
     else { // mipmaps
@@ -1700,11 +1688,11 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       // remote rendering. (At least we've had lots of problems with
       // NVidia's GLX implementation for non-1.0 OpenGL stuff.)
       //
-      //   (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, numComponents,
-      //                                         w, h, d, glformat,
+      //   (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, internalFormat,
+      //                                         w, h, d, dataFormat,
       //                                         GL_UNSIGNED_BYTE, texture);
 
-      fast_mipmap(state, w, h, d, numComponents, texture, glformat, FALSE);
+      fast_mipmap(state, w, h, d, numComponents, texture, FALSE, compress);
     }
   }
   else { // 2D textures
@@ -1740,18 +1728,19 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     }
     if (!mipmapimage) {
       // Create only level 0 texture. Mimpamps might be created by GL_SGIS_generate_mipmap
-      glTexImage2D(target, 0, numComponents, w, h,
-                   border, glformat, GL_UNSIGNED_BYTE, texture);
+
+      glTexImage2D(target, 0, internalFormat, w, h,
+                   border, dataFormat, GL_UNSIGNED_BYTE, texture);
     }
     else { // mipmaps
       // The GLU function invocation has been disabled, for the
       // reasons stated in the code comments ~20 lines above on the
       // construction of 3D mipmap textures.
       //
-      //   (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents,
-      //                                         w, h, glformat,
+      //   (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, internalFormat,
+      //                                         w, h, dataFormat,
       //                                         GL_UNSIGNED_BYTE, texture);
-      fast_mipmap(state, w, h, numComponents, texture, glformat, FALSE);
+      fast_mipmap(state, w, h, numComponents, texture, FALSE, compress);
     }
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);

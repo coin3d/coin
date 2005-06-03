@@ -130,6 +130,9 @@ public:
     // use GL_NV_texture_rectangle or GL_EXT_texture_rectangle
     RECTANGLE                 = 0x0400,
 
+    // Compress texture if available from OpenGL
+    COMPRESSED                = 0x0800,
+
     // use quality value to decide mipmap, filtering and scaling. This
     // is the default.
     USE_QUALITY_VALUE         = 0X8000
