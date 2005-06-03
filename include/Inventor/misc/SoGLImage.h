@@ -63,12 +63,12 @@ public:
     MIPMAP
   };
 
-  typedef bool SoGLImageResizeCB(SoState * state,
-                                 const SbVec3s &newsize, 
-                                 unsigned char * destbuffer, 
-                                 ResizeReason reason,
-                                 void * closure,
-                                 class SoGLImage * image);
+  typedef SbBool SoGLImageResizeCB(SoState * state,
+                                   const SbVec3s &newsize, 
+                                   unsigned char * destbuffer, 
+                                   ResizeReason reason,
+                                   void * closure,
+                                   class SoGLImage * image);
 
   void setPBuffer(SoState * state,
                   void * context,
