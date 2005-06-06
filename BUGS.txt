@@ -4779,3 +4779,28 @@ Group {
     20050602 mortene.
 
 =====================================================================
+
+194 SoOffscreenRenderer in tile-mode asserts on VRML97 scene graph.
+
+    The following scene graph attempted drawn with an
+    SoOffscreenRenderer (use e.g. the 'osgrab' debugging backdoor in
+    an examiner viewer to reproduce) causes an assert to hit in
+    SoOffscreenRenderer, due to the tail of the
+    SoGLRenderAction::getCurPath() being NULL at one point. The tail
+    of the path should likely never become NULL.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#VRML V2.0 utf8
+
+Group {
+   children [
+      Shape {
+         geometry Sphere { }
+      }
+   ]
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20050606 mortene.
+
+=====================================================================
