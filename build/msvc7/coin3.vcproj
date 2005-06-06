@@ -461,6 +461,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\misc\CoinOffscreenGLCanvas.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\misc\CoinStaticObjectInDLL.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -818,6 +842,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\fonts/"
 						ProgramDataBaseFileName="Release\fonts/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\base\dict.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\base/"
+						ProgramDataBaseFileName="Debug\base/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\base/"
+						ProgramDataBaseFileName="Release\base/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -16562,6 +16610,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\vrml97/"
 						ProgramDataBaseFileName="Release\vrml97/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\glue\spidermonkey.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\glue/"
+						ProgramDataBaseFileName="Debug\glue/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\glue/"
+						ProgramDataBaseFileName="Release\glue/"/>
 				</FileConfiguration>
 			</File>
 			<File

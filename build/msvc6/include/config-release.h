@@ -264,7 +264,7 @@
 /* Define to use Win32 QueryPerformanceCounter() */
 #define HAVE_QUERYPERFORMANCECOUNTER 1
 
-/* define if single-precision math functions are avialable */
+/* define if single-precision math functions are available */
 /* #undef HAVE_SINGLEPRECISION_MATH */
 
 /* define if snprintf() is available */
@@ -341,6 +341,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 /* #undef HAVE_UNISTD_H */
+
+/* Define to use va_copy() when available */
+/* #undef HAVE_VA_COPY_MACRO */
 
 /* define to use the VRML97 extension */
 #define HAVE_VRML97 

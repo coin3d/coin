@@ -262,6 +262,15 @@ SOURCE=..\..\src\actions\SoAudioRenderAction.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\base\dict.c
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\base"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\base\hash.c
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\base"
@@ -3160,6 +3169,15 @@ SOURCE=..\..\src\glue\cg.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\glue\spidermonkey.c
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\glue"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\glue\dl.c
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\glue"
@@ -3800,6 +3818,15 @@ SOURCE=..\..\src\misc\AudioTools.cpp
 # Begin Source File
 
 SOURCE=..\..\src\misc\CoinStaticObjectInDLL.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\CoinOffscreenGLCanvas.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
