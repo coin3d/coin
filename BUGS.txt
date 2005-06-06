@@ -4766,3 +4766,16 @@ Group {
     20050526 mortene.
 
 =====================================================================
+
+193 superglu should be sync'ed against SGI GLU.
+
+    This should be done with regular intervals, to get any bug fixes
+    etc migrated into superglu. This hasn't been done for a long time
+    now.
+
+    We should also send back any important bugfixes we've made
+    ourselves.
+
+    20050602 mortene.
+
+=====================================================================
