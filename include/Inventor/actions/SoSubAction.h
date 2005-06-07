@@ -31,8 +31,9 @@
 #else // !COIN_INTERNAL
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/C/tidbits.h>
 #endif // COIN_INTERNAL
+
+#include <Inventor/C/tidbits.h> // for cc_coin_atexit() / coin_atexit_f
 
 // *************************************************************************
 
