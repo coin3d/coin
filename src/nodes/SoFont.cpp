@@ -154,6 +154,15 @@
   try to use that debugging option when something does not work quite
   as expected.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Font {
+        name "defaultFont"
+        size 10
+    }
+  \endverbatim
+
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
 

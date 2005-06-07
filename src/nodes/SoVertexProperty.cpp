@@ -57,6 +57,20 @@
   which is something that can easily be done when setting up
   individual state-changing nodes in the scenegraph.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    VertexProperty {
+        vertex [  ]
+        normal [  ]
+        texCoord [  ]
+        orderedRGBA [  ]
+        texCoord3 [  ]
+        normalBinding PER_VERTEX_INDEXED
+        materialBinding OVERALL
+    }
+  \endverbatim
+
   \since Inventor 2.1
   \sa SoVertexShape
   \sa SoCoordinate3, SoTextureCoordinate2, SoTextureCoordinate3, SoNormal

@@ -30,7 +30,17 @@
   traversals for e.g. rendering. Scale values are specified in a
   triple-value vector, with one scale factor for each of the 3
   principal axes.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Scale {
+        scaleFactor 1 1 1
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -38,6 +48,8 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoScale::scaleFactor
@@ -63,6 +75,8 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoScale);
+
+// *************************************************************************
 
 /*!
   Constructor.

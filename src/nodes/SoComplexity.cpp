@@ -45,6 +45,16 @@
   modifying the value of the SoComplexity::textureQuality field. By
   setting the SoComplexity::textureQuality field to a value of 0.0,
   you can also turn texturemapping completely off.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Complexity {
+        type OBJECT_SPACE
+        value 0.5
+        textureQuality 0.5
+    }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoComplexity.h>

@@ -30,8 +30,21 @@
   it to accumulate any kind of transformation matrix on top of the
   current model transformation matrix.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    MatrixTransform {
+        matrix 1 0 0 0
+  0 1 0 0
+  0 0 1 0
+  0 0 0 1
+    }
+  \endverbatim
+
   \sa SoTransform
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -40,11 +53,12 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
+// *************************************************************************
+
 /*!
   \var SoSFMatrix SoMatrixTransform::matrix
   The transformation matrix. Defaults to the identity matrix.
 */
-
 
 // *************************************************************************
 

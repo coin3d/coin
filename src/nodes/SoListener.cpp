@@ -39,6 +39,18 @@
   Coin does not currently support doppler effects, so the
   dopplerVelocity and dopplerFactor fields are currently ignored.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Listener {
+        position 0 0 0
+        orientation 0 0 1  0
+        dopplerVelocity 0 0 0
+        dopplerFactor 0
+        gain 1
+    }
+  \endverbatim
+
   \sa SoVRMLSound
 */
 

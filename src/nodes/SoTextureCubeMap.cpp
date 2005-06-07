@@ -33,6 +33,30 @@
   various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
   information about the specifics of how the textures will be applied.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCubeMap {
+        filenames [  ]
+        imagePosX 0 0 0
+
+        imageNegX 0 0 0
+
+        imagePosY 0 0 0
+
+        imageNegY 0 0 0
+
+        imagePosZ 0 0 0
+
+        imageNegZ 0 0 0
+
+        wrapS REPEAT
+        wrapT REPEAT
+        model MODULATE
+        blendColor 0 0 0
+    }
+  \endverbatim
+
   \since Coin 3.0
 */
 

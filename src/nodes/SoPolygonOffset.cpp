@@ -96,10 +96,22 @@
   z-buffer floating point calculations will be fickle with regard to
   whether or not the polygon or the line will be closer to the camera.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PolygonOffset {
+        factor 1
+        units 1
+        styles FILLED
+        on TRUE
+    }
+  \endverbatim
 
   \since TGS Inventor 2.5
   \since Coin 1.0
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -109,13 +121,14 @@
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
+// *************************************************************************
+
 /*!
   \enum SoPolygonOffset::Style
 
   Enumeration of the rendering primitives which can be influenced by
   an SoPolygonOffset node.
 */
-
 
 /*!
   \var SoSFFloat SoPolygonOffset::factor

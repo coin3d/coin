@@ -37,6 +37,14 @@
   the overlay planes (which are usually limited to only 2 or 4
   available colors), if supported by the OpenGL hardware and / or
   driver.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    ColorIndex {
+        index 1
+    }
+  \endverbatim
 */
 
 // FIXME: couldn't we check for the above mentioned pre-conditions

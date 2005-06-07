@@ -28,16 +28,34 @@
 
   For realistic looking 3D scene, the geometry should be rendered with
   perspective calculations. Use this camera type to accomplish this.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PerspectiveCamera {
+        viewportMapping ADJUST_CAMERA
+        position 0 0 1
+        orientation 0 0 1  0
+        nearDistance 1
+        farDistance 10
+        aspectRatio 1
+        focalDistance 5
+        heightAngle 0.78539819
+    }
+  \endverbatim
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/SbSphere.h>
+
 #include <assert.h>
 
-#if COIN_DEBUG
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/SbSphere.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \var SoSFFloat SoPerspectiveCamera::heightAngle

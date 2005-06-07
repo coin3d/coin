@@ -33,9 +33,21 @@
   scaling) for it's children. Apart from transformations, the
   appearance of it's children will be identical.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    MultipleCopy {
+        matrix 1 0 0 0
+        0 1 0 0
+        0 0 1 0
+        0 0 0 1
+    }
+  \endverbatim
+
   \sa SoArray
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -47,6 +59,8 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSwitch.h> // SO_SWITCH_ALL
+
+// *************************************************************************
 
 /*!
   \var SoMFMatrix SoMultipleCopy::matrix

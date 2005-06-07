@@ -28,6 +28,13 @@
 
   The cube used for reference when mapping is the boundingbox for the shape.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinateCube {
+    }
+  \endverbatim
+
   \since Coin 2.3
 */
 // FIXME: Add a better class description (20040123 handegar)

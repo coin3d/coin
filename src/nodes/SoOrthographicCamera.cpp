@@ -58,14 +58,32 @@
   geometry. If so, this can be solved by e.g. inserting an SoCallback
   node in the sub-scene, where you let the callback disable the depth
   buffer with glDisable(GL_DEPTH_TEST).
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    OrthographicCamera {
+        viewportMapping ADJUST_CAMERA
+        position 0 0 1
+        orientation 0 0 1  0
+        nearDistance 1
+        farDistance 10
+        aspectRatio 1
+        focalDistance 5
+        height 2
+    }
+  \endverbatim
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoOrthographicCamera.h>
+
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbSphere.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \var SoSFFloat SoOrthographicCamera::height

@@ -50,8 +50,20 @@
   <center>
   <img src="http://doc.coin3d.org/images/Coin/nodes/drawstyle.png">
   </center>
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    DrawStyle {
+        style FILLED
+        pointSize 0
+        lineWidth 0
+        linePattern 0xffff
+    }
+  \endverbatim
 */
 
+// *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -62,6 +74,8 @@
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoDrawStyle::Style

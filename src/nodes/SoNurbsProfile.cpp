@@ -28,7 +28,19 @@
 
   Use nodes of this type if you want to set up profiles that are
   smooth curves.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    NurbsProfile {
+        index 0
+        linkage START_FIRST
+        knotVector 0
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoNurbsProfile.h>
 
@@ -50,11 +62,14 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
 
+// *************************************************************************
 
 /*!
   \var SoMFFloat SoNurbsProfile::knotVector
   Knot values for the nurbs curve.
 */
+
+// *************************************************************************
 
 typedef struct {
   SbList <float> * coordlist;

@@ -131,9 +131,18 @@
   we could switch to a less complex version without losing enough
   detail that it gives a noticable visual degradation.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    LevelOfDetail {
+        screenArea 0
+    }
+  \endverbatim
+
   \sa SoLOD
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
 

@@ -71,9 +71,18 @@
   fetched in a monotonically increasing manner from the
   SoMaterial::diffuseColor field, starting at index 0.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    MaterialBinding {
+        value OVERALL
+    }
+  \endverbatim
+
   \sa SoMaterial
 */
 
+// *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -82,6 +91,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoMaterialBinding::Binding

@@ -33,8 +33,21 @@
   SoSeparator nodes also provides options for traversal optimalization
   through the use of caching.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Separator {
+        renderCaching AUTO
+        boundingBoxCaching AUTO
+        renderCulling AUTO
+        pickCulling AUTO
+    }
+  \endverbatim
+
   \sa SoTransformSeparator
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoSeparator.h>
 
@@ -76,9 +89,13 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
+
 #if COIN_DEBUG
 #define GLCACHE_DEBUG 0 // set to 1 to debug caching
 #endif
+
+// *************************************************************************
 
 // environment variable
 static int COIN_RANDOMIZE_RENDER_CACHING = -1;
@@ -87,6 +104,7 @@ static int COIN_RANDOMIZE_RENDER_CACHING = -1;
 // rendercaching.
 int SoSeparator::numrendercaches = 2;
 
+// *************************************************************************
 
 /*!
   \enum SoSeparator::CacheEnabled
@@ -271,7 +289,6 @@ soseparator_storage_destruct(void * data)
 
 class SoSeparatorP {
 public:
-  // lots of ifdefs here but it can't be helped...
   SoSeparatorP(void) {
     this->glcachestorage =
       new SbStorage(sizeof(soseparator_storage),
@@ -603,9 +620,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
     PRIVATE(this)->unlock();
     if (glcachelist->call(action)) {
-#if GLCACHE_DEBUG && 1 // debug
+#if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                             "Executing GL cache: %p", this);
+                             "%p executed GL cache", this);
 #endif // debug
       state->pop();
       return;
@@ -613,7 +630,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                             "Creating GL cache: %p", this);
+                             "%p creating GL cache", this);
 #endif // debug
       createcache = glcachelist;
     }

@@ -93,12 +93,28 @@
   }
   \endverbatim
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Material {
+        ambientColor 0.2 0.2 0.2
+        diffuseColor 0.8 0.8 0.8
+        specularColor 0 0 0
+        emissiveColor 0 0 0
+        shininess 0.2
+        transparency 0
+    }
+  \endverbatim
+
   \sa SoMaterialBinding, SoBaseColor, SoPackedColor
 */
+
+// *************************************************************************
 
 // FIXME: should also describe what happens if the number of values in
 // the fields are not consistent. 20020119 mortene.
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -119,6 +135,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
+
+// *************************************************************************
 
 /*!
   \var SoMFColor SoMaterial::ambientColor

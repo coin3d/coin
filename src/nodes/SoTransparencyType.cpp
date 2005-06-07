@@ -40,9 +40,19 @@
 
   \COIN_CLASS_EXTENSION
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TransparencyType {
+        value SCREEN_DOOR
+    }
+  \endverbatim
+
   \sa SoGLRenderAction::TransparencyType
   \since Coin 2.0
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -53,6 +63,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoTransparencyType::Type

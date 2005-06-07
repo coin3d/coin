@@ -31,7 +31,21 @@
   is used. Halfway through the cycle, the resulting translation equals
   translation1, and at the end of the cycle, we're at translation0
   again.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Shuttle {
+        translation 0 0 0
+        translation0 0 0 0
+        translation1 0 0 0
+        speed 1
+        on TRUE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoShuttle.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -41,6 +55,7 @@
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateVec3f.h>
 
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoShuttle::translation0

@@ -33,6 +33,17 @@
   Since the Z-buffer needs to be disabled, the childrens' geometry
   will not be rendered back-to-front sorted, but rather in the order
   they are present in the scenegraph.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Annotation {
+        renderCaching AUTO
+        boundingBoxCaching AUTO
+        renderCulling AUTO
+        pickCulling AUTO
+    }
+    \endverbatim
 */
 
 // FIXME: consider adding a lazy GL depth buffer element. 200YMMDD pederb.

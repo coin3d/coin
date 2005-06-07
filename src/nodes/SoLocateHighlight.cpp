@@ -29,6 +29,20 @@
   Note: this node is supposed to draw to the front buffer. However, in
   Coin we always draw to the back buffer, forcing a scene redraw
   whenever a highlight state changes.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    LocateHighlight {
+        renderCaching AUTO
+        boundingBoxCaching AUTO
+        renderCulling AUTO
+        pickCulling AUTO
+        color 0.3 0.3 0.3
+        style EMISSIVE
+        mode AUTO
+    }
+  \endverbatim
 */
 
 // *************************************************************************

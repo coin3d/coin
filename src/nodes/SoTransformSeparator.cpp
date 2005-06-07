@@ -32,9 +32,17 @@
   will affect the remaining parts of the scenegraph after traversal,
   just like as for the SoGroup node.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TransformSeparator {
+    }
+  \endverbatim
+
   \sa SoSeparator, SoGroup
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -49,7 +57,11 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoChildList.h>
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoTransformSeparator);
+
+// *************************************************************************
 
 /*!
   Default constructor.

@@ -33,13 +33,26 @@
   Using SoRotationXYZ nodes are also simpler and more efficient than
   using SoRotation nodes if you are connecting engines to rotation
   angles for animation purposes.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    RotationXYZ {
+        angle 0
+        axis X
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoRotationXYZ::Axis

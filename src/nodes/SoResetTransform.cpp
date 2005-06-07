@@ -29,7 +29,17 @@
   SoResetTransform is useful for setting up geometry in the scene
   graph which will not be influenced by the transformation nodes
   before it during traversal.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    ResetTransform {
+        whatToReset TRANSFORM
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -40,6 +50,8 @@
 #include <Inventor/elements/SoGLModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoResetTransform::ResetType

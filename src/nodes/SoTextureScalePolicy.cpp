@@ -68,8 +68,19 @@
 
   \COIN_CLASS_EXTENSION
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureScalePolicy {
+        policy USE_TEXTURE_QUALITY
+        quality 0.5
+    }
+  \endverbatim
+
   \since Coin 2.0
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTextureScalePolicy.h>
 #include <Inventor/nodes/SoSubNodeP.h>

@@ -26,8 +26,16 @@
   \brief The SoPathSwitch class traverses only when current path matches a configurable path.
   \ingroup nodes
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PathSwitch {
+        path NULL
+    }
+  \endverbatim
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoPathSwitch.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -40,6 +48,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 
+// *************************************************************************
 
 /*!
   \var SoSFPath SoPathSwitch::path
@@ -53,6 +62,8 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoPathSwitch);
+
+// *************************************************************************
 
 /*!
   Default constructor.

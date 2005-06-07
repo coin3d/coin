@@ -156,7 +156,24 @@
   \verbatim
   $ ./test < input.iv
   \endverbatim
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Texture2 {
+        filename ""
+        image 0 0 0
+
+        wrapS REPEAT
+        wrapT REPEAT
+        model MODULATE
+        blendColor 0 0 0
+        enableCompressedTexture FALSE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <assert.h>
 
@@ -195,6 +212,8 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+// *************************************************************************
 
 /*!
   \enum SoTexture2::Model

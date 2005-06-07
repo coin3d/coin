@@ -47,9 +47,22 @@
   Inventor 2.1 but will in most cases result in the default font being
   rendered. It is highly recommended to use the SoFont node instead.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    FontStyle {
+        name "defaultFont"
+        size 10
+        family SERIF
+        style ()
+    }
+  \endverbatim
+
   \since Inventor 2.1
   \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -60,6 +73,8 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
+
+// *************************************************************************
 
 /*!
   \enum SoFontStyle::Family

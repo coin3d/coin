@@ -34,7 +34,21 @@
 
   The order of operations is: first scaling is done, then rotation,
   then translation.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Transform {
+        translation 0 0 0
+        rotation 0 0 1  0
+        scaleFactor 1 1 1
+        scaleOrientation 0 0 1  0
+        center 0 0 0
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -42,6 +56,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoTransform::translation

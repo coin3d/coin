@@ -34,14 +34,25 @@
   You can also optimize pick operations by using the
   SoPickStyle::BOUNDING_BOX pickstyle.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PickStyle {
+        style SHAPE
+    }
+  \endverbatim
+
   \sa SoRayPickAction
 */
 
+// *************************************************************************
 
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+
+// *************************************************************************
 
 /*!
   \enum SoPickStyle::Style

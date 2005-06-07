@@ -26,6 +26,13 @@
   \brief The SoTextureCoordinateCylinder class autogenerates cylinder mapped texture coordinated for shapes.
   \ingroup nodes
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinateCylinder {
+    }
+  \endverbatim
+
   \since Coin 2.3
 */
 // FIXME: Add a better class description (20040123 handegar)

@@ -33,6 +33,17 @@
   The default settings of this node's fields equals a "null
   transform", ie no transformation.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    BumpMapTransform {
+        translation 0 0
+        rotation 0
+        scaleFactor 1 1
+        center 0 0
+    }
+  \endverbatim
+
   \since Coin 2.2
 */
 

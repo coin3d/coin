@@ -28,7 +28,22 @@
 
   This node type provides the application programmer with the ability
   to set global parameters influencing lighting and fog.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Environment {
+        ambientIntensity 0.2
+        ambientColor 1 1 1
+        attenuation 0 0 1
+        fogType NONE
+        fogColor 1 1 1
+        fogVisibility 0
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -37,6 +52,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
 #include <Inventor/elements/SoLightAttenuationElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoEnvironment::FogType

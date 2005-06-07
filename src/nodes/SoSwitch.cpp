@@ -34,8 +34,17 @@
   This node is very useful for conditionally turning on or off parts
   of the scenegraph based on the current application processing mode,
   visualizing mode, or whatever else the application can do.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Switch {
+        whichChild -1
+    }
+  \endverbatim
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -56,10 +65,9 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
 #include "../io/SoWriterefCounter.h"
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \var SoSFInt32 SoSwitch::whichChild

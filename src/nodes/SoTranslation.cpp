@@ -28,7 +28,17 @@
 
   For simply translating some geometry in a scene graph, you can use
   this node type.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Translation {
+        translation 0 0 0
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -36,6 +46,8 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoTranslation::translation

@@ -26,6 +26,13 @@
   \brief The SoTextureCoordinateSphere class autogenerates spheremapped texture coordinated for shapes.
   \ingroup nodes
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinateSphere {
+    }
+  \endverbatim
+
   \since Coin 2.3
 */
 // FIXME: Add a better class description (20040123 handegar)

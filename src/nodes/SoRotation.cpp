@@ -31,15 +31,26 @@
 
   See SoTransformation class documentation for a short usage example.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Rotation {
+        rotation 0 0 1  0
+    }
+  \endverbatim
+
   \sa SbRotation, SoRotationXYZ
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFRotation SoRotation::rotation

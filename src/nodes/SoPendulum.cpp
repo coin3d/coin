@@ -30,7 +30,21 @@
   a cosine function. In the beginning of the cycle, rotation0 is
   used. Halfway through the cycle, the resulting rotation equals
   rotation1, and at the end of the cycle, we're at rotation0 again.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Pendulum {
+        rotation 0 0 1  0
+        rotation0 0 0 1  0
+        rotation1 0 0 1  0
+        speed 1
+        on TRUE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoPendulum.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -40,6 +54,8 @@
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFRotation SoPendulum::rotation0

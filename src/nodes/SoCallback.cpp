@@ -33,6 +33,13 @@
   The callback function will be executed during traversal of \e any
   action, so check the type of the \a action argument of the callback
   function if you only want to run your code at specific actions.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Callback {
+    }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoCallback.h>

@@ -34,6 +34,14 @@
   Note that an SoCoordinate3 node will \e replace the coordinates
   already present in the state (if any).
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Coordinate3 {
+        point 0 0 0
+    }
+  \endverbatim
+
   \sa SoCoordinate4
 */
 

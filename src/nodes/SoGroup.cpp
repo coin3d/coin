@@ -166,7 +166,16 @@
   to not do any operations that immediately changes the layout of the
   scene graph, but to delay it for after the traversal is done. This
   can e.g. be done by using a Coin sensor.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Group {
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -185,6 +194,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
@@ -193,10 +203,7 @@
 
 #include <Inventor/system/gl.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
+// *************************************************************************
 
 /*!
   \var SoChildList * SoGroup::children

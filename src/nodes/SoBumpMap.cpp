@@ -59,6 +59,18 @@
   bumps. You can turn off specular lighting on the bumps by setting
   specularColor to (0.0, 0.0, 0.0).
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    BumpMap {
+        filename ""
+        image 0 0 0
+
+        wrapS REPEAT
+        wrapT REPEAT
+    }
+  \endverbatim
+
   \since Coin 2.2
 */
 

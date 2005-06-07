@@ -51,8 +51,25 @@
   are equal to a whole power-of-two, see documentation for
   SoSceneTexture::size.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    SceneTexture2 {
+        size 256 256
+        scene NULL
+        backgroundColor 0 0 0 0
+        transparencyFunction NONE
+        wrapS REPEAT
+        wrapT REPEAT
+        model MODULATE
+        blendColor 0 0 0
+    }
+  \endverbatim
+
   \since Coin 2.2
 */
+
+// *************************************************************************
 
 /*!
   \enum SoSceneTexture2::Model

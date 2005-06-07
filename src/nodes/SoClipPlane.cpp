@@ -67,7 +67,18 @@
      Sphere { }
   }
   \endverbatim
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    ClipPlane {
+        plane 1 0 0  0
+        on TRUE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -77,6 +88,8 @@
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFPlane SoClipPlane::plane

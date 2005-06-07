@@ -33,8 +33,21 @@
   The default settings of this node's fields equals a "null
   transform", ie no transformation.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Texture2Transform {
+        translation 0 0
+        rotation 0
+        scaleFactor 1 1
+        center 0 0
+    }
+  \endverbatim
+
   \sa SoTexture3Transform
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTexture2Transform.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -47,6 +60,8 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/C/glue/gl.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFVec2f SoTexture2Transform::translation

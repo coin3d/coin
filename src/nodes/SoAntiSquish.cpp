@@ -35,6 +35,15 @@
   SoSurroundScale node (which can yield nonuniform scale-vectors in
   the current state transformation matrix).
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    AntiSquish {
+        recalcAlways TRUE
+        sizing AVERAGE_DIMENSION
+    }
+  \endverbatim
+
   \sa SoSurroundScale for a usage example.
 */
 

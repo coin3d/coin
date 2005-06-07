@@ -29,13 +29,25 @@
   This node provides a convenient way of setting diffuse colors and
   transparency values with packed 32-bit RGBA vectors.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PackedColor {
+        orderedRGBA 0xccccccff
+    }
+  \endverbatim
+
   \sa SoBaseColor
 */
+
+// *************************************************************************
 
 // FIXME: the name of the "orderedRGBA" field was actually "rgba" in
 // the version 2.0 Inventor file format, and the semantics was also
 // different (reversed order). This means that Inventor 2.0 files with
 // PackedColor nodes will not import properly at the moment.  20020508 mortene.
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoPackedColor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -44,6 +56,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoMFUInt32 SoPackedColor::orderedRGBA

@@ -35,6 +35,17 @@
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    WWWInline {
+        name "<Undefined file>"
+        bboxCenter 0 0 0
+        bboxSize 0 0 0
+        alternateRep NULL
+    }
+  \endverbatim
+
   \since SGI Inventor 2.1
   \since Coin 1.0
 */

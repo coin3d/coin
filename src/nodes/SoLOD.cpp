@@ -75,10 +75,20 @@
   to decide when to switch children, so that node will still work with
   SoOrthographicCamera.)
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    LOD {
+        center 0 0 0
+        range [  ]
+    }
+  \endverbatim
+
   \since Inventor 2.1
   \sa SoLevelOfDetail
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoLOD.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -91,6 +101,8 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
 #include "SoSoundElementHelper.h"
+
+// *************************************************************************
 
 /*!
   \var SoMFFloat SoLOD::range

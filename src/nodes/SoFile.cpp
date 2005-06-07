@@ -36,6 +36,14 @@
   You can also set the SoFile::name field manually. Such an action
   will then automatically trigger an invocation of a read operation
   which imports the filename you set in the field.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    File {
+        name "<Undefined file>"
+    }
+  \endverbatim
 */
 
 // *************************************************************************

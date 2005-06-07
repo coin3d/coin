@@ -48,7 +48,15 @@
   }
   </code>
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinateNormalMap {
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 // FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
 

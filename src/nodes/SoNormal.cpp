@@ -32,8 +32,18 @@
   performance, 2) you can calculate and use "incorrect" normals to do
   various special effects.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Normal {
+        vector [  ]
+    }
+  \endverbatim
+
   \sa SoNormalBinding
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -43,6 +53,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoMFVec3f SoNormal::vector

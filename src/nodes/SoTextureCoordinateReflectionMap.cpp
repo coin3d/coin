@@ -30,8 +30,15 @@
   
   FIXME: more doc.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinateReflectionMap {
+    }
+  \endverbatim
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateReflectionMap.h>
 #include <Inventor/nodes/SoSubNodeP.h>

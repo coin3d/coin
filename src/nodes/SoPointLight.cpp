@@ -31,7 +31,20 @@
 
   See also documentation of parent class for important information
   regarding light sources in general.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    PointLight {
+        on TRUE
+        intensity 1
+        color 1 1 1
+        location 0 0 1
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -44,15 +57,14 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoPointLight::location
@@ -62,6 +74,8 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoPointLight);
+
+// *************************************************************************
 
 /*!
   Constructor.

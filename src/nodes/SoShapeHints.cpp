@@ -71,8 +71,20 @@
   enabled, since it will be difficult to know if a normal points in or
   out of a polygon.  But for compatibility reasons we are of course
   sticking to the same behavior as the original SGI Inventor library.)
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    ShapeHints {
+        vertexOrdering UNKNOWN_ORDERING
+        shapeType UNKNOWN_SHAPE_TYPE
+        faceType CONVEX
+        creaseAngle 0
+    }
+  \endverbatim
 */
 
+// *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -83,6 +95,7 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
+// *************************************************************************
 
 /*!
   \enum SoShapeHints::VertexOrdering

@@ -43,9 +43,27 @@
 
   \COIN_CLASS_EXTENSION
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Texture3 {
+        filenames ""
+        images 0 0 0 0
+
+        wrapR REPEAT
+        wrapS REPEAT
+        wrapT REPEAT
+        model MODULATE
+        blendColor 0 0 0
+        enableCompressedTexture FALSE
+    }
+  \endverbatim
+
   \since Coin 2.0
   \since TGS Inventor 2.6
 */
+
+// *************************************************************************
 
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -65,6 +83,8 @@
 #include <Inventor/SbImage.h>
 #include <assert.h>
 #include <string.h>
+
+// *************************************************************************
 
 /*!
   \enum SoTexture3::Model

@@ -42,16 +42,31 @@
   about the angle "gets lost" if there is no actual rotation.
 
   Note also that the rotation will start at the given angle value.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Rotor {
+        rotation 0 0 1  0
+        speed 1
+        on TRUE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
+
+#include <Inventor/nodes/SoRotor.h>
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/nodes/SoRotor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFFloat SoRotor::speed

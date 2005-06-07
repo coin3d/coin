@@ -29,6 +29,14 @@
   If you want to just set the diffuse color of the following geometry,
   you can use this node for simplicity.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    BaseColor {
+        rgb 0.8 0.8 0.8
+    }
+  \endverbatim
+
   \sa SoMaterial
 */
 

@@ -44,6 +44,23 @@
   }
   \endverbatim
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    WWWAnchor {
+        renderCaching AUTO
+        boundingBoxCaching AUTO
+        renderCulling AUTO
+        pickCulling AUTO
+        color 0.3 0.3 0.3
+        style EMISSIVE
+        mode AUTO
+        name "<Undefined URL>"
+        description ""
+        map NONE
+    }
+  \endverbatim
+
   \since Inventor 2.1
 */
 

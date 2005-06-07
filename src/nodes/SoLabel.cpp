@@ -31,11 +31,22 @@
 
   SoLabel nodes does not influence traversal in any way for any of the
   builtin actions.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Label {
+        label "<Undefined label>"
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoLabel.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+// *************************************************************************
 
 /*!
   \var SoSFName SoLabel::label

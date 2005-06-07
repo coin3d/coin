@@ -87,7 +87,17 @@
 
   before adding the texture coordinate plane.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinatePlane {
+        directionS 1 0 0
+        directionT 0 1 0
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
 #include <Inventor/nodes/SoSubNodeP.h>

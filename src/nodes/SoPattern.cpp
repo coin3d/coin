@@ -28,6 +28,15 @@
 
   FIXME: class doc
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Pattern {
+        category ""
+        name ""
+    }
+  \endverbatim
+
   \since Coin 2.4
   \since TGS Inventor 2.6
 */

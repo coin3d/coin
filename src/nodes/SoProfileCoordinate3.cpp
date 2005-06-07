@@ -36,8 +36,18 @@
   Note that an SoProfileCoordinate3 node will \e replace the profile
   coordinates already present in the state (if any).
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    ProfileCoordinate3 {
+        point 0 0 1
+    }
+  \endverbatim
+
   \sa SoProfile, SoProfileCoordinate2
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -48,6 +58,8 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
+
+// *************************************************************************
 
 /*!
   \var SoMFVec3f SoProfileCoordinate3::point

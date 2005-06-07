@@ -34,6 +34,15 @@
 
   See the SoGuiExample CVS module for an usage example for this node.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureUnit {
+        unit 0
+        mappingMethod IMAGE_MAPPING
+    }
+  \endverbatim
+
   \since Coin 2.2
 */
 

@@ -126,6 +126,18 @@
   clicking outside the selectable objects.  You'll therefore also have
   to manually override that behaviour, if you want selection change on
   one SoSelection node to not affect the others.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Selection {
+        renderCaching AUTO
+        boundingBoxCaching AUTO
+        renderCulling AUTO
+        pickCulling AUTO
+        policy SHIFT
+    }
+  \endverbatim
 */
 
 // *************************************************************************
@@ -342,6 +354,7 @@ void
 SoSelection::select(const SoPath * path)
 {
   SoPath * newpath = this->copyFromThis(path);
+  // FIXME: memleak if path already stored in list. 20050107 mortene.
   if (newpath && this->findPath(newpath) < 0) {
     newpath->ref();
     this->addPath(newpath);
@@ -836,7 +849,7 @@ SoSelection::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint * pp = action->getPickedPoint();
     if (pp) {
       SoPath * selectionpath = pp->getPath();
-      
+
       // call pick filter callback also for mouse down events
       if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
                                selectionpath->findNode(this) >= 0)) {

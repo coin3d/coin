@@ -170,8 +170,19 @@
   SoAntiSquish nodes to get uniform scaling along all three principal
   axes, as has also been done in the above example.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    SurroundScale {
+        numNodesUpToContainer 0
+        numNodesUpToReset 0
+    }
+  \endverbatim
+
   \sa SoAntiSquish
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -179,11 +190,9 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+// *************************************************************************
 
 /*!
   \var SoSFInt32 SoSurroundScale::numNodesUpToContainer

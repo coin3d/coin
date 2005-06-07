@@ -33,10 +33,22 @@
 
   SoInfo nodes does not influence traversal in any way for any of the
   builtin actions.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Info {
+        string "<Undefined info>"
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFString SoInfo::string

@@ -33,7 +33,17 @@
 
   When encountering SoUnit nodes, the traversal actions methods makes
   sure the following geometry is scaled accordingly.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Units {
+        units METERS
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoUnits.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -47,6 +57,8 @@
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoUnits::Units

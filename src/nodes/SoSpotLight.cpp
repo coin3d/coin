@@ -32,9 +32,24 @@
   See also documentation of parent class for important information
   regarding light sources in general.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    SpotLight {
+        on TRUE
+        intensity 1
+        color 1 1 1
+        location 0 0 1
+        direction 0 0 -1
+        dropOffRate 0
+        cutOffAngle 0.78539819
+    }
+  \endverbatim
+
   \sa SoSpotLight
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoSpotLight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -47,17 +62,14 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
-
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoSpotLight::location
@@ -91,6 +103,8 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoSpotLight);
+
+// *************************************************************************
 
 /*!
   Constructor.

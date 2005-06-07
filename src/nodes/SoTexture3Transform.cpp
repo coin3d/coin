@@ -35,10 +35,24 @@
 
   \COIN_CLASS_EXTENSION
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Texture3Transform {
+        translation 0 0 0
+        rotation 0 0 1  0
+        scaleFactor 1 1 1
+        scaleOrientation 0 0 1  0
+        center 0 0 0
+    }
+  \endverbatim
+
   \sa SoTexture2Transform
   \since Coin 2.0
   \since TGS Inventor 2.6
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTexture3Transform.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -52,6 +66,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/C/glue/gl.h>
 
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoTexture3Transform::translation

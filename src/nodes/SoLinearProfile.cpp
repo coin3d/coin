@@ -28,7 +28,18 @@
 
   Use nodes of this type if you want to set up profiles that are
   simply straight lines connected by control points.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    LinearProfile {
+        index 0
+        linkage START_FIRST
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoLinearProfile.h>
 

@@ -30,7 +30,19 @@
   times per second. If the node has only one child, it will be cycled
   on and off. Cycling can be turned off using the SoBlinker::on field,
   and the node then behaves like a normal SoSwitch node.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    Blinker {
+        whichChild -1
+        speed 1
+        on TRUE
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoBlinker.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -39,10 +51,9 @@
 #include <Inventor/engines/SoTimeCounter.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SoOutput.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \var SoSFFloat SoBlinker::speed

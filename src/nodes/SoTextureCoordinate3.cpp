@@ -41,10 +41,20 @@
 
   \COIN_CLASS_EXTENSION
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCoordinate3 {
+        point [  ]
+    }
+  \endverbatim
+
   \sa SoTextureCoordinate2
   \since Coin 2.0
   \since TGS Inventor 2.6
 */
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinate3.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -56,6 +66,8 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/C/glue/gl.h>
+
+// *************************************************************************
 
 /*!
   \var SoMFVec3f SoTextureCoordinate3::point

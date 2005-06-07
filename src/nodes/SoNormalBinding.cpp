@@ -28,8 +28,18 @@
 
   Use nodes of this type to specify how to map normal vectors from
   SoNormal nodes in the scene graph to shape nodes.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    NormalBinding {
+        value PER_VERTEX_INDEXED
+    }
+  \endverbatim
+
 */
 
+// *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -38,6 +48,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoNormalBinding::Binding

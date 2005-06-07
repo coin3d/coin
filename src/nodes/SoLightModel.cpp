@@ -28,7 +28,17 @@
 
   Use nodes of this type to set up how lighting should affect
   subsequent geometry in the scene.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    LightModel {
+        model PHONG
+    }
+  \endverbatim
 */
+
+// *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -36,6 +46,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+
+// *************************************************************************
 
 /*!
   \enum SoLightModel::Model

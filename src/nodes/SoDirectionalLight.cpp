@@ -40,6 +40,17 @@
 
   See also documentation of parent class for important information
   regarding light sources in general.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    DirectionalLight {
+        on TRUE
+        intensity 1
+        color 1 1 1
+        direction 0 0 -1
+    }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoDirectionalLight.h>

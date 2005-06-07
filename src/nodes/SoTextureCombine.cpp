@@ -177,8 +177,26 @@
   using this scheme, at the cost of extra texture memory usage (the
   intermediate textures), of course.
 
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    TextureCombine {
+        rgbSource [  ]
+        alphaSource [  ]
+        rgbOperand [  ]
+        alphaOperand [  ]
+        rgbOperation MODULATE
+        alphaOperation MODULATE
+        rgbScale 1
+        alphaScale 1
+        constantColor 1 1 1 1
+    }
+  \endverbatim
+
   \since Coin 2.3
 */
+
+// *************************************************************************
 
 /*!
   \enum SoTextureCombine::Source

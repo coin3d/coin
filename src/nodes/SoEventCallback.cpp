@@ -52,6 +52,13 @@
   SoSelection nodes).  These Coin elements might catch the event for
   themselves, short-circuiting the SoHandleEventAction traversal so
   the event will never reach the SoEventCallback node(s) you insert.
+
+  \verbatim
+  FILE FORMAT/DEFAULTS
+
+    EventCallback {
+    }
+  \endverbatim
 */
 
 // *************************************************************************
