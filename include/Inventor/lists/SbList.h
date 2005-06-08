@@ -209,6 +209,13 @@ public:
     return !(*this == l);
   }
 
+  void ensureCapacity(const int size) {
+    if ((size > itembuffersize) &&
+        (size > DEFAULTSIZE)) {
+      this->grow(size);
+    }
+  }
+
 protected:
 
   void expand(const int size) {

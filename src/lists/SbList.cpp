@@ -252,3 +252,15 @@
 
   \sa getLength()
 */
+
+/*!
+  \fn void SbList<Type>::ensureCapacity(const int size)
+
+  Ensure that the internal buffer can hold at least \a size
+  elements. SbList will automatically resize itself to make room for
+  new elements, but this method can be used to improve performance
+  (and avoid memory fragmentation) if you know approximately the
+  number of elements that is going to be added to the list.
+  
+  \since Coin 2.5
+*/
