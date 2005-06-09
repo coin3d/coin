@@ -167,12 +167,11 @@
   scene graph, but to delay it for after the traversal is done. This
   can e.g. be done by using a Coin sensor.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Group {
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

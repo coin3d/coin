@@ -34,13 +34,12 @@
   SoInfo nodes does not influence traversal in any way for any of the
   builtin actions.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Info {
         string "<Undefined info>"
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

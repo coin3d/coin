@@ -34,13 +34,12 @@
   You can also optimize pick operations by using the
   SoPickStyle::BOUNDING_BOX pickstyle.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PickStyle {
         style SHAPE
     }
-  \endverbatim
+  \endcode
 
   \sa SoRayPickAction
 */

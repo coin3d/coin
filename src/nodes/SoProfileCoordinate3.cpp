@@ -36,13 +36,12 @@
   Note that an SoProfileCoordinate3 node will \e replace the profile
   coordinates already present in the state (if any).
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ProfileCoordinate3 {
         point 0 0 1
     }
-  \endverbatim
+  \endcode
 
   \sa SoProfile, SoProfileCoordinate2
 */

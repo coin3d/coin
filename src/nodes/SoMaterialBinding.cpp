@@ -71,13 +71,12 @@
   fetched in a monotonically increasing manner from the
   SoMaterial::diffuseColor field, starting at index 0.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     MaterialBinding {
         value OVERALL
     }
-  \endverbatim
+  \endcode
 
   \sa SoMaterial
 */

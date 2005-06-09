@@ -26,13 +26,12 @@
   \brief The SoPathSwitch class traverses only when current path matches a configurable path.
   \ingroup nodes
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PathSwitch {
         path NULL
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

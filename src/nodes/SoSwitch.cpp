@@ -35,13 +35,12 @@
   of the scenegraph based on the current application processing mode,
   visualizing mode, or whatever else the application can do.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Switch {
         whichChild -1
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

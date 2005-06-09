@@ -29,13 +29,12 @@
   Use nodes of this type to set up how lighting should affect
   subsequent geometry in the scene.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     LightModel {
         model PHONG
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

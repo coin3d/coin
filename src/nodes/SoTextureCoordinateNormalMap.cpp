@@ -48,12 +48,11 @@
   }
   </code>
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinateNormalMap {
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

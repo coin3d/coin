@@ -47,16 +47,15 @@
   Inventor 2.1 but will in most cases result in the default font being
   rendered. It is highly recommended to use the SoFont node instead.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     FontStyle {
         name "defaultFont"
         size 10
         family SERIF
         style ()
     }
-  \endverbatim
+  \endcode
 
   \since Inventor 2.1
   \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph

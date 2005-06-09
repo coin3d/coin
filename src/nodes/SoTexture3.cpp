@@ -43,13 +43,11 @@
 
   \COIN_CLASS_EXTENSION
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Texture3 {
         filenames ""
         images 0 0 0 0
-
         wrapR REPEAT
         wrapS REPEAT
         wrapT REPEAT
@@ -57,7 +55,7 @@
         blendColor 0 0 0
         enableCompressedTexture FALSE
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.0
   \since TGS Inventor 2.6

@@ -36,9 +36,8 @@
   SoMultipleCopy group node, which can do general transformations
   (including rotation and scaling) for its child.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Array {
         origin FIRST
         numElements1 1
@@ -48,7 +47,7 @@
         separation2 0 1 0
         separation3 0 0 1
     }
-  \endverbatim
+  \endcode
 
   \sa SoMultipleCopy
 */

@@ -85,13 +85,12 @@ Separator {
 
 \endcode
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinate2 {
         point [  ]
     }
-  \endverbatim
+  \endcode
 
   \sa SoTextureCoordinateFunction, SoTextureCoordinateBinding
 */

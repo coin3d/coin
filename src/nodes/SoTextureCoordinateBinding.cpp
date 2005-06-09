@@ -29,13 +29,12 @@
   SoTextureCoordinateBinding binds current coordinates to subsequent
   shapes by using either per vertex or per indexed vertex binding.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinateBinding {
         value PER_VERTEX_INDEXED
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

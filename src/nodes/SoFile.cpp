@@ -37,13 +37,12 @@
   will then automatically trigger an invocation of a read operation
   which imports the filename you set in the field.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     File {
         name "<Undefined file>"
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

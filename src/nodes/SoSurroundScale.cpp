@@ -170,14 +170,13 @@
   SoAntiSquish nodes to get uniform scaling along all three principal
   axes, as has also been done in the above example.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     SurroundScale {
         numNodesUpToContainer 0
         numNodesUpToReset 0
     }
-  \endverbatim
+  \endcode
 
   \sa SoAntiSquish
 */

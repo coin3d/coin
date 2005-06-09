@@ -30,12 +30,11 @@
   texture coordinates as SoTextureCoordinateDefault cleans out all previously
   defined texture coordinates and texture coordinate functions.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinateDefault {
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

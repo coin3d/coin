@@ -38,13 +38,12 @@
   available colors), if supported by the OpenGL hardware and / or
   driver.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ColorIndex {
         index 1
     }
-  \endverbatim
+  \endcode
 */
 
 // FIXME: couldn't we check for the above mentioned pre-conditions

@@ -34,14 +34,13 @@
 
   See the SoGuiExample CVS module for an usage example for this node.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureUnit {
         unit 0
         mappingMethod IMAGE_MAPPING
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.2
 */

@@ -72,16 +72,15 @@
   out of a polygon.  But for compatibility reasons we are of course
   sticking to the same behavior as the original SGI Inventor library.)
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ShapeHints {
         vertexOrdering UNKNOWN_ORDERING
         shapeType UNKNOWN_SHAPE_TYPE
         faceType CONVEX
         creaseAngle 0
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

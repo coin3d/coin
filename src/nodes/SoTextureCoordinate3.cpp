@@ -41,13 +41,12 @@
 
   \COIN_CLASS_EXTENSION
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinate3 {
         point [  ]
     }
-  \endverbatim
+  \endcode
 
   \sa SoTextureCoordinate2
   \since Coin 2.0

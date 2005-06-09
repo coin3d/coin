@@ -29,13 +29,12 @@
   This node provides a convenient way of setting diffuse colors and
   transparency values with packed 32-bit RGBA vectors.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PackedColor {
         orderedRGBA 0xccccccff
     }
-  \endverbatim
+  \endcode
 
   \sa SoBaseColor
 */

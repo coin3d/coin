@@ -157,20 +157,18 @@
   $ ./test < input.iv
   \endverbatim
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Texture2 {
         filename ""
         image 0 0 0
-
         wrapS REPEAT
         wrapT REPEAT
         model MODULATE
         blendColor 0 0 0
         enableCompressedTexture FALSE
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

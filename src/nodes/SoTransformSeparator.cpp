@@ -32,12 +32,11 @@
   will affect the remaining parts of the scenegraph after traversal,
   just like as for the SoGroup node.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TransformSeparator {
     }
-  \endverbatim
+  \endcode
 
   \sa SoSeparator, SoGroup
 */

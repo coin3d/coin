@@ -32,9 +32,8 @@
   See also documentation of parent class for important information
   regarding light sources in general.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     SpotLight {
         on TRUE
         intensity 1
@@ -44,7 +43,7 @@
         dropOffRate 0
         cutOffAngle 0.78539819
     }
-  \endverbatim
+  \endcode
 
   \sa SoSpotLight
 */

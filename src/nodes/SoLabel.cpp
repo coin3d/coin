@@ -32,13 +32,12 @@
   SoLabel nodes does not influence traversal in any way for any of the
   builtin actions.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Label {
         label "<Undefined label>"
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

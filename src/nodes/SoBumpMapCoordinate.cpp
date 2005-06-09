@@ -45,13 +45,12 @@
   If you supply no bump map coordinates for a shape, the texture
   coordinates for texture unit 0 will be used.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     BumpMapCoordinate {
         point [  ]
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.2
 */

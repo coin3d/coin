@@ -43,15 +43,14 @@
 
   Note also that the rotation will start at the given angle value.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Rotor {
         rotation 0 0 1  0
         speed 1
         on TRUE
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

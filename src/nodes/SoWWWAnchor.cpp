@@ -44,9 +44,8 @@
   }
   \endverbatim
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     WWWAnchor {
         renderCaching AUTO
         boundingBoxCaching AUTO
@@ -59,7 +58,7 @@
         description ""
         map NONE
     }
-  \endverbatim
+  \endcode
 
   \since Inventor 2.1
 */

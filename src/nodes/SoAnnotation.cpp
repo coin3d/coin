@@ -34,16 +34,15 @@
   will not be rendered back-to-front sorted, but rather in the order
   they are present in the scenegraph.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Annotation {
         renderCaching AUTO
         boundingBoxCaching AUTO
         renderCulling AUTO
         pickCulling AUTO
     }
-    \endverbatim
+    \endcode
 */
 
 // FIXME: consider adding a lazy GL depth buffer element. 200YMMDD pederb.

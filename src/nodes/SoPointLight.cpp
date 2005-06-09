@@ -32,16 +32,15 @@
   See also documentation of parent class for important information
   regarding light sources in general.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PointLight {
         on TRUE
         intensity 1
         color 1 1 1
         location 0 0 1
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

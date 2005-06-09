@@ -45,9 +45,8 @@
   you find discrepancies between Coin's SoExtSelection and TGS's
   SoExtSelection node.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ExtSelection {
         renderCaching AUTO
         boundingBoxCaching AUTO
@@ -58,7 +57,7 @@
         lassoPolicy FULL_BBOX
         lassoMode ALL_SHAPES
     }
-  \endverbatim
+  \endcode
 
   \since TGS Inventor 2.5
   \since Coin 1.0

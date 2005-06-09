@@ -51,16 +51,15 @@
   <img src="http://doc.coin3d.org/images/Coin/nodes/drawstyle.png">
   </center>
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     DrawStyle {
         style FILLED
         pointSize 0
         lineWidth 0
         linePattern 0xffff
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

@@ -45,7 +45,7 @@
 #include <Inventor/C/tidbits.h>
 #include "../io/SoWriterefCounter.h"
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoUnknownNodeP {
 public:
@@ -53,8 +53,7 @@ public:
   SoChildList * privatechildren, * alternate;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
+// *************************************************************************
 
 // The following code is used instead of SO_NODE_SOURCE() to let
 // SoUnknownNodes have dynamic handling of SoFieldData objects.

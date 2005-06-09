@@ -32,14 +32,13 @@
   Please note that this is an experimental class. The API might change
   a lot before/if it's included in any official Coin release.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     CacheHint {
         memValue 0.5
         gfxValue 0.5
     }
-  \endverbatim
+  \endcode
 */
 
 /*!

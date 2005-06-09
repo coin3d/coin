@@ -68,14 +68,13 @@
   }
   \endverbatim
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ClipPlane {
         plane 1 0 0  0
         on TRUE
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

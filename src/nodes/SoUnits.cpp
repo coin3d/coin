@@ -34,13 +34,12 @@
   When encountering SoUnit nodes, the traversal actions methods makes
   sure the following geometry is scaled accordingly.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Units {
         units METERS
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

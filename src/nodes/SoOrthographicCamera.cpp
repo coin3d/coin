@@ -59,9 +59,8 @@
   node in the sub-scene, where you let the callback disable the depth
   buffer with glDisable(GL_DEPTH_TEST).
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     OrthographicCamera {
         viewportMapping ADJUST_CAMERA
         position 0 0 1
@@ -72,7 +71,7 @@
         focalDistance 5
         height 2
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

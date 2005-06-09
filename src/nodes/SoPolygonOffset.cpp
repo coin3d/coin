@@ -96,16 +96,15 @@
   z-buffer floating point calculations will be fickle with regard to
   whether or not the polygon or the line will be closer to the camera.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PolygonOffset {
         factor 1
         units 1
         styles FILLED
         on TRUE
     }
-  \endverbatim
+  \endcode
 
   \since TGS Inventor 2.5
   \since Coin 1.0

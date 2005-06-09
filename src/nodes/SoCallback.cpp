@@ -34,12 +34,11 @@
   action, so check the type of the \a action argument of the callback
   function if you only want to run your code at specific actions.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Callback {
     }
-  \endverbatim
+  \endcode
 */
 
 #include <Inventor/nodes/SoCallback.h>

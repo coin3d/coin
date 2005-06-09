@@ -29,9 +29,8 @@
   For realistic looking 3D scene, the geometry should be rendered with
   perspective calculations. Use this camera type to accomplish this.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     PerspectiveCamera {
         viewportMapping ADJUST_CAMERA
         position 0 0 1
@@ -42,7 +41,7 @@
         focalDistance 5
         heightAngle 0.78539819
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

@@ -29,15 +29,14 @@
   Use nodes of this type if you want to set up profiles that are
   smooth curves.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     NurbsProfile {
         index 0
         linkage START_FIRST
         knotVector 0
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

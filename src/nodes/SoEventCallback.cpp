@@ -53,12 +53,11 @@
   themselves, short-circuiting the SoHandleEventAction traversal so
   the event will never reach the SoEventCallback node(s) you insert.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     EventCallback {
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

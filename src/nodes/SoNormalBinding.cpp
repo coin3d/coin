@@ -29,13 +29,12 @@
   Use nodes of this type to specify how to map normal vectors from
   SoNormal nodes in the scene graph to shape nodes.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     NormalBinding {
         value PER_VERTEX_INDEXED
     }
-  \endverbatim
+  \endcode
 
 */
 

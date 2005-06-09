@@ -30,13 +30,12 @@
   graph which will not be influenced by the transformation nodes
   before it during traversal.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     ResetTransform {
         whatToReset TRANSFORM
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

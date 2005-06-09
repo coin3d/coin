@@ -68,14 +68,13 @@
 
   \COIN_CLASS_EXTENSION
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureScalePolicy {
         policy USE_TEXTURE_QUALITY
         quality 0.5
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.0
 */

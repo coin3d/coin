@@ -30,12 +30,11 @@
   
   FIXME: more doc.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinateReflectionMap {
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

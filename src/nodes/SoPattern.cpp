@@ -28,14 +28,13 @@
 
   FIXME: class doc
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Pattern {
         category ""
         name ""
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.4
   \since TGS Inventor 2.6

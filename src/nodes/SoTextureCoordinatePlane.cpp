@@ -87,14 +87,13 @@
 
   before adding the texture coordinate plane.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinatePlane {
         directionS 1 0 0
         directionT 0 1 0
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

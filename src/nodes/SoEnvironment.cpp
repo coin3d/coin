@@ -29,9 +29,8 @@
   This node type provides the application programmer with the ability
   to set global parameters influencing lighting and fog.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Environment {
         ambientIntensity 0.2
         ambientColor 1 1 1
@@ -40,7 +39,7 @@
         fogColor 1 1 1
         fogVisibility 0
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

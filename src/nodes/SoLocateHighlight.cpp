@@ -30,9 +30,8 @@
   Coin we always draw to the back buffer, forcing a scene redraw
   whenever a highlight state changes.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     LocateHighlight {
         renderCaching AUTO
         boundingBoxCaching AUTO
@@ -42,7 +41,7 @@
         style EMISSIVE
         mode AUTO
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

@@ -28,16 +28,15 @@
 
   FIXME: not implemented yet. pederb, 2005-04-20
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TextureCoordinateObject {
         factorS 1 0 0 0
         factorT 0 1 0 0
         factorR 0 0 1 0
         factorQ 0 0 0 1
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

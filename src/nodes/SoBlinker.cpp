@@ -31,15 +31,14 @@
   on and off. Cycling can be turned off using the SoBlinker::on field,
   and the node then behaves like a normal SoSwitch node.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Blinker {
         whichChild -1
         speed 1
         on TRUE
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

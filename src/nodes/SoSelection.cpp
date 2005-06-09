@@ -127,9 +127,8 @@
   to manually override that behaviour, if you want selection change on
   one SoSelection node to not affect the others.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Selection {
         renderCaching AUTO
         boundingBoxCaching AUTO
@@ -137,7 +136,7 @@
         pickCulling AUTO
         policy SHIFT
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

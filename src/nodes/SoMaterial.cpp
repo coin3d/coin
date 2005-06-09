@@ -93,9 +93,8 @@
   }
   \endverbatim
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Material {
         ambientColor 0.2 0.2 0.2
         diffuseColor 0.8 0.8 0.8
@@ -104,7 +103,7 @@
         shininess 0.2
         transparency 0
     }
-  \endverbatim
+  \endcode
 
   \sa SoMaterialBinding, SoBaseColor, SoPackedColor
 */

@@ -154,14 +154,13 @@
   try to use that debugging option when something does not work quite
   as expected.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Font {
         name "defaultFont"
         size 10
     }
-  \endverbatim
+  \endcode
 
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */

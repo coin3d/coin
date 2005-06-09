@@ -35,9 +35,8 @@
 
   \COIN_CLASS_EXTENSION
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Texture3Transform {
         translation 0 0 0
         rotation 0 0 1  0
@@ -45,7 +44,7 @@
         scaleOrientation 0 0 1  0
         center 0 0 0
     }
-  \endverbatim
+  \endcode
 
   \sa SoTexture2Transform
   \since Coin 2.0

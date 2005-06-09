@@ -33,16 +33,15 @@
   SoSeparator nodes also provides options for traversal optimalization
   through the use of caching.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Separator {
         renderCaching AUTO
         boundingBoxCaching AUTO
         renderCulling AUTO
         pickCulling AUTO
     }
-  \endverbatim
+  \endcode
 
   \sa SoTransformSeparator
 */

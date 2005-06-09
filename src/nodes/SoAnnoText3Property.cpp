@@ -28,15 +28,14 @@
 
   FIXME: doc
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     AnnoText3Property {
         renderPrintType RENDER3D_PRINT_VECTOR
         fontSizeHint FIT_VECTOR_TEXT
         isCharOrientedRasterPrint TRUE
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.4
   \since TGS Inventor v2.6

@@ -40,13 +40,12 @@
 
   \COIN_CLASS_EXTENSION
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     TransparencyType {
         value SCREEN_DOOR
     }
-  \endverbatim
+  \endcode
 
   \sa SoGLRenderAction::TransparencyType
   \since Coin 2.0

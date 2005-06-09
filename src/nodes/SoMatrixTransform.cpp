@@ -30,16 +30,15 @@
   it to accumulate any kind of transformation matrix on top of the
   current model transformation matrix.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     MatrixTransform {
         matrix 1 0 0 0
   0 1 0 0
   0 0 1 0
   0 0 0 1
     }
-  \endverbatim
+  \endcode
 
   \sa SoTransform
 */

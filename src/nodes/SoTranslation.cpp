@@ -29,13 +29,12 @@
   For simply translating some geometry in a scene graph, you can use
   this node type.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Translation {
         translation 0 0 0
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

@@ -31,9 +31,8 @@
   used. Halfway through the cycle, the resulting rotation equals
   rotation1, and at the end of the cycle, we're at rotation0 again.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Pendulum {
         rotation 0 0 1  0
         rotation0 0 0 1  0
@@ -41,7 +40,7 @@
         speed 1
         on TRUE
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

@@ -75,14 +75,13 @@
   to decide when to switch children, so that node will still work with
   SoOrthographicCamera.)
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     LOD {
         center 0 0 0
         range [  ]
     }
-  \endverbatim
+  \endcode
 
   \since Inventor 2.1
   \sa SoLevelOfDetail

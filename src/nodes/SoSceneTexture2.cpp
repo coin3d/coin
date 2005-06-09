@@ -51,9 +51,8 @@
   are equal to a whole power-of-two, see documentation for
   SoSceneTexture::size.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     SceneTexture2 {
         size 256 256
         scene NULL
@@ -64,7 +63,7 @@
         model MODULATE
         blendColor 0 0 0
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.2
 */

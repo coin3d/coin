@@ -32,13 +32,12 @@
   performance, 2) you can calculate and use "incorrect" normals to do
   various special effects.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Normal {
         vector [  ]
     }
-  \endverbatim
+  \endcode
 
   \sa SoNormalBinding
 */

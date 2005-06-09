@@ -131,13 +131,12 @@
   we could switch to a less complex version without losing enough
   detail that it gives a noticable visual degradation.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     LevelOfDetail {
         screenArea 0
     }
-  \endverbatim
+  \endcode
 
   \sa SoLOD
 */

@@ -33,16 +33,15 @@
   scaling) for it's children. Apart from transformations, the
   appearance of it's children will be identical.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     MultipleCopy {
         matrix 1 0 0 0
         0 1 0 0
         0 0 1 0
         0 0 0 1
     }
-  \endverbatim
+  \endcode
 
   \sa SoArray
 */

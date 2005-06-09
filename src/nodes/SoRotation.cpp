@@ -31,13 +31,12 @@
 
   See SoTransformation class documentation for a short usage example.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Rotation {
         rotation 0 0 1  0
     }
-  \endverbatim
+  \endcode
 
   \sa SbRotation, SoRotationXYZ
 */

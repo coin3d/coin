@@ -31,13 +31,12 @@
   triple-value vector, with one scale factor for each of the 3
   principal axes.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     Scale {
         scaleFactor 1 1 1
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************

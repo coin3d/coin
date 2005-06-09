@@ -28,16 +28,15 @@
 
   FIXME: doc
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     AnnoText3 {
         string ""
         justification LEFT
         spacing 1
         alternateRep NULL
     }
-  \endverbatim
+  \endcode
 
   \since Coin 2.4
   \since TGS Inventor v2.6

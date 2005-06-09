@@ -34,14 +34,13 @@
   using SoRotation nodes if you are connecting engines to rotation
   angles for animation purposes.
 
-  \verbatim
-  FILE FORMAT/DEFAULTS
-
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
     RotationXYZ {
         angle 0
         axis X
     }
-  \endverbatim
+  \endcode
 */
 
 // *************************************************************************
