@@ -552,6 +552,85 @@ THE WISH LIST
   A more dynamic scheme would be preferable, but as a first measure this
   should be fixed.
 
+  UPDATE 2005-06-09 mortene: below follows a good example of typical
+  problems with the current code/interface. Try hitting SHIFT + '0'
+  and SHIFT + '9' on a Norwegian keyboard -- the results are very
+  confusing.
+
+  ---------8<--------------- [snip] ---------------------8<---------------
+  #include <Inventor/@Gui@/So@Gui@.h>
+  #include <Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h>
+  #include <Inventor/nodes/SoEventCallback.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/events/SoKeyboardEvent.h>
+  
+  static void
+  event_cb(void * userdata, SoEventCallback * node)
+  {
+    const SoEvent * event = node->getEvent();
+    SoKeyboardEvent *keyboardEvent;
+    SbBool ctrl = event->wasCtrlDown();
+    SbBool shift = event->wasShiftDown();
+  
+    if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
+      keyboardEvent = (SoKeyboardEvent*) event;
+  
+      const char c = keyboardEvent->getPrintableCharacter();
+      printf("keyboardEvent->getPrintableCharacter() == %c\n", c);
+      
+      if (SoKeyboardEvent::isKeyPressEvent (keyboardEvent,SoKeyboardEvent::NUMBER_0)) {
+        if (ctrl) {
+          fprintf(stderr,"ctrl 0\n");
+        } 
+        else {
+          if(shift) {
+            fprintf(stderr,"shift 0\n");
+          } else {
+            fprintf(stderr,"key 0\n");
+          }
+        }
+        return;
+      }
+    }
+  }
+  
+  int main(int argc, char ** argv)
+  {
+    @WIDGET@ window = So@Gui@::init(argv[0]);
+    
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+    root->addChild(new SoCube);
+   
+    // create an Inventor viewer
+    So@Gui@ExaminerViewer * ex1 = new So@Gui@ExaminerViewer(window);
+   
+    SoEventCallback * event = new SoEventCallback;
+    event->addEventCallback(SoKeyboardEvent::getClassTypeId(),
+                            event_cb, ex1);
+    root->addChild(event);
+  
+    ex1->setSceneGraph(root);
+    ex1->show();
+    So@Gui@::show(window);
+    So@Gui@::mainLoop(); // go
+    delete ex1;
+  
+    root->unref();
+  
+    return 0;
+  }
+  ---------8<--------------- [snip] ---------------------8<---------------
+
+  The behavior is strange, but I believe this is actually how SGI
+  Inventor works aswell, so it's not exactly a bug.
+
+  To go ahead and fix it properly, I believe the correct thing to do
+  would be to add a replacement for SoKeyboardEvent in Coin (keeping
+  backward compatibility, so I guess it must _supplement_
+  SoKeyboardEvent, not really replace it).
+
 
 * SoSwitch::whichChild as an SoMFBool
   2002-01-15  Morten Eriksen  <mortene@sim.no>
