@@ -919,6 +919,7 @@ SoFaceSet::useConvexCache(SoAction * action)
     break;
   case PER_VERTEX:
     mbind = SoConvexDataCache::PER_VERTEX;
+    break;
   case PER_FACE:
     mbind = SoConvexDataCache::PER_FACE;
     break;
@@ -934,6 +935,7 @@ SoFaceSet::useConvexCache(SoAction * action)
     break;
   case PER_VERTEX:
     nbind = SoConvexDataCache::PER_VERTEX;
+    break;
   case PER_FACE:
     nbind = SoConvexDataCache::PER_FACE;
     break;
