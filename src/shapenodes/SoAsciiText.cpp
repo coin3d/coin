@@ -103,6 +103,16 @@
     <img src="http://doc.coin3d.org/images/Coin/nodes/asciitext.png">
   </center>
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    AsciiText {
+        string ""
+        spacing 1
+        justification LEFT
+        width 0
+    }
+  \endcode
+
   \since Inventor 2.1
 */
 

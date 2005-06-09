@@ -28,6 +28,23 @@
 
   It is very similar to the SoNurbsSurface class, but controlpoints
   can be specified using indices.
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    IndexedNurbsSurface {
+        numUControlPoints 0
+        numVControlPoints 0
+        coordIndex 0
+        uKnotVector 0
+        vKnotVector 0
+        numSControlPoints 0
+        numTControlPoints 0
+        textureCoordIndex -1
+        sKnotVector 0
+        tKnotVector 0
+    }
+  \endcode
+
 */
 // FIXME: more class doc. Usage example! 20011220 mortene.
 

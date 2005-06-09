@@ -43,6 +43,15 @@
   and more detailed information about various issues also relevant for
   this node.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    FaceSet {
+        vertexProperty NULL
+        startIndex 0
+        numVertices -1
+    }
+  \endcode
+
   \sa SoIndexedFaceSet, SoIndexedTriangleStripSet
 */
 

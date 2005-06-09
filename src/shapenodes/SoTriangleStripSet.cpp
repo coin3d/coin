@@ -86,6 +86,15 @@
   set for material, and normals. The default material binding is
   OVERALL. The default normal binding is PER_VERTEX.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    TriangleStripSet {
+        vertexProperty NULL
+        startIndex 0
+        numVertices -1
+    }
+  \endcode
+
   \sa SoIndexedTriangleStripSet
 */
 

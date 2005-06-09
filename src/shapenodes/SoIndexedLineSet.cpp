@@ -35,6 +35,18 @@
   For more information about line sets, see documentation in
   SoLineSet.  For more information about indexed shapes, see
   documentation in SoIndexedShape and SoIndexedFaceSet.
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    IndexedLineSet {
+        vertexProperty NULL
+        coordIndex 0
+        materialIndex -1
+        normalIndex -1
+        textureCoordIndex -1
+    }
+  \endcode
+
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>

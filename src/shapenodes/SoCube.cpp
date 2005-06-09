@@ -44,6 +44,15 @@
   without having to do the calculation and book-keeping of the polygon
   sides and other low-level programming herself.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Cube {
+        width 2
+        height 2
+        depth 2
+    }
+  \endcode
+
   \sa SoCylinder, SoSphere, SoCone
 */
 

@@ -154,6 +154,17 @@
   FaceSet {}
   \endverbatim
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    IndexedFaceSet {
+        vertexProperty NULL
+        coordIndex 0
+        materialIndex -1
+        normalIndex -1
+        textureCoordIndex -1
+    }
+  \endcode
+
   \sa SoFaceSet, SoIndexedTriangleStripSet
 */
 

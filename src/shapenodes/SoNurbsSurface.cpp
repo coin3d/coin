@@ -30,6 +30,21 @@
   are unfamiliar with the principles of representing smooth curves and
   surfaces when doing 3D visualization, we recommend finding a good
   book on the subject.
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    NurbsSurface {
+        numUControlPoints 0
+        numVControlPoints 0
+        numSControlPoints 0
+        numTControlPoints 0
+        uKnotVector 0
+        vKnotVector 0
+        sKnotVector 0
+        tKnotVector 0
+    }
+  \endcode
+
 */
 // FIXME: recommend the book pederb bought about the subject? If so,
 // also add to class doc for SoNurbsSurface (and others?). Plus, add a

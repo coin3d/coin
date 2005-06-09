@@ -59,6 +59,16 @@
      PointSet { }
   }
   \endverbatim
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    PointSet {
+        vertexProperty NULL
+        startIndex 0
+        numPoints -1
+    }
+  \endcode
+
 */
 
 #include <Inventor/nodes/SoPointSet.h>

@@ -58,6 +58,13 @@
   be a good trade-off between correctness and speed for your
   particular application.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Sphere {
+        radius 1
+    }
+  \endcode
+
   \sa SoCone, SoCylinder, SoCube
 */
 

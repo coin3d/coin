@@ -59,6 +59,15 @@
   insertion of an SoDrawStyle node in front of SoLineSet node(s) in
   the scenegraph.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    LineSet {
+        vertexProperty NULL
+        startIndex 0
+        numVertices -1
+    }
+  \endcode
+
   \sa SoIndexedLineSet
 */
 

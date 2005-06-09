@@ -26,8 +26,8 @@
   \brief The SoNonIndexedShape class is the superclass for all non-indexed vertex based shapes.
   \ingroup nodes
   
-  It contains the (now obsoleted) startIndex field and a convenience method for 
-  calculating the bounding box.
+  It contains the (now obsoleted) startIndex field and a convenience
+  method for calculating the bounding box.
 */
 
 #include <Inventor/nodes/SoNonIndexedShape.h>

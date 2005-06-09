@@ -115,6 +115,19 @@
   graph for the best possible rendering performance. See the note
   about this issue in the SoText2 class documentation.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Image {
+        width -1
+        height -1
+        vertAlignment BOTTOM
+        horAlignment LEFT
+        image 0 0 0
+
+        filename ""
+    }
+  \endcode
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */

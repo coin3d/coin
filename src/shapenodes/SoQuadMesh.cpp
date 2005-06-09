@@ -140,6 +140,15 @@
   done is must be without using any of the SoTextureCoordinateFunction
   subclass nodes.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    QuadMesh {
+        vertexProperty NULL
+        startIndex 0
+        verticesPerColumn 1
+        verticesPerRow 1
+    }
+  \endcode
 
   \sa SoTriangleStripSet SoIndexedTriangleStripSet
 */

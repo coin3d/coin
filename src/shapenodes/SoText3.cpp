@@ -95,6 +95,16 @@
   a few characters to be placed in your scene, rather than to
   visualize complete sentences.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Text3 {
+        string ""
+        spacing 1
+        justification LEFT
+        parts FRONT
+    }
+  \endcode
+
   \sa SoText2, SoAsciiText, SoProfile
 */
 

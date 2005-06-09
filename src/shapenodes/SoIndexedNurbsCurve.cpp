@@ -30,6 +30,16 @@
   are unfamiliar with the principles of representing smooth curves and
   surfaces when doing 3D visualization, we recommend finding a good
   book on the subject.
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    IndexedNurbsCurve {
+        numControlPoints 0
+        coordIndex 0
+        knotVector 0
+    }
+  \endcode
+
 */
 // FIXME: Usage example! Also give a reference to a decent
 // book on NURBS. 20011220 mortene.

@@ -39,6 +39,16 @@
   in TGS' Inventor implementation. (Note that TGS's implementation
   doesn't support the NONE markerIndex value.)
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    MarkerSet {
+        vertexProperty NULL
+        startIndex 0
+        numPoints -1
+        markerIndex 0
+    }
+  \endcode
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */

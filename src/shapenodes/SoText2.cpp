@@ -68,6 +68,15 @@
 
   SoText2 uses the SoGlyph class to generate glyph bitmaps.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Text2 {
+        string ""
+        spacing 1
+        justification LEFT
+    }
+  \endcode
+
   \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph
 */
 

@@ -51,6 +51,15 @@
   believe would be a good trade-off between correctness and speed for
   your particular application.
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    Cylinder {
+        radius 1
+        height 2
+        parts (SIDES | TOP | BOTTOM)
+    }
+  \endcode
+
   \sa SoCone, SoSphere, SoCube
 */
 

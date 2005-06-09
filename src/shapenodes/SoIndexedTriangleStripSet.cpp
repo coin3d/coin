@@ -57,6 +57,18 @@
      }
   }
   \endverbatim
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    IndexedTriangleStripSet {
+        vertexProperty NULL
+        coordIndex 0
+        materialIndex -1
+        normalIndex -1
+        textureCoordIndex -1
+    }
+  \endcode
+
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
