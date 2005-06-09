@@ -4925,3 +4925,61 @@ Separator {
     20050609 mortene.
 
 =====================================================================
+
+196 Bug with VRML97 scene graph searching.
+
+    The below scene graph (with a VRML97 PROTO) demonstrates a problem
+    with SoSearchAction in VRML97 graphs: one can not get paths to all
+    nodes, which causes e.g. PROTO-connection to "miss out" on certain
+    connections it should be able to make.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#VRML V2.0 utf8
+
+PROTO AnnText [
+ exposedField MFString sText ""
+ field SFFloat sFontSize 0.1
+ field MFString sFontFamily "courier"
+ field SFString sFontStyle ""
+ exposedField SFVec3f slocation 0 0 0
+]
+{
+   Transform {
+      translation IS slocation
+      children [
+         Shape {
+            geometry Text{
+               string IS sText
+               fontStyle FontStyle {
+                  size IS sFontSize
+                  family IS sFontFamily
+                  style IS sFontStyle
+                  spacing 2.5
+               }
+            }
+         }
+      ]
+   }
+}
+
+Transform {
+   children [
+      AnnText { slocation 0 0 0 sText "hepp" }
+   ]
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    pederb suggests that this should be fix be extending the
+    SoVRMLParent etc hack by duplicating MFNode contents into "hidden"
+    SoChildList instances. pederb has a framework for this in:
+
+        void SoVRMLParent::updateChildList(SoNode * nodewithsfnode, SoChildList & cl)
+
+    Note: is there some other, more fundamental, way we could fix this
+    without applying this hack?  It's not very nice, and is giving us
+    headaches now and then with bugs which are the results of these
+    SoChildList instances not kept in sync.
+
+    20050609 mortene.
+
+=====================================================================
