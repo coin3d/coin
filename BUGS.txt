@@ -1480,6 +1480,13 @@ Now, for the list of known bugs in the core Coin library:
 
     20030602 mortene.
 
+    UPDATE 20050610 mortene: it seems someone (pederb?) rewrote the
+    assert, and made the code "kinder", as there are now warnings
+    instead:
+
+        Coin warning in SoWriterefCounter::setWriteref(): writeref < 0 for <noname> <0x806d6a8>
+        Coin warning in SoWriterefCounter::<cleanup>(): Not removed from writedict: 0x806d6a8, Group:<noname>
+
 =====================================================================
 
 073 Multiple complexity settings for same SoTexture2 does not work.
@@ -4845,5 +4852,18 @@ Transform {
     SoChildList instances not kept in sync.
 
     20050609 mortene.
+
+=====================================================================
+
+197 SoLineHighlightRenderAction exhibits rendering artifacts due to
+    z-buffer fighting.
+
+    I hadn't noticed this until a recent bug report, because the
+    default line width is 3.0, which usually covers over the artifact.
+
+    Fix by using the SoPolygonOffsetElement, in a similar manner to
+    other override elements in SoLineHighlightRenderAction.cpp.
+
+    20050610 mortene.
 
 =====================================================================
