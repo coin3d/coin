@@ -24,7 +24,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -37,11 +37,8 @@ class SoGLShaderProgram;
 
 // *************************************************************************
 
-// FIXME: in TGS Inventor, this node inherits an SoNode. Consider
-// whether it could cause trouble to not be 100% compatible in that
-// regard. 20050120 mortene.
-class COIN_DLL_API SoShaderObject : public SoGroup {
-  typedef SoGroup inherited;
+class COIN_DLL_API SoShaderObject : public SoNode {
+  typedef SoNode inherited;
   SO_NODE_ABSTRACT_HEADER(SoShaderObject);
 
 public:

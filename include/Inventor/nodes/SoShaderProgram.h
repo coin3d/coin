@@ -24,7 +24,8 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFNode.h>
 
 class SoState;
@@ -32,8 +33,8 @@ class SoGLRenderAction;
 
 // *************************************************************************
 
-class COIN_DLL_API SoShaderProgram : public SoGroup {
-  typedef SoGroup inherited;
+class COIN_DLL_API SoShaderProgram : public SoNode {
+  typedef SoNode inherited;
   SO_NODE_HEADER(SoShaderProgram);
   
 public:

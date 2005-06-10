@@ -153,10 +153,6 @@ SoShaderObject::search(SoSearchAction * action)
       if (action->isFound()) return;
     }
   }
-  
-  //FIXME: only as long as SoShaderObject is derived by SoGroup
-  //       (which is not TGS conform) 20050129 martin
-  SoGroup::doAction((SoAction *)action);
 }
 
 void
@@ -467,7 +463,6 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
 void
 SoShaderObjectP::updateParameters(int start, int num)
 {
-  // FIXME: the group's children are ignored at the moment (20041011 martin)
   if (!this->owner->isActive.getValue() || this->glShaderObject==NULL) return;
   if (start < 0 || num < 0) return;
 
@@ -494,12 +489,6 @@ SoShaderObjectP::updateAllParameters(void)
       (SoUniformShaderParameter*)this->owner->parameter[i];
     param->updateParameter(this->glShaderObject);
   }
-  cnt = this->owner->getNumChildren();
-  for (i=0; i<cnt; i++) {
-    SoUniformShaderParameter *param =
-      (SoUniformShaderParameter*)this->owner->getChild(i);
-    param->updateParameter(this->glShaderObject);
-  }
 }
 
 // Update state matrix paramaters
@@ -515,12 +504,6 @@ SoShaderObjectP::updateStateMatrixParameters(void)
     if (param->isOfType(STATE_PARAM::getClassTypeId()))
       param->updateParameter(this->glShaderObject);
   }
-  cnt = this->owner->getNumChildren();
-  for (i=0; i<cnt; i++) {
-    STATE_PARAM *param = (STATE_PARAM*)this->owner->getChild(i);
-    if (param->isOfType(STATE_PARAM::getClassTypeId()))
-      param->updateParameter(this->glShaderObject);
-  }
 #undef STATE_PARAM
 }
 
@@ -531,11 +514,6 @@ SoShaderObjectP::containStateMatrixParameters(void) const
   int i, cnt = this->owner->parameter.getNum();
   for (i=0; i<cnt; i++) {
     if (this->owner->parameter[i]->isOfType(STATE_PARAM::getClassTypeId()))
-      return TRUE;
-  }
-  cnt = this->owner->getNumChildren();
-  for (i=0; i<cnt; i++) {
-    if (this->owner->getChild(i)->isOfType(STATE_PARAM::getClassTypeId()))
       return TRUE;
   }
 #undef STATE_PARAM

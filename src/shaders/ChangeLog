@@ -10,10 +10,19 @@ be removed soon (in one month or so), when the shaders run smoothly.
 
 ============================================================================
 
-2005-04-13: src/shader/SoShaderObject.cpp:
+2005-06-08: martin
+	* include/Inventor/nodes/SoShaderObject.h,
+	  include/Inventor/nodes/SoShaderProgram.h,
+	  src/shader/SoShaderObject.cpp,
+	  src/shader/SoShaderProgram.cpp:
+	changed superclass to SoNode (was SoGroup before) to be compatible
+	to TGS
+
+2005-04-13: martin
+	* src/shader/SoShaderObject.cpp:
 	avoid unnecessary reloading of shaders if uniforms are changed
 	
-2005-03-24:
+2005-03-24: martin
 	* include/Inventor/nodes/SoNodes.h:
 	added following #includes: (to be compatible with TGS)
 	  SoShaderObject.h, 

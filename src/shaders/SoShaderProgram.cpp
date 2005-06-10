@@ -123,10 +123,6 @@ SoShaderProgram::search(SoSearchAction * action)
       if (action->isFound()) return;
     }
   }
-  
-  //FIXME: only as long as SoShaderProgram is derived by SoGroup
-  //       (which is not TGS conform) 20050129 martin
-  SoGroup::doAction((SoAction *)action);
 }
 
 void
@@ -174,21 +170,12 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
 
   SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
 
-  int cnt1 = PUBLIC(this)->shaderObject.getNum();
-  int cnt2 = PUBLIC(this)->getNumChildren();
-  int i;
+  int i, cnt = PUBLIC(this)->shaderObject.getNum();
 
   // load shader objects
   if (this->shouldTraverseShaderObjects) {
-    for (i=0; i<cnt1; i++) {
+    for (i=0; i<cnt; i++) {
       SoNode *node = PUBLIC(this)->shaderObject[i];
-      if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        this->removeFromPreviousChildren(node);
-        ((SoShaderObject *)node)->GLRender(action);
-      }
-    }
-    for (i=0; i<cnt2; i++) {
-      SoNode *node = PUBLIC(this)->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
         this->removeFromPreviousChildren(node);
         ((SoShaderObject *)node)->GLRender(action);
@@ -204,15 +191,8 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   if (this->shouldTraverseShaderObjects) {
     SbBool flag = FALSE;
 
-    for (i=0; i<cnt1; i++) {
+    for (i=0; i<cnt; i++) {
       SoShaderObject *node = (SoShaderObject *)PUBLIC(this)->shaderObject[i];
-      if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        node->updateAllParameters();
-        if (node->containStateMatrixParameters()) flag = TRUE;
-      }
-    }
-    for (i=0; i<cnt2; i++) {
-      SoShaderObject *node = (SoShaderObject *)PUBLIC(this)->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
         node->updateAllParameters();
         if (node->containStateMatrixParameters()) flag = TRUE;
@@ -230,18 +210,10 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
 void
 SoShaderProgramP::updateStateMatrixParameters(void)
 {
-  int cnt1 = PUBLIC(this)->shaderObject.getNum();
-  int cnt2 = PUBLIC(this)->getNumChildren();
-  int i;
+  int i, cnt = PUBLIC(this)->shaderObject.getNum();
 
-  for (i=0; i<cnt1; i++) {
+  for (i=0; i<cnt; i++) {
     SoNode *node = PUBLIC(this)->shaderObject[i];
-    if (node->isOfType(SoShaderObject::getClassTypeId())) {
-      ((SoShaderObject*)node)->updateStateMatrixParameters();
-    }
-  }
-  for (i=0; i<cnt2; i++) {
-    SoNode *node = PUBLIC(this)->getChild(i);
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
       ((SoShaderObject*)node)->updateStateMatrixParameters();
     }
@@ -251,23 +223,17 @@ SoShaderProgramP::updateStateMatrixParameters(void)
 void
 SoShaderProgramP::updateProgramAndPreviousChildren(void)
 {
-  int i, cnt1, cnt2 = this->previousChildren.getLength();
+  int i, cnt = this->previousChildren.getLength();
 
-  for (i=cnt2-1; i>=0; i--) {
+  for (i=cnt-1; i>=0; i--) {
     SoShaderObject *node = (SoShaderObject*)this->previousChildren[i];
     node->removeGLShaderFromGLProgram(&this->glShaderProgram);
     this->previousChildren.remove(i);
   }
   assert(this->previousChildren.getLength() == 0);
-  cnt1 = PUBLIC(this)->shaderObject.getNum();
-  cnt2 = PUBLIC(this)->getNumChildren();
-  for (i=0; i<cnt1; i++) {
+  cnt = PUBLIC(this)->shaderObject.getNum();
+  for (i=0; i<cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
-    if (node->isOfType(SoShaderObject::getClassTypeId()))
-      this->previousChildren.append(node);
-  }
-  for (i=0; i<cnt2; i++) {
-    SoNode * node = PUBLIC(this)->getChild(i);
     if (node->isOfType(SoShaderObject::getClassTypeId()))
       this->previousChildren.append(node);
   }
