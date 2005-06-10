@@ -3694,21 +3694,6 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-147 Compatibility issue: SoTexture2 and SoTexture3
-    "enableCompressedTexture" fields missing in Coin.
-
-    This was added for TGS OIV 4.0, so we should implement this for
-    compatibility reasons.
-
-    Adding at least stubs should be straightforward.
-
-    Note that this breaks ABI-compatibility, so it is only relevant
-    for Coin 3.
-
-    20041010 mortene.
-
-=====================================================================
-
 148 Compatibility issue: SoDrawStyle::linePatternScaleFactor missing
     in Coin.
 
