@@ -321,7 +321,7 @@ public:
 
   SoTexture2 * recentTex2;
   SbBool do_post_primitives;
-
+  
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
   
   SoFullPath * vrml2path;
@@ -410,12 +410,13 @@ SoToVRML2Action::SoToVRML2Action(void)
 #define ADD_TRIANGLE_CB(_node_) \
   PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, PRIVATE(this))
 #define ADD_SHAPE_CB(_node_, _cb_) \
-  ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
+  ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
+  shapehandledlist.append(_node_::getClassTypeId());
 #define ADD_SO_TO_IFS(_node_) \
-  ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
+  ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
+  shapehandledlist.append(_node_::getClassTypeId());
 
-  // Shape nodes
-  ADD_SO_TO_IFS(SoShape); // General geometry fallback in case we don't have more specific handling
+  SoTypeList shapehandledlist;
 
   ADD_SHAPE_CB(SoAsciiText, soasciitext_cb);
   ADD_SHAPE_CB(SoCone, socone_cb);
@@ -464,6 +465,24 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_SO_TO_IFS(SoIndexedNurbsSurface);
 
   ADD_SO_TO_IFS(SoProfile); // FIXME: Should this be here? 20020805 kristian.
+
+  // find all shapes not handled earlier, and add generic triangle
+  // handling for them 
+  //
+  // FIXME: also add line segment callback and point callback. pederb,
+  // 2005-06-10
+  SoTypeList shapes;
+  (void) SoType::getAllDerivedFrom(SoShape::getClassTypeId(), shapes);
+  int i;
+  
+  for (i = 0; i < shapes.getLength(); i++) {
+    SoType type = shapes[i];
+    if (type.canCreateInstance() && (shapehandledlist.find(type) < 0)) {
+      PRIVATE(this)->cbaction.addPreCallback(type, SoToVRML2ActionP::sotoifs_cb, PRIVATE(this));
+      PRIVATE(this)->cbaction.addTriangleCallback(type, SoToVRML2ActionP::triangle_cb, PRIVATE(this));
+      PRIVATE(this)->cbaction.addPostCallback(type, SoToVRML2ActionP::post_primitives_cb, PRIVATE(this));
+    }
+  }
 
 #undef ADD_PRE_CB
 #undef ADD_POST_CB
