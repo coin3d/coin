@@ -17,15 +17,16 @@ mortene ("x" means "done"):
         - clean up the SOURCE_HINT #define (use an element to pass on error messages?)
         - Cheshire Cat for classes in public API (may be ok already)
         - check all public API elements against TGS Inventor
-            - SoShaderProgram is SoGroup, should perhaps be inheriting SoNode
-            - SoShaderParameter has a similar incompatibility
+            x SoShaderProgram is SoGroup, should perhaps be inheriting SoNode
+            x SoShaderParameter has a similar incompatibility
         x make sure public and private headers are handled correctly
         - trim header-file inclusion
         - grep for FIXMEs, and check all of them
         - write API documentation
 
-        -> copy to Coin-2 (for 2.4.0 release)
+        -> copy to Coin-2 (for 2.5.0 release?)
         -> example program(s) and/or iv-files
+                => handegar has been doing some stuff
 
 martin:
   - array/matrix parameter
