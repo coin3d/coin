@@ -181,9 +181,11 @@
 */
 
 /*!  \var SoMFString SoAsciiText::string 
+
   Lines of text to render. Several strings can be specified for this
-  multifield, where each string represents a line. Default value is
-  empty.
+  multifield, where each string represents a line.
+
+  Default value is a single empty string.
 */
 /*!
   \var SoSFFloat SoAsciiText::spacing

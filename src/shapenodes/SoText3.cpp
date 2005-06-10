@@ -203,7 +203,10 @@
 
 /*!
   \var SoMFString SoText3::string
-  The strings. Defaults to empty set.
+
+  The strings to render.
+
+  Array defaults to contain a single empty string.
 */
 /*!
   \var SoSFFloat SoText3::spacing
