@@ -31,6 +31,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SbHash.h>
 #include <stdlib.h>
 
 class SoVertexArrayIndexer {
@@ -52,11 +53,17 @@ public:
   void endTarget(GLenum target);
 
   void close(void);
-  void render(const cc_glglue * glue, const SbBool vbo); 
+  void render(const cc_glglue * glue, const SbBool vbo, const uint32_t vbocontextid); 
 
   int getNumVertices(void);
 
 private:
+  static void context_destruction_cb(uint32_t context, void * userdata);
+  static void vbo_schedule(const uint32_t & key,
+                           const GLuint & value,
+                           void * closure);
+  static void vbo_delete(void * closure, uint32_t contextid);
+
   SoVertexArrayIndexer * getNext(void);
 
   GLenum target;
@@ -66,6 +73,8 @@ private:
   SbList <GLsizei> countarray;
   SbList <const int32_t *> ciarray;
   SbList <int32_t> indexarray;
+  SbHash <GLuint, uint32_t> vbohash;
+  
 };
 
 #endif // COIN_VERTEXARRAYINDEXER_H

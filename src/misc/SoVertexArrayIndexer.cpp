@@ -24,15 +24,22 @@
 #include "SoVertexArrayIndexer.h"
 #include <assert.h>
 #include <string.h>
+#include <stdio.h>
+#include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 
 SoVertexArrayIndexer::SoVertexArrayIndexer(void)
   : target(0),
     next(NULL)
 {
+  SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
 SoVertexArrayIndexer::~SoVertexArrayIndexer() 
 {
+  SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);  
+  // schedule delete for all allocated GL resources
+  this->vbohash.apply(vbo_schedule, NULL);
   delete this->next;
 }
 
@@ -122,17 +129,38 @@ SoVertexArrayIndexer::close(void)
 }
 
 void 
-SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo)
+SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo, const uint32_t contextid)
 {
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
-    cc_glglue_glDrawElements(glue,
-                             this->target,
-                             this->indexarray.getLength(),
-                             GL_UNSIGNED_INT,
-                             (const GLvoid*) this->indexarray.getArrayPtr());
-
+    // common case
+    if (vbo) {
+      GLuint glid;
+      if (!this->vbohash.get(contextid, glid)) {
+        cc_glglue_glGenBuffers(glue, 1, &glid);          
+        (void) this->vbohash.put(contextid, glid);
+        cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, glid);
+        cc_glglue_glBufferData(glue, GL_ELEMENT_ARRAY_BUFFER,
+                               this->indexarray.getLength()*sizeof(int32_t),
+                               this->indexarray.getArrayPtr(),
+                               GL_STATIC_DRAW);
+      }
+      else {
+        cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, glid);
+      }
+      cc_glglue_glDrawElements(glue, 
+                               this->target, 
+                               this->indexarray.getLength(), 
+                               GL_UNSIGNED_INT, NULL);
+    }
+    else {
+      cc_glglue_glDrawElements(glue,
+                               this->target,
+                               this->indexarray.getLength(),
+                               GL_UNSIGNED_INT,
+                               (const GLvoid*) this->indexarray.getArrayPtr());
+    }
     break;
   default:
     if (cc_glglue_has_multidraw_vertex_arrays(glue)) {
@@ -157,7 +185,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo)
     break;
   }
 
-  if (this->next) this->next->render(glue, vbo);
+  if (this->next) this->next->render(glue, vbo, contextid);
 }
 
 int 
@@ -175,4 +203,28 @@ SoVertexArrayIndexer::getNext(void)
     this->next = new SoVertexArrayIndexer;
   }
   return this->next;
+}
+
+void 
+SoVertexArrayIndexer::context_destruction_cb(uint32_t context, void * userdata)
+{
+}
+
+// callback from SbHash::apply()
+void
+SoVertexArrayIndexer::vbo_schedule(const uint32_t & key,
+                                   const GLuint & value,
+                                   void * closure)
+{
+  void * ptr = (void*) ((uintptr_t) value);
+  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, ptr);
+}
+
+// callback from SoGLCacheContextElement
+void
+SoVertexArrayIndexer::vbo_delete(void * closure, uint32_t contextid)
+{
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  GLuint id = (GLuint) ((uintptr_t) closure);
+  cc_glglue_glDeleteBuffers(glue, 1, &id);
 }

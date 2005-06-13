@@ -633,7 +633,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     if (THIS->vaindexer) {
       // don't cache when rendering with vertex arrays
       SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-      THIS->vaindexer->render(glue, FALSE);
+      THIS->vaindexer->render(glue, FALSE, SoGLCacheContextElement::get(state));
     }
     THIS->unlockVAIndexer();
     
