@@ -26,7 +26,6 @@
    backwards API and ABI compatible on the Coin 2.x releases. */
 
 /* ********************************************************************** */
-
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -68,6 +67,7 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   cc_hash_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
   assert(coin_is_power_of_two(newsize));
+  cc_hash_entry * prev;
 
   /* Never shrink the table */
   if (ht->size >= newsize)
@@ -83,7 +83,9 @@ hash_resize(cc_hash * ht, unsigned int newsize)
     cc_hash_entry * he = oldbuckets[i];
     while (he) {
       cc_hash_put(ht, he->key, he->val);
+      prev = he;
       he = he->next;
+      cc_memalloc_deallocate(ht->memalloc, (void*) prev);
     }
   }
   free(oldbuckets);
