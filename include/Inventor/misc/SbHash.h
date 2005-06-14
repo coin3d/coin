@@ -39,6 +39,7 @@
 #include <string.h> // memset()
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/C/base/memalloc.h>
 
 // *************************************************************************
 
@@ -53,9 +54,22 @@
 template <class Type, class Key>
 class SbHashEntry {
 public:
+  
+  void * operator new(size_t size, cc_memalloc * memhandler) {
+    SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *)
+      cc_memalloc_allocate(memhandler);
+    entry->memhandler = memhandler;    
+    return (void*) entry;
+  }
+  void operator delete(void * ptr) {
+    SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *) ptr;
+    cc_memalloc_deallocate(entry->memhandler, ptr);
+  }
+  
   Key key;
   Type obj;
   SbHashEntry<Type, Key> * next;
+  cc_memalloc * memhandler;
 };
 
 // *************************************************************************
@@ -88,6 +102,7 @@ public:
   ~SbHash()
   {
     this->clear();
+    cc_memalloc_destruct(this->memhandler);
     delete [] this->buckets;
   }
 
@@ -121,7 +136,7 @@ public:
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
-    entry = new SbHashEntry<Type, Key>;
+    entry = new (this->memhandler) SbHashEntry<Type, Key>;
     entry->key = key;
     entry->obj = obj;
     entry->next = this->buckets[i];
@@ -236,6 +251,7 @@ private:
     if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
     unsigned int s = 1;
     while ( s < sizearg ) { s <<= 1; } // power-of-two size
+    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Type, Key>));
     this->size = s;
     this->elements = 0;
     this->threshold = (unsigned int) (s * loadfactorarg);
@@ -285,6 +301,7 @@ private:
 
   SbHashEntry<Type, Key> ** buckets;
   SbHashFunc * hashfunc;
+  cc_memalloc * memhandler;
 };
 
 #endif // !COIN_SBHASH_H
