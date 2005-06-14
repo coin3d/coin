@@ -222,7 +222,9 @@ protected:
       SbHashEntry<Type, Key> * entry = oldbuckets[i];
       while ( entry ) {
         this->put(entry->key, entry->obj);
+        SbHashEntry<Type, Key> * preventry = entry;
         entry = entry->next;
+        delete preventry;
       }
     }
     delete [] oldbuckets;
