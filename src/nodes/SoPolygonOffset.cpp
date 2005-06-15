@@ -96,6 +96,11 @@
   z-buffer floating point calculations will be fickle with regard to
   whether or not the polygon or the line will be closer to the camera.
 
+  See the API documentation of the SoPolygonOffset::styles field below
+  for a discussion of one important limitation of OpenGL's Z-buffer
+  offset mechanism: it only works with polygons or polygons rendered
+  in line or point mode, using the SoDrawStyle::style field.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     PolygonOffset {
@@ -163,8 +168,62 @@
   of filled polygons, lines and points) be influenced by the offset at
   the same time.
 
-  Defaults to SoPolygonOffset::FILLED.
+  There is one very important OpenGL limitation to know about in this
+  regard: Z-buffer offsetting can \e only be done for either polygons,
+  or for \e polygons rendered \e as \e lines or \e as \e points.
+
+  So attempts at using this node to offset e.g. SoLineSet /
+  SoIndexedLineSet or SoPointSet primitives will \e not work.
+
+  See the comments in the scene graph below for a detailed example on
+  what SoPolygonOffset can and can not do:
+
+  \code
+  #Inventor V2.1 ascii
+  
+  Separator {
+     # render polygon:
+  
+     Coordinate3 { point [ -1.1 -1.1 0, 1.1 -1.1 0, 1.1 1.1 0, -1.1 1.1 0 ] }
+     BaseColor { rgb 0 0.5 0 }
+     FaceSet { numVertices [ 4 ] }
+  
+     # offset polygon-as-lines to be in front of above polygon:
+  
+     PolygonOffset {
+        styles LINES
+        factor -2.0
+        units 1.0
+     }
+     
+     # render lines:
+  
+     Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+     BaseColor { rgb 1 1 0 }
+  
+     Switch {
+        # change this to '0' to see how glPolygonOffset() does *not* work
+        # with "true" lines
+        whichChild 1
+  
+        DEF child0 Group {
+           # can *not* be offset
+           IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, 2, -1, 1, 3 -1 ]
+           }
+        }
+  
+        DEF child1 Group {
+           # will be offset
+           DrawStyle { style LINES }
+           FaceSet { numVertices [ 4 ] }
+        }
+     }
+  }
+  \endcode
+
+  Field default value is SoPolygonOffset::FILLED.
 */
+
 /*!
   \var SoSFBool SoPolygonOffset::on
 
