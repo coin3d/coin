@@ -4811,3 +4811,41 @@ Transform {
     20050609 mortene.
 
 =====================================================================
+
+197 SoOffscreenRenderer performance gradually degrades.
+
+    The below example demonstrates how SoOffscreenRenderer performance
+    gradually degrades when rendering successive times with the same
+    scene. AFAIU, there is no obvious reason why this should happen.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+begin 644 degradingoffscreen.cpp.bz2
+M0EIH.3%!629367=U<?@``+O?@$`56W_]7S_MW\2_[]_Z4`0;W53.Y0)`'A(J
+M:4!FB:/*/4:!M1Y3RC0``-!H`T"5-`$RIM)^J::`:&0:``````!*:10:0S3$
+M)B-`-`#)HT`9``:'-,C(9,$-&$P1IHT8@:9,C``$$BFB"8FAJ--%/TU/1JGJ
+M/2>D!Z::C3U`8RF-)%BZW:F#0FP#O3T./-I('@)**&=(7?=C"(DFP=@K'(\?
+M"5[?%622/*)`E,0B]'`9TGO\IU:.>Z(=RZH(DQ7K.$1$_(*"`]E/%3"V:>S&
+MXK$IG=ZE\W1A)O33H)R*5#B)$@+60XQ'!PAUC1RH*?8;DL+JDB1)=%63A1:\
+MD])2O+S9)?<#C'C6IAX##@;06!'VCEP((%]7FWDI<6B9!.FO?IC%SL9^@_/F
+MH>&QE7I1M"*;=R@Q:&I=?=>DWV"(DQ#L>87-T:(548*J5=Q1S(6K1A00<TM1
+MN"^LK%]8$KF0"VLSR2*AU<G-2I9=0<K;:+\"DD"F$&25\>)YZ*Q3BXEBOXX:
+MTDH&3B8MEM6DU)%R+EA,TR+"$I11*+@A4*>%KY05@^#IQ%W8Z\4F@W:5!%^+
+M=##W&.3&0&>__?AY9\],5=W@;O\;4_=:-:2^I1UEP4"I-<8?CN#Y!XE3\>_)
+M;?5(+D;YP$V2;;;;]`%X:CL+X4<1%'O8*8BB:4G+\L9=L+:&]0E4(`QD#G-\
+M4OB<W'L.I5&[M3+O2'Z@?-=&HH+?J%G`A7!V!M0;!&OS-S,`//SQ,?K=[5H%
+M7!!\*NFI&Y`Q'M>@+OCW25VL:/^R'*AB9(.W`%`/#!8\B)XWI&&Q7+Z1`=#+
+M!A)[5RR#FS*%RA<_L^/($!`$6@7!,"U-5@\PI\0$PD`P[E?(.=*3&5ZEL7+B
+MT[42](3N`XP(#D[$=90(/<QW^T/DN!<C@@KTVJR\8!/5LGOV&19;8P;#,I89
+M2#JO553/11DV[:VG2U-),AM!=BJ@F-BPR#9@,XLS2@7LM`YV@FIAE:&3694&
+MA,3RS_1$2,P20FA.I/I":"2"8%<J!`=X#`U(#:LD'::P]`M^09M.?`)@>S4D
+M=7,D??:K6[4C$#2IDP9E]R_30BY%=I4B0F9DRMD3B<@)`Y0*@Z!G#MZ^ME`5
+M]18C;&E&(U4`7UBTWT]0V."HULCUTP0:`Y<%JTT+%G%GO28G6!NT(F!.A:2:
+M+)-[+:(U(82T`.L;;;&-)6$!5`%:)^&[]I+CF][4BH!NQV\Y>9`N`'&*H-E$
+C2#JV@9E`&W9R(;&0!@%GKG#7=H"V.8;/XNY(IPH2#NZN/P``
+`
+end
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20050615 mortene.
+
+=====================================================================
