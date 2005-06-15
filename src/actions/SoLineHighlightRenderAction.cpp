@@ -36,7 +36,12 @@
   \sa SoBoxHighlightRenderAction, SoSelection
 */
 
+// *************************************************************************
+
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
+
+#include <assert.h>
+
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoSubAction.h>
@@ -45,13 +50,15 @@
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <assert.h>
+
+// *************************************************************************
 
 /*!
   \var SoLineHighlightRenderAction::hlVisible
@@ -293,15 +300,20 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, &this->colorpacker);
+  // FIXME: we should check this versus the actual max line width
+  // supported by the underlying OpenGL context. 20050610 mortene.
   SoLineWidthElement::set(state, this->linewidth);
   SoLinePatternElement::set(state, this->linepattern);
   SoTextureQualityElement::set(state, 0.0f);
   SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
+  SoPolygonOffsetElement::set(state, NULL, -1.0f, 1.0f, SoPolygonOffsetElement::LINES, TRUE);
+  
   SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
   SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
   SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
   SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
   SoOverrideElement::setDrawStyleOverride(state, NULL, TRUE);
+  SoOverrideElement::setPolygonOffsetOverride(state, NULL, TRUE);
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
