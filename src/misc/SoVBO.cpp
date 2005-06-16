@@ -33,6 +33,7 @@
 #include "SoVBO.h"
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <stdio.h>
 
 /*!
   Constructor
@@ -84,16 +85,16 @@ SoVBO::bindBuffer(uint32_t contextid)
   if (!this->vbohash.get(contextid, buffer)) {
     // need to create a new buffer for this context
     cc_glglue_glGenBuffers(glue, 1, &buffer);
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, buffer);
-    cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
+    cc_glglue_glBindBuffer(glue, this->target, buffer);
+    cc_glglue_glBufferData(glue, this->target,
                            this->datasize,
                            this->data,
-                           GL_STATIC_DRAW);
+                           this->usage);
     this->vbohash.put(contextid, buffer);
   }
   else {
     // buffer already exists, bind it
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, buffer);
+    cc_glglue_glBindBuffer(glue, this->target, buffer);
   }
 }
 
