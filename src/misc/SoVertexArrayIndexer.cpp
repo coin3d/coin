@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SoVertexArrayIndexer.h"
+#include "SoVBO.h"
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
@@ -31,16 +32,13 @@
 SoVertexArrayIndexer::SoVertexArrayIndexer(void)
   : target(0),
     next(NULL),
-    vbohash(5)
+    vbo(NULL)
 {
-  SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
 SoVertexArrayIndexer::~SoVertexArrayIndexer() 
 {
-  SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);  
-  // schedule delete for all allocated GL resources
-  this->vbohash.apply(vbo_schedule, NULL);
+  delete this->vbo;
   delete this->next;
 }
 
@@ -130,26 +128,19 @@ SoVertexArrayIndexer::close(void)
 }
 
 void 
-SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo, const uint32_t contextid)
+SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
 {
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
     // common case
-    if (vbo) {
-      GLuint glid;
-      if (!this->vbohash.get(contextid, glid)) {
-        cc_glglue_glGenBuffers(glue, 1, &glid);          
-        (void) this->vbohash.put(contextid, glid);
-        cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, glid);
-        cc_glglue_glBufferData(glue, GL_ELEMENT_ARRAY_BUFFER,
-                               this->indexarray.getLength()*sizeof(int32_t),
-                               this->indexarray.getArrayPtr(),
-                               GL_STATIC_DRAW);
+    if (renderasvbo) {
+      if (this->vbo == NULL) {
+        this->vbo = new SoVBO(GL_ELEMENT_ARRAY_BUFFER);
+        this->vbo->setData(this->indexarray.getArrayPtr(),
+                           this->indexarray.getLength()*sizeof(int32_t));
       }
-      else {
-        cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, glid);
-      }
+      this->vbo->bindBuffer(contextid);
       cc_glglue_glDrawElements(glue, 
                                this->target, 
                                this->indexarray.getLength(), 
@@ -186,7 +177,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo, const uin
     break;
   }
 
-  if (this->next) this->next->render(glue, vbo, contextid);
+  if (this->next) this->next->render(glue, renderasvbo, contextid);
 }
 
 int 
@@ -204,36 +195,4 @@ SoVertexArrayIndexer::getNext(void)
     this->next = new SoVertexArrayIndexer;
   }
   return this->next;
-}
-
-void 
-SoVertexArrayIndexer::context_destruction_cb(uint32_t context, void * userdata)
-{
-  GLuint buffer;
-  SoVertexArrayIndexer * thisp = (SoVertexArrayIndexer*) userdata;
-
-  if (thisp->vbohash.get(context, buffer)) {
-    const cc_glglue * glue = cc_glglue_instance((int) context);
-    cc_glglue_glDeleteBuffers(glue, 1, &buffer);    
-    thisp->vbohash.remove(context);
-  }
-}
-
-// callback from SbHash::apply()
-void
-SoVertexArrayIndexer::vbo_schedule(const uint32_t & key,
-                                   const GLuint & value,
-                                   void * closure)
-{
-  void * ptr = (void*) ((uintptr_t) value);
-  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, ptr);
-}
-
-// callback from SoGLCacheContextElement
-void
-SoVertexArrayIndexer::vbo_delete(void * closure, uint32_t contextid)
-{
-  const cc_glglue * glue = cc_glglue_instance((int) contextid);
-  GLuint id = (GLuint) ((uintptr_t) closure);
-  cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
