@@ -30,7 +30,8 @@
 
 SoVertexArrayIndexer::SoVertexArrayIndexer(void)
   : target(0),
-    next(NULL)
+    next(NULL),
+    vbohash(5)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -208,6 +209,14 @@ SoVertexArrayIndexer::getNext(void)
 void 
 SoVertexArrayIndexer::context_destruction_cb(uint32_t context, void * userdata)
 {
+  GLuint buffer;
+  SoVertexArrayIndexer * thisp = (SoVertexArrayIndexer*) userdata;
+
+  if (thisp->vbohash.get(context, buffer)) {
+    const cc_glglue * glue = cc_glglue_instance((int) context);
+    cc_glglue_glDeleteBuffers(glue, 1, &buffer);    
+    thisp->vbohash.remove(context);
+  }
 }
 
 // callback from SbHash::apply()
