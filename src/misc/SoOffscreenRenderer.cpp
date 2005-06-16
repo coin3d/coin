@@ -133,12 +133,14 @@
   SoSceneManager::enableRealTimeUpdate().
 */
 
-// As first mentioned to me by Kyrah, the functionality of this class
+// As first mentioned to me by kyrah, the functionality of this class
 // should really have been outside the core Coin library, seeing how
 // it makes heavy use of window-system specifics. To be SGI Inventor
 // compatible we need it to be part of the Coin API, though.
 //
 // mortene.
+
+// *************************************************************************
 
 // FIXME: we don't set up and render to RGBA-capable OpenGL-contexts,
 // even when the requested format from the app-programmer is
@@ -203,6 +205,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/SbTime.h>
 #include <coindefs.h> // COIN_STUB()
 
 // *************************************************************************
@@ -487,7 +490,9 @@ SoOffscreenRenderer::getBackgroundColor(void) const
 void
 SoOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-  if (PRIVATE(this)->didallocation) delete PRIVATE(this)->renderaction;
+  if (action == PRIVATE(this)->renderaction) { return; }
+
+  if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
   PRIVATE(this)->renderaction = action;
   PRIVATE(this)->didallocation = FALSE;
 }
@@ -501,6 +506,8 @@ SoOffscreenRenderer::getGLRenderAction(void) const
   return PRIVATE(this)->renderaction;
 }
 
+// *************************************************************************
+
 static void
 pre_render_cb(void * userdata, SoGLRenderAction * action)
 {
@@ -508,6 +515,7 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
   action->setRenderingIsRemote(FALSE);
 }
 
+// *************************************************************************
 
 // Callback when rendering scenegraph to subscreens. Detects when a
 // camera has just been traversed, and then invokes the method which
@@ -586,7 +594,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   const SbVec2s regionsize = SbVec2s(SbMin(tilesize[0], fullsize[0]), SbMin(tilesize[1], fullsize[1]));
 
-  // For debugging purposes, it has been made possibly to use an
+  // For debugging purposes, it has been made possible to use an
   // envvar to *force* tiled rendering even when it can be done in a
   // single chunk.
   //
@@ -656,8 +664,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   }
 
   // Deallocate old and allocate new target buffer.
+  // FIXME: this looks unnecessary inefficient. 20050616 mortene.
   delete[] this->buffer;
   this->buffer = new unsigned char[fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents()];
+
+  // needed to clear viewport after glViewport() is called from
+  // SoGLRenderAction
+  this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
   // Shall we use subscreen rendering or regular one-screen renderer?
   if (tiledrendering) {
@@ -674,7 +687,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       this->numsubscreens[i] = (fullsize[i] + (tilesize[i] - 1)) / tilesize[i];
     }
 
-    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
     // We have to grab cameras using this callback during rendering
     this->visitedcamera = NULL;
     this->renderaction->setAbortCallback(SoOffscreenRendererP::GLRenderAbortCallback, this);
@@ -754,9 +766,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     this->renderaction->setViewportRegion(this->viewport);
 
-    // needed to clear viewport after glViewport is called
-    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
-
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
@@ -764,7 +773,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     else  {
       assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
     }
-    
+
     this->glcanvas.postRender();
 
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
@@ -780,6 +789,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     this->convertBuffer(this->glcanvas.getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
   }
+
+  this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
 
   // Restore old value.
   (void)SoGLBigImage::setChangeLimit(bigimagechangelimit);
