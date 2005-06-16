@@ -231,6 +231,11 @@ Could not build against the SmallChange library. If you are sure
 SmallChange is properly installed on your system, see the file
 config.log to find out what went wrong.
 
+!simaruba-unavailable
+Could not build against the SIM Aruba library. If you are sure
+SIM Aruba is properly installed on your system, see the file
+config.log to find out what went wrong.
+
 !simvoleon-unavailable
 Could not build against the SimVoleon library. If you are sure
 SimVoleon is properly installed on your system, see the file

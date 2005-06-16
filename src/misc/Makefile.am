@@ -28,6 +28,7 @@ RegularSources = \
 	SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp \
+	SoVBO.cpp \
 	SoVertexArrayIndexer.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
@@ -50,6 +51,7 @@ PrivateHeaders = \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
+	SoVBO.h \
 	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \

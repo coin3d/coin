@@ -283,6 +283,7 @@ RegularSources = \
 	SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp \
+	SoVBO.cpp \
 	SoVertexArrayIndexer.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
@@ -307,6 +308,7 @@ PrivateHeaders = \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
+	SoVBO.h \
 	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
@@ -385,7 +387,7 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp all-misc-cpp.cpp
@@ -402,10 +404,11 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoProtoInstance.$(OBJEXT) SoSceneManager.$(OBJEXT) \
 	SoType.$(OBJEXT) SoOffscreenRenderer.$(OBJEXT) \
 	SoOffscreenAGLData.$(OBJEXT) SoOffscreenGLXData.$(OBJEXT) \
-	SoOffscreenWGLData.$(OBJEXT) SoVertexArrayIndexer.$(OBJEXT) \
-	SoGenerate.$(OBJEXT) SoLockManager.$(OBJEXT) \
-	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT) \
-	CoinStaticObjectInDLL.$(OBJEXT) CoinOffscreenGLCanvas.$(OBJEXT)
+	SoOffscreenWGLData.$(OBJEXT) SoVBO.$(OBJEXT) \
+	SoVertexArrayIndexer.$(OBJEXT) SoGenerate.$(OBJEXT) \
+	SoLockManager.$(OBJEXT) SoAudioDevice.$(OBJEXT) \
+	AudioTools.$(OBJEXT) CoinStaticObjectInDLL.$(OBJEXT) \
+	CoinOffscreenGLCanvas.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
@@ -415,7 +418,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
@@ -427,7 +430,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp
@@ -445,7 +448,7 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp all-misc-cpp.cpp
@@ -458,8 +461,8 @@ am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoPrimitiveVertex.lo SoProto.lo SoProtoInstance.lo \
 	SoSceneManager.lo SoType.lo SoOffscreenRenderer.lo \
 	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
-	SoOffscreenWGLData.lo SoVertexArrayIndexer.lo SoGenerate.lo \
-	SoLockManager.lo SoAudioDevice.lo AudioTools.lo \
+	SoOffscreenWGLData.lo SoVBO.lo SoVertexArrayIndexer.lo \
+	SoGenerate.lo SoLockManager.lo SoAudioDevice.lo AudioTools.lo \
 	CoinStaticObjectInDLL.lo CoinOffscreenGLCanvas.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
@@ -470,7 +473,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
@@ -482,7 +485,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp
@@ -498,7 +501,7 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp all-misc-cpp.cpp
@@ -509,7 +512,7 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
@@ -521,7 +524,7 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp
@@ -585,7 +588,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoState.Plo ./$(DEPDIR)/SoState.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Po ./$(DEPDIR)/SoType.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoType.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoType.Po ./$(DEPDIR)/SoVBO.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVBO.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexArrayIndexer.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexArrayIndexer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
@@ -746,6 +750,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTempPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBO.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBO.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexArrayIndexer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexArrayIndexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
