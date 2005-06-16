@@ -66,8 +66,9 @@ hash_resize(cc_hash * ht, unsigned int newsize)
 {
   cc_hash_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
-  assert(coin_is_power_of_two(newsize));
   cc_hash_entry * prev;
+
+  assert(coin_is_power_of_two(newsize));
 
   /* Never shrink the table */
   if (ht->size >= newsize)
