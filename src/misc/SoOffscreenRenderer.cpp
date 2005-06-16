@@ -32,7 +32,8 @@
   the scene to disk files (as pixel bitmaps or as Postscript files for
   sending to a Postscript-capable printer).
 
-  Here's a dead simple usage example:
+  Here's a dead simple usage example, just the code diectly related to
+  the SoOffscreenRenderer:
 
   \code
   SoOffscreenRenderer myRenderer(vpregion);
@@ -41,6 +42,55 @@
   unsigned char * imgbuffer = myRenderer.getBuffer();
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
+
+  And a complete, simple, stand-alone example:
+
+  \code
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoOffscreenRenderer.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/nodes/SoDirectionalLight.h>
+  #include <Inventor/nodes/SoPerspectiveCamera.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  
+  int 
+  main(int argc, char ** argv) 
+  {
+    SoDB::init();
+  
+    SoPerspectiveCamera * camera = new SoPerspectiveCamera;
+    SoDirectionalLight * light = new SoDirectionalLight;
+    SoCube * cube = new SoCube;
+  
+    SoSeparator * root = new SoSeparator;
+    root->addChild(camera);
+    root->addChild(light);
+    root->addChild(cube);
+    root->ref();
+  
+    SbViewportRegion vpr;
+    vpr.setWindowSize(400, 400);
+  
+    light->direction.setValue(1, -1.2, -0.5);
+  
+    camera->position.setValue(-2, 2, 2);
+    camera->pointAt(SbVec3f(0, 0, 0));
+    camera->viewAll(cube, vpr);
+  
+    SoOffscreenRenderer osr(vpr);
+    SbBool ok = osr.render(root);
+    if (!ok) { exit(1); }
+  
+    ok = osr.writeToRGB("test-image.rgb");
+    if (!ok) { exit(1); }
+  
+    (void)puts("Image written successfully.");
+  
+    root->unref();
+    return 0;
+  }
+  \endcode
+
 
   Note that the SoOffscreenRenderer potentially allocates a fairly
   large amount of resources, both OpenGL and general system resources,
@@ -766,6 +816,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     this->renderaction->setViewportRegion(this->viewport);
 
+    SbTime t = SbTime::getTimeOfDay(); // for debugging
+
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
@@ -774,7 +826,21 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
     }
 
+    if (SoOffscreenRendererP::debug()) {
+      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                             "*TIMING* SoGLRenderAction::apply() took %f secs",
+                             (SbTime::getTimeOfDay() - t).getValue());
+      t = SbTime::getTimeOfDay();
+    }
+    
     this->glcanvas.postRender();
+
+    if (SoOffscreenRendererP::debug()) {
+      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                             "*TIMING* postRender() took %f secs",
+                             (SbTime::getTimeOfDay() - t).getValue());
+      t = SbTime::getTimeOfDay();
+    }
 
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     assert(dims[0] == this->glcanvas.getBufferSize()[0]);
@@ -788,6 +854,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
      */
     this->convertBuffer(this->glcanvas.getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
+
+    if (SoOffscreenRendererP::debug()) {
+      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                             "*TIMING* this->convertBuffer() took %f secs",
+                             (SbTime::getTimeOfDay() - t).getValue());
+    }
   }
 
   this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
