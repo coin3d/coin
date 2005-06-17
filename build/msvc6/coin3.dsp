@@ -1342,6 +1342,15 @@ SOURCE=..\..\src\elements\GL\SoGLUpdateAreaElement.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\elements\GL\SoGLVBOElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\GL"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\elements\GL\SoGLViewingMatrixElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\GL"
@@ -3764,6 +3773,15 @@ SOURCE=..\..\src\misc\SoOffscreenGLXData.cpp
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenWGLData.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoVBO.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
@@ -7526,6 +7544,10 @@ SOURCE=..\..\include\Inventor\elements\SoGLTextureMatrixElement.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\elements\SoGLUpdateAreaElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\elements\SoGLVBOElement.h
 # End Source File
 # Begin Source File
 

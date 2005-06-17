@@ -232,6 +232,7 @@ copy ..\..\include\Inventor\elements\SoGLTexture3EnabledElement.h %COINDIR%\incl
 copy ..\..\include\Inventor\elements\SoGLTextureImageElement.h %COINDIR%\include\Inventor\elements\SoGLTextureImageElement.h >nul:
 copy ..\..\include\Inventor\elements\SoGLTextureMatrixElement.h %COINDIR%\include\Inventor\elements\SoGLTextureMatrixElement.h >nul:
 copy ..\..\include\Inventor\elements\SoGLUpdateAreaElement.h %COINDIR%\include\Inventor\elements\SoGLUpdateAreaElement.h >nul:
+copy ..\..\include\Inventor\elements\SoGLVBOElement.h %COINDIR%\include\Inventor\elements\SoGLVBOElement.h >nul:
 copy ..\..\include\Inventor\elements\SoGLViewingMatrixElement.h %COINDIR%\include\Inventor\elements\SoGLViewingMatrixElement.h >nul:
 copy ..\..\include\Inventor\elements\SoGLViewportRegionElement.h %COINDIR%\include\Inventor\elements\SoGLViewportRegionElement.h >nul:
 copy ..\..\include\Inventor\elements\SoInt32Element.h %COINDIR%\include\Inventor\elements\SoInt32Element.h >nul:
