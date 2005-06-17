@@ -326,11 +326,8 @@ public:
 
   static SoGLRenderAction::AbortCode GLRenderAbortCallback(void *userData);
   SbBool renderFromBase(SoBase * base);
-  void convertBuffer(const uint8_t * src, unsigned int srcwidth, unsigned int srcheight,
-                     uint8_t * dst, unsigned int dstwidth, unsigned int dstheight);
 
   void setCameraViewvolForTile(SoCamera * cam);
-  void pasteSubscreen(const SbVec2s & subscreenidx, const uint8_t * srcbuf);
 
   static SbBool writeToRGB(FILE * fp, unsigned int w, unsigned int h,
                            unsigned int nrcomponents, const uint8_t * imgbuf);
@@ -378,17 +375,14 @@ SoOffscreenRendererP::debug(void)
 // Set the environment variable below to get the individual tiles
 // written out for debugging purposes. E.g.
 //
-//   $ export COIN_SOOFFSCREENRENDERER_TILEPREFIX="/tmp/offscreentile_"
+//   $ export COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX="/tmp/offscreentile_"
 //
 // Tile X and Y position, plus the ".rgb" suffix, will be added when
 // writing.
-//
-// Note that the COIN_DEBUG_SOOFFSCREENRENDERER envvar must also be
-// set for this to be active.
 const char *
 SoOffscreenRendererP::debugTileOutputPrefix(void)
 {
-  return coin_getenv("COIN_SOOFFSCREENRENDERER_TILEPREFIX");
+  return coin_getenv("COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX");
 }
 
 // *************************************************************************
@@ -716,7 +710,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // Deallocate old and allocate new target buffer.
   // FIXME: this looks unnecessary inefficient. 20050616 mortene.
   delete[] this->buffer;
-  this->buffer = new unsigned char[fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents()];
+  size_t bufsize = fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents();
+  this->buffer = new unsigned char[bufsize];
+
+  if (SoOffscreenRendererP::debugTileOutputPrefix()) {
+    (void)memset(this->buffer, 0x00, bufsize);
+  }
 
   // needed to clear viewport after glViewport() is called from
   // SoGLRenderAction
@@ -728,10 +727,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     // Allocate memory for subscreen
     this->subtilesize[0] = SbMin(tilesize[0], fullsize[0]);
     this->subtilesize[1] = SbMin(tilesize[1], fullsize[1]);
-
-    const unsigned int bufsize =
-      this->subtilesize[0] * this->subtilesize[1] * PUBLIC(this)->getComponents();
-    uint8_t * subscreen = new unsigned char[bufsize];
 
     for (int i=0; i < 2; i++) {
       this->numsubscreens[i] = (fullsize[i] + (tilesize[i] - 1)) / tilesize[i];
@@ -766,42 +761,45 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         else if (base->isOfType(SoPath::getClassTypeId()))
           this->renderaction->apply((SoPath *)base);
         else {
-          assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
+          assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
         }
         
-        this->glcanvas.readPixels();
+        const unsigned int nrcomp = PUBLIC(this)->getComponents();
 
-        const SbVec2s idsize = this->glcanvas.getBufferSize();
-        const unsigned char * renderbuffer = this->glcanvas.getBuffer();
+        const int MAINBUF_OFFSET =
+          (this->subtilesize[1] * y * fullsize[0] + this->subtilesize[0] * x) *
+          nrcomp;
 
-        if (SoOffscreenRendererP::debug() &&
-            SoOffscreenRendererP::debugTileOutputPrefix()) {
+        const SbVec2s vpsize = subviewport.getViewportSizePixels();
+        this->glcanvas.readPixels(this->buffer + MAINBUF_OFFSET,
+                                  vpsize, fullsize[0], nrcomp);
+
+        // Debug option to dump the (full) buffer after each
+        // iteration.
+        if (SoOffscreenRendererP::debugTileOutputPrefix()) {
           SbString s;
           s.sprintf("%s_%03d_%03d.rgb",
                     SoOffscreenRendererP::debugTileOutputPrefix(), x, y);
 
           FILE * f = fopen(s.getString(), "wb");
           assert(f);
-          SbBool w = SoOffscreenRendererP::writeToRGB(f, idsize[0], idsize[1],
-                                                      4, renderbuffer);
+          SbBool w = SoOffscreenRendererP::writeToRGB(f, fullsize[0], fullsize[1],
+                                                      nrcomp, this->buffer);
           assert(w);
           const int r = fclose(f);
           assert(r == 0);
-        }
 
-	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
-	 * as everything gets rendered the exact way as on the screen.
-	 * this should do the trick and is slightly more efficient:
-	 * this->pasteSubscreen(SbVec2s(x, y), this->glcanvas.getBuffer());
-	 * 20031106 tamer.
-	 */
-        this->convertBuffer(renderbuffer, idsize[0], idsize[1],
-                            subscreen, this->subsize[0], this->subsize[1]);
-        this->pasteSubscreen(SbVec2s(x, y), subscreen);
+          // This is sometimes useful to enable during debugging to
+          // see the exact order and position of the tiles. Not
+          // enabled by default because it makes the final buffer
+          // completely blank.
+#if 0 // debug
+          (void)memset(this->buffer, 0x00, bufsize);
+#endif // debug
+        }
       }
     }
 
-    delete[] subscreen;
     this->renderaction->setAbortCallback(NULL, this);
 
     if (!this->visitedcamera) {
@@ -816,14 +814,14 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     this->renderaction->setViewportRegion(this->viewport);
 
-    SbTime t = SbTime::getTimeOfDay(); // for debugging
+    SbTime t = SbTime::getTimeOfDay(); // for profiling
 
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
       this->renderaction->apply((SoPath *)base);
     else  {
-      assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
+      assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
     }
 
     if (SoOffscreenRendererP::debug()) {
@@ -837,7 +835,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     assert(dims[0] == this->glcanvas.getBufferSize()[0]);
     assert(dims[1] == this->glcanvas.getBufferSize()[1]);
 
-    this->glcanvas.readPixels(this->buffer,
+    this->glcanvas.readPixels(this->buffer, dims, dims[0],
                               (unsigned int)PUBLIC(this)->getComponents());
 
     if (SoOffscreenRendererP::debug()) {
@@ -856,64 +854,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   this->renderaction->setCacheContext(oldcontext); // restore old
 
   return TRUE;
-}
-
-// Convert from RGBA format to the application programmer's requested
-// format.
-//
-// FIXME: should do some refactoring here. This method should really
-// be part of an (internal) "SbImageBlock" class, consisting of a
-// uint8_t buffer and <width, height, components> settings. 20030516 mortene.
-void
-SoOffscreenRendererP::convertBuffer(const uint8_t * src, unsigned int srcwidth, unsigned int srcheight,
-                                    uint8_t * dst, unsigned int dstwidth, unsigned int dstheight)
-{
-  assert(dstwidth <= srcwidth);
-  assert(dstheight <= srcheight);
-
-  const SoOffscreenRenderer::Components comp = PUBLIC(this)->getComponents();
-
-  for (unsigned int y = 0; y < dstheight; y++) {
-    for (unsigned int x = 0; x < dstwidth; x++) {
-
-      switch (comp) {
-      case SoOffscreenRenderer::RGB_TRANSPARENCY:
-        *dst++ = *src++;
-        *dst++ = *src++;
-        *dst++ = *src++;
-        *dst++ = *src++;
-        break;
-
-      case SoOffscreenRenderer::RGB:
-        *dst++ = *src++;
-        *dst++ = *src++;
-        *dst++ = *src++;
-        src++;
-        break;
-
-      case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
-        {
-          int val = (int(src[0]) + int(src[1]) + int(src[2])) / 3;
-          *dst++ = (unsigned char)(val && 0xff);
-          *dst++ = src[3];
-          src += 4;
-        }
-        break;
-
-      case SoOffscreenRenderer::LUMINANCE:
-        {
-          uint32_t val = 76 * src[0] + 155 * src[1] + 26 * src[2];
-          *dst++ = (unsigned char)(val>>8);
-          src += 4;
-        }
-        break;
-
-      default:
-        assert(FALSE && "unknown buffer format"); break;
-      }
-    }
-    src += (srcwidth - dstwidth) * 4;
-  }
 }
 
 /*!
@@ -1548,40 +1488,6 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   SoViewVolumeElement::set(state, cam, vv);
   SoProjectionMatrixElement::set(state, cam, proj);
   SoViewingMatrixElement::set(state, cam, affine);
-}
-
-void
-SoOffscreenRendererP::pasteSubscreen(const SbVec2s & subscreenidx,
-                                     const uint8_t * srcbuf)
-{
-  const int DEPTH = PUBLIC(this)->getComponents();
-
-  const SbVec2s fullsize = this->viewport.getViewportSizePixels();
-
-  const int SUBBUFFERWIDTH = this->subsize[0] * DEPTH;
-  const int MAINBUFFERWIDTH = fullsize[0] * DEPTH;
-  const int MAINBUF_OFFSET =
-    (this->subtilesize[1] * subscreenidx[1] * fullsize[0] +
-     this->subtilesize[0] * subscreenidx[0]) * DEPTH;
-
-  if (SoOffscreenRendererP::debug()) {
-    SoDebugError::postInfo("SoOffscreenRendererP::pasteSubscreen",
-                           "subscreenidx==<%d, %d>, subsize==<%d, %d>, subtilesize==<%d, %d>, "
-                           "subbufferwidth==%d, mainbufferwidth==%d, mainbuf_offset==%d",
-                           subscreenidx[0], subscreenidx[1],
-                           this->subsize[0], this->subsize[1],
-                           this->subtilesize[0], this->subtilesize[1],
-                           SUBBUFFERWIDTH / DEPTH,
-                           MAINBUFFERWIDTH / DEPTH,
-                           MAINBUF_OFFSET / DEPTH);
-  }
-
-  for (unsigned int j = 0; j < this->subsize[1]; j++) {
-    (void)memcpy(this->buffer + MAINBUF_OFFSET + MAINBUFFERWIDTH * j,
-                 srcbuf + SUBBUFFERWIDTH * j,
-                 SUBBUFFERWIDTH);
-  }
-
 }
 
 // Return largest size of offscreen canvas system can handle. Will

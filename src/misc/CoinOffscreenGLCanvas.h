@@ -31,7 +31,6 @@
 // *************************************************************************
 
 #include <Inventor/SbVec2s.h>
-#include <Inventor/misc/SbHash.h>
 
 // *************************************************************************
 
@@ -40,22 +39,20 @@ public:
   CoinOffscreenGLCanvas(void);
   virtual ~CoinOffscreenGLCanvas();
 
-  uint8_t * getBuffer(void) const;
-
   uint32_t activateGLContext(void);
   void deactivateGLContext(void);
 
   void setBufferSize(const SbVec2s & size);
   SbVec2s getBufferSize(void) const;
 
-  void readPixels(uint8_t * dst, unsigned int nrcomponents) const;
-  void readPixels(void);
+  void readPixels(uint8_t * dst, const SbVec2s & vpdims,
+                  unsigned int dstrowsize,
+                  unsigned int nrcomponents) const;
 
 private:
   void destructContext(void);
 
   SbVec2s buffersize;
-  uint8_t * buffer;
 
   void * context;
   uint32_t renderid;

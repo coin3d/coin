@@ -33,14 +33,12 @@
 CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
 {
   this->buffersize = SbVec2s(0, 0);
-  this->buffer = NULL;
   this->context = NULL;
 }
 
 CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 {
   if (this->context) { this->destructContext(); }
-  delete[] this->buffer;
 }
 
 // *************************************************************************
@@ -48,20 +46,12 @@ CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 void
 CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
 {
+  assert((size[0] > 0) && (size[1] > 0) && "invalid dimensions attempted set");
+
   // Avoid costly operations below if not really necessary.
   if (this->buffersize == size) { return; }
 
-  if ((size[0] <= 0) || (size[1] <= 0)) {
-    SoDebugError::post("CoinOffscreenGLCanvas::setBufferSize",
-                       "invalid dimensions attempted set: <%d, %d> -- ignored",
-                       size[0], size[1]);
-    return;
-  }
-
   this->buffersize = size;
-
-  delete[] this->buffer;
-  this->buffer = new uint8_t[this->buffersize[0] * this->buffersize[1] * 4];
 
   if (this->context) { this->destructContext(); }
 }
@@ -84,8 +74,6 @@ CoinOffscreenGLCanvas::getBufferSize(void) const
 uint32_t 
 CoinOffscreenGLCanvas::activateGLContext(void) 
 {
-  assert(this->buffer);
-  
   if (this->context == NULL) {
     this->context = cc_glglue_context_create_offscreen(this->buffersize[0],
                                                        this->buffersize[1]);
@@ -128,15 +116,12 @@ CoinOffscreenGLCanvas::destructContext(void)
 
 // *************************************************************************
 
-void
-CoinOffscreenGLCanvas::readPixels(void)
-{
-  this->readPixels(this->buffer, 4);
-}
-
 // Pushes the rendered pixels into the internal memory array.
 void
-CoinOffscreenGLCanvas::readPixels(uint8_t * dst, unsigned int nrcomponents) const
+CoinOffscreenGLCanvas::readPixels(uint8_t * dst,
+                                  const SbVec2s & vpdims,
+                                  unsigned int dstrowsize,
+                                  unsigned int nrcomponents) const
 {
   glPushAttrib(GL_ALL_ATTRIB_BITS);
 
@@ -149,10 +134,14 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst, unsigned int nrcomponents) cons
 
   glPixelStorei(GL_PACK_SWAP_BYTES, 0);
   glPixelStorei(GL_PACK_LSB_FIRST, 0);
-  glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_PACK_ROW_LENGTH, (GLint)dstrowsize);
   glPixelStorei(GL_PACK_SKIP_ROWS, 0);
   glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-  glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
+  // FIXME: should use best possible alignment, for speediest
+  // operation. 20050617 mortene.
+//   glPixelStorei(GL_PACK_ALIGNMENT, 4);
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
   glPixelTransferi(GL_MAP_COLOR, 0);
   glPixelTransferi(GL_MAP_STENCIL, 0);
@@ -205,27 +194,16 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst, unsigned int nrcomponents) cons
 
   glFlush(); glFinish();
 
-  const SbVec2s size = this->getBufferSize();
-
   assert((nrcomponents >= 1) && (nrcomponents <= 4));
   static const GLenum formats[] =
     { GL_LUMINANCE, GL_LUMINANCE_ALPHA, GL_RGB, GL_RGBA };
 
-  glReadPixels(0, 0, size[0], size[1],
+  glReadPixels(0, 0, vpdims[0], vpdims[1],
                formats[nrcomponents - 1], GL_UNSIGNED_BYTE, dst);
-  glPixelStorei(GL_PACK_ALIGNMENT, 4);
 
   glFlush(); glFinish();
 
   glPopAttrib();
-}
-
-// *************************************************************************
-
-uint8_t *
-CoinOffscreenGLCanvas::getBuffer(void) const
-{
-  return this->buffer;
 }
 
 // *************************************************************************
