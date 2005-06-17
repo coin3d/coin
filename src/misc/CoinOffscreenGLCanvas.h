@@ -40,7 +40,7 @@ public:
   CoinOffscreenGLCanvas(void);
   virtual ~CoinOffscreenGLCanvas();
 
-  unsigned char * getBuffer(void) const;
+  uint8_t * getBuffer(void) const;
 
   uint32_t activateGLContext(void);
   void deactivateGLContext(void);
@@ -48,13 +48,14 @@ public:
   void setBufferSize(const SbVec2s & size);
   SbVec2s getBufferSize(void) const;
 
-  void postRender(void);
+  void readPixels(uint8_t * dst, unsigned int nrcomponents) const;
+  void readPixels(void);
 
 private:
   void destructContext(void);
 
   SbVec2s buffersize;
-  unsigned char * buffer;
+  uint8_t * buffer;
 
   void * context;
   uint32_t renderid;

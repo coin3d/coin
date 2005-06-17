@@ -32,8 +32,8 @@
   the scene to disk files (as pixel bitmaps or as Postscript files for
   sending to a Postscript-capable printer).
 
-  Here's a dead simple usage example, just the code diectly related to
-  the SoOffscreenRenderer:
+  Here's a dead simple usage example, just the code directly related
+  to the SoOffscreenRenderer:
 
   \code
   SoOffscreenRenderer myRenderer(vpregion);
@@ -769,7 +769,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
         }
         
-        this->glcanvas.postRender();
+        this->glcanvas.readPixels();
 
         const SbVec2s idsize = this->glcanvas.getBufferSize();
         const unsigned char * renderbuffer = this->glcanvas.getBuffer();
@@ -828,37 +828,22 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     if (SoOffscreenRendererP::debug()) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                             "*TIMING* SoGLRenderAction::apply() took %f secs",
-                             (SbTime::getTimeOfDay() - t).getValue());
+                             "*TIMING* SoGLRenderAction::apply() took %f msecs",
+                             (SbTime::getTimeOfDay() - t).getValue() * 1000);
       t = SbTime::getTimeOfDay();
     }
     
-    this->glcanvas.postRender();
-
-    if (SoOffscreenRendererP::debug()) {
-      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                             "*TIMING* postRender() took %f secs",
-                             (SbTime::getTimeOfDay() - t).getValue());
-      t = SbTime::getTimeOfDay();
-    }
-
-    SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
+    const SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     assert(dims[0] == this->glcanvas.getBufferSize()[0]);
     assert(dims[1] == this->glcanvas.getBufferSize()[1]);
 
-    /* FIXME: see FIXME above:
-     * memcpy(this->buffer, this->glcanvas.getBuffer(),
-     *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
-     * or something more efficient. e.g. by using other opengl extensions
-     * like render-to-texture. 20031106 tamer.
-     */
-    this->convertBuffer(this->glcanvas.getBuffer(), dims[0], dims[1],
-                        this->buffer, dims[0], dims[1]);
+    this->glcanvas.readPixels(this->buffer,
+                              (unsigned int)PUBLIC(this)->getComponents());
 
     if (SoOffscreenRendererP::debug()) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                             "*TIMING* this->convertBuffer() took %f secs",
-                             (SbTime::getTimeOfDay() - t).getValue());
+                             "*TIMING* glcanvas.readPixels() took %f msecs",
+                             (SbTime::getTimeOfDay() - t).getValue() * 1000);
     }
   }
 

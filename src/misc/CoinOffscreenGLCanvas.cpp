@@ -61,8 +61,7 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
   this->buffersize = size;
 
   delete[] this->buffer;
-  this->buffer =
-    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+  this->buffer = new uint8_t[this->buffersize[0] * this->buffersize[1] * 4];
 
   if (this->context) { this->destructContext(); }
 }
@@ -129,12 +128,16 @@ CoinOffscreenGLCanvas::destructContext(void)
 
 // *************************************************************************
 
+void
+CoinOffscreenGLCanvas::readPixels(void)
+{
+  this->readPixels(this->buffer, 4);
+}
+
 // Pushes the rendered pixels into the internal memory array.
 void
-CoinOffscreenGLCanvas::postRender(void)
+CoinOffscreenGLCanvas::readPixels(uint8_t * dst, unsigned int nrcomponents) const
 {
-  SbVec2s size = this->getBufferSize();
-
   glPushAttrib(GL_ALL_ATTRIB_BITS);
 
   // First reset all settings that can influence the result of a
@@ -201,8 +204,17 @@ CoinOffscreenGLCanvas::postRender(void)
   // mortene.
 
   glFlush(); glFinish();
-  glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, this->buffer);
+
+  const SbVec2s size = this->getBufferSize();
+
+  assert((nrcomponents >= 1) && (nrcomponents <= 4));
+  static const GLenum formats[] =
+    { GL_LUMINANCE, GL_LUMINANCE_ALPHA, GL_RGB, GL_RGBA };
+
+  glReadPixels(0, 0, size[0], size[1],
+               formats[nrcomponents - 1], GL_UNSIGNED_BYTE, dst);
   glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
   glFlush(); glFinish();
 
   glPopAttrib();
@@ -210,7 +222,7 @@ CoinOffscreenGLCanvas::postRender(void)
 
 // *************************************************************************
 
-unsigned char *
+uint8_t *
 CoinOffscreenGLCanvas::getBuffer(void) const
 {
   return this->buffer;
