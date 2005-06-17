@@ -21,6 +21,16 @@
  *
 \**************************************************************************/
 
+// FIXME: idea from thammer; make all the various operations connect
+// through callback-plugins, for maximum flexibility. 20050606 mortene.
+
+// FIXME: another idea; factor out all the internal Javascript
+// handling, connecting up to fields, etc etc to a more generic
+// internal interface -- as thammer's project would like to connect
+// Javascript programs/routines to any scene graph field. 20050606 mortene.
+
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
