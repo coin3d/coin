@@ -8429,6 +8429,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\elements\GL\SoGLVBOElement.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\GL/"
+						ProgramDataBaseFileName="Debug\GL/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\GL/"
+						ProgramDataBaseFileName="Release\GL/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\elements\GL\SoGLViewingMatrixElement.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -16253,6 +16277,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\misc\SoVBO.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\misc\SoVertexArrayIndexer.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -18430,6 +18478,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLUpdateAreaElement.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\elements\SoGLVBOElement.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLViewingMatrixElement.h">
