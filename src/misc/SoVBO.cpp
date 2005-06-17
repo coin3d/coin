@@ -43,6 +43,7 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
     usage(usage),
     data(NULL),
     datasize(0),
+    dataid(0),
     vbohash(5)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
@@ -59,19 +60,44 @@ SoVBO::~SoVBO()
 }
 
 /*!
-  Sets the buffer data.
+  Sets the buffer data. \a dataid is a unique id used to identify 
+  the buffer data. In Coin it's possible to use the node id
+  (SoNode::getNodeId()) to test if a buffer is valid for a node.
 */
 void 
-SoVBO::setData(const GLvoid * data, intptr_t size)
+SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
   this->vbohash.apply(vbo_schedule, NULL);
   // clear hash table
   this->vbohash.clear();
-
+  
   this->data = data;
   this->datasize = size;
+  this->dataid = dataid;
 }
+
+/*!
+  Returns the buffer data id. 
+  
+  \sa setBufferData()
+*/
+uint32_t 
+SoVBO::getBufferDataId(void) const
+{
+  return this->dataid;
+}
+
+/*!
+  Returns the data pointer and size.
+*/
+void 
+SoVBO::getBufferData(const GLvoid *& data, intptr_t & size)
+{
+  data = this->data;
+  size = this->datasize;
+}
+
 
 /*!
   Binds the buffer for the context \a contextid.
@@ -79,6 +105,12 @@ SoVBO::setData(const GLvoid * data, intptr_t size)
 void 
 SoVBO::bindBuffer(uint32_t contextid)
 {
+  if ((this->data == NULL) ||
+      (this->datasize == 0)) {
+    assert(0 && "no data in buffer");
+    return;
+  }
+
   const cc_glglue * glue = cc_glglue_instance((int) contextid);
 
   GLuint buffer;
@@ -135,4 +167,40 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
     cc_glglue_glDeleteBuffers(glue, 1, &buffer);    
     thisp->vbohash.remove(context);
   }
+}
+
+static int vbo_vertex_count_min_limit = 100;
+static int vbo_vertex_count_max_limit = 1000000;
+
+/*!
+  Sets the global limits on the number of vertex data in a node before
+  vertex buffer objects are considered to be used for rendering.
+*/
+void 
+SoVBO::setVertexCountLimits(const int minlimit, const int maxlimit)
+{
+  vbo_vertex_count_min_limit = minlimit;
+  vbo_vertex_count_max_limit = maxlimit;
+}
+
+/*!
+  Returns the vertex VBO minimum limit.
+
+  \sa setVertexCountLimits()
+ */
+int 
+SoVBO::getVertexCountMinLimit(void)
+{
+  return vbo_vertex_count_min_limit;
+}
+
+/*!
+  Returns the vertex VBO maximum limit.
+
+  \sa setVertexCountLimits()
+ */
+int 
+SoVBO::getVertexCountMaxLimit(void)
+{
+  return vbo_vertex_count_max_limit;
 }

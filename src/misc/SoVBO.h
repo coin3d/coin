@@ -38,9 +38,15 @@ class SoVBO {
         const GLenum usage = GL_STATIC_DRAW);
   ~SoVBO();
   
-  void setData(const GLvoid * data, intptr_t size);  
+  void setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid = 0);  
+  uint32_t getBufferDataId(void) const;
+  void getBufferData(const GLvoid *& data, intptr_t & size);
   void bindBuffer(uint32_t contextid);
   
+  static void setVertexCountLimits(const int minlimit, const int maxlimit);
+  static int getVertexCountMinLimit(void);
+  static int getVertexCountMaxLimit(void);
+
  private:
   static void context_destruction_cb(uint32_t context, void * userdata);
   static void vbo_schedule(const uint32_t & key,
@@ -52,6 +58,7 @@ class SoVBO {
   GLenum usage;
   const GLvoid * data;
   intptr_t datasize;
+  uint32_t dataid;
 
   SbHash <GLuint, uint32_t> vbohash;
 };

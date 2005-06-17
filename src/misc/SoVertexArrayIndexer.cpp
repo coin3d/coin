@@ -137,8 +137,8 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     if (renderasvbo) {
       if (this->vbo == NULL) {
         this->vbo = new SoVBO(GL_ELEMENT_ARRAY_BUFFER);
-        this->vbo->setData(this->indexarray.getArrayPtr(),
-                           this->indexarray.getLength()*sizeof(int32_t));
+        this->vbo->setBufferData(this->indexarray.getArrayPtr(),
+                                 this->indexarray.getLength()*sizeof(int32_t));
       }
       this->vbo->bindBuffer(contextid);
       cc_glglue_glDrawElements(glue, 
