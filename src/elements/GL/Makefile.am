@@ -29,6 +29,7 @@ RegularSources = \
 	SoGLTextureImageElement.cpp \
 	SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp \
+	SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp

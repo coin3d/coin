@@ -59,6 +59,7 @@ PublicHeaders = \
 	SoGLTextureImageElement.h \
 	SoGLTextureMatrixElement.h \
 	SoGLUpdateAreaElement.h \
+	SoGLVBOElement.h \
 	SoGLViewingMatrixElement.h \
 	SoGLViewportRegionElement.h \
 	SoInt32Element.h \
