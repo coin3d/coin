@@ -4587,6 +4587,24 @@ Separator {
 
     20050516 mortene.
 
+    UPDATE 20050617 mortene: this also seems to be a problem under
+    Windows, as we've had the following bug report from an external
+    developer:
+
+    -----8<----------- [snip] --------8<----------- [snip] ---
+
+    If I leave the default values for the complexity node all is
+    ok. But if I change the value I get an assert in
+ 
+        Coin-2\src\fonts\win32.c   line 1110 : assert(unused)
+ 
+    for each character and an eventual access violation crash.  
+
+    -----8<----------- [snip] --------8<----------- [snip] ---
+
+    This was from mixing SoComplexity nodes with SoFont and
+    SoAsciiText nodes.
+
 =====================================================================
 
 191 SoOffscreenRenderer bug with SoOrthographicCamera in multitile-mode.
