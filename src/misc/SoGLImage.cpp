@@ -1529,7 +1529,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
     dl->setTextureTarget((int) GL_TEXTURE_3D);
   }
   else {
-    dl->setTextureTarget((int) (this->flags & SoGLImage::RECTANGLE ?
+    dl->setTextureTarget((int) ((this->flags & SoGLImage::RECTANGLE) ?
                                 GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
   }
 

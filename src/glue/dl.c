@@ -149,7 +149,7 @@
 static const char * NULL_STR = "(null)";
 
 struct cc_libhandle_struct {
-  void * nativehnd;
+  const void * nativehnd;
   cc_string libname;
 };
 
@@ -234,7 +234,7 @@ cc_build_search_list(const char * libname)
   int i;
   size_t length;
   char * res_path = NULL;
-  char * p = NULL;
+  const char * p = NULL;
   char * path, * framework_path, * dyld_path, * default_path;
 
   

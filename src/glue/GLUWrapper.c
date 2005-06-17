@@ -475,7 +475,7 @@ GLUWrapper(void)
      when an older GLU DLL is installed on a system.
   */
   {
-    const char * versionstr = coin_getenv("COIN_DEBUG_GLU_VERSION");
+    const GLubyte * versionstr = (const GLubyte *)coin_getenv("COIN_DEBUG_GLU_VERSION");
     if (!versionstr) { versionstr = gi->gluGetString(GLU_VERSION); }
     GLUWrapper_set_version(versionstr);
   }

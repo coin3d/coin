@@ -2702,4 +2702,8 @@ SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
         return FALSE;
     }
   }
+  // Will never be reached, but functions with a return value other than 
+  // void must return *something* by default. At least gcc-4.0.0
+  // (Apple snapshot 20041026, default in Mac OS 10.4) will warn.
+  return TRUE;
 }
