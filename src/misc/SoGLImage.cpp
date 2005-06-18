@@ -1524,13 +1524,15 @@ SoGLImageP::createGLDisplayList(SoState *state)
                                             1, mipmap);
   dl->ref();
 
-  SbBool is3D = (size[2]==0)?FALSE:TRUE;
-  if (is3D) {
-    dl->setTextureTarget((int) GL_TEXTURE_3D);
-  }
-  else {
-    dl->setTextureTarget((int) ((this->flags & SoGLImage::RECTANGLE) ?
-                                GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
+  if (bytes) {
+    SbBool is3D = (size[2]==0)?FALSE:TRUE;
+    if (is3D) {
+      dl->setTextureTarget((int) GL_TEXTURE_3D);
+    }
+    else {
+      dl->setTextureTarget((int) ((this->flags & SoGLImage::RECTANGLE) ?
+                                  GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
+    }
   }
 
   dl->open(state);
