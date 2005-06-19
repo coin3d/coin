@@ -343,6 +343,13 @@ simage_wrapper(void)
         si->simage_version(&si->version.major,
                            &si->version.minor,
                            &si->version.micro);
+        if (cc_simage_debugging()) {
+          cc_debugerror_postinfo ("simage_wrapper",
+                                  "simage version: %d.%d.%d",
+                                  si->version.major, 
+                                  si->version.minor,
+                                  si->version.micro);
+        }
       }
 
       SIMAGEWRAPPER_REGISTER_FUNC(simage_check_supported, simage_check_supported_t);
