@@ -21,6 +21,13 @@
  *
 \**************************************************************************/
 
+/*
+ *  Environment variable controls available:
+ * 
+ *   - COIN_DEBUG_SIMAGE: set to 1 to get information about success or
+ *     failure of loading the simage library.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #else /* No config.h? Hmm. Assume the simage library is available for linking. */
@@ -55,6 +62,17 @@ static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
 
+/* Return value of COIN_DEBUG_SIMAGE environment variable. */
+static int
+cc_simage_debugging(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char * val = coin_getenv("COIN_DEBUG_SIMAGE");
+    d = val ? atoi(val) : 0;
+  }
+  return (d > 0) ? 1 : 0;
+}
 
 /* Cleans up at exit. */
 static void
@@ -270,6 +288,17 @@ simage_wrapper(void)
       while (!simage_libhandle && possiblelibnames[idx]) {
         simage_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;
+      }
+
+      if (cc_simage_debugging()) {
+        if (!simage_libhandle) {
+          cc_debugerror_post("simage_wrapper",
+                             "failed to load simage library.");
+        } else {
+          cc_debugerror_postinfo("simage_wrapper",
+                                 "loaded library %s",
+                                 possiblelibnames[idx-1]);
+        }
       }
 
       if (!simage_libhandle) {
