@@ -51,3 +51,4 @@
 #include "SoGLUpdateAreaElement.cpp"
 #include "SoGLViewingMatrixElement.cpp"
 #include "SoGLViewportRegionElement.cpp"
+#include "SoGLVBOElement.cpp"

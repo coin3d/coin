@@ -48,6 +48,7 @@
 #include "SoState.cpp"
 #include "SoTempPath.cpp"
 #include "SoType.cpp"
+#include "SoVBO.cpp"
 #include "SoContextHandler.cpp"
 #include "SoProto.cpp"
 #include "SoProtoInstance.cpp"
