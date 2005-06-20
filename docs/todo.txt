@@ -310,6 +310,10 @@ STUFF TO FIX IN COIN
     Plus (for at least OpenGL 1.3): the glCompressedTexImage*()
     functions.
 
+    UPDATE 2005-06-20 mortene: kintel has implemented this now, I
+    believe. (Is it feature complete, or are there still important
+    FIXMEs etc? Should check this before removing the item.)
+
 
 006 Font specification
     2001-11-28  Morten Eriksen  <mortene@sim.no>
@@ -464,6 +468,12 @@ STUFF TO FIX IN COIN
     configure option that makes it possible to _exclude_ simage from
     Coin build, as not everyone needs to be able to load textures
     from disk.
+
+    UPDATE 2005-06-20 mortene: there are many good arguments for _not_
+    doing this, actually. So we should probably rather make it easy
+    and conventient for external developers to download, update,
+    install etc new versions of simage -- so it's unlikely they will
+    ever have to build it themselves.
 
 
 019 Dynamically configurable viewer interaction (SoQt++)
