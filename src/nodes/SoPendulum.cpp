@@ -31,13 +31,6 @@
   used. Halfway through the cycle, the resulting rotation equals
   rotation1, and at the end of the cycle, we're at rotation0 again.
 
-  Note that the update rate of this node is dependent on the update
-  rate of the \e realTime global field. The default value of this
-  field is set so an update happens every 1/12th second. The low
-  update rate is due to historical reasons, to be compatible with
-  application code written for SGI Inventor.  One can change this
-  value by calling SoDB::setRealTimeInterval().
-
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     Pendulum {
