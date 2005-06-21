@@ -116,20 +116,23 @@ SoGLSLShaderParameter::set4fv(const SoGLShaderObject * shader, const int num,
 }
 
 void
-SoGLSLShaderParameter::setMatrix(const SoGLShaderObject *,
-				 const float *, const char *,
-				 const int)
+SoGLSLShaderParameter::setMatrix(const SoGLShaderObject *shader,
+								 const float * value, const char * name,
+								 const int)
 {
-  // FIXME not implemented yet -- 20050128 martin
+  if (this->isValid(shader, name, GL_FLOAT_MAT4_ARB))
+    shader->GLContext()->glUniformMatrix4fvARB(this->location,1,FALSE,value);
 }
 
   
 void
-SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *,
-				      const int, const float *,
-				      const char *, const int)
+SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *shader,
+									  const int num, const float *value,
+									  const char *name, const int)
 {
-  // FIXME not implemented yet -- 20050128 martin
+  int cnt = num;
+  if (this->isValid(shader, name, GL_FLOAT_MAT4_ARB, &cnt))
+    shader->GLContext()->glUniformMatrix4fvARB(this->location,cnt,FALSE,value);
 }
 
 void
@@ -189,7 +192,7 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
     }
     return TRUE;
   }
- 
+
   COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
   const cc_glglue * g = shader->GLContext();
 
@@ -222,7 +225,7 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
     case GL_SAMPLER_2D_RECT_SHADOW_ARB: break;
     default: return FALSE;
     }
-  }  
+  }
   else if (this->cacheType != type)
     return FALSE;
 

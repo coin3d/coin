@@ -28,9 +28,10 @@ mortene ("x" means "done"):
         -> example program(s) and/or iv-files
                 => handegar has been doing some stuff
 
+
 martin:
   - array/matrix parameter
-     - GLSL: seems not to work properly
+     X GLSL: seems not to work properly
      - ARB: not supported yet
 
 

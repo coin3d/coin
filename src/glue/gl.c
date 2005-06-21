@@ -1485,6 +1485,9 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glUniform2ivARB = NULL;
   w->glUniform3ivARB = NULL;
   w->glUniform4ivARB = NULL;
+  w->glUniformMatrix2fvARB = NULL;
+  w->glUniformMatrix3fvARB = NULL;
+  w->glUniformMatrix4fvARB = NULL;
 
 
 #ifdef GL_ARB_shader_objects
@@ -1538,6 +1541,11 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glUniform2ivARB, COIN_PFNGLUNIFORM2IVARBPROC);
     BIND_FUNCTION_WITH_WARN(glUniform3ivARB, COIN_PFNGLUNIFORM3IVARBPROC);
     BIND_FUNCTION_WITH_WARN(glUniform4ivARB, COIN_PFNGLUNIFORM4IVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniformMatrix2fvARB, COIN_PFNGLUNIFORMMATRIX2FVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniformMatrix3fvARB, COIN_PFNGLUNIFORMMATRIX3FVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniformMatrix4fvARB, COIN_PFNGLUNIFORMMATRIX4FVARBPROC);
+
+
 
 #undef BIND_FUNCTION_WITH_WARN
   } 

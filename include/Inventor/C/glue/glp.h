@@ -498,6 +498,10 @@ typedef void (APIENTRY * COIN_PFNGLUNIFORM2IVARBPROC)(COIN_GLhandle, GLsizei, co
 typedef void (APIENTRY * COIN_PFNGLUNIFORM3IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
 typedef void (APIENTRY * COIN_PFNGLUNIFORM4IVARBPROC)(COIN_GLhandle, GLsizei, const GLint *);
 
+typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX2FVARBPROC)(COIN_GLhandle, GLsizei, GLboolean, const GLfloat *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX3FVARBPROC)(COIN_GLhandle, GLsizei, GLboolean, const GLfloat *);
+typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX4FVARBPROC)(COIN_GLhandle, GLsizei, GLboolean, const GLfloat *);
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -720,6 +724,9 @@ struct cc_glglue {
   COIN_PFNGLUNIFORM2IVARBPROC glUniform2ivARB;
   COIN_PFNGLUNIFORM3IVARBPROC glUniform3ivARB;  
   COIN_PFNGLUNIFORM4IVARBPROC glUniform4ivARB;
+  COIN_PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB;
+  COIN_PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB;
+  COIN_PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB;
  
   const char * versionstr;
   const char * vendorstr;

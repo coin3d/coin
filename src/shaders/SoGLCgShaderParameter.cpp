@@ -195,7 +195,9 @@ SoGLCgShaderParameter::set4i(const SoGLShaderObject * shader,
 SbBool
 SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
 {
-  if (type1 == CG_FLOAT && type2 == CG_FLOAT1)
+  if (type1 == type2)
+    return TRUE;
+  else if (type1 == CG_FLOAT && type2 == CG_FLOAT1)
     return TRUE;
   else if (type1 == CG_FLOAT1 && type2 == CG_FLOAT)
     return TRUE;
@@ -211,14 +213,10 @@ SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
     case CG_SAMPLER3D:
     case CG_SAMPLERRECT:
     case CG_SAMPLERCUBE: return TRUE;
-    default: break;
+    default: return FALSE;
     }
   }
-  else
-    return (type1 == type2);
-
-  assert(FALSE && "uncovered case");
-  return FALSE; // avoid compiler warning
+  return FALSE;
 }
 
 SbBool 

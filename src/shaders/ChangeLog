@@ -10,6 +10,15 @@ be removed soon (in one month or so), when the shaders run smoothly.
 
 ============================================================================
 
+2005-06-20: martin
+	* include/Inventor/C/glue/glp.h,
+	  src/glue/gl.c,
+	  src/shaders/SoGLSLShaderParameter.cpp:
+	added uniform matrix support for GLSL
+
+	* src/shaders/SoGLCgShaderParameter.cpp:
+	fixed int-sampler type compare
+
 2005-06-08: martin
 	* include/Inventor/nodes/SoShaderObject.h,
 	  include/Inventor/nodes/SoShaderProgram.h,
