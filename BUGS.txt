@@ -4605,6 +4605,9 @@ Separator {
     This was from mixing SoComplexity nodes with SoFont and
     SoAsciiText nodes.
 
+    UPDATED 2005-06-22 mortene: confirmed that the above Inventor-file
+    example also asserts in the same manner under Windows.
+
 =====================================================================
 
 191 SoOffscreenRenderer bug with SoOrthographicCamera in multitile-mode.
