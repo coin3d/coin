@@ -31,6 +31,7 @@ extern "C" {
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/list.h>
+#include "fontspec.h"
 
   /*
     FLW is a Font Library Wrapper designed to allow any number of
@@ -74,13 +75,13 @@ extern "C" {
   void * cc_flw_get_font_handle(int fontid);
 
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
-  void cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y);
+  void cc_flw_get_bitmap_advance(int font, float fontsize, unsigned int glyph, int * x, int * y);
   void cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y);
   void cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
   void cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
   void cc_flw_done_glyph(int font, unsigned int glyph);
 
-  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, unsigned int glyph);
+  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, float size, unsigned int glyph);
   struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
 
   const float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);

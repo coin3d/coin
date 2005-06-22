@@ -28,13 +28,22 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
+#include <Inventor/system/inttypes.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+#if 0
+/* old interface for single-sized default font */
 const int * coin_default2dfont_get_isolatin1_mapping(void);
 const unsigned char * coin_default2dfont_get_data(void);
 int coin_default2dfont_get_size(void);
+#endif
+
+int coin_default2dfont_get_height(float size);
+int coin_default2dfont_get_width(float size);
+const unsigned char * coin_default2dfont_get_data(float size);
 
 const float ** coin_default3dfont_get_coords(void);
 const int ** coin_default3dfont_get_faceidx(void);

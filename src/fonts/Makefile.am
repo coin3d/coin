@@ -19,8 +19,19 @@ PrivateHeaders = \
 	fontspec.h \
 	glyph2d.h \
 	glyph3d.h \
-	defaultfonts.h
+	defaultfonts.h \
+	builtin2dfonts.ic \
+	font13.ic \
+	font17.ic \
+	font25.ic \
+	font33.ic
+	
 ObsoleteHeaders =
+
+EXTRA_DIST = \
+	extractfont.cpp \
+	builtin2dfonts.sh \
+	font13.tif font17.tif font25.tif font33.tif
 
 ##$ BEGIN TEMPLATE Make-Common(fonts, fonts)
 # **************************************************************************

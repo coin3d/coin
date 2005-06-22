@@ -199,7 +199,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   glyph->fontidx = fontidx;
   glyph->angle = angle;
 
-  bm = cc_flw_get_bitmap(fontidx, glyphidx);
+  bm = cc_flw_get_bitmap(fontidx, spec->size, glyphidx);
   assert(bm);
   glyph->width = bm->width;
   glyph->height = bm->rows;
@@ -273,7 +273,7 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 void 
 cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y)
 {
-  cc_flw_get_bitmap_advance(g->fontidx, g->glyphidx, x, y);
+  cc_flw_get_bitmap_advance(g->fontidx, g->fontspec->size, g->glyphidx, x, y);
 }
 
 void 

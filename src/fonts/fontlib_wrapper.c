@@ -128,24 +128,25 @@ static SbBool win32api = FALSE;
 /* ********************************************************************** */
 /* BEGIN Internal functions */
 
-static struct cc_flw_bitmap *
-get_default_bitmap(unsigned int character)
+static
+struct cc_flw_bitmap *
+get_default_bitmap(unsigned int character, float wantedsize)
 {
   struct cc_flw_bitmap * bm;
 
   if (character < 256) {
-    const int fontsize = coin_default2dfont_get_size();
-    const int * isomapping = coin_default2dfont_get_isolatin1_mapping();
-    const unsigned char * fontdata = coin_default2dfont_get_data();
+    const int fontheight = coin_default2dfont_get_height(wantedsize);
+    /* const int * isomapping = coin_default2dfont_get_isolatin1_mapping(); */
+    unsigned char * fontdata =
+      (unsigned char *) coin_default2dfont_get_data(wantedsize);
 
-    bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
-    bm->buffer = (unsigned char *) fontdata +
-      fontsize * isomapping[character];
+    bm = (struct cc_flw_bitmap *) malloc(sizeof(struct cc_flw_bitmap));
+    bm->buffer = fontdata + fontheight * 4 * character;
     bm->bearingX = 0;
-    bm->bearingY = fontsize;
-    bm->rows = fontsize;
-    bm->width = 7;
-    bm->pitch = 1;
+    bm->bearingY = fontheight;
+    bm->rows = fontheight;
+    bm->width = coin_default2dfont_get_width(wantedsize);
+    bm->pitch = 4;
     bm->mono = 1;
     return bm;
   }
@@ -580,7 +581,13 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
     /* Use the default font for the given fontname and size. */
     /* FIXME: the defaultfont size is now fixed at 12-pt. Should scale
        it to match sizey. 20030317 mortene. */
+    struct cc_flw_font * font;
+    int newsizex, newsizey;
     idx = flw_map_fontname_to_defaultfont(fontname);
+    font = flw_fontidx2fontptr(idx);
+    newsizex = coin_default2dfont_get_width((float) sizey);
+    newsizey = coin_default2dfont_get_height((float) sizey);
+    fontstruct_set_size(font, newsizex, newsizey);
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -683,7 +690,7 @@ cc_flw_get_glyph(int font, unsigned int charidx)
 }
 
 void 
-cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
+cc_flw_get_bitmap_advance(int font, float fontsize, unsigned int glyph, int * x, int * y)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -696,7 +703,8 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
   *x = *y = 0;
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = 7; /* All chars are equal in width. No need for a lookup table */
+    *x = coin_default2dfont_get_width(fontsize);
+    *y = coin_default2dfont_get_height(fontsize);
   }
   else {
     if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->glyph, x, y); }
@@ -811,7 +819,7 @@ cc_flw_done_glyph(int font, unsigned int glyph)
 }
 
 struct cc_flw_bitmap *
-cc_flw_get_bitmap(int font, unsigned int glyph)
+cc_flw_get_bitmap(int font, float fontsize, unsigned int glyph)
 {
   unsigned char * buf;
   struct cc_flw_font * fs;
@@ -836,7 +844,7 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
   if (!bm) {
     /* glyph handle == char value in default font. &255 to avoid
        index out of range. */
-    bm = get_default_bitmap(gs->glyph & 0xff);
+    bm = get_default_bitmap(gs->glyph & 0xff, fontsize);
   }
   else if (bm && bm->buffer) {
     buf = (unsigned char *)malloc(bm->pitch * bm->rows);

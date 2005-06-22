@@ -28,6 +28,8 @@
 
 #include "defaultfonts.h"
 
+#if 0
+
 static const unsigned char coin_default2dfont[][12] = {
   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, /* [blank] */
   {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, /* ! */
@@ -174,6 +176,12 @@ static const int coin_default2dfont_isolatin1_mapping[] = {
    96,   0,   0,   0,   0,   0,   0,   0
 };
 
+#endif // 0
+
+#include "builtin2dfonts.ic"
+
+#if 0
+
 const int * 
 coin_default2dfont_get_isolatin1_mapping(void)
 {
@@ -191,3 +199,33 @@ coin_default2dfont_get_size(void)
 {
   return 12;
 }
+
+#endif // 0
+
+int
+coin_default2dfont_get_height(float size)
+{
+  if ( size < 14.0f ) { return COIN_FONT_13_HEIGHT; }
+  else if ( size < 18.0f ) { return COIN_FONT_17_HEIGHT; }
+  else if ( size < 26.0f ) { return COIN_FONT_25_HEIGHT; }
+  else { return COIN_FONT_33_HEIGHT; }
+}
+
+int
+coin_default2dfont_get_width(float size)
+{
+  if ( size < 14.0f ) { return COIN_FONT_13_WIDTH; }
+  else if ( size < 18.0f ) { return COIN_FONT_17_WIDTH; }
+  else if ( size < 26.0f ) { return COIN_FONT_25_WIDTH; }
+  else { return COIN_FONT_33_WIDTH; }
+}
+
+const unsigned char *
+coin_default2dfont_get_data(float size)
+{
+  if ( size < 14.0f ) { return (const unsigned char *) font_data_13; }
+  else if ( size < 18.0f ) { return (const unsigned char *) font_data_17; }
+  else if ( size < 26.0f ) { return (const unsigned char *) font_data_25; }
+  else { return (const unsigned char *) font_data_33; }
+}
+
