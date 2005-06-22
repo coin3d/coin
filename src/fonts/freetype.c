@@ -21,6 +21,17 @@
  *
 \**************************************************************************/
 
+/* FIXME: problem reported by Jan Peèiva on coin-dicuss: if there's a
+   freetype.dll installed as part of Cygwin, and Coin has been built
+   with MSVC (and not Cygwin GCC), trying to use the Cygwin FreeType
+   DLL leads to a crash. Should detect this problem and avoid a
+   Cygwin-built FreeType DLL (unless Coin was also built with Cygwin).
+
+   Similar code to what is needed to implement this can be found in
+   the listWin32ProcessModules() in src/misc/SoDB.cpp.
+
+   20050613 mortene. */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -76,13 +87,13 @@ void cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, 
 void cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 
-struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
-struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity) { assert(FALSE); return NULL; }
+struct cc_font_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
+struct cc_font_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity) { assert(FALSE); return NULL; }
 
-void cc_flwft_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor){ assert(FALSE); }
-const float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+void cc_flwft_scale_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph, float factor){ assert(FALSE); }
+const float * cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+const int * cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 
 
 #else /* HAVE_FREETYPE || FREETYPE_RUNTIME_LINKING */
@@ -101,12 +112,14 @@ static void flwft_combineCallback(GLdouble coords[3], GLvoid * data,
 static void flwft_errorCallback(GLenum error_code);
 static void flwft_addTessVertex(double * vertex);
 
-static void flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph);
-static void flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
-static void flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flwft_buildVertexList(struct cc_font_vector_glyph * newglyph);
+static void flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph);
+static void flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph);
 static void flwft_cleanupMallocList(void);
 
 static int flwft_calctessellatorsteps(float complexity);
+
+/* ************************************************************************* */
 
 #include <string.h>
 #include <math.h>
@@ -131,9 +144,15 @@ static int flwft_calctessellatorsteps(float complexity);
 #include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/namemap.h>
-#include "fontlib_wrapper.h"
+#include <Inventor/C/base/list.h>
+
+#include "common.h"
+
+/* ************************************************************************* */
 
 static const int flwft_3dfontsize = 40;
+
+/* ************************************************************************* */
 
 typedef struct flwft_tessellator_t {  
   coin_GLUtessellator * tessellator_object;
@@ -158,8 +177,6 @@ typedef struct flwft_tessellator_t {
 } flwft_tessellator_t;
 
 static flwft_tessellator_t flwft_tessellator;
-
-
 
 /* ************************************************************************* */
 
@@ -334,8 +351,8 @@ static const char * fontfilenames[] = {
   };
   
   struct cc_flwft_glyph {
-    struct cc_flw_bitmap * bitmap;
-    struct cc_flw_vector_glyph * vector;
+    struct cc_font_bitmap * bitmap;
+    struct cc_font_vector_glyph * vector;
   };
 
 static cc_dict *
@@ -375,13 +392,13 @@ cc_flwft_initialize(void)
   }
   error = cc_ftglue_FT_Init_FreeType(&library);
   if (error) {
-    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
+    if (cc_font_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
     library = NULL;
     return FALSE;
   }
 
   cc_ftglue_FT_Library_Version(library, &major, &minor, &patch);
-  if (cc_flw_debug()) {
+  if (cc_font_debug()) {
     cc_debugerror_postinfo("cc_flwft_initialize",
                            "FreeType library version is %d.%d.%d",
                            major, minor, patch);
@@ -561,7 +578,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
       return NULL;
     }
     
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_fcglue_FcPatternPrint(matched_pattern);
     }
     
@@ -570,7 +587,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);
     
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_postinfo("find_font_file",
                              "fontfile matching the pattern: '%s'",
                              foundfile);
@@ -587,7 +604,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     found_in_hash = cc_dict_get(cc_flwft_globals.fontname2filename, key, &val);
     if (!found_in_hash) {
       const char * c = NULL;
-      if (cc_flw_debug()) {
+      if (cc_font_debug()) {
         cc_debugerror_postinfo("find_font_file",
                                "fontname '%s' not found in name hash",
                                fontname);
@@ -619,7 +636,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
         }
 
         found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
-        if (cc_flw_debug()) {
+        if (cc_font_debug()) {
           cc_debugerror_postinfo("find_font_file", "'%s' %s",
                                  cc_string_get_text(&str),
                                  found ? "found!" : "NOT found");
@@ -651,7 +668,7 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
   if (error) {
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_postwarning("cc_flwft_get_font",
                                 "error %d for fontname '%s' (filename '%s')",
                                 error, fontname,
@@ -660,7 +677,7 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
     return NULL;
   }
 
-  if (cc_flw_debug()) {
+  if (cc_font_debug()) {
     cc_debugerror_postinfo("cc_flwft_get_font",
                            "FT_New_Face(..., \"%s\" / \"%s\", ...) => "
                            "family \"%s\" and style \"%s\"",
@@ -697,7 +714,7 @@ cc_flwft_done_font(void * font)
   face = (FT_Face)font;
   error = cc_ftglue_FT_Done_Face(face);
   if (error) {
-    if (cc_flw_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
+    if (cc_font_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
 
   glyphs = ft_get_glyph_hash(font);
@@ -750,7 +767,7 @@ cc_flwft_get_charmap_name(void * font, int charmap)
     case FT_ENCODING_APPLE_ROMAN: 
       name = "apple_roman"; break; 
     default:
-      if (cc_flw_debug()) {
+      if (cc_font_debug()) {
         cc_debugerror_postwarning("cc_flwft_get_charmap_name",
                                   "unknown encoding: 0x%x",
                                   face->charmaps[charmap]->encoding);
@@ -958,11 +975,11 @@ cc_flwft_done_glyph(void * font, int glyph)
   (void) cc_dict_remove(glyphhash, (uintptr_t)glyph);
 }
 
-struct cc_flw_bitmap *
+struct cc_font_bitmap *
 cc_flwft_get_bitmap(void * font, unsigned int glyph)
 {
   FT_Error error;
-  struct cc_flw_bitmap * bm;
+  struct cc_font_bitmap * bm;
   FT_Face face;
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
@@ -985,14 +1002,14 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   */
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
-    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+    if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                            "FT_Load_Glyph() => error %d",
                                            error);
     return NULL;
   }
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
-    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+    if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                            "FT_Get_Glyph() => error %d",
                                            error);
     return NULL;
@@ -1007,7 +1024,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   if (!mono) {
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
     if (error) {
-      if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+      if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                              "FT_Glyph_To_Bitmap() => error %d",
                                              error);
       return NULL;
@@ -1017,7 +1034,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
 
-  bm = (struct cc_flw_bitmap *) malloc(sizeof(struct cc_flw_bitmap));
+  bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
   bm->buffer = (unsigned char *) malloc(tfbm->rows * tfbm->pitch);
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
@@ -1040,10 +1057,10 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   return bm;
 }
 
-struct cc_flw_vector_glyph * 
+struct cc_font_vector_glyph * 
 cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity)
 { 
-  struct cc_flw_vector_glyph * new_vector_glyph;
+  struct cc_font_vector_glyph * new_vector_glyph;
   FT_Outline_Funcs outline_funcs;
   FT_Error error;
   FT_Face face;
@@ -1090,7 +1107,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT);
   if (error != 0) {
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_post("cc_flwft_get_vector_glyph",
                          "Error loading glyph (glyphindex==%d). "
                          "(FT_Load_Glyph() error => %d)", glyphindex, error);
@@ -1114,7 +1131,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
      robust and catch the unprobable case where the provided bitmap
      font could match the flwt_3dfontsize. */
   if (tmp->format == FT_GLYPH_FORMAT_BITMAP) {
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_post("cc_flwft_get_vector_glyph",
                          "Glyph is a bitmap. Falling back to the default font!");
     }
@@ -1184,7 +1201,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   /* Copy the static vector_glyph struct to a newly allocated struct
      returned to the user. This is done due to the fact that the
      tessellation callback solution needs a static working struct. */
-  new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
+  new_vector_glyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
    
   flwft_buildVertexList(new_vector_glyph);
   flwft_buildFaceIndexList(new_vector_glyph);
@@ -1529,7 +1546,7 @@ flwft_cleanupMallocList(void)
 }
 
 static void
-flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildVertexList(struct cc_font_vector_glyph * newglyph)
 {
   int numcoords,i;
   float * coord;
@@ -1551,14 +1568,14 @@ flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 }
 
 const float *
-cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
 {   
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
 } 
 
 static void
-flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
 {
   int i,len;
 
@@ -1575,14 +1592,14 @@ flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 }
 
 const int *
-cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
   assert(vecglyph->edgeindices && "Edge indices not initialized properly");
   return vecglyph->edgeindices;
 } 
 
 static void
-flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
 {
   int len,i;
 
@@ -1599,7 +1616,7 @@ flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
 }
 
 const int *
-cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
 {  
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;

@@ -1,6 +1,3 @@
-#ifndef COIN_FONTSPEC_H
-#define COIN_FONTSPEC_H
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -24,38 +21,22 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/string.h>
+#include "common.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <stdlib.h>
+#include <Inventor/C/tidbits.h>
 
-  typedef struct {
-    float size;
-    cc_string name;  
-    cc_string style; /* 'Bold', 'Italic' or 'Bold Italic' */
+/* ********************************************************************** */
 
-    float complexity;  /* detail level for vector glyphs
-
-                       FIXME: does this variable really belong here?
-                       Is this really an attribute of a /font/? And is
-                       it used when asking for a font from the
-                       underlying font API? (I.e. FreeType or Win32.)
-                       20050519 mortene. */
-
-  } cc_font_specification;
-
-  void cc_fontspec_construct(cc_font_specification * spec,
-                             const char * name_style,
-                             float size, float complexity);
-
-  void cc_fontspec_copy(const cc_font_specification * from,
-                        cc_font_specification * to);
-
-  void cc_fontspec_clean(cc_font_specification * spec);
-
-#ifdef __cplusplus
+SbBool
+cc_font_debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
+    dbg = env && (atoi(env) > 0);
+  }
+  return dbg;
 }
-#endif
 
-#endif /* !COIN_FONTSPEC_H */
+/* ********************************************************************** */

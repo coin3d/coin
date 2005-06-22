@@ -69,12 +69,12 @@ void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, i
 void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
-struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
+struct cc_font_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
+struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
 
-const float * cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+const float * cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+const int * cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+const int * cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 
 
 #else /* HAVE_WIN32_API */
@@ -87,9 +87,9 @@ static void CALLBACK flww32_combineCallback(GLdouble coords[3], GLvoid * data, G
 static void CALLBACK flww32_errorCallback(GLenum error_code);
 static void flww32_addTessVertex(double x, double y);
 
-static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size);
-static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
-static void flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flww32_buildVertexList(struct cc_font_vector_glyph * newglyph, int size);
+static void flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph);
+static void flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph);
 static void flww32_cleanupMallocList(void);
 static int flww32_calcfontsize(float complexity);
 
@@ -110,7 +110,7 @@ static int flww32_calcfontsize(float complexity);
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
-#include "fontlib_wrapper.h"
+#include "common.h"
 
 /* ************************************************************************* */
 
@@ -147,7 +147,7 @@ struct cc_flww32_globals_s {
   /* This is a hash of hashes. The unique keys are HFONT instances,
      which each maps to a new hash. This hash then contains a set of
      glyph ids (i.e. which are the hash keys) which maps to struct
-     cc_flw_bitmap instances. */
+     cc_font_bitmap instances. */
   cc_dict * font2glyphhash;
 
   /* This is a hash of hashes. Unique keys are HFONT instances. This again
@@ -163,8 +163,8 @@ static struct cc_flww32_globals_s cc_flww32_globals = {
 };
 
 struct cc_flww32_glyph {
-  struct cc_flw_bitmap * bitmap;
-  struct cc_flw_vector_glyph * vector;
+  struct cc_font_bitmap * bitmap;
+  struct cc_font_vector_glyph * vector;
 };
 
 /* Callback functions for cleaning up kerninghash table */
@@ -234,7 +234,7 @@ cc_flww32_initialize(void)
 {
   OSVERSIONINFO osvi;
 
-  if (cc_flw_debug()) { /* list all fonts on system */
+  if (cc_font_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
 
     /* Only these are inspected by the EnumFontFamiliesEx()
@@ -729,10 +729,10 @@ cc_flww32_done_glyph(void * font, int glyph)
 }
 
 /* Draws a bitmap for the given glyph. */
-struct cc_flw_bitmap *
+struct cc_font_bitmap *
 cc_flww32_get_bitmap(void * font, int glyph)
 {
-  struct cc_flw_bitmap * bm = NULL;
+  struct cc_font_bitmap * bm = NULL;
   GLYPHMETRICS gm;
 
   /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
@@ -827,7 +827,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
     }
   }
 
-  bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
+  bm = (struct cc_font_bitmap *)malloc(sizeof(struct cc_font_bitmap));
   assert(bm);
   bm->bearingX = gm.gmptGlyphOrigin.x;
   bm->bearingY = gm.gmptGlyphOrigin.y;
@@ -961,7 +961,7 @@ flww32_getVerticesFromPath(HDC hdc)
     
 }
 
-cc_flw_vector_glyph *
+struct cc_font_vector_glyph *
 cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 {
   SbBool unused;
@@ -971,7 +971,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   HBITMAP membmp;
   HDC screendc;
   TCHAR string[1];
-  struct cc_flw_vector_glyph * new_vector_glyph;
+  struct cc_font_vector_glyph * new_vector_glyph;
   void * tmp;
   unsigned int size;
   uintptr_t cast_aid;
@@ -1105,7 +1105,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   /* Copy the static vector_glyph struct to a newly allocated struct
      returned to the user. This is done due to the fact that the
      tessellation callback solution needs a static working struct. */
-  new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
+  new_vector_glyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
 
   size = 200;
   if (cc_dict_get(cc_flww32_globals.fontsizehash, (uintptr_t)font, &tmp)) {
@@ -1278,7 +1278,7 @@ flww32_errorCallback(GLenum error_code)
 }
 
 static void
-flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size)
+flww32_buildVertexList(struct cc_font_vector_glyph * newglyph, int size)
 {
 
   int numcoords,i;
@@ -1318,14 +1318,14 @@ flww32_cleanupMallocList(void)
 }
 
 const float *
-cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
 {   
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
 } 
 
 static void
-flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
+flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
 {
   int i,len;
 
@@ -1346,14 +1346,14 @@ flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 }
 
 const int *
-cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
   assert(vecglyph->edgeindices && "Edge indices not initialized properly");
   return vecglyph->edgeindices;
 } 
 
 static void
-flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
+flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
 {
   int len,i;
 
@@ -1375,7 +1375,7 @@ flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
 }
 
 const int *
-cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
 {  
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;

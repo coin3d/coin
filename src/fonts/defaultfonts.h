@@ -34,13 +34,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#if 0
-/* old interface for single-sized default font */
-const int * coin_default2dfont_get_isolatin1_mapping(void);
-const unsigned char * coin_default2dfont_get_data(void);
-int coin_default2dfont_get_size(void);
-#endif
-
 int coin_default2dfont_get_height(float size);
 int coin_default2dfont_get_width(float size);
 const unsigned char * coin_default2dfont_get_data(float size);

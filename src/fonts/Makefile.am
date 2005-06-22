@@ -6,12 +6,14 @@ RegularSources = \
 	glyph2d.c \
 	glyph3d.c \
 	default3dfont.c \
-	default2dfont.c
+	default2dfont.c \
+	common.c
 
 LinkHackSources = \
 	all-fonts-c.c
 
 PublicHeaders = 
+
 PrivateHeaders = \
 	fontlib_wrapper.h \
 	win32.h \
@@ -25,7 +27,8 @@ PrivateHeaders = \
 	font17.ic \
 	font25.ic \
 	font33.ic
-	
+	common.h \
+
 ObsoleteHeaders =
 
 EXTRA_DIST = \

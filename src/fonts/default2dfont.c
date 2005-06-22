@@ -228,4 +228,3 @@ coin_default2dfont_get_data(float size)
   else if ( size < 26.0f ) { return (const unsigned char *) font_data_25; }
   else { return (const unsigned char *) font_data_33; }
 }
-

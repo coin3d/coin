@@ -1,5 +1,5 @@
-#ifndef COIN_FONTSPEC_H
-#define COIN_FONTSPEC_H
+#ifndef COIN_FONTS_COMMON_H
+#define COIN_FONTS_COMMON_H
 
 /**************************************************************************\
  *
@@ -24,38 +24,36 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/string.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-  typedef struct {
-    float size;
-    cc_string name;  
-    cc_string style; /* 'Bold', 'Italic' or 'Bold Italic' */
+#include <Inventor/C/basic.h>
 
-    float complexity;  /* detail level for vector glyphs
 
-                       FIXME: does this variable really belong here?
-                       Is this really an attribute of a /font/? And is
-                       it used when asking for a font from the
-                       underlying font API? (I.e. FreeType or Win32.)
-                       20050519 mortene. */
+  struct cc_font_bitmap {
+    int bearingX; /* left side of bitmap relative to pen */
+    int bearingY; /* top of bitmap relative to pen */
+    unsigned int rows; /* height of bitmap */
+    unsigned int width; /* width of bitmap */
+    unsigned int pitch; /* number of bytes occupied by each row (rows are padded to nearest byte) */
+    int advanceX; /* where to position pen for next glyph */
+    int advanceY;
+    unsigned char * buffer; /* bitmap data */
+    SbBool mono; /* monochrome or antialiased gray level bitmap */
+  };
 
-  } cc_font_specification;
+  struct cc_font_vector_glyph {
+    float * vertices;
+    int * faceindices;
+    int * edgeindices;
+  };
 
-  void cc_fontspec_construct(cc_font_specification * spec,
-                             const char * name_style,
-                             float size, float complexity);
 
-  void cc_fontspec_copy(const cc_font_specification * from,
-                        cc_font_specification * to);
-
-  void cc_fontspec_clean(cc_font_specification * spec);
+  SbBool cc_font_debug(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* !COIN_FONTSPEC_H */
+#endif /* !COIN_FONTS_COMMON_H */

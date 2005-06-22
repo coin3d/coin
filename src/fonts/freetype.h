@@ -24,19 +24,19 @@
  *
 \**************************************************************************/
 
+/*
+  Here is the glue between the FLW and the FreeType font lib.
+
+  See http://www.freetype.org for more information about
+  the FreeType font library.
+*/
+  
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
-  /*
-    Here is the glue between the FLW and the FreeType font lib.
-
-    See http://www.freetype.org for more information about
-    the FreeType font library.
-  */
   
   SbBool cc_flwft_initialize(void);
   void cc_flwft_exit(void);
@@ -59,11 +59,11 @@ extern "C" {
   void cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
   void cc_flwft_done_glyph(void * font, int glyph);  
 
-  struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph);
-  struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity);
-  const float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
-  const int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
-  const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
+  struct cc_font_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph);
+  struct cc_font_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity);
+  const float * cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph);
+  const int * cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);
+  const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph);
 
  
 #ifdef __cplusplus

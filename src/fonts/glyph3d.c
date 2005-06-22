@@ -54,7 +54,7 @@ struct cc_glyph3d {
   int glyphidx;
   float width;
   float bbox[4];
-  cc_flw_vector_glyph * vectorglyph;
+  struct cc_font_vector_glyph * vectorglyph;
   SbBool didallocvectorglyph;
   cc_font_specification * fontspec;
   uint32_t character;
@@ -125,16 +125,13 @@ cc_glyph3d_initialize()
 cc_glyph3d *
 cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 {
-
   cc_glyph3d * glyph;
   int glyphidx;
   int fontidx;
-  int i;
   void * val;
   cc_font_specification * newspec;
-  int namelen = 0;
   cc_string * fonttoload;
-  cc_list * glyphlist;
+  cc_list * glyphlist = NULL;
 
   /* Beacuse this function is the entry point for glyph3d, the mutex
      is initialized here. */
@@ -147,6 +144,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 
   /* Has the glyph been created before? */
   if (cc_dict_get(glyph3d_fonthash, (uintptr_t)character, &val)) {
+    int i;
     glyphlist = (cc_list *) val;
     for (i=0;i<cc_list_get_length(glyphlist);++i) {
       glyph = (cc_glyph3d *) cc_list_get(glyphlist, i);
@@ -200,10 +198,11 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 
   cc_flw_ref_font(fontidx);
 
+  glyphidx = cc_flw_get_glyph(fontidx, character);
+
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
      should be used.  -mortene. */
-  glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
 
   glyph->glyphidx = glyphidx;
@@ -217,7 +216,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 
   /* Setup builtin default font if no character was found */
   if (glyph->vectorglyph == NULL) {
-    glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
+    glyph->vectorglyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
     glyph->didallocvectorglyph = TRUE;
 
     if (character <= 32 || character >= 127) {
@@ -428,12 +427,10 @@ cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
   cc_flw_get_vector_kerning(right->fontidx, left->glyphidx, right->glyphidx, x, y);
 }
 
-
 static SbBool
 glyph3d_specmatch(const cc_font_specification * spec1,
                   const cc_font_specification * spec2)
 {
-  
   float c1, c2;
   int temp1,temp2;
   
@@ -461,8 +458,6 @@ glyph3d_specmatch(const cc_font_specification * spec1,
     /* No need to compare size for 3D fonts */
     return TRUE;
   }
-  else return FALSE;
-  
+
+  return FALSE;
 }
-
-

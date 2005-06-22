@@ -97,7 +97,7 @@ static int flw_global_glyph_index = 0;
 
 struct cc_flw_glyph {
   unsigned int glyph;
-  struct cc_flw_bitmap * bitmap;
+  struct cc_font_bitmap * bitmap;
   SbBool fromdefaultfont;
   uint32_t charidx;
   int glyphindex;
@@ -128,19 +128,17 @@ static SbBool win32api = FALSE;
 /* ********************************************************************** */
 /* BEGIN Internal functions */
 
-static
-struct cc_flw_bitmap *
+static struct cc_font_bitmap *
 get_default_bitmap(unsigned int character, float wantedsize)
 {
-  struct cc_flw_bitmap * bm;
+  struct cc_font_bitmap * bm;
 
-  if (character < 256) {
+  if (character < 256) { /* FIXME: should this be an assert? 20050622 mortene. */
     const int fontheight = coin_default2dfont_get_height(wantedsize);
-    /* const int * isomapping = coin_default2dfont_get_isolatin1_mapping(); */
     unsigned char * fontdata =
       (unsigned char *) coin_default2dfont_get_data(wantedsize);
 
-    bm = (struct cc_flw_bitmap *) malloc(sizeof(struct cc_flw_bitmap));
+    bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
     bm->buffer = fontdata + fontheight * 4 * character;
     bm->bearingX = 0;
     bm->bearingY = fontheight;
@@ -335,7 +333,6 @@ flw_exit(void)
 static void
 flw_initialize(void)
 {
-  int idx;
   const char * env;
   static SbBool initialized = FALSE;
   /* CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe */
@@ -352,7 +349,7 @@ flw_initialize(void)
 
   freetypelib = !((env = coin_getenv("COIN_FORCE_FREETYPE_OFF")) && (atoi(env) > 0));
   freetypelib = freetypelib && cc_flwft_initialize();
-  if (cc_flw_debug()) {
+  if (cc_font_debug()) {
     cc_debugerror_postinfo("cc_flw_initialize",
                            "FreeType library %s",
                            freetypelib ? "can be used" : "can not be used");
@@ -360,7 +357,7 @@ flw_initialize(void)
 
   win32api = !((env = coin_getenv("COIN_FORCE_WIN32FONTS_OFF")) && (atoi(env) > 0));
   win32api = win32api && cc_flww32_initialize();
-  if (cc_flw_debug()) {
+  if (cc_font_debug()) {
     cc_debugerror_postinfo("cc_flw_initialize",
                            "Win32 API %s for font support",
                            win32api ? "can be used" : "can not be used");
@@ -375,7 +372,7 @@ flw_initialize(void)
      a good reason on the Windows machine in question.
   */
   if (win32api && freetypelib) {
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_initialize",
                              "FreeType library will take precedence "
                              "over Win32 API");
@@ -384,32 +381,13 @@ flw_initialize(void)
     win32api = FALSE;
   }
 
-  /* Set up an item at the front of the list for the default font, so
-     that the first request for a font with the name "defaultFont"
-     will not make the underlying font import libraries try to find a
-     best match (and get a positive result for some random font). */
-  idx = flw_map_fontname_to_defaultfont("defaultFont");
-
   coin_atexit((coin_atexit_f *)flw_exit, 0);
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  cc_flw_ref_font(idx); /* increase refcount for default font */
 }
 
 /* END Internal functions */
 /* ********************************************************************** */
-
-SbBool
-cc_flw_debug(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
-    dbg = env && (atoi(env) > 0);
-  }
-  return dbg;
-}
-
 
 /*
   Returns internal index of given font specification, for subsequent
@@ -438,7 +416,7 @@ flw_find_font(const char * fontname, const unsigned int sizex, const unsigned in
   n = cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
-    if ((fs->defaultfont || (fs->sizex == sizex && fs->sizey == sizey)) &&
+    if ((fs->sizex == sizex && fs->sizey == sizey) &&
         (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
         (fs->angle == angle)) {
       FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -482,7 +460,6 @@ cc_flw_unref_font(int fontid)
     if (fs->fontindex == fontid) {
       fs->refcount--;
       if (fs->refcount == 0) {
-        /* fprintf(stderr,"unref font: %s\n", cc_string_get_text(fs->requestname)); */
         if (win32api) {
           if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
         }
@@ -514,7 +491,8 @@ cc_flw_unref_font(int fontid)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey,
+cc_flw_get_font_id(const char * fontname,
+                   const unsigned int sizex, const unsigned int sizey,
                    const float angle, const float complexity)
 {
   void * font;
@@ -528,14 +506,19 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
 
   font = NULL;
 
-  /* fprintf(stderr,"new font: %s\n", fontname); */
-
   FLW_MUTEX_LOCK(flw_global_lock);
 
-  if (win32api) { 
-    font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
-  } else if (freetypelib) { 
-    font = cc_flwft_get_font(fontname, sizex);    
+  /* Avoid having the underlying font import libraries try to find a
+     best match for "defaultFont" (and get a positive result for some
+     random font). */
+  if (strcmp(fontname, "defaultFont") != 0) {
+
+    if (win32api) { 
+      font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
+    }
+    else if (freetypelib) { 
+      font = cc_flwft_get_font(fontname, sizex);    
+    }
   }
 
 
@@ -563,7 +546,7 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
       assert(FALSE && "incomplete code path");
     }
 
-    if (cc_flw_debug()) {
+    if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_get_font",
                              "'%s', size==<%d, %d> => realname='%s', %s",
                              fontname, sizex, sizey,
@@ -578,9 +561,10 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
     idx = fs->fontindex;
   }
   else {
-    /* Use the default font for the given fontname and size. */
-    /* FIXME: the defaultfont size is now fixed at 12-pt. Should scale
-       it to match sizey. 20030317 mortene. */
+    /* Use a built-in default font for the given fontname and size,
+       trying to match as close as possible to the requested size.
+    */
+
     struct cc_flw_font * font;
     int newsizex, newsizey;
     idx = flw_map_fontname_to_defaultfont(fontname);
@@ -592,19 +576,6 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
   return idx;
-}
-
-/*
-  Returns the native (win32 or freetype) font handle.
-*/
-void * 
-cc_flw_get_font_handle(int fontid)
-{
-  static struct cc_flw_font * font;
-  font = flw_fontidx2fontptr(fontid);
-  assert(font);
-  
-  return font->font;
 }
 
 const char *
@@ -666,7 +637,7 @@ cc_flw_get_glyph(int font, unsigned int charidx)
          character mapping, causing failure to find special chars such
          as 'ØÆÅ'. The bug has since been fixed).  20030327 preng */
 
-      if (cc_flw_debug()) {
+      if (cc_font_debug()) {
         cc_debugerror_postwarning("cc_flw_get_glyph",
                                   "no character 0x%x was found in font '%s'",
                                   charidx, cc_string_get_text(fs->fontname));
@@ -747,13 +718,13 @@ cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2,
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
-  fs = flw_fontidx2fontptr(font);
-  gs1 = flw_glyphidx2glyphptr(fs, glyph1);
-  gs2 = flw_glyphidx2glyphptr(fs, glyph2);
-
   *x = *y = 0;
 
+  fs = flw_fontidx2fontptr(font);
+
   if (fs->defaultfont == FALSE) {
+    gs1 = flw_glyphidx2glyphptr(fs, glyph1);
+    gs2 = flw_glyphidx2glyphptr(fs, glyph2);
     if (win32api) {
       cc_flww32_get_bitmap_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
     }
@@ -818,13 +789,13 @@ cc_flw_done_glyph(int font, unsigned int glyph)
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
-struct cc_flw_bitmap *
-cc_flw_get_bitmap(int font, float fontsize, unsigned int glyph)
+struct cc_font_bitmap *
+cc_flw_get_bitmap(int font, unsigned int glyph)
 {
   unsigned char * buf;
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
-  struct cc_flw_bitmap * bm = NULL;
+  struct cc_font_bitmap * bm = NULL;
   unsigned int i;
 
   FLW_MUTEX_LOCK(flw_global_lock);
@@ -844,7 +815,7 @@ cc_flw_get_bitmap(int font, float fontsize, unsigned int glyph)
   if (!bm) {
     /* glyph handle == char value in default font. &255 to avoid
        index out of range. */
-    bm = get_default_bitmap(gs->glyph & 0xff, fontsize);
+    bm = get_default_bitmap(gs->glyph & 0xff, fs->sizey);
   }
   else if (bm && bm->buffer) {
     buf = (unsigned char *)malloc(bm->pitch * bm->rows);
@@ -863,10 +834,10 @@ cc_flw_get_bitmap(int font, float fontsize, unsigned int glyph)
   return bm;
 }
 
-struct cc_flw_vector_glyph *
+struct cc_font_vector_glyph *
 cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 {
-  struct cc_flw_vector_glyph * vector_glyph = NULL;
+  struct cc_font_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
 
@@ -893,42 +864,40 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 }
 
 const float *
-cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_coords(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_coords(vecglyph);
   } else {
-    /* FIXME: Should one assert here instead? It should be impossible
-       to call this method with an valid glyph and get NULL
-       returned... Goes for the others below aswell (20030912
-       handegar)
-    */
+    assert(FALSE);
     return NULL;
   }
 }
 
 const int *
-cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_faceidx(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_faceidx(vecglyph);
   } else {
+    assert(FALSE);
     return NULL;
   }
 }
 
 const int *
-cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_edgeidx(vecglyph);
   } else {
+    assert(FALSE);
     return NULL;
   }
 }

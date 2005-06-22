@@ -124,7 +124,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   int fontidx;
   int glyphidx;
   int i;
-  cc_flw_bitmap * bm;
+  struct cc_font_bitmap * bm;
   cc_font_specification * newspec;
   int namelen = 0;
   cc_string * fonttoload;
@@ -180,6 +180,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     cc_string_append_string(fonttoload, &spec->style);
   }
   
+  /* FIXME: get rid of angle -- not used. 20050516 mortene. */
   fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), 
                                angle, -1.0f);
 
@@ -199,7 +200,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   glyph->fontidx = fontidx;
   glyph->angle = angle;
 
-  bm = cc_flw_get_bitmap(fontidx, spec->size, glyphidx);
+  bm = cc_flw_get_bitmap(fontidx, glyphidx);
   assert(bm);
   glyph->width = bm->width;
   glyph->height = bm->rows;

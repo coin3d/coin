@@ -24,6 +24,17 @@
  *
 \**************************************************************************/
 
+/*
+  FLW is a Font Library Wrapper abstraction designed to allow any
+  number of underlying font libraries to be used through the same API.
+
+  Functions and datatypes are loosely modeled on the FreeType font
+  library.
+
+  Which underlying font library to use is currently determined at
+  compile time.
+*/
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,46 +44,15 @@ extern "C" {
 #include <Inventor/C/base/list.h>
 #include "fontspec.h"
 
-  /*
-    FLW is a Font Library Wrapper designed to allow any number of
-    underlying font libraries to be used through the same
-    API. Functions and datatypes are modelled on the FreeType font
-    library.
-
-    Which underlying font library to use is currently determined at
-    compile time.
-
-    See http://www.freetype.org for more information about the
-    FreeType font library.
-  */
-
-
-  typedef struct cc_flw_bitmap {
-    int bearingX; /* left side of bitmap relative to pen */
-    int bearingY; /* top of bitmap relative to pen */
-    unsigned int rows; /* height of bitmap */
-    unsigned int width; /* width of bitmap */
-    unsigned int pitch; /* number of bytes occupied by each row (rows are padded to nearest byte) */
-    int advanceX; /* where to position pen for next glyph */
-    int advanceY;
-    unsigned char * buffer; /* bitmap data */
-    SbBool mono; /* monochrome or antialiased gray level bitmap */
-  } cc_flw_bitmap;
-
-  typedef struct cc_flw_vector_glyph {
-    float * vertices;
-    int * faceindices;
-    int * edgeindices;
-  } cc_flw_vector_glyph;
-
+#include "common.h"
 
   void cc_flw_ref_font(int fontid);
   void cc_flw_unref_font(int fontid);
 
-  int cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey,
+  int cc_flw_get_font_id(const char * fontname,
+                         const unsigned int sizex, const unsigned int sizey,
                          const float angle, const float complexity);
   const char * cc_flw_get_font_name(int fontid);
-  void * cc_flw_get_font_handle(int fontid);
 
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
   void cc_flw_get_bitmap_advance(int font, float fontsize, unsigned int glyph, int * x, int * y);
@@ -81,14 +61,12 @@ extern "C" {
   void cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
   void cc_flw_done_glyph(int font, unsigned int glyph);
 
-  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, float size, unsigned int glyph);
-  struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
+  struct cc_font_bitmap * cc_flw_get_bitmap(int font, unsigned int glyph);
+  struct cc_font_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
 
-  const float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
-  const int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
-  const int * cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
-
-  SbBool cc_flw_debug(void);
+  const float * cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph);
+  const int * cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);
+  const int * cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph);
 
 #ifdef __cplusplus
 }

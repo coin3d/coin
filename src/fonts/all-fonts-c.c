@@ -32,3 +32,5 @@
 
 #include "default2dfont.c"
 #include "default3dfont.c"
+
+#include "common.c"
