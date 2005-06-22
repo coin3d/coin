@@ -3169,6 +3169,15 @@ SOURCE=..\..\src\fonts\default2dfont.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fonts\common.c
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\fonts"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\glue\cg.c
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\glue"
