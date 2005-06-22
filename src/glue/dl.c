@@ -598,7 +598,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 #ifdef HAVE_DL_LIB
 
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
-  ptr = dlsym(handle->nativehnd, symbolname);
+  ptr = dlsym((void *)handle->nativehnd, symbolname);
 
   if (cc_dl_debugging()) {
     const char * e = dlerror();
@@ -712,7 +712,7 @@ cc_dl_close(cc_libhandle handle)
       cc_string_compare_text(cc_string_get_text(&handle->libname),
                              NULL_STR) == 0;
     if (!is_proc_img) {
-      result = dlclose(handle->nativehnd);
+      result = dlclose((void *)handle->nativehnd);
     }
     
     if (result != 0) {
