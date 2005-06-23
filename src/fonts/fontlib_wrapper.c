@@ -178,22 +178,6 @@ get_default_bitmap(unsigned int character, float wantedsize)
   return NULL;
 }
 
-static struct cc_flw_glyph *
-glyphstruct_new(void)
-{
-  struct cc_flw_glyph * gs =
-    (struct cc_flw_glyph *)malloc(sizeof(struct cc_flw_glyph));
-
-  gs->nativeglyphidx = 0;
-  gs->fromdefaultfont = FALSE;
-  gs->character = 0;
-
-  gs->bitmap = NULL;
-  gs->vector = NULL;
-
-  return gs;
-}
-
 static struct cc_flw_font *
 fontstruct_new(void * font)
 {
@@ -264,12 +248,12 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
 
-  if (gs->bitmap) {
+  if (gs->bitmap && !gs->fromdefaultfont) {
     if (gs->bitmap->buffer) { free(gs->bitmap->buffer); }
     free(gs->bitmap);
   }
 
-  if (gs->vector) {
+  if (gs->vector && !gs->fromdefaultfont) {
     free(gs->vector->vertices);
     free(gs->vector->faceindices);
     free(gs->vector->edgeindices);
@@ -506,6 +490,7 @@ cc_flw_unref_font(int fontid)
     }
   }
   assert(i < n);
+
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
@@ -628,8 +613,10 @@ cc_flw_get_glyph(int font, unsigned int character)
   /* FIXME: should this perhaps rather be an assert()? 20050623 mortene. */
   if (gs == NULL) {
 
-    gs = glyphstruct_new();
+    gs = (struct cc_flw_glyph *)malloc(sizeof(struct cc_flw_glyph));
     gs->character = character;
+    gs->bitmap = NULL;
+    gs->vector = NULL;
 
     if (!cc_dict_put(fs->glyphdict, character, gs)) {
       assert(0 && "glyph already exists");
@@ -685,25 +672,27 @@ cc_flw_get_glyph(int font, unsigned int character)
 void
 cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
 {
-  struct cc_font_bitmap * bm;
+  struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
-#if 0
-  if (fs->defaultfont || gs->fromdefaultfont) {
-    /* FIXME: is this necessary, or would it work to just use the
-       else{} block below unconditionally. 20050623 mortene.*/
+  fs = flw_fontidx2fontptr(font);
+  gs = flw_glyphidx2glyphptr(fs, glyph);
+  assert(gs);
+
+  if (gs->fromdefaultfont) {
+    /* FIXME: should be simplified, so we could just use the else{}
+       block below unconditionally. 20050623 mortene.*/
     *x = coin_default2dfont_get_width((float)fs->sizex);
     *y = coin_default2dfont_get_height((float)fs->sizey);
   }
   else {
-#else
-    bm = cc_flw_get_bitmap(font, glyph);
+    struct cc_font_bitmap * bm = cc_flw_get_bitmap(font, glyph);
     assert(bm);
     *x = bm->advanceX;
     *y = bm->advanceY;
-#endif
-/*   } */
+  }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
@@ -722,7 +711,7 @@ cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y)
 
   *x = *y = 0.0f;
 
-  if (fs->defaultfont || gs->fromdefaultfont) {
+  if (gs->fromdefaultfont) {
     *x = coin_default3dfont_get_advance(gs->character);
   }
   else {
@@ -808,10 +797,10 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
 
   if (cc_font_debug()) { dump_cc_flw_glyph("cc_flw_done_glyph", gs); }
 
-  if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
+  if (win32api && !gs->fromdefaultfont) {
     cc_flww32_done_glyph(fs->font, gs->nativeglyphidx);
   }
-  else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
+  else if (freetypelib && !gs->fromdefaultfont) {
     cc_flwft_done_glyph(fs->font, gs->nativeglyphidx);
   }
 
@@ -837,10 +826,10 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
 
   if (gs->bitmap == NULL) {
 
-    if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
+    if (win32api && !gs->fromdefaultfont) {
       bm = cc_flww32_get_bitmap(fs->font, gs->nativeglyphidx);
     }
-    else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
+    else if (freetypelib && !gs->fromdefaultfont) {
       bm = cc_flwft_get_bitmap(fs->font, gs->nativeglyphidx);
     }
 
