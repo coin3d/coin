@@ -57,7 +57,7 @@
 
 static void * flw_global_lock = NULL;
 static int flw_global_font_index = 0;
-static int flw_global_glyph_index = 0;
+static unsigned int flw_global_glyph_index = 0;
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
    will typically happen for one out of two reasons:
@@ -96,11 +96,12 @@ static int flw_global_glyph_index = 0;
 /* ********************************************************************** */
 
 struct cc_flw_glyph {
-  unsigned int glyph;
-  struct cc_font_bitmap * bitmap;
+  unsigned int nativeglyphidx;
   SbBool fromdefaultfont;
-  uint32_t charidx;
-  int glyphindex;
+  unsigned int character;
+
+  struct cc_font_bitmap * bitmap;
+  struct cc_font_vector_glyph * vector;
 };
 
 struct cc_flw_font {
@@ -147,11 +148,11 @@ static void
 dump_cc_flw_glyph(const char * srcfunc, struct cc_flw_glyph * g)
 {
   cc_debugerror_postinfo(srcfunc,
-                         "glyph==%u, bitmap==%p, fromdefaultfont==%s, "
-                         "charidx=='%c', glyphindex==%d",
-                         g->glyph, g->bitmap,
+                         "nativeglyphidx==%u, bitmap==%p, vector==%p, "
+                         "fromdefaultfont==%s, character=='%c'",
+                         g->nativeglyphidx, g->bitmap, g->vector,
                          g->fromdefaultfont ? "TRUE" : "FALSE",
-                         g->charidx, g->glyphindex);
+                         g->character);
 }
 
 static struct cc_font_bitmap *
@@ -180,12 +181,16 @@ get_default_bitmap(unsigned int character, float wantedsize)
 static struct cc_flw_glyph *
 glyphstruct_new(void)
 {
-  struct cc_flw_glyph * gs = (struct cc_flw_glyph *)malloc(sizeof(struct cc_flw_glyph));
-  gs->glyph = 0;
-  gs->bitmap = NULL;
+  struct cc_flw_glyph * gs =
+    (struct cc_flw_glyph *)malloc(sizeof(struct cc_flw_glyph));
+
+  gs->nativeglyphidx = 0;
   gs->fromdefaultfont = FALSE;
-  gs->charidx = 0;
-  gs->glyphindex = flw_global_glyph_index++;
+  gs->character = 0;
+
+  gs->bitmap = NULL;
+  gs->vector = NULL;
+
   return gs;
 }
 
@@ -250,37 +255,37 @@ flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
   if (cc_dict_get(fs->glyphdict, glyphidx, &tmp)) {
     gs = (struct cc_flw_glyph *) tmp;
   }
-  else {
-    assert(0 && "glyph not found");
-  }  
   return gs;
 }
 
 static void
-fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph, int removefromdict)
+fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
 
-  /* HACK Warning: Handle special case where default 2D font is
-     used. For other cases the memory will be deallocated in the
-     freetype or Win32 font modules. pederb, 2004-06-16  */ 
-  if (gs->bitmap && gs->fromdefaultfont) {
-    free(gs->bitmap); 
+  if (gs->bitmap) {
+    if (gs->bitmap->buffer) { free(gs->bitmap->buffer); }
+    free(gs->bitmap);
   }
   free(gs);
 
-  if (removefromdict) {
-    if (!cc_dict_remove(fs->glyphdict, glyph)) {
-      assert(0 && "glyph to remove not found");
-    }
+  if (gs->vector) {
+    free(gs->vector->vertices);
+    free(gs->vector->faceindices);
+    free(gs->vector->edgeindices);
+    free(gs->vector);
+  }
+
+  if (!cc_dict_remove(fs->glyphdict, glyph)) {
+    assert(0 && "glyph to remove not found");
   }
 }
 
 static void 
 fontstruct_rmglyph_apply(uintptr_t key, void * val, void * closure)
 {
-  fontstruct_rmglyph((struct cc_flw_font *)closure, (unsigned int)key, 0);
+  fontstruct_rmglyph((struct cc_flw_font *)closure, (unsigned int)key);
 }
 
 static void
@@ -604,70 +609,78 @@ cc_flw_get_font_id(const char * fontname,
   return idx;
 }
 
+/*!
+  Returns a unique glyph index for the given character.
+*/
 unsigned int
-cc_flw_get_glyph(int font, unsigned int charidx)
+cc_flw_get_glyph(int font, unsigned int character)
 {
   unsigned int glyph = 0;
-  int fsid = -1;
   struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
   fs = flw_fontidx2fontptr(font);
 
-  if (!fs->defaultfont) {
-    if (win32api) { glyph = cc_flww32_get_glyph(fs->font, charidx); }
-    else if (freetypelib) { glyph = cc_flwft_get_glyph(fs->font, charidx); }
+  /* Check if it has already been set up, and if so, just return. */
+  gs = flw_glyphidx2glyphptr(fs, character);
 
-    if (glyph > 0) {
-      struct cc_flw_glyph * gs = glyphstruct_new();
-      gs->glyph = glyph;
-      gs->charidx = charidx;
-      gs->fromdefaultfont = FALSE;
-      fsid = gs->glyphindex;
-      if (!cc_dict_put(fs->glyphdict, fsid, gs)) {
-        assert(0 && "glyph already exists");
-      }
-    }
-    else {
-      /* Create glyph from default font, mark as default. */
+  /* FIXME: should this perhaps rather be an assert()? 20050623 mortene. */
+  if (gs == NULL) {
 
-      /* FIXME: shouldn't it rather be handled by making an empty
-         rectangle glyph of the correct size, like it's at least done
-         for X11 (and probably other systems aswell)?
+    gs = glyphstruct_new();
+    gs->character = character;
 
-         Or perhaps this strategy _is_ better, but then we should at
-         least scale the defaultfont glyph to the correct size.
-         20030317 mortene. */
-
-      /* Correct fix is to make an empty rectangle. Using a char from
-         the default font only gives a blank since most fonts contain
-         a superset of the chars in the default font. (The default
-         font characters being rendered was due to a bug in the
-         character mapping, causing failure to find special chars such
-         as 'ØÆÅ'. The bug has since been fixed).  20030327 preng */
-
-      if (cc_font_debug()) {
-        cc_debugerror_postwarning("cc_flw_get_glyph",
-                                  "no character 0x%x was found in font '%s'",
-                                  charidx, cc_string_get_text(fs->fontname));
-      }
-    }
-  }
-
-  if (fsid == -1) {
-    struct cc_flw_glyph * gs = glyphstruct_new();
-    gs->glyph = charidx;
-    gs->fromdefaultfont = TRUE;
-    gs->charidx = charidx;
-    fsid = gs->glyphindex;
-    if (!cc_dict_put(fs->glyphdict, fsid, gs)) {
+    if (!cc_dict_put(fs->glyphdict, character, gs)) {
       assert(0 && "glyph already exists");
+    }
+
+    if (!fs->defaultfont) {
+      if (win32api) { glyph = cc_flww32_get_glyph(fs->font, character); }
+      else if (freetypelib) { glyph = cc_flwft_get_glyph(fs->font, character); }
+
+      if (glyph > 0) {
+        gs->nativeglyphidx = glyph;
+        gs->fromdefaultfont = FALSE;
+      }
+      else {
+        /* Create glyph from default font, mark as default. */
+
+        /* FIXME: shouldn't it rather be handled by making an empty
+           rectangle glyph of the correct size, like it's at least done
+           for X11 (and probably other systems aswell)?
+
+           Or perhaps this strategy _is_ better, but then we should at
+           least scale the defaultfont glyph to the correct size.
+           20030317 mortene. */
+
+        /* Correct fix is to make an empty rectangle. Using a char from
+           the default font only gives a blank since most fonts contain
+           a superset of the chars in the default font. (The default
+           font characters being rendered was due to a bug in the
+           character mapping, causing failure to find special chars such
+           as 'ØÆÅ'. The bug has since been fixed).  20030327 preng */
+
+        if (cc_font_debug()) {
+          cc_debugerror_postwarning("cc_flw_get_glyph",
+                                    "no character 0x%x was found in font '%s'",
+                                    character, cc_string_get_text(fs->fontname));
+        }
+      }
+    }
+
+    if (glyph == 0) {
+      gs->nativeglyphidx = character;
+      gs->fromdefaultfont = TRUE;
     }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  return fsid;
+
+  /* Since we're simply using the character value as the hash key into
+     the glyph hash for the font: */
+  return character;
 }
 
 void 
@@ -680,6 +693,7 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
+  assert(gs);
 
   *x = *y = 0;
 
@@ -688,8 +702,8 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
     *y = coin_default2dfont_get_height(fs->sizey);
   }
   else {
-    if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->glyph, x, y); }
-    else if (freetypelib) { cc_flwft_get_bitmap_advance(fs->font, gs->glyph, x, y); }
+    if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->nativeglyphidx, x, y); }
+    else if (freetypelib) { cc_flwft_get_bitmap_advance(fs->font, gs->nativeglyphidx, x, y); }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -705,15 +719,16 @@ cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y)
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
+  assert(gs);
 
   *x = *y = 0.0f;
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = coin_default3dfont_get_advance(gs->charidx);
+    *x = coin_default3dfont_get_advance(gs->character);
   }
   else {
-    if (win32api) { cc_flww32_get_vector_advance(fs->font, gs->glyph, x, y); }
-    else if (freetypelib) { cc_flwft_get_vector_advance(fs->font, gs->glyph, x, y); }
+    if (win32api) { cc_flww32_get_vector_advance(fs->font, gs->nativeglyphidx, x, y); }
+    else if (freetypelib) { cc_flwft_get_vector_advance(fs->font, gs->nativeglyphidx, x, y); }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -735,11 +750,12 @@ cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2,
   if (fs->defaultfont == FALSE) {
     gs1 = flw_glyphidx2glyphptr(fs, glyph1);
     gs2 = flw_glyphidx2glyphptr(fs, glyph2);
+    assert(gs1 && gs2);
     if (win32api) {
-      cc_flww32_get_bitmap_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flww32_get_bitmap_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
     }
     else if (freetypelib) {
-      cc_flwft_get_bitmap_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flwft_get_bitmap_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
     }
   }
 
@@ -759,15 +775,16 @@ cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2,
   fs = flw_fontidx2fontptr(font);
   gs1 = flw_glyphidx2glyphptr(fs, glyph1);
   gs2 = flw_glyphidx2glyphptr(fs, glyph2);
+  assert(gs1 && gs2);
 
   *x = *y = 0.0f;
 
   if (fs->defaultfont == FALSE) {
     if (win32api) {
-      cc_flww32_get_vector_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flww32_get_vector_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
     }
     else if (freetypelib) {
-      cc_flwft_get_vector_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flwft_get_vector_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
     }
   }
 
@@ -793,13 +810,13 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
   if (cc_font_debug()) { dump_cc_flw_glyph("cc_flw_done_glyph", gs); }
 
   if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
-    cc_flww32_done_glyph(fs->font, gs->glyph);
+    cc_flww32_done_glyph(fs->font, gs->nativeglyphidx);
   }
   else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
-    cc_flwft_done_glyph(fs->font, gs->glyph);
+    cc_flwft_done_glyph(fs->font, gs->nativeglyphidx);
   }
 
-  fontstruct_rmglyph(fs, glyphidx, 1);
+  fontstruct_rmglyph(fs, glyphidx);
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
@@ -817,42 +834,45 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
-  
-  assert(gs->bitmap == NULL);
+  assert(gs);
 
-  if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
-    bm = cc_flww32_get_bitmap(fs->font, gs->glyph);
-  }
-  else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
-    bm = cc_flwft_get_bitmap(fs->font, gs->glyph);
-  }
+  if (gs->bitmap == NULL) {
 
-  if (!bm) {
-    /* glyph handle == char value in default font. &255 to avoid
-       index out of range. */
-    bm = get_default_bitmap(gs->glyph & 0xff, fs->sizey);
-  }
-  else if (bm && bm->buffer) {
-    buf = (unsigned char *)malloc(bm->pitch * bm->rows);
-    /* Copy & reverse buffer to OpenGL "up" direction. */
-    for (i = 0; i < bm->rows; i++) {
-      (void)memcpy(buf + i*bm->pitch,
-                   bm->buffer + (bm->rows-i-1) * bm->pitch,
-                   bm->pitch);
+    if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
+      bm = cc_flww32_get_bitmap(fs->font, gs->nativeglyphidx);
     }
-    free(bm->buffer);
-    bm->buffer = buf;
+    else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
+      bm = cc_flwft_get_bitmap(fs->font, gs->nativeglyphidx);
+    }
+
+    if (!bm) {
+      /* glyph handle == char value in default font. &255 to avoid
+         index out of range. */
+      bm = get_default_bitmap(gs->nativeglyphidx & 0xff, fs->sizey);
+    }
+    else if (bm && bm->buffer) {
+      buf = (unsigned char *)malloc(bm->pitch * bm->rows);
+      /* Copy & reverse buffer to OpenGL "up" direction. */
+      for (i = 0; i < bm->rows; i++) {
+        (void)memcpy(buf + i*bm->pitch,
+                     bm->buffer + (bm->rows-i-1) * bm->pitch,
+                     bm->pitch);
+      }
+      free(bm->buffer);
+      bm->buffer = buf;
+    }
+
+    gs->bitmap = bm;
   }
 
-  gs->bitmap = bm;
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  return bm;
+
+  return gs->bitmap;
 }
 
 struct cc_font_vector_glyph *
 cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 {
-  struct cc_font_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
 
@@ -860,21 +880,26 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
+  assert(gs);
 
-  if (freetypelib) {
-    vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->glyph, complexity);
-    if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
-  }
-  else if (win32api) {
-    vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->glyph, complexity);
-    if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
-  }
-  else {
-    vector_glyph = NULL;
+  if (gs->vector == NULL) {
+    struct cc_font_vector_glyph * vector_glyph = NULL;
+
+    if (freetypelib) {
+      vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->nativeglyphidx, complexity);
+      if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
+    }
+    else if (win32api) {
+      vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->nativeglyphidx, complexity);
+      if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
+    }
+
+    gs->vector = vector_glyph;
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  return vector_glyph;
+
+  return gs->vector;
 
 }
 
@@ -885,10 +910,11 @@ cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
     return cc_flwft_get_vector_glyph_coords(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_coords(vecglyph);
-  } else {
-    assert(FALSE);
-    return NULL;
   }
+  else {
+    assert(FALSE);
+  }
+  return NULL;
 }
 
 const int *
@@ -898,10 +924,11 @@ cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
     return cc_flwft_get_vector_glyph_faceidx(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_faceidx(vecglyph);
-  } else {
-    assert(FALSE);
-    return NULL;
   }
+  else {
+    assert(FALSE);
+  }
+  return NULL;
 }
 
 const int *
@@ -911,8 +938,10 @@ cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
     return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
   else if (win32api) {
     return cc_flww32_get_vector_glyph_edgeidx(vecglyph);
-  } else {
-    assert(FALSE);
-    return NULL;
   }
+  else {
+    assert(FALSE);
+  }
+
+  return NULL;
 }

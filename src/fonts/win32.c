@@ -548,6 +548,11 @@ int
 cc_flww32_get_glyph(void * font, unsigned int charidx)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
+
+  /* FIXME: what does the above FIXME really mean? This function is in
+     use, and there is no immediately obvious ill effect.
+     20050623 mortene. */
+
   return charidx;
 }
 
@@ -703,29 +708,6 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
 void
 cc_flww32_done_glyph(void * font, int glyph)
 {
-  cc_dict * glyphhash;
-
-  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
-  assert(glyphstruct);
-
-  if (glyphstruct->bitmap) {
-    /* bitmap glyph */
-    if (glyphstruct->bitmap->buffer) free(glyphstruct->bitmap->buffer);
-    free(glyphstruct->bitmap);
-  }
-  else {
-    assert(glyphstruct->vector);
-    
-    free(glyphstruct->vector->vertices);
-    free(glyphstruct->vector->faceindices);
-    free(glyphstruct->vector->edgeindices);
-    free(glyphstruct->vector);
-  }
-
-  free(glyphstruct);
-
-  glyphhash = get_glyph_hash(font);
-  (void)cc_dict_remove(glyphhash, (uintptr_t)glyph);
 }
 
 /* Draws a bitmap for the given glyph. */

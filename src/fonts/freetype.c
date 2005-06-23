@@ -343,42 +343,12 @@ static const char * fontfilenames[] = {
   struct cc_flwft_globals {
     cc_dict * fontname2filename;
     cc_dynarray * fontfiledirs;
-    cc_dict * font2glyphhash;
   };
 
   static struct cc_flwft_globals cc_flwft_globals = {
-    NULL, NULL, NULL
+    NULL, NULL
   };
   
-  struct cc_flwft_glyph {
-    struct cc_font_bitmap * bitmap;
-    struct cc_font_vector_glyph * vector;
-  };
-
-static cc_dict *
-ft_get_glyph_hash(void * font)
-{
-  void * val;
-  SbBool found;
-
-  found = cc_dict_get(cc_flwft_globals.font2glyphhash, (uintptr_t)font, &val);
-  return found ? ((cc_dict *)val) : NULL;
-}
-  
-static struct cc_flwft_glyph *
-ft_get_glyph_struct(void * font, int glyph)
-{
-  void * val;
-  SbBool found;
-  
-  cc_dict * ghash = ft_get_glyph_hash(font);
-  if (ghash == NULL) { return NULL; }
-
-  found = cc_dict_get(ghash, (uintptr_t)glyph, &val);
-  return found ? ((struct cc_flwft_glyph *)val) : NULL;
-}
-
-
 /* ************************************************************************* */
 
 SbBool
@@ -483,9 +453,6 @@ cc_flwft_initialize(void)
   flwft_tessellator.edgeindexlist = NULL;
   flwft_tessellator.malloclist = NULL;
 
-  /* set up font2glyph hash */
-  cc_flwft_globals.font2glyphhash = cc_dict_construct(50, 0.75); 
- 
   return TRUE;
 }
 
@@ -509,7 +476,6 @@ cc_flwft_exit(void)
 
   cc_dict_apply(cc_flwft_globals.fontname2filename, clean_fontmap_hash, NULL);
   cc_dict_destruct(cc_flwft_globals.fontname2filename);
-  cc_dict_destruct(cc_flwft_globals.font2glyphhash);
 
   cc_ftglue_FT_Done_FreeType(library);
 }
@@ -687,9 +653,6 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
 
   cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
 
-  glyphhash = cc_dict_construct(128, 0.7f);
-  (void) cc_dict_put(cc_flwft_globals.font2glyphhash, (uintptr_t)face, glyphhash);
-  
   return face;
 }
 
@@ -716,13 +679,6 @@ cc_flwft_done_font(void * font)
   if (error) {
     if (cc_font_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
-
-  glyphs = ft_get_glyph_hash(font);
-  assert(glyphs && "called with non-existent font");
-  
-  found = cc_dict_remove(cc_flwft_globals.font2glyphhash, (uintptr_t)font);
-  assert(found && "huh?");
-  cc_dict_destruct(glyphs);
 }
 
 int
@@ -848,19 +804,10 @@ cc_flwft_set_font_rotation(void * font, float angle)
 int
 cc_flwft_get_glyph(void * font, unsigned int charidx)
 {
+  FT_UInt val;
   FT_Face face = (FT_Face)font;
-  
-  /* FIXME: check code paths & reenable assert. Comments follow */
-  
-  /* disabled 2003-03-17, pederb. Triggers too often for my taste. The
-     documentation states that NULL should be returned if glyph is not
-     found */
-  
-  /* update 20030317 mortene: the assert() isn't really too strict,
-     it's the caller(s) that should avoid trying to get a glyph out of
-     a non-existent font. Reenable assert when code paths are fixed. */
-  
-  return (face == NULL) ? 0 : cc_ftglue_FT_Get_Char_Index(face, charidx);
+  assert(face);
+  return cc_ftglue_FT_Get_Char_Index(face, charidx);
 }
 
 void
@@ -951,28 +898,6 @@ cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float
 void
 cc_flwft_done_glyph(void * font, int glyph)
 {
-  cc_dict * glyphhash;
-  struct cc_flwft_glyph * glyphstruct = ft_get_glyph_struct(font, glyph);
-    
-  assert(glyphstruct);
-
-  if (glyphstruct->bitmap) {
-    /* bitmap glyph */
-    if (glyphstruct->bitmap->buffer) free(glyphstruct->bitmap->buffer);
-    free(glyphstruct->bitmap);
-  }
-  else {
-    assert(glyphstruct->vector);
-    
-    free(glyphstruct->vector->vertices);
-    free(glyphstruct->vector->faceindices);
-    free(glyphstruct->vector->edgeindices);
-    free(glyphstruct->vector);
-  }
-
-  free(glyphstruct);
-  glyphhash = ft_get_glyph_hash(font);
-  (void) cc_dict_remove(glyphhash, (uintptr_t)glyph);
 }
 
 struct cc_font_bitmap *
@@ -984,10 +909,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
   FT_Bitmap * tfbm;
-
-  struct cc_flwft_glyph * gs;
-  cc_dict * glyphhash;
-  SbBool mono, unused;
+  SbBool mono;
 
   assert(font);
   
@@ -1046,14 +968,6 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
   cc_ftglue_FT_Done_Glyph(g);
 
-  gs = (struct cc_flwft_glyph*) malloc(sizeof(struct cc_flwft_glyph));
-  gs->bitmap = bm;
-  gs->vector = NULL;
-  
-  glyphhash = ft_get_glyph_hash(font);
-  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, gs);
-  assert(unused);
-
   return bm;
 }
 
@@ -1067,9 +981,6 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   FT_OutlineGlyph g;
   FT_Glyph tmp;
   FT_Outline outline;
-  struct cc_flwft_glyph * gs;
-  cc_dict * glyphhash;
-  SbBool unused;
 
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flwft_get_vector_glyph",
@@ -1208,17 +1119,8 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   flwft_buildEdgeIndexList(new_vector_glyph);
   flwft_cleanupMallocList();
 
-  gs = (struct cc_flwft_glyph*) malloc(sizeof(struct cc_flwft_glyph));
-  gs->bitmap = NULL;
-  gs->vector = new_vector_glyph;
-  
-  glyphhash = ft_get_glyph_hash(font);
-  unused = cc_dict_put(glyphhash, (uintptr_t)glyphindex, gs);
-  assert(unused);
-  
   /* clean up glyph in Freetype */
-  tmp = (FT_Glyph) g;
-  cc_ftglue_FT_Done_Glyph(tmp);
+  cc_ftglue_FT_Done_Glyph((FT_Glyph) g);
 
   return new_vector_glyph; 
 
