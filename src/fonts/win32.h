@@ -41,7 +41,6 @@ extern "C" {
   void cc_flww32_done_font(void * font);
 
   int cc_flww32_get_glyph(void * font, unsigned int charidx);
-  void cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y);
   void cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y);
   void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y);
   void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y);

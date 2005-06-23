@@ -31,6 +31,7 @@
 #include "win32.h"
 
 #include <Inventor/C/glue/GLUWrapper.h>
+#include <Inventor/C/base/list.h>
 
 /* ************************************************************************* */
 
@@ -63,12 +64,11 @@ void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
 int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-void cc_flww32_get_bitmap_advance(void * font, int glyph, int *x, int *y) { assert(FALSE); }
 void cc_flww32_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
 void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
 void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
-  
+
 struct cc_font_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
 
@@ -114,7 +114,7 @@ static int flww32_calcfontsize(float complexity);
 
 /* ************************************************************************* */
 
-typedef struct flww32_tessellator_t {  
+typedef struct flww32_tessellator_t {
   coin_GLUtessellator * tessellator_object;
   SbBool contour_open;
 
@@ -144,14 +144,8 @@ struct cc_flww32_globals_s {
   /* Offscreen device context for connecting to fonts. */
   HDC devctx;
 
-  /* This is a hash of hashes. The unique keys are HFONT instances,
-     which each maps to a new hash. This hash then contains a set of
-     glyph ids (i.e. which are the hash keys) which maps to struct
-     cc_font_bitmap instances. */
-  cc_dict * font2glyphhash;
-
   /* This is a hash of hashes. Unique keys are HFONT instances. This again
-     contains hashes for each glyph which contain a hash for its 
+     contains hashes for each glyph which contain a hash for its
      pairing glyphs. This again contains the kerning value for that pair. */
   cc_dict * font2kerninghash;
   cc_dict * fontsizehash;
@@ -159,12 +153,8 @@ struct cc_flww32_globals_s {
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
   NULL, /* devctx */
-  NULL /* font2glyphhash */
-};
-
-struct cc_flww32_glyph {
-  struct cc_font_bitmap * bitmap;
-  struct cc_font_vector_glyph * vector;
+  NULL,
+  NULL
 };
 
 /* Callback functions for cleaning up kerninghash table */
@@ -204,29 +194,6 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
   return 1; /* non-0 to continue enumeration */
 }
 
-static cc_dict *
-get_glyph_hash(void * font)
-{
-  void * val;
-  SbBool found;
-
-  found = cc_dict_get(cc_flww32_globals.font2glyphhash, (uintptr_t)font, &val);
-  return found ? ((cc_dict *)val) : NULL;
-}
-
-static struct cc_flww32_glyph *
-get_glyph_struct(void * font, int glyph)
-{
-  void * val;
-  SbBool found;
-
-  cc_dict * ghash = get_glyph_hash(font);
-  if (ghash == NULL) { return NULL; }
-
-  found = cc_dict_get(ghash, (uintptr_t)glyph, &val);
-  return found ? ((struct cc_flww32_glyph *)val) : NULL;
-}
-
 /* ************************************************************************* */
 
 SbBool
@@ -259,7 +226,6 @@ cc_flww32_initialize(void)
     return FALSE;
   }
 
-  cc_flww32_globals.font2glyphhash = cc_dict_construct(17, 0.75);
   cc_flww32_globals.font2kerninghash = cc_dict_construct(17, 0.75);
   cc_flww32_globals.fontsizehash = cc_dict_construct(17, 0.75f);
 
@@ -271,10 +237,10 @@ cc_flww32_initialize(void)
 
   /* Are we running Windows 95/98/Me? */
   ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);    
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
   cc_win32()->GetVersionEx(&osvi);
 
-  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) 
+  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
     flww32_win9598Me = TRUE;
 
   return TRUE;
@@ -285,11 +251,7 @@ cc_flww32_exit(void)
 {
   BOOL ok;
 
-  /* FIXME: this hash should be empty at this point, or it means that
-     one or more calls to cc_flww32_done_font() are missing. Should
-     insert a check (plus dump) for that here. 20030610 mortene. */
-  /* UPDATE: Ditto for the kerning hash. (20030930 handegar) */
-  cc_dict_destruct(cc_flww32_globals.font2glyphhash);
+  /* FIXME: this hash should be empty at this point? 20030930 handegar */
   cc_dict_destruct(cc_flww32_globals.font2kerninghash);	
   cc_dict_destruct(cc_flww32_globals.fontsizehash);
 
@@ -300,26 +262,26 @@ cc_flww32_exit(void)
 }
 
 /* Callbacks for kerninghash delete */
-void 
+void
 cc_flww32_kerninghash_deleteCB1(uintptr_t key, void * val, void * closure)
 {
-  cc_dict * khash;   
+  cc_dict * khash;
   khash = (cc_dict *) val;
   cc_dict_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
   cc_dict_destruct(khash);
 }
-void 
+void
 cc_flww32_kerninghash_deleteCB2(uintptr_t key, void * val, void * closure)
 {
-  cc_dict * khash;   
+  cc_dict * khash;
   khash = (cc_dict *) val;
   cc_dict_apply(khash, cc_flww32_kerninghash_deleteCB3, NULL);
   cc_dict_destruct(khash);
 }
-void 
+void
 cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
 {
-  float * kerning;   
+  float * kerning;
   kerning = (float *) val;
   free(kerning);
 }
@@ -333,6 +295,11 @@ cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
 void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity)
 {
+  /* FIXME: an idea about sizex / width specification for fonts: let
+     sizex==0 indicate "don't care". Should update API and API doc
+     upstream to that effect. 20030911 mortene.
+  */
+
   int i;
   DWORD nrkpairs, ret;
   KERNINGPAIR * kpairs;
@@ -340,12 +307,6 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
   cc_dict * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
-
-  /* FIXME: an idea about sizex / width specification for fonts: let
-     sizex==0 indicate "don't care". Should update API and API doc
-     upstream to that effect. 20030911 mortene.
-  */
-  cc_dict * glyphhash;
   HFONT wfont;
 
   if (complexity >= 0.0f) {
@@ -393,11 +354,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     return NULL;
   }
 
-  glyphhash = cc_dict_construct(127, 0.75);
-  cc_dict_put(cc_flww32_globals.font2glyphhash, (uintptr_t)wfont, glyphhash);
-
-
-  /* 
+  /*
      Constructing a multilevel kerninghash for this font
   */
 
@@ -409,7 +366,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
 
   nrkpairs = GetKerningPairs(cc_flww32_globals.devctx, 0, NULL);
   if (nrkpairs) {
-    
+
     kpairs = (KERNINGPAIR *) malloc(nrkpairs * sizeof(KERNINGPAIR));
 
     ret = GetKerningPairs(cc_flww32_globals.devctx, nrkpairs, kpairs);
@@ -425,7 +382,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
 
     for (i=0;i<(int) nrkpairs;++i) {
       if (cc_dict_get(fontkerninghash, kpairs[i].wFirst, &khash)) {
-        
+
         if (!cc_dict_get(khash, kpairs[i].wSecond, &khash)) {
           kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
           kerningvalue[0] = (float) kpairs[i].iKernAmount;
@@ -433,31 +390,31 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
         }
 
       } else {
-        
+
         khash = cc_dict_construct(127, 0.75);
         kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
         kerningvalue[0] = (float) kpairs[i].iKernAmount;
 
-        /* FIXME: A standalone cc_floathash should have been made so that we dont have to 
-           allocate memory to store a single float. We could have used the pointer-value to 
+        /* FIXME: A standalone cc_floathash should have been made so that we dont have to
+           allocate memory to store a single float. We could have used the pointer-value to
            store the float, but that might cause problems later when we go from 32 to 64 bits.
            (20030929 handegar) */
 
         cc_dict_put(khash, (uintptr_t) kpairs[i].wSecond, kerningvalue);
         cc_dict_put(fontkerninghash, (uintptr_t) kpairs[i].wFirst, khash);
-        
+
       }
     }
 
     free(kpairs);
-  } 
-  
+  }
+
   {
     /* MSVC7 on 64-bit Windows wants this extra cast. */
     const uintptr_t tmp = (uintptr_t)sizey;
     (void) cc_dict_put(cc_flww32_globals.fontsizehash, (uintptr_t)wfont, (void *)tmp);
   }
-  
+
   return (void *)wfont;
 }
 
@@ -476,12 +433,12 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
     return;
   }
-  
+
   size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
   /* 'size' will never be 0. Then GetTextFace would have asserted. */
   s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
-  
+
   newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
   cc_string_set_text(str, s);
 
@@ -492,11 +449,11 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     /* The returned fontname length is longer than expected. This
        means that the system has cropped the string. Requested font
        will most probably not be found. */
-    cc_debugerror_postwarning("cc_flww32_get_font_name", 
+    cc_debugerror_postwarning("cc_flww32_get_font_name",
 			      "GetTextFace(). The length of the returned fontname is"
 			      " >= expected size. Fontname has been cropped.");
   }
-  
+
   free(s);
 
   /* Reconnect device context to default font. */
@@ -513,22 +470,10 @@ cc_flww32_done_font(void * font)
   BOOL ok;
   SbBool found;
   cc_dict * khash;	
-  cc_dict * glyphs;
-
-  glyphs = get_glyph_hash(font);
-  assert(glyphs && "called with non-existent font");
-
-  found = cc_dict_remove(cc_flww32_globals.font2glyphhash, (uintptr_t)font);
-  assert(found && "huh?");
 
   found = cc_dict_remove(cc_flww32_globals.fontsizehash, (uintptr_t)font);
   assert(found && "huh?");
 
-  /* FIXME: the hash should really be checked to see if it's empty or
-     not, but the cc_flww32_done_glyph() method hasn't been
-     implemented yet. 20030610 mortene. */
-  cc_dict_destruct(glyphs);
-    
   /* Delete kerninghash for this font using apply-callbacks */
 
   if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {
@@ -556,39 +501,11 @@ cc_flww32_get_glyph(void * font, unsigned int charidx)
   return charidx;
 }
 
-
-/* Returns, in x and y input arguments, how much to advance cursor
-   after rendering glyph. */
-void
-cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y)
-{
-  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
-#if 0
-  /* FIXME: is this too strict? Could make it on demand. Fix if we
-     ever run into this assert. 20030610 mortene. */
-  assert(glyphstruct && "glyph was not made yet");
-  /* UPDATE: assert hits if glyph does not exist. Re-enable assert
-     after we have set up the code for making an empty rectangle on
-     non-existent glyph. 20030610 mortene. */
-#else /* tmp enabled */
-  if (glyphstruct == NULL) {
-    *x = 10;
-    *y = 0;
-    return;
-  }
-#endif
-
-  *x = glyphstruct->bitmap->advanceX;
-  *y = - glyphstruct->bitmap->advanceY;
-}
-
-
 /* Returns, in x and y input arguments, how much to advance cursor
    after rendering glyph. */
 void
 cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 {
-
   LOGFONT lfont;
   GLYPHMETRICS gm;
 
@@ -633,14 +550,14 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
     cc_string_clean(&str);
     return;
   }
- 
+
   ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
   size = -lfont.lfHeight;
   if (ret == 0) {
     cc_win32_print_error("cc_flww32_get_vector_advance", "GetObject()", GetLastError());
     size = 1;
   }
-  
+
   *x = (float) gm.gmCellIncX / ((float) size);
   *y = (float) gm.gmCellIncY / ((float) size);
 
@@ -655,7 +572,7 @@ cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int *
   float * kerning = NULL;
   cc_dict * khash;	
 
-  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	 
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	
     if (cc_dict_get(khash, (uintptr_t)glyph1, &khash)) {
       if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, &kerning)) {
         *x = (int) kerning[0];
@@ -664,7 +581,7 @@ cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int *
       }
     }
   }
- 
+
   *x = 0;
   *y = 0;
 }
@@ -688,7 +605,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
     size = 1;
   }
 
-  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	 
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, &khash)) {	
     if (cc_dict_get(khash, (uintptr_t)glyph1, &khash)) {
       if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, &kerning)) {
         *x = kerning[0] / size;
@@ -728,13 +645,6 @@ cc_flww32_get_bitmap(void * font, int glyph)
   DWORD size = 0;
   uint8_t * w32bitmap = NULL;
   HFONT previousfont;
-  SbBool unused;
-  cc_dict * glyphhash;
-  struct cc_flww32_glyph * glyphstruct;
-
-  /* See if we can just return the bitmap from cached glyph. */
-  glyphstruct = get_glyph_struct(font, glyph);
-  if (NULL != glyphstruct) { return glyphstruct->bitmap; }
 
   /* Connect device context to font. */
   previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
@@ -846,21 +756,14 @@ cc_flww32_get_bitmap(void * font, int glyph)
     }
   }
 
-  glyphhash = get_glyph_hash(font);
-  glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
-  glyphstruct->bitmap = bm;
-  glyphstruct->vector = NULL;
-  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, glyphstruct);
-  assert(unused);
-
- done: 
+ done:
   if (w32bitmap) free(w32bitmap);
 
   /* Reconnect device context to default font. */
   if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
     cc_win32_print_error("cc_flww32_get_bitmap", "SelectObject()", GetLastError());
   }
-  
+
   return bm;
 }
 
@@ -886,17 +789,17 @@ flww32_getVerticesFromPath(HDC hdc)
   if (numpoints < 0) {
     cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
                          "GetPath()", GetLastError());
-    return;    
+    return;
   }
 
   if (numpoints > 0) {
     /* allocate memory for the point data and for the vertex types  */
     p_points = (POINT *)malloc(numpoints * sizeof(POINT));
     p_types = (BYTE *)malloc(numpoints * sizeof(BYTE));
-        
+
     /* get the path's description */
     GetPath(hdc, p_points, p_types, numpoints);
-                       
+
     /* go through the endpoints */
     for (i = 0; i < numpoints; i++) {
             	
@@ -906,7 +809,7 @@ flww32_getVerticesFromPath(HDC hdc)
         lastmoveto = i;	
         if (flww32_tessellator.contour_open) {
           GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);
-          cc_list_truncate(flww32_tessellator.edgeindexlist, 
+          cc_list_truncate(flww32_tessellator.edgeindexlist,
                            cc_list_get_length(flww32_tessellator.edgeindexlist)-1);
           /* MSVC7 on 64-bit Windows wants this extra cast. */
           tmp = (uintptr_t)flww32_tessellator.edge_start_vertex;
@@ -917,7 +820,7 @@ flww32_getVerticesFromPath(HDC hdc)
         flww32_tessellator.edge_start_vertex = flww32_tessellator.vertex_counter;
         flww32_tessellator.contour_open = TRUE;	
         continue;
-      }                
+      }
 					
       /* Close the contour? */
       if (p_types[i] & PT_CLOSEFIGURE) {				
@@ -936,19 +839,16 @@ flww32_getVerticesFromPath(HDC hdc)
       else {
         flww32_addTessVertex(p_points[i].x, p_points[i].y);		
       }
-    }       
+    }
     if (p_points != NULL) free(p_points);
-    if (p_types != NULL) free(p_types);	    
+    if (p_types != NULL) free(p_types);	
   }
-    
+
 }
 
 struct cc_font_vector_glyph *
 cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 {
-  SbBool unused;
-  cc_dict * glyphhash;
-  struct cc_flww32_glyph * glyphstruct;
   HDC memdc;
   HBITMAP membmp;
   HDC screendc;
@@ -957,7 +857,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   void * tmp;
   unsigned int size;
   uintptr_t cast_aid;
-  
+
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
                        "GLU library could not be loaded.");
@@ -978,14 +878,14 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     return NULL;
   }
 
- 
+
   /* FIXME: we're being unnecessary robust for much of the code below
      calling into Win32 API functions. For most or all of the calls we
      should just wrap the Win32 API calls in the glue/C/win32api.h
      interface, catch errors, inform about the problem and assert()
      there -- to simplify the client code below. 20031118 mortene. */
 
-  /* 
+  /*
      If NULL is returned due to an error, glyph3d.c will load the
      default font instead.
   */
@@ -1022,7 +922,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
                          "Cannot vectorize font.", GetLastError());
     return NULL;
   }
-  
+
   if (SetBkMode(memdc, TRANSPARENT) == 0) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SetBkMode()", GetLastError());
     /* Not a critical error, continuing. Glyphs might look abit wierd though. */
@@ -1068,20 +968,20 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   GLUWrapper()->gluTessBeginPolygon(flww32_tessellator.tessellator_object, NULL);
 
   flww32_getVerticesFromPath(memdc);
- 
+
   if (flww32_tessellator.contour_open) {
-    GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);        
-    cc_list_truncate(flww32_tessellator.edgeindexlist, 
+    GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);
+    cc_list_truncate(flww32_tessellator.edgeindexlist,
                      cc_list_get_length(flww32_tessellator.edgeindexlist)-1);
     /* MSVC7 on 64-bit Windows wants this extra cast. */
     cast_aid = (uintptr_t)flww32_tessellator.edge_start_vertex;
     cc_list_append(flww32_tessellator.edgeindexlist, (void *)cast_aid);
   }
- 
-  GLUWrapper()->gluTessEndPolygon(flww32_tessellator.tessellator_object);  
+
+  GLUWrapper()->gluTessEndPolygon(flww32_tessellator.tessellator_object);
   GLUWrapper()->gluDeleteTess(flww32_tessellator.tessellator_object);
-  
-  cc_list_append(flww32_tessellator.faceindexlist, (void *) -1);  
+
+  cc_list_append(flww32_tessellator.faceindexlist, (void *) -1);
   cc_list_append(flww32_tessellator.edgeindexlist, (void *) -1);
 
   /* Copy the static vector_glyph struct to a newly allocated struct
@@ -1102,20 +1002,12 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flww32_cleanupMallocList();
 
   /* Remove allocated DCs */
-  if (!DeleteObject(membmp)) 
+  if (!DeleteObject(membmp))
     cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting bitmap device context.", GetLastError());
   if (!DeleteObject(screendc))
     cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting screen device context.", GetLastError());
   if (!DeleteObject(memdc))
     cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting memory device context.", GetLastError());
-
-  glyphhash = get_glyph_hash(font);
-  glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
-  glyphstruct->bitmap = NULL;
-  glyphstruct->vector = new_vector_glyph;
-  
-  unused = cc_dict_put(glyphhash, (uintptr_t)glyph, glyphstruct);
-  assert(unused);
 
   return new_vector_glyph;
 }
@@ -1131,7 +1023,7 @@ flww32_addTessVertex(double x, double y)
   point[0] = flww32_tessellator.vertex_scale * (float)x;
   point[1] = flww32_tessellator.vertex_scale * (float)y;
   cc_list_append(flww32_tessellator.vertexlist, point);
-  
+
   /* MSVC7 on 64-bit Windows wants this extra cast. */
   cast_aid = (uintptr_t)flww32_tessellator.vertex_counter;
   cc_list_append(flww32_tessellator.edgeindexlist, (void *)cast_aid);
@@ -1161,31 +1053,31 @@ flww32_vertexCallback(GLvoid * data)
     flww32_tessellator.triangle_fan_root_index = index;
   }
 
-  if (flww32_tessellator.triangle_mode == GL_TRIANGLE_FAN) {      
+  if (flww32_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
     if (flww32_tessellator.triangle_index_counter == 0) {
-      flww32_tessellator.triangle_indices[0] = flww32_tessellator.triangle_fan_root_index; 
+      flww32_tessellator.triangle_indices[0] = flww32_tessellator.triangle_fan_root_index;
       flww32_tessellator.triangle_indices[1] = index;
       ++flww32_tessellator.triangle_index_counter;
-    } 
+    }
     else flww32_tessellator.triangle_indices[flww32_tessellator.triangle_index_counter++] = index;
   }
   else {
-    flww32_tessellator.triangle_indices[flww32_tessellator.triangle_index_counter++] = index; 
+    flww32_tessellator.triangle_indices[flww32_tessellator.triangle_index_counter++] = index;
   }
-  
+
   assert(flww32_tessellator.triangle_index_counter < 4);
 
   if (flww32_tessellator.triangle_index_counter == 3) {
-    
-    
-    if (flww32_tessellator.triangle_mode == GL_TRIANGLE_STRIP) { 
-      if (flww32_tessellator.triangle_strip_flipflop) {        
+
+
+    if (flww32_tessellator.triangle_mode == GL_TRIANGLE_STRIP) {
+      if (flww32_tessellator.triangle_strip_flipflop) {
         index = flww32_tessellator.triangle_indices[1];
         flww32_tessellator.triangle_indices[1] = flww32_tessellator.triangle_indices[2];
         flww32_tessellator.triangle_indices[2] = index;
       }
     }
-    
+
     for (i=0; i < 3; i++) {
       /* MSVC7 on 64-bit Windows wants this extra cast. */
       cast_aid = (uintptr_t)flww32_tessellator.triangle_indices[i];
@@ -1199,7 +1091,7 @@ flww32_vertexCallback(GLvoid * data)
 
     else if (flww32_tessellator.triangle_mode == GL_TRIANGLE_STRIP) {
 
-      if (flww32_tessellator.triangle_strip_flipflop) {        
+      if (flww32_tessellator.triangle_strip_flipflop) {
         index = flww32_tessellator.triangle_indices[1];
         flww32_tessellator.triangle_indices[1] = flww32_tessellator.triangle_indices[2];
         flww32_tessellator.triangle_indices[2] = index;
@@ -1207,12 +1099,12 @@ flww32_vertexCallback(GLvoid * data)
 
       flww32_tessellator.triangle_indices[0] = flww32_tessellator.triangle_indices[1];
       flww32_tessellator.triangle_indices[1] = flww32_tessellator.triangle_indices[2];
-      flww32_tessellator.triangle_index_counter = 2;    
+      flww32_tessellator.triangle_index_counter = 2;
       flww32_tessellator.triangle_strip_flipflop = !flww32_tessellator.triangle_strip_flipflop;
 
     } else flww32_tessellator.triangle_index_counter = 0;
 
-  } 
+  }
 
 }
 
@@ -1226,15 +1118,15 @@ flww32_beginCallback(GLenum which)
     flww32_tessellator.triangle_fan_root_index = 0;
   flww32_tessellator.triangle_index_counter = 0;
   flww32_tessellator.triangle_strip_flipflop = FALSE;
-  
+
 }
-    
-static void CALLBACK 
+
+static void CALLBACK
 flww32_endCallback(void)
 {
 }
 
-static void CALLBACK 
+static void CALLBACK
 flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
 
@@ -1248,15 +1140,15 @@ flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[
   cc_list_append(flww32_tessellator.malloclist, ret);
 
   ret[0] = flww32_tessellator.vertex_counter++;
-  
+
   *dataOut = ret;
 
 }
 
-static void CALLBACK 
+static void CALLBACK
 flww32_errorCallback(GLenum error_code)
 {
-  cc_debugerror_post("flww32_errorCallback","Error when tesselating glyph (GLU errorcode: %d):, investigate.", error_code); 
+  cc_debugerror_post("flww32_errorCallback","Error when tesselating glyph (GLU errorcode: %d):, investigate.", error_code);
 }
 
 static void
@@ -1274,10 +1166,10 @@ flww32_buildVertexList(struct cc_font_vector_glyph * newglyph, int size)
   for (i=0;i<numcoords;++i) {
     coord = (float *) cc_list_get(flww32_tessellator.vertexlist,i);
 
-    /* Must flip and translate glyph due to the W32 coord system 
+    /* Must flip and translate glyph due to the W32 coord system
        which has a y-axis pointing downwards */
     newglyph->vertices[i*2 + 0] = coord[0] / size;
-    newglyph->vertices[i*2 + 1] = (-coord[1] / size) + 1; 
+    newglyph->vertices[i*2 + 1] = (-coord[1] / size) + 1;
     free(coord);
   }
 
@@ -1301,10 +1193,10 @@ flww32_cleanupMallocList(void)
 
 const float *
 cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
-{   
+{
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
-} 
+}
 
 static void
 flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
@@ -1312,7 +1204,7 @@ flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
   int i,len;
 
   assert(flww32_tessellator.edgeindexlist);
- 
+
   len = cc_list_get_length(flww32_tessellator.edgeindexlist);
   newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
 
@@ -1332,7 +1224,7 @@ cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
   assert(vecglyph->edgeindices && "Edge indices not initialized properly");
   return vecglyph->edgeindices;
-} 
+}
 
 static void
 flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
@@ -1340,7 +1232,7 @@ flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
   int len,i;
 
   assert(flww32_tessellator.faceindexlist);
-  
+
   len = cc_list_get_length(flww32_tessellator.faceindexlist);
   newglyph->faceindices = (int *) malloc(sizeof(int)*len);
 
@@ -1350,7 +1242,7 @@ flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
       cc_list_get(flww32_tessellator.faceindexlist, i);
     newglyph->faceindices[i] = (int)cast_aid;
   }
- 
+
   cc_list_destruct(flww32_tessellator.faceindexlist);
   flww32_tessellator.faceindexlist = NULL;
 
@@ -1358,10 +1250,10 @@ flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
 
 const int *
 cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
-{  
+{
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;
-} 
+}
 
 
 static int

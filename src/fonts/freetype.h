@@ -30,14 +30,14 @@
   See http://www.freetype.org for more information about
   the FreeType font library.
 */
-  
+
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
   SbBool cc_flwft_initialize(void);
   void cc_flwft_exit(void);
 
@@ -51,13 +51,12 @@ extern "C" {
 
   void cc_flwft_set_char_size(void * font, int width, int height);
   void cc_flwft_set_font_rotation(void * font, float angle);
-  
+
   int cc_flwft_get_glyph(void * font, unsigned int charidx);
-  void cc_flwft_get_bitmap_advance(void * font, int glyph, int * x, int * y);
   void cc_flwft_get_vector_advance(void * font, int glyph, float * x, float * y);
   void cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y);
   void cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
-  void cc_flwft_done_glyph(void * font, int glyph);  
+  void cc_flwft_done_glyph(void * font, int glyph);
 
   struct cc_font_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph);
   struct cc_font_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity);
@@ -65,7 +64,7 @@ extern "C" {
   const int * cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);
   const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph);
 
- 
+
 #ifdef __cplusplus
 }
 #endif

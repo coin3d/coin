@@ -251,7 +251,7 @@ flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
 {
   void * tmp;
   struct cc_flw_glyph * gs = NULL;
-  
+
   if (cc_dict_get(fs->glyphdict, glyphidx, &tmp)) {
     gs = (struct cc_flw_glyph *) tmp;
   }
@@ -282,7 +282,7 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
   }
 }
 
-static void 
+static void
 fontstruct_rmglyph_apply(uintptr_t key, void * val, void * closure)
 {
   fontstruct_rmglyph((struct cc_flw_font *)closure, (unsigned int)key);
@@ -294,7 +294,7 @@ fontstruct_rmfont(int font)
   int i, n;
   int arrayindex;
   struct cc_flw_font * fs = NULL;
-  
+
   n = cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
@@ -305,8 +305,8 @@ fontstruct_rmfont(int font)
 
   if (fs->fontname) cc_string_destruct(fs->fontname);
   if (fs->requestname) cc_string_destruct(fs->requestname);
-    
-  cc_dict_apply(fs->glyphdict, fontstruct_rmglyph_apply, fs);  
+
+  cc_dict_apply(fs->glyphdict, fontstruct_rmglyph_apply, fs);
   cc_dict_destruct(fs->glyphdict);
   free(fs);
   cc_dynarray_remove_idx(fontarray, arrayindex);
@@ -338,7 +338,7 @@ flw_map_fontname_to_defaultfont(const char * reqname)
   fontstruct_set_fontname(fs, "defaultFont");
   fontstruct_set_size(fs, 0, 0);
   fontstruct_set_angle(fs, 0.0f);
-  fs->defaultfont = TRUE;  
+  fs->defaultfont = TRUE;
   cc_dynarray_append(fontarray, fs);
   return fs->fontindex;
 }
@@ -349,7 +349,7 @@ flw_exit(void)
   unsigned int n;
 
   n = cc_dynarray_length(fontarray);
-  
+
   while (n--) {
     fontstruct_rmfont(n);
   }
@@ -357,7 +357,7 @@ flw_exit(void)
 
   if (freetypelib) { cc_flwft_exit(); }
   if (win32api) { cc_flww32_exit(); }
-  
+
   CC_MUTEX_DESTRUCT(flw_global_lock);
 }
 
@@ -431,7 +431,7 @@ static int
 flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
 {
   unsigned int i, n;
-  
+
   /* This function is a common entry spot for first access into the
      wrapper (unless client code is doing something wrong, but then
      we'll likely catch that with an assert somewhere), so we call the
@@ -459,7 +459,7 @@ flw_find_font(const char * fontname, const unsigned int sizex, const unsigned in
 }
 
 
-void 
+void
 cc_flw_ref_font(int fontid)
 {
   int i, n;
@@ -477,7 +477,7 @@ cc_flw_ref_font(int fontid)
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
-void 
+void
 cc_flw_unref_font(int fontid)
 {
   int i, n;
@@ -544,11 +544,11 @@ cc_flw_get_font_id(const char * fontname,
      random font). */
   if (strcmp(fontname, "defaultFont") != 0) {
 
-    if (win32api) { 
+    if (win32api) {
       font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
     }
-    else if (freetypelib) { 
-      font = cc_flwft_get_font(fontname, sizex);    
+    else if (freetypelib) {
+      font = cc_flwft_get_font(fontname, sizex);
     }
   }
 
@@ -683,28 +683,28 @@ cc_flw_get_glyph(int font, unsigned int character)
   return character;
 }
 
-void 
+void
 cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
 {
-  struct cc_flw_font * fs;
-  struct cc_flw_glyph * gs;
+  struct cc_font_bitmap * bm;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
-  fs = flw_fontidx2fontptr(font);
-  gs = flw_glyphidx2glyphptr(fs, glyph);
-  assert(gs);
-
-  *x = *y = 0;
-
+#if 0
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = coin_default2dfont_get_width(fs->sizex);
-    *y = coin_default2dfont_get_height(fs->sizey);
+    /* FIXME: is this necessary, or would it work to just use the
+       else{} block below unconditionally. 20050623 mortene.*/
+    *x = coin_default2dfont_get_width((float)fs->sizex);
+    *y = coin_default2dfont_get_height((float)fs->sizey);
   }
   else {
-    if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->nativeglyphidx, x, y); }
-    else if (freetypelib) { cc_flwft_get_bitmap_advance(fs->font, gs->nativeglyphidx, x, y); }
-  }
+#else
+    bm = cc_flw_get_bitmap(font, glyph);
+    assert(bm);
+    *x = bm->advanceX;
+    *y = bm->advanceY;
+#endif
+/*   } */
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
@@ -848,7 +848,7 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
     if (!bm) {
       /* glyph handle == char value in default font. &255 to avoid
          index out of range. */
-      bm = get_default_bitmap(gs->nativeglyphidx & 0xff, fs->sizey);
+      bm = get_default_bitmap(gs->nativeglyphidx & 0xff, (float)fs->sizey);
     }
     else if (bm && bm->buffer) {
       buf = (unsigned char *)malloc(bm->pitch * bm->rows);

@@ -79,10 +79,9 @@ void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE);
 
 
 void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
-  
+
 int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
 void cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
-void cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y) { assert(FALSE); }
 void cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
@@ -101,13 +100,13 @@ const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecg
 static int flwft_moveToCallback(FT_Vector * to, void * user);
 static int flwft_lineToCallback(FT_Vector * to, void * user);
 static int flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user);
-static int flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, 
+static int flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2,
                                  FT_Vector * to, void * user);
 
 static void flwft_vertexCallback(GLvoid * vertex);
 static void flwft_beginCallback(GLenum which);
 static void flwft_endCallback(void);
-static void flwft_combineCallback(GLdouble coords[3], GLvoid * data, 
+static void flwft_combineCallback(GLdouble coords[3], GLvoid * data,
                                   GLfloat weight[4], int **dataOut);
 static void flwft_errorCallback(GLenum error_code);
 static void flwft_addTessVertex(double * vertex);
@@ -154,7 +153,7 @@ static const int flwft_3dfontsize = 40;
 
 /* ************************************************************************* */
 
-typedef struct flwft_tessellator_t {  
+typedef struct flwft_tessellator_t {
   coin_GLUtessellator * tessellator_object;
   int tessellation_steps;
   SbBool contour_open;
@@ -209,10 +208,10 @@ static flwft_tessellator_t flwft_tessellator;
 
 enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_NONE, 0, 0, 0, 0),
-  
+
   FT_ENC_TAG(FT_ENCODING_MS_SYMBOL,  's', 'y', 'm', 'b'),
   FT_ENC_TAG(FT_ENCODING_UNICODE,    'u', 'n', 'i', 'c'),
-  
+
   FT_ENC_TAG(FT_ENCODING_MS_SJIS,    's', 'j', 'i', 's'),
   FT_ENC_TAG(FT_ENCODING_MS_GB2312,  'g', 'b', ' ', ' '),
   FT_ENC_TAG(FT_ENCODING_MS_BIG5,    'b', 'i', 'g', '5'),
@@ -223,11 +222,11 @@ enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_ADOBE_EXPERT,   'A', 'D', 'B', 'E'),
   FT_ENC_TAG(FT_ENCODING_ADOBE_CUSTOM,   'A', 'D', 'B', 'C'),
   FT_ENC_TAG(FT_ENCODING_ADOBE_LATIN_1,  'l', 'a', 't', '1'),
-  
+
   FT_ENC_TAG(FT_ENCODING_LATIN_2, 'l', 'a', 't', '2'),
-  
+
   FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
-  
+
 };
 
 #ifndef FT_IMAGE_TAG
@@ -245,7 +244,7 @@ enum  Coin_FT_Glyph_Format {
   FT_IMAGE_TAG( FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
   FT_IMAGE_TAG( FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
   FT_IMAGE_TAG( FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
-  
+
 };
 
 #endif /* FREETYPE_RUNTIME_LINKING */
@@ -339,7 +338,7 @@ static const char * fontfilenames[] = {
   "Verdana Italic", "Verdana_Italic.ttf", NULL,
   "Webdings", "Webdings.ttf", NULL
 };
-  
+
   struct cc_flwft_globals {
     cc_dict * fontname2filename;
     cc_dynarray * fontfiledirs;
@@ -348,7 +347,7 @@ static const char * fontfilenames[] = {
   static struct cc_flwft_globals cc_flwft_globals = {
     NULL, NULL
   };
-  
+
 /* ************************************************************************* */
 
 SbBool
@@ -374,7 +373,7 @@ cc_flwft_initialize(void)
                            major, minor, patch);
   }
   if (major < 2 || (major == 2 && minor < 1)) {
-    cc_debugerror_post("cc_flwft_initialize", 
+    cc_debugerror_post("cc_flwft_initialize",
                        "Version of Freetype 2 library is < 2.1 "
                        "Font rendering is disabled.");
     cc_ftglue_FT_Done_FreeType(library);
@@ -406,7 +405,7 @@ cc_flwft_initialize(void)
       while (fontfilenames[++i] != NULL) {
         cc_dynarray_append(array, (void *)fontfilenames[i]);
       }
-      
+
       i++;
     }
   }
@@ -446,7 +445,7 @@ cc_flwft_initialize(void)
     assert(str);
     cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
   }
-  
+
   /* Setup temporary glyph-struct used during for tessellation */
   flwft_tessellator.vertexlist = NULL;
   flwft_tessellator.faceindexlist = NULL;
@@ -499,7 +498,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
                              fontname);
       return NULL;
     }
-    
+
     /* add the requested size to the pattern in order to pick up the correct font
        in case of bitmap fonts */
     if (!cc_fcglue_FcPatternAddDouble(font_pattern, FC_PIXEL_SIZE, pixelsize)) {
@@ -512,7 +511,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
      * otherwise results will not be correct by either the pattern
      * being underspecified or the pattern modification operations
      * given by the user not taken out. */
-        
+
     /* apply pattern modification operations for those tagged as such */
     if (!cc_fcglue_FcConfigSubstitute(NULL, font_pattern, FcMatchPattern)) {
       cc_debugerror_postinfo("find_font_file",
@@ -522,37 +521,37 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 
     /* supply default values for underspecified font patterns */
     cc_fcglue_FcDefaultSubstitute(font_pattern);
-    
+
     /* FIXME: Should we check the result in the next call and rather
      * bail out if our font has not been found or always keep going with
      * the fallback provided by fontconfig? IMHO, everything is better
      * than the builtin font. Possibly a big fat warning that there was
      * no font found with the specified pattern would be helpful for the
      * visually impaired (like me...). 20040410 tamer. */
-    
+
     /* return the font most close matching the provided pattern */
     if (!(matched_pattern = cc_fcglue_FcFontMatch(NULL, font_pattern, &result))) {
       cc_debugerror_postinfo("cc_fcglue_find_font_file",
                              "cc_fcglue_FcFontMatch failed");
       return NULL;
     }
-    
+
     /* get the filename entry out of the pattern */
     if (cc_fcglue_FcPatternGetString(matched_pattern, "file", 0, &filename) != FcResultMatch) {
       cc_debugerror_postinfo("find_font_file",
                              "cc_fcglue_FcPatternGetString failed to get the fontfile");
       return NULL;
     }
-    
+
     if (cc_font_debug()) {
       cc_fcglue_FcPatternPrint(matched_pattern);
     }
-    
+
     foundfile = strdup((const char*)filename);
-  
+
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);
-    
+
     if (cc_font_debug()) {
       cc_debugerror_postinfo("find_font_file",
                              "fontfile matching the pattern: '%s'",
@@ -629,7 +628,6 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
   FT_Face face;
   const char * fontfilename = find_font_file(fontname, pixelsize);
   FT_Error error;
-  cc_dict * glyphhash;
 
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
@@ -670,8 +668,6 @@ cc_flwft_done_font(void * font)
 {
   FT_Error error;
   FT_Face face;
-  cc_dict * glyphs;
-  SbBool found;
 
   assert(font);
   face = (FT_Face)font;
@@ -698,30 +694,30 @@ cc_flwft_get_charmap_name(void * font, int charmap)
 
   if (charmap < face->num_charmaps) {
     switch (face->charmaps[charmap]->encoding) {
-    case FT_ENCODING_UNICODE:    
-      name = "unicode"; break; 
-    case FT_ENCODING_MS_SYMBOL: 
-      name = "symbol"; break; 
-    case FT_ENCODING_MS_SJIS:    
-      name = "sjis"; break; 
-    case FT_ENCODING_MS_GB2312: 
-      name = "gb2312"; break; 
-    case FT_ENCODING_MS_BIG5:    
-      name = "big5"; break; 
-    case FT_ENCODING_MS_WANSUNG:         
-      name = "wansung"; break; 
-    case FT_ENCODING_MS_JOHAB:   
-      name = "johab"; break; 
-    case FT_ENCODING_ADOBE_STANDARD: 
-      name = "adobe_standard"; break; 
-    case FT_ENCODING_ADOBE_EXPERT: 
-      name = "adobe_expert"; break; 
-    case FT_ENCODING_ADOBE_CUSTOM: 
-      name = "adobe_custom"; break; 
-    case FT_ENCODING_ADOBE_LATIN_1:       
-      name = "latin_1"; break;  
-    case FT_ENCODING_APPLE_ROMAN: 
-      name = "apple_roman"; break; 
+    case FT_ENCODING_UNICODE:
+      name = "unicode"; break;
+    case FT_ENCODING_MS_SYMBOL:
+      name = "symbol"; break;
+    case FT_ENCODING_MS_SJIS:
+      name = "sjis"; break;
+    case FT_ENCODING_MS_GB2312:
+      name = "gb2312"; break;
+    case FT_ENCODING_MS_BIG5:
+      name = "big5"; break;
+    case FT_ENCODING_MS_WANSUNG:
+      name = "wansung"; break;
+    case FT_ENCODING_MS_JOHAB:
+      name = "johab"; break;
+    case FT_ENCODING_ADOBE_STANDARD:
+      name = "adobe_standard"; break;
+    case FT_ENCODING_ADOBE_EXPERT:
+      name = "adobe_expert"; break;
+    case FT_ENCODING_ADOBE_CUSTOM:
+      name = "adobe_custom"; break;
+    case FT_ENCODING_ADOBE_LATIN_1:
+      name = "latin_1"; break;
+    case FT_ENCODING_APPLE_ROMAN:
+      name = "apple_roman"; break;
     default:
       if (cc_font_debug()) {
         cc_debugerror_postwarning("cc_flwft_get_charmap_name",
@@ -763,7 +759,7 @@ cc_flwft_set_char_size(void * font, int width, int height)
   face = (FT_Face)font;
   /* FIXME: the input arguments for width and height looks
      bogus. Check against the FreeType API doc. 20030515 mortene.
-     
+
      UPDATE 20040408 tamer: checked docs. they are not bogus. width
      and height are specified in 1/64th of points. changed resolution
      values from hardcoded (...,72,72) to (...,0,0) where 72dpi is the
@@ -804,28 +800,9 @@ cc_flwft_set_font_rotation(void * font, float angle)
 int
 cc_flwft_get_glyph(void * font, unsigned int charidx)
 {
-  FT_UInt val;
   FT_Face face = (FT_Face)font;
   assert(face);
   return cc_ftglue_FT_Get_Char_Index(face, charidx);
-}
-
-void
-cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y)
-{
-  FT_Error error;
-  FT_Face face;
-  long tmp;
-
-  assert(font);
-  face = (FT_Face)font;
-  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
-  assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
-
-  tmp = face->glyph->advance.x;
-  x[0] = (int) (tmp / 64);
-  tmp = face->glyph->advance.y;
-  y[0] = (int) (tmp / 64);
 }
 
 void
@@ -912,9 +889,9 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   SbBool mono;
 
   assert(font);
-  
+
   face = (FT_Face)font;
-  
+
   /*
     NOTE: Do not use the combination [FT_LOAD_RENDER |
     FT_LOAD_MONOCHROME] for the 'load_flags' parameter to explicitly
@@ -960,6 +937,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   bm->buffer = (unsigned char *) malloc(tfbm->rows * tfbm->pitch);
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
+  bm->advanceX = (int)(face->glyph->advance.x / 64);
+  bm->advanceY = (int)(face->glyph->advance.y / 64);
   bm->rows = tfbm->rows;
   bm->width = tfbm->width;
   bm->pitch = tfbm->pitch;
@@ -971,9 +950,9 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   return bm;
 }
 
-struct cc_font_vector_glyph * 
+struct cc_font_vector_glyph *
 cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity)
-{ 
+{
   struct cc_font_vector_glyph * new_vector_glyph;
   FT_Outline_Funcs outline_funcs;
   FT_Error error;
@@ -1005,7 +984,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   face = (FT_Face) font;
 
   error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 0, 0);
-  if (error != 0) {  
+  if (error != 0) {
     /* FIXME: No message is printed here because returning NULL will
        force glyph3d.c to use the builtin font. This happens whenever
        the system cannot find the requested font. This cannot be
@@ -1090,22 +1069,22 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_ERROR, (gluTessCallback_cb_t) flwft_errorCallback);
 
   GLUWrapper()->gluTessBeginPolygon(flwft_tessellator.tessellator_object, NULL);
-  /* According to the SGI doc for GLU, specifying the triangle normal will speed up 
+  /* According to the SGI doc for GLU, specifying the triangle normal will speed up
      the tessellation process. */
   GLUWrapper()->gluTessNormal(flwft_tessellator.tessellator_object, 0.0f, 0.0f, -1.0f);
   error = cc_ftglue_FT_Outline_Decompose(&outline, &outline_funcs, NULL);
   if (flwft_tessellator.contour_open) {
     GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);
-        
-    cc_list_truncate(flwft_tessellator.edgeindexlist, 
+
+    cc_list_truncate(flwft_tessellator.edgeindexlist,
                      cc_list_get_length(flwft_tessellator.edgeindexlist)-1);
     cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.edge_start_vertex);
   }
 
-  GLUWrapper()->gluTessEndPolygon(flwft_tessellator.tessellator_object);  
+  GLUWrapper()->gluTessEndPolygon(flwft_tessellator.tessellator_object);
   GLUWrapper()->gluDeleteTess(flwft_tessellator.tessellator_object);
-  
-  cc_list_append(flwft_tessellator.faceindexlist, (void *) -1);  
+
+  cc_list_append(flwft_tessellator.faceindexlist, (void *) -1);
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) -1);
 
 
@@ -1113,7 +1092,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
      returned to the user. This is done due to the fact that the
      tessellation callback solution needs a static working struct. */
   new_vector_glyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
-   
+
   flwft_buildVertexList(new_vector_glyph);
   flwft_buildFaceIndexList(new_vector_glyph);
   flwft_buildEdgeIndexList(new_vector_glyph);
@@ -1122,7 +1101,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   /* clean up glyph in Freetype */
   cc_ftglue_FT_Done_Glyph((FT_Glyph) g);
 
-  return new_vector_glyph; 
+  return new_vector_glyph;
 
 }
 
@@ -1146,7 +1125,7 @@ flwft_addTessVertex(double * vertex)
 
 
   cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.vertex_counter);
-  
+
 }
 
 
@@ -1155,8 +1134,8 @@ flwft_moveToCallback(FT_Vector * to, void * user)
 {
 
   if (flwft_tessellator.contour_open) {
-    GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);    
-    cc_list_truncate(flwft_tessellator.edgeindexlist, 
+    GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);
+    cc_list_truncate(flwft_tessellator.edgeindexlist,
                      cc_list_get_length(flwft_tessellator.edgeindexlist)-1);
     cc_list_append(flwft_tessellator.edgeindexlist, (void *)(intptr_t)flwft_tessellator.edge_start_vertex);
   }
@@ -1164,7 +1143,7 @@ flwft_moveToCallback(FT_Vector * to, void * user)
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
 
-  GLUWrapper()->gluTessBeginContour(flwft_tessellator.tessellator_object);  
+  GLUWrapper()->gluTessBeginContour(flwft_tessellator.tessellator_object);
   flwft_tessellator.edge_start_vertex = flwft_tessellator.vertex_counter;
 
   flwft_tessellator.contour_open = TRUE;
@@ -1206,10 +1185,10 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 
   c[0] = 2*(-flwft_tessellator.last_vertex.x + control->x);
   c[1] = 2*(-flwft_tessellator.last_vertex.y + control->y);
- 
+
   d[0] = (flwft_tessellator.last_vertex.x);
   d[1] = (flwft_tessellator.last_vertex.y);
-  
+
   f[0] = d[0];
   f[1] = d[1];
 
@@ -1217,27 +1196,27 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   df[1] = c[1] * spline_delta + b[1] * spline_delta2;
   df2[0] = 2 * b[0] * spline_delta2;
   df2[1] = 2 * b[1] * spline_delta2;
-  
+
   for (i=0;i<flwft_tessellator.tessellation_steps - 1;i++) {
 
     f[0] += df[0];
     f[1] += df[1];
-    
+
     vertex[0] = f[0];
     vertex[1] = f[1];
-    vertex[2] = 0;    
+    vertex[2] = 0;
     flwft_addTessVertex(vertex);
 
     df[0] += df2[0];
     df[1] += df2[1];
 
   }
-    
+
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
-  
+
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
 
@@ -1293,13 +1272,13 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
 
     f[0] += df[0];
     f[1] += df[1];
-    
+
     vertex[0] = f[0];
     vertex[1] = f[1];
     vertex[2] = 0;
-    
+
     flwft_addTessVertex(vertex);
-    
+
     df[0] += df2[0];
     df[1] += df2[1];
     df2[0] += df3[0];
@@ -1310,16 +1289,16 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
-  
+
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
- 
+
   return 0;
 }
 
 
 
-static void 
+static void
 flwft_vertexCallback(GLvoid * data)
 {
 
@@ -1330,42 +1309,42 @@ flwft_vertexCallback(GLvoid * data)
     flwft_tessellator.triangle_fan_root_index = index;
   }
 
-  if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {      
+  if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
     if (flwft_tessellator.triangle_index_counter == 0) {
-      flwft_tessellator.triangle_indices[0] = flwft_tessellator.triangle_fan_root_index; 
+      flwft_tessellator.triangle_indices[0] = flwft_tessellator.triangle_fan_root_index;
       flwft_tessellator.triangle_indices[1] = index;
       ++flwft_tessellator.triangle_index_counter;
-    } 
+    }
     else flwft_tessellator.triangle_indices[flwft_tessellator.triangle_index_counter++] = index;
   }
   else {
-    flwft_tessellator.triangle_indices[flwft_tessellator.triangle_index_counter++] = index; 
+    flwft_tessellator.triangle_indices[flwft_tessellator.triangle_index_counter++] = index;
   }
-  
+
   assert(flwft_tessellator.triangle_index_counter < 4);
 
   if (flwft_tessellator.triangle_index_counter == 3) {
-    
-    
-    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_STRIP) { 
-      if (flwft_tessellator.triangle_strip_flipflop) {        
+
+
+    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_STRIP) {
+      if (flwft_tessellator.triangle_strip_flipflop) {
         index = flwft_tessellator.triangle_indices[1];
         flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
         flwft_tessellator.triangle_indices[2] = index;
       }
     }
-    
+
     /* FIXME: Using pointers as storage for INTs it not nice. This
        might cause a lot of problems when compiling on a 64 bits
        platform. A special cc_list for integers would be a good
        solution (Reported by mortene). (20030914 handegar) */
-    cc_list_append(flwft_tessellator.faceindexlist, 
+    cc_list_append(flwft_tessellator.faceindexlist,
                    (void *)(intptr_t)flwft_tessellator.triangle_indices[0]);
-    cc_list_append(flwft_tessellator.faceindexlist, 
+    cc_list_append(flwft_tessellator.faceindexlist,
                    (void *)(intptr_t)flwft_tessellator.triangle_indices[1]);
-    cc_list_append(flwft_tessellator.faceindexlist, 
+    cc_list_append(flwft_tessellator.faceindexlist,
                    (void *)(intptr_t)flwft_tessellator.triangle_indices[2]);
-    
+
    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
       flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
       flwft_tessellator.triangle_index_counter = 2;
@@ -1373,7 +1352,7 @@ flwft_vertexCallback(GLvoid * data)
 
     else if (flwft_tessellator.triangle_mode == GL_TRIANGLE_STRIP) {
 
-      if (flwft_tessellator.triangle_strip_flipflop) {        
+      if (flwft_tessellator.triangle_strip_flipflop) {
         index = flwft_tessellator.triangle_indices[1];
         flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
         flwft_tessellator.triangle_indices[2] = index;
@@ -1381,16 +1360,16 @@ flwft_vertexCallback(GLvoid * data)
 
       flwft_tessellator.triangle_indices[0] = flwft_tessellator.triangle_indices[1];
       flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
-      flwft_tessellator.triangle_index_counter = 2;    
+      flwft_tessellator.triangle_index_counter = 2;
       flwft_tessellator.triangle_strip_flipflop = !flwft_tessellator.triangle_strip_flipflop;
 
     } else flwft_tessellator.triangle_index_counter = 0;
 
-  } 
+  }
 
 }
 
-static void 
+static void
 flwft_beginCallback(GLenum which)
 {
 
@@ -1401,18 +1380,18 @@ flwft_beginCallback(GLenum which)
     flwft_tessellator.triangle_fan_root_index = 0;
   flwft_tessellator.triangle_index_counter = 0;
   flwft_tessellator.triangle_strip_flipflop = FALSE;
-  
+
 }
-    
-static void 
+
+static void
 flwft_endCallback(void)
 {
 }
 
-static void 
+static void
 flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
-  int * ret;  
+  int * ret;
   float * point;
 
   point = (float*) malloc(sizeof(float)*2);
@@ -1424,11 +1403,11 @@ flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4
   ret = (int*) malloc(sizeof(int));
   cc_list_append(flwft_tessellator.malloclist, ret); /* to avoid mem leaks */
   ret[0] = flwft_tessellator.vertex_counter++;
-  
+
   *dataOut = ret;
 }
 
-static void 
+static void
 flwft_errorCallback(GLenum error_code)
 {
 }
@@ -1471,10 +1450,10 @@ flwft_buildVertexList(struct cc_font_vector_glyph * newglyph)
 
 const float *
 cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
-{   
+{
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
-} 
+}
 
 static void
 flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
@@ -1482,11 +1461,11 @@ flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
   int i,len;
 
   assert(flwft_tessellator.edgeindexlist);
- 
+
   len = cc_list_get_length(flwft_tessellator.edgeindexlist);
   newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
-  
-  for (i=0;i<len;++i) 
+
+  for (i=0;i<len;++i)
     newglyph->edgeindices[i] = (int) ((intptr_t) cc_list_get(flwft_tessellator.edgeindexlist, i));
 
   cc_list_destruct(flwft_tessellator.edgeindexlist);
@@ -1498,7 +1477,7 @@ cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
   assert(vecglyph->edgeindices && "Edge indices not initialized properly");
   return vecglyph->edgeindices;
-} 
+}
 
 static void
 flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
@@ -1506,23 +1485,23 @@ flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
   int len,i;
 
   assert(flwft_tessellator.faceindexlist);
-  
+
   len = cc_list_get_length(flwft_tessellator.faceindexlist);
   newglyph->faceindices = (int *) malloc(sizeof(int)*len);
 
-  for (i=0;i<len;++i) 
+  for (i=0;i<len;++i)
     newglyph->faceindices[i] = (int) ((intptr_t) cc_list_get(flwft_tessellator.faceindexlist, i));
-   
+
   cc_list_destruct(flwft_tessellator.faceindexlist);
   flwft_tessellator.faceindexlist = NULL;
 }
 
 const int *
 cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
-{  
+{
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;
-} 
+}
 
 static int
 flwft_calctessellatorsteps(float complexity)
