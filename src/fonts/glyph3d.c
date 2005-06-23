@@ -189,8 +189,6 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
                                0.0f,
                                newspec->complexity);
 
-  /* fprintf(stderr,"new glyph: %c\n", glyph->character); */
-
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
@@ -207,12 +205,11 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   glyph->fontidx = fontidx;
   glyph->didallocvectorglyph = FALSE;
 
-  glyph->vectorglyph = 
-    (fontidx != 0) ? cc_flw_get_vector_glyph(fontidx,
-                                             glyphidx,
-                                             newspec->complexity) : NULL;
+  glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, glyphidx,
+                                               newspec->complexity);
 
   /* Setup builtin default font if no character was found */
+  /* FIXME: this should be moved to fontlib_wrapper.c. 20050623 mortene. */
   if (glyph->vectorglyph == NULL) {
     glyph->vectorglyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
     glyph->didallocvectorglyph = TRUE;
@@ -291,9 +288,9 @@ cc_glyph3d_getcoords(const cc_glyph3d * g)
   const float * ptr = cc_flw_get_vector_glyph_coords(g->vectorglyph);
   if (ptr == NULL) {    
     assert(g->vectorglyph->vertices && "Default vertices has not been initialized as expected!");
-    /* default vertices are already initialized */
     return g->vectorglyph->vertices;
-  } else return ptr;  
+  }
+  return ptr;  
 }
 
 const int *
@@ -302,9 +299,9 @@ cc_glyph3d_getfaceindices(const cc_glyph3d * g)
   const int * ptr = cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
   if (ptr == NULL) {      
     assert(g->vectorglyph->faceindices && "Default face indices has not been initialized as expected!");
-    /* default face indices are already initialized */
     return g->vectorglyph->faceindices; 
-  } else return ptr;
+  }
+  return ptr;
 }
 
 const int *
@@ -313,9 +310,9 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
   const int * ptr = cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
   if (ptr == NULL) {    
     assert(g->vectorglyph->edgeindices && "Default edge indices has not been initialized as expected!");
-    /* default edge indices are already initialized */
     return g->vectorglyph->edgeindices; 
-  } else return ptr;
+  }
+  return ptr;
 }
 
 const int *
