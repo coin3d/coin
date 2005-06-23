@@ -52,14 +52,9 @@ extern "C" {
   int cc_flw_get_font_id(const char * fontname,
                          const unsigned int sizex, const unsigned int sizey,
                          const float angle, const float complexity);
-  const char * cc_flw_get_font_name(int fontid);
 
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
-  void cc_flw_get_bitmap_advance(int font, float fontsize, unsigned int glyph, int * x, int * y);
-  void cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y);
-  void cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
-  void cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
-  void cc_flw_done_glyph(int font, unsigned int glyph);
+  void cc_flw_done_glyph(int font, unsigned int glyphidx);
 
   struct cc_font_bitmap * cc_flw_get_bitmap(int font, unsigned int glyph);
   struct cc_font_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
@@ -67,6 +62,12 @@ extern "C" {
   const float * cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph);
   const int * cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);
   const int * cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph);
+
+  void cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y);
+  void cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
+
+  void cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y);
+  void cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
 
 #ifdef __cplusplus
 }

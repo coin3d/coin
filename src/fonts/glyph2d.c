@@ -35,7 +35,6 @@
 #include <Inventor/C/tidbitsp.h>
 
 #include "fontlib_wrapper.h"
-#include "freetype.h"
 #include "glyph2d.h"
 
 static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
@@ -109,11 +108,6 @@ cc_glyph2d_initialize()
   coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, 0);
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
-}
-
-cc_glyph2d * cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle)
-{
-  return cc_glyph2d_ref(character, spec, angle);
 }
 
 cc_glyph2d * 
@@ -274,7 +268,7 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 void 
 cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y)
 {
-  cc_flw_get_bitmap_advance(g->fontidx, g->fontspec->size, g->glyphidx, x, y);
+  cc_flw_get_bitmap_advance(g->fontidx, g->glyphidx, x, y);
 }
 
 void 

@@ -37,11 +37,9 @@
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/threads/threadsutilp.h>
 
-#include <Inventor/C/glue/freetype.h>
 #include <Inventor/C/tidbitsp.h>
 
 #include "fontlib_wrapper.h"
-#include "freetype.h"
 #include "glyph3d.h"
 #include "defaultfonts.h"
 
@@ -293,7 +291,7 @@ cc_glyph3d_getcoords(const cc_glyph3d * g)
   const float * ptr = cc_flw_get_vector_glyph_coords(g->vectorglyph);
   if (ptr == NULL) {    
     assert(g->vectorglyph->vertices && "Default vertices has not been initialized as expected!");
-    /* default vertices are already initialized in 'cc_glyph3d_getglyph()' */
+    /* default vertices are already initialized */
     return g->vectorglyph->vertices;
   } else return ptr;  
 }
@@ -304,7 +302,7 @@ cc_glyph3d_getfaceindices(const cc_glyph3d * g)
   const int * ptr = cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
   if (ptr == NULL) {      
     assert(g->vectorglyph->faceindices && "Default face indices has not been initialized as expected!");
-    /* default face indices are already initialized in 'cc_glyph3d_getglyph()' */
+    /* default face indices are already initialized */
     return g->vectorglyph->faceindices; 
   } else return ptr;
 }
@@ -315,7 +313,7 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
   const int * ptr = cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
   if (ptr == NULL) {    
     assert(g->vectorglyph->edgeindices && "Default edge indices has not been initialized as expected!");
-    /* default edge indices are already initialized in 'cc_glyph3d_getglyph()'*/
+    /* default edge indices are already initialized */
     return g->vectorglyph->edgeindices; 
   } else return ptr;
 }

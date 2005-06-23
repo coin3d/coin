@@ -68,7 +68,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "../fonts/common.h"
 #include "../fonts/fontlib_wrapper.h"
 #include "../fonts/defaultfonts.h"
 
@@ -95,7 +95,7 @@ public:
 
   int bitmapwidth;
   int bitmapheight;
-  cc_flw_bitmap * bitmap;
+  cc_font_bitmap * bitmap;
 
   struct {
     unsigned int didcalcbbox : 1;
@@ -650,7 +650,7 @@ SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) cons
   if (PRIVATE(this)->bitmap == NULL) {
     PRIVATE(this)->bitmap = cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
   }
-  struct cc_flw_bitmap * bm = PRIVATE(this)->bitmap;
+  struct cc_font_bitmap * bm = PRIVATE(this)->bitmap;
   assert(bm);
   
   PRIVATE(this)->bitmapwidth = bm->width;
@@ -684,7 +684,7 @@ SoGlyphP::setup3DFontData(void)
     // FIXME: Should fetch the complexity value from the action. But
     // because this class is obsolete, we'll stick to the default
     // complexity value for now... (20030918 handegar)
-    cc_flw_vector_glyph * vector_glyph = cc_flw_get_vector_glyph(this->fontidx, this->character, 0.5);
+    cc_font_vector_glyph * vector_glyph = cc_flw_get_vector_glyph(this->fontidx, this->character, 0.5);
     
     if (vector_glyph == NULL) {
       // Default hardcoded 3d font. Size = 1.0
