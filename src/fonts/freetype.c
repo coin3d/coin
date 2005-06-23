@@ -90,9 +90,6 @@ struct cc_font_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { a
 struct cc_font_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity) { assert(FALSE); return NULL; }
 
 void cc_flwft_scale_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph, float factor){ assert(FALSE); }
-const float * cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 
 
 #else /* HAVE_FREETYPE || FREETYPE_RUNTIME_LINKING */
@@ -1448,13 +1445,6 @@ flwft_buildVertexList(struct cc_font_vector_glyph * newglyph)
   flwft_tessellator.vertexlist = NULL;
 }
 
-const float *
-cc_flwft_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->vertices && "Vertices not initialized properly");
-  return vecglyph->vertices;
-}
-
 static void
 flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
 {
@@ -1472,13 +1462,6 @@ flwft_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
   flwft_tessellator.edgeindexlist = NULL;
 }
 
-const int *
-cc_flwft_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->edgeindices && "Edge indices not initialized properly");
-  return vecglyph->edgeindices;
-}
-
 static void
 flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
 {
@@ -1494,13 +1477,6 @@ flwft_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
 
   cc_list_destruct(flwft_tessellator.faceindexlist);
   flwft_tessellator.faceindexlist = NULL;
-}
-
-const int *
-cc_flwft_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->faceindices && "Face indices not initialized properly");
-  return vecglyph->faceindices;
 }
 
 static int

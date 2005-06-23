@@ -72,10 +72,6 @@ void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
 struct cc_font_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
 
-const float * cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-const int * cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
-
 
 #else /* HAVE_WIN32_API */
 
@@ -1191,13 +1187,6 @@ flww32_cleanupMallocList(void)
   }
 }
 
-const float *
-cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->vertices && "Vertices not initialized properly");
-  return vecglyph->vertices;
-}
-
 static void
 flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
 {
@@ -1217,13 +1206,6 @@ flww32_buildEdgeIndexList(struct cc_font_vector_glyph * newglyph)
 
   cc_list_destruct(flww32_tessellator.edgeindexlist);
   flww32_tessellator.edgeindexlist = NULL;
-}
-
-const int *
-cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->edgeindices && "Edge indices not initialized properly");
-  return vecglyph->edgeindices;
 }
 
 static void
@@ -1247,14 +1229,6 @@ flww32_buildFaceIndexList(struct cc_font_vector_glyph * newglyph)
   flww32_tessellator.faceindexlist = NULL;
 
 }
-
-const int *
-cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
-{
-  assert(vecglyph->faceindices && "Face indices not initialized properly");
-  return vecglyph->faceindices;
-}
-
 
 static int
 flww32_calcfontsize(float complexity)

@@ -268,7 +268,6 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
     if (gs->bitmap->buffer) { free(gs->bitmap->buffer); }
     free(gs->bitmap);
   }
-  free(gs);
 
   if (gs->vector) {
     free(gs->vector->vertices);
@@ -280,6 +279,8 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
   if (!cc_dict_remove(fs->glyphdict, glyph)) {
     assert(0 && "glyph to remove not found");
   }
+
+  free(gs);
 }
 
 static void
@@ -428,7 +429,9 @@ flw_initialize(void)
   yet.
 */
 static int
-flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
+flw_find_font(const char * fontname,
+              const unsigned int sizex, const unsigned int sizey,
+              const float angle)
 {
   unsigned int i, n;
 
@@ -543,7 +546,6 @@ cc_flw_get_font_id(const char * fontname,
      best match for "defaultFont" (and get a positive result for some
      random font). */
   if (strcmp(fontname, "defaultFont") != 0) {
-
     if (win32api) {
       font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
     }
@@ -551,7 +553,6 @@ cc_flw_get_font_id(const char * fontname,
       font = cc_flwft_get_font(fontname, sizex);
     }
   }
-
 
   if (font) {
     struct cc_flw_font * fs;
@@ -565,25 +566,23 @@ cc_flw_get_font_id(const char * fontname,
 
     if (win32api) {
       cc_flww32_get_font_name(font, &realname);
-      fontstruct_set_fontname(fs, cc_string_get_text(&realname));
     }
     else if (freetypelib) {
       cc_flwft_set_char_size(font, sizex, sizey);
       cc_flwft_set_font_rotation(font, angle);
       cc_flwft_get_font_name(font, &realname);
-      fontstruct_set_fontname(fs, cc_string_get_text(&realname));
     }
     else {
       assert(FALSE && "incomplete code path");
     }
 
+    fontstruct_set_fontname(fs, cc_string_get_text(&realname));
+
     if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_get_font",
-                             "'%s', size==<%d, %d> => realname='%s', %s",
+                             "'%s', size==<%d, %d> => realname='%s'",
                              fontname, sizex, sizey,
-                             cc_string_get_text(&realname),
-                             fs->defaultfont ?
-                             "(defaultfont)" : "(not defaultfont)");
+                             cc_string_get_text(&realname));
     }
 
     cc_string_clean(&realname);
@@ -900,48 +899,31 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
   FLW_MUTEX_UNLOCK(flw_global_lock);
 
   return gs->vector;
-
 }
 
 const float *
 cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph)
 {
-  if (freetypelib)
-    return cc_flwft_get_vector_glyph_coords(vecglyph);
-  else if (win32api) {
-    return cc_flww32_get_vector_glyph_coords(vecglyph);
-  }
-  else {
-    assert(FALSE);
-  }
-  return NULL;
+  assert(vecglyph);
+  assert(vecglyph->vertices);
+
+  return vecglyph->vertices;
 }
 
 const int *
 cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph)
 {
-  if (freetypelib)
-    return cc_flwft_get_vector_glyph_faceidx(vecglyph);
-  else if (win32api) {
-    return cc_flww32_get_vector_glyph_faceidx(vecglyph);
-  }
-  else {
-    assert(FALSE);
-  }
-  return NULL;
+  assert(vecglyph);
+  assert(vecglyph->faceindices);
+
+  return vecglyph->faceindices;
 }
 
 const int *
 cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 {
-  if (freetypelib)
-    return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
-  else if (win32api) {
-    return cc_flww32_get_vector_glyph_edgeidx(vecglyph);
-  }
-  else {
-    assert(FALSE);
-  }
+  assert(vecglyph);
+  assert(vecglyph->edgeindices);
 
-  return NULL;
+  return vecglyph->edgeindices;
 }

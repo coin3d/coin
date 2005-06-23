@@ -48,9 +48,6 @@ extern "C" {
 
   struct cc_font_bitmap * cc_flww32_get_bitmap(void * font, int glyph);
   struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity);
-  const float * cc_flww32_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph);
-  const int * cc_flww32_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);
-  const int * cc_flww32_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph);
 
 #ifdef __cplusplus
 }
