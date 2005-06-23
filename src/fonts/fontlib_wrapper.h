@@ -57,7 +57,7 @@ extern "C" {
   void cc_flw_done_glyph(int font, unsigned int glyphidx);
 
   struct cc_font_bitmap * cc_flw_get_bitmap(int font, unsigned int glyph);
-  struct cc_font_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
+  struct cc_font_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph);
 
   const float * cc_flw_get_vector_glyph_coords(struct cc_font_vector_glyph * vecglyph);
   const int * cc_flw_get_vector_glyph_faceidx(struct cc_font_vector_glyph * vecglyph);

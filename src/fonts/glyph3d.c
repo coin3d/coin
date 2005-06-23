@@ -205,8 +205,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   glyph->fontidx = fontidx;
   glyph->didallocvectorglyph = FALSE;
 
-  glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, glyphidx,
-                                               newspec->complexity);
+  glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, glyphidx);
 
   /* Setup builtin default font if no character was found */
   /* FIXME: this should be moved to fontlib_wrapper.c. 20050623 mortene. */

@@ -680,11 +680,7 @@ SoGlyphP::setup3DFontData(void)
     this->flags.didcalcbbox = 1;
   }
   else {
-    
-    // FIXME: Should fetch the complexity value from the action. But
-    // because this class is obsolete, we'll stick to the default
-    // complexity value for now... (20030918 handegar)
-    cc_font_vector_glyph * vector_glyph = cc_flw_get_vector_glyph(this->fontidx, this->character, 0.5);
+    cc_font_vector_glyph * vector_glyph = cc_flw_get_vector_glyph(this->fontidx, this->character);
     
     if (vector_glyph == NULL) {
       // Default hardcoded 3d font. Size = 1.0

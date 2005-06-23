@@ -111,6 +111,7 @@ struct cc_flw_font {
   cc_dict * glyphdict;
   unsigned int sizex, sizey;
   float angle;
+  float complexity;
   SbBool defaultfont;
   int fontindex;
   int refcount;
@@ -177,58 +178,6 @@ get_default_bitmap(unsigned int character, float wantedsize)
   }
   return NULL;
 }
-
-static struct cc_flw_font *
-fontstruct_new(void * font)
-{
-  struct cc_flw_font * fs;
-  fs = (struct cc_flw_font *)malloc(sizeof(struct cc_flw_font));
-  fs->font = font;
-  fs->fontname = NULL;
-  fs->requestname = NULL;
-  fs->sizex = 0;
-  fs->sizey = 0;
-  fs->angle = 0.0f;
-  fs->defaultfont = FALSE;
-  fs->glyphdict = cc_dict_construct(256, 0.7f);
-  fs->fontindex = flw_global_font_index++;
-  fs->refcount = 0;
-  return fs;
-}
-
-static void
-fontstruct_set_fontname(struct cc_flw_font * fs, const char * newname)
-{
-  assert(fs && newname);
-  if (!fs->fontname)
-    fs->fontname = cc_string_construct_new();
-  cc_string_set_text(fs->fontname, newname);
-}
-
-static void
-fontstruct_set_requestname(struct cc_flw_font * fs, const char * newname)
-{
-  assert(fs && newname);
-  if (!fs->requestname)
-    fs->requestname = cc_string_construct_new();
-  cc_string_set_text(fs->requestname, newname);
-}
-
-static void
-fontstruct_set_size(struct cc_flw_font * fs, const int x, const int y)
-{
-  assert(fs);
-  fs->sizex = x;
-  fs->sizey = y;
-}
-
-static void
-fontstruct_set_angle(struct cc_flw_font * fs, const float angle)
-{
-  assert(fs);
-  fs->angle = angle;
-}
-
 
 static struct cc_flw_glyph *
 flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
@@ -311,21 +260,6 @@ flw_fontidx2fontptr(int fontidx)
   assert(i < n);
 
   return fs;
-}
-
-/* Map the given font name to the built-in default font. Returns index
-   in array of the font struct that was made. */
-static unsigned int
-flw_map_fontname_to_defaultfont(const char * reqname)
-{
-  struct cc_flw_font * fs = fontstruct_new(NULL);
-  fontstruct_set_requestname(fs, reqname);
-  fontstruct_set_fontname(fs, "defaultFont");
-  fontstruct_set_size(fs, 0, 0);
-  fontstruct_set_angle(fs, 0.0f);
-  fs->defaultfont = TRUE;
-  cc_dynarray_append(fontarray, fs);
-  return fs->fontindex;
 }
 
 static void
@@ -415,7 +349,7 @@ flw_initialize(void)
 static int
 flw_find_font(const char * fontname,
               const unsigned int sizex, const unsigned int sizey,
-              const float angle)
+              const float angle, const float complexity)
 {
   unsigned int i, n;
 
@@ -436,7 +370,8 @@ flw_find_font(const char * fontname,
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
     if ((fs->sizex == sizex && fs->sizey == sizey) &&
         (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
-        (fs->angle == angle)) {
+        (fs->angle == angle) &&
+        (fs->complexity == complexity)) {
       FLW_MUTEX_UNLOCK(flw_global_lock);
       return fs->fontindex;
     }
@@ -514,12 +449,13 @@ cc_flw_get_font_id(const char * fontname,
                    const unsigned int sizex, const unsigned int sizey,
                    const float angle, const float complexity)
 {
+  struct cc_flw_font * fs;
   void * font;
   int idx;
 
   /* Don't create font if one has already been created for this name
      and size. */
-  idx = flw_find_font(fontname, sizex, sizey, angle);
+  idx = flw_find_font(fontname, sizex, sizey, angle, complexity);
 
   if (idx != -1) { return idx; }
 
@@ -539,15 +475,24 @@ cc_flw_get_font_id(const char * fontname,
     }
   }
 
+  fs = (struct cc_flw_font *)malloc(sizeof(struct cc_flw_font));
+  fs->font = font;
+  fs->defaultfont = font ? FALSE : TRUE;
+  fs->complexity = complexity;
+  fs->glyphdict = cc_dict_construct(256, 0.7f);
+  fs->fontindex = flw_global_font_index++;
+  fs->refcount = 0;
+  fs->requestname = cc_string_construct_new();
+  cc_string_set_text(fs->requestname, fontname);
+  fs->fontname = cc_string_construct_new();
+
   if (font) {
-    struct cc_flw_font * fs;
     cc_string realname;
     cc_string_construct(&realname);
 
-    fs = fontstruct_new(font);
-    fontstruct_set_requestname(fs, fontname);
-    fontstruct_set_size(fs, sizex, sizey);
-    fontstruct_set_angle(fs, angle);
+    fs->sizex = sizex;
+    fs->sizey = sizey;
+    fs->angle = angle;
 
     if (win32api) {
       cc_flww32_get_font_name(font, &realname);
@@ -561,7 +506,7 @@ cc_flw_get_font_id(const char * fontname,
       assert(FALSE && "incomplete code path");
     }
 
-    fontstruct_set_fontname(fs, cc_string_get_text(&realname));
+    cc_string_set_text(fs->fontname, cc_string_get_text(&realname));
 
     if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_get_font",
@@ -571,26 +516,21 @@ cc_flw_get_font_id(const char * fontname,
     }
 
     cc_string_clean(&realname);
-
-    cc_dynarray_append(fontarray, fs);
-    idx = fs->fontindex;
   }
   else {
-    /* Use a built-in default font for the given fontname and size,
+    /* Using a built-in default font for the given fontname and size,
        trying to match as close as possible to the requested size.
     */
-
-    struct cc_flw_font * font;
-    int newsizex, newsizey;
-    idx = flw_map_fontname_to_defaultfont(fontname);
-    font = flw_fontidx2fontptr(idx);
-    newsizex = coin_default2dfont_get_width((float) sizey);
-    newsizey = coin_default2dfont_get_height((float) sizey);
-    fontstruct_set_size(font, newsizex, newsizey);
+    cc_string_set_text(fs->fontname, "defaultFont");
+    fs->sizex = coin_default2dfont_get_width((float)sizex);
+    fs->sizey = coin_default2dfont_get_height((float)sizey);
+    fs->angle = 0.0f;
   }
 
+  cc_dynarray_append(fontarray, fs);
+
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  return idx;
+  return fs->fontindex;
 }
 
 /*!
@@ -859,7 +799,7 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
 }
 
 struct cc_font_vector_glyph *
-cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
+cc_flw_get_vector_glyph(int font, unsigned int glyph)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -874,11 +814,11 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
     struct cc_font_vector_glyph * vector_glyph = NULL;
 
     if (freetypelib) {
-      vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->nativeglyphidx, complexity);
+      vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->nativeglyphidx, fs->complexity);
       if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
     }
     else if (win32api) {
-      vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->nativeglyphidx, complexity);
+      vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->nativeglyphidx, fs->complexity);
       if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
     }
 
