@@ -810,7 +810,7 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph)
   gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
 
-  if (gs->vector == NULL) {
+  if (gs->vector == NULL && !gs->fromdefaultfont) {
     struct cc_font_vector_glyph * vector_glyph = NULL;
 
     if (freetypelib) {
