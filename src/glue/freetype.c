@@ -90,13 +90,13 @@ typedef struct {
 
 typedef FT_Error (*cc_ftglue_FT_Init_FreeType_t)(FT_Library * library);
 typedef void (*cc_ftglue_FT_Library_Version_t)(void * library, int * major, int * minor, int * patch);
-typedef void (*cc_ftglue_FT_Done_FreeType_t)(void * library);
+typedef FT_Error (*cc_ftglue_FT_Done_FreeType_t)(void * library);
 typedef FT_Error (*cc_ftglue_FT_New_Face_t)(void * library, const char * filepathname, long faceindex, FT_Face * face);
 typedef FT_Error (*cc_ftglue_FT_Done_Face_t)(void * face);
 typedef FT_Error (*cc_ftglue_FT_Select_Charmap_t)(FT_Face face, int encoding);
 typedef FT_Error (*cc_ftglue_FT_Set_Char_Size_t)(FT_Face face, long width, long height, unsigned int hres, unsigned int vres);
 typedef void (*cc_ftglue_FT_Set_Transform_t)(FT_Face face, FT_Matrix * matrix, FT_Vector * delta);
-typedef FT_Error (*cc_ftglue_FT_Get_Char_Index_t)(FT_Face face, unsigned long charidx);
+typedef FT_UInt (*cc_ftglue_FT_Get_Char_Index_t)(FT_Face face, unsigned long charidx);
 typedef FT_Error (*cc_ftglue_FT_Load_Glyph_t)(FT_Face face, unsigned int glyph, int32_t loadflags);
 typedef FT_Error (*cc_ftglue_FT_Get_Kerning_t)(FT_Face face, unsigned int left, unsigned int right, unsigned int kernmode, FT_Vector * akerning);
 typedef FT_Error (*cc_ftglue_FT_Get_Glyph_t)(void * glyphslot, FT_Glyph * glyph);
@@ -431,8 +431,10 @@ cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * pat
 void 
 cc_ftglue_FT_Done_FreeType(void * library)
 {
+  FT_Error err;
   assert(freetype_instance && freetype_instance->available);
-  freetype_instance->FT_Done_FreeType(library);
+  err = freetype_instance->FT_Done_FreeType(library);
+  assert(err == 0 && "something bad happened at FreeType exit");
 }
 
 FT_Error 
@@ -470,7 +472,7 @@ cc_ftglue_FT_Set_Transform(FT_Face face, FT_Matrix * matrix, FT_Vector * delta)
   freetype_instance->FT_Set_Transform(face, matrix, delta);
 }
 
-FT_Error 
+FT_UInt
 cc_ftglue_FT_Get_Char_Index(FT_Face face, unsigned long charidx)
 {
   assert(freetype_instance && freetype_instance->available);

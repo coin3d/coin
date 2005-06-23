@@ -350,12 +350,13 @@ int cc_ftglue_available(void);
 FT_Error cc_ftglue_FT_Init_FreeType(FT_Library * library);
 void cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * patch);
 void cc_ftglue_FT_Done_FreeType(void * library);
+
 FT_Error cc_ftglue_FT_New_Face(void * library, const char * filepathname, long faceindex, FT_Face * face);
 FT_Error cc_ftglue_FT_Done_Face(void * face);
 FT_Error cc_ftglue_FT_Select_Charmap(FT_Face face, int encoding);
 FT_Error cc_ftglue_FT_Set_Char_Size(FT_Face face, long width, long height, unsigned int hres, unsigned int vres);
 void cc_ftglue_FT_Set_Transform(FT_Face face, FT_Matrix * matrix, FT_Vector * delta);
-FT_Error cc_ftglue_FT_Get_Char_Index(FT_Face face, unsigned long charidx);
+FT_UInt cc_ftglue_FT_Get_Char_Index(FT_Face face, unsigned long charidx);
 FT_Error cc_ftglue_FT_Load_Glyph(FT_Face face, unsigned int glyph, int32_t loadflags);
 FT_Error cc_ftglue_FT_Get_Kerning(FT_Face face, unsigned int left, unsigned int right, unsigned int kernmode, FT_Vector * akerning);
 FT_Error cc_ftglue_FT_Get_Glyph(void * glyphslot, FT_Glyph * glyph);
