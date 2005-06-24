@@ -128,13 +128,15 @@ static void
 dump_cc_flw_font(const char * srcfunc, struct cc_flw_font * f)
 {
   cc_debugerror_postinfo(srcfunc,
-                         "font==%p, fontname=='%s', requestname=='%s', "
+                         "nativefonthandle==%p, fontname=='%s', requestname=='%s', "
                          "glyphdict==%p, size==<%u, %u>, angle==%f, "
-                         "defaultfont==%s, fontindex==%d, refcount==%d",
+                         "complexity==%f, defaultfont==%s, fontindex==%d, "
+                         "refcount==%d",
                          f->nativefonthandle,
                          cc_string_get_text(f->fontname),
                          cc_string_get_text(f->requestname),
                          f->glyphdict, f->sizex, f->sizey, f->angle,
+                         f->complexity,
                          f->defaultfont ? "TRUE" : "FALSE",
                          f->fontindex, f->refcount);
 }
@@ -349,11 +351,17 @@ flw_exit(void)
   unsigned int n;
 
   n = cc_dynarray_length(fontarray);
-
   while (n--) {
-    fontstruct_rmfont(n); /* FIXME: buggy! should pass fontids, not
-                             array indices! 20050624 mortene. */
+    struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, n);
+
+#if COIN_DEBUG
+    cc_debugerror_postinfo("flw_exit", "font instance resource leak:");
+    dump_cc_flw_font("flw_exit", fs);
+#endif /* COIN_DEBUG */
+
+    fontstruct_rmfont(fs->fontindex);
   }
+
   cc_dynarray_destruct(fontarray);
 
   CC_MUTEX_DESTRUCT(flw_global_lock);
@@ -383,7 +391,6 @@ flw_initialize(void)
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
-/* END Internal functions */
 /* ********************************************************************** */
 
 /*
