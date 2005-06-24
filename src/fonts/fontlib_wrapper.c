@@ -105,7 +105,7 @@ struct cc_flw_glyph {
 };
 
 struct cc_flw_font {
-  void * font;
+  void * nativefonthandle;
   cc_string * fontname;
   cc_string * requestname;
   cc_dict * glyphdict;
@@ -137,7 +137,7 @@ dump_cc_flw_font(const char * srcfunc, struct cc_flw_font * f)
                          "font==%p, fontname=='%s', requestname=='%s', "
                          "glyphdict==%p, size==<%u, %u>, angle==%f, "
                          "defaultfont==%s, fontindex==%d, refcount==%d",
-                         f->font,
+                         f->nativefonthandle,
                          cc_string_get_text(f->fontname),
                          cc_string_get_text(f->requestname),
                          f->glyphdict, f->sizex, f->sizey, f->angle,
@@ -414,10 +414,10 @@ cc_flw_unref_font(int fontid)
       fs->refcount--;
       if (fs->refcount == 0) {
         if (win32api) {
-          if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
+          if (!fs->defaultfont) { cc_flww32_done_font(fs->nativefonthandle); }
         }
         else if (freetypelib) {
-          if (!fs->defaultfont) { cc_flwft_done_font(fs->font); }
+          if (!fs->defaultfont) { cc_flwft_done_font(fs->nativefonthandle); }
         }
         fontstruct_rmfont(fontid);
       }
@@ -476,7 +476,7 @@ cc_flw_get_font_id(const char * fontname,
   }
 
   fs = (struct cc_flw_font *)malloc(sizeof(struct cc_flw_font));
-  fs->font = font;
+  fs->nativefonthandle = font;
   fs->defaultfont = font ? FALSE : TRUE;
   fs->complexity = complexity;
   fs->glyphdict = cc_dict_construct(256, 0.7f);
@@ -563,8 +563,8 @@ cc_flw_get_glyph(int font, unsigned int character)
     }
 
     if (!fs->defaultfont) {
-      if (win32api) { glyph = cc_flww32_get_glyph(fs->font, character); }
-      else if (freetypelib) { glyph = cc_flwft_get_glyph(fs->font, character); }
+      if (win32api) { glyph = cc_flww32_get_glyph(fs->nativefonthandle, character); }
+      else if (freetypelib) { glyph = cc_flwft_get_glyph(fs->nativefonthandle, character); }
 
       if (glyph > 0) {
         gs->nativeglyphidx = glyph;
@@ -655,8 +655,14 @@ cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y)
     *x = coin_default3dfont_get_advance(gs->character);
   }
   else {
-    if (win32api) { cc_flww32_get_vector_advance(fs->font, gs->nativeglyphidx, x, y); }
-    else if (freetypelib) { cc_flwft_get_vector_advance(fs->font, gs->nativeglyphidx, x, y); }
+    if (win32api) {
+      cc_flww32_get_vector_advance(fs->nativefonthandle, gs->nativeglyphidx,
+                                   x, y);
+    }
+    else if (freetypelib) {
+      cc_flwft_get_vector_advance(fs->nativefonthandle, gs->nativeglyphidx,
+                                  x, y);
+    }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -680,10 +686,14 @@ cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2,
     gs2 = flw_glyphidx2glyphptr(fs, glyph2);
     assert(gs1 && gs2);
     if (win32api) {
-      cc_flww32_get_bitmap_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
+      cc_flww32_get_bitmap_kerning(fs->nativefonthandle,
+                                   gs1->nativeglyphidx,
+                                   gs2->nativeglyphidx, x, y);
     }
     else if (freetypelib) {
-      cc_flwft_get_bitmap_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
+      cc_flwft_get_bitmap_kerning(fs->nativefonthandle,
+                                  gs1->nativeglyphidx,
+                                  gs2->nativeglyphidx, x, y);
     }
   }
 
@@ -709,10 +719,14 @@ cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2,
 
   if (fs->defaultfont == FALSE) {
     if (win32api) {
-      cc_flww32_get_vector_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
+      cc_flww32_get_vector_kerning(fs->nativefonthandle,
+                                   gs1->nativeglyphidx,
+                                   gs2->nativeglyphidx, x, y);
     }
     else if (freetypelib) {
-      cc_flwft_get_vector_kerning(fs->font, gs1->nativeglyphidx, gs2->nativeglyphidx, x, y);
+      cc_flwft_get_vector_kerning(fs->nativefonthandle,
+                                  gs1->nativeglyphidx,
+                                  gs2->nativeglyphidx, x, y);
     }
   }
 
@@ -738,10 +752,10 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
   if (cc_font_debug()) { dump_cc_flw_glyph("cc_flw_done_glyph", gs); }
 
   if (win32api && !gs->fromdefaultfont) {
-    cc_flww32_done_glyph(fs->font, gs->nativeglyphidx);
+    cc_flww32_done_glyph(fs->nativefonthandle, gs->nativeglyphidx);
   }
   else if (freetypelib && !gs->fromdefaultfont) {
-    cc_flwft_done_glyph(fs->font, gs->nativeglyphidx);
+    cc_flwft_done_glyph(fs->nativefonthandle, gs->nativeglyphidx);
   }
 
   fontstruct_rmglyph(fs, glyphidx);
@@ -767,10 +781,10 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
   if (gs->bitmap == NULL) {
 
     if (win32api && !gs->fromdefaultfont) {
-      bm = cc_flww32_get_bitmap(fs->font, gs->nativeglyphidx);
+      bm = cc_flww32_get_bitmap(fs->nativefonthandle, gs->nativeglyphidx);
     }
     else if (freetypelib && !gs->fromdefaultfont) {
-      bm = cc_flwft_get_bitmap(fs->font, gs->nativeglyphidx);
+      bm = cc_flwft_get_bitmap(fs->nativefonthandle, gs->nativeglyphidx);
     }
 
     if (!bm) {
@@ -814,11 +828,15 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph)
     struct cc_font_vector_glyph * vector_glyph = NULL;
 
     if (freetypelib) {
-      vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->nativeglyphidx, fs->complexity);
+      vector_glyph = cc_flwft_get_vector_glyph(fs->nativefonthandle,
+                                               gs->nativeglyphidx,
+                                               fs->complexity);
       if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
     }
     else if (win32api) {
-      vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->nativeglyphidx, fs->complexity);
+      vector_glyph = cc_flww32_get_vector_glyph(fs->nativefonthandle,
+                                                gs->nativeglyphidx,
+                                                fs->complexity);
       if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
     }
 
