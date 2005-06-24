@@ -473,7 +473,7 @@ envlist_append(struct envvar_data * item)
   if (envlist_head == NULL) {
     envlist_head = item;
     envlist_tail = item;
-    (void)atexit(envlist_cleanup);
+    coin_atexit_func("envlist_cleanup", envlist_cleanup, -2147483647);
   }
   else {
     envlist_tail->next = item;
