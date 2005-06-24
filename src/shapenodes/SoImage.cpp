@@ -147,6 +147,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
@@ -329,6 +330,11 @@ SoImage::GLRender(SoGLRenderAction * action)
   this->testTransparency();
   if (action->handleTransparency(this->transparency)) return;
 
+  // evaluate lazy element to enable/disable blending
+  const SoGLLazyElement * elem = (const SoGLLazyElement*) 
+    SoLazyElement::getInstance(state);
+  elem->send(state, SoLazyElement::ALL_MASK); 
+      
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
 
@@ -458,6 +464,23 @@ SoImage::GLRender(SoGLRenderAction * action)
     }
   }
 
+
+  int offsetx, offsety;
+  int rpx, rpy;
+  int offvp;
+  
+  rpx = xpos >= 0 ? xpos : 0;
+  offvp = xpos < 0 ? 1 : 0;
+  offsetx = xpos >= 0 ? 0 : xpos;
+          
+  rpy = ypos >= 0 ? ypos : 0;
+  offvp = offvp || ypos < 0 ? 1 : 0;
+  offsety = ypos >= 0 ? 0 : ypos;
+
+  glRasterPos3f((float) rpx, (float) rpy, -nilpoint[2]);
+
+  if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
+
   glPixelStorei(GL_UNPACK_ROW_LENGTH, orgsize[0]);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, skipx);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, skipy);
@@ -465,7 +488,6 @@ SoImage::GLRender(SoGLRenderAction * action)
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*) dataptr);
 
@@ -904,6 +926,7 @@ SoImage::loadFilename(void)
       SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
       this->image.enableNotify(oldnotify);
+      this->testtransparency = TRUE;
       retval = TRUE;
     }
   }
