@@ -49,7 +49,7 @@ extern "C" {
   const char * cc_flwft_get_charmap_name(void * font, int charmap);
   void cc_flwft_set_charmap(void * font, int charmap);
 
-  void cc_flwft_set_char_size(void * font, int width, int height);
+  void cc_flwft_set_char_size(void * font, int height);
   void cc_flwft_set_font_rotation(void * font, float angle);
 
   int cc_flwft_get_glyph(void * font, unsigned int charidx);

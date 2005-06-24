@@ -175,8 +175,9 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   }
   
   /* FIXME: get rid of angle -- not used. 20050516 mortene. */
-  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), 
-                               angle, -1.0f);
+  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload),
+                               (unsigned int)(newspec->size), 
+                               angle, 0.5f);
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);

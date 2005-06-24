@@ -112,7 +112,7 @@ struct cc_flw_font {
   cc_string * fontname;
   cc_string * requestname;
   cc_dict * glyphdict;
-  unsigned int sizex, sizey;
+  unsigned int sizey;
   float angle;
   float complexity;
   SbBool defaultfont;
@@ -129,13 +129,13 @@ dump_cc_flw_font(const char * srcfunc, struct cc_flw_font * f)
 {
   cc_debugerror_postinfo(srcfunc,
                          "nativefonthandle==%p, fontname=='%s', requestname=='%s', "
-                         "glyphdict==%p, size==<%u, %u>, angle==%f, "
+                         "glyphdict==%p, sizey==%u, angle==%f, "
                          "complexity==%f, defaultfont==%s, fontindex==%d, "
                          "refcount==%d",
                          f->nativefonthandle,
                          cc_string_get_text(f->fontname),
                          cc_string_get_text(f->requestname),
-                         f->glyphdict, f->sizex, f->sizey, f->angle,
+                         f->glyphdict, f->sizey, f->angle,
                          f->complexity,
                          f->defaultfont ? "TRUE" : "FALSE",
                          f->fontindex, f->refcount);
@@ -271,6 +271,7 @@ flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
   if (cc_dict_get(fs->glyphdict, glyphidx, &tmp)) {
     gs = (struct cc_flw_glyph *) tmp;
   }
+
   return gs;
 }
 
@@ -401,8 +402,7 @@ flw_initialize(void)
   yet.
 */
 static int
-flw_find_font(const char * fontname,
-              const unsigned int sizex, const unsigned int sizey,
+flw_find_font(const char * fontname, const unsigned int sizey,
               const float angle, const float complexity)
 {
   unsigned int i, n;
@@ -422,7 +422,7 @@ flw_find_font(const char * fontname,
   n = cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
-    if ((fs->sizex == sizex && fs->sizey == sizey) &&
+    if ((fs->sizey == sizey) &&
         (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
         (fs->angle == angle) &&
         (fs->complexity == complexity)) {
@@ -497,17 +497,21 @@ cc_flw_unref_font(int fontid)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font_id(const char * fontname,
-                   const unsigned int sizex, const unsigned int sizey,
+cc_flw_get_font_id(const char * fontname, const unsigned int sizey,
                    const float angle, const float complexity)
 {
+  /* FIXME: complexity (and angle, if we're keeping it) needs to be
+     clamped to single-digit precision, to make sure we don't set up
+     gazillions of fonts, for instance if end-user can change
+     SoComplexity::value with a GUI slider component. 20050624 mortene. */
+
   struct cc_flw_font * fs;
   void * font;
   int idx;
 
   /* Don't create font if one has already been created for this name
      and size. */
-  idx = flw_find_font(fontname, sizex, sizey, angle, complexity);
+  idx = flw_find_font(fontname, sizey, angle, complexity);
 
   if (idx != -1) { return idx; }
 
@@ -520,10 +524,10 @@ cc_flw_get_font_id(const char * fontname,
      random font). */
   if (strcmp(fontname, "defaultFont") != 0) {
     if (using_win32api()) {
-      font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
+      font = cc_flww32_get_font(fontname, sizey, angle, complexity);
     }
     else if (using_freetype()) {
-      font = cc_flwft_get_font(fontname, sizex);
+      font = cc_flwft_get_font(fontname, sizey);
     }
   }
 
@@ -537,20 +541,19 @@ cc_flw_get_font_id(const char * fontname,
   fs->requestname = cc_string_construct_new();
   cc_string_set_text(fs->requestname, fontname);
   fs->fontname = cc_string_construct_new();
+  fs->sizey = sizey;
 
   if (font) {
     cc_string realname;
     cc_string_construct(&realname);
 
-    fs->sizex = sizex;
-    fs->sizey = sizey;
     fs->angle = angle;
 
     if (using_win32api()) {
       cc_flww32_get_font_name(font, &realname);
     }
     else if (using_freetype()) {
-      cc_flwft_set_char_size(font, sizex, sizey);
+      cc_flwft_set_char_size(font, sizey);
       cc_flwft_set_font_rotation(font, angle);
       cc_flwft_get_font_name(font, &realname);
     }
@@ -562,8 +565,8 @@ cc_flw_get_font_id(const char * fontname,
 
     if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_get_font",
-                             "'%s', size==<%d, %d> => realname='%s'",
-                             fontname, sizex, sizey,
+                             "'%s', size==%u => realname='%s'",
+                             fontname, sizey,
                              cc_string_get_text(&realname));
     }
 
@@ -574,8 +577,6 @@ cc_flw_get_font_id(const char * fontname,
        trying to match as close as possible to the requested size.
     */
     cc_string_set_text(fs->fontname, "defaultFont");
-    fs->sizex = coin_default2dfont_get_width((float)sizex);
-    fs->sizey = coin_default2dfont_get_height((float)sizey);
     fs->angle = 0.0f;
   }
 
@@ -609,6 +610,10 @@ cc_flw_get_glyph(int font, unsigned int character)
     gs->character = character;
     gs->bitmap = NULL;
     gs->vector = NULL;
+    /* These will be changed below if the glyph is found in a
+       non-default font: */
+    gs->nativeglyphidx = character;
+    gs->fromdefaultfont = TRUE;
 
     if (!cc_dict_put(fs->glyphdict, character, gs)) {
       assert(0 && "glyph already exists");
@@ -647,11 +652,6 @@ cc_flw_get_glyph(int font, unsigned int character)
         }
       }
     }
-
-    if (glyph == 0) {
-      gs->nativeglyphidx = character;
-      gs->fromdefaultfont = TRUE;
-    }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -676,7 +676,7 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
   if (gs->fromdefaultfont) {
     /* FIXME: should be simplified, so we could just use the else{}
        block below unconditionally. 20050623 mortene.*/
-    *x = coin_default2dfont_get_width((float)fs->sizex);
+    *x = coin_default2dfont_get_width((float)fs->sizey);
     *y = coin_default2dfont_get_height((float)fs->sizey);
   }
   else {

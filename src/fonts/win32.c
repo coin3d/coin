@@ -59,7 +59,7 @@
 SbBool cc_flww32_initialize(void) { return FALSE; }
 void cc_flww32_exit(void) { }
 
-void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity) { assert(FALSE); return NULL; }
+void * cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexity) { assert(FALSE); return NULL; }
 void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
@@ -289,13 +289,8 @@ cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
    Returns NULL on error.
 */
 void *
-cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity)
+cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexity)
 {
-  /* FIXME: an idea about sizex / width specification for fonts: let
-     sizex==0 indicate "don't care". Should update API and API doc
-     upstream to that effect. 20030911 mortene.
-  */
-
   int i;
   DWORD nrkpairs, ret;
   KERNINGPAIR * kpairs;
@@ -309,42 +304,39 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     sizey = flww32_calcfontsize(complexity);
   }
 
-  wfont = CreateFont(-sizey, /* Using a negative
-                                      'sizey'. Otherwise leads to less
-                                      details as it seems like the Win32
-                                      systems tries to 'quantize' the
-                                      glyph to match the pixels of the
-                                      choosen resolution. */
-                           0, /* really sizex, but let Win32 choose to
-                                 get correct aspect ratio */
-                           (int) (10 * (angle * 180) / M_PI) , /* escapement */
-                           (int) (10 * (angle * 180) / M_PI) , /* orientation */
-                           FW_DONTCARE, /* weight */
-                           FALSE, FALSE, FALSE, /* italic, underline, strikeout */
-                           /* FIXME: using DEFAULT_CHARSET is probably
-                              not what we should do, AFAICT from a
-                              quick read-over of the CreateFont() API
-                              doc. 20030530 mortene. */
-                           DEFAULT_CHARSET,
-                           /* FIXME: to also make it possible to use
-                              Window's raster fonts, this should
-                              rather be OUT_DEFAULT_PRECIS. Then when
-                              GetGlyphOutline() fails on a font, we
-                              should grab it's bitmap by using
-                              TextOut() and GetDIBits(). 20030610
-                              mortene.
-                           */
-                           OUT_TT_ONLY_PRECIS, /* output precision */
-                           CLIP_DEFAULT_PRECIS, /* clipping precision */
-                           PROOF_QUALITY, /* output quality */
-                           DEFAULT_PITCH, /* pitch and family */
-                           fontname); /* typeface name */
+  wfont = CreateFont(-sizey, /* Using a negative 'sizey'. Otherwise
+                                leads to less details as it seems like
+                                the Win32 systems tries to 'quantize'
+                                the glyph to match the pixels of the
+                                choosen resolution. */
+                     0, /* let Win32 choose to get correct aspect
+                           ratio */
+                     (int) (10 * (angle * 180) / M_PI) , /* escapement */
+                     (int) (10 * (angle * 180) / M_PI) , /* orientation */
+                     FW_DONTCARE, /* weight */
+                     FALSE, FALSE, FALSE, /* italic, underline, strikeout */
+                     /* FIXME: using DEFAULT_CHARSET is probably not
+                        what we should do, AFAICT from a quick
+                        read-over of the CreateFont() API
+                        doc. 20030530 mortene. */
+                     DEFAULT_CHARSET,
+                     /* FIXME: to also make it possible to use
+                        Window's raster fonts, this should rather be
+                        OUT_DEFAULT_PRECIS. Then when
+                        GetGlyphOutline() fails on a font, we should
+                        grab it's bitmap by using TextOut() and
+                        GetDIBits(). 20030610 mortene.
+                     */
+                     OUT_TT_ONLY_PRECIS, /* output precision */
+                     CLIP_DEFAULT_PRECIS, /* clipping precision */
+                     PROOF_QUALITY, /* output quality */
+                     DEFAULT_PITCH, /* pitch and family */
+                     fontname); /* typeface name */
 
   if (!wfont) {
     DWORD lasterr = GetLastError();
     cc_string * str = cc_string_construct_new();
-    cc_string_sprintf(str, "CreateFont(%d, %d, ..., '%s')",
-                      sizey, sizex, fontname);
+    cc_string_sprintf(str, "CreateFont(%d, ..., '%s')", sizey, fontname);
     cc_win32_print_error("cc_flww32_get_font", cc_string_get_text(str), lasterr);
     cc_string_destruct(str);
     return NULL;

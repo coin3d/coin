@@ -748,30 +748,27 @@ cc_flwft_set_charmap(void * font, int charmap)
 
 
 void
-cc_flwft_set_char_size(void * font, int width, int height)
+cc_flwft_set_char_size(void * font, int height)
 {
   FT_Error error;
   FT_Face face;
   assert(font);
   face = (FT_Face)font;
-  /* FIXME: the input arguments for width and height looks
-     bogus. Check against the FreeType API doc. 20030515 mortene.
+  /* Height size is specified in 1/64th of points.
 
-     UPDATE 20040408 tamer: checked docs. they are not bogus. width
-     and height are specified in 1/64th of points. changed resolution
-     values from hardcoded (...,72,72) to (...,0,0) where 72dpi is the
-     current default of FreeType. just in case it has a different
-     default for other platforms such as win32 where 96dpi is the
-     modus operandi.
+     tamer: changed resolution values from hardcoded (...,72,72) to
+     (...,0,0) where 72dpi is the current default of FreeType. just in
+     case it has a different default for other platforms such as win32
+     where 96dpi is the modus operandi.
   */
 
   /* set the size for the face by using default values of FreeType for
    * the resolution */
-  error = cc_ftglue_FT_Set_Char_Size(face, (width<<6), (height<<6), 0, 0);
+  error = cc_ftglue_FT_Set_Char_Size(face, (height<<6), (height<<6), 0, 0);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
-                       width, height, error);
+                       height, height, error);
   }
 }
 

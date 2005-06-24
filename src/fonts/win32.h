@@ -36,7 +36,7 @@ extern "C" {
   SbBool cc_flww32_initialize(void);
   void cc_flww32_exit(void);
 
-  void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, float complexity);
+  void * cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexity);
   void cc_flww32_get_font_name(void * font, cc_string * str);
   void cc_flww32_done_font(void * font);
 
