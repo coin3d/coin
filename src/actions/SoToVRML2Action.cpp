@@ -51,7 +51,7 @@
   #include <Inventor/actions/SoToVRML2Action.h>
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/VRMLnodes/SoVRMLGroup.h>
-  
+
   int
   main(int argc, char *argv[])
   {
@@ -61,28 +61,28 @@
     in.openFile(argv[1]);
     printf("Reading...\n");
     SoSeparator *root = SoDB::readAll(&in);
-    
+
     if (root) {
       root->ref();
       SbString hdr = in.getHeader();
       in.closeFile();
-  
+
       printf("Converting...\n");
       SoToVRML2Action tovrml2;
       tovrml2.apply(root);
       SoVRMLGroup *newroot = tovrml2.getVRML2SceneGraph();
       newroot->ref();
       root->unref();
-  
+
       printf("Writing...\n");
-  
+
       SoOutput out;
       out.openFile("out.wrl");
       out.setHeaderString("#VRML V2.0 utf8");
       SoWriteAction wra(&out);
       wra.apply(newroot);
       out.closeFile();
-  
+
       newroot->unref();
     }
 
@@ -282,7 +282,7 @@ public:
 
     recentTex2 = NULL;
     do_post_primitives = FALSE;
-      
+
     this->vrmlcoords = new SbList <SoVRMLCoordinate *>;
     this->vrmlnormals = new SbList <SoVRMLNormal *>;
     this->vrmlcolors = new SbList <SoVRMLColor *>;
@@ -293,7 +293,7 @@ public:
     }
     this->vrml2path = (SoFullPath*) new SoPath;
     this->vrml2path->ref();
-    
+
     if (this->vrml2root) {
       this->vrml2root->unref();
     }
@@ -321,9 +321,9 @@ public:
 
   SoTexture2 * recentTex2;
   SbBool do_post_primitives;
-  
+
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
-  
+
   SoFullPath * vrml2path;
   SoVRMLGroup * vrml2root;
   SbList <SoVRMLCoordinate *> * vrmlcoords;
@@ -339,7 +339,7 @@ public:
   SoVRMLColor * get_or_create_color(const uint32_t * packedColor, int32_t num);
   SoVRMLColor * get_or_create_color(const SbColor *, int32_t num);
   SoVRMLTextureCoordinate * get_or_create_texcoordinate(const SbVec2f *, int32_t num);
-  void insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom);    
+  void insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom);
 
   // Shape nodes
   static SoCallbackAction::Response soasciitext_cb(void *, SoCallbackAction *, const SoNode *);
@@ -467,14 +467,14 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_SO_TO_IFS(SoProfile); // FIXME: Should this be here? 20020805 kristian.
 
   // find all shapes not handled earlier, and add generic triangle
-  // handling for them 
+  // handling for them
   //
   // FIXME: also add line segment callback and point callback. pederb,
   // 2005-06-10
   SoTypeList shapes;
   (void) SoType::getAllDerivedFrom(SoShape::getClassTypeId(), shapes);
   int i;
-  
+
   for (i = 0; i < shapes.getLength(); i++) {
     SoType type = shapes[i];
     if (type.canCreateInstance() && (shapehandledlist.find(type) < 0)) {
@@ -504,7 +504,7 @@ SoToVRML2Action::~SoToVRML2Action(void)
 }
 
 // Documented in superclass.
-void 
+void
 SoToVRML2Action::apply(SoNode * root)
 {
   PRIVATE(this)->init();
@@ -512,7 +512,7 @@ SoToVRML2Action::apply(SoNode * root)
 }
 
 // Documented in superclass.
-void 
+void
 SoToVRML2Action::apply(SoPath * path)
 {
   PRIVATE(this)->init();
@@ -520,7 +520,7 @@ SoToVRML2Action::apply(SoPath * path)
 }
 
 // Documented in superclass.
-void 
+void
 SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
   PRIVATE(this)->init();
@@ -530,7 +530,7 @@ SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules)
 // Documented in superclass.
 void
 SoToVRML2Action::beginTraversal(SoNode * node)
-{  
+{
   assert(0 && "should never get here");
 }
 
@@ -579,7 +579,7 @@ SoToVRML2Action::doReuseGeometryNodes(void) const
 }
 
 
-SoNode * 
+SoNode *
 SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
 {
   this->searchaction.setSearchingAll(FALSE);
@@ -590,7 +590,7 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   SoBaseKit::setSearchingChildren(TRUE);
 
   this->searchaction.apply((SoPath *)action->getCurPath());
-  
+
   SoNode * tail = NULL;
   SoFullPath * path = (SoFullPath*) this->searchaction.getPath();
   if (path) {
@@ -602,7 +602,7 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   return tail;
 }
 
-SoGroup * 
+SoGroup *
 SoToVRML2ActionP::get_current_tail(void)
 {
   SoNode * node = this->vrml2path->getTail();
@@ -731,7 +731,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
 {
   SoVRMLShape * shape = new SoVRMLShape;
   shape->geometry = geom;
-    
+
   // Create appearance
   SoVRMLAppearance * appearance = new SoVRMLAppearance;
   shape->appearance = appearance;
@@ -743,10 +743,10 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
   SbColor ambient, diffuse, specular, emissions;
   float shin, transp;
   action->getMaterial(ambient, diffuse, specular, emissions, shin, transp);
-  
+
   if (!geom->isOfType(SoVRMLPointSet::getClassTypeId())) {
     if (mat->diffuseColor.getValue() != diffuse) mat->diffuseColor = diffuse;
-    
+
     // Convert to grayscale for calculating the ambient intensity
     float ambientGray = ambient[0] * 77 + ambient[1] * 150 + ambient[2] * 29;
     if (ambientGray >  0) {
@@ -754,17 +754,17 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
       if (mat->ambientIntensity.getValue() != ambientIntensity)
         mat->ambientIntensity = ambientIntensity;
     }
-    
-    if (mat->specularColor.getValue() != specular) mat->specularColor = specular;    
+
+    if (mat->specularColor.getValue() != specular) mat->specularColor = specular;
     if (mat->emissiveColor.getValue() != emissions) mat->emissiveColor = emissions;
     if (mat->shininess.getValue() != shin) mat->shininess = shin;
     if (mat->transparency.getValue() != transp) mat->transparency = transp;
-  
+
     // Texture
     if (this->recentTex2 == NULL) {
       this->recentTex2 = (SoTexture2 *) search_for_recent_node(action, SoTexture2::getClassTypeId());
     }
-    
+
     if (this->recentTex2 != NULL) {
       SbVec2s size;
       int numComponents;
@@ -783,7 +783,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
         tex->repeatS = this->recentTex2->wrapS.getValue() == SoTexture2::REPEAT;
         tex->repeatT = this->recentTex2->wrapT.getValue() == SoTexture2::REPEAT;
         appearance->texture = tex;
-      
+
         // Texture transform
         const SbMatrix * matrix = &action->getTextureMatrix();
 
@@ -800,9 +800,9 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
           rotation.getValue(axis, radians);
           if (axis[2] < 0) radians = 2.0f*(float)M_PI - radians;
           textrans->rotation = radians;
-            
+
           textrans->scale = SbVec2f(scaleFactor[0], scaleFactor[1]);
-      
+
           appearance->textureTransform = textrans;
         }
       }
@@ -811,11 +811,11 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
   } else {
     if (mat->emissiveColor.getValue() != diffuse) mat->emissiveColor = diffuse;
   }
-    
+
   get_current_tail()->addChild(shape);
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
@@ -827,7 +827,7 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
     prevgroup->addChild(vp);
     return SoCallbackAction::PRUNE;
   }
-    
+
   // Push a new SoVRMLGroup on the tail of the path
   SoVRMLGroup * newgroup = new SoVRMLGroup;
   prevgroup->addChild(newgroup);
@@ -835,14 +835,14 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
-SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node) 
+SoCallbackAction::Response
+SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
     return SoCallbackAction::CONTINUE;
   }
-    
+
   // Pop node from the tail of the path until an SoVRMLGroup has been popped
   SoGroup * grp;
   do {
@@ -850,11 +850,11 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const So
     THISP(closure)->vrml2path->pop();
   } while (grp->getTypeId() != SoVRMLGroup::getClassTypeId());
 
-  THISP(closure)->dict.put(node, grp);  
+  THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
@@ -867,7 +867,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
     return SoCallbackAction::PRUNE;
   }
 
-  const SoSwitch * oldswitch = (const SoSwitch *) node;  
+  const SoSwitch * oldswitch = (const SoSwitch *) node;
   SoVRMLSwitch * newswitch = new SoVRMLSwitch;
 
   // SO_SWITCH_INHERIT is not supported in VRML97, so just translate
@@ -875,7 +875,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
   // inherited whichChoice field to this field...
   int wc = oldswitch->whichChild.getValue() == SO_SWITCH_INHERIT ?
     action->getSwitch() : oldswitch->whichChild.getValue();
-  
+
   newswitch->whichChoice = wc;
   prevgroup->addChild(newswitch);
   thisp->vrml2path->append(newswitch);
@@ -910,8 +910,8 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
-SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node) 
+SoCallbackAction::Response
+SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -926,7 +926,7 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
 
   SoVRMLSwitch * sw = (SoVRMLSwitch *) grp;
   int wc = sw->whichChoice.getValue();
-  
+
   if (wc == SO_SWITCH_ALL) {
     // workaround since VRML97 does not support SO_SWITCH_ALL.
     SoVRMLGroup * allfix = new SoVRMLGroup;
@@ -940,12 +940,12 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
     // set whichChoice to point to the new group node
     sw->whichChoice = 0;
   }
-    
-  THISP(closure)->dict.put(node, grp);  
+
+  THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
@@ -960,10 +960,10 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
 
   const SoLOD * oldlod = (const SoLOD *) node;
   SoVRMLLOD * newlod = new SoVRMLLOD;
-  
+
   newlod->range.setValues(0, oldlod->range.getNum(), oldlod->range.getValues(0));
   newlod->center = oldlod->center.getValue();
-  
+
   prevgroup->addChild(newlod);
   thisp->vrml2path->append(newlod);
 
@@ -978,7 +978,7 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
   return SoCallbackAction::PRUNE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::unsupported_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoVRMLWorldInfo * info = new SoVRMLWorldInfo;
@@ -991,7 +991,7 @@ SoToVRML2ActionP::unsupported_cb(void * closure, SoCallbackAction * action, cons
   if (THISP(closure)->master->isVerbose()) {
       SoDebugError::postWarning("SoToVRML2Action::unsupported_cb", "%s", str.getString());
   }
-  
+
   return SoCallbackAction::CONTINUE;
 }
 
@@ -1012,12 +1012,12 @@ SoToVRML2ActionP::soasciitext_cb(void * closure, SoCallbackAction * action, cons
   style->size.setValue(action->getFontSize());
   text->fontStyle.setValue(style);
   // FIXME: Better FontStyle handling (20030414 kintel)
-  
+
   THISP(closure)->insert_shape(action, text);
   return SoCallbackAction::PRUNE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::socube_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   if (action->getDrawStyle() != SoDrawStyle::FILLED) {
@@ -1034,7 +1034,7 @@ SoToVRML2ActionP::socube_cb(void * closure, SoCallbackAction * action, const SoN
   return SoCallbackAction::PRUNE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::socone_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   if (action->getDrawStyle() != SoDrawStyle::FILLED) {
@@ -1042,16 +1042,16 @@ SoToVRML2ActionP::socone_cb(void * closure, SoCallbackAction * action, const SoN
   }
   SoVRMLCone * cone = new SoVRMLCone;
   const SoCone * oldcone = (const SoCone*) node;
-  
+
   if (oldcone->bottomRadius != cone->bottomRadius)
     cone->bottomRadius = oldcone->bottomRadius.getValue();
   if (oldcone->height != cone->height)
     cone->height = oldcone->height.getValue();
-  SbBool bottom = (oldcone->parts.getValue() & SoCone::BOTTOM) ? TRUE : FALSE; 
+  SbBool bottom = (oldcone->parts.getValue() & SoCone::BOTTOM) ? TRUE : FALSE;
   if (bottom != cone->bottom.getValue()) cone->bottom = bottom;
-  SbBool side = (oldcone->parts.getValue() & SoCone::SIDES) ? TRUE : FALSE; 
+  SbBool side = (oldcone->parts.getValue() & SoCone::SIDES) ? TRUE : FALSE;
   if (side != cone->side.getValue()) cone->side = side;
-  
+
   THISP(closure)->insert_shape(action, cone);
   return SoCallbackAction::PRUNE;
 }
@@ -1088,11 +1088,11 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   const SoIndexedFaceSet * oldifs = (const SoIndexedFaceSet*) node;
-  
+
   if (oldifs->coordIndex.getNum() == 0 ||
       oldifs->coordIndex[0] < 0)
     return SoCallbackAction::CONTINUE;
-  
+
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * tail = thisp->get_current_tail();
   SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
@@ -1138,7 +1138,7 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
       if (lazy->isPacked()) {
         ifs->color = thisp->get_or_create_color(lazy->getPackedPointer(),
                                                 lazy->getNumDiffuse());
-      } 
+      }
       else {
         ifs->color = thisp->get_or_create_color(lazy->getDiffusePointer(),
                                                 lazy->getNumDiffuse());
@@ -1160,7 +1160,7 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   if (oldifs->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
-  
+
   ifs->coordIndex.setValues(0, oldifs->coordIndex.getNum(),
                             oldifs->coordIndex.getValues(0));
   if (!oldifs->textureCoordIndex.isDefault() &&
@@ -1188,7 +1188,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  
+
   const SoIndexedLineSet * oldils = (const SoIndexedLineSet*) node;
 
   if (oldils->coordIndex.getNum() == 0 ||
@@ -1203,7 +1203,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     action->getState()->push();
     ((SoVertexProperty *)oldils->vertexProperty.getValue())->callback(action);
   }
-  
+
   SoVRMLCoordinate * newcoord = NULL;
   const SoCoordinateElement * coordElem = SoCoordinateElement::getInstance(action->getState());
   if (coordElem->getNum() > 0) {
@@ -1270,7 +1270,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
                               bsp.getPointsArrayPtr());
 
     if (coordElem->getArrayPtr3() == NULL) delete[] c;
-    
+
   }
   else {
     ils->coordIndex.setValues(0, oldils->coordIndex.getNum(),
@@ -1327,14 +1327,14 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
 
     ils->colorIndex.setValues(0, coordIdx.getLength(),
                               coordIdx.getArrayPtr());
-    
+
     ils->colorPerVertex = TRUE;
   }
 
   if (oldils->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
-  
+
   THISP(closure)->insert_shape(action, ils);
   return SoCallbackAction::PRUNE;
 }
@@ -1346,7 +1346,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  
+
   const SoLineSet * oldls = (const SoLineSet*) node;
 
   if (oldls->numVertices.getNum() == 0)
@@ -1360,7 +1360,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     action->getState()->push();
     ((SoVertexProperty *)oldls->vertexProperty.getValue())->callback(action);
   }
-  
+
   const SoCoordinateElement * coordElem = SoCoordinateElement::getInstance(action->getState());
   if (coordElem->getNum() > 0) {
     if (coordElem->getArrayPtr3() != NULL) {
@@ -1388,15 +1388,27 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
       }
     }
   }
-  
+
+  SbList <int32_t> l;
   int n = oldls->numVertices.getNum();
   int32_t curidx = 0;
-  SbList <int32_t> l;
-  for (int i = 0; i < n; i++) {
-    for (int j = oldls->numVertices[i]-1; j >= 0; j--) {
+  
+  // check for special case where lineset should render all vertices
+  // on the state
+  if ((n == 1) && (oldls->numVertices[0] == -1)) {
+    const int numv = coordElem->getNum();
+    for (int i = 0; i < numv; i++) {
       l.append(curidx++);
     }
     l.append(-1);
+  }
+  else {
+    for (int i = 0; i < n; i++) {
+      for (int j = oldls->numVertices[i]-1; j >= 0; j--) {
+        l.append(curidx++);
+      }
+      l.append(-1);
+    }
   }
   ils->coordIndex.setValues(0, l.getLength(),
                             l.getArrayPtr());
@@ -1410,12 +1422,12 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
       SbVec3f curcol, nextcol;
-      
+
       curcol = color->color[colidx];
       if (i != n-1)
         nextcol = color->color[colidx+1];
       colidx++;
-      
+
       coordIdx.append(bsp.addPoint(curcol));
 
       if (i == n-1 || ils->coordIndex[i+2] == -1) {
@@ -1438,14 +1450,14 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 
     ils->colorIndex.setValues(0, coordIdx.getLength(),
                               coordIdx.getArrayPtr());
-    
+
     ils->colorPerVertex = TRUE;
   }
 
   if (oldls->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
-  
+
   THISP(closure)->insert_shape(action, ils);
   return SoCallbackAction::PRUNE;
 }
@@ -1479,7 +1491,7 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
       ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr4(),
                                                   SbMin(coordElem->getNum(),
                                                         oldps->numPoints.getValue()));
-    } 
+    }
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
@@ -1519,7 +1531,7 @@ SoToVRML2ActionP::sosphere_cb(void * closure, SoCallbackAction * action, const S
 }
 
 // Property nodes
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoInfo * oldinfo = (const SoInfo*) node;
@@ -1529,7 +1541,7 @@ SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * action, const SoN
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::somattrans_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoMatrixTransform * oldt = (const SoMatrixTransform*) node;
@@ -1548,7 +1560,7 @@ SoToVRML2ActionP::somattrans_cb(void * closure, SoCallbackAction * action, const
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoRotation * oldt = (const SoRotation*) node;
@@ -1559,7 +1571,7 @@ SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * action, const
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoRotationXYZ * oldt = (const SoRotationXYZ*) node;
@@ -1570,7 +1582,7 @@ SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * action, co
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::soscale_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoScale * oldt = (const SoScale*) node;
@@ -1581,7 +1593,7 @@ SoToVRML2ActionP::soscale_cb(void * closure, SoCallbackAction * action, const So
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::sotransform_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoTransform * oldt = (const SoTransform*) node;
@@ -1597,7 +1609,7 @@ SoToVRML2ActionP::sotransform_cb(void * closure, SoCallbackAction * action, cons
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::sotranslation_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   const SoTranslation * oldt = (const SoTranslation*) node;
@@ -1620,14 +1632,14 @@ SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * action, const
 {
   SoVRMLDirectionalLight * dl = new SoVRMLDirectionalLight;
   const SoDirectionalLight * olddl = (const SoDirectionalLight *) node;
-  
+
   dl->direction = olddl->direction.getValue();
   dl->on = olddl->on.getValue();
   dl->intensity = olddl->intensity.getValue();
   dl->color = olddl->color.getValue();
   // FIXME: SoDirectionalLight seems to not support this? 20020805 kristian.
   //dl->ambientIntensity = ambient.getValue()[0] / diffuse.getValue()[0];
-  
+
   THISP(closure)->get_current_tail()->addChild(dl);
   return SoCallbackAction::CONTINUE;
 }
@@ -1637,22 +1649,22 @@ SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * action, const S
 {
   SoVRMLInline * inl = new SoVRMLInline;
   const SoWWWInline * oldinl = (const SoWWWInline *) node;
-  
+
   inl->url = oldinl->name.getValue();
   inl->bboxCenter = oldinl->bboxCenter.getValue();
   inl->bboxSize = oldinl->bboxSize.getValue();
-  
+
   THISP(closure)->get_current_tail()->addChild(inl);
   return SoCallbackAction::CONTINUE;
 }
 
 // Convert nodes to ifs
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * tail = thisp->get_current_tail();
-  
+
   thisp->bsptree = new SbBSPTree;
   thisp->bsptreenormal = new SbBSPTree;
 
@@ -1672,13 +1684,13 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
     thisp->bsptreetex = new SbBSPTree;
     thisp->texidx = new SbList <int32_t>;
   }
-  
+
   thisp->do_post_primitives = TRUE;
 
   return SoCallbackAction::CONTINUE;
 }
 
-void 
+void
 SoToVRML2ActionP::triangle_cb(void * closure, SoCallbackAction * action,
                              const SoPrimitiveVertex * v1,
                              const SoPrimitiveVertex * v2,
@@ -1706,13 +1718,13 @@ SoToVRML2ActionP::triangle_cb(void * closure, SoCallbackAction * action,
   if (thisp->coloridx) thisp->coloridx->append(-1);
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   if (!thisp->do_post_primitives) return SoCallbackAction::CONTINUE;
   thisp->do_post_primitives = FALSE;
-  
+
   SoVRMLGeometry * is;
   if (action->getDrawStyle() == SoDrawStyle::POINTS) {
     SoVRMLPointSet * ps = new SoVRMLPointSet;
@@ -1720,7 +1732,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 
     ps->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
                                                 thisp->bsptree->numPoints());
-      
+
     if (thisp->coloridx) {
       // Copy the colors from the state
       SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
@@ -1728,7 +1740,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
         if (colorElem->isPacked()) {
           ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
                                                  colorElem->getNumDiffuse());
-        } 
+        }
         else {
           ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
                                                  colorElem->getNumDiffuse());
@@ -1754,10 +1766,10 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
         ils->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
                                                 colorElem->getNumDiffuse());
       }
-      
+
       // Index
       ils->colorIndex.setValues(0, thisp->coloridx->getLength(),
-                                thisp->coloridx->getArrayPtr());  
+                                thisp->coloridx->getArrayPtr());
     }
 
     int n = thisp->coordidx->getLength();
@@ -1773,7 +1785,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
     }
     ils->coordIndex.setValues(0, l.getLength(),
                               l.getArrayPtr());
-    
+
   } else {
     SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
     is = ifs;
@@ -1790,7 +1802,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 
     ifs->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
                                                 thisp->bsptree->numPoints());
-  
+
     ifs->normal = thisp->get_or_create_normal(thisp->bsptreenormal->getPointsArrayPtr(),
                                              thisp->bsptreenormal->numPoints());
 
@@ -1804,7 +1816,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
         ifs->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
                                                 colorElem->getNumDiffuse());
       }
-      
+
       // Index
       ifs->colorIndex.setValues(0, thisp->coloridx->getLength(),
                                 thisp->coloridx->getArrayPtr());
@@ -1839,7 +1851,7 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
   delete thisp->bsptree; thisp->bsptree = NULL;
   delete thisp->bsptreetex; thisp->bsptreetex = NULL;
   delete thisp->bsptreenormal; thisp->bsptreenormal = NULL;
-  
+
   delete thisp->coordidx; thisp->coordidx = NULL;
   delete thisp->normalidx; thisp->normalidx = NULL;
   delete thisp->texidx; thisp->texidx = NULL;
