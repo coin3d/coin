@@ -65,6 +65,7 @@ RegularSources = \
 	SoRotor.cpp \
 	SoScale.cpp \
 	SoSceneTexture2.cpp \
+	SoSceneTextureCubeMap.cpp \
 	SoSelection.cpp \
 	SoSeparator.cpp \
 	SoShapeHints.cpp \

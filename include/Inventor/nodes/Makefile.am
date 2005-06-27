@@ -84,6 +84,7 @@ PublicHeaders = \
 	SoRotor.h \
 	SoScale.h \
 	SoSceneTexture2.h \
+	SoSceneTextureCubeMap.h \
 	SoSelection.h \
 	SoSeparator.h \
 	SoShape.h \
