@@ -4795,3 +4795,27 @@ Transform {
     20050624 mortene.
 
 =====================================================================
+
+199 Backslash-quoting in iv-file strings does not work properly.
+
+    The following causes a read error upon import:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Text2 {
+   string "\\"
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    The error message is
+
+        Coin read error: Missing terminating quote-character (")
+                Occurred at line  11 in text.iv
+
+    ...because the parser "reuses" the last backslash, on the quote
+    character.
+
+    20050627 mortene.
+
+=====================================================================
