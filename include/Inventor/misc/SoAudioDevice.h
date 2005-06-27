@@ -30,16 +30,28 @@
 
 class SoAudioDeviceP;
 
+// *************************************************************************
+
+// FIXME: is there any good reason why this needs to be part of the
+// public API? Seems to me to be only of interest within Coin?
+// 20050627 mortene.
+
 class COIN_DLL_API SoAudioDevice {
 public:
   static SoAudioDevice *instance();
+
+  // FIXME: this next function should be private. And it does not need
+  // to return a value. 20050627 mortene.
   SbBool init(const SbString &devicetype, const SbString &devicename);
+
   SbBool enable();
   void disable();
   SbBool isEnabled();
   SbBool haveSound();
   void setGain(float gain);
   void mute(SbBool mute=TRUE);
+
+  // NOTE: obsolete, don't use.
   void cleanup();
 
 private:

@@ -360,9 +360,6 @@
 
 #ifdef HAVE_SOUND
 #include <Inventor/misc/SoAudioDevice.h>
-#include <Inventor/VRMLnodes/SoVRMLSound.h>
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
-
 #include "AudioTools.h"
 #endif // HAVE_SOUND
 
@@ -454,12 +451,24 @@ int SoDBP::notificationcounter = 0;
 SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
 
 // *************************************************************************
+// FIXME: this should be moved into a function in tidsbits.c. 20050509 mortene.
+
 // A sanity check. Invoked from SoDB::init() below.
 //
 // This checks that the undefined behaviour of the system's
 // vsnprintf() works the way we need it to when the (C99) va_copy()
 // macro is not available on the system. See coin_vsnprintf() in
 // tidbits.c for more information.
+//
+// The relevant part of ISO/IEC 9899:1999 ("C99") says (in section
+// 7.19.6.12):
+//
+//  2] The vsnprintf function is equivalent to snprintf, with the
+//  variable argument list replaced by arg, which shall have been
+//  initialized by the va_start macro (and possibly subsequent va_arg
+//  calls). The vsnprintf function does not invoke the va_end
+//  macro. If copying takes place between objects that overlap, the
+//  behavior is undefined.
 
 static void
 forward_sprintf(char * dst, unsigned int realdstlen, const char * fmtstr, ...)
@@ -518,6 +527,10 @@ SoDBP::variableArgsSanityCheck(void)
 // variables before the ones in DLLs. If this is done (as we have seen
 // with at least one external user), various hard-to-debug problems
 // may crop up.
+
+// FIXME: this is probably not initialized upon system start, but
+// rather placed static in a thunk in the DLL/.so. Needs to fetch a
+// value that can not have been compiled in. 20050506 mortene.
 
 static uint32_t a_static_variable = 0xdeadbeef;
 
@@ -688,32 +701,23 @@ SoDB::init(void)
     }
   }
 
-  if (initaudio) {
-    SoAudioDevice * audioDevice;
-    audioDevice = SoAudioDevice::instance();
-    env = coin_getenv("COIN_SOUND_DRIVER_NAME");
-    (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
-    if (audioDevice->haveSound()) {
-      env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
-      /* Note: The default buffersize is currently set to 4096 *
-         10. This is because the Linux version of OpenAL currently in
-         CVS at www.openal.org is slightly buggy when it comes to
-         buffer handling, and for mysterious reasons, if the buffer
-         size is a multiple of 4096, everything works allmost as it
-         should.  The problem (and this quick-fix) has been
-         aknowledged by the guy in charge of the Linux version of
-         OpenAL, and it is being worked at. 2003-03-10 thammer */
-      int bufferlength = env ? atoi(env) : 40960;
-      env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
-      int numbuffers = env ? atoi(env) : 5;
-      env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
-      float threadsleeptime = env ? (float) atof(env) : 0.250f;
-      SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
-      env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
-      float intropause = env ? (float) atof(env) : 0.0f;
-      SoVRMLAudioClip::setDefaultIntroPause(intropause);
-    }
-  }
+  // FIXME: should not init audio here, for various reasons:
+  //
+  // a) Efficiency. Loading the audio libs probably takes a fair
+  // amount of time, and only a small percentage of Coin applications
+  // actually use sound.
+  //
+  // b) Crash bugs. We've had reports of various problems with sound
+  // drivers, particularly under Windows. (My guess is that these are
+  // related to call-type interface incompabilities, by the way.)
+  // Developers (or end-users) not using sound shouldn't suffer from
+  // this problem.
+  //
+  // 20050509 mortene.
+
+  // indirectly triggers initialization
+  if (initaudio) { (void)SoAudioDevice::instance(); }
+
 #endif // HAVE_SOUND
   
   // Register all valid file format headers.
@@ -784,9 +788,11 @@ SoDB::init(void)
 
   SoDBP::globaltimersensor = new SoTimerSensor;
   SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
-  // FIXME: An interval of 1/12 is pretty low for today's standards,
-  // resulting in rather jerky animations of SoRotor & Co. Should
-  // maybe increase default to, say, 1/60. 20031222 kyrah.
+  // An interval of 1/12 is pretty low for today's standards, but this
+  // won't result in e.g. jerky animations of SoRotor & Co, since the
+  // SoSensorManager automatically and continually re-triggers scene
+  // traversals when anything has been connected to the realTime
+  // field.
   SoDBP::globaltimersensor->setInterval(SbTime(1.0/12.0));
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or does this muck
@@ -815,12 +821,13 @@ SoDB::init(void)
 
   SoDBP::isinitialized = TRUE;
 
-#if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get
-  // called _before_ clean() methods in other classes.
+  // called _before_ clean() methods in other classes with the same
+  // priority.
+  //
+  // FIXME: should use "cross-Coin" enum for priority. 20050627 mortene.
   coin_atexit((coin_atexit_f *)SoDBP::clean, 0);
-#endif // COIN_DEBUG
 }
 
 // This will free all resources which has been allocated by the SoDB
@@ -834,21 +841,6 @@ SoDBP::clean(void)
   delete SoDBP::progresscblist;
   SoDBP::progresscblist = NULL;
 
-  // Here be dragons: If SoAudioDevice::instance()->cleanup() for some
-  // reason is called as part of Coin's atexit() queue, and
-  // SoAudioDevice::instance()->haveSound() == TRUE, and Coin is used
-  // as a DLL, and we're running on the Win32 platform, we will most
-  // likely get a crash. 
-  //
-  // See notes in SoAudioDevice::SoAudioDevice() and
-  // SoAudioDeviceP::clean() for more information.  
-  // 2003-02-27 thammer.
-
-#ifdef HAVE_SOUND
-  SoAudioDevice::instance()->cleanup();
-#endif // HAVE_SOUND
-
-#if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
   // into the So@Gui@ class -- not only have it possible "died", but
   // the whole GUI toolkit could have died until we come here.
@@ -876,7 +868,6 @@ SoDBP::clean(void)
 #ifdef COIN_THREADSAFE
   delete sodb_globalmutex;
 #endif // COIN_THREADSAFE
-#endif // COIN_DEBUG
 }
 
 /*!
@@ -1399,6 +1390,9 @@ SoDBP::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 /*!
   Set the time interval between updates for the \c realTime global field
   to \a interval. Default value is 1/12 s.
+
+  The low update rate is due to historical reasons, to be compatible
+  with application code written for SGI Inventor.
 
   Setting the interval to a zero time will disable automatic updates
   of the realTime field.

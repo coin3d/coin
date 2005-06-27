@@ -39,7 +39,7 @@
   http://developer.soundblaster.com [Games section]) to render audio.
   OpenAL should work with any soundcard, and on most modern operating
   systems (including Unix, Linux, IRIX, *BSD, Mac OS X and Microsoft
-  Windows). 2 speaker output is allways available, and on some OS and
+  Windows). 2 speaker output is always available, and on some OS and
   soundcard combinations, more advanced speaker configurations are
   supported. On Microsoft Windows, OpenAL can use DirectSound3D to
   render audio, thus supporting any speaker configuration the current
@@ -47,34 +47,32 @@
   the soundcard driver, and is transparent to both Coin and OpenAL.  
 */
 
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
 #include <Inventor/misc/SoAudioDevice.h>
-#include <Inventor/errors/SoDebugError.h>
+
+#include <Inventor/C/glue/openal_wrapper.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/VRMLnodes/SoVRMLSound.h>
+#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 
-#include <Inventor/SbBasic.h>
 #include "AudioTools.h"
 
-#ifdef HAVE_SOUND
-#include <Inventor/C/glue/openal_wrapper.h>
-#endif // HAVE_SOUND
-
-#include <stdlib.h> // for atexit
+// *************************************************************************
 
 class SoAudioDeviceP {
 public:
-  SoAudioDeviceP(SoAudioDevice * master) : master(master) {};
-  SoAudioDevice *master;
-
-  void internal_cleanup();
+  SoAudioDeviceP(SoAudioDevice * master);
+  ~SoAudioDeviceP();
 
   static SoAudioDevice *singleton;
 
-  static SoAudioDevice *private_instance();
   static void clean();
 
   void *context;
@@ -84,16 +82,16 @@ public:
   SbBool initOK;
   float lastGain;
 
-  static SbBool atexitcalled;
-  static SbBool cleancalled;
+private:
+  SoAudioDevice *master;
 };
 
 #define PRIVATE(p) ((p)->pimpl)
 #define PUBLIC(p) ((p)->master)
 
 SoAudioDevice *SoAudioDeviceP::singleton = NULL;
-SbBool SoAudioDeviceP::atexitcalled= FALSE;
-SbBool SoAudioDeviceP::cleancalled= FALSE;
+
+// *************************************************************************
 
 /*!
   Returns a pointer to the SoAudioDevice class, which is a singleton.
@@ -104,13 +102,49 @@ SoAudioDevice::instance()
 {
   if (SoAudioDeviceP::singleton == NULL) {
     SoAudioDeviceP::singleton = new SoAudioDevice();
+
+    // Note: there is a known problem with the OpenAL driver on
+    // certain platforms. If clean-up is not done before application
+    // exit, that is, alcDestroyContext() and alcCloseDevice() is
+    // *not* invoked, the application hangs on exit.
+    //
+    // For Coin, that means one /has/ to invoke SoDB::finish() for
+    // application which uses sound, or the application will hang on
+    // exit for some users.
+    //
+    // FIXME: about the priority setting below; make sure this is done
+    // before SoDebugError's at-exit. 20050627 mortene.
+    coin_atexit((coin_atexit_f *)SoAudioDeviceP::clean, 1);
   }
   return SoAudioDeviceP::singleton;
 }
 
-extern "C" {
-typedef void atexit_f();
+void
+SoAudioDeviceP::clean()
+{
+  if (SoAudioDeviceP::singleton) { delete SoAudioDeviceP::singleton; }
+  SoAudioDeviceP::singleton = NULL;
 }
+
+// *************************************************************************
+
+SoAudioDeviceP::SoAudioDeviceP(SoAudioDevice * master)
+  : master(master)
+{
+  this->context = NULL;
+  this->device = NULL;
+  this->enabled = FALSE;
+  this->initOK = FALSE;
+  this->lastGain = 1.0f;
+}
+
+SoAudioDeviceP::~SoAudioDeviceP()
+{
+  if (this->context) { openal_wrapper()->alcDestroyContext(this->context); }
+  if (this->device) { openal_wrapper()->alcCloseDevice(this->device); }
+}
+
+// *************************************************************************
 
 /*!
   Constructor
@@ -119,20 +153,38 @@ typedef void atexit_f();
 SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
-  PRIVATE(this)->context = NULL;
-  PRIVATE(this)->device = NULL;
-  PRIVATE(this)->enabled = FALSE;
-  PRIVATE(this)->initOK = FALSE;
-  PRIVATE(this)->lastGain = 1.0f;
-  if (!SoAudioDeviceP::atexitcalled) {
-    atexit((atexit_f *)SoAudioDeviceP::clean);
-    // Note: This object will be cleaned up as part of Coin's atexit()
-    // queue. If Coin is built as a dll, this queue might very well be
-    // different from the application's atexit() queue, which means
-    // that OpenAl32.dll might have been unloaded allready (by the
-    // application's atexit() queue).  2003-02-27 thammer.
+
+  const char * env = coin_getenv("COIN_SOUND_DRIVER_NAME");
+  (void)this->init("OpenAL", env ? env : "DirectSound3D");
+
+  if (this->haveSound()) {
+    /* Note: The default buffersize is currently set to 4096*10. This
+       is because the Linux version of OpenAL currently in CVS at
+       www.openal.org is slightly buggy when it comes to buffer
+       handling, and for mysterious reasons, if the buffer size is a
+       multiple of 4096, everything works almost as it should.  The
+       problem (and this quick-fix) has been aknowledged by the guy in
+       charge of the Linux version of OpenAL, and it is being worked
+       at. 2003-03-10 thammer */
+    env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
+    int bufferlength = env ? atoi(env) : 40960;
+
+    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
+    int numbuffers = env ? atoi(env) : 5;
+
+    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
+    float threadsleeptime = env ? (float) atof(env) : 0.250f;
+
+    // FIXME: ugh, bad design -- SoAudioDevice shouldn't have to know
+    // about SoVRMLSound. 20050627 mortene.
+    SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
+
+    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
+    float intropause = env ? (float) atof(env) : 0.0f;
+    // FIXME: ugh, bad design -- SoAudioDevice shouldn't have to know
+    // about SoVRMLAudioClip. 20050627 mortene.
+    SoVRMLAudioClip::setDefaultIntroPause(intropause);
   }
-  SoAudioDeviceP::atexitcalled = TRUE;
 }
 
 /*!
@@ -141,6 +193,12 @@ SoAudioDevice::SoAudioDevice()
 
 SoAudioDevice::~SoAudioDevice()
 {
+  if (coin_debug_audio()) {
+    SoDebugError::postInfo("SoAudioDevice::~SoAudioDevice", "closing");
+  }
+
+  if (this->haveSound()) { this->disable(); }
+
   delete PRIVATE(this);
 }
 
@@ -157,8 +215,8 @@ SoAudioDevice::~SoAudioDevice()
   is "DirectSound3D", which should normally be what the user wants.
  */
 
-SbBool SoAudioDevice::init(const SbString &devicetype, 
-                           const SbString &devicename)
+SbBool
+SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 {
 #ifdef HAVE_SOUND
   const char * env;
@@ -185,8 +243,6 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
     PRIVATE(this)->initOK = FALSE;
     return FALSE;
   }
-
-  PRIVATE(this)->internal_cleanup();
 
   PRIVATE(this)->device = 
     openal_wrapper()->alcOpenDevice((unsigned char*)devicename.getString());
@@ -228,7 +284,10 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   openal_wrapper()->alcMakeContextCurrent(PRIVATE(this)->context);
 
   // Clear Error Code
-  openal_wrapper()->alGetError();
+  //
+  // FIXME: huh? This seems bogus -- shouldn't we rather check and
+  // report if there is one? 20050627 mortene.
+  (void)openal_wrapper()->alGetError();
 
   // Set listener parameters (position, orientation, velocity, gain)
   // These will never change, since we're simulating listener movement by
@@ -237,6 +296,13 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   float alfloat3[3] = { 0.0f, 0.0f, 0.0f };
   float alfloat6[6] = { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f };
   float gain = 1.0f;
+
+  // FIXME: why disable sound all together if any one of the below
+  // calls fail? 20050627 mortene.
+
+  // FIXME: it seems like it would be better to integrate error
+  // checking into the OpenAL wrapper..? At least for catching and
+  // reporting non-fatal errors. 20050627 mortene.
 
   openal_wrapper()->alListenerfv(AL_POSITION, alfloat3);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
@@ -301,48 +367,22 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
 #endif // HAVE_SOUND
   if (coin_debug_audio() && PRIVATE(this)->initOK) {
     SoDebugError::postInfo("SoAudioDevice::init",
-                              "Initialization succeeded");
+                           "Initialization succeeded");
   }
   return PRIVATE(this)->initOK;
 }
 
 /*!
   Cleans up any allocated resources.
- */
 
+  NOTE: now obsoleted, don't use this. Clean-up is triggered from the
+  atexit scheme in "tidbits".
+*/
 void SoAudioDevice::cleanup()
 {
-  PRIVATE(this)->internal_cleanup();
-
-  if (SoAudioDeviceP::singleton)
-    delete SoAudioDeviceP::singleton;
-  SoAudioDeviceP::singleton = NULL;
+  SoDebugError::post("SoAudioDevice::cleanup", "OBSOLETED");
 }
 
-void SoAudioDeviceP::internal_cleanup()
-{
-  if (coin_debug_audio()) {
-    SoDebugError::postInfo("SoAudioDevice::cleanup", "Closing audio device");
-  }
-
-  if (PUBLIC(this)->haveSound()) {
-    PUBLIC(this)->disable();
-
-#ifdef HAVE_SOUND
-    if (this->context != NULL)
-      openal_wrapper()->alcDestroyContext(this->context);
-    this->context = NULL;
-
-    //Close device
-    if (this->device != NULL)
-      openal_wrapper()->alcCloseDevice(this->device);
-    this->device = NULL;
-#endif // HAVE_SOUND
-
-    this->initOK = FALSE;
-  }
-}
-  
 /*!
   returns true if the audio device has been initialized successfully.
  */
@@ -362,7 +402,7 @@ SbBool SoAudioDevice::enable()
     return FALSE;
 
   if (PRIVATE(this)->enabled)
-    return TRUE; // allready enabled
+    return TRUE; // already enabled
 
   PRIVATE(this)->enabled = TRUE;
 
@@ -383,7 +423,7 @@ void SoAudioDevice::disable()
     return;
 
   if (!PRIVATE(this)->enabled)
-    return; // allready disabled
+    return; // already disabled
   
   PRIVATE(this)->enabled = FALSE;
 
@@ -432,34 +472,6 @@ SoAudioDevice::mute(SbBool mute)
   } else {
     this->setGain(PRIVATE(this)->lastGain);
   }
-}
-
-void
-SoAudioDeviceP::clean()
-{
-  if (SoAudioDeviceP::cleancalled)
-    return; // only cleanup once
-  SoAudioDeviceP::cleancalled = TRUE;
-#ifndef _WIN32
-  // Note: This crashes under Win32 if Coin is used as a DLL (see note
-  // in SoAudioDevice::SoAudioDevice() and in SoDBP::clean()).
-  // cleanup() uses OpenAL32.dll, and if this DLL is allready unloaded
-  // when cleanup() is called, the crash is near. This is why we don't
-  // do a proper cleanup of OpenAL related stuff on the Win32
-  // platform. This doesn't matter at all, because when OpenAL32.dll
-  // is unloaded, it manages to clean up after itself. 
-  //
-  // On platforms other than Win32, the situation is allmost the
-  // opposite. There is only one atexit() queue shared by the
-  // application and all DLLs. And for some reason, OpenAL doesn't
-  // manage to clean up after itself when the DLL is unloaded.
-  // 2003-02-27 thammer.
-  SoAudioDevice::instance()->cleanup();
-#else 
-  if (SoAudioDeviceP::singleton)
-    delete SoAudioDeviceP::singleton;
-  SoAudioDeviceP::singleton = NULL;
-#endif // _WIN32
 }
 
 #undef PRIVATE
