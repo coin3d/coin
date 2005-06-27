@@ -194,6 +194,7 @@
 #include <Inventor/nodes/SoCacheHint.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoSceneTexture2.h>
+#include <Inventor/nodes/SoSceneTextureCubeMap.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoTextureCombine.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h>
@@ -283,7 +284,7 @@
 
 // *************************************************************************
 
-uint32_t SoNode::nextUniqueId = 0;
+uint32_t SoNode::nextUniqueId = 1;
 int SoNode::nextActionMethodIndex = 0;
 SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
 static void * sonode_mutex = NULL;
@@ -643,6 +644,7 @@ SoNode::initClasses(void)
   SoBumpMapTransform::initClass();
 
   SoSceneTexture2::initClass();
+  SoSceneTextureCubeMap::initClass();
 
   SoTextureCoordinateCube::initClass();
   SoTextureCoordinateSphere::initClass();
