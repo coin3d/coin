@@ -350,6 +350,17 @@ SoVRMLSound::initClass(void)
 */
 SoVRMLSound::SoVRMLSound(void)
 {
+  // This is done to trigger the operation which sets up
+  // coin_sound_should_traverse() (which, when TRUE informs
+  // SoSceneManager that it should start applying an
+  // SoAudioRenderAction on its scene graphs).
+  //
+  // Note: even though SoAudioDevice::instance() is called further
+  // below in this constructor, keep this here right at the top, so we
+  // don't end up by chance without any call, in case the one(s) below
+  // are later removed.
+  (void)SoAudioDevice::instance();
+
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLSound);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(source, (NULL));
@@ -527,7 +538,7 @@ SoVRMLSound::setDopplerVelocity(float velocity)
 */
 
 float
-SoVRMLSound::getDopplerVelocity()
+SoVRMLSound::getDopplerVelocity() const
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerVelocity",
@@ -554,7 +565,7 @@ SoVRMLSound::setDopplerFactor(float factor)
 */
 
 float
-SoVRMLSound::getDopplerFactor()
+SoVRMLSound::getDopplerFactor() const
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerFactor",

@@ -28,10 +28,19 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
-class SbString;
+// *************************************************************************
+
+#include <Inventor/SbBasic.h>
+
+// *************************************************************************
 
 const char * coin_get_openal_error(int errcode);
 int coin_debug_audio(void);
+
+void coin_sound_enable_traverse(void);
+SbBool coin_sound_should_traverse(void);
+
+// *************************************************************************
 
 #define SOUND_NOT_ENABLED_BY_DEFAULT_STRING \
         "The main reason for considering sound on this platform " \
@@ -46,5 +55,6 @@ int coin_debug_audio(void);
         "linux/test/teststream.c sample and verify that everything " \
         "sounds OK. "
 
+// *************************************************************************
 
 #endif // COIN_AUDIOTOOLS_H

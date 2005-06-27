@@ -38,9 +38,13 @@
 
 // *************************************************************************
 
+#include <Inventor/SoSceneManager.h>
+
 #include <assert.h>
 
-#include <Inventor/SoSceneManager.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
@@ -53,13 +57,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/system/gl.h>
-
+#include "AudioTools.h"
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
@@ -237,12 +236,15 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-#ifdef HAVE_SOUND
   if (PRIVATE(this)->scene && 
+      // Order is important below, because we don't want to call
+      // SoAudioDevice::instance() unless we need to -- as it triggers
+      // loading the OpenAL library, which should only be loaded on
+      // demand.
+      coin_sound_should_traverse() &&
       SoAudioDevice::instance()->haveSound() &&
       SoAudioDevice::instance()->isEnabled())
     PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
-#endif
 
   this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
 }

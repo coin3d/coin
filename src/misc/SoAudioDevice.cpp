@@ -359,6 +359,13 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
     SoDebugError::postInfo("SoAudioDevice::init",
                            "Initialization succeeded");
   }
+  
+  // Notify SoSceneManager that sound is (maybe) being used, so it
+  // should start applying an SoAudioRenderAction on its scene graphs.
+  //
+  // For further information, see function's code comments in
+  // AudioTools.cpp.
+  coin_sound_enable_traverse();
 
   return TRUE;
 }

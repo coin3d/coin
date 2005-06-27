@@ -96,3 +96,38 @@ coin_debug_audio(void)
   }
   return (d > 0) ? 1 : 0;
 }
+
+// *************************************************************************
+
+// The following data and functions are used to avoid
+// SoAudioRenderAction being applied to the scene graph unless there
+// has been at least one sound-emitting node instantiated.
+
+static SbBool should_traverse = FALSE;
+
+// Called from the constructor of SoVRMLAudioClip and SoVRMLSound.
+// After this has been called once, SoSceneManager instances will
+// start applying an SoAudioRenderAction to its scene graph before
+// rendering, at each frame.
+//
+// This is far from perfect design, but it is better than how it used
+// to be (SoAudioRenderAction _always_ applied, even when no sound
+// nodes had even been instantiated by the application -- which I
+// presume is the common case, actually).
+//
+// 20050627 mortene.
+void
+coin_sound_enable_traverse(void)
+{
+  should_traverse = TRUE;
+}
+
+// Called from SoSceneManager::render() to decide whether or not to
+// invoke its SoAudioRenderAction on its scene graph.
+SbBool
+coin_sound_should_traverse(void)
+{
+  return should_traverse;
+}
+
+// *************************************************************************

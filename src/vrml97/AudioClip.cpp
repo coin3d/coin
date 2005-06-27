@@ -319,6 +319,17 @@ SoVRMLAudioClip::initClass(void) // static
 */
 SoVRMLAudioClip::SoVRMLAudioClip(void)
 {
+  // This is done to trigger the operation which sets up
+  // coin_sound_should_traverse() (which, when TRUE informs
+  // SoSceneManager that it should start applying an
+  // SoAudioRenderAction on its scene graphs).
+  //
+  // Note: even though SoAudioDevice::instance() is called further
+  // below in this constructor, keep this here right at the top, so we
+  // don't end up by chance without any call, in case the one(s) below
+  // are later removed.
+  (void)SoAudioDevice::instance();
+
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAudioClip);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(description, (""));
