@@ -324,6 +324,25 @@ SoVRMLSound::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLSound, SO_VRML97_NODE_TYPE);
   SoAudioRenderAction::addMethod(SoVRMLSound::getClassTypeId(),
                                  SoNode::audioRenderS);
+
+  /* Note: The default buffersize is currently set to 4096*10. This is
+     because the Linux version of OpenAL currently in CVS at
+     www.openal.org is slightly buggy when it comes to buffer
+     handling, and for mysterious reasons, if the buffer size is a
+     multiple of 4096, everything works almost as it should.  The
+     problem (and this quick-fix) has been aknowledged by the guy in
+     charge of the Linux version of OpenAL, and it is being worked
+     at. 2003-03-10 thammer */
+  const char * env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
+  int bufferlength = env ? atoi(env) : 40960;
+
+  env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
+  int numbuffers = env ? atoi(env) : 5;
+
+  env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
+  float threadsleeptime = env ? (float) atof(env) : 0.250f;
+
+  SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
 }
 
 /*!
@@ -394,6 +413,10 @@ SoVRMLSound::SoVRMLSound(void)
   if (!warningprintedonce) {
     if (!SoAudioDevice::instance()->haveSound()) {
       warningprintedonce = TRUE;
+
+      // FIXME: checking support platform and the COIN_SOUND_ENABLE
+      // envvar is already done in SoAudioDevice.cpp -- I don't see
+      // why it needs to be done again. Clean up. 20050627 mortene.
       SbBool unsupportedplatform = TRUE;
 #ifdef _WIN32
       unsupportedplatform = FALSE;

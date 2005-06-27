@@ -357,12 +357,6 @@
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
-
-#ifdef HAVE_SOUND
-#include <Inventor/misc/SoAudioDevice.h>
-#include "AudioTools.h"
-#endif // HAVE_SOUND
-
 #endif // HAVE_VRML97
 
 #ifdef HAVE_THREADS
@@ -671,55 +665,6 @@ SoDB::init(void)
 
   const char * env;
 
-#if defined(HAVE_SOUND) && defined(HAVE_VRML97)
-
-  // Default disabled, as sound support through OpenAL caused crashes
-  // under Linux.
-  SbBool initaudio = FALSE;
-  // FIXME: nobody bothered to document what was crashing, and how and
-  // why and how to solve it, though. *grumpf*. 20030507 mortene.
-
-#ifdef HAVE_WIN32_API
-  initaudio = TRUE;
-#endif // HAVE_WIN32_API
-
-  env = coin_getenv("COIN_SOUND_ENABLE");
-  if (env) {
-    if (!initaudio && atoi(env) > 0) {
-      SoDebugError::postInfo("SoDB::init", 
-                             "Sound has been enabled because the environment variable "
-                             "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
-                             "experimental, and is therefore not enabled by default. "
-                             SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
-      initaudio = TRUE;
-    }
-    else if (initaudio && atoi(env) == 0) {
-      SoDebugError::postInfo("SoDB::init", 
-                             "Sound has been disabled because the environment variable "
-                             "COIN_SOUND_ENABLE=0.");
-      initaudio = FALSE;
-    }
-  }
-
-  // FIXME: should not init audio here, for various reasons:
-  //
-  // a) Efficiency. Loading the audio libs probably takes a fair
-  // amount of time, and only a small percentage of Coin applications
-  // actually use sound.
-  //
-  // b) Crash bugs. We've had reports of various problems with sound
-  // drivers, particularly under Windows. (My guess is that these are
-  // related to call-type interface incompabilities, by the way.)
-  // Developers (or end-users) not using sound shouldn't suffer from
-  // this problem.
-  //
-  // 20050509 mortene.
-
-  // indirectly triggers initialization
-  if (initaudio) { (void)SoAudioDevice::instance(); }
-
-#endif // HAVE_SOUND
-  
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);

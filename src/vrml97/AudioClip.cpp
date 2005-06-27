@@ -286,7 +286,6 @@ public:
 
   SbTime actualStartTime;
   int totalNumberOfFramesToPlay;
-
 };
 
 SoVRMLAudioClipP::StaticData * SoVRMLAudioClipP::staticdata = NULL;
@@ -309,6 +308,10 @@ SoVRMLAudioClip::initClass(void) // static
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLAudioClip, SO_VRML97_NODE_TYPE);
   SoVRMLAudioClipP::staticdata = new SoVRMLAudioClipP::StaticData;
   coin_atexit((coin_atexit_f*) cleanup_audioclip, 0);
+
+  const char * env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
+  float intropause = env ? (float) atof(env) : 0.0f;
+  SoVRMLAudioClip::setDefaultIntroPause(intropause);
 }
 
 /*!
@@ -1085,7 +1088,7 @@ SoVRMLAudioClipP::openFile(int playlistIndex)
 SbBool
 SoVRMLAudioClipP::openFile(const char *filename)
 {
-  closeFile();
+  this->closeFile();
 
   if (!this->simageVersionOK("SoVRMLAudioClipP::openFile")) {
     return FALSE;
@@ -1094,25 +1097,27 @@ SoVRMLAudioClipP::openFile(const char *filename)
   // FIXME: only looks in current directory -- should use the full set
   // of SoInput::getDirectories() (make a copy of the returned
   // SbStringList from when the SoVRMLAudioClip was read).  20050113 mortene.
+  //
+  // FIXME: this is attempted again and again when the file can not be
+  // opened. Once should be sufficient, and subsequent attempts should
+  // be short-cutted somewhere before this in the call-chain. 20050627 mortene.
   this->stream = simage_wrapper()->s_stream_open(filename, NULL);
   if (this->stream == NULL) {
-    /*
-      FIXME: only one error message, and sound should stop playing.
-      20021101 thammer */
+    // FIXME: sound should stop playing.  20021101 thammer
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
-      "Couldn't open file '%s'.\n"
-      "Here's some advice for debbugging:\n\n"
-      "Audio data is loaded using the \"simage\" library. "
-      "Make sure you have\n"
-      "built the simage library with support for the audio file formats you\n"
-      "intend to use. Simage needs the libraries libogg, libvorbis and \n"
-      "libvorbisfile for the OggVorbis audio file format, and the\n"
-      "libsndfile library for WAV and several other formats (visit\n"
-      "http://www.mega-nerd.com/libsndfile/ for a complete list of supported\n"
-      "file formats).\n\n"
-      "Verify that you have the necessary access rights for reading the\n"
-      "audio file.\n\n"
-      , filename);
+                              "Couldn't open file '%s'.\n"
+                              "Here's some advice for debbugging:\n\n"
+                              "Audio data is loaded using the \"simage\" library. "
+                              "Make sure you have\n"
+                              "built the simage library with support for the audio file formats you\n"
+                              "intend to use. Simage needs the libraries libogg, libvorbis and \n"
+                              "libvorbisfile for the OggVorbis audio file format, and the\n"
+                              "libsndfile library for WAV and several other formats (visit\n"
+                              "http://www.mega-nerd.com/libsndfile/ for a complete list of supported\n"
+                              "file formats).\n\n"
+                              "Verify that you have the necessary access rights for reading the\n"
+                              "audio file.\n\n"
+                              , filename);
     return FALSE;
   }
 

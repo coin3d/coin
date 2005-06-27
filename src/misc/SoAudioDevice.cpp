@@ -59,8 +59,6 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/VRMLnodes/SoVRMLSound.h>
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 
 #include "AudioTools.h"
 
@@ -154,37 +152,38 @@ SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
 
-  const char * env = coin_getenv("COIN_SOUND_DRIVER_NAME");
-  (void)this->init("OpenAL", env ? env : "DirectSound3D");
+  // Default disabled, as sound support through OpenAL caused crashes
+  // under Linux.
+  SbBool initaudio = FALSE;
+  // FIXME: nobody bothered to document what was crashing, and how and
+  // why and how to solve it, though. *grumpf*. 20030507 mortene.
 
-  if (this->haveSound()) {
-    /* Note: The default buffersize is currently set to 4096*10. This
-       is because the Linux version of OpenAL currently in CVS at
-       www.openal.org is slightly buggy when it comes to buffer
-       handling, and for mysterious reasons, if the buffer size is a
-       multiple of 4096, everything works almost as it should.  The
-       problem (and this quick-fix) has been aknowledged by the guy in
-       charge of the Linux version of OpenAL, and it is being worked
-       at. 2003-03-10 thammer */
-    env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
-    int bufferlength = env ? atoi(env) : 40960;
+#ifdef HAVE_WIN32_API
+  initaudio = TRUE;
+#endif // HAVE_WIN32_API
 
-    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
-    int numbuffers = env ? atoi(env) : 5;
-
-    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
-    float threadsleeptime = env ? (float) atof(env) : 0.250f;
-
-    // FIXME: ugh, bad design -- SoAudioDevice shouldn't have to know
-    // about SoVRMLSound. 20050627 mortene.
-    SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
-
-    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
-    float intropause = env ? (float) atof(env) : 0.0f;
-    // FIXME: ugh, bad design -- SoAudioDevice shouldn't have to know
-    // about SoVRMLAudioClip. 20050627 mortene.
-    SoVRMLAudioClip::setDefaultIntroPause(intropause);
+  const char * env = coin_getenv("COIN_SOUND_ENABLE");
+  if (env) {
+    if (!initaudio && atoi(env) > 0) {
+      SoDebugError::postInfo("SoAudioDevice::SoAudioDevice", 
+                             "Sound has been enabled because the environment variable "
+                             "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
+                             "experimental, and is therefore not enabled by default. "
+                             SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
+      initaudio = TRUE;
+    }
+    else if (initaudio && atoi(env) == 0) {
+      SoDebugError::postInfo("SoAudioDevice::SoAudioDevice", 
+                             "Sound has been disabled because the environment variable "
+                             "COIN_SOUND_ENABLE=0.");
+      initaudio = FALSE;
+    }
   }
+
+  if (!initaudio) { return; }
+
+  env = coin_getenv("COIN_SOUND_DRIVER_NAME");
+  (void)this->init("OpenAL", env ? env : "DirectSound3D");
 }
 
 /*!
@@ -209,18 +208,17 @@ SoAudioDevice::~SoAudioDevice()
   "DirectSound3D", "DirectSound", and "MMSYSTEM". See OpenAL documentation
   (available from http://www.openal.org/) for further information.
 
-  This function is called by SoDB::init(). The user can control which
-  \a devicename SoDB::init() uses by setting the COIN_SOUND_DRIVER_NAME
-  environment variable. On Microsoft Windows, the default driver name
-  is "DirectSound3D", which should normally be what the user wants.
- */
-
+  The user can control which \a devicename OpenAL uses by setting the
+  COIN_SOUND_DRIVER_NAME environment variable. On Microsoft Windows,
+  the default driver name is "DirectSound3D", which should normally be
+  what the user wants.
+*/
 SbBool
 SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 {
-#ifdef HAVE_SOUND
-  const char * env;
-  env = coin_getenv("COIN_SOUND_DISABLE");
+  // FIXME: there's both COIN_SOUND_ENABLE and COIN_SOUND_DISABLE --
+  // one of them should be sufficient. Clean up. 20050627 mortene.
+  const char * env = coin_getenv("COIN_SOUND_DISABLE");
   if (env && atoi(env)) {
     if (coin_debug_audio()) {
       SoDebugError::postInfo("SoAudioDevice::init", 
@@ -244,6 +242,13 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
     return FALSE;
   }
 
+#ifndef HAVE_SOUND
+  SoDebugError::postWarning("SoAudioDevice::init",
+                            "Sound support was forced off when building "
+                            "this Coin binary.");
+  return FALSE;
+#endif // !HAVE_SOUND
+
   PRIVATE(this)->device = 
     openal_wrapper()->alcOpenDevice((unsigned char*)devicename.getString());
 
@@ -254,21 +259,6 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
     return FALSE;
   }
 
-  if (coin_debug_audio()) {
-    SoDebugError::postInfo("SoAudioDevice::init", 
-                           "OpenAL linking OK. Using %s linking.", 
-                           openal_wrapper()->runtime ? "run-time" :
-                           "link-time");
-    const unsigned char * str;
-    str = openal_wrapper()->alGetString(AL_VENDOR);
-    SoDebugError::postInfo("SoAudioDevice::init", "AL_VENDOR=='%s'", str);
-    str = openal_wrapper()->alGetString(AL_VERSION);
-    SoDebugError::postInfo("SoAudioDevice::init", "AL_VERSION=='%s'", str);
-    str = openal_wrapper()->alGetString(AL_RENDERER);
-    SoDebugError::postInfo("SoAudioDevice::init", "AL_RENDERER=='%s'", str);
-    str = openal_wrapper()->alGetString(AL_EXTENSIONS);
-    SoDebugError::postInfo("SoAudioDevice::init", "AL_EXTENSIONS=='%s'", str);
-  }
   // FIXME: the version string should be checked against the minimum
   // version we demand. A standard "Debian testing" distribution as of
   // now comes with version 0.0.6, for instance, and that one has
@@ -364,12 +354,13 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 
   PRIVATE(this)->enabled = TRUE;
   PRIVATE(this)->initOK = TRUE;
-#endif // HAVE_SOUND
+
   if (coin_debug_audio() && PRIVATE(this)->initOK) {
     SoDebugError::postInfo("SoAudioDevice::init",
                            "Initialization succeeded");
   }
-  return PRIVATE(this)->initOK;
+
+  return TRUE;
 }
 
 /*!
@@ -406,9 +397,7 @@ SbBool SoAudioDevice::enable()
 
   PRIVATE(this)->enabled = TRUE;
 
-#ifdef HAVE_SOUND
   openal_wrapper()->alcProcessContext(PRIVATE(this)->context);
-#endif
 
   return TRUE;
 }
@@ -427,9 +416,7 @@ void SoAudioDevice::disable()
   
   PRIVATE(this)->enabled = FALSE;
 
-#ifdef HAVE_SOUND
   openal_wrapper()->alcSuspendContext(PRIVATE(this)->context);
-#endif
 }
 
 /*!
@@ -449,7 +436,7 @@ SoAudioDevice::setGain(float gain)
     return;
 
   gain = (gain < 0.0f) ? 0.0f : gain;
-#ifdef HAVE_SOUND
+
   int error;
   openal_wrapper()->alListenerf(AL_GAIN, gain);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
@@ -458,7 +445,7 @@ SoAudioDevice::setGain(float gain)
                               coin_get_openal_error(error));
     return;
   }
-#endif // HAVE_SOUND
+
   PRIVATE(this)->lastGain = gain;
 }
 
