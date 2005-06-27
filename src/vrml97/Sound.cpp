@@ -69,13 +69,14 @@
   emitted by the Sound node (note: this is different from the
   traditional definition of intensity with respect to sound).
 
-  The intensity field has a value that ranges from 0.0 to 1.0 and specifies
-  a factor which shall be used to scale the normalized sample data of the
-  sound source during playback. A Sound node with an intensity of 1.0 shall
-  emit audio at its maximum loudness (before attenuation), and a Sound node
-  with an intensity of 0.0 shall emit no audio. Between these values, the
-  loudness should increase linearly from a -20 dB change approaching an intensity
-  of 0.0 to a 0 dB change at an intensity of 1.0.
+  The intensity field has a value that ranges from 0.0 to 1.0 and
+  specifies a factor which shall be used to scale the normalized
+  sample data of the sound source during playback. A Sound node with
+  an intensity of 1.0 shall emit audio at its maximum loudness (before
+  attenuation), and a Sound node with an intensity of 0.0 shall emit
+  no audio. Between these values, the loudness should increase
+  linearly from a -20 dB change approaching an intensity of 0.0 to a 0
+  dB change at an intensity of 1.0.
 
   The priority field provides a hint for the browser to choose which
   sounds to play when there are more active Sound nodes than can be
@@ -170,7 +171,9 @@
 
 /*!
   \var SoSFFloat SoVRMLSound::priority
-  Browser hint for how important the sound is. A value from 0 to 1. Default value is 0. Coin does not yet support this field.  */
+  Browser hint for how important the sound is. A value from 0 to
+  1. Default value is 0. Coin does not yet support this field.  
+*/
 
 /*!
   \var SoSFVec3f SoVRMLSound::location
@@ -179,36 +182,34 @@
 
 /*!
   \var SoSFVec3f SoVRMLSound::direction
-  Sound direction. Default value is (0, 0, 1). Coin does not yet
-  support this field.  */
+  Sound direction. Default value is (0, 0, 1). 
+*/
 
 /*!
   \var SoSFFloat SoVRMLSound::minFront
-  Inner ellipse front value. Default value is 1. Coin does not yet
-  support this field.
+  Inner ellipse front value. Default value is 1.
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::maxFront
-  Outer ellipse front value. Default value is 10. Coin does not yet
-  support this field.
+  Outer ellipse front value. Default value is 10. 
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::minBack
-  Inner ellipse back value. Default value is 1. Coin does not yet
-  support this field.
+  Inner ellipse back value. Default value is 1. 
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::maxBack
-  Outer ellips back value. Default value is 10. Coin does not yet
-  support this field.
+  Outer ellips back value. Default value is 10. 
 */
 
 /*!
   \var SoSFBool SoVRMLSound::spatialize
-  TRUE is sound should be spatialized with respect to the viewer. Default value is TRUE.
+  Set to TRUE if sound should be spatialized (directional effects 
+  are applied) with respect to the viewer. Distance attenuation is 
+  always applied. Default value is TRUE.  
 */
 
 #include <stddef.h>
@@ -408,9 +409,9 @@ SoVRMLSound::SoVRMLSound(void)
       if (unsupportedplatform && (!forceenable)) {
         SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
           "You are using a SoVRMLSound node, but sound support on this "
-          "platform is considered experimental and is not enabled by default. "
-          "If you'd like to enable sound, set the environment variable "
-          "COIN_SOUND_ENABLE=1. "
+          "platform is considered experimental and is not enabled by "
+          "default. If you'd like to enable sound, set the environment "
+          "variable COIN_SOUND_ENABLE=1. "
           SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
       }
       else {
@@ -462,6 +463,7 @@ SoVRMLSound::SoVRMLSound(void)
 /*!
   Destructor.
 */
+
 SoVRMLSound::~SoVRMLSound(void)
 {
   delete PRIVATE(this)->sourcesensor;
@@ -502,7 +504,7 @@ SoVRMLSound::setDopplerVelocity(float velocity)
 */
 
 float
-SoVRMLSound::getDopplerVelocity(void) const
+SoVRMLSound::getDopplerVelocity()
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerVelocity",
@@ -529,7 +531,7 @@ SoVRMLSound::setDopplerFactor(float factor)
 */
 
 float
-SoVRMLSound::getDopplerFactor(void) const
+SoVRMLSound::getDopplerFactor()
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerFactor",
@@ -570,14 +572,18 @@ SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
   a bit. This should be made more robust, or at the very least
   documented properly.  2002-11-15 thammer.  */
 
-void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
+void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, 
+                                                int numBuffers, 
+                                                SbTime sleepTime)
 {
   SoVRMLSoundP::defaultBufferLength = bufferLength;
   SoVRMLSoundP::defaultNumBuffers = numBuffers;
   SoVRMLSoundP::defaultSleepTime = sleepTime.getValue();
 }
 
-void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
+void SoVRMLSound::setBufferingProperties(int bufferLength, 
+                                         int numBuffers, 
+                                         SbTime sleepTime)
 {
   /* FIXME: if (coin_debug_audio()), post the function
      parameters. 2003-01-14 thammer */
@@ -596,7 +602,9 @@ void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTim
   PRIVATE(this)->audioBuffer = new int16_t[PRIVATE(this)->bufferLength * 2];
 }
 
-void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime)
+void SoVRMLSound::getBufferingProperties(int &bufferLength, 
+                                         int &numBuffers, 
+                                         SbTime &sleepTime)
 {
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
@@ -622,7 +630,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #endif
   SoState * state = action->getState();
   SoSoundElement::setSceneGraphHasSoundNode(state, this, TRUE);
-  SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE); // might be changed below
+  SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE); 
+  // ^-- might be changed below
 
   if (!SoAudioDevice::instance()->haveSound())
     return;
@@ -664,6 +673,19 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   if (!PRIVATE(this)->hasValidAlSource())
     PRIVATE(this)->generateAlSource();
+  
+  // Clamp field values
+  float intensity = this->intensity.getValue();
+  float minFront = this->minFront.getValue();
+  float maxFront = this->maxFront.getValue();
+  float minBack = this->minBack.getValue();
+  float maxBack = this->maxBack.getValue();
+
+  intensity = (intensity < 0.0f) ? 0.0f : (intensity > 1.0f) ? 1.0f : intensity;
+  maxFront = (maxFront < 0.0f) ? 0.0f : maxFront;
+  minFront = (minFront > maxFront) ? maxFront : minFront;
+  maxBack = (maxBack < 0.0f) ? 0.0f : maxBack;
+  minBack = (minBack > maxBack) ? maxBack : minBack;
 
   // get listener stuff
   const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
@@ -671,29 +693,45 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   const SbVec3f &listenervelocity = SoListenerDopplerElement::getDopplerVelocity(state);
   float listenergain = SoListenerGainElement::get(state);
 
-
 #if COIN_DEBUG && 0 // debug
   float x, y, z;
   listenerpos.getValue(x, y, z);
-  SoDebugError::postInfo("SoVRMLSound::audioRender", "listenerpos = (%0.2f, %0.2f, %0.2f)", x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", 
+                         "listenerpos = (%0.2f, %0.2f, %0.2f)", x, y, z);
 #endif // debug
 
   int error;
-  SbVec3f pos, worldpos;
   float alfloat3[3];
+  SbVec3f pos, worldpos, relativepos;
 
   pos = this->location.getValue();
   SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos);
   worldpos -= listenerpos;
+  relativepos = worldpos;
   listenerorientation.inverse().multVec(worldpos, worldpos);
 #if COIN_DEBUG && 0 // debug
   worldpos.getValue(x, y, z);
-  SoDebugError::postInfo("SoVRMLSound::audioRender", "rotated (inversed) : (%0.2f, %0.2f, %0.2f)", x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", 
+                         "rotated (inversed) : (%0.2f, %0.2f, %0.2f)", 
+                         x, y, z);
 #endif // debug
 
-  SbVec3f2ALfloat3(alfloat3, worldpos);
+  // Since we're not using OpenAL to calculate the distance
+  // attenuation, we normalize the source position (relative to the
+  // listener) before we send it to OpenAL.  So it's only the
+  // direction from the listener to the source that matters
+  SbVec3f normworldpos = worldpos;
+  if (normworldpos.length() > 0.0f)
+    normworldpos.normalize();
 
-  // Position ...
+  SbVec3f2ALfloat3(alfloat3, normworldpos);
+  if (!this->spatialize.getValue()) {
+    // don't spatialize - i.e. do distance attenuation but not
+    // directional effects
+    alfloat3[0] = 0.0f; alfloat3[1] = 0.0f; alfloat3[2] = 0.0f;
+  }
+
+  // Set position
   openal_wrapper()->alSourcefv(PRIVATE(this)->sourceId, AL_POSITION, alfloat3);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::audioRender",
@@ -719,9 +757,102 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 #endif
 
-  // Gain / intensity
-  float gain = this->intensity.getValue();
+  float gain = intensity;
   gain *= listenergain;
+
+  // Distance attenuation
+
+  // There are some nice formulas for the ellipse at 
+  // http://mathworld.wolfram.com/Ellipse.html
+  // the letters used below are defined there
+  // (this is the common lettering, as used in e.g. 
+  // Edwards & Penny's "Calculus and Analytic Geometry")
+
+  // r and theta measured from one of the focal points
+  // a = (back + front) / 2
+  // c = (front - back) / 2
+  // e = c / a = (front - back) / (front + back)
+  // r = (a * (1 - e^2)) / (1 + e * cos theta))
+
+  float theta = 0.0f;
+  float distance = 0.0f;
+
+  SbVec3f world_direction;
+  SbVec3f source_translation;
+  SbRotation source_rotation;
+  SbVec3f source_scale;
+  SbRotation source_scaleorientation;
+
+  SoModelMatrixElement::get(action->getState()).getTransform(
+    source_translation, source_rotation, source_scale,
+    source_scaleorientation);
+  
+  source_rotation.multVec(this->direction.getValue(),
+    world_direction);
+
+  SbRotation rot(world_direction, -relativepos);
+  SbVec3f dummy;
+  rot.getValue(dummy, theta);
+  theta = (float)(M_PI - theta);
+
+  distance = relativepos.length();
+
+  float min_r =0;
+  float max_r = 0;
+  float a, c, e;
+
+  a = (minFront + minBack) / 2.0f;
+  c = (minFront - minBack) / 2.0f;
+  e = c / a;
+  if ( (e < 1.0f) && (e > -1.0f))
+    min_r = (float) ((a * (1 - e * e)) / (1 + e * cos(theta)));
+  // if e == +/- 1, the ellipse is (approaches) a straight horizontal line
+  // and we'll define the sound level to be zero in this case
+
+  a = (maxFront + maxBack) / 2.0f;
+  c = (maxFront - maxBack) / 2.0f;
+  e = c / a;
+  if ( (e < 1.0f) && (e > -1.0f))
+    max_r = (float) ((a * (1 - e * e)) / (1 + e * cos(theta)));
+
+  if (max_r < min_r) {
+    max_r = min_r;
+  }
+
+  if (distance >= max_r)
+    gain = 0.0f;
+  else if (distance >= min_r) {
+    float diff_r = max_r - min_r;
+    if (diff_r > 0.0f) {
+      /* Note: According to the VRML97 spec, the attenuation should vary 
+         from 0dB at the minimum (inner) ellipsoid to 20dB at the 
+         maximum (outer) ellipsoid. Since OpenAL's gain uses a linear
+         scale, not a decibel one, we must do some conversion.
+         
+         attenuation_dB = -20 * (distance - min_r) / diff_r; // VRML97 spec
+         attenuation_linear = 10 ^ (attenuation_dB / 20)
+                            = 10 ^ (-1 * (distance - min_r) / diff_r)
+                            = 10 ^ ( (min_r - distance) / diff_r)
+
+         Personally, I think a maximum attenuation of 20dB is too
+         little. This means that the transition between no sound just
+         outside the max ellipsoid and some sound just inside the max
+         ellipsoid will be quite abrupt. 40dB would have been a much
+         better choice - or the falloff could be steeper (nonlinear)
+         when approaching the max ellipsoid from inside. But we'll
+         follow the VRML97 spec.
+
+         Old (linear, not dB) formula, kept for future reference: 
+           gain *= (max_r - distance) / diff_r;
+
+         2005-04-15 thammer.  */
+      float attenuation_linear =
+        (float) pow(10.0f, ((min_r - distance) / diff_r));
+      gain *= attenuation_linear;
+    }
+  }
+
+  // clamp gain to [0.0, 1.0]
   gain = (gain > 0.0f) ? ((gain < 1.0f) ? gain : 1.0f) : 0.0f;
   openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,AL_GAIN, gain);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
@@ -732,80 +863,6 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     return;
   }
 
-  /*
-    FIXME: for non-spatialized sources, the source's position should
-    be set to AL_RELATIVE, and position to 0. 2002-10-31 thammer.
-   */
-
-  // Distance attenuation
-  /* FIXME: If minFront = maxFront = 0.0f, we interpret this as no
-     distance attenuation.  This is a violation of the VRML97 spec,
-     but we keep it like this because it is so very very useful. It is
-     strange that the VRML97 spec doesn't specify a way to bypass
-     distance attenuation.  If the user was able to specify some kind
-     of MAX_FLOAT value as a parameter, we wouldn't have to make this
-     a special case, and we wouldn't have to violate the VRML97
-     spec. Investigate this further. 2002-11-07 thammer.  */
-
-  /*
-    FIXME: move these to a sensor instead. 2002-11-07 thammer.
-   */
-  if ((this->maxBack.getValue() == 0.0) && (this->maxFront.getValue() == 0.0)) {
-    /* Note: On some systems, it might not be possible to disable
-      distance attenuation.  This has been experienced by thammer on
-      WindowsXP using Creaitve Labs Extigy, driver version
-      5.12.01.0038.  On the same system, using another soundcard
-      (DellInspiron 8200's built-in soundcard), distance attenuation
-      was disabled, as it should be.  This difference is probably due
-      to poor DirectSound3D drivers for the Extigy.  2002-11-07
-      thammer.  */
-    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,
-                                AL_ROLLOFF_FACTOR, 0.0f); // no distance attenuation
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
-                                coin_get_openal_error(error));
-      PRIVATE(this)->deleteAlSource();
-      return;
-    }
-
-    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,
-                                AL_MIN_GAIN, gain); // no distance attenuation
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_MIN_GAIN,) failed. %s",
-                                coin_get_openal_error(error));
-      return;
-    }
- }
-   else {
-    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,
-                                AL_ROLLOFF_FACTOR, 1.0f); // default
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
-                                coin_get_openal_error(error));
-      PRIVATE(this)->deleteAlSource();
-      return;
-    }
-#ifndef __APPLE__
-    // FIXME: This fails on Mac OS 10.2. According to thammer, this is
-    // due to a bug in OpenAL/Mac (according to their spec, setting
-    // AL_MIN_GAIN to 0 should be allowed, but in their implementation,
-    // it results in an error). Since we are only setting the gain to its
-    // default value anyways, it's no problem to just leave this disabled
-    // in here until they have fixed it... 20030113 kyrah
-    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,
-                                AL_MIN_GAIN, 0.0f); // default
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_MIN_GAIN,) failed. %s",
-                                coin_get_openal_error(error));
-      PRIVATE(this)->deleteAlSource();
-      return;
-    }
-#endif // ! __APPLE__
-  }
 
   /* Note: According to the OpenAL 1.0 spec, the legal range for pitch
      is [0, 1].  However, both the Win32 implementation and the linux
@@ -931,6 +988,32 @@ SoVRMLSoundP::generateAlSource()
                          coin_get_openal_error(error));
       return;
     }
+    // Turn off OpenAL's distance attenuation for this source
+    // (We're doing distance attenuation ourselves)
+    // Distance attenuation is also eliminated for this source in 
+    // SoVRMLSound::audioRender() by normalizing the position
+    // of the source relative to the listener, and in 
+    // SoAudioDevice::init() by setting the distance model to 
+    // AL_NONE.
+
+    /* Note: On some systems, it might not be possible to disable
+      distance attenuation by setting the AL_ROLLOFF_FACTOR to 0.0.
+      This has been experienced by thammer on WindowsXP using Creaitve
+      Labs Extigy, driver version 5.12.01.0038.  On the same system,
+      using another soundcard (DellInspiron 8200's built-in
+      soundcard), distance attenuation was disabled, as it should be.
+      This difference is probably due to poor DirectSound3D drivers
+      for the Extigy.  2002-11-07 thammer.  */
+    openal_wrapper()->alSourcef(this->sourceId,
+                                AL_ROLLOFF_FACTOR, 0.0f);
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
+      SoDebugError::postWarning("SoVRMLSound::generateAlSource",
+                                "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
+                                coin_get_openal_error(error));
+      this->deleteAlSource();
+      return;
+    }
+
   }
 #endif
 }
@@ -1239,7 +1322,8 @@ void SoVRMLSoundP::fillBuffers()
   if (this->waitingForAudioClipToFinish) {
 #if COIN_DEBUG && DEBUG_AUDIO // debug
     SoDebugError::postInfo("SoVRMLSound::fillBuffers",
-                           "this->waitingForAudioClipToFinish == TRUE, returning.");
+                           "this->waitingForAudioClipToFinish == TRUE, "
+                           "returning.");
 #endif // debug
     return;
   }
@@ -1247,7 +1331,8 @@ void SoVRMLSoundP::fillBuffers()
   int      processed;
 
   // Get status
-  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, 
+                                 &processed);
 
   int      queued;
   openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
@@ -1289,11 +1374,13 @@ void SoVRMLSoundP::fillBuffers()
       // inform currentAudioClip() that the last buffer has been played,
       // so it can decide if it would like to stop playing
       int numchannels;
-      ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, numchannels);
+      ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, 
+                                         numchannels);
       assert (ret == 0); // or else the AudioClip isn't performing as it should
     }
   } else {
-    while (((processed > 0) || (queued<this->numBuffers)) && !this->endoffile)  {
+    while (((processed > 0) || (queued<this->numBuffers)) 
+           && !this->endoffile)  {
       // FIXME: perhaps we should reread processed in the while loop
       // too. This might make buffer underruns less frequent.
       // 2002-10-07 thammer.
@@ -1334,7 +1421,8 @@ void SoVRMLSoundP::fillBuffers()
          The reason I had to look into doing more finegrained
          synchronization was because
          I stumbled across a deadlock. Description of the deadlock:
-         - sound::fillbuffers locks sound::syncmutex and calls clip::fillbuffer,
+         - sound::fillbuffers locks sound::syncmutex and calls 
+           clip::fillbuffer,
            which tries to lock clip::syncmutex
          - clip::timerCB locks clip::syncmutex and calls stopPlaying, which
            changes isActive, which triggers sound::sourceSensorCB, which tries

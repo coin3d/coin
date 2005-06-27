@@ -105,8 +105,7 @@
   0):
   \verbatim
   t = (now - startTime) modulo (duration / pitch)
-  \endverbatim
-*/
+  \endverbatim */
 
 /*!
   \var SoSFString SoVRMLAudioClip::description
@@ -537,9 +536,19 @@ SoVRMLAudioClip::close(void *datasource)
 /*!  Reads \a numframes frames of audio with \a channels channels from
      \a datasource into \a buffer. Buffer must be allocated by the
      caller, and must be able to hold all the audio data (size = \a
-     numframes * \a channels * sizeof(int16_t)). Returns 0 if an error
-     occured, otherwise returns the number of frames actually read
-     (should allways be equal to \a numframes).  */
+     numframes * \a channels * sizeof(int16_t)). The function must
+     always fill the buffer completely unless \a buffer == NULL. 
+
+     When an error occurs, or when end-of-file has been reached, 
+     this function returns 0. Otherwise, the function should return
+     \a numframes.
+
+     When the caller receives a return value of 0, it will queue the
+     returned buffer for playing. When this buffer is finished playing,
+     the caller will call read() one final time, with \a buffer == NULL. 
+     The read() function can then set the isActive field to FALSE, 
+     free any resources allocated, etc.
+*/
 
 size_t
 SoVRMLAudioClip::read(void *datasource, void *buffer,
@@ -673,8 +682,9 @@ SoVRMLAudioClipP::internal_read_wrapper(void *datasource, void *buffer,
 }
 
 int   
-SoVRMLAudioClipP::internal_seek_wrapper(void *datasource, long offset, int whence,
-                               SoVRMLAudioClip *clip, void *userdataptr)
+SoVRMLAudioClipP::internal_seek_wrapper(void *datasource, long offset, 
+                                        int whence, SoVRMLAudioClip *clip, 
+                                        void *userdataptr)
 {
   SoVRMLAudioClipP *pthis = (SoVRMLAudioClipP *)userdataptr;
   return pthis->internal_seek(datasource, offset, whence, clip);
@@ -762,30 +772,54 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
       this->currentPlaylistIndex = 0;
     }
 
+    if (this->playlist.getLength() == 0) {
+      this->closeFile();
+      int outputsize = (numframes - framepos) * channelsdelivered * 
+        sizeof(int16_t);
+      memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
+              outputsize);
+      channelsref = channelsdelivered;
+      return 0; // signal that we're done playing
+    }
+
     /* FIXME: Read the VRML spec on the url field in AudioClip more
        carefully. I think it's only supposed to play one file, and
        only try the next if the current file fails.
        2003-01-16 thammer. */
 
     if (this->stream==NULL) {
-      if ( this->loop && 
-           (this->currentPlaylistIndex >= this->playlist.getLength()) )
-        this->currentPlaylistIndex = 0;
-      int startindex = this->currentPlaylistIndex;
-      SbBool ret = FALSE;
-      while ( (!ret) && (this->currentPlaylistIndex < 
-                         this->playlist.getLength()) ) {
-        ret = openFile(this->currentPlaylistIndex);
-        if (!ret) {
-          this->currentPlaylistIndex++;
-          if ( this->loop && 
-               (this->currentPlaylistIndex >= this->playlist.getLength()) &&
-               (this->currentPlaylistIndex != startindex) )
-            this->currentPlaylistIndex = 0;
+      if (this->currentPlaylistIndex >= this->playlist.getLength()) {
+        if (this->loop)
+          this->currentPlaylistIndex = 0;
+        else {
+          // We have played all files in the list, and we're not looping.
+          // => We can stop playing.
+          int outputsize = (numframes - framepos) * channelsdelivered * 
+            sizeof(int16_t);
+          memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
+                 outputsize);
+          channelsref = channelsdelivered;
+          return 0; // signal that eof has been reached
         }
       }
 
-      if (!ret) {
+      int startindex = this->currentPlaylistIndex;
+      SbBool success = FALSE;
+      SbBool allfailed = FALSE;
+      while ( ! ( success || allfailed ) ) {
+        success = openFile(this->currentPlaylistIndex);
+        if (!success) {
+          this->currentPlaylistIndex++;
+          if ( this->loop && 
+               (this->currentPlaylistIndex >= this->playlist.getLength()))
+            this->currentPlaylistIndex = 0;
+          if ( (this->currentPlaylistIndex == startindex) ||
+               (this->currentPlaylistIndex >= this->playlist.getLength()) )
+            allfailed = TRUE;
+        }
+      }
+
+      if (!success) {
         int outputsize = (numframes - framepos) * channelsdelivered * 
           sizeof(int16_t);
         memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
@@ -799,8 +833,6 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
     assert(bitspersample == sizeof(int16_t) * 8);
 
     channelsdelivered = this->channels;
-    // fixme: use this->channels instead of channelsdelivered?. 
-    // 20021105 thammer
     int inputsize = (numframes - framepos) * this->channels * 
       this->bitspersample / 8;
     int numread = inputsize;
@@ -822,8 +854,12 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
       framepos += (numread / (this->channels * this->bitspersample / 8));
 
       this->currentPlaylistIndex++;
-      if ( (this->currentPlaylistIndex<this->playlist.getLength()) && 
-           this->loop )
+      // FIXME: Used to use the following check in the conditional
+      // below. Investigate if this should still be used.
+      // if ( (this->currentPlaylistIndex<this->playlist.getLength()) &&
+      //      this->loop)
+      // 2005-05-25 thammer.
+      if (this->playlist.getLength() > 1)
         this->currentPause = SoVRMLAudioClipP::staticdata->pauseBetweenTracks;
     } else {
       bufferFilled = TRUE;
@@ -849,7 +885,6 @@ SoVRMLAudioClipP::internal_close(void *datasource, SoVRMLAudioClip *clip)
 {
   return 0;
 }
-
 
 void
 SoVRMLAudioClipP::loadUrl()
@@ -1065,8 +1100,19 @@ SoVRMLAudioClipP::openFile(const char *filename)
       FIXME: only one error message, and sound should stop playing.
       20021101 thammer */
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
-                              "Couldn't open file '%s'",
-                              filename);
+      "Couldn't open file '%s'.\n"
+      "Here's some advice for debbugging:\n\n"
+      "Audio data is loaded using the \"simage\" library. "
+      "Make sure you have\n"
+      "built the simage library with support for the audio file formats you\n"
+      "intend to use. Simage needs the libraries libogg, libvorbis and \n"
+      "libvorbisfile for the OggVorbis audio file format, and the\n"
+      "libsndfile library for WAV and several other formats (visit\n"
+      "http://www.mega-nerd.com/libsndfile/ for a complete list of supported\n"
+      "file formats).\n\n"
+      "Verify that you have the necessary access rights for reading the\n"
+      "audio file.\n\n"
+      , filename);
     return FALSE;
   }
 
