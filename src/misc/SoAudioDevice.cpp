@@ -278,7 +278,23 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
     return FALSE;
   }
 
-  openal_wrapper()->alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+  // Disable OpenAL's distance attenuation since it doesn't
+  // fit very well with the model used by the VRML Sound node.
+  // The line below disables distance attenuation for all sources.
+  // Distance attenuation is also disabled on a per-source basis
+  // in SoVRMLSound, by setting the rolloff factor to 0.0 in
+  // generateAlSource() and by normalizing the position of the 
+  // source relative to the listener in audioRender(). The reason
+  // we do the same thing all these places is to be more robust
+  // for drivers not supporting all these methods (see note regarding
+  // CreativeLabs Extigy in SoVRMLSoundP::generateAlSource()).
+  // Note that if we later want to implement sound nodes that use
+  // OpenAL's distance attenuation, we can enable
+  // AL_INVERSE_DISTANCE_CLAMPED distance model here and 
+  // nullify the distance attenuation in SoVRMLSound instead. 
+  // 
+  // 2005-04-10 thammer
+  openal_wrapper()->alDistanceModel(AL_NONE);
 
   PRIVATE(this)->enabled = TRUE;
   PRIVATE(this)->initOK = TRUE;
