@@ -331,10 +331,10 @@ SoImage::GLRender(SoGLRenderAction * action)
   if (action->handleTransparency(this->transparency)) return;
 
   // evaluate lazy element to enable/disable blending
-  const SoGLLazyElement * elem = (const SoGLLazyElement*) 
+  const SoGLLazyElement * elem = (const SoGLLazyElement*)
     SoLazyElement::getInstance(state);
-  elem->send(state, SoLazyElement::ALL_MASK); 
-      
+  elem->send(state, SoLazyElement::ALL_MASK);
+
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
 
@@ -436,7 +436,7 @@ SoImage::GLRender(SoGLRenderAction * action)
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
   float oldzx, oldzy;
-  
+
   if (orgsize != size) { // use glPixelZoom to scale image
     glGetFloatv(GL_ZOOM_X, &oldzx);
     glGetFloatv(GL_ZOOM_Y, &oldzy);
@@ -450,7 +450,7 @@ SoImage::GLRender(SoGLRenderAction * action)
     glPixelZoom(zx, zy);
 
     // adjust glDrawImage and glPixelStorage parameters to account for zoom
-    srcw = (int) (srcw / zx); 
+    srcw = (int) (srcw / zx);
     srch = (int) (srch / zy);
     skipx = (int) (skipx / zx);
     skipy = (int) (skipy / zy);
@@ -459,25 +459,21 @@ SoImage::GLRender(SoGLRenderAction * action)
     if (skipx + srcw > orgsize[0]) {
       srcw = orgsize[0] - skipx;
     }
-    if (skipy + srch > orgsize[1]) { 
+    if (skipy + srch > orgsize[1]) {
       srch = orgsize[1] - skipy;
     }
   }
 
 
-  int offsetx, offsety;
-  int rpx, rpy;
-  int offvp;
-  
-  rpx = xpos >= 0 ? xpos : 0;
-  offvp = xpos < 0 ? 1 : 0;
-  offsetx = xpos >= 0 ? 0 : xpos;
-          
-  rpy = ypos >= 0 ? ypos : 0;
-  offvp = offvp || ypos < 0 ? 1 : 0;
-  offsety = ypos >= 0 ? 0 : ypos;
+  GLfloat rpx = xpos >= 0 ? xpos : 0.0f;
+  SbBool offvp = xpos < 0 ? TRUE : FALSE;
+  GLfloat offsetx = xpos >= 0 ? 0.0f : xpos;
 
-  glRasterPos3f((float) rpx, (float) rpy, -nilpoint[2]);
+  GLfloat rpy = ypos >= 0 ? ypos : 0.0f;
+  offvp = offvp || ypos < 0 ? TRUE : FALSE;
+  GLfloat offsety = ypos >= 0 ? 0.0f : ypos;
+
+  glRasterPos3f(rpx, rpy, -nilpoint[2]);
 
   if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
 
