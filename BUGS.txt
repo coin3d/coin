@@ -4819,3 +4819,79 @@ Text2 {
     20050627 mortene.
 
 =====================================================================
+
+200 "Fake" NVidia stereo reported to not work with Coin / SoWin/SoQt.
+
+    There's an add-on to NVidia's drivers at
+
+      http://www.nvidia.com/object/3dstereo_71.89 
+
+    ..which I assume uses some kind of trick to make a stereo signal
+    out of a mono GL scene (intercepting and transforming the camera-
+    and projection-related state changes?). This is reported to not
+    work with Coin: the (attempted) stereo images comes out with
+    strange rendering artifacts, which seems to stem from the camera
+    settings being wrong.
+
+    The reporter's system:
+
+        * NVidia Geforce6800 Graphicscard
+        * Windows XP
+        * latest NVidia drivers + NVidia 3D Stereo Driver
+        * Coin 2.4.2
+
+    He also reproduced the problem with an NVidia Quadro.
+
+    To reproduce, running SoGuiExamples' components/simpleexviewer is
+    sufficient, as long as this is done to the viewer configuration
+    (or the stereo will not kick in):
+
+        viewer->setFullScreen(TRUE);
+        viewer->setDecoration(FALSE);
+
+    20050627 mortene. Reported by Guenter Schwann.
+
+=====================================================================
+
+201 Coin 2.4.1 + SoQt 1.2.0 + Qt 3.3.4 hangs on Win98.
+
+    We've had an external report that the above combination hangs on
+    Win98 systems, even when just attempting to display a simple
+    SoQtRenderArea. The same combination, but with Coin 2.2.1, does
+    not hang (!). It is unclear whether or not they tried with SoQt
+    from CVS.
+
+    The reporter gets the following error message in the terminal
+    window where the application is run from, and supplies to
+    following information:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+        ---------------
+        GetModuleHandleA succeed
+
+        LoadLibrary returns baaa0000
+        not a dibseciton
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+
+        not a dibseciton
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+        ---------------
+
+        The corresponding Window stays lightgrey (backgroundcolor set
+        to black) and the CPU Load rises to 100%. Termination of the
+        Task is not possible (Win98) and so I have to make a hard
+        reset.
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+    
+
+    20050627 mortene. Reported by Sascha Schneider.
+
+=====================================================================
