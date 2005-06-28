@@ -242,11 +242,13 @@
 #include <Inventor/C/threads/thread.h>
 #endif // HAVE_THREADS
 
-#ifdef HAVE_SOUND
 #include <Inventor/C/glue/openal_wrapper.h>
-#endif // HAVE_SOUND
+
+// *************************************************************************
 
 #define DEBUG_AUDIO 0
+
+// *************************************************************************
 
 class SoVRMLSoundP
 {
@@ -419,6 +421,16 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->cliphandle = NULL;
 
   static SbBool warningprintedonce = FALSE;
+
+  // FIXME: I believe all this checking with HAVE_SOUND should be
+  // unnecessary -- using SoAudioDevice::instance()->haveSound()
+  // should be sufficient. This goes for a lot of code in this file
+  // (and nowhere else -- after I did some cleaning up). 20050628 mortene.
+
+  // FIXME: the remaining code in this constructor seems to just be
+  // more or less a duplicate of the envvar checking, warning
+  // messages, and other functionality from
+  // SoAudioDevice::init(). Clean up. 20050628 mortene.
 
 #ifdef HAVE_SOUND
   if (!warningprintedonce) {

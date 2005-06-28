@@ -258,18 +258,18 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
     return FALSE;
   }
 
-  if (!openal_wrapper()->available) {
-    PRIVATE(this)->enabled = FALSE;
-    PRIVATE(this)->initOK = FALSE;
-    return FALSE;
-  }
-
 #ifndef HAVE_SOUND
   SoDebugError::postWarning("SoAudioDevice::init",
                             "Sound support was forced off when building "
                             "this Coin binary.");
   return FALSE;
 #endif // !HAVE_SOUND
+
+  if (!openal_wrapper()->available) {
+    PRIVATE(this)->enabled = FALSE;
+    PRIVATE(this)->initOK = FALSE;
+    return FALSE;
+  }
 
   PRIVATE(this)->device = 
     openal_wrapper()->alcOpenDevice((unsigned char*)devicename.getString());
