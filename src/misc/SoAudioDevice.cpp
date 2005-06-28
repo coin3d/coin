@@ -150,39 +150,9 @@ SoAudioDeviceP::~SoAudioDeviceP()
 
 SoAudioDevice::SoAudioDevice()
 {
-  PRIVATE(this) = new SoAudioDeviceP(this);
+  PRIVATE(this) = NULL;
 
-  // Default disabled, as sound support through OpenAL caused crashes
-  // under Linux.
-  SbBool initaudio = FALSE;
-  // FIXME: nobody bothered to document what was crashing, and how and
-  // why and how to solve it, though. *grumpf*. 20030507 mortene.
-
-#ifdef HAVE_WIN32_API
-  initaudio = TRUE;
-#endif // HAVE_WIN32_API
-
-  const char * env = coin_getenv("COIN_SOUND_ENABLE");
-  if (env) {
-    if (!initaudio && atoi(env) > 0) {
-      SoDebugError::postInfo("SoAudioDevice::SoAudioDevice", 
-                             "Sound has been enabled because the environment variable "
-                             "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
-                             "experimental, and is therefore not enabled by default. "
-                             SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
-      initaudio = TRUE;
-    }
-    else if (initaudio && atoi(env) == 0) {
-      SoDebugError::postInfo("SoAudioDevice::SoAudioDevice", 
-                             "Sound has been disabled because the environment variable "
-                             "COIN_SOUND_ENABLE=0.");
-      initaudio = FALSE;
-    }
-  }
-
-  if (!initaudio) { return; }
-
-  env = coin_getenv("COIN_SOUND_DRIVER_NAME");
+  const char * env = coin_getenv("COIN_SOUND_DRIVER_NAME");
   (void)this->init("OpenAL", env ? env : "DirectSound3D");
 }
 
@@ -197,7 +167,6 @@ SoAudioDevice::~SoAudioDevice()
   }
 
   if (this->haveSound()) { this->disable(); }
-
   delete PRIVATE(this);
 }
 
@@ -208,25 +177,78 @@ SoAudioDevice::~SoAudioDevice()
   "DirectSound3D", "DirectSound", and "MMSYSTEM". See OpenAL documentation
   (available from http://www.openal.org/) for further information.
 
-  The user can control which \a devicename OpenAL uses by setting the
-  COIN_SOUND_DRIVER_NAME environment variable. On Microsoft Windows,
-  the default driver name is "DirectSound3D", which should normally be
-  what the user wants.
+  The application programmer may override the default setting by
+  calling this method with the wanted device type and name.
+
+  The user can also control which \a devicename OpenAL uses by setting
+  the COIN_SOUND_DRIVER_NAME environment variable. On Microsoft
+  Windows, the default driver name is "DirectSound3D", which should
+  normally be what the user wants.
 */
 SbBool
 SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 {
-  // FIXME: there's both COIN_SOUND_ENABLE and COIN_SOUND_DISABLE --
-  // one of them should be sufficient. Clean up. 20050627 mortene.
-  const char * env = coin_getenv("COIN_SOUND_DISABLE");
-  if (env && atoi(env)) {
+  if (PRIVATE(this)) {
+    if (this->haveSound()) { this->disable(); }
+    delete PRIVATE(this);
+  }
+
+  PRIVATE(this) = new SoAudioDeviceP(this);
+
+
+  // Default disabled, as sound support through OpenAL caused crashes
+  // under Linux.
+  SbBool initaudio = FALSE;
+  // FIXME: nobody bothered to document what was crashing, and how and
+  // why and how to solve it, though. *grumpf*.
+  //
+  // And it works for me, on my Debian Linux system with the following
+  // OpenAL specifics:
+  //
+  // AL_VENDOR=='J. Valenzuela'
+  // AL_VERSION=='0.0.6'
+  // AL_RENDERER=='Software'
+  // AL_EXTENSIONS==''
+  //
+  // 20030507 mortene.
+
+#ifdef HAVE_WIN32_API
+  initaudio = TRUE;
+#endif // HAVE_WIN32_API
+
+  const char * env = coin_getenv("COIN_SOUND_ENABLE");
+  if (env) {
+    if (!initaudio && atoi(env) > 0) {
+      SoDebugError::postInfo("SoAudioDevice::init", 
+                             "Sound has been enabled because the environment variable "
+                             "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
+                             "experimental, and is therefore not enabled by default. "
+                             SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
+      initaudio = TRUE;
+    }
+    else if (initaudio && atoi(env) == 0) {
+      SoDebugError::postInfo("SoAudioDevice::init", 
+                             "Sound has been disabled because the environment variable "
+                             "COIN_SOUND_ENABLE=0.");
+      initaudio = FALSE;
+    }
+  }
+
+  // Yes, there's both COIN_SOUND_ENABLE and COIN_SOUND_DISABLE -- one
+  // should be sufficient, but for compatibility reasons with
+  // exisiting run-time systems, we keep them both.
+  env = coin_getenv("COIN_SOUND_DISABLE");
+  if (env && (atoi(env) > 0)) {
     if (coin_debug_audio()) {
       SoDebugError::postInfo("SoAudioDevice::init", 
                              "Sound has been disabled because the "
-                             "environment variable COIN_SOUND_DISABLE=1");
+                             "environment variable COIN_SOUND_DISABLE was set.");
     }
-    return FALSE;
+    initaudio = FALSE;
   }
+
+
+  if (!initaudio) { return FALSE; }
 
   if (devicetype != "OpenAL") {
     SoDebugError::postWarning("SoAudioDevice::init",
