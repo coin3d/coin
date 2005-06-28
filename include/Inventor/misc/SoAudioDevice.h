@@ -45,9 +45,6 @@ public:
   void setGain(float gain);
   void mute(SbBool mute=TRUE);
 
-  // NOTE: obsolete, don't use.
-  void cleanup();
-
 private:
   SoAudioDevice();
   ~SoAudioDevice();

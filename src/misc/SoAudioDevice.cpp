@@ -393,17 +393,6 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 }
 
 /*!
-  Cleans up any allocated resources.
-
-  NOTE: now obsoleted, don't use this. Clean-up is triggered from the
-  atexit scheme in "tidbits".
-*/
-void SoAudioDevice::cleanup()
-{
-  SoDebugError::post("SoAudioDevice::cleanup", "OBSOLETED");
-}
-
-/*!
   returns true if the audio device has been initialized successfully.
  */
 
