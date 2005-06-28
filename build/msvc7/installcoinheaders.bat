@@ -555,6 +555,7 @@ copy ..\..\include\Inventor\nodes\SoRotationXYZ.h %COINDIR%\include\Inventor\nod
 copy ..\..\include\Inventor\nodes\SoRotor.h %COINDIR%\include\Inventor\nodes\SoRotor.h >nul:
 copy ..\..\include\Inventor\nodes\SoScale.h %COINDIR%\include\Inventor\nodes\SoScale.h >nul:
 copy ..\..\include\Inventor\nodes\SoSceneTexture2.h %COINDIR%\include\Inventor\nodes\SoSceneTexture2.h >nul:
+copy ..\..\include\Inventor\nodes\SoSceneTextureCubeMap.h %COINDIR%\include\Inventor\nodes\SoSceneTextureCubeMap.h >nul:
 copy ..\..\include\Inventor\nodes\SoSelection.h %COINDIR%\include\Inventor\nodes\SoSelection.h >nul:
 copy ..\..\include\Inventor\nodes\SoSeparator.h %COINDIR%\include\Inventor\nodes\SoSeparator.h >nul:
 copy ..\..\include\Inventor\nodes\SoShape.h %COINDIR%\include\Inventor\nodes\SoShape.h >nul:

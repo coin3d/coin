@@ -4708,6 +4708,15 @@ SOURCE=..\..\src\nodes\SoSceneTexture2.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoSceneTextureCubeMap.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+# PROP Intermediate_Dir "Debug\nodes"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoSelection.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release"
 # PROP Intermediate_Dir "Release\nodes"
@@ -8845,6 +8854,10 @@ SOURCE=..\..\include\Inventor\nodes\SoScale.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoSceneTexture2.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoSceneTextureCubeMap.h
 # End Source File
 # Begin Source File
 

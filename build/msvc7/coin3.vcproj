@@ -12965,6 +12965,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\nodes\SoSceneTextureCubeMap.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\nodes/"
+						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\nodes/"
+						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\actions\SoSearchAction.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -19096,6 +19120,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoSceneTexture2.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoSceneTextureCubeMap.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\actions\SoSearchAction.h">
