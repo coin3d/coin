@@ -471,7 +471,7 @@ STUFF TO FIX IN COIN
 
     UPDATE 2005-06-20 mortene: there are many good arguments for _not_
     doing this, actually. So we should probably rather make it easy
-    and conventient for external developers to download, update,
+    and convenient for external developers to download, update,
     install etc new versions of simage -- so it's unlikely they will
     ever have to build it themselves.
 
@@ -480,6 +480,24 @@ STUFF TO FIX IN COIN
     don't see binary snapshots of simage (or even regular
     patchlevel-releases) happening any time soon. What are the 
     "many good arguments", by the way?
+
+    UPDATE 2005-06-28 mortene: I agree it is unlikely that someone
+    will volunteer to make updated simage binaries on a regular basis,
+    but it should be possible to automate the process, given a little
+    bit of time to put in the effort to implement it.
+
+    As for the many good arguments, I don't remember. :-} (thammer &
+    barbara convinced me it was a good idea to keep them separate,
+    when they were working on the binary installer package for Win32.)
+
+    I can think of one, though: simage has a whole lot of
+    dependencies. Meeting even just a useful number of those when
+    building Coin is quite a lot of hassle -- at least on Windows. I
+    believe it's a real asset that Coin has so few hard dependencies
+    now. So it seems simpler to let people build Coin, but to donwload
+    a separate, full-featured simage binary -- to upgrade their
+    ability to import and export the various supported media formats.
+
 
 019 Dynamically configurable viewer interaction (SoQt++)
     2002-09-30  Lars J. Aas  <larsa@sim.no>
