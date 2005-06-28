@@ -498,6 +498,20 @@ STUFF TO FIX IN COIN
     a separate, full-featured simage binary -- to upgrade their
     ability to import and export the various supported media formats.
 
+    UPDATE 2005-06-28 thammer: On the Windows platform, the process of
+    building simage and all libraries it depends on is automated
+    through the simage/build/build_simage_win32.sh script. The script
+    needs cygwin and VC6. 
+
+    I believe the right way to proceed with this is to configure a a
+    VirtualPC VMWare virtual machine VC6, cygwin, etc - and fine-tune
+    the script for the virtual machine (if that is needed at
+    all). Whenever new simage binaries needs to be rebuilt, fire up
+    this virtual machine and run the script.
+
+    For using QImage instead of all the misc image libraries, we
+    should make visual studio projects file to make it easy for the
+    user to build it himself.
 
 019 Dynamically configurable viewer interaction (SoQt++)
     2002-09-30  Lars J. Aas  <larsa@sim.no>
