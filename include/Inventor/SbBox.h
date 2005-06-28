@@ -28,12 +28,15 @@
 #error "Do not include SbBox.h internally."
 #endif // COIN_INTERNAL
 
-#define COIN_INCLUDED_FROM_SBBOX_H
+// These are here for compile-time compatibility with SGI / TGS
+// Inventor.
+#include <Inventor/SbBasic.h>
+#include <Inventor/SbLinear.h>
+
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbBox3s.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbXfBox3f.h>
-#undef  COIN_INCLUDED_FROM_SBBOX_H
 
 #endif // !COIN_SBBOX_H
