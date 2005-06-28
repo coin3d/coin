@@ -846,6 +846,29 @@ First, the larger issues:
         }
 
 
+ IV.  C++ FEATURES UNAVAILABLE TO COIN PROGRAMMERS
+
+      Because we want to support fairly old C++ compilers, there are a
+      number of C++ features that are forbidden to use for Coin source
+      code. What follows may not be a comprehensive list, more items
+      will likely be added. Anyway, one must at least avoid these:
+
+      - Don't use functionality out of the Standard Template Library
+        ("STL") -- the implementation and compatibility of this seems
+        to be sub-par on a lot of C++ compiler systems.
+
+      - Don't use functionality out of the C++ library, like e.g. file
+        streams -- we don't want to force a link dependency on
+        libstdc++, since it has been (and still is?) very unstable
+        with regard to binary compatibility, making it harder to make
+        binary distributions for e.g. Linux systems.
+
+      - Don't use namespaces. They are not supported on some older
+        compilers we want the code to be compatible with.
+
+      - Don't use exceptions.
+  
+
 Enough about the larger issues, now for the mucky details that has
 been written down to guide the Coin programmers in being consistent
 versus the code "layout" (to make it more easily readable):
