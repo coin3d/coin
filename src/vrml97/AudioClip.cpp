@@ -162,6 +162,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 
 #ifdef HAVE_THREADS
