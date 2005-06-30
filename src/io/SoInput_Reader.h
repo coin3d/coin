@@ -24,8 +24,16 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+// *************************************************************************
+
 #include <Inventor/SbString.h>
 #include <stdio.h>
+
+// *************************************************************************
 
 class SoInput_Reader {
 public:

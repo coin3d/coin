@@ -24,19 +24,22 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SoInput.h>
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+// *************************************************************************
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include "SoInput_Reader.h"
-#include <Inventor/misc/SoProto.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-// #define SOINPUT_ASYNC_IO // define this to test async reading of files
+// debug, define this to test async reading of files:
+// #define SOINPUT_ASYNC_IO
 
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
 #include <Inventor/C/threads/mutex.h>
@@ -44,6 +47,11 @@
 #include <Inventor/C/threads/condvar.h>
 #endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 #include <ctype.h>
+
+class SoProto;
+class SoInput;
+
+// *************************************************************************
 
 class SoInput_FileInfo {
 public:
@@ -164,7 +172,7 @@ public:
     return coin_isspace(c) || (this->vrml2file && c == ',');
   }
 
-  void connectRoutes(class SoInput * in);
+  void connectRoutes(SoInput * in);
   void unrefProtos(void);
   int readChar(char * s, char charToRead);
   int readDigits(char * str);
