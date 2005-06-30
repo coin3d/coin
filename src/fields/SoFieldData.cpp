@@ -39,18 +39,23 @@
   It is unlikely that application programmers should need to use any
   of the methods of this class directly.
 
-  \sa SoField, SoFieldContainer */
+  \sa SoField, SoFieldContainer
+*/
 
-/*¡
-  Some methods related to reading VRML 2 files are missing.
- */
+// *************************************************************************
 
+// FIXME: Some methods related to reading VRML 2 files are
+// missing. ????-??-?? pederb.
 
 /* IMPORTANT NOTE:
  * If you make any changes (bugfixes, improvements) in this class,
  * remember to also check the SoEngineOutputData class, as it is
  * heavily based on this class.
  */
+
+// *************************************************************************
+
+#include <Inventor/fields/SoFieldData.h>
 
 #include <ctype.h>
 #include <coindefs.h> // COIN_STUB()
@@ -61,18 +66,18 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include "../io/SoInputP.h"
+
+// *************************************************************************
 
 static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
 static const char VALUE_SEPARATOR_CHAR = ',';
 
-// Internal classes, start /////////////////////////////////////////////////
-
-#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
+// *************************************************************************
 
 class SoFieldEntry {
 public:
@@ -125,11 +130,7 @@ private:
   }
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
-// Internal classes, end ///////////////////////////////////////////////////
-
-
+// *************************************************************************
 
 /*!
   Default constructor.
@@ -404,10 +405,12 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     uint8_t numfields = (uint8_t) (fieldsval & 0xff);
     uint8_t fieldflags = (uint8_t) (fieldsval >> 8);
 
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoFieldData::read", "0x%08x => 0x%02x 0x%02x",
-                           fieldsval, fieldflags, numfields);
-#endif // debug
+    if (SoInputP::debugBinary()) {
+      SoDebugError::postInfo("SoFieldData::read",
+                             "fieldsval==0x%08x => "
+                             "flags==0x%02x numfields==%u (0x%02x)",
+                             fieldsval, fieldflags, numfields);
+    }
 
     // Unknown node type, must read field descriptions.
     if (fieldflags & SoFieldData::NOTBUILTIN) {
@@ -438,14 +441,15 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     for (int i=0; i < numfields; i++) {
       SbName fieldname;
       if (!in->read(fieldname, TRUE) || !fieldname) {
-        SoReadError::post(in, "Couldn't read field number %d", i);
+        SoReadError::post(in, "Couldn't read the name of field number %d", i);
         return FALSE;
       }
 
-#if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoFieldData::read",
-                             "fieldname: '%s'", fieldname.getString());
-#endif // debug
+      if (SoInputP::debugBinary()) {
+        SoDebugError::postInfo("SoFieldData::read",
+                               "fieldname=='%s'", fieldname.getString());
+      }
+
       SbBool foundname;
       if (!this->read(in, object, fieldname, foundname)) {
         if (!foundname) SoReadError::post(in, "Unknown field \"%s\"",

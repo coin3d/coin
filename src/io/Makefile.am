@@ -15,12 +15,15 @@ LinkHackSources = \
 	all-io-c.c
 
 PublicHeaders =
+
 PrivateHeaders = \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
 	SoWriterefCounter.h \
+	SoInputP.h
 	gzmemio.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(io, io)

@@ -117,6 +117,7 @@
 #include <Inventor/threads/SbStorage.h>
 #include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
 
+#include "SoInputP.h"
 #include "SoInput_FileInfo.h"
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
@@ -130,25 +131,6 @@
  #error Can neither find nor make an S_ISDIR macro to test stat structures.
  #endif // !_S_IFDIR
 #endif // !S_ISDIR
-
-// *************************************************************************
-
-class SoInputP {
- public:
-  SoInputP(SoInput * owner) {
-    this->owner = owner;
-    this->usingstdin = FALSE;
-  }
-  
-  SoInput_FileInfo * getTopOfStackPopOnEOF(void);
-  SbBool isNameStartChar(unsigned char c, SbBool validIdent);
-  SbBool isNameChar(unsigned char c, SbBool validIdent);
-
-  SoInput * owner;
-  SbBool usingstdin;
-
-  SbHash<SoBase *, const char *> references;
-};
 
 // *************************************************************************
 
@@ -179,6 +161,19 @@ soinput_destruct_tls_data(void * closure)
     delete (*data->searchlist)[i];
   }
   delete data->searchlist;
+}
+
+// *************************************************************************
+
+SbBool
+SoInputP::debugBinary(void)
+{
+  static int debug = -1;
+  if (debug == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_BINARY_INPUT");
+    debug = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return debug ? TRUE : FALSE;
 }
 
 // *************************************************************************
