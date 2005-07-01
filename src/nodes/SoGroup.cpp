@@ -281,8 +281,16 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
 
   // Make sure we're compatible with binary format Inventor 2.0 files.
   if (in->isBinary() && (in->getIVVersion() < 2.1f) &&
-      this->getTypeId() == SoGroup::getClassTypeId())
+      // The next line used to be
+      //     this->getTypeId() == SoGroup::getClassTypeId()
+      //
+      // but at least for Inventor V1.0 files, no fields should be
+      // attempted read from SoSeparator nodes when reading from
+      // binary format files, or the input parsing would go wrong.
+      // 20050701 mortene.
+      this->isOfType(SoGroup::getClassTypeId())) {
     readfields = FALSE;
+  }
 
   // This influences how SoFieldContainer::readInstance() handles
   // unknown field names inside the node: if it's a group, ignore, as
