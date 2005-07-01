@@ -386,6 +386,16 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
       this->vrml2file = TRUE;
     }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
+
+    if (this->ivversion == 1.0f) {
+      SoDebugError::postWarning("SoInput_FileInfo::readHeader",
+                                "Attempting to import old Inventor V1.0 file. "
+                                "This operation may fail, due to limited "
+                                "support for old Inventor files. If it does, "
+                                "please get in touch with Systems in Motion "
+                                "at <coin-support@coin3d.org>, and we will "
+                                "rectify the situation.");
+    }
   }
   return TRUE;
 }
