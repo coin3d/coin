@@ -4925,3 +4925,27 @@ Text2 {
     20050630 mortene.
 
 =====================================================================
+
+203 openal.dll instances may have different calling convention.
+
+    Different than the custom under Windows, and different than from
+    what we assume it is. This causes a crash on those platforms when
+    attempts are made at using sound. (The first attempt at calling an
+    openal.dll function will crash the application, because of
+    unexpected stack layout on return.)
+
+    My suggestion for a "best fix" would be to include code in Coin to
+    detect the calling convention used for a DLL. To do this, one
+    needs to do some trickery with checking the stack pointer after
+    calling a function of the DLL -- something which probably requires
+    some x86 assembly programming.
+
+    This is still not a perfect fix, as functions in a DLL can have
+    different calling conventions. Perhaps it would be possible to
+    query the DLL directly about this? Request for assistance at a
+    Usenet Windows programming group did not result in any useful
+    hints for how to do this.
+
+    20050701 mortene.
+
+=====================================================================
