@@ -54,6 +54,8 @@
 
 // *************************************************************************
 
+#include <Inventor/misc/SoBase.h>
+
 #include <assert.h>
 #include <string.h>
 
@@ -77,6 +79,7 @@
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/misc/SbHash.h>
+#include "../io/SoInputP.h"
 #include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
@@ -249,17 +252,6 @@ debug_writerefs(void)
   static int dbg = -1;
   if (dbg == -1) {
     const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
-    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
-  }
-  return dbg;
-}
-
-static SbBool
-debug_import(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_IMPORT");
     dbg = (env && (atoi(env) > 0)) ? 1 : 0;
   }
   return dbg;
@@ -1144,7 +1136,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   SbBool result = in->read(name, TRUE);
 
 #if COIN_DEBUG
-  if (debug_import()) {
+  if (SoInputP::debug()) {
     // This output is extremely useful when debugging the import code.
     SoDebugError::postInfo("SoBase::read",
                            "SoInput::read(&name, TRUE) => returns %s, name=='%s'",
@@ -1196,7 +1188,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   }
 
 #if COIN_DEBUG
-  if (debug_import()) {
+  if (SoInputP::debug()) {
     SoDebugError::postInfo("SoBase::read", "done, name=='%s' baseptr==%p, result==%s",
                            name.getString(), base, result ? "TRUE" : "FALSE");
   }
@@ -1740,11 +1732,11 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
     SoUnknownNode * unknownnode = new SoUnknownNode;
     unknownnode->setNodeClassName(classname);
     instance = unknownnode;
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoBase::createInstance",
-                           "created SoUnknownNode for '%s'",
-                           classname.getString());
-#endif // debug
+    if (SoInputP::debug()) {
+      SoDebugError::postInfo("SoBase::createInstance",
+                             "created SoUnknownNode for '%s'",
+                             classname.getString());
+    }
   }
   else if (!type.canCreateInstance()) {
     SoReadError::post(in, "Class \"%s\" is abstract", classname.getString());

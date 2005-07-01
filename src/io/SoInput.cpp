@@ -166,6 +166,17 @@ soinput_destruct_tls_data(void * closure)
 // *************************************************************************
 
 SbBool
+SoInputP::debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_IMPORT");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
+SbBool
 SoInputP::debugBinary(void)
 {
   static int debug = -1;

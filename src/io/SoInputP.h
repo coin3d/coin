@@ -44,6 +44,7 @@ public:
     this->usingstdin = FALSE;
   }
 
+  static SbBool debug(void);
   static SbBool debugBinary(void);
   
   SoInput_FileInfo * getTopOfStackPopOnEOF(void);
