@@ -32,6 +32,7 @@
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
+#include <Inventor/C/tidbits.h>
 #include "SoInput_Reader.h"
 
 #ifdef HAVE_CONFIG_H
