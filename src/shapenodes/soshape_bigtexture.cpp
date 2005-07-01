@@ -73,6 +73,10 @@ soshape_bigtexture::beginShape(SoGLBigImage * imageptr,
   this->pvlistcnt = 0;
   this->vertexlist.truncate(0);
 
+  // FIXME: hardcoding for 265x256 tiles is a bad strategy, as it will
+  // often give bad performance vs larger tile sizes. See the
+  // elaborate FIXME note on this issue in SoGLBigImage.cpp
+  // initSubImages(). 20050701 mortene.
   int num = imageptr->initSubImages(SbVec2s(256, 256));
   this->numregions = num;
 

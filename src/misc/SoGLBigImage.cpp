@@ -308,6 +308,33 @@ SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
   tls->glimagesize[0] = coin_geq_power_of_two(tls->imagesize[0]);
   tls->glimagesize[1] = coin_geq_power_of_two(tls->imagesize[1]);
 
+  // FIXME: hardcoding for maximum 265x256 tiles is a bad strategy, as
+  // it will often give bad performance vs larger tile sizes.
+  //
+  // pederb has the following input on this issue:
+  // ------------8<--------- [snip] --------------------------8<-----
+  // That part of SoGLBigImage should be recoded. We should use a quad
+  // tree instead, so that the number of subtextures depends on the
+  // needed resolution. Right now the number of subtextures is static
+  // for a texture. This can lead to slow rendering when the entire
+  // texture is viewed from a long distance.
+  //
+  // We should also precalculate the triangle clipping done on this
+  // quadtree.  This would lead to much faster rendering on models
+  // with many triangles (the rendering is very slow per triangle
+  // now).
+  //
+  // As a temporary workaround it might be possible to calculate a new
+  // subtexture size, based on the size of the original image. We
+  // could base this on maximum number of subtextures to create or
+  // something.
+  // ------------8<--------- [snip] --------------------------8<-----
+  //
+  // Note also that there's hardcoding for 256x256 in
+  // src/shapenodes/soshape_bigtexture.cpp's beginShape().
+  //
+  // 20050701 mortene.
+
   if (tls->glimagesize[0] > tls->imagesize[0] && tls->glimagesize[0] >= 256) {
     int diff = tls->imagesize[0] - (tls->glimagesize[0]>>1);
     float ratio = float(diff) / float(tls->glimagesize[0]>>1);
