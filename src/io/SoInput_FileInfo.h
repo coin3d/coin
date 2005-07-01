@@ -30,10 +30,14 @@
 
 // *************************************************************************
 
+#include <ctype.h>
+#include <stdio.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
-#include "SoInput_Reader.h"
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/lists/SbList.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -47,7 +51,8 @@
 #include <Inventor/C/threads/sched.h>
 #include <Inventor/C/threads/condvar.h>
 #endif // HAVE_THREADS && SOINPUT_ASYNC_IO
-#include <ctype.h>
+
+#include "SoInput_Reader.h"
 
 class SoProto;
 class SoInput;

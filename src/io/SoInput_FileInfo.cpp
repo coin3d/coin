@@ -21,23 +21,28 @@
  *
 \**************************************************************************/
 
+#include "SoInput_FileInfo.h"
+
+#include <string.h>
+#include <math.h> // pow()
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <string.h>
-
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
-#include "SoInput_FileInfo.h"
-#include <math.h> // pow()
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/nodes/SoNode.h>
+
+// *************************************************************************
 
 const unsigned int READBUFSIZE = 65536*2;
+
+// *************************************************************************
 
 SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
 {
