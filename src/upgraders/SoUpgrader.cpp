@@ -38,13 +38,16 @@
 #include <stddef.h> // for NULL
 #include <assert.h>
 
-#include "SoPackedColorV20.h"
-#include "SoShapeHintsV10.h"
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SbHash.h>
+
+#include "../io/SoInputP.h"
+
+#include "SoPackedColorV20.h"
+#include "SoShapeHintsV10.h"
 
 // *************************************************************************
 
@@ -70,9 +73,16 @@ static void
 soupgrader_add_to_namedict(const SbString & name)
 {
   assert(soupgrader_namedict);
-  soupgrader_namedict->put(name.getString(), NULL);
 
-  // create lookup both with and without the "So" prefix
+  // Note: the SbString->SbName wrapping is necessary, or the const
+  // char* will _not_ be valid upon the SbString going out of scope
+  // (while SbName makes permanent const char* references).
+  soupgrader_namedict->put(SbName(name.getString()).getString(), NULL);
+
+  // Create lookup both with and without the "So" prefix. This is
+  // necessary for the hash lookup in soupgrader_exists() to match
+  // with both permutations.
+
   SbString tmp;
   if (name.compareSubString("So") == 0) {
     tmp = name.getSubString(2);
@@ -81,11 +91,14 @@ soupgrader_add_to_namedict(const SbString & name)
     tmp = "So";
     tmp += name;
   }
-  soupgrader_namedict->put(tmp.getString(), NULL);
+
+  // Note: the SbString->SbName wrapping is necessary, see above
+  // comment.
+  soupgrader_namedict->put(SbName(tmp.getString()).getString(), NULL);
 }
 
 static SbBool 
-soupgrader_exists(const SbString & name) 
+soupgrader_exists(const SbName & name) 
 {
   assert(soupgrader_namedict);
   void * dummy;
@@ -122,29 +135,22 @@ soupgrader_init_classes(void)
 SoBase * 
 SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
 {
-  if (ivversion == 1.0f) {
+  if ((ivversion == 1.0f) || (ivversion == 2.0f)) {
     soupgrader_init_classes();
     
     SbString s(name.getString());
-    s += "V10";
+    s += (ivversion == 1.0f) ? "V10" : "V20";
 
     if (soupgrader_exists(s.getString())) {
       SoType type = SoType::fromName(SbName(s.getString()));
       if (type.canCreateInstance()) {
-        return (SoBase*) type.createInstance();
-      }
-    }
-  }
-  else if (ivversion == 2.0f) {
-    soupgrader_init_classes();
-    
-    SbString s(name.getString());
-    s += "V20";
-
-    if (soupgrader_exists(s.getString())) {
-      SoType type = SoType::fromName(SbName(s.getString()));
-      if (type.canCreateInstance()) {
-        return (SoBase*) type.createInstance();
+        SoBase * b = (SoBase*) type.createInstance();
+        if (SoInputP::debug()) {
+          SoDebugError::postInfo("SoUpgrader::tryCreateNode",
+                                 "name=='%s', ivversion==%f => SoBase==%p",
+                                 name.getString(), ivversion, b);
+        }
+        return b;
       }
     }
   }
