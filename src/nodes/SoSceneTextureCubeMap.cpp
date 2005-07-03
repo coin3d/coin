@@ -60,8 +60,6 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
-#include <iostream>
-
 // *************************************************************************
 
 // FIXME: more detailed description on how the camera is to be set 20050429 martin
@@ -123,17 +121,21 @@ class SoSceneTextureCubeMapP {
 
 
 SbRotation SoSceneTextureCubeMapP::ROT_NEG_X = 
-  SbRotation(SbVec3f(0,1,0),M_PI/2.0)*SbRotation(SbVec3f(1,0,0),M_PI);
+  SbRotation(SbVec3f(0,1,0), (float) (M_PI/2.0f)) *
+  SbRotation(SbVec3f(1,0,0), (float) M_PI);
 SbRotation SoSceneTextureCubeMapP::ROT_POS_X = 
-  SbRotation(SbVec3f(0,1,0),M_PI/-2.0f)*SbRotation(SbVec3f(1,0,0), M_PI);
+  SbRotation(SbVec3f(0,1,0), (float) (M_PI/-2.0f)) *
+  SbRotation(SbVec3f(1,0,0), (float) M_PI);
 SbRotation SoSceneTextureCubeMapP::ROT_NEG_Y = 
-  SbRotation(SbVec3f(1,0,0), M_PI / -2.0f);
+  SbRotation(SbVec3f(1,0,0), (float) (M_PI / -2.0f));
 SbRotation SoSceneTextureCubeMapP::ROT_POS_Y = 
-  SbRotation(SbVec3f(1,0,0), M_PI / 2.0f);
+  SbRotation(SbVec3f(1,0,0), (float) (M_PI / 2.0f));
 SbRotation SoSceneTextureCubeMapP::ROT_NEG_Z =  
-  SbRotation(SbVec3f(0,1,0), 0.0f) * SbRotation(SbVec3f(0,0,1), M_PI);
+  SbRotation(SbVec3f(0,1,0), 0.0f) *
+  SbRotation(SbVec3f(0,0,1), (float) M_PI);
 SbRotation SoSceneTextureCubeMapP::ROT_POS_Z = 
-  SbRotation(SbVec3f(0,1,0), M_PI) * SbRotation(SbVec3f(0,0,1), M_PI);
+  SbRotation(SbVec3f(0,1,0), (float) M_PI) *
+  SbRotation(SbVec3f(0,0,1), (float) M_PI);
 
 #undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
@@ -616,9 +618,10 @@ SoSceneTextureCubeMapP::ensureCamera(void)
     if (this->cachedCamera) this->cachedCamera->unref();
     this->cachedCamera = new SoPerspectiveCamera;
     this->cachedCamera->position = SbVec3f(0, 0, 0);
-    this->cachedCamera->nearDistance = 0.1;
+    this->cachedCamera->nearDistance = 0.1f;
     this->cachedCamera->farDistance = 100;
-    ((SoPerspectiveCamera*)this->cachedCamera)->heightAngle = M_PI / 2.0f;
+    ((SoPerspectiveCamera*)this->cachedCamera)->heightAngle =
+      (float) (M_PI / 2.0f);
     this->cachedCamera->ref();
   }
   assert(this->cachedCamera);
