@@ -284,7 +284,8 @@ PrivateHeaders = \
 	font13.ic \
 	font17.ic \
 	font25.ic \
-	font33.ic
+	font33.ic \
+	common.h
 
 
 ObsoleteHeaders = 
@@ -348,7 +349,9 @@ EXTRA_fonts_lst_SOURCES = \
 subdir = src/fonts
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/include/config.h
+CONFIG_HEADER = $(top_builddir)/include/discard.h \
+	$(top_builddir)/include/config.h \
+	$(top_builddir)/include/setup.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
@@ -367,7 +370,7 @@ am__objects_2 = fontlib_wrapper.$(OBJEXT) win32.$(OBJEXT) \
 am_fonts_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_fonts_lst_SOURCES_DIST = fontlib_wrapper.h win32.h freetype.h \
 	fontspec.h glyph2d.h glyph3d.h defaultfonts.h builtin2dfonts.ic \
-	font13.ic font17.ic font25.ic font33.ic all-fonts-c.c \
+	font13.ic font17.ic font25.ic font33.ic common.h all-fonts-c.c \
 	fontlib_wrapper.c win32.c freetype.c fontspec.c glyph2d.c \
 	glyph3d.c default3dfont.c default2dfont.c common.c
 fonts_lst_OBJECTS = $(am_fonts_lst_OBJECTS)
@@ -388,8 +391,9 @@ am_libfonts_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts_la_SOURCES_DIST = fontlib_wrapper.h win32.h \
 	freetype.h fontspec.h glyph2d.h glyph3d.h defaultfonts.h \
 	builtin2dfonts.ic font13.ic font17.ic font25.ic font33.ic \
-	all-fonts-c.c fontlib_wrapper.c win32.c freetype.c fontspec.c \
-	glyph2d.c glyph3d.c default3dfont.c default2dfont.c common.c
+	common.h all-fonts-c.c fontlib_wrapper.c win32.c freetype.c \
+	fontspec.c glyph2d.c glyph3d.c default3dfont.c default2dfont.c \
+	common.c
 libfonts_la_OBJECTS = $(am_libfonts_la_OBJECTS)
 libfonts@SUFFIX@LINKHACK_la_LDFLAGS =
 libfonts@SUFFIX@LINKHACK_la_LIBADD =
@@ -400,9 +404,9 @@ am_libfonts@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.h \
 	win32.h freetype.h fontspec.h glyph2d.h glyph3d.h \
 	defaultfonts.h builtin2dfonts.ic font13.ic font17.ic font25.ic \
-	font33.ic all-fonts-c.c fontlib_wrapper.c win32.c freetype.c \
-	fontspec.c glyph2d.c glyph3d.c default3dfont.c default2dfont.c \
-	common.c
+	font33.ic common.h all-fonts-c.c fontlib_wrapper.c win32.c \
+	freetype.c fontspec.c glyph2d.c glyph3d.c default3dfont.c \
+	default2dfont.c common.c
 libfonts@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libfonts@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -752,7 +756,6 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-libfontsincHEADERS
 
-	common.h \
 
 # this rule causes a make warning, so we remove it when it is not in use
 fonts.lst: Makefile $(fonts_lst_OBJECTS)

@@ -280,7 +280,9 @@ libMPEGinc_HEADERS = $(PublicHeaders)
 subdir = include/Inventor/MPEG
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/include/config.h
+CONFIG_HEADER = $(top_builddir)/include/discard.h \
+	$(top_builddir)/include/config.h \
+	$(top_builddir)/include/setup.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
 HEADERS = $(libMPEGinc_HEADERS)

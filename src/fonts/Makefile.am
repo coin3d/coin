@@ -26,8 +26,8 @@ PrivateHeaders = \
 	font13.ic \
 	font17.ic \
 	font25.ic \
-	font33.ic
-	common.h \
+	font33.ic \
+	common.h
 
 ObsoleteHeaders =
 
