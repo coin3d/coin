@@ -84,6 +84,7 @@ COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
+COIN_LIB_DSP_DEFS = @COIN_LIB_DSP_DEFS@
 COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
@@ -272,12 +273,14 @@ LinkHackSources = \
 
 
 PublicHeaders = 
+
 PrivateHeaders = \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
 	SoWriterefCounter.h \
-	gzmemio.h
+	SoInputP.h
+
 
 ObsoleteHeaders = 
 
@@ -354,7 +357,7 @@ am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_io_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_io_lst_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h SoWriterefCounter.h gzmemio.h all-io-cpp.cpp \
+	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h all-io-cpp.cpp \
 	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
 	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
 	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
@@ -376,7 +379,7 @@ am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libio_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio_la_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h SoWriterefCounter.h gzmemio.h all-io-cpp.cpp \
+	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h all-io-cpp.cpp \
 	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
 	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
 	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
@@ -392,7 +395,7 @@ am__libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput.cpp \
 am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput_FileInfo.h \
 	SoInput_Reader.h SoOutput_Writer.h SoWriterefCounter.h \
-	gzmemio.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
+	SoInputP.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
 	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
 	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c
@@ -796,6 +799,7 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-libioincHEADERS
 
+	gzmemio.h
 
 # this rule causes a make warning, so we remove it when it is not in use
 io.lst: Makefile $(io_lst_OBJECTS)

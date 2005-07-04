@@ -282,7 +282,7 @@ AC_DEFUN([SIM_AC_DATE_RFC822], [
 AC_DEFUN([SIM_AC_ISO8601_DATE], [SIM_AC_DATE_ISO8601([$1])])
 
 
-# **************************************************************************
+ **************************************************************************
 # gendsp.m4
 #
 # macros:
@@ -314,6 +314,7 @@ AC_REQUIRE([SIM_AC_MSVC_DSP_ENABLE_OPTION])
 $1_DSP_LIBDIRS=
 $1_DSP_LIBS=
 $1_DSP_INCS=
+$1_LIB_DSP_DEFS=
 $1_DSP_DEFS=
 
 if $sim_ac_make_dsp; then
@@ -364,6 +365,15 @@ if $sim_ac_make_dsp; then
       else
         $1_DSP_DEFS="[$]$1_DSP_DEFS /D \"$define\""
       fi
+      if echo $define | grep _MAKE_DLL; then
+        :
+      else
+        if test x"[$]$1_DSP_DEFS" = x""; then
+          $1_LIB_DSP_DEFS="/D \"$define\""
+        else
+          $1_LIB_DSP_DEFS="[$]$1_LIB_DSP_DEFS /D \"$define\""
+        fi
+      fi
       ;;
     esac
   done
@@ -389,6 +399,7 @@ fi
 AC_SUBST([$1_DSP_LIBS])
 AC_SUBST([$1_DSP_INCS])
 AC_SUBST([$1_DSP_DEFS])
+AC_SUBST([$1_LIB_DSP_DEFS])
 ])
 
 
@@ -507,6 +518,17 @@ AC_ARG_ENABLE([msvc],
 ])
 
 # **************************************************************************
+
+AC_DEFUN([SIM_AC_MSVC_VERSION], [
+AC_MSG_CHECKING([Visual Studio C++ version])
+AC_TRY_COMPILE([],
+  [long long number = 0;],
+  [sim_ac_msvc_version=7]
+  [sim_ac_msvc_version=6])
+AC_MSG_RESULT($sim_ac_msvc_version)
+])
+
+# **************************************************************************
 # Note: the SIM_AC_SETUP_MSVC_IFELSE macro has been OBSOLETED and
 # replaced by the one below.
 #
@@ -533,6 +555,7 @@ if $sim_ac_try_msvc; then
       export CC CXX
       BUILD_WITH_MSVC=true
       AC_MSG_RESULT([working])
+      # SIM_AC_MSVC_VERSION
     else
       case $host in
       *-cygwin)
@@ -8715,6 +8738,7 @@ SIM_AC_COMPILE_DEBUG([
   else
     case $CXX in
     *wrapmsvc* )
+      AC_REQUIRE([SIM_AC_MSVC_VERSION])
       if $sim_ac_simian; then
         if $sim_ac_source_release; then :; else
           # break build on warnings, except for in official source code releases
@@ -8727,9 +8751,11 @@ SIM_AC_COMPILE_DEBUG([
       SIM_AC_CC_COMPILER_OPTION([/W3], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /W3"])
       SIM_AC_CXX_COMPILER_OPTION([/W3], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /W3"])
 
-      # 64-bit porting warnings
-      SIM_AC_CC_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /Wp64"])
-      SIM_AC_CXX_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /Wp64"])
+      if test x$sim_ac_msvc_version = x7; then
+        # 64-bit porting warnings
+        SIM_AC_CC_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /Wp64"])
+        SIM_AC_CXX_COMPILER_OPTION([/Wp64], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /Wp64"])
+      fi
       ;;
     esac
   fi
@@ -8742,15 +8768,17 @@ ifelse($1, [], :, $1)
 AC_DEFUN([SIM_AC_COMPILER_NOBOOL], [
 sim_ac_nobool_CXXFLAGS=
 sim_ac_have_nobool=false
-AC_MSG_CHECKING([whether $CXX accepts /noBool])
-SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
-  [/noBool],
-  [int temp],
-  [SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
+if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
+  AC_MSG_CHECKING([whether $CXX accepts /noBool])
+  SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
     [/noBool],
-    [bool res = true],
-    [],
-    [sim_ac_have_nobool=true])])
+    [int temp],
+    [SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
+      [/noBool],
+      [bool res = true],
+      [],
+      [sim_ac_have_nobool=true])])
+fi
  
 if $sim_ac_have_nobool; then
   sim_ac_nobool_CXXFLAGS="/noBool"
