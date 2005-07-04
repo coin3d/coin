@@ -405,6 +405,9 @@ EXTRA_DIST = \
 	build/msvc6/include/Inventor/system/gl.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
 	build/msvc6/include/config.h \
+	build/msvc6/include/config-debug.h \
+	build/msvc6/include/config-release.h \
+	build/msvc6/include/setup.h \
 	build/msvc6/installcoin.bat \
 	build/msvc6/installcoinheaders.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
@@ -437,6 +440,9 @@ EXTRA_DIST = \
 	build/msvc7/include/Inventor/system/gl.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
 	build/msvc7/include/config.h \
+	build/msvc7/include/config-debug.h \
+	build/msvc7/include/config-release.h \
+	build/msvc7/include/setup.h \
 	build/msvc7/installcoin.bat \
 	build/msvc7/installcoinheaders.bat
 
