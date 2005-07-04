@@ -51,6 +51,9 @@
 /* System dependent thread ID type */
 #undef COIN_THREADID_TYPE
 
+/* for setup.h */
+#undef COIN_THREADSAFE
+
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 
@@ -86,6 +89,9 @@
 
 /* define for runtime linking with GLU */
 #undef GLU_RUNTIME_LINKING
+
+/* for setup.h */
+#undef HAVE_3DS_IMPORT_CAPABILITIES
 
 /* define if you have AGL OpenGL bindings */
 #undef HAVE_AGL
@@ -264,6 +270,9 @@
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
 
+/* for setup.h */
+#undef HAVE_SOUND
+
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H
 
@@ -335,6 +344,9 @@
 
 /* Define to use va_copy() when available */
 #undef HAVE_VA_COPY_MACRO
+
+/* for setup.h */
+#undef HAVE_VRML97
 
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF

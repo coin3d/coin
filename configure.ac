@@ -54,6 +54,7 @@ AH_TOP([
 #endif
 
 #include <unconfig.h>
+#include <setup.h>
 ])
 
 AC_CANONICAL_SYSTEM
@@ -365,7 +366,7 @@ AC_ARG_ENABLE(
 HAVE_3DS_IMPORT_CAPABILITIES=1
 
 if $sim_ac_enable_3ds_import ; then
-  AC_DEFINE([HAVE_3DS_IMPORT_CAPABILITIES],, [define to use the 3ds import capabilities])
+  AC_DEFINE([HAVE_3DS_IMPORT_CAPABILITIES],, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([3ds import capabilities], [Yes (warning: experimental)])
 else
   HAVE_3DS_IMPORT_CAPABILITIES=0
@@ -392,7 +393,7 @@ AC_ARG_ENABLE(
 HAVE_VRML97=1
 
 if $sim_ac_enable_vrml97 ; then
-  AC_DEFINE([HAVE_VRML97],, [define to use the VRML97 extension])
+  AC_DEFINE([HAVE_VRML97],, [for setup.h])
   VRML97MAKEFILE=src/vrml97/Makefile
   SIM_AC_CONFIGURATION_SETTING([VRML97 support], [Yes])
 else
@@ -517,7 +518,7 @@ if $sim_ac_enable_threadsafe; then
   fi
 
   HAVE_THREADSAFE=1
-  AC_DEFINE([COIN_THREADSAFE], 1, [define to compile with thread safe action traversal for the library])
+  AC_DEFINE([COIN_THREADSAFE], 1, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [Yes  (in development)])
 else
   SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [No  (enable with --enable-threadsafe)])
@@ -1218,7 +1219,7 @@ fi
 HAVE_SOUND=1
 
 if $sim_ac_enable_sound ; then
-  AC_DEFINE([HAVE_SOUND],, [define to enable sound support])
+  AC_DEFINE([HAVE_SOUND],, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([Sound support], [Yes])
 else
   HAVE_SOUND=0
@@ -1923,7 +1924,22 @@ SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_d
 
 # **************************************************************************
 
-AM_CONFIG_HEADER(include/config.h)
+AM_CONFIG_HEADER([include/discard.h include/config.h include/setup.h])
+
+sim_ac_tmpfile=/tmp/Coin-2-config-h.$$
+
+sed -e '/^\/\* for setup.h \*\//, /^$/ d' \
+  <$srcdir/include/discard.h.in \
+  >$sim_ac_tmpfile
+
+if cmp -s $sim_ac_tmpfile $srcdir/include/config.h.in; then
+  :
+else
+  rm $sim_ac_tmpfile
+  AC_ERROR([config.h.in is out of sync - maintainer must update])
+fi
+
+rm $sim_ac_tmpfile
 
 # **************************************************************************
 
