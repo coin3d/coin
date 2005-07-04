@@ -84,7 +84,8 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 
   // Check for known buggy OpenGL driver.
   const char * versionstr = (const char *)glGetString(GL_VERSION);
-  if (versionstr && (strcmp(versionstr, "1.3.1 NVIDIA 28.02") == 0)) {
+  assert(versionstr && "glGetString() returned 0 -- no valid GL context?");
+  if (strcmp(versionstr, "1.3.1 NVIDIA 28.02") == 0) {
     // (From NVidia's changelog, it looks like the problem we've been
     // seeing with the 28.02 driver and displaylists *might* have been
     // fixed for the next version (28.80)).
