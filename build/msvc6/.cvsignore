@@ -1,5 +1,7 @@
 Debug
 Release
+StaticDebug
+StaticRelease
 cfg
 src
 man
@@ -11,6 +13,9 @@ config.status
 config.log
 vc70.pdb
 coin3.dll
+coin3d.dll
+coin3.ilk
+coin3d.ilk
 coin3.opt
 coin3.plg
 coin3.sln

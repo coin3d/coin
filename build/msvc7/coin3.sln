@@ -1,18 +1,24 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{F41F2BAC-E59A-4EFA-8AEF-FDF4CCFF66F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+		Debug DLL = Debug DLL
+		Debug LIB = Debug LIB
+		Release DLL = Release DLL
+		Release LIB = Release LIB
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{F41F2BAC-E59A-4EFA-8AEF-FDF4CCFF66F5}.Debug.ActiveCfg = Debug|Win32
-		{F41F2BAC-E59A-4EFA-8AEF-FDF4CCFF66F5}.Debug.Build.0 = Debug|Win32
-		{F41F2BAC-E59A-4EFA-8AEF-FDF4CCFF66F5}.Release.ActiveCfg = Release|Win32
-		{F41F2BAC-E59A-4EFA-8AEF-FDF4CCFF66F5}.Release.Build.0 = Release|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Debug DLL.ActiveCfg = Debug DLL|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Debug DLL.Build.0 = Debug DLL|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Debug LIB.ActiveCfg = Debug LIB|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Debug LIB.Build.0 = Debug LIB|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Release DLL.ActiveCfg = Release DLL|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Release DLL.Build.0 = Release DLL|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Release LIB.ActiveCfg = Release LIB|Win32
+		{04AB0773-5058-4EDB-A769-F45AFD1FAB7B}.Release LIB.Build.0 = Release LIB|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

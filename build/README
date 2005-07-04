@@ -4,7 +4,7 @@ msvc6
 
 msvc7
 
-	Directory for building Coin with Visual Studio 7.
+	Directory for building Coin with Visual Studio 7.1.
 
 coin.spec.in
 

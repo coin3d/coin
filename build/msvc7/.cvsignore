@@ -1,5 +1,7 @@
 Debug
 Release
+StaticDebug
+StaticRelease
 cfg
 src
 man

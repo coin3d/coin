@@ -4,7 +4,7 @@
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=coin3 - Win32 Debug
+CFG=coin3 - Win32 Debug DLL
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE
@@ -13,12 +13,14 @@ CFG=coin3 - Win32 Debug
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE
-!MESSAGE NMAKE /f "coin3.mak" CFG="coin3 - Win32 Debug"
+!MESSAGE NMAKE /f "coin3.mak" CFG="coin3 - Win32 Debug DLL"
 !MESSAGE
 !MESSAGE Possible choices for configuration are:
 !MESSAGE
-!MESSAGE "coin3 - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "coin3 - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "coin3 - Win32 Release DLL" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "coin3 - Win32 Debug DLL" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "coin3 - Win32 Release LIB" (based on "Win32 (x86) Static Library")
+!MESSAGE "coin3 - Win32 Debug LIB" (based on "Win32 (x86) Static Library")
 !MESSAGE
 
 # Begin Project
@@ -29,7 +31,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -56,11 +58,11 @@ LINK32=link.exe
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386 /out:"coin3.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
-SOURCE=
+SOURCE="$(InputPath)"
 PostBuild_Cmds=installcoin.bat
 # End Special Build Tool
 
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -85,6542 +87,9497 @@ LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll"
 # Begin Special Build Tool
-SOURCE=
+SOURCE="$(InputPath)"
 PostBuild_Cmds=installcoin.bat
 # End Special Build Tool
 
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "StaticRelease"
+# PROP BASE Intermediate_Dir "StaticRelease"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "StaticRelease"
+# PROP Intermediate_Dir "StaticRelease"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=0"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I ".\include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=0"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I ".\include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
+# ADD BASE RSC /l 0x414 /d "NDEBUG"
+# ADD RSC /l 0x414 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo
+# ADD LIB32 /nologo
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=installcoin.bat
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "StaticDebug"
+# PROP BASE Intermediate_Dir "StaticDebug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "StaticDebug"
+# PROP Intermediate_Dir "StaticDebug"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=1"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I ".\include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=1"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I ".\include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
+# ADD BASE RSC /l 0x414 /d "_DEBUG"
+# ADD RSC /l 0x414 /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo
+# ADD LIB32 /nologo
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=installcoin.bat
+# End Special Build Tool
 !ENDIF
 
 # Begin Target
 
-# Name "coin3 - Win32 Release"
-# Name "coin3 - Win32 Debug"
+# Name "coin3 - Win32 Release DLL"
+# Name "coin3 - Win32 Debug DLL"
+# Name "coin3 - Win32 Release LIB"
+# Name "coin3 - Win32 Debug LIB"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;ic;icc"
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoBoxHighlightRenderAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoCallbackAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoGLRenderAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoGetBoundingBoxAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoGetMatrixAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoGetPrimitiveCountAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoHandleEventAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoLineHighlightRenderAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoPickAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoRayPickAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoReorganizeAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoSearchAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoSimplifyAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoToVRMLAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoToVRML2Action.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoWriteAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\actions\SoAudioRenderAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\actions"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\actions"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\actions"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\dict.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\hash.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\heap.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\list.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\memalloc.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\rbptree.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\time.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\string.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\dynarray.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\namemap.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBSPTree.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox2s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox3s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox2d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbClip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbColor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbColor4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbCylinder.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDict.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDPLine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDPMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDPPlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDPRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbHeap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbLine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbName.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbOctTree.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbPlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbSphere.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbString.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbTesselator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbTime.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec2s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec2d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec3s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec3d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbVec4d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbViewVolume.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbDPViewVolume.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbViewportRegion.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\base\SbXfBox3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\base"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\bundles\SoBundle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\bundles"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\bundles"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\bundles\SoMaterialBundle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\bundles"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\bundles"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\bundles\SoNormalBundle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\bundles"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\bundles"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\bundles\SoTextureCoordinateBundle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\bundles"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\bundles"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoBoundingBoxCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoConvexDataCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoGLCacheList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoGLRenderCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoNormalCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoTextureCoordinateCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoPrimitiveVertexCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\caches\SoGlyphCache.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\caches"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\caches"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoConeDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoCubeDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoCylinderDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoFaceDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoLineDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoNodeKitDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoPointDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\details\SoTextDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\details"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\details"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\details"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoCenterballDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoDirectionalLightDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoDragPointDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoHandleBoxDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoJackDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoPointLightDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoRotateCylindricalDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoRotateDiscDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoRotateSphericalDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoScale1Dragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoScale2Dragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoScale2UniformDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoScaleUniformDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoSpotLightDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTabBoxDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTabPlaneDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTrackballDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTransformBoxDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTransformerDragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTranslate1Dragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\draggers\SoTranslate2Dragger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\draggers"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\draggers"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\draggers"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLCacheContextElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLClipPlaneElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLColorIndexElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLDrawStyleElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLEnvironmentElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLLazyElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLLightIdElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLLinePatternElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLLineWidthElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLModelMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLMultiTextureCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLMultiTextureEnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLMultiTextureMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLMultiTextureImageElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLNormalElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLPointSizeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLPolygonOffsetElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLProjectionMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLRenderPassElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLShapeHintsElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLTextureCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLTextureEnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLTexture3EnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLTextureImageElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLTextureMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLUpdateAreaElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLVBOElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLViewingMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLViewportRegionElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\GL\SoGLDisplayList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\GL"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\GL"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoAccumulatedElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoAmbientColorElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoAnnoText3CharOrientElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoAnnoText3FontSizeHintElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoAnnoText3RenderPrintElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoBBoxModelMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoBumpMapElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoBumpMapCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoBumpMapMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoBumpMappingPropertyElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoCacheElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoCacheHintElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoClipPlaneElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoComplexityElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoComplexityTypeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoCreaseAngleElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoCullElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoDecimationPercentageElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoDecimationTypeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoDiffuseColorElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoDrawStyleElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoEmissiveColorElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoEnvironmentElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoFloatElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoFocalDistanceElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoFontNameElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoFontSizeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoInt32Element.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLazyElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLightAttenuationElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLightElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLightModelElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLinePatternElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLineWidthElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoLocalBBoxMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMaterialBindingElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMultiTextureCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMultiTextureEnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMultiTextureMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMultiTextureImageElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoModelMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoNormalBindingElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoNormalElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoOverrideElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoPickRayElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoPickStyleElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoPointSizeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoPolygonOffsetElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoProfileCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoProfileElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoProjectionMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoReplacedElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoShapeHintsElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoShapeStyleElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoShininessElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoSpecularColorElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoSwitchElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextOutlineEnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureCombineElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureCoordinateBindingElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureCoordinateElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureEnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTexture3EnabledElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureImageElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureOverrideElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureScalePolicyElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureScaleQualityElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureUnitElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTextureQualityElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoTransparencyElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoUnitsElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoViewVolumeElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoViewingMatrixElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoViewportRegionElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoWindowElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoListenerPositionElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoListenerOrientationElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoListenerGainElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoListenerDopplerElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoSoundElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\elements"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\elements"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoBoolOperation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoCalculator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeRotationFromTo.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComposeVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoComputeBoundingBox.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoConcatenate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoConvertAll.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoCounter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoDecomposeMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoDecomposeRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoDecomposeVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoDecomposeVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoDecomposeVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoElapsedTime.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoEngine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoEngineOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoFieldConverter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoGate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolateFloat.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolateRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolateVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolateVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoInterpolateVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoNodeEngine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoOnOff.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoOneShot.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoOutputData.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoSelectOne.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoTimeCounter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoTransformVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\SoTriggerAny.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\evaluator.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\evaluator_tab.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\engines"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\engines"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\error.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\debugerror.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\SoDebugError.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\SoError.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\SoMemoryError.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\errors\SoReadError.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\errors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\errors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\errors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoButtonEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoKeyboardEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoLocation2Event.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoMotion3Event.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoMouseButtonEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\events\SoSpaceballButtonEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\events"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\events"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\events"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoField.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoFieldContainer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoFieldData.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFBitMask.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFBool.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFColor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFEngine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFEnum.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFFloat.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFInt32.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFName.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFNode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFPlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFShort.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFString.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFTime.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFUInt32.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFUShort.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFVec3d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMFVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoMField.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFBitMask.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFBool.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFBox3s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFColor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFEngine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFEnum.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFFloat.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFImage3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFInt32.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFMatrix.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFName.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFNode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFPlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFShort.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFString.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFTime.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFTrigger.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFUInt32.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFUShort.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec2s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec3d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec3s.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFVec4f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSField.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoGlobalField.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fields\shared.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fields"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fields"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\fontlib_wrapper.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\win32.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\freetype.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\fontspec.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\glyph2d.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\glyph3d.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\default3dfont.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\default2dfont.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\fonts\common.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\fonts"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\fonts"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\cg.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\spidermonkey.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\dl.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\gl.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\gl_wgl.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\gl_agl.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\gl_glx.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\GLUWrapper.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\simage_wrapper.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\openal_wrapper.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\win32api.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\zlib.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\bzip2.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\freetype.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\glue-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\glue\normalization_cubemap.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\glue"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoInput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoInput_FileInfo.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoInput_Reader.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoOutput_Writer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoByteStream.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoTranSender.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoTranReceiver.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\SoWriterefCounter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\io\gzmemio.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\io"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\io"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\io"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoClipPlaneManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoDirectionalLightManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoPointLightManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoSpotLightManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoTransformManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoCenterballManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoHandleBoxManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoJackManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoTabBoxManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoTrackballManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoTransformBoxManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\SoTransformerManip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\manips\commoncode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\manips"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\manips"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\manips"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoBase.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoChildList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoContextHandler.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGL.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGLImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGLCubeMapImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGLBigImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGlyph.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoNormalGenerator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoNotification.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoNotRec.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoState.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoDB.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoFullPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoTempPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoLightPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoInteraction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoPick.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoPickedPoint.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoPrimitiveVertex.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoProto.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoProtoInstance.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoSceneManager.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoType.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenRenderer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenAGLData.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenGLXData.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenWGLData.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoVBO.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoVertexArrayIndexer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoGenerate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoLockManager.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoAudioDevice.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\AudioTools.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\CoinStaticObjectInDLL.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\misc\CoinOffscreenGLCanvas.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SbList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SbPList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SbIntList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SbVec3fList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SbStringList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoActionMethodList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoAuditorList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoBaseList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoCallbackList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoDetailList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoEnabledElementsList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoEngineList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoEngineOutputList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoFieldList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoNodeList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoPathList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoPickedPointList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\lists\SoTypeList.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\lists"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\lists"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoNodeKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoNodeKitPath.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoNodeKitListPart.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoNodekitCatalog.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoBaseKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoAppearanceKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoCameraKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoInteractionKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoLightKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoSceneKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoSeparatorKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoShapeKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodekits\SoWrapperKit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodekits"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodekits"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodekits"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoAnnotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoAnnoText3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoAnnoText3Property.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoAntiSquish.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoArray.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBaseColor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBlinker.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBumpMap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBumpMapCoordinate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBumpMapTransform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoBumpMappingProperty.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCallback.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCacheHint.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCamera.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoClipPlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoColorIndex.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoComplexity.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCoordinate3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCoordinate4.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoDirectionalLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoDrawStyle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoEnvironment.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoEventCallback.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoExtSelection.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoFile.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoFont.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoFontStyle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoGroup.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoInfo.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLOD.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLabel.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLevelOfDetail.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLightModel.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLinearProfile.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoListener.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoLocateHighlight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoMaterial.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoMaterialBinding.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoMatrixTransform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoMultipleCopy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoNode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoNormal.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoNormalBinding.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoNurbsProfile.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoOrthographicCamera.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPackedColor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPathSwitch.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPattern.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPendulum.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPerspectiveCamera.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPickStyle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPointLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPolygonOffset.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoProfile.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoProfileCoordinate2.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoProfileCoordinate3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoResetTransform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoRotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoRotationXYZ.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoRotor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoScale.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSceneTexture2.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSceneTextureCubeMap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSelection.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSeparator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoShapeHints.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoShuttle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSpotLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSurroundScale.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSwitch.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTexture2.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTexture3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTexture2Transform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTexture3Transform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCombine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinate2.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinate3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateBinding.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateCube.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateCylinder.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateSphere.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateDefault.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateEnvironment.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateFunction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinatePlane.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateNormalMap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCoordinateObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureCubeMap.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureScalePolicy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTextureUnit.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTransform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTransparencyType.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTransformSeparator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTransformation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoTranslation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoUnits.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoUnknownNode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoVertexProperty.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoWWWAnchor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoWWWInline.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\nodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoAsciiText.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoCone.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoCube.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoCylinder.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoFaceSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoImage.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedFaceSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedLineSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedNurbsSurface.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoLineSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoMarkerSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoNonIndexedShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoNurbsCurve.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoNurbsSurface.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoPointSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoQuadMesh.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoSphere.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoText2.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoText3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoTriangleStripSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoVertexShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\soshape_primdata.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\soshape_bigtexture.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\soshape_trianglesort.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\soshape_bumprender.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shapenodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbCylinderPlaneProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbCylinderProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbCylinderSectionProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbCylinderSheetProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbLineProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbPlaneProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbSpherePlaneProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbSphereProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbSphereSectionProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\projectors\SbSphereSheetProjector.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\projectors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\projectors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\projectors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoAlarmSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoDataSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoDelayQueueSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoFieldSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoIdleSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoNodeSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoOneShotSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoPathSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoSensorManager.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoTimerQueueSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\sensors\SoTimerSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\sensors"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\sensors"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\sensors"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\upgraders\SoUpgrader.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\upgraders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\upgraders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\upgraders\SoPackedColorV20.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\upgraders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\upgraders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\upgraders\SoShapeHintsV10.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\upgraders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\upgraders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\upgraders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\3ds\3ds-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\3ds"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\3ds"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\3ds"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\3ds"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\collision\SbTri3f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\collision"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\collision"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\collision"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\collision"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\collision\SoIntersectionDetectionAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\collision"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\collision"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\collision"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\collision"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\HardCopy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\PSVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\CGMVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\HPGLVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\GDIVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizeAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizeActionP.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizePSAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizeCGMAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizeHPGLAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizeGDIAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\hardcopy"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\hardcopy"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\common.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\thread.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\mutex.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\rwmutex.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\storage.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\condvar.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\worker.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\wpool.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\recmutex.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\sched.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\sync.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\fifo.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\barrier.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\threads\threads-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\threads"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\threads"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\mpeg\SoMPEGRenderer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\mpeg"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\mpeg"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\mpeg"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\mpeg\SoMPEGFrameRenderer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\mpeg"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\mpeg"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\mpeg"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoFragmentShader.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLARBShaderParameter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLARBShaderObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLARBShaderProgram.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLCgShaderObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLCgShaderParameter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLCgShaderProgram.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLSLShaderParameter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLSLShaderObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLSLShaderProgram.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLShaderObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLShaderParameter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLShaderProgram.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLShaderProgramElement.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoShaderObject.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoShaderParameter.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoShaderProgram.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoShader.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoVertexShader.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\shaders"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\shaders"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Anchor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Appearance.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\AudioClip.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Background.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Billboard.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Box.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Collision.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Color.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\ColorInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Cone.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Coordinate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\CoordinateInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Cylinder.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\CylinderSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\DirectionalLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\DragSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\ElevationGrid.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Extrusion.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Fog.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\FontStyle.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Geometry.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Group.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\ImageTexture.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\IndexedFaceSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\IndexedLine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\IndexedLineSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\IndexedShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Init.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Inline.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Interpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\LOD.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Light.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Material.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\MovieTexture.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\NavigationInfo.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Normal.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\NormalInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\OrientationInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Parent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\PixelTexture.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\PlaneSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\PointLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\PointSet.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\PositionInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\ProximitySensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\ScalarInterpolator.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Script.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Sensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Shape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Sound.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Sphere.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\SphereSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\SpotLight.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Switch.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Text.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Texture.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\TextureCoordinate.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\TextureTransform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\TimeSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\TouchSensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Transform.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\VertexLine.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\VertexPoint.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\VertexShape.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\Viewpoint.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\VisibilitySensor.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\WorldInfo.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\vrml97"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\tidbits.c
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\src"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\src"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\src"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\src"
 !ENDIF 
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\coin-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 Release"
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\src"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
 # PROP Intermediate_Dir "Debug\src"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\src"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\src"
 !ENDIF 
 # End Source File
 # End Group
@@ -9800,6 +12757,16 @@ SOURCE=.\include\config-release.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\discard.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\setup.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=.\data\draggerDefaults\centerballDragger.h
 # PROP Exclude_From_Build 1
 # End Source File
@@ -9911,6 +12878,16 @@ SOURCE=.\include\config-debug.h
 # Begin Source File
 
 SOURCE=.\include\config-release.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\discard.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\setup.h
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
