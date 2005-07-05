@@ -29,3 +29,4 @@
 #include "SoOutput_Writer.cpp"
 #include "SoTranReceiver.cpp"
 #include "SoTranSender.cpp"
+#include "SoWriteRefCounter.cpp"
