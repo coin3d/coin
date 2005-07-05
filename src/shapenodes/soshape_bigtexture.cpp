@@ -77,7 +77,16 @@ soshape_bigtexture::beginShape(SoGLBigImage * imageptr,
   // often give bad performance vs larger tile sizes. See the
   // elaborate FIXME note on this issue in SoGLBigImage.cpp
   // initSubImages(). 20050701 mortene.
-  int num = imageptr->initSubImages(SbVec2s(256, 256));
+  int size = 256;
+  int num = imageptr->initSubImages(SbVec2s(size, size));
+  
+  // try to not use more than 256 subtextures, but don't use a
+  // subimage size bigger than 1024 (it will be too slow to
+  // recalculate the subimage for larger images)
+  while (num > 256 && size < 1024) {
+    size <<= 1;
+    num = imageptr->initSubImages(SbVec2s(size, size));
+  }
   this->numregions = num;
 
   if (this->clipper == NULL) {
