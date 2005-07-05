@@ -55,4 +55,4 @@
 #include "SoPick.cpp"
 #include "SoAudioDevice.cpp"
 #include "AudioTools.cpp"
-#include "CoinStaticObjectInDLL.h"
+#include "CoinStaticObjectInDLL.cpp"
