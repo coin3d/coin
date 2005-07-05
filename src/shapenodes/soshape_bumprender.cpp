@@ -815,7 +815,7 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
     SbVec3f tTangent = this->tangentlist[i*2+1];
     thelightvec = this->getLightVec(vertices[i]);
     tlightvec = thelightvec;
-#if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
+#if 1 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
     SbVec3f tcross = tTangent.cross(sTangent);
     if (tcross.dot(normals[i]) < 0.0f) {
       tlightvec = -tlightvec;      
