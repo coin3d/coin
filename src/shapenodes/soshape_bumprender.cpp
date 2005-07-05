@@ -794,8 +794,8 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
     }
   }
   for (i = 0; i < numv; i++) {
-    this->tangentlist[i*2].normalize();
-    this->tangentlist[i*2+1].normalize();
+    NORMALIZE(this->tangentlist[i*2]);
+    NORMALIZE(this->tangentlist[i*2+1]);
   }
 }
 
