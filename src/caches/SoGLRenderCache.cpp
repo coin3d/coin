@@ -48,8 +48,7 @@ public:
   SoGLLazyElement::GLState poststate;
 };
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -59,9 +58,9 @@ public:
 SoGLRenderCache::SoGLRenderCache(SoState * state)
   : SoCache(state)
 {
-  THIS = new SoGLRenderCacheP;
-  THIS->displaylist = NULL;
-  THIS->openstate = NULL;
+  PRIVATE(this) = new SoGLRenderCacheP;
+  PRIVATE(this)->displaylist = NULL;
+  PRIVATE(this)->openstate = NULL;
 }
 
 /*!
@@ -70,10 +69,10 @@ SoGLRenderCache::SoGLRenderCache(SoState * state)
 SoGLRenderCache::~SoGLRenderCache()
 {
   // stuff should have been deleted in destroy()
-  assert(THIS->displaylist == NULL);
-  assert(THIS->nestedcachelist.getLength() == 0);
+  assert(PRIVATE(this)->displaylist == NULL);
+  assert(PRIVATE(this)->nestedcachelist.getLength() == 0);
   
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -85,13 +84,13 @@ SoGLRenderCache::~SoGLRenderCache()
 void
 SoGLRenderCache::open(SoState * state)
 {
-  assert(THIS->displaylist == NULL);
-  assert(THIS->openstate == NULL); // cache should not be open
-  THIS->openstate = state;
-  THIS->displaylist =
+  assert(PRIVATE(this)->displaylist == NULL);
+  assert(PRIVATE(this)->openstate == NULL); // cache should not be open
+  PRIVATE(this)->openstate = state;
+  PRIVATE(this)->displaylist =
     new SoGLDisplayList(state, SoGLDisplayList::DISPLAY_LIST);
-  THIS->displaylist->ref();
-  THIS->displaylist->open(state);
+  PRIVATE(this)->displaylist->ref();
+  PRIVATE(this)->displaylist->open(state);
 }
 
 /*!
@@ -102,10 +101,10 @@ SoGLRenderCache::open(SoState * state)
 void
 SoGLRenderCache::close(void)
 {
-  assert(THIS->openstate != NULL);
-  assert(THIS->displaylist != NULL);
-  THIS->displaylist->close(THIS->openstate);
-  THIS->openstate = NULL;
+  assert(PRIVATE(this)->openstate != NULL);
+  assert(PRIVATE(this)->displaylist != NULL);
+  PRIVATE(this)->displaylist->close(PRIVATE(this)->openstate);
+  PRIVATE(this)->openstate = NULL;
 }
 
 /*!
@@ -116,7 +115,7 @@ SoGLRenderCache::close(void)
 void
 SoGLRenderCache::call(SoState * state)
 {
-  assert(THIS->displaylist != NULL);
+  assert(PRIVATE(this)->displaylist != NULL);
 
   // FIXME: needed for nested caching, pederb 2002-01-24
   //  SoCacheElement::addCacheDependency(state, this);
@@ -124,7 +123,7 @@ SoGLRenderCache::call(SoState * state)
   // FIXME: this is just a temporary workaround until nested caching is
   // properly supported. pederb, 2002-01-24
   SoCacheElement::invalidate(state);
-  THIS->displaylist->call(state);
+  PRIVATE(this)->displaylist->call(state);
 
   if (state->isCacheOpen()) {
     // FIXME: support nested caching properly, pederb, 2002-01-24
@@ -140,7 +139,7 @@ SoGLRenderCache::call(SoState * state)
 int
 SoGLRenderCache::getCacheContext(void) const
 {
-  if (THIS->displaylist) return THIS->displaylist->getContext();
+  if (PRIVATE(this)->displaylist) return PRIVATE(this)->displaylist->getContext();
   return -1;
 }
 
@@ -164,33 +163,34 @@ void
 SoGLRenderCache::addNestedCache(SoGLDisplayList * child)
 {
   child->ref();
-  THIS->nestedcachelist.append(child);
+  PRIVATE(this)->nestedcachelist.append(child);
 }
 
 // Documented in superclass. Overridden to unref display lists.
 void
 SoGLRenderCache::destroy(SoState * state)
 {
-  int n = THIS->nestedcachelist.getLength();
+  int n = PRIVATE(this)->nestedcachelist.getLength();
   for (int i = 0; i < n; i++) {
-    THIS->nestedcachelist[i]->unref(state);
+    PRIVATE(this)->nestedcachelist[i]->unref(state);
   }
-  THIS->nestedcachelist.truncate(0);
-  if (THIS->displaylist) {
-    THIS->displaylist->unref(state);
-    THIS->displaylist = NULL;
+  PRIVATE(this)->nestedcachelist.truncate(0);
+  if (PRIVATE(this)->displaylist) {
+    PRIVATE(this)->displaylist->unref(state);
+    PRIVATE(this)->displaylist = NULL;
   }
 }
 
 SoGLLazyElement::GLState * 
 SoGLRenderCache::getPreLazyState(void)
 {
-  return &THIS->prestate;
+  return &PRIVATE(this)->prestate;
 }
 
 SoGLLazyElement::GLState * 
 SoGLRenderCache::getPostLazyState(void)
 {
-  return &THIS->poststate;
+  return &PRIVATE(this)->poststate;
 }
 
+#undef PRIVATE

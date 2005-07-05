@@ -67,8 +67,7 @@ public:
 
 #define NORMAL_EPSILON FLT_EPSILON
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 #define NORMALCACHE_DEBUG 0 // Set to one for debug output
 
@@ -80,9 +79,9 @@ public:
 SoNormalCache::SoNormalCache(SoState * const state)
   : SoCache(state)
 {
-  THIS = new SoNormalCacheP;
-  THIS->normalData.normals = NULL;
-  THIS->numNormals = 0;
+  PRIVATE(this) = new SoNormalCacheP;
+  PRIVATE(this)->normalData.normals = NULL;
+  PRIVATE(this)->numNormals = 0;
 }
 
 /*!
@@ -91,7 +90,7 @@ SoNormalCache::SoNormalCache(SoState * const state)
 SoNormalCache::~SoNormalCache()
 {
   this->clearGenerator();
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -102,10 +101,10 @@ void
 SoNormalCache::set(const int num, const SbVec3f * const normals)
 {
   this->clearGenerator();
-  THIS->numNormals = num;
-  THIS->normalData.normals = normals;
-  THIS->indices.truncate(0, TRUE);
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->numNormals = num;
+  PRIVATE(this)->normalData.normals = normals;
+  PRIVATE(this)->indices.truncate(0, TRUE);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
 }
 
 /*!
@@ -116,10 +115,10 @@ void
 SoNormalCache::set(SoNormalGenerator * generator)
 {
   this->clearGenerator();
-  THIS->indices.truncate(0, TRUE);
-  THIS->normalArray.truncate(0, TRUE);
-  THIS->numNormals = 0;
-  THIS->normalData.generator = generator;
+  PRIVATE(this)->indices.truncate(0, TRUE);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->numNormals = 0;
+  PRIVATE(this)->normalData.generator = generator;
 }
 
 /*!
@@ -128,10 +127,10 @@ SoNormalCache::set(SoNormalGenerator * generator)
 int
 SoNormalCache::getNum(void) const
 {
-  if (THIS->numNormals == 0 && THIS->normalData.generator) {
-    return THIS->normalData.generator->getNumNormals();
+  if (PRIVATE(this)->numNormals == 0 && PRIVATE(this)->normalData.generator) {
+    return PRIVATE(this)->normalData.generator->getNumNormals();
   }
-  return THIS->numNormals;
+  return PRIVATE(this)->numNormals;
 }
 
 /*!
@@ -140,10 +139,10 @@ SoNormalCache::getNum(void) const
 const SbVec3f *
 SoNormalCache::getNormals(void) const
 {
-  if (THIS->numNormals == 0 && THIS->normalData.generator) {
-    return THIS->normalData.generator->getNormals();
+  if (PRIVATE(this)->numNormals == 0 && PRIVATE(this)->normalData.generator) {
+    return PRIVATE(this)->normalData.generator->getNormals();
   }
-  return THIS->normalData.normals;
+  return PRIVATE(this)->normalData.normals;
 }
 
 /*!
@@ -153,7 +152,7 @@ SoNormalCache::getNormals(void) const
 int
 SoNormalCache::getNumIndices(void) const
 {
-  return THIS->indices.getLength();
+  return PRIVATE(this)->indices.getLength();
 }
 
 /*!
@@ -162,7 +161,7 @@ SoNormalCache::getNumIndices(void) const
 const int32_t *
 SoNormalCache::getIndices(void) const
 {
-  if (THIS->indices.getLength()) return THIS->indices.getArrayPtr();
+  if (PRIVATE(this)->indices.getLength()) return PRIVATE(this)->indices.getArrayPtr();
   return NULL;
 }
 
@@ -230,8 +229,8 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->indices.truncate(0);
-  THIS->normalArray.truncate(0);
+  PRIVATE(this)->indices.truncate(0);
+  PRIVATE(this)->normalArray.truncate(0);
 
 
 #if COIN_DEBUG && 0 // debug
@@ -368,10 +367,10 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       if (len > 0.0f) tmpvec /= len;
       else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
 
-      if (THIS->normalArray.getLength() <= nindex)
-        THIS->normalArray.append(tmpvec);
+      if (PRIVATE(this)->normalArray.getLength() <= nindex)
+        PRIVATE(this)->normalArray.append(tmpvec);
       else
-        THIS->normalArray[nindex] = tmpvec;
+        PRIVATE(this)->normalArray[nindex] = tmpvec;
 
       // try to find equal normal (total smoothing)
       SbList <int32_t> & array = vertexNormalArray[currindex];
@@ -380,19 +379,19 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       int same_normal = -1;
       for (j = 0; j < n && !found; j++) {
         same_normal = array[j];
-        found = THIS->normalArray[same_normal].equals(THIS->normalArray[nindex],
+        found = PRIVATE(this)->normalArray[same_normal].equals(PRIVATE(this)->normalArray[nindex],
                                                       NORMAL_EPSILON);
       }
       if (found)
-        THIS->indices.append(same_normal);
+        PRIVATE(this)->indices.append(same_normal);
       // might be equal to the previous normal (when all normals for a face are equal)
       else if ((nindex > 0) &&
-               THIS->normalArray[nindex].equals(THIS->normalArray[nindex-1],
+               PRIVATE(this)->normalArray[nindex].equals(PRIVATE(this)->normalArray[nindex-1],
                                                 NORMAL_EPSILON)) {
-        THIS->indices.append(nindex-1);
+        PRIVATE(this)->indices.append(nindex-1);
       }
       else {
-        THIS->indices.append(nindex);
+        PRIVATE(this)->indices.append(nindex);
         array.append(nindex);
         nindex++;
       }
@@ -400,17 +399,17 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     else { // new face
       facenum++;
       stripcnt = 0;
-      THIS->indices.append(-1); // add a -1 for PER_VERTEX_INDEXED binding
+      PRIVATE(this)->indices.append(-1); // add a -1 for PER_VERTEX_INDEXED binding
     }
   }
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerVertex",
                          "generated normals per vertex: %p %d %d\n",
-                         THIS->normalData.normals, THIS->numNormals, THIS->indices.getLength());
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals, PRIVATE(this)->indices.getLength());
 #endif
   delete [] vertexFaceArray;
   delete [] vertexNormalArray;
@@ -432,8 +431,8 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->indices.truncate(0);
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->indices.truncate(0);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
 
   const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
@@ -459,7 +458,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
        // Insert dummy normal for robustness
       SbVec3f dummynormal;
       dummynormal.setValue(1.0, 0.0, 0.0);
-      THIS->normalArray.append(dummynormal);
+      PRIVATE(this)->normalArray.append(dummynormal);
 
       // Skip ahead to next possible index
       if (cind[0] < 0 || cind[0] > maxcoordidx) {
@@ -510,7 +509,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
       if (len > 0.0f) tmpvec /= len;
       else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
-      THIS->normalArray.append(tmpvec);
+      PRIVATE(this)->normalArray.append(tmpvec);
       cind += 4; // goto next triangle/polygon
     }
     else { // more than 3 vertices
@@ -554,7 +553,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
       if (len > 0.0f) tmpvec /= len;
       else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
-      THIS->normalArray.append(ccw ? tmpvec : -tmpvec);
+      PRIVATE(this)->normalArray.append(ccw ? tmpvec : -tmpvec);
       cind++; // skip the -1
     }
   }
@@ -566,18 +565,18 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
     SbVec3f dummynormal;
     dummynormal.setValue(1.0, 0.0, 0.0);
-    THIS->normalArray.append(dummynormal);
+    PRIVATE(this)->normalArray.append(dummynormal);
   }
 
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG // debug
   SoDebugError::postInfo("SoNormalCache::generatePerFace",
                          "generated normals per face: %p %d",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif // debug
 }
 
@@ -596,8 +595,8 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->indices.truncate(0);
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->indices.truncate(0);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
 
   const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
@@ -621,7 +620,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
       // Insert dummy normal for robustness
       SbVec3f dummynormal;
       dummynormal.setValue(1.0, 0.0, 0.0);
-      THIS->normalArray.append(dummynormal);
+      PRIVATE(this)->normalArray.append(dummynormal);
 
       // Skip to next possibly valid index
       if (cind[0] < 0 || cind[0] > maxcoordidx) {
@@ -674,7 +673,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
     
     if (len > 0.0f) n /= len;
     else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-    THIS->normalArray.append(n);
+    PRIVATE(this)->normalArray.append(n);
 
     int idx = cind < endptr ? *cind++ : -1;
     while (idx >= 0 && idx <= maxcoordidx) {
@@ -706,7 +705,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
       if (len > 0.0f) n /= len;
       else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-      THIS->normalArray.append(n);
+      PRIVATE(this)->normalArray.append(n);
       idx = cind < endptr ? *cind++ : -1;
     }
 
@@ -731,18 +730,18 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
     SbVec3f dummynormal;
     dummynormal.setValue(1.0, 0.0, 0.0);
-    THIS->normalArray.append(dummynormal);
+    PRIVATE(this)->normalArray.append(dummynormal);
   }
 
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerFaceStrip",
                          "generated tristrip normals per face: %p %d",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif // debug
 
 }
@@ -762,8 +761,8 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->indices.truncate(0);
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->indices.truncate(0);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
 
   const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
@@ -787,7 +786,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
       // Insert dummy normal for robustness
       SbVec3f dummynormal;
       dummynormal.setValue(1.0, 0.0, 0.0);
-      THIS->normalArray.append(dummynormal);
+      PRIVATE(this)->normalArray.append(dummynormal);
 
       // Skip to next possibly valid index
       if (cind[0] < 0 || cind[0] > maxcoordidx) {
@@ -861,7 +860,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
     
     if (len > 0.0f) n /= len;
     else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-    THIS->normalArray.append(n);
+    PRIVATE(this)->normalArray.append(n);
   }
 
   if (endptr - cind > 0) {
@@ -870,18 +869,18 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 
     SbVec3f dummynormal;
     dummynormal.setValue(1.0, 0.0, 0.0);
-    THIS->normalArray.append(dummynormal);
+    PRIVATE(this)->normalArray.append(dummynormal);
   }
 
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerStrip",
                          "generated normals per strip: %p %d\n",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif
 
 }
@@ -943,19 +942,19 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
         
       if (len > 0.0f) n /= len;
       else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-      THIS->normalArray.append(ccw ? -n : n);
+      PRIVATE(this)->normalArray.append(ccw ? -n : n);
     }
   }
 
 #undef IDX
 
-  THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-  THIS->numNormals = THIS->normalArray.getLength();
+  PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+  PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerVertexQuad",
                          "generated normals per vertex quad: %p %d\n",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif
 }
 
@@ -1022,27 +1021,27 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
         
         if (len > 0.0f) n /= len;
         else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-        THIS->normalArray.append(ccw ? -n : n);
+        PRIVATE(this)->normalArray.append(ccw ? -n : n);
       }
       else {
         // Generate normals even for invalid input
         SbVec3f dummynormal(1.0, 0.0, 0.0);
-        THIS->normalArray.append(ccw ? -dummynormal : dummynormal);
+        PRIVATE(this)->normalArray.append(ccw ? -dummynormal : dummynormal);
       }
     }
   }
 
 #undef IDX
 
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerFaceQuad",
                          "generated normals per face quad: %p %d\n",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif
 
 }
@@ -1062,7 +1061,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
   SbVec3f n;
 
   if (vPerRow <= 1 || vPerColumn <= 1 || 
@@ -1107,20 +1106,20 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
     
     if (len > 0.0f) n /= len;
     else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
-    THIS->normalArray.append(ccw ? -n : n);
+    PRIVATE(this)->normalArray.append(ccw ? -n : n);
   }
 
 #undef IDX
 
-  if (THIS->normalArray.getLength()) {
-    THIS->normalData.normals = THIS->normalArray.getArrayPtr();
-    THIS->numNormals = THIS->normalArray.getLength();
+  if (PRIVATE(this)->normalArray.getLength()) {
+    PRIVATE(this)->normalData.normals = PRIVATE(this)->normalArray.getArrayPtr();
+    PRIVATE(this)->numNormals = PRIVATE(this)->normalArray.getLength();
   }
 
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerRowQuad",
                          "generated normals per row quad: %p %d\n",
-                         THIS->normalData.normals, THIS->numNormals);
+                         PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif
 
 }
@@ -1131,9 +1130,12 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 void
 SoNormalCache::clearGenerator(void)
 {
-  if (THIS->numNormals == 0 && THIS->normalData.generator) {
-    delete THIS->normalData.generator;
+  if (PRIVATE(this)->numNormals == 0 && PRIVATE(this)->normalData.generator) {
+    delete PRIVATE(this)->normalData.generator;
   }
-  THIS->normalData.normals = NULL;
-  THIS->numNormals = 0;
+  PRIVATE(this)->normalData.normals = NULL;
+  PRIVATE(this)->numNormals = 0;
 }
+
+#undef PRIVATE
+

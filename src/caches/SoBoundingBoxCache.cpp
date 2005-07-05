@@ -43,7 +43,6 @@ public:
   unsigned int linesorpoints : 1;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
@@ -167,3 +166,5 @@ SoBoundingBoxCache::hasLinesOrPoints(void) const
 {
   return PRIVATE(this)->linesorpoints == 1;
 }
+
+#undef PRIVATE

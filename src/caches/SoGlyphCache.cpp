@@ -42,7 +42,7 @@ public:
   cc_font_specification * fontspec;
 };
 
-#define PRIVATE(obj) obj->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SoGlyphCache::SoGlyphCache(SoState * state)
   : SoCache(state)

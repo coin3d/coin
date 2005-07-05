@@ -96,8 +96,7 @@ public:
   }
 };
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -137,7 +136,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     else COIN_SMART_CACHING = 0;
   }
   
-  SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, THIS);
+  SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, PRIVATE(this));
 }
 
 /*!
@@ -145,12 +144,12 @@ SoGLCacheList::SoGLCacheList(int numcaches)
 */
 SoGLCacheList::~SoGLCacheList()
 {
-  SoContextHandler::removeContextDestructionCallback(SoGLCacheListP::contextCleanup, THIS);
-  const int n = THIS->itemlist.getLength();
+  SoContextHandler::removeContextDestructionCallback(SoGLCacheListP::contextCleanup, PRIVATE(this));
+  const int n = PRIVATE(this)->itemlist.getLength();
   for (int i = 0; i < n; i++) {
-    THIS->itemlist[i]->unref();
+    PRIVATE(this)->itemlist[i]->unref();
   }
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -162,7 +161,7 @@ SbBool
 SoGLCacheList::call(SoGLRenderAction * action)
 {
   // do a quick return if there are no caches in the list
-  int n = THIS->itemlist.getLength();
+  int n = PRIVATE(this)->itemlist.getLength();
   if (n == 0) return FALSE;
 
   int i;
@@ -170,7 +169,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
   int context = SoGLCacheContextElement::get(state);
 
   for (i = 0; i < n; i++) {
-    SoGLRenderCache * cache = THIS->itemlist[i];
+    SoGLRenderCache * cache = PRIVATE(this)->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state) && 
           SoGLLazyElement::preCacheCall(state, cache->getPreLazyState())) {
@@ -179,14 +178,14 @@ SoGLCacheList::call(SoGLRenderAction * action)
         // the end of the list, and the LRU will be the first
         // item. This makes it easy to choose a cache to destroy when
         // the maximum number of caches is exceeded.
-        THIS->itemlist.remove(i);
-        THIS->itemlist.append(cache);
+        PRIVATE(this)->itemlist.remove(i);
+        PRIVATE(this)->itemlist.append(cache);
         // update lazy GL state before calling cache
         SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
         cache->call(state);
         SoGLLazyElement::postCacheCall(state, cache->getPostLazyState());
         cache->unref(state);
-        THIS->numused++;
+        PRIVATE(this)->numused++;
 
 #if COIN_DEBUG
         // The GL error test is default disabled for this optimized
@@ -414,7 +413,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
                            "no valid cache found for %p. Node has %d caches",
                            this, n);
     for (i = 0; i < n; i++) {
-      SoGLRenderCache * cache = THIS->itemlist[i];
+      SoGLRenderCache * cache = PRIVATE(this)->itemlist[i];
       if (cache->getCacheContext() == context) {
         SoDebugError::postInfo("SoGLCacheList::call",
                                "cache %d isValid()? %s", i, cache->isValid(state) ? "TRUE" : "FALSE");        
@@ -502,8 +501,8 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 
   if (shouldcreate && autocache) {
     // determine if we really should create a new cache, based on numused and numdiscarded
-    double docreate = (double) (THIS->numframesok + THIS->numused);
-    double dontcreate = (THIS->numdiscarded);
+    double docreate = (double) (PRIVATE(this)->numframesok + PRIVATE(this)->numused);
+    double dontcreate = (PRIVATE(this)->numdiscarded);
     dontcreate *= dontcreate;
     dontcreate *= dontcreate;
 
@@ -511,19 +510,19 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
   }
 
   if (shouldcreate) {
-    if (THIS->itemlist.getLength() >= THIS->numcaches) {
+    if (PRIVATE(this)->itemlist.getLength() >= PRIVATE(this)->numcaches) {
       // the cache at position 0 will be the LRU cache. Remove it.
-      SoGLRenderCache * cache = THIS->itemlist[0];
+      SoGLRenderCache * cache = PRIVATE(this)->itemlist[0];
       cache->unref(state);
-      THIS->itemlist.remove(0);
-      THIS->numdiscarded++;
+      PRIVATE(this)->itemlist.remove(0);
+      PRIVATE(this)->numdiscarded++;
     }
-    THIS->opencache = new SoGLRenderCache(state);
-    THIS->opencache->ref();
-    SoCacheElement::set(state, THIS->opencache);
-    SoGLLazyElement::beginCaching(state, THIS->opencache->getPreLazyState(),
-                                  THIS->opencache->getPostLazyState());
-    THIS->opencache->open(state);
+    PRIVATE(this)->opencache = new SoGLRenderCache(state);
+    PRIVATE(this)->opencache->ref();
+    SoCacheElement::set(state, PRIVATE(this)->opencache);
+    SoGLLazyElement::beginCaching(state, PRIVATE(this)->opencache->getPreLazyState(),
+                                  PRIVATE(this)->opencache->getPostLazyState());
+    PRIVATE(this)->opencache->open(state);
 
     // force a dependency on the transparecy type 
     // FIXME: consider adding a new element for storing the
@@ -549,24 +548,24 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 void
 SoGLCacheList::close(SoGLRenderAction * action)
 {
-  if (!THIS->needclose) return;
+  if (!PRIVATE(this)->needclose) return;
 
   SoState * state = action->getState();
 
   // close open cache before accepting it or throwing it away
-  if (THIS->opencache) {
-    THIS->opencache->close();
+  if (PRIVATE(this)->opencache) {
+    PRIVATE(this)->opencache->close();
     SoGLLazyElement::endCaching(state);            
   }
-  if (SoCacheElement::setInvalid(THIS->savedinvalid)) {
+  if (SoCacheElement::setInvalid(PRIVATE(this)->savedinvalid)) {
     // notify parent caches
     SoCacheElement::setInvalid(TRUE);
-    THIS->numframesok = 0;
+    PRIVATE(this)->numframesok = 0;
     // just throw away the open cache, it's invalid
-    if (THIS->opencache) {
-      THIS->opencache->unref();
-      THIS->opencache = NULL;
-      THIS->numdiscarded += 1;
+    if (PRIVATE(this)->opencache) {
+      PRIVATE(this)->opencache->unref();
+      PRIVATE(this)->opencache = NULL;
+      PRIVATE(this)->numdiscarded += 1;
 
 #if COIN_DEBUG
       if (COIN_DEBUG_CACHING) {
@@ -605,7 +604,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
 void
 SoGLCacheList::invalidateAll(void)
 {
-  int n = THIS->itemlist.getLength();
+  int n = PRIVATE(this)->itemlist.getLength();
 #if COIN_DEBUG
   if (n && COIN_DEBUG_CACHING && 0) {
     SoDebugError::postInfo("SoGLCacheList::invalidateAll",
@@ -614,9 +613,11 @@ SoGLCacheList::invalidateAll(void)
 #endif // debug
 
   for (int i = 0; i < n; i++) {
-    THIS->itemlist[i]->unref();
+    PRIVATE(this)->itemlist[i]->unref();
   }
-  THIS->itemlist.truncate(0);
-  THIS->numdiscarded += n;
-  THIS->numframesok = 0;
+  PRIVATE(this)->itemlist.truncate(0);
+  PRIVATE(this)->numdiscarded += n;
+  PRIVATE(this)->numframesok = 0;
 }
+
+#undef PRIVATE

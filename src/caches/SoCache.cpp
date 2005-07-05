@@ -99,8 +99,7 @@ public:
   int statedepth;
 };
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -109,18 +108,18 @@ public:
 */
 SoCache::SoCache(SoState * const state)
 {
-  THIS = new SoCacheP;
-  THIS->elementflags = NULL;
-  THIS->refcount = 0;
-  THIS->invalidated = FALSE;
-  THIS->statedepth = state ? state->getDepth() : 0;
+  PRIVATE(this) = new SoCacheP;
+  PRIVATE(this)->elementflags = NULL;
+  PRIVATE(this)->refcount = 0;
+  PRIVATE(this)->invalidated = FALSE;
+  PRIVATE(this)->statedepth = state ? state->getDepth() : 0;
 
   int numidx = SoElement::getNumStackIndices();
   int numbytes = (numidx >> 3) + 1;
   // one bit per element is used to quickly determine whether an
   // element of a given type already has been added.
-  THIS->elementflags = new unsigned char[numbytes];
-  memset(THIS->elementflags, 0, numbytes);
+  PRIVATE(this)->elementflags = new unsigned char[numbytes];
+  memset(PRIVATE(this)->elementflags, 0, numbytes);
 }
 
 /*!
@@ -128,13 +127,13 @@ SoCache::SoCache(SoState * const state)
 */
 SoCache::~SoCache()
 {
-  delete [] THIS->elementflags;
+  delete [] PRIVATE(this)->elementflags;
 
-  int n = THIS->elements.getLength();
+  int n = PRIVATE(this)->elements.getLength();
   for (int i = 0; i < n; i++) {
-    delete THIS->elements[i];
+    delete PRIVATE(this)->elements[i];
   }
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -145,7 +144,7 @@ SoCache::~SoCache()
 void
 SoCache::ref(void)
 {
-  THIS->refcount++;
+  PRIVATE(this)->refcount++;
 }
 
 /*!
@@ -156,8 +155,8 @@ SoCache::ref(void)
 void
 SoCache::unref(SoState *state)
 {
-  assert(THIS->refcount > 0);
-  if (--THIS->refcount == 0) {
+  assert(PRIVATE(this)->refcount > 0);
+  if (--PRIVATE(this)->refcount == 0) {
     this->destroy(state);
     delete this;
   }
@@ -171,19 +170,19 @@ SoCache::unref(SoState *state)
 void
 SoCache::addElement(const SoElement * const elem)
 {
-  if (elem->getDepth() < THIS->statedepth) {
+  if (elem->getDepth() < PRIVATE(this)->statedepth) {
     int idx = elem->getStackIndex();
     int flag = 0x1 << (idx & 0x7);
     idx >>= 3; // get byte number
-    if (!(THIS->elementflags[idx] & flag)) {
+    if (!(PRIVATE(this)->elementflags[idx] & flag)) {
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoCache::addElement",
                              "cache: %p, elem: %s", this,
                              elem->getTypeId().getName().getString());
 #endif // debug
       SoElement * copy = elem->copyMatchInfo();
-      if (copy) THIS->elements.append(copy);
-      THIS->elementflags[idx] |= flag;
+      if (copy) PRIVATE(this)->elements.append(copy);
+      PRIVATE(this)->elementflags[idx] |= flag;
     }
   }
 }
@@ -211,7 +210,7 @@ SoCache::addCacheDependency(const SoState * state, SoCache * cache)
 SbBool
 SoCache::isValid(const SoState * state) const
 {
-  if (THIS->invalidated) return FALSE;
+  if (PRIVATE(this)->invalidated) return FALSE;
   return this->getInvalidElement(state) == NULL;
 }
 
@@ -223,11 +222,11 @@ SoCache::isValid(const SoState * state) const
 const SoElement *
 SoCache::getInvalidElement(const SoState * const state) const
 {
-  if (THIS->invalidated) return NULL;
+  if (PRIVATE(this)->invalidated) return NULL;
 
   // use local variables for speed
-  int n = THIS->elements.getLength();
-  const SoElement * const * ptr = THIS->elements.getArrayPtr();
+  int n = PRIVATE(this)->elements.getLength();
+  const SoElement * const * ptr = PRIVATE(this)->elements.getArrayPtr();
   const SoElement * elem;
   for (int i = 0; i < n; i++) {
     elem = ptr[i];
@@ -249,7 +248,7 @@ SoCache::getInvalidElement(const SoState * const state) const
 void
 SoCache::invalidate(void)
 {
-  THIS->invalidated = TRUE;
+  PRIVATE(this)->invalidated = TRUE;
 }
 
 /*!
@@ -260,5 +259,7 @@ void
 SoCache::destroy(SoState *)
 {
 }
+
+#undef PRIVATE
 
 // *************************************************************************

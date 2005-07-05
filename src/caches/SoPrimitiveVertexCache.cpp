@@ -152,8 +152,7 @@ public:
   static void contextCleanup(uint32_t context, void * closure);
 };
 
-#undef PRIVATE
-#define PRIVATE(obj) obj->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -766,8 +765,6 @@ SoPrimitiveVertexCache::fit(void)
   }
 }
 
-#undef PRIVATE
-
 
 
 SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
@@ -1099,3 +1096,4 @@ SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
 
 #undef MAX_UNITS
 #undef CACHE_HINT_LIMIT
+#undef PRIVATE

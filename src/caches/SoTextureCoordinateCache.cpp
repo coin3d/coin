@@ -40,8 +40,7 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
@@ -49,7 +48,7 @@ public:
 SoTextureCoordinateCache::SoTextureCoordinateCache(SoState * const state)
   : SoCache(state)
 {
-  THIS = new SoTextureCoordinateCacheP;
+  PRIVATE(this) = new SoTextureCoordinateCacheP;
 }
 
 /*!
@@ -57,7 +56,7 @@ SoTextureCoordinateCache::SoTextureCoordinateCache(SoState * const state)
 */
 SoTextureCoordinateCache::~SoTextureCoordinateCache()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -111,12 +110,12 @@ SoTextureCoordinateCache::generate(const SbBox3f & bbox,
     s /= sizes[0];
     t /= sizes[1];
     // expand list array as needed
-    if (i >= THIS->texCoords.getLength()) THIS->texCoords.append(SbVec2f());
-    THIS->texCoords[i].setValue(s, t);
+    if (i >= PRIVATE(this)->texCoords.getLength()) PRIVATE(this)->texCoords.append(SbVec2f());
+    PRIVATE(this)->texCoords[i].setValue(s, t);
   }
 
   // fit list array in case we used to have more items than now
-  THIS->texCoords.truncate(numvertices);
+  PRIVATE(this)->texCoords.truncate(numvertices);
 }
 
 /*!
@@ -125,7 +124,7 @@ SoTextureCoordinateCache::generate(const SbBox3f & bbox,
 const SbVec2f *
 SoTextureCoordinateCache::get(void) const
 {
-  return THIS->texCoords.getArrayPtr();
+  return PRIVATE(this)->texCoords.getArrayPtr();
 }
 
 /*!
@@ -134,5 +133,7 @@ SoTextureCoordinateCache::get(void) const
 int
 SoTextureCoordinateCache::getNum(void) const
 {
-  return THIS->texCoords.getLength();
+  return PRIVATE(this)->texCoords.getLength();
 }
+
+#undef PRIVATE
