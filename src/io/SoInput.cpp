@@ -1167,6 +1167,13 @@ SoInput::read(SbString & s)
     if (!this->read(slen)) { return FALSE; }
     if (slen == 0) { s = ""; return TRUE; }
 
+    // Inventor V1.0 binary files seems to have 0xffffffff as some
+    // sort of end-of-file tag, so handle that case.
+    if (slen == 0xffffffff) {
+      fi->doBufferRead(); // sets the EOF flag as a side-effect
+      if (fi->isEndOfFile()) { return FALSE; }
+    }
+
     // Sanity check
     if (slen > MAXSTRLEN) {
       SoReadError::post(this, "String too long (%u characters) -- "
