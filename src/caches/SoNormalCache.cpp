@@ -900,9 +900,9 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
   // avoid reallocations in growable array by setting the buffer size first
-  THIS->normalArray.ensureCapacity(vPerRow * vPerColumn);
+  PRIVATE(this)->normalArray.ensureCapacity(vPerRow * vPerColumn);
 
   SoNormalCache tempcache(NULL);
   tempcache.generatePerFaceQuad(coords, numcoords, vPerRow, vPerColumn, ccw);
@@ -973,9 +973,9 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
 #endif
 
   this->clearGenerator();
-  THIS->normalArray.truncate(0, TRUE);
+  PRIVATE(this)->normalArray.truncate(0, TRUE);
   // avoid reallocations in growable array by setting the buffer size first
-  THIS->normalArray.ensureCapacity((vPerRow-1)*(vPerColumn-1));
+  PRIVATE(this)->normalArray.ensureCapacity((vPerRow-1)*(vPerColumn-1));
   
   if (vPerRow <= 1 || vPerColumn <= 1 || 
       (unsigned int)(vPerRow * vPerColumn) > numcoords) {

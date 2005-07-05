@@ -105,16 +105,16 @@ public:
 */
 SoGLCacheList::SoGLCacheList(int numcaches)
 {
-  THIS = new SoGLCacheListP;
-  THIS->numcaches = numcaches;
-  THIS->opencache = NULL;
-  THIS->autocachebits = 0;
-  THIS->numused = 0;
-  THIS->numdiscarded = 0;
-  THIS->needclose = FALSE;
-  THIS->invalidelement = NULL;
-  THIS->numframesok = 0;
-  THIS->numshapes = 0;
+  PRIVATE(this) = new SoGLCacheListP;
+  PRIVATE(this)->numcaches = numcaches;
+  PRIVATE(this)->opencache = NULL;
+  PRIVATE(this)->autocachebits = 0;
+  PRIVATE(this)->numused = 0;
+  PRIVATE(this)->numdiscarded = 0;
+  PRIVATE(this)->needclose = FALSE;
+  PRIVATE(this)->invalidelement = NULL;
+  PRIVATE(this)->numframesok = 0;
+  PRIVATE(this)->numshapes = 0;
 
   // auto caching must be enabled using an environment variable
   if (COIN_AUTO_CACHING < 0) {
@@ -442,44 +442,44 @@ void
 SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 {
   // needclose is used to quickly return in close()
-  if (THIS->numcaches == 0 || (autocache && COIN_AUTO_CACHING == 0)) {
-    THIS->needclose = FALSE;
+  if (PRIVATE(this)->numcaches == 0 || (autocache && COIN_AUTO_CACHING == 0)) {
+    PRIVATE(this)->needclose = FALSE;
     return;
   }
 
-  THIS->needclose = TRUE;
+  PRIVATE(this)->needclose = TRUE;
 
-  assert(THIS->opencache == NULL);
+  assert(PRIVATE(this)->opencache == NULL);
   SoState * state = action->getState();
 
   // will be restored in close()
-  THIS->savedinvalid = SoCacheElement::setInvalid(FALSE);
+  PRIVATE(this)->savedinvalid = SoCacheElement::setInvalid(FALSE);
 
   if (SoCacheElement::anyOpen(state)) return;
 
   SbBool shouldcreate = FALSE;
   if (!autocache) {
-    if (THIS->numframesok >= 1) shouldcreate = TRUE;
+    if (PRIVATE(this)->numframesok >= 1) shouldcreate = TRUE;
   }
   else {
-    if (THIS->numframesok >= 2 && 
-        (THIS->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE)) {
+    if (PRIVATE(this)->numframesok >= 2 && 
+        (PRIVATE(this)->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE)) {
       
       if (COIN_SMART_CACHING) {
-        if (THIS->numshapes < 2) {
-          if (THIS->numframesok >= 5) shouldcreate = TRUE;
+        if (PRIVATE(this)->numshapes < 2) {
+          if (PRIVATE(this)->numframesok >= 5) shouldcreate = TRUE;
         }
-        else if (THIS->numshapes < 5) {
-          if (THIS->numframesok >= 4) shouldcreate = TRUE;
+        else if (PRIVATE(this)->numshapes < 5) {
+          if (PRIVATE(this)->numframesok >= 4) shouldcreate = TRUE;
         }
-        else if (THIS->numshapes < 10) {
-          if (THIS->numframesok >= 3) shouldcreate = TRUE;
+        else if (PRIVATE(this)->numshapes < 10) {
+          if (PRIVATE(this)->numframesok >= 3) shouldcreate = TRUE;
         }
-        else if (THIS->numshapes > 1000) {
-          if (THIS->numframesok >= 4) shouldcreate = TRUE;
+        else if (PRIVATE(this)->numshapes > 1000) {
+          if (PRIVATE(this)->numframesok >= 4) shouldcreate = TRUE;
         }
-        else if (THIS->numshapes > 100) {
-          if (THIS->numframesok >= 3) shouldcreate = TRUE;
+        else if (PRIVATE(this)->numshapes > 100) {
+          if (PRIVATE(this)->numframesok >= 3) shouldcreate = TRUE;
         }
         else {
           shouldcreate = TRUE;
@@ -489,10 +489,10 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
         shouldcreate = TRUE;
       }
 #if COIN_DEBUG
-      if (COIN_DEBUG_CACHING && THIS->numframesok >= 2) {
+      if (COIN_DEBUG_CACHING && PRIVATE(this)->numframesok >= 2) {
         SoDebugError::postInfo("SoGLCacheList::open",
                                "consider cache create: %p. numframesok: %d, numused: %d, numdiscarded: %d",
-                               this, THIS->numframesok, THIS->numused, THIS->numdiscarded);
+                               this, PRIVATE(this)->numframesok, PRIVATE(this)->numused, PRIVATE(this)->numdiscarded);
       }
 #endif // debug
 
@@ -537,8 +537,8 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     }
 #endif // debug
   }
-  THIS->autocachebits = SoGLCacheContextElement::resetAutoCacheBits(state);
-  THIS->numshapes = 0;
+  PRIVATE(this)->autocachebits = SoGLCacheContextElement::resetAutoCacheBits(state);
+  PRIVATE(this)->numshapes = 0;
 }
 
 /*!
@@ -576,25 +576,25 @@ SoGLCacheList::close(SoGLRenderAction * action)
     }
   }
   else {
-    THIS->numframesok++;
+    PRIVATE(this)->numframesok++;
   }
 
   // open cache is ok, add it to the cache list
-  if (THIS->opencache) {
+  if (PRIVATE(this)->opencache) {
 #if COIN_DEBUG
     if (COIN_DEBUG_CACHING) {
       SoDebugError::postInfo("SoGLCacheList::close",
                              "new cache created: %p", this);
     }
 #endif // debug
-    THIS->itemlist.append(THIS->opencache);
-    THIS->opencache = NULL;
+    PRIVATE(this)->itemlist.append(PRIVATE(this)->opencache);
+    PRIVATE(this)->opencache = NULL;
   }
 
-  THIS->numshapes = SoGLCacheContextElement::getNumShapes(state);
+  PRIVATE(this)->numshapes = SoGLCacheContextElement::getNumShapes(state);
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
-  SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
-  THIS->autocachebits = bits;
+  SoGLCacheContextElement::setAutoCacheBits(state, bits|PRIVATE(this)->autocachebits);
+  PRIVATE(this)->autocachebits = bits;
 }
 
 /*!
