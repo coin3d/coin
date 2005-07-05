@@ -53,7 +53,7 @@ static SbBool spidermonkey_failed_to_load = FALSE;
 /* ******************************************************************** */
 
 static SbBool
-debug(void)
+spidermonkey_debug(void)
 {
   static int dbg = -1;
   if (dbg == -1) {
@@ -136,7 +136,7 @@ spidermonkey(void)
       goto wrapperexit;
     }
 
-    if (debug()) {
+    if (spidermonkey_debug()) {
       if (spidermonkey_failed_to_load) {
         cc_debugerror_postinfo("spidermonkey", "Found no SpiderMonkey library on system.");
       }
@@ -184,7 +184,7 @@ spidermonkey(void)
 #endif /* done setting up REGISTER_FUNC */
 
   REGISTER_FUNC(JS_GetImplementationVersion, JS_GetImplementationVersion_t);
-  if (debug() && sm->JS_GetImplementationVersion) {
+  if (spidermonkey_debug() && sm->JS_GetImplementationVersion) {
     const char * version = sm->JS_GetImplementationVersion();
     cc_debugerror_postinfo("spidermonkey", "%s", version);
   }

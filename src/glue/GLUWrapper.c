@@ -71,7 +71,7 @@ static int GLU_failed_to_load = 0;
 /* ******************************************************************** */
 
 static SbBool
-debug(void)
+GLUWrapper_debug(void)
 {
   static int dbg = -1;
   if (dbg == -1) {
@@ -154,7 +154,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
     const SbBool runtime = FALSE;
 #endif /* !GLU_RUNTIME_LINKING */
 
-    if (debug()) {
+    if (GLUWrapper_debug()) {
       const char * extensions = (const char *)
         GLU_instance->gluGetString(GLU_EXTENSIONS);
 
@@ -385,7 +385,7 @@ GLUWrapper(void)
       goto wrapperexit;
     }
 
-    if (debug()) {
+    if (GLUWrapper_debug()) {
       if (GLU_failed_to_load) {
         cc_debugerror_postinfo("GLUWrapper", "found no GLU library on system");
       }
