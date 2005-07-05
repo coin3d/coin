@@ -279,7 +279,8 @@ PrivateHeaders = \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
 	SoWriterefCounter.h \
-	SoInputP.h
+	SoInputP.h \
+	gzmemio.h
 
 
 ObsoleteHeaders = 
@@ -359,11 +360,11 @@ am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_io_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_io_lst_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h all-io-cpp.cpp \
-	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
-	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
-	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
-	gzmemio.c
+	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h gzmemio.h \
+	all-io-cpp.cpp all-io-c.c SoInput.cpp SoInput_FileInfo.cpp \
+	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
+	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
+	SoWriterefCounter.cpp gzmemio.c
 io_lst_OBJECTS = $(am_io_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -381,11 +382,11 @@ am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libio_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio_la_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h all-io-cpp.cpp \
-	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
-	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
-	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
-	gzmemio.c
+	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h gzmemio.h \
+	all-io-cpp.cpp all-io-c.c SoInput.cpp SoInput_FileInfo.cpp \
+	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
+	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
+	SoWriterefCounter.cpp gzmemio.c
 libio_la_OBJECTS = $(am_libio_la_OBJECTS)
 libio@SUFFIX@LINKHACK_la_LDFLAGS =
 libio@SUFFIX@LINKHACK_la_LIBADD =
@@ -397,7 +398,7 @@ am__libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput.cpp \
 am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput_FileInfo.h \
 	SoInput_Reader.h SoOutput_Writer.h SoWriterefCounter.h \
-	SoInputP.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
+	SoInputP.h gzmemio.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
 	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
 	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c
@@ -801,7 +802,6 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-libioincHEADERS
 
-	gzmemio.h
 
 # this rule causes a make warning, so we remove it when it is not in use
 io.lst: Makefile $(io_lst_OBJECTS)

@@ -21,7 +21,7 @@ PrivateHeaders = \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
 	SoWriterefCounter.h \
-	SoInputP.h
+	SoInputP.h \
 	gzmemio.h
 
 ObsoleteHeaders =

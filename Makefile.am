@@ -157,6 +157,7 @@ EXTRA_DIST = \
 	build/msvc6/data/draggerDefaults/translate2Dragger.h \
 	build/msvc6/coin3.dsp \
 	build/msvc6/coin3.dsw \
+	build/msvc6/config-wrapper.h \
 	build/msvc6/generate.sh \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl.h \
@@ -192,6 +193,7 @@ EXTRA_DIST = \
 	build/msvc7/coin3.dsw \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
+	build/msvc7/config-wrapper.h \
 	build/msvc7/generate.sh \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl.h \
