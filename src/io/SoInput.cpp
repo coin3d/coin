@@ -1170,8 +1170,10 @@ SoInput::read(SbString & s)
     // Inventor V1.0 binary files seems to have 0xffffffff as some
     // sort of end-of-file tag, so handle that case.
     if (slen == 0xffffffff) {
-      fi->doBufferRead(); // sets the EOF flag as a side-effect
+      char c;
+      (void)fi->get(c); // sets the EOF flag as a side-effect
       if (fi->isEndOfFile()) { return FALSE; }
+      fi->putBack(c);
     }
 
     // Sanity check
