@@ -129,7 +129,9 @@ SoInput_FileInfo::sched_cb(void * closure)
 }
 #endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 
-SbBool
+// This function will as a side-effect set the EOF-flag, as can be
+// queried by SoInput_FileInfo::isEndOfFile().
+void
 SoInput_FileInfo::doBufferRead(void)
 {
   // Make sure that we really do need to read more bytes.
@@ -150,20 +152,20 @@ SoInput_FileInfo::doBufferRead(void)
     SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
 #endif // debug
     cc_mutex_unlock(this->mutex);
-    return FALSE;
   }
-  this->totalread += this->readbufidx;
-  this->readbufidx = 0;
-  this->readbuflen = this->threadbuflen[idx];
-  this->readbuf = this->threadbuf[idx];
-  this->threadbufidx ^= 1;
-  // make previous buffer ready for new data
-  this->threadbuflen[this->threadbufidx] = -1;
-  if (!this->threadeof) {
-    cc_sched_schedule(this->sched, sched_cb, this, 0);
+  else {
+    this->totalread += this->readbufidx;
+    this->readbufidx = 0;
+    this->readbuflen = this->threadbuflen[idx];
+    this->readbuf = this->threadbuf[idx];
+    this->threadbufidx ^= 1;
+    // make previous buffer ready for new data
+    this->threadbuflen[this->threadbufidx] = -1;
+    if (!this->threadeof) {
+      cc_sched_schedule(this->sched, sched_cb, this, 0);
+    }
+    cc_mutex_unlock(this->mutex);
   }
-  cc_mutex_unlock(this->mutex);
-  return TRUE;
 
 #else // HAVE_THREADS && SOINPUT_ASYNC_IO
 
@@ -175,14 +177,12 @@ SoInput_FileInfo::doBufferRead(void)
 #if 0 // debug
     SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
 #endif // debug
-    return FALSE;
   }
-
-  this->totalread += this->readbufidx;
-  this->readbufidx = 0;
-  this->readbuflen = len;
-  return TRUE;
-
+  else {
+    this->totalread += this->readbufidx;
+    this->readbufidx = 0;
+    this->readbuflen = len;
+  }
 #endif // !(HAVE_THREADS && SOINPUT_ASYNC_IO)
 }
 
@@ -208,8 +208,9 @@ SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
       length--;
     }
 
-    // Fetch more bytes if necessary.
-    if ((length > 0) && !this->eof) this->doBufferRead();
+    // Fetch more bytes if necessary. doBufferRead() sets the eof-flag
+    // as a side-effect.
+    if ((length > 0) && !this->eof) { this->doBufferRead(); }
 
   } while (length && !this->eof);
 
@@ -226,7 +227,8 @@ SoInput_FileInfo::get(char & c)
     if (this->readbufidx >= this->readbuflen) {
       // doBufferRead() sets the EOF flag for the stream if there is
       // nothing left of the buffer to read.
-      if (!this->doBufferRead()) {
+      this->doBufferRead();
+      if (this->eof) {
         c = (char) EOF;
         return FALSE;
       }

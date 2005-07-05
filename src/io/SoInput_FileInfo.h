@@ -64,7 +64,7 @@ public:
   SoInput_FileInfo(SoInput_Reader * reader);
   ~SoInput_FileInfo();
 
-  SbBool doBufferRead(void);
+  void doBufferRead(void);
   size_t getNumBytesParsedSoFar(void) const;
 
   SbBool getChunkOfBytes(unsigned char * ptr, size_t length);
@@ -121,7 +121,7 @@ public:
     if (this->reader == NULL) return this->stdinname;
     return this->getReader()->getFilename();
   }
-  SbBool isEndOfFile(void) {
+  SbBool isEndOfFile(void) const {
     return this->eof;
   }
   void applyPostCallback(SoInput * soinput) {
