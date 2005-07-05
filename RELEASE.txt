@@ -179,7 +179,8 @@ anything.
 
 * Generate up-to-date ChangeLog file for this release.
 
-  Ensure the version number update is top entry in ChangeLog.
+  Ensure the version number update / msvc build file regeneration is on the
+  top in the ChangeLog.
 
   Move updated ChangeLog file to docs/ChangeLog.vN.N.N.
   Put "See docs/ChangeLog.vN.N.N" as the only content of root ChangeLog file.
@@ -197,6 +198,7 @@ anything.
   NEWS (start new section for Coin beta)
 
   Rerun bootstrap.  Commit changes.
+  Regenerate Visual Studio build files.  Commit changes.
 
   We're now home free if everything went well with the spiffing.
 
