@@ -5591,6 +5591,19 @@ SOURCE=..\..\src\misc\CoinOffscreenGLCanvas.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\SoDebug.cpp
+!IF  "$(CFG)" == "coin3 - Win32 Release DLL"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug DLL"
+# PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Release LIB"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 Debug LIB"
+# PROP Intermediate_Dir "StaticDebug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\lists\SbList.cpp
 !IF  "$(CFG)" == "coin3 - Win32 Release DLL"
 # PROP Intermediate_Dir "Release\lists"
@@ -12394,11 +12407,23 @@ SOURCE=..\..\include\Inventor\SoType.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\oivwin32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\non_winsys.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\SoWinEnterScope.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\include\SoWinLeaveScope.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\SoDebug.h
 # End Source File
 # Begin Source File
 

@@ -700,8 +700,11 @@ copy ..\..\include\Inventor\SoPickedPoint.h %COINDIR%\include\Inventor\SoPickedP
 copy ..\..\include\Inventor\SoPrimitiveVertex.h %COINDIR%\include\Inventor\SoPrimitiveVertex.h >nul:
 copy ..\..\include\Inventor\SoSceneManager.h %COINDIR%\include\Inventor\SoSceneManager.h >nul:
 copy ..\..\include\Inventor\SoType.h %COINDIR%\include\Inventor\SoType.h >nul:
+copy ..\..\include\Inventor\oivwin32.h %COINDIR%\include\Inventor\oivwin32.h >nul:
+copy ..\..\include\Inventor\non_winsys.h %COINDIR%\include\Inventor\non_winsys.h >nul:
 copy ..\..\include\SoWinEnterScope.h %COINDIR%\include\SoWinEnterScope.h >nul:
 copy ..\..\include\SoWinLeaveScope.h %COINDIR%\include\SoWinLeaveScope.h >nul:
+copy ..\..\include\SoDebug.h %COINDIR%\include\SoDebug.h >nul:
 copy ..\..\src\..\include\Inventor\SbPList.h %COINDIR%\include\Inventor\SbPList.h >nul:
 copy ..\..\src\..\include\Inventor\So.h %COINDIR%\include\Inventor\So.h >nul:
 copy ..\..\src\..\include\Inventor\SoDB.h %COINDIR%\include\Inventor\SoDB.h >nul:
