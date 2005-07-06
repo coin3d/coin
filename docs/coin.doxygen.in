@@ -934,6 +934,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorOutput.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizeAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
+                         @path_tag@@coin_src_dir@/include/SoDebug.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
@@ -1169,6 +1170,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/misc/SoSceneManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoState.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoType.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoDebug.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoAppearanceKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoBaseKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoCameraKit.cpp \
