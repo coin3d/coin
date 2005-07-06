@@ -73,7 +73,7 @@ SoDebug::RTPrintf(const char * formatstr, ...)
   // FIXME: should print to string buffer, dump complete buffer now
   // and then instead
   va_list args;
-  va_start(formatstr, args);
+  va_start(args, formatstr);
   vprintf(formatstr, args);
   va_end(args);
 }
