@@ -175,9 +175,23 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   }
   
   /* FIXME: get rid of angle -- not used. 20050516 mortene. */
-  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload),
-                               (unsigned int)(newspec->size), 
-                               angle, 0.5f);
+  fontidx =
+    cc_flw_get_font_id(cc_string_get_text(fonttoload),
+                       (unsigned int)(newspec->size), angle,
+                       /* FIXME: passing in -1 for complexity below is
+                          necessary because the Win32 API code in
+                          win32.c cc_flww32_get_font() detects this
+                          and uses this as a hack to *not* change the
+                          font size. (Changing the font size is
+                          necessary for *3D* fonts because otherwise
+                          the resolution will be too low for
+                          vectorization.)
+
+                          What an ugly mess. Should be cleaned up
+                          properly -- the worst offender against any
+                          good design taste is the code in
+                          win32.c. 20050706 mortene.*/
+                       -1.0f);
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);

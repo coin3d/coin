@@ -300,6 +300,11 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
   HFONT previousfont;
   HFONT wfont;
 
+  /* FIXME: glyph2d.c will pass in complexity==-1.0f, so this can be
+     used to detect that the font will be used for 2D font rendering
+     -- as sizey must be scaled up for fonts used for 3D
+     vectorization, or the resolution will be too low. This is a
+     rather ugly hack -- fix. 20050706 mortene. */
   if (complexity >= 0.0f) {
     sizey = flww32_calcfontsize(complexity);
   }
@@ -878,6 +883,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
      default font instead.
   */
 
+  /* FIXME: don't do the DC- and bitmap-initialization for each and
+     every glyph -- once should be enough. 20050706 mortene. */
+
   memdc = CreateCompatibleDC(NULL);
   if (memdc == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling CreateCompatibleDC(). "
@@ -913,7 +921,8 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 
   if (SetBkMode(memdc, TRANSPARENT) == 0) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SetBkMode()", GetLastError());
-    /* Not a critical error, continuing. Glyphs might look abit wierd though. */
+    /* Not a critical error, continuing. Glyphs might look a bit weird
+       though. */
   }
   if (BeginPath(memdc) == 0) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling BeginPath(). Cannot vectorize font.", GetLastError());
@@ -928,6 +937,10 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling EndPath(). Cannot vectorize font.", GetLastError());
     return NULL;
   }
+
+  /* FIXME: very inefficient to do initialization of the GLU
+     tessellator object, and the cc_list instances, for each and every
+     glyph to vectorize -- do this only once. 20050706 mortene. */
 
   if (flww32_tessellator.vertexlist == NULL)
     flww32_tessellator.vertexlist = cc_list_construct();
