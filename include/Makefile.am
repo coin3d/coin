@@ -11,7 +11,8 @@ if ! MAC_FRAMEWORK
 thisincdir = $(includedir)
 thisinc_HEADERS = \
 	SoWinEnterScope.h \
-	SoWinLeaveScope.h
+	SoWinLeaveScope.h \
+	SoDebug.h
 
 install-thisincHEADERS: $(thisinc_HEADERS)
 	@$(NORMAL_INSTALL)

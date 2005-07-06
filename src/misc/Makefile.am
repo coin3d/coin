@@ -35,7 +35,8 @@ RegularSources = \
 	SoAudioDevice.cpp \
 	AudioTools.cpp \
 	CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp
+	CoinOffscreenGLCanvas.cpp \
+	SoDebug.cpp
 
 LinkHackSources = \
 	all-misc-cpp.cpp

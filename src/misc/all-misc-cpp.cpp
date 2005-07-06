@@ -56,3 +56,4 @@
 #include "SoAudioDevice.cpp"
 #include "AudioTools.cpp"
 #include "CoinStaticObjectInDLL.cpp"
+#include "SoDebug.cpp"

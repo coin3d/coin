@@ -62,7 +62,9 @@ PublicHeaders = \
 	SoPickedPoint.h \
 	SoPrimitiveVertex.h \
 	SoSceneManager.h \
-	SoType.h
+	SoType.h \
+	oivwin32.h \
+	non_winsys.h
 
 PrivateHeaders =
 ObsoleteHeaders =
