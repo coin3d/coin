@@ -673,6 +673,11 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
   gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
 
+  /* the rest should be mt-safe, and we need to give up the lock,
+     since we're calling into another cc_flw_*() function (which will
+     also want to lock the mutex */
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+
   if (gs->fromdefaultfont) {
     /* FIXME: should be simplified, so we could just use the else{}
        block below unconditionally. 20050623 mortene.*/
@@ -685,8 +690,6 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
     *x = bm->advanceX;
     *y = bm->advanceY;
   }
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
 void
