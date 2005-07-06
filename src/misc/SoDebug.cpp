@@ -50,19 +50,16 @@ SoDebug::NamePtr(const char * name, void * ptr)
   }
   data = strdup(name);
   SoDebug_internal::namedict->put(ptr, data);
-  printf("stored '%s' for pointer %p\n", data, ptr);
 }
 
 const char *
 SoDebug::PtrName(void * ptr)
 {
-  printf("looking up pointer %p\n", ptr);
   static const char fallback[] = "<unnamed>";
   if ( SoDebug_internal::namedict == NULL ) return fallback;
   char * data = NULL;
   if ( SoDebug_internal::namedict->get(ptr, data) ) {
     if ( data ) {
-      printf("located '%s'\n", data);
       return data;
     }
   }
