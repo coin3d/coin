@@ -1,3 +1,5 @@
 Makefile
 .deps
 *.lst
+*.lo
+.libs
