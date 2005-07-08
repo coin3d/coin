@@ -81,7 +81,7 @@ static const char VALUE_SEPARATOR_CHAR = ',';
 
 class SoFieldEntry {
 public:
-  SoFieldEntry(const char * n, int offset) : name(n), ptroffset(offset) { }
+  SoFieldEntry(const char * n, ptrdiff_t o) : name(n), ptroffset(o) { }
   // Copy constructors.
   SoFieldEntry(const SoFieldEntry * fe) { this->copy(fe); }
   SoFieldEntry(const SoFieldEntry & fe) { this->copy(&fe); }
@@ -96,7 +96,7 @@ public:
   }
 
   SbName name;
-  int ptroffset;
+  ptrdiff_t ptroffset;
 
 private:
   void copy(const SoFieldEntry * fe) {
@@ -197,19 +197,52 @@ void
 SoFieldData::addField(SoFieldContainer * base, const char * name,
                       const SoField * field)
 {
+  // FIXME: one peculiar thing I discovered while debugging something
+  // else. It appears the GlobalField::realTime is added twice -- how
+  // come? 20050708 mortene.
+  //
+  // FIXME: and another peculiar thing. Why is the SoInfo::string
+  // field added upon SoDB::init()? 20050708 mortene.
+
   CC_GLOBAL_LOCK;
+
+  // Will be called many times, from each node constructor, for every
+  // field of the node. We're only interested in in getting this
+  // information /once/, however.
   if (!this->hasField(name)) {
+
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::addField",
-                           "class: ``%s'', field: ``%s''",
+                           "class==%s, fieldname==%s, field==%p, index==%d",
                            base->getTypeId().getName().getString(),
-                           name);
+                           name, field, this->fields.getLength());
 #endif // debug
     
     char * vbase = (char *)base;
     char * vfield = (char *)field;
     const ptrdiff_t offs = vfield - vbase;
-    this->fields.append(new SoFieldEntry(name, (int)offs));
+
+    // FIXME: disabled yet, as we should first make a test program to
+    // see if this robustness check is ok with the current Coin
+    // code. The check shuold simply run through all
+    // SoFieldContainer-derived classes and make an instance of all
+    // non-abstract ones. Then see if there'll be any asserting or
+    // crashing from the below check.
+    //
+    // This would smoke out any internal faulty use of
+    // SoFieldData::addField().
+    //
+    // 20050708 mortene.
+#if 0
+    // Robustness: check whether or not the given field is actually a
+    // member of base.
+    const SoField * f = (const SoField *)(base + offs);
+    // The next is likely to segfault from the isOfType() call if
+    // there's an error (and not actually assert).
+    assert(f->isOfType(SoField::getClassTypeId()));
+#endif
+
+    this->fields.append(new SoFieldEntry(name, offs));
   }
   CC_GLOBAL_UNLOCK;
 }
