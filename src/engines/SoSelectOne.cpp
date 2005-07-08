@@ -201,11 +201,45 @@ SoSelectOne::evaluate(void)
     SO_ENGINE_OUTPUT((*output), SoSField, setDirty(FALSE));
   }
   else if (idx >= 0 && idx < this->input->getNum()) {
-    // FIXME: this is a _very_ suboptimal way of doing the
-    // SoMFField->SoSFField conversion. 20000919 mortene.
-    SbString valuestring;
-    this->input->get1(idx, valuestring);
-    SO_ENGINE_OUTPUT((*output), SoSField, set(valuestring.getString()));
+
+    // Macro used to generate the right casts for copying field values
+#define IF_TYPE(_var_, _fieldtype_) \
+    if(_var_ == SoMF##_fieldtype_::getClassTypeId() ) \
+    { \
+        SO_ENGINE_OUTPUT((*output), SoSF##_fieldtype_, setValue((*((SoMF##_fieldtype_ *)this->input))[idx])); \
+    }
+    // end of macro
+
+    SoType type = this->input->getTypeId();
+    IF_TYPE(type,BitMask)
+    else IF_TYPE(type,Bool)
+    else IF_TYPE(type,Color)
+    else IF_TYPE(type,Engine)
+    else IF_TYPE(type,Enum)
+    else IF_TYPE(type,Float)
+    else IF_TYPE(type,Int32)
+    else IF_TYPE(type,Matrix)
+    else IF_TYPE(type,Name)
+    else IF_TYPE(type,Node)
+    else IF_TYPE(type,Path)
+    else IF_TYPE(type,Plane)
+    else IF_TYPE(type,Rotation)
+    else IF_TYPE(type,Short)
+    else IF_TYPE(type,String)
+    else IF_TYPE(type,Time)
+    else IF_TYPE(type,UInt32)
+    else IF_TYPE(type,UShort)
+    else IF_TYPE(type,Vec2f)
+    else IF_TYPE(type,Vec3f)
+    else IF_TYPE(type,Vec4f)
+    else {
+      // fall back for user defined types, and built-in types not
+      // covered by the above (if any)
+      SbString valuestring;
+      this->input->get1(idx, valuestring);
+      SO_ENGINE_OUTPUT((*output), SoSField, set(valuestring.getString()));
+    }
+#undef IF_TYPE
   }
 #if COIN_DEBUG
   else {
