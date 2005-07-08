@@ -379,52 +379,40 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   // I haven't found any use for the inv argument. The function
   // should be kept as is to make this node OIV compatible though.
   // pederb, 20000220
-
   int numtocontainer = this->numNodesUpToContainer.getValue();
   int numtoreset = this->numNodesUpToReset.getValue();
-
-  if (numtoreset >= numtocontainer) {
+  const SoFullPath * curpath = (const SoFullPath *) action->getCurPath();
+  const int curpathlen = curpath->getLength();
+  
+  if ((numtocontainer <= 0) || (numtocontainer >= curpathlen)) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoSurroundScale::updateMySurroundParams",
-                              "illegal field values, numNodesUpToReset (==%d)"
-                              "should always be less than "
-                              "numNodesUpToContainer (==%d)",
-                              numtoreset, numtocontainer);
+                              "illegal field value, numNodesUpToContainer (==%d)"
+                              "should always be > 0 and < path length\n",
+                              numtocontainer);
 #endif // debug
-    this->cachedScale.setValue(1.0f, 1.0f, 1.0f);
-    this->cachedInvScale.setValue(1.0f, 1.0f, 1.0f);
-    this->cachedTranslation.setValue(0.0f, 0.0f, 0.0f);
-    this->cacheOK = TRUE;
-    return;
-  }
-
-  // make sure we don't get here when calculating the bbox
-  SbBool storedignore = this->isIgnoreInBbox();
-  this->setIgnoreInBbox(TRUE);
-
-  const SoFullPath * curpath = (const SoFullPath *) action->getCurPath();
-
-  SoNode * applynode = curpath->getNodeFromTail(numtocontainer);
-
-  int start = curpath->getLength() - 1 - numtocontainer;
-  int end = curpath->getLength() - 1 - numtoreset;
-
-  if (start < 0 || end < 0) {
-    // if values are out of range, just return. This might happen if an
-    // SoGetMatrixAction is applied directly on the node..
     this->cachedScale.setValue(1.0f, 1.0f, 1.0f);
     this->cachedInvScale.setValue(1.0f, 1.0f, 1.0f);
     this->cachedTranslation.setValue(0.0f, 0.0f, 0.0f);
     this->cacheOK = FALSE;
     return;
   }
-  assert(start >= 0);
-  assert(end >= 0);
 
-  SoTempPath temppath(end-start+1);
-  for (int i = start; i <= end; i++) {
-    temppath.append(curpath->getNode(i));
+  // make sure we don't get here when calculating the bbox
+  SbBool storedignore = this->isIgnoreInBbox();
+  this->setIgnoreInBbox(TRUE);
+  
+  SoPath * applypath = curpath->copy(0, curpathlen - numtocontainer);
+  applypath->ref();
+
+  SoPath * resetpath = NULL;
+  // if numtoreset is out of range, just ignore it and don't use a
+  // reset path
+  if ((numtoreset >= 0) && (numtoreset < numtocontainer)) {
+    resetpath = curpath->copy(0, curpathlen - numtoreset);
+    resetpath->ref();
   }
+  
   SbViewportRegion vp(100, 100);
   // need to test if SoViewportRegionElement is enabled since this
   // element is not enabled for SoAudioRenderAction.
@@ -432,14 +420,20 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   if (action->getState()->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
     vp = SoViewportRegionElement::get(action->getState());
   }
-
+  
   SoGetBoundingBoxAction bboxaction(vp);
 
   // reset bbox when returning from surroundscale branch,
   // meaning we'll calculate the bbox of only the geometry
   // to the right of this branch, getting the wanted result.
-  bboxaction.setResetPath(&temppath, FALSE, SoGetBoundingBoxAction::ALL);
-  bboxaction.apply(applynode);
+  if (resetpath) {
+    bboxaction.setResetPath(resetpath, FALSE, SoGetBoundingBoxAction::ALL);
+  }
+  bboxaction.apply(applypath);
+  applypath->unref();
+  if (resetpath) {
+    resetpath->unref();
+  }
 
   SbBox3f box = bboxaction.getBoundingBox();
   if (box.isEmpty()) {
@@ -476,7 +470,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
 
     this->cachedTranslation = box.getCenter();
   }
-
+  
   this->setIgnoreInBbox(storedignore);
   this->cacheOK = TRUE;
 }
