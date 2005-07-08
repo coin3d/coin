@@ -303,7 +303,7 @@ public:
   // Convenience method to extract a string that identifies the field
   // with as much relevant info as possible. Used from other debug
   // output code.
-  static SbString getDebugIdString(SoField * f)
+  static SbString getDebugIdString(const SoField * f)
   {
     SoFieldContainer * fcontainer = f->getContainer();
     SbName fname("<no-container>");
@@ -623,7 +623,7 @@ void
 SoField::setDefault(SbBool def)
 {
 #if COIN_DEBUG && 0 // debug
-  SbString finfo = SoFieldP::getDebugIdString();
+  SbString finfo = SoFieldP::getDebugIdString(this);
   SoDebugError::postInfo("SoField::setDefault", "%s, setDefault(%s)",
                          finfo.getString(), def ? "TRUE" : "FALSE");
 #endif // debug
@@ -1251,6 +1251,8 @@ SoField::set(const char * valuestring)
 void
 SoField::get(SbString & valuestring)
 {
+  // FIXME: this function should be const! 20050607 mortene.
+
   // NOTE: this code has an almost verbatim copy in SoMField::get1(),
   // so remember to update both places if any fixes are done.
 
@@ -1527,7 +1529,7 @@ SbBool
 SoField::shouldWrite(void) const
 {
 #if COIN_DEBUG && 0 // debug
-  SbString finfo = SoFieldP::getDebugIdString();
+  SbString finfo = SoFieldP::getDebugIdString(this);
   SoDebugError::postInfo("SoField::shouldWrite",
                          "%s: isDefault==%d, isIgnored==%d, isConnected==%d",
                          finfo.getString(), this->isDefault(),
@@ -1664,7 +1666,6 @@ SoField::copyConnection(const SoField * fromfield)
     SoFieldContainer * masterfc = master->getContainer();
     SbName fieldname;
     (void) masterfc->getFieldName(master, fieldname);
-    const ptrdiff_t ptroffset = (char *)master - (char *)masterfc;
     SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
     SoField * copyfield = copyfc->getField(fieldname);
     
