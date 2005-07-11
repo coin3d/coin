@@ -43,7 +43,6 @@ public:
   void deactivateGLContext(void);
 
   void setBufferSize(const SbVec2s & size);
-  SbVec2s getBufferSize(void) const;
 
   void readPixels(uint8_t * dst, const SbVec2s & vpdims,
                   unsigned int dstrowsize,

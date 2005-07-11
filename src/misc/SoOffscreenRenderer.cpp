@@ -297,6 +297,7 @@ public:
     this->backgroundcolor.setValue(0,0,0);
     this->components = SoOffscreenRenderer::RGB;
     this->buffer = NULL;
+    this->bufferbytesize = 0;
     this->lastnodewasacamera = FALSE;
     
     if (glrenderaction) {
@@ -338,7 +339,9 @@ public:
   SoGLRenderAction * renderaction;
   SbBool didallocation;
   CoinOffscreenGLCanvas glcanvas;
+
   unsigned char * buffer;
+  size_t bufferbytesize;
 
   int numsubscreens[2];
   // The maximum size of a subscreen tile.
@@ -443,9 +446,12 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
   Get maximum dimensions (width, height) of the offscreen buffer.
 
   Note that from Coin version 2 onwards, the returned value will
-  always be (SHRT_MAX, SHRT_MAX), as the SoOffscreenRenderer can in
-  principle generate unlimited size offscreen canvases by tiling
-  together multiple renderings of the same scene.
+  always be (\c SHRT_MAX, \c SHRT_MAX), where \c SHRT_MAX on most
+  systems is equal to 32767.
+
+  This because the SoOffscreenRenderer can in principle generate
+  unlimited size offscreen canvases by tiling together multiple
+  renderings of the same scene.
 */
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
@@ -472,7 +478,6 @@ void
 SoOffscreenRenderer::setComponents(const Components components)
 {
   PRIVATE(this)->components = components;
-  SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
 }
 
 /*!
@@ -570,6 +575,9 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 // whatever data we're now grabbing directly from the SoCamera nodes.
 // It'd be more robust, I believe, as the elements set by SoCamera can
 // in principle also be set from other code. 20041006 mortene.
+//
+// UPDATE 20050711 mortene: on how to fix this properly, see item #121
+// in Coin/BUGS.txt.
 SoGLRenderAction::AbortCode
 SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
 {
@@ -597,6 +605,11 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
     // SoOffscreenRenderer -- which is very unlikely.
     //
     // 20050512 mortene.
+    //
+    // UPDATE 20050711 mortene: on how to fix this properly, see item
+    // #121 in Coin/BUGS.txt. (The tile number should be in an
+    // element, which the SoCamera would query (and thereby also make
+    // the cache dependent on)).
     SoCacheElement::invalidate(thisp->renderaction->getState());
   }
 
@@ -658,7 +671,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // criteria as is used in SoExtSelection to decide which size to use
   // for its offscreen-buffer, as that node fails in VISIBLE_SHAPE
   // mode with tiled rendering. This is a weakness with SoExtSelection
-  // which should be improved upon, if possible. 20041028 mortene.
+  // which should be improved upon, if possible (i.e. fix
+  // SoExtSelection, rather than adding some kind of "semi-private"
+  // API to let SoExtSelection find out whether or not tiled rendering
+  // is used). 20041028 mortene.
   const SbBool tiledrendering =
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
@@ -699,6 +715,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   //
   // FIXME: this doesn't seem to be working, according to a report by
   // Colin Dunlop. See bug item #108. 20050509 mortene.
+  //
+  // UPDATE 20050711 mortene: the bug report referred to above may not
+  // be correct. We should anyway fix this in a more appropriate
+  // manner, for instance by setting up a new element with a boolean
+  // value to indicate whether or not stuff should be rendered in
+  // maximum quality. That would be generally useful for having better
+  // control from the offscreenrenderer.
   const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
 
   if (SoOffscreenRendererP::debug()) {
@@ -707,11 +730,21 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                            fullsize[0], fullsize[1], tilesize[0], tilesize[1]);
   }
 
-  // Deallocate old and allocate new target buffer.
-  // FIXME: this looks unnecessary inefficient. 20050616 mortene.
-  delete[] this->buffer;
-  size_t bufsize = fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents();
-  this->buffer = new unsigned char[bufsize];
+  // Deallocate old and allocate new target buffer, if necessary.
+  //
+  // If we need more space:
+  const size_t bufsize =
+    fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents();
+  SbBool alloc = (bufsize > this->bufferbytesize);
+  // or if old buffer was much larger, free up the memory by fitting
+  // to smaller size:
+  alloc = alloc || (bufsize <= (this->bufferbytesize / 8));
+
+  if (alloc) {
+    delete[] this->buffer;
+    this->buffer = new unsigned char[bufsize];
+    this->bufferbytesize = bufsize;
+  }
 
   if (SoOffscreenRendererP::debugTileOutputPrefix()) {
     (void)memset(this->buffer, 0x00, bufsize);
@@ -832,9 +865,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     }
     
     const SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
-    assert(dims[0] == this->glcanvas.getBufferSize()[0]);
-    assert(dims[1] == this->glcanvas.getBufferSize()[1]);
-
     this->glcanvas.readPixels(this->buffer, dims, dims[0],
                               (unsigned int)PUBLIC(this)->getComponents());
 
@@ -1200,7 +1230,12 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
 }
 
 // FIXME: the file format support checking could have been done
-// better, for instance by using MIME types. 20020206 mortene.
+// better, for instance by using MIME types. Consider fixing the API
+// for later major releases. 20020206 mortene.
+//
+// UPDATE 20050711 mortene: it seems like TGS has extended their API
+// in an even worse way; by adding separate writeToJPEG(),
+// writeToPNG(), etc etc functions.
 
 /*!
   Returns \c TRUE if the buffer can be saved as a file of type \a

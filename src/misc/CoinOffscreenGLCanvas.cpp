@@ -48,19 +48,20 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
 {
   assert((size[0] > 0) && (size[1] > 0) && "invalid dimensions attempted set");
 
-  // Avoid costly operations below if not really necessary.
-  if (this->buffersize == size) { return; }
+  // Avoid costly operations below if not really necessary, by
+  // checking that if buffersize is equal or larger, don't reallocate.
+  // We can do this as glViewport() is used from SoOffscreenRenderer
+  // to render to the correct viewport dimensions.
+  if ((this->buffersize[0] >= size[0]) && (this->buffersize[1] >= size[1])) {
+    return;
+  }
+  // (Note that we don't care to check if the in-memory buffer is much
+  // larger than what is requested (to then free up potentially large
+  // memory resources), as the size of the GL canvas will be limited
+  // by the largest support viewport / tile size.)
 
   this->buffersize = size;
-
   if (this->context) { this->destructContext(); }
-}
-
-
-SbVec2s
-CoinOffscreenGLCanvas::getBufferSize(void) const
-{
-  return this->buffersize;
 }
 
 // *************************************************************************
