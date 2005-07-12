@@ -1987,6 +1987,8 @@ cc_glglue_instance_from_context_ptr(void * ctx)
   /* The id can really be anything unique for the current context, but
      we should avoid a crash with the possible ids defined by
      SoGLCacheContextElement. It's a bit of a hack, this. */
+
+  /* FIXME: seems bogus! 20050627 mortene. */
   const int id = (int)((long)ctx);
   return cc_glglue_instance(id);
 }
@@ -3893,6 +3895,11 @@ cc_glglue_context_destruct(void * ctx)
   will succeed, as that is also subject to e.g. memory constraints,
   which is something that will dynamically change during the running
   time of an application.
+
+  So the values returned from this function should be taken as hints,
+  and client code of cc_glglue_context_create_offscreen() and
+  cc_glglue_context_make_current() should re-request offscreen
+  contexts with lower dimensions if any of those fails.
 */
 void
 cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
@@ -3959,8 +3966,19 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
        versions (even if we're under MSWin). 20030812 mortene.
     */
 
-    size[0] = cc_min(size[0], 512);
-    size[1] = cc_min(size[1], 512);
+    /* UPDATE 20050712 mortene: this clamping should no longer be
+       necessary, as we now re-request a new, lower size for offscreen
+       buffers from SoOffscreenRenderer (i.e. the values returned from
+       this function is considered just a hint).
+
+       I'm keeping the code comments and the commented out code below,
+       in case there have issues with NVidia drivers hidden by this
+       clamping, which will surface now...
+
+       Eventually, this special case check should be removed, though.
+    */
+/*     size[0] = cc_min(size[0], 512); */
+/*     size[1] = cc_min(size[1], 512); */
   }
 
   *width = (unsigned int) size[0];
@@ -4024,6 +4042,14 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      of allocation if the maximum (or wanted) buffer size fails. For
      further discussion, see the FIXME at the top of the
      SoOffscreenRendererP::renderFromBase() method. 20040714 mortene.
+
+     UPDATE 20050712 mortene: this has now been fixed in
+     SoOffscreenRenderer -- it will try with sucessively smaller
+     sizes. I'm still keeping the max clamping below, though, to avoid
+     unexpected problems with external applications, as we're
+     currently between patch-level releases with Coin-2, and I have
+     only limited time right now for testing that removing this would
+     not not cause badness.
   */
   *width = cc_min(*width, 4096);
   *height = cc_min(*height, 4096);
