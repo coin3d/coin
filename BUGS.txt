@@ -412,22 +412,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-030 Running larsa's 'iv2scenegraph' tool (from SmallChange/test-code/)
-    on the good old windmill.iv model (and probably others aswell)
-    makes it output a PNG that is "skewed".
-
-    Most likely an SoOffscreenRenderer bug (perhaps with the unlimited
-    buffer size functionality), but more investigation is needed.
-
-    20020924 mortene.
-
-    UPDATE 20021121 larsa:  I think Øystein has fixed the skewing
-    problem now - don't know if he has been instructed to update this
-    file when fixing bugs?  Anyways, he has other problems with the
-    offscreen renderer he is working on.
-
-=====================================================================
-
 031 Setting up the alpha channel for the offscreen renderer doesn't
     consistently (between hosts) produce a transparent background when
     using setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY).  It
@@ -4047,6 +4031,9 @@ PointSet { }
 
     20041104 mortene, reported by kintel.
 
+    UPDATE 20050711 mortene: see also item #196, which seems to be the
+    same issue.
+
 =====================================================================
 
 165 Faulty error reporting upon reading bad file.
@@ -4735,6 +4722,9 @@ Transform {
     SoChildList instances not kept in sync.
 
     20050609 mortene.
+
+    UPDATE 20050711 mortene: see also item #162, which seems to be the
+    same issue.
 
 =====================================================================
 
