@@ -48,19 +48,48 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
 {
   assert((size[0] > 0) && (size[1] > 0) && "invalid dimensions attempted set");
 
-  // Avoid costly operations below if not really necessary, by
-  // checking that if buffersize is equal or larger, don't reallocate.
-  // We can do this as glViewport() is used from SoOffscreenRenderer
-  // to render to the correct viewport dimensions.
-  if ((this->buffersize[0] >= size[0]) && (this->buffersize[1] >= size[1])) {
+  // We check if the current GL canvas is much larger than what is
+  // requested, as to then free up potentially large memory resources,
+  // even if we already have a large enough canvas.
+  size_t oldres = (size_t)this->buffersize[0] * (size_t)this->buffersize[1];
+  size_t newres = (size_t)size[0] * (size_t)size[1];
+  const SbBool resourcehog = (oldres > (newres * 16));
+
+  // Since the operation of context destruction and reconstruction has
+  // the potential to be such a costly operation (because GL caches
+  // are smashed, among other things), we try hard to avoid it.
+  //
+  // So avoid it if not really necessary, by checking that if we
+  // already have a working GL context with size equal or larger to
+  // the requested, don't destruct (and reconstruct).
+  //
+  // We can have a different sized internal GL canvas as to what
+  // SoOffscreenRenderer wants, because glViewport() is used from
+  // SoOffscreenRenderer to render to the correct viewport dimensions.
+  if (this->context &&
+      (this->buffersize[0] >= size[0]) && (this->buffersize[1] >= size[1]) &&
+      !resourcehog) {
     return;
   }
-  // (Note that we don't care to check if the in-memory buffer is much
-  // larger than what is requested (to then free up potentially large
-  // memory resources), as the size of the GL canvas will be limited
-  // by the largest support viewport / tile size.)
 
-  this->buffersize = size;
+  // Ok, there's no way around it, we need to destruct the GL context:
+
+  if (resourcehog) {
+    // If we were hogging too much memory for the offscreen context,
+    // simply go back to the requested size, to free up all that we
+    // can.
+    this->buffersize = size;
+  }
+  else {
+    // To avoid costly reconstruction on "flutter", by one or two
+    // dimensions going a little bit up and down from frame to frame,
+    // we try to expand the GL canvas up-front to what perhaps would
+    // be sufficient to avoid further GL canvas destruct- /
+    // reconstruct-operations.
+    this->buffersize[0] = SbMax(size[0], this->buffersize[0]);
+    this->buffersize[1] = SbMax(size[1], this->buffersize[1]);
+  }
+
   if (this->context) { this->destructContext(); }
 }
 
