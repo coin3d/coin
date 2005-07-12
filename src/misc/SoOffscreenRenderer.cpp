@@ -338,14 +338,14 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
-  CoinOffscreenGLCanvas glcanvas;
 
   unsigned char * buffer;
   size_t bufferbytesize;
 
+  CoinOffscreenGLCanvas glcanvas;
+  unsigned int glcanvassize[2];
+
   int numsubscreens[2];
-  // The maximum size of a subscreen tile.
-  unsigned int subtilesize[2];
   // The subscreen size of the current tile. (Less than max if it's a
   // right- or bottom-border tile.)
   unsigned int subsize[2];
@@ -595,7 +595,7 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
     thisp->visitedcamera = (SoCamera *) node;
     thisp->lastnodewasacamera = TRUE;
 
-    // FIXME: this is not really enitrely sufficient. If a camera is
+    // FIXME: this is not really entirely sufficient. If a camera is
     // already within a cached list upon the first invocation of a
     // render pass, we'll never get a callback upon encountering it.
     //
@@ -631,66 +631,54 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
-  // FIXME: the getMaxTileSize() here is the *theoretical* maximum,
-  // we're not guaranteed that we'll be able to allocate a buffer of
-  // this size -- e.g. due to memory constraints on the gfx
-  // card.
-  //
-  // What we should do is to actually try to allocate the wanted size,
-  // and then upon failure, successively try with smaller sizes
-  // (alternating between halving width and height) until either a
-  // workable offscreen buffer was found, or no buffer could be made
-  // (well, don't bother with too small buffers, as that will cause
-  // pain when tiling them together, we should have >= 128x128 or
-  // something like that).
-  //
-  // 20040714 mortene, inspired by kyrah.
-  const SbVec2s tilesize = SoOffscreenRendererP::getMaxTileSize();
-  if (tilesize == SbVec2s(0, 0)) { return FALSE; }
+  // getMaxTileSize() returns the *theoretical* maximum, we're not
+  // guaranteed that we'll be able to allocate a buffer of this size
+  // -- e.g. due to memory constraints on the gfx card.
+
+  SbVec2s glsize = SoOffscreenRendererP::getMaxTileSize();
+  if (glsize == SbVec2s(0, 0)) { return FALSE; }
 
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
-  const SbVec2s regionsize = SbVec2s(SbMin(tilesize[0], fullsize[0]), SbMin(tilesize[1], fullsize[1]));
-
-  // For debugging purposes, it has been made possible to use an
-  // envvar to *force* tiled rendering even when it can be done in a
-  // single chunk.
-  //
-  // (Note: don't use this envvar when using SoExtSelection nodes, for
-  // the reason noted below.)
-  static int forcetiled = -1;
-  if (forcetiled == -1) {
-    const char * env = coin_getenv("COIN_FORCE_TILED_OFFSCREENRENDERING");
-    forcetiled = (env && (atoi(env) > 0)) ? 1 : 0;
-    if (forcetiled) {
-      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                             "Forcing tiled rendering.");
-    }
-  }
-
-  // FIXME: tiled rendering should be decided on the exact same
-  // criteria as is used in SoExtSelection to decide which size to use
-  // for its offscreen-buffer, as that node fails in VISIBLE_SHAPE
-  // mode with tiled rendering. This is a weakness with SoExtSelection
-  // which should be improved upon, if possible (i.e. fix
-  // SoExtSelection, rather than adding some kind of "semi-private"
-  // API to let SoExtSelection find out whether or not tiled rendering
-  // is used). 20041028 mortene.
-  const SbBool tiledrendering =
-    forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
-
-  this->glcanvas.setBufferSize(tiledrendering ? tilesize : regionsize);
+  glsize[0] = SbMin(glsize[0], fullsize[0]);
+  glsize[1] = SbMin(glsize[1], fullsize[1]);
 
   // oldcontext is used to restore the previous context id, in case
   // the render action is not allocated by us.
   const uint32_t oldcontext = this->renderaction->getCacheContext();
 
-  const uint32_t newcontext = this->glcanvas.activateGLContext();
+  // We try to allocate the wanted size, and then if we fail,
+  // successively try with smaller sizes (alternating between halving
+  // width and height) until either a workable offscreen buffer was
+  // found, or no buffer could be made.
+  uint32_t newcontext;
+  do {
+    this->glcanvas.setBufferSize(glsize);
+    newcontext = this->glcanvas.activateGLContext();
+    if (newcontext != 0) { break; }
+
+    // keep trying until 32x32 -- if even those dimensions doesn't
+    // work, give up, as too small tiles will cause the processing
+    // time to go through the roof due to the huge number of passes:
+    if ((glsize[0] <= 32) && (glsize[1] <= 32)) { break; }
+
+    // else, halve the largest dimension, and try again:
+    if (glsize[0] > glsize[1]) { glsize[0] /= 2; }
+    else { glsize[1] /= 2; }
+  } while (TRUE);
+
   if (newcontext == 0) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
                               "Could not activate an offscreen OpenGL context.");
     return FALSE;
   }
+
   this->renderaction->setCacheContext(newcontext);
+
+  // We need to know the actual GL viewport size for tiled rendering,
+  // in calculations when narrowing the camera view volume -- so we
+  // store away this value for the "found a camera"-callback.
+  this->glcanvassize[0] = glsize[0];
+  this->glcanvassize[1] = glsize[1];
 
   if (SoOffscreenRendererP::debug()) {
     GLint colbits[4];
@@ -726,8 +714,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
   if (SoOffscreenRendererP::debug()) {
     SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                           "fullsize==<%d, %d>, tilesize==<%d, %d>",
-                           fullsize[0], fullsize[1], tilesize[0], tilesize[1]);
+                           "fullsize==<%d, %d>, glsize==<%d, %d>",
+                           fullsize[0], fullsize[1], glsize[0], glsize[1]);
   }
 
   // Deallocate old and allocate new target buffer, if necessary.
@@ -754,15 +742,38 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // SoGLRenderAction
   this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
+  // For debugging purposes, it has been made possible to use an
+  // envvar to *force* tiled rendering even when it can be done in a
+  // single chunk.
+  //
+  // (Note: don't use this envvar when using SoExtSelection nodes, for
+  // the reason noted below.)
+  static int forcetiled = -1;
+  if (forcetiled == -1) {
+    const char * env = coin_getenv("COIN_FORCE_TILED_OFFSCREENRENDERING");
+    forcetiled = (env && (atoi(env) > 0)) ? 1 : 0;
+    if (forcetiled) {
+      SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                             "Forcing tiled rendering.");
+    }
+  }
+
+  // FIXME: tiled rendering should be decided on the exact same
+  // criteria as is used in SoExtSelection to decide which size to use
+  // for its offscreen-buffer, as that node fails in VISIBLE_SHAPE
+  // mode with tiled rendering. This is a weakness with SoExtSelection
+  // which should be improved upon, if possible (i.e. fix
+  // SoExtSelection, rather than adding some kind of "semi-private"
+  // API to let SoExtSelection find out whether or not tiled rendering
+  // is used). 20041028 mortene.
+  const SbBool tiledrendering =
+    forcetiled || (fullsize[0] > glsize[0]) || (fullsize[1] > glsize[1]);
+
   // Shall we use subscreen rendering or regular one-screen renderer?
   if (tiledrendering) {
 
-    // Allocate memory for subscreen
-    this->subtilesize[0] = SbMin(tilesize[0], fullsize[0]);
-    this->subtilesize[1] = SbMin(tilesize[1], fullsize[1]);
-
     for (int i=0; i < 2; i++) {
-      this->numsubscreens[i] = (fullsize[i] + (tilesize[i] - 1)) / tilesize[i];
+      this->numsubscreens[i] = (fullsize[i] + (glsize[i] - 1)) / glsize[i];
     }
 
     // We have to grab cameras using this callback during rendering
@@ -775,15 +786,15 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         this->currenttile = SbVec2s(x, y);
 
         // Find current "active" tilesize.
-        this->subsize[0] = this->subtilesize[0];
-        this->subsize[1] = this->subtilesize[1];
+        this->subsize[0] = glsize[0];
+        this->subsize[1] = glsize[1];
         if (x == (this->numsubscreens[0] - 1)) {
-          this->subsize[0] = fullsize[0] % this->subtilesize[0];
-          if (this->subsize[0] == 0) { this->subsize[0] = this->subtilesize[0]; }
+          this->subsize[0] = fullsize[0] % glsize[0];
+          if (this->subsize[0] == 0) { this->subsize[0] = glsize[0]; }
         }
         if (y == (this->numsubscreens[1] - 1)) {
-          this->subsize[1] = fullsize[1] % this->subtilesize[1];
-          if (this->subsize[1] == 0) { this->subsize[1] = this->subtilesize[1]; }
+          this->subsize[1] = fullsize[1] % glsize[1];
+          if (this->subsize[1] == 0) { this->subsize[1] = glsize[1]; }
         }
 
         SbViewportRegion subviewport = SbViewportRegion(SbVec2s(this->subsize[0], this->subsize[1]));
@@ -800,8 +811,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         const unsigned int nrcomp = PUBLIC(this)->getComponents();
 
         const int MAINBUF_OFFSET =
-          (this->subtilesize[1] * y * fullsize[0] + this->subtilesize[0] * x) *
-          nrcomp;
+          (glsize[1] * y * fullsize[0] + glsize[0] * x) * nrcomp;
 
         const SbVec2s vpsize = subviewport.getViewportSizePixels();
         this->glcanvas.readPixels(this->buffer + MAINBUF_OFFSET,
@@ -1452,6 +1462,8 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   return ret ? TRUE : FALSE;
 }
 
+// FIXME: this should really be done by SoCamera, on the basis of data
+// from an "SoTileRenderingElement". See BUGS.txt, item #121. 20050712 mortene.
 void
 SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
 {
@@ -1482,9 +1494,9 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
     break;
   }
 
-  const int LEFTINTPOS = this->currenttile[0] * this->subtilesize[0];
+  const int LEFTINTPOS = this->currenttile[0] * this->glcanvassize[0];
   const int RIGHTINTPOS = LEFTINTPOS + this->subsize[0];
-  const int TOPINTPOS = this->currenttile[1] * this->subtilesize[1];
+  const int TOPINTPOS = this->currenttile[1] * this->glcanvassize[1];
   const int BOTTOMINTPOS = TOPINTPOS + this->subsize[1];
 
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
@@ -1512,7 +1524,7 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   if (renderaction->getNumPasses() > 1) {
     SbVec3f jittervec;
     SbMatrix m;
-    const int vpsize[2] = { this->subtilesize[0], this->subtilesize[1] };
+    const int vpsize[2] = { this->glcanvassize[0], this->glcanvassize[1] };
     coin_viewvolume_jitter(renderaction->getNumPasses(), renderaction->getCurPass(),
                            vpsize, (float *)jittervec.getValue());
     m.setTranslate(jittervec);
