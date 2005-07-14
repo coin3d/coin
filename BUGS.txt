@@ -4568,6 +4568,15 @@ Cube {
     then also do the view volume narrowing itself, removing the need
     for the current ugly hack in SoOffscreenRenderer to do this.)
 
+    UPDATE 20050714 mortene: there's something else odd going on
+    here... if the tilewidth and -height is set to 640 and 480,
+    respectively, which is the same as the default size of renderos'
+    buffer, it also comes out wrong -- but only if tiled rendering is
+    *not* used. If we on the other hand force tiled rendering on (by
+    using the envvar COIN_FORCE_TILED_OFFSCREENRENDERING=1), and the
+    tile size is at least of dimensions 640x480, everything works..?
+    Strange.
+
 =====================================================================
 
 192 VRML97 fan-in doesn't work.
@@ -4907,5 +4916,15 @@ Text2 {
     hints for how to do this.
 
     20050701 mortene.
+
+=====================================================================
+
+204 SoOffscreenRenderer with its SbViewportRegion's origin != <0,0>.
+
+    This fails in tiled mode rendering. It seems like the origin value
+    is simply ignored. In non-tiled rendering, this seems to work as
+    expected.
+
+    20050714 mortene.
 
 =====================================================================
