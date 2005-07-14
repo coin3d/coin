@@ -189,13 +189,14 @@ SbString::findAll(const SbString & strarg, SbIntList & found) const
 /*!
   \fn SbString SbString::getSubString(int startidx, int endidx) const
 
-  This method returns a new string which contains a substring defined by the
-  given indices \a startidx and \a endChar (inclusive).
-  If \a endChar is -1, the substring from \a startidx to the end of the
+  This method returns a new string which contains a substring defined
+  by the given indices \a startidx and \a endidx (inclusive).
+
+  If \a endidx is -1, the substring from \a startidx to the end of the
   string is used.
 
-  This will return a string which is (\a endChar - \a startidx + 1) characters
-  long, i.e. if this string is "foo/bar" and we call by
+  This will return a string which is (\a endidx - \a startidx + 1)
+  characters long, i.e. if this string is "foo/bar" and we call by
   SbString::getSubString(0, 3), the returned string will be "foo/".
 */
 

@@ -30,9 +30,7 @@
   representation and calculations on time values of high resolution.
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+// *************************************************************************
 
 #include <assert.h>
 #include <stdlib.h>
@@ -40,6 +38,10 @@
 #include <limits.h>
 #include <errno.h>
 #include <math.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef HAVE_TIME_H
 #include <time.h> // struct timeval (Linux)
@@ -59,9 +61,27 @@
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/tidbits.h>
 
+// *************************************************************************
+
+// FIXME: I don't agree with this willy-nilly, "gut feeling"
+// constant. As far as I can tell from a quick look, the exceptions in
+// the code using this should be handled in other ways.
+//
+// E.g. this:
+//
+//   if (s==0.0) { this->dtime /= s + SMALLEST_DOUBLE_TIMEUNIT; }
+//
+// ..could better be written as
+//
+//   if (s==0.0) { this->dtime = DBL_MAX; }
+//
+// If there are no protests, I'll take care of removing this constant.
+//
+// 20050526 mortene.
 
 static const double SMALLEST_DOUBLE_TIMEUNIT  = 1.0/1000000.0;
 
+// *************************************************************************
 
 /*!
   The default constructor sets up a time instance of 0 seconds.

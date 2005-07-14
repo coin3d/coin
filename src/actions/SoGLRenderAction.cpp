@@ -296,6 +296,8 @@
 
   Turns off transparency for objects, even if transparency is set using
   an SoMaterial node.
+
+  \since Coin 1.0
 */
 
 /*!
@@ -1054,8 +1056,8 @@ SoGLRenderAction::abortNow(void)
     const SoNode * n = p->getTail();
     assert(n);
     printf("%p %s (\"%s\")\n",
-           n, n->getTypeId().getName().getString() : "",
-           n->getName().getString() : "");
+           n, n->getTypeId().getName().getString(),
+           n->getName().getString());
   }
 #endif // debug
 

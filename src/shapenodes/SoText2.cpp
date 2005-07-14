@@ -42,6 +42,12 @@
   of text (the baseline being the imaginary line on which all upper case
   characters are standing).
 
+  The size of the fonts on screen is decided from the SoFont::size
+  field of a preceding SoFont-node in the scene graph, which specifies
+  the size in pixel dimensions. This value sets the approximate
+  vertical dimension of the letters.  The default value if no
+  SoFont-nodes are used, is 10.
+
   One important issue about rendering performance: since the
   positioning and rendering of an SoText2 node depends on the current
   viewport and camera, having SoText2 nodes in the scene graph will
@@ -66,7 +72,8 @@
   two separate SoText2 nodes, one for each font, since it will have to
   recalculate glyph bitmap ids and positions for each call to \c GLrender().
 
-  SoText2 uses the SoGlyph class to generate glyph bitmaps.
+  SoScale nodes can not be used to influence the dimensions of the
+  rendering output of SoText2 nodes.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -77,7 +84,7 @@
     }
   \endcode
 
-  \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph
+  \sa SoFont, SoFontStyle, SoText3, SoAsciiText
 */
 
 #include <limits.h>
@@ -294,7 +301,6 @@ SoText2::GLRender(SoGLRenderAction * action)
 
   state->push();
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  // Render using SoGlyphs
 
   PRIVATE(this)->lock();
   PRIVATE(this)->buildGlyphCache(state);

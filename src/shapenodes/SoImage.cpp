@@ -115,6 +115,9 @@
   graph for the best possible rendering performance. See the note
   about this issue in the SoText2 class documentation.
 
+  SoScale nodes can not be used to influence the dimensions of the
+  rendering output of SoImage nodes.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     Image {

@@ -438,7 +438,18 @@ SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
   camera orientation constant.
 
   Finds the bounding box of the scene and calls
-  SoCamera::viewBoundingBox().
+  SoCamera::viewBoundingBox(). A bounding sphere will be calculated
+  from the scene bounding box, so the camera will "view all" even when
+  the scene is rotated, in any way.
+
+  The \a slack argument gives a multiplication factor to the distance
+  the camera is supposed to move out from the \a sceneroot mid-point.
+
+  A value less than 1.0 for the \a slack argument will therefore cause
+  the camera to come closer to the scene, a value of 1.0 will position
+  the camera as exactly outside the scene bounding sphere, and a value
+  larger than 1.0 will give "extra slack" versus the scene bounding
+  sphere.
 */
 void
 SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,

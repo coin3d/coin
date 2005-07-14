@@ -28,6 +28,12 @@
 
   Render text as 3D geometry.
 
+  The size of the textual geometry representation is decided from the
+  SoFont::size field of a preceding SoFont-node in the scene graph,
+  which specifies the size in unit coordinates. This value sets the
+  approximate vertical size of the letters.  The default value if no
+  SoFont-nodes are used, is 10.
+
   This node will create 3D geometry from a specified font defined by a
   preceding SoFont node. The complexity of the glyphs is controlled by
   a preceding SoComplexity node with \e Type set to OBJECT_SPACE.
