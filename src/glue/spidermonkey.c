@@ -208,6 +208,34 @@ spidermonkey(void)
   REGISTER_FUNC(JS_FinalizeStub, JS_FinalizeStub_t);
   REGISTER_FUNC(JS_NewObject, JS_NewObject_t);
   REGISTER_FUNC(JS_InitStandardClasses, JS_InitStandardClasses_t);
+  REGISTER_FUNC(JS_DefineObject, JS_DefineObject_t);
+  REGISTER_FUNC(JS_DefineProperties, JS_DefineProperties_t);
+  REGISTER_FUNC(JS_GetPrivate, JS_GetPrivate_t);
+  REGISTER_FUNC(JS_SetPrivate, JS_SetPrivate_t);
+  REGISTER_FUNC(JS_NewFunction, JS_NewFunction_t);
+  REGISTER_FUNC(JS_GetFunctionObject, JS_GetFunctionObject_t);
+  REGISTER_FUNC(JS_GetParent, JS_GetParent_t);
+  REGISTER_FUNC(JS_SetParent, JS_SetParent_t);
+  REGISTER_FUNC(JS_DefineFunctions, JS_DefineFunctions_t);
+  REGISTER_FUNC(JS_NewStringCopyZ, JS_NewStringCopyZ_t);
+  REGISTER_FUNC(JS_TypeOfValue, JS_TypeOfValue_t);
+  REGISTER_FUNC(JS_GetTypeName, JS_GetTypeName_t);
+  REGISTER_FUNC(JS_InstanceOf, JS_InstanceOf_t);
+  REGISTER_FUNC(JS_InitClass, JS_InitClass_t);
+  REGISTER_FUNC(JS_NewDoubleValue, JS_NewDoubleValue_t);
+  REGISTER_FUNC(JS_SetContextPrivate, JS_SetContextPrivate_t);
+  REGISTER_FUNC(JS_GetContextPrivate, JS_GetContextPrivate_t);
+  REGISTER_FUNC(JS_ValueToBoolean, JS_ValueToBoolean_t);
+  REGISTER_FUNC(JS_ValueToNumber, JS_ValueToNumber_t);
+  REGISTER_FUNC(JS_NewArrayObject, JS_NewArrayObject_t);
+  REGISTER_FUNC(JS_GetArrayLength, JS_GetArrayLength_t);
+  REGISTER_FUNC(JS_SetArrayLength, JS_SetArrayLength_t);
+  REGISTER_FUNC(JS_HasArrayLength, JS_HasArrayLength_t);
+  REGISTER_FUNC(JS_GetElement, JS_GetElement_t);
+  REGISTER_FUNC(JS_SetElement, JS_SetElement_t);
+  REGISTER_FUNC(JS_AddRoot, JS_AddRoot_t);
+  REGISTER_FUNC(JS_RemoveRoot, JS_RemoveRoot_t);
+  REGISTER_FUNC(JS_GetStringLength, JS_GetStringLength_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);

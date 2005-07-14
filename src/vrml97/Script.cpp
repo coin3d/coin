@@ -158,13 +158,19 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/glue/spidermonkey.h>
 #include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
 static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
 static void * sovrmlscript_eval_closure = NULL;
+
+
+// *************************************************************************
+
+// FIXME: Do this in a nicer way. 20050714 erikgors.
+#include "JavascriptEngine.cpp"
+#include "JS_VRMLClasses.cpp"
 
 // *************************************************************************
 
@@ -176,12 +182,17 @@ public:
     this->oneshotsensor = new SoOneShotSensor(SoVRMLScript::eval_cb, master);
     this->isreading = FALSE;
     this->isevaluating = FALSE;
+    this->engine = NULL;
   }
 
   ~SoVRMLScriptP()
   {
     delete this->oneshotsensor;
+    this->shutdown();
   }
+
+  void initialize(void);
+  void shutdown(void);
 
   static void cleanup(void);
 
@@ -194,26 +205,10 @@ public:
   SbBool isreading, isevaluating;
   SoOneShotSensor * oneshotsensor;
 
-  static int jsinit;
-  static void initJS(void); // FIXME: should there be an engine for
-                            // each Script node, or just one global,
-                            // or...? Check the VRML spec. 20050602 mortene.
-  static void shutdownJS(void);
-
-  static struct JS {
-    JSRuntime * rt;
-    JSContext * cx;
-    JSObject * global;
-    JSClass globalclassdef;
-  } SpiderMonkey;
-
-  SbList<SbName> fieldnotifications, eventoutfields;
-  void evaluateAllScripts(void);
-  void executeScript(const char * script) const;
+  SbList<SbName> fieldnotifications, eventoutfields, eventinfields;
   void executeFunctions(void);
 
-  static void field2jsval(const SoField * f, jsval * v);
-  static void jsval2field(const jsval v, SoField * f);
+  JavascriptEngine * engine;
 
 private:
   SoVRMLScript * master;
@@ -222,14 +217,13 @@ private:
 #define PUBLIC(p) ((p)->master)
 #define PRIVATE(p) ((p)->pimpl)
 
-SoVRMLScriptP::JS SoVRMLScriptP::SpiderMonkey;
-SbBool SoVRMLScriptP::jsinit = FALSE;
-
 void
 SoVRMLScriptP::cleanup(void)
 {
-  SoVRMLScriptP::shutdownJS();
-  SoVRMLScriptP::jsinit = FALSE;
+  if (SoVRMLScriptP::useSpiderMonkey()) {
+    // Destroy javascript runtime
+    JavascriptEngine::shutdown();
+  }
 }
 
 // *************************************************************************
@@ -241,6 +235,7 @@ SoVRMLScriptP::debug(void)
   if (d == -1) {
     const char * env = coin_getenv("COIN_DEBUG_VRMLSCRIPT");
     d = (env && (atoi(env) > 0)) ? 1 : 0;
+
   }
   return d ? TRUE : FALSE;
 }
@@ -264,7 +259,7 @@ SoVRMLScriptP::useSpiderMonkey(void)
 {
   if (!SoVRMLScriptP::allowSpiderMonkey()) { return FALSE; }
   if (!spidermonkey()->available) { return FALSE; }
-  if (SoVRMLScriptP::SpiderMonkey.rt == NULL) { return FALSE; }
+  if (JavascriptEngine::runtime == NULL) { return FALSE; }
   return TRUE;
 }
 
@@ -289,15 +284,13 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
-  if (!SoVRMLScriptP::jsinit && SoVRMLScriptP::allowSpiderMonkey()) {
-    SoVRMLScriptP::initJS();
-    SoVRMLScriptP::jsinit = TRUE;
+  if (!JavascriptEngine::runtime && SoVRMLScriptP::allowSpiderMonkey()) {
+    JavascriptEngine::init();
     coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 0);
   }
 
   PRIVATE(this) = new SoVRMLScriptP(this);
   this->setNodeType(SoNode::VRML2);
-  this->isBuiltIn = TRUE;
 
   this->isBuiltIn = TRUE;
   assert(SoVRMLScript::classTypeId != SoType::badType());
@@ -307,12 +300,14 @@ SoVRMLScript::SoVRMLScript(void)
 
   // FIXME: directOutput should default be FALSE, according to the
   // VRML97 spec doc. 20050526 mortene.
-  this->directOutput.setValue(TRUE);
+  // Looks more like a hint than a rule to me. Something we can
+  // safely ignore. 20050712 erikgors.
+  this->directOutput.setValue(FALSE);
   this->directOutput.setContainer(this);
 
   // FIXME: shouldn't mustEvaluate be default FALSE? Seems like it
   // from the VRML97 spec doc. 20050526 mortene.
-  this->mustEvaluate.setValue(TRUE);
+  this->mustEvaluate.setValue(FALSE);
   this->mustEvaluate.setContainer(this);
 
   this->initFieldData();
@@ -528,17 +523,25 @@ SoVRMLScript::notify(SoNotList * l)
       SbName name;
       SbBool ok = this->getFieldName(f, name);
       assert(ok);
-      if (PRIVATE(this)->fieldnotifications.find(name) == -1) {
-        PRIVATE(this)->fieldnotifications.append(name);
-      }
 
-      if (!PRIVATE(this)->oneshotsensor->isScheduled()) {
-        PRIVATE(this)->oneshotsensor->schedule();
+      // We silently ignore events for non-eventIn fields
+      // FIXME: This will happen when we get a fieldnotification from a
+      // reference. Should we post a warning? 20050712 erikgors.
+      if (PRIVATE(this)->eventinfields.find(name) != -1) {
+        if (PRIVATE(this)->fieldnotifications.find(name) == -1) {
+          PRIVATE(this)->fieldnotifications.append(name);
+        }
+
+        if (!PRIVATE(this)->oneshotsensor->isScheduled()) {
+          PRIVATE(this)->oneshotsensor->schedule();
+        }
       }
     }
   }
 
-  if (f == &this->url) { PRIVATE(this)->evaluateAllScripts(); }
+  if (f == &this->url) {
+    PRIVATE(this)->initialize();
+  }
 
   inherited::notify(l);
 }
@@ -599,24 +602,11 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
 
           if (name == EVENTIN) {
             f->setFieldType(SoField::EVENTIN_FIELD);
+            PRIVATE(this)->eventinfields.append(fname);
           }
           else if (name == EVENTOUT) {
             f->setFieldType(SoField::EVENTOUT_FIELD);
             PRIVATE(this)->eventoutfields.append(fname);
-
-            if (SoVRMLScriptP::useSpiderMonkey()) {
-              jsval initval;
-              SoVRMLScriptP::field2jsval(f, &initval);
-              const JSBool ok =
-                spidermonkey()->JS_SetProperty(SoVRMLScriptP::SpiderMonkey.cx,
-                                               SoVRMLScriptP::SpiderMonkey.global,
-                                               fname.getString(), &initval);
-              if (!ok) {
-                SoDebugError::post("SoVRMLScript::readInstance",
-                                   "Could not set up eventOut field '%s' for "
-                                   "Javascript engine.");
-              }
-            }
           }
           else if (name == EXPOSEDFIELD) {
             f->setFieldType(SoField::EXPOSED_FIELD);
@@ -624,6 +614,7 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
           f->setContainer(this);
           this->fielddata->addField(this, fname, f);
           if (name == FIELD || name == EXPOSEDFIELD) { // only read field values for fields
+
             err = ! f->read(in, fname);
             if (err) {
               SoReadError::post(in, "Unable to read default value for '%s'.", 
@@ -694,31 +685,108 @@ SoVRMLScript::initFieldData(void)
 // *************************************************************************
 
 void
-SoVRMLScriptP::evaluateAllScripts(void)
+SoVRMLScriptP::initialize(void)
 {
-  if (PUBLIC(this)->url.getNum() == 0) { return; }
+  if (this->engine != NULL) {
+      if (SoVRMLScriptP::debug()) {
+        SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                               "restarting script engine");
+      }
+    this->shutdown();
+  }
+  SbString script;
 
-  // FIXME: lift this limitation, of course. 20050602 mortene.
-  if (PUBLIC(this)->url.getNum() == 1) {
-    SbString s(PUBLIC(this)->url[0].getString());
-    const char * prefix = "javascript:";
-    const size_t prefixlen = strlen(prefix);
+  for (int index=0; index<PUBLIC(this)->url.getNum(); ++index) {
+    SbString s(PUBLIC(this)->url[index].getString());
 
-    // FIXME: lift this limitation, of course. 20050602 mortene.
-    if ((s.getLength() > (int)prefixlen) && (s.getSubString(0, prefixlen - 1) == prefix)) {
-      s = s.getSubString(prefixlen);
-      const char * script = s.getString();
-      this->executeScript(script);
-    }
-    else {
-      SoDebugError::postInfo("SoVRMLScriptP::evaluateAllScripts",
-                             "only \"javascript:\" URLs supported yet");
+    // javascript support
+    const char jsPrefix[] = "javascript:";
+    const size_t jsPrefixlen = sizeof(jsPrefix) - 1;
+    if (s.getLength() > (int)jsPrefixlen && s.getSubString(0, jsPrefixlen -1) == jsPrefix) {
+    
+      // starting javascript engine
+      if (!SoVRMLScriptP::useSpiderMonkey()) {
+        if (SoVRMLScriptP::debug()) {
+          SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                                 "SpiderMonkey Javascript engine not available");
+        }
+        continue;
+      }
+      assert(this->engine == NULL);
+      this->engine = new JavascriptEngine;
+      JS_addVRMLclasses(this->engine);
+      this->engine->initHandlers();
+
+      script = s.getSubString(jsPrefixlen);
+      break;
     }
   }
-  else {
-    SoDebugError::postInfo("SoVRMLScriptP::evaluateAllScripts",
-                           "only supports a single script in the \"url\" field yet");
+
+  if (this->engine == NULL) {
+      SoDebugError::postWarning("SoVRMLScript::initialize",
+                                "No script language evaluation engine available.");
+      return;
   }
+
+  // FIXME: should scriptFields be set before or after the script has been
+  // executed? After script feels most correct from a languange independent
+  // viewpoint.  200507011 erikgors.
+
+  this->engine->executeScript(script.getString());
+
+  int numFields = PUBLIC(this)->fielddata->getNumFields();
+  for (int i=0; i<numFields; ++i) {
+    const SbName & name = PUBLIC(this)->fielddata->getFieldName(i);
+    const SoField * f = PUBLIC(this)->fielddata->getField(PUBLIC(this), i);
+    if (!(f->getFieldType() == SoField::NORMAL_FIELD ||
+        f->getFieldType() == SoField::EVENTOUT_FIELD)) {
+      if (SoVRMLScriptP::debug()) {
+        SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                               "skipping scriptField %s", name.getString());
+      }
+      continue;
+    }
+    if (SoVRMLScriptP::debug()) {
+      SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                             "setting scriptField %s", name.getString());
+    }
+    this->engine->setScriptField(name, f);
+  }
+
+  // Adding TRUE and FALSE to be bug-compatible.
+  SoSFBool * jee = (SoSFBool *)SoSFBool::createInstance();
+  jee->setValue(TRUE);
+  this->engine->setScriptField(SbName("TRUE"), jee);
+  jee->setValue(FALSE);
+  this->engine->setScriptField(SbName("FALSE"), jee);
+  delete jee;
+
+  SbName initialize("initialize");
+  if (this->engine->hasScriptField(initialize)) {
+    if (SoVRMLScriptP::debug()) {
+      SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                             "executing script function \"%s\"", initialize.getString());
+    }
+    this->engine->executeFunction(initialize, 0, NULL);
+  }
+}
+
+void
+SoVRMLScriptP::shutdown(void)
+{
+  assert(this->engine != NULL);
+
+  SbName shutdown("shutdown");
+  if (this->engine->hasScriptField(shutdown)) {
+    if (SoVRMLScriptP::debug()) {
+      SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                             "executing script function \"%s\"", shutdown.getString());
+    }
+    this->engine->executeFunction(shutdown, 0, NULL);
+  }
+
+  delete this->engine;
+  this->engine = NULL;
 }
 
 // *************************************************************************
@@ -734,11 +802,11 @@ SoVRMLScriptP::evaluate(void)
                              this->fieldnotifications[i].getString());
     }
   }
-
+  
   if (sovrmlscript_eval_cb) {
     sovrmlscript_eval_cb(sovrmlscript_eval_closure, PUBLIC(this));
   }
-  else if (SoVRMLScriptP::useSpiderMonkey()) {
+  else if (this->engine != NULL) {
     this->executeFunctions();
   }
   else {
@@ -770,40 +838,14 @@ SoVRMLScript::eval_cb(void * data, SoSensor *)
 // *************************************************************************
 
 void
-SoVRMLScriptP::field2jsval(const SoField * f, jsval * v)
-{
-  if (f->isOfType(SoSFBool::getClassTypeId())) {
-    const SbBool val = ((SoSFBool *)f)->getValue();
-    *v = BOOLEAN_TO_JSVAL(val);
-  }
-  else {
-    // FIXME: fix, obviously. 20050602 mortene.
-    SoDebugError::postInfo("SoVRMLScriptP::field2jsval",
-                           "only know how to handle SoSFBool yet...");
-  }
-}
-
-void
-SoVRMLScriptP::jsval2field(const jsval v, SoField * f)
-{
-  if (f->isOfType(SoSFBool::getClassTypeId())) {
-    const SbBool b = JSVAL_TO_BOOLEAN(v);
-    ((SoSFBool *)f)->setValue(b);
-  }
-  else {
-    // FIXME: fix, obviously. 20050602 mortene.
-    SoDebugError::postInfo("SoVRMLScriptP::jsval2field",
-                           "only know how to handle SoSFBool yet...");
-  }
-}
-
-// *************************************************************************
-
-void
 SoVRMLScriptP::executeFunctions(void)
 {
   int i;
 
+  if (this->fieldnotifications.getLength() == 0) {
+    return;
+  }
+  
   // Execute all functions for input fields that have been changed.
 
   for (i = 0; i < this->fieldnotifications.getLength(); i++) {
@@ -811,182 +853,36 @@ SoVRMLScriptP::executeFunctions(void)
     const SoField * f = PUBLIC(this)->getField(n);
     assert(f);
 
-    jsval argv[1];
-    SoVRMLScriptP::field2jsval(f, &argv[0]);
-
-    jsval rval;
-    JSBool ok =
-      spidermonkey()->JS_CallFunctionName(SoVRMLScriptP::SpiderMonkey.cx,
-                                          SoVRMLScriptP::SpiderMonkey.global,
-                                          n.getString(), 1, argv, &rval);
-    if (!ok) {
-      SoDebugError::postWarning("SoVRMLScriptP::executeFunctions",
-                                "JS_CallFunctionName(..., \"%s\", ...) "
-                                "failed!", n.getString());
-    }
+    this->engine->executeFunction(n, 1, f);
   }
   this->fieldnotifications.truncate(0);
-  
+
+  // Call eventsProcessed
+
+  static SbName eventsProcessed("eventsProcessed");
+  if (this->engine->hasScriptField(eventsProcessed)) {
+    this->engine->executeFunction(eventsProcessed, 0, NULL);
+  }
 
   // Then, pick up all new eventOut values.
 
   for (i = 0; i < this->eventoutfields.getLength(); i++) {
-    jsval val;
     const SbName & name = this->eventoutfields[i];
+    SoField * f = PUBLIC(this)->getEventOut(name);
+    assert(f);
+
     if (debug()) {
       SoDebugError::postInfo("SoVRMLScriptP::executeFunctions",
                              "Picking up new (?) value of eventOut '%s'...",
                              name.getString());
     }
-    const JSBool ok =
-      spidermonkey()->JS_GetProperty(SoVRMLScriptP::SpiderMonkey.cx,
-                                     SoVRMLScriptP::SpiderMonkey.global,
-                                     name.getString(), &val);
-    if (!ok) {
-      SoDebugError::post("SoVRMLScriptP::executeFunctions",
-                         "Could not find eventOut '%s' as SpiderMonkey "
-                         "object property!", name.getString());
-      continue;
-    }
-    SoField * f = PUBLIC(this)->getEventOut(name);
-    assert(f);
 
     // FIXME: should probably rather compare new value with old before
     // actually pushing it. Perhaps there's something about this in
     // the spec. 20050606 mortene.
-    SoVRMLScriptP::jsval2field(val, f);
+    this->engine->getScriptField(name, f);
   }
 }
-
-// *************************************************************************
-
-void
-SoVRMLScriptP::executeScript(const char * script) const
-{
-  if (SoVRMLScriptP::debug()) {
-    SoDebugError::postInfo("SoVRMLScript::executeScript", "script=='%s'", script);
-  }
-
-  jsval rval;
-  JSBool ok =
-    spidermonkey()->JS_EvaluateScript(SoVRMLScriptP::SpiderMonkey.cx,
-                                      SoVRMLScriptP::SpiderMonkey.global,
-                                      script, strlen(script),
-                                      "inline-script", 1, &rval);
-  if (SoVRMLScriptP::debug()) {
-    SoDebugError::postInfo("SoVRMLScript::executeScript", "JS_EvaluateScript() => %d", ok);
-  }
-
-  if (ok) {
-    JSString * str =
-      spidermonkey()->JS_ValueToString(SoVRMLScriptP::SpiderMonkey.cx, rval);
-
-    if (SoVRMLScriptP::debug()) {
-      SoDebugError::postInfo("SoVRMLScript::executeScript",
-                             "script result: '%s'",
-                             spidermonkey()->JS_GetStringBytes(str));
-    }
-  }
-  else {
-    // FIXME: improve on this. 20050526 mortene.
-    SoDebugError::postWarning("SoVRMLScript::executeScript",
-                              "Script evaluation failed!");
-  }
-}
-
-// *************************************************************************
-
-static void
-SpiderMonkey_ErrorHandler(JSContext * cx, const char * message, JSErrorReport * report)
-{
-  SoDebugError::postWarning("SpiderMonkey_ErrorHandler", "%s", message);
-}
-
-void
-SoVRMLScriptP::initJS(void)
-{
-  if (!spidermonkey()->available) { return; }
-
-  SoVRMLScriptP::SpiderMonkey.rt = NULL;
-  SoVRMLScriptP::SpiderMonkey.cx = NULL;
-
-  JSRuntime * rt = SoVRMLScriptP::SpiderMonkey.rt =
-    spidermonkey()->JS_NewRuntime(/* maxbytes allocated before GC runs: */ 4 * 1024 * 1024);
-  if (!rt) {
-    SoDebugError::postWarning("SoVRMLScriptP::initJS",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to instantiate a JSRuntime!");
-    return;
-  }
-
-  JSContext * cx = SoVRMLScriptP::SpiderMonkey.cx =
-    spidermonkey()->JS_NewContext(rt, /* stack chunk size: */ 8192);
-  if (!cx) {
-    SoDebugError::postWarning("SoVRMLScriptP::initJS",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to set up a JSContext!");
-    SoVRMLScriptP::shutdownJS();
-    return;
-  }
-
-  (void)spidermonkey()->JS_SetErrorReporter(cx, SpiderMonkey_ErrorHandler);
-  
-  JSClass jclass = {
-    "Coin SoVRMLScript global object class", 0,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
-    spidermonkey()->JS_FinalizeStub,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
-  };
-
-  SoVRMLScriptP::SpiderMonkey.globalclassdef = jclass;
-
-  // FIXME: the eventOut fields are stored as variables (or
-  // "properties" in JS-lingo) in this object, so this can not be
-  // global for all VRMLScript nodes. 20050602 mortene.
-  JSObject * global = SoVRMLScriptP::SpiderMonkey.global =
-    spidermonkey()->JS_NewObject(cx, &SoVRMLScriptP::SpiderMonkey.globalclassdef, NULL, NULL);
-  if (!global) {
-    SoDebugError::postWarning("SoVRMLScriptP::initJS",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to set up a global JSObject!");
-    SoVRMLScriptP::shutdownJS();
-    return;
-  }
-
-  JSBool ok = spidermonkey()->JS_InitStandardClasses(cx, global);
-  if (!ok) {
-    SoDebugError::postWarning("SoVRMLScriptP::initJS",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to init standard classes for "
-                              "global JSObject!");
-    SoVRMLScriptP::shutdownJS();
-    return;
-  }
-}
-
-void
-SoVRMLScriptP::shutdownJS(void)
-{
-  if (!spidermonkey()->available) { return; }
-
-  if (SoVRMLScriptP::SpiderMonkey.cx) {
-    spidermonkey()->JS_DestroyContext(SoVRMLScriptP::SpiderMonkey.cx);
-  }
-
-  if (SoVRMLScriptP::SpiderMonkey.rt) {
-    spidermonkey()->JS_DestroyRuntime(SoVRMLScriptP::SpiderMonkey.rt);
-  }
-
-  spidermonkey()->JS_ShutDown();
-}
-
-// *************************************************************************
 
 #undef PRIVATE
 #undef PUBLIC

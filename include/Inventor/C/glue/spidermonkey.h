@@ -73,6 +73,13 @@ typedef int JSBool;
 typedef long jsword;
 typedef jsword jsval;
 typedef unsigned int uintN;
+typedef uint16_t jschar;
+
+
+typedef int32_t jsrefcount;
+typedef uint8_t jsbytecode;
+typedef uint32_t JSHashNumber;
+typedef uint32_t jsatomid;
 
 typedef enum JSType {
   JSTYPE_VOID,
@@ -100,9 +107,12 @@ typedef void JSObject;
 typedef void JSObjectOps;
 typedef void JSXDRState;
 typedef void JSString;
-typedef void JSErrorReport;
 typedef struct JSClass JSClass;
+typedef struct JSPropertySpec JSPropertySpec;
 typedef int JSVersion;
+typedef void JSFunction;
+typedef struct JSFunctionSpec JSFunctionSpec;
+typedef struct JSErrorReport JSErrorReport;
 
 #define JS_DLL_CALLBACK /* FIXME: set up this define properly. 20050601 mortene. */
 
@@ -117,7 +127,6 @@ typedef JSBool (* JS_DLL_CALLBACK JSNative)(JSContext *, JSObject *, uintN, jsva
 typedef JSBool (* JS_DLL_CALLBACK JSXDRObjectOp)(JSXDRState *, JSObject **);
 typedef JSBool (* JS_DLL_CALLBACK JSHasInstanceOp)(JSContext *, JSObject *, jsval, JSBool *);
 typedef uint32_t (* JS_DLL_CALLBACK JSMarkOp)(JSContext *, JSObject *, void *);
-typedef void (* JS_DLL_CALLBACK JSErrorReporter)(JSContext *, const char *, JSErrorReport *);
 
 struct JSClass {
   const char * name;
@@ -140,20 +149,109 @@ struct JSClass {
   jsword spare;
 };
 
+struct JSPropertySpec {
+  const char * name;
+  int8_t tinyid;
+  uint8_t flags;
+  JSPropertyOp getter;
+  JSPropertyOp setter;
+};
+
+struct JSFunctionSpec {
+  const char *name;
+  JSNative call;
+  uint8_t nargs;
+  uint8_t flags;
+  uint16_t extra;
+};
+
+struct JSErrorReport {
+  const char * filename;
+  uintN lineno;
+  const char * linebuf;
+  const char * tokenptr;
+  const jschar * uclinebuf;
+  const jschar * uctokenptr;
+  uintN flags;
+  uintN errorNumber;
+  const jschar * ucmessage;
+  const jschar ** messageArgs;
+};
+
+
+
 #endif /* HAVE_DYNAMIC_LINKING */
 
 
 /* Defines and macros. ************************************************** */
 
+#define JSVAL_OBJECT 0x0
+#define JSVAL_INT 0x1
+#define JSVAL_DOUBLE 0x2
+#define JSVAL_STRING 0x4
 #define JSVAL_BOOLEAN 0x6
 
+#define JS_BIT(n)       ((uint32_t)1 << (n))
+#define JS_BITMASK(n)   (JS_BIT(n) - 1)
+
 #define JSVAL_TAGBITS 3
+#define JSVAL_TAGMASK           JS_BITMASK(JSVAL_TAGBITS)
+#define JSVAL_TAG(v)            ((v) & JSVAL_TAGMASK)
 #define JSVAL_SETTAG(v,t) ((v) | (t))
+#define JSVAL_CLRTAG(v)         ((v) & ~(jsval)JSVAL_TAGMASK)
+
+#define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
+#define JSVAL_IS_NUMBER(v)      (JSVAL_IS_INT(v) || JSVAL_IS_DOUBLE(v))
+#define JSVAL_IS_INT(v)         (((v) & JSVAL_INT) && (v) != JSVAL_VOID)
+#define JSVAL_IS_DOUBLE(v)      (JSVAL_TAG(v) == JSVAL_DOUBLE)
+#define JSVAL_IS_STRING(v)      (JSVAL_TAG(v) == JSVAL_STRING)
+#define JSVAL_IS_BOOLEAN(v)     (JSVAL_TAG(v) == JSVAL_BOOLEAN)
 
 #define BOOLEAN_TO_JSVAL(b) JSVAL_SETTAG((jsval)(b) << JSVAL_TAGBITS, JSVAL_BOOLEAN)
 #define JSVAL_TO_BOOLEAN(v) ((JSBool)((v) >> JSVAL_TAGBITS))
 
+#define JSVAL_INT_BITS          31
+#define JSVAL_INT_POW2(n)       ((jsval)1 << (n))
+#define JSVAL_INT_MIN           ((jsval)1 - JSVAL_INT_POW2(30))
+#define JSVAL_INT_MAX           (JSVAL_INT_POW2(30) - 1)
+#define INT_FITS_IN_JSVAL(i)    ((uint32_t)((i)+JSVAL_INT_MAX) <= 2*JSVAL_INT_MAX)
+#define JSVAL_TO_INT(v)         ((int32_t)(v) >> 1)
+#define INT_TO_JSVAL(i)         (((jsval)(i) << 1) | JSVAL_INT)
+
+#define JSVAL_TO_GCTHING(v)     ((void *)JSVAL_CLRTAG(v))
+#define JSVAL_TO_OBJECT(v)      ((JSObject *)JSVAL_TO_GCTHING(v))
+#define JSVAL_TO_DOUBLE(v)      ((double *)JSVAL_TO_GCTHING(v))
+#define JSVAL_TO_STRING(v)      ((JSString *)JSVAL_TO_GCTHING(v))
+#define OBJECT_TO_JSVAL(obj)    ((jsval)(obj))
+#define DOUBLE_TO_JSVAL(dp)     JSVAL_SETTAG((jsval)(dp), JSVAL_DOUBLE)
+#define STRING_TO_JSVAL(str)    JSVAL_SETTAG((jsval)(str), JSVAL_STRING)
+
+#define JSPROP_ENUMERATE 0x01
+#define JSPROP_READONLY 0x02
+#define JSPROP_PERMANENT 0x04
+#define JSPROP_EXPORTED 0x08
+#define JSPROP_GETTER 0x10
+#define JSPROP_SETTER 0x20
+#define JSPROP_SHARED 0x40
+#define JSPROP_INDEX 0x80
+
+#define JS_FALSE (int)0
+#define JS_TRUE (int)1
+
+#define JSVAL_VOID   INT_TO_JSVAL(0 - JSVAL_INT_POW2(30))
+#define JSVAL_NULL   OBJECT_TO_JSVAL(0)
+#define JSVAL_ZERO   INT_TO_JSVAL(0)
+#define JSVAL_ONE    INT_TO_JSVAL(1)
+#define JSVAL_FALSE  BOOLEAN_TO_JSVAL(JS_FALSE)
+#define JSVAL_TRUE   BOOLEAN_TO_JSVAL(JS_TRUE)
+
+#define JSCLASS_HAS_PRIVATE (1<<0)
+
+#define JSFUN_BOUND_METHOD 0x40
+
 /* Function typedefs. *************************************************** */
+
+typedef void (* JS_DLL_CALLBACK JSErrorReporter)(JSContext *, const char *, JSErrorReport *);
 
 typedef JSBool (* JS_EvaluateScript_t)(JSContext *, JSObject *, const char *, uintN, const char *, uintN, jsval *);
 typedef JSString * (* JS_ValueToString_t)(JSContext *, jsval);
@@ -175,6 +273,36 @@ typedef JSBool (* JS_ResolveStub_t)(JSContext *, JSObject *, jsval);
 typedef JSBool (* JS_ConvertStub_t)(JSContext *, JSObject *, JSType, jsval *);
 typedef void (* JS_FinalizeStub_t)(JSContext *, JSObject *);
 typedef const char * (* JS_GetImplementationVersion_t)(void);
+typedef void * (* JS_GetPrivate_t)(JSContext *, JSObject *);
+typedef JSBool (* JS_SetPrivate_t)(JSContext *, JSObject *, void *);
+typedef JSFunction * (* JS_NewFunction_t)(JSContext *, JSNative, uintN, uintN flags, JSObject *, const char *);
+typedef JSObject * (* JS_GetFunctionObject_t)(JSFunction *);
+typedef JSObject * (* JS_DefineObject_t)(JSContext *, JSObject *, const char *, JSClass *, JSObject *, uintN);
+typedef JSBool (* JS_DefineProperties_t)(JSContext *, JSObject *, JSPropertySpec *);
+typedef JSObject * (* JS_GetParent_t)(JSContext *, JSObject *);
+typedef JSBool (* JS_SetParent_t)(JSContext *, JSObject *, JSObject *);
+typedef JSBool (* JS_DefineFunctions_t)(JSContext *, JSObject *, JSFunctionSpec *);
+typedef JSString * (* JS_NewStringCopyZ_t)(JSContext *, const char *);
+typedef JSType (* JS_TypeOfValue_t)(JSContext *, jsval);
+typedef const char * (* JS_GetTypeName_t)(JSContext *, JSType);
+typedef JSBool (* JS_InstanceOf_t)(JSContext *, JSObject *, JSClass *, jsval *);
+typedef JSObject * (* JS_InitClass_t)(JSContext *, JSObject *, JSObject *, JSClass *,
+                                      JSNative, uintN, JSPropertySpec *, JSFunctionSpec *,
+                                      JSPropertySpec *, JSFunctionSpec *);
+typedef JSBool (* JS_NewDoubleValue_t)(JSContext *, double, jsval *);
+typedef void * (* JS_GetContextPrivate_t)(JSContext *);
+typedef void (* JS_SetContextPrivate_t)(JSContext *, void *);
+typedef JSBool (* JS_ValueToBoolean_t)(JSContext *, jsval, JSBool *);
+typedef JSBool (* JS_ValueToNumber_t)(JSContext *, jsval, double *);
+typedef JSObject * (* JS_NewArrayObject_t)(JSObject *, int32_t, jsval *);
+typedef JSBool (* JS_GetArrayLength_t)(JSContext *, JSObject *, uint32_t *);
+typedef JSBool (* JS_SetArrayLength_t)(JSContext *, JSObject *, uint32_t);
+typedef JSBool (* JS_HasArrayLength_t)(JSContext *, JSObject *, uint32_t *);
+typedef JSBool (* JS_GetElement_t)(JSContext *, JSObject *, int32_t, jsval *);
+typedef JSBool (* JS_SetElement_t)(JSContext *, JSObject *, int32_t, jsval *);
+typedef JSBool (* JS_AddRoot_t)(JSContext *, void *);
+typedef JSBool (* JS_RemoveRoot_t)(JSContext *, void *);
+typedef size_t (* JS_GetStringLength_t)(JSString *);
 
 /* Access interface. **************************************************** */
 
@@ -201,6 +329,34 @@ typedef struct {
   JS_SetProperty_t JS_SetProperty;
   JS_ShutDown_t JS_ShutDown;
   JS_ValueToString_t JS_ValueToString;
+  JS_DefineObject_t JS_DefineObject;
+  JS_DefineProperties_t JS_DefineProperties;
+  JS_GetPrivate_t JS_GetPrivate;
+  JS_SetPrivate_t JS_SetPrivate;
+  JS_NewFunction_t JS_NewFunction;
+  JS_GetFunctionObject_t JS_GetFunctionObject;
+  JS_GetParent_t JS_GetParent;
+  JS_SetParent_t JS_SetParent;
+  JS_DefineFunctions_t JS_DefineFunctions;
+  JS_NewStringCopyZ_t JS_NewStringCopyZ;
+  JS_TypeOfValue_t JS_TypeOfValue;
+  JS_GetTypeName_t JS_GetTypeName;
+  JS_InstanceOf_t JS_InstanceOf;
+  JS_InitClass_t JS_InitClass;
+  JS_NewDoubleValue_t JS_NewDoubleValue;
+  JS_GetContextPrivate_t JS_GetContextPrivate;
+  JS_SetContextPrivate_t JS_SetContextPrivate;
+  JS_ValueToBoolean_t JS_ValueToBoolean;
+  JS_ValueToNumber_t JS_ValueToNumber;
+  JS_NewArrayObject_t JS_NewArrayObject;
+  JS_GetArrayLength_t JS_GetArrayLength;
+  JS_SetArrayLength_t JS_SetArrayLength;
+  JS_HasArrayLength_t JS_HasArrayLength;
+  JS_GetElement_t JS_GetElement;
+  JS_SetElement_t JS_SetElement;
+  JS_AddRoot_t JS_AddRoot;
+  JS_RemoveRoot_t JS_RemoveRoot;
+  JS_GetStringLength_t JS_GetStringLength;
 
 } SpiderMonkey_t;
 
