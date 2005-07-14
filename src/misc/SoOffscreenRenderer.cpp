@@ -245,7 +245,6 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
@@ -1468,7 +1467,6 @@ void
 SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
 {
   SoState * state = (PUBLIC(this)->getGLRenderAction())->getState();
-  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
 
   // A small trick to change the aspect ratio without changing the
   // scenegraph camera.
@@ -1481,6 +1479,21 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   case SoCamera::CROP_VIEWPORT_LINE_FRAME:
   case SoCamera::CROP_VIEWPORT_NO_FRAME:
     vv = cam->getViewVolume(0.0f);
+
+    { // FIXME: should really fix this bug, not just warn that it is
+      // there. See item #191 in Coin/BUGS.txt for more information.
+      // 20050714 mortene.
+      static SbBool first = TRUE;
+      if (first) {
+        SbString s;
+        cam->viewportMapping.get(s);
+        SoDebugError::postWarning("SoOffscreenRendererP::setCameraViewvolForTile",
+                                  "The SoOffscreenRenderer does not yet work "
+                                  "properly with the SoCamera::viewportMapping "
+                                  "field set to '%s'", s.getString());
+        first = FALSE;
+      }
+    }
     break;
   case SoCamera::ADJUST_CAMERA:
     vv = cam->getViewVolume(aspectratio);
