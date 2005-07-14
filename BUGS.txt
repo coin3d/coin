@@ -4928,3 +4928,19 @@ Text2 {
     20050714 mortene.
 
 =====================================================================
+
+205 Hardcopy export does not work correctly with viewport region
+    changes.
+
+    As reported on coin-discuss by user Ole Jacob Hagen:
+
+        > Generating a postscript file when my scenegraph consists of
+        > one instance of Smallchange's [ViewportRegion] works, but
+        > when I have arranged my scenegraphs into four viewports
+        > (2x2-array) it doesn't work.
+
+    Is this a bug or a limitation? Waiting for pederb's input on this.
+
+    20050714 mortene.
+
+=====================================================================
