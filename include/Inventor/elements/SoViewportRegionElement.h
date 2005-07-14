@@ -52,8 +52,6 @@ protected:
   SbViewportRegion viewportRegion;
 
 private:
-  static  SbViewportRegion *emptyViewportRegion;
-
 };
 
 #endif // !COIN_SOVIEWPORTREGIONELEMENT_H

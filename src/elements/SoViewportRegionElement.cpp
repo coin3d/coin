@@ -34,9 +34,6 @@
 
 #include <assert.h>
 
-// static variables
-SbViewportRegion * SoViewportRegionElement::emptyViewportRegion;
-
 /*!
   \fn SoViewportRegionElement::viewportRegion
 
