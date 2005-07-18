@@ -67,7 +67,7 @@ public:
   void initHandlers(void);
 
 
-  SbList<JavascriptHandler::JavascriptHandler> handlerList;
+  SbList<JavascriptHandler> handlerList;
   static JSRuntime * runtime;
   JSContext * context;
   JSObject * global;
@@ -214,7 +214,7 @@ JavascriptEngine::executeFunction(const SbName &name,
                                   int argc, const SoField * argv, SoField *rval) const
 {
 //  assert(name == "Posicion");
-  jsval jsargv[argc];
+  jsval * jsargv = new jsval[argc];
 
   for (int i=0; i<argc; ++i) {
     this->field2jsval(this->context, &argv[i], &jsargv[i]);
@@ -245,6 +245,8 @@ JavascriptEngine::executeFunction(const SbName &name,
   if (rval != NULL) {
     this->jsval2field(this->context, rjsval, rval);
   }
+
+  delete jsargv;
 }
 
 void
