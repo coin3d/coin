@@ -246,7 +246,7 @@ JavascriptEngine::executeFunction(const SbName &name,
     this->jsval2field(this->context, rjsval, rval);
   }
 
-  delete jsargv;
+  delete [] jsargv;
 }
 
 void
