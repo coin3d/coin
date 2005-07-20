@@ -4919,16 +4919,6 @@ Text2 {
 
 =====================================================================
 
-204 SoOffscreenRenderer with its SbViewportRegion's origin != <0,0>.
-
-    This fails in tiled mode rendering. It seems like the origin value
-    is simply ignored. In non-tiled rendering, this seems to work as
-    expected.
-
-    20050714 mortene.
-
-=====================================================================
-
 205 Hardcopy export does not work correctly with viewport region
     changes.
 
