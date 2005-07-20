@@ -1471,10 +1471,10 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   // A small trick to change the aspect ratio without changing the
   // scenegraph camera.
   SbViewVolume vv;
-  int vpm = cam->viewportMapping.getValue();
-  float aspectratio = this->viewport.getViewportAspectRatio();
+  const float aspectratio = this->viewport.getViewportAspectRatio();
+  const SbVec2s vporigin = this->viewport.getViewportOriginPixels();
 
-  switch(vpm) {
+  switch(cam->viewportMapping.getValue()) {
   case SoCamera::CROP_VIEWPORT_FILL_FRAME:
   case SoCamera::CROP_VIEWPORT_LINE_FRAME:
   case SoCamera::CROP_VIEWPORT_NO_FRAME:
@@ -1507,9 +1507,9 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
     break;
   }
 
-  const int LEFTINTPOS = this->currenttile[0] * this->glcanvassize[0];
+  const int LEFTINTPOS = (this->currenttile[0] * this->glcanvassize[0]) - vporigin[0];
   const int RIGHTINTPOS = LEFTINTPOS + this->subsize[0];
-  const int TOPINTPOS = this->currenttile[1] * this->glcanvassize[1];
+  const int TOPINTPOS = (this->currenttile[1] * this->glcanvassize[1]) - vporigin[1];
   const int BOTTOMINTPOS = TOPINTPOS + this->subsize[1];
 
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
