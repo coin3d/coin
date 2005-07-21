@@ -1645,6 +1645,7 @@ static SbBool MF_jsval2field(JSContext * cx, const jsval v, SoField * f)
       assert(SoJavaScriptEngine::jsval2field(cx, element, data));
       ((MFFieldClass *)f)->set1Value(i, data->getValue());
     }
+    delete data;
     return TRUE;
   }
   return FALSE;
@@ -1745,6 +1746,7 @@ static void MF_field2jsval(JSContext * cx, const SoField * f, jsval * v)
   jsval rval;
   desc->constructor(cx, obj, num, vals, &rval);
   *v = OBJECT_TO_JSVAL(obj);
+  delete data;
   delete vals;
 }
 
