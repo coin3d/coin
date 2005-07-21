@@ -159,6 +159,7 @@
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/misc/SoJavaScriptEngine.h>
 
 // *************************************************************************
 
@@ -169,7 +170,7 @@ static void * sovrmlscript_eval_closure = NULL;
 // *************************************************************************
 
 // FIXME: Do this in a nicer way. 20050714 erikgors.
-#include "JavascriptEngine.cpp"
+//#include "SoJavaScriptEngine.cpp"
 #include "JS_VRMLClasses.cpp"
 
 // *************************************************************************
@@ -188,7 +189,10 @@ public:
   ~SoVRMLScriptP()
   {
     delete this->oneshotsensor;
-    this->shutdown();
+
+    // FIXME: this needs to be done in a nicer way. 20050720 erikgors.
+    if (this->engine != NULL)
+      this->shutdown();
   }
 
   void initialize(void);
@@ -208,7 +212,7 @@ public:
   SbList<SbName> fieldnotifications, eventoutfields, eventinfields;
   void executeFunctions(void);
 
-  JavascriptEngine * engine;
+  SoJavaScriptEngine * engine;
 
 private:
   SoVRMLScript * master;
@@ -220,9 +224,14 @@ private:
 void
 SoVRMLScriptP::cleanup(void)
 {
+  // FIXME: need to make sure this is added to atexit only after
+  // the engine has started. 20050720 erikgors.
+  if (SoJavaScriptEngine::getRuntime() == NULL)
+    return;
+
   if (SoVRMLScriptP::useSpiderMonkey()) {
     // Destroy javascript runtime
-    JavascriptEngine::shutdown();
+    SoJavaScriptEngine::shutdown();
   }
 }
 
@@ -259,7 +268,7 @@ SoVRMLScriptP::useSpiderMonkey(void)
 {
   if (!SoVRMLScriptP::allowSpiderMonkey()) { return FALSE; }
   if (!spidermonkey()->available) { return FALSE; }
-  if (JavascriptEngine::runtime == NULL) { return FALSE; }
+  if (SoJavaScriptEngine::getRuntime() == NULL) { return FALSE; }
   return TRUE;
 }
 
@@ -284,8 +293,8 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
-  if (!JavascriptEngine::runtime && SoVRMLScriptP::allowSpiderMonkey()) {
-    JavascriptEngine::init();
+  if (!SoJavaScriptEngine::getRuntime() && SoVRMLScriptP::allowSpiderMonkey()) {
+    SoJavaScriptEngine::init();
     coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 0);
   }
 
@@ -713,7 +722,7 @@ SoVRMLScriptP::initialize(void)
         continue;
       }
       assert(this->engine == NULL);
-      this->engine = new JavascriptEngine;
+      this->engine = new SoJavaScriptEngine;
       JS_addVRMLclasses(this->engine);
       this->engine->initHandlers();
 
@@ -732,7 +741,9 @@ SoVRMLScriptP::initialize(void)
   // executed? After script feels most correct from a languange independent
   // viewpoint.  200507011 erikgors.
 
-  this->engine->executeScript(script.getString());
+  // FIXME: is getName() a sensiable identificator for script? 20050719 erikgors.
+  SbName name = PUBLIC(this)->getName();
+  this->engine->executeScript(name, script.getString());
 
   int numFields = PUBLIC(this)->fielddata->getNumFields();
   for (int i=0; i<numFields; ++i) {
@@ -753,14 +764,15 @@ SoVRMLScriptP::initialize(void)
     this->engine->setScriptField(name, f);
   }
 
-  // Adding TRUE and FALSE to be bug-compatible.
-  SoSFBool * jee = (SoSFBool *)SoSFBool::createInstance();
-  jee->setValue(TRUE);
-  this->engine->setScriptField(SbName("TRUE"), jee);
-  jee->setValue(FALSE);
-  this->engine->setScriptField(SbName("FALSE"), jee);
-  delete jee;
+  // Adding TRUE and FALSE to be bug-compatible. 20050719 erikgors.
+  SoSFBool * boolean = (SoSFBool *)SoSFBool::createInstance();
+  boolean->setValue(TRUE);
+  this->engine->setScriptField(SbName("TRUE"), boolean);
+  boolean->setValue(FALSE);
+  this->engine->setScriptField(SbName("FALSE"), boolean);
+  delete boolean;
 
+  // Run initialize function if it exists
   SbName initialize("initialize");
   if (this->engine->hasScriptField(initialize)) {
     if (SoVRMLScriptP::debug()) {
@@ -853,7 +865,11 @@ SoVRMLScriptP::executeFunctions(void)
     const SoField * f = PUBLIC(this)->getField(n);
     assert(f);
 
-    this->engine->executeFunction(n, 1, f);
+    if (!this->engine->executeFunction(n, 1, f)) {
+      SoDebugError::postWarning("SoVRMLScriptP::executeFunctions", 
+                                "could not execute function %s",
+                                n.getString());
+    }
   }
   this->fieldnotifications.truncate(0);
 
@@ -868,19 +884,35 @@ SoVRMLScriptP::executeFunctions(void)
 
   for (i = 0; i < this->eventoutfields.getLength(); i++) {
     const SbName & name = this->eventoutfields[i];
+
+    if (!this->engine->hasScriptField(name)) {
+      if (debug()) {
+        SoDebugError::postInfo("SoVRMLScriptP::executeFunctions",
+                               "No new value of eventOut '%s'...",
+                               name.getString());
+      }
+      continue;
+    }
     SoField * f = PUBLIC(this)->getEventOut(name);
     assert(f);
 
     if (debug()) {
       SoDebugError::postInfo("SoVRMLScriptP::executeFunctions",
-                             "Picking up new (?) value of eventOut '%s'...",
+                             "Picking up new value of eventOut '%s'...",
                              name.getString());
     }
 
     // FIXME: should probably rather compare new value with old before
     // actually pushing it. Perhaps there's something about this in
     // the spec. 20050606 mortene.
-    this->engine->getScriptField(name, f);
+    if (!this->engine->getScriptField(name, f)) {
+      SoDebugError::postWarning("SoVRMLScriptP::executeFunctions", 
+                                "could not convert eventOut field %s",
+                                name.getString());
+    }
+    // FIXME: We could simply unset the field, but then a lot of
+    // "buggy" javascripts will start to complain. 20050721 erikgors.
+    // this->engine->unsetScriptField(name);
   }
 }
 

@@ -21,7 +21,9 @@ PublicHeaders = \
 	SoLightPath.h \
 	SoTempPath.h \
 	SoGlyph.h \
-	SoAudioDevice.h
+	SoAudioDevice.h \
+	SoScriptEngine.h \
+	SoJavaScriptEngine.h
 PrivateHeaders = \
 	SbHash.h \
 	SoGL.h \

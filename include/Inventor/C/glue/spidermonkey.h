@@ -25,16 +25,12 @@
 \**************************************************************************/
 
 /*
-  Internal Coin interface to the SpiderMonkey Javascript engine, from
+  Coin interface to the SpiderMonkey Javascript engine, from
   the Mozilla project.
 
   Coin can bind to the engine dynamically, i.e. by run-time linking,
   or at build-time.
 */
-
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -75,7 +71,6 @@ typedef jsword jsval;
 typedef unsigned int uintN;
 typedef uint16_t jschar;
 
-
 typedef int32_t jsrefcount;
 typedef uint8_t jsbytecode;
 typedef uint32_t JSHashNumber;
@@ -101,6 +96,13 @@ typedef enum JSAccessMode {
   JSACC_LIMIT
 } JSAccessMode;
 
+typedef enum JSGCStatus {
+  JSGC_BEGIN,
+  JSGC_END,
+  JSGC_MARK_END,
+  JSGC_FINALIZE_END
+} JSGCStatus;
+
 typedef void JSRuntime;
 typedef void JSContext;
 typedef void JSObject;
@@ -113,6 +115,7 @@ typedef int JSVersion;
 typedef void JSFunction;
 typedef struct JSFunctionSpec JSFunctionSpec;
 typedef struct JSErrorReport JSErrorReport;
+typedef void JSScript;
 
 #define JS_DLL_CALLBACK /* FIXME: set up this define properly. 20050601 mortene. */
 
@@ -206,6 +209,8 @@ struct JSErrorReport {
 #define JSVAL_IS_DOUBLE(v)      (JSVAL_TAG(v) == JSVAL_DOUBLE)
 #define JSVAL_IS_STRING(v)      (JSVAL_TAG(v) == JSVAL_STRING)
 #define JSVAL_IS_BOOLEAN(v)     (JSVAL_TAG(v) == JSVAL_BOOLEAN)
+#define JSVAL_IS_NULL(v)        ((v) == JSVAL_NULL)
+#define JSVAL_IS_VOID(v)        ((v) == JSVAL_VOID)
 
 #define BOOLEAN_TO_JSVAL(b) JSVAL_SETTAG((jsval)(b) << JSVAL_TAGBITS, JSVAL_BOOLEAN)
 #define JSVAL_TO_BOOLEAN(v) ((JSBool)((v) >> JSVAL_TAGBITS))
@@ -225,6 +230,8 @@ struct JSErrorReport {
 #define OBJECT_TO_JSVAL(obj)    ((jsval)(obj))
 #define DOUBLE_TO_JSVAL(dp)     JSVAL_SETTAG((jsval)(dp), JSVAL_DOUBLE)
 #define STRING_TO_JSVAL(str)    JSVAL_SETTAG((jsval)(str), JSVAL_STRING)
+#define JSVAL_TO_PRIVATE(v)     ((void *)((v) & ~JSVAL_INT))
+#define PRIVATE_TO_JSVAL(p)     ((jsval)(p) | JSVAL_INT)
 
 #define JSPROP_ENUMERATE 0x01
 #define JSPROP_READONLY 0x02
@@ -252,6 +259,7 @@ struct JSErrorReport {
 /* Function typedefs. *************************************************** */
 
 typedef void (* JS_DLL_CALLBACK JSErrorReporter)(JSContext *, const char *, JSErrorReport *);
+typedef JSBool (* JS_DLL_CALLBACK JSGCCallback)(JSContext *, JSGCStatus);
 
 typedef JSBool (* JS_EvaluateScript_t)(JSContext *, JSObject *, const char *, uintN, const char *, uintN, jsval *);
 typedef JSString * (* JS_ValueToString_t)(JSContext *, jsval);
@@ -303,6 +311,32 @@ typedef JSBool (* JS_SetElement_t)(JSContext *, JSObject *, int32_t, jsval *);
 typedef JSBool (* JS_AddRoot_t)(JSContext *, void *);
 typedef JSBool (* JS_RemoveRoot_t)(JSContext *, void *);
 typedef size_t (* JS_GetStringLength_t)(JSString *);
+typedef JSBool (* JS_LookupProperty_t)(JSContext *, JSObject *, const char *, jsval *);
+typedef JSBool (* JS_DefineProperty_t)(JSContext *, JSObject *, const char *, jsval, JSPropertyOp, JSPropertyOp, uintN);
+typedef JSScript * (* JS_CompileFile_t)(JSContext *, JSObject *, const char *);
+typedef JSBool (* JS_ValueToObject_t)(JSContext *, jsval, JSObject **);
+typedef JSBool (* JS_ExecuteScript_t)(JSContext *, JSObject *, JSScript *, jsval *);
+typedef JSBool (* JS_GetPendingException_t)(JSContext *, jsval *);
+typedef double * (* JS_NewDouble_t)(JSContext *, double);
+typedef JSBool (* JS_CallFunction_t)(JSContext *, JSObject *, JSFunction *, uintN, jsval *, jsval *);
+typedef JSFunction * (* JS_ValueToFunction_t)(JSContext *, jsval);
+typedef void (* JS_ReportError_t)(JSContext *, const char *, ...);
+typedef JSBool (* JS_IsArrayObject_t)(JSContext *, JSObject *);
+typedef JSBool (* JS_ValueToInt32_t)(JSContext *, jsval, int32_t *);
+typedef JSFunction * (* JS_DefineFunction_t)(JSContext *, JSObject *, const char *, JSNative, uintN, uintN);
+typedef JSObject * (* JS_GetGlobalObject_t)(JSContext *);
+typedef JSGCCallback (* JS_SetGCCallback_t)(JSContext *, JSGCCallback);
+typedef void (* JS_GC_t)(JSContext *);
+typedef JSBool (* JS_IsRunning_t)(JSContext *);
+typedef JSBool (* JS_DeleteProperty_t)(JSContext *, JSObject *, const char *);
+typedef JSScript * (* JS_CompileScript_t)(JSContext *, JSObject *,
+                                          const char *, size_t,
+                                          const char *, uintN);
+typedef jsval (* JS_GetNaNValue_t)(JSContext *);
+typedef jsval (* JS_GetNegativeInfinityValue_t)(JSContext *);
+typedef jsval (* JS_GetPositiveInfinityValue_t)(JSContext *);
+typedef jsval (* JS_GetEmptyStringValue_t)(JSContext *);
+
 
 /* Access interface. **************************************************** */
 
@@ -357,6 +391,30 @@ typedef struct {
   JS_AddRoot_t JS_AddRoot;
   JS_RemoveRoot_t JS_RemoveRoot;
   JS_GetStringLength_t JS_GetStringLength;
+  JS_LookupProperty_t JS_LookupProperty;
+  JS_DefineProperty_t JS_DefineProperty;
+  JS_CompileFile_t JS_CompileFile;
+  JS_ValueToObject_t JS_ValueToObject;
+  JS_ExecuteScript_t JS_ExecuteScript;
+  JS_GetPendingException_t JS_GetPendingException;
+  JS_NewDouble_t JS_NewDouble;
+  JS_CallFunction_t JS_CallFunction;
+  JS_ValueToFunction_t JS_ValueToFunction;
+  JS_ReportError_t JS_ReportError;
+  JS_IsArrayObject_t JS_IsArrayObject;
+  JS_ValueToInt32_t JS_ValueToInt32;
+  JS_DefineFunction_t JS_DefineFunction;
+  JS_GetGlobalObject_t JS_GetGlobalObject;
+  JS_SetGCCallback_t JS_SetGCCallback;
+  JS_GC_t JS_GC;
+  JS_IsRunning_t JS_IsRunning;
+  JS_DeleteProperty_t JS_DeleteProperty;
+  JS_CompileScript_t JS_CompileScript;
+  JS_GetNaNValue_t JS_GetNaNValue;
+  JS_GetNegativeInfinityValue_t JS_GetNegativeInfinityValue;
+  JS_GetPositiveInfinityValue_t JS_GetPositiveInfinityValue;
+  JS_GetEmptyStringValue_t JS_GetEmptyStringValue;
+
 
 } SpiderMonkey_t;
 

@@ -236,6 +236,29 @@ spidermonkey(void)
   REGISTER_FUNC(JS_AddRoot, JS_AddRoot_t);
   REGISTER_FUNC(JS_RemoveRoot, JS_RemoveRoot_t);
   REGISTER_FUNC(JS_GetStringLength, JS_GetStringLength_t);
+  REGISTER_FUNC(JS_LookupProperty, JS_LookupProperty_t);
+  REGISTER_FUNC(JS_DefineProperty, JS_DefineProperty_t);
+  REGISTER_FUNC(JS_CompileFile, JS_CompileFile_t);
+  REGISTER_FUNC(JS_ValueToObject, JS_ValueToObject_t);
+  REGISTER_FUNC(JS_ExecuteScript, JS_ExecuteScript_t);
+  REGISTER_FUNC(JS_GetPendingException, JS_GetPendingException_t);
+  REGISTER_FUNC(JS_NewDouble, JS_NewDouble_t);
+  REGISTER_FUNC(JS_CallFunction, JS_CallFunction_t);
+  REGISTER_FUNC(JS_ValueToFunction, JS_ValueToFunction_t);
+  REGISTER_FUNC(JS_ReportError, JS_ReportError_t);
+  REGISTER_FUNC(JS_IsArrayObject, JS_IsArrayObject_t);
+  REGISTER_FUNC(JS_ValueToInt32, JS_ValueToInt32_t);
+  REGISTER_FUNC(JS_DefineFunction, JS_DefineFunction_t);
+  REGISTER_FUNC(JS_GetGlobalObject, JS_GetGlobalObject_t);
+  REGISTER_FUNC(JS_SetGCCallback, JS_SetGCCallback_t);
+  REGISTER_FUNC(JS_GC, JS_GC_t);
+  REGISTER_FUNC(JS_IsRunning, JS_IsRunning_t);
+  REGISTER_FUNC(JS_DeleteProperty, JS_DeleteProperty_t);
+  REGISTER_FUNC(JS_CompileScript, JS_CompileScript_t);
+  REGISTER_FUNC(JS_GetNaNValue, JS_GetNaNValue_t);
+  REGISTER_FUNC(JS_GetNegativeInfinityValue, JS_GetNegativeInfinityValue_t);
+  REGISTER_FUNC(JS_GetPositiveInfinityValue, JS_GetPositiveInfinityValue_t);
+  REGISTER_FUNC(JS_GetEmptyStringValue, JS_GetEmptyStringValue_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);
