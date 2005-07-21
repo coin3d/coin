@@ -1,11 +1,11 @@
 PublicHeaders = \
 	gl.h \
-	dl.h
+	dl.h \
+	spidermonkey.h
 
 PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
-	spidermonkey.h \
 	cg.h \
 	dlp.h \
 	freetype.h \
