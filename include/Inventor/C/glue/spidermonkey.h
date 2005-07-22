@@ -418,7 +418,7 @@ typedef struct {
 
 } SpiderMonkey_t;
 
-const SpiderMonkey_t * spidermonkey(void);
+COIN_DLL_API const SpiderMonkey_t * spidermonkey(void);
 
 #ifdef __cplusplus
 }
