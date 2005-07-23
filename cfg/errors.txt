@@ -79,6 +79,13 @@ If you are absolutely sure you want to attempt to run the configure script
 and the build process without Microsoft Visual C++, and you know what you
 are doing, use the ''--disable-msvc'' option to configure.
 
+!cygwin-link
+Cygwin's /usr/bin/link tool is earlier in the shell's PATH than MSVC's
+link.exe.  Building would fail in the final stage because of this.
+
+Fix your PATH variable so the MSVC link.exe program is found instead
+of Cygwin's /usr/bin/link and re-run configure.
+
 !c--inlinefor
 This C++ compiler (\"$CXX\") does not seem to be capable of compiling
 Coin, as it can't compile a simple test snippet with a for()-loop

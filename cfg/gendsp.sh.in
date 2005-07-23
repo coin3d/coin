@@ -241,11 +241,8 @@ if test -f "$studiofile"; then :; else
   echo "# ** DO NOT EDIT **" >>"$studiofile"
   echo "" >>"$studiofile"
   echo "# TARGTYPE \"Win32 (x86) Dynamic-Link Library\" 0x0102" >>"$studiofile"
-#  if $enable_static; then
-#    echo "# TARGTYPE \"Win32 (x86) Static Library\" 0x0104" >>"$studiofile"
-#  fi
   echo "" >>"$studiofile"
-  echo "CFG=${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug DLL" >>"$studiofile"
+  echo "CFG=${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)" >>"$studiofile"
   echo "!MESSAGE This is not a valid makefile. To build this project using NMAKE," >>"$studiofile"
   echo "!MESSAGE use the Export Makefile command and run" >>"$studiofile"
   echo "!MESSAGE" >>"$studiofile"
@@ -254,16 +251,17 @@ if test -f "$studiofile"; then :; else
   echo "!MESSAGE You can specify a configuration when running NMAKE" >>"$studiofile"
   echo "!MESSAGE by defining the macro CFG on the command line. For example:" >>"$studiofile"
   echo "!MESSAGE" >>"$studiofile"
-  echo "!MESSAGE NMAKE /f \"${library}@${LIBRARY}_MAJOR_VERSION@.mak\" CFG=\"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug DLL\"" >>"$studiofile"
+  echo "!MESSAGE NMAKE /f \"${library}@${LIBRARY}_MAJOR_VERSION@.mak\" CFG=\"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)\"" >>"$studiofile"
   echo "!MESSAGE" >>"$studiofile"
   echo "!MESSAGE Possible choices for configuration are:" >>"$studiofile"
   echo "!MESSAGE" >>"$studiofile"
-  echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release DLL\" (based on \"Win32 (x86) Dynamic-Link Library\")" >>"$studiofile"
-  echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug DLL\" (based on \"Win32 (x86) Dynamic-Link Library\")" >>"$studiofile"
+  # last configuration mentioned seems to become default / selected by IDE
   if $enable_static; then
-    echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release LIB\" (based on \"Win32 (x86) Static Library\")" >>"$studiofile"
-    echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug LIB\" (based on \"Win32 (x86) Static Library\")" >>"$studiofile"
+    echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Release)\" (based on \"Win32 (x86) Static Library\")" >>"$studiofile"
+    echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Debug)\" (based on \"Win32 (x86) Static Library\")" >>"$studiofile"
   fi
+  echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Release)\" (based on \"Win32 (x86) Dynamic-Link Library\")" >>"$studiofile"
+  echo "!MESSAGE \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)\" (based on \"Win32 (x86) Dynamic-Link Library\")" >>"$studiofile"
   echo "!MESSAGE" >>"$studiofile"
   echo "" >>"$studiofile"
   echo "# Begin Project" >>"$studiofile"
@@ -274,7 +272,7 @@ if test -f "$studiofile"; then :; else
   echo "MTL=midl.exe" >>"$studiofile"
   echo "RSC=rc.exe" >>"$studiofile"
   echo "" >>"$studiofile"
-  echo "!IF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release DLL\"" >>"$studiofile"
+  echo "!IF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Release)\"" >>"$studiofile"
   echo "" >>"$studiofile"
   echo "# PROP BASE Use_MFC 0" >>"$studiofile"
   echo "# PROP BASE Use_Debug_Libraries 0" >>"$studiofile"
@@ -306,7 +304,7 @@ if test -f "$studiofile"; then :; else
   echo "# End Special Build Tool" >>"$studiofile"
   echo "" >>"$studiofile"
 
-  echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug DLL\"" >>"$studiofile"
+  echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)\"" >>"$studiofile"
   echo "" >>"$studiofile"
   echo "# PROP BASE Use_MFC 0" >>"$studiofile"
   echo "# PROP BASE Use_Debug_Libraries 1" >>"$studiofile"
@@ -337,7 +335,7 @@ if test -f "$studiofile"; then :; else
   echo "" >>"$studiofile"
 
   if $enable_static; then
-    echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release LIB\"" >>"$studiofile"
+    echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Release)\"" >>"$studiofile"
     echo "" >>"$studiofile"
     echo "# PROP BASE Use_MFC 0" >>"$studiofile"
     echo "# PROP BASE Use_Debug_Libraries 0" >>"$studiofile"
@@ -365,7 +363,7 @@ if test -f "$studiofile"; then :; else
     echo "# End Special Build Tool" >>"$studiofile"
     echo "" >>"$studiofile"
   
-    echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug LIB\"" >>"$studiofile"
+    echo "!ELSEIF  \"\$(CFG)\" == \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Debug)\"" >>"$studiofile"
     echo "" >>"$studiofile"
     echo "# PROP BASE Use_MFC 0" >>"$studiofile"
     echo "# PROP BASE Use_Debug_Libraries 1" >>"$studiofile"
@@ -400,11 +398,11 @@ if test -f "$studiofile"; then :; else
   echo "" >>"$studiofile"
   echo "# Begin Target" >>"$studiofile"
   echo "" >>"$studiofile"
-  echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release DLL\"" >>"$studiofile"
-  echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug DLL\"" >>"$studiofile"
+  echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Release)\"" >>"$studiofile"
+  echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)\"" >>"$studiofile"
   if $enable_static; then
-    echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Release LIB\"" >>"$studiofile"
-    echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 Debug LIB\"" >>"$studiofile"
+    echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Release)\"" >>"$studiofile"
+    echo "# Name \"${library}@${LIBRARY}_MAJOR_VERSION@ - Win32 LIB (Debug)\"" >>"$studiofile"
   fi
   echo "# Begin Group \"Source Files\"" >>"$studiofile"
   echo "" >>"$studiofile"
@@ -434,14 +432,14 @@ if test x"$sourcefile" = x""; then :; else
   sourcefiledir=`dirname "$sourcefileunixname"`
   sourcefiledirdir=`dirname "$sourcefiledir"`
   targetdir=`echo $sourcefiledir | sed "s%^$sourcefiledirdir%%" | sed s%/%%g`
-  echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release DLL"' >>"$studiofile"
+  echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 DLL (Release)"' >>"$studiofile"
   echo "# PROP Intermediate_Dir \"Release\\$targetdir\"" >>"$studiofile"
-  echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug DLL"' >>"$studiofile"
+  echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 DLL (Debug)"' >>"$studiofile"
   echo "# PROP Intermediate_Dir \"Debug\\$targetdir\"" >>"$studiofile"
   if $enable_static; then
-    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release LIB"' >>"$studiofile"
+    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 LIB (Release)"' >>"$studiofile"
     echo "# PROP Intermediate_Dir \"StaticRelease\\$targetdir\"" >>"$studiofile"
-    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug LIB"' >>"$studiofile"
+    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 LIB (Debug)"' >>"$studiofile"
     echo "# PROP Intermediate_Dir \"StaticDebug\\$targetdir\"" >>"$studiofile"
   fi
   echo '!ENDIF ' >>"$studiofile"
@@ -473,7 +471,7 @@ if test x"$sourcefile" = x""; then :; else
     echo "SOURCE=$headerfile" >>"$studiofile"
     echo "" >>"$studiofile"
 
-    echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release DLL"' >>"$studiofile"
+    echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 DLL (Release)"' >>"$studiofile"
     echo "" >>"$studiofile"
     echo "# PROP IgnoreDefaultTool 1" >>"$studiofile"
     echo "#Begin Custom Build - moc'ing \$(InputPath)" >>"$studiofile"
@@ -485,7 +483,7 @@ if test x"$sourcefile" = x""; then :; else
     echo "# End Custom Build" >>"$studiofile"
     echo "" >>"$studiofile"
 
-    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug DLL"' >>"$studiofile"
+    echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 DLL (Debug)"' >>"$studiofile"
     echo "" >>"$studiofile"
     echo "# PROP IgnoreDefaultTool 1" >>"$studiofile"
     echo "#Begin Custom Build - moc'ing \$(InputPath)" >>"$studiofile"
@@ -498,7 +496,7 @@ if test x"$sourcefile" = x""; then :; else
     echo "" >>"$studiofile"
 
     if $enable_static; then
-      echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release LIB"' >>"$studiofile"
+      echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 LIB (Release)"' >>"$studiofile"
       echo "" >>"$studiofile"
       echo "# PROP IgnoreDefaultTool 1" >>"$studiofile"
       echo "#Begin Custom Build - moc'ing \$(InputPath)" >>"$studiofile"
@@ -510,7 +508,7 @@ if test x"$sourcefile" = x""; then :; else
       echo "# End Custom Build" >>"$studiofile"
       echo "" >>"$studiofile"
   
-      echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug LIB"' >>"$studiofile"
+      echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 LIB (Debug)"' >>"$studiofile"
       echo "" >>"$studiofile"
       echo "# PROP IgnoreDefaultTool 1" >>"$studiofile"
       echo "#Begin Custom Build - moc'ing \$(InputPath)" >>"$studiofile"
