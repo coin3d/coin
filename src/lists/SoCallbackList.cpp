@@ -58,6 +58,8 @@ SoCallbackList::~SoCallbackList(void)
 void
 SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
+  // FIXME: Shouldn't we check if the callback is already in the list?
+  // 20050723 kyrah.
   this->funclist.append((void*)f);
   this->datalist.append(userdata);
 }
@@ -70,12 +72,18 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
 {
   int idx = this->getNumCallbacks() - 1;
 
+  // FIXME: Why are we not using a dictionary here? (The question is
+  // of course whether it should be allowed to have the same callback
+  // entry in the list twice...) 20050723 kyrah.
   while (idx != -1) {
     if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) break;
     idx--;
   }
 
 #if COIN_DEBUG
+  // FIXME: Is this warning really necessary? Shouldn't it be possible
+  // to do the equivalent of setCallback(NULL,NULL) -- i.e. "remove if
+  // already exists, else do nothing"? 20050723 kyrah.
   if (idx == -1) {
     SoDebugError::post("SoCallbackList::removeCallback",
                        "Tried to remove non-existant callback function.");
