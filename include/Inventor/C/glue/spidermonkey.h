@@ -37,6 +37,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <Inventor/system/inttypes.h>
+#include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
 extern "C" {
