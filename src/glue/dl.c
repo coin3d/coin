@@ -571,7 +571,7 @@ cc_dl_open(const char * filename)
     if (cc_dl_debugging()) {
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
       char libpath[512];
-      DWORD retval = GetModuleFileName(h->nativehnd, libpath, sizeof(libpath));
+      DWORD retval = GetModuleFileName((HINSTANCE) h->nativehnd, libpath, sizeof(libpath));
       assert(retval > 0 && "GetModuleFileName() failed");
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
@@ -662,7 +662,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
-  ptr = GetProcAddress(handle->nativehnd, symbolname);
+  ptr = GetProcAddress((HINSTANCE) handle->nativehnd, symbolname);
 
   if (cc_dl_debugging() && (ptr == NULL)) {
     cc_string funcstr;
@@ -734,7 +734,7 @@ cc_dl_close(cc_libhandle handle)
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
   { 
-    BOOL result = FreeLibrary(handle->nativehnd);
+    BOOL result = FreeLibrary((HINSTANCE) handle->nativehnd);
     
     if (!result) {
       cc_string funcstr;
