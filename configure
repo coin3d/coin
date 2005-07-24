@@ -36409,15 +36409,24 @@ EOF`
 fi
 
 
-case $enable_static in
-yes | true)  COIN_STATIC=true ;;
-*)           COIN_STATIC=false ;;
-esac
+if $BUILD_WITH_MSVC; then
+  case ${enable_static-no} in
+  yes | true)  COIN_STATIC=true;
+               enable_shared=no ;; # --enable-static-problem with autoconf 2.58
+  *)           COIN_STATIC=false ;;
+  esac
 
-case $enable_shared in
-yes | true)  COIN_STATIC=false ;;
-*)           COIN_STATIC=true ;;
-esac
+  case ${enable_shared-default} in
+  default)     ;;
+  yes | true)  COIN_STATIC=false ;;
+  *)           COIN_STATIC=true ;;
+  esac
+fi
+
+# The above mentioned "bug" might not be a bug for Unix platforms, but for
+# Windows you can't compile for both shared and static library linkage at
+# the same time, hence we do need to disable shared when enabling static
+# builds.  20041021 larsa
 
 
 
