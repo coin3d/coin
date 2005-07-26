@@ -1124,7 +1124,7 @@ atexit_qsort_cb(const void * q0, const void * q1)
 }
 
 /*
-   Calls all atexit functions. Invoked from SoDB::cleanup().
+   Calls all atexit functions. Invoked from SoDB::finish().
 */
 void
 coin_atexit_cleanup(void)
@@ -1222,7 +1222,7 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
        cleaned out when our callback triggers.
 
        We therefore now force cleanup at exit to be done explicitly
-       from application code by invoking the SoDB::cleanup() method,
+       from application code by invoking the SoDB::finish() method,
        which then invokes the coin_atexit_cleanup() method.
 
        mortene.
@@ -1250,7 +1250,11 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 }
 
 /*
- * Public version of the coin_atexit function which always sets the priority to -2.
+  Public version of the coin_atexit function which always sets the priority 
+  to -2.
+
+  Note that the registered atexit functions will only be called when
+  SoDB::finish() is invoked from the application code.
  */
 void
 cc_coin_atexit(coin_atexit_f * f)
