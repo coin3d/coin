@@ -35,7 +35,7 @@ typedef void (* CoinJSfield2jsval_t)(JSContext *, const SoField *, jsval *);
 typedef SbBool (* CoinJSjsval2field_t)(JSContext *, const jsval, SoField *);
 typedef JSObject * (* CoinJSinit_t)(JSContext *, JSObject * obj);
 
-class SoJavaScriptEngine : public SoScriptEngine {
+class COIN_DLL_API SoJavaScriptEngine : public SoScriptEngine {
 
 public:
   SoJavaScriptEngine();

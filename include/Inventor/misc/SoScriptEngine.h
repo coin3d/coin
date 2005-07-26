@@ -28,7 +28,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/fields/SoField.h>
 
-class SoScriptEngine {
+class COIN_DLL_API SoScriptEngine {
 
 public:
 /*  SoScriptEngine(void) = 0;*/
