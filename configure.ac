@@ -998,8 +998,17 @@ AC_TRY_LINK([
   struct timeb timebuffer;
   ftime(&timebuffer);
 ], [
-  AC_MSG_RESULT([yes])
-  AC_DEFINE([HAVE_FTIME],1, [Define to use ftime()])
+  # ftime() is not available in libSystem on Mac OS X < 10.4,
+  # so don't use it when building the binary SDK.
+  case ${MACOSX_DEPLOYMENT_TARGET} in
+    10.[[0123]])
+      AC_MSG_RESULT([yes (unused)])
+      ;;
+    *)
+      AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE_FTIME],1, [Define to use ftime()])
+      ;;
+  esac
 ], [
   AC_MSG_RESULT([no])
 ])
