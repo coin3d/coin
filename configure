@@ -29028,13 +29028,23 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-  echo "$as_me:$LINENO: result: yes" >&5
+  # ftime() is not available in libSystem on Mac OS X < 10.4,
+  # so don't use it when building the binary SDK.
+  case ${MACOSX_DEPLOYMENT_TARGET} in
+    10.[0123])
+      echo "$as_me:$LINENO: result: yes (unused)" >&5
+echo "${ECHO_T}yes (unused)" >&6
+      ;;
+    *)
+      echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_FTIME 1
 _ACEOF
 
+      ;;
+  esac
 
 else
   echo "$as_me: failed program was:" >&5
