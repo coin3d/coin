@@ -239,6 +239,7 @@ struct CoinVrmlJsMFHandler {
         spidermonkey()->JS_ReportError(cx, "argv %d is of wrong type", i);
       }
     }
+    delete field;
     return JSVAL_TRUE;
   }
 
@@ -321,14 +322,19 @@ struct CoinVrmlJsMFHandler {
   }
 
   static JSBool get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
-  {                                                                                            JSObject * array = (JSObject *)spidermonkey()->JS_GetPrivate(cx, obj);
-                                                                                               if (JSVAL_IS_INT(id)) {
+  {
+    
+    JSObject * array = (JSObject *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+    if (JSVAL_IS_INT(id)) {
+      assert(array != NULL);
       int index = JSVAL_TO_INT(id);
       return spidermonkey()->JS_GetElement(cx, array, index, rval);
     }
     else if (JSVAL_IS_STRING(id)) {
       const char * str = spidermonkey()->JS_GetStringBytes(JSVAL_TO_STRING(id));
       if (SbName("length") == str) {
+        assert(array != NULL);
         uint32_t length;
         assert(spidermonkey()->JS_GetArrayLength(cx, array, &length));
         *rval = INT_TO_JSVAL(length);
@@ -355,7 +361,7 @@ struct CoinVrmlJsMFHandler {
       uint32_t length;
       assert(spidermonkey()->JS_GetArrayLength(cx, array, &length));
       if (index >= (int)length) {
-        resize(cx, array, index);
+        resize(cx, array, index+1);
       }
 
       SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
@@ -365,6 +371,7 @@ struct CoinVrmlJsMFHandler {
         assert(spidermonkey()->JS_SetElement(cx, array, index, val));
         return JSVAL_TRUE;
       }
+      delete field;
     }
     else if (JSVAL_IS_STRING(id)) {
       const char * str = spidermonkey()->JS_GetStringBytes(JSVAL_TO_STRING(id));
@@ -398,16 +405,16 @@ struct CoinVrmlJsMFHandler {
       uint32_t num;
       JSBool ok = spidermonkey()->JS_GetArrayLength(cx, array, &num);
 
-      SFFieldClass * data = (SFFieldClass *)SFFieldClass::createInstance();
+      SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
       
       for (i=0; i<num; ++i) {
         ok = spidermonkey()->JS_GetElement(cx, obj, i, &element);
         assert(ok);
 
-        assert(SoJavaScriptEngine::jsval2field(cx, element, data));
-        ((MFFieldClass *)f)->set1Value(i, data->getValue());
+        assert(SoJavaScriptEngine::jsval2field(cx, element, field));
+        ((MFFieldClass *)f)->set1Value(i, field->getValue());
       }
-      delete data;
+      delete field;
       return TRUE;
     }
     return FALSE;
@@ -423,16 +430,16 @@ struct CoinVrmlJsMFHandler {
 
     MFFieldClass & mf = *(MFFieldClass *)f;
 
-    SFFieldClass * data = (SFFieldClass *)SFFieldClass::createInstance();
+    SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
     for (int i=0; i<num; ++i) {
-      data->setValue(mf[i]);
-      assert(SoJavaScriptEngine::field2jsval(cx, data, &vals[i]));
+      field->setValue(mf[i]);
+      assert(SoJavaScriptEngine::field2jsval(cx, field, &vals[i]));
     }
 
     jsval rval;
     constructor(cx, obj, num, vals, &rval);
     *v = OBJECT_TO_JSVAL(obj);
-    delete data;
+    delete field;
     delete [] vals;
   }
 };
