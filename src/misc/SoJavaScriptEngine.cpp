@@ -31,28 +31,73 @@
 #include <Inventor/C/tidbitsp.h>
 
 JSRuntime * SoJavaScriptEngine::runtime = NULL;
-uint32_t SoJavaScriptEngine::RUNTIME_MAXBYTES = 4 * 1024 * 1024; /* maxbytes allocated before GC runs */
 size_t SoJavaScriptEngine::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
 
+
+/*!
+  Returns spidermonkey runtime instance for this class.
+ */
 JSRuntime *
 SoJavaScriptEngine::getRuntime(void)
 {
   return SoJavaScriptEngine::runtime;
 }
-
+    
+/*!
+  Set the spidermonkey runtime for this class
+ */
 void
 SoJavaScriptEngine::setRuntime(JSRuntime * runtime)
 {
   SoJavaScriptEngine::runtime = runtime;
 }
 
-void
-SoJavaScriptEngine::init(void)
+/*!
+  Returns spidermonkey context for this object.
+ */
+JSContext *
+SoJavaScriptEngine::getContext(void)
 {
-  JSRuntime * rt =
-    spidermonkey()->JS_NewRuntime(SoJavaScriptEngine::RUNTIME_MAXBYTES);
+  return this->context;
+}
+    
+/*!
+  Set the spidermonkey context for this object.
+ */
+void
+SoJavaScriptEngine::setContext(JSContext * context)
+{
+  this->context = context;
+}
 
-  if (!rt) {
+/*!
+  Returns spidermonkey global object for this object.
+ */
+JSObject *
+SoJavaScriptEngine::getGlobal(void)
+{
+  return this->global;
+}
+    
+/*!
+  Set the spidermonkey global object for this object.
+ */
+void
+SoJavaScriptEngine::setGlobal(JSObject * global)
+{
+  this->global = global;
+}
+
+/*!
+ Init the spidermonkey runtime.
+ */
+void
+SoJavaScriptEngine::init(uint32_t maxBytes)
+{
+  assert(SoJavaScriptEngine::getRuntime() == NULL);
+  JSRuntime * rt = spidermonkey()->JS_NewRuntime(maxBytes);
+
+  if (rt == NULL) {
     SoDebugError::postWarning("SoJavaScriptEngine::init",
                               "SpiderMonkey Javascript engine available, "
                               "but failed to instantiate a JSRuntime!");
@@ -61,6 +106,9 @@ SoJavaScriptEngine::init(void)
   SoJavaScriptEngine::setRuntime(rt);
 }
 
+/*!
+ Shutdown the spidermonkey runtime.
+ */
 void
 SoJavaScriptEngine::shutdown(void)
 {
@@ -135,6 +183,9 @@ printJSException(JSContext *cx)
   assert(spidermonkey()->JS_RemoveRoot(cx, s));
 }
 
+/*!
+  Default Error Handler for Coin
+ */
 static void
 SpiderMonkey_ErrorHandler(JSContext * cx, const char * message, JSErrorReport * report)
 {                               
@@ -144,6 +195,10 @@ SpiderMonkey_ErrorHandler(JSContext * cx, const char * message, JSErrorReport * 
   printJSException(cx);
 }   
 
+/*!
+  Easy to use print function for spidermonkey.
+  print("hello", "world", 123, obj) will return "hello world 123 [some obj]"
+ */
 static JSBool JavascriptPrint(JSContext * cx, JSObject * obj, 
                     uintN argc, jsval * argv, jsval * rval)
 {
@@ -163,6 +218,10 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * obj,
   return JS_TRUE;
 }
 
+/*!
+  Constructor. Will create a new context and global spidermonkey object
+  for this object.
+ */
 SoJavaScriptEngine::SoJavaScriptEngine()
 {
   JSContext * cx = this->context =
@@ -221,11 +280,17 @@ SoJavaScriptEngine::SoJavaScriptEngine()
   spidermonkey()->JS_SetContextPrivate(cx, this);
 }
 
+/*!
+  Destructor. Will destroy the spidermonkey context
+ */
 SoJavaScriptEngine::~SoJavaScriptEngine()
 {
   spidermonkey()->JS_DestroyContext(this->context);
 }
 
+/*!
+  Compile and execute a string containing a script.
+ */
 SbBool
 SoJavaScriptEngine::executeScript(const SbName & name, const SbString & script) const
 {
@@ -234,6 +299,8 @@ SoJavaScriptEngine::executeScript(const SbName & name, const SbString & script) 
                            script.getString());
   }
 
+  // FIXME: should set a correct linenum offset, for better error messages.
+  // 20050728 erikgors.
   JSScript * jsscript =
     spidermonkey()->JS_CompileScript(this->context,
                                      this->global,
@@ -243,6 +310,9 @@ SoJavaScriptEngine::executeScript(const SbName & name, const SbString & script) 
   return this->executeJSScript(jsscript);
 }
 
+/*!
+  Compile and execute a file.
+ */
 SbBool
 SoJavaScriptEngine::executeFile(const SbName & filename) const
 {
@@ -255,6 +325,9 @@ SoJavaScriptEngine::executeFile(const SbName & filename) const
   return this->executeJSScript(script);
 }
 
+/*!
+  Execute a compiled script.
+ */
 SbBool
 SoJavaScriptEngine::executeJSScript(JSScript * script) const
 {
@@ -277,9 +350,12 @@ SoJavaScriptEngine::executeJSScript(JSScript * script) const
   return FALSE;
 }
 
+/*!
+  Execute a function in the global spidermonkey object.
+ */
 SbBool
 SoJavaScriptEngine::executeFunction(const SbName & name,
-                                  int argc, const SoField * argv, SoField * rval) const
+                                    int argc, const SoField * argv, SoField * rval) const
 {
   jsval * jsargv = new jsval[argc];
 
@@ -316,6 +392,9 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
   }
 }
 
+/*!
+  Convert a SoField object to a native spidermonkey value.
+ */
 SbBool
 SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v)
 {
@@ -343,6 +422,9 @@ SoJavaScriptEngine::field2jsval(JSContext * cx, const SoField * f, jsval * v)
   return engine->field2jsval(f, v);
 }
 
+/*!
+  Convert a native spidermonkey value to a SoField object.
+ */
 SbBool 
 SoJavaScriptEngine::jsval2field(const jsval v, SoField * f)
 {
@@ -378,6 +460,10 @@ SoJavaScriptEngine::jsval2field(JSContext * cx, const jsval v, SoField * f)
   return engine->jsval2field(v, f);
 }
 
+/*!
+  Add a handler. init, field2jsval and jsval2field can be NULL.
+  init, if not NULL, will be called.
+ */
 void
 SoJavaScriptEngine::addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field)
 {
@@ -388,21 +474,15 @@ SoJavaScriptEngine::addHandler(const SoType & type, CoinJSinit_t init, CoinJSfie
   handler.jsval2field = jsval2field;
 
   this->handlerList.append(handler);
-}
 
-void
-SoJavaScriptEngine::initHandlers(void)
-{ 
-  int i;
-  int num = this->handlerList.getLength();
-  for (i=0; i<num; ++i) {
-    const SoJavaScriptEngine::JavascriptHandler & handler = this->handlerList[i];
-    if (handler.init != NULL) {
-      handler.init(this->context, this->global);
-    }
+  if (handler.init != NULL) {
+    handler.init(this->context, this->global);
   }
 }
 
+/*!
+  Set a script field.
+ */
 SbBool
 SoJavaScriptEngine::setScriptField(const SbName & name, const SoField * f) const
 {
@@ -420,6 +500,9 @@ SoJavaScriptEngine::setScriptField(const SbName & name, const SoField * f) const
   return ok;
 }
 
+/*!
+  Unset a script field.
+ */
 SbBool
 SoJavaScriptEngine::unsetScriptField(const SbName & name) const
 {
@@ -434,6 +517,10 @@ SoJavaScriptEngine::unsetScriptField(const SbName & name) const
   }
   return ok;
 }
+
+/*!
+  Get a script field.
+ */
 SbBool
 SoJavaScriptEngine::getScriptField(const SbName & name, SoField * f) const
 {
@@ -461,12 +548,8 @@ SbBool
 SoJavaScriptEngine::hasScriptField(const SbName & name) const
 {
   jsval val;
-  const JSBool ok = spidermonkey()->JS_GetProperty(this->context, this->global,
-                                                   name.getString(), &val);
-  assert(ok);
+  assert(spidermonkey()->JS_GetProperty(this->context, this->global,
+                                        name.getString(), &val));
 
-
-  // FIXME: this _should_ be good enough. 20050711 erikgors.
-  JSType type = spidermonkey()->JS_TypeOfValue(this->context, val);
-  return type != 0;
+  return JSVAL_IS_VOID(val) ? FALSE : TRUE;
 }

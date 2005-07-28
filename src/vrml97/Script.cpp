@@ -724,7 +724,6 @@ SoVRMLScriptP::initialize(void)
       assert(this->engine == NULL);
       this->engine = new SoJavaScriptEngine;
       JS_addVRMLclasses(this->engine);
-      this->engine->initHandlers();
 
       script = s.getSubString(jsPrefixlen);
       break;

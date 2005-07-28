@@ -28,6 +28,8 @@
 #include <Inventor/C/glue/spidermonkey.h>
 #include <Inventor/lists/SbList.h>
 
+#define RUNTIME_MAXBYTES 4194304
+
 // FIXME: change this to use the Cheshire Cat/Bridge Pattern.
 // 20050721 erikgors.
 
@@ -52,7 +54,7 @@ public:
   virtual SbBool hasScriptField(const SbName & name) const;
 
   // Everthing under here is javascript specific
-  static void init(void);
+  static void init(uint32_t maxbytes=RUNTIME_MAXBYTES);
   static void shutdown(void);
   static SbBool debug(void);
 
@@ -69,9 +71,6 @@ public:
   // new handlers will get precedence over old handlers
   void addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field);
 
-  // FIXME: do we really need this? init can be run in addHandler. 20050719 erikgors.
-  void initHandlers(void);
-
   SbBool executeJSScript(JSScript * script) const;
 
 protected:
@@ -81,7 +80,6 @@ protected:
 
 private:
   // Constants
-  static uint32_t RUNTIME_MAXBYTES; /* maxbytes allocated before GC runs */
   static size_t CONTEXT_STACK_CHUNK_SIZE; /* stack chunk size */
 
   static JSRuntime * runtime;
