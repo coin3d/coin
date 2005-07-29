@@ -113,11 +113,11 @@ spidermonkey(void)
     /* FIXME: there's a configure mortene. */
     const char * possiblelibnames[] = {
       NULL, /* is set below */
-      /* (assumed) MSWindows DLL name */
-      "js",
+      /* MSWindows DLL name */
+      "js32",
 
       /* UNIX-style names */
-      "js", "libjs", "libjs.so",
+      "js", "libjs", "libjs.so", "libjs.dylib",
 
       /* terminator */
       NULL
