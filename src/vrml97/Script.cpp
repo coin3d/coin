@@ -166,15 +166,6 @@
 static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
 static void * sovrmlscript_eval_closure = NULL;
 
-
-// *************************************************************************
-
-// FIXME: Do this in a nicer way. 20050714 erikgors.
-//#include "SoJavaScriptEngine.cpp"
-#include "JS_VRMLClasses.cpp"
-
-// *************************************************************************
-
 class SoVRMLScriptP {
 public:
   SoVRMLScriptP(SoVRMLScript * m)
@@ -723,7 +714,6 @@ SoVRMLScriptP::initialize(void)
       }
       assert(this->engine == NULL);
       this->engine = new SoJavaScriptEngine;
-      JS_addVRMLclasses(this->engine);
 
       script = s.getSubString(jsPrefixlen);
       break;

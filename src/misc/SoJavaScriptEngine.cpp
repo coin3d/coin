@@ -30,6 +30,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbitsp.h>
 
+// FIXME: Do this in a nicer way. 20050714 erikgors.
+#include "../vrml97/JS_VRMLClasses.cpp"
+
 JSRuntime * SoJavaScriptEngine::runtime = NULL;
 size_t SoJavaScriptEngine::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
 
@@ -278,6 +281,8 @@ SoJavaScriptEngine::SoJavaScriptEngine()
 
   // Make the engine accessable from within the context
   spidermonkey()->JS_SetContextPrivate(cx, this);
+
+  JS_addVRMLclasses(this);
 }
 
 /*!
