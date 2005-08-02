@@ -259,6 +259,7 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetNegativeInfinityValue, JS_GetNegativeInfinityValue_t);
   REGISTER_FUNC(JS_GetPositiveInfinityValue, JS_GetPositiveInfinityValue_t);
   REGISTER_FUNC(JS_GetEmptyStringValue, JS_GetEmptyStringValue_t);
+  REGISTER_FUNC(JS_SetPropertyAttributes, JS_SetPropertyAttributes_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);

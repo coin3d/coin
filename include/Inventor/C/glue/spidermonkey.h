@@ -337,6 +337,7 @@ typedef jsval (* JS_GetNaNValue_t)(JSContext *);
 typedef jsval (* JS_GetNegativeInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetPositiveInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetEmptyStringValue_t)(JSContext *);
+typedef JSBool (* JS_SetPropertyAttributes_t)(JSContext *, JSObject *, const char *, uintN, JSBool *);
 
 
 /* Access interface. **************************************************** */
@@ -415,7 +416,7 @@ typedef struct {
   JS_GetNegativeInfinityValue_t JS_GetNegativeInfinityValue;
   JS_GetPositiveInfinityValue_t JS_GetPositiveInfinityValue;
   JS_GetEmptyStringValue_t JS_GetEmptyStringValue;
-
+  JS_SetPropertyAttributes_t JS_SetPropertyAttributes;
 
 } SpiderMonkey_t;
 
