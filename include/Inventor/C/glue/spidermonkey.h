@@ -268,6 +268,8 @@ typedef char * (* JS_GetStringBytes_t)(JSString *);
 typedef JSBool (* JS_SetProperty_t)(JSContext *, JSObject *, const char *, jsval *);
 typedef JSBool (* JS_GetProperty_t)(JSContext *, JSObject *, const char *, jsval *);
 typedef JSBool (* JS_CallFunctionName_t)(JSContext *, JSObject *, const char *, uintN, jsval *, jsval *);
+typedef JSBool (* JS_CallFunctionValue_t)(JSContext *, JSObject *, jsval, uintN, jsval *, jsval *);
+typedef JSObject * (* JS_ConstructObjectWithArguments_t)(JSContext *, JSClass *, JSObject *, JSObject *, uintN, jsval *);
 typedef JSRuntime * (* JS_NewRuntime_t)(uint32_t);
 typedef void (* JS_DestroyRuntime_t)(JSRuntime *);
 typedef JSContext * (* JS_NewContext_t)(JSRuntime *, size_t);
@@ -338,6 +340,9 @@ typedef jsval (* JS_GetNegativeInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetPositiveInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetEmptyStringValue_t)(JSContext *);
 typedef JSBool (* JS_SetPropertyAttributes_t)(JSContext *, JSObject *, const char *, uintN, JSBool *);
+typedef JSClass * (* JS_GetClass_t)(JSObject *);
+typedef JSObject * (* JS_GetPrototype_t)(JSContext *, JSObject *);
+typedef JSObject * (* JS_SetPrototype_t)(JSContext *, JSObject *, JSObject *);
 
 
 /* Access interface. **************************************************** */
@@ -346,12 +351,15 @@ typedef struct {
   int available;
 
   JS_CallFunctionName_t JS_CallFunctionName;
+  JS_CallFunctionValue_t JS_CallFunctionValue;
+  JS_ConstructObjectWithArguments_t JS_ConstructObjectWithArguments;
   JS_ConvertStub_t JS_ConvertStub;
   JS_DestroyContext_t JS_DestroyContext;
   JS_DestroyRuntime_t JS_DestroyRuntime;
   JS_EnumerateStub_t JS_EnumerateStub;
   JS_EvaluateScript_t JS_EvaluateScript;
   JS_FinalizeStub_t JS_FinalizeStub;
+  JS_GetClass_t JS_GetClass;
   JS_GetImplementationVersion_t JS_GetImplementationVersion;
   JS_GetProperty_t JS_GetProperty;
   JS_GetStringBytes_t JS_GetStringBytes;
@@ -417,6 +425,8 @@ typedef struct {
   JS_GetPositiveInfinityValue_t JS_GetPositiveInfinityValue;
   JS_GetEmptyStringValue_t JS_GetEmptyStringValue;
   JS_SetPropertyAttributes_t JS_SetPropertyAttributes;
+  JS_GetPrototype_t JS_GetPrototype;
+  JS_SetPrototype_t JS_SetPrototype;
 
 } SpiderMonkey_t;
 

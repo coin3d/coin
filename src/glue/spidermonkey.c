@@ -195,6 +195,8 @@ spidermonkey(void)
   REGISTER_FUNC(JS_SetProperty, JS_SetProperty_t);
   REGISTER_FUNC(JS_GetProperty, JS_GetProperty_t);
   REGISTER_FUNC(JS_CallFunctionName, JS_CallFunctionName_t);
+  REGISTER_FUNC(JS_CallFunctionValue, JS_CallFunctionValue_t);
+  REGISTER_FUNC(JS_ConstructObjectWithArguments, JS_ConstructObjectWithArguments_t);
   REGISTER_FUNC_ALTERNATE(JS_NewRuntime, JS_Init, JS_NewRuntime_t);
   REGISTER_FUNC_ALTERNATE(JS_DestroyRuntime, JS_Finish, JS_DestroyRuntime_t);
   REGISTER_FUNC(JS_NewContext, JS_NewContext_t);
@@ -260,6 +262,9 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetPositiveInfinityValue, JS_GetPositiveInfinityValue_t);
   REGISTER_FUNC(JS_GetEmptyStringValue, JS_GetEmptyStringValue_t);
   REGISTER_FUNC(JS_SetPropertyAttributes, JS_SetPropertyAttributes_t);
+  REGISTER_FUNC(JS_GetClass, JS_GetClass_t);
+  REGISTER_FUNC(JS_GetPrototype, JS_GetPrototype_t);
+  REGISTER_FUNC(JS_SetPrototype, JS_SetPrototype_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);
