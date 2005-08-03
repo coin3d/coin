@@ -107,13 +107,21 @@ CoinOffscreenGLCanvas::activateGLContext(void)
   if (this->context == NULL) {
     this->context = cc_glglue_context_create_offscreen(this->buffersize[0],
                                                        this->buffersize[1]);
-    if (this->context == NULL) { return 0; }
+    if (this->context == NULL) { 
+      SoDebugError::post("CoinOffscreenGLCanvas::activateGLContext",
+                         "Couldn't create offscreen context.");
+      return 0;
+    }
 
     // Set up mapping from GL context to SoGLRenderAction context id.
     this->renderid = SoGLCacheContextElement::getUniqueCacheContext();
   }
 
-  if (cc_glglue_context_make_current(this->context) == FALSE) { return 0; }
+  if (cc_glglue_context_make_current(this->context) == FALSE) { 
+    SoDebugError::post("CoinOffscreenGLCanvas::activateGLContext",
+                       "Couldn't make context current.");
+    return 0; 
+  }
   return this->renderid;
 }
 
