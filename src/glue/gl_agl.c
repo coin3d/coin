@@ -495,11 +495,13 @@ aglglue_context_make_current(void * ctx)
 
     vs = aglGetVirtualScreen (context->aglcontext);
     if (!aglglue_aglSetPBuffer (context->aglcontext, context->aglpbuffer, 0, 0, vs)) {
-      GLenum error = aglGetError();
-      if (error != AGL_NO_ERROR) {
-        cc_debugerror_post("aglglue_context_make_current",
-                           "aglSetPBbuffer failed: %s", 
-                           (char *)aglErrorString(error));
+      if (coin_glglue_debug()) {
+        GLenum error = aglGetError();
+        if (error != AGL_NO_ERROR) {
+          cc_debugerror_post("aglglue_context_make_current",
+                             "aglSetPBuffer failed: %s", 
+                             (char *)aglErrorString(error));
+        }
       }
       return FALSE;
     }
