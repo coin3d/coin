@@ -1099,21 +1099,14 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
       spidermonkey()->JS_ReportError(cx, "input is not legal VRML string");
       return JSVAL_FALSE;
     }
-    if (group->getNumChildren() > 1) {
-      spidermonkey()->JS_ReportError(cx, "more than one top-level node, "
-                                         "result is undefined");
-      return JSVAL_FALSE;
-    }
     if (group->getNumChildren() == 0) {
       spidermonkey()->JS_ReportError(cx, "no top-level node, result is undefined");
       *rval = JSVAL_VOID;
       return JSVAL_FALSE;
     }
 
-    SoNode * node = group->getChild(0);
-
-    node->ref();
-    spidermonkey()->JS_SetPrivate(cx, obj, node);
+    group->ref();
+    spidermonkey()->JS_SetPrivate(cx, obj, group);
 
     return JSVAL_TRUE;
   }
