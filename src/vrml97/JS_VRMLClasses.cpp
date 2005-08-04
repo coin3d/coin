@@ -213,7 +213,9 @@ struct CoinVrmlJsSFHandler {
   static void destructor(JSContext * cx, JSObject * obj)
   {
     Base * data = (Base *)spidermonkey()->JS_GetPrivate(cx, obj);
-    assert(data != NULL);
+    // FIXME: We cannot assume this since the class object itself is an
+    // instance of this JSClass. kintel 20050804.
+    //    assert(data != NULL);
     delete data;
   }
 };
@@ -246,7 +248,9 @@ struct CoinVrmlJsMFHandler {
   static void destructor(JSContext * cx, JSObject * obj)
   {
     JSObject * array = spidermonkey()->JS_GetPrivate(cx, obj);
-    assert(array != NULL);
+    // FIXME: We cannot assume this since the class object itself is an
+    // instance of this JSClass. kintel 20050804.
+    //    assert(array != NULL);
     assert(spidermonkey()->JS_RemoveRoot(cx, array));
   }
 
@@ -1057,8 +1061,10 @@ static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
 static void SFNodeDestructor(JSContext * cx, JSObject * obj)
 {
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
-  assert(container != NULL);
-  container->unref();
+  // FIXME: We cannot assume this since the class object itself is an
+  // instance of this JSClass. kintel 20050804.
+  //  assert(container != NULL);
+  if (container) container->unref();
 }
 
 static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
