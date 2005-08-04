@@ -36,6 +36,7 @@
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
+#include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoProtoInstance.h>
 
@@ -87,9 +88,9 @@ SoType
 SoEngineOutput::getConnectionType(void) const
 {
   assert(this->container != NULL);
-  const SoEngineOutputData * outputs = 
-    this->isNodeEngineOutput() ? 
-    this->getNodeContainer()->getOutputData() : 
+  const SoEngineOutputData * outputs =
+    this->isNodeEngineOutput() ?
+    this->getNodeContainer()->getOutputData() :
     this->getContainer()->getOutputData();
   assert(outputs);
   int idx = outputs->getIndex(this->container, this);
@@ -107,9 +108,22 @@ SoEngineOutput::getConnectionType(void) const
 int
 SoEngineOutput::getForwardConnections(SoFieldList & fl) const
 {
-  int n = this->slaves.getLength();
-  for (int i = 0; i < n; i++) fl.append(this->slaves[i]);
-  return n;
+  int numc = 0;
+  for (int i = 0; i < this->slaves.getLength(); i++) {
+    SoField * field = this->slaves[i];
+    SoFieldContainer * fc = field->getContainer();
+    // test for and skip field converters. Get the real field this
+    // output is connected to.
+    if (fc && fc->isOfType(SoFieldConverter::getClassTypeId())) {
+      SoFieldConverter * converter = (SoFieldConverter*) fc;
+      numc += converter->getForwardConnections(fl);
+    }
+    else {
+      fl.append(field);
+      numc++;
+    }
+  }
+  return numc;
 }
 
 /*!
@@ -136,11 +150,11 @@ SoEngineOutput::isEnabled(void) const
   return this->enabled;
 }
 
-/*!  
+/*!
   Returns the engine containing this output. If the engine
   containing this output is a NodeEngine, this method returns NULL.
 
-  \sa setContainer(), getNodeContainer() 
+  \sa setContainer(), getNodeContainer()
 */
 SoEngine *
 SoEngineOutput::getContainer(void) const
@@ -155,18 +169,18 @@ SoEngineOutput::getContainer(void) const
   return this->container;
 }
 
-/*!  
+/*!
 
   Returns the node engine containing this output. If the engine
   containing this output is not a NodeEgine, this method returns NULL.
 
   \COIN_FUNCTION_EXTENSION
 
-  \sa setNodeContainer(), getContainer() 
+  \sa setNodeContainer(), getContainer()
   \since Coin 2.0
 */
 
-SoNodeEngine * 
+SoNodeEngine *
 SoEngineOutput::getNodeContainer(void) const
 {
   if (!this->isNodeEngineOutput()) {
@@ -184,10 +198,10 @@ SoEngineOutput::getNodeContainer(void) const
 
   \COIN_FUNCTION_EXTENSION
 
-  \sa getNodeContainer(), getContainer() 
+  \sa getNodeContainer(), getContainer()
   \since Coin 2.0
 */
-SbBool 
+SbBool
 SoEngineOutput::isNodeEngineOutput(void) const
 {
   assert(this->container);
@@ -215,7 +229,7 @@ SoEngineOutput::setContainer(SoEngine * engine)
   \since Coin 2.0
 */
 
-void 
+void
 SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 {
   // FIXME: need a union as member instead of container
@@ -244,7 +258,7 @@ SoEngineOutput::addConnection(SoField * f)
 
   // An engine's reference count increases with the number of
   // connections it has.
-  
+
   // SoProtoInstance has some special memory handling. Don't ref
   // and unref if the connection is to an SoProtoInstance
   SoFieldContainer * fc = f->getContainer();
@@ -304,6 +318,10 @@ SoEngineOutput::getNumConnections(void) const
 
 /*!
   Returns the field at index \a i in the list of connections.
+
+  Please note that this might not be the same field as the one the
+  output was originally connected to, since a field converted might
+  have been inserted to converted the output to match the field type.
 
   \sa getNumConnections()
 */
@@ -398,7 +416,7 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
 
   \since Coin 2.0
 */
-SoFieldContainer * 
+SoFieldContainer *
 SoEngineOutput::getFieldContainer(void)
 {
   return (SoFieldContainer*) this->container;

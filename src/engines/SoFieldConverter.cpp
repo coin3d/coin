@@ -55,6 +55,7 @@
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 #include <assert.h>
 #include <Inventor/engines/SoSubEngineP.h>
 #include <coindefs.h> // COIN_OBSOLETED
@@ -128,13 +129,12 @@ SoFieldConverter::getConnectedInput(void)
 int
 SoFieldConverter::getForwardConnections(SoFieldList & l) const
 {
-  const SoEngineOutputData * outputs = this->getOutputData();
-  assert(outputs && outputs->getNumOutputs() == 1);
-
-  SoEngineOutput * output = outputs->getOutput(this, 0);
-  assert(output);
-
-  int n = output->getNumConnections();
-  for (int i = 0; i < n; i++) l.append((*output)[i]);
+  SoEngineOutputList outputlist;
+  int n = 0;
+  (void) this->getOutputs(outputlist);
+  
+  for (int i = 0; i < outputlist.getLength(); i++) {
+    n += outputlist[i]->getForwardConnections(l);
+  }
   return n;
 }
