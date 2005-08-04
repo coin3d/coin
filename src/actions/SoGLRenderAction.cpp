@@ -1342,10 +1342,22 @@ SoGLRenderActionP::render(SoNode * node)
 
   this->precblist.invokeCallbacks((void*) this->action);
 
+  // Check if the current OpenGL context has an accumulation buffer
+  // (rendering multiple passes doesn't make much sense otherwise).
+  GLint accumbits;
+  glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
+
   if (this->action->getNumPasses() > 1) {
-    this->renderMulti(node);
-  }
-  else {
+    if (accumbits == 0) {
+      SoDebugError::postWarning("SoGLRenderActionP::render", 
+                                "Multipass rendering requested,\nbut current "
+                                "GL context has no accumulation buffer - "
+                                "falling back to single pass\nrendering.");
+      this->renderSingle(node);
+    } else {
+      this->renderMulti(node);
+    }
+  } else {
     this->renderSingle(node);
   }
 
@@ -1366,20 +1378,11 @@ SoGLRenderActionP::renderMulti(SoNode * node)
   this->renderSingle(node);
   if (this->action->hasTerminated()) return;
 
-  // Using glAccum() will generate GL_INVALID_OPERATION if there is no
-  // accumulation buffer for the GL context, so we have to check this.
-  // (Offscreen contexts will typically not have an accumulation
-  // buffer.)
-  GLint accumbits;
-  glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
-
-  // FIXME: Will simply disabling the glAccum() calls like this cause
-  // any problems elsewhere? 20050803 kyrah.
-  if (accumbits) glAccum(GL_LOAD, fraction);
+  glAccum(GL_LOAD, fraction);
 
   for (int i = 1; i < this->numpasses; i++) {
     if (this->passupdate) {
-      if (accumbits) glAccum(GL_RETURN, float(this->numpasses) / float(i));
+      glAccum(GL_RETURN, float(this->numpasses) / float(i));
     }
     if (this->passcallback) this->passcallback(this->passcallbackdata);
     else glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -1387,9 +1390,9 @@ SoGLRenderActionP::renderMulti(SoNode * node)
     this->renderSingle(node);
 
     if (this->action->hasTerminated()) return;
-    if (accumbits) glAccum(GL_ACCUM, fraction);
+    glAccum(GL_ACCUM, fraction);
   }
-  if (accumbits) glAccum(GL_RETURN, 1.0f);
+  glAccum(GL_RETURN, 1.0f);
 }
 
 //
