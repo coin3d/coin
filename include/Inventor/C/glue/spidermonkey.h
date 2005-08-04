@@ -340,6 +340,7 @@ typedef jsval (* JS_GetNegativeInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetPositiveInfinityValue_t)(JSContext *);
 typedef jsval (* JS_GetEmptyStringValue_t)(JSContext *);
 typedef JSBool (* JS_SetPropertyAttributes_t)(JSContext *, JSObject *, const char *, uintN, JSBool *);
+typedef JSBool (* JS_GetPropertyAttributes_t)(JSContext *, JSObject *, const char *, uintN *, JSBool *);
 typedef JSClass * (* JS_GetClass_t)(JSObject *);
 typedef JSObject * (* JS_GetPrototype_t)(JSContext *, JSObject *);
 typedef JSObject * (* JS_SetPrototype_t)(JSContext *, JSObject *, JSObject *);
@@ -425,6 +426,7 @@ typedef struct {
   JS_GetPositiveInfinityValue_t JS_GetPositiveInfinityValue;
   JS_GetEmptyStringValue_t JS_GetEmptyStringValue;
   JS_SetPropertyAttributes_t JS_SetPropertyAttributes;
+  JS_GetPropertyAttributes_t JS_GetPropertyAttributes;
   JS_GetPrototype_t JS_GetPrototype;
   JS_SetPrototype_t JS_SetPrototype;
 

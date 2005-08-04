@@ -262,6 +262,7 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetPositiveInfinityValue, JS_GetPositiveInfinityValue_t);
   REGISTER_FUNC(JS_GetEmptyStringValue, JS_GetEmptyStringValue_t);
   REGISTER_FUNC(JS_SetPropertyAttributes, JS_SetPropertyAttributes_t);
+  REGISTER_FUNC(JS_GetPropertyAttributes, JS_GetPropertyAttributes_t);
   REGISTER_FUNC(JS_GetClass, JS_GetClass_t);
   REGISTER_FUNC(JS_GetPrototype, JS_GetPrototype_t);
   REGISTER_FUNC(JS_SetPrototype, JS_SetPrototype_t);
