@@ -226,7 +226,10 @@ struct CoinVrmlJsMFHandler {
   {
     JSObject * array = spidermonkey()->JS_NewArrayObject(cx, 0, NULL);
     // add gc protection
-    assert(spidermonkey()->JS_AddRoot(cx, array));
+    // FIXME: This will crash on gc since the storage of the pointer itself
+    // must be retained outside this method (kintel 20050805)
+    JSBool ok = spidermonkey()->JS_AddRoot(cx, &array);
+    assert(ok);
     spidermonkey()->JS_SetPrivate(cx, obj, array);
 
     SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
@@ -251,7 +254,10 @@ struct CoinVrmlJsMFHandler {
     // FIXME: We cannot assume this since the class object itself is an
     // instance of this JSClass. kintel 20050804.
     //    assert(array != NULL);
-    assert(spidermonkey()->JS_RemoveRoot(cx, array));
+    // FIXME: This will crash on gc since the storage of the pointer itself
+    // must be retained outside this method (kintel 20050805)
+    JSBool ok = spidermonkey()->JS_RemoveRoot(cx, &array);
+    assert(ok);
   }
 
   static JSObject * init(JSContext * cx, JSObject * obj)
