@@ -1225,11 +1225,11 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
        from application code by invoking the SoDB::finish() method,
        which then invokes the coin_atexit_cleanup() method.
 
-       mortene.
+       Note that this scheme is not to be considered a temporary
+       workaround -- application-exit clean-up should be done
+       explicitly by invoking SoDB::finish().
 
-       FIXME: Is this a temporary workaround until we figure out
-       why using atexit() does not work, or is using SoDB::finish()
-       the way to go? 20050726 kyrah.
+       mortene.
     */
     /* (void)atexit(coin_atexit_cleanup); */
   }
