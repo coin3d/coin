@@ -236,6 +236,24 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
+  // FIXME: according to a user, TGS Inventor seems to disable the
+  // redraw SoOneShotSensor while the scene graph is being rendered,
+  // which Coin does not do. SGI Inventor probably has the same
+  // behavior as TGS Inventor. (Should investigate this.)
+  //
+  // pederb suggests keeping the current behavior in Coin, even though
+  // this may cause trouble for code being ported from SGI / TGS
+  // Inventor, as it is convenient to "touch()" a node for triggering
+  // continuous animation. Besides, making Coin compatible with SGI
+  // (?) / TGS Inventor now may cause problems for existing Coin
+  // client code.
+  //
+  // I'm however not too happy with this fairly large incompatibility.
+  // Any usable suggestions for a resolution of this problem would be
+  // welcome.
+  //
+  // 20050809 mortene.
+
   if (PRIVATE(this)->scene && 
       // Order is important below, because we don't want to call
       // SoAudioDevice::instance() unless we need to -- as it triggers
