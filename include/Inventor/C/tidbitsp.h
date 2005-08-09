@@ -138,6 +138,10 @@ int coin_finite(double value);
 
 /* ********************************************************************** */
 
+unsigned long coin_geq_prime_number(unsigned long num);
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
