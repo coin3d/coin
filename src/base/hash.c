@@ -26,6 +26,7 @@
    backwards API and ABI compatible on the Coin 2.x releases. */
 
 /* ********************************************************************** */
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -34,6 +35,8 @@
                               for obsoleted ADT. */
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
+#include <Inventor/C/tidbitsp.h>
+
 #undef COIN_ALLOW_CC_HASH
 
 #include <Inventor/C/tidbits.h>
@@ -57,8 +60,7 @@ hash_get_index(cc_hash * ht, unsigned long key)
 {
   assert(ht != NULL);
   key = ht->hashfunc(key);
-  key -= (key << 7); /* i.e. key = key * -127; */
-  return key & (ht->size-1);
+  return key % ht->size;
 }
 
 static void
@@ -67,8 +69,6 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   cc_hash_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
   cc_hash_entry * prev;
-
-  assert(coin_is_power_of_two(newsize));
 
   /* Never shrink the table */
   if (ht->size >= newsize)
@@ -112,15 +112,13 @@ hash_resize(cc_hash * ht, unsigned int newsize)
 cc_hash *
 cc_hash_construct(unsigned int size, float loadfactor)
 {
+  unsigned int s;
   cc_hash * ht = (cc_hash *) malloc(sizeof(cc_hash));
 
-  /* Size must be a power of two */
-  unsigned int s = 1;
-  while (s < size)
-    s <<= 1;
-
+  /* size should be a prime number */
+  s = (unsigned int) coin_geq_prime_number(size);
   if (loadfactor <= 0.0f) loadfactor = 0.75f;
-
+  
   ht->size = s;
   ht->elements = 0;
   ht->threshold = (unsigned int) (s * loadfactor);
@@ -211,7 +209,7 @@ cc_hash_put(cc_hash * ht, unsigned long key, void * val)
   ht->buckets[i] = he;
 
   if (ht->elements++ >= ht->threshold) {
-    hash_resize(ht, ht->size * 2);
+    hash_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
   }
   return TRUE;
 }

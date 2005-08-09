@@ -28,6 +28,7 @@
 #include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/dictp.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #ifdef __cplusplus
@@ -48,8 +49,7 @@ dict_get_index(cc_dict * ht, uintptr_t key)
 {
   assert(ht != NULL);
   key = ht->hashfunc(key);
-  key -= (key << 7); /* i.e. key = key * -127; */
-  return ((unsigned int)key) & (ht->size-1);
+  return (unsigned int) (key % ht->size);
 }
 
 static void
@@ -57,7 +57,6 @@ dict_resize(cc_dict * ht, unsigned int newsize)
 {
   cc_dict_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
-  assert(coin_is_power_of_two(newsize));
 
   /* Never shrink the table */
   if (ht->size >= newsize)
@@ -99,15 +98,12 @@ dict_resize(cc_dict * ht, unsigned int newsize)
 cc_dict *
 cc_dict_construct(unsigned int size, float loadfactor)
 {
+  unsigned int s;
   cc_dict * ht = (cc_dict *) malloc(sizeof(cc_dict));
-
-  /* Size must be a power of two */
-  unsigned int s = 1;
-  while (s < size)
-    s <<= 1;
-
+  
+  s = (unsigned int) coin_geq_prime_number(size);
   if (loadfactor <= 0.0f) loadfactor = 0.75f;
-
+  
   ht->size = s;
   ht->elements = 0;
   ht->threshold = (unsigned int) (s * loadfactor);
@@ -196,9 +192,9 @@ cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
   he->val = val;
   he->next = ht->buckets[i];
   ht->buckets[i] = he;
-
+  
   if (ht->elements++ >= ht->threshold) {
-    dict_resize(ht, ht->size * 2);
+    dict_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
   }
   return TRUE;
 }

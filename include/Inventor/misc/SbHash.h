@@ -40,6 +40,7 @@
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/base/memalloc.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -142,7 +143,9 @@ public:
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if ( this->elements++ >= this->threshold ) { this->resize(this->size * 2); }
+    if ( this->elements++ >= this->threshold ) { 
+      this->resize((unsigned int) coin_geq_prime_number(this->size + 1)); 
+    }
     return TRUE;
   }
 
@@ -213,14 +216,12 @@ protected:
 
   unsigned int getIndex(const Key & key) const {
     unsigned int idx = this->hashfunc(key);
-    idx -= (idx << 7); /* i.e. key = key * -127; */
-    return idx & (this->size - 1);
+    return (idx % this->size);
   }
 
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
-    /* assert(coin_is_power_of_two(newsize)); */
 
     unsigned int oldsize = this->size;
     SbHashEntry<Type, Key> ** oldbuckets = this->buckets;
@@ -249,8 +250,7 @@ private:
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
     if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
-    unsigned int s = 1;
-    while ( s < sizearg ) { s <<= 1; } // power-of-two size
+    unsigned int s = coin_geq_prime_number(sizearg);
     this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Type, Key>));
     this->size = s;
     this->elements = 0;
