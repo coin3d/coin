@@ -1099,7 +1099,7 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
     }
                              
 
-    SoInput input = SoInput();
+    SoInput input;
     const char * array[2];
     array[0] = str;
     array[1] = NULL;
