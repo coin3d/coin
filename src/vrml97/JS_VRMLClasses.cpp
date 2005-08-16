@@ -224,13 +224,11 @@ template <class MFFieldClass, class SFFieldClass, CoinVrmlJs::ClassDescriptor * 
 struct CoinVrmlJsMFHandler {
   static JSBool constructor(JSContext * cx, JSObject * obj, uintN argc, jsval * argv, jsval * rval)
   {
+    jsval * val = new jsval;
     JSObject * array = spidermonkey()->JS_NewArrayObject(cx, 0, NULL);
-    // add gc protection
-    // FIXME: This will crash on gc since the storage of the pointer itself
-    // must be retained outside this method (kintel 20050805)
-    JSBool ok = spidermonkey()->JS_AddRoot(cx, &array);
-    assert(ok);
-    spidermonkey()->JS_SetPrivate(cx, obj, array);
+    *val = OBJECT_TO_JSVAL(array);
+    assert(spidermonkey()->JS_AddRoot(cx, val));
+    spidermonkey()->JS_SetPrivate(cx, obj, val);
 
     SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
     uintN i;
@@ -250,14 +248,11 @@ struct CoinVrmlJsMFHandler {
 
   static void destructor(JSContext * cx, JSObject * obj)
   {
-    JSObject * array = spidermonkey()->JS_GetPrivate(cx, obj);
-    // FIXME: We cannot assume this since the class object itself is an
-    // instance of this JSClass. kintel 20050804.
-    //    assert(array != NULL);
-    // FIXME: This will crash on gc since the storage of the pointer itself
-    // must be retained outside this method (kintel 20050805)
-    JSBool ok = spidermonkey()->JS_RemoveRoot(cx, &array);
-    assert(ok);
+    jsval * val = (jsval *)spidermonkey()->JS_GetPrivate(cx, obj);
+    if (val != NULL) {
+      assert(spidermonkey()->JS_RemoveRoot(cx, val));
+      delete val;
+    }
   }
 
   static JSObject * init(JSContext * cx, JSObject * obj)
@@ -334,19 +329,19 @@ struct CoinVrmlJsMFHandler {
   static JSBool get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
   {
     
-    JSObject * array = (JSObject *)spidermonkey()->JS_GetPrivate(cx, obj);
+    jsval * array = (jsval *)spidermonkey()->JS_GetPrivate(cx, obj);
 
     if (JSVAL_IS_INT(id)) {
       assert(array != NULL);
       int index = JSVAL_TO_INT(id);
-      return spidermonkey()->JS_GetElement(cx, array, index, rval);
+      return spidermonkey()->JS_GetElement(cx, JSVAL_TO_OBJECT(*array), index, rval);
     }
     else if (JSVAL_IS_STRING(id)) {
       const char * str = spidermonkey()->JS_GetStringBytes(JSVAL_TO_STRING(id));
       if (SbName("length") == str) {
         assert(array != NULL);
         uint32_t length;
-        assert(spidermonkey()->JS_GetArrayLength(cx, array, &length));
+        assert(spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length));
         *rval = INT_TO_JSVAL(length);
         return JSVAL_TRUE;
       }
@@ -357,7 +352,7 @@ struct CoinVrmlJsMFHandler {
 
   static JSBool set(JSContext * cx, JSObject * obj, jsval id, jsval * val)
   {
-    JSObject * array = (JSObject *)spidermonkey()->JS_GetPrivate(cx, obj);
+    jsval * array = (jsval *)spidermonkey()->JS_GetPrivate(cx, obj);
 
     if (JSVAL_IS_INT(id)) {
       int index = JSVAL_TO_INT(id);
@@ -369,16 +364,16 @@ struct CoinVrmlJsMFHandler {
 
       // resize if necessary
       uint32_t length;
-      assert(spidermonkey()->JS_GetArrayLength(cx, array, &length));
+      assert(spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length));
       if (index >= (int)length) {
-        resize(cx, array, index+1);
+        resize(cx, JSVAL_TO_OBJECT(*array), index+1);
       }
 
       SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
       // Check if val is not of wrong type
       if (SoJavaScriptEngine::jsval2field(cx, *val, field)) {
         // assign it
-        assert(spidermonkey()->JS_SetElement(cx, array, index, val));
+        assert(spidermonkey()->JS_SetElement(cx, JSVAL_TO_OBJECT(*array), index, val));
         return JSVAL_TRUE;
       }
       delete field;
@@ -392,7 +387,7 @@ struct CoinVrmlJsMFHandler {
           spidermonkey()->JS_ReportError(cx, "RangeError: invalid array length");
         }
         else {
-          resize(cx, array, (uint32_t)number);
+          resize(cx, JSVAL_TO_OBJECT(*array), (uint32_t)number);
         }
         return JSVAL_TRUE;
       }
@@ -407,13 +402,13 @@ struct CoinVrmlJsMFHandler {
     if (JSVAL_IS_OBJECT(v) && 
         spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(v), &desc->cls, NULL)) {
       JSObject * obj = JSVAL_TO_OBJECT(v);
-      JSObject * array = (JSObject *)spidermonkey()->JS_GetPrivate(cx, obj);
+      jsval * array = (jsval *)spidermonkey()->JS_GetPrivate(cx, obj);
       assert(array != NULL);
 
       jsval element;
       uint32_t i;
       uint32_t num;
-      JSBool ok = spidermonkey()->JS_GetArrayLength(cx, array, &num);
+      JSBool ok = spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &num);
 
       SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
       
