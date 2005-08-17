@@ -42,16 +42,24 @@ public:
   uint32_t activateGLContext(void);
   void deactivateGLContext(void);
 
-  void setBufferSize(const SbVec2s & size);
+  void setWantedSize(SbVec2s size);
+  const SbVec2s & getActualSize(void) const;
 
   void readPixels(uint8_t * dst, const SbVec2s & vpdims,
                   unsigned int dstrowsize,
                   unsigned int nrcomponents) const;
 
+  static SbBool debug(void);
+
 private:
+  static SbBool clampSize(SbVec2s & s);
+  static void clampToPixelSizeRoof(SbVec2s & s);
+  static SbVec2s getMaxTileSize(void);
+  static unsigned int tilesizeroof;
+  uint32_t tryActivateGLContext(void);
   void destructContext(void);
 
-  SbVec2s buffersize;
+  SbVec2s size;
 
   void * context;
   uint32_t renderid;

@@ -23,6 +23,8 @@
 
 #include "CoinOffscreenGLCanvas.h"
 
+#include <limits.h>
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
@@ -30,9 +32,13 @@
 
 // *************************************************************************
 
+unsigned int CoinOffscreenGLCanvas::tilesizeroof = UINT_MAX;
+
+// *************************************************************************
+
 CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
 {
-  this->buffersize = SbVec2s(0, 0);
+  this->size = SbVec2s(0, 0);
   this->context = NULL;
 }
 
@@ -43,16 +49,56 @@ CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
 
 // *************************************************************************
 
-void
-CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
+SbBool
+CoinOffscreenGLCanvas::clampSize(SbVec2s & reqsize)
 {
-  assert((size[0] > 0) && (size[1] > 0) && "invalid dimensions attempted set");
+  // getMaxTileSize() returns the theoretical maximum gathered from
+  // various GL driver information. We're not guaranteed that we'll be
+  // able to allocate a buffer of this size -- e.g. due to memory
+  // constraints on the gfx card.
+
+  const SbVec2s maxsize = CoinOffscreenGLCanvas::getMaxTileSize();
+  if (maxsize == SbVec2s(0, 0)) { return FALSE; }
+
+  reqsize[0] = SbMin(reqsize[0], maxsize[0]);
+  reqsize[1] = SbMin(reqsize[1], maxsize[1]);
+
+  // Fit the attempted allocation size to be less than the largest
+  // tile size we know have failed allocation. We do this to avoid
+  // trying to set the tilesize to dimensions which will very likely
+  // fail -- as attempting to find a workable tilesize is an expensive
+  // operation when the SoOffscreenRenderer instance already has a GL
+  // context set up (destruction and creation of a new one will take
+  // time, and it will also kill all GL resources tied to the
+  // context).
+  while ((((unsigned int)reqsize[0]) * ((unsigned int)reqsize[1])) >
+         CoinOffscreenGLCanvas::tilesizeroof) {
+    // shrink by halving the largest dimension:
+    if (reqsize[0] > reqsize[1]) { reqsize[0] /= 2; }
+    else { reqsize[1] /= 2; }
+  }
+
+  if ((reqsize[0] == 0) || (reqsize[1] == 0)) { return FALSE; }
+  return TRUE;
+}
+
+void
+CoinOffscreenGLCanvas::setWantedSize(SbVec2s reqsize)
+{
+  assert((reqsize[0] > 0) && (reqsize[1] > 0) && "invalid dimensions attempted set");
+
+  const SbBool ok = CoinOffscreenGLCanvas::clampSize(reqsize);
+  if (!ok) {
+    if (this->context) { this->destructContext(); }
+    this->size = SbVec2s(0, 0);
+    return;
+  }
 
   // We check if the current GL canvas is much larger than what is
   // requested, as to then free up potentially large memory resources,
   // even if we already have a large enough canvas.
-  size_t oldres = (size_t)this->buffersize[0] * (size_t)this->buffersize[1];
-  size_t newres = (size_t)size[0] * (size_t)size[1];
+  size_t oldres = (size_t)this->size[0] * (size_t)this->size[1];
+  size_t newres = (size_t)reqsize[0] * (size_t)reqsize[1];
   const SbBool resourcehog = (oldres > (newres * 16));
 
   // Since the operation of context destruction and reconstruction has
@@ -67,18 +113,28 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
   // SoOffscreenRenderer wants, because glViewport() is used from
   // SoOffscreenRenderer to render to the correct viewport dimensions.
   if (this->context &&
-      (this->buffersize[0] >= size[0]) && (this->buffersize[1] >= size[1]) &&
+      (this->size[0] >= reqsize[0]) &&
+      (this->size[1] >= reqsize[1]) &&
       !resourcehog) {
     return;
   }
 
   // Ok, there's no way around it, we need to destruct the GL context:
 
+  if (CoinOffscreenGLCanvas::debug()) {
+    SoDebugError::postInfo("CoinOffscreenGLCanvas::setWantedSize",
+                           "killing current context, (clamped) reqsize==[%d, %d],"
+                           " previous size==[%d, %d], resourcehog==%s",
+                           reqsize[0], reqsize[1],
+                           this->size[0], this->size[1],
+                           resourcehog ? "TRUE" : "FALSE");
+  }
+
   if (resourcehog) {
     // If we were hogging too much memory for the offscreen context,
     // simply go back to the requested size, to free up all that we
     // can.
-    this->buffersize = size;
+    this->size = reqsize;
   }
   else {
     // To avoid costly reconstruction on "flutter", by one or two
@@ -86,14 +142,64 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
     // we try to expand the GL canvas up-front to what perhaps would
     // be sufficient to avoid further GL canvas destruct- /
     // reconstruct-operations.
-    this->buffersize[0] = SbMax(size[0], this->buffersize[0]);
-    this->buffersize[1] = SbMax(size[1], this->buffersize[1]);
+    this->size[0] = SbMax(reqsize[0], this->size[0]);
+    this->size[1] = SbMax(reqsize[1], this->size[1]);
   }
 
   if (this->context) { this->destructContext(); }
 }
 
+const SbVec2s &
+CoinOffscreenGLCanvas::getActualSize(void) const
+{
+  return this->size;
+}
+
 // *************************************************************************
+
+uint32_t
+CoinOffscreenGLCanvas::tryActivateGLContext(void) 
+{
+  if (this->size == SbVec2s(0, 0)) { return 0; }
+
+  if (this->context == NULL) {
+    this->context = cc_glglue_context_create_offscreen(this->size[0],
+                                                       this->size[1]);
+    if (CoinOffscreenGLCanvas::debug()) {
+      SoDebugError::postInfo("CoinOffscreenGLCanvas::tryActivateGLContext",
+                             "Tried to create offscreen context of dimensions "
+                             "<%d, %d> -- %s",
+                             this->size[0], this->size[1],
+                             this->context == NULL ? "failed" : "succeeded");
+    }
+
+    if (this->context == NULL) { return 0; }
+
+    // Set up mapping from GL context to SoGLRenderAction context id.
+    this->renderid = SoGLCacheContextElement::getUniqueCacheContext();
+  }
+
+  if (cc_glglue_context_make_current(this->context) == FALSE) { 
+    SoDebugError::post("CoinOffscreenGLCanvas::tryActivateGLContext",
+                       "Couldn't make context current.");
+    return 0; 
+  }
+  return this->renderid;
+}
+
+void
+CoinOffscreenGLCanvas::clampToPixelSizeRoof(SbVec2s & s)
+{
+  unsigned int pixelsize;
+  do {
+    pixelsize = (unsigned int)s[0] * (unsigned int)s[1];
+    if (pixelsize >= CoinOffscreenGLCanvas::tilesizeroof) {
+      // halve the largest dimension, and try again:
+      if (s[0] > s[1]) { s[0] /= 2; }
+      else { s[1] /= 2; }
+    }
+  } while (pixelsize >= CoinOffscreenGLCanvas::tilesizeroof);
+}
 
 // Activates an offscreen GL context, and returns a guaranteed unique
 // id to use with SoGLRenderAction::setCacheContext().
@@ -104,25 +210,34 @@ CoinOffscreenGLCanvas::setBufferSize(const SbVec2s & size)
 uint32_t 
 CoinOffscreenGLCanvas::activateGLContext(void) 
 {
-  if (this->context == NULL) {
-    this->context = cc_glglue_context_create_offscreen(this->buffersize[0],
-                                                       this->buffersize[1]);
-    if (this->context == NULL) { 
-      SoDebugError::post("CoinOffscreenGLCanvas::activateGLContext",
-                         "Couldn't create offscreen context.");
-      return 0;
-    }
+  // We try to allocate the wanted size, and then if we fail,
+  // successively try with smaller sizes (alternating between halving
+  // width and height) until either a workable offscreen buffer was
+  // found, or no buffer could be made.
+  uint32_t ctx;
+  do {
+    CoinOffscreenGLCanvas::clampToPixelSizeRoof(this->size);
 
-    // Set up mapping from GL context to SoGLRenderAction context id.
-    this->renderid = SoGLCacheContextElement::getUniqueCacheContext();
-  }
+    ctx = this->tryActivateGLContext();
+    if (ctx != 0) { break; }
 
-  if (cc_glglue_context_make_current(this->context) == FALSE) { 
-    SoDebugError::post("CoinOffscreenGLCanvas::activateGLContext",
-                       "Couldn't make context current.");
-    return 0; 
-  }
-  return this->renderid;
+    // if we've allocated a context, but couldn't make it current
+    if (this->context) { this->destructContext(); }
+
+    // we failed with this size, so make sure we only try with smaller
+    // tile sizes later
+    const unsigned int failedsize =
+      (unsigned int)this->size[0] * (unsigned int)this->size[1];
+    assert(failedsize < CoinOffscreenGLCanvas::tilesizeroof);
+    CoinOffscreenGLCanvas::tilesizeroof = failedsize;
+
+    // keep trying until 32x32 -- if even those dimensions doesn't
+    // work, give up, as too small tiles will cause the processing
+    // time to go through the roof due to the huge number of passes:
+    if ((this->size[0] <= 32) && (this->size[1] <= 32)) { break; }
+  } while (TRUE);
+
+  return ctx;
 }
 
 void
@@ -139,13 +254,15 @@ CoinOffscreenGLCanvas::destructContext(void)
 {
   assert(this->context);
 
-  const uint32_t id = this->activateGLContext();
-  if (id == 0) {
-    SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
-                       "Couldn't activate context.");
+  if (cc_glglue_context_make_current(this->context)) {
+    SoContextHandler::destructingContext(this->renderid);
+    this->deactivateGLContext();
   }
-  SoContextHandler::destructingContext(id);
-  this->deactivateGLContext();
+  else {
+    SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
+                       "Couldn't activate context -- resource clean-up "
+                       "not complete.");
+  }
 
   cc_glglue_context_destruct(this->context);
   this->context = NULL;
@@ -242,6 +359,69 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst,
   glFlush(); glFinish();
 
   glPopAttrib();
+}
+
+// *************************************************************************
+
+// Return largest size of offscreen canvas system can handle. Will
+// cache result, so only the first look-up is expensive.
+SbVec2s
+CoinOffscreenGLCanvas::getMaxTileSize(void)
+{
+  // cache the values in static variables so that a new context is not
+  // created every time render() is called in SoOffscreenRenderer
+  static SbBool cached = FALSE;
+  static unsigned int maxtile[2] = { 0, 0 };
+  if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+
+  cached = TRUE; // Flip on first run.
+
+  unsigned int width, height;
+  cc_glglue_context_max_dimensions(&width, &height);
+
+  if (CoinOffscreenGLCanvas::debug()) {
+    SoDebugError::postInfo("CoinOffscreenGLCanvas::getMaxTileSize",
+                           "cc_glglue_context_max_dimensions()==[%u, %u]",
+                           width, height);
+  }
+
+  // Makes it possible to override the default tilesizes. Should prove
+  // useful for debugging problems on remote sites.
+  const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+  const unsigned int forcedtilewidth = env ? atoi(env) : 0;
+  env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+  const unsigned int forcedtileheight = env ? atoi(env) : 0;
+
+  if (forcedtilewidth != 0) { width = forcedtilewidth; }
+  if (forcedtileheight != 0) { height = forcedtileheight; }
+
+  // Also make it possible to force a maximum tilesize.
+  env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
+  const unsigned int maxtilesize = env ? atoi(env) : 0;
+  if (maxtilesize != 0) {
+    width = SbMin(width, maxtilesize);
+    height = SbMin(height, maxtilesize);
+  }
+
+  // cache result for later calls, and clamp to fit within a short
+  // integer type
+  maxtile[0] = SbMin(width, (unsigned int)SHRT_MAX);
+  maxtile[1] = SbMin(height, (unsigned int)SHRT_MAX);
+
+  return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+}
+
+// *************************************************************************
+
+SbBool
+CoinOffscreenGLCanvas::debug(void)
+{
+  static int flag = -1; // -1 means "not initialized" in this context
+  if (flag == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_SOOFFSCREENRENDERER");
+    flag = env && (atoi(env) > 0);
+  }
+  return flag;
 }
 
 // *************************************************************************

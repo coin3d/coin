@@ -319,9 +319,6 @@ public:
 
   static SbBool offscreenContextsNotSupported(void);
 
-  static SbVec2s getMaxTileSize(void);
-
-  static SbBool debug(void);
   static const char * debugTileOutputPrefix(void);
 
   static SoGLRenderAction::AbortCode GLRenderAbortCallback(void *userData);
@@ -362,17 +359,6 @@ private:
 #define PUBLIC(p) (p->master)
 
 // *************************************************************************
-
-SbBool
-SoOffscreenRendererP::debug(void)
-{
-  static int flag = -1; // -1 means "not initialized" in this context
-  if (flag == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_SOOFFSCREENRENDERER");
-    flag = env && (atoi(env) > 0);
-  }
-  return flag;
-}
 
 // Set the environment variable below to get the individual tiles
 // written out for debugging purposes. E.g.
@@ -630,56 +616,39 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
-  // getMaxTileSize() returns the *theoretical* maximum, we're not
-  // guaranteed that we'll be able to allocate a buffer of this size
-  // -- e.g. due to memory constraints on the gfx card.
-
-  SbVec2s glsize = SoOffscreenRendererP::getMaxTileSize();
-  if (glsize == SbVec2s(0, 0)) { return FALSE; }
-
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
-  glsize[0] = SbMin(glsize[0], fullsize[0]);
-  glsize[1] = SbMin(glsize[1], fullsize[1]);
+  this->glcanvas.setWantedSize(fullsize);
 
-  // oldcontext is used to restore the previous context id, in case
-  // the render action is not allocated by us.
-  const uint32_t oldcontext = this->renderaction->getCacheContext();
-
-  // We try to allocate the wanted size, and then if we fail,
-  // successively try with smaller sizes (alternating between halving
-  // width and height) until either a workable offscreen buffer was
-  // found, or no buffer could be made.
-  uint32_t newcontext;
-  do {
-    this->glcanvas.setBufferSize(glsize);
-    newcontext = this->glcanvas.activateGLContext();
-    if (newcontext != 0) { break; }
-
-    // keep trying until 32x32 -- if even those dimensions doesn't
-    // work, give up, as too small tiles will cause the processing
-    // time to go through the roof due to the huge number of passes:
-    if ((glsize[0] <= 32) && (glsize[1] <= 32)) { break; }
-
-    // else, halve the largest dimension, and try again:
-    if (glsize[0] > glsize[1]) { glsize[0] /= 2; }
-    else { glsize[1] /= 2; }
-  } while (TRUE);
-
+  const uint32_t newcontext = this->glcanvas.activateGLContext();
   if (newcontext == 0) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
-                              "Could not activate an offscreen OpenGL context.");
+                              "Could not set up an offscreen OpenGL context.");
     return FALSE;
   }
 
-  this->renderaction->setCacheContext(newcontext);
+  const SbVec2s glsize = this->glcanvas.getActualSize();
 
   // We need to know the actual GL viewport size for tiled rendering,
   // in calculations when narrowing the camera view volume -- so we
   // store away this value for the "found a camera"-callback.
+  //
+  // FIXME: seems unnecessary now, should be able to just query
+  // glcanvas.getActualSize() XXX
   this->glcanvassize[0] = glsize[0];
   this->glcanvassize[1] = glsize[1];
 
-  if (SoOffscreenRendererP::debug()) {
+  if (CoinOffscreenGLCanvas::debug()) {
+    SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
+                           "fullsize==<%d, %d>, glsize==<%d, %d>",
+                           fullsize[0], fullsize[1], glsize[0], glsize[1]);
+  }
+  
+  // oldcontext is used to restore the previous context id, in case
+  // the render action is not allocated by us.
+  const uint32_t oldcontext = this->renderaction->getCacheContext();
+  this->renderaction->setCacheContext(newcontext);
+
+  if (CoinOffscreenGLCanvas::debug()) {
     GLint colbits[4];
     glGetIntegerv(GL_RED_BITS, &colbits[0]);
     glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
@@ -710,12 +679,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // maximum quality. That would be generally useful for having better
   // control from the offscreenrenderer.
   const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
-
-  if (SoOffscreenRendererP::debug()) {
-    SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                           "fullsize==<%d, %d>, glsize==<%d, %d>",
-                           fullsize[0], fullsize[1], glsize[0], glsize[1]);
-  }
 
   // Deallocate old and allocate new target buffer, if necessary.
   //
@@ -866,7 +829,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
     }
 
-    if (SoOffscreenRendererP::debug()) {
+    if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
                              "*TIMING* SoGLRenderAction::apply() took %f msecs",
                              (SbTime::getTimeOfDay() - t).getValue() * 1000);
@@ -877,7 +840,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     this->glcanvas.readPixels(this->buffer, dims, dims[0],
                               (unsigned int)PUBLIC(this)->getComponents());
 
-    if (SoOffscreenRendererP::debug()) {
+    if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
                              "*TIMING* glcanvas.readPixels() took %f msecs",
                              (SbTime::getTimeOfDay() - t).getValue() * 1000);
@@ -1290,7 +1253,7 @@ SbBool
 SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-    if (SoOffscreenRendererP::debug()) {
+    if (CoinOffscreenGLCanvas::debug()) {
       if (!simage_wrapper()->available) {    
 	SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
 			       "simage library not available.");
@@ -1520,7 +1483,7 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   const float top = float(BOTTOMINTPOS) / float(fullsize[1]);
   const float bottom = float(TOPINTPOS) / float(fullsize[1]);
 
-  if (SoOffscreenRendererP::debug()) {
+  if (CoinOffscreenGLCanvas::debug()) {
     SoDebugError::postInfo("SoOffscreenRendererP::setCameraViewvolForTile",
                            "narrowing for tile <%d, %d>: <%f, %f> - <%f, %f>",
                            this->currenttile[0], this->currenttile[1],
@@ -1550,61 +1513,12 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   SoViewingMatrixElement::set(state, cam, affine);
 }
 
-// Return largest size of offscreen canvas system can handle. Will
-// cache result, so only the first look-up is expensive.
-SbVec2s
-SoOffscreenRendererP::getMaxTileSize(void)
-{
-  // cache the values in static variables so that a new context is not
-  // created every time render() is called in SoOffscreenRenderer
-  static SbBool cached = FALSE;
-  static unsigned int maxtile[2] = { 0, 0 };
-  if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
-
-  cached = TRUE; // Flip on first run.
-
-  unsigned int width, height;
-  cc_glglue_context_max_dimensions(&width, &height);
-
-  if (SoOffscreenRendererP::debug()) {
-    SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
-                           "cc_glglue_context_max_dimensions()==[%u, %u]",
-                           width, height);
-  }
-
-  // Makes it possible to override the default tilesizes. Should prove
-  // useful for debugging problems on remote sites.
-  const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
-  const unsigned int forcedtilewidth = env ? atoi(env) : 0;
-  env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
-  const unsigned int forcedtileheight = env ? atoi(env) : 0;
-
-  if (forcedtilewidth != 0) { width = forcedtilewidth; }
-  if (forcedtileheight != 0) { height = forcedtileheight; }
-
-  // Also make it possible to force a maximum tilesize.
-  env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
-  const unsigned int maxtilesize = env ? atoi(env) : 0;
-  if (maxtilesize != 0) {
-    width = SbMin(width, maxtilesize);
-    height = SbMin(height, maxtilesize);
-  }
-
-  // cache result for later calls, and clamp to fit within a short
-  // integer type
-  maxtile[0] = SbMin(width, (unsigned int)SHRT_MAX);
-  maxtile[1] = SbMin(height, (unsigned int)SHRT_MAX);
-
-  return SbVec2s((short)maxtile[0], (short)maxtile[1]);
-}
-
 /*!
-  WARNING: Please don't use this function. It can cause hard to find
-  bugs on the Windows platform if your application is linked against a
-  different CRT than your Coin DLL. 
+  \DANGEROUS_ALLOC_RETURN
   
-  Use void getWriteFiletypeInfo(const int idx, SbPList & extlist, SbString & fullname, SbString & description)
-  instead.
+  To avoid this potential problem, use the overloaded
+  getWriteFiletypeInfo() function with an SbPList for the second
+  argument instead.
  */
 void
 SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
