@@ -108,6 +108,7 @@
 #include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
 #include <Inventor/elements/SoSoundElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 
 // elements still supported by Coin that are not in SGI Inventor >= 2.1
 #include <Inventor/elements/SoAmbientColorElement.h>

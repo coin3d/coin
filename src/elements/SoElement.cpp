@@ -472,6 +472,8 @@ SoElement::initElements(void)
 
   SoTextureCombineElement::initClass();
   SoCacheHintElement::initClass();
+
+  SoGLVBOElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
