@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoMFVec3f.h>
 
 class SbVec3f;
-
+class SoNormalP;
 
 class COIN_DLL_API SoNormal : public SoNode {
   typedef SoNode inherited;
@@ -49,6 +49,9 @@ public:
 
 protected:
   virtual ~SoNormal();
+
+ private:
+  SoNormalP * pimpl;
 };
 
 #endif // !COIN_SONORMAL_H

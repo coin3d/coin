@@ -27,6 +27,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
+class SoCoordinate3P;
+
 class COIN_DLL_API SoCoordinate3 : public SoNode {
   typedef SoNode inherited;
 
@@ -45,8 +47,11 @@ public:
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-protected:
+ protected:
   virtual ~SoCoordinate3();
+
+ private:
+  SoCoordinate3P * pimpl;
 };
 
 #endif // !COIN_SOCOORDINATE3_H

@@ -52,6 +52,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include "../misc/SoVBO.h"
 
 // *************************************************************************
 
@@ -62,6 +63,16 @@
 
 // *************************************************************************
 
+class SoNormalP {
+ public:
+  SoNormalP() : vbo(NULL) { }
+  ~SoNormalP() { delete this->vbo; }
+
+  SoVBO * vbo;
+};
+
+#define PRIVATE(obj) obj->pimpl
+
 SO_NODE_SOURCE(SoNormal);
 
 /*!
@@ -69,6 +80,7 @@ SO_NODE_SOURCE(SoNormal);
 */
 SoNormal::SoNormal(void)
 {
+  PRIVATE(this) = new SoNormalP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNormal);
 
   SO_NODE_ADD_FIELD(vector, (NULL));
@@ -79,6 +91,7 @@ SoNormal::SoNormal(void)
 */
 SoNormal::~SoNormal()
 {
+  delete PRIVATE(this);
 }
 
 // Doc in superclass.
@@ -103,6 +116,30 @@ SoNormal::GLRender(SoGLRenderAction * action)
   // SoGLNormalizeElement to optimize rendering (pederb)
   //
   SoNormal::doAction(action);
+
+  SoBase::staticDataLock();
+  const int num = this->vector.getNum();
+  if (num >= SoVBO::getVertexCountMinLimit() &&
+      num <= SoVBO::getVertexCountMaxLimit()) {
+    SbBool dirty = FALSE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->vector.getValues(0),
+                                        num*sizeof(SbVec3f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
 }
 
 // Doc in superclass.
@@ -140,3 +177,5 @@ SoNormal::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoNormal::doAction(action);
 }
+
+#undef PRIVATE
