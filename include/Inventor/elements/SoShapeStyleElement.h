@@ -39,21 +39,22 @@ public:
 
   // flags used for optimized testing of features
   enum Flags {
-    LIGHTING            = 0x000100,
-    TEXENABLED          = 0x000200,
-    TEXFUNC             = 0x000400,
-    BBOXCMPLX           = 0x000800,
-    INVISIBLE           = 0x001000,
-    ABORTCB             = 0x002000,
-    OVERRIDE            = 0x004000,
-    TEX3ENABLED         = 0x008000,
-    BIGIMAGE            = 0x010000,
-    BUMPMAP             = 0x020000,
-    VERTEXARRAY         = 0x040000,
-    TRANSP_TEXTURE      = 0x080000,
-    TRANSP_MATERIAL     = 0x100000
+    LIGHTING                = 0x000100,
+    TEXENABLED              = 0x000200,
+    TEXFUNC                 = 0x000400,
+    BBOXCMPLX               = 0x000800,
+    INVISIBLE               = 0x001000,
+    ABORTCB                 = 0x002000,
+    OVERRIDE                = 0x004000,
+    TEX3ENABLED             = 0x008000,
+    BIGIMAGE                = 0x010000,
+    BUMPMAP                 = 0x020000,
+    VERTEXARRAY             = 0x040000,
+    TRANSP_TEXTURE          = 0x080000,
+    TRANSP_MATERIAL         = 0x100000,
+    TRANSP_SORTED_TRIANGLES = 0x200000
   };
-
+  
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);

@@ -167,6 +167,14 @@ SoShapeStyleElement::setTransparencyType(SoState * const state,
   elem->flags &= ~TRANSPTYPE_MASK;
   assert(value <= TRANSPTYPE_MASK);
   elem->flags |= (value & TRANSPTYPE_MASK);
+  
+  if ((value == int(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND)) || 
+      (value == int(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
+    elem->flags |= TRANSP_SORTED_TRIANGLES;
+  }
+  else {
+    elem->flags &= ~TRANSP_SORTED_TRIANGLES;
+  }
 }
 
 //! FIXME: write doc.
