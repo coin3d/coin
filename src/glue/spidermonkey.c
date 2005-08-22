@@ -116,8 +116,11 @@ spidermonkey(void)
       /* MSWindows DLL name */
       "js32",
 
-      /* UNIX-style names */
+      /* UNIX-style names (SpiderMonkey compiled from source) */
       "js", "libjs", "libjs.so", "libjs.dylib",
+
+      /* Debian package 'spidermonkey-bin' (SpiderMonkey v1.5) */
+      "libsmjs.so.1",
 
       /* terminator */
       NULL
