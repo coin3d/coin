@@ -344,6 +344,9 @@ SoNode::SoNode(void)
 {
   CC_MUTEX_LOCK(sonode_mutex);
   this->uniqueId = SoNode::nextUniqueId++;
+  if (this->uniqueId == 0) {
+    this->uniqueId = SoNode::nextUniqueId++;
+  }
   CC_MUTEX_UNLOCK(sonode_mutex);
   this->stateflags = 0; // clear all flags
 
@@ -444,6 +447,9 @@ SoNode::notify(SoNotList * l)
   if (l->getTimeStamp() > this->uniqueId) {
     CC_MUTEX_LOCK(sonode_mutex);
     this->uniqueId = SoNode::nextUniqueId++;
+    if (this->uniqueId == 0) {
+      this->uniqueId = SoNode::nextUniqueId++;
+    }
     CC_MUTEX_UNLOCK(sonode_mutex);
     inherited::notify(l);
   }
@@ -684,6 +690,9 @@ SoNode::setOverride(const SbBool state)
     // setting, so the caches are regenerated.
     CC_MUTEX_LOCK(sonode_mutex);
     this->uniqueId = SoNode::nextUniqueId++;
+    if (this->uniqueId == 0) {
+      this->uniqueId = SoNode::nextUniqueId++;
+    }
     CC_MUTEX_UNLOCK(sonode_mutex);
 
     if (state) this->setStateFlags(FLAG_OVERRIDE);
