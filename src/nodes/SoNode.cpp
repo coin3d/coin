@@ -335,6 +335,20 @@ SoNode::getState(const unsigned int bits) const
   return (this->stateflags & bits) != 0;
 }
 
+// Macro which sets the node id for the node to a new unique id.  The
+// node id is used by the caching system in Coin to quickly identify
+// changes in the scene graph (and to optimize notification). To
+// simplify the VBO handling in attribute nodes, no node can have
+// nodeid == 0 (making it possible for VBO caches to set the current
+// dataid to 0 to mark the data as invalid / not set).
+#define SET_UNIQUE_NODE_ID(obj) \
+  CC_MUTEX_LOCK(sonode_mutex); \
+  (obj)->uniqueId = SoNode::nextUniqueId++;   \
+  if (obj->uniqueId == 0) {                 \
+    obj->uniqueId = SoNode::nextUniqueId++; \
+  } \
+  CC_MUTEX_UNLOCK(sonode_mutex)
+ 
 // *************************************************************************
 
 /*!
@@ -342,12 +356,7 @@ SoNode::getState(const unsigned int bits) const
 */
 SoNode::SoNode(void)
 {
-  CC_MUTEX_LOCK(sonode_mutex);
-  this->uniqueId = SoNode::nextUniqueId++;
-  if (this->uniqueId == 0) {
-    this->uniqueId = SoNode::nextUniqueId++;
-  }
-  CC_MUTEX_UNLOCK(sonode_mutex);
+  SET_UNIQUE_NODE_ID(this);
   this->stateflags = 0; // clear all flags
 
   // set node type to Inventor by default.
@@ -445,12 +454,7 @@ SoNode::notify(SoNotList * l)
   // only continue if node hasn't already been notified.
   // The time stamp is set in the SoNotList constructor.
   if (l->getTimeStamp() > this->uniqueId) {
-    CC_MUTEX_LOCK(sonode_mutex);
-    this->uniqueId = SoNode::nextUniqueId++;
-    if (this->uniqueId == 0) {
-      this->uniqueId = SoNode::nextUniqueId++;
-    }
-    CC_MUTEX_UNLOCK(sonode_mutex);
+    SET_UNIQUE_NODE_ID(this);
     inherited::notify(l);
   }
 }
@@ -688,12 +692,7 @@ SoNode::setOverride(const SbBool state)
   if (state != this->getState(FLAG_OVERRIDE)) {
     // This change affects caches in the tree, so we must change our id
     // setting, so the caches are regenerated.
-    CC_MUTEX_LOCK(sonode_mutex);
-    this->uniqueId = SoNode::nextUniqueId++;
-    if (this->uniqueId == 0) {
-      this->uniqueId = SoNode::nextUniqueId++;
-    }
-    CC_MUTEX_UNLOCK(sonode_mutex);
+    SET_UNIQUE_NODE_ID(this);
 
     if (state) this->setStateFlags(FLAG_OVERRIDE);
     else this->clearStateFlags(FLAG_OVERRIDE);
@@ -1548,3 +1547,6 @@ init_action_methods(void)
   SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(),
                                  SoAudioRenderAction::callDoAction);
 }
+
+#undef SET_UNIQUE_NODE_ID
+
