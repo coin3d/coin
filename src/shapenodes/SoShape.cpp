@@ -536,15 +536,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   // test if we should sort triangles before rendering
-  if (transparent &&
-      // FIXME: test transparency type in SoShapeStyleElement instead? pederb, 2004-01-10
-      ((action->getTransparencyType() ==
-        SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) ||
-       (action->getTransparencyType() ==
-        SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
-
+  if (transparent && (shapestyleflags & SoShapeStyleElement::TRANSP_SORTED_TRIANGLES)) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
-
+    
     // do this before generating triangles to get correct
     // material for lines and point (only triangles are sorted).
     SoMaterialBundle mb(action);
