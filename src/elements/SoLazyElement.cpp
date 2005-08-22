@@ -26,6 +26,34 @@
   \brief The SoLazyElement class is used to handle material and shape properties.
   \ingroup elements
 
+  So[GL]LazyElement is, as the name implies, an element that is lazy
+  about sending things to OpenGL. The changes are not sent to OpenGL
+  until SoGLLazyElement::send() is called. This means that you can
+  change the state of certain attributes several times, but the state
+  will only be sent to OpenGL once.
+
+  When creating a new shape node in Coin, it's a common operation to
+  modify the OpenGL diffuse color.  There are several ways you can
+  send the color to OpenGL. If you're not going to use the color
+  outside your node, you can just as well send it using plain
+  OpenGL. You can also set the color in the element, and then force a
+  send by using SoGLLazyElement::send(state,
+  SoLazyElement::DIFFUSE_MASK).
+
+  However, when creating an extension shape node, it's always
+  recommended to create an instance of SoMaterialBundle on the
+  stack. If this instance is created after you update SoLazyElement
+  with a new color, the new color will be sent to OpenGL when you call
+  SoMaterialBundle::sendFirst(). This call will also update all other
+  lazy OpenGL state, and it's actually required to either use
+  SoMaterialBundle::sendFirst() or call SoGLLazyElement::send(state,
+  SoLazyElement::ALL_MASK) when creating a shape node.
+
+  If you decide to send the color to OpenGL using glColor*(), you
+  should notify SoGLLazyElement about this by calling
+  SoGLLazyElement::reset(state, SoLazyElement::DIFFUSE_MASK). This
+  will notify SoGLLazyElement that the current OpenGL diffuse color is
+  unknown.
 */
 
 #include <Inventor/elements/SoLazyElement.h>
