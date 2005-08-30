@@ -273,6 +273,12 @@
 /* for setup.h */
 #undef HAVE_SOUND
 
+/* define if you have the SpiderMonkey library */
+#undef HAVE_SPIDERMONKEY
+
+/* define that the Spidermonkey header is available */
+#undef HAVE_SPIDERMONKEY_H
+
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H
 
@@ -428,6 +434,9 @@
 
 /* define for runtime linking with simage */
 #undef SIMAGE_RUNTIME_LINKING
+
+/* define for runtime linking with SpiderMonkey */
+#undef SPIDERMONKEY_RUNTIME_LINKING
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS

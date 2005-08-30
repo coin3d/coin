@@ -466,7 +466,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all src/extensions/superglu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_SPIDERMONKEY_TRUE HAVE_SPIDERMONKEY_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1078,6 +1078,9 @@ Optional Features:
                           [default=yes]
   --disable-dl-fontconfig disable runtime dynamic linking for fontconfig if
                           possible [default=--enable-dl-fontconfig]
+  --disable-dl-spidermonkey
+                          disable runtime dynamic linking for SpiderMonkey if
+                          possible [default=--enable-dl-spidermonkey]
   --disable-dl-freetype   disable runtime dynamic linking for freetype if
                           possible [default=--enable-dl-freetype]
   --disable-dl-zlib       disable runtime dynamic linking for libz if possible
@@ -1113,6 +1116,8 @@ Optional Packages:
   --with-simage=DIR       use simage for loading texture files
   --with-openal=PATH      enable/disable OpenAL support
   --with-fontconfig=PATH  enable/disable Fontconfig support
+  --with-spidermonkey=PATH
+                          enable/disable Spidermonkey support
   --with-freetype=PATH    enable/disable Freetype support
   --with-zlib=PATH        enable/disable zlib support
   --with-bzip2=PATH       enable/disable bzip2 support
@@ -4972,7 +4977,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4975 "configure"' > conftest.$ac_ext
+  echo '#line 4980 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -6087,7 +6092,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:6090:" \
+echo "$as_me:6095:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -7144,11 +7149,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7147: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7152: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7151: \$? = $ac_status" >&5
+   echo "$as_me:7156: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -7387,11 +7392,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7390: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7395: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7394: \$? = $ac_status" >&5
+   echo "$as_me:7399: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -7447,11 +7452,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7450: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7455: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7454: \$? = $ac_status" >&5
+   echo "$as_me:7459: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9632,7 +9637,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9635 "configure"
+#line 9640 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9730,7 +9735,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9733 "configure"
+#line 9738 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11923,11 +11928,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11926: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11931: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11930: \$? = $ac_status" >&5
+   echo "$as_me:11935: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11983,11 +11988,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11986: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11991: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11990: \$? = $ac_status" >&5
+   echo "$as_me:11995: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13344,7 +13349,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 13347 "configure"
+#line 13352 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13442,7 +13447,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 13445 "configure"
+#line 13450 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14279,11 +14284,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14282: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14287: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14286: \$? = $ac_status" >&5
+   echo "$as_me:14291: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -14339,11 +14344,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14342: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14347: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14346: \$? = $ac_status" >&5
+   echo "$as_me:14351: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16374,11 +16379,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16377: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16382: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16381: \$? = $ac_status" >&5
+   echo "$as_me:16386: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -16617,11 +16622,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16620: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16625: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16624: \$? = $ac_status" >&5
+   echo "$as_me:16629: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -16677,11 +16682,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16680: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16685: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:16684: \$? = $ac_status" >&5
+   echo "$as_me:16689: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -18862,7 +18867,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 18865 "configure"
+#line 18870 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -18960,7 +18965,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 18963 "configure"
+#line 18968 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -31193,6 +31198,313 @@ else
 fi
 
 
+# ********************************************************************
+# * Set us up for using the SpiderMonkey javascript library (if wanted,
+# * and if available).
+# ********************************************************************
+
+# Check whether --enable-dl-spidermonkey or --disable-dl-spidermonkey was given.
+if test "${enable_dl_spidermonkey+set}" = set; then
+  enableval="$enable_dl_spidermonkey"
+  case "${enableval}" in
+    yes | true) enable_dl_spidermonkey=true ;;
+    no | false) enable_dl_spidermonkey=false ;;
+    *)
+{ { echo "$as_me:$LINENO: error: invalid value \"${enableval}\" for \"--enable-dl-spidermonkey\" configure argument" >&5
+echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-dl-spidermonkey\" configure argument" >&2;}
+   { (exit 1); exit 1; }; }
+ ;;
+  esac
+else
+  enable_dl_spidermonkey=true
+fi;
+
+sim_ac_have_spidermonkey=false
+if $enable_dl_spidermonkey && $coin_can_do_runtime_linking; then
+
+cat >>confdefs.h <<_ACEOF
+#define SPIDERMONKEY_RUNTIME_LINKING 1
+_ACEOF
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:Yes, run-time binding"
+else
+  sim_ac_configuration_settings="SpiderMonkey support:Yes, run-time binding"
+fi
+
+else
+  : ${sim_ac_have_spidermonkey=false}
+
+# Check whether --with-spidermonkey or --without-spidermonkey was given.
+if test "${with_spidermonkey+set}" = set; then
+  withval="$with_spidermonkey"
+  case $withval in
+  yes | "") sim_ac_want_spidermonkey=true ;;
+  no)       sim_ac_want_spidermonkey=false ;;
+  *)        sim_ac_want_spidermonkey=true
+            sim_ac_spidermonkey_path=$withval ;;
+  esac
+else
+  sim_ac_want_spidermonkey=true
+fi;
+case $sim_ac_want_spidermonkey in
+true)
+  $sim_ac_have_spidermonkey && break
+  sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_spidermonkey_save_LDFLAGS=$LDFLAGS
+  sim_ac_spidermonkey_save_LIBS=$LIBS
+
+  sim_ac_spidermonkey_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_spidermonkey_debug=true
+
+  sim_ac_spidermonkey_name=smjs
+  sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
+
+  if test -n "$sim_ac_spidermonkey_path"; then
+    for sim_ac_spidermonkey_candidate in \
+      `( ls $sim_ac_spidermonkey_path/lib/smjs*.lib;
+         ls $sim_ac_spidermonkey_path/lib/smjs*d.lib;
+         ls $sim_ac_spidermonkey_path/lib/js*.lib;
+         ls $sim_ac_spidermonkey_path/lib/js*d.lib;
+         ls $sim_ac_spidermonkey_path/lib/libsmjs*.lib;
+         ls $sim_ac_spidermonkey_path/lib/libsmjs*d.lib
+         ls $sim_ac_spidermonkey_path/lib/libjs*.lib;
+         ls $sim_ac_spidermonkey_path/lib/libjs*d.lib; ) 2>/dev/null`
+    do
+      case $sim_ac_spidermonkey_candidate in
+      *d.lib)
+        $sim_ac_spidermonkey_debug &&
+          sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .lib` ;;
+      *.lib)
+        sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .lib` ;;
+      esac
+    done
+    sim_ac_spidermonkey_cppflags="$sim_ac_spidermonkey_cppflags -I$sim_ac_spidermonkey_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+    sim_ac_spidermonkey_ldflags="-L$sim_ac_spidermonkey_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
+    sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
+    # unset sim_ac_spidermonkey_candidate
+    # unset sim_ac_spidermonkey_path
+  fi
+
+  sim_ac_spidermonkey_header_avail=false
+echo "$as_me:$LINENO: checking how to include spidermonkey's jsapi.h" >&5
+echo $ECHO_N "checking how to include spidermonkey's jsapi.h... $ECHO_C" >&6
+if test x"$with_spidermonkey" != x"no"; then
+  sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
+
+  if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
+    sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}/include -I${with_spidermonkey}/include/smjs -DXP_UNIX=1"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE=1"
+
+
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <smjs/jsapi.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_smjs_jsapi_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_smjs_jsapi_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_smjs_jsapi_h = yes; then
+
+    sim_ac_spidermonkey_header_avail=true
+    sim_ac_spidermonkey_header=jsapi.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_SPIDERMONKEY_H 1
+_ACEOF
+
+
+fi
+
+
+
+
+  CPPFLAGS="$sim_ac_spidermonkey_save_CPPFLAGS"
+  if $sim_ac_spidermonkey_header_avail; then
+    if test x"$sim_ac_spidermonkey_cppflags" = x""; then
+      echo "$as_me:$LINENO: result: #include <$sim_ac_spidermonkey_header>" >&5
+echo "${ECHO_T}#include <$sim_ac_spidermonkey_header>" >&6
+    else
+      echo "$as_me:$LINENO: result: $sim_ac_spidermonkey_cppflags, #include <$sim_ac_spidermonkey_header>" >&5
+echo "${ECHO_T}$sim_ac_spidermonkey_cppflags, #include <$sim_ac_spidermonkey_header>" >&6
+    fi
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+  else
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+
+fi
+
+
+  echo "$as_me:$LINENO: checking for Spidermonkey" >&5
+echo $ECHO_N "checking for Spidermonkey... $ECHO_C" >&6
+  LIBS="$sim_ac_spidermonkey_libs $LIBS"
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#define CROSS_COMPILE 1
+     #include <smjs/jsapi.h>
+int
+main ()
+{
+JSVersion ver = JS_GetVersion((void *) 0);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_have_spidermonkey=true
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+  CPPFLAGS=$sim_ac_spidermonkey_save_CPPFLAGS
+  LDFLAGS=$sim_ac_spidermonkey_save_LDFLAGS
+  LIBS=$sim_ac_spidermonkey_save_LIBS
+  # unset sim_ac_spidermonkey_debug
+  # unset sim_ac_spidermonkey_name
+  # unset sim_ac_spidermonkey_save_CPPFLAGS
+  # unset sim_ac_spidermonkey_save_LDFLAGS
+  # unset sim_ac_spidermonkey_save_LIBS
+  ;;
+esac
+if $sim_ac_want_spidermonkey; then
+  if $sim_ac_have_spidermonkey; then
+    echo "$as_me:$LINENO: result: success ($sim_ac_spidermonkey_libs)" >&5
+echo "${ECHO_T}success ($sim_ac_spidermonkey_libs)" >&6
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_SPIDERMONKEY 1
+_ACEOF
+
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
+    LIBS="$sim_ac_spidermonkey_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_spidermonkey_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_spidermonkey_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_spidermonkey_libs $COIN_EXTRA_LIBS"
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:Yes, link-time binding"
+else
+  sim_ac_configuration_settings="SpiderMonkey support:Yes, link-time binding"
+fi
+
+
+  else
+    echo "$as_me:$LINENO: result: failure" >&5
+echo "${ECHO_T}failure" >&6
+
+    if $sim_ac_spidermonkey_desired; then
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:No"
+else
+  sim_ac_configuration_settings="SpiderMonkey support:No"
+fi
+
+    fi
+
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+
+    if $sim_ac_spidermonkey_desired; then
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:No"
+else
+  sim_ac_configuration_settings="SpiderMonkey support:No"
+fi
+
+    fi
+
+fi
+# unset sim_ac_want_spidermonkey
+
+fi
+
+
+
+if $sim_ac_have_spidermonkey; then
+  HAVE_SPIDERMONKEY_TRUE=
+  HAVE_SPIDERMONKEY_FALSE='#'
+else
+  HAVE_SPIDERMONKEY_TRUE='#'
+  HAVE_SPIDERMONKEY_FALSE=
+fi
+
+
+
+
 # **************************************************************************
 # Set us up for using TrueType fonts. Through the FreeType library (if
 # wanted, and if available), and / or the Win32 API.
@@ -37049,6 +37361,13 @@ echo "$as_me: error: conditional \"HAVE_FONTCONFIG\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${HAVE_SPIDERMONKEY_TRUE}" && test -z "${HAVE_SPIDERMONKEY_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_SPIDERMONKEY\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"HAVE_SPIDERMONKEY\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${HAVE_FREETYPE_TRUE}" && test -z "${HAVE_FREETYPE_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"HAVE_FREETYPE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -37838,6 +38157,8 @@ s,@BUILD_WITH_SOUND_TRUE@,$BUILD_WITH_SOUND_TRUE,;t t
 s,@BUILD_WITH_SOUND_FALSE@,$BUILD_WITH_SOUND_FALSE,;t t
 s,@HAVE_FONTCONFIG_TRUE@,$HAVE_FONTCONFIG_TRUE,;t t
 s,@HAVE_FONTCONFIG_FALSE@,$HAVE_FONTCONFIG_FALSE,;t t
+s,@HAVE_SPIDERMONKEY_TRUE@,$HAVE_SPIDERMONKEY_TRUE,;t t
+s,@HAVE_SPIDERMONKEY_FALSE@,$HAVE_SPIDERMONKEY_FALSE,;t t
 s,@HAVE_FREETYPE_TRUE@,$HAVE_FREETYPE_TRUE,;t t
 s,@HAVE_FREETYPE_FALSE@,$HAVE_FREETYPE_FALSE,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

@@ -1278,6 +1278,48 @@ fi
 
 AM_CONDITIONAL(HAVE_FONTCONFIG, $sim_ac_have_fontconfig)
 
+# ********************************************************************
+# * Set us up for using the SpiderMonkey javascript library (if wanted,
+# * and if available).
+# ********************************************************************
+
+AC_ARG_ENABLE([dl-spidermonkey],
+  AC_HELP_STRING([--disable-dl-spidermonkey],
+                 [disable runtime dynamic linking for SpiderMonkey if possible [[default=--enable-dl-spidermonkey]]]),
+  [case "${enableval}" in
+    yes | true) enable_dl_spidermonkey=true ;;
+    no | false) enable_dl_spidermonkey=false ;;
+    *) SIM_AC_ENABLE_ERROR([--enable-dl-spidermonkey]) ;;
+  esac],
+  [enable_dl_spidermonkey=true])
+
+sim_ac_have_spidermonkey=false
+if $enable_dl_spidermonkey && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([SPIDERMONKEY_RUNTIME_LINKING], 1,
+    [define for runtime linking with SpiderMonkey])
+  SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, run-time binding])
+else
+  SIM_AC_HAVE_SPIDERMONKEY_IFELSE([
+    AC_DEFINE(HAVE_SPIDERMONKEY, 1,
+      [define if you have the SpiderMonkey library])
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
+    LIBS="$sim_ac_spidermonkey_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_spidermonkey_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_spidermonkey_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_spidermonkey_libs $COIN_EXTRA_LIBS"
+    SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, link-time binding])
+  ], [
+    if $sim_ac_spidermonkey_desired; then
+      SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [No])
+    fi
+  ])
+fi
+
+AM_CONDITIONAL(HAVE_SPIDERMONKEY, $sim_ac_have_spidermonkey)
+
+
+
 # **************************************************************************
 # Set us up for using TrueType fonts. Through the FreeType library (if
 # wanted, and if available), and / or the Win32 API.
@@ -1357,18 +1399,8 @@ AC_CACHE_CHECK([whether single-precision math functions are available],
                 (void)asinf(1.0f);
                 (void)atanf(1.0f);
                 (void)atan2f(1.0f, 1.0f);],
-               [case ${MACOSX_DEPLOYMENT_TARGET} in
-                10.[[0123]])
-                  # single precision math functions are not available in
-                  # libSystem on Mac OS X < 10.4, so don't use them when
-                  # building the binary SDK.
-                  sim_cv_func_singleprec_avail=false
-                  ;;
-                *)
-                  sim_cv_func_singleprec_avail=true
-                  ;;
-                esac],
-               [sim_cv_func_singleprec_avail=false])])
+               sim_cv_func_singleprec_avail=true,
+               sim_cv_func_singleprec_avail=false)])
 
 $sim_cv_func_singleprec_avail &&
   AC_DEFINE([HAVE_SINGLEPRECISION_MATH],1,

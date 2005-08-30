@@ -70,7 +70,7 @@ fi
 # **************************************************************************
 # The following block (the --registar-public-header part) generates
 # 1) the public headers part of the .dsp file
-# 2) the install*headers.bat file
+# 2) the install-headers.bat file
 # It is invoked from a "make ... install-data"-command far down in this script
 
 if test x"$1" = x"--register-public-header"; then
@@ -126,7 +126,7 @@ if test x"$1" = x"--register-public-header"; then
   echo "# End Source File" >>"$studiofile"
 
   # and the installation script
-  installheadersfile=`echo $studiofile | sed -e 's,\([^\\/0-9]*\)[0-9][^\\/]*\.dsp,install\1headers.bat,'`
+  installheadersfile=`echo $studiofile | sed -e 's,\([^\\/0-9]*\)[0-9][^\\/]*\.dsp,install-headers.bat,'`
 
   # sourcedirq=`echo "$sourcedir" | sed -e 's,\\\\,\\\\,g'`
   # builddirq=`echo "$builddir" | sed -e 's,\\\\,\\\\,g'`
@@ -300,7 +300,7 @@ if test -f "$studiofile"; then :; else
   echo "# SUBTRACT LINK32 /pdb:none" >>"$studiofile"
   echo "# Begin Special Build Tool" >>"$studiofile"
   echo "SOURCE=\"\$(InputPath)\"" >>"$studiofile"
-  echo "PostBuild_Cmds=install${library}.bat" >>"$studiofile"
+  echo "PostBuild_Cmds=install-dll-release.bat" >>"$studiofile"
   echo "# End Special Build Tool" >>"$studiofile"
   echo "" >>"$studiofile"
 
@@ -330,7 +330,7 @@ if test -f "$studiofile"; then :; else
   echo "# ADD LINK32 @${LIBRARY}_DSP_LIBS@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:\"${library}@${LIBRARY}_MAJOR_VERSION@d.dll\"" >>"$studiofile"
   echo "# Begin Special Build Tool" >>"$studiofile"
   echo "SOURCE=\"\$(InputPath)\"" >>"$studiofile"
-  echo "PostBuild_Cmds=install${library}.bat" >>"$studiofile"
+  echo "PostBuild_Cmds=install-dll-debug.bat" >>"$studiofile"
   echo "# End Special Build Tool" >>"$studiofile"
   echo "" >>"$studiofile"
 
@@ -355,11 +355,11 @@ if test -f "$studiofile"; then :; else
     echo "# ADD BASE BSC32 /nologo" >>"$studiofile"
     echo "# ADD BSC32 /nologo" >>"$studiofile"
     echo "LIB32=link.exe -lib" >>"$studiofile"
-    echo "# ADD BASE LIB32 /nologo" >>"$studiofile"
-    echo "# ADD LIB32 /nologo" >>"$studiofile"
+    echo "# ADD BASE LIB32 /nologo /machine:I386 /out:\"${library}@${LIBRARY}_MAJOR_VERSION@s.lib\"" >>"$studiofile"
+    echo "# ADD LIB32 /nologo /machine:I386 /out:\"${library}@${LIBRARY}_MAJOR_VERSION@s.lib\"" >>"$studiofile"
     echo "# Begin Special Build Tool" >>"$studiofile"
     echo "SOURCE=\"\$(InputPath)\"" >>"$studiofile"
-    echo "PostBuild_Cmds=install${library}.bat" >>"$studiofile"
+    echo "PostBuild_Cmds=install-lib-release.bat" >>"$studiofile"
     echo "# End Special Build Tool" >>"$studiofile"
     echo "" >>"$studiofile"
   
@@ -383,11 +383,11 @@ if test -f "$studiofile"; then :; else
     echo "# ADD BASE BSC32 /nologo" >>"$studiofile"
     echo "# ADD BSC32 /nologo" >>"$studiofile"
     echo "LIB32=link.exe -lib" >>"$studiofile"
-    echo "# ADD BASE LIB32 /nologo" >>"$studiofile"
-    echo "# ADD LIB32 /nologo" >>"$studiofile"
+    echo "# ADD BASE LIB32 /nologo /machine:I386 /out:\"${library}@${LIBRARY}_MAJOR_VERSION@sd.lib\"" >>"$studiofile"
+    echo "# ADD LIB32 /nologo /machine:I386 /out:\"${library}@${LIBRARY}_MAJOR_VERSION@sd.lib\"" >>"$studiofile"
     echo "# Begin Special Build Tool" >>"$studiofile"
     echo "SOURCE=\"\$(InputPath)\"" >>"$studiofile"
-    echo "PostBuild_Cmds=install${library}.bat" >>"$studiofile"
+    echo "PostBuild_Cmds=install-lib-debug.bat" >>"$studiofile"
     echo "# End Special Build Tool" >>"$studiofile"
     echo ""
   fi
