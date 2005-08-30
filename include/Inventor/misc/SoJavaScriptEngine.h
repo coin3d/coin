@@ -28,10 +28,12 @@
 #include <Inventor/C/glue/spidermonkey.h>
 #include <Inventor/lists/SbList.h>
 
-#define RUNTIME_MAXBYTES 4194304
+#define COIN_JAVASCRIPT_RUNTIME_MAXBYTES 4194304
 
 // FIXME: change this to use the Cheshire Cat/Bridge Pattern.
 // 20050721 erikgors.
+// UPDATE: Pimpl class added. Which methods can be moved? (20050830
+// handegar)
 
 typedef void (* CoinJSfield2jsval_t)(JSContext *, const SoField *, jsval *);
 typedef SbBool (* CoinJSjsval2field_t)(JSContext *, const jsval, SoField *);
@@ -45,7 +47,6 @@ public:
 
   virtual SbBool executeScript(const SbName & name, const SbString & script) const;
   virtual SbBool executeFile(const SbName & filename) const;
-
   virtual SbBool executeFunction(const SbName &name, int argc, const SoField * argv, SoField * rval=NULL) const;
 
   virtual SbBool setScriptField(const SbName & name, const SoField * f) const;
@@ -53,16 +54,15 @@ public:
   virtual SbBool getScriptField(const SbName & name, SoField * f) const;
   virtual SbBool hasScriptField(const SbName & name) const;
 
-  // Everthing under here is javascript specific
-  static void init(uint32_t maxbytes=RUNTIME_MAXBYTES);
-  static void shutdown(void);
-  static SbBool debug(void);
-
   static SbBool field2jsval(JSContext * cx, const SoField * f, jsval * v);
   static SbBool jsval2field(JSContext * cx, const jsval v, SoField * f);
-
   SbBool field2jsval(const SoField * f, jsval * v);
   SbBool jsval2field(const jsval v, SoField * f);
+
+  // Everthing under here is javascript specific
+  static void init(uint32_t maxbytes=COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
+  static void shutdown(void);
+  static SbBool debug(void);
 
   static JSRuntime * getRuntime(void);
   JSContext * getContext(void);
@@ -71,29 +71,14 @@ public:
   // new handlers will get precedence over old handlers
   void addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field);
 
-  SbBool executeJSScript(JSScript * script) const;
-
 protected:
   static void setRuntime(JSRuntime * runtime);
   void setContext(JSContext * context);
   void setGlobal(JSObject * global);
 
 private:
-  // Constants
-  static size_t CONTEXT_STACK_CHUNK_SIZE; /* stack chunk size */
-
-  static JSRuntime * runtime;
-  JSContext * context;
-  JSObject * global;
-
-  struct JavascriptHandler {
-    SoType type;
-    CoinJSinit_t init;
-    CoinJSfield2jsval_t field2jsval;
-    CoinJSjsval2field_t jsval2field;
-  };
-
-  SbList<JavascriptHandler> handlerList;
+  class SoJavaScriptEngineP * pimpl; 
+  friend class SoJavaScriptEngineP; 
 };
 
 #endif // !COIN_SOJAVASCRIPTENGINE_H

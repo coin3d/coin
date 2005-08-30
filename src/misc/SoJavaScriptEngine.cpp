@@ -33,9 +33,34 @@
 // FIXME: Do this in a nicer way. 20050714 erikgors.
 #include "../vrml97/JS_VRMLClasses.cpp"
 
-JSRuntime * SoJavaScriptEngine::runtime = NULL;
-size_t SoJavaScriptEngine::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
+#undef PRIVATE
+#undef PUBLIC
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
 
+class SoJavaScriptEngineP {
+public:
+  SoJavaScriptEngineP(SoJavaScriptEngine * node) : master(node) {};
+  SbBool executeJSScript(JSScript * script) const;
+
+  static size_t CONTEXT_STACK_CHUNK_SIZE; /* stack chunk size */
+  static JSRuntime * runtime;
+  JSContext * context;
+  JSObject * global;
+
+  struct JavascriptHandler {
+    SoType type;
+    CoinJSinit_t init;
+    CoinJSfield2jsval_t field2jsval;
+    CoinJSjsval2field_t jsval2field;
+  };
+
+  SbList<JavascriptHandler> handlerList;
+  SoJavaScriptEngine * master;
+};
+
+JSRuntime * SoJavaScriptEngineP::runtime = NULL;
+size_t SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
 
 /*!
   Returns spidermonkey runtime instance for this class.
@@ -43,7 +68,7 @@ size_t SoJavaScriptEngine::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size 
 JSRuntime *
 SoJavaScriptEngine::getRuntime(void)
 {
-  return SoJavaScriptEngine::runtime;
+  return SoJavaScriptEngineP::runtime;
 }
     
 /*!
@@ -52,7 +77,7 @@ SoJavaScriptEngine::getRuntime(void)
 void
 SoJavaScriptEngine::setRuntime(JSRuntime * runtime)
 {
-  SoJavaScriptEngine::runtime = runtime;
+  SoJavaScriptEngineP::runtime = runtime;
 }
 
 /*!
@@ -61,7 +86,7 @@ SoJavaScriptEngine::setRuntime(JSRuntime * runtime)
 JSContext *
 SoJavaScriptEngine::getContext(void)
 {
-  return this->context;
+  return PRIVATE(this)->context;
 }
     
 /*!
@@ -70,7 +95,7 @@ SoJavaScriptEngine::getContext(void)
 void
 SoJavaScriptEngine::setContext(JSContext * context)
 {
-  this->context = context;
+  PRIVATE(this)->context = context;
 }
 
 /*!
@@ -79,7 +104,7 @@ SoJavaScriptEngine::setContext(JSContext * context)
 JSObject *
 SoJavaScriptEngine::getGlobal(void)
 {
-  return this->global;
+  return PRIVATE(this)->global;
 }
     
 /*!
@@ -88,7 +113,7 @@ SoJavaScriptEngine::getGlobal(void)
 void
 SoJavaScriptEngine::setGlobal(JSObject * global)
 {
-  this->global = global;
+  PRIVATE(this)->global = global;
 }
 
 /*!
@@ -227,8 +252,11 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * obj,
  */
 SoJavaScriptEngine::SoJavaScriptEngine()
 {
-  JSContext * cx = this->context =
-    spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), SoJavaScriptEngine::CONTEXT_STACK_CHUNK_SIZE);
+
+  PRIVATE(this) = new SoJavaScriptEngineP(this); 
+
+  JSContext * cx = PRIVATE(this)->context =
+    spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE);
   if (!cx) {
     SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
                               "SpiderMonkey Javascript engine available, "
@@ -254,7 +282,7 @@ SoJavaScriptEngine::SoJavaScriptEngine()
 
   // FIXME: add global as an argument, so more than one context can share
   // the same global object? 20050719 erikgors.
-  JSObject * global = this->global =
+  JSObject * global = PRIVATE(this)->global =
     spidermonkey()->JS_NewObject(cx, &jclass, NULL, NULL);
   if (!global) {
     SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
@@ -290,7 +318,7 @@ SoJavaScriptEngine::SoJavaScriptEngine()
  */
 SoJavaScriptEngine::~SoJavaScriptEngine()
 {
-  spidermonkey()->JS_DestroyContext(this->context);
+  spidermonkey()->JS_DestroyContext(PRIVATE(this)->context);
 }
 
 /*!
@@ -307,12 +335,12 @@ SoJavaScriptEngine::executeScript(const SbName & name, const SbString & script) 
   // FIXME: should set a correct linenum offset, for better error messages.
   // 20050728 erikgors.
   JSScript * jsscript =
-    spidermonkey()->JS_CompileScript(this->context,
-                                     this->global,
+    spidermonkey()->JS_CompileScript(PRIVATE(this)->context,
+                                     PRIVATE(this)->global,
                                      script.getString(), script.getLength(),
                                      name.getString(), 1);
 
-  return this->executeJSScript(jsscript);
+  return PRIVATE(this)->executeJSScript(jsscript);
 }
 
 /*!
@@ -325,23 +353,23 @@ SoJavaScriptEngine::executeFile(const SbName & filename) const
     SoDebugError::postInfo("SoJavaScriptEngine::executeFile", "filename=='%s'", filename.getString());
   }
 
-  JSScript * script = spidermonkey()->JS_CompileFile(this->context, this->global, filename);
+  JSScript * script = spidermonkey()->JS_CompileFile(PRIVATE(this)->context, PRIVATE(this)->global, filename);
 
-  return this->executeJSScript(script);
+  return PRIVATE(this)->executeJSScript(script);
 }
 
 /*!
   Execute a compiled script.
  */
 SbBool
-SoJavaScriptEngine::executeJSScript(JSScript * script) const
+SoJavaScriptEngineP::executeJSScript(JSScript * script) const
 {
   jsval rval;
   JSBool ok = spidermonkey()->JS_ExecuteScript(this->context, this->global, script, &rval);
   if (ok) {
     if (SoJavaScriptEngine::debug()) {
       JSString * str = spidermonkey()->JS_ValueToString(this->context, rval);
-      SoDebugError::postInfo("SoJavaScriptEngine::executeJSScript",
+      SoDebugError::postInfo("SoJavaScriptEngineP::executeJSScript",
                              "script result: '%s'",
                              spidermonkey()->JS_GetStringBytes(str));
     }
@@ -365,18 +393,18 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
   jsval * jsargv = new jsval[argc];
 
   for (int i=0; i<argc; ++i) {
-    this->field2jsval(this->context, &argv[i], &jsargv[i]);
+    this->field2jsval(PRIVATE(this)->context, &argv[i], &jsargv[i]);
   }
 
   jsval rjsval;
   JSBool ok =
-    spidermonkey()->JS_CallFunctionName(this->context, this->global,
+    spidermonkey()->JS_CallFunctionName(PRIVATE(this)->context, PRIVATE(this)->global,
                                         name.getString(), argc, jsargv, &rjsval);
   delete [] jsargv;
 
   if (ok) {
     if (SoJavaScriptEngine::debug()) {
-      JSString * str = spidermonkey()->JS_ValueToString(this->context, rjsval);
+      JSString * str = spidermonkey()->JS_ValueToString(PRIVATE(this)->context, rjsval);
       SoDebugError::postInfo("SoJavaScriptEngine::executeFunction",
                              "function: \"%s\" "
                              "result: '%s'",
@@ -385,7 +413,7 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
 
     SbBool ok2 = TRUE;
     if (rval != NULL) {
-      ok2 = this->jsval2field(this->context, rjsval, rval);
+      ok2 = this->jsval2field(PRIVATE(this)->context, rjsval, rval);
     }
     return ok2;
   }
@@ -403,14 +431,14 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
 SbBool
 SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v)
 {
-  int n = this->handlerList.getLength();
+  int n = PRIVATE(this)->handlerList.getLength();
 
   // go backwards. new handlers has precedence. 20050719 erikgors.
   while (n --> 0) {
-    const SoJavaScriptEngine::JavascriptHandler & handler = this->handlerList[n];
+    const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 
     if (handler.field2jsval != NULL && f->isOfType(handler.type)) {
-      handler.field2jsval(this->context, f, v);
+      handler.field2jsval(PRIVATE(this)->context, f, v);
       return TRUE;
     }
   }
@@ -433,18 +461,18 @@ SoJavaScriptEngine::field2jsval(JSContext * cx, const SoField * f, jsval * v)
 SbBool 
 SoJavaScriptEngine::jsval2field(const jsval v, SoField * f)
 {
-  int n = this->handlerList.getLength();
+  int n = PRIVATE(this)->handlerList.getLength();
 
   // go backwards. new handlers has precedence. 20050719 erikgors.
   while (n --> 0) {
-    const SoJavaScriptEngine::JavascriptHandler & handler = this->handlerList[n];
+    const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 
     if (handler.jsval2field != NULL && f->isOfType(handler.type)) {
-      if (handler.jsval2field(this->context, v, f)) {
+      if (handler.jsval2field(PRIVATE(this)->context, v, f)) {
         return TRUE;
       }
       else {
-        JSString * jsstr = spidermonkey()->JS_ValueToString(this->context, v); 
+        JSString * jsstr = spidermonkey()->JS_ValueToString(PRIVATE(this)->context, v); 
         const char * str = spidermonkey()->JS_GetStringBytes(jsstr);
         SoDebugError::postWarning("SoJavaScriptEngine::jsval2field",
                                   "convertion of '%s' to SoField type '%s' failed",
@@ -472,16 +500,16 @@ SoJavaScriptEngine::jsval2field(JSContext * cx, const jsval v, SoField * f)
 void
 SoJavaScriptEngine::addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field)
 {
-  SoJavaScriptEngine::JavascriptHandler handler;
+  SoJavaScriptEngineP::JavascriptHandler handler;
   handler.type = type;
   handler.init = init;
   handler.field2jsval = field2jsval;
   handler.jsval2field = jsval2field;
 
-  this->handlerList.append(handler);
+  PRIVATE(this)->handlerList.append(handler);
 
   if (handler.init != NULL) {
-    handler.init(this->context, this->global);
+    handler.init(PRIVATE(this)->context, PRIVATE(this)->global);
   }
 }
 
@@ -492,10 +520,10 @@ SbBool
 SoJavaScriptEngine::setScriptField(const SbName & name, const SoField * f) const
 {
   jsval initval;
-  SoJavaScriptEngine::field2jsval(this->context, f, &initval);
+  SoJavaScriptEngine::field2jsval(PRIVATE(this)->context, f, &initval);
   const JSBool ok =
-    spidermonkey()->JS_SetProperty(this->context,
-                                   this->global,
+    spidermonkey()->JS_SetProperty(PRIVATE(this)->context,
+                                   PRIVATE(this)->global,
                                    name.getString(), &initval);
   if (!ok) {
     SoDebugError::post("SoJavaScriptEngine::setScriptField",
@@ -512,8 +540,8 @@ SbBool
 SoJavaScriptEngine::unsetScriptField(const SbName & name) const
 {
   const JSBool ok =
-    spidermonkey()->JS_DeleteProperty(this->context,
-                                      this->global,
+    spidermonkey()->JS_DeleteProperty(PRIVATE(this)->context,
+                                      PRIVATE(this)->global,
                                       name.getString());
   if (!ok) {
     SoDebugError::post("SoJavaScriptEngine::unsetScriptField",
@@ -530,7 +558,7 @@ SbBool
 SoJavaScriptEngine::getScriptField(const SbName & name, SoField * f) const
 {
     jsval val;
-    const JSBool ok = spidermonkey()->JS_GetProperty(this->context, this->global,
+    const JSBool ok = spidermonkey()->JS_GetProperty(PRIVATE(this)->context, PRIVATE(this)->global,
                                                      name.getString(), &val);
     if (!ok) {
       SoDebugError::post("SoJavaScriptEngine::getScriptField",
@@ -539,22 +567,25 @@ SoJavaScriptEngine::getScriptField(const SbName & name, SoField * f) const
       return FALSE;
     }
     if (SoJavaScriptEngine::debug()) {
-      JSString * str = spidermonkey()->JS_ValueToString(this->context, val);
+      JSString * str = spidermonkey()->JS_ValueToString(PRIVATE(this)->context, val);
       SoDebugError::postInfo("SoJavaScriptEngine::getScriptField", "trying to convert"
                              " \"%s\" to type %s", spidermonkey()->JS_GetStringBytes(str),
                              f->getTypeId().getName().getString());
     }
 
 
-    return SoJavaScriptEngine::jsval2field(this->context, val, f);
+    return SoJavaScriptEngine::jsval2field(PRIVATE(this)->context, val, f);
 }
 
 SbBool
 SoJavaScriptEngine::hasScriptField(const SbName & name) const
 {
   jsval val;
-  assert(spidermonkey()->JS_GetProperty(this->context, this->global,
+  assert(spidermonkey()->JS_GetProperty(PRIVATE(this)->context, PRIVATE(this)->global,
                                         name.getString(), &val));
 
   return JSVAL_IS_VOID(val) ? FALSE : TRUE;
 }
+
+#undef PRIVATE
+#undef PUBLIC
