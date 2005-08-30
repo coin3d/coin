@@ -165,7 +165,7 @@ spidermonkey(void)
           if (sm->_funcname_ == NULL) { sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_altname_)); } \
           assert(sm->_funcname_)
 
-#elif defined(HAVE_SPIDERMONKEY_LIB) /* static linking */
+#elif defined(HAVE_SPIDERMONKEY) /* static linking */
 
   #define REGISTER_FUNC(_funcname_, _funcsig_) \
           sm->_funcname_ = (_funcsig_)_funcname_; \

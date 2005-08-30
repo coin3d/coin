@@ -47,20 +47,16 @@ extern "C" {
 }
 #endif /* emacs indentation */
 
-#define SPIDERMONKEY_RUNTIME_LINKING 0
 
-#if !defined(HAVE_DYNAMIC_LINKING) && defined(HAVE_SPIDERMONKEY_LIB)
+#if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY)
 
 /* FIXME: static linking with SpiderMonkey library has not been tested
    yet. 20050125 mortene.*/
 
 #define CROSS_COMPILE // FIXME: is this correct? 20050601 mortene.
-#include <jsapi.h>
+#include <smjs/jsapi.h>
 
-#else /* HAVE_DYNAMIC_LINKING || !HAVE_SPIDERMONKEY_LIB */
-
-#undef SPIDERMONKEY_RUNTIME_LINKING
-#define SPIDERMONKEY_RUNTIME_LINKING 1
+#else /* !SPIDERMONKEY_RUNTIME_LINKING || !HAVE_SPIDERMONKEY */
 
 /*
    Structs and defines.
@@ -183,10 +179,6 @@ struct JSErrorReport {
 };
 
 
-
-#endif /* HAVE_DYNAMIC_LINKING */
-
-
 /* Defines and macros. ************************************************** */
 
 #define JSVAL_OBJECT 0x0
@@ -257,10 +249,13 @@ struct JSErrorReport {
 
 #define JSFUN_BOUND_METHOD 0x40
 
+
 /* Function typedefs. *************************************************** */
 
 typedef void (* JS_DLL_CALLBACK JSErrorReporter)(JSContext *, const char *, JSErrorReport *);
 typedef JSBool (* JS_DLL_CALLBACK JSGCCallback)(JSContext *, JSGCStatus);
+
+#endif /* SPIDERMONKEY_RUNTIME_LINKING */
 
 typedef JSBool (* JS_EvaluateScript_t)(JSContext *, JSObject *, const char *, uintN, const char *, uintN, jsval *);
 typedef JSString * (* JS_ValueToString_t)(JSContext *, jsval);
@@ -305,7 +300,7 @@ typedef void * (* JS_GetContextPrivate_t)(JSContext *);
 typedef void (* JS_SetContextPrivate_t)(JSContext *, void *);
 typedef JSBool (* JS_ValueToBoolean_t)(JSContext *, jsval, JSBool *);
 typedef JSBool (* JS_ValueToNumber_t)(JSContext *, jsval, double *);
-typedef JSObject * (* JS_NewArrayObject_t)(JSObject *, int32_t, jsval *);
+typedef JSObject * (* JS_NewArrayObject_t)(JSContext *, int32_t, jsval *);
 typedef JSBool (* JS_GetArrayLength_t)(JSContext *, JSObject *, uint32_t *);
 typedef JSBool (* JS_SetArrayLength_t)(JSContext *, JSObject *, uint32_t);
 typedef JSBool (* JS_HasArrayLength_t)(JSContext *, JSObject *, uint32_t *);
@@ -344,6 +339,7 @@ typedef JSBool (* JS_GetPropertyAttributes_t)(JSContext *, JSObject *, const cha
 typedef JSClass * (* JS_GetClass_t)(JSObject *);
 typedef JSObject * (* JS_GetPrototype_t)(JSContext *, JSObject *);
 typedef JSObject * (* JS_SetPrototype_t)(JSContext *, JSObject *, JSObject *);
+
 
 
 /* Access interface. **************************************************** */
