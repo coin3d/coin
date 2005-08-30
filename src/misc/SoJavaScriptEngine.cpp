@@ -319,6 +319,7 @@ SoJavaScriptEngine::SoJavaScriptEngine()
 SoJavaScriptEngine::~SoJavaScriptEngine()
 {
   spidermonkey()->JS_DestroyContext(PRIVATE(this)->context);
+  delete PRIVATE(this);
 }
 
 /*!
