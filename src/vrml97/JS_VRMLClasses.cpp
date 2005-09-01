@@ -77,17 +77,12 @@ struct CoinVrmlJs {
   static ClassDescriptor MFTime;
   static ClassDescriptor MFVec2f;
   static ClassDescriptor MFVec3f;
-
-  static char * SFColorAliases[];
-  static char * SFRotationAliases[];
-  static float SFdefaultValues[];
-  static float SFRotationDefaultValues[];
 };
 
-char * CoinVrmlJs::SFColorAliases[] = {"r", "g", "b"};
-char * CoinVrmlJs::SFRotationAliases[] = {"x", "y", "z", "angle"};
-float CoinVrmlJs::SFdefaultValues[] = {0.0, 0.0, 0.0, 0.0};
-float CoinVrmlJs::SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
+char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
+char * CoinVrmlJs_SFRotationAliases[] = {"x", "y", "z", "angle"};
+float CoinVrmlJs_SFdefaultValues[] = {0.0, 0.0, 0.0, 0.0};
+float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 
 // Macros for instance checking
 #define JSVAL_IS_SFVEC2F(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFVec2f.cls, NULL))
@@ -96,10 +91,10 @@ float CoinVrmlJs::SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 #define JSVAL_IS_SFROTATION(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFRotation.cls, NULL))
 
 // Handlers
-#define SFColorHandler CoinVrmlJsSFHandler<SbColor, 3, CoinVrmlJs::SFColorAliases, CoinVrmlJs::SFdefaultValues>
-#define SFRotationHandler CoinVrmlJsSFHandler<SbVec4f, 4, CoinVrmlJs::SFRotationAliases, CoinVrmlJs::SFRotationDefaultValues>
-#define SFVec2fHandler CoinVrmlJsSFHandler<SbVec2f, 2, CoinVrmlJs::SFRotationAliases, CoinVrmlJs::SFdefaultValues>
-#define SFVec3fHandler CoinVrmlJsSFHandler<SbVec3f, 3, CoinVrmlJs::SFRotationAliases, CoinVrmlJs::SFdefaultValues>
+#define SFColorHandler CoinVrmlJsSFHandler<SbColor, 3, CoinVrmlJs_SFColorAliases, CoinVrmlJs_SFdefaultValues>
+#define SFRotationHandler CoinVrmlJsSFHandler<SbVec4f, 4, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFRotationDefaultValues>
+#define SFVec2fHandler CoinVrmlJsSFHandler<SbVec2f, 2, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
+#define SFVec3fHandler CoinVrmlJsSFHandler<SbVec3f, 3, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
 
 #define MFColorHandler CoinVrmlJsMFHandler<SoMFColor, SoSFColor, &CoinVrmlJs::MFColor>
 #define MFFloatHandler CoinVrmlJsMFHandler<SoMFFloat, SoSFFloat, &CoinVrmlJs::MFFloat>
@@ -110,6 +105,14 @@ float CoinVrmlJs::SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 #define MFTimeHandler CoinVrmlJsMFHandler<SoMFTime, SoSFTime, &CoinVrmlJs::MFTime>
 #define MFVec2fHandler CoinVrmlJsMFHandler<SoMFVec2f, SoSFVec2f, &CoinVrmlJs::MFVec2f>
 #define MFVec3fHandler CoinVrmlJsMFHandler<SoMFVec3f, SoSFVec3f, &CoinVrmlJs::MFVec3f>
+
+static JSFunctionSpec MFFunctions[] = {
+//  {"toString", MF_toString, 0, 0, 0},
+  {NULL, NULL, 0, 0, 0}
+};    
+
+static JSBool SFRotationConstructor(JSContext * cx, JSObject * obj,
+                                    uintN argc, jsval * argv, jsval * rval);
 
 // Factory methods for converting to javascript objects
 static JSObject * SFColorFactory(JSContext * cx, const SbColor & self);
@@ -887,11 +890,6 @@ static JSFunctionSpec SFRotationFunctions[] = {
   {"slerp", SFRotation_slerp, 2, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
-
-static JSFunctionSpec MFFunctions[] = {
-//  {"toString", MF_toString, 0, 0, 0},
-  {NULL, NULL, 0, 0, 0}
-};    
 
 // *************************************************************************
 // factory
