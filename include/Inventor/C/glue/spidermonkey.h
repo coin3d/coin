@@ -24,19 +24,6 @@
  *
 \**************************************************************************/
 
-/*
-  Coin interface to the SpiderMonkey Javascript engine, from
-  the Mozilla project.
-
-  Coin can bind to the engine dynamically, i.e. by run-time linking,
-  or at build-time.
-*/
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
-#include <Inventor/system/inttypes.h>
 #include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
@@ -48,20 +35,17 @@ extern "C" {
 #endif /* emacs indentation */
 
 
-#if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY)
+/*
+  This is used to detect whether the 'jsapi.h' was included by the
+  user or not. The JSVERSION_IS_ECMA is defined in the 'jspubtd.h'
+  file in the SpiderMonkey header directory. 
+*/
+#ifndef JSVERSION_IS_ECMA
 
-/* FIXME: static linking with SpiderMonkey library has not been tested
-   yet. 20050125 mortene.*/
-
-#define CROSS_COMPILE // FIXME: is this correct? 20050601 mortene.
-#include <smjs/jsapi.h>
-
-#else /* !SPIDERMONKEY_RUNTIME_LINKING || !HAVE_SPIDERMONKEY */
 
 /*
    Structs and defines.
 */
-
 typedef int JSBool;
 typedef long jsword;
 typedef jsword jsval;
@@ -255,7 +239,7 @@ struct JSErrorReport {
 typedef void (* JS_DLL_CALLBACK JSErrorReporter)(JSContext *, const char *, JSErrorReport *);
 typedef JSBool (* JS_DLL_CALLBACK JSGCCallback)(JSContext *, JSGCStatus);
 
-#endif /* SPIDERMONKEY_RUNTIME_LINKING */
+#endif /* !JSVERSION_IS_ECMA */
 
 typedef JSBool (* JS_EvaluateScript_t)(JSContext *, JSObject *, const char *, uintN, const char *, uintN, jsval *);
 typedef JSString * (* JS_ValueToString_t)(JSContext *, jsval);
@@ -435,3 +419,4 @@ COIN_DLL_API const SpiderMonkey_t * spidermonkey(void);
 #endif /* __cplusplus */
 
 #endif /* !COIN_GLUE_SPIDERMONKEY_H */
+

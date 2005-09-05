@@ -26,7 +26,6 @@
 #endif // HAVE_CONFIG_H
   
 #include <Inventor/misc/SoJavaScriptEngine.h>
-#include <Inventor/C/glue/spidermonkey.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbitsp.h>
 

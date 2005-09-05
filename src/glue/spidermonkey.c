@@ -30,6 +30,12 @@
 #include <string.h>
 #include <stdio.h>
 
+
+#if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY)
+#define CROSS_COMPILE // FIXME: is this correct? 20050601 mortene.
+#include <smjs/jsapi.h>
+#endif /* !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY) */
+
 #include <Inventor/C/glue/spidermonkey.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
