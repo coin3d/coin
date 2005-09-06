@@ -10876,13 +10876,21 @@ AC_MSG_CHECKING([how to include spidermonkey's jsapi.h])
 if test x"$with_spidermonkey" != x"no"; then
   sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
 
-  if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
-    sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}/include -I${with_spidermonkey}/include/smjs -DXP_UNIX=1"
+  if $BUILD_WITH_MSVC; then      
+    if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -DXP_WIN"
+    fi
+  else
+    if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
+      # FIXME: Not tested on Mac. One might have to use the XP_MAC
+      # flag instead. (20050906 handegar)
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/lib -DCROSS_COMPILE"
+    fi
   fi
 
-  CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE=1"
+  CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([smjs/jsapi.h], [
+  SIM_AC_CHECK_HEADER_SILENT([jsapi.h], [
     sim_ac_spidermonkey_header_avail=true
     sim_ac_spidermonkey_header=jsapi.h
     AC_DEFINE([HAVE_SPIDERMONKEY_H], 1, [define that the Spidermonkey header is available])
@@ -10900,6 +10908,7 @@ if test x"$with_spidermonkey" != x"no"; then
     AC_MSG_RESULT([not found])
     $2
   fi
+
 else
   AC_MSG_RESULT([disabled])
   $2
@@ -10950,19 +10959,21 @@ true)
   test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
     sim_ac_spidermonkey_debug=true
 
-  sim_ac_spidermonkey_name=smjs
+  sim_ac_spidermonkey_name=js
   sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
 
   if test -n "$sim_ac_spidermonkey_path"; then
     for sim_ac_spidermonkey_candidate in \
-      `( ls $sim_ac_spidermonkey_path/lib/smjs*.lib;
-         ls $sim_ac_spidermonkey_path/lib/smjs*d.lib; 
+      `( ls $sim_ac_spidermonkey_path/Debug/js32.lib; 
+         ls $sim_ac_spidermonkey_path/Release/js32.lib; 
          ls $sim_ac_spidermonkey_path/lib/js*.lib;     
-         ls $sim_ac_spidermonkey_path/lib/js*d.lib;     
+         ls $sim_ac_spidermonkey_path/lib/js*d.lib;  
+         ls $sim_ac_spidermonkey_path/lib/libjs*.lib; 
+         ls $sim_ac_spidermonkey_path/lib/libjs*d.lib;   
          ls $sim_ac_spidermonkey_path/lib/libsmjs*.lib; 
          ls $sim_ac_spidermonkey_path/lib/libsmjs*d.lib 
-         ls $sim_ac_spidermonkey_path/lib/libjs*.lib; 
-         ls $sim_ac_spidermonkey_path/lib/libjs*d.lib; ) 2>/dev/null`
+         ls $sim_ac_spidermonkey_path/lib/smjs*.lib;
+         ls $sim_ac_spidermonkey_path/lib/smjs*d.lib;) 2>/dev/null`
     do
       case $sim_ac_spidermonkey_candidate in
       *d.lib)
@@ -10972,9 +10983,18 @@ true)
         sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .lib` ;;
       esac
     done
-    sim_ac_spidermonkey_cppflags="$sim_ac_spidermonkey_cppflags -I$sim_ac_spidermonkey_path/include"
+    sim_ac_spidermonkey_cppflags="$sim_ac_spidermonkey_cppflags -I$sim_ac_spidermonkey_path"
     CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
-    sim_ac_spidermonkey_ldflags="-L$sim_ac_spidermonkey_path/lib"
+
+    if $BUILD_WITH_MSVC; then    
+      sim_ac_spidermonkey_ldflags="-L$sim_ac_spidermonkey_path/Release -L$sim_ac_spidermonkey_path/Debug"
+    else
+      # FIXME: This is not exactly correct. The lib dir name depends on the
+      # platform the library was built on + Release/Debug mode (20050906 handegar)
+      sim_ac_spidermonkey_ldflags="-L$sim_ac_spidermonkey_path/lib"
+    fi
+
+
     LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
     sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
     # unset sim_ac_spidermonkey_candidate
@@ -10986,8 +11006,7 @@ true)
   AC_MSG_CHECKING([for Spidermonkey])
   LIBS="$sim_ac_spidermonkey_libs $LIBS"
   AC_TRY_LINK(
-    [#define CROSS_COMPILE 1
-     #include <smjs/jsapi.h>],
+    [#include <jsapi.h>],
     [JSVersion ver = JS_GetVersion((void *) 0);],
     [sim_ac_have_spidermonkey=true])
 
