@@ -32,8 +32,14 @@
 
 
 #if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY)
-#define CROSS_COMPILE // FIXME: is this correct? 20050601 mortene.
-#include <smjs/jsapi.h>
+#ifdef _WIN32
+ #define XP_WIN
+#elif HAVE_GLX /* FIXME: Whats the proper way to detect Unix? (20050906 handegar) */
+ #define XP_UNIX 
+#elif __APPLE__
+ #define XP_MAC
+#endif
+#include <jsapi.h>
 #endif /* !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY) */
 
 #include <Inventor/C/glue/spidermonkey.h>
@@ -135,6 +141,8 @@ spidermonkey(void)
     idx = possiblelibnames[0] ? 0 : 1;
 
     while (!spidermonkey_libhandle && possiblelibnames[idx]) {
+      cc_debugerror_postinfo("spidermonkey", "Trying to dynamically load '%s'.",
+                             possiblelibnames[idx]);
       spidermonkey_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
@@ -147,6 +155,7 @@ spidermonkey(void)
 
     if (spidermonkey_debug()) {
       if (spidermonkey_failed_to_load) {
+        /* FIXME: This well never be reached, as far as I can see (20050906 handegar) */
         cc_debugerror_postinfo("spidermonkey", "Found no SpiderMonkey library on system.");
       }
       else {
