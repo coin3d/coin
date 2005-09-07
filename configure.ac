@@ -376,6 +376,31 @@ AC_SUBST(HAVE_3DS_IMPORT_CAPABILITIES)
 
 AM_CONDITIONAL([BUILD_3DS_CAPABILITIES], [$sim_ac_enable_3ds_import])
 
+
+# *******************************************************************
+# See if we should build with javascript capabilities.
+
+sim_ac_enable_javascript=true
+AC_ARG_ENABLE(
+  [javascript-api],
+  AC_HELP_STRING([--enable-javascript-api], [enable javascript capabilities]), [
+  case $enableval in
+    yes | true) sim_ac_enable_javascript=true ;;
+    *) ;;
+  esac])
+
+HAVE_JAVASCRIPT=1
+
+if $sim_ac_enable_javascript ; then
+  AC_DEFINE([COIN_HAVE_JAVASCRIPT],, [for setup.h])
+  SIM_AC_CONFIGURATION_SETTING([javascript capabilities], [Yes])
+else
+  HAVE_JAVASCRIPT=0
+  SIM_AC_CONFIGURATION_SETTING([javascript capabilities], [No (enable with --enable-javascript-api)])
+fi
+AC_SUBST(HAVE_JAVASCRIPT)
+
+
 # *******************************************************************
 # Search for the vrml97 extension
 
@@ -1297,10 +1322,12 @@ sim_ac_have_spidermonkey=false
 if $enable_dl_spidermonkey && $coin_can_do_runtime_linking; then
   AC_DEFINE_UNQUOTED([SPIDERMONKEY_RUNTIME_LINKING], 1,
     [define for runtime linking with SpiderMonkey])
-  SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, run-time binding])
+  if $sim_ac_enable_javascript ; then     
+    SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, run-time binding])
+  fi      
 else
   SIM_AC_HAVE_SPIDERMONKEY_IFELSE([
-    AC_DEFINE(HAVE_SPIDERMONKEY, 1,
+    AC_DEFINE(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING, 1,
       [define if you have the SpiderMonkey library])
     CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
@@ -1308,7 +1335,10 @@ else
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_spidermonkey_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_spidermonkey_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_spidermonkey_libs $COIN_EXTRA_LIBS"
-    SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, link-time binding])
+    if $sim_ac_enable_javascript ; then
+      SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [Yes, link-time binding])
+      sim_ac_have_spidermonkey=true
+    fi
   ], [
     if $sim_ac_spidermonkey_desired; then
       SIM_AC_CONFIGURATION_SETTING([SpiderMonkey support], [No])
@@ -1316,8 +1346,7 @@ else
   ])
 fi
 
-AM_CONDITIONAL(HAVE_SPIDERMONKEY, $sim_ac_have_spidermonkey)
-
+AM_CONDITIONAL(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING, $sim_ac_have_spidermonkey)
 
 
 # **************************************************************************

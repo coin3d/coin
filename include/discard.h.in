@@ -21,6 +21,9 @@
 /* Build target system. */
 #undef COIN_CONFIGURE_TARGET
 
+/* for setup.h */
+#undef COIN_HAVE_JAVASCRIPT
+
 /* define this to a type of the indicated bitwidth */
 #undef COIN_INT16_T
 
@@ -273,11 +276,11 @@
 /* for setup.h */
 #undef HAVE_SOUND
 
-/* define if you have the SpiderMonkey library */
-#undef HAVE_SPIDERMONKEY
-
 /* define that the Spidermonkey header is available */
 #undef HAVE_SPIDERMONKEY_H
+
+/* define if you have the SpiderMonkey library */
+#undef HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H

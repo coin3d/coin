@@ -264,11 +264,11 @@
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
 
-/* define if you have the SpiderMonkey library */
-#undef HAVE_SPIDERMONKEY
-
 /* define that the Spidermonkey header is available */
 #undef HAVE_SPIDERMONKEY_H
+
+/* define if you have the SpiderMonkey library */
+#undef HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H

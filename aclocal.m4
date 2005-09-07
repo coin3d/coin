@@ -8260,7 +8260,10 @@ if test x"$with_pthread" != xno; then
   for sim_ac_pthreads_libcheck in "-lpthread" "-pthread"; do
     if $sim_ac_pthread_avail; then :; else
       LIBS="$sim_ac_pthreads_libcheck $sim_ac_save_libs"
-      AC_TRY_LINK([#include <pthread.h>],
+      AC_TRY_LINK([#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#include <pthread.h>],
                   [(void)pthread_create(0L, 0L, 0L, 0L);],
                   [sim_ac_pthread_avail=true
                    sim_ac_pthread_libs="$sim_ac_pthreads_libcheck"
@@ -8278,7 +8281,10 @@ if test x"$with_pthread" != xno; then
     AC_CACHE_CHECK(
       [the struct timespec resolution],
       sim_cv_lib_pthread_timespec_resolution,
-      [AC_TRY_COMPILE([#include <pthread.h>],
+      [AC_TRY_COMPILE([#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#include <pthread.h>],
                       [struct timespec timeout;
                        timeout.tv_nsec = 0;],
                       [sim_cv_lib_pthread_timespec_resolution=nsecs],
@@ -10874,21 +10880,25 @@ AC_DEFUN([SIM_AC_CHECK_HEADER_SPIDERMONKEY],
 [sim_ac_spidermonkey_header_avail=false
 AC_MSG_CHECKING([how to include spidermonkey's jsapi.h])
 if test x"$with_spidermonkey" != x"no"; then
-  sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_spidermonkey_tmp_CPPFLAGS=$CPPFLAGS
 
   if $BUILD_WITH_MSVC; then      
     if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
-      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -DXP_WIN"
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}"
     fi
   else
     if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
       # FIXME: Not tested on Mac. One might have to use the XP_MAC
       # flag instead. (20050906 handegar)
-      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/lib -DCROSS_COMPILE"
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/lib"
     fi
   fi
 
-  CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+  if $BUILD_WITH_MSVC; then 
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE"
+  fi
 
   SIM_AC_CHECK_HEADER_SILENT([jsapi.h], [
     sim_ac_spidermonkey_header_avail=true
@@ -10896,7 +10906,7 @@ if test x"$with_spidermonkey" != x"no"; then
     AC_DEFINE([HAVE_SPIDERMONKEY_H], 1, [define that the Spidermonkey header is available])
   ])
 
-  CPPFLAGS="$sim_ac_spidermonkey_save_CPPFLAGS"
+  CPPFLAGS="$sim_ac_spidermonkey_tmp_CPPFLAGS"
   if $sim_ac_spidermonkey_header_avail; then
     if test x"$sim_ac_spidermonkey_cppflags" = x""; then
       AC_MSG_RESULT([@%:@include <$sim_ac_spidermonkey_header>])
@@ -11004,6 +11014,14 @@ true)
   SIM_AC_CHECK_HEADER_SPIDERMONKEY([CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"])
 
   AC_MSG_CHECKING([for Spidermonkey])
+
+
+  if $BUILD_WITH_MSVC; then 
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE"
+  fi
+
   LIBS="$sim_ac_spidermonkey_libs $LIBS"
   AC_TRY_LINK(
     [#include <jsapi.h>],

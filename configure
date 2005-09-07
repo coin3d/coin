@@ -466,7 +466,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all src/extensions/superglu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_SPIDERMONKEY_TRUE HAVE_SPIDERMONKEY_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_JAVASCRIPT HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1054,6 +1054,7 @@ Optional Features:
                           [default=yes]
   --enable-java-wrapper   enable building java wrapper
   --enable-3ds-import     enable 3ds import capabilities
+  --enable-javascript-api enable javascript capabilities
   --disable-vrml97        disable VRML97 support
   --disable-threads       disable platform-independent multithreading
                           abstraction classes
@@ -1977,7 +1978,7 @@ MAC_FRAMEWORK_VERSION=$sim_ac_framework_version
 frameworkdir=
 if $sim_ac_framework; then
   frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework
-  includedir=$frameworkdir/Headers
+  includedir=$frameworkdir/Resources/pivy
 fi
 
 ivincludedir=$includedir
@@ -4977,7 +4978,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4980 "configure"' > conftest.$ac_ext
+  echo '#line 4981 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -6092,7 +6093,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:6095:" \
+echo "$as_me:6096:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -7149,11 +7150,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7152: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7153: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7156: \$? = $ac_status" >&5
+   echo "$as_me:7157: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -7392,11 +7393,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7395: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7396: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7399: \$? = $ac_status" >&5
+   echo "$as_me:7400: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -7452,11 +7453,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7455: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7456: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7459: \$? = $ac_status" >&5
+   echo "$as_me:7460: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9637,7 +9638,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9640 "configure"
+#line 9641 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9735,7 +9736,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9738 "configure"
+#line 9739 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11928,11 +11929,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11931: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11932: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11935: \$? = $ac_status" >&5
+   echo "$as_me:11936: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11988,11 +11989,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11991: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11992: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11995: \$? = $ac_status" >&5
+   echo "$as_me:11996: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13349,7 +13350,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 13352 "configure"
+#line 13353 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13447,7 +13448,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 13450 "configure"
+#line 13451 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14284,11 +14285,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14287: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14288: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14291: \$? = $ac_status" >&5
+   echo "$as_me:14292: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -14344,11 +14345,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14347: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14348: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14351: \$? = $ac_status" >&5
+   echo "$as_me:14352: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16379,11 +16380,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16382: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16383: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16386: \$? = $ac_status" >&5
+   echo "$as_me:16387: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -16622,11 +16623,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16625: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16626: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16629: \$? = $ac_status" >&5
+   echo "$as_me:16630: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -16682,11 +16683,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16685: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16686: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:16689: \$? = $ac_status" >&5
+   echo "$as_me:16690: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -18867,7 +18868,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 18870 "configure"
+#line 18871 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -18965,7 +18966,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 18968 "configure"
+#line 18969 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -20956,6 +20957,49 @@ else
 fi
 
 
+
+# *******************************************************************
+# See if we should build with javascript capabilities.
+
+sim_ac_enable_javascript=true
+# Check whether --enable-javascript-api or --disable-javascript-api was given.
+if test "${enable_javascript_api+set}" = set; then
+  enableval="$enable_javascript_api"
+
+  case $enableval in
+    yes | true) sim_ac_enable_javascript=true ;;
+    *) ;;
+  esac
+fi;
+
+HAVE_JAVASCRIPT=1
+
+if $sim_ac_enable_javascript ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define COIN_HAVE_JAVASCRIPT
+_ACEOF
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|javascript capabilities:Yes"
+else
+  sim_ac_configuration_settings="javascript capabilities:Yes"
+fi
+
+else
+  HAVE_JAVASCRIPT=0
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|javascript capabilities:No (enable with --enable-javascript-api)"
+else
+  sim_ac_configuration_settings="javascript capabilities:No (enable with --enable-javascript-api)"
+fi
+
+fi
+
+
+
 # *******************************************************************
 # Search for the vrml97 extension
 
@@ -21211,6 +21255,9 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #include <pthread.h>
 int
 main ()
@@ -21275,6 +21322,9 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #include <pthread.h>
 int
 main ()
@@ -31226,6 +31276,7 @@ cat >>confdefs.h <<_ACEOF
 #define SPIDERMONKEY_RUNTIME_LINKING 1
 _ACEOF
 
+  if $sim_ac_enable_javascript ; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:Yes, run-time binding"
@@ -31233,6 +31284,7 @@ else
   sim_ac_configuration_settings="SpiderMonkey support:Yes, run-time binding"
 fi
 
+  fi
 else
   : ${sim_ac_have_spidermonkey=false}
 
@@ -31305,21 +31357,25 @@ true)
 echo "$as_me:$LINENO: checking how to include spidermonkey's jsapi.h" >&5
 echo $ECHO_N "checking how to include spidermonkey's jsapi.h... $ECHO_C" >&6
 if test x"$with_spidermonkey" != x"no"; then
-  sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_spidermonkey_tmp_CPPFLAGS=$CPPFLAGS
 
   if $BUILD_WITH_MSVC; then
     if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
-      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -DXP_WIN"
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}"
     fi
   else
     if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
       # FIXME: Not tested on Mac. One might have to use the XP_MAC
       # flag instead. (20050906 handegar)
-      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/lib -DCROSS_COMPILE"
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/lib"
     fi
   fi
 
-  CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+  if $BUILD_WITH_MSVC; then
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE"
+  fi
 
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -31371,7 +31427,7 @@ fi
 
 
 
-  CPPFLAGS="$sim_ac_spidermonkey_save_CPPFLAGS"
+  CPPFLAGS="$sim_ac_spidermonkey_tmp_CPPFLAGS"
   if $sim_ac_spidermonkey_header_avail; then
     if test x"$sim_ac_spidermonkey_cppflags" = x""; then
       echo "$as_me:$LINENO: result: #include <$sim_ac_spidermonkey_header>" >&5
@@ -31396,6 +31452,14 @@ fi
 
   echo "$as_me:$LINENO: checking for Spidermonkey" >&5
 echo $ECHO_N "checking for Spidermonkey... $ECHO_C" >&6
+
+
+  if $BUILD_WITH_MSVC; then
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE"
+  fi
+
   LIBS="$sim_ac_spidermonkey_libs $LIBS"
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -31460,7 +31524,7 @@ echo "${ECHO_T}success ($sim_ac_spidermonkey_libs)" >&6
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_SPIDERMONKEY 1
+#define HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1
 _ACEOF
 
     CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
@@ -31469,6 +31533,7 @@ _ACEOF
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_spidermonkey_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_spidermonkey_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_spidermonkey_libs $COIN_EXTRA_LIBS"
+    if $sim_ac_enable_javascript ; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|SpiderMonkey support:Yes, link-time binding"
@@ -31476,6 +31541,8 @@ else
   sim_ac_configuration_settings="SpiderMonkey support:Yes, link-time binding"
 fi
 
+      sim_ac_have_spidermonkey=true
+    fi
 
   else
     echo "$as_me:$LINENO: result: failure" >&5
@@ -31514,13 +31581,12 @@ fi
 
 
 if $sim_ac_have_spidermonkey; then
-  HAVE_SPIDERMONKEY_TRUE=
-  HAVE_SPIDERMONKEY_FALSE='#'
+  HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE=
+  HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE='#'
 else
-  HAVE_SPIDERMONKEY_TRUE='#'
-  HAVE_SPIDERMONKEY_FALSE=
+  HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE='#'
+  HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE=
 fi
-
 
 
 
@@ -34799,6 +34865,9 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #include <pthread.h>
 int
 main ()
@@ -34863,6 +34932,9 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #include <pthread.h>
 int
 main ()
@@ -37380,10 +37452,10 @@ echo "$as_me: error: conditional \"HAVE_FONTCONFIG\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
-if test -z "${HAVE_SPIDERMONKEY_TRUE}" && test -z "${HAVE_SPIDERMONKEY_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"HAVE_SPIDERMONKEY\" was never defined.
+if test -z "${HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE}" && test -z "${HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"HAVE_SPIDERMONKEY\" was never defined.
+echo "$as_me: error: conditional \"HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -38132,6 +38204,7 @@ s,@BUILD_JAVA_WRAPPER_FALSE@,$BUILD_JAVA_WRAPPER_FALSE,;t t
 s,@HAVE_3DS_IMPORT_CAPABILITIES@,$HAVE_3DS_IMPORT_CAPABILITIES,;t t
 s,@BUILD_3DS_CAPABILITIES_TRUE@,$BUILD_3DS_CAPABILITIES_TRUE,;t t
 s,@BUILD_3DS_CAPABILITIES_FALSE@,$BUILD_3DS_CAPABILITIES_FALSE,;t t
+s,@HAVE_JAVASCRIPT@,$HAVE_JAVASCRIPT,;t t
 s,@HAVE_VRML97@,$HAVE_VRML97,;t t
 s,@BUILD_VRML97_TRUE@,$BUILD_VRML97_TRUE,;t t
 s,@BUILD_VRML97_FALSE@,$BUILD_VRML97_FALSE,;t t
@@ -38176,8 +38249,8 @@ s,@BUILD_WITH_SOUND_TRUE@,$BUILD_WITH_SOUND_TRUE,;t t
 s,@BUILD_WITH_SOUND_FALSE@,$BUILD_WITH_SOUND_FALSE,;t t
 s,@HAVE_FONTCONFIG_TRUE@,$HAVE_FONTCONFIG_TRUE,;t t
 s,@HAVE_FONTCONFIG_FALSE@,$HAVE_FONTCONFIG_FALSE,;t t
-s,@HAVE_SPIDERMONKEY_TRUE@,$HAVE_SPIDERMONKEY_TRUE,;t t
-s,@HAVE_SPIDERMONKEY_FALSE@,$HAVE_SPIDERMONKEY_FALSE,;t t
+s,@HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE@,$HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE,;t t
+s,@HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE@,$HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE,;t t
 s,@HAVE_FREETYPE_TRUE@,$HAVE_FREETYPE_TRUE,;t t
 s,@HAVE_FREETYPE_FALSE@,$HAVE_FREETYPE_FALSE,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

@@ -61,6 +61,19 @@
 #undef HAVE_3DS_IMPORT_CAPABILITIES
 
 /***************************************************************************
+ * COIN_HAVE_JAVASCRIPT
+ *
+ * All the SpiderMonkey javascript code is wrapped in this
+ * define. This is done to make sure the code in Coin-2 and Coin-dev
+ * is as equal as possible, making it easier to port fixes and
+ * enchancements.
+ *
+ * Default is to have this define set
+ */
+
+#undef COIN_HAVE_JAVASCRIPT
+
+/***************************************************************************
  * The end.
  *
  * Make sure this header file is not installed, and only used when building
