@@ -24,6 +24,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#ifdef COIN_HAVE_JAVASCRIPT
   
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -589,3 +591,5 @@ SoJavaScriptEngine::hasScriptField(const SbName & name) const
 
 #undef PRIVATE
 #undef PUBLIC
+
+#endif // !COIN_HAVE_JAVASCRIPT 

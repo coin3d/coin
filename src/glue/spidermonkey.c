@@ -25,22 +25,26 @@
 #include <config.h>
 #endif /* !HAVE_CONFIG_H */
 
+#ifdef COIN_HAVE_JAVASCRIPT
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-
-#if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY)
+                                                      
+#if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING)
 #ifdef _WIN32
  #define XP_WIN
-#elif HAVE_GLX /* FIXME: Whats the proper way to detect Unix? (20050906 handegar) */
+ #ifdef HAVE_WINDOWS_H
+  #include <windows.h>
+ #else
+  #error Cannot compile SpiderMonkey support without windows.h available.
+ #endif /* !HAVE_WINDWOS_H */
+#else /* For UNIX and Mac OS X */
  #define XP_UNIX 
-#elif __APPLE__
- #define XP_MAC
 #endif
 #include <jsapi.h>
-#endif /* !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY) */
+#endif /* !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING) */
 
 #include <Inventor/C/glue/spidermonkey.h>
 
@@ -51,7 +55,6 @@
 #include <Inventor/C/tidbitsp.h>
 
 /* ********************************************************************** */
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -141,8 +144,10 @@ spidermonkey(void)
     idx = possiblelibnames[0] ? 0 : 1;
 
     while (!spidermonkey_libhandle && possiblelibnames[idx]) {
-      cc_debugerror_postinfo("spidermonkey", "Trying to dynamically load '%s'.",
-                             possiblelibnames[idx]);
+      if (spidermonkey_debug()) {
+        cc_debugerror_postinfo("spidermonkey", "Trying to dynamically load library '%s'", 
+                               possiblelibnames[idx]);
+      }
       spidermonkey_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
@@ -150,12 +155,15 @@ spidermonkey(void)
     if (!spidermonkey_libhandle) {
       sm->available = 0;
       spidermonkey_failed_to_load = 1;
+      if (spidermonkey_debug()) {
+        cc_debugerror_postinfo("spidermonkey", "SpiderMonkey library failed to load.");
+      }
       goto wrapperexit;
     }
 
-    if (spidermonkey_debug()) {
+    if (spidermonkey_debug()) {      
       if (spidermonkey_failed_to_load) {
-        /* FIXME: This well never be reached, as far as I can see (20050906 handegar) */
+        /* FIXME: This message will never be reached, as far as I can see (20050906 handegar) */
         cc_debugerror_postinfo("spidermonkey", "Found no SpiderMonkey library on system.");
       }
       else {
@@ -180,7 +188,7 @@ spidermonkey(void)
           if (sm->_funcname_ == NULL) { sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_altname_)); } \
           assert(sm->_funcname_)
 
-#elif defined(HAVE_SPIDERMONKEY) /* static linking */
+#elif defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING) /* static linking */
 
   #define REGISTER_FUNC(_funcname_, _funcsig_) \
           sm->_funcname_ = (_funcsig_)_funcname_; \
@@ -295,3 +303,5 @@ wrapperexit:
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#endif /* !COIN_HAVE_JAVASCRIPT */

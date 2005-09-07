@@ -158,6 +158,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/misc/SoJavaScriptEngine.h>
 
@@ -174,27 +175,32 @@ public:
     this->oneshotsensor = new SoOneShotSensor(SoVRMLScript::eval_cb, master);
     this->isreading = FALSE;
     this->isevaluating = FALSE;
+#ifdef COIN_HAVE_JAVASCRIPT
     this->engine = NULL;
+#endif // !COIN_HAVE_JAVASCRIPT
   }
 
   ~SoVRMLScriptP()
   {
     delete this->oneshotsensor;
 
+#ifdef COIN_HAVE_JAVASCRIPT
     // FIXME: this needs to be done in a nicer way. 20050720 erikgors.
     if (this->engine != NULL)
       this->shutdown();
+#endif // !COIN_HAVE_JAVASCRIPT
   }
 
+  static SbBool debug(void);
+
+#ifdef COIN_HAVE_JAVASCRIPT
   void initialize(void);
   void shutdown(void);
 
   static void cleanup(void);
-
-  static SbBool debug(void);
   static SbBool allowSpiderMonkey(void);
   static SbBool useSpiderMonkey(void);
-
+#endif // !COIN_HAVE_JAVASCRIPT
   void evaluate(void);
 
   SbBool isreading, isevaluating;
@@ -203,7 +209,9 @@ public:
   SbList<SbName> fieldnotifications, eventoutfields, eventinfields;
   void executeFunctions(void);
 
+#ifdef COIN_HAVE_JAVASCRIPT
   SoJavaScriptEngine * engine;
+#endif // !COIN_HAVE_JAVASCRIPT
 
 private:
   SoVRMLScript * master;
@@ -212,6 +220,7 @@ private:
 #define PUBLIC(p) ((p)->master)
 #define PRIVATE(p) ((p)->pimpl)
 
+#ifdef COIN_HAVE_JAVASCRIPT
 void
 SoVRMLScriptP::cleanup(void)
 {
@@ -225,6 +234,7 @@ SoVRMLScriptP::cleanup(void)
     SoJavaScriptEngine::shutdown();
   }
 }
+#endif // !COIN_HAVE_JAVASCRIPT
 
 // *************************************************************************
 
@@ -239,6 +249,8 @@ SoVRMLScriptP::debug(void)
   }
   return d ? TRUE : FALSE;
 }
+
+#ifdef COIN_HAVE_JAVASCRIPT
 
 // The Javascript support is far from being compliant with the VRML
 // specification, and has so far been developed just for internal SIM
@@ -263,6 +275,8 @@ SoVRMLScriptP::useSpiderMonkey(void)
   return TRUE;
 }
 
+#endif // !COIN_HAVE_JAVASCRIPT
+
 // *************************************************************************
 
 SoType SoVRMLScript::classTypeId STATIC_SOTYPE_INIT;
@@ -284,10 +298,12 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
+#ifdef COIN_HAVE_JAVASCRIPT
   if (!SoJavaScriptEngine::getRuntime() && SoVRMLScriptP::allowSpiderMonkey()) {
     SoJavaScriptEngine::init();
     coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 0);
   }
+#endif // !COIN_HAVE_JAVASCRIPT
 
   PRIVATE(this) = new SoVRMLScriptP(this);
   this->setNodeType(SoNode::VRML2);
@@ -539,9 +555,11 @@ SoVRMLScript::notify(SoNotList * l)
     }
   }
 
+#ifdef COIN_HAVE_JAVASCRIPT
   if (f == &this->url) {
     PRIVATE(this)->initialize();
   }
+#endif // !COIN_HAVE_JAVASCRIPT
 
   inherited::notify(l);
 }
@@ -684,6 +702,8 @@ SoVRMLScript::initFieldData(void)
 
 // *************************************************************************
 
+#ifdef COIN_HAVE_JAVASCRIPT
+
 void
 SoVRMLScriptP::initialize(void)
 {
@@ -694,6 +714,7 @@ SoVRMLScriptP::initialize(void)
       }
     this->shutdown();
   }
+
   SbString script;
 
   for (int index=0; index<PUBLIC(this)->url.getNum(); ++index) {
@@ -703,7 +724,6 @@ SoVRMLScriptP::initialize(void)
     const char jsPrefix[] = "javascript:";
     const size_t jsPrefixlen = sizeof(jsPrefix) - 1;
     if (s.getLength() > (int)jsPrefixlen && s.getSubString(0, jsPrefixlen -1) == jsPrefix) {
-    
       // starting javascript engine
       if (!SoVRMLScriptP::useSpiderMonkey()) {
         if (SoVRMLScriptP::debug()) {
@@ -714,7 +734,6 @@ SoVRMLScriptP::initialize(void)
       }
       assert(this->engine == NULL);
       this->engine = new SoJavaScriptEngine;
-
       script = s.getSubString(jsPrefixlen);
       break;
     }
@@ -790,6 +809,8 @@ SoVRMLScriptP::shutdown(void)
   this->engine = NULL;
 }
 
+#endif // !COIN_HAVE_JAVASCRIPT
+
 // *************************************************************************
 
 void 
@@ -807,9 +828,11 @@ SoVRMLScriptP::evaluate(void)
   if (sovrmlscript_eval_cb) {
     sovrmlscript_eval_cb(sovrmlscript_eval_closure, PUBLIC(this));
   }
+#ifdef COIN_HAVE_JAVASCRIPT
   else if (this->engine != NULL) {
     this->executeFunctions();
   }
+#endif // !COIN_HAVE_JAVASCRIPT
   else {
     // FIXME: improve on this to be of more informational value to
     // both the app programmer and end-user. 20050526 mortene.
@@ -853,27 +876,29 @@ SoVRMLScriptP::executeFunctions(void)
     const SbName & n = this->fieldnotifications[i];
     const SoField * f = PUBLIC(this)->getField(n);
     assert(f);
-
+#ifdef COIN_HAVE_JAVASCRIPT
     if (!this->engine->executeFunction(n, 1, f)) {
       SoDebugError::postWarning("SoVRMLScriptP::executeFunctions", 
                                 "could not execute function %s",
                                 n.getString());
     }
+#endif // !COIN_HAVE_JAVASCRIPT
   }
   this->fieldnotifications.truncate(0);
 
   // Call eventsProcessed
-
+#ifdef COIN_HAVE_JAVASCRIPT
   static SbName eventsProcessed("eventsProcessed");
   if (this->engine->hasScriptField(eventsProcessed)) {
     this->engine->executeFunction(eventsProcessed, 0, NULL);
   }
+#endif // !COIN_HAVE_JAVASCRIPT
 
   // Then, pick up all new eventOut values.
 
   for (i = 0; i < this->eventoutfields.getLength(); i++) {
     const SbName & name = this->eventoutfields[i];
-
+#ifdef COIN_HAVE_JAVASCRIPT
     if (!this->engine->hasScriptField(name)) {
       if (debug()) {
         SoDebugError::postInfo("SoVRMLScriptP::executeFunctions",
@@ -882,6 +907,7 @@ SoVRMLScriptP::executeFunctions(void)
       }
       continue;
     }
+#endif // !COIN_HAVE_JAVASCRIPT
     SoField * f = PUBLIC(this)->getEventOut(name);
     assert(f);
 
@@ -894,11 +920,14 @@ SoVRMLScriptP::executeFunctions(void)
     // FIXME: should probably rather compare new value with old before
     // actually pushing it. Perhaps there's something about this in
     // the spec. 20050606 mortene.
+#ifdef COIN_HAVE_JAVASCRIPT
     if (!this->engine->getScriptField(name, f)) {
       SoDebugError::postWarning("SoVRMLScriptP::executeFunctions", 
                                 "could not convert eventOut field %s",
                                 name.getString());
     }
+#endif // !COIN_HAVE_JAVASCRIPT
+
     // FIXME: We could simply unset the field, but then a lot of
     // "buggy" javascripts will start to complain. 20050721 erikgors.
     // this->engine->unsetScriptField(name);
