@@ -4948,20 +4948,3 @@ Text2 {
     20050902 mortene.
 
 =====================================================================
-
-207 SoIntersectionDetectionAction use causes assert in SbOctTree.
-
-    To reproduce, run the SoGuiExamples/actions/intersection
-    example. Select the cone, drag it onto the cylinder, and you'll
-    get the following assert:
-
-      src/base/SbOctTree.cpp:523: void SbOctTree::addItem(void *):
-      Assertion `this->itemfuncs.insideboxfunc(item,
-      this->topnode->getBBox()) && "bbox of item outside the octtree
-      top-level bbox"' failed.
-
-    (Tested with the "Coin" dev branch.)
-
-    20050908 mortene.
-
-=====================================================================
