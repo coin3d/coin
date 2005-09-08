@@ -38,6 +38,7 @@
 #include <Inventor/SbOctTree.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
@@ -519,6 +520,16 @@ SbOctTree::addItem(void * const item)
   // new octtree structure build itself.
   //
   // 20050512 mortene.
+#if COIN_DEBUG && 0 // debug
+  const SbBox3f & b = this->topnode->getBBox();
+  if (!this->itemfuncs.insideboxfunc(item, b)) {
+    const SbVec3f & bmin = b.getMin();
+    const SbVec3f & bmax = b.getMax();
+    SoDebugError::post("SbOctTree::addItem",
+                       "tree bbox==<%f, %f, %f>, <%f, %f, %f>",
+                       bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2]);
+  }
+#endif // debug
   assert(this->itemfuncs.insideboxfunc(item, this->topnode->getBBox()) &&
          "bbox of item outside the octtree top-level bbox");
 
