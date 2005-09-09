@@ -125,6 +125,7 @@ SoVectorizeActionP::SoVectorizeActionP(SoVectorizeAction * p)
 //
 SoVectorizeActionP::~SoVectorizeActionP()
 {
+  this->reset();
   delete this->clipper;
   delete this->output;
   for (int i = 0; i < this->vertexdatalist.getLength(); i++) {
@@ -148,6 +149,7 @@ SoVectorizeActionP::reset(void)
     delete this->annotationlist[i];
   }
   this->annotationlist.truncate(0);
+  this->bsp.clear();
 }
 
 //
