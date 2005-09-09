@@ -138,6 +138,10 @@
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/SbVec3d.h>
+#include <Inventor/SbDPLine.h>
+#include <Inventor/SbDPPlane.h>
+#include <Inventor/SbDPMatrix.h>
 #include <float.h>
 
 #if COIN_DEBUG
@@ -158,7 +162,7 @@ public:
   // Hidden private methods.
 
 
-  SbBool isBetweenPlanesWS(const SbVec3f & intersection,
+  SbBool isBetweenPlanesWS(const SbVec3d & intersection,
                            const SoClipPlaneElement * planes) const;
   void cleanupPickedPoints(void);
   void setFlag(const unsigned int flag);
@@ -171,25 +175,28 @@ public:
 
   SbViewVolume osvolume;
   SbViewVolume wsvolume;
-  SbLine osline;
-  SbPlane nearplane;
+  SbLine osline_sp;
+
+  // use double precision types to increase picking precision
+  SbDPLine osline;
+  SbDPPlane nearplane;
   SbVec2s vppoint;
   SbVec2f normvppoint;
-  SbVec3f raystart;
-  SbVec3f raydirection;
+  SbVec3d raystart;
+  SbVec3d raydirection;
   double rayradiusstart;
   double rayradiusdelta;
   double raynear;
   double rayfar;
   float radiusinpixels;
 
-  SbLine wsline;
-  SbMatrix obj2world;
-  SbMatrix world2obj;
-  SbMatrix extramatrix;
+  SbDPLine wsline;
+  SbDPMatrix obj2world;
+  SbDPMatrix world2obj;
+  SbDPMatrix extramatrix;
 
   SoPickedPointList pickedpointlist;
-  SbList <float> ppdistance;
+  SbList <double> ppdistance;
 
   unsigned int flags;
   SbBool objectspacevalid;
@@ -339,27 +346,28 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 
   // set these to some values. They will be set to better values
   // in computeWorldSpaceRay() (when we know the view volume).
-  PRIVATE(this)->rayradiusstart = 0.01f;
-  PRIVATE(this)->rayradiusdelta = 0.0f;
+  PRIVATE(this)->rayradiusstart = 0.01;
+  PRIVATE(this)->rayradiusdelta = 0.0;
 
-  PRIVATE(this)->raystart = start;
-  PRIVATE(this)->raydirection = direction;
+  PRIVATE(this)->raystart.setValue(start);
+  PRIVATE(this)->raydirection.setValue(direction);
   PRIVATE(this)->raydirection.normalize();
   PRIVATE(this)->raynear = neardistance;
   PRIVATE(this)->rayfar = fardistance;
-  PRIVATE(this)->wsline = SbLine(start, start + direction);
-
+  PRIVATE(this)->wsline = SbDPLine(PRIVATE(this)->raystart, 
+                                   PRIVATE(this)->raystart + PRIVATE(this)->raydirection);
+  
   // D = shortest distance from origin to plane
-  const float D = PRIVATE(this)->raydirection.dot(PRIVATE(this)->raystart);
-  PRIVATE(this)->nearplane = SbPlane(PRIVATE(this)->raydirection, D + (float) PRIVATE(this)->raynear);
-
+  const double D = PRIVATE(this)->raydirection.dot(PRIVATE(this)->raystart);
+  PRIVATE(this)->nearplane = SbDPPlane(PRIVATE(this)->raydirection, D + PRIVATE(this)->raynear);
+  
   PRIVATE(this)->setFlag(SoRayPickActionP::WS_RAY_SET);
 
   // We use a real cone for picking, but keep pick view volume in sync to be
   // compatible with OIV
   PRIVATE(this)->wsvolume.perspective(0.0, 1.0, neardistance, fardistance);
   PRIVATE(this)->wsvolume.translateCamera(start);
-  PRIVATE(this)->wsvolume.rotateCamera(SbRotation(SbVec3f(0.0, 0.0, -1.0), direction));
+  PRIVATE(this)->wsvolume.rotateCamera(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), direction));
   PRIVATE(this)->setFlag(SoRayPickActionP::OSVOLUME_DIRTY);
 }
 
@@ -398,11 +406,11 @@ SoRayPickAction::getPickedPointList(void) const
   int n = PRIVATE(this)->pickedpointlist.getLength();
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PPLIST_IS_SORTED) && n > 1) {
     SoPickedPoint ** pparray = (SoPickedPoint**) PRIVATE(this)->pickedpointlist.getArrayPtr();
-    float * darray = (float*) PRIVATE(this)->ppdistance.getArrayPtr();
+    double * darray = (double*) PRIVATE(this)->ppdistance.getArrayPtr();
 
     int i, j, distance;
     SoPickedPoint * pptmp;
-    float dtmp;
+    double dtmp;
 
     // shell sort algorithm (O(nlog(n))
     for (distance = 1; distance <= n/9; distance = 3*distance + 1);
@@ -480,9 +488,9 @@ SoRayPickAction::computeWorldSpaceRay(void)
 
     SbLine templine;
     vv.projectPointToLine(PRIVATE(this)->normvppoint, templine);
-    PRIVATE(this)->raystart = templine.getPosition();
-    PRIVATE(this)->raydirection = templine.getDirection();
-
+    PRIVATE(this)->raystart.setValue(templine.getPosition());
+    PRIVATE(this)->raydirection.setValue(templine.getDirection());
+    
     PRIVATE(this)->raynear = 0.0;
     PRIVATE(this)->rayfar = vv.getDepth();
 
@@ -491,25 +499,27 @@ SoRayPickAction::computeWorldSpaceRay(void)
       double(PRIVATE(this)->radiusinpixels);
     PRIVATE(this)->rayradiusdelta = 0.0;
     if (vv.getProjectionType() == SbViewVolume::PERSPECTIVE) {
-      SbVec3f dir(0.0f, vv.getHeight()*0.5f, vv.getNearDist());
+      SbVec3d dir(0.0f, vv.getHeight()*0.5f, vv.getNearDist());
       dir.normalize();
-      SbVec3f upperfar = dir * (vv.getNearDist()+vv.getDepth()) /
-        dir.dot(SbVec3f(0.0f, 0.0f, 1.0f));
+      SbVec3d upperfar = dir * (vv.getNearDist()+vv.getDepth()) /
+        dir.dot(SbVec3d(0.0f, 0.0f, 1.0f));
 
       double farheight = double(upperfar[1])*2.0;
       double farsize = (farheight / double(vpsize[1])) * double(PRIVATE(this)->radiusinpixels);
       PRIVATE(this)->rayradiusdelta = (farsize - PRIVATE(this)->rayradiusstart) / double(vv.getDepth());
     }
-    PRIVATE(this)->wsline = SbLine(PRIVATE(this)->raystart,
-                          PRIVATE(this)->raystart + PRIVATE(this)->raydirection);
+    PRIVATE(this)->wsline = SbDPLine(PRIVATE(this)->raystart,
+                                     PRIVATE(this)->raystart + PRIVATE(this)->raydirection);
 
-    PRIVATE(this)->nearplane = SbPlane(vv.getProjectionDirection(), PRIVATE(this)->raystart);
+    SbVec3d tmp;
+    tmp.setValue(vv.getProjectionDirection());
+    PRIVATE(this)->nearplane = SbDPPlane(tmp, PRIVATE(this)->raystart);
     PRIVATE(this)->setFlag(SoRayPickActionP::WS_RAY_COMPUTED);
 
     // we pick on a real cone, but keep pick view volume in sync to be
     // compatible with OIV.
-    float normradius = float(PRIVATE(this)->radiusinpixels) /
-      float(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
+    double normradius = double(PRIVATE(this)->radiusinpixels) /
+      double(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
 
     PRIVATE(this)->wsvolume = vv.narrow(PRIVATE(this)->normvppoint[0] - normradius,
                                         PRIVATE(this)->normvppoint[1] - normradius,
@@ -546,7 +556,7 @@ void
 SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
 {
   PRIVATE(this)->setFlag(SoRayPickActionP::EXTRA_MATRIX);
-  PRIVATE(this)->extramatrix = matrix;
+  PRIVATE(this)->extramatrix = SbDPMatrix(matrix);
   PRIVATE(this)->calcObjectSpaceData(this->state);
 }
 
@@ -554,9 +564,9 @@ SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
   \COININTERNAL
  */
 SbBool
-SoRayPickAction::intersect(const SbVec3f & v0,
-                           const SbVec3f & v1,
-                           const SbVec3f & v2,
+SoRayPickAction::intersect(const SbVec3f & v0_in,
+                           const SbVec3f & v1_in,
+                           const SbVec3f & v2_in,
                            SbVec3f & intersection, SbVec3f & barycentric,
                            SbBool & front) const
 {
@@ -566,20 +576,25 @@ SoRayPickAction::intersect(const SbVec3f & v0,
   // intersection point, so we just return FALSE.
   if (!PRIVATE(this)->objectspacevalid) return FALSE;
 
-  const SbVec3f & orig = PRIVATE(this)->osline.getPosition();
-  const SbVec3f & dir = PRIVATE(this)->osline.getDirection();
+  SbVec3d v0,v1,v2;
+  v0.setValue(v0_in);
+  v1.setValue(v1_in);
+  v2.setValue(v2_in);
 
-  SbVec3f edge1 = v1 - v0;
-  SbVec3f edge2 = v2 - v0;
+  const SbVec3d & orig = PRIVATE(this)->osline.getPosition();
+  const SbVec3d & dir = PRIVATE(this)->osline.getDirection();
 
-  SbVec3f pvec = dir.cross(edge2);
+  SbVec3d edge1 = v1 - v0;
+  SbVec3d edge2 = v2 - v0;
+
+  SbVec3d pvec = dir.cross(edge2);
 
   // if determinant is near zero, ray lies in plane of triangle
-  float det = edge1.dot(pvec);
-  if (fabs(det) < FLT_EPSILON) return FALSE;
+  double det = edge1.dot(pvec);
+  if (fabs(det) < DBL_EPSILON) return FALSE;
 
   // does ray hit front or back of triangle
-  if (det > 0.0f) front = TRUE;
+  if (det > 0.0) front = TRUE;
   else front = FALSE;
 
   // create some more intuitive barycentric coordinate names
@@ -587,30 +602,32 @@ SoRayPickAction::intersect(const SbVec3f & v0,
   float & v = barycentric[2];
   float & w = barycentric[0];
 
-  float inv_det = 1.0f / det;
+  double inv_det = 1.0 / det;
 
   // calculate distance from v0 to ray origin
-  SbVec3f tvec = orig - v0;
+  SbVec3d tvec = orig - v0;
 
   // calculate U parameter and test bounds
   u = tvec.dot(pvec) * inv_det;
-  if (u < 0.0f || u > 1.0f)
+  if (u < 0.0 || u > 1.0)
     return FALSE;
 
   // prepare to test V parameter
-  SbVec3f qvec = tvec.cross(edge1);
+  SbVec3d qvec = tvec.cross(edge1);
 
   // calculate V parameter and test bounds
   v = dir.dot(qvec) * inv_det;
-  if (v < 0.0f || u + v > 1.0f)
+  if (v < 0.0 || u + v > 1.0)
     return FALSE;
 
   // third barycentric coordinate
-  w = 1.0f - u - v;
+  w = 1.0 - u - v;
 
   // calculate t and intersection point
-  float t = edge2.dot(qvec) * inv_det;
-  intersection = orig + t * dir;
+  double t = edge2.dot(qvec) * inv_det;
+
+  SbVec3d itmp = orig + t * dir;
+  intersection.setValue(itmp);
 
   return TRUE;
 }
@@ -619,7 +636,7 @@ SoRayPickAction::intersect(const SbVec3f & v0,
   \COININTERNAL
  */
 SbBool
-SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
+SoRayPickAction::intersect(const SbVec3f & v0_in, const SbVec3f & v1_in,
                            SbVec3f & intersection) const
 {
   // Calculating intersections when we have a degenerate transform
@@ -628,38 +645,42 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
   // intersection point, so we just return FALSE.
   if (!PRIVATE(this)->objectspacevalid) return FALSE;
   
+  SbVec3d v0, v1;
+  v0.setValue(v0_in);
+  v1.setValue(v1_in);
+
   // test if we have a valid line, and do point intersection testing
   // if we don't
   if (v0 == v1) {
-    intersection = v0;
+    intersection = v0_in;
     // this might return TRUE or FALSE. We already set the
     // intersection point.
-    return this->intersect(v0);
+    return this->intersect(v0_in);
   }
 
-  SbLine line(v0, v1);
-  SbVec3f op0, op1; // object space
-  SbVec3f p0, p1; // world space
+  SbDPLine line(v0, v1);
+  SbVec3d op0, op1; // object space
+  SbVec3d p0, p1; // world space
 
   if (!PRIVATE(this)->osline.getClosestPoints(line, op0, op1)) return FALSE;
   
   // clamp op1 between v0 and v1
-  if ((op1-v0).dot(line.getDirection()) < 0.0f) op1 = v0;
-  else if ((v1-op1).dot(line.getDirection()) < 0.0f) op1 = v1;
+  if ((op1-v0).dot(line.getDirection()) < 0.0) op1 = v0;
+  else if ((v1-op1).dot(line.getDirection()) < 0.0) op1 = v1;
 
   PRIVATE(this)->obj2world.multVecMatrix(op0, p0);
   PRIVATE(this)->obj2world.multVecMatrix(op1, p1);
 
   // distance between points
-  float distance = (p1-p0).length();
+  double distance = (p1-p0).length();
 
-  float raypos = PRIVATE(this)->nearplane.getDistance(p0);
+  double raypos = PRIVATE(this)->nearplane.getDistance(p0);
 
-  float radius = (float) (PRIVATE(this)->rayradiusstart +
-    PRIVATE(this)->rayradiusdelta * raypos);
-
+  double radius = (float) (PRIVATE(this)->rayradiusstart +
+                           PRIVATE(this)->rayradiusdelta * raypos);
+  
   if (radius >= distance) {
-    intersection = op1;
+    intersection.setValue(op1);
     return TRUE;
   }
   return FALSE;
@@ -669,7 +690,7 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
   \COININTERNAL
  */
 SbBool
-SoRayPickAction::intersect(const SbVec3f & point) const
+SoRayPickAction::intersect(const SbVec3f & point_in) const
 {
   // Calculating intersections when we have a degenerate transform
   // makes no sense. We could do the intersection calculations in
@@ -677,28 +698,31 @@ SoRayPickAction::intersect(const SbVec3f & point) const
   // intersection point, so we just return FALSE.
   if (!PRIVATE(this)->objectspacevalid) return FALSE;
 
-  SbVec3f wpoint;
+  SbVec3d point;
+  point.setValue(point_in);
+
+  SbVec3d wpoint;
   PRIVATE(this)->obj2world.multVecMatrix(point, wpoint);
-  SbVec3f ptonline = PRIVATE(this)->wsline.getClosestPoint(wpoint);
+  SbVec3d ptonline = PRIVATE(this)->wsline.getClosestPoint(wpoint);
 
   // distance between points
-  float distance = (wpoint-ptonline).length();
+  double distance = (wpoint-ptonline).length();
 
-  float raypos = PRIVATE(this)->nearplane.getDistance(ptonline);
+  double raypos = PRIVATE(this)->nearplane.getDistance(ptonline);
 
-  float radius = (float) (PRIVATE(this)->rayradiusstart +
-    PRIVATE(this)->rayradiusdelta * raypos);
+  double radius = (double) (PRIVATE(this)->rayradiusstart +
+                            PRIVATE(this)->rayradiusdelta * raypos);
 
   return (radius >= distance);
 }
 
 // calculates the square distance (smallest possible) from a 2D point
 // to a 2D rectangle
-static float
-dist_to_quad(const float xmin, const float ymin,
-             const float xmax, const float ymax,
-             const float x, const float y,
-             float & cx, float & cy)
+static double
+dist_to_quad(const double xmin, const double ymin,
+             const double xmax, const double ymax,
+             const double x, const double y,
+             double & cx, double & cy)
 {
   if (x < xmin) {
     if (y < ymin) {
@@ -749,7 +773,7 @@ dist_to_quad(const float xmin, const float ymin,
       // inside rectangle
       cx = x;
       cy = y;
-      return -1.0f;
+      return -1.0;
     }
   }
 }
@@ -767,13 +791,13 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
   // intersection point, so we just return FALSE.
   if (!PRIVATE(this)->objectspacevalid) return FALSE;
 
-  const SbLine & line = PRIVATE(this)->osline;
-  SbVec3f bounds[2];
-  bounds[0] = box.getMin();
-  bounds[1] = box.getMax();
+  const SbDPLine & line = PRIVATE(this)->osline;
+  SbVec3d bounds[2];
+  bounds[0].setValue(box.getMin());
+  bounds[1].setValue(box.getMax());
 
-  SbVec3f ptonray, ptonbox;
-  float sqrmindist = FLT_MAX;
+  SbVec3d ptonray, ptonbox;
+  double sqrmindist = DBL_MAX;
 
   SbBool conepick = usefullviewvolume && !PRIVATE(this)->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
@@ -786,13 +810,13 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     int numfar = 0;
 
     for (i = 0; i < 8; i++) {
-      SbVec3f bp(i&1 ? bounds[0][0] : bounds[1][0],
+      SbVec3d bp(i&1 ? bounds[0][0] : bounds[1][0],
                  i&2 ? bounds[0][1] : bounds[1][1],
                  i&4 ? bounds[0][2] : bounds[1][2]);
       PRIVATE(this)->obj2world.multVecMatrix(bp, bp);
-      float dist = PRIVATE(this)->nearplane.getDistance(bp);
+      double dist = PRIVATE(this)->nearplane.getDistance(bp);
       if (PRIVATE(this)->isFlagSet(SoRayPickActionP::CLIP_NEAR)) {
-        if (dist < 0.0f) numnear++;
+        if (dist < 0.0) numnear++;
       }
       if (PRIVATE(this)->isFlagSet(SoRayPickActionP::CLIP_FAR)) {
         if (dist > (PRIVATE(this)->rayfar - PRIVATE(this)->raynear)) numfar++;
@@ -804,23 +828,23 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
   for (int j = 0; j < 2; j++) {
     for (i = 0; i < 3; i++) {
-      SbVec3f norm(0.0f, 0.0f, 0.0f);
+      SbVec3d norm(0.0f, 0.0f, 0.0f);
       norm[i] = 1.0f;
-      SbVec3f isect;
+      SbVec3d isect;
 
-      SbPlane plane(norm, bounds[j][i]);
+      SbDPPlane plane(norm, bounds[j][i]);
       if (plane.intersect(line, isect)) {
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
-        float x, y;
+        double x, y;
 
-        float d = dist_to_quad(bounds[0][i1], bounds[0][i2],
-                               bounds[1][i1], bounds[1][i2],
-                               isect[i1], isect[i2],
-                               x, y);
+        double d = dist_to_quad(bounds[0][i1], bounds[0][i2],
+                                bounds[1][i1], bounds[1][i2],
+                                isect[i1], isect[i2],
+                                x, y);
         if (d <= 0.0f) {
           // center of ray hit box directly
-          intersection = isect;
+          intersection.setValue(isect);
           return TRUE;
         }
         else if (d < sqrmindist) {
@@ -832,22 +856,22 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
       }
     }
   }
-  if (sqrmindist != FLT_MAX && conepick) {
+  if (sqrmindist != DBL_MAX && conepick) {
     // transform ptonray and ptonbox to world space to test on ray cone
-    SbVec3f wptonray, wptonbox;
+    SbVec3d wptonray, wptonbox;
     PRIVATE(this)->obj2world.multVecMatrix(ptonbox, wptonbox);
     PRIVATE(this)->obj2world.multVecMatrix(ptonray, wptonray);
 
-    float raypos = PRIVATE(this)->nearplane.getDistance(wptonray);
-    float distance = (wptonray-wptonbox).length();
+    double raypos = PRIVATE(this)->nearplane.getDistance(wptonray);
+    double distance = (wptonray-wptonbox).length();
 
     // find ray radius at wptonray
-    float radius = (float) (PRIVATE(this)->rayradiusstart +
-      PRIVATE(this)->rayradiusdelta * raypos);
-
+    double radius = (float) (PRIVATE(this)->rayradiusstart +
+                             PRIVATE(this)->rayradiusdelta * raypos);
+    
     // test for cone intersection
     if (radius >= distance) {
-      intersection = ptonbox; // set intersection to the point on box closest to ray
+      intersection.setValue(ptonbox); // set intersection to the point on box closest to ray
       return TRUE;
     }
   }
@@ -877,11 +901,23 @@ SoRayPickAction::getViewVolume(void)
     // to be compatible with OIV.
     PRIVATE(this)->osvolume = SoPickRayElement::get(this->getState());
     if (PRIVATE(this)->isFlagSet(SoRayPickActionP::EXTRA_MATRIX)) {
-      SbMatrix m = PRIVATE(this)->world2obj * PRIVATE(this)->extramatrix;
-      PRIVATE(this)->osvolume.transform(m);
+      SbDPMatrix m = PRIVATE(this)->world2obj * PRIVATE(this)->extramatrix;
+      SbMatrix tmp((float) m[0][0], (float) m[0][1], (float) m[0][2], (float) m[0][3],
+                   (float) m[1][0], (float) m[1][1], (float) m[1][2], (float) m[1][3],
+                   (float) m[2][0], (float) m[2][1], (float) m[2][2], (float) m[2][3],
+                   (float) m[2][0], (float) m[3][1], (float) m[3][2], (float) m[3][3]);
+
+      PRIVATE(this)->osvolume.transform(tmp);
     }
     else {
-      PRIVATE(this)->osvolume.transform(PRIVATE(this)->world2obj);
+      const SbDPMatrix & m = PRIVATE(this)->world2obj;
+      SbMatrix tmp((float) m[0][0], (float) m[0][1], (float) m[0][2], (float) m[0][3],
+                   (float) m[1][0], (float) m[1][1], (float) m[1][2], (float) m[1][3],
+                   (float) m[2][0], (float) m[2][1], (float) m[2][2], (float) m[2][3],
+                   (float) m[2][0], (float) m[3][1], (float) m[3][2], (float) m[3][3]);
+
+
+      PRIVATE(this)->osvolume.transform(tmp);
     }
     PRIVATE(this)->clearFlag(SoRayPickActionP::OSVOLUME_DIRTY);
   }
@@ -894,30 +930,34 @@ SoRayPickAction::getViewVolume(void)
 const SbLine &
 SoRayPickAction::getLine(void)
 {
-  return PRIVATE(this)->osline;
+  return PRIVATE(this)->osline_sp;
 }
 
 /*!
   \COININTERNAL
  */
 SbBool
-SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
+SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection_in) const
 {
-  SbVec3f worldpoint;
+  SbVec3d intersection;
+  intersection.setValue(intersection_in);
+  SbVec3d worldpoint;
   PRIVATE(this)->obj2world.multVecMatrix(intersection, worldpoint);
   return PRIVATE(this)->isBetweenPlanesWS(worldpoint,
-                                 SoClipPlaneElement::getInstance(this->state));
+                                          SoClipPlaneElement::getInstance(this->state));
 }
 
 /*!
   \COININTERNAL
  */
 SoPickedPoint *
-SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
+SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in)
 {
-  SbVec3f worldpoint;
+  SbVec3d objectspacepoint;
+  objectspacepoint.setValue(objectspacepoint_in);
+  SbVec3d worldpoint;
   PRIVATE(this)->obj2world.multVecMatrix(objectspacepoint, worldpoint);
-  float dist = PRIVATE(this)->nearplane.getDistance(worldpoint);
+  double dist = PRIVATE(this)->nearplane.getDistance(worldpoint);
 
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PICK_ALL) && PRIVATE(this)->pickedpointlist.getLength()) {
     // got to test if new candidate is closer than old one
@@ -929,7 +969,7 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
 
   // create the new picked point
   SoPickedPoint * pp = new SoPickedPoint(this->getCurPath(),
-                                         this->state, objectspacepoint);
+                                         this->state, objectspacepoint_in);
   PRIVATE(this)->pickedpointlist.append(pp);
   PRIVATE(this)->ppdistance.append(dist);
   PRIVATE(this)->clearFlag(SoRayPickActionP::PPLIST_IS_SORTED);
@@ -967,10 +1007,12 @@ SoRayPickAction::beginTraversal(SoNode * node)
 //////// SoRayPickActionP (pimpl) ////////////////////////////////////////
 
 SbBool
-SoRayPickActionP::isBetweenPlanesWS(const SbVec3f & intersection,
+SoRayPickActionP::isBetweenPlanesWS(const SbVec3d & intersection,
                                     const SoClipPlaneElement * planes) const
 {
-  float dist = this->nearplane.getDistance(intersection);
+  SbVec3f isect_f;
+  isect_f.setValue(intersection);
+  double dist = this->nearplane.getDistance(intersection);
   if (this->isFlagSet(CLIP_NEAR)) {
     if (dist < 0) return FALSE;
   }
@@ -979,7 +1021,7 @@ SoRayPickActionP::isBetweenPlanesWS(const SbVec3f & intersection,
   }
   int n =  planes->getNum();
   for (int i = 0; i < n; i++) {
-    if (!planes->get(i).isInHalfSpace(intersection)) return FALSE;
+    if (!planes->get(i).isInHalfSpace(isect_f)) return FALSE;
   }
   return TRUE;
 }
@@ -1015,25 +1057,31 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
 {
   this->calcMatrices(ownerstate);
 
-  SbVec3f start, dir;
+  SbVec3d start, dir;
 
   if (this->objectspacevalid) {
     this->world2obj.multVecMatrix(this->raystart, start);
     this->world2obj.multDirMatrix(this->raydirection, dir);
-    this->osline = SbLine(start, start + dir);
+    this->osline = SbDPLine(start, start + dir);
+
+    SbVec3f tmp1, tmp2;
+    tmp1.setValue(start);
+    tmp2.setValue(dir);
+    this->osline_sp = SbLine(tmp1, tmp1 + tmp2);
   }
 }
 
 void
 SoRayPickActionP::calcMatrices(SoState * state)
 {
-  const float VALID_LIMIT = 1.0e-12f;  // FIXME: why not FLT_EPSILON? 20010916 mortene.
-  this->obj2world = SoModelMatrixElement::get(state);
+  const double VALID_LIMIT = 1.0e-12;  // FIXME: why not FLT_EPSILON? 20010916 mortene.
+  const SbMatrix & tmp = SoModelMatrixElement::get(state); 
+  this->obj2world = SbDPMatrix(tmp);
   if (this->isFlagSet(EXTRA_MATRIX)) {
     this->obj2world.multLeft(this->extramatrix);
   }
   this->objectspacevalid = FALSE;
-  float det = this->obj2world.det4();
+  double det = this->obj2world.det4();
   if (SbAbs(det) > VALID_LIMIT) {
     this->world2obj = this->obj2world.inverse();
     this->objectspacevalid = TRUE;
