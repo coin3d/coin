@@ -119,10 +119,16 @@ SoVertexArrayIndexer::close(void)
   this->indexarray.fit();
   this->countarray.fit();
   this->ciarray.truncate(0);
-  const int32_t * ptr = this->indexarray.getArrayPtr();
-  for (int i = 0; i < this->countarray.getLength(); i++) {
-    this->ciarray.append(ptr);
-    ptr += (int) this->countarray[i];
+
+  if (this->target != GL_TRIANGLES && this->target != GL_QUADS) {
+    const int32_t * ptr = this->indexarray.getArrayPtr();
+    for (int i = 0; i < this->countarray.getLength(); i++) {
+      this->ciarray.append(ptr);
+      ptr += (int) this->countarray[i];
+    }
+  }
+  if (this->target == GL_TRIANGLES) {
+    this->sort_triangles();
   }
   if (this->next) this->next->close();
 }
@@ -130,6 +136,10 @@ SoVertexArrayIndexer::close(void)
 void 
 SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
 {
+  SbBool ismac = FALSE;
+#ifdef __APPLE__
+  ismac = TRUE;
+#endif
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
@@ -145,6 +155,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
                                this->target, 
                                this->indexarray.getLength(), 
                                GL_UNSIGNED_INT, NULL);
+      cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {
       cc_glglue_glDrawElements(glue,
@@ -155,7 +166,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     }
     break;
   default:
-    if (cc_glglue_has_multidraw_vertex_arrays(glue)) {
+    if (cc_glglue_has_multidraw_vertex_arrays(glue) && !ismac) {
       cc_glglue_glMultiDrawElements(glue,
                                     this->target,
                                     (GLsizei*) this->countarray.getArrayPtr(),
@@ -195,4 +206,67 @@ SoVertexArrayIndexer::getNext(void)
     this->next = new SoVertexArrayIndexer;
   }
   return this->next;
+}
+
+// sort an array of three integers
+static void sort3(int32_t * arr)
+{
+  // simple bubble-sort
+  int32_t tmp;
+  if (arr[1] < arr[0]) {
+    tmp = arr[0];
+    arr[0] = arr[1];
+    arr[1] = tmp;
+  }
+  if (arr[2] < arr[1]) {
+    tmp = arr[1];
+    arr[1] = arr[2];
+    arr[2] = tmp;
+  }
+  if (arr[1] < arr[0]) {
+    tmp = arr[0];
+    arr[0] = arr[1];
+    arr[1] = tmp;
+  }
+}
+
+// qsort callback used for sorting triangles based on vertex indices
+extern "C" {
+static int
+compare_triangle(const void * v0, const void * v1)
+{
+  int i;
+  int32_t * t0 = (int*) v0;
+  int32_t * t1 = (int*) v1;
+
+  int32_t ti0[3];
+  int32_t ti1[3];
+  for (i = 0; i < 3; i++) {
+    ti0[i] = t0[i];
+    ti1[i] = t1[i];
+  }
+  sort3(ti0);
+  sort3(ti1);
+
+  for (i = 0; i < 3; i++) {
+    int32_t diff = ti0[i] - ti1[i];
+    if (diff != 0) return diff;
+  }
+  return 0;
+}
+}
+
+void 
+SoVertexArrayIndexer::sort_triangles(void)
+{
+  // sort triangles based on vertex indices to get more hits in the
+  // GPU vertex cache. Not the optimal solution, but should work
+  // pretty well. Example: bunny.iv (~70000 triangles) went from 238
+  // fps with no sorting to 380 fps with sorting.
+  if (this->indexarray.getLength()) {
+    qsort((void*) this->indexarray.getArrayPtr(),
+          this->indexarray.getLength() / 3,
+          sizeof(int32_t) * 3,
+          compare_triangle);
+  }
 }

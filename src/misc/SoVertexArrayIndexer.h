@@ -59,7 +59,8 @@ public:
   int getNumVertices(void);
 
 private:
-  
+
+  void sort_triangles(void);
   SoVertexArrayIndexer * getNext(void);
   
   GLenum target;
