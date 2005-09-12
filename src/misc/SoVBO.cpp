@@ -44,6 +44,7 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
     data(NULL),
     datasize(0),
     dataid(0),
+    didalloc(FALSE),
     vbohash(5)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
@@ -57,6 +58,40 @@ SoVBO::~SoVBO()
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
   this->vbohash.apply(vbo_schedule, NULL);
+  if (this->didalloc) {
+    char * ptr = (char*) this->data;
+    delete[] ptr;
+  }
+}
+
+/*!
+  Used to allocate buffer data. The user is responsible for filling in
+  the correct type of data in the buffer before the buffer is used.
+
+  \sa setBufferData()
+*/
+void *
+SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
+{
+  // schedule delete for all allocated GL resources
+  this->vbohash.apply(vbo_schedule, NULL);
+  // clear hash table
+  this->vbohash.clear();
+
+  if (this->didalloc && this->datasize == size) {
+    return (void*)this->data;
+  }
+  if (this->didalloc) {
+    char * ptr = (char*) this->data;
+    delete[] ptr;
+  }
+
+  char * ptr = new char[size];
+  this->didalloc = TRUE;
+  this->data = (const GLvoid*) ptr;
+  this->datasize = size;
+  this->dataid = dataid;
+  return (void*) this->data;
 }
 
 /*!
@@ -71,10 +106,17 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
   this->vbohash.apply(vbo_schedule, NULL);
   // clear hash table
   this->vbohash.clear();
+
+  // clean up old buffer (if any)
+  if (this->didalloc) {
+    char * ptr = (char*) this->data;
+    delete[] ptr;
+  }
   
   this->data = data;
   this->datasize = size;
   this->dataid = dataid;
+  this->didalloc = FALSE;
 }
 
 /*!
