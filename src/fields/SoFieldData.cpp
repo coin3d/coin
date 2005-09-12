@@ -160,10 +160,9 @@ SoFieldData::SoFieldData(const SoFieldData * fd)
   Constructor. Takes an indication on the number of fields which
   should be stored, to make sure the memory handling is efficient.
  */
-SoFieldData::SoFieldData(int /* numfields */)
+SoFieldData::SoFieldData(int numfields)
+  : fields(numfields)
 {
-  // Ignore the argument, I don't think there's any point in doing
-  // optimization here. 19991231 mortene.
 }
 
 /*!
