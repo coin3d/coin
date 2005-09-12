@@ -100,6 +100,8 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
 
 /*!
   \enum SoVertexProperty::Binding
@@ -191,13 +193,31 @@
 
 class SoVertexPropertyP {
  public:
-  SoVertexPropertyP(SoVertexProperty * master) : master(master) {
+  SoVertexPropertyP(void) 
+    : vertexvbo(NULL),
+      normalvbo(NULL),
+      texcoordvbo(NULL),
+      colorvbo(NULL)
+  {
     this->checktransparent = FALSE;
     this->transparent = FALSE;
   }
+  ~SoVertexPropertyP() {
+    delete this->vertexvbo;
+    delete this->normalvbo;
+    delete this->texcoordvbo;
+    delete this->colorvbo;
+  }
+  
   SoVertexProperty * master;
   SbBool transparent;
   SbBool checktransparent;
+
+  SoVBO * vertexvbo;
+  SoVBO * normalvbo;
+  SoVBO * texcoordvbo;
+  SoVBO * colorvbo;
+
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -209,7 +229,7 @@ SO_NODE_SOURCE(SoVertexProperty);
 */
 SoVertexProperty::SoVertexProperty(void)
 {
-  PRIVATE(this) = new SoVertexPropertyP(this);
+  PRIVATE(this) = new SoVertexPropertyP;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
@@ -332,34 +352,132 @@ SoVertexProperty::doAction(SoAction *action)
       }
     }
   }
-
-  if (this->vertex.getNum() > 0)
-    SoCoordinateElement::set3(state, this, this->vertex.getNum(),
+  int minlimit = SoVBO::getVertexCountMinLimit();
+  int maxlimit = SoVBO::getVertexCountMaxLimit();
+  
+  int num = this->vertex.getNum();
+  if (num > 0) {    
+    SbBool setvbo = FALSE;
+    if (glrender) {
+      if ((num >= minlimit) && (num <= maxlimit)) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->vertexvbo == NULL) {
+          PRIVATE(this)->vertexvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+          dirty =  TRUE;
+        }
+        else if (PRIVATE(this)->vertexvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          PRIVATE(this)->vertexvbo->setBufferData(this->vertex.getValues(0),
+                                                  num*sizeof(SbVec3f),
+                                                  this->getNodeId());
+        }
+      }
+      else if (PRIVATE(this)->vertexvbo && PRIVATE(this)->vertexvbo->getBufferDataId()) {
+        // clear buffers to deallocate VBO memory
+        PRIVATE(this)->vertexvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setVertexVBO(state, setvbo ? PRIVATE(this)->vertexvbo : NULL);
+    }
+    SoCoordinateElement::set3(state, this, num,
                               this->vertex.getValues(0));
-
-  if (this->texCoord3.getNum() > 0) {
+  }
+  num = this->texCoord3.getNum();
+  if (num > 0) {
     if (glrender) {
       if (SoGLTexture3EnabledElement::get(state)) {
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
       }
-      SoTextureCoordinateElement::set3(state, this, this->texCoord3.getNum(),
-                                       this->texCoord3.getValues(0));
+      SbBool setvbo = FALSE;
+      if ((num >= minlimit) && (num <= maxlimit)) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->texcoordvbo == NULL) {
+          PRIVATE(this)->texcoordvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+          dirty =  TRUE;
+        }
+        else if (PRIVATE(this)->texcoordvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          PRIVATE(this)->texcoordvbo->setBufferData(this->texCoord3.getValues(0),
+                                                    num*sizeof(SbVec3f),
+                                                    this->getNodeId());
+        }
+      }
+      else if (PRIVATE(this)->texcoordvbo && PRIVATE(this)->texcoordvbo->getBufferDataId()) {
+        // clear buffers to deallocate VBO memory
+        PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo : NULL);
     }
+    SoTextureCoordinateElement::set3(state, this, num,
+                                     this->texCoord3.getValues(0));
   }
   else {
-    if (this->texCoord.getNum() > 0) {
+    num = this->texCoord.getNum();
+    if (num > 0) {
       if (glrender) {
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
+        SbBool setvbo = FALSE;
+        if ((num >= minlimit) && (num <= maxlimit)) {
+          SbBool dirty = FALSE;
+          setvbo = TRUE;
+          if (PRIVATE(this)->texcoordvbo == NULL) {
+            PRIVATE(this)->texcoordvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+            dirty =  TRUE;
+          }
+          else if (PRIVATE(this)->texcoordvbo->getBufferDataId() != this->getNodeId()) {
+            dirty = TRUE;
+          }
+          if (dirty) {
+            PRIVATE(this)->texcoordvbo->setBufferData(this->texCoord.getValues(0),
+                                                      num*sizeof(SbVec2f),
+                                                    this->getNodeId());
+          }
+        }
+        else if (PRIVATE(this)->texcoordvbo && PRIVATE(this)->texcoordvbo->getBufferDataId()) {
+          // clear buffers to deallocate VBO memory
+          PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
+        }
+        SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo : NULL);
       }
-      SoTextureCoordinateElement::set2(state, this, this->texCoord.getNum(),
+      SoTextureCoordinateElement::set2(state, this, num,
                                        this->texCoord.getValues(0));
     }
   }
-
-  if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_VECTOR)) {
-    SoNormalElement::set(state, this, this->normal.getNum(),
+  
+  num = this->normal.getNum();
+  if (num > 0 && !TEST_OVERRIDE(NORMAL_VECTOR)) {
+    SbBool setvbo = FALSE;
+    if (glrender) {
+      if ((num >= minlimit) && (num <= maxlimit)) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->normalvbo == NULL) {
+          PRIVATE(this)->normalvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+          dirty =  TRUE;
+        }
+        else if (PRIVATE(this)->normalvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          PRIVATE(this)->normalvbo->setBufferData(this->normal.getValues(0),
+                                                  num*sizeof(SbVec3f),
+                                                  this->getNodeId());
+        }
+      }
+      else if (PRIVATE(this)->normalvbo && PRIVATE(this)->normalvbo->getBufferDataId()) {
+        // clear buffers to deallocate VBO memory
+        PRIVATE(this)->normalvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setNormalVBO(state, setvbo ? PRIVATE(this)->normalvbo : NULL);
+    }
+    SoNormalElement::set(state, this, num,
                          this->normal.getValues(0));
     if (this->isOverride()) {
       SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
