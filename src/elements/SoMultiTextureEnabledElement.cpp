@@ -174,106 +174,6 @@ SoMultiTextureEnabledElement::push(SoState * state)
   }
 }
 
-
-/*!
-  Returns the mode of all units. Also returns the last enabled unit
-  in \a lastenabled.
-
-  \since Coin 2.4
-*/
-const SoMultiTextureEnabledElement::Mode * 
-SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
-{
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
-
-  int i = MAX_UNITS-1;
-  while (i >= 0) {
-    if (PRIVATE(elem)->mode[i] != DISABLED) break;
-    i--;
-  }
-  if (i >= 0) {
-    lastenabled = i;
-    return PRIVATE(elem)->mode;
-  }
-  return NULL;
-}
-
-/*!
-  Enable RECTANGLE texture mode.
-
-  \since Coin 2.4
-*/
-void 
-SoMultiTextureEnabledElement::enableRectangle(SoState * state, 
-                                              SoNode * node, 
-                                              const int unit)
-{
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getElement(classStackIndex);
-  // FIXME: in Coin-3, make sure the setElt() method is changed to
-  // setElt(const int32_t mode). pederb, 2005-01-31
-  elem->setElt(unit, (SbBool) RECTANGLE);
-}
-
-/*!
-  Enable CUBEMAP texture mode.
-
-  \since Coin 2.4
-*/
-void 
-SoMultiTextureEnabledElement::enableCubeMap(SoState * state, 
-                                            SoNode * node, 
-                                            const int unit)
-{
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getElement(classStackIndex);
-  
-  // FIXME: in Coin-3, make sure the setElt() method is changed to
-  // setElt(const int32_t mode). pederb, 2005-01-31
-  elem->setElt(unit, (SbBool) CUBEMAP);
-}
-
-/*!
-
-  Disable all active texture units. Convenient when all textures needs
-  to be disabled before rendering.
-  
-  \since Coin 2.4
-*/
-void 
-SoMultiTextureEnabledElement::disableAll(SoState * state)
-{
-  int lastenabled;
-  const SbBool * enabled = getEnabledUnits(state, lastenabled);
-  if (enabled) {
-    SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-      state->getElement(classStackIndex);
-    
-    for (int i = 1; i <= lastenabled; i++) {
-      if (enabled[i]) {
-        elem->setElt(i, FALSE);
-      }
-    }
-  }
-}
-
-SoMultiTextureEnabledElement::Mode 
-SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
-{
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
-
-  return elem->getMode(unit);
-}
-
-SoMultiTextureEnabledElement::Mode 
-SoMultiTextureEnabledElement::getMode(const int unit) const
-{
-  assert(unit >= 0 && unit < MAX_UNITS);
-  return PRIVATE(this)->mode[unit];
-}
-
 SbBool
 SoMultiTextureEnabledElement::matches(const SoElement * elem) const
 {
@@ -298,6 +198,112 @@ SoMultiTextureEnabledElement::copyMatchInfo(void) const
   return elem;
 }
 
+/*!
+  Returns the mode of all units. Also returns the last enabled unit
+  in \a lastenabled.
+
+  \since Coin 2.5
+*/
+const SoMultiTextureEnabledElement::Mode * 
+SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    SoElement::getConstElement(state, classStackIndex);
+
+  int i = MAX_UNITS-1;
+  while (i >= 0) {
+    if (PRIVATE(elem)->mode[i] != DISABLED) break;
+    i--;
+  }
+  if (i >= 0) {
+    lastenabled = i;
+    return PRIVATE(elem)->mode;
+  }
+  return NULL;
+}
+
+/*!
+  Enable RECTANGLE texture mode.
+
+  \since Coin 2.5
+*/
+void 
+SoMultiTextureEnabledElement::enableRectangle(SoState * state, 
+                                              SoNode * node, 
+                                              const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    state->getElement(classStackIndex);
+  // FIXME: in Coin-3, make sure the setElt() method is changed to
+  // setElt(const int32_t mode). pederb, 2005-01-31
+  elem->setElt(unit, (SbBool) RECTANGLE);
+}
+
+/*!
+  Enable CUBEMAP texture mode.
+
+  \since Coin 2.5
+*/
+void 
+SoMultiTextureEnabledElement::enableCubeMap(SoState * state, 
+                                            SoNode * node, 
+                                            const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    state->getElement(classStackIndex);
+  
+  // FIXME: in Coin-3, make sure the setElt() method is changed to
+  // setElt(const int32_t mode). pederb, 2005-01-31
+  elem->setElt(unit, (SbBool) CUBEMAP);
+}
+
+/*!
+
+  Disable all active texture units. Convenient when all textures needs
+  to be disabled before rendering.
+  
+  \since Coin 2.5
+*/
+void 
+SoMultiTextureEnabledElement::disableAll(SoState * state)
+{
+  int lastenabled;
+  const SbBool * enabled = getEnabledUnits(state, lastenabled);
+  if (enabled) {
+    SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+      state->getElement(classStackIndex);
+    
+    for (int i = 1; i <= lastenabled; i++) {
+      if (enabled[i]) {
+        elem->setElt(i, FALSE);
+      }
+    }
+  }
+}
+
+/*!
+  Returns the mode for a texture unit.
+
+  \since Coin 2.5
+*/
+SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    SoElement::getConstElement(state, classStackIndex);
+
+  return elem->getMode(unit);
+}
+
+//
+// returns the texture mode for a unit.
+//
+SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::getMode(const int unit) const
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  return PRIVATE(this)->mode[unit];
+}
 
 #undef MAX_UNITS
 #undef PRIVATE
