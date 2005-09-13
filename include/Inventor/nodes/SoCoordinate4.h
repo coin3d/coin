@@ -27,6 +27,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec4f.h>
 
+class SoCoordinate4P;
+
 class COIN_DLL_API SoCoordinate4 : public SoNode {
   typedef SoNode inherited;
 
@@ -47,6 +49,9 @@ public:
 
 protected:
   virtual ~SoCoordinate4();
+
+ private:
+  SoCoordinate4P * pimpl;
 };
 
 #endif // !COIN_SOCOORDINATE4_H

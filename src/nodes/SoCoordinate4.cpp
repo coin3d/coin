@@ -58,6 +58,8 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
 
 /*!
   \var SoMFVec4f SoCoordinate4::point
@@ -66,6 +68,14 @@
   coordinate plus normalization value).
 */
 
+class SoCoordinate4P {
+ public:
+  SoCoordinate4P() : vbo(NULL) { }
+  ~SoCoordinate4P() { delete this->vbo; }
+  SoVBO * vbo;
+};
+
+#define PRIVATE(obj) obj->pimpl
 
 // *************************************************************************
 
@@ -76,6 +86,7 @@ SO_NODE_SOURCE(SoCoordinate4);
 */
 SoCoordinate4::SoCoordinate4(void)
 {
+  PRIVATE(this) = new SoCoordinate4P;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCoordinate4);
 
   SO_NODE_ADD_FIELD(point, (SbVec4f(0.0f, 0.0f, 0.0f, 1.0f)));
@@ -86,6 +97,8 @@ SoCoordinate4::SoCoordinate4(void)
 */
 SoCoordinate4::~SoCoordinate4()
 {
+  delete PRIVATE(this)->vbo;
+  delete PRIVATE(this);
 }
 
 // Doc from superclass.
@@ -121,6 +134,34 @@ void
 SoCoordinate4::GLRender(SoGLRenderAction * action)
 {
   SoCoordinate4::doAction(action);
+  const int num = this->point.getNum();
+  SbBool setvbo = FALSE;
+  SoBase::staticDataLock();
+  if (num >= SoVBO::getVertexCountMinLimit() &&
+      num <= SoVBO::getVertexCountMaxLimit()) {
+    SbBool dirty = FALSE;
+    setvbo = TRUE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->point.getValues(0),
+                                        num*sizeof(SbVec4f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setVertexVBO(action->getState(), PRIVATE(this)->vbo);
+  }
 }
 
 // Doc from superclass.
@@ -143,3 +184,5 @@ SoCoordinate4::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoCoordinate4::doAction(action);
 }
+
+#undef PRIVATE
