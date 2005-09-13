@@ -199,6 +199,8 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/lists/SbList.h>
@@ -209,6 +211,7 @@
 #include <Inventor/C/threads/threadsutilp.h>
 
 #include "../misc/SoVertexArrayIndexer.h"
+#include "../misc/SoVBO.h"
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
@@ -220,6 +223,8 @@
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
+#define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
+#define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()
 
 #ifndef DOXYGEN_SKIP_THIS
 class SoIndexedFaceSetP {
@@ -236,17 +241,17 @@ public:
 
 #ifdef COIN_THREADSAFE
   SbRWMutex convexmutex;
-  SbMutex vamutex;
+  // SbMutex vamutex;
 #endif // COIN_THREADSAFE
 
   void lockVAIndexer(void) {
 #ifdef COIN_THREADSAFE
-    this->vamutex.lock();
+    //    this->vamutex.lock();
 #endif // COIN_THREADSAFE
   }
   void unlockVAIndexer(void) {
 #ifdef COIN_THREADSAFE
-    this->vamutex.unlock();
+    //    this->vamutex.unlock();
 #endif // COIN_THREADSAFE
   }
 
@@ -397,12 +402,12 @@ SoIndexedFaceSet::notify(SoNotList * list)
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) {
     THIS->concavestatus = STATUS_UNKNOWN;
-    THIS->lockVAIndexer();
+    LOCK_VAINDEXER(this);
     if (THIS->vaindexer) {
       delete THIS->vaindexer;
       THIS->vaindexer = NULL;
     }
-    THIS->unlockVAIndexer();
+    UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);
 }
@@ -519,20 +524,41 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
           cc_glglue_has_vertex_array(sogl_glue_instance(state)));
 #endif
 
-  if ((numindices > 300) &&
-      !convexcacheused && !normalCacheUsed &&
-      ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
-      (mbind == OVERALL) && // FIXME: add support for fetching the packed array from SoGLLazyElement
-      // ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
-      ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
-      cc_glglue_has_vertex_array(sogl_glue_instance(state))) {
-    
+  SoGLLazyElement * lelem = NULL;
+  SbBool dova = 
+    (numindices > 50) &&
+    !convexcacheused && !normalCacheUsed &&
+    ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
+    ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
+    ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
+    cc_glglue_has_vertex_array(sogl_glue_instance(state));
+
+  const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+  SoVBO * colorvbo = NULL;
+
+  if (dova && (mbind != OVERALL)) {
+    dova = FALSE;
+    if ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL))) {
+      lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+      colorvbo = vboelem->getColorVBO();
+      if (colorvbo) dova = TRUE;
+      else {
+        // we might be able to do VA-rendering, but need to check the
+        // diffuse color type first.
+        if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+          dova = TRUE;
+        }
+      }
+    }
+  }
+  if (dova) {
+    SbBool dovbo = TRUE;
+    const GLvoid * dataptr = NULL;
+    const uint32_t contextid = action->getCacheContext();
     const cc_glglue * glue = sogl_glue_instance(state);
-    
-    cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
-                              coords->is3D() ? ((const GLvoid *)coords->getArrayPtr3()) : ((const GLvoid *)coords->getArrayPtr4()));
-    cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-    
+    SoVBO * vbo = vboelem->getVertexVBO();
+    if (!vbo) dovbo = FALSE;
+
     const SoTextureCoordinateElement * telem = NULL;
     const SoMultiTextureCoordinateElement * mtelem = NULL;
     const SbBool * enabledunits = NULL;
@@ -546,13 +572,25 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
       }
     }
 
-#if 0 // FIXME: support colors
-    if (color) {
-      cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0,
-                               (GLvoid*) this->rgbalist.getArrayPtr());
+    if (mbind != OVERALL) {
+      dataptr = NULL;
+      assert(lelem != NULL);
+      if (colorvbo) {
+        lelem->updateColorVBO(colorvbo);
+        colorvbo->bindBuffer(contextid);
+      }
+      else {
+        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        dataptr = (const GLvoid*) lelem->getDiffusePointer();
+      }
+      if (colorvbo) {
+        cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0, dataptr);
+      }
+      else {
+        cc_glglue_glColorPointer(glue, 3, GL_FLOAT, 0, dataptr);
+      }
       cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
     }
-#endif
     
     if (doTextures) {
       if (telem->getNum()) {
@@ -564,10 +602,17 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
         case 3: tptr = (const GLvoid*) telem->getArrayPtr3(); break;
         case 4: tptr = (const GLvoid*) telem->getArrayPtr4(); break;
         }
+        vbo = dovbo ? vboelem->getTexCoordVBO(0) : NULL;
+        if (vbo) {
+          vbo->bindBuffer(contextid);
+          tptr = NULL;
+        }
+        else {
+          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        }
         cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
         cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       }
-
       for (int i = 1; i <= lastenabled; i++) {
         if (enabledunits[i] && mtelem->getNum(i)) {
           int dim = mtelem->getDimension(i);
@@ -579,18 +624,48 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
           case 4: tptr = (const GLvoid*) mtelem->getArrayPtr4(i); break;
           }
           cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+          vbo = dovbo ? vboelem->getTexCoordVBO(i) : NULL;
+          if (vbo) {
+            vbo->bindBuffer(contextid);
+            tptr = NULL;
+          }
+          else {
+            cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+          }
           cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
           cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
         }
       }
     }
     if (nbind != OVERALL) {
-      cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
-                                (GLvoid*) normals);
+      vbo = dovbo ? vboelem->getNormalVBO() : NULL;
+      dataptr = NULL;
+      if (vbo) {
+        vbo->bindBuffer(contextid);
+      }
+      else {
+        dataptr = (const GLvoid*) normals;
+        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      }
+      cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, dataptr);
       cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
     }
+    vbo = vboelem->getVertexVBO();
+    dataptr = NULL;
+    if (vbo) {
+      vbo->bindBuffer(contextid);
+    }
+    else {
+      dataptr = coords->is3D() ? 
+        ((const GLvoid *)coords->getArrayPtr3()) : 
+        ((const GLvoid *)coords->getArrayPtr4());
+    }
+    cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
+                              dataptr);
+    cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-    THIS->lockVAIndexer();
+
+    LOCK_VAINDEXER(this);
     if (THIS->vaindexer == NULL) {
 
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -633,9 +708,16 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     if (THIS->vaindexer) {
       // don't cache when rendering with vertex arrays
       SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-      THIS->vaindexer->render(glue, FALSE, SoGLCacheContextElement::get(state));
+      THIS->vaindexer->render(glue, dovbo, contextid);
+      if (mbind != OVERALL) {
+        assert(lelem != NULL);
+        lelem->reset(state, SoLazyElement::DIFFUSE_MASK);
+      }
     }
-    THIS->unlockVAIndexer();
+    if (dovbo) {
+      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+    }
+    UNLOCK_VAINDEXER(this);
     
     // disable client states again
     cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
@@ -1151,3 +1233,5 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
 #undef STATUS_UNKNOWN
 #undef STATUS_CONVEX
 #undef STATUS_CONCAVE
+#undef LOCK_VAINDEXER
+#undef UNLOCK_VAINDEXER
