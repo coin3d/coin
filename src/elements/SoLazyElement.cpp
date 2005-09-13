@@ -61,6 +61,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/misc/SoState.h>
@@ -208,6 +209,9 @@ void
 SoLazyElement::setDiffuse(SoState * state, SoNode * node, int32_t numcolors,
                           const SbColor * colors, SoColorPacker * packer)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setColorVBO(state, NULL);
+  }
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (numcolors && (elem->coinstate.diffusenodeid != 
                     get_diffuse_node_id(node, numcolors, colors))) {
@@ -226,6 +230,9 @@ void
 SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
                                const float * transparency, SoColorPacker * packer)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setColorVBO(state, NULL);
+  }
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (numvalues && (elem->coinstate.transpnodeid != 
                     get_transp_node_id(node, numvalues, transparency))) {
@@ -249,6 +256,9 @@ SoLazyElement::setPacked(SoState * state, SoNode * node,
                          int32_t numcolors, const uint32_t * colors,
                          const SbBool packedtransparency)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setColorVBO(state, NULL);
+  }
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (numcolors && elem->coinstate.diffusenodeid != node->getNodeId()) {
     elem = getWInstance(state);
@@ -678,6 +688,9 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
                             const float shininess,
                             const SbBool istransparent)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setColorVBO(state, NULL);
+  }
   SoLazyElement * elem = SoLazyElement::getInstance(state);
 
   uint32_t eltbitmask = 0;

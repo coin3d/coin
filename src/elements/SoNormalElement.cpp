@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <assert.h>
 
 /*!
@@ -71,6 +72,9 @@ SoNormalElement::set(SoState * const state,
                      const SbVec3f * const normals,
                      const SbBool unitLength)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setNormalVBO(state, NULL);
+  }
   SoNormalElement *elem = (SoNormalElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (elem) {

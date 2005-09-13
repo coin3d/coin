@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
@@ -120,6 +121,9 @@ SoCoordinateElement::set3(SoState * const state,
                           const int32_t numCoords,
                           const SbVec3f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setVertexVBO(state, NULL);
+  }
   SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
   if (elem) {
@@ -138,6 +142,9 @@ SoCoordinateElement::set4(SoState * const state,
                           const int32_t numCoords,
                           const SbVec4f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setVertexVBO(state, NULL);
+  }
   SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
   if (elem) {

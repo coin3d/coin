@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
@@ -145,6 +146,9 @@ void
 SoTextureCoordinateElement::setDefault(SoState * const state,
                                        SoNode * const node)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
+  }
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {
@@ -161,6 +165,9 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
                                         SoTextureCoordinateFunctionCB * const func,
                                         void * const userdata)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
+  }
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
    SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {
@@ -182,6 +189,9 @@ SoTextureCoordinateElement::set2(SoState * const state,
                                  const int32_t numCoords,
                                  const SbVec2f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
+  }
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {
@@ -207,6 +217,9 @@ SoTextureCoordinateElement::set3(SoState * const state,
                                  const int32_t numCoords,
                                  const SbVec3f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
+  }
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {
@@ -227,6 +240,9 @@ SoTextureCoordinateElement::set4(SoState * const state,
                                  const int32_t numCoords,
                                  const SbVec4f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
+  }
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {

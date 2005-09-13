@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
@@ -86,6 +87,9 @@ SoMultiTextureCoordinateElement::setDefault(SoState * const state,
                                             SoNode * const node,
                                             const int unit)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
+  }
   SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
     SoElement::getElement(state, classStackIndex);
   
@@ -105,6 +109,10 @@ SoMultiTextureCoordinateElement::setFunction(SoState * const state,
                                              SoTextureCoordinateFunctionCB * const func,
                                              void * const userdata)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
+  }
+
   SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
    SoElement::getElement(state, classStackIndex);
 
@@ -130,6 +138,9 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
                                       const int32_t numCoords,
                                       const SbVec2f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
+  }
   SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
     SoElement::getElement(state, classStackIndex);
 
@@ -155,6 +166,9 @@ SoMultiTextureCoordinateElement::set3(SoState * const state,
                                       const int32_t numCoords,
                                       const SbVec3f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
+  }
   SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
     SoElement::getElement(state, classStackIndex);
 
@@ -179,6 +193,9 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
                                       const int32_t numCoords,
                                       const SbVec4f * const coords)
 {
+  if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+    SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
+  }
   SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
     SoElement::getElement(state, classStackIndex);
 
