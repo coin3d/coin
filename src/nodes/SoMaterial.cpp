@@ -131,6 +131,8 @@
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
@@ -223,9 +225,13 @@
 
 class SoMaterialP {
 public:
+  SoMaterialP() : vbo(NULL) { }
+  ~SoMaterialP() { delete this->vbo; }
+  
   int materialtype;
   int transparencyflag;
   SoColorPacker colorpacker;
+  SoVBO * vbo;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -407,10 +413,11 @@ SoMaterial::doAction(SoAction * action)
     }
 #endif // COIN_DEBUG
 
+    const int numtransp = this->transparency.getNum();
     SoLazyElement::setMaterials(state, this, bitmask, 
                                 &THIS->colorpacker,
                                 diffuseptr, numdiffuse, 
-                                this->transparency.getValues(0), this->transparency.getNum(),
+                                this->transparency.getValues(0), numtransp,
                                 bitmask & SoLazyElement::AMBIENT_MASK ? 
                                 this->ambientColor[0] : dummycolor,
                                 bitmask & SoLazyElement::EMISSIVE_MASK ? 
@@ -420,6 +427,26 @@ SoMaterial::doAction(SoAction * action)
                                 bitmask & SoLazyElement::SHININESS_MASK ?
                                 SbClamp(this->shininess[0], 0.0f, 1.0f) : dummyval,
                                 istransparent);
+    if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+      SoBase::staticDataLock();
+      SbBool setvbo = FALSE;
+      if ((numdiffuse >= SoVBO::getVertexCountMinLimit()) &&
+          (numdiffuse <= SoVBO::getVertexCountMaxLimit())) {
+        setvbo = TRUE;
+        if (THIS->vbo == NULL) {
+          THIS->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+        }
+      }
+      else if (THIS->vbo) {
+        THIS->vbo->setBufferData(NULL, 0, 0);
+      }
+      // don't fill in any data in the VBO. Data will be filled in
+      // using the ColorPacker right before the VBO is used
+      SoBase::staticDataUnlock();
+      if (setvbo) {
+        SoGLVBOElement::setColorVBO(state, THIS->vbo);
+      }
+    }
   }
 }
 
