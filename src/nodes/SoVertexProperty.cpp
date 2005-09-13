@@ -357,9 +357,12 @@ SoVertexProperty::doAction(SoAction *action)
 
   int minlimit = SoVBO::getVertexCountMinLimit();
   int maxlimit = SoVBO::getVertexCountMaxLimit();
-  
+
   int num = this->vertex.getNum();
   if (num > 0) {    
+    SoCoordinateElement::set3(state, this, num,
+                              this->vertex.getValues(0));
+
     SbBool setvbo = FALSE;
     if (glrender) {
       if ((num >= minlimit) && (num <= maxlimit)) {
@@ -386,11 +389,11 @@ SoVertexProperty::doAction(SoAction *action)
         SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vertexvbo);
       }
     }
-    SoCoordinateElement::set3(state, this, num,
-                              this->vertex.getValues(0));
   }
   num = this->texCoord3.getNum();
   if (num > 0) {
+    SoTextureCoordinateElement::set3(state, this, num,
+                                     this->texCoord3.getValues(0));
     if (glrender) {
       if (SoGLTexture3EnabledElement::get(state)) {
         SoGLTextureCoordinateElement::setTexGen(state,
@@ -421,12 +424,13 @@ SoVertexProperty::doAction(SoAction *action)
         SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
       }
     }
-    SoTextureCoordinateElement::set3(state, this, num,
-                                     this->texCoord3.getValues(0));
   }
   else {
     num = this->texCoord.getNum();
     if (num > 0) {
+      SoTextureCoordinateElement::set2(state, this, num,
+                                       this->texCoord.getValues(0));
+
       if (glrender) {
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
@@ -455,13 +459,17 @@ SoVertexProperty::doAction(SoAction *action)
           SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
         }
       }
-      SoTextureCoordinateElement::set2(state, this, num,
-                                       this->texCoord.getValues(0));
     }
   }
   
   num = this->normal.getNum();
   if (num > 0 && !TEST_OVERRIDE(NORMAL_VECTOR)) {
+    SoNormalElement::set(state, this, num,
+                         this->normal.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
+    }
+
     SbBool setvbo = FALSE;
     if (glrender) {
       if ((num >= minlimit) && (num <= maxlimit)) {
@@ -487,11 +495,6 @@ SoVertexProperty::doAction(SoAction *action)
       if (setvbo) {
         SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->normalvbo);
       }
-    }
-    SoNormalElement::set(state, this, num,
-                         this->normal.getValues(0));
-    if (this->isOverride()) {
-      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
     }
   }
   if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_BINDING)) {
