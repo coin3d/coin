@@ -27,6 +27,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
+class SoTextureCoordinate3P;
+
 class COIN_DLL_API SoTextureCoordinate3 : public SoNode {
   typedef SoNode inherited;
 
@@ -45,6 +47,9 @@ public:
 
 protected:
   virtual ~SoTextureCoordinate3();
+
+ private:
+  SoTextureCoordinate3P * pimpl;
 };
 
 #endif // !COIN_SOTEXTURECOORDINATE3_H

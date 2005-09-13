@@ -63,8 +63,10 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/C/glue/gl.h>
+#include "../misc/SoVBO.h"
 
 // *************************************************************************
 
@@ -83,6 +85,15 @@
 
 // *************************************************************************
 
+class SoTextureCoordinate3P {
+ public:
+  SoTextureCoordinate3P() : vbo(NULL) { }
+  ~SoTextureCoordinate3P() { delete this->vbo; }
+  SoVBO * vbo;
+};
+
+#define PRIVATE(obj) obj->pimpl
+
 SO_NODE_SOURCE(SoTextureCoordinate3);
 
 /*!
@@ -90,6 +101,7 @@ SO_NODE_SOURCE(SoTextureCoordinate3);
 */
 SoTextureCoordinate3::SoTextureCoordinate3(void)
 {
+  PRIVATE(this) = new SoTextureCoordinate3P;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinate3);
   SO_NODE_ADD_FIELD(point, (NULL));
 }
@@ -99,6 +111,7 @@ SoTextureCoordinate3::SoTextureCoordinate3(void)
 */
 SoTextureCoordinate3::~SoTextureCoordinate3()
 {
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -152,6 +165,35 @@ SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
                                             this->point.getValues(0));
     }
   }
+
+  SoBase::staticDataLock();
+  const int num = this->point.getNum();
+  SbBool setvbo = FALSE;
+  if (num >= SoVBO::getVertexCountMinLimit() &&
+      num <= SoVBO::getVertexCountMaxLimit()) {
+    setvbo = TRUE;
+    SbBool dirty = FALSE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->point.getValues(0),
+                                        num*sizeof(SbVec3f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
+  }
 }
 
 // Documented in superclass.
@@ -167,3 +209,5 @@ SoTextureCoordinate3::pick(SoPickAction * action)
 {
   SoTextureCoordinate3::doAction((SoAction *)action);
 }
+
+#undef PRIVATE
