@@ -124,7 +124,7 @@ AC_SUBST([nop], [])
 frameworkdir=
 if $sim_ac_framework; then
   frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework 
-  includedir=$frameworkdir/Resources/pivy
+  includedir=$frameworkdir/Resources/include
 fi
 
 ivincludedir=$includedir
