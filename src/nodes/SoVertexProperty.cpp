@@ -352,6 +352,9 @@ SoVertexProperty::doAction(SoAction *action)
       }
     }
   }
+
+  if (glrender) SoBase::staticDataLock();
+
   int minlimit = SoVBO::getVertexCountMinLimit();
   int maxlimit = SoVBO::getVertexCountMaxLimit();
   
@@ -379,7 +382,9 @@ SoVertexProperty::doAction(SoAction *action)
         // clear buffers to deallocate VBO memory
         PRIVATE(this)->vertexvbo->setBufferData(NULL, 0, 0);
       }
-      SoGLVBOElement::setVertexVBO(state, setvbo ? PRIVATE(this)->vertexvbo : NULL);
+      if (setvbo) {
+        SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vertexvbo);
+      }
     }
     SoCoordinateElement::set3(state, this, num,
                               this->vertex.getValues(0));
@@ -412,7 +417,9 @@ SoVertexProperty::doAction(SoAction *action)
         // clear buffers to deallocate VBO memory
         PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
       }
-      SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo : NULL);
+      if (setvbo) {
+        SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
+      }
     }
     SoTextureCoordinateElement::set3(state, this, num,
                                      this->texCoord3.getValues(0));
@@ -444,7 +451,9 @@ SoVertexProperty::doAction(SoAction *action)
           // clear buffers to deallocate VBO memory
           PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
         }
-        SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo : NULL);
+        if (setvbo) {
+          SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
+        }
       }
       SoTextureCoordinateElement::set2(state, this, num,
                                        this->texCoord.getValues(0));
@@ -475,7 +484,9 @@ SoVertexProperty::doAction(SoAction *action)
         // clear buffers to deallocate VBO memory
         PRIVATE(this)->normalvbo->setBufferData(NULL, 0, 0);
       }
-      SoGLVBOElement::setNormalVBO(state, setvbo ? PRIVATE(this)->normalvbo : NULL);
+      if (setvbo) {
+        SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->normalvbo);
+      }
     }
     SoNormalElement::set(state, this, num,
                          this->normal.getValues(0));
@@ -491,16 +502,63 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
     }
   }
-  if (this->orderedRGBA.getNum() > 0 && 
+
+  num = this->orderedRGBA.getNum();
+  if (num > 0 && 
       !TEST_OVERRIDE(DIFFUSE_COLOR)) {
     
-    SoLazyElement::setPacked(state, this, this->orderedRGBA.getNum(),
+    SoLazyElement::setPacked(state, this, num,
                              this->orderedRGBA.getValues(0),
                              PRIVATE(this)->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
+    if (glrender) {
+      SbBool setvbo = FALSE;
+      if ((num >= SoVBO::getVertexCountMinLimit()) &&
+          (num <= SoVBO::getVertexCountMaxLimit())) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->colorvbo == NULL) {
+          PRIVATE(this)->colorvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+          dirty = TRUE;
+        }
+        else if (PRIVATE(this)->colorvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          if (coin_host_get_endianness() == COIN_HOST_IS_BIGENDIAN) {
+            PRIVATE(this)->colorvbo->setBufferData(this->orderedRGBA.getValues(0),
+                                                   num*sizeof(uint32_t),
+                                                   this->getNodeId());
+          }
+          else {
+            const uint32_t * src = this->orderedRGBA.getValues(0);
+            uint32_t * dst = (uint32_t*) 
+              PRIVATE(this)->colorvbo->allocBufferData(num*sizeof(uint32_t), 
+                                                       this->getNodeId());  
+            for (int i = 0; i < num; i++) {
+              uint32_t tmp = src[i];
+              dst[i] = 
+                (tmp << 24) |
+                ((tmp & 0xff00) << 8) |
+                ((tmp & 0xff0000) >> 8) |
+                (tmp >> 24);
+            }
+          }
+        }
+      }
+      else if (PRIVATE(this)->colorvbo) {
+        PRIVATE(this)->colorvbo->setBufferData(NULL, 0, 0);
+      }
+      if (setvbo) {
+        SoGLVBOElement::setColorVBO(state, PRIVATE(this)->colorvbo);
+      }
+    }
   }
+
+  if (glrender) SoBase::staticDataUnlock();
+
   if (this->orderedRGBA.getNum() && !TEST_OVERRIDE(MATERIAL_BINDING)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
