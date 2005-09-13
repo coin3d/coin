@@ -28,6 +28,7 @@
 
 class SoGLRenderCache;
 class SoGLLazyElementP;
+class SoVBO;
 
 class COIN_DLL_API SoGLLazyElement : public SoLazyElement {
   typedef SoLazyElement inherited;
@@ -127,6 +128,8 @@ public:
 
   static SbBool preCacheCall(SoState * state, SoGLLazyElement::GLState * prestate);
   static void postCacheCall(SoState * state, SoGLLazyElement::GLState * poststate);
+
+  void updateColorVBO(SoVBO * vbo);
 
 protected:
   virtual void lazyDidSet(uint32_t mask);

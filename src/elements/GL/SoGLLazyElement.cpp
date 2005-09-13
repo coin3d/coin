@@ -57,6 +57,8 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/C/tidbits.h>
+#include "../../misc/SoVBO.h"
 #include <coindefs.h> // COIN_OBSOLETED
 
 // *************************************************************************
@@ -1250,6 +1252,41 @@ SoGLLazyElement::lazyDidntSet(uint32_t mask)
     }
   }
   this->didntsetbitmask |= mask&(~this->didsetbitmask);
+}
+
+void 
+SoGLLazyElement::updateColorVBO(SoVBO * vbo)
+{
+  if (this->colorpacker) {
+    uint32_t maxid = this->colorpacker->getDiffuseId();
+    uint32_t tid = this->colorpacker->getTranspId();
+    if (tid > maxid) {
+      maxid = tid;
+    }
+    uint32_t vboid = vbo->getBufferDataId();
+    if (vboid != maxid) {
+      const int n = this->coinstate.numdiffuse;
+      // need to update the VBO
+      const uint32_t * src = this->colorpacker->getPackedColors();
+      if (coin_host_get_endianness() == COIN_HOST_IS_BIGENDIAN) {
+        vbo->setBufferData(src, n * sizeof(uint32_t),
+                           maxid);
+      }
+      else {
+        uint32_t * dst = (uint32_t*)
+          vbo->allocBufferData(n * sizeof(uint32_t),
+                               maxid);
+        for (int i = 0; i < n; i++) {
+          uint32_t tmp = src[i];
+          dst[i] = 
+            (tmp << 24) |
+            ((tmp & 0xff00) << 8) |
+            ((tmp & 0xff0000) >> 8) |
+            (tmp >> 24);
+        }
+      }
+    }
+  }
 }
 
 #undef FLAG_FORCE_DIFFUSE
