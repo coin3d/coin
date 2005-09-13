@@ -284,6 +284,12 @@ public:
   }
   void reallocate(const int32_t size);
 
+  uint32_t getDiffuseId(void) const {
+    return this->diffuseid;
+  }
+  uint32_t getTranspId(void) const {
+    return this->transpid;
+  }
 private:
   uint32_t transpid;
   uint32_t diffuseid;
