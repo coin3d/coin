@@ -52,6 +52,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include "../misc/SoVBO.h"
 
 // *************************************************************************
@@ -118,9 +119,11 @@ SoNormal::GLRender(SoGLRenderAction * action)
   SoNormal::doAction(action);
 
   SoBase::staticDataLock();
+  SbBool setvbo = FALSE;
   const int num = this->vector.getNum();
   if (num >= SoVBO::getVertexCountMinLimit() &&
       num <= SoVBO::getVertexCountMaxLimit()) {
+    setvbo = TRUE;
     SbBool dirty = FALSE;
     if (PRIVATE(this)->vbo == NULL) {
       PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
@@ -140,6 +143,9 @@ SoNormal::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
   }
   SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setNormalVBO(action->getState(), PRIVATE(this)->vbo);
+  }
 }
 
 // Doc in superclass.
