@@ -1978,7 +1978,7 @@ MAC_FRAMEWORK_VERSION=$sim_ac_framework_version
 frameworkdir=
 if $sim_ac_framework; then
   frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework
-  includedir=$frameworkdir/Resources/pivy
+  includedir=$frameworkdir/Resources/include
 fi
 
 ivincludedir=$includedir
@@ -31480,7 +31480,7 @@ fi
 echo $ECHO_N "checking for Spidermonkey... $ECHO_C" >&6
 
   if $BUILD_WITH_MSVC; then
-    CPPFLAGS="$CPPFLAGS -DXP_WIN"
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32"
   else
     CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE"
   fi

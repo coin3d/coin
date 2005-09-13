@@ -11042,7 +11042,7 @@ true)
   AC_MSG_CHECKING([for Spidermonkey])
 
   if $BUILD_WITH_MSVC; then 
-    CPPFLAGS="$CPPFLAGS -DXP_WIN" 
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32" 
   else 
     CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE" 
   fi 
