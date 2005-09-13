@@ -54,25 +54,6 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 
-  // set max limit to 0 to disable VBO rendering by default.
-  // will enable by default as soon as we've done some more testing
-
-  if (vbo_vertex_count_min_limit < 0) {
-    const char * env = coin_getenv("COIN_VBO_MIN_LIMIT");
-    if (env) {
-      vbo_vertex_count_min_limit = atoi(env);
-    }
-    else {
-      vbo_vertex_count_min_limit = 40;
-    }
-    env = coin_getenv("COIN_VBO_MAX_LIMIT");
-    if (env) {
-      vbo_vertex_count_max_limit = atoi(env);
-    }
-    else {
-      vbo_vertex_count_max_limit = 0;
-    }
-  }
 }
 
 /*!
@@ -256,7 +237,19 @@ SoVBO::setVertexCountLimits(const int minlimit, const int maxlimit)
 int 
 SoVBO::getVertexCountMinLimit(void)
 {
-  return vbo_vertex_count_min_limit;
+  // set max limit to 0 to disable VBO rendering by default.
+  // will enable by default as soon as we've done some more testing
+  
+  if (vbo_vertex_count_min_limit < 0) {
+    const char * env = coin_getenv("COIN_VBO_MIN_LIMIT");
+    if (env) {
+      vbo_vertex_count_min_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_min_limit = 40;
+    }
+  } 
+ return vbo_vertex_count_min_limit;
 }
 
 /*!
@@ -267,5 +260,14 @@ SoVBO::getVertexCountMinLimit(void)
 int 
 SoVBO::getVertexCountMaxLimit(void)
 {
+  if (vbo_vertex_count_max_limit < 0) {
+    const char * env = coin_getenv("COIN_VBO_MAX_LIMIT");
+    if (env) {
+      vbo_vertex_count_max_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_max_limit = 40;
+    }
+  }
   return vbo_vertex_count_max_limit;
 }
