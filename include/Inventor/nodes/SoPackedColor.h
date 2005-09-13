@@ -27,6 +27,8 @@
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/nodes/SoSubNode.h>
 
+class SoPackedColorP;
+
 class COIN_DLL_API SoPackedColor : public SoNode {
   typedef SoNode inherited;
 
@@ -49,8 +51,7 @@ protected:
   virtual void notify(SoNotList *list);
 
 private:
-  SbBool transparent;
-  SbBool checktransparent;
+  SoPackedColorP * pimpl;
 };
 
 #endif // !COIN_SOPACKEDCOLOR_H
