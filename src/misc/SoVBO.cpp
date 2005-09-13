@@ -33,7 +33,12 @@
 #include "SoVBO.h"
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/tidbits.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+static int vbo_vertex_count_min_limit = -1;
+static int vbo_vertex_count_max_limit = -1;
 
 /*!
   Constructor
@@ -48,6 +53,26 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
     vbohash(5)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
+
+  // set max limit to 0 to disable VBO rendering by default.
+  // will enable by default as soon as we've done some more testing
+
+  if (vbo_vertex_count_min_limit < 0) {
+    const char * env = coin_getenv("COIN_VBO_MIN_LIMIT");
+    if (env) {
+      vbo_vertex_count_min_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_min_limit = 40;
+    }
+    env = coin_getenv("COIN_VBO_MAX_LIMIT");
+    if (env) {
+      vbo_vertex_count_max_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_max_limit = 0;
+    }
+  }
 }
 
 /*!
@@ -211,8 +236,6 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
   }
 }
 
-static int vbo_vertex_count_min_limit = 100;
-static int vbo_vertex_count_max_limit = 1000000;
 
 /*!
   Sets the global limits on the number of vertex data in a node before
