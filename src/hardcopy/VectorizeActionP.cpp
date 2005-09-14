@@ -128,9 +128,6 @@ SoVectorizeActionP::~SoVectorizeActionP()
   this->reset();
   delete this->clipper;
   delete this->output;
-  for (int i = 0; i < this->vertexdatalist.getLength(); i++) {
-    delete this->vertexdatalist[i];
-  }
 }
 
 //
@@ -140,6 +137,11 @@ void
 SoVectorizeActionP::reset(void)
 {
   int i;
+  for (i = 0; i < this->vertexdatalist.getLength(); i++) {
+    delete this->vertexdatalist[i];
+  }
+  this->vertexdatalist.truncate(0);
+
   for (i = 0; i < this->itemlist.getLength(); i++) {
     delete this->itemlist[i];
   }
