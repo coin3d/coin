@@ -71,8 +71,8 @@ SoVectorizeActionP::SoVectorizeActionP(SoVectorizeAction * p)
   this->output = NULL;
 
   PUBLIC(this)->addTriangleCallback(SoShape::getClassTypeId(),
-                                      SoVectorizeActionP::triangle_cb,
-                                      this);
+                                    SoVectorizeActionP::triangle_cb,
+                                    this);
 
   PUBLIC(this)->addLineSegmentCallback(SoShape::getClassTypeId(),
                                        SoVectorizeActionP::line_segment_cb,
@@ -382,7 +382,6 @@ SoVectorizeActionP::triangle_cb(void * userdata,
     for (i = 0; i < thisp->clipplanes.getLength(); i++) {
       thisp->clipper->clip(thisp->clipplanes[i]);
     }
-
     n = thisp->clipper->getNumVertices();
     if (n < 3) return;
     for (i = 0; i < n; i++) {
@@ -693,8 +692,15 @@ SoVectorizeActionP::pre_shape_cb(void * userdata,
   }
   const SoClipPlaneElement * celem = SoClipPlaneElement::getInstance(state);
   thisp->clipplanes.truncate(0);
-  for (int i = 0; i < celem->getNum(); i++) {
-    thisp->clipplanes.append(celem->get(i));
+  
+  if (celem->getNum()) {
+    SbMatrix toobj = SoModelMatrixElement::get(state).inverse();
+  
+    for (int i = 0; i < celem->getNum(); i++) {
+      SbPlane plane = celem->get(i, TRUE);
+      plane.transform(toobj);
+      thisp->clipplanes.append(plane);
+    }
   }
   // used to detect when a new polygon arrives
   thisp->prevfaceindex = -1;
