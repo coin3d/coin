@@ -127,6 +127,9 @@ typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD3FVPROC)(GLenum target,
 typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD4FVPROC)(GLenum target,
                                                          const GLfloat * v);
 
+typedef void (APIENTRY * COIN_PFNGLPUSHCLIENTATTRIBPROC)(GLbitfield mask);
+typedef void (APIENTRY * COIN_PFNGLPOPCLIENTATTRIBPROC)(void);
+
 /* typedefs for texture compression */
 typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)(GLenum target,
                                                              GLint level,
@@ -506,6 +509,7 @@ typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX4FVARBPROC)(COIN_GLhandle, GLsiz
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
+
 /* ********************************************************************** */
 
 /* Type specification for GLX info storage structure, embedded within
@@ -727,7 +731,10 @@ struct cc_glglue {
   COIN_PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB;
   COIN_PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB;
   COIN_PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB;
- 
+
+  COIN_PFNGLPUSHCLIENTATTRIBPROC glPushClientAttrib;
+  COIN_PFNGLPOPCLIENTATTRIBPROC glPopClientAttrib;
+
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;

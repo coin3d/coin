@@ -227,6 +227,9 @@ COIN_DLL_API SbBool cc_glglue_has_2d_proxy_textures(const cc_glglue * glue);
 
 COIN_DLL_API SbBool cc_glglue_has_texture_edge_clamp(const cc_glglue * glue);
 
+COIN_DLL_API void cc_glglue_glPushClientAttrib(const cc_glglue * glue, GLbitfield mask);
+COIN_DLL_API void cc_glglue_glPopClientAttrib(const cc_glglue * glue);
+
 
 /* Texture compression ***/
 

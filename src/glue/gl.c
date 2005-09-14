@@ -227,6 +227,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#if 0 /* emacs indentation fix */
+}
+#endif
+
 static cc_libhandle gl_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
@@ -753,6 +757,16 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2DEXT);
   }
 #endif /* GL_EXT_subtexture */
+
+  /* Appeared in OpenGL 1.1 */
+  w->glPushClientAttrib = NULL;
+  w->glPopClientAttrib = NULL;
+#ifdef GL_VERSION_1_1
+  if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
+    w->glPushClientAttrib = (COIN_PFNGLPUSHCLIENTATTRIBPROC) PROC(glPushClientAttrib);
+    w->glPopClientAttrib = (COIN_PFNGLPOPCLIENTATTRIBPROC) PROC(glPopClientAttrib);
+  }
+#endif /* GL_VERSION_1_1 */
 
   /* These were introduced with OpenGL v1.2. */
   w->glTexImage3D = NULL;
@@ -2321,6 +2335,23 @@ cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
     cc_glglue_glext_supported(w, "GL_EXT_texture_edge_clamp") ||
     cc_glglue_glext_supported(w, "GL_SGIS_texture_edge_clamp");
 }
+
+void 
+cc_glglue_glPushClientAttrib(const cc_glglue * w, GLbitfield mask)
+{
+  if (!glglue_allow_newer_opengl(w)) return;
+  assert(w->glPushClientAttrib);
+  w->glPushClientAttrib(mask);
+}
+
+void 
+cc_glglue_glPopClientAttrib(const cc_glglue * w)
+{
+  if (!glglue_allow_newer_opengl(w)) return;
+  assert(w->glPopClientAttrib);
+  w->glPopClientAttrib();
+}
+
 
 SbBool
 cc_glglue_has_multitexture(const cc_glglue * w)
