@@ -10916,7 +10916,8 @@ if test x"$with_spidermonkey" != x"no"; then
     fi
     $1
   else
-    AC_MSG_RESULT([not found])
+    AC_MSG_RESULT([failed])
+    SIM_AC_ERROR([spidermonkey-unavailable])
     $2
   fi
 
@@ -11069,6 +11070,7 @@ if $sim_ac_want_spidermonkey; then
     $1
   else
     AC_MSG_RESULT([failure])
+    SIM_AC_ERROR([spidermonkey-unavailable])    
     $2
   fi
 else

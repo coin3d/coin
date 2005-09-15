@@ -253,4 +253,11 @@ Could not build against the SoQt library. If you are sure
 SoQt is properly installed on your system, see the file
 config.log to find out what went wrong.
 
+!spidermonkey-unavailable
+
+Could not build against the SpiderMoneky library. Make sure the path
+specified by --with-spidermonkey is correct. See the file config.log
+for more information on what went wrong.
+
+
 !end
