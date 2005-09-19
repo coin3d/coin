@@ -54,9 +54,11 @@ several times as new problems show up.
     information given in HACKING.  Update NEWS if there has been changes
     (new requirements?) since last release.
 
-  - Enter cfg/ and update config.guess and config.sub from these files:
-      ftp://ftp.gnu.org/gnu/config/config.guess
-      ftp://ftp.gnu.org/gnu/config/config.sub
+  - Enter simacros/cfg/ and update config.guess and config.sub from these
+    locations:
+
+  http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.guess
+  http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.sub
 
 * Source and build-system validation:
 
