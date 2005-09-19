@@ -120,6 +120,14 @@ public:
   SbHash<SoPrimitiveVertexCache_vboidx *, uint32_t> vbodict;
 
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
+
+  void renderImmediate(const cc_glglue * glue,
+                       const int32_t * indices,
+                       const int numindices,
+                       const SbBool color, const SbBool normal,
+                       const SbBool texture, const SbBool * enabled,
+                       const int lastenabled);
+
   void enableArrays(const cc_glglue * glue,
                     const SbBool color, const SbBool normal,
                     const SbBool texture, const SbBool * enabled,
@@ -290,11 +298,20 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, NULL);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
-  else {
+  else if (cc_glglue_has_vertex_array(glue)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                              (const GLvoid*) this->getIndices());
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+  }
+  else {
+    // fall back to immediate mode rendering
+    glBegin(GL_TRIANGLES);
+    PRIVATE(this)->renderImmediate(glue,
+                                   PRIVATE(this)->indices.getArrayPtr(),
+                                   PRIVATE(this)->indices.getLength(),
+                                   color, normal, texture, enabled, lastenabled);
+    glEnd();
   }
 }
 
@@ -314,10 +331,21 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   }
   const cc_glglue * glue = sogl_glue_instance(state);
 
-  PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-  cc_glglue_glDrawElements(glue, GL_LINES, n, GL_UNSIGNED_INT,
-                           (const GLvoid*) this->getLineIndices());
-  PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+  if (cc_glglue_has_vertex_array(glue)) {
+    PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+    cc_glglue_glDrawElements(glue, GL_LINES, n, GL_UNSIGNED_INT,
+                             (const GLvoid*) this->getLineIndices());
+    PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+  }
+  else {
+    // fall back to immediate mode rendering
+    glBegin(GL_TRIANGLES);
+    PRIVATE(this)->renderImmediate(glue,
+                                   PRIVATE(this)->lineindices.getArrayPtr(),
+                                   PRIVATE(this)->lineindices.getLength(),
+                                   color, normal, texture, enabled, lastenabled);
+    glEnd();
+  }
 }
 
 void
@@ -336,10 +364,21 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
   }
   const cc_glglue * glue = sogl_glue_instance(state);
 
-  PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-  cc_glglue_glDrawElements(glue, GL_POINTS, n, GL_UNSIGNED_INT,
-                           (const GLvoid*) this->getPointIndices());
-  PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+  if (cc_glglue_has_vertex_array(glue)) {
+    PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+    cc_glglue_glDrawElements(glue, GL_POINTS, n, GL_UNSIGNED_INT,
+                             (const GLvoid*) this->getPointIndices());
+    PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+  }
+  else {
+    // fall back to immediate mode rendering
+    glBegin(GL_POINTS);
+    PRIVATE(this)->renderImmediate(glue,
+                                   PRIVATE(this)->pointindices.getArrayPtr(),
+                                   PRIVATE(this)->pointindices.getLength(),
+                                   color, normal, texture, enabled, lastenabled);
+    glEnd();
+  }
 }
 
 
@@ -1090,6 +1129,54 @@ SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
   if (thisp->vbodict.get(context, tmp)) {
     SoPrimitiveVertexCacheP::vbo_delete(tmp, context);
     thisp->vbodict.remove(context);
+  }
+}
+
+void 
+SoPrimitiveVertexCacheP::renderImmediate(const cc_glglue * glue,
+                                         const int32_t * indices,
+                                         const int numindices,
+                                         const SbBool color, const SbBool normal,
+                                         const SbBool texture, const SbBool * enabled,
+                                         const int lastenabled)
+{
+  const unsigned char * colorptr = NULL;
+  const SbVec3f * normalptr = NULL;
+  const SbVec3f * vertexptr = NULL;
+  const SbVec4f * texcoordptr = NULL;
+  
+  if (color) {
+    colorptr = this->rgbalist.getArrayPtr();
+  }
+  if (normal) {
+    normalptr = this->normallist.getArrayPtr();
+  }
+  if (texture) {
+    texcoordptr = this->texcoordlist.getArrayPtr();
+  }
+  vertexptr = this->vertexlist.getArrayPtr();
+  
+  for (int i = 0; i < numindices; i++) {
+    const int idx = indices[i];
+    if (normal) {
+      glNormal3fv((const GLfloat*) &normalptr[idx]);
+    }
+    if (color) {
+      glColor3ubv((const GLubyte*) &colorptr[idx*4]);
+    }
+    if (texture) {
+      glTexCoord4fv((const GLfloat*) &texcoordptr[idx]);
+      
+      for (int j = 1; j <= lastenabled; j++) {
+        if (enabled[j]) {
+          const SbVec4f * mt = this->multitexcoords[j].getArrayPtr();
+          cc_glglue_glMultiTexCoord4fv(glue,
+                                       GL_TEXTURE0 + j,
+                                       (const GLfloat *) &mt[idx]);
+        }
+      }
+      }
+    glVertex3fv((const GLfloat*) &vertexptr[idx]);
   }
 }
 
