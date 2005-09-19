@@ -484,8 +484,9 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 
       SbBool foundname;
       if (!this->read(in, object, fieldname, foundname)) {
-        if (!foundname) SoReadError::post(in, "Unknown field \"%s\"",
-                                          fieldname.getString());
+        if (!foundname) SoReadError::post(in, "Unknown field \"%s\" in \"%s\"",
+                                          fieldname.getString(),
+                                          object->getTypeId().getName().getString());
         return FALSE;
       }
     }
@@ -553,7 +554,9 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
           return FALSE;
         }
         else if (erroronunknownfield) {
-          SoReadError::post(in, "Unknown field \"%s\"", fieldname.getString());
+          SoReadError::post(in, "Unknown field \"%s\" in \"%s\"",
+                            fieldname.getString(),
+                            object->getTypeId().getName().getString());
           return FALSE;
         }
         else {
