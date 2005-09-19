@@ -1726,7 +1726,8 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
 
   SoBase * instance = NULL;
 
-  if (type == SoType::badType()) {
+  if (type == SoType::badType() ||
+      type == SoUnknownNode::getClassTypeId()) {
     // Default to SoUnknownNode for now.. FIXME: what if we're dealing
     // with an unknown engine? 20000105 mortene.
     SoUnknownNode * unknownnode = new SoUnknownNode;
