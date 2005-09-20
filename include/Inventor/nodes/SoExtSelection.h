@@ -29,6 +29,10 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <stddef.h> // NULL
 
+#ifndef COIN_INTERNAL
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_INTERNAL
+
 class SbColor;
 class SbVec3f;
 class SbViewportRegion;

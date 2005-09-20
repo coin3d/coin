@@ -29,6 +29,10 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoMFString.h>
 
+#ifndef COIN_INTERNAL
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_INTERNAL
+
 class SbColor;
 class SoVRMLInline;
 class SoVRMLInlineP;

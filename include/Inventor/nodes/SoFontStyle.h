@@ -29,6 +29,10 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
+#ifndef COIN_INTERNAL
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_INTERNAL
+
 class COIN_DLL_API SoFontStyle : public SoFont {
   typedef SoFont inherited;
 

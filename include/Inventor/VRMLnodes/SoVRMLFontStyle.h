@@ -32,6 +32,10 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/SbString.h>
 
+#ifndef COIN_INTERNAL
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_INTERNAL
+
 class SoVRMLFontStyleP;
 
 class COIN_DLL_API SoVRMLFontStyle : public SoNode
