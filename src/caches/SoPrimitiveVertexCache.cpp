@@ -848,10 +848,6 @@ SoPrimitiveVertexCacheP::enableArrays(const cc_glglue * glue,
                                       const int lastenabled)
 {
   int i;
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            (GLvoid*) this->vertexlist.getArrayPtr());
-  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-
   if (color) {
     cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0,
                              (GLvoid*) this->rgbalist.getArrayPtr());
@@ -877,6 +873,10 @@ SoPrimitiveVertexCacheP::enableArrays(const cc_glglue * glue,
                               (GLvoid*) this->normallist.getArrayPtr());
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
+
+  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
+                            (GLvoid*) this->vertexlist.getArrayPtr());
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
 
 
@@ -924,20 +924,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
   }
 
   int i;
-  if (vbo->vertex == 0) {
-    cc_glglue_glGenBuffers(glue, 1, &vbo->vertex);
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
-    cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                           this->vertexlist.getLength()*3*sizeof(float),
-                           this->vertexlist.getArrayPtr(),
-                           GL_STATIC_DRAW);
-  }
-  else {
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
-  }
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
-  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-
   if (color) {
     if (vbo->rgba == 0) {
       cc_glglue_glGenBuffers(glue, 1, &vbo->rgba);
@@ -1017,6 +1003,19 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
   else {
     cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
   }
+  if (vbo->vertex == 0) {
+    cc_glglue_glGenBuffers(glue, 1, &vbo->vertex);
+    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
+    cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
+                           this->vertexlist.getLength()*3*sizeof(float),
+                           this->vertexlist.getArrayPtr(),
+                           GL_STATIC_DRAW);
+  }
+  else {
+    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
+  }
+  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
 
 
