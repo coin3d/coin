@@ -27,11 +27,9 @@
 
   Note. This is work-in-progress. pederb, 2005-04-05.
 
-  The code below is an example of a program that applies a
+  The code below is an example of a program that applies an
   SoReorganizeAction on a scene graph, converting all shapes into
-  shapes that can be rendered using vertex array rendering.  VBO
-  rendering for these shapes is not implemented yet. Coming soon
-  though.
+  shapes that can be rendered using vertex array or VBO rendering.
 
   \verbatim
 
@@ -154,6 +152,7 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -165,6 +164,8 @@
 #include <Inventor/elements/SoTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/SbColor4f.h>
 #include <string.h>
@@ -186,11 +187,9 @@ class SoReorganizeActionP {
   {
     cbaction.addTriangleCallback(SoVertexShape::getClassTypeId(), triangle_cb, this);
     cbaction.addLineSegmentCallback(SoVertexShape::getClassTypeId(), line_segment_cb, this);
-    cbaction.addPointCallback(SoVertexShape::getClassTypeId(), point_cb, this);
 
     cbaction.addTriangleCallback(SoVRMLVertexShape::getClassTypeId(), triangle_cb, this);
     cbaction.addLineSegmentCallback(SoVRMLVertexShape::getClassTypeId(), line_segment_cb, this);
-    cbaction.addPointCallback(SoVRMLVertexShape::getClassTypeId(), point_cb, this);
 
     cbaction.addPreCallback(SoVertexShape::getClassTypeId(),
                             pre_shape_cb, this);
@@ -219,6 +218,8 @@ class SoReorganizeActionP {
   SbBool didinit;
   SbBool hastexture;
   SbColor4f diffusecolor;
+  SbBool lighting;
+  SbBool normalsonstate;
 
   SoCallbackAction cbaction;
   SoSearchAction sa;
@@ -234,13 +235,15 @@ class SoReorganizeActionP {
   static void line_segment_cb(void * userdata, SoCallbackAction * action,
                               const SoPrimitiveVertex * v1,
                               const SoPrimitiveVertex * v2);
-  static void point_cb(void * userdata, SoCallbackAction * action,
-                       const SoPrimitiveVertex * v);
-                       
-  
-  
+    
   SbBool initShape(SoCallbackAction * action);
   void replaceNode(SoFullPath * path);
+  void replaceIfs(SoFullPath * path);
+  void replaceVrmlIfs(SoFullPath * path);
+  void replaceIls(SoFullPath * path);
+  void replaceVrmlIls(SoFullPath * path);
+
+  SoVertexProperty * createVertexProperty(const SbBool forlines);
 };
 
 
@@ -466,37 +469,18 @@ SoReorganizeActionP::line_segment_cb(void * userdata, SoCallbackAction * action,
   }
 }
 
-void 
-SoReorganizeActionP::point_cb(void * userdata, SoCallbackAction * action,
-                            const SoPrimitiveVertex * v)
-{
-  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
-  
-  if (!thisp->didinit) {
-    if (thisp->initShape(action)) {
-      assert(thisp->pvcache == NULL);
-      thisp->pvcache = new SoPrimitiveVertexCache(action->getState());
-      thisp->pvcache->ref();
-    }
-  }
-
-  thisp->numpoints++;
-  if (thisp->pvcache) {
-    thisp->pvcache->addPoint(v);
-  }
-
-}
-                       
-
 SbBool
 SoReorganizeActionP::initShape(SoCallbackAction * action)
 {
   this->didinit = TRUE;
   SoState * state = action->getState();
   SbBool canrenderasvertexarray = TRUE;
-
+  
   unsigned int shapeflags = SoShapeStyleElement::get(state)->getFlags();
-
+  
+  this->lighting = SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR;
+  this->normalsonstate = SoNormalElement::getInstance(state)->getNum() > 0;
+  
   SbBool texture0enabled =
     SoTextureEnabledElement::get(state) != FALSE;
 
@@ -582,90 +566,164 @@ SoReorganizeActionP::replaceNode(SoFullPath * path)
 {
   if (this->pvcache == NULL) return;  
   this->pvcache->fit(); // needed to do optimize-sort of data
-
-  if (this->isvrml) {
-//     fprintf(stderr,"FIXME: vrml replace-node: %d %d %d\n",
-//             this->numtriangles, this->numlines, this->numpoints);
+  
+  if (this->pvcache->getNumIndices()) {
+    if (this->isvrml) {
+      this->replaceVrmlIfs(path);
+    }
+    else {
+      this->replaceIfs(path);
+    }
   }
-  else {
-    SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
-    SoVertexProperty * vp = new SoVertexProperty;
-    vp->normalBinding = SoVertexProperty::PER_VERTEX_INDEXED;
-    vp->materialBinding = SoVertexProperty::OVERALL;
-    ifs->ref();
-    ifs->vertexProperty = vp;
-    
-    int numv = this->pvcache->getNumVertices();
-    
-    if (this->hastexture) {
-      vp->texCoord.setNum(numv);
-      SbVec2f * dst = vp->texCoord.startEditing();
-      const SbVec4f * src = this->pvcache->getTexCoordArray();
-      
-      for (int i = 0; i < numv; i++) {
-        SbVec4f tmp = src[i];
-        if (tmp[3] != 0.0f) {
-          tmp[0] /= tmp[3];
-          tmp[1] /= tmp[3];
-        }
-        dst[i][0] = tmp[0];
-        dst[i][1] = tmp[1];
-      }
-      vp->texCoord.finishEditing();
+  else if (this->pvcache->getNumLineIndices()) {
+    if (this->isvrml) {
+      this->replaceVrmlIls(path);
     }
-    
-    vp->materialBinding = SoVertexProperty::OVERALL;
-    vp->vertex.setValues(0, numv,
-                         this->pvcache->getVertexArray());
-    vp->normal.setValues(0, numv,
-                         this->pvcache->getNormalArray());
-    
-    ifs->normalIndex.setNum(0);
-    ifs->materialIndex.setNum(0);
-    ifs->textureCoordIndex.setNum(0);
-
-    vp->orderedRGBA = this->diffusecolor.getPackedValue();
-    if (this->pvcache->colorPerVertex()) {
-      vp->materialBinding = SoVertexProperty::PER_VERTEX_INDEXED;
-      uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
-      vp->orderedRGBA.setNum(numv);
-      uint32_t * dst = vp->orderedRGBA.startEditing();
-      for (int i = 0; i < numv; i++) {
-        dst[i] = (src[0]<<24)|(src[1]<<16)|(src[2]<<8)|src[3];
-        src += 4;
-      }
-      vp->orderedRGBA.finishEditing();
+    else {
+      this->replaceIls(path);
     }
-
-    int numtri = this->pvcache->getNumIndices() / 3;
-    const int32_t * indices = this->pvcache->getIndices();
-    ifs->coordIndex.setNum(numtri * 4);
-    int32_t * ptr = ifs->coordIndex.startEditing();
-    
-    for (int i = 0; i < numtri; i++) {
-      *ptr++ = indices[i*3];
-      *ptr++ = indices[i*3+1];
-      *ptr++ = indices[i*3+2];
-      *ptr++ = -1;
-    }
-    ifs->coordIndex.finishEditing();
-    
-    SoNode * parent = path->getNodeFromTail(1);
-    int idx = path->getIndexFromTail(0);
-    
-    path->pop();
-    if (parent->isOfType(SoGroup::getClassTypeId())) {
-      SoGroup * g = (SoGroup*)parent;
-      g->replaceChild(idx, ifs);
-    }
-    else if (parent->isOfType(SoVRMLShape::getClassTypeId())) {
-      SoVRMLShape * vs = (SoVRMLShape*) parent;
-      vs->geometry = ifs;
-    }
-    path->push(idx);
-    ifs->unrefNoDelete();
   }
-
   this->pvcache->unref();
   this->pvcache = NULL;
+}
+
+SoVertexProperty * 
+SoReorganizeActionP::createVertexProperty(const SbBool forlines)
+{
+  SoVertexProperty * vp = new SoVertexProperty;
+  vp->ref();
+  SoVertexProperty::Binding nbind = SoVertexProperty::PER_VERTEX_INDEXED;
+
+  if (!this->lighting || 
+      (forlines && !this->normalsonstate)) {
+    nbind = SoVertexProperty::OVERALL;
+  }                                             
+  vp->normalBinding = nbind;
+
+  int numv = this->pvcache->getNumVertices();
+  
+  if (this->hastexture) {
+    vp->texCoord.setNum(numv);
+    SbVec2f * dst = vp->texCoord.startEditing();
+    const SbVec4f * src = this->pvcache->getTexCoordArray();
+    
+    for (int i = 0; i < numv; i++) {
+      SbVec4f tmp = src[i];
+      if (tmp[3] != 0.0f) {
+        tmp[0] /= tmp[3];
+        tmp[1] /= tmp[3];
+      }
+      dst[i][0] = tmp[0];
+      dst[i][1] = tmp[1];
+    }
+    vp->texCoord.finishEditing();
+  }
+  
+  vp->vertex.setValues(0, numv,
+                       this->pvcache->getVertexArray());
+  if (nbind == SoVertexProperty::PER_VERTEX_INDEXED) {
+    vp->normal.setValues(0, numv,
+                         this->pvcache->getNormalArray());
+  }  
+  
+  vp->materialBinding = SoVertexProperty::OVERALL;  
+  vp->orderedRGBA = this->diffusecolor.getPackedValue();
+  
+  if (this->pvcache->colorPerVertex()) {
+    vp->materialBinding = SoVertexProperty::PER_VERTEX_INDEXED;
+    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    vp->orderedRGBA.setNum(numv);
+    uint32_t * dst = vp->orderedRGBA.startEditing();
+    for (int i = 0; i < numv; i++) {
+      dst[i] = (src[0]<<24)|(src[1]<<16)|(src[2]<<8)|src[3];
+      src += 4;
+    }
+    vp->orderedRGBA.finishEditing();
+  }
+  vp->unrefNoDelete();
+  return vp;
+}
+
+void 
+SoReorganizeActionP::replaceIfs(SoFullPath * path)
+{
+  SoNode * parent = path->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+    return;
+  }
+
+  SoVertexProperty * vp = this->createVertexProperty(FALSE);
+  SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
+  ifs->ref();
+  ifs->vertexProperty = vp;
+  ifs->normalIndex.setNum(0);
+  ifs->materialIndex.setNum(0);
+  ifs->textureCoordIndex.setNum(0);
+  
+  int numtri = this->pvcache->getNumIndices() / 3;
+  const int32_t * indices = this->pvcache->getIndices();
+  ifs->coordIndex.setNum(numtri * 4);
+  int32_t * ptr = ifs->coordIndex.startEditing();
+
+  
+  for (int i = 0; i < numtri; i++) {
+    *ptr++ = indices[i*3];
+    *ptr++ = indices[i*3+1];
+    *ptr++ = indices[i*3+2];
+    *ptr++ = -1;
+  }
+  ifs->coordIndex.finishEditing();
+
+  int idx = path->getIndexFromTail(0);  
+  path->pop();
+  SoGroup * g = (SoGroup*)parent;
+  g->replaceChild(idx, ifs);
+  path->push(idx);
+  ifs->unrefNoDelete();
+}
+
+void 
+SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
+{
+}
+
+void 
+SoReorganizeActionP::replaceIls(SoFullPath * path)
+{
+  SoNode * parent = path->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+    return;
+  }
+
+  SoVertexProperty * vp = this->createVertexProperty(TRUE);
+  SoIndexedLineSet * ils = new SoIndexedLineSet;
+  ils->ref();
+  ils->vertexProperty = vp;
+  ils->normalIndex.setNum(0);
+  ils->materialIndex.setNum(0);
+  ils->textureCoordIndex.setNum(0);
+  
+  int numlines = this->pvcache->getNumLineIndices() / 2;
+  const int32_t * indices = this->pvcache->getLineIndices();
+  ils->coordIndex.setNum(numlines * 3);
+  int32_t * ptr = ils->coordIndex.startEditing();
+  
+  for (int i = 0; i < numlines; i++) {
+    *ptr++ = indices[i*2];
+    *ptr++ = indices[i*2+1];
+    *ptr++ = -1;
+  }
+  ils->coordIndex.finishEditing();
+
+  int idx = path->getIndexFromTail(0);  
+  path->pop();
+  SoGroup * g = (SoGroup*)parent;
+  g->replaceChild(idx, ils);
+  path->push(idx);
+  ils->unrefNoDelete();
+}
+
+void 
+SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
+{
 }
