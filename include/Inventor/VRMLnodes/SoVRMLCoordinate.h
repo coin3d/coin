@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
+class SoVRMLCoordinateP;
 
 class COIN_DLL_API SoVRMLCoordinate : public SoNode
 {
@@ -46,9 +47,11 @@ public:
   virtual void callback( SoCallbackAction * action );
   virtual void pick( SoPickAction * action );
 
-protected:
+ protected:
   virtual ~SoVRMLCoordinate();
 
+ private:
+  SoVRMLCoordinateP * pimpl;
 }; // class SoVRMLCoordinate
 
 #endif // ! COIN_SOVRMLCOORDINATE_H

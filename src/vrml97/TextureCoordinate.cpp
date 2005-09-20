@@ -85,6 +85,17 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
+
+class SoVRMLTextureCoordinateP {
+ public:
+  SoVRMLTextureCoordinateP() : vbo(NULL) { }
+  ~SoVRMLTextureCoordinateP() { delete this->vbo; }
+  SoVBO * vbo;
+};
+
+#define PRIVATE(obj) obj->pimpl
 
 SO_NODE_SOURCE(SoVRMLTextureCoordinate);
 
@@ -100,6 +111,7 @@ SoVRMLTextureCoordinate::initClass(void)
 */
 SoVRMLTextureCoordinate::SoVRMLTextureCoordinate(void)
 {
+  PRIVATE(this) = new SoVRMLTextureCoordinateP;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLTextureCoordinate);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(point);
@@ -110,6 +122,7 @@ SoVRMLTextureCoordinate::SoVRMLTextureCoordinate(void)
 */
 SoVRMLTextureCoordinate::~SoVRMLTextureCoordinate()
 {
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -132,9 +145,38 @@ SoVRMLTextureCoordinate::callback(SoCallbackAction * action)
 void
 SoVRMLTextureCoordinate::GLRender(SoGLRenderAction * action)
 {
-  SoGLTextureCoordinateElement::setTexGen(action->getState(),
+  SoState * state = action->getState();
+  SoGLTextureCoordinateElement::setTexGen(state,
                                           this, NULL);
   SoVRMLTextureCoordinate::doAction((SoAction*)action);
+
+  SoBase::staticDataLock();
+  const int num = this->point.getNum();
+  SbBool setvbo = FALSE;
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+    setvbo = TRUE;
+    SbBool dirty = FALSE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->point.getValues(0),
+                                        num*sizeof(SbVec2f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
+  }
 }
 
 // Doc in parent
@@ -151,4 +193,5 @@ SoVRMLTextureCoordinate::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoVRMLTextureCoordinate::doAction((SoAction*)action);
 }
 
+#undef PRIVATE
 #endif // HAVE_VRML97

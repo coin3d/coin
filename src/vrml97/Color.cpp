@@ -70,13 +70,16 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoVRMLColorP {
-public:
+ public:
+  SoVRMLColorP() : vbo(NULL) { }
+  ~SoVRMLColorP() { delete this->vbo; }
   SoColorPacker colorpacker;
+  SoVBO * vbo;
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
@@ -113,14 +116,36 @@ void
 SoVRMLColor::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-  if (this->color.getNum() &&
+  const int num = this->color.getNum();
+  if (num &&
       !this->color.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
+
     SoLazyElement::setDiffuse(state,
                               this,
-                              this->color.getNum(),
+                              num,
                               this->color.getValues(0),
                               &PRIVATE(this)->colorpacker);
+
+    if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
+      SbBool setvbo = FALSE;
+      SoBase::staticDataLock();
+      if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+        setvbo = TRUE;
+        if (PRIVATE(this)->vbo == NULL) {
+          PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+        }
+      }
+      else if (PRIVATE(this)->vbo) {
+        PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+      }
+      // don't fill in any data in the VBO. Data will be filled in
+      // using the ColorPacker right before the VBO is used
+      SoBase::staticDataUnlock();
+      if (setvbo) {
+        SoGLVBOElement::setColorVBO(state, PRIVATE(this)->vbo);
+      }
+    }
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }

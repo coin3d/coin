@@ -53,11 +53,23 @@
 
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/actions/SoAction.h>
+#include "../misc/SoVBO.h"
 
 SO_NODE_SOURCE(SoVRMLCoordinate);
+
+#define PRIVATE(obj) obj->pimpl
+
+class SoVRMLCoordinateP {
+ public:
+  SoVRMLCoordinateP() : vbo(NULL) { }
+  ~SoVRMLCoordinateP() { delete this->vbo; }
+  SoVBO * vbo;
+};
 
 // Doc in parent
 void
@@ -71,6 +83,7 @@ SoVRMLCoordinate::initClass(void) // static
 */
 SoVRMLCoordinate::SoVRMLCoordinate(void)
 {
+  PRIVATE(this) = new SoVRMLCoordinateP;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCoordinate);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(point);
@@ -81,6 +94,7 @@ SoVRMLCoordinate::SoVRMLCoordinate(void)
 */
 SoVRMLCoordinate::~SoVRMLCoordinate()
 {
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -96,6 +110,36 @@ void
 SoVRMLCoordinate::GLRender(SoGLRenderAction * action)
 {
   SoVRMLCoordinate::doAction((SoAction*) action);
+  
+  SoState * state = action->getState();
+  const int num = this->point.getNum();
+  SbBool setvbo = FALSE;
+  SoBase::staticDataLock();
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+    SbBool dirty = FALSE;
+    setvbo = TRUE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->point.getValues(0),
+                                        num*sizeof(SbVec3f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
+  }
+
 }
 
 // Doc in parent
@@ -119,4 +163,5 @@ SoVRMLCoordinate::pick(SoPickAction * action)
   SoVRMLCoordinate::doAction((SoAction*) action);
 }
 
+#undef PRIVATE
 #endif // HAVE_VRML97

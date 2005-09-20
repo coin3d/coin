@@ -55,10 +55,22 @@
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include "../misc/SoVBO.h"
 
 SO_NODE_SOURCE(SoVRMLNormal);
+
+class SoVRMLNormalP {
+ public:
+  SoVRMLNormalP() : vbo(NULL) { }
+  ~SoVRMLNormalP() { delete this->vbo; }
+  
+  SoVBO * vbo;
+};
+
+#define PRIVATE(obj) obj->pimpl
 
 // Doc in parent
 void
@@ -72,6 +84,7 @@ SoVRMLNormal::initClass(void)
 */
 SoVRMLNormal::SoVRMLNormal(void)
 {
+  PRIVATE(this) = new SoVRMLNormalP;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLNormal);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(vector);
@@ -82,6 +95,7 @@ SoVRMLNormal::SoVRMLNormal(void)
 */
 SoVRMLNormal::~SoVRMLNormal()
 {
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -102,6 +116,36 @@ SoVRMLNormal::GLRender(SoGLRenderAction * action)
   // SoGLNormalizeElement to optimize rendering (pederb)
   //
   SoVRMLNormal::doAction((SoAction*) action);
+  SoState * state = action->getState();
+  
+  SoBase::staticDataLock();
+  SbBool setvbo = FALSE;
+  const int num = this->vector.getNum();
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+    setvbo = TRUE;
+    SbBool dirty = FALSE;
+    if (PRIVATE(this)->vbo == NULL) {
+      PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+      dirty =  TRUE;
+    }
+    else if (PRIVATE(this)->vbo->getBufferDataId() != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->vbo->setBufferData(this->vector.getValues(0),
+                                        num*sizeof(SbVec3f),
+                                        this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->vbo && PRIVATE(this)->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+  if (setvbo) {
+    SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->vbo);
+  }
+
 }
 
 // Doc in parent
@@ -125,4 +169,5 @@ SoVRMLNormal::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoVRMLNormal::doAction((SoAction*) action);
 }
 
+#undef PRIVATE
 #endif // HAVE_VRML97

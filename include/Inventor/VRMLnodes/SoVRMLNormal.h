@@ -28,6 +28,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
+class SoVRMLNormalP;
+
 class COIN_DLL_API SoVRMLNormal : public SoNode
 {
   typedef SoNode inherited;
@@ -45,9 +47,11 @@ public:
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-protected:
+ protected:
   virtual ~SoVRMLNormal();
 
+ private:
+  SoVRMLNormalP * pimpl;
 }; // class SoVRMLNormal
 
 #endif // ! COIN_SOVRMLNORMAL_H

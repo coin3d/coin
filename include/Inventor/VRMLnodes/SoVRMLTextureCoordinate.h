@@ -28,6 +28,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
+class SoVRMLTextureCoordinateP;
+
 class COIN_DLL_API SoVRMLTextureCoordinate : public SoNode
 {
   typedef SoNode inherited;
@@ -45,8 +47,10 @@ public:
   virtual void pick( SoPickAction * action );
   virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
 
-protected:
+ protected:
   virtual ~SoVRMLTextureCoordinate();
+ private:
+  SoVRMLTextureCoordinateP * pimpl;
 
 }; // class SoVRMLTextureCoordinate
 
