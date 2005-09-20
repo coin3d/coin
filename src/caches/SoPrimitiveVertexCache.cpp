@@ -43,6 +43,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoCacheHintElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
@@ -313,6 +314,12 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
+
+  // inform SoGLLazyElement that we might have changed the current color
+  if (color) {
+    SoGLLazyElement::getInstance(state)->reset(state, 
+                                               SoLazyElement::DIFFUSE_MASK);
+  }
 }
 
 void
@@ -346,6 +353,11 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
+  // inform SoGLLazyElement that we might have changed the current color
+  if (color) {
+    SoGLLazyElement::getInstance(state)->reset(state, 
+                                               SoLazyElement::DIFFUSE_MASK);
+  }
 }
 
 void
@@ -378,6 +390,11 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
                                    PRIVATE(this)->pointindices.getLength(),
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
+  }
+  // inform SoGLLazyElement that we might have changed the current color
+  if (color) {
+    SoGLLazyElement::getInstance(state)->reset(state, 
+                                               SoLazyElement::DIFFUSE_MASK);
   }
 }
 
