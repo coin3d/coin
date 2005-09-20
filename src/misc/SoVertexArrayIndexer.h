@@ -39,30 +39,35 @@ class SoVertexArrayIndexer {
 public:
   SoVertexArrayIndexer(void);
   ~SoVertexArrayIndexer();
-  
+
   void addTriangle(const int32_t v0,
                    const int32_t v1,
                    const int32_t v2);
+  void addLine(const int32_t v0,
+               const int32_t v1);
+  void addPoint(const int32_t v0);
+
 
   void addQuad(const int32_t v0,
                const int32_t v1,
                const int32_t v2,
                const int32_t v3);
-  
+
   void beginTarget(GLenum target);
   void targetVertex(GLenum target, const int32_t v);
   void endTarget(GLenum target);
 
   void close(void);
-  void render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t vbocontextid); 
+  void render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t vbocontextid);
 
   int getNumVertices(void);
 
 private:
 
   void sort_triangles(void);
+  void sort_lines(void);
   SoVertexArrayIndexer * getNext(void);
-  
+
   GLenum target;
   SoVertexArrayIndexer * next;
 
