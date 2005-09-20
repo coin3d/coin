@@ -366,12 +366,13 @@ SoReorganizeAction::getSimplifier(void) const
 void 
 SoReorganizeAction::apply(SoNode * root)
 {
+  int i;
   PRIVATE(this)->sa.setType(SoVertexShape::getClassTypeId());
   PRIVATE(this)->sa.setSearchingAll(TRUE);
   PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
   PRIVATE(this)->sa.apply(root);
   SoPathList & pl = PRIVATE(this)->sa.getPaths();
-  for (int i = 0; i < pl.getLength(); i++) {
+  for (i = 0; i < pl.getLength(); i++) {
     this->apply(pl[i]);
   }
   PRIVATE(this)->sa.reset();
@@ -381,7 +382,7 @@ SoReorganizeAction::apply(SoNode * root)
   PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
   PRIVATE(this)->sa.apply(root);
   SoPathList & pl2 = PRIVATE(this)->sa.getPaths();
-  for (int i = 0; i < pl2.getLength(); i++) {
+  for (i = 0; i < pl2.getLength(); i++) {
     this->apply(pl2[i]);
   }
   PRIVATE(this)->sa.reset();
@@ -391,7 +392,7 @@ SoReorganizeAction::apply(SoNode * root)
   PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
   PRIVATE(this)->sa.apply(root);
   SoPathList & pl3 = PRIVATE(this)->sa.getPaths();
-  for (int i = 0; i < pl3.getLength(); i++) {
+  for (i = 0; i < pl3.getLength(); i++) {
     this->apply(pl3[i]);
   }
   PRIVATE(this)->sa.reset();
@@ -766,7 +767,6 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
     col->color.setNum(numv);
     uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
     SbColor * dst = col->color.startEditing();
-    float dummy;
     for (int i = 0; i < numv; i++) {
       dst[i] = SbColor(src[0]/255.0f,
                        src[1]/255.0f,

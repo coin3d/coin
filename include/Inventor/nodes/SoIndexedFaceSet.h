@@ -27,7 +27,9 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
+#ifndef SO_END_FACE_INDEX // also defined in SoVRMLIndexedFaceSet.h
 #define SO_END_FACE_INDEX (-1)
+#endif // !SO_END_FACE_INDEX
 
 class SoIndexedFaceSetP;
 

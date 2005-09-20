@@ -27,7 +27,9 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
+#ifndef SO_END_LINE_INDEX // also defined in SoVRMLIndexedLineSet.h
 #define SO_END_LINE_INDEX (-1)
+#endif // !SO_END_LINE_INDEX
 
 class SoIndexedLineSetP;
 

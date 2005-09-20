@@ -29,8 +29,9 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-#undef SO_END_FACE_INDEX
-#define SO_END_FACE_INDEX -1
+#ifndef SO_END_FACE_INDEX // also defined in SoIndexedFaceSet.h
+#define SO_END_FACE_INDEX (-1)
+#endif // !SO_END_FACE_INDEX
 
 class SoVRMLIndexedFaceSetP;
 

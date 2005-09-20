@@ -27,8 +27,9 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/VRMLnodes/SoVRMLIndexedLine.h>
 
-#undef SO_END_LINE_INDEX
-#define SO_END_LINE_INDEX -1
+#ifndef SO_END_LINE_INDEX // also defined in SoIndexedLineSet.h
+#define SO_END_LINE_INDEX (-1)
+#endif // !SO_END_LINE_INDEX
 
 class COIN_DLL_API SoVRMLIndexedLineSet : public SoVRMLIndexedLine
 {
