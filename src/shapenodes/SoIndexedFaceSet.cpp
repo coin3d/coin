@@ -244,17 +244,6 @@ public:
   // SbMutex vamutex;
 #endif // COIN_THREADSAFE
 
-  void lockVAIndexer(void) {
-#ifdef COIN_THREADSAFE
-    //    this->vamutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlockVAIndexer(void) {
-#ifdef COIN_THREADSAFE
-    //    this->vamutex.unlock();
-#endif // COIN_THREADSAFE
-  }
-
   void readLockConvexCache(void) {
 #ifdef COIN_THREADSAFE
     this->convexmutex.readLock();
