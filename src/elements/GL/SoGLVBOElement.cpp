@@ -222,7 +222,9 @@ SoGLVBOElement::getNumTexCoordVBO(void) const
 SoVBO * 
 SoGLVBOElement::getTexCoordVBO(const int idx) const
 {
-  assert((idx >= 0) && (idx < PRIVATE(this)->texcoordvbo.getLength()));
-  return PRIVATE(this)->texcoordvbo[idx];
+  if (idx < PRIVATE(this)->texcoordvbo.getLength()) {
+    return PRIVATE(this)->texcoordvbo[idx];
+  }
+  return NULL;
 }
 
