@@ -430,8 +430,7 @@ SoMaterial::doAction(SoAction * action)
     if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
       SoBase::staticDataLock();
       SbBool setvbo = FALSE;
-      if ((numdiffuse >= SoVBO::getVertexCountMinLimit()) &&
-          (numdiffuse <= SoVBO::getVertexCountMaxLimit())) {
+      if (SoGLVBOElement::shouldCreateVBO(state, numdiffuse)) {
         setvbo = TRUE;
         if (THIS->vbo == NULL) {
           THIS->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);

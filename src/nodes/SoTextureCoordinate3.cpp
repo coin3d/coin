@@ -169,8 +169,7 @@ SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
   SoBase::staticDataLock();
   const int num = this->point.getNum();
   SbBool setvbo = FALSE;
-  if (num >= SoVBO::getVertexCountMinLimit() &&
-      num <= SoVBO::getVertexCountMaxLimit()) {
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
     setvbo = TRUE;
     SbBool dirty = FALSE;
     if (PRIVATE(this)->vbo == NULL) {

@@ -147,8 +147,7 @@ SoPackedColor::doAction(SoAction * action)
     if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
       SoBase::staticDataLock();
       SbBool setvbo = FALSE;
-      if ((num >= SoVBO::getVertexCountMinLimit()) &&
-          (num <= SoVBO::getVertexCountMaxLimit())) {
+      if (SoGLVBOElement::shouldCreateVBO(state, num)) {
         SbBool dirty = FALSE;
         setvbo = TRUE;
         if (PRIVATE(this)->vbo == NULL) {

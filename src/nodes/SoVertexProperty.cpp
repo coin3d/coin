@@ -352,20 +352,18 @@ SoVertexProperty::doAction(SoAction *action)
       }
     }
   }
-
   if (glrender) SoBase::staticDataLock();
-
-  int minlimit = SoVBO::getVertexCountMinLimit();
-  int maxlimit = SoVBO::getVertexCountMaxLimit();
-
   int num = this->vertex.getNum();
+  const int numvertex = num;
+  const SbBool shouldcreatevbo = glrender ? SoGLVBOElement::shouldCreateVBO(state, numvertex) : FALSE;
+  
   if (num > 0) {    
     SoCoordinateElement::set3(state, this, num,
                               this->vertex.getValues(0));
 
     SbBool setvbo = FALSE;
     if (glrender) {
-      if ((num >= minlimit) && (num <= maxlimit)) {
+      if (shouldcreatevbo) {
         SbBool dirty = FALSE;
         setvbo = TRUE;
         if (PRIVATE(this)->vertexvbo == NULL) {
@@ -400,7 +398,7 @@ SoVertexProperty::doAction(SoAction *action)
                                                 this, NULL);
       }
       SbBool setvbo = FALSE;
-      if ((num >= minlimit) && (num <= maxlimit)) {
+      if ((num == numvertex) && shouldcreatevbo) {
         SbBool dirty = FALSE;
         setvbo = TRUE;
         if (PRIVATE(this)->texcoordvbo == NULL) {
@@ -435,7 +433,7 @@ SoVertexProperty::doAction(SoAction *action)
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
         SbBool setvbo = FALSE;
-        if ((num >= minlimit) && (num <= maxlimit)) {
+        if ((num == numvertex) && shouldcreatevbo) {
           SbBool dirty = FALSE;
           setvbo = TRUE;
           if (PRIVATE(this)->texcoordvbo == NULL) {
@@ -472,7 +470,7 @@ SoVertexProperty::doAction(SoAction *action)
 
     SbBool setvbo = FALSE;
     if (glrender) {
-      if ((num >= minlimit) && (num <= maxlimit)) {
+      if ((num == numvertex) && shouldcreatevbo) {
         SbBool dirty = FALSE;
         setvbo = TRUE;
         if (PRIVATE(this)->normalvbo == NULL) {
@@ -518,8 +516,7 @@ SoVertexProperty::doAction(SoAction *action)
     }
     if (glrender) {
       SbBool setvbo = FALSE;
-      if ((num >= SoVBO::getVertexCountMinLimit()) &&
-          (num <= SoVBO::getVertexCountMaxLimit())) {
+      if ((num == numvertex) && shouldcreatevbo) {
         SbBool dirty = FALSE;
         setvbo = TRUE;
         if (PRIVATE(this)->colorvbo == NULL) {

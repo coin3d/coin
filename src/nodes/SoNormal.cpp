@@ -117,12 +117,12 @@ SoNormal::GLRender(SoGLRenderAction * action)
   // SoGLNormalizeElement to optimize rendering (pederb)
   //
   SoNormal::doAction(action);
-
+  SoState * state = action->getState();
+  
   SoBase::staticDataLock();
   SbBool setvbo = FALSE;
   const int num = this->vector.getNum();
-  if (num >= SoVBO::getVertexCountMinLimit() &&
-      num <= SoVBO::getVertexCountMaxLimit()) {
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
     setvbo = TRUE;
     SbBool dirty = FALSE;
     if (PRIVATE(this)->vbo == NULL) {
@@ -144,7 +144,7 @@ SoNormal::GLRender(SoGLRenderAction * action)
   }
   SoBase::staticDataUnlock();
   if (setvbo) {
-    SoGLVBOElement::setNormalVBO(action->getState(), PRIVATE(this)->vbo);
+    SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->vbo);
   }
 }
 

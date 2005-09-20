@@ -134,11 +134,11 @@ void
 SoCoordinate4::GLRender(SoGLRenderAction * action)
 {
   SoCoordinate4::doAction(action);
+  SoState * state = action->getState();
   const int num = this->point.getNum();
   SbBool setvbo = FALSE;
   SoBase::staticDataLock();
-  if (num >= SoVBO::getVertexCountMinLimit() &&
-      num <= SoVBO::getVertexCountMaxLimit()) {
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
     SbBool dirty = FALSE;
     setvbo = TRUE;
     if (PRIVATE(this)->vbo == NULL) {
@@ -160,7 +160,7 @@ SoCoordinate4::GLRender(SoGLRenderAction * action)
   }
   SoBase::staticDataUnlock();
   if (setvbo) {
-    SoGLVBOElement::setVertexVBO(action->getState(), PRIVATE(this)->vbo);
+    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
   }
 }
 

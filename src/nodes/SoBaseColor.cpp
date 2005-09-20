@@ -130,8 +130,7 @@ SoBaseColor::doAction(SoAction * action)
     if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
       SbBool setvbo = FALSE;
       SoBase::staticDataLock();
-      if ((num >= SoVBO::getVertexCountMinLimit()) &&
-          (num <= SoVBO::getVertexCountMaxLimit())) {
+      if (SoGLVBOElement::shouldCreateVBO(state, num)) {
         setvbo = TRUE;
         if (THIS->vbo == NULL) {
           THIS->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
