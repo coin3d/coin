@@ -91,6 +91,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/misc/SoGL.h>
@@ -235,19 +236,50 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   int32_t idx = this->startIndex.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
-
-  sogl_render_pointset(coords,
-                       nbind != OVERALL ? normals : NULL,
-                       mbind != OVERALL ? &mb : NULL,
-                       doTextures ? &tb : NULL,
-                       numpts, idx);
-
+  
+  const cc_glglue * glue = sogl_glue_instance(state);
+  
+  SbBool dova = cc_glglue_has_vertex_array(glue);
+  
+  if (dova && (mbind == PER_VERTEX)) {
+    const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+    if (vboelem->getColorVBO() == NULL) {
+      dova = FALSE;
+      // we might be able to do VA-rendering, but need to check the
+      // diffuse color type first.
+      SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+      if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+        dova = TRUE;
+      }
+    }
+  }
+  if (dova) {
+    SbBool vbo = this->startVertexArray(action,
+                                        coords,
+                                        (needNormals && (nbind != OVERALL)) ? normals : NULL,
+                                        doTextures,
+                                        mbind == PER_VERTEX);
+    
+    cc_glglue_glDrawArrays(glue, GL_POINTS, idx, numpts);
+    this->finishVertexArray(action, vbo,
+                            (needNormals && (nbind != OVERALL)),
+                            doTextures,
+                            mbind == PER_VERTEX);
+  }
+  else {
+    sogl_render_pointset(coords,
+                         nbind != OVERALL ? normals : NULL,
+                         mbind != OVERALL ? &mb : NULL,
+                         doTextures ? &tb : NULL,
+                         numpts, idx);
+  }
   if (didpush)
     state->pop();
 
   // send approx number of points for autocache handling. Divide
   // by three so that three points is the same as one triangle.
   sogl_autocache_update(state, numpts/3);
+
 }
 
 // Documented in superclass.
