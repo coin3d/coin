@@ -36,6 +36,9 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/C/glue/gl.h>
+#include "../../misc/SoVBO.h"
 #include <assert.h>
 
 #define PRIVATE(obj) obj->pimpl
@@ -226,5 +229,20 @@ SoGLVBOElement::getTexCoordVBO(const int idx) const
     return PRIVATE(this)->texcoordvbo[idx];
   }
   return NULL;
+}
+
+/*!
+  Returns \a TRUE if VBO is supported for the current context,
+  and if numdata is between the limits set for VBO rendering.
+
+*/
+SbBool 
+SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
+{
+  const cc_glglue * glue = sogl_glue_instance(state);
+  return 
+    (numdata >= SoVBO::getVertexCountMinLimit()) &&
+    (numdata <= SoVBO::getVertexCountMaxLimit()) &&
+    cc_glglue_has_vertex_buffer_object(glue);
 }
 

@@ -41,6 +41,7 @@ class SoGLVBOElement : public SoElement {
 
  public:
 
+  static SbBool shouldCreateVBO(SoState * state, const int numdata);
   static void setVertexVBO(SoState * state, SoVBO * vbo);
   static void setNormalVBO(SoState * state, SoVBO * vbo);
   static void setColorVBO(SoState * state, SoVBO * vbo);
