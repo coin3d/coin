@@ -147,8 +147,14 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
+#include <Inventor/VRMLnodes/SoVRMLTextureCoordinate.h>
+#include <Inventor/VRMLnodes/SoVRMLNormal.h>
+#include <Inventor/VRMLnodes/SoVRMLColor.h>
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -188,17 +194,23 @@ class SoReorganizeActionP {
     cbaction.addTriangleCallback(SoVertexShape::getClassTypeId(), triangle_cb, this);
     cbaction.addLineSegmentCallback(SoVertexShape::getClassTypeId(), line_segment_cb, this);
 
-    cbaction.addTriangleCallback(SoVRMLVertexShape::getClassTypeId(), triangle_cb, this);
-    cbaction.addLineSegmentCallback(SoVRMLVertexShape::getClassTypeId(), line_segment_cb, this);
-
+    cbaction.addTriangleCallback(SoVRMLIndexedFaceSet::getClassTypeId(), triangle_cb, this);
+    cbaction.addLineSegmentCallback(SoVRMLIndexedLineSet::getClassTypeId(), line_segment_cb, this);
+    
     cbaction.addPreCallback(SoVertexShape::getClassTypeId(),
                             pre_shape_cb, this);
     cbaction.addPostCallback(SoVertexShape::getClassTypeId(),
                              post_shape_cb, this);
     
-    cbaction.addPreCallback(SoVRMLVertexShape::getClassTypeId(),
+    cbaction.addPreCallback(SoVRMLIndexedFaceSet::getClassTypeId(),
                             pre_shape_cb, this);
-    cbaction.addPostCallback(SoVRMLVertexShape::getClassTypeId(),
+    cbaction.addPostCallback(SoVRMLIndexedFaceSet::getClassTypeId(),
+                             post_shape_cb, this);
+    
+
+    cbaction.addPreCallback(SoVRMLIndexedLineSet::getClassTypeId(),
+                            pre_shape_cb, this);
+    cbaction.addPostCallback(SoVRMLIndexedLineSet::getClassTypeId(),
                              post_shape_cb, this);
     
   } 
@@ -363,6 +375,26 @@ SoReorganizeAction::apply(SoNode * root)
     this->apply(pl[i]);
   }
   PRIVATE(this)->sa.reset();
+  
+  PRIVATE(this)->sa.setType(SoVRMLIndexedFaceSet::getClassTypeId());
+  PRIVATE(this)->sa.setSearchingAll(TRUE);
+  PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
+  PRIVATE(this)->sa.apply(root);
+  SoPathList & pl2 = PRIVATE(this)->sa.getPaths();
+  for (int i = 0; i < pl2.getLength(); i++) {
+    this->apply(pl2[i]);
+  }
+  PRIVATE(this)->sa.reset();
+
+  PRIVATE(this)->sa.setType(SoVRMLIndexedLineSet::getClassTypeId());
+  PRIVATE(this)->sa.setSearchingAll(TRUE);
+  PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
+  PRIVATE(this)->sa.apply(root);
+  SoPathList & pl3 = PRIVATE(this)->sa.getPaths();
+  for (int i = 0; i < pl3.getLength(); i++) {
+    this->apply(pl3[i]);
+  }
+  PRIVATE(this)->sa.reset();
 }
 
 void 
@@ -405,7 +437,7 @@ SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * action, co
 {
   SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
   thisp->didinit = FALSE;
-  thisp->isvrml  = node->isOfType(SoVRMLVertexShape::getClassTypeId());
+  thisp->isvrml  = node->isOfType(SoVRMLGeometry::getClassTypeId());
   thisp->numtriangles = 0;
   thisp->numpoints = 0;
   thisp->numlines = 0;
@@ -674,7 +706,7 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   }
   ifs->coordIndex.finishEditing();
 
-  int idx = path->getIndexFromTail(0);  
+  int idx = path->getIndexFromTail(0);
   path->pop();
   SoGroup * g = (SoGroup*)parent;
   g->replaceChild(idx, ifs);
@@ -685,6 +717,95 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
 void 
 SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 {
+  SoNode * parent = path->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId()) &&
+      !parent->isOfType(SoVRMLShape::getClassTypeId())) {
+    return;
+  }
+
+
+  SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
+  ifs->ref();
+  ifs->normalPerVertex = this->lighting;
+  ifs->colorPerVertex = this->pvcache->colorPerVertex();
+  
+  int numv = this->pvcache->getNumVertices();
+  
+  if (this->hastexture) {
+    SoVRMLTextureCoordinate * tc = new SoVRMLTextureCoordinate;
+    tc->point.setNum(numv);
+    SbVec2f * dst = tc->point.startEditing();
+    const SbVec4f * src = this->pvcache->getTexCoordArray();
+    
+    for (int i = 0; i < numv; i++) {
+      SbVec4f tmp = src[i];
+      if (tmp[3] != 0.0f) {
+        tmp[0] /= tmp[3];
+        tmp[1] /= tmp[3];
+      }
+      dst[i][0] = tmp[0];
+      dst[i][1] = tmp[1];
+    }
+    tc->point.finishEditing();
+    ifs->texCoord = tc;
+  }
+
+  SoVRMLCoordinate * c = new SoVRMLCoordinate;
+  c->point.setValues(0, numv,
+                     this->pvcache->getVertexArray());
+  ifs->coord = c;
+
+  if (this->lighting) {
+    SoVRMLNormal * norm = new SoVRMLNormal;
+    norm->vector.setValues(0, numv,
+                           this->pvcache->getNormalArray());
+    ifs->normal = norm;
+  }    
+  if (this->pvcache->colorPerVertex()) {
+    SoVRMLColor * col = new SoVRMLColor;
+    col->color.setNum(numv);
+    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    SbColor * dst = col->color.startEditing();
+    float dummy;
+    for (int i = 0; i < numv; i++) {
+      dst[i] = SbColor(src[0]/255.0f,
+                       src[1]/255.0f,
+                       src[2]/255.0f);
+      src += 4;
+    }
+    col->color.finishEditing();
+    ifs->color = col;
+  }
+
+  ifs->normalIndex.setNum(0);
+  ifs->colorIndex.setNum(0);
+  ifs->texCoordIndex.setNum(0);
+  
+  int numtri = this->pvcache->getNumIndices() / 3;
+  const int32_t * indices = this->pvcache->getIndices();
+  ifs->coordIndex.setNum(numtri * 4);
+  int32_t * ptr = ifs->coordIndex.startEditing();
+
+  for (int i = 0; i < numtri; i++) {
+    *ptr++ = indices[i*3];
+    *ptr++ = indices[i*3+1];
+    *ptr++ = indices[i*3+2];
+    *ptr++ = -1;
+  }
+  ifs->coordIndex.finishEditing();
+
+  int idx = path->getIndexFromTail(0);
+  path->pop();
+  if (parent->isOfType(SoGroup::getClassTypeId())) {
+    SoGroup * g = (SoGroup*)parent;
+    g->replaceChild(idx, ifs);
+  }
+  else {
+    SoVRMLShape * shape = (SoVRMLShape*) parent;
+    shape->geometry = ifs;
+  }
+  path->push(idx);
+  ifs->unrefNoDelete();
 }
 
 void 
