@@ -541,129 +541,19 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
-    SbBool dovbo = TRUE;
-    const GLvoid * dataptr = NULL;
-    const uint32_t contextid = action->getCacheContext();
-    const cc_glglue * glue = sogl_glue_instance(state);
-    SoVBO * vbo = vboelem->getVertexVBO();
-    if (!vbo) dovbo = FALSE;
-
-    const SoTextureCoordinateElement * telem = NULL;
-    const SoMultiTextureCoordinateElement * mtelem = NULL;
-    const SbBool * enabledunits = NULL;
-    int lastenabled;
-
-    if (doTextures) {
-      telem = SoTextureCoordinateElement::getInstance(state);
-      enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-      if (enabledunits) {
-        mtelem = SoMultiTextureCoordinateElement::getInstance(state);
-      }
-    }
-
-    if (mbind != OVERALL) {
-      dataptr = NULL;
-      assert(lelem != NULL);
-      if (colorvbo) {
-        lelem->updateColorVBO(colorvbo);
-        colorvbo->bindBuffer(contextid);
-      }
-      else {
-        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-        dataptr = (const GLvoid*) lelem->getDiffusePointer();
-      }
-      if (colorvbo) {
-        cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0, dataptr);
-      }
-      else {
-        cc_glglue_glColorPointer(glue, 3, GL_FLOAT, 0, dataptr);
-      }
-      cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
-    }
-    
-    if (doTextures) {
-      if (telem->getNum()) {
-        int dim = telem->getDimension();
-        const GLvoid * tptr;
-        switch (dim) {
-        default:
-        case 2: tptr = (const GLvoid*) telem->getArrayPtr2(); break;
-        case 3: tptr = (const GLvoid*) telem->getArrayPtr3(); break;
-        case 4: tptr = (const GLvoid*) telem->getArrayPtr4(); break;
-        }
-        vbo = dovbo ? vboelem->getTexCoordVBO(0) : NULL;
-        if (vbo) {
-          vbo->bindBuffer(contextid);
-          tptr = NULL;
-        }
-        else {
-          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-        }
-        cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
-        cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-      }
-      for (int i = 1; i <= lastenabled; i++) {
-        if (enabledunits[i] && mtelem->getNum(i)) {
-          int dim = mtelem->getDimension(i);
-          const GLvoid * tptr;
-          switch (dim) {
-          default:
-          case 2: tptr = (const GLvoid*) mtelem->getArrayPtr2(i); break;
-          case 3: tptr = (const GLvoid*) mtelem->getArrayPtr3(i); break;
-          case 4: tptr = (const GLvoid*) mtelem->getArrayPtr4(i); break;
-          }
-          cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
-          vbo = dovbo ? vboelem->getTexCoordVBO(i) : NULL;
-          if (vbo) {
-            vbo->bindBuffer(contextid);
-            tptr = NULL;
-          }
-          else {
-            cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-          }
-          cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
-          cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-        }
-      }
-    }
-    if (nbind != OVERALL) {
-      vbo = dovbo ? vboelem->getNormalVBO() : NULL;
-      dataptr = NULL;
-      if (vbo) {
-        vbo->bindBuffer(contextid);
-      }
-      else {
-        dataptr = (const GLvoid*) normals;
-        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-      }
-      cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, dataptr);
-      cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
-    }
-    vbo = vboelem->getVertexVBO();
-    dataptr = NULL;
-    if (vbo) {
-      vbo->bindBuffer(contextid);
-    }
-    else {
-      dataptr = coords->is3D() ? 
-        ((const GLvoid *)coords->getArrayPtr3()) : 
-        ((const GLvoid *)coords->getArrayPtr4());
-    }
-    cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
-                              dataptr);
-    cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-
-
+    SbBool dovbo = this->startVertexArray(action,
+                                          coords,
+                                          (nbind != OVERALL) ? normals : NULL,
+                                          doTextures,
+                                          mbind != OVERALL);
     LOCK_VAINDEXER(this);
     if (THIS->vaindexer == NULL) {
-
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
-      
       int i = 0;
       while (i < numindices) {
         int cnt = 0;
         while (i + cnt < numindices && cindices[i+cnt] >= 0) cnt++;
-
+        
         switch (cnt) {
         case 3:
           indexer->addTriangle(cindices[i],cindices[i+1], cindices[i+2]);
@@ -695,36 +585,15 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     if (THIS->vaindexer) {
-      // don't cache when rendering with vertex arrays
-      SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-      THIS->vaindexer->render(glue, dovbo, contextid);
-      if (mbind != OVERALL) {
-        assert(lelem != NULL);
-        lelem->reset(state, SoLazyElement::DIFFUSE_MASK);
-      }
-    }
-    if (dovbo) {
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      const uint32_t contextid = action->getCacheContext();
+      THIS->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
-    
-    // disable client states again
-    cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
-    if (nbind != OVERALL) {
-      cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
-    }
-    if (doTextures) {
-      for (int i = 1; i <= lastenabled; i++) {
-        if (enabledunits[i] && mtelem->getNum(i)) {
-          cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
-          cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-        }
-      }
-      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
-      if (telem->getNum()) {
-        cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-      }
-    }
+    this->finishVertexArray(action,
+                            dovbo,
+                            (nbind != OVERALL),
+                            doTextures,
+                            mbind != OVERALL);
   }
   else {
     sogl_render_faceset((SoGLCoordinateElement *)coords,
