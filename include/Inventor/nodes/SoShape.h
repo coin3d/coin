@@ -35,6 +35,7 @@ class SoPickedPoint;
 class SoFaceDetail;
 class SoState;
 class SoTextureCoordinateElement;
+class SoCoordinateElement;
 class SbVec2f;
 class SoMaterialBundle;
 class SoBoundingBoxCache;
@@ -128,6 +129,17 @@ protected:
                       const float r,
                       const SbVec3f & normal);
 
+  SbBool startVertexArray(SoGLRenderAction * action,
+                          const SoCoordinateElement * coords,
+                          const SbVec3f * pervertexnormals,
+                          const SbBool texpervertex,
+                          const SbBool colorpervertex);
+  
+  void finishVertexArray(SoGLRenderAction * action,
+                         const SbBool vbo,
+                         const SbBool normpervertex,
+                         const SbBool texpervertex,
+                         const SbBool colorpervertex);
 private:
   class SoShapeP * pimpl;
 

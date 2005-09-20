@@ -74,6 +74,7 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -90,6 +91,11 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/threads/SbStorage.h>
+#include "../misc/SoVBO.h"
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+
 #include <coindefs.h> // COIN_OBSOLETED()
 
 // SoShape.cpp grew too big, so I had to move some code into new
@@ -1548,6 +1554,187 @@ SoShapeP::calibrateBBoxCache(void)
   }
   SbTime end = SbTime::getTimeOfDay();
   SoShapeP::bboxcachetimelimit = end.getValue() - begin.getValue();
+}
+
+/*!
+  Convenience method that enables vertex arrays and/or VBOs
+  Returns \e TRUE if VBO is used.
+  
+  \sa finishVertexArray()
+  \since Coin 3.0
+*/
+SbBool 
+SoShape::startVertexArray(SoGLRenderAction * action,
+                          const SoCoordinateElement * coords,
+                          const SbVec3f * pervertexnormals,
+                          const SbBool texpervertex,
+                          const SbBool colorpervertex)
+{
+  SoState * state = action->getState();
+  const cc_glglue * glue = sogl_glue_instance(state);
+  const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+  const uint32_t contextid = action->getCacheContext();
+  SoVBO * vertexvbo = vboelem->getVertexVBO();
+  SbBool dovbo = TRUE;
+  if (!vertexvbo) dovbo = FALSE;
+  
+  if (colorpervertex) {
+    const GLvoid * dataptr = NULL;
+    SoVBO * colorvbo = dovbo ? vboelem->getColorVBO() : NULL;
+    SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+    if (colorvbo) {
+      lelem->updateColorVBO(colorvbo);
+      colorvbo->bindBuffer(contextid);
+    }
+    else {
+      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      dataptr = (const GLvoid*) lelem->getDiffusePointer();
+    }
+    if (colorvbo) {
+      cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0, dataptr);
+    }
+    else {
+      cc_glglue_glColorPointer(glue, 3, GL_FLOAT, 0, dataptr);
+    }
+    cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
+  }
+  if (texpervertex) {
+    const SoTextureCoordinateElement * telem = NULL;
+    const SoMultiTextureCoordinateElement * mtelem = NULL;
+    const SbBool * enabledunits = NULL;
+    int lastenabled;
+    
+    telem = SoTextureCoordinateElement::getInstance(state);
+    enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    if (enabledunits) {
+      mtelem = SoMultiTextureCoordinateElement::getInstance(state);
+    }
+    SoVBO * vbo;
+    if (telem->getNum()) {
+      int dim = telem->getDimension();
+      const GLvoid * tptr;
+      switch (dim) {
+      default:
+      case 2: tptr = (const GLvoid*) telem->getArrayPtr2(); break;
+      case 3: tptr = (const GLvoid*) telem->getArrayPtr3(); break;
+      case 4: tptr = (const GLvoid*) telem->getArrayPtr4(); break;
+      }
+      vbo = dovbo ? vboelem->getTexCoordVBO(0) : NULL;
+      if (vbo) {
+        vbo->bindBuffer(contextid);
+        tptr = NULL;
+      }
+      else {
+        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      }
+      cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
+      cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    }
+    for (int i = 1; i <= lastenabled; i++) {
+      if (enabledunits[i] && mtelem->getNum(i)) {
+        int dim = mtelem->getDimension(i);
+        const GLvoid * tptr;
+        switch (dim) {
+        default:
+        case 2: tptr = (const GLvoid*) mtelem->getArrayPtr2(i); break;
+        case 3: tptr = (const GLvoid*) mtelem->getArrayPtr3(i); break;
+        case 4: tptr = (const GLvoid*) mtelem->getArrayPtr4(i); break;
+        }
+        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+        vbo = dovbo ? vboelem->getTexCoordVBO(i) : NULL;
+        if (vbo) {
+          vbo->bindBuffer(contextid);
+          tptr = NULL;
+        }
+        else {
+          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        }
+        cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
+        cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+      }
+    }
+  }
+  if (pervertexnormals != NULL) {
+    SoVBO * vbo = dovbo ? vboelem->getNormalVBO() : NULL;
+    const GLvoid * dataptr = NULL;
+    if (vbo) {
+      vbo->bindBuffer(contextid);
+    }
+    else {
+      dataptr = (const GLvoid*) pervertexnormals;
+      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+    }
+    cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, dataptr);
+    cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
+  }
+  const GLvoid * dataptr = NULL;
+  if (vertexvbo) {
+    vertexvbo->bindBuffer(contextid);
+  }
+  else {
+    dataptr = coords->is3D() ? 
+      ((const GLvoid *)coords->getArrayPtr3()) : 
+      ((const GLvoid *)coords->getArrayPtr4());
+  }
+  cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
+                            dataptr);
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
+  
+  return dovbo;
+}
+
+/*!  
+  Should be called after rendering with vertex arrays. This method
+  will disable arrays and VBOs enabled in the startVertexArray()
+  function.
+  
+  \sa startVertexArray()
+  \since Coin 3.0
+*/
+void 
+SoShape::finishVertexArray(SoGLRenderAction * action,
+                           const SbBool vbo,
+                           const SbBool normpervertex,
+                           const SbBool texpervertex,
+                           const SbBool colorpervertex)
+{
+  SoState * state = action->getState();
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  if (vbo) {
+    // unset VBO buffer
+    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+  }
+  cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
+  if (normpervertex) {
+    cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
+  }
+  if (texpervertex) {
+    const SoTextureCoordinateElement * telem = NULL;
+    const SoMultiTextureCoordinateElement * mtelem = NULL;
+    const SbBool * enabledunits = NULL;
+    int lastenabled;
+
+    telem = SoTextureCoordinateElement::getInstance(state);
+    enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    
+    for (int i = 1; i <= lastenabled; i++) {
+      if (enabledunits[i] && mtelem->getNum(i)) {
+        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+        cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+      }
+    }
+    cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
+    if (telem->getNum()) {
+      cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    }
+  }
+  if (colorpervertex) {
+    SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+    lelem->reset(state, SoLazyElement::DIFFUSE_MASK);
+    
+    cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
+  }
 }
 
 #undef PRIVATE
