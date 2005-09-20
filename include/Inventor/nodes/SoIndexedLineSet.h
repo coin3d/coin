@@ -29,6 +29,8 @@
 
 #define SO_END_LINE_INDEX (-1)
 
+class SoIndexedLineSetP;
+
 class COIN_DLL_API SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
@@ -44,6 +46,7 @@ public:
 
 protected:
   virtual ~SoIndexedLineSet();
+  virtual void notify(SoNotList * list);
 
 private:
   virtual void generatePrimitives(SoAction * action);
@@ -63,6 +66,8 @@ private:
 
   Binding findNormalBinding(SoState * state);
   Binding findMaterialBinding(SoState * state);
+
+  SoIndexedLineSetP * pimpl;
 };
 
 #endif // !COIN_SOINDEXEDLINESET_H
