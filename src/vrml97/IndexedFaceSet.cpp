@@ -220,12 +220,16 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/misc/SoGL.h>
+#include "../misc/SoVertexArrayIndexer.h"
+#include "../misc/SoVBO.h"
 
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/glp.h>
@@ -243,7 +247,9 @@
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
-#ifndef DOXYGEN_SKIP_THIS
+#define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
+#define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()
+
 class SoVRMLIndexedFaceSetP {
 public:
   SoVRMLIndexedFaceSetP(void) 
@@ -251,6 +257,7 @@ public:
     : convexmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE 
   { }
+  SoVertexArrayIndexer * vaindexer;
   SoConvexDataCache * convexCache;
   int concavestatus;
 #ifdef COIN_THREADSAFE
@@ -278,7 +285,6 @@ public:
 #endif // COIN_THREADSAFE
   }
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
@@ -300,6 +306,7 @@ SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
   PRIVATE(this) = new SoVRMLIndexedFaceSetP;
   PRIVATE(this)->convexCache = NULL;
   PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+  PRIVATE(this)->vaindexer = NULL;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedFaceSet);
 
@@ -316,6 +323,7 @@ SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
 SoVRMLIndexedFaceSet::~SoVRMLIndexedFaceSet() // virtual, protected
 {
   if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->unref();
+  delete PRIVATE(this)->vaindexer;
   delete PRIVATE(this);
 }
 
@@ -516,19 +524,102 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
-  sogl_render_faceset((SoGLCoordinateElement *)coords,
-                      cindices,
-                      numindices,
-                      normals,
-                      nindices,
-                      &mb,
-                      mindices,
-                      &tb,
-                      tindices,
-                      (int)nbind,
-                      (int)mbind,
-                      doTextures?1:0);
+  SoGLLazyElement * lelem = NULL;
+  SbBool dova = 
+    (numindices > 50) &&
+    !convexcacheused && !normalCacheUsed &&
+    ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
+    ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
+    ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
+    cc_glglue_has_vertex_array(sogl_glue_instance(state));
 
+  const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+  SoVBO * colorvbo = NULL;
+
+  if (dova && (mbind != OVERALL)) {
+    dova = FALSE;
+    if ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL))) {
+      lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+      colorvbo = vboelem->getColorVBO();
+      if (colorvbo) dova = TRUE;
+      else {
+        // we might be able to do VA-rendering, but need to check the
+        // diffuse color type first.
+        if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+          dova = TRUE;
+        }
+      }
+    }
+  }
+  if (dova) {
+    SbBool dovbo = this->startVertexArray(action,
+                                          coords,
+                                          (nbind != OVERALL) ? normals : NULL,
+                                          doTextures,
+                                          mbind != OVERALL);
+    LOCK_VAINDEXER(this);
+    if (PRIVATE(this)->vaindexer == NULL) {
+      SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
+      int i = 0;
+      while (i < numindices) {
+        int cnt = 0;
+        while (i + cnt < numindices && cindices[i+cnt] >= 0) cnt++;
+        
+        switch (cnt) {
+        case 3:
+          indexer->addTriangle(cindices[i],cindices[i+1], cindices[i+2]);
+          break;
+        case 4:
+          indexer->addQuad(cindices[i],cindices[i+1],cindices[i+2],cindices[i+3]);
+          break;
+        default:
+          if (cnt > 4) {
+            indexer->beginTarget(GL_POLYGON);
+            for (int j = 0; j < cnt; j++) {
+              indexer->targetVertex(GL_POLYGON, cindices[i+j]);
+            }
+            indexer->endTarget(GL_POLYGON);
+          }
+        }
+        i += cnt + 1;
+      }
+      indexer->close();
+      if (indexer->getNumVertices()) {
+        PRIVATE(this)->vaindexer = indexer;
+      }
+      else {
+        delete indexer;
+      }
+#if 0
+      fprintf(stderr,"XXX: create VRML VertexArrayIndexer: %d\n", indexer->getNumVertices());
+#endif
+    }
+
+    if (PRIVATE(this)->vaindexer) {
+      const uint32_t contextid = action->getCacheContext();
+      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+    }
+    UNLOCK_VAINDEXER(this);
+    this->finishVertexArray(action,
+                            dovbo,
+                            (nbind != OVERALL),
+                            doTextures,
+                            mbind != OVERALL);
+  }
+  else {
+    sogl_render_faceset((SoGLCoordinateElement *)coords,
+                        cindices,
+                        numindices,
+                        normals,
+                        nindices,
+                        &mb,
+                        mindices,
+                        &tb,
+                        tindices,
+                        (int)nbind,
+                        (int)mbind,
+                        doTextures?1:0);
+  }
   if (normalCacheUsed) {
     this->readUnlockNormalCache();
   }
@@ -843,7 +934,15 @@ SoVRMLIndexedFaceSet::notify(SoNotList * list)
 {
   if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->invalidate();
   SoField *f = list->getLastField();
-  if (f == &this->coordIndex) PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+  if (f == &this->coordIndex) {
+    PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+    LOCK_VAINDEXER(this);
+    if (PRIVATE(this)->vaindexer) {
+      delete PRIVATE(this)->vaindexer;
+      PRIVATE(this)->vaindexer = NULL;
+    }
+    UNLOCK_VAINDEXER(this);
+  }
   inherited::notify(list);
 }
 
