@@ -215,6 +215,9 @@ if $BUILD_WITH_MSVC; then
     CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
     LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_msvcrt_CPPFLAGS"
+    COIN_EXTRA_CFLAGS="$COIN_EXTRA_CFLAGS $sim_ac_msvcrt_CFLAGS"
+    COIN_EXTRA_CXXFLAGS="$COIN_EXTRA_CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
     # sim_ac_msvcrt_LIBLIBS is set up at the end
     # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
   ])
@@ -898,6 +901,19 @@ SIM_AC_COMPILER_NOBOOL([
 #  "inefficient including" internally.
 
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
+
+if $BUILD_WITH_MSVC; then
+  case ${enable_static-no} in
+  yes | true)  COIN_STATIC=true;
+               enable_shared=no ;; # --enable-static-problem with autoconf 2.58
+  *)           COIN_STATIC=false ;;
+  esac
+  case ${enable_shared-default} in
+  default)     ;;
+  yes | true)  COIN_STATIC=false ;;
+  *)           COIN_STATIC=true ;;
+  esac
+fi
 
 # **************************************************************************
 # Check for various system specifics.
@@ -1792,19 +1808,6 @@ SIM_AC_UNIQIFY_OPTION_LIST(LIBS, $LIBS)
 CPP_AC_SEARCH_ORDER_FILTER(CPPFLAGS, $CPPFLAGS)
 CPP_AC_SEARCH_ORDER_FILTER(COIN_EXTRA_CPPFLAGS, $COIN_EXTRA_CPPFLAGS)
 
-if $BUILD_WITH_MSVC; then
-  case ${enable_static-no} in
-  yes | true)  COIN_STATIC=true;
-               enable_shared=no ;; # --enable-static-problem with autoconf 2.58
-  *)           COIN_STATIC=false ;;
-  esac
-
-  case ${enable_shared-default} in
-  default)     ;;
-  yes | true)  COIN_STATIC=false ;;
-  *)           COIN_STATIC=true ;;
-  esac
-fi
 
 # The above mentioned "bug" might not be a bug for Unix platforms, but for
 # Windows you can't compile for both shared and static library linkage at
@@ -1885,6 +1888,8 @@ COIN_COMPILER="$CXX"
 
     if $COIN_STATIC; then
       COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
+      COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $LIBS"
+      LIBS=
     else
       CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
       COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
@@ -1894,9 +1899,18 @@ COIN_COMPILER="$CXX"
     debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
     if $COIN_STATIC; then
-      SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib])
       LIBFLAGS="-LIB $LIBFLAGS"
       LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
+      case $enable_symbols in
+      no | false)
+        SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, no symbols])
+	;;
+      *)
+        SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, with symbols])
+        CFLAGS="-g /Z7 /Yd $CFLAGS"
+        CXXFLAGS="-g /Z7 /Yd $CXXFLAGS"
+	;;
+      esac
     else
       LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
       case $enable_symbols in
@@ -1908,8 +1922,8 @@ COIN_COMPILER="$CXX"
       *)
         SIM_AC_CONFIGURATION_SETTING([Coin build type],
                                      [dynamic .dll + .pdb])
-        CFLAGS="/Fd$debugfile -g $CFLAGS"
-        CXXFLAGS="/Fd$debugfile -g $CXXFLAGS"
+        CFLAGS="-g /Z7 /Yd $CFLAGS"
+        CXXFLAGS="-g /Z7 /Yd $CXXFLAGS"
         LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
         ;;
       esac
