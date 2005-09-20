@@ -521,10 +521,10 @@ SoRayPickAction::computeWorldSpaceRay(void)
     double normradius = double(PRIVATE(this)->radiusinpixels) /
       double(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
 
-    PRIVATE(this)->wsvolume = vv.narrow(PRIVATE(this)->normvppoint[0] - normradius,
-                                        PRIVATE(this)->normvppoint[1] - normradius,
-                                        PRIVATE(this)->normvppoint[0] + normradius,
-                                        PRIVATE(this)->normvppoint[1] + normradius);
+    PRIVATE(this)->wsvolume = vv.narrow(float(PRIVATE(this)->normvppoint[0] - normradius),
+                                        float(PRIVATE(this)->normvppoint[1] - normradius),
+                                        float(PRIVATE(this)->normvppoint[0] + normradius),
+                                        float(PRIVATE(this)->normvppoint[1] + normradius));
     SoPickRayElement::set(state, PRIVATE(this)->wsvolume);
     PRIVATE(this)->setFlag(SoRayPickActionP::OSVOLUME_DIRTY);
   }
@@ -608,7 +608,7 @@ SoRayPickAction::intersect(const SbVec3f & v0_in,
   SbVec3d tvec = orig - v0;
 
   // calculate U parameter and test bounds
-  u = tvec.dot(pvec) * inv_det;
+  u = float(tvec.dot(pvec) * inv_det);
   if (u < 0.0 || u > 1.0)
     return FALSE;
 
@@ -616,12 +616,12 @@ SoRayPickAction::intersect(const SbVec3f & v0_in,
   SbVec3d qvec = tvec.cross(edge1);
 
   // calculate V parameter and test bounds
-  v = dir.dot(qvec) * inv_det;
+  v = float(dir.dot(qvec) * inv_det);
   if (v < 0.0 || u + v > 1.0)
     return FALSE;
 
   // third barycentric coordinate
-  w = 1.0 - u - v;
+  w = 1.0f - u - v;
 
   // calculate t and intersection point
   double t = edge2.dot(qvec) * inv_det;
