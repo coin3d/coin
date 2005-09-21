@@ -58,3 +58,5 @@
 #include "CoinStaticObjectInDLL.cpp"
 #include "SoDebug.cpp"
 #include "SoJavaScriptEngine.cpp"
+#include "SoVertexArrayIndexer.cpp"
+#include "SoVBO.cpp"
