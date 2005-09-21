@@ -390,13 +390,17 @@ SoVertexProperty::doAction(SoAction *action)
   }
   num = this->texCoord3.getNum();
   if (num > 0) {
-    SoTextureCoordinateElement::set3(state, this, num,
-                                     this->texCoord3.getValues(0));
     if (glrender) {
       if (SoGLTexture3EnabledElement::get(state)) {
+        // it's important to call this _before_ setting the coordinates
+        // on the state.
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
       }
+    }
+    SoTextureCoordinateElement::set3(state, this, num,
+                                     this->texCoord3.getValues(0));
+    if (glrender) {
       SbBool setvbo = FALSE;
       if ((num == numvertex) && shouldcreatevbo) {
         SbBool dirty = FALSE;
@@ -426,12 +430,16 @@ SoVertexProperty::doAction(SoAction *action)
   else {
     num = this->texCoord.getNum();
     if (num > 0) {
+      if (glrender) {
+        // it's important to call this _before_ setting the coordinates
+        // on the state.
+        SoGLTextureCoordinateElement::setTexGen(state,
+                                                this, NULL);
+      }
       SoTextureCoordinateElement::set2(state, this, num,
                                        this->texCoord.getValues(0));
 
       if (glrender) {
-        SoGLTextureCoordinateElement::setTexGen(state,
-                                                this, NULL);
         SbBool setvbo = FALSE;
         if ((num == numvertex) && shouldcreatevbo) {
           SbBool dirty = FALSE;
