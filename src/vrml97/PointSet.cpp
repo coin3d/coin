@@ -94,6 +94,9 @@
 #include <Inventor/SbColor4f.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include "../misc/SoVBO.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -164,15 +167,47 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
     mb.sendFirst();
   }
 
-  sogl_render_pointset((SoGLCoordinateElement*) coords,
-                       NULL,
-                       matpervertex ? &mb : NULL,
-                       NULL,
-                       coords->getNum(), 0);
+  const cc_glglue * glue = sogl_glue_instance(state);
 
+  const int numpts = coords->getNum();
+  
+  SbBool dova = (numpts >= SoVBO::getVertexCountMinLimit()) && cc_glglue_has_vertex_array(glue);
+  
+  if (dova && matpervertex) {
+    const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+    if (vboelem->getColorVBO() == NULL) {
+      dova = FALSE;
+      // we might be able to do VA-rendering, but need to check the
+      // diffuse color type first.
+      SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+      if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+        dova = TRUE;
+      }
+    }
+  }
+  if (dova) {
+    SbBool vbo = this->startVertexArray(action,
+                                        coords,
+                                        NULL,
+                                        FALSE,
+                                        matpervertex);
+    
+    cc_glglue_glDrawArrays(glue, GL_POINTS, 0, numpts);
+    this->finishVertexArray(action, vbo,
+                            FALSE,
+                            FALSE,
+                            matpervertex);
+  }
+  else {
+    sogl_render_pointset((SoGLCoordinateElement*) coords,
+                         NULL,
+                         matpervertex ? &mb : NULL,
+                         NULL,
+                         numpts, 0);
+  }
 
   // send approx number of points for autocache handling
-  sogl_autocache_update(state, coords->getNum()); 
+  sogl_autocache_update(state, numpts); 
 }
 
 // Doc in parent
