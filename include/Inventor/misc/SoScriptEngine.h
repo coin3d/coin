@@ -31,17 +31,18 @@
 class COIN_DLL_API SoScriptEngine {
 
 public:
-/*  SoScriptEngine(void) = 0;*/
-//  virtual ~SoScriptEngine() = 0;
-
   // FIXME: should all these functions be const? 20050719 erikgors.
   // FIXME: what about the return value from executing a script?
   // 20050719 erikgors.
-  virtual SbBool executeScript(const SbName & name, const SbString & script) const = 0;
+  virtual SbBool executeScript(const SbName & name, 
+                               const SbString & script) const = 0;
   virtual SbBool executeFile(const SbName & filename) const = 0;
-  virtual SbBool executeFunction(const SbName &name, int argc, const SoField * argv, SoField * rval=NULL) const = 0;
+  virtual SbBool executeFunction(const SbName & name, int argc, 
+                                 const SoField * argv, 
+                                 SoField * rval = NULL) const = 0;
 
-  virtual SbBool setScriptField(const SbName & name, const SoField * f) const = 0;
+  virtual SbBool setScriptField(const SbName & name, 
+                                const SoField * f) const = 0;
   virtual SbBool getScriptField(const SbName & name, SoField * f) const = 0;
   virtual SbBool unsetScriptField(const SbName & name) const = 0;
   virtual SbBool hasScriptField(const SbName & name) const = 0;
