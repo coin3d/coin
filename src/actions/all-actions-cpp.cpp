@@ -37,6 +37,7 @@
 #include "SoRayPickAction.cpp"
 #include "SoReorganizeAction.cpp"
 #include "SoSearchAction.cpp"
+#include "SoSimplifyAction.cpp"
 #include "SoToVRMLAction.cpp"
 #include "SoToVRML2Action.cpp"
 #include "SoWriteAction.cpp"
