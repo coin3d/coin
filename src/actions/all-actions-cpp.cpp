@@ -35,6 +35,7 @@
 #include "SoLineHighlightRenderAction.cpp"
 #include "SoPickAction.cpp"
 #include "SoRayPickAction.cpp"
+#include "SoReorganizeAction.cpp"
 #include "SoSearchAction.cpp"
 #include "SoToVRMLAction.cpp"
 #include "SoToVRML2Action.cpp"
