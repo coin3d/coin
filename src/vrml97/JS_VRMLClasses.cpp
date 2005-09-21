@@ -60,6 +60,7 @@ struct CoinVrmlJs {
   struct ClassDescriptor {
     JSClass cls;
     JSFunctionSpec * functions;
+
   };
 
   static ClassDescriptor SFColor;
@@ -237,7 +238,7 @@ struct CoinVrmlJsMFHandler {
     uintN i;
 
     for (i=0; i<argc; ++i) {
-      if (SoJavaScriptEngine::jsval2field(cx, argv[i], field)) {
+      if (SoJavaScriptEngine::getEngine(cx)->jsval2field(argv[i], field)) {
         assert(spidermonkey()->JS_SetElement(cx, array, i, &argv[i]));
       }
       else {
@@ -374,7 +375,7 @@ struct CoinVrmlJsMFHandler {
 
       SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
       // Check if val is not of wrong type
-      if (SoJavaScriptEngine::jsval2field(cx, *val, field)) {
+      if (SoJavaScriptEngine::getEngine(cx)->jsval2field(*val, field)) {
         // assign it
         assert(spidermonkey()->JS_SetElement(cx, JSVAL_TO_OBJECT(*array), index, val));
         return JSVAL_TRUE;
@@ -419,7 +420,7 @@ struct CoinVrmlJsMFHandler {
         ok = spidermonkey()->JS_GetElement(cx, obj, i, &element);
         assert(ok);
 
-        assert(SoJavaScriptEngine::jsval2field(cx, element, field));
+        assert(SoJavaScriptEngine::getEngine(cx)->jsval2field(element, field));
         ((MFFieldClass *)f)->set1Value(i, field->getValue());
       }
       delete field;
@@ -441,7 +442,7 @@ struct CoinVrmlJsMFHandler {
     SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
     for (int i=0; i<num; ++i) {
       field->setValue(mf[i]);
-      assert(SoJavaScriptEngine::field2jsval(cx, field, &vals[i]));
+      assert(SoJavaScriptEngine::getEngine(cx)->field2jsval(field, &vals[i]));
     }
 
     jsval rval;
@@ -1008,7 +1009,7 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
     }
 
     if (out != NULL) {
-      SoJavaScriptEngine::field2jsval(cx, out, rval);
+      SoJavaScriptEngine::getEngine(cx)->field2jsval(out, rval);
       return JSVAL_TRUE;
     }
     else {
@@ -1043,7 +1044,7 @@ static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
     }
 
     if (in != NULL) {
-      SoJavaScriptEngine::jsval2field(cx, *rval, in);
+      SoJavaScriptEngine::getEngine(cx)->jsval2field(*rval, in);
       if (SoJavaScriptEngine::debug()) {
         SoDebugError::postInfo("SFNode_set", "setting field %s", str.getString());
       }
@@ -1075,7 +1076,7 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 }
 
 static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj, 
-                                    uintN argc, jsval * argv, jsval *rval)
+                                uintN argc, jsval * argv, jsval *rval)
 {
   // spidermonkey ignores the return value
 
