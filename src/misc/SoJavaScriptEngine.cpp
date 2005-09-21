@@ -51,9 +51,9 @@ public:
 
   struct JavascriptHandler {
     SoType type;
-    CoinJSinit_t init;
-    CoinJSfield2jsval_t field2jsval;
-    CoinJSjsval2field_t jsval2field;
+    SoJSWrapperInitFunc * init;
+    SoJSfield2jsvalFunc * field2jsval;
+    SoJSjsval2field2Func * jsval2field;
   };
 
   SbList<JavascriptHandler> handlerList;
@@ -62,6 +62,196 @@ public:
 
 JSRuntime * SoJavaScriptEngineP::runtime = NULL;
 size_t SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
+
+/*!
+  Execute a compiled script.
+ */
+SbBool
+SoJavaScriptEngineP::executeJSScript(JSScript * script) const
+{
+  jsval rval;
+  JSBool ok = spidermonkey()->JS_ExecuteScript(this->context, this->global, script, &rval);
+  if (ok) {
+    if (SoJavaScriptEngine::debug()) {
+      JSString * str = spidermonkey()->JS_ValueToString(this->context, rval);
+      SoDebugError::postInfo("SoJavaScriptEngineP::executeJSScript",
+                             "script result: '%s'",
+                             spidermonkey()->JS_GetStringBytes(str));
+    }
+    return TRUE;
+  }
+  else {
+    // FIXME: improve on this. 20050526 mortene.
+    SoDebugError::postWarning("SoJavaScriptEngine::executeJSScript",
+                              "Script evaluation failed!");
+  }
+  return FALSE;
+}
+
+// FIXME: imported from SquirrelMonkey/src/jsutils.cpp
+// 20050719 erikgors.
+/*!
+  Prints a stacktrace for the pending exception.
+  Does nothing if there aren't any pending exceptions.
+*/
+static void printJSException(JSContext *cx)
+{
+  jsval val, stack;
+  JSObject * obj;
+  char * cstr;
+  int len;
+  JSString *s;
+
+  if (!spidermonkey()->JS_GetPendingException(cx, &val)) return;
+  if (!JSVAL_IS_OBJECT(val)) return;
+  obj = JSVAL_TO_OBJECT(val);
+  if (!spidermonkey()->JS_GetProperty(cx, obj, "stack", &stack)) return;
+
+  /* print exception.stack */
+  if (!(s=spidermonkey()->JS_ValueToString(cx, stack))) {
+    SoDebugError::postWarning("printJSException", "could not convert exception to string");
+    return;
+  }
+  /* root the string */
+  if (!spidermonkey()->JS_AddRoot(cx, &s)) {
+    SoDebugError::postWarning("printJSException", "could not root string");
+    return;
+  }
+
+  /* Todo: we loose unicode information here */
+  cstr = spidermonkey()->JS_GetStringBytes(s);
+  if (!cstr) {
+    SoDebugError::postWarning("printJSException", "could not get string bytes");
+    assert(spidermonkey()->JS_RemoveRoot(cx, &s));
+    return;
+  }
+  len = spidermonkey()->JS_GetStringLength(s);
+  SoDebugError::postWarning("printJSException", "Stack:");
+  /*
+     Todo: somehow do nice indent
+     Note: string might contain \0 => we don't use fputs
+  */
+  // FIXME: this looks ugly. 20050719 erikgors.
+  fwrite(cstr, 1, spidermonkey()->JS_GetStringLength(s), stderr);
+  fprintf(stderr, "\n");
+  assert(spidermonkey()->JS_RemoveRoot(cx, &s));
+}
+
+/*!
+  Default Error Handler for Coin
+ */
+static void SpiderMonkey_ErrorHandler(JSContext * cx, const char * message, 
+                                      JSErrorReport * report)
+{                               
+  SoDebugError::postWarning("SpiderMonkey_ErrorHandler",
+                            "%s:%d: %s:\n  %s\n",
+                            report->filename, report->lineno, message, 
+                            report->linebuf);
+  printJSException(cx);
+}   
+
+/*!
+  Easy to use print function for spidermonkey.
+  print("hello", "world", 123, obj) will return "hello world 123 [some obj]"
+ */
+static JSBool JavascriptPrint(JSContext * cx, JSObject * obj, 
+                              uintN argc, jsval * argv, jsval * rval)
+{
+  SbString out;
+
+  if (argc > 0) {
+    // " ".join(argv)
+    uintN i;
+    for (i=0; i<argc-1; ++i) {
+      out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
+      out += " ";
+    }
+    out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
+  }
+  
+  SoDebugError::postInfo("JavascriptPrint", out.getString());
+  return JS_TRUE;
+}
+
+/*!
+  Constructor. Will create a new context and global spidermonkey object
+  for this object.
+ */
+SoJavaScriptEngine::SoJavaScriptEngine()
+{
+  PRIVATE(this) = new SoJavaScriptEngineP(this); 
+
+  JSContext * cx = PRIVATE(this)->context = 
+    spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), 
+                                  SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE);
+  if (!cx) {
+    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
+                              "SpiderMonkey Javascript engine available, "
+                              "but failed to set up a JSContext!");
+    SoJavaScriptEngine::shutdown();
+    return;
+  }
+
+  (void)spidermonkey()->JS_SetErrorReporter(cx, SpiderMonkey_ErrorHandler);
+
+  static JSClass jclass = {
+    "SoJavaScriptEngine_global", 0,
+    spidermonkey()->JS_PropertyStub,
+    spidermonkey()->JS_PropertyStub,
+    spidermonkey()->JS_PropertyStub,
+    spidermonkey()->JS_PropertyStub,
+    spidermonkey()->JS_EnumerateStub,
+    spidermonkey()->JS_ResolveStub,
+    spidermonkey()->JS_ConvertStub, 
+    spidermonkey()->JS_FinalizeStub,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
+  };
+
+  // FIXME: add global as an argument, so more than one context can share
+  // the same global object? 20050719 erikgors.
+  JSObject * global = PRIVATE(this)->global = 
+    spidermonkey()->JS_NewObject(cx, &jclass, NULL, NULL);
+  if (!global) {
+    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
+                              "SpiderMonkey Javascript engine available, "
+                              "but failed to set up a global JSObject!");
+    SoJavaScriptEngine::shutdown();
+    return;
+  }
+
+  // JS_InitStandardClasses also adds gc protection and sets cx's global
+  // 20050719 erikgors.
+  JSBool ok = spidermonkey()->JS_InitStandardClasses(cx, global);
+  if (!ok) {
+    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
+                              "SpiderMonkey Javascript engine available, "
+                              "but failed to init standard classes for "
+                              "global JSObject!");
+    SoJavaScriptEngine::shutdown();
+    return;
+  }
+
+  // FIXME: maybe this should be optional? 20050719 erikgors.
+  spidermonkey()->JS_DefineFunction(cx, global, "print", JavascriptPrint, 0, 0);
+
+  // Make the engine accessable from within the context
+  spidermonkey()->JS_SetContextPrivate(cx, this);
+
+  JS_addVRMLclasses(this);
+}
+
+/*!
+  Destructor. Will destroy the spidermonkey context
+
+  FIXME: Should we destroy a context that was set externally 
+  using setContext()? (assuming that setContext will be made public)
+  kintel 20050920
+ */
+SoJavaScriptEngine::~SoJavaScriptEngine()
+{
+  spidermonkey()->JS_DestroyContext(PRIVATE(this)->context);
+  delete PRIVATE(this);
+}
 
 /*!
   Returns spidermonkey runtime instance for this class.
@@ -96,6 +286,7 @@ SoJavaScriptEngine::getContext(void)
 void
 SoJavaScriptEngine::setContext(JSContext * context)
 {
+  // FIXME: reassociate this with the given context?  kintel 20050920
   PRIVATE(this)->context = context;
 }
 
@@ -105,6 +296,7 @@ SoJavaScriptEngine::setContext(JSContext * context)
 JSObject *
 SoJavaScriptEngine::getGlobal(void)
 {
+  // FIXME: Get using JS_GetGlobalObject()? kintel 20050920
   return PRIVATE(this)->global;
 }
     
@@ -115,6 +307,7 @@ void
 SoJavaScriptEngine::setGlobal(JSObject * global)
 {
   PRIVATE(this)->global = global;
+  // FIXME: Also set using JS_SetGlobalObject()? kintel 20050920
 }
 
 /*!
@@ -162,167 +355,6 @@ SoJavaScriptEngine::debug(void)
   return d ? TRUE : FALSE;
 }
 
-// FIXME: imported from SquirrelMonkey/src/jsutils.cpp
-// 20050719 erikgors.
-/*!
-  Prints a stacktrace for the pending exception.
-  Does nothing if there aren't any pending exceptions.
-*/
-static void
-printJSException(JSContext *cx)
-{
-  jsval val, stack;
-  JSObject * obj;
-  char * cstr;
-  int len;
-  JSString *s;
-
-  if (!spidermonkey()->JS_GetPendingException(cx, &val)) return;
-  if (!JSVAL_IS_OBJECT(val)) return;
-  obj = JSVAL_TO_OBJECT(val);
-  if (!spidermonkey()->JS_GetProperty(cx, obj, "stack", &stack)) return;
-
-  /* print exception.stack */
-  if (!(s=spidermonkey()->JS_ValueToString(cx, stack))) {
-    SoDebugError::postWarning("printJSException", "could not convert exception to string");
-    return;
-  }
-  /* root the string */
-  if (!spidermonkey()->JS_AddRoot(cx, s)) {
-    SoDebugError::postWarning("printJSException", "could not root string");
-    return;
-  }
-
-  /* Todo: we loose unicode information here */
-  cstr = spidermonkey()->JS_GetStringBytes(s);
-  if (!cstr) {
-    SoDebugError::postWarning("printJSException", "could not get string bytes");
-    assert(spidermonkey()->JS_RemoveRoot(cx, s));
-    return;
-  }
-  len = spidermonkey()->JS_GetStringLength(s);
-  SoDebugError::postWarning("printJSException", "Stack:");
-  /*
-     Todo: somehow do nice indent
-     Note: string might contain \0 => we don't use fputs
-  */
-  // FIXME: this looks ugly. 20050719 erikgors.
-  fwrite(cstr, 1, spidermonkey()->JS_GetStringLength(s), stderr);
-  fprintf(stderr, "\n");
-  assert(spidermonkey()->JS_RemoveRoot(cx, s));
-}
-
-/*!
-  Default Error Handler for Coin
- */
-static void
-SpiderMonkey_ErrorHandler(JSContext * cx, const char * message, JSErrorReport * report)
-{                               
-  SoDebugError::postWarning("SpiderMonkey_ErrorHandler",
-                            "%s:%d: %s:\n  %s\n",
-                            report->filename, report->lineno, message, report->linebuf);
-  printJSException(cx);
-}   
-
-/*!
-  Easy to use print function for spidermonkey.
-  print("hello", "world", 123, obj) will return "hello world 123 [some obj]"
- */
-static JSBool JavascriptPrint(JSContext * cx, JSObject * obj, 
-                    uintN argc, jsval * argv, jsval * rval)
-{
-  SbString out;
-
-  if (argc > 0) {
-    // " ".join(argv)
-    uintN i;
-    for (i=0; i<argc-1; ++i) {
-      out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
-      out += " ";
-    }
-    out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
-  }
-  
-  SoDebugError::postInfo("JavascriptPrint", out.getString());
-  return JS_TRUE;
-}
-
-/*!
-  Constructor. Will create a new context and global spidermonkey object
-  for this object.
- */
-SoJavaScriptEngine::SoJavaScriptEngine()
-{
-
-  PRIVATE(this) = new SoJavaScriptEngineP(this); 
-
-  JSContext * cx = PRIVATE(this)->context =
-    spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE);
-  if (!cx) {
-    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to set up a JSContext!");
-    SoJavaScriptEngine::shutdown();
-    return;
-  }
-
-  (void)spidermonkey()->JS_SetErrorReporter(cx, SpiderMonkey_ErrorHandler);
-
-  static JSClass jclass = {
-    "Coin SoJavaScriptEngine global object class", 0,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub, 
-    spidermonkey()->JS_FinalizeStub,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
-  };
-
-  // FIXME: add global as an argument, so more than one context can share
-  // the same global object? 20050719 erikgors.
-  JSObject * global = PRIVATE(this)->global =
-    spidermonkey()->JS_NewObject(cx, &jclass, NULL, NULL);
-  if (!global) {
-    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to set up a global JSObject!");
-    SoJavaScriptEngine::shutdown();
-    return;
-  }
-
-  // JS_InitStandardClasses also adds gc protection and sets cx's global
-  // 20050719 erikgors.
-  JSBool ok = spidermonkey()->JS_InitStandardClasses(cx, global);
-  if (!ok) {
-    SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to init standard classes for "
-                              "global JSObject!");
-    SoJavaScriptEngine::shutdown();
-    return;
-  }
-
-  // FIXME: maybe this should be optional? 20050719 erikgors.
-  spidermonkey()->JS_DefineFunction(cx, global, "print", JavascriptPrint, 0, 0);
-
-  // Make the engine accessable from within the context
-  spidermonkey()->JS_SetContextPrivate(cx, this);
-
-  JS_addVRMLclasses(this);
-}
-
-/*!
-  Destructor. Will destroy the spidermonkey context
- */
-SoJavaScriptEngine::~SoJavaScriptEngine()
-{
-  spidermonkey()->JS_DestroyContext(PRIVATE(this)->context);
-  delete PRIVATE(this);
-}
-
 /*!
   Compile and execute a string containing a script.
  */
@@ -361,41 +393,17 @@ SoJavaScriptEngine::executeFile(const SbName & filename) const
 }
 
 /*!
-  Execute a compiled script.
- */
-SbBool
-SoJavaScriptEngineP::executeJSScript(JSScript * script) const
-{
-  jsval rval;
-  JSBool ok = spidermonkey()->JS_ExecuteScript(this->context, this->global, script, &rval);
-  if (ok) {
-    if (SoJavaScriptEngine::debug()) {
-      JSString * str = spidermonkey()->JS_ValueToString(this->context, rval);
-      SoDebugError::postInfo("SoJavaScriptEngineP::executeJSScript",
-                             "script result: '%s'",
-                             spidermonkey()->JS_GetStringBytes(str));
-    }
-    return TRUE;
-  }
-  else {
-    // FIXME: improve on this. 20050526 mortene.
-    SoDebugError::postWarning("SoJavaScriptEngine::executeJSScript",
-                              "Script evaluation failed!");
-  }
-  return FALSE;
-}
-
-/*!
   Execute a function in the global spidermonkey object.
  */
 SbBool
-SoJavaScriptEngine::executeFunction(const SbName & name,
-                                    int argc, const SoField * argv, SoField * rval) const
+SoJavaScriptEngine::executeFunction(const SbName & name, 
+                                    int argc, const SoField * argv, 
+                                    SoField * rval) const
 {
   jsval * jsargv = new jsval[argc];
 
   for (int i=0; i<argc; ++i) {
-    this->field2jsval(PRIVATE(this)->context, &argv[i], &jsargv[i]);
+    field2jsval(&argv[i], &jsargv[i]);
   }
 
   jsval rjsval;
@@ -415,7 +423,7 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
 
     SbBool ok2 = TRUE;
     if (rval != NULL) {
-      ok2 = this->jsval2field(PRIVATE(this)->context, rjsval, rval);
+      ok2 = jsval2field(rjsval, rval);
     }
     return ok2;
   }
@@ -431,7 +439,7 @@ SoJavaScriptEngine::executeFunction(const SbName & name,
   Convert a SoField object to a native spidermonkey value.
  */
 SbBool
-SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v)
+SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
@@ -449,19 +457,26 @@ SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v)
   return FALSE;
 }
 
-SbBool
-SoJavaScriptEngine::field2jsval(JSContext * cx, const SoField * f, jsval * v)
+/*!
+  Returns the SoJavaScriptEngine associated with the given context.
+  If the context isn't associated with an SoJavaScriptEngine it will 
+  return NULL.
+
+  NB! Setting the context private data (using JS_SetContextPrivate()) will
+  overwrite this information and cause this method to return a garbage
+  pointer.
+*/
+SoJavaScriptEngine *
+SoJavaScriptEngine::getEngine(JSContext * cx)
 {
-  SoJavaScriptEngine * engine = (SoJavaScriptEngine *)spidermonkey()->JS_GetContextPrivate(cx);
-  assert(engine != NULL);
-  return engine->field2jsval(f, v);
+  return (SoJavaScriptEngine *)spidermonkey()->JS_GetContextPrivate(cx);
 }
 
 /*!
   Convert a native spidermonkey value to a SoField object.
  */
 SbBool 
-SoJavaScriptEngine::jsval2field(const jsval v, SoField * f)
+SoJavaScriptEngine::jsval2field(const jsval v, SoField * f) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
@@ -487,20 +502,22 @@ SoJavaScriptEngine::jsval2field(const jsval v, SoField * f)
   return FALSE;
 }
 
-SbBool
-SoJavaScriptEngine::jsval2field(JSContext * cx, const jsval v, SoField * f)
-{
-  SoJavaScriptEngine * engine = (SoJavaScriptEngine *)spidermonkey()->JS_GetContextPrivate(cx);
-  assert(engine != NULL);
-  return engine->jsval2field(v, f);
-}
-
 /*!
-  Add a handler. init, field2jsval and jsval2field can be NULL.
-  init, if not NULL, will be called.
- */
+  Adds a JavaScript handler for an SoField subtype.
+
+  \a init is the class init function and will be called immediately 
+  if specified.
+  \a field2jsval and \a jsval2field will convert an SoField to a jsval 
+  or vice versa. Setting these to NULL is allowed but will result in the 
+  fields not being accessible from JavaScript.
+
+  New handlers will get precedence over old handlers.
+*/
 void
-SoJavaScriptEngine::addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field)
+SoJavaScriptEngine::addHandler(const SoType & type, 
+                               SoJSWrapperInitFunc * init, 
+                               SoJSfield2jsvalFunc * field2jsval, 
+                               SoJSjsval2field2Func * jsval2field)
 {
   SoJavaScriptEngineP::JavascriptHandler handler;
   handler.type = type;
@@ -522,7 +539,7 @@ SbBool
 SoJavaScriptEngine::setScriptField(const SbName & name, const SoField * f) const
 {
   jsval initval;
-  SoJavaScriptEngine::field2jsval(PRIVATE(this)->context, f, &initval);
+  field2jsval(f, &initval);
   const JSBool ok =
     spidermonkey()->JS_SetProperty(PRIVATE(this)->context,
                                    PRIVATE(this)->global,
@@ -576,7 +593,7 @@ SoJavaScriptEngine::getScriptField(const SbName & name, SoField * f) const
     }
 
 
-    return SoJavaScriptEngine::jsval2field(PRIVATE(this)->context, val, f);
+    return jsval2field(val, f);
 }
 
 SbBool

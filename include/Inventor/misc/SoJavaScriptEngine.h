@@ -35,9 +35,9 @@
 // UPDATE: Pimpl class added. Which methods can be moved? (20050830
 // handegar)
 
-typedef void (* CoinJSfield2jsval_t)(JSContext *, const SoField *, jsval *);
-typedef SbBool (* CoinJSjsval2field_t)(JSContext *, const jsval, SoField *);
-typedef JSObject * (* CoinJSinit_t)(JSContext *, JSObject * obj);
+typedef void SoJSfield2jsvalFunc(JSContext *, const SoField *, jsval *);
+typedef SbBool SoJSjsval2field2Func(JSContext *, const jsval, SoField *);
+typedef JSObject * SoJSWrapperInitFunc(JSContext *, JSObject * obj);
 
 class COIN_DLL_API SoJavaScriptEngine : public SoScriptEngine {
 
@@ -45,22 +45,26 @@ public:
   SoJavaScriptEngine();
   virtual ~SoJavaScriptEngine();
 
-  virtual SbBool executeScript(const SbName & name, const SbString & script) const;
+  virtual SbBool executeScript(const SbName & name, 
+                               const SbString & script) const;
   virtual SbBool executeFile(const SbName & filename) const;
-  virtual SbBool executeFunction(const SbName &name, int argc, const SoField * argv, SoField * rval=NULL) const;
+  virtual SbBool executeFunction(const SbName &name, int argc, 
+                                 const SoField * argv, 
+                                 SoField * rval = NULL) const;
 
   virtual SbBool setScriptField(const SbName & name, const SoField * f) const;
   virtual SbBool unsetScriptField(const SbName & name) const;
   virtual SbBool getScriptField(const SbName & name, SoField * f) const;
   virtual SbBool hasScriptField(const SbName & name) const;
 
-  static SbBool field2jsval(JSContext * cx, const SoField * f, jsval * v);
-  static SbBool jsval2field(JSContext * cx, const jsval v, SoField * f);
-  SbBool field2jsval(const SoField * f, jsval * v);
-  SbBool jsval2field(const jsval v, SoField * f);
+  // Everything under here is javascript specific
 
-  // Everthing under here is javascript specific
-  static void init(uint32_t maxbytes=COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
+  static SoJavaScriptEngine *getEngine(JSContext * cx);
+
+  SbBool field2jsval(const SoField * f, jsval * v) const;
+  SbBool jsval2field(const jsval v, SoField * f) const;
+
+  static void init(uint32_t maxbytes = COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
   static void shutdown(void);
   static SbBool debug(void);
 
@@ -68,8 +72,9 @@ public:
   JSContext * getContext(void);
   JSObject * getGlobal(void);
 
-  // new handlers will get precedence over old handlers
-  void addHandler(const SoType & type, CoinJSinit_t init, CoinJSfield2jsval_t field2jsval, CoinJSjsval2field_t jsval2field);
+  void addHandler(const SoType & type, SoJSWrapperInitFunc * init, 
+                  SoJSfield2jsvalFunc * field2jsval, 
+                  SoJSjsval2field2Func * jsval2field);
 
 protected:
   static void setRuntime(JSRuntime * runtime);
