@@ -31,7 +31,6 @@
 #include <Inventor/actions/SoSimplifyAction.h>
 #include <coindefs.h> // COIN_STUB()
 
-
 SO_ACTION_SOURCE(SoSimplifyAction);
 
 // Overridden from parent class.
@@ -48,7 +47,7 @@ SoSimplifyAction::initClass(void)
 
 SoSimplifyAction::SoSimplifyAction(void)
 {
-  SO_ACTION_CONSTRUCTOR(SoSimplifyAction);
+  COIN_STUB();
 }
 
 /*!
@@ -62,6 +61,24 @@ SoSimplifyAction::~SoSimplifyAction(void)
 // Documented in superclass.
 void
 SoSimplifyAction::beginTraversal(SoNode * /* node */)
+{
+  COIN_STUB();
+}
+
+void 
+SoSimplifyAction::apply(SoNode * root)
+{
+  COIN_STUB();
+}
+
+void 
+SoSimplifyAction::apply(SoPath * path)
+{
+  COIN_STUB();
+}
+
+void 
+SoSimplifyAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
   COIN_STUB();
 }

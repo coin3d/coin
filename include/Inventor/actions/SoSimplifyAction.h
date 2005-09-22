@@ -27,6 +27,8 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
+class SoSimplifyActionP;
+
 class COIN_DLL_API SoSimplifyAction : public SoAction {
   typedef SoAction inherited;
 
@@ -36,10 +38,17 @@ public:
   SoSimplifyAction(void);
   virtual ~SoSimplifyAction();
 
+  virtual void apply(SoNode * root);
+  virtual void apply(SoPath * path);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+
   static void initClass(void);
 
 protected:
   virtual void beginTraversal(SoNode * node);
+
+private:
+  SoSimplifyActionP * pimpl;
 };
 
 #endif // !COIN_SOSIMPLIFYACTION_H
