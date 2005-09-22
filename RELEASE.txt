@@ -200,6 +200,7 @@ anything.
   NEWS (start new section for Coin beta)
 
   Rerun bootstrap.  Commit changes.
+
   Regenerate Visual Studio build files.  Commit changes.
 
   We're now home free if everything went well with the spiffing.
