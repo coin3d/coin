@@ -97,7 +97,6 @@ SoCoordinate4::SoCoordinate4(void)
 */
 SoCoordinate4::~SoCoordinate4()
 {
-  delete PRIVATE(this)->vbo;
   delete PRIVATE(this);
 }
 
