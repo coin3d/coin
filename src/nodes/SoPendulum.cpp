@@ -103,7 +103,7 @@ SoPendulum::SoPendulum(void)
   this->interpolator->input0.connectFrom(&this->rotation0);
   this->interpolator->input1.connectFrom(&this->rotation1);
   this->interpolator->alpha.connectFrom(&this->calculator->oa);
-  this->rotation.connectFrom(&this->interpolator->output);
+  this->rotation.connectFrom(&this->interpolator->output, TRUE);
 }
 
 /*!
@@ -164,30 +164,31 @@ SoPendulum::copy(SbBool copyconnections) const
   return cp;
 }
 
-// Remove connections to and from internal engine.
+// Remove connections to and from internal engines.
 void
 SoPendulum::deconnectInternalEngine(void)
 {
-  // Decouple connections to/from internal engine to avoid them being
-  // written.
+  // Do this first, to avoid field being set due to subsequent engine
+  // input value change.
+  this->rotation.disconnect(&this->interpolator->output);
+
   this->timer->on.disconnect(&this->on);
   this->timer->on = FALSE;
   this->calculator->b.disconnect(&this->speed);
   this->interpolator->input0.disconnect(&this->rotation0);
   this->interpolator->input1.disconnect(&this->rotation1);
-  this->rotation.disconnect(&this->interpolator->output);
 }
 
 
-// Reset connections to and from internal engine.
+// Reenable all connections to/from internal engines.
 void
 SoPendulum::reconnectInternalEngine(void)
 {
-  // Reenable all connections to/from internal engine.
   this->timer->on.connectFrom(&this->on);
   this->calculator->b.connectFrom(&this->speed);
   this->interpolator->input0.connectFrom(&this->rotation0);
   this->interpolator->input1.connectFrom(&this->rotation1);
   this->interpolator->alpha.connectFrom(&this->calculator->oa);
-  this->rotation.connectFrom(&this->interpolator->output);
+
+  this->rotation.connectFrom(&this->interpolator->output, TRUE);
 }

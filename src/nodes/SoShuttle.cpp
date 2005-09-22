@@ -76,7 +76,11 @@
   Toggles animation on or off. Defauls to \c TRUE.
 */
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoShuttle);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -104,7 +108,8 @@ SoShuttle::SoShuttle(void)
   this->interpolator->input0.connectFrom(&this->translation0);
   this->interpolator->input1.connectFrom(&this->translation1);
   this->interpolator->alpha.connectFrom(&this->calculator->oa);
-  this->translation.connectFrom(&this->interpolator->output);
+
+  this->translation.connectFrom(&this->interpolator->output, TRUE);
 }
 
 /*!
@@ -169,25 +174,26 @@ SoShuttle::copy(SbBool copyconnections) const
 void
 SoShuttle::deconnectInternalEngines(void)
 {
-  // Decouple connections to/from internal engines to avoid them being
-  // written.
+  // Do this first, to avoid field being set due to subsequent engine
+  // input value change.
+  this->translation.disconnect(&this->interpolator->output);
+
   this->timer->on.disconnect(&this->on);
   this->timer->on = FALSE;
   this->calculator->b.disconnect(&this->speed);
   this->interpolator->input0.disconnect(&this->translation0);
   this->interpolator->input1.disconnect(&this->translation1);
-  this->translation.disconnect(&this->interpolator->output);
 }
 
 
-// Reset connections to and from internal engines.
+// Reenable all connections to/from internal engines.
 void
 SoShuttle::reconnectInternalEngines(void)
 {
-  // Reenable all connections to/from internal engines.
   this->timer->on.connectFrom(&this->on);
   this->calculator->b.connectFrom(&this->speed);
   this->interpolator->input0.connectFrom(&this->translation0);
   this->interpolator->input1.connectFrom(&this->translation1);
-  this->translation.connectFrom(&this->interpolator->output);
+
+  this->translation.connectFrom(&this->interpolator->output, TRUE);
 }

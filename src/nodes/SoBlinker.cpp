@@ -68,6 +68,8 @@
 
 SO_NODE_SOURCE(SoBlinker);
 
+// *************************************************************************
+
 /*!
   Constructor.
 */
@@ -84,7 +86,8 @@ SoBlinker::SoBlinker(void)
   this->counter->max = SO_SWITCH_NONE;
   this->counter->frequency.connectFrom(&this->speed);
   this->counter->on.connectFrom(&this->on);
-  this->whichChild.connectFrom(&this->counter->output);
+
+  this->whichChild.connectFrom(&this->counter->output, TRUE);
 }
 
 /*!
@@ -202,7 +205,10 @@ SoBlinker::copy(SbBool copyconnections) const
 void
 SoBlinker::deconnectInternalEngine(void)
 {
+  // Do this first, to avoid field being set due to subsequent engine
+  // input value change.
   this->whichChild.disconnect(&this->counter->output);
+
   this->counter->on.disconnect(&this->on);
   this->counter->on = FALSE;
   this->counter->frequency.disconnect(&this->speed);
@@ -215,5 +221,6 @@ SoBlinker::reconnectInternalEngine(void)
 {
   this->counter->frequency.connectFrom(&this->speed);
   this->counter->on.connectFrom(&this->on);
-  this->whichChild.connectFrom(&this->counter->output);
+
+  this->whichChild.connectFrom(&this->counter->output, TRUE);
 }
