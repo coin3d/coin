@@ -31,6 +31,8 @@
 #define SO_END_LINE_INDEX (-1)
 #endif // !SO_END_LINE_INDEX
 
+class SoVRMLIndexedLineSetP;
+
 class COIN_DLL_API SoVRMLIndexedLineSet : public SoVRMLIndexedLine
 {
   typedef SoVRMLIndexedLine inherited;
@@ -44,9 +46,13 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
-protected:
+ protected:
   virtual ~SoVRMLIndexedLineSet();
   virtual void generatePrimitives(SoAction * action);
+  virtual void notify(SoNotList * list);
+
+ private:
+  SoVRMLIndexedLineSetP * pimpl;
 };
 
 #endif // ! COIN_SOVRMLINDEXEDLINESET_H

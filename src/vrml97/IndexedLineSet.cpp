@@ -130,22 +130,29 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/glp.h>
+#include "../misc/SoVertexArrayIndexer.h"
+#include "../misc/SoVBO.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 class SoVRMLIndexedLineSetP {
-public:
+ public:
+  SoVRMLIndexedLineSetP() : vaindexer(NULL) { }
+  ~SoVRMLIndexedLineSetP() { delete this->vaindexer; }
+
   enum Binding {
     // Needs to be these specific values to match the rendering code
     // in SoGL.cpp.  FIXME: bad dependency. It looks like the same
@@ -159,7 +166,12 @@ public:
   };
 
   static Binding findMaterialBinding(SoVRMLIndexedLineSet * node, SoState * state);
+  SoVertexArrayIndexer * vaindexer;
 };
+
+#define PRIVATE(obj) obj->pimpl
+#define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
+#define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()
 
 
 SO_NODE_SOURCE(SoVRMLIndexedLineSet);
@@ -172,6 +184,7 @@ SoVRMLIndexedLineSet::initClass(void) // static
 
 SoVRMLIndexedLineSet::SoVRMLIndexedLineSet(void)
 {
+  PRIVATE(this) = new SoVRMLIndexedLineSetP;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedLineSet);
 }
 
@@ -296,19 +309,93 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
+ 
+  SoGLLazyElement * lelem = NULL;
+  SbBool dova = 
+    !drawPoints &&
+    (numindices > 30) &&
+    cc_glglue_has_vertex_array(sogl_glue_instance(state));
+  
+  const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
+  SoVBO * colorvbo = NULL;
+  
+  if (dova && (mbind != SoVRMLIndexedLineSetP::OVERALL)) {
+    dova = FALSE;
+    if ((mbind == SoVRMLIndexedLineSetP::PER_VERTEX_INDEXED) && 
+        ((mindices == cindices) || (mindices == NULL))) {
+      lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
+      colorvbo = vboelem->getColorVBO();
+      if (colorvbo) dova = TRUE;
+      else {
+        // we might be able to do VA-rendering, but need to check the
+        // diffuse color type first.
+        if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+          dova = TRUE;
+        }
+      }
+    }
+  }
+  if (dova) {
+    SbBool dovbo = this->startVertexArray(action,
+                                          coords,
+                                          FALSE,
+                                          FALSE,
+                                          mbind != SoVRMLIndexedLineSetP::OVERALL);
+    LOCK_VAINDEXER(this);
+    if (PRIVATE(this)->vaindexer == NULL) {
+      SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
+      
+      int i = 0;
+      while (i < numindices) {
+        int cnt = 0;
+        while (i + cnt < numindices && cindices[i+cnt] >= 0) cnt++;
+        if (cnt >= 2) {
+          for (int j = 1; j < cnt;j++) {
+            indexer->addLine(cindices[i+j-1],
+                             cindices[i+j]);
+          }
+        }
+        i += cnt + 1;
+      }
+      indexer->close();
+      if (indexer->getNumVertices()) {
+        PRIVATE(this)->vaindexer = indexer;
+      }
+      else {
+        delete indexer;
+      }
+#if 0
+      fprintf(stderr,"XXX: ILS create VertexArrayIndexer: %d\n", indexer->getNumVertices());
+#endif
+    }
+    
+    if (PRIVATE(this)->vaindexer) {
+      const uint32_t contextid = action->getCacheContext();
+      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+    }
+    UNLOCK_VAINDEXER(this);
 
-  sogl_render_lineset((SoGLCoordinateElement*)coords,
-                      cindices,
-                      numindices,
-                      NULL,
-                      NULL,
-                      &mb,
-                      mindices,
-                      NULL, 0,
-                      0,
-                      (int)mbind,
-                      0,
-                      drawPoints ? 1 : 0);
+    this->finishVertexArray(action,
+                            dovbo,
+                            FALSE,
+                            FALSE,
+                            mbind != SoVRMLIndexedLineSetP::OVERALL);
+  }
+  else {
+    
+    sogl_render_lineset((SoGLCoordinateElement*)coords,
+                        cindices,
+                        numindices,
+                        NULL,
+                        NULL,
+                        &mb,
+                        mindices,
+                        NULL, 0,
+                        0,
+                        (int)mbind,
+                        0,
+                        drawPoints ? 1 : 0);
+  }
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, this->coordIndex.getNum() / 2);
 }
@@ -438,4 +525,22 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   state->pop();
 }
 
+void 
+SoVRMLIndexedLineSet::notify(SoNotList * list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->coordIndex) {
+    LOCK_VAINDEXER(this);
+    if (PRIVATE(this)->vaindexer) {
+      delete PRIVATE(this)->vaindexer;
+      PRIVATE(this)->vaindexer = NULL;
+    }
+    UNLOCK_VAINDEXER(this);
+  }
+  inherited::notify(list);
+}
+
+#undef LOCK_VAINDEXER
+#undef PRIVATE
+#undef UNLOCK_VAINDEXER
 #endif // HAVE_VRML97
