@@ -190,6 +190,7 @@ SoVRMLIndexedLineSet::SoVRMLIndexedLineSet(void)
 
 SoVRMLIndexedLineSet::~SoVRMLIndexedLineSet()
 {
+  delete PRIVATE(this);
 }
 
 SoVRMLIndexedLineSetP::Binding
