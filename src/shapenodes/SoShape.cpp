@@ -543,8 +543,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   // test if we should sort triangles before rendering
   if (transparent && (shapestyleflags & SoShapeStyleElement::TRANSP_SORTED_TRIANGLES)) {
-    soshape_staticdata * shapedata = soshape_get_staticdata();
-    
+    soshape_staticdata * shapedata = soshape_get_staticdata();    
+#if 0 // old code
     // do this before generating triangles to get correct
     // material for lines and point (only triangles are sorted).
     SoMaterialBundle mb(action);
@@ -560,6 +560,57 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     shapedata->rendermode = NORMAL;
 
     shapedata->trianglesort->endShape(state, mb); // this will render the triangles
+#else // new code that used the pvcache to render
+    // lock mutex since pvcache is shared among all threads
+    PRIVATE(this)->lock();
+    if (PRIVATE(this)->pvcache == NULL ||
+        !PRIVATE(this)->pvcache->isValid(state)) {
+      if (PRIVATE(this)->pvcache) {
+        PRIVATE(this)->pvcache->unref();
+      }
+      SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+      // must push state to make cache dependencies work
+      state->push();
+      PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
+      PRIVATE(this)->pvcache->ref();
+      SoCacheElement::set(state, PRIVATE(this)->pvcache);
+      shapedata->rendermode = PVCACHE;
+      this->generatePrimitives(action);
+      shapedata->rendermode = NORMAL;
+      // this _must_ be called after creating the pvcache
+      state->pop();
+      SoCacheElement::setInvalid(storedinvalid);
+      PRIVATE(this)->pvcache->fit();
+      PRIVATE(this)->testSetupShapeHints(this);
+    }
+
+    int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
+    SoGLTextureImageElement::Model model;
+    SbColor blendcolor;
+    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+    if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    PRIVATE(this)->setupShapeHints(this, state);
+    PRIVATE(this)->pvcache->depthSortTriangles(state);
+    PRIVATE(this)->pvcache->renderTriangles(state, arrays);
+    if (PRIVATE(this)->pvcache->getNumLineIndices() ||
+        PRIVATE(this)->pvcache->getNumPointIndices()) {
+      const SoNormalElement * nelem = SoNormalElement::getInstance(state);
+      if (nelem->getNum() == 0) {
+        glPushAttrib(GL_LIGHTING_BIT);
+        glDisable(GL_LIGHTING);
+        arrays &= SoPrimitiveVertexCache::NORMAL;
+      }
+      PRIVATE(this)->pvcache->renderLines(state, arrays);
+      PRIVATE(this)->pvcache->renderPoints(state, arrays);
+
+      if (nelem->getNum() == 0) {
+        glPopAttrib();
+      }
+    }
+    PRIVATE(this)->unlock();    
+#endif // end of new sorted triangles transparency rendering
     return FALSE; // tell shape _not_ to render
   }
   
