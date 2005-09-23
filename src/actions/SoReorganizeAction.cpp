@@ -630,7 +630,7 @@ SoReorganizeActionP::createVertexProperty(const SbBool forlines)
   if (!this->lighting || 
       (forlines && !this->normalsonstate)) {
     nbind = SoVertexProperty::OVERALL;
-  }                                             
+  }                                          
   vp->normalBinding = nbind;
 
   int numv = this->pvcache->getNumVertices();
@@ -847,4 +847,60 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
 void 
 SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
 {
+  SoNode * parent = path->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId()) &&
+      !parent->isOfType(SoVRMLShape::getClassTypeId())) {
+    return;
+  }
+
+  SoVRMLIndexedLineSet * ils = new SoVRMLIndexedLineSet;
+  ils->ref();
+
+  int numv = this->pvcache->getNumVertices();
+  int numlines = this->pvcache->getNumLineIndices() / 2;
+  const int32_t * indices = this->pvcache->getLineIndices();
+  ils->coordIndex.setNum(numlines * 3);
+  int32_t * ptr = ils->coordIndex.startEditing();
+  
+  for (int i = 0; i < numlines; i++) {
+    *ptr++ = indices[i*2];
+    *ptr++ = indices[i*2+1];
+    *ptr++ = -1;
+  }
+  ils->coordIndex.finishEditing();
+
+  SoVRMLCoordinate * c = new SoVRMLCoordinate;
+  c->point.setValues(0, numv,
+                     this->pvcache->getVertexArray());
+  ils->coord = c;
+  
+  if (this->pvcache->colorPerVertex()) {
+    ils->colorPerVertex = TRUE;
+    SoVRMLColor * col = new SoVRMLColor;
+    col->color.setNum(numv);
+    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    SbColor * dst = col->color.startEditing();
+    for (int i = 0; i < numv; i++) {
+      dst[i] = SbColor(src[0]/255.0f,
+                       src[1]/255.0f,
+                       src[2]/255.0f);
+      src += 4;
+    }
+    col->color.finishEditing();
+    ils->color = col;
+  }
+  ils->colorIndex.setNum(0);
+  
+  int idx = path->getIndexFromTail(0);
+  path->pop();
+  if (parent->isOfType(SoGroup::getClassTypeId())) {
+    SoGroup * g = (SoGroup*)parent;
+    g->replaceChild(idx, ils);
+  }
+  else {
+    SoVRMLShape * shape = (SoVRMLShape*) parent;
+    shape->geometry = ils;
+  }
+  path->push(idx);
+  ils->unrefNoDelete();
 }
