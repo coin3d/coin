@@ -287,10 +287,10 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   SoCacheHintElement::get(state, memcaching, gfxcaching);
 
   SbBool renderasvbo = 
-    ((COIN_ENABLE_VBO == 1) ||
-     (COIN_ENABLE_VBO != 0 && gfxcaching >= CACHE_HINT_LIMIT)) &&
+    ((COIN_ENABLE_VBO == 1) || (COIN_ENABLE_VBO == -1) ||
+     ((COIN_ENABLE_VBO != 0) && gfxcaching >= CACHE_HINT_LIMIT)) &&
     cc_glglue_has_vertex_buffer_object(glue);
-  
+     
   if (renderasvbo) {
     unsigned long size = PRIVATE(this)->countVBOSize(glue, contextid, color,
                                                      normal, texture, enabled, lastenabled);
