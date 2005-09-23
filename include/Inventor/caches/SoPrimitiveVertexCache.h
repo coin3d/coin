@@ -82,6 +82,7 @@ public:
   const int32_t * getPointIndices(void) const;
 
   void fit(void);
+  void depthSortTriangles(SoState * state);
 private:
 
   friend class SoPrimitiveVertexCacheP;

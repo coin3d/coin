@@ -42,6 +42,8 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -52,6 +54,7 @@
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/misc/SoContextHandler.h>
 
 // *************************************************************************
@@ -84,7 +87,9 @@ public:
       rgbalist(256),
       indices(1024),
       vhash(1024),
-      vbodict(4) { }
+      vbodict(4),
+      deptharray(NULL)
+  { }
 
   SbList <SoPrimitiveVertexCache::Vertex> vertices;
 
@@ -119,6 +124,8 @@ public:
   SbList <SbVec4f> * multitexcoords;
   SoState * state;
   SbHash<SoPrimitiveVertexCache_vboidx *, uint32_t> vbodict;
+  SbPlane prevsortplane;
+  float * deptharray;
 
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
 
@@ -252,6 +259,7 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
+  delete[] PRIVATE(this)->deptharray;
   delete PRIVATE(this);
 }
 
@@ -821,7 +829,72 @@ SoPrimitiveVertexCache::fit(void)
   }
 }
 
+void 
+SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
+{
+  int numv = PRIVATE(this)->vertexlist.getLength();
+  int numtri = PRIVATE(this)->indices.getLength() / 3;
+  if (numv == 0 || numtri == 0) return;
+  
+  SbPlane sortplane = SoViewVolumeElement::get(state).getPlane(0.0);
+  // move plane into object space
+  sortplane.transform(SoModelMatrixElement::get(state).inverse());
+  
+  if (PRIVATE(this)->deptharray == NULL ||
+      (sortplane != PRIVATE(this)->prevsortplane)) {
+    if (!PRIVATE(this)->deptharray) {
+      PRIVATE(this)->deptharray = new float[numtri];
+    }
+    PRIVATE(this)->prevsortplane = sortplane;
+    float * darray = PRIVATE(this)->deptharray;
+    const SbVec3f * vptr = PRIVATE(this)->vertexlist.getArrayPtr();
+    int32_t * iptr = (int32_t*) PRIVATE(this)->indices.getArrayPtr();
+    int i,j;
+    for (i = 0; i < numtri; i++) {
+      float acc = 0.0;
+      for (j = 0; j < 3; j++) {
+        acc += sortplane.getDistance(vptr[iptr[i*3+j]]);
+      }
+      darray[i] = acc / 3.0f;
+    }
+    int distance;
+    float dtmp;
+    int itmp[3];
 
+    // shell sort algorithm (O(nlog(n))
+    for (distance = 1; distance <= numtri/9; distance = 3*distance + 1);
+    for (; distance > 0; distance /= 3) {
+      for (i = distance; i < numtri; i++) {
+        dtmp = darray[i];
+        itmp[0] = iptr[i*3];
+        itmp[1] = iptr[i*3+1];
+        itmp[2] = iptr[i*3+2];
+        j = i;
+        while (j >= distance && darray[j-distance] > dtmp) {
+          darray[j] = darray[j-distance];
+          iptr[j*3] = iptr[(j-distance)*3];
+          iptr[j*3+1] = iptr[(j-distance)*3+1];
+          iptr[j*3+2] = iptr[(j-distance)*3+2];
+          j -= distance;
+        }
+        darray[j] = dtmp;
+        iptr[j*3] = itmp[0];
+        iptr[j*3+1] = itmp[1];
+        iptr[j*3+2] = itmp[2];
+      }
+    }
+    const uint32_t contextid = SoGLCacheContextElement::get(state);
+    const cc_glglue * glue = cc_glglue_instance((int) contextid);
+ 
+    SoPrimitiveVertexCache_vboidx * vbo;
+    if (PRIVATE(this)->vbodict.get(contextid, vbo)) {
+      if (vbo->triangleindex) {
+        cc_glglue_glDeleteBuffers(glue, 1, &vbo->triangleindex);
+        vbo->triangleindex = 0;        
+      }
+    }
+  } 
+}
 
 SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 {
