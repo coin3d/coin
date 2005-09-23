@@ -60,25 +60,25 @@ SoSimplifyAction::~SoSimplifyAction(void)
 
 // Documented in superclass.
 void
-SoSimplifyAction::beginTraversal(SoNode * /* node */)
+SoSimplifyAction::beginTraversal(SoNode * node)
 {
-  COIN_STUB();
+  inherited::beginTraversal(node);
 }
 
 void 
 SoSimplifyAction::apply(SoNode * root)
 {
-  COIN_STUB();
+  inherited::apply(root);
 }
 
 void 
 SoSimplifyAction::apply(SoPath * path)
 {
-  COIN_STUB();
+  inherited::apply(path);
 }
 
 void 
 SoSimplifyAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
-  COIN_STUB();
+  inherited::apply(pathlist, obeysrules);
 }
