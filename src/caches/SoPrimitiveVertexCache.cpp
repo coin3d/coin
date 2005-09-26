@@ -750,8 +750,8 @@ static int
 compare_triangle(const void * v0, const void * v1)
 {
   int i;
-  int32_t * t0 = (int*) v0;
-  int32_t * t1 = (int*) v1;
+  int32_t * t0 = (int32_t*) v0;
+  int32_t * t1 = (int32_t*) v1;
 
   int32_t ti0[3];
   int32_t ti1[3];
@@ -777,8 +777,8 @@ static int
 compare_line_segment(const void * v0, const void * v1)
 {
   int i;
-  int32_t * l0 = (int*) v0;
-  int32_t * l1 = (int*) v1;
+  int32_t * l0 = (int32_t*) v0;
+  int32_t * l1 = (int32_t*) v1;
   int32_t li0[2];
   int32_t li1[2];
   
