@@ -7,6 +7,7 @@ src
 man
 html
 bin
+generate.log
 Makefile
 libtool
 config.status
@@ -25,3 +26,4 @@ coin3.vcproj
 Info.plist
 version.plist
 coin-default.cfg
+generate.log

@@ -1,24 +1,24 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{E95F05A2-17BE-4342-956D-9600077252E0}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		Debug DLL = Debug DLL
-		Debug LIB = Debug LIB
-		Release DLL = Release DLL
-		Release LIB = Release LIB
+		DLL (Debug) = DLL (Debug)
+		DLL (Release) = DLL (Release)
+		LIB (Debug) = LIB (Debug)
+		LIB (Release) = LIB (Release)
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Debug DLL.ActiveCfg = Debug DLL|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Debug DLL.Build.0 = Debug DLL|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Debug LIB.ActiveCfg = Debug LIB|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Debug LIB.Build.0 = Debug LIB|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Release DLL.ActiveCfg = Release DLL|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Release DLL.Build.0 = Release DLL|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Release LIB.ActiveCfg = Release LIB|Win32
-		{EE6297BE-A0C0-4EAA-B9AD-8BF9756A3E1A}.Release LIB.Build.0 = Release LIB|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.DLL (Debug).ActiveCfg = DLL (Debug)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.DLL (Debug).Build.0 = DLL (Debug)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.DLL (Release).ActiveCfg = DLL (Release)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.DLL (Release).Build.0 = DLL (Release)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.LIB (Debug).ActiveCfg = LIB (Debug)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.LIB (Debug).Build.0 = LIB (Debug)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.LIB (Release).ActiveCfg = LIB (Release)|Win32
+		{E95F05A2-17BE-4342-956D-9600077252E0}.LIB (Release).Build.0 = LIB (Release)|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

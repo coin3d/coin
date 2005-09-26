@@ -385,13 +385,56 @@
 /* some glVertexBufferObject defines */
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER 0x8892
-#endif /* GL_ARRAY_BUFFER_ARB */
+#endif /* GL_ARRAY_BUFFER */
 #ifndef GL_ELEMENT_ARRAY_BUFFER
 #define GL_ELEMENT_ARRAY_BUFFER 0x8893
-#endif /* GL_ELEMENT_ARRAY_BUFFER_ARB */
+#endif /* GL_ELEMENT_ARRAY_BUFFER */
+#ifndef GL_READ_ONLY
+#define GL_READ_ONLY 0x88B8
+#endif /* GL_READ_ONLY */
+#ifndef GL_WRITE_ONLY
+#define GL_WRITE_ONLY 0x88B9
+#endif /* GL_WRITE_ONLY */
+#ifndef GL_READ_WRITE
+#define GL_READ_WRITE 0x88BA
+#endif /* GL_READ_WRITE */
+#ifndef GL_BUFFER_ACCESS
+#define GL_BUFFER_ACCESS 0x88BB
+#endif /* GL_BUFFER_ACCESS */
+#ifndef GL_BUFFER_MAPPED
+#define GL_BUFFER_MAPPED 0x88BC
+#endif /* GL_BUFFER_MAPPED */
+#ifndef GL_BUFFER_MAP_POINTER
+#define GL_BUFFER_MAP_POINTER 0x88BD
+#endif /* GL_BUFFER_MAP_POINTER */
+#ifndef GL_STREAM_DRAW
+#define GL_STREAM_DRAW 0x88E0
+#endif /* GL_STREAM_DRAW */
+#ifndef GL_STREAM_READ
+#define GL_STREAM_READ 0x88E1
+#endif /* GL_STREAM_READ */
+#ifndef GL_STREAM_COPY
+#define GL_STREAM_COPY 0x88E2
+#endif /* GL_STREAM_COPY */
 #ifndef GL_STATIC_DRAW
 #define GL_STATIC_DRAW 0x88E4
-#endif /* GL_STATIC_DRAW_ARB */
+#endif /* GL_STATIC_DRAW */
+#ifndef GL_STATIC_READ
+#define GL_STATIC_READ 0x88E5
+#endif /* GL_STATIC_READ */
+#ifndef GL_STATIC_COPY
+#define GL_STATIC_COPY 0x88E6
+#endif /* GL_STATIC_COPY */
+#ifndef GL_DYNAMIC_DRAW
+#define GL_DYNAMIC_DRAW 0x88E8
+#endif /* GL_DYNAMIC_DRAW */
+#ifndef GL_DYNAMIC_READ
+#define GL_DYNAMIC_READ 0x88E9
+#endif /* GL_DYNAMIC_READ */
+#ifndef GL_DYNAMIC_COPY
+#define GL_DYNAMIC_COPY 0x88EA
+#endif /* GL_DYNAMIC_COPY */
+
 
 /* NViDIA GL_NV_register_combiners extension */
 #ifndef GL_REGISTER_COMBINERS_NV 
@@ -1406,6 +1449,23 @@
 #ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
 #endif /* GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT */
+
+/* glClientPush/PopAttrib() defines */
+#ifndef GL_CLIENT_PIXEL_STORE_BIT
+#define GL_CLIENT_PIXEL_STORE_BIT 0x00000001
+#endif /* GL_CLIENT_PIXEL_STORE_BIT */
+
+#ifndef GL_CLIENT_VERTEX_ARRAY_BIT
+#define GL_CLIENT_VERTEX_ARRAY_BIT  0x00000002
+#endif /* GL_CLIENT_VERTEX_ARRAY_BIT */
+
+#ifndef GL_CLIENT_ALL_ATTRIB_BITS
+#define GL_CLIENT_ALL_ATTRIB_BITS 0xFFFFFFFF
+#endif /* GL_CLIENT_ALL_ATTRIB_BITS */
+
+#ifndef GL_ALL_CLIENT_ATTRIB_BITS
+#define GL_ALL_CLIENT_ATTRIB_BITS 0xFFFFFFFF
+#endif /* GL_ALL_CLIENT_ATTRIB_BITS */
 
 /*** GL enums, end ****************************************************/
 /**********************************************************************/

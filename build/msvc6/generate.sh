@@ -43,9 +43,13 @@ sed \
   -e "s/$source/..\\\\../g" \
   -e "s/$source_pwd/..\\\\../g" \
   -e 's/$/\r/g' \
-  <installcoinheaders.bat >new.bat
+  <install-headers.bat >new.bat
 
-mv new.bat installcoinheaders.bat
+mv new.bat install-headers.bat
+
+echo "Done."
+echo "Make sure the coin3.dsp file does not contain any absolute paths."
+grep -i c: coin3.dsp /dev/null
 
 # How can I avoid the modal upgrade prompt-dialog for MSVC7.1 here???
 # devenv /command "File.OpenProject $build\\coin3.dsp"

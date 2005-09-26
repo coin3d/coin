@@ -265,6 +265,12 @@
 /* define if snprintf() is available */
 /* #undef HAVE_SNPRINTF */
 
+/* define that the Spidermonkey header is available */
+/* #undef HAVE_SPIDERMONKEY_H */
+
+/* define if you have the SpiderMonkey library */
+/* #undef HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING */
+
 /* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
 
@@ -417,6 +423,9 @@
 
 /* define for runtime linking with simage */
 #define SIMAGE_RUNTIME_LINKING 1
+
+/* define for runtime linking with SpiderMonkey */
+#define SPIDERMONKEY_RUNTIME_LINKING 1
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
