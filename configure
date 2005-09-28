@@ -32438,7 +32438,17 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_func_singleprec_avail=true
+  case ${MACOSX_DEPLOYMENT_TARGET} in
+                10.[0123])
+                  # single precision math functions are not available in
+                  # libSystem on Mac OS X < 10.4, so don't use them when
+                  # building the binary SDK.
+                  sim_cv_func_singleprec_avail=false
+                  ;;
+                *)
+                  sim_cv_func_singleprec_avail=true
+                  ;;
+                esac
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
