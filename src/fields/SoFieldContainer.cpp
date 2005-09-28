@@ -866,7 +866,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   // Don't call copyContents for the proto instance root node, since
   // this is handled by the Proto node.
   if (!protoinst) {
-    SbBool copied;
+    SbBool copied = FALSE;
     SbBool chk = contentscopied->get(orig, copied);
     assert(chk);
     

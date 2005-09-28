@@ -351,7 +351,7 @@ SoFieldP::hashExitCleanup(void)
 void *
 SoFieldP::hashRealloc(void * bufptr, size_t size)
 {
-  char ** bufptrptr;
+  char ** bufptrptr = NULL;
   int ok = SoFieldP::ptrhash->get((char *)bufptr, bufptrptr);
   assert(ok);
 
