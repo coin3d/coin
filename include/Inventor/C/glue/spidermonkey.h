@@ -304,7 +304,7 @@ typedef JSBool (* JS_CallFunction_t)(JSContext *, JSObject *, JSFunction *, uint
 typedef JSFunction * (* JS_ValueToFunction_t)(JSContext *, jsval);
 typedef void (* JS_ReportError_t)(JSContext *, const char *, ...);
 typedef JSBool (* JS_IsArrayObject_t)(JSContext *, JSObject *);
-typedef JSBool (* JS_ValueToInt32_t)(JSContext *, jsval, int32_t *);
+typedef JSBool (* JS_ValueToECMAInt32_t)(JSContext *, jsval, int32_t *);
 typedef JSFunction * (* JS_DefineFunction_t)(JSContext *, JSObject *, const char *, JSNative, uintN, uintN);
 typedef JSObject * (* JS_GetGlobalObject_t)(JSContext *);
 typedef JSGCCallback (* JS_SetGCCallback_t)(JSContext *, JSGCCallback);
@@ -393,7 +393,7 @@ typedef struct {
   JS_ValueToFunction_t JS_ValueToFunction;
   JS_ReportError_t JS_ReportError;
   JS_IsArrayObject_t JS_IsArrayObject;
-  JS_ValueToInt32_t JS_ValueToInt32;
+  JS_ValueToECMAInt32_t JS_ValueToECMAInt32;
   JS_DefineFunction_t JS_DefineFunction;
   JS_GetGlobalObject_t JS_GetGlobalObject;
   JS_SetGCCallback_t JS_SetGCCallback;

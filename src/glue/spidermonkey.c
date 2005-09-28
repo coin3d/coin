@@ -275,7 +275,7 @@ spidermonkey(void)
   REGISTER_FUNC(JS_ValueToFunction, JS_ValueToFunction_t);
   REGISTER_FUNC(JS_ReportError, JS_ReportError_t);
   REGISTER_FUNC(JS_IsArrayObject, JS_IsArrayObject_t);
-  REGISTER_FUNC(JS_ValueToInt32, JS_ValueToInt32_t);
+  REGISTER_FUNC(JS_ValueToECMAInt32, JS_ValueToECMAInt32_t);
   REGISTER_FUNC(JS_DefineFunction, JS_DefineFunction_t);
   REGISTER_FUNC(JS_GetGlobalObject, JS_GetGlobalObject_t);
   REGISTER_FUNC(JS_SetGCCallback, JS_SetGCCallback_t);
