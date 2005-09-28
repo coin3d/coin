@@ -47,7 +47,7 @@ DEVICE=`hdiutil attach $OUTNAME.tmp.sparseimage | sed -ne 's|.*/dev/\([^ ]*\).*|
 ditto -rsrcFork $ROOT /Volumes/$VOLNAME
 echo "--"
 echo "Open $VOLNAME from Desktop and set background to"
-echo "/Volumes/$VOLNAME/coin_dmg_bg.tiff. Make sure \"This window only\" is chosen."
+echo "/Volumes/$VOLNAME/dmg_bg.tiff. Make sure \"This window only\" is chosen."
 echo "When done, press enter to continue."
 read
 # Hide files
@@ -55,7 +55,7 @@ read
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/.DS_Store
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DB
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DF
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/coin_dmg_bg.tiff
+/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/dmg_bg.tiff
 # We have a custom volume icon
 /Developer/Tools/SetFile -a C /Volumes/$VOLNAME
 

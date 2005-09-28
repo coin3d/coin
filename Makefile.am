@@ -103,7 +103,7 @@ EXTRA_DIST = \
 	packaging/macosx/CoinTools_Welcome.rtf \
 	packaging/macosx/inst-dmg-files/.DS_Store \
 	packaging/macosx/inst-dmg-files/.VolumeIcon.icns \
-	packaging/macosx/inst-dmg-files/coin_dmg_bg.tiff \
+	packaging/macosx/inst-dmg-files/dmg_bg.tiff \
 	packaging/macosx/inst-dmg-files/Desktop_DB \
 	packaging/macosx/inst-dmg-files/Desktop_DF \
 	packaging/macosx/License.rtf \
@@ -115,7 +115,7 @@ EXTRA_DIST = \
 	packaging/macosx/makenoinstdmg.sh.in \
 	packaging/macosx/noinst-dmg-files/.DS_Store \
 	packaging/macosx/noinst-dmg-files/.VolumeIcon.icns \
-	packaging/macosx/noinst-dmg-files/coin_dmg_bg.tiff \
+	packaging/macosx/noinst-dmg-files/dmg_bg.tiff \
 	packaging/macosx/noinst-dmg-files/Desktop_DB \
 	packaging/macosx/noinst-dmg-files/Desktop_DF \
 	packaging/macosx/noinst-README-Jaguar.txt.in \
