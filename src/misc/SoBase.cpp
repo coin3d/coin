@@ -719,7 +719,7 @@ SoBase::getName(void) const
   // called.
   assert(SoBaseP::obj2name);
 
-  const char * value;
+  const char * value = NULL;
   CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
   SbBool found = SoBaseP::obj2name->get(this, value);
   CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
@@ -816,7 +816,7 @@ void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
   CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  SbPList * l;
+  SbPList * l = NULL;
   SbBool found = SoBaseP::name2obj->get(name, l);
   assert(found);
 
