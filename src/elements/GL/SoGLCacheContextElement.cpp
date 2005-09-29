@@ -292,11 +292,14 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   assert(extid >= 0 && extid < extsupportlist->getLength());
 
   so_glext_info * info = (*extsupportlist)[extid];
-
+  
   int currcontext = SoGLCacheContextElement::get(state);
   int n = info->context.getLength();
   for (int i = 0; i < n; i++) {
-    if (info->context[i] == currcontext) return info->supported[i];
+    if (info->context[i] == currcontext) {
+      CC_MUTEX_UNLOCK(glcache_mutex);
+      return info->supported[i];
+    }
   }
   const cc_glglue * w = sogl_glue_instance(state);
   SbBool supported = cc_glglue_glext_supported(w, info->extname.getString());
