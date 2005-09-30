@@ -41,6 +41,11 @@ if test -e /Volumes/$VOLNAME; then
   exit 1
 fi
 
+# Determine which README file to use (*gcc4* or *gcc3*)
+gccversion="gcc4"
+versionstring=`cpp -dM /dev/null | grep __VERSION__ |grep '__VERSION__ "3'`
+if test x"$versionstring" = x""; then :; else gccversion="gcc3"; fi
+
 # Remove old generated files
 rm -rf inst-dmg-root
 rm -rf $VOLNAME.dmg
@@ -51,7 +56,7 @@ mv inst-dmg-root/Desktop_DB inst-dmg-root/Desktop\ DB
 mv inst-dmg-root/Desktop_DF inst-dmg-root/Desktop\ DF
 
 # Copy dist files
-cp inst-README-@MACOSX_NAME@.txt inst-dmg-root/README.txt
+cp inst-README-$gccversion.txt inst-dmg-root/README.txt
 ditto -rsrcFork Coin.pkg inst-dmg-root/Coin.pkg
 ditto -rsrcFork CoinTools.pkg inst-dmg-root/CoinTools.pkg
 #FIXME: doc disabled for now

@@ -48,6 +48,11 @@ if test $VERBOSE; then
   set -x
 fi
 
+# Determine which README file to use (*gcc4* or *gcc3*)
+gccversion="gcc4"
+versionstring=`cpp -dM /dev/null | grep __VERSION__ |grep '__VERSION__ "3'`
+if test x"$versionstring" = x""; then :; else gccversion="gcc3"; fi
+
 # Remove old generated files
 rm -rf noinst-dmg-root
 rm -rf $VOLNAME-no_inst.dmg
@@ -58,7 +63,7 @@ mv noinst-dmg-root/Desktop_DB noinst-dmg-root/Desktop\ DB
 mv noinst-dmg-root/Desktop_DF noinst-dmg-root/Desktop\ DF
 
 # Copy dist files
-cp noinst-README-@MACOSX_NAME@.txt noinst-dmg-root/README.txt
+cp noinst-README-$gccversion.txt noinst-dmg-root/README.txt
 ditto -rsrcFork $FRAMEWORK noinst-dmg-root/Inventor.framework
 
 # Build dmg file from dmgroot

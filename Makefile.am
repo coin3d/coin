@@ -118,12 +118,10 @@ EXTRA_DIST = \
 	packaging/macosx/noinst-dmg-files/dmg_bg.tiff \
 	packaging/macosx/noinst-dmg-files/Desktop_DB \
 	packaging/macosx/noinst-dmg-files/Desktop_DF \
-	packaging/macosx/noinst-README-Jaguar.txt.in \
-	packaging/macosx/noinst-README-Panther.txt.in \
-	packaging/macosx/noinst-README-.txt.in \
-	packaging/macosx/inst-README-Jaguar.txt.in \
-	packaging/macosx/inst-README-Panther.txt.in \
-	packaging/macosx/inst-README-.txt.in \
+	packaging/macosx/noinst-README-gcc3.txt.in \
+	packaging/macosx/noinst-README-gcc4.txt.in \
+	packaging/macosx/inst-README-gcc3.txt.in \
+	packaging/macosx/inst-README-gcc4.txt.in \
 	packaging/macosx/background.tiff \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
