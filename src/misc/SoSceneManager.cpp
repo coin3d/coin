@@ -366,9 +366,27 @@ SoSceneManager::processEvent(const SoEvent * const event)
 {
   assert(PRIVATE(this)->handleeventaction);
 
-  PRIVATE(this)->handleeventaction->setEvent(event);
-  if (PRIVATE(this)->scene) PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
-  return PRIVATE(this)->handleeventaction->isHandled();
+  SbBool handled = FALSE;
+  if ( PRIVATE(this)->scene == NULL ) {
+    // nothing
+  } else if ( PRIVATE(this)->handleeventaction->getCurPath() ) {
+    // recursive invocation - action currently in use - use new one
+#ifdef COIN_EXTRA_DEBUG
+    SoDebugError::postInfo("SoSceneManager::processEvent",
+                           "recursive invocation - potentially unsafe");
+#endif // COIN_EXTRA_DEBUG
+    const SbViewportRegion & viewport =
+      PRIVATE(this)->handleeventaction->getViewportRegion();
+    SoHandleEventAction ha(viewport);
+    ha.setEvent(event);
+    ha.apply(PRIVATE(this)->scene);
+    handled = ha.isHandled();
+  } else {
+    PRIVATE(this)->handleeventaction->setEvent(event);
+    PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
+    handled = PRIVATE(this)->handleeventaction->isHandled();
+  }
+  return handled;
 }
 
 /*!
