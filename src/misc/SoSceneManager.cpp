@@ -378,6 +378,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
     const SbViewportRegion & viewport =
       PRIVATE(this)->handleeventaction->getViewportRegion();
     SoHandleEventAction ha(viewport);
+    ha.setGrabber(PRIVATE(this)->handleeventaction->getGrabber());
     ha.setEvent(event);
     ha.apply(PRIVATE(this)->scene);
     handled = ha.isHandled();
