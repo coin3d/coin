@@ -54,6 +54,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/misc/SoAudioDevice.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
@@ -367,21 +368,16 @@ SoSceneManager::processEvent(const SoEvent * const event)
   assert(PRIVATE(this)->handleeventaction);
 
   SbBool handled = FALSE;
-  if ( PRIVATE(this)->scene == NULL ) {
+  if ( PRIVATE(this)->handleeventaction->getState() != NULL &&
+       PRIVATE(this)->handleeventaction->getState()->getDepth() != 0 ) {
+    // recursive invocation - action currently in use
+#if COIN_DEBUG
+    SoDebugError::post("SoSceneManager::processEvent",
+                       "Recursive invocation detected. Delay processing event "
+                       "until the current event is finished processing.");
+#endif // COIN_DEBUG
+  } else if ( PRIVATE(this)->scene == NULL ) {
     // nothing
-  } else if ( PRIVATE(this)->handleeventaction->getCurPath() ) {
-    // recursive invocation - action currently in use - use new one
-#ifdef COIN_EXTRA_DEBUG
-    SoDebugError::postInfo("SoSceneManager::processEvent",
-                           "recursive invocation - potentially unsafe");
-#endif // COIN_EXTRA_DEBUG
-    const SbViewportRegion & viewport =
-      PRIVATE(this)->handleeventaction->getViewportRegion();
-    SoHandleEventAction ha(viewport);
-    ha.setGrabber(PRIVATE(this)->handleeventaction->getGrabber());
-    ha.setEvent(event);
-    ha.apply(PRIVATE(this)->scene);
-    handled = ha.isHandled();
   } else {
     PRIVATE(this)->handleeventaction->setEvent(event);
     PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
