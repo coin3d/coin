@@ -183,10 +183,7 @@ SoTextureUnit::callback(SoCallbackAction * action)
 void
 SoTextureUnit::pick(SoPickAction * action)
 {
-  // So far only SoGLRenderAction supports SoTextureUnitElement.  We
-  // may never support multiple texture units for SoPickAction, but we
-  // reimplement the method just in case
-  inherited::pick(action);
+  SoTextureUnit::doAction(action);
 }
 
 /*!
