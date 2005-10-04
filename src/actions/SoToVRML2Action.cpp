@@ -769,7 +769,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
       SbVec2s size;
       int numComponents;
       const unsigned char * image = this->recentTex2->image.getValue(size, numComponents);
-      if (size[0] > 0 && size[1] > 0) {
+      if (!this->recentTex2->filename.isDefault() || (size[0] > 0 && size[1] > 0)) {
         SoVRMLTexture * tex;
         if (!this->recentTex2->filename.isDefault()) {
           tex = new SoVRMLImageTexture;
