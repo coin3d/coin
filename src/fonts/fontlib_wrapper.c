@@ -281,8 +281,8 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
 
-  if (gs->bitmap && !gs->fromdefaultfont) {
-    if (gs->bitmap->buffer) { free(gs->bitmap->buffer); }
+  if (gs->bitmap) {
+    if (!gs->fromdefaultfont && gs->bitmap->buffer) { free(gs->bitmap->buffer); }
     free(gs->bitmap);
   }
 
