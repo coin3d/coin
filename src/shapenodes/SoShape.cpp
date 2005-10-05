@@ -1628,7 +1628,8 @@ SoShape::startVertexArray(SoGLRenderAction * action,
   SoVBO * vertexvbo = vboelem->getVertexVBO();
   SbBool dovbo = TRUE;
   if (!vertexvbo) dovbo = FALSE;
-  
+  SbBool didbind = FALSE;
+
   if (colorpervertex) {
     const GLvoid * dataptr = NULL;
     SoVBO * colorvbo = dovbo ? vboelem->getColorVBO() : NULL;
@@ -1636,9 +1637,13 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     if (colorvbo) {
       lelem->updateColorVBO(colorvbo);
       colorvbo->bindBuffer(contextid);
+      didbind = TRUE;
     }
     else {
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      if (didbind) {
+        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        didbind = FALSE;
+      }
       dataptr = (const GLvoid*) lelem->getDiffusePointer();
     }
     if (colorvbo) {
@@ -1673,10 +1678,14 @@ SoShape::startVertexArray(SoGLRenderAction * action,
       vbo = dovbo ? vboelem->getTexCoordVBO(0) : NULL;
       if (vbo) {
         vbo->bindBuffer(contextid);
+        didbind = TRUE;
         tptr = NULL;
       }
       else {
-        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        if (didbind) {
+          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+          didbind = FALSE;
+        }
       }
       cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -1695,10 +1704,14 @@ SoShape::startVertexArray(SoGLRenderAction * action,
         vbo = dovbo ? vboelem->getTexCoordVBO(i) : NULL;
         if (vbo) {
           vbo->bindBuffer(contextid);
+          didbind = TRUE;
           tptr = NULL;
         }
         else {
-          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+          if (didbind) {
+            cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+            didbind = FALSE;
+          }
         }
         cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
         cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -1710,10 +1723,14 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     const GLvoid * dataptr = NULL;
     if (vbo) {
       vbo->bindBuffer(contextid);
+      didbind = TRUE;
     }
     else {
       dataptr = (const GLvoid*) pervertexnormals;
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+      if (didbind) {
+        cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
+        didbind = FALSE;
+      }
     }
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, dataptr);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
