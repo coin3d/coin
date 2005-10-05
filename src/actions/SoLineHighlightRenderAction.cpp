@@ -53,6 +53,8 @@
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
@@ -307,7 +309,11 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   SoTextureQualityElement::set(state, 0.0f);
   SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
   SoPolygonOffsetElement::set(state, NULL, -1.0f, 1.0f, SoPolygonOffsetElement::LINES, TRUE);
-  
+  SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL); 
+  SoNormalElement::set(state, NULL, 0, NULL, FALSE);
+ 
+  SoOverrideElement::setNormalVectorOverride(state, NULL, TRUE);
+  SoOverrideElement::setMaterialBindingOverride(state, NULL, TRUE);
   SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
   SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
   SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
