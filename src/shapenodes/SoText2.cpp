@@ -209,6 +209,8 @@ public:
   SoGlyphCache * cache;
   SoFieldSensor * spacingsensor;
   SoFieldSensor * stringsensor;
+  unsigned char * pixel_buffer;
+  int pixel_buffer_size;
 
   static void sensor_cb(void * userdata, SoSensor * s) {
     SoText2P * thisp = (SoText2P*) userdata;
@@ -267,6 +269,8 @@ SoText2::SoText2(void)
   PRIVATE(this)->spacingsensor->attach(&this->spacing);
   PRIVATE(this)->spacingsensor->setPriority(0);
   PRIVATE(this)->cache = NULL;
+  PRIVATE(this)->pixel_buffer = NULL;
+  PRIVATE(this)->pixel_buffer_size = 0;
 }
 
 /*!
@@ -275,6 +279,7 @@ SoText2::SoText2(void)
 SoText2::~SoText2()
 {
   if (PRIVATE(this)->cache) PRIVATE(this)->cache->unref();
+  delete[] PRIVATE(this)->pixel_buffer;
   delete PRIVATE(this)->stringsensor;
   delete PRIVATE(this)->spacingsensor;
 
@@ -419,7 +424,6 @@ SoText2::GLRender(SoGLRenderAction * action)
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
           
-
             glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         
             // get the current glColor
@@ -431,10 +435,16 @@ SoText2::GLRender(SoGLRenderAction * action)
             unsigned char blue  = (unsigned char) (ftglColor[2] * 255.0f);
 
             int numpixels = ix * iy;
-            unsigned char * data = (unsigned char *) malloc(numpixels * 4);
-            unsigned char * dst = data;
+ 
+            if (numpixels > PRIVATE(this)->pixel_buffer_size) {
+              delete[] PRIVATE(this)->pixel_buffer;
+              PRIVATE(this)->pixel_buffer = new unsigned char[numpixels*4];
+              PRIVATE(this)->pixel_buffer_size = numpixels;
+            }
+            unsigned char * dst = PRIVATE(this)->pixel_buffer;
             const unsigned char * src = buffer;
 
+            // Ouch. This must lead to pretty slow rendering
             if (ftglColor[3] == 1.0f) {
               for (int i = 0; i < numpixels; i++) {
                 *dst++ = red; *dst++ = green; *dst++ = blue;
@@ -448,10 +458,7 @@ SoText2::GLRender(SoGLRenderAction * action)
                 *dst++ = (((unsigned int)(ftglColor[3] * 256.0f)) * *src++) >> 8;
               }
             }
-
-            glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)data);
-
-            free(data);
+            glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)PRIVATE(this)->pixel_buffer);
 
             glPopClientAttrib();
             glPopAttrib();
