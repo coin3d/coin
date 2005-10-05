@@ -545,6 +545,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     }
 
     foundfile = strdup((const char*)filename);
+    cc_list_append(flwft_tessellator.malloclist, (void*) foundfile); /* to avoid mem leaks */
 
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);
@@ -647,7 +648,6 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
   }
 
   cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
-
   return face;
 }
 
