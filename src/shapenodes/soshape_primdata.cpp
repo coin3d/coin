@@ -275,6 +275,8 @@ soshape_primdata::handleLineDetail(void)
   if (this->lineDetail) {
     this->lineDetail->setPoint0(&this->pointDetails[0]);
     this->lineDetail->setPoint1(&this->pointDetails[1]);
+    this->vertsArray[0].setDetail(this->lineDetail);
+    this->vertsArray[1].setDetail(this->lineDetail);
   }
 }
 
