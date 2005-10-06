@@ -355,6 +355,26 @@ SoText2::GLRender(SoGLRenderAction * action)
     
     const int nrlines = this->string.getNum();
 
+    // get the current glColor
+    float ftglColor[4];
+    glGetFloatv(GL_CURRENT_COLOR, ftglColor);
+
+    unsigned char red   = (unsigned char) (ftglColor[0] * 255.0f);
+    unsigned char green = (unsigned char) (ftglColor[1] * 255.0f);
+    unsigned char blue  = (unsigned char) (ftglColor[2] * 255.0f);
+
+    state->push();
+    
+    // disable textures for all units
+    SoGLTextureEnabledElement::set(state, this, FALSE);
+    SoGLTexture3EnabledElement::set(state, this, FALSE);
+    SoGLMultiTextureEnabledElement::disableAll(state);
+    
+    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
+    glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
+    
+    SbBool didenableblend = FALSE;
+
     for (int i = 0; i < nrlines; i++) {
       SbString str = this->string[i];
       switch (this->justification.getValue()) {
@@ -386,7 +406,8 @@ SoText2::GLRender(SoGLRenderAction * action)
         int kerningx, kerningy;
         if (strcharidx > 0) {
           cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        } else {
+        } 
+        else {
           kerningx = 0;
           kerningy = 0;          
         }
@@ -407,33 +428,24 @@ SoText2::GLRender(SoGLRenderAction * action)
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
+            if (didenableblend) {
+              glDisable(GL_BLEND);
+              glDisable(GL_ALPHA_TEST);
+              didenableblend = FALSE;
+            }
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
-          } else {
-            state->push();
-            // disable textures for all units
-            SoGLTextureEnabledElement::set(state, this, FALSE);
-            SoGLTexture3EnabledElement::set(state, this, FALSE);
-            SoGLMultiTextureEnabledElement::disableAll(state);
-
-            glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
-            glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
+          } 
+          else {
+            if (!didenableblend) {
+              glEnable(GL_ALPHA_TEST);
+              glAlphaFunc(GL_GREATER, 0.3f);
           
-            glEnable(GL_ALPHA_TEST);
-            glAlphaFunc(GL_GREATER, 0.3f);
-          
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-          
+              glEnable(GL_BLEND);
+              glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+              didenableblend = TRUE;
+            }
             glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         
-            // get the current glColor
-            float ftglColor[4];
-            glGetFloatv(GL_CURRENT_COLOR, ftglColor);
-
-            unsigned char red   = (unsigned char) (ftglColor[0] * 255.0f);
-            unsigned char green = (unsigned char) (ftglColor[1] * 255.0f);
-            unsigned char blue  = (unsigned char) (ftglColor[2] * 255.0f);
-
             int numpixels = ix * iy;
  
             if (numpixels > PRIVATE(this)->pixel_buffer_size) {
@@ -460,10 +472,6 @@ SoText2::GLRender(SoGLRenderAction * action)
             }
             glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)PRIVATE(this)->pixel_buffer);
 
-            glPopClientAttrib();
-            glPopAttrib();
-            
-            state->pop();
           }
         }
 
@@ -485,9 +493,14 @@ SoText2::GLRender(SoGLRenderAction * action)
       // instance
       cc_glyph2d_unref(prevglyph);
     }
+
+    // pop old state
+    glPopClientAttrib();
+    glPopAttrib();
+    state->pop();
       
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-    // Pop old GL state.
+    // Pop old GL matrix state.
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
