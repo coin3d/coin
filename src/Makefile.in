@@ -1207,8 +1207,8 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	done
 
 @MAC_FRAMEWORK_TRUE@install-data-local:
-@MAC_FRAMEWORK_TRUE@	@echo " ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME)"; \
-@MAC_FRAMEWORK_TRUE@	ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME);
+@MAC_FRAMEWORK_TRUE@	cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current && ln -sf Libraries/libCoin.dylib $(MAC_FRAMEWORK_NAME) && cd -; \
+@MAC_FRAMEWORK_TRUE@	cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework && ln -sf Versions/Current/$(MAC_FRAMEWORK_NAME) $(MAC_FRAMEWORK_NAME) && install_name_tool -id $(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/$(MAC_FRAMEWORK_NAME) $(MAC_FRAMEWORK_NAME) && cd -;
 @MAC_FRAMEWORK_FALSE@install-data-local:
 @MAC_FRAMEWORK_FALSE@	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 @MAC_FRAMEWORK_FALSE@	for ext in lib; do \
