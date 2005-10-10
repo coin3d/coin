@@ -39,8 +39,8 @@
 #ifdef USE_W32THREAD
 /* we test if Win32 TryEnterCriticalSection exists, and use Win32
    critical section if it does, and Win32 mutex if it doesn't */
-typedef BOOL cc_mutex_TryEnterCriticalSection_func(LPCRITICAL_SECTION);
-static cc_mutex_TryEnterCriticalSection_func * cc_mutex_TryEnterCriticalSection = NULL; 
+typedef BOOL (WINAPI * cc_mutex_TryEnterCriticalSection_func)(LPCRITICAL_SECTION);
+static cc_mutex_TryEnterCriticalSection_func cc_mutex_TryEnterCriticalSection = NULL; 
 #include "mutex_win32mutex.ic" 
 #include "mutex_win32cs.ic" 
 #endif /* USE_W32THREAD */
@@ -198,7 +198,7 @@ cc_mutex_init(void)
   /* This function is unsupported in Win95/98/Me and NT <=3.51, but we
      still want to use it if it's available, since it can provide
      major speed-ups for certain aspects of Win32 mutex handling. */
-  cc_mutex_TryEnterCriticalSection = (cc_mutex_TryEnterCriticalSection_func *)
+  cc_mutex_TryEnterCriticalSection = (cc_mutex_TryEnterCriticalSection_func)
     GetProcAddress(h, "TryEnterCriticalSection");
   
 #endif /* USE_W32THREAD */
