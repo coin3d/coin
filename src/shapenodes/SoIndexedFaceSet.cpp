@@ -818,7 +818,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    else if (nbind == PER_VERTEX || nbind == PER_VERTEX_INDEXED) {
+    else if (nbind == PER_FACE_INDEXED || nbind == PER_VERTEX_INDEXED) {
       pointDetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
