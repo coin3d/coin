@@ -253,7 +253,7 @@ SoFile::readNamedFile(SoInput * in)
       break; 
     }
     cl.append(n);
-  } while (TRUE);
+  } while (!in->eof());
   
   // The file should not be removed from the stack before it is done
   // deliberately at the end of this method.
