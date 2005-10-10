@@ -258,6 +258,8 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 
+ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
+
 RegularSources = \
 	SoNodeKit.cpp \
 	SoNodeKitPath.cpp \
