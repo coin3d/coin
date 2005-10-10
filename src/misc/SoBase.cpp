@@ -716,7 +716,8 @@ SbName
 SoBase::getName(void) const
 {
   // If this assert fails, SoBase::initClass() has probably not been
-  // called.
+  // called, or you have objects on the stack that is destroyed after
+  // you have invoked SoDB::cleanup().
   assert(SoBaseP::obj2name);
 
   const char * value = NULL;
