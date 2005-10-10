@@ -935,6 +935,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorOutput.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizeAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
@@ -1396,7 +1398,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/hardcopy/PSVectorOutput.cpp \
                          @path_tag@@coin_src_dir@/src/hardcopy/VectorOutput.cpp \
                          @path_tag@@coin_src_dir@/src/hardcopy/VectorizeAction.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp \
+                         @path_tag@@coin_src_dir@/src/foreignfiles/SoForeignFileKit.cpp \
+                         @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

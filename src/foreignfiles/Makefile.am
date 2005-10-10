@@ -3,27 +3,26 @@
 
 ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 
+# Don't put steel.l in PrivateHeaders to avoid Automake complaining about
+# missing lex/flex support.
+EXTRA_DIST = \
+	steel.l
 RegularSources = \
-	SoNodeKit.cpp \
-	SoNodeKitPath.cpp \
-	SoNodeKitListPart.cpp \
-	SoNodekitCatalog.cpp \
-	SoBaseKit.cpp \
-	SoAppearanceKit.cpp \
-	SoCameraKit.cpp \
-	SoInteractionKit.cpp \
-	SoLightKit.cpp \
-	SoSceneKit.cpp \
-	SoSeparatorKit.cpp \
-	SoShapeKit.cpp \
-	SoWrapperKit.cpp
+	SoForeignFileKit.cpp \
+	SoSTLFileKit.cpp \
+	steel.c
 LinkHackSources = \
-	all-nodekits-cpp.cpp
+	all-foreignfiles-cpp.cpp \
+	all-foreignfiles-c.c
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = \
+	steel.h
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(nodekits, nodekits)
+#steel.c: steel.l Makefile
+#	flex steel.l
+
+##$ BEGIN TEMPLATE Make-Common(foreignfiles, annex/ForeignFiles)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -50,12 +49,12 @@ ExtraSources = $(LinkHackSources)
 endif
 
 if BUILD_WITH_MSVC
-noinst_LIBRARIES = nodekits.lst
+noinst_LIBRARIES = foreignfiles.lst
 else
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = libnodekits@SUFFIX@LINKHACK.la
+lib_LTLIBRARIES = libforeignfiles@SUFFIX@LINKHACK.la
 else
-noinst_LTLIBRARIES = libnodekits.la
+noinst_LTLIBRARIES = libforeignfiles.la
 endif
 endif
 
@@ -67,49 +66,49 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncl
 
 # header installation
 if MAC_FRAMEWORK
-libnodekitsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/nodekits
+libforeignfilesincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/annex/ForeignFiles
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libnodekitsincdir = $(includedir)/Inventor/nodekits
+libforeignfilesincdir = $(includedir)/Inventor/annex/ForeignFiles
 endif
-libnodekitsinc_HEADERS = $(PublicHeaders)
+libforeignfilesinc_HEADERS = $(PublicHeaders)
 
-libnodekits_la_SOURCES = $(BuildSources)
-EXTRA_libnodekits_la_SOURCES = \
+libforeignfiles_la_SOURCES = $(BuildSources)
+EXTRA_libforeignfiles_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
+libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-nodekits_lst_SOURCES = $(BuildSources)
-EXTRA_nodekits_lst_SOURCES = \
+foreignfiles_lst_SOURCES = $(BuildSources)
+EXTRA_foreignfiles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 # this rule causes a make warning, so we remove it when it is not in use
-nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
-	@echo "Linking nodekits.lst..."; \
+foreignfiles.lst: Makefile $(foreignfiles_lst_OBJECTS)
+	@echo "Linking foreignfiles.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(nodekits_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(foreignfiles_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
+install-libforeignfilesincHEADERS: $(libforeignfilesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libnodekitsinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir); \
+	@if test x"$(libforeignfilesinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libforeignfilesincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libforeignfilesincdir); \
 	fi
-	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libforeignfilesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libforeignfilesincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libforeignfilesincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

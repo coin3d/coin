@@ -42,6 +42,8 @@
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
 
+#include <ForeignFiles/SoForeignFileKit.h>
+
 
 SbBool SoNodeKit::isinitialized = FALSE;
 
@@ -74,6 +76,7 @@ SoNodeKit::init(void)
   SoSeparatorKit::initClass();
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
+  SoForeignFileKit::initClass();
 
   SoNodeKit::isinitialized = TRUE;
 }

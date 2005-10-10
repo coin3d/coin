@@ -348,6 +348,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #include <coindefs.h> // COIN_STUB()
@@ -929,14 +930,25 @@ SoDBP::read3DSFile(SoInput * in)
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
-  if (SoDBP::is3dsFile(in)) {
+  SbBool valid = in->isValidFile();
+
+  if (!valid && SoDBP::is3dsFile(in)) {
     base = SoDBP::read3DSFile(in);
     return (base != NULL);
   }
 
+  if ( !valid &&
+       SoForeignFileKit::getClassTypeId() != SoType::badType() &&
+       SoForeignFileKit::isFileSupported(in) ) {
+    base = SoForeignFileKit::createForeignFileKit(in);
+    return (base != NULL);
+  }
+
   // Header is only required when reading from a stream, if reading from
-  // memory no header is required
-  if (!in->isValidFile()) return FALSE;
+  // memory no header is required.
+  if ( !valid ) {
+    return FALSE;
+  }
   return SoBase::read(in, base, SoBase::getClassTypeId());
 }
 
@@ -960,6 +972,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
     rootnode = SoDBP::read3DSFile(in);
     return (rootnode != NULL);
   }
+
   // allow engines at the top level of a file
   do {
     if (!SoDB::read(in, baseptr)) return FALSE;
@@ -1564,6 +1577,7 @@ SoDB::enableRealTimeSensor(SbBool on)
 SbBool
 SoDBP::is3dsFile(SoInput * in)
 {
+  if (in->getNumBytesRead() > 0) { return FALSE; }
   if (in->getHeader().getLength() > 0) { return FALSE; }
 
   char c1, c2;
@@ -1587,11 +1601,12 @@ SoGroup *
 SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 {
   assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
-
   assert(grouptype.canCreateInstance());
   assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
 
-  if (SoDBP::is3dsFile(in)) {
+  SbBool valid = in->isValidFile();
+
+  if (!valid && SoDBP::is3dsFile(in)) {
     SoSeparator * root3ds = SoDBP::read3DSFile(in);
     if (root3ds == NULL) { return NULL; }
 
@@ -1605,7 +1620,18 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     }
   }
 
-  if (!in->isValidFile()) {
+  if ( !valid &&
+       SoForeignFileKit::getClassTypeId() != SoType::badType() &&
+       SoForeignFileKit::isFileSupported(in) ) {
+    SoForeignFileKit * kit = SoForeignFileKit::createForeignFileKit(in);
+    if ( kit ) {
+      SoGroup * root = (SoGroup *) grouptype.createInstance();
+      root->addChild(kit);
+      return root;
+    }
+  }
+
+  if ( !valid ) {
     SoReadError::post(in, "Not a valid Inventor file.");
     return NULL;
   }

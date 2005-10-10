@@ -1431,7 +1431,6 @@ SIM_AC_MATHLIB_READY_IFELSE([], [
     [SIM_AC_ERROR([no-math-library])])])
 AC_LANG_POP(C++)
 
-
 AC_CACHE_CHECK([whether single-precision math functions are available],
   sim_cv_func_singleprec_avail,
   [AC_TRY_LINK([#include <math.h>],
@@ -2069,8 +2068,6 @@ AC_CONFIG_FILES([
         include/Inventor/MPEG/Makefile
         include/Inventor/VRMLnodes/Makefile
         include/Inventor/actions/Makefile
-        include/Inventor/annex/Makefile
-        include/Inventor/annex/HardCopy/Makefile
         include/Inventor/bundles/Makefile
         include/Inventor/caches/Makefile
         include/Inventor/collision/Makefile
@@ -2091,6 +2088,9 @@ AC_CONFIG_FILES([
         include/Inventor/sensors/Makefile
         include/Inventor/system/Makefile
         include/Inventor/threads/Makefile
+        include/Inventor/annex/Makefile
+        include/Inventor/annex/HardCopy/Makefile
+        include/Inventor/annex/ForeignFiles/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         man/Makefile
@@ -2130,6 +2130,7 @@ AC_CONFIG_FILES([
         src/hardcopy/Makefile
         src/mpeg/Makefile
         src/shaders/Makefile
+        src/foreignfiles/Makefile
         cfg/gendsp.sh
 ])
 

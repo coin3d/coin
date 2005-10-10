@@ -1,3 +1,2 @@
 
-SUBDIRS = HardCopy
-
+SUBDIRS = HardCopy ForeignFiles

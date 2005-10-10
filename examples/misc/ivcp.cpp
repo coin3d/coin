@@ -40,14 +40,20 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 
 int
 main(int argc, char ** argv)
 {
+  fprintf(stderr, "ivcp v0.1\n");
+
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
@@ -75,6 +81,20 @@ main(int argc, char ** argv)
   delete in;
   scene->ref();
 
+  if ( scene->isOfType(SoForeignFileKit::getClassTypeId()) {
+    SoForeignFileKit * kit = (SoForeignFileKit *) scene;
+    if ( kit->canWriteScene() ) {
+      SoNode * subscene = NULL;
+      kit->writeScene(subscene);
+      if ( !subscene ) {
+        return -1;
+      }
+      subscene->ref();
+      scene->unref();
+      scene = subscene;
+    }
+  }
+
   SoOutput * out = new SoOutput;
   if ( !out->openFile(argv[2]) ) {
     fprintf(stderr, "error: could not open file '%s' for writing\n");
@@ -92,7 +112,8 @@ main(int argc, char ** argv)
 
   scene->unref();
 
-  SoDB::cleanup();
+  // with actions on the stack, cleanup can't be called...
+  // SoDB::cleanup();
   return 0;
 }
 
