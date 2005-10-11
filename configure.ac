@@ -2013,7 +2013,9 @@ COIN_COMPILER="$CXX"
     COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME"
     COIN_EXTRA_LIBS=
     # adjust for OpenGL usage
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-framework,OpenGL"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_ogl_libs $COIN_EXTRA_LIBS"
     # adjust for simage usage
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
