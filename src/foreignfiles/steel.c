@@ -547,7 +547,7 @@ struct stl_reader_s {
 };
 
 /* prototypes for internal functions used in lex part */
-int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c);
+static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c);
 
 #define STL_PUBLIC_FLAGS 0x000000ff
 #define STL_NO_PENDING   ((STL_ERROR) - 1)
