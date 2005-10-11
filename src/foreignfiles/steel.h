@@ -58,13 +58,13 @@ typedef  struct stl_facet_s   stl_facet;
 typedef  struct stl_reader_s  stl_reader;
 typedef  struct stl_writer_s  stl_writer;
 
-unsigned int  stl_steel_major(void);
-unsigned int  stl_steel_minor(void);
-unsigned int  stl_steel_micro(void);
-unsigned int  stl_steel_abi_version(void);
-unsigned int  stl_steel_abi_revision(void);
-unsigned int  stl_steel_abi_age(void);
-unsigned int  stl_steel_abi_supported(unsigned int version, unsigned int revision);
+int  stl_steel_major(void);
+int  stl_steel_minor(void);
+int  stl_steel_micro(void);
+int  stl_steel_abi_version(void);
+int  stl_steel_abi_revision(void);
+int  stl_steel_abi_age(void);
+int  stl_steel_abi_supported(int version, int revision);
 
 stl_facet *   stl_facet_create_uninitialized(void);
 stl_facet *   stl_facet_create(void);

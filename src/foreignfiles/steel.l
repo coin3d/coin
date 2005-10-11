@@ -134,7 +134,6 @@ LINE    [^\n]*
 	    reader->info = NULL;
 	  }
 	  stl_parse_real_triple(yytext, &(reader->facet->nx), &(reader->facet->ny), &(reader->facet->nz));
-	  /* fprintf(stderr, "facet normal : <%g %g %g>\n", reader->facet->nx, reader->facet->ny, reader->facet->nz); /* */
 	}
 
 {WS}outer{WS}loop{WHITE}$	{
@@ -371,7 +370,7 @@ This function returns the major part (#.-.-) of the steel release version
 number.
  */
 
-unsigned int
+int
 stl_steel_major(void)
 {
   return STL_STEEL_MAJOR;
@@ -382,7 +381,7 @@ This function returns the minor part (-.#.-) of the steel release version
 number.
  */
 
-unsigned int
+int
 stl_steel_minor(void)
 {
   return STL_STEEL_MINOR;
@@ -393,7 +392,7 @@ This function returns the micro part (-.-.#) of the steel release version
 number.
  */
 
-unsigned int
+int
 stl_steel_micro(void)
 {
   return STL_STEEL_MICRO;
@@ -404,7 +403,7 @@ This function returns the version of the steel library ABI.  It is the same
 as the libtool "current" number.
  */
 
-unsigned int
+int
 stl_steel_abi_version(void)
 {
   return STL_STEEL_ABI_VERSION;
@@ -415,7 +414,7 @@ This function returns the revision of the current steel library ABI version.
 It is the same as the libtool "revision" number.
  */
 
-unsigned int
+int
 stl_steel_abi_revision(void)
 {
   return STL_STEEL_ABI_REVISION;
@@ -426,7 +425,7 @@ This function returns the age of the current steel library ABI.
 It is essentially the same as the libtool "age" number.
  */
 
-unsigned int
+int
 stl_steel_abi_age(void)
 {
   return STL_STEEL_ABI_AGE;
@@ -437,8 +436,8 @@ This function returns TRUE if the requested ABI version is supported and
 FALSE otherwise.
  */
 
-unsigned int
-stl_steel_abi_supported(unsigned int version, unsigned int revision)
+int
+stl_steel_abi_supported(int version, int revision)
 {
   if ( (version < STL_STEEL_ABI_VERSION) &&
        (version >= (STL_STEEL_ABI_VERSION - STL_STEEL_ABI_AGE)) )
