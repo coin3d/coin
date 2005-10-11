@@ -30,41 +30,40 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#define  STL_STEEL_MAJOR            0
-#define  STL_STEEL_MINOR            5
-#define  STL_STEEL_MICRO            0
-#define  STL_STEEL_ABI_VERSION      0
-#define  STL_STEEL_ABI_REVISION     0
-#define  STL_STEEL_ABI_AGE          0
+#define  STL_STEEL_MAJOR           (0)
+#define  STL_STEEL_MINOR           (5)
+#define  STL_STEEL_MICRO           (0)
+#define  STL_STEEL_ABI_VERSION     (0)
+#define  STL_STEEL_ABI_REVISION    (0)
+#define  STL_STEEL_ABI_AGE         (0)
 
-#define  STL_ERROR                 -1
-#define  STL_OK                     0
-#define  STL_BEGIN                  1
-#define  STL_INIT_INFO              2
-#define  STL_FACET                  3
-#define  STL_EXIT_INFO              4
-#define  STL_END                    5
+#define  STL_ERROR                (-1)
+#define  STL_OK                    (0)
+#define  STL_BEGIN                 (1)
+#define  STL_INIT_INFO             (2)
+#define  STL_FACET                 (3)
+#define  STL_EXIT_INFO             (4)
+#define  STL_END                   (5)
 
-#define  STL_BINARY              0x01
-/* - not implemented - there are btw multiple extensions, so the define
-     must probably be changed
-#define  STL_COLOR               0x02
-*/
+#define  STL_BINARY             (0x01)
+/* binary file color extensions (mutually exclusive): */
+#define  STL_COLOR_MATERIALISE  (0x02)
+#define  STL_COLOR_TNO_VISICAM  (0x04)
 
-#define  STL_NO_COLOR      0xffffffff
+#define  STL_NO_COLOR     (0xffffffff)
 
 typedef  float                stl_real;
 typedef  struct stl_facet_s   stl_facet;
 typedef  struct stl_reader_s  stl_reader;
 typedef  struct stl_writer_s  stl_writer;
 
-int  stl_steel_major(void);
-int  stl_steel_minor(void);
-int  stl_steel_micro(void);
-int  stl_steel_abi_version(void);
-int  stl_steel_abi_revision(void);
-int  stl_steel_abi_age(void);
-int  stl_steel_abi_supported(int version, int revision);
+int           stl_steel_major(void);
+int           stl_steel_minor(void);
+int           stl_steel_micro(void);
+int           stl_steel_abi_version(void);
+int           stl_steel_abi_revision(void);
+int           stl_steel_abi_age(void);
+int           stl_steel_abi_supported(int version, int revision);
 
 stl_facet *   stl_facet_create_uninitialized(void);
 stl_facet *   stl_facet_create(void);
