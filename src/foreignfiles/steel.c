@@ -486,7 +486,6 @@ char *yytext;
  * TODO:
  * - implement writing
  * - color extensions (binary only)
- * - reading binary floats on big-endian systems?
  * - be robust for corrupt files
  * - wtf does "A facet normal coordinate may have a leading minus sign;
  *   a vertex coordinate may not." for stl ascii files mean?  do I need to
@@ -497,20 +496,22 @@ char *yytext;
  * - cr+lf on DOS/unix for ascii files
  * - remove error-handling asserts
  * ********************************************************************** */
-#line 41 "steel.l"
+#line 40 "steel.l"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <Inventor/system/inttypes.h>
+
 #include "steel.h"
 
-/*@stl_real@
+/* @stl_real@
 This is a typedef for the C type float.  It is used so the floating point type
 can be changed at a later date.  It is not likely to happen though, as the
 STL file format specifies that the floats should be IEEE 32-bit floats.
  */
 
-/*@stl_facet_s@
+/* @stl_facet_s@
 This is an opaque handle for one facet record in an STL file.  It contains
 the position of the three vertices in the triangle face, and the normal
 vector.  For binary STL files, there is also two bytes of padding data
@@ -526,7 +527,7 @@ struct stl_facet_s {
   unsigned int color;
 };
 
-/*@stl_reader_s@
+/* @stl_reader_s@
 This is an opaque handle for an STL file that is opened for reading.
 Both ascii and binary file access is handled with this type.
  */
@@ -557,7 +558,7 @@ int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c)
 #define YY_NO_SCAN_BUFFER 1
 #define YY_NO_SCAN_BYTES 1
 #define YY_NO_SCAN_STRING 1
-#line 561 "steel.c"
+#line 562 "steel.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -708,10 +709,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 114 "steel.l"
+#line 115 "steel.l"
 
 
-#line 715 "steel.c"
+#line 716 "steel.c"
 
 	if ( yy_init )
 		{
@@ -799,7 +800,7 @@ case 1:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 116 "steel.l"
+#line 117 "steel.l"
 {
 	  char * ptr = yytext;
 	  while ( *ptr == ' ' || *ptr == '\t' ) ptr++;
@@ -819,7 +820,7 @@ case 2:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 130 "steel.l"
+#line 131 "steel.l"
 {
 	  assert(reader->facet != NULL);
 	  if ( reader->info != NULL ) {
@@ -1893,6 +1894,7 @@ int main()
     } \
   } while ( FALSE )
 
+static
 int
 stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c)
 {
@@ -1911,45 +1913,88 @@ stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c)
   return TRUE;
 }
 
+static
+int
+stl_host_is_bigendian(void)
+{
+  static int retval = -1;
+  if ( retval == -1 ) {
+    union {
+      unsigned char bytes[4];
+      uint32_t word;
+    } data;
+    data.word = 0x01;
+    if ( data.bytes[3] == 0x01 )
+      retval = TRUE;
+    else
+      retval = FALSE;
+  }
+  return retval;
+}
+
+static
+uint32_t
+stl_ntohl(uint32_t word)
+{
+  if ( stl_host_is_bigendian() ) {
+    uint32_t swapped =
+      ((word & 0x000000ff) << 24) | ((word & 0x0000ff00) <<  8) |
+      ((word & 0x00ff0000) >>  8) | ((word & 0xff000000) >> 24);
+    return swapped;
+  }
+  return word;
+}
+
+static
 void
 stl_reader_binary_facet(stl_reader * reader)
 {
   union {
     unsigned char bytes[4];
+    uint32_t data;
     float real;
   } data;
   assert(reader != NULL);
   assert(reader->file != NULL);
   assert(reader->facet != NULL);
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->nx = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->ny = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->nz = data.real;
-  /* fprintf(stderr, "normal : <%g, %g, %g>\n", reader->facet->nx, reader->facet->ny, reader->facet->nz); */
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v1x = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v1y = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v1z = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v2x = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v2y = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v2z = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v3x = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v3y = data.real;
   fread(&data.bytes, 4, 1, reader->file);
+  data.data = stl_ntohl(data.data);
   reader->facet->v3z = data.real;
-  /* fprintf(stderr, "  vertex 1 : <%g, %g, %g>\n", reader->facet->v1x, reader->facet->v1y, reader->facet->v1z); */
-  /* fprintf(stderr, "  vertex 2 : <%g, %g, %g>\n", reader->facet->v2x, reader->facet->v2y, reader->facet->v2z); */
-  /* fprintf(stderr, "  vertex 3 : <%g, %g, %g>\n", reader->facet->v3x, reader->facet->v3y, reader->facet->v3z); */
   fread(&data.bytes, 2, 1, reader->file);
+  /* byteswap? */
   reader->facet->color = data.bytes[0] | (data.bytes[1] << 8);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
   reader->facets++;
@@ -2328,6 +2373,7 @@ stl_reader_create(const char * filename)
   reader->facet = stl_facet_create();
   reader->linenum = 1;
 
+  /* FIXME: try binary first, then ascii */
   id = stl_reader_peek(reader);
   if ( id != -1 ) {
     reader->pending = id;
@@ -2340,6 +2386,7 @@ stl_reader_create(const char * filename)
   fread(bytes, 1, 4, reader->file);
   reader->facets_total = (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
   if ( (84 + (reader->facets_total * 50)) == length ) {
+    /* FIXME: scan header for "COLOR=" for the "Materialise" color extension */
     reader->flags |= STL_BINARY;
     fseek(reader->file, 0, SEEK_SET);
     reader->info = malloc(81);
