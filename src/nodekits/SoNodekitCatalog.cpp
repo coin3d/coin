@@ -576,64 +576,30 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 SbBool
 SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
 {
-  // First item in catalog?
-  if (this->items.getLength() == 0) {
-
-    assert( newitem->parentname == "" && newitem->siblingname == "" );
-
+  const int n = this->items.getLength();
+  
+  if (n == 0) {
     this->items.append(newitem);
     return TRUE;
   }
 
-  // First find parent.
-  int position = this->getPartNumber( this->items, newitem->parentname );
-
-#if COIN_DEBUG && 0
-  SoDebugError::postInfo("SoNodekitCatalog::addEntry",
-                         "parent position: %d", position);
-#endif
-
-  // See if we're only child so far..
-  position++;
-  if (position == this->items.getLength()) {
-    this->items.append(newitem);
-    return TRUE;
-  }
-  else {
-    CatalogItem * next = this->items[position];
-    if (next->parentname != newitem->parentname) {
-
-      // FIXME: This assert is 'translated' from a piece of COIN_DEBUG
-      // code that changed the debug-vs-release contract, othervise it
-      // is equivalent behaviour. Find a better place for it: Asserts
-      // has nothing to do 'in the middle of nowhere'; they should be
-      // placed either at the start or termination of a method.
-      // 
-      // This method could do with some refactoring to accomodate this
-      // requirement. 20021029 rolvs
-      assert( newitem->siblingname == "" &&
-              "sibling don't have same parent as new item" );
-
-      this->items.insert(newitem, position);
-      return TRUE;
+  int i;
+  for (i = 0; i < n; i++) {
+    if ((this->items[i]->parentname == newitem->parentname) &&
+        (this->items[i]->siblingname == newitem->siblingname)) {
+      // this might happen when extending the catalog of another nodekit
+      this->items[i]->siblingname = newitem->name;
+      break;
     }
   }
 
-  // Find correct position among the siblings.
-  while (position < this->items.getLength() &&
-         this->items[position]->name != newitem->siblingname &&
-         this->items[position]->parentname == newitem->parentname) position++;
+  int position = 0;
+  while (position < n &&
+         (this->items[position]->name != newitem->siblingname ||
+          this->items[position]->parentname != newitem->parentname)) position++;
 
-  // Then insert in catalog.
-  CatalogItem * prev = this->items[position-1];
-  if (prev->parentname == newitem->parentname)
-    prev->siblingname = newitem->name;
-
-#if 0
-  SoDebugError::postInfo("SoNodekitCatalog::addEntry",
-                         "item position: %d", position);
-#endif
-
+  if (position == n) position = this->getPartNumber(this->items, newitem->parentname) + 1;
+  
   if (position == this->items.getLength())
     this->items.append(newitem);
   else 
@@ -804,7 +770,9 @@ SoNodekitCatalog::getPartNumber(const SbList<class CatalogItem *> & l,
                                 const SbName & name) const
 {
   int nritems = l.getLength();
-  for (int i=0; i < nritems; i++) if (name == l[i]->name) return i;
+  for (int i= 0; i < nritems; i++) {
+    if (name == l[i]->name) return i;
+  }
   return SO_CATALOG_NAME_NOT_FOUND;
 }
 
