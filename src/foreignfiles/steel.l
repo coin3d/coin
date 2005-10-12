@@ -23,8 +23,9 @@
 
 /* ********************************************************************** *
  * TODO:
+ * - API to get file position data when encountering errors
  * - implement writing
- * - color extensions (binary only)
+ * - read/write the two color extensions (binary only)
  * - be robust for corrupt files
  * - wtf does "A facet normal coordinate may have a leading minus sign;
  *   a vertex coordinate may not." for stl ascii files mean?  do I need to
@@ -36,8 +37,8 @@
  *   created for use by 3D rinters.
  * - figure out how to support gzipped files (in combination with flex,
  *   memory buffer techniques will probably have to be used)
- * - cr+lf on DOS/unix for ascii files
- * - remove error-handling asserts
+ * - cr+lf on DOS/unix for ascii files - is this a problem?
+ * - remove any error-handling asserts
  * ********************************************************************** */
 
 %{
@@ -130,6 +131,8 @@ LINE    [^\n]*
 	    assert(reader->info);
 	    strcpy(reader->info, ptr);
 	    reader->pending = STL_INIT_INFO;
+	  } else {
+	    reader->pending = STL_NO_PENDING;
 	  }
 	  return STL_BEGIN;
 	}
@@ -179,6 +182,7 @@ LINE    [^\n]*
 	}
 
 {WHITE}endfacet{WHITE}$	{
+	  reader->pending = STL_NO_PENDING;
 	  return STL_FACET;
 	}
 
@@ -198,6 +202,7 @@ LINE    [^\n]*
 	    reader->pending = STL_END;
 	    return STL_EXIT_INFO;
 	  }
+	  reader->pending = STL_NO_PENDING;
 	  return STL_END;
 	}
 
@@ -211,6 +216,10 @@ LINE    [^\n]*
 	  reader->linenum++;
 	}
 
+^#{LINE}$	{
+	  /* SIM extension - enable commenting out lines with # */
+	}
+
 .	{
 	  /* 8k into sphere.stl, flex needs some help to get going again... */
 	  if ( reader->hickups < 32 ) {
@@ -218,12 +227,14 @@ LINE    [^\n]*
 	    yymore(); /* where is stl_yymore()? */
 	  } else {
 	    reader->error = "unknown problem - too many flex hickups";
+	    reader->pending = STL_ERROR;
 	    return STL_ERROR;
 	  }
 	}
 
 <<EOF>>	{
 	  reader->error = "premature end of file";
+	  reader->pending = STL_ERROR;
 	  return STL_ERROR;
 	}
 
@@ -755,7 +766,9 @@ stl_reader_create(const char * filename)
   /* FIXME: try binary first, then ascii */
   id = stl_reader_peek(reader);
   if ( id != STL_ERROR ) {
-    reader->pending = id;
+    fseek(reader->file, 0, SEEK_SET);
+    stl_yyrestart();
+    reader->pending = STL_NO_PENDING;
     return reader;
   }
 
@@ -837,22 +850,27 @@ stl_reader_peek(stl_reader * reader)
   assert(reader != NULL);
   if ( reader->pending != STL_NO_PENDING ) {
     peekval = reader->pending;
-    if ( reader->pending == STL_END )
+    if ( reader->pending == STL_END ) {
       reader->pending = STL_ERROR;
-    if ( reader->pending == STL_BEGIN )
-      if ( reader->info != NULL )
+    }
+    if ( reader->pending == STL_BEGIN ) {
+      if ( reader->info != NULL ) {
         reader->pending = STL_INIT_INFO;
-      else
+      } else {
         reader->pending = STL_NO_PENDING;
-    else if ( reader->pending != STL_ERROR )
+      }
+    } else if ( reader->pending != STL_ERROR ) {
       reader->pending = STL_NO_PENDING;
+    }
     return peekval;
   }
   if ( !(reader->flags & STL_BINARY) ) {
     stl_yyin = reader->file;
     peekval = stl_scan(reader);
   } else {
-    if ( reader->facets == reader->facets_total ) return STL_END;
+    if ( reader->facets == reader->facets_total ) {
+      return STL_END;
+    }
     stl_reader_binary_facet(reader);
     return STL_FACET;
   }
@@ -915,6 +933,16 @@ stl_reader_get_error(stl_reader * reader)
   assert(reader != NULL);
   return reader->error;
 } /* stl_reader_get_error() */
+
+/* @stl_reader_get_line_number@
+ */
+
+int
+stl_reader_get_line_number(stl_reader * reader)
+{
+  assert(reader != NULL);
+  return reader->linenum;
+}
 
 /* ********************************************************************** */
 
