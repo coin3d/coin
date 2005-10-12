@@ -30,6 +30,10 @@
  *   a vertex coordinate may not." for stl ascii files mean?  do I need to
  *   take special care because of this?  why are there no proper formal
  *   specs for the stl file formats?
+ *   UPDATE: it probably means that all vertices must lie in the positive
+ *   octant in the worldspace - negative coordinates in any dimension is
+ *   not allowed.  might be sensible, given that STL files are generally
+ *   created for use by 3D rinters.
  * - figure out how to support gzipped files (in combination with flex,
  *   memory buffer techniques will probably have to be used)
  * - cr+lf on DOS/unix for ascii files
@@ -84,6 +88,7 @@ struct stl_reader_s {
   int vertex;
   int facets;
   int facets_total;
+  int hickups;
 };
 
 /* prototypes for internal functions used in lex part */
@@ -95,6 +100,7 @@ static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_re
 %}
 
 %option outfile="steel.c"
+%option prefix="stl_yy"
 %option case-insensitive
 %option never-interactive
 %option noyywrap
@@ -115,7 +121,7 @@ LINE    [^\n]*
 %%
 
 {WHITE}solid{WHITE}{LINE}$	{
-	  char * ptr = yytext;
+	  char * ptr = stl_yytext;
 	  while ( *ptr == ' ' || *ptr == '\t' ) ptr++;
 	  while ( *ptr != ' ' && *ptr != '\t' ) ptr++;
 	  while ( *ptr && (*ptr == ' ' || *ptr == '\t') ) ptr++;
@@ -128,23 +134,24 @@ LINE    [^\n]*
 	  return STL_BEGIN;
 	}
 
-{WS}facet{WS}normal{WS}{FLOAT}{WS}{FLOAT}{WS}{FLOAT}{WHITE}$	{
+{WHITE}facet{WS}normal{WS}{FLOAT}{WS}{FLOAT}{WS}{FLOAT}{WHITE}$	{
+	  reader->hickups = 0; /* reset flex hickup counter */
 	  assert(reader->facet != NULL);
 	  if ( reader->info != NULL ) {
 	    free(reader->info);
 	    reader->info = NULL;
 	  }
-	  stl_parse_real_triple(yytext, &(reader->facet->nx), &(reader->facet->ny), &(reader->facet->nz));
+	  stl_parse_real_triple(stl_yytext, &(reader->facet->nx), &(reader->facet->ny), &(reader->facet->nz));
 	}
 
-{WS}outer{WS}loop{WHITE}$	{
+{WHITE}outer{WS}loop{WHITE}$	{
 	  reader->vertex = 0;
 	}
 
-{WS}vertex{WS}{FLOAT}{WS}{FLOAT}{WS}{FLOAT}{WHITE}$	{
+{WHITE}vertex{WS}{FLOAT}{WS}{FLOAT}{WS}{FLOAT}{WHITE}$	{
 	  stl_real x = 0.0f, y = 0.0f, z = 0.0f;
 	  assert(reader->facet != NULL);
-	  stl_parse_real_triple(yytext, &x, &y, &z);
+	  stl_parse_real_triple(stl_yytext, &x, &y, &z);
 	  switch ( reader->vertex ) {
 	  case 0:
 	    reader->facet->v1x = x;
@@ -162,23 +169,21 @@ LINE    [^\n]*
 	    reader->facet->v3z = z;
 	    break;
 	  default:
-	    fprintf(stderr, "vertex data error\n");
 	    reader->error = "vertex data error";
 	    return STL_ERROR;
 	  }
-	  /* fprintf(stderr, "  vertex %d : <%g, %g, %g>\n", reader->vertex, x, y, z); * */
 	  reader->vertex++;
 	}
 
-{WS}endloop{WHITE}$	{
+{WHITE}endloop{WHITE}$	{
 	}
 
-{WS}endfacet{WHITE}$	{
+{WHITE}endfacet{WHITE}$	{
 	  return STL_FACET;
 	}
 
 {WHITE}endsolid{WHITE}{LINE}$	{
-	  char * ptr = yytext;
+	  char * ptr = stl_yytext;
 	  if ( reader->info != NULL ) {
 	    free(reader->info);
 	    reader->info = NULL;
@@ -207,14 +212,18 @@ LINE    [^\n]*
 	}
 
 .	{
-	  /* fprintf(stderr, "yytext[0] = '%c' (%d), line %d\n", yytext[0], yytext[0], reader->linenum); */
-	  reader->error = "unknown error";
-	  return STL_ERROR;
+	  /* 8k into sphere.stl, flex needs some help to get going again... */
+	  if ( reader->hickups < 32 ) {
+	    reader->hickups += 1;
+	    yymore(); /* where is stl_yymore()? */
+	  } else {
+	    reader->error = "unknown problem - too many flex hickups";
+	    return STL_ERROR;
+	  }
 	}
 
 <<EOF>>	{
-	  /* fprintf(stderr, "premature eof\n"); */
-	  reader->error = "end of file";
+	  reader->error = "premature end of file";
 	  return STL_ERROR;
 	}
 
@@ -264,7 +273,6 @@ LINE    [^\n]*
     } \
   } while ( FALSE )
 
-static
 int
 stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c)
 {
@@ -725,13 +733,14 @@ stl_reader_create(const char * filename)
   reader->facet = NULL;
   reader->error = NULL;
   reader->flags = 0;
-  reader->linenum = -1;
+  reader->linenum = 0;
   reader->pending = STL_NO_PENDING;
   reader->vertex = 0;
   reader->facets = 0;
   reader->facets_total = 0;
+  reader->hickups = 0;
 
-  reader->file = fopen(filename, "rb");
+  reader->file = fopen(filename, "r");
   if ( reader->file == NULL ) {
     free(reader);
     return NULL;
@@ -745,11 +754,14 @@ stl_reader_create(const char * filename)
 
   /* FIXME: try binary first, then ascii */
   id = stl_reader_peek(reader);
-  if ( id != -1 ) {
+  if ( id != STL_ERROR ) {
     reader->pending = id;
     return reader;
   }
+
   /* the file is not an ascii STL file - might be binary */
+  reader->file = freopen(reader->filename, "rb", reader->file);
+  assert(reader->file);
   fseek(reader->file, 0, SEEK_END);
   length = ftell(reader->file);
   fseek(reader->file, 80, SEEK_SET);
@@ -837,7 +849,7 @@ stl_reader_peek(stl_reader * reader)
     return peekval;
   }
   if ( !(reader->flags & STL_BINARY) ) {
-    yyin = reader->file;
+    stl_yyin = reader->file;
     peekval = stl_scan(reader);
   } else {
     if ( reader->facets == reader->facets_total ) return STL_END;
@@ -845,7 +857,6 @@ stl_reader_peek(stl_reader * reader)
     return STL_FACET;
   }
   if ( reader->error ) {
-    /* fprintf(stderr, "error: %s\n", reader->error); */
     return STL_ERROR;
   }
   return peekval;
