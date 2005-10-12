@@ -583,23 +583,26 @@ SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
     return TRUE;
   }
 
-  int i;
-  for (i = 0; i < n; i++) {
+  int position = -1;
+  for (int i = 0; i < n; i++) {
     if ((this->items[i]->parentname == newitem->parentname) &&
         (this->items[i]->siblingname == newitem->siblingname)) {
       // this might happen when extending the catalog of another nodekit
       this->items[i]->siblingname = newitem->name;
+      position = i+1;
       break;
     }
   }
-
-  int position = 0;
-  while (position < n &&
-         (this->items[position]->name != newitem->siblingname ||
-          this->items[position]->parentname != newitem->parentname)) position++;
-
-  if (position == n) position = this->getPartNumber(this->items, newitem->parentname) + 1;
-  
+  if (position < 0) {
+    position = 0;
+    while (position < n &&
+           (this->items[position]->name != newitem->siblingname ||
+            this->items[position]->parentname != newitem->parentname)) position++;
+    if (position == n) {
+      // parent and sibling not found, insert item after the parent
+      position = this->getPartNumber(this->items, newitem->parentname) + 1;
+    }
+  }
   if (position == this->items.getLength())
     this->items.append(newitem);
   else 
