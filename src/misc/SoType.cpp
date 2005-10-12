@@ -76,7 +76,10 @@
   given name.
   On UNIX, extensions nodes are regular .so files.
   On Win32, extension nodes are built as DLLs.
-  On Mac OS X systems, extension nodes are built as .dylib files.
+  On Mac OS X systems, extension nodes are built as .dylib files. (Note:
+  The extension nodes have to be built using the flag "-dynamiclib", 
+  not "-bundle".)
+
   Whether the dynamically loadable objects should be named with
   or without the "lib" prefix is optional.  Both schemes will work.
   
