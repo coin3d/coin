@@ -31,6 +31,7 @@
 
 #include <ForeignFiles/SoForeignFileKit.h>
 
+class SbVec3f;
 class SoCallbackAction;
 class SoPrimitiveVertex;
 class SoSTLFileKitP;
@@ -72,6 +73,8 @@ protected:
   virtual ~SoSTLFileKit(void);
 
   void reset(void);
+  SbBool addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3,
+                  const SbVec3f & normal);
 
 private:
   SoSTLFileKitP * pimpl;

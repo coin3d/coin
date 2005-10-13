@@ -43,14 +43,6 @@
 
 #include <ForeignFiles/SoSTLFileKit.h>
 
-/*!
-  \class SoSTLFileKit ForeignFiles/SoSTLFileKit.h
-
-  Class for using STL models with Open Inventor.
-
-
-  \relates foreignfileformats
-*/
 
 #if 0
   SoCallback         "callbackList"         SoBaseKit
@@ -67,7 +59,8 @@
 
 class SoSTLFileKitP {
 public:
-  SoSTLFileKitP(SoSTLFileKit * api) {
+  SoSTLFileKitP(SoSTLFileKit * pub)
+  : api(pub) {
     this->data = NULL;
     this->points = NULL;
     this->normals = NULL;
@@ -78,6 +71,9 @@ public:
     if ( this->normals ) delete this->normals;
   }
 
+public:
+  SoSTLFileKit * const api;
+
   SbList<uint16_t> * data;
   SbBSPTree * points;
   SbBSPTree * normals;
@@ -87,7 +83,20 @@ public:
   int numnormals;
   int numsharedvertices;
   int numsharednormals;
+  int numredundantfacets;
 }; // SoSTLFileKitP
+
+// *************************************************************************
+
+/*!
+  \class SoSTLFileKit ForeignFiles/SoSTLFileKit.h
+
+  Class for using STL models with Open Inventor.
+
+  \relates foreignfileformats
+*/
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_KIT_SOURCE(SoSTLFileKit)
 
@@ -99,8 +108,6 @@ SoSTLFileKit::initClass(void)
   SoType type = SoSTLFileKit::getClassTypeId();
   SoForeignFileKit::registerFileExtension(type, "stl", SoSTLFileKit::identify);
 }
-
-#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
@@ -115,14 +122,22 @@ SoSTLFileKit::SoSTLFileKit(void)
   SO_KIT_ADD_FIELD(proper, (FALSE));
   SO_KIT_ADD_FIELD(colorization, (NONE));
 
-  SO_KIT_ADD_CATALOG_ENTRY(facets, SoIndexedFaceSet, TRUE, topSeparator, \x0, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(coordinates, SoCoordinate3, TRUE, topSeparator, facets, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial, TRUE, topSeparator, coordinates, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(materialbinding, SoMaterialBinding, TRUE, topSeparator, material, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(normals, SoNormal, TRUE, topSeparator, materialbinding, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(normalbinding, SoNormalBinding, TRUE, topSeparator, normals, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(texture, SoTexture2, TRUE, topSeparator, normalbinding, TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(shapehints, SoShapeHints, TRUE, topSeparator, texture, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(facets, SoIndexedFaceSet,
+                           TRUE, topSeparator, \x0, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(coordinates, SoCoordinate3,
+                           TRUE, topSeparator, facets, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial,
+                           TRUE, topSeparator, coordinates, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(materialbinding, SoMaterialBinding,
+                           TRUE, topSeparator, material, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(normals, SoNormal,
+                           TRUE, topSeparator, materialbinding, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(normalbinding, SoNormalBinding,
+                           TRUE, topSeparator, normals, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(texture, SoTexture2,
+                           TRUE, topSeparator, normalbinding, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(shapehints, SoShapeHints,
+                           TRUE, topSeparator, texture, TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }
@@ -144,6 +159,13 @@ SoSTLFileKit::~SoSTLFileKit(void)
 void
 SoSTLFileKit::reset(void)
 {
+  PRIVATE(this)->numvertices = 0;
+  PRIVATE(this)->numfacets = 0;
+  PRIVATE(this)->numnormals = 0;
+  PRIVATE(this)->numsharedvertices = 0;
+  PRIVATE(this)->numsharednormals = 0;
+  PRIVATE(this)->numredundantfacets = 0;
+
   if ( PRIVATE(this)->data ) {
     PRIVATE(this)->data->truncate(0);
   }
@@ -153,6 +175,7 @@ SoSTLFileKit::reset(void)
   if ( PRIVATE(this)->normals ) {
     PRIVATE(this)->normals->clear();
   }
+
   // this->setAnyPart("shapehints", new SoShapeHints, TRUE);
   // this->setAnyPart("normalbinding", new SoNormalBinding, TRUE);
   this->setAnyPart("normals", new SoNormal, TRUE);
@@ -209,37 +232,25 @@ SoSTLFileKit::readFile(const char * filename)
     PRIVATE(this)->normals = new SbBSPTree;
   }
 
-  SoShapeHints * hints = SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
+  SoShapeHints * hints =
+    SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
   hints->vertexOrdering.setValue(SoShapeHints::UNKNOWN_ORDERING);
   // what it should have been
   // hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
   hints->shapeType.setValue(SoShapeHints::SOLID);
   hints->faceType.setValue(SoShapeHints::UNKNOWN_FACE_TYPE);
 
-  SoNormalBinding * normalbinding = SO_GET_ANY_PART(this, "normalbinding", SoNormalBinding);
+  SoNormalBinding * normalbinding =
+    SO_GET_ANY_PART(this, "normalbinding", SoNormalBinding);
   normalbinding->value = SoNormalBinding::PER_FACE_INDEXED;
 
-
-  SoNormal * normals = SO_GET_ANY_PART(this, "normals", SoNormal);
-  SoCoordinate3 * coordinates = SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
-  SoIndexedFaceSet * facets = SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
-  PRIVATE(this)->numvertices = 0;
-  PRIVATE(this)->numfacets = 0;
-  PRIVATE(this)->numnormals = 0;
-  PRIVATE(this)->numsharedvertices = 0;
-  PRIVATE(this)->numsharednormals = 0;
   stl_facet * facet = stl_facet_create();
   SbBool loop = TRUE, success = TRUE;
   while ( loop ) {
     const int peekval = stl_reader_peek(reader);
-    if ( peekval == STL_ERROR ) {
-      // SoReadError instead?
-      SoDebugError::post("SoSTLFileKit::readFile",
-                         "error '%s' after %d facets.",
-                         stl_reader_get_error(reader),
-                         PRIVATE(this)->numfacets);
-      loop = FALSE;
-      success = FALSE;
+    if ( peekval == STL_BEGIN ) {
+    } else if ( peekval == STL_INIT_INFO ) {
+    } else if ( peekval == STL_EXIT_INFO ) {
     } else if ( peekval == STL_END ) {
       loop = FALSE;
     } else if ( peekval == STL_FACET ) {
@@ -261,89 +272,48 @@ SoSTLFileKit::readFile(const char * filename)
         if ( len > 0 ) normal /= len;
       }
 
-      // FIXME: place vectors in octtrees to see if they are already
-      // in and can be reused?  octtree needs initial bounding box,
-      // which we don't have before all facets are read in though...
-
-      int idx = 0;
-
-      idx = PRIVATE(this)->normals->findPoint(normal);
-      if ( idx == -1 ) {
-        normals->vector.set1Value(PRIVATE(this)->numnormals, normal);
-        PRIVATE(this)->normals->addPoint(normal, (void *) PRIVATE(this)->numnormals);
-        facets->normalIndex.set1Value(PRIVATE(this)->numfacets, PRIVATE(this)->numnormals);
-        PRIVATE(this)->numnormals++;
-      } else {
-        int normalidx = (int) PRIVATE(this)->normals->getUserData(idx);
-        facets->normalIndex.set1Value(PRIVATE(this)->numfacets, normalidx);
-        PRIVATE(this)->numsharednormals++;
-      }
-
-      idx = PRIVATE(this)->points->findPoint(vertex1);
-      if ( idx == -1 ) {
-        coordinates->point.set1Value(PRIVATE(this)->numvertices, vertex1);
-        PRIVATE(this)->points->addPoint(vertex1, (void *) PRIVATE(this)->numvertices);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4, PRIVATE(this)->numvertices);
-        PRIVATE(this)->numvertices++;
-      } else {
-        int vertexidx = (int) PRIVATE(this)->points->getUserData(idx);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4, vertexidx);
-        PRIVATE(this)->numsharedvertices++;
-      }
-
-      idx = PRIVATE(this)->points->findPoint(vertex2);
-      if ( idx == -1 ) {
-        coordinates->point.set1Value(PRIVATE(this)->numvertices, vertex2);
-        PRIVATE(this)->points->addPoint(vertex2, (void *) PRIVATE(this)->numvertices);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+1, PRIVATE(this)->numvertices);
-        PRIVATE(this)->numvertices++;
-      } else {
-        int vertexidx = (int) PRIVATE(this)->points->getUserData(idx);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+1, vertexidx);
-        PRIVATE(this)->numsharedvertices++;
-      }
-
-      idx = PRIVATE(this)->points->findPoint(vertex3);
-      if ( idx == -1 ) {
-        coordinates->point.set1Value(PRIVATE(this)->numvertices, vertex3);
-        PRIVATE(this)->points->addPoint(vertex3, (void *) PRIVATE(this)->numvertices);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+2, PRIVATE(this)->numvertices);
-        PRIVATE(this)->numvertices++;
-      } else {
-        int vertexidx = (int) PRIVATE(this)->points->getUserData(idx);
-        facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+2, vertexidx);
-        PRIVATE(this)->numsharedvertices++;
-      }
-
-      facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+3, -1);
+      this->addFacet(vertex1, vertex2, vertex3, normal);
 
       if ( binary ) {
         // binary contains padding, which might be colorization
         unsigned int data = stl_facet_get_padding(facet);
         PRIVATE(this)->data->append((uint16_t) data);
+        // fprintf(stderr, "facet data: %04x\n", data);
       }
-
-      PRIVATE(this)->numfacets++;
+    } else if ( peekval == STL_ERROR ) {
+      SoDebugError::post("SoSTLFileKit::readFile",
+                         "error '%s' after %d facets, line %d.",
+                         stl_reader_get_error(reader),
+                         PRIVATE(this)->numfacets,
+                         stl_reader_get_line_number(reader));
+      loop = FALSE;
+      success = FALSE;
     }
   }
+  // done
 
+  // no need for the BSP trees to contain data any more
   PRIVATE(this)->points->clear();
   PRIVATE(this)->normals->clear();
 
+  stl_facet_destroy(facet);
   stl_reader_destroy(reader);
 
   if ( !success ) {
     this->reset();
-#ifdef COIN_EXTRA_DEBUG
+#if defined(COIN_EXTRA_DEBUG)
   } else {
     SoDebugError::postInfo("SoSTLFileKit::readFile",
                            "file read successfully. "
                            "%d unique vertices, %d reuses. "
-                           "%d unique normals, %d reuses.",
+                           "%d unique normals, %d reuses. "
+                           "%d facets, %d redundant facets.",
                            PRIVATE(this)->numvertices,
                            PRIVATE(this)->numsharedvertices,
                            PRIVATE(this)->numnormals,
-                           PRIVATE(this)->numsharednormals);
+                           PRIVATE(this)->numsharednormals,
+                           PRIVATE(this)->numfacets,
+                           PRIVATE(this)->numredundantfacets);
 #endif // COIN_EXTRA_DEBUG
   }
   return success;
@@ -352,6 +322,104 @@ SoSTLFileKit::readFile(const char * filename)
 SbBool
 SoSTLFileKit::canReadScene(void) const
 {
+  return TRUE;
+}
+
+SbBool
+SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3, const SbVec3f & n)
+{
+  SoNormal * normals =
+    SO_GET_ANY_PART(this, "normals", SoNormal);
+  SoCoordinate3 * coordinates =
+    SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
+  SoIndexedFaceSet * facets =
+    SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
+
+  // find existing indexes if any
+  int v1idx = PRIVATE(this)->points->findPoint(v1);
+  int v2idx = PRIVATE(this)->points->findPoint(v2);
+  int v3idx = PRIVATE(this)->points->findPoint(v3);
+  if (v1idx != -1) { v1idx = (int) PRIVATE(this)->points->getUserData(v1idx); }
+  if (v2idx != -1) { v2idx = (int) PRIVATE(this)->points->getUserData(v2idx); }
+  if (v3idx != -1) { v3idx = (int) PRIVATE(this)->points->getUserData(v3idx); }
+  int nidx = PRIVATE(this)->normals->findPoint(n);
+  if (nidx != -1) { nidx = (int) PRIVATE(this)->normals->getUserData(nidx); }
+
+  // toss out invalid facets (of which there are often many)...
+  // what are these - are they lines and points or something?
+  if ((v1 == v2) || (v2 == v3) || (v1 == v3)) {
+    // IDEA: optimize above test for the cases where you have vertex
+    // indexes. we can't use only indices of course since the vertices
+    // may not have been registered yet, but...
+    PRIVATE(this)->numredundantfacets += 1;
+    return FALSE;
+  }
+
+  // toss out redundant facets, if any...
+  if ( (v1idx != -1) && (v2idx != -1) && (v3idx != -1) ) {
+    int count = facets->coordIndex.getNum();
+    const int32_t * points = facets->coordIndex.getValues(0);
+    int i;
+    for ( i = 0; i < count; i++ ) {
+      if (points[i] == v1idx) {
+        int beg = i - (i % 4);
+        if ( ((points[beg] == v1idx) && (points[beg+1] == v2idx) &&
+              (points[beg+2] == v3idx)) ||
+             ((points[beg] == v2idx) && (points[beg+1] == v3idx) &&
+              (points[beg+2] == v1idx)) ||
+             ((points[beg] == v3idx) && (points[beg+1] == v1idx) &&
+              (points[beg+2] == v2idx)) ) {
+          // same vertices, same vertex ordering (we drop comparing normal)
+          PRIVATE(this)->numredundantfacets += 1;
+          return FALSE;
+        }
+      }
+    }
+  }
+
+  // add facet (triangle) to faceset
+  if (v1idx == -1) {
+    v1idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v1idx, v1);
+    PRIVATE(this)->points->addPoint(v1, (void *) v1idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4, v1idx);
+  
+  if (v2idx == -1) {
+    v2idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v2idx, v2);
+    PRIVATE(this)->points->addPoint(v2, (void *) v2idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+1, v2idx);
+
+  if (v3idx == -1) {
+    v3idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v3idx, v3);
+    PRIVATE(this)->points->addPoint(v3, (void *) v3idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+2, v3idx);
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+3, -1);
+
+  if (nidx == -1) {
+    nidx = PRIVATE(this)->numnormals;
+    normals->vector.set1Value(nidx, n);
+    PRIVATE(this)->normals->addPoint(n, (void *) nidx);
+    PRIVATE(this)->numnormals++;
+  } else {
+    PRIVATE(this)->numsharednormals++;
+  }
+  facets->normalIndex.set1Value(PRIVATE(this)->numfacets, nidx);
+
+  PRIVATE(this)->numfacets++;
   return TRUE;
 }
 
@@ -375,61 +443,7 @@ SoSTLFileKit::triangle_cb(void * closure,
   float len = normal.length();
   if ( len > 0 ) normal /= len;
 
-  SoNormal * normals = SO_GET_ANY_PART(filekit, "normals", SoNormal);
-  SoCoordinate3 * coordinates = SO_GET_ANY_PART(filekit, "coordinates", SoCoordinate3);
-  SoIndexedFaceSet * facets = SO_GET_ANY_PART(filekit, "facets", SoIndexedFaceSet);
-
-  int idx = 0;
-  idx = PRIVATE(filekit)->normals->findPoint(normal);
-  if ( idx == -1 ) {
-    normals->vector.set1Value(PRIVATE(filekit)->numnormals, normal);
-    PRIVATE(filekit)->normals->addPoint(normal, (void *) PRIVATE(filekit)->numnormals);
-    facets->normalIndex.set1Value(PRIVATE(filekit)->numfacets, PRIVATE(filekit)->numnormals);
-    PRIVATE(filekit)->numnormals++;
-  } else {
-    int normalidx = (int) PRIVATE(filekit)->normals->getUserData(idx);
-    facets->normalIndex.set1Value(PRIVATE(filekit)->numfacets, normalidx);
-    PRIVATE(filekit)->numsharednormals++;
-  }
-
-  idx = PRIVATE(filekit)->points->findPoint(vertex1);
-  if ( idx == -1 ) {
-    coordinates->point.set1Value(PRIVATE(filekit)->numvertices, vertex1);
-    PRIVATE(filekit)->points->addPoint(vertex1, (void *) PRIVATE(filekit)->numvertices);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4, PRIVATE(filekit)->numvertices);
-    PRIVATE(filekit)->numvertices++;
-  } else {
-    int vertexidx = (int) PRIVATE(filekit)->points->getUserData(idx);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4, vertexidx);
-    PRIVATE(filekit)->numsharedvertices++;
-  }
-  
-  idx = PRIVATE(filekit)->points->findPoint(vertex2);
-  if ( idx == -1 ) {
-    coordinates->point.set1Value(PRIVATE(filekit)->numvertices, vertex2);
-    PRIVATE(filekit)->points->addPoint(vertex2, (void *) PRIVATE(filekit)->numvertices);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4+1, PRIVATE(filekit)->numvertices);
-    PRIVATE(filekit)->numvertices++;
-  } else {
-    int vertexidx = (int) PRIVATE(filekit)->points->getUserData(idx);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4+1, vertexidx);
-    PRIVATE(filekit)->numsharedvertices++;
-  }
-
-  idx = PRIVATE(filekit)->points->findPoint(vertex3);
-  if ( idx == -1 ) {
-    coordinates->point.set1Value(PRIVATE(filekit)->numvertices, vertex3);
-    PRIVATE(filekit)->points->addPoint(vertex3, (void *) PRIVATE(filekit)->numvertices);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4+2, PRIVATE(filekit)->numvertices);
-    PRIVATE(filekit)->numvertices++;
-  } else {
-    int vertexidx = (int) PRIVATE(filekit)->points->getUserData(idx);
-    facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4+2, vertexidx);
-    PRIVATE(filekit)->numsharedvertices++;
-  }
-
-  facets->coordIndex.set1Value(PRIVATE(filekit)->numfacets*4+3, -1);
-  PRIVATE(filekit)->numfacets++;
+  filekit->addFacet(vertex1, vertex2, vertex3, normal);
 }
 
 /*!
@@ -442,16 +456,17 @@ SbBool
 SoSTLFileKit::readScene(SoNode * scene)
 {
   this->reset();
-  PRIVATE(this)->numvertices = 0;
-  PRIVATE(this)->numfacets = 0;
-  PRIVATE(this)->numnormals = 0;
-  PRIVATE(this)->numsharedvertices = 0;
-  PRIVATE(this)->numsharednormals = 0;
+
   SoCallbackAction cba;
   cba.addTriangleCallback(SoType::fromName("SoNode"), triangle_cb, this);
   cba.apply(scene);
+  // done
 
-#ifdef COIN_EXTRA_DEBUG
+  // no need for the BSP trees to contain data any more
+  PRIVATE(this)->points->clear();
+  PRIVATE(this)->normals->clear();
+
+#if defined(COIN_EXTRA_DEBUG)
   SoDebugError::postInfo("SoSTLFileKit::readScene",
                          "scene graph read in. "
                          "%d unique vertices, %d reuses. "
@@ -544,10 +559,11 @@ SoSTLFileKit::writeScene(SoNode *& root, const char * format)
     facets_copy->copyContents(facets_orig, FALSE);
     sceneroot->addChild(facets_copy);
 
-    // try reenabling this when the ReorganizeAction bugs are fixed
     // optimize/reorganize mesh
-    // SoReorganizeAction ra;
-    // ra.apply(scene);
+    SoReorganizeAction ra;
+    ra.apply(sceneroot);
+
+    // FIXME: remove redundant scene graph nodes after scene reorganization
 
     sceneroot->unrefNoDelete();
     root = sceneroot;
@@ -567,7 +583,6 @@ SoSTLFileKit::writeScene(SoNode *& root, const char * format)
 SbBool
 SoSTLFileKit::canWriteFile(const char * filename) const
 {
-  // writing to file is not implemented yet
   return inherited::canWriteFile(filename);
 }
 
@@ -575,7 +590,22 @@ SbBool
 SoSTLFileKit::writeFile(const char * filename)
 {
   // writing to file is not implemented yet
+#if 0
+  unsigned int flags = 0;
+  // set up flags for binary and color if wanted
+  stl_writer * writer = stl_writer_create(filename, flags);
+  if ( !writer ) {
+    return FALSE;
+  }
+
+  // write header info
+  // write facets
+
+  stl_writer_destroy(writer);
+#endif
+
   return inherited::writeFile(filename);
 }
 
 #undef PRIVATE
+
