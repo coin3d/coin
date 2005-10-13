@@ -405,6 +405,7 @@ _class_::allocValues(int newnum) \
   /* or not they should be matched with modifications in that method */ \
   /* aswell. */ \
  \
+  int oldmaxnum; /* must be here as a gcc 4.0.0 bug workaround */ \
   assert(newnum >= 0); \
  \
   if (newnum == 0) { \
@@ -423,7 +424,7 @@ _class_::allocValues(int newnum) \
       /* */ \
       /* I think this will handle both cases quite gracefully: */ \
       /* 1) newnum > this->maxNum, 2) newnum < num */ \
-      int oldmaxnum = this->maxNum; \
+      oldmaxnum = this->maxNum; \
       while (newnum > this->maxNum) this->maxNum *= 2; \
       while ((this->maxNum / 2) >= newnum) this->maxNum /= 2; \
  \
