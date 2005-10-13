@@ -513,33 +513,32 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   float quality = SoTextureQualityElement::get(state);
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-
+  SoTextureScalePolicyElement::Policy scalepolicy =
+    SoTextureScalePolicyElement::get(state);
+  SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
+  SoType glimagetype = PRIVATE(this)->glimage ? PRIVATE(this)->glimage->getTypeId() : SoType::badType();
+    
   LOCK_GLIMAGE(this);
-
-  if (!PRIVATE(this)->glimagevalid) {
+  
+  if (!PRIVATE(this)->glimagevalid || 
+      (needbig && glimagetype != SoGLBigImage::getClassTypeId()) ||
+      (!needbig && glimagetype != SoGLImage::getClassTypeId())) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes =
       this->image.getValue(size, nc);
     
-    SoTextureScalePolicyElement::Policy scalepolicy =
-      SoTextureScalePolicyElement::get(state);
-      
-    SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
-
     if (needbig &&
-        (PRIVATE(this)->glimage == NULL ||
-         PRIVATE(this)->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+        (glimagetype != SoGLBigImage::getClassTypeId())) {
       if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
       PRIVATE(this)->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (PRIVATE(this)->glimage == NULL ||
-              PRIVATE(this)->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+             (glimagetype != SoGLImage::getClassTypeId())) {
       if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
       PRIVATE(this)->glimage = new SoGLImage();
     }
-
+    
     if (this->enableCompressedTexture.getValue()) {
       PRIVATE(this)->glimage->setFlags(PRIVATE(this)->glimage->getFlags()|
                                        SoGLImage::COMPRESSED);
