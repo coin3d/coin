@@ -794,7 +794,7 @@ stl_reader_create(const char * filename)
       break; /* not an ascii stl file */
     }
     fseek(reader->file, 0, SEEK_SET);
-    stl_yyrestart();
+    stl_yyrestart(reader->file);
     reader->pending = STL_NO_PENDING;
     return reader;
   } while ( FALSE );
