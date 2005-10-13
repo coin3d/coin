@@ -2423,8 +2423,7 @@ stl_reader_create(const char * filename)
   reader->facets = 0;
   reader->facets_total = 0;
   reader->hickups = 0;
-
-  reader->file = fopen(filename, "r");
+  reader->file = fopen(filename, "rb");
   if ( reader->file == NULL ) {
     free(reader);
     return NULL;
@@ -2432,49 +2431,56 @@ stl_reader_create(const char * filename)
   reader->filename = (char *) malloc(strlen(filename)+1);
   assert(reader->filename);
   strcpy(reader->filename, filename);
-
   reader->facet = stl_facet_create();
-  reader->linenum = 1;
 
-  /* FIXME: try binary first, then ascii */
-  id = stl_reader_peek(reader);
-  if ( id != STL_ERROR ) {
-    fseek(reader->file, 0, SEEK_SET);
-    stl_yyrestart();
-    reader->pending = STL_NO_PENDING;
-    return reader;
-  }
-
-  /* the file is not an ascii STL file - might be binary */
-  reader->file = freopen(reader->filename, "rb", reader->file);
-  assert(reader->file);
-  fseek(reader->file, 0, SEEK_END);
-  length = ftell(reader->file);
-  fseek(reader->file, 80, SEEK_SET);
-  fread(bytes, 1, 4, reader->file);
-  reader->facets_total = (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
-  if ( (84 + (reader->facets_total * 50)) == length ) {
+  /* check if file is binary stl file first */
+  do {
     /* FIXME: scan header for "COLOR=" for the "Materialise" color extension */
+    reader->linenum = 0;
+    fseek(reader->file, 0, SEEK_END);
+    length = ftell(reader->file);
+    fseek(reader->file, 80, SEEK_SET);
+    fread(bytes, 1, 4, reader->file);
+    reader->facets_total =
+      (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
+    if ( (84 + (reader->facets_total * 50)) != length ) {
+      break; /* not a binary stl file */
+    }
     reader->flags |= STL_BINARY;
     fseek(reader->file, 0, SEEK_SET);
     reader->info = malloc(81);
     assert(reader->info);
     fread(reader->info, 1, 80, reader->file);
     reader->info[80] = '\0';
-    fseek(reader->file, 84, SEEK_SET); /* first facet */
+    fseek(reader->file, 84, SEEK_SET); /* position of first facet */
     reader->pending = STL_INIT_INFO;
     return reader;
-  } else {
-    /* the file is not an STL file */
-    fclose(reader->file);
-    free(reader->filename);
-    reader->filename = NULL;
-    stl_facet_destroy(reader->facet);
-    reader->facet = NULL;
-    free(reader);
-    /* can return a reader with pending STL_ERROR and error message instead */
-    return NULL;
-  }
+  } while ( FALSE );
+
+  /* now try ascii stl */
+  do {
+    reader->linenum = 1;
+    reader->file = freopen(reader->filename, "r", reader->file);
+    assert(reader->file);
+    id = stl_reader_peek(reader);
+    if ( id == STL_ERROR ) {
+      break; /* not an ascii stl file */
+    }
+    fseek(reader->file, 0, SEEK_SET);
+    stl_yyrestart();
+    reader->pending = STL_NO_PENDING;
+    return reader;
+  } while ( FALSE );
+
+  /* the file is not an stl file */
+  fclose(reader->file);
+  free(reader->filename);
+  reader->filename = NULL;
+  stl_facet_destroy(reader->facet);
+  reader->facet = NULL;
+  free(reader);
+  /* could return a reader with pending STL_ERROR and error message instead? */
+  return NULL;
 } /* stl_reader_create() */
 
 /* @stl_reader_destroy@
