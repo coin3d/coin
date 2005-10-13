@@ -91,6 +91,7 @@ const char *  stl_reader_get_info(stl_reader * reader);
 stl_facet *   stl_reader_get_facet(stl_reader * reader);
 void          stl_reader_fill_facet(stl_reader * reader, stl_facet * facet);
 const char *  stl_reader_get_error(stl_reader * reader);
+int           stl_reader_get_line_number(stl_reader * reader);
 
 /* not really implemented yet */
 stl_writer *  stl_writer_create(const char * filename, unsigned int flags);
