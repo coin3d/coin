@@ -36,6 +36,7 @@ RegularSources = \
 	AudioTools.cpp \
 	CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp \
+	CoinGLPerformance.cpp \
 	SoDebug.cpp \
 	SoJavaScriptEngine.cpp
 
@@ -53,6 +54,7 @@ PrivateHeaders = \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
+	CoinGLPerformance.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
