@@ -110,7 +110,7 @@ inline void **
 SbPList::getArrayPtr(const int start) const 
 {
 #ifdef COIN_EXTRA_DEBUG
-  assert(index >= 0 && index < this->numitems);
+  assert(start >= 0 && start < this->numitems);
 #endif // COIN_EXTRA_DEBUG
   return &this->itembuffer[start];
 }
