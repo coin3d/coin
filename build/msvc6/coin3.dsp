@@ -5591,6 +5591,19 @@ SOURCE=..\..\src\misc\CoinOffscreenGLCanvas.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\CoinGLPerformance.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\misc\SoDebug.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
@@ -9582,6 +9595,45 @@ SOURCE=..\..\src\vrml97\WorldInfo.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\foreignfiles\SoForeignFileKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\foreignfiles"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\foreignfiles\SoSTLFileKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\foreignfiles"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\foreignfiles\steel.c
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\foreignfiles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\foreignfiles"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\tidbits.c
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\src"
@@ -10129,6 +10181,14 @@ SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeHPGLAction.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeGDIAction.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h
 # End Source File
 # Begin Source File
 

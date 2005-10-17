@@ -825,6 +825,50 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\misc\CoinGLPerformance.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\misc/"
+						ProgramDataBaseFileName="StaticDebug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\misc/"
+						ProgramDataBaseFileName="StaticRelease\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\misc\CoinOffscreenGLCanvas.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -13054,6 +13098,50 @@
 						BasicRuntimeChecks="3"
 						ObjectFile=".\Debug\nodes/"
 						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\foreignfiles\SoForeignFileKit.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\foreignfiles/"
+						ProgramDataBaseFileName="StaticDebug\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\foreignfiles/"
+						ProgramDataBaseFileName="Release\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\foreignfiles/"
+						ProgramDataBaseFileName="StaticRelease\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\foreignfiles/"
+						ProgramDataBaseFileName="Debug\foreignfiles/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -26565,6 +26653,50 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\foreignfiles\SoSTLFileKit.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\foreignfiles/"
+						ProgramDataBaseFileName="StaticDebug\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\foreignfiles/"
+						ProgramDataBaseFileName="Release\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\foreignfiles/"
+						ProgramDataBaseFileName="StaticRelease\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\foreignfiles/"
+						ProgramDataBaseFileName="Debug\foreignfiles/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\nodes\SoSurroundScale.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -30789,6 +30921,50 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\foreignfiles\steel.c">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\foreignfiles/"
+						ProgramDataBaseFileName="StaticDebug\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\foreignfiles/"
+						ProgramDataBaseFileName="Release\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\foreignfiles/"
+						ProgramDataBaseFileName="StaticRelease\foreignfiles/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\foreignfiles/"
+						ProgramDataBaseFileName="Debug\foreignfiles/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\threads\storage.c">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -33094,6 +33270,9 @@
 				RelativePath="..\..\include\Inventor\nodes\SoFontStyle.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\nodes\SoFragmentShader.h">
 			</File>
 			<File
@@ -34004,6 +34183,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\misc\SoState.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\actions\SoSubAction.h">
