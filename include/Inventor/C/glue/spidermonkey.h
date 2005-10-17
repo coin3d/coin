@@ -395,6 +395,9 @@ typedef struct {
   JS_ReportError_t JS_ReportError;
   JS_IsArrayObject_t JS_IsArrayObject;
   JS_ObjectIsFunction_t JS_ObjectIsFunction;
+  // Note: We use this function instead of JS_ValueToInt32() since the 
+  // latter is buggy in versions of SpiderMonkey older than 2005-09-29, 
+  // see Mozilla bug #284032.
   JS_ValueToECMAInt32_t JS_ValueToECMAInt32;
   JS_DefineFunction_t JS_DefineFunction;
   JS_GetGlobalObject_t JS_GetGlobalObject;
