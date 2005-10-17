@@ -35,6 +35,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -61,14 +62,14 @@ class SoSTLFileKitP {
 public:
   SoSTLFileKitP(SoSTLFileKit * pub)
   : api(pub) {
-    this->data = NULL;
-    this->points = NULL;
-    this->normals = NULL;
+    this->data = new SbList<uint16_t>;
+    this->points = new SbBSPTree;
+    this->normals = new SbBSPTree;
   }
   ~SoSTLFileKitP(void) {
-    if ( this->data ) delete this->data;
-    if ( this->points ) delete this->points;
-    if ( this->normals ) delete this->normals;
+    delete this->data;
+    delete this->points;
+    delete this->normals;
   }
 
 public:
@@ -90,8 +91,47 @@ public:
 
 /*!
   \class SoSTLFileKit ForeignFiles/SoSTLFileKit.h
+  \brief SoSTLFileKit is a class for using STL files with Coin.
 
-  Class for using STL models with Open Inventor.
+  Class for using STL files with Coin.  You can use it to read and
+  write STL files, and convert back and forth between Open Inventor
+  scene graphs and SoSTLFileKits.
+
+  STL files are 3D models intended for 3D printers, and is a format
+  supported by a wide variety of computer-aided design programs.  STL
+  models are, because of their intended purpose, always
+  representations of solid objects.  STL is short for
+  Stereolithography, the process used for 3D printing.
+
+  Ordinary STL models do not contain color information.  There are,
+  however, two extensions to the binary file format for specifying
+  color.  Currently neither extension is supported.  This is caused by
+  lack of sample models using the extensions and will be added as soon
+  as such models are found.  We have the specs on the extensions, and
+  it should be pretty straight-forwards to implement, but we want to
+  get it right at once since we have write support (we don't want to
+  inadvertently create a third color extension ;).
+
+  When writing STL files, certain STL model criterias are not enforced
+  by SoSTLFileKit.  These are:
+
+  - STL models should represent complete solids - it is the user's
+    responsibility to give models of solid data to readScene(), and
+    not readScene()'s responsibility to check the incoming data.
+
+  - STL models should have all triangles in counterclockwise order.
+    This is not enforced either.
+
+  - STL models should reside in the positive octant of the coordinate
+    space.  This is also the user's responsibility to ensure, although
+    adding functionality for translating the model should be easy, so
+    it might get implemented.
+
+  Since the color extensions are not supported yet, color information
+  is not collected either when converting Open Inventor scene graphs to
+  SoSTLFileKits.
+
+  \since 2005-10-10
 
   \relates foreignfileformats
 */
@@ -100,6 +140,10 @@ public:
 
 SO_KIT_SOURCE(SoSTLFileKit)
 
+/*!
+  Initializes class and registers file identification functions.
+*/
+
 void
 SoSTLFileKit::initClass(void)
 {
@@ -107,6 +151,22 @@ SoSTLFileKit::initClass(void)
 
   SoType type = SoSTLFileKit::getClassTypeId();
   SoForeignFileKit::registerFileExtension(type, "stl", SoSTLFileKit::identify);
+}
+
+/*!
+  Returns wether or not \a filename is identified as an STL file.
+*/
+
+SbBool
+SoSTLFileKit::identify(const char * filename)
+{
+  assert(filename);
+  stl_reader * reader = stl_reader_create(filename);
+  if ( !reader ) {
+    return FALSE;
+  }
+  stl_reader_destroy(reader);
+  return TRUE;
 }
 
 /*!
@@ -119,25 +179,32 @@ SoSTLFileKit::SoSTLFileKit(void)
 
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSTLFileKit);
 
-  SO_KIT_ADD_FIELD(proper, (FALSE));
-  SO_KIT_ADD_FIELD(colorization, (NONE));
+  SO_KIT_ADD_FIELD(info, (""));
+  SO_KIT_ADD_FIELD(binary, (FALSE));
+  SO_KIT_ADD_FIELD(colorization, (SoSTLFileKit::GREY));
+
+  SO_KIT_DEFINE_ENUM_VALUE(Colorization, GREY);
+  SO_KIT_DEFINE_ENUM_VALUE(Colorization, MATERIALISE);
+  SO_KIT_DEFINE_ENUM_VALUE(Colorization, TNO_VISICAM);
+
+  SO_KIT_SET_SF_ENUM_TYPE(colorization, Colorization);
 
   SO_KIT_ADD_CATALOG_ENTRY(facets, SoIndexedFaceSet,
-                           TRUE, topSeparator, \x0, TRUE);
+                           FALSE, topSeparator, \x0, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(coordinates, SoCoordinate3,
-                           TRUE, topSeparator, facets, TRUE);
+                           FALSE, topSeparator, facets, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial,
-                           TRUE, topSeparator, coordinates, TRUE);
+                           FALSE, topSeparator, coordinates, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(materialbinding, SoMaterialBinding,
-                           TRUE, topSeparator, material, TRUE);
+                           FALSE, topSeparator, material, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(normals, SoNormal,
-                           TRUE, topSeparator, materialbinding, TRUE);
+                           FALSE, topSeparator, materialbinding, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(normalbinding, SoNormalBinding,
-                           TRUE, topSeparator, normals, TRUE);
+                           FALSE, topSeparator, normals, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(texture, SoTexture2,
-                           TRUE, topSeparator, normalbinding, TRUE);
+                           FALSE, topSeparator, normalbinding, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(shapehints, SoShapeHints,
-                           TRUE, topSeparator, texture, TRUE);
+                           FALSE, topSeparator, texture, FALSE);
 
   SO_KIT_INIT_INSTANCE();
 }
@@ -152,56 +219,23 @@ SoSTLFileKit::~SoSTLFileKit(void)
   PRIVATE(this) = NULL;
 }
 
-/*!
-  Resets the STL blob so it contains nothing.
-*/
-
-void
-SoSTLFileKit::reset(void)
-{
-  PRIVATE(this)->numvertices = 0;
-  PRIVATE(this)->numfacets = 0;
-  PRIVATE(this)->numnormals = 0;
-  PRIVATE(this)->numsharedvertices = 0;
-  PRIVATE(this)->numsharednormals = 0;
-  PRIVATE(this)->numredundantfacets = 0;
-
-  if ( PRIVATE(this)->data ) {
-    PRIVATE(this)->data->truncate(0);
-  }
-  if ( PRIVATE(this)->points ) {
-    PRIVATE(this)->points->clear();
-  }
-  if ( PRIVATE(this)->normals ) {
-    PRIVATE(this)->normals->clear();
-  }
-
-  // this->setAnyPart("shapehints", new SoShapeHints, TRUE);
-  // this->setAnyPart("normalbinding", new SoNormalBinding, TRUE);
-  this->setAnyPart("normals", new SoNormal, TRUE);
-  this->setAnyPart("coordinates", new SoCoordinate3, TRUE);
-  this->setAnyPart("material", new SoMaterial, TRUE);
-  this->setAnyPart("facets", new SoIndexedFaceSet, TRUE);
-}
-
-SbBool
-SoSTLFileKit::identify(const char * filename)
-{
-  assert(filename);
-  stl_reader * reader = stl_reader_create(filename);
-  if ( !reader ) {
-    return FALSE;
-  }
-  stl_reader_destroy(reader);
-  return TRUE;
-}
-
+// doc in inherited class
 SbBool
 SoSTLFileKit::canReadFile(const char * filename) const
 {
-  if ( !filename ) return TRUE; // we can read (in general)
+  if ( !filename ) return TRUE; // we can read STL files, in general
   return SoSTLFileKit::identify(filename);
 }
+
+/*!
+  Reads in an STL file.  Both ascii and binary files are supported.
+  For binary files, the color extensions are not implemented yet.
+
+  Returns FALSE if \a filename could not be opened or parsed
+  correctly.
+
+  \sa canReadFile, canWriteScene, writeScene
+*/
 
 SbBool
 SoSTLFileKit::readFile(const char * filename)
@@ -219,18 +253,6 @@ SoSTLFileKit::readFile(const char * filename)
   }
 
   SbBool binary = (stl_reader_flags(reader) & STL_BINARY) ? TRUE : FALSE;
-
-  if ( binary && (PRIVATE(this)->data == NULL) ) {
-    PRIVATE(this)->data = new SbList<uint16_t>;
-  }
-
-  if ( PRIVATE(this)->points == NULL ) {
-    PRIVATE(this)->points = new SbBSPTree;
-  }
-
-  if ( PRIVATE(this)->normals == NULL ) {
-    PRIVATE(this)->normals = new SbBSPTree;
-  }
 
   SoShapeHints * hints =
     SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
@@ -250,6 +272,7 @@ SoSTLFileKit::readFile(const char * filename)
     const int peekval = stl_reader_peek(reader);
     if ( peekval == STL_BEGIN ) {
     } else if ( peekval == STL_INIT_INFO ) {
+      // FIXME: set info
     } else if ( peekval == STL_EXIT_INFO ) {
     } else if ( peekval == STL_END ) {
       loop = FALSE;
@@ -271,15 +294,21 @@ SoSTLFileKit::readFile(const char * filename)
         float len = normal.length();
         if ( len > 0 ) normal /= len;
       }
+      unsigned int data = stl_facet_get_padding(facet);
 
-      this->addFacet(vertex1, vertex2, vertex3, normal);
+      SbBool added = this->addFacet(vertex1, vertex2, vertex3, normal);
 
-      if ( binary ) {
+#if defined(COIN_EXTRA_DEBUG) || 1
+      if ( added && binary ) {
         // binary contains padding, which might be colorization
-        unsigned int data = stl_facet_get_padding(facet);
+        // colorization is not implemented yet, so therefore some debug
+        // output comes here so colorized models can be detected.
         PRIVATE(this)->data->append((uint16_t) data);
-        // fprintf(stderr, "facet data: %04x\n", data);
+        if ( data != 0 ) {
+          fprintf(stderr, "facet %5d - data: %04x\n", PRIVATE(this)->numfacets - 1, data);
+        }
       }
+#endif // COIN_EXTRA_DEBUG
     } else if ( peekval == STL_ERROR ) {
       SoDebugError::post("SoSTLFileKit::readFile",
                          "error '%s' after %d facets, line %d.",
@@ -288,11 +317,15 @@ SoSTLFileKit::readFile(const char * filename)
                          stl_reader_get_line_number(reader));
       loop = FALSE;
       success = FALSE;
+      if (strcmp(stl_reader_get_error(reader), "premature end of file") == 0) {
+        // this one we will accept though - models with missing
+        // end-indicator have been found...
+        success = TRUE;
+      }
     }
   }
-  // done
 
-  // no need for the BSP trees to contain data any more
+  // done - no need for the BSP trees to contain data any more
   PRIVATE(this)->points->clear();
   PRIVATE(this)->normals->clear();
 
@@ -301,155 +334,24 @@ SoSTLFileKit::readFile(const char * filename)
 
   if ( !success ) {
     this->reset();
-#if defined(COIN_EXTRA_DEBUG)
   } else {
-    SoDebugError::postInfo("SoSTLFileKit::readFile",
-                           "file read successfully. "
-                           "%d unique vertices, %d reuses. "
-                           "%d unique normals, %d reuses. "
-                           "%d facets, %d redundant facets.",
-                           PRIVATE(this)->numvertices,
-                           PRIVATE(this)->numsharedvertices,
-                           PRIVATE(this)->numnormals,
-                           PRIVATE(this)->numsharednormals,
-                           PRIVATE(this)->numfacets,
-                           PRIVATE(this)->numredundantfacets);
-#endif // COIN_EXTRA_DEBUG
+    this->organizeModel();
   }
   return success;
 }
 
+// doc in inherited class
 SbBool
 SoSTLFileKit::canReadScene(void) const
 {
   return TRUE;
 }
 
-SbBool
-SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3, const SbVec3f & n)
-{
-  SoNormal * normals =
-    SO_GET_ANY_PART(this, "normals", SoNormal);
-  SoCoordinate3 * coordinates =
-    SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
-  SoIndexedFaceSet * facets =
-    SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
-
-  // find existing indexes if any
-  int v1idx = PRIVATE(this)->points->findPoint(v1);
-  int v2idx = PRIVATE(this)->points->findPoint(v2);
-  int v3idx = PRIVATE(this)->points->findPoint(v3);
-  if (v1idx != -1) { v1idx = (int) PRIVATE(this)->points->getUserData(v1idx); }
-  if (v2idx != -1) { v2idx = (int) PRIVATE(this)->points->getUserData(v2idx); }
-  if (v3idx != -1) { v3idx = (int) PRIVATE(this)->points->getUserData(v3idx); }
-  int nidx = PRIVATE(this)->normals->findPoint(n);
-  if (nidx != -1) { nidx = (int) PRIVATE(this)->normals->getUserData(nidx); }
-
-  // toss out invalid facets (of which there are often many)...
-  // what are these - are they lines and points or something?
-  if ((v1 == v2) || (v2 == v3) || (v1 == v3)) {
-    // IDEA: optimize above test for the cases where you have vertex
-    // indexes. we can't use only indices of course since the vertices
-    // may not have been registered yet, but...
-    PRIVATE(this)->numredundantfacets += 1;
-    return FALSE;
-  }
-
-  // toss out redundant facets, if any...
-  if ( (v1idx != -1) && (v2idx != -1) && (v3idx != -1) ) {
-    int count = facets->coordIndex.getNum();
-    const int32_t * points = facets->coordIndex.getValues(0);
-    int i;
-    for ( i = 0; i < count; i++ ) {
-      if (points[i] == v1idx) {
-        int beg = i - (i % 4);
-        if ( ((points[beg] == v1idx) && (points[beg+1] == v2idx) &&
-              (points[beg+2] == v3idx)) ||
-             ((points[beg] == v2idx) && (points[beg+1] == v3idx) &&
-              (points[beg+2] == v1idx)) ||
-             ((points[beg] == v3idx) && (points[beg+1] == v1idx) &&
-              (points[beg+2] == v2idx)) ) {
-          // same vertices, same vertex ordering (we drop comparing normal)
-          PRIVATE(this)->numredundantfacets += 1;
-          return FALSE;
-        }
-      }
-    }
-  }
-
-  // add facet (triangle) to faceset
-  if (v1idx == -1) {
-    v1idx = PRIVATE(this)->numvertices;
-    coordinates->point.set1Value(v1idx, v1);
-    PRIVATE(this)->points->addPoint(v1, (void *) v1idx);
-    PRIVATE(this)->numvertices++;
-  } else {
-    PRIVATE(this)->numsharedvertices++;
-  }
-  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4, v1idx);
-  
-  if (v2idx == -1) {
-    v2idx = PRIVATE(this)->numvertices;
-    coordinates->point.set1Value(v2idx, v2);
-    PRIVATE(this)->points->addPoint(v2, (void *) v2idx);
-    PRIVATE(this)->numvertices++;
-  } else {
-    PRIVATE(this)->numsharedvertices++;
-  }
-  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+1, v2idx);
-
-  if (v3idx == -1) {
-    v3idx = PRIVATE(this)->numvertices;
-    coordinates->point.set1Value(v3idx, v3);
-    PRIVATE(this)->points->addPoint(v3, (void *) v3idx);
-    PRIVATE(this)->numvertices++;
-  } else {
-    PRIVATE(this)->numsharedvertices++;
-  }
-  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+2, v3idx);
-  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+3, -1);
-
-  if (nidx == -1) {
-    nidx = PRIVATE(this)->numnormals;
-    normals->vector.set1Value(nidx, n);
-    PRIVATE(this)->normals->addPoint(n, (void *) nidx);
-    PRIVATE(this)->numnormals++;
-  } else {
-    PRIVATE(this)->numsharednormals++;
-  }
-  facets->normalIndex.set1Value(PRIVATE(this)->numfacets, nidx);
-
-  PRIVATE(this)->numfacets++;
-  return TRUE;
-}
-
-void
-SoSTLFileKit::triangle_cb(void * closure,
-                          SoCallbackAction * action,
-                          const SoPrimitiveVertex * v1,
-                          const SoPrimitiveVertex * v2,
-                          const SoPrimitiveVertex * v3)
-{
-  assert(closure); assert(v1); assert(v2); assert(v3);
-  SoSTLFileKit * filekit = (SoSTLFileKit *) closure;
-
-  SbVec3f vertex1(v1->getPoint());
-  SbVec3f vertex2(v2->getPoint());
-  SbVec3f vertex3(v3->getPoint());
-
-  SbVec3f vec1(vertex2-vertex1);
-  SbVec3f vec2(vertex3-vertex1);
-  SbVec3f normal(vec1.cross(vec2));
-  float len = normal.length();
-  if ( len > 0 ) normal /= len;
-
-  filekit->addFacet(vertex1, vertex2, vertex3, normal);
-}
-
 /*!
-  Convert a scene graph into an SoSTLFileKit.
-  Useful in relation to writable foreign file kits to convert between
-  various file formats.
+  Converts a scene graph into an SoSTLFileKit.  Useful for creating
+  STL files.
+
+  \sa canReadScene, canWriteFile, writeFile
 */
 
 SbBool
@@ -457,31 +359,22 @@ SoSTLFileKit::readScene(SoNode * scene)
 {
   this->reset();
 
+  scene->ref();
   SoCallbackAction cba;
-  cba.addTriangleCallback(SoType::fromName("SoNode"), triangle_cb, this);
+  cba.addTriangleCallback(SoType::fromName("SoNode"), add_facet_cb, this);
   cba.apply(scene);
-  // done
+  scene->unrefNoDelete();
 
   // no need for the BSP trees to contain data any more
   PRIVATE(this)->points->clear();
   PRIVATE(this)->normals->clear();
 
-#if defined(COIN_EXTRA_DEBUG)
-  SoDebugError::postInfo("SoSTLFileKit::readScene",
-                         "scene graph read in. "
-                         "%d unique vertices, %d reuses. "
-                         "%d unique normals, %d reuses.",
-                         PRIVATE(this)->numvertices,
-                         PRIVATE(this)->numsharedvertices,
-                         PRIVATE(this)->numnormals,
-                         PRIVATE(this)->numsharednormals);
-#endif // COIN_EXTRA_DEBUG
+  this->organizeModel();
+
   return TRUE;
 }
 
-/*!
-*/
-
+// doc in inherited class
 SbBool
 SoSTLFileKit::canWriteScene(const char * format) const
 {
@@ -491,6 +384,9 @@ SoSTLFileKit::canWriteScene(const char * format) const
 }
 
 /*!
+  Converts the STL model into a native scene graph.
+
+  \sa canWriteScene
 */
 
 SbBool
@@ -503,6 +399,7 @@ SoSTLFileKit::writeScene(SoNode *& root, const char * format)
 
   // FIXME: implement format check to specify scene graph setup
   enum Format {
+    UNKNOWN,
     VRML1,
     VRML97
   };
@@ -513,6 +410,10 @@ SoSTLFileKit::writeScene(SoNode *& root, const char * format)
     // create VRML1 scene
     SoSeparator * sceneroot = new SoSeparator;
     sceneroot->ref();
+
+    SoInfo * info = new SoInfo;
+    info->string = "STL model data, created by Coin " COIN_VERSION ".";
+    sceneroot->addChild(info);
     
     SoShapeHints * shapehints_orig =
       SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
@@ -576,35 +477,316 @@ SoSTLFileKit::writeScene(SoNode *& root, const char * format)
   return success;
 }
 
-/*!
-  Returns 
-*/
-
+// doc in inherited class
 SbBool
 SoSTLFileKit::canWriteFile(const char * filename) const
 {
   return inherited::canWriteFile(filename);
 }
 
+/*!
+  Writes the STL model to an STL file.
+
+  \sa binary, info, canWriteFile, canReadScene
+*/
+
 SbBool
 SoSTLFileKit::writeFile(const char * filename)
 {
-  // writing to file is not implemented yet
-#if 0
   unsigned int flags = 0;
-  // set up flags for binary and color if wanted
+  if ( this->binary.getValue() ) {
+    flags |= STL_BINARY;
+    // set up flags for colorization if wanted
+  }
+
   stl_writer * writer = stl_writer_create(filename, flags);
   if ( !writer ) {
     return FALSE;
   }
 
-  // write header info
-  // write facets
+  stl_facet * facet = stl_facet_create();
+  assert(facet);
+  stl_writer_set_facet(writer, facet);
+
+  SbString infostring = this->info.getValue();
+  if ( infostring.getLength() > 0 ) {
+    if ( stl_writer_set_info(writer, infostring.getString()) != STL_OK ) {
+      SoDebugError::post("SoSTLFileKit::writeFile",
+                         "error: '%s'",
+                         stl_writer_get_error(writer));
+      return FALSE;
+    }
+  }
+
+  this->ref();
+  SoCallbackAction cba;
+  cba.addTriangleCallback(SoNode::getClassTypeId(), put_facet_cb, writer);
+  cba.apply(this);
+  this->unrefNoDelete();
 
   stl_writer_destroy(writer);
+
+  return TRUE;
+}
+
+// *************************************************************************
+
+/*!
+  Resets the STL model so it contains nothing.
+*/
+
+void
+SoSTLFileKit::reset(void)
+{
+  PRIVATE(this)->numvertices = 0;
+  PRIVATE(this)->numfacets = 0;
+  PRIVATE(this)->numnormals = 0;
+  PRIVATE(this)->numsharedvertices = 0;
+  PRIVATE(this)->numsharednormals = 0;
+  PRIVATE(this)->numredundantfacets = 0;
+
+  PRIVATE(this)->data->truncate(0);
+  PRIVATE(this)->points->clear();
+  PRIVATE(this)->normals->clear();
+    
+  this->setAnyPart("shapehints", new SoShapeHints);
+  this->setAnyPart("texture", new SoTexture2);
+  this->setAnyPart("normalbinding", new SoNormalBinding);
+  this->setAnyPart("normals", new SoNormal);
+  this->setAnyPart("materialbinding", new SoMaterialBinding);
+  this->setAnyPart("material", new SoMaterial);
+  this->setAnyPart("coordinates", new SoCoordinate3);
+  this->setAnyPart("facets", new SoIndexedFaceSet);
+
+  SoNormalBinding * normalbinding =
+    SO_GET_ANY_PART(this, "normalbinding", SoNormalBinding);
+  normalbinding->value = SoNormalBinding::PER_FACE_INDEXED;
+
+  SoShapeHints * shapehints =
+    SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
+  shapehints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+  // proper model is
+  //   shapehints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  // but many models are not proper
+  shapehints->shapeType = SoShapeHints::SOLID;
+}
+
+/*!
+  Adds one triangle to the STL model.
+
+  \sa reset, organizeModel
+*/
+
+SbBool
+SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3, const SbVec3f & n)
+{
+  SoNormal * normals =
+    SO_GET_ANY_PART(this, "normals", SoNormal);
+  SoCoordinate3 * coordinates =
+    SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
+  SoIndexedFaceSet * facets =
+    SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
+
+  // find existing indexes if any
+  int v1idx = PRIVATE(this)->points->findPoint(v1), v1new = (v1idx == -1);
+  int v2idx = PRIVATE(this)->points->findPoint(v2), v2new = (v2idx == -1);
+  int v3idx = PRIVATE(this)->points->findPoint(v3), v3new = (v3idx == -1);
+  if (!v1new) { v1idx = (int) PRIVATE(this)->points->getUserData(v1idx); }
+  if (!v2new) { v2idx = (int) PRIVATE(this)->points->getUserData(v2idx); }
+  if (!v3new) { v3idx = (int) PRIVATE(this)->points->getUserData(v3idx); }
+  int nidx = PRIVATE(this)->normals->findPoint(n);
+  if (nidx != -1) { nidx = (int) PRIVATE(this)->normals->getUserData(nidx); }
+
+  // toss out invalid facets - facets where two or more points are in
+  // the same location.  what are these - are they lines and points or
+  // something?  selection?  borders?  creases?
+  if ((!v1new && !v2new && (v1idx == v2idx)) ||
+      (!v1new && !v3new && (v1idx == v3idx)) ||
+      (!v2new && !v3new && (v2idx == v3idx)) ||
+      (v1new && v2new && (v1 == v2)) ||
+      (v1new && v3new && (v1 == v3)) ||
+      (v2new && v3new && (v2 == v3))) {
+    // the above test is optimized for using vertex indexes if
+    // possible and avoid vec3f-comparisons when index-comparisons
+    // should have sufficed.
+    PRIVATE(this)->numredundantfacets += 1;
+    return FALSE;
+  }
+
+#if 0 // disabled (O(n^2))
+  // toss out redundant facets, if any...
+  if (!v1new && !v2new && !v3new) {
+    int count = facets->coordIndex.getNum();
+    const int32_t * points = facets->coordIndex.getValues(0);
+    int i;
+    for (i = 0; i < count; i++) {
+      if (points[i] == v1idx) {
+        int beg = i - (i % 4);
+        if ( ((points[beg] == v1idx) && (points[beg+1] == v2idx) &&
+              (points[beg+2] == v3idx)) ||
+             ((points[beg] == v2idx) && (points[beg+1] == v3idx) &&
+              (points[beg+2] == v1idx)) ||
+             ((points[beg] == v3idx) && (points[beg+1] == v1idx) &&
+              (points[beg+2] == v2idx)) ) {
+          // same vertices, same vertex ordering (we drop comparing normal)
+          PRIVATE(this)->numredundantfacets += 1;
+          return FALSE;
+        }
+      }
+    }
+  }
 #endif
 
-  return inherited::writeFile(filename);
+  // add facet (triangle) to faceset
+  if (v1new) {
+    v1idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v1idx, v1);
+    PRIVATE(this)->points->addPoint(v1, (void *) v1idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4, v1idx);
+  
+  if (v2new) {
+    v2idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v2idx, v2);
+    PRIVATE(this)->points->addPoint(v2, (void *) v2idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+1, v2idx);
+
+  if (v3new) {
+    v3idx = PRIVATE(this)->numvertices;
+    coordinates->point.set1Value(v3idx, v3);
+    PRIVATE(this)->points->addPoint(v3, (void *) v3idx);
+    PRIVATE(this)->numvertices++;
+  } else {
+    PRIVATE(this)->numsharedvertices++;
+  }
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+2, v3idx);
+  facets->coordIndex.set1Value(PRIVATE(this)->numfacets*4+3, -1);
+
+  if (nidx == -1) {
+    nidx = PRIVATE(this)->numnormals;
+    normals->vector.set1Value(nidx, n);
+    PRIVATE(this)->normals->addPoint(n, (void *) nidx);
+    PRIVATE(this)->numnormals++;
+  } else {
+    PRIVATE(this)->numsharednormals++;
+  }
+  facets->normalIndex.set1Value(PRIVATE(this)->numfacets, nidx);
+
+  PRIVATE(this)->numfacets++;
+  return TRUE;
+}
+
+/*!
+  Should be called after the STL model is completely set up in the
+  SoSTLFileKit through import from a file or from a scene graph.  The
+  model will then be optimized for fast rendering.
+
+  \sa addFacet, reset
+*/
+
+void
+SoSTLFileKit::organizeModel(void)
+{
+#if defined(COIN_EXTRA_DEBUG)
+  SoDebugError::postInfo("SoSTLFileKit::organizeModel",
+                         "model data imported successfully. "
+                         "%d unique vertices, %d reuses. "
+                         "%d unique normals, %d reuses. "
+                         "%d facets, %d redundant facets.",
+                         PRIVATE(this)->numvertices,
+                         PRIVATE(this)->numsharedvertices,
+                         PRIVATE(this)->numnormals,
+                         PRIVATE(this)->numsharednormals,
+                         PRIVATE(this)->numfacets,
+                         PRIVATE(this)->numredundantfacets);
+#endif // COIN_EXTRA_DEBUG
+
+  SoIndexedFaceSet * facets =
+    SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
+
+  assert(facets->coordIndex.getNum() == PRIVATE(this)->numfacets*4);
+  assert(facets->normalIndex.getNum() == (PRIVATE(this)->numfacets));
+
+  if ( PRIVATE(this)->numfacets > 300 ) {
+    // FIXME: at some number of facets, reorganization for faster
+    // rendering should really be performed.
+  }
+}
+
+/*!
+  Helper callback for readScene(), calling addFacet() for each
+  triangle in the provided scene graph.
+
+  \sa readScene
+*/
+
+void
+SoSTLFileKit::add_facet_cb(void * closure,
+                           SoCallbackAction * action,
+                           const SoPrimitiveVertex * v1,
+                           const SoPrimitiveVertex * v2,
+                           const SoPrimitiveVertex * v3)
+{
+  assert(closure); assert(v1); assert(v2); assert(v3);
+  SoSTLFileKit * filekit = (SoSTLFileKit *) closure;
+
+  SbVec3f vertex1(v1->getPoint());
+  SbVec3f vertex2(v2->getPoint());
+  SbVec3f vertex3(v3->getPoint());
+
+  SbVec3f vec1(vertex2-vertex1);
+  SbVec3f vec2(vertex3-vertex1);
+  SbVec3f normal(vec1.cross(vec2));
+  float len = normal.length();
+  if ( len > 0.0f && len != 1.0f ) normal /= len;
+  assert(len != 0.0f);
+
+  filekit->addFacet(vertex1, vertex2, vertex3, normal);
+}
+
+/*!
+  Helper callback for writeFile(), writing each triangle in the STL
+  model to the STL file.
+
+  \sa writeFile
+*/
+
+void
+SoSTLFileKit::put_facet_cb(void * closure,
+                           SoCallbackAction * action,
+                           const SoPrimitiveVertex * v1,
+                           const SoPrimitiveVertex * v2,
+                           const SoPrimitiveVertex * v3)
+{
+  assert(closure); assert(v1); assert(v2); assert(v3);
+  stl_writer * writer = (stl_writer *) closure;
+
+  SbVec3f vertex1(v1->getPoint());
+  SbVec3f vertex2(v2->getPoint());
+  SbVec3f vertex3(v3->getPoint());
+
+  SbVec3f vec1(vertex2-vertex1);
+  SbVec3f vec2(vertex3-vertex1);
+  SbVec3f normal(vec1.cross(vec2));
+  float len = normal.length();
+  if ( len > 0 ) normal /= len;
+
+  stl_facet * facet = stl_writer_get_facet(writer);
+  assert(facet);
+  stl_facet_set_vertex1(facet, vertex1[0], vertex1[1], vertex1[2]);
+  stl_facet_set_vertex2(facet, vertex2[0], vertex2[1], vertex2[2]);
+  stl_facet_set_vertex3(facet, vertex3[0], vertex3[1], vertex3[2]);
+  stl_facet_set_normal(facet, normal[0], normal[1], normal[2]);
+  stl_facet_set_padding(facet, 0);
+
+  stl_writer_put_facet(writer, facet);
 }
 
 #undef PRIVATE

@@ -26,6 +26,7 @@
 
 #include <Inventor/SbBasic.h>
 
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFEnum.h>
 
@@ -53,9 +54,10 @@ public:
   static void initClass(void);
   SoSTLFileKit(void);
 
-  enum Colorization { NONE, METHOD1, METHOD2 };
+  enum Colorization { GREY, MATERIALISE, TNO_VISICAM };
 
-  SoSFBool proper;
+  SoSFString info;
+  SoSFBool binary;
   SoSFEnum colorization;
 
   static SbBool identify(const char * filename);
@@ -75,11 +77,13 @@ protected:
   void reset(void);
   SbBool addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3,
                   const SbVec3f & normal);
+  void organizeModel(void);
 
 private:
   SoSTLFileKitP * pimpl;
 
-  static void triangle_cb(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3);
+  static void add_facet_cb(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3);
+  static void put_facet_cb(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3);
 
 }; // SoSTLFileKit
 

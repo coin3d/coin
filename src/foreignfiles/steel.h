@@ -96,8 +96,10 @@ int           stl_reader_get_line_number(stl_reader * reader);
 /* not really implemented yet */
 stl_writer *  stl_writer_create(const char * filename, unsigned int flags);
 int           stl_writer_destroy(stl_writer * writer);
-unsigned int  stl_writer_flags(stl_writer * writer);
-int           stl_writer_put_info(stl_writer * writer, const char * info);
+unsigned int  stl_writer_get_flags(stl_writer * writer);
+int           stl_writer_set_info(stl_writer * writer, const char * info);
+void          stl_writer_set_facet(stl_writer * writer, stl_facet * facet);
+stl_facet *   stl_writer_get_facet(stl_writer * writer);
 int           stl_writer_put_facet(stl_writer * writer, stl_facet * facet);
 const char *  stl_writer_get_error(stl_writer * writer);
 

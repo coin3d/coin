@@ -92,6 +92,21 @@ struct stl_reader_s {
   int hickups;
 };
 
+/* @stl_writer_s@
+This is an opaque handle for an STL file that is opened for writing.
+ */
+
+struct stl_writer_s {
+  char * filename;
+  FILE * file;
+  char * info;
+  const char * error;
+  int facets;
+  unsigned int flags;
+  stl_facet * facet;
+  int linenum;
+};
+
 /* prototypes for internal functions used in lex part */
 static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_real * c);
 
@@ -112,8 +127,8 @@ static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_re
 %option noyy_scan_string
 
 DIGITS  [0123456789]+
-EXP     ([eE]"-"?{DIGITS})?
 SIGN    [+-]?
+EXP     ([eE]{SIGN}?{DIGITS})?
 FLOAT   {SIGN}{DIGITS}("."{DIGITS})?{EXP}
 WHITE   [ \t]*
 WS      [ \t]{WHITE}
@@ -147,7 +162,7 @@ LINE    [^\n]*
 	  stl_parse_real_triple(stl_yytext, &(reader->facet->nx), &(reader->facet->ny), &(reader->facet->nz));
 	}
 
-{WHITE}outer{WS}loop{WHITE}$	{
+{WHITE}(outer{WS})?loop{WHITE}$	{
 	  reader->vertex = 0;
 	}
 
@@ -186,12 +201,13 @@ LINE    [^\n]*
 	  return STL_FACET;
 	}
 
-{WHITE}endsolid{WHITE}{LINE}$	{
+{WHITE}end{WHITE}solid{WHITE}{LINE}$	{
 	  char * ptr = stl_yytext;
 	  if ( reader->info != NULL ) {
 	    free(reader->info);
 	    reader->info = NULL;
 	  }
+	  /* FIXME: this scanning is now incorrect if not "endsolid" */
 	  while ( *ptr && (*ptr == ' ' || *ptr == '\t') ) ptr++;
 	  while ( *ptr && (*ptr != ' ' && *ptr != '\t') ) ptr++;
 	  while ( *ptr && (*ptr == ' ' || *ptr == '\t') ) ptr++;
@@ -338,6 +354,7 @@ static
 void
 stl_reader_binary_facet(stl_reader * reader)
 {
+  // FIXME: use one 50-byte read operation instead
   union {
     unsigned char bytes[4];
     uint32_t data;
@@ -387,6 +404,64 @@ stl_reader_binary_facet(stl_reader * reader)
   reader->facet->color = data.bytes[0] | (data.bytes[1] << 8);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
   reader->facets++;
+}
+
+static
+int
+stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
+{
+  union {
+    unsigned char bytes[4];
+    uint32_t data;
+    float real;
+  } data;
+  assert(writer != NULL);
+  assert(writer->file != NULL);
+  assert(writer->facet != NULL);
+  data.real = writer->facet->nx;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->ny;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->nz;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v1x;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v1y;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v1z;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v2x;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v2y;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v2z;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v3x;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v3y;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+  data.real = writer->facet->v3z;
+  data.data = stl_ntohl(data.data);
+  fwrite(&data.bytes, 4, 1, writer->file);
+
+  data.bytes[0] = writer->facet->color & 0xff;
+  data.bytes[1] = (writer->facet->color >> 8) & 0xff;
+  /* byteswap? */
+  fwrite(&data.bytes, 2, 1, writer->file);
+  /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
+
+  return TRUE;
 }
 
 /* ********************************************************************** */
@@ -767,7 +842,7 @@ stl_reader_create(const char * filename)
     fseek(reader->file, 0, SEEK_END);
     length = ftell(reader->file);
     fseek(reader->file, 80, SEEK_SET);
-    fread(bytes, 1, 4, reader->file);
+    fread(bytes, 4, 1, reader->file);
     reader->facets_total =
       (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
     if ( (84 + (reader->facets_total * 50)) != length ) {
@@ -777,7 +852,7 @@ stl_reader_create(const char * filename)
     fseek(reader->file, 0, SEEK_SET);
     reader->info = malloc(81);
     assert(reader->info);
-    fread(reader->info, 1, 80, reader->file);
+    fread(reader->info, 80, 1, reader->file);
     reader->info[80] = '\0';
     fseek(reader->file, 84, SEEK_SET); /* position of first facet */
     reader->pending = STL_INIT_INFO;
@@ -952,18 +1027,6 @@ stl_reader_get_line_number(stl_reader * reader)
 
 /* ********************************************************************** */
 
-/* @stl_writer_s@
-This is an opaque handle for an STL file that is opened for writing.
- */
-
-struct stl_writer_s {
-  char * filename;
-  FILE * file;
-  const char * error;
-  unsigned int facets;
-  unsigned int flags;
-};
-
 /* @stl_writer_create@
  */
 
@@ -980,10 +1043,18 @@ stl_writer_create(const char * filename, unsigned int flags)
   writer->flags = (flags & STL_PUBLIC_FLAGS);
   if ( writer->flags & STL_BINARY ) {
     writer->file = fopen(writer->filename, "wb");
+    assert(writer->file);
+    writer->linenum = 0;
   } else {
     writer->file = fopen(writer->filename, "w");
+    assert(writer->file);
+    writer->linenum = 1;
   }
   assert(writer->file);
+  writer->facets = 0;
+  writer->error = NULL;
+  writer->facet = NULL;
+  writer->info = NULL;
   return writer;
 } /* stl_writer_create() */
 
@@ -996,9 +1067,29 @@ stl_writer_destroy(stl_writer * writer)
   assert(writer != NULL);
   assert(writer->file != NULL);
   if ( writer->flags & STL_BINARY ) {
-    /* fseek back and write number of facets */
+    unsigned char bytes[4];
+    bytes[3] = (writer->facets >> 24) & 0xff;
+    bytes[2] = (writer->facets >> 16) & 0xff;
+    bytes[1] = (writer->facets >> 8) & 0xff;
+    bytes[0] = writer->facets & 0xff;
+    fflush(writer->file);
+    fseek(writer->file, 80, SEEK_SET);
+    fwrite(bytes, 4, 1, writer->file);
   } else {
+    fprintf(writer->file, "endsolid\n");
+    writer->linenum++;
   }
+  fclose(writer->file);
+  writer->file = NULL;
+  if ( writer->info != NULL ) {
+    free(writer->info);
+    writer->info = NULL;
+  }
+  if ( writer->facet != NULL ) {
+    stl_facet_destroy(writer->facet);
+    writer->facet = NULL;
+  }
+  free(writer);
   return STL_OK;
 } /* stl_writer_destroy() */
 
@@ -1006,7 +1097,7 @@ stl_writer_destroy(stl_writer * writer)
  */
 
 unsigned int
-stl_writer_flags(stl_writer * writer)
+stl_writer_get_flags(stl_writer * writer)
 {
   assert(writer != NULL);
   return writer->flags & STL_PUBLIC_FLAGS;
@@ -1016,12 +1107,51 @@ stl_writer_flags(stl_writer * writer)
  */
 
 int
-stl_writer_put_info(stl_writer * writer, const char * info)
+stl_writer_set_info(stl_writer * writer, const char * info)
 {
   assert(writer != NULL);
   assert(writer->file != NULL);
+  if ( writer->info != NULL ) {
+    free(writer->info);
+    writer->info = NULL;
+  }
+  if ( info == NULL ) {
+    return STL_OK;
+  }
+  if ( writer->facets != 0 ) {
+    writer->error =
+      "programming error - info must be set before writing facets";
+    return STL_ERROR;
+  }
+  if ( strlen(info) > 80 ) {
+    writer->error = "too long info string";
+    return STL_ERROR;
+  }
+  writer->info = (char *) malloc(strlen(info)+1);
+  assert(writer->info);
+  strcpy(writer->info, info);
   return STL_OK;
 } /* stl_writer_put_info() */
+
+/* @stl_writer_set_facet@
+ */
+
+void
+stl_writer_set_facet(stl_writer * writer, stl_facet * facet)
+{
+  assert(writer);
+  writer->facet = facet;
+}
+
+/* @stl_writer_get_facet@
+ */
+
+stl_facet *
+stl_writer_get_facet(stl_writer * writer)
+{
+  assert(writer);
+  return writer->facet;
+}
 
 /* @stl_writer_put_facet@
  */
@@ -1031,10 +1161,58 @@ stl_writer_put_facet(stl_writer * writer, stl_facet * facet)
 {
   assert(writer != NULL);
   assert(writer->file != NULL);
-/*
-  if ( ! (writer->flags & STL_INIT_INFO_PUT) )
-    stl_writer_put_info(writer->filename);
-*/
+  assert(facet);
+
+  if ( writer->facets == 0 ) {
+    /* write info */
+    if ( writer->flags & STL_BINARY ) {
+      /* FIXME: take color extension into account when constructing header */
+      char header[84];
+      memset(header, 0, 84);
+      if ( writer->info ) {
+        if ( strlen(writer->info) < 80 ) {
+          strcpy(header, writer->info);
+        }
+      }
+      if ( fwrite(header, 84, 1, writer->file) != 1 ) {
+        writer->error = "writing header failed";
+        return STL_ERROR;
+      }
+    } else {
+      if ( writer->info ) {
+        fprintf(writer->file, "solid %s\n", writer->info);
+        free(writer->info);
+        writer->info = NULL;
+      } else {
+        fprintf(writer->file, "solid\n");
+      }
+    }
+  }
+
+  if ( writer->flags & STL_BINARY ) {
+    stl_writer_put_binary_facet(writer, facet);
+  } else {
+    float x, y, z;
+    stl_facet_get_normal(facet, &x, &y, &z);
+    fprintf(writer->file, "  facet normal %g %g %g\n", x, y, z);
+    writer->linenum++;
+    fprintf(writer->file, "    outer loop\n");
+    writer->linenum++;
+    stl_facet_get_vertex1(facet, &x, &y, &z);
+    fprintf(writer->file, "      vertex %g %g %g\n", x, y, z);
+    writer->linenum++;
+    stl_facet_get_vertex2(facet, &x, &y, &z);
+    fprintf(writer->file, "      vertex %g %g %g\n", x, y, z);
+    writer->linenum++;
+    stl_facet_get_vertex3(facet, &x, &y, &z);
+    fprintf(writer->file, "      vertex %g %g %g\n", x, y, z);
+    writer->linenum++;
+    fprintf(writer->file, "    endloop\n");
+    writer->linenum++;
+    fprintf(writer->file, "  endfacet\n");
+    writer->linenum++;
+  }
+  // fflush(writer->file);
   writer->facets++;
   return STL_OK;
 } /* stl_writer_put_facet() */
