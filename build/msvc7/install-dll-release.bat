@@ -1,6 +1,6 @@
 @echo off
 
-echo "Installing to %COINDIR%"
+echo Installing to %COINDIR%...
 
 if not "%COINDIR%"=="" goto coindirset
 echo The COINDIR environment variable must be set to point to a directory
@@ -89,6 +89,10 @@ if exist HardCopy\*.* goto hardcopyexists
 echo mkdir %COINDIR%\include\Inventor\annex\HardCopy
 mkdir HardCopy
 :hardcopyexists
+if exist ForeignFiles\*.* goto foreignfilesexists
+echo mkdir %COINDIR%\include\Inventor\annex\ForeignFiles
+mkdir ForeignFiles
+:foreignfilesexists
 chdir ..
 if exist bundles\*.* goto bundlesexists
 echo mkdir %COINDIR%\include\Inventor\bundles
