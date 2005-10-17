@@ -99,7 +99,7 @@ get_average_performance_time(const SbList<double> & l)
 const SbTime
 cc_perf_gl_timer(const cc_glglue * glue,
                  const unsigned int nrrendercbs,
-                 const cc_perf_render_cb * rendercbs[],
+                 cc_perf_render_cb * rendercbs[],
                  double averagerendertime[],
                  cc_perf_pre_cb * precb, cc_perf_post_cb * postcb,
                  const unsigned int maxruns, const SbTime maxtime,
@@ -187,8 +187,8 @@ cc_perf_gl_timer(const cc_glglue * glue,
   // being processed.
   glFinish();
 
-  SbList<double> timings[nrrendercbs];
- 
+  SbList<double> * timings = new SbList<double> [nrrendercbs];
+
   for (unsigned int i = 0; i < maxruns; ++i) {
     for (unsigned int j = 0; j < nrrendercbs; j++) {
       const SbTime start = SbTime::getTimeOfDay();
@@ -219,6 +219,9 @@ cc_perf_gl_timer(const cc_glglue * glue,
   for (unsigned int j = 0; j < nrrendercbs; j++) {
     averagerendertime[j] = get_average_performance_time(timings[j]);
   }
+
+  delete [] timings;
+  timings = NULL;
  
   if (postcb) { (*postcb)(glue, userdata); }
 

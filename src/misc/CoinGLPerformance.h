@@ -82,7 +82,7 @@ typedef void cc_perf_post_cb(const cc_glglue * g, void * userdata);
 
 const SbTime cc_perf_gl_timer(const cc_glglue * glue,
                               const unsigned int nrrendercbs,
-                              const cc_perf_render_cb * rendercbs[],
+                              cc_perf_render_cb * rendercbs[],
                               double averagerendertime[],
 
                               cc_perf_pre_cb * precb = NULL,
