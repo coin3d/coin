@@ -1140,13 +1140,17 @@ AC_TRY_LINK([
 
 coin_can_do_runtime_linking=false
 
-# Try to use Mac OS X dyld first, since libdl has problems on Mac OS X.
-
-SIM_AC_CHECK_DYLD([
-  AC_DEFINE_UNQUOTED([HAVE_DYLD_RUNTIME_BINDING],1,
-                     [define if the Mac OS X dyld can be used for runtime binding])
-  coin_can_do_runtime_linking=true
-])
+# Mac OS X versions < 10.4 did not support dlopen() so we use our 
+# own implementation based on built-in dyld functions there.
+case ${MACOSX_DEPLOYMENT_TARGET} in
+  10.[[0123]])
+    SIM_AC_CHECK_DYLD([
+      AC_DEFINE_UNQUOTED([HAVE_DYLD_RUNTIME_BINDING],1,
+                         [define if the Mac OS X dyld can be used for runtime binding])
+      coin_can_do_runtime_linking=true
+    ])
+    ;;
+esac
 
 if ! $coin_can_do_runtime_linking; then
   SIM_AC_CHECK_DL([
