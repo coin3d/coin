@@ -527,7 +527,7 @@ aglglue_context_reinstate_previous(void * ctx)
                              "releasing context");
     }
 
-    if (context->storedcontext && context->storeddrawable) {
+    if (context->storedcontext) {
 
       if (coin_glglue_debug()) {
         cc_debugerror_postinfo("aglglue_context_reinstate_previous",
@@ -537,7 +537,6 @@ aglglue_context_reinstate_previous(void * ctx)
                                context->storeddrawable);
       }
 
-      aglSetDrawable(context->storedcontext, context->storeddrawable);
       aglSetCurrentContext(context->storedcontext);
     }
 
