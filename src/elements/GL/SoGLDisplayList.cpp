@@ -45,7 +45,6 @@
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 
@@ -364,15 +363,9 @@ SoGLDisplayList::bindTexture(SoState *state)
   assert(cc_glglue_has_texture_objects(glw));
 
   GLenum target = PRIVATE(this)->texturetarget;
-
   if (target == 0) {
+    // target is not set. Assume normal 2D texture. 
     target = GL_TEXTURE_2D;
-    // FIXME: this is ugly. Will not work properly for multiple texture units
-    // pederb, 2005-02-17
-    if (SoGLTexture3EnabledElement::get(state)) {
-      assert(cc_glglue_has_3d_textures(glw));
-      target = GL_TEXTURE_3D;
-    }
   }
   cc_glglue_glBindTexture(glw, target, (GLuint)PRIVATE(this)->firstindex);
 }
