@@ -290,9 +290,9 @@ cc_build_search_list(const char * libname)
   for (i = 0; i < image_count; i++) {
     p = _dyld_get_image_name(i);
     if (strstr(p, "Inventor.framework")) {
-      /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
+      /* We get /path/to/Foo.framework/Versions/A/Foo
          but want /path/to/Foo.framework/Versions/A/Resources */
-      char * path_to_version_dir = cc_dirname(cc_dirname(p));
+      char * path_to_version_dir = cc_dirname(p);
       /* FIXME: it'd be simpler, cleaner and safer to use the
          cc_string_sprintf() function. 20030804 mortene. */
       size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
