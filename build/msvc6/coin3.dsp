@@ -5591,19 +5591,6 @@ SOURCE=..\..\src\misc\CoinOffscreenGLCanvas.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc\CoinGLPerformance.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\misc"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\misc"
-!ENDIF 
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\misc\SoDebug.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
@@ -9643,6 +9630,19 @@ SOURCE=..\..\src\tidbits.c
 # PROP Intermediate_Dir "StaticRelease\src"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
 # PROP Intermediate_Dir "StaticDebug\src"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\gl"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\gl"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\gl"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\gl"
 !ENDIF 
 # End Source File
 # Begin Source File

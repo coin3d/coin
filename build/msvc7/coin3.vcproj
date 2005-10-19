@@ -825,7 +825,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\CoinGLPerformance.cpp">
+				RelativePath="..\..\src\share\gl\CoinGLPerformance.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
 					<Tool
@@ -833,8 +833,8 @@
 						Optimization="2"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						ObjectFile=".\StaticDebug\misc/"
-						ProgramDataBaseFileName="StaticDebug\misc/"/>
+						ObjectFile=".\StaticDebug\gl/"
+						ProgramDataBaseFileName="StaticDebug\gl/"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="DLL (Release)|Win32">
@@ -843,8 +843,8 @@
 						Optimization="1"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile=".\Release\misc/"
-						ProgramDataBaseFileName="Release\misc/"/>
+						ObjectFile=".\Release\gl/"
+						ProgramDataBaseFileName="Release\gl/"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="LIB (Release)|Win32">
@@ -853,8 +853,8 @@
 						Optimization="2"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						ObjectFile=".\StaticRelease\misc/"
-						ProgramDataBaseFileName="StaticRelease\misc/"/>
+						ObjectFile=".\StaticRelease\gl/"
+						ProgramDataBaseFileName="StaticRelease\gl/"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="DLL (Debug)|Win32">
@@ -864,8 +864,8 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						BasicRuntimeChecks="3"
-						ObjectFile=".\Debug\misc/"
-						ProgramDataBaseFileName="Debug\misc/"/>
+						ObjectFile=".\Debug\gl/"
+						ProgramDataBaseFileName="Debug\gl/"/>
 				</FileConfiguration>
 			</File>
 			<File

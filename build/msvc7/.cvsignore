@@ -18,6 +18,7 @@ coin3.dsp
 coin3.ncb
 coin3.suo
 coin3.dll
+coin3d.dll
 Info.plist
 version.plist
 coin-default.cfg
