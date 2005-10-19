@@ -34,6 +34,7 @@
 
 typedef void SoGLRenderPassCB(void * userdata);
 typedef void SoGLPreRenderCB(void * userdata, class SoGLRenderAction * action);
+typedef float SoGLSortedObjectOrderCB(void * userdata, SoGLRenderAction * action);
 
 class COIN_DLL_API SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -60,6 +61,13 @@ public:
     CONTINUE, ABORT, PRUNE, DELAY
   };
 
+  enum SortedObjectOrderStrategy {
+    BBOX_CENTER,
+    BBOX_CLOSEST_CORNER,
+    BBOX_FARTHEST_CORNER,
+    CUSTOM_CALLBACK
+  };
+  
   typedef AbortCode SoGLRenderAbortCB(void * userdata);
 
   void setViewportRegion(const SbViewportRegion & newregion);
@@ -96,7 +104,11 @@ public:
  
   void setSortedLayersNumPasses(int num);
   int getSortedLayersNumPasses() const;
-  
+
+  void setSortedObjectOrderStrategy(const SortedObjectOrderStrategy strategy,
+                                    SoGLSortedObjectOrderCB * cb = NULL,
+                                    void * closure = NULL);
+
 protected:
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
@@ -110,3 +122,4 @@ private:
 };
 
 #endif // !COIN_SOGLRENDERACTION_H
+

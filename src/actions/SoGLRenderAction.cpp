@@ -424,6 +424,60 @@
   \sa setAbortCallback()
 */
 
+/*!
+  \typedef float SoGLSortedObjectOrderCB(void * userdata, SoGLRenderAction * action)
+
+  A callback used for controlling the transparency sorting order.
+
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
+/*! 
+   \enum SortedObjectOrderStrategy
+
+   Used for enumerating the different transparency sorting strategies.
+
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
+/*!
+  \var SoGLRenderAction::SortedObjectOrderStrategy SoGLRenderAction::BBOX_CENTER
+
+  Do the sorting based on the center of the object bounding box.
+
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
+/*!
+  \var SoGLRenderAction::SortedObjectOrderStrategy BBOX_CLOSEST_CORNER
+
+  Do the sorting based on the bounding box corner closest to the camera.
+
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
+/*!
+  \var SoGLRenderAction::SortedObjectOrderStrategy SoGLRenderAction::BBOX_FARTHEST_CORNER
+
+  Do the sorting based on the bounding box corner farthest from the camera.
+
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
+/*!
+  \var SoGLRenderAction::SortedObjectOrderStrategy SoGLRenderAction::CUSTOM_CALLBACK
+
+  Use a custom callback to determine the sorting order. 
+  
+  \sa setSortedObjectOrderStrategy().
+  \since Coin 2.5
+*/
+
 // *************************************************************************
 
 class SoGLRenderActionP {
@@ -471,6 +525,10 @@ public:
   SbMatrix sortedlayersblendprojectionmatrix;
   int sortedlayersblendcounter;
   SbBool usenvidiaregistercombiners;
+
+  SoGLRenderAction::SortedObjectOrderStrategy sortedobjectstrategy;
+  SoGLSortedObjectOrderCB * sortedobjectcb;
+  void * sortedobjectclosure;
 
   void setupSortedLayersBlendTextures(const SoState * state);
   void doSortedLayersBlendRendering(const SoState * state, SoNode * node);
@@ -596,6 +654,10 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->sortedlayersblendinitialized = FALSE;
   THIS->sortedlayersblendcounter = 0;
   THIS->usenvidiaregistercombiners = FALSE;
+
+  THIS->sortedobjectstrategy = BBOX_CENTER;
+  THIS->sortedobjectcb = NULL;
+  THIS->sortedobjectclosure = NULL;
 }
 
 /*!
@@ -1188,7 +1250,7 @@ SoGLRenderAction::doPathSort(void)
       dtmp = darray[i];
       ptmp = plist->get(i);
       j = i;
-      while (j >= distance && darray[j-distance] > dtmp) {
+      while (j >= distance && darray[j-distance] < dtmp) {
         darray[j] = darray[j-distance];
         plist->set(j, plist->get(j-distance));
         j -= distance;
@@ -1240,6 +1302,35 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
   THIS->precblist.removeCallback((SoCallbackListCB*) func, userdata);
 }
 
+/*!
+  
+  Sets the strategy used for sorting transparent objects.
+
+  The \e CUSTOM_CALLBACK strategy enabled the user to supply a
+  callback which is called for each transparent shape. This strategy
+  can be used if the built in sorting strategies isn't sufficient.
+
+  The callback should return a floating point value to be used when
+  sorting the objects in Coin. This floating point value is
+  interpreted as a distance to the camera, and objects with higher
+  values will be sorted behind objects with lower values.
+  
+  The callback will supply the SoGLRenderAction instance, and the path
+  to the current object can be found using SoAction::getCurPath().
+
+  \since Coin 2.5 
+
+*/
+void 
+SoGLRenderAction::setSortedObjectOrderStrategy(const SortedObjectOrderStrategy strategy,
+                                               SoGLSortedObjectOrderCB * cb,
+                                               void * closure)
+{
+  THIS->sortedobjectstrategy = strategy;
+  THIS->sortedobjectcb = cb;
+  THIS->sortedobjectclosure = closure;
+}
+
 #undef THIS
 
 // *************************************************************************
@@ -1253,9 +1344,17 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
 {
   this->sorttranspobjpaths.append(path);
 
+  // check and handle callback first
+  if ((this->sortedobjectstrategy == SoGLRenderAction::CUSTOM_CALLBACK) &&
+      (this->sortedobjectcb != NULL)) {
+    this->sorttranspobjdistances.append(this->sortedobjectcb(this->sortedobjectclosure,
+                                                             this->action));
+    return;
+  }
+  
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
-
+  SbBox3f bbox;
   // test if we can find the bbox using SoShape::getBoundingBoxCache()
   // or SoShape::computeBBox. This is the common case, and quite a lot
   // faster than using an SoGetBoundingBoxAction.
@@ -1267,19 +1366,51 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
     if (bboxcache && bboxcache->isValid(action->state)) {
       if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
       center = bboxcache->getProjectedBox().getCenter();
+      bbox = bboxcache->getProjectedBox();
     }
     else {
-      SbBox3f dummy;
-      tailshape->computeBBox(action, dummy, center);
+      tailshape->computeBBox(action, bbox, center);
     }
     SoModelMatrixElement::get(action->state).multVecMatrix(center, center);
-    dist = SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+    dist = -SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
   }
   else {
     this->bboxaction->setViewportRegion(SoViewportRegionElement::get(action->state));
     this->bboxaction->apply(path);
     SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
-    dist = SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+    bbox = this->bboxaction->getBoundingBox();
+    bbox.transform(SoModelMatrixElement::get(action->state).inverse());
+    dist = -SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+  }
+  if ((this->sortedobjectstrategy == SoGLRenderAction::BBOX_CLOSEST_CORNER) ||
+      (this->sortedobjectstrategy == SoGLRenderAction::BBOX_FARTHEST_CORNER)) {
+    const SbMatrix & m = SoModelMatrixElement::get(action->state);
+    const SbPlane & plane = SoViewVolumeElement::get(action->state).getPlane(0.0f);
+    SbVec3f bmin, bmax;
+    bmin = bbox.getMin();
+    bmax = bbox.getMax();
+    
+    for (int i = 0; i < 8; i++) {
+      SbVec3f tmp(i&1 ? bmin[0] : bmax[0],
+                  i&2 ? bmin[1] : bmax[1],
+                  i&4 ? bmin[2] : bmax[2]);
+      m.multVecMatrix(tmp, tmp);
+      float tmpdist = -plane.getDistance(tmp);
+      if (i == 0) dist = tmpdist;
+      else {
+        switch (this->sortedobjectstrategy) {
+        case SoGLRenderAction::BBOX_CLOSEST_CORNER: 
+          if (tmpdist < dist) dist = tmpdist;
+          break;
+        case SoGLRenderAction::BBOX_FARTHEST_CORNER:
+          if (tmpdist > dist) dist = tmpdist;
+          break;
+        default:
+          assert(0 && "unknown sorting strategy");
+          break;
+        }
+      }
+    }
   }
   this->sorttranspobjdistances.append(dist);
 }
