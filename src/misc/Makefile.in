@@ -295,7 +295,6 @@ RegularSources = \
 	AudioTools.cpp \
 	CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp \
-	CoinGLPerformance.cpp \
 	SoDebug.cpp \
 	SoJavaScriptEngine.cpp
 
@@ -315,7 +314,6 @@ PrivateHeaders = \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
-	CoinGLPerformance.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
@@ -400,8 +398,8 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp all-misc-cpp.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
+	all-misc-cpp.cpp
 am__objects_1 = all-misc-cpp.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoContextHandler.$(OBJEXT) SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
@@ -419,8 +417,8 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoVertexArrayIndexer.$(OBJEXT) SoGenerate.$(OBJEXT) \
 	SoLockManager.$(OBJEXT) SoAudioDevice.$(OBJEXT) \
 	AudioTools.$(OBJEXT) CoinStaticObjectInDLL.$(OBJEXT) \
-	CoinOffscreenGLCanvas.$(OBJEXT) CoinGLPerformance.$(OBJEXT) \
-	SoDebug.$(OBJEXT) SoJavaScriptEngine.$(OBJEXT)
+	CoinOffscreenGLCanvas.$(OBJEXT) SoDebug.$(OBJEXT) \
+	SoJavaScriptEngine.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
@@ -430,8 +428,8 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	CoinGLPerformance.h SoVBO.h SoVertexArrayIndexer.h \
-	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
@@ -445,8 +443,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -464,8 +461,8 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp all-misc-cpp.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
+	all-misc-cpp.cpp
 am__objects_6 = all-misc-cpp.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoGLImage.lo SoGLCubeMapImage.lo SoGLBigImage.lo SoGlyph.lo \
@@ -477,8 +474,8 @@ am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
 	SoOffscreenWGLData.lo SoVBO.lo SoVertexArrayIndexer.lo \
 	SoGenerate.lo SoLockManager.lo SoAudioDevice.lo AudioTools.lo \
-	CoinStaticObjectInDLL.lo CoinOffscreenGLCanvas.lo \
-	CoinGLPerformance.lo SoDebug.lo SoJavaScriptEngine.lo
+	CoinStaticObjectInDLL.lo CoinOffscreenGLCanvas.lo SoDebug.lo \
+	SoJavaScriptEngine.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
@@ -488,8 +485,8 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	CoinGLPerformance.h SoVBO.h SoVertexArrayIndexer.h \
-	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
@@ -503,8 +500,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -520,8 +516,8 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp all-misc-cpp.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
+	all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
@@ -529,8 +525,8 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	CoinGLPerformance.h SoVBO.h SoVertexArrayIndexer.h \
-	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h cppmangle.icc systemsanity.icc \
 	all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
@@ -544,16 +540,13 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp CoinGLPerformance.cpp SoDebug.cpp \
-	SoJavaScriptEngine.cpp
+	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/AudioTools.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/AudioTools.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/CoinGLPerformance.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CoinGLPerformance.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/CoinOffscreenGLCanvas.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/CoinOffscreenGLCanvas.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/CoinStaticObjectInDLL.Plo \
@@ -705,8 +698,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AudioTools.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AudioTools.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinOffscreenGLCanvas.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinOffscreenGLCanvas.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinStaticObjectInDLL.Plo@am__quote@

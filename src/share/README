@@ -1,0 +1,25 @@
+The source code files under this catalog and its subcatalogs are files
+that are shared outside just Coin to other SIM Coin-related projects,
+like e.g. SIM Scenery, SIM Voleon, to the stable Coin-2 branch,
+So@Gui@-libraries, and others.
+
+This is done for two main reasons:
+
+  * To avoid code duplication.
+
+    As an example, consider what was done with OpenGL support code in
+    SIM Scenery -- it ended up extremely similar to Coin's ditto.
+
+  * To avoid having to add "inter-Coin3D"-stuff to the public API of
+    Coin.
+
+    Consider what was done with e.g. the OpenGL-wrapper stuff under
+    src/glue/, where the public API was extended again and again -- in
+    ways of no interest to application programmers -- to accommodate
+    SIM Voleon and other projects.
+
+    (The OpenGL-wrapper will probably be migrated to eventually lay
+    under this directory.)
+
+-- 
+mortene

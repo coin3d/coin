@@ -15,8 +15,6 @@
 @SET_MAKE@
 
 # **************************************************************************
-# Process this file with automake to generate Makefile.in.
-# **************************************************************************
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -293,12 +291,16 @@ SUBDIRS = \
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
+
+# **************************************************************************
 @BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
 
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 
+
+# **************************************************************************
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
 @HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la base/libbase.la \
@@ -316,11 +318,27 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 @HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97LIBADD) $(SUPERGLULIBADD)
 
 
-libCoin@SUFFIX@_la_SOURCES = \
+
+# **************************************************************************
+# Source code files for local build & dist.
+RegularSources = \
 	tidbits.c \
+	share/gl/CoinGLPerformance.cpp \
 	coin-dummy.cpp
 
 
+PrivateHeaders = \
+	share/gl/CoinGLPerformance.h
+
+
+libCoin@SUFFIX@_la_SOURCES = $(RegularSources)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(RegularSources)
+
+EXTRA_libCoin@SUFFIX@_la_SOURCES = $(PrivateHeaders)
+EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(PrivateHeaders)
+
+
+# **************************************************************************
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
@@ -337,10 +355,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	tidbits.c \
-	coin-dummy.cpp
-
+# **************************************************************************
+# Installation information.
 
 # On Mac OS 10.2 or later, create two-level namespace binaries and use
 # prebinding. Also pad the install_name to make it possible to change it
@@ -559,8 +575,9 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	shaders/shaders.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	$(VRML97DIR)/vrml97.lst
-am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = tidbits.$(OBJEXT) \
+am__objects_1 = tidbits.$(OBJEXT) CoinGLPerformance.$(OBJEXT) \
 	coin-dummy.$(OBJEXT)
+am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = $(am__objects_1)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
@@ -701,11 +718,14 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
-am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo coin-dummy.lo
+am__objects_3 = tidbits.lo CoinGLPerformance.lo coin-dummy.lo
+am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/coin-dummy.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/CoinGLPerformance.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/CoinGLPerformance.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/coin-dummy.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/coin-dummy.Po ./$(DEPDIR)/tidbits.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/tidbits.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -724,7 +744,9 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
-	$(libCoin@SUFFIX@_la_SOURCES)
+	$(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
+	$(libCoin@SUFFIX@_la_SOURCES) \
+	$(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 HEADERS = $(libCoininc_HEADERS)
 
 
@@ -739,7 +761,7 @@ DIST_SUBDIRS = extensions actions base bundles caches details draggers \
 	lists nodekits nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy threads mpeg shaders vrml97 foreignfiles \
 	.
-SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES)
+SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: all-recursive
 
@@ -817,6 +839,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coin-dummy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coin-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tidbits.Plo@am__quote@
@@ -890,6 +914,39 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+CoinGLPerformance.o: share/gl/CoinGLPerformance.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CoinGLPerformance.o -MD -MP -MF "$(DEPDIR)/CoinGLPerformance.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o CoinGLPerformance.o `test -f 'share/gl/CoinGLPerformance.cpp' || echo '$(srcdir)/'`share/gl/CoinGLPerformance.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/CoinGLPerformance.Tpo" "$(DEPDIR)/CoinGLPerformance.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/CoinGLPerformance.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='share/gl/CoinGLPerformance.cpp' object='CoinGLPerformance.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/CoinGLPerformance.Po' tmpdepfile='$(DEPDIR)/CoinGLPerformance.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CoinGLPerformance.o `test -f 'share/gl/CoinGLPerformance.cpp' || echo '$(srcdir)/'`share/gl/CoinGLPerformance.cpp
+
+CoinGLPerformance.obj: share/gl/CoinGLPerformance.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CoinGLPerformance.obj -MD -MP -MF "$(DEPDIR)/CoinGLPerformance.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o CoinGLPerformance.obj `if test -f 'share/gl/CoinGLPerformance.cpp'; then $(CYGPATH_W) 'share/gl/CoinGLPerformance.cpp'; else $(CYGPATH_W) '$(srcdir)/share/gl/CoinGLPerformance.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/CoinGLPerformance.Tpo" "$(DEPDIR)/CoinGLPerformance.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/CoinGLPerformance.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='share/gl/CoinGLPerformance.cpp' object='CoinGLPerformance.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/CoinGLPerformance.Po' tmpdepfile='$(DEPDIR)/CoinGLPerformance.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CoinGLPerformance.obj `if test -f 'share/gl/CoinGLPerformance.cpp'; then $(CYGPATH_W) 'share/gl/CoinGLPerformance.cpp'; else $(CYGPATH_W) '$(srcdir)/share/gl/CoinGLPerformance.cpp'; fi`
+
+CoinGLPerformance.lo: share/gl/CoinGLPerformance.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CoinGLPerformance.lo -MD -MP -MF "$(DEPDIR)/CoinGLPerformance.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o CoinGLPerformance.lo `test -f 'share/gl/CoinGLPerformance.cpp' || echo '$(srcdir)/'`share/gl/CoinGLPerformance.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/CoinGLPerformance.Tpo" "$(DEPDIR)/CoinGLPerformance.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/CoinGLPerformance.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='share/gl/CoinGLPerformance.cpp' object='CoinGLPerformance.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/CoinGLPerformance.Plo' tmpdepfile='$(DEPDIR)/CoinGLPerformance.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CoinGLPerformance.lo `test -f 'share/gl/CoinGLPerformance.cpp' || echo '$(srcdir)/'`share/gl/CoinGLPerformance.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -1186,7 +1243,6 @@ uninstall-info: uninstall-info-recursive
 
 
 # **************************************************************************
-
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \

@@ -1,6 +1,4 @@
 # **************************************************************************
-# Process this file with automake to generate Makefile.in.
-# **************************************************************************
 
 CLEANFILES = \
 	coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb \
@@ -40,6 +38,8 @@ SUBDIRS = \
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
+# **************************************************************************
+
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 else
@@ -50,6 +50,8 @@ if MAC_FRAMEWORK
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 endif
+
+# **************************************************************************
 
 if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
@@ -70,9 +72,24 @@ libCoin@SUFFIX@_la_LIBADD = \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
-libCoin@SUFFIX@_la_SOURCES = \
+# **************************************************************************
+# Source code files for local build & dist.
+
+RegularSources = \
 	tidbits.c \
+	share/gl/CoinGLPerformance.cpp \
 	coin-dummy.cpp
+
+PrivateHeaders = \
+	share/gl/CoinGLPerformance.h
+
+libCoin@SUFFIX@_la_SOURCES = $(RegularSources)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(RegularSources)
+
+EXTRA_libCoin@SUFFIX@_la_SOURCES = $(PrivateHeaders)
+EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(PrivateHeaders)
+
+# **************************************************************************
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
@@ -89,11 +106,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	foreignfiles/foreignfiles.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	tidbits.c \
-	coin-dummy.cpp
-
-## Installation information.
+# **************************************************************************
+# Installation information.
 
 # On Mac OS 10.2 or later, create two-level namespace binaries and use
 # prebinding. Also pad the install_name to make it possible to change it
@@ -177,7 +191,6 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbXfBox3f.h
 
 # **************************************************************************
-
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
