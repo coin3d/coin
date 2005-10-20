@@ -3630,6 +3630,8 @@ incremented during the copy, but never decremented :(
     Note that this breaks ABI-compatibility, so it is only relevant
     for Coin 3.
 
+    20041010 mortene.
+
     UPDATE 20041210 mortene: GLU tessellation can do polygons with
     holes, and we should probably use that for the implementation of
     this feature.
@@ -3638,7 +3640,9 @@ incremented during the copy, but never decremented :(
     is known to be buggy (it crashes AFAIR) wrt. tesselating polygons
     with holes.
 
-    20041010 mortene.
+    UPDATE 20050809 mortene: adding the capability of tessellating
+    polygons with holes to SbTessellator would perhaps be a good task
+    for a student. Suggested by pederb.
 
 =====================================================================
 
@@ -4946,5 +4950,107 @@ Text2 {
     is a node we implemented from TGS' API.)
 
     20050902 mortene.
+
+=====================================================================
+
+207 VBO rendering crashes on ATI driver(s).
+
+    The following iv-file crashes on display in any viewer when run on
+    certain ATI cards / drivers:
+
+    -----8<-------------------- [snip] -----------------------------
+    #Inventor V2.1 ascii
+
+MaterialBinding { value PER_VERTEX_INDEXED }
+LightModel { model BASE_COLOR }
+
+BaseColor {
+  rgb [
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0,
+    1 0 0, 0 1 0, 0 0 1, 1 1 0
+  ]
+}
+Coordinate3 {
+  point [
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0,
+   0 0 0, 1 0 0, 1 1 0, 0 1 0
+  ]
+}
+
+PointSet {
+  numPoints 44
+}
+
+Switch { whichChild -3
+ShapeHints {
+  vertexOrdering COUNTERCLOCKWISE
+  faceType CONVEX
+  shapeType UNKNOWN_SHAPE_TYPE
+}
+
+IndexedFaceSet {
+  coordIndex [
+    0,1,2,3,-1,
+    4,5,6,7, -1,
+    8,9,10,11, -1,
+    12,13,14,15, -1,
+    16,17,18,19,-1,
+    20,21,22,23,-1,
+    24,25,26,27,-1,
+    28,29,30,31,-1,
+    32,33,34,35,-1,
+    36,37,38,39,-1,
+    40,41,42,43,-1
+  ]
+}
+
+IndexedLineSet {
+  coordIndex [
+    0,1,2,3,-1,
+    4,5,6,7, -1,
+    8,9,10,11, -1,
+    12,13,14,15, -1,
+    16,17,18,19,-1,
+    20,21,22,23,-1,
+    24,25,26,27,-1,
+    28,29,30,31,-1,
+    32,33,34,35,-1,
+    36,37,38,39,-1,
+    40,41,42,43,-1
+  ]
+}
+}
+
+    -----8<-------------------- [snip] -----------------------------
+
+    Crashes on my ATI Mobility Radeon 9700, under MS Windows, GL
+    driver version 1.4.4145.
+
+    Callstack is
+
+        atioglxx.dll
+        atioglxx.dll
+        cc_glglue_glDrawArrays()
+        SoPointSet::GLRender()
+
+    20051020 mortene.
 
 =====================================================================
