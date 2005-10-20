@@ -601,7 +601,7 @@ int
 coin_glglue_extension_available(const char * extensions, const char * ext)
 {
   const char * start;
-  int extlen;
+  size_t extlen;
   SbBool found = FALSE;
 
   assert(ext && "NULL string");
@@ -2002,8 +2002,13 @@ cc_glglue_instance_from_context_ptr(void * ctx)
      we should avoid a crash with the possible ids defined by
      SoGLCacheContextElement. It's a bit of a hack, this. */
 
-  /* FIXME: seems bogus! 20050627 mortene. */
-  const int id = (int)((long)ctx);
+  /* MSVC7 on 64-bit Windows wants this extra cast. */
+  const uintptr_t cast_aid = (uintptr_t)ctx;
+  /* FIXME: holy shit! This doesn't look sensible at all! (Could this
+     e.g. be where the remote rendering bugs are coming from?)
+     20050525 mortene.*/
+  const int id = (int)cast_aid;
+
   return cc_glglue_instance(id);
 }
 
