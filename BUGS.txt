@@ -5053,4 +5053,11 @@ IndexedLineSet {
 
     20051020 mortene.
 
+    Also crashes on Lars' laptop. ATI Mobility Radeon 9600,
+    GL driver version 1.4.4054. The crash doesn't happen until the
+    VBO calls are added to a display list though, so a possible
+    workaround is to avoid creating display lists for separators
+    that has shapes which is rendered using VBOs.
+    
+    20051020 pederb
 =====================================================================
