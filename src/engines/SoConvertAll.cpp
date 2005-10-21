@@ -665,398 +665,397 @@ SoConvertAll::initClass(void)
   // doesn't have a default constructor), so use the ABSTRACT macros.
   SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
 
-#define SOCONVERTALL_ADDCONVERTER(_fromto_, _from_, _to_) \
-  register_convertfunc(_fromto_, _from_::getClassTypeId(), _to_::getClassTypeId())
+  struct Conversion {
+    convert_func * func;
+    const char * from;
+    const char * to;
+  };
 
-  SOCONVERTALL_ADDCONVERTER(SoSFBitMask_SoMFBitMask, SoSFBitMask, SoMFBitMask);
-  SOCONVERTALL_ADDCONVERTER(SoMFBitMask_SoSFBitMask, SoMFBitMask, SoSFBitMask);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFBool, SoSFBool, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFBool, SoMFBool, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoMFColor, SoSFColor, SoMFColor);
-  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoSFColor, SoMFColor, SoSFColor);
-  SOCONVERTALL_ADDCONVERTER(SoSFEnum_SoMFEnum, SoSFEnum, SoMFEnum);
-  SOCONVERTALL_ADDCONVERTER(SoMFEnum_SoSFEnum, SoMFEnum, SoSFEnum);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFFloat, SoSFFloat, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFFloat, SoMFFloat, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFInt32, SoSFInt32, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFInt32, SoMFInt32, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoMFMatrix, SoSFMatrix, SoMFMatrix);
-  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoSFMatrix, SoMFMatrix, SoSFMatrix);
-  SOCONVERTALL_ADDCONVERTER(SoSFName_SoMFName, SoSFName, SoMFName);
-  SOCONVERTALL_ADDCONVERTER(SoMFName_SoSFName, SoMFName, SoSFName);
-  SOCONVERTALL_ADDCONVERTER(SoSFNode_SoMFNode, SoSFNode, SoMFNode);
-  SOCONVERTALL_ADDCONVERTER(SoMFNode_SoSFNode, SoMFNode, SoSFNode);
-  SOCONVERTALL_ADDCONVERTER(SoSFPath_SoMFPath, SoSFPath, SoMFPath);
-  SOCONVERTALL_ADDCONVERTER(SoMFPath_SoSFPath, SoMFPath, SoSFPath);
-  SOCONVERTALL_ADDCONVERTER(SoSFPlane_SoMFPlane, SoSFPlane, SoMFPlane);
-  SOCONVERTALL_ADDCONVERTER(SoMFPlane_SoSFPlane, SoMFPlane, SoSFPlane);
-  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoMFRotation, SoSFRotation, SoMFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoSFRotation, SoMFRotation, SoSFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFShort, SoSFShort, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFShort, SoMFShort, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFString_SoMFString, SoSFString, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(SoMFString_SoSFString, SoMFString, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoMFTime, SoSFTime, SoMFTime);
-  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoSFTime, SoMFTime, SoSFTime);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFUInt32, SoSFUInt32, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFUInt32, SoMFUInt32, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFUShort, SoSFUShort, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFUShort, SoMFUShort, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec2f_SoMFVec2f, SoSFVec2f, SoMFVec2f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec2f_SoSFVec2f, SoMFVec2f, SoSFVec2f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoMFVec3f, SoSFVec3f, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoSFVec3f, SoMFVec3f, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec4f_SoMFVec4f, SoSFVec4f, SoMFVec4f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_SoMFVec3d, SoSFVec3d, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_SoSFVec3d, SoMFVec3d, SoSFVec3d);
+  struct Conversion allconverters[] = {
+    { SoSFBitMask_SoMFBitMask, "SoSFBitMask", "SoMFBitMask" },
+    { SoMFBitMask_SoSFBitMask, "SoMFBitMask", "SoSFBitMask" },
+    { SoSFBool_SoMFBool, "SoSFBool", "SoMFBool" },
+    { SoMFBool_SoSFBool, "SoMFBool", "SoSFBool" },
+    { SoSFColor_SoMFColor, "SoSFColor", "SoMFColor" },
+    { SoMFColor_SoSFColor, "SoMFColor", "SoSFColor" },
+    { SoSFEnum_SoMFEnum, "SoSFEnum", "SoMFEnum" },
+    { SoMFEnum_SoSFEnum, "SoMFEnum", "SoSFEnum" },
+    { SoSFFloat_SoMFFloat, "SoSFFloat", "SoMFFloat" },
+    { SoMFFloat_SoSFFloat, "SoMFFloat", "SoSFFloat" },
+    { SoSFInt32_SoMFInt32, "SoSFInt32", "SoMFInt32" },
+    { SoMFInt32_SoSFInt32, "SoMFInt32", "SoSFInt32" },
+    { SoSFMatrix_SoMFMatrix, "SoSFMatrix", "SoMFMatrix" },
+    { SoMFMatrix_SoSFMatrix, "SoMFMatrix", "SoSFMatrix" },
+    { SoSFName_SoMFName, "SoSFName", "SoMFName" },
+    { SoMFName_SoSFName, "SoMFName", "SoSFName" },
+    { SoSFNode_SoMFNode, "SoSFNode", "SoMFNode" },
+    { SoMFNode_SoSFNode, "SoMFNode", "SoSFNode" },
+    { SoSFPath_SoMFPath, "SoSFPath", "SoMFPath" },
+    { SoMFPath_SoSFPath, "SoMFPath", "SoSFPath" },
+    { SoSFPlane_SoMFPlane, "SoSFPlane", "SoMFPlane" },
+    { SoMFPlane_SoSFPlane, "SoMFPlane", "SoSFPlane" },
+    { SoSFRotation_SoMFRotation, "SoSFRotation", "SoMFRotation" },
+    { SoMFRotation_SoSFRotation, "SoMFRotation", "SoSFRotation" },
+    { SoSFShort_SoMFShort, "SoSFShort", "SoMFShort" },
+    { SoMFShort_SoSFShort, "SoMFShort", "SoSFShort" },
+    { SoSFString_SoMFString, "SoSFString", "SoMFString" },
+    { SoMFString_SoSFString, "SoMFString", "SoSFString" },
+    { SoSFTime_SoMFTime, "SoSFTime", "SoMFTime" },
+    { SoMFTime_SoSFTime, "SoMFTime", "SoSFTime" },
+    { SoSFUInt32_SoMFUInt32, "SoSFUInt32", "SoMFUInt32" },
+    { SoMFUInt32_SoSFUInt32, "SoMFUInt32", "SoSFUInt32" },
+    { SoSFUShort_SoMFUShort, "SoSFUShort", "SoMFUShort" },
+    { SoMFUShort_SoSFUShort, "SoMFUShort", "SoSFUShort" },
+    { SoSFVec2f_SoMFVec2f, "SoSFVec2f", "SoMFVec2f" },
+    { SoMFVec2f_SoSFVec2f, "SoMFVec2f", "SoSFVec2f" },
+    { SoSFVec3f_SoMFVec3f, "SoSFVec3f", "SoMFVec3f" },
+    { SoMFVec3f_SoSFVec3f, "SoMFVec3f", "SoSFVec3f" },
+    { SoSFVec4f_SoMFVec4f, "SoSFVec4f", "SoMFVec4f" },
+    { SoMFVec4f_SoSFVec4f, "SoMFVec4f", "SoSFVec4f" },
+    { SoSFVec3d_SoMFVec3d, "SoSFVec3d", "SoMFVec3d" },
+    { SoMFVec3d_SoSFVec3d, "SoMFVec3d", "SoSFVec3d" },
+    { field_to_sfstring, "SoMFBitMask", "SoSFString" },
+    { field_to_sfstring, "SoMFBool", "SoSFString" },
+    { field_to_sfstring, "SoMFColor", "SoSFString" },
+    { field_to_sfstring, "SoMFEnum", "SoSFString" },
+    { field_to_sfstring, "SoMFFloat", "SoSFString" },
+    { field_to_sfstring, "SoMFInt32", "SoSFString" },
+    { field_to_sfstring, "SoMFMatrix", "SoSFString" },
+    { field_to_sfstring, "SoMFName", "SoSFString" },
+    { field_to_sfstring, "SoMFNode", "SoSFString" },
+    { field_to_sfstring, "SoMFPath", "SoSFString" },
+    { field_to_sfstring, "SoMFPlane", "SoSFString" },
+    { field_to_sfstring, "SoMFRotation", "SoSFString" },
+    { field_to_sfstring, "SoMFShort", "SoSFString" },
+    { field_to_sfstring, "SoMFUInt32", "SoSFString" },
+    { field_to_sfstring, "SoMFUShort", "SoSFString" },
+    { field_to_sfstring, "SoMFVec2f", "SoSFString" },
+    { field_to_sfstring, "SoMFVec3f", "SoSFString" },
+    { field_to_sfstring, "SoMFVec4f", "SoSFString" },
+    { field_to_sfstring, "SoSFBitMask", "SoSFString" },
+    { field_to_sfstring, "SoSFBool", "SoSFString" },
+    { field_to_sfstring, "SoSFColor", "SoSFString" },
+    { field_to_sfstring, "SoSFEnum", "SoSFString" },
+    { field_to_sfstring, "SoSFFloat", "SoSFString" },
+    { field_to_sfstring, "SoSFInt32", "SoSFString" },
+    { field_to_sfstring, "SoSFMatrix", "SoSFString" },
+    { field_to_sfstring, "SoSFName", "SoSFString" },
+    { field_to_sfstring, "SoSFNode", "SoSFString" },
+    { field_to_sfstring, "SoSFPath", "SoSFString" },
+    { field_to_sfstring, "SoSFPlane", "SoSFString" },
+    { field_to_sfstring, "SoSFRotation", "SoSFString" },
+    { field_to_sfstring, "SoSFShort", "SoSFString" },
+    { field_to_sfstring, "SoSFUInt32", "SoSFString" },
+    { field_to_sfstring, "SoSFUShort", "SoSFString" },
+    { field_to_sfstring, "SoSFVec2s", "SoSFString" },
+    { field_to_sfstring, "SoSFVec2f", "SoSFString" },
+    { field_to_sfstring, "SoSFVec3s", "SoSFString" },
+    { field_to_sfstring, "SoSFVec3f", "SoSFString" },
+    { field_to_sfstring, "SoSFVec3d", "SoSFString" },
+    { field_to_sfstring, "SoSFVec4f", "SoSFString" },
+    { sfield_to_mfstring, "SoSFBitMask", "SoMFString" },
+    { sfield_to_mfstring, "SoSFBool", "SoMFString" },
+    { sfield_to_mfstring, "SoSFColor", "SoMFString" },
+    { sfield_to_mfstring, "SoSFEnum", "SoMFString" },
+    { sfield_to_mfstring, "SoSFFloat", "SoMFString" },
+    { sfield_to_mfstring, "SoSFInt32", "SoMFString" },
+    { sfield_to_mfstring, "SoSFMatrix", "SoMFString" },
+    { sfield_to_mfstring, "SoSFName", "SoMFString" },
+    { sfield_to_mfstring, "SoSFNode", "SoMFString" },
+    { sfield_to_mfstring, "SoSFPath", "SoMFString" },
+    { sfield_to_mfstring, "SoSFPlane", "SoMFString" },
+    { sfield_to_mfstring, "SoSFRotation", "SoMFString" },
+    { sfield_to_mfstring, "SoSFShort", "SoMFString" },
+    { sfield_to_mfstring, "SoSFUInt32", "SoMFString" },
+    { sfield_to_mfstring, "SoSFUShort", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec2s", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec2f", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec3s", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec3f", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec3d", "SoMFString" },
+    { sfield_to_mfstring, "SoSFVec4f", "SoMFString" },
+    { mfield_to_mfstring, "SoMFBitMask", "SoMFString" },
+    { mfield_to_mfstring, "SoMFBool", "SoMFString" },
+    { mfield_to_mfstring, "SoMFColor", "SoMFString" },
+    { mfield_to_mfstring, "SoMFEnum", "SoMFString" },
+    { mfield_to_mfstring, "SoMFFloat", "SoMFString" },
+    { mfield_to_mfstring, "SoMFInt32", "SoMFString" },
+    { mfield_to_mfstring, "SoMFMatrix", "SoMFString" },
+    { mfield_to_mfstring, "SoMFName", "SoMFString" },
+    { mfield_to_mfstring, "SoMFNode", "SoMFString" },
+    { mfield_to_mfstring, "SoMFPath", "SoMFString" },
+    { mfield_to_mfstring, "SoMFPlane", "SoMFString" },
+    { mfield_to_mfstring, "SoMFRotation", "SoMFString" },
+    { mfield_to_mfstring, "SoMFShort", "SoMFString" },
+    { mfield_to_mfstring, "SoMFUInt32", "SoMFString" },
+    { mfield_to_mfstring, "SoMFUShort", "SoMFString" },
+    { mfield_to_mfstring, "SoMFVec2f", "SoMFString" },
+    { mfield_to_mfstring, "SoMFVec3f", "SoMFString" },
+    { mfield_to_mfstring, "SoMFVec3d", "SoMFString" },
+    { mfield_to_mfstring, "SoMFVec4f", "SoMFString" },
+    { sfstring_to_field, "SoSFString", "SoSFBitMask" },
+    { sfstring_to_field, "SoSFString", "SoSFBool" },
+    { sfstring_to_field, "SoSFString", "SoSFColor" },
+    { sfstring_to_field, "SoSFString", "SoSFEnum" },
+    { sfstring_to_field, "SoSFString", "SoSFFloat" },
+    { sfstring_to_field, "SoSFString", "SoSFInt32" },
+    { sfstring_to_field, "SoSFString", "SoSFMatrix" },
+    { sfstring_to_field, "SoSFString", "SoSFName" },
+    { sfstring_to_field, "SoSFString", "SoSFNode" },
+    { sfstring_to_field, "SoSFString", "SoSFPath" },
+    { sfstring_to_field, "SoSFString", "SoSFPlane" },
+    { sfstring_to_field, "SoSFString", "SoSFRotation" },
+    { sfstring_to_field, "SoSFString", "SoSFShort" },
+    { sfstring_to_field, "SoSFString", "SoSFTime" },
+    { sfstring_to_field, "SoSFString", "SoSFUInt32" },
+    { sfstring_to_field, "SoSFString", "SoSFUShort" },
+    { sfstring_to_field, "SoSFString", "SoSFVec2s" },
+    { sfstring_to_field, "SoSFString", "SoSFVec2f" },
+    { sfstring_to_field, "SoSFString", "SoSFVec3s" },
+    { sfstring_to_field, "SoSFString", "SoSFVec3f" },
+    { sfstring_to_field, "SoSFString", "SoSFVec3d" },
+    { sfstring_to_field, "SoSFString", "SoSFVec4f" },
+    { sfstring_to_field, "SoSFString", "SoMFBitMask" },
+    { sfstring_to_field, "SoSFString", "SoMFBool" },
+    { sfstring_to_field, "SoSFString", "SoMFColor" },
+    { sfstring_to_field, "SoSFString", "SoMFEnum" },
+    { sfstring_to_field, "SoSFString", "SoMFFloat" },
+    { sfstring_to_field, "SoSFString", "SoMFInt32" },
+    { sfstring_to_field, "SoSFString", "SoMFMatrix" },
+    { sfstring_to_field, "SoSFString", "SoMFName" },
+    { sfstring_to_field, "SoSFString", "SoMFNode" },
+    { sfstring_to_field, "SoSFString", "SoMFPath" },
+    { sfstring_to_field, "SoSFString", "SoMFPlane" },
+    { sfstring_to_field, "SoSFString", "SoMFRotation" },
+    { sfstring_to_field, "SoSFString", "SoMFShort" },
+    { sfstring_to_field, "SoSFString", "SoMFTime" },
+    { sfstring_to_field, "SoSFString", "SoMFUInt32" },
+    { sfstring_to_field, "SoSFString", "SoMFUShort" },
+    { sfstring_to_field, "SoSFString", "SoMFVec2f" },
+    { sfstring_to_field, "SoSFString", "SoMFVec3f" },
+    { sfstring_to_field, "SoSFString", "SoMFVec3d" },
+    { sfstring_to_field, "SoSFString", "SoMFVec4f" },
+    { mfstring_to_sfield, "SoMFString", "SoSFBitMask" },
+    { mfstring_to_sfield, "SoMFString", "SoSFBool" },
+    { mfstring_to_sfield, "SoMFString", "SoSFColor" },
+    { mfstring_to_sfield, "SoMFString", "SoSFEnum" },
+    { mfstring_to_sfield, "SoMFString", "SoSFFloat" },
+    { mfstring_to_sfield, "SoMFString", "SoSFInt32" },
+    { mfstring_to_sfield, "SoMFString", "SoSFMatrix" },
+    { mfstring_to_sfield, "SoMFString", "SoSFName" },
+    { mfstring_to_sfield, "SoMFString", "SoSFNode" },
+    { mfstring_to_sfield, "SoMFString", "SoSFPath" },
+    { mfstring_to_sfield, "SoMFString", "SoSFPlane" },
+    { mfstring_to_sfield, "SoMFString", "SoSFRotation" },
+    { mfstring_to_sfield, "SoMFString", "SoSFShort" },
+    { mfstring_to_sfield, "SoMFString", "SoSFTime" },
+    { mfstring_to_sfield, "SoMFString", "SoSFUInt32" },
+    { mfstring_to_sfield, "SoMFString", "SoSFUShort" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec2s" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec2f" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec3s" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec3f" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec4f" },
+    { mfstring_to_sfield, "SoMFString", "SoSFVec3d" },
+    { mfstring_to_mfield, "SoMFString", "SoMFBitMask" },
+    { mfstring_to_mfield, "SoMFString", "SoMFBool" },
+    { mfstring_to_mfield, "SoMFString", "SoMFColor" },
+    { mfstring_to_mfield, "SoMFString", "SoMFEnum" },
+    { mfstring_to_mfield, "SoMFString", "SoMFFloat" },
+    { mfstring_to_mfield, "SoMFString", "SoMFInt32" },
+    { mfstring_to_mfield, "SoMFString", "SoMFMatrix" },
+    { mfstring_to_mfield, "SoMFString", "SoMFName" },
+    { mfstring_to_mfield, "SoMFString", "SoMFNode" },
+    { mfstring_to_mfield, "SoMFString", "SoMFPath" },
+    { mfstring_to_mfield, "SoMFString", "SoMFPlane" },
+    { mfstring_to_mfield, "SoMFString", "SoMFRotation" },
+    { mfstring_to_mfield, "SoMFString", "SoMFShort" },
+    { mfstring_to_mfield, "SoMFString", "SoMFTime" },
+    { mfstring_to_mfield, "SoMFString", "SoMFUInt32" },
+    { mfstring_to_mfield, "SoMFString", "SoMFUShort" },
+    { mfstring_to_mfield, "SoMFString", "SoMFVec2f" },
+    { mfstring_to_mfield, "SoMFString", "SoMFVec3f" },
+    { mfstring_to_mfield, "SoMFString", "SoMFVec3d" },
+    { mfstring_to_mfield, "SoMFString", "SoMFVec4f" },
+    { SoSFBool_SoSFFloat, "SoSFBool", "SoSFFloat" },
+    { SoSFBool_SoMFFloat, "SoSFBool", "SoMFFloat" },
+    { SoSFFloat_SoSFBool, "SoSFFloat", "SoSFBool" },
+    { SoSFFloat_SoMFBool, "SoSFFloat", "SoMFBool" },
+    { SoSFBool_SoSFInt32, "SoSFBool", "SoSFInt32" },
+    { SoSFBool_SoMFInt32, "SoSFBool", "SoMFInt32" },
+    { SoSFInt32_SoSFBool, "SoSFInt32", "SoSFBool" },
+    { SoSFInt32_SoMFBool, "SoSFInt32", "SoMFBool" },
+    { SoSFBool_SoSFShort, "SoSFBool", "SoSFShort" },
+    { SoSFBool_SoMFShort, "SoSFBool", "SoMFShort" },
+    { SoSFShort_SoSFBool, "SoSFShort", "SoSFBool" },
+    { SoSFShort_SoMFBool, "SoSFShort", "SoMFBool" },
+    { SoSFBool_SoSFUInt32, "SoSFBool", "SoSFUInt32" },
+    { SoSFBool_SoMFUInt32, "SoSFBool", "SoMFUInt32" },
+    { SoSFUInt32_SoSFBool, "SoSFUInt32", "SoSFBool" },
+    { SoSFUInt32_SoMFBool, "SoSFUInt32", "SoMFBool" },
+    { SoSFBool_SoSFUShort, "SoSFBool", "SoSFUShort" },
+    { SoSFBool_SoMFUShort, "SoSFBool", "SoMFUShort" },
+    { SoSFUShort_SoSFBool, "SoSFUShort", "SoSFBool" },
+    { SoSFUShort_SoMFBool, "SoSFUShort", "SoMFBool" },
+    { SoSFColor_SoSFVec3f, "SoSFColor", "SoSFVec3f" },
+    { SoSFColor_SoMFVec3f, "SoSFColor", "SoMFVec3f" },
+    { SoSFVec3f_SoSFColor, "SoSFVec3f", "SoSFColor" },
+    { SoSFVec3f_SoMFColor, "SoSFVec3f", "SoMFColor" },
+    { SoSFFloat_SoSFInt32, "SoSFFloat", "SoSFInt32" },
+    { SoSFFloat_SoMFInt32, "SoSFFloat", "SoMFInt32" },
+    { SoSFInt32_SoSFFloat, "SoSFInt32", "SoSFFloat" },
+    { SoSFInt32_SoMFFloat, "SoSFInt32", "SoMFFloat" },
+    { SoSFFloat_SoSFShort, "SoSFFloat", "SoSFShort" },
+    { SoSFFloat_SoMFShort, "SoSFFloat", "SoMFShort" },
+    { SoSFShort_SoSFFloat, "SoSFShort", "SoSFFloat" },
+    { SoSFShort_SoMFFloat, "SoSFShort", "SoMFFloat" },
+    { SoSFFloat_SoSFUInt32, "SoSFFloat", "SoSFUInt32" },
+    { SoSFFloat_SoMFUInt32, "SoSFFloat", "SoMFUInt32" },
+    { SoSFUInt32_SoSFFloat, "SoSFUInt32", "SoSFFloat" },
+    { SoSFUInt32_SoMFFloat, "SoSFUInt32", "SoMFFloat" },
+    { SoSFFloat_SoSFUShort, "SoSFFloat", "SoSFUShort" },
+    { SoSFFloat_SoMFUShort, "SoSFFloat", "SoMFUShort" },
+    { SoSFUShort_SoSFFloat, "SoSFUShort", "SoSFFloat" },
+    { SoSFUShort_SoMFFloat, "SoSFUShort", "SoMFFloat" },
+    { SoSFInt32_SoSFShort, "SoSFInt32", "SoSFShort" },
+    { SoSFInt32_SoMFShort, "SoSFInt32", "SoMFShort" },
+    { SoSFShort_SoSFInt32, "SoSFShort", "SoSFInt32" },
+    { SoSFShort_SoMFInt32, "SoSFShort", "SoMFInt32" },
+    { SoSFInt32_SoSFUInt32, "SoSFInt32", "SoSFUInt32" },
+    { SoSFInt32_SoMFUInt32, "SoSFInt32", "SoMFUInt32" },
+    { SoSFUInt32_SoSFInt32, "SoSFUInt32", "SoSFInt32" },
+    { SoSFUInt32_SoMFInt32, "SoSFUInt32", "SoMFInt32" },
+    { SoSFInt32_SoSFUShort, "SoSFInt32", "SoSFUShort" },
+    { SoSFInt32_SoMFUShort, "SoSFInt32", "SoMFUShort" },
+    { SoSFUShort_SoSFInt32, "SoSFUShort", "SoSFInt32" },
+    { SoSFUShort_SoMFInt32, "SoSFUShort", "SoMFInt32" },
+    { SoSFShort_SoSFUInt32, "SoSFShort", "SoSFUInt32" },
+    { SoSFShort_SoMFUInt32, "SoSFShort", "SoMFUInt32" },
+    { SoSFUInt32_SoSFShort, "SoSFUInt32", "SoSFShort" },
+    { SoSFUInt32_SoMFShort, "SoSFUInt32", "SoMFShort" },
+    { SoSFShort_SoSFUShort, "SoSFShort", "SoSFUShort" },
+    { SoSFShort_SoMFUShort, "SoSFShort", "SoMFUShort" },
+    { SoSFUShort_SoSFShort, "SoSFUShort", "SoSFShort" },
+    { SoSFUShort_SoMFShort, "SoSFUShort", "SoMFShort" },
+    { SoSFUInt32_SoSFUShort, "SoSFUInt32", "SoSFUShort" },
+    { SoSFUInt32_SoMFUShort, "SoSFUInt32", "SoMFUShort" },
+    { SoSFUShort_SoSFUInt32, "SoSFUShort", "SoSFUInt32" },
+    { SoSFUShort_SoMFUInt32, "SoSFUShort", "SoMFUInt32" },
+    { SoSFFloat_SoSFTime, "SoSFFloat", "SoSFTime" },
+    { SoSFFloat_SoMFTime, "SoSFFloat", "SoMFTime" },
+    { SoSFTime_SoSFFloat, "SoSFTime", "SoSFFloat" },
+    { SoSFTime_SoMFFloat, "SoSFTime", "SoMFFloat" },
+    { SoMFBool_SoSFFloat, "SoMFBool", "SoSFFloat" },
+    { SoMFFloat_SoSFBool, "SoMFFloat", "SoSFBool" },
+    { SoMFBool_SoSFInt32, "SoMFBool", "SoSFInt32" },
+    { SoMFInt32_SoSFBool, "SoMFInt32", "SoSFBool" },
+    { SoMFBool_SoSFShort, "SoMFBool", "SoSFShort" },
+    { SoMFShort_SoSFBool, "SoMFShort", "SoSFBool" },
+    { SoMFBool_SoSFUInt32, "SoMFBool", "SoSFUInt32" },
+    { SoMFUInt32_SoSFBool, "SoMFUInt32", "SoSFBool" },
+    { SoMFBool_SoSFUShort, "SoMFBool", "SoSFUShort" },
+    { SoMFUShort_SoSFBool, "SoMFUShort", "SoSFBool" },
+    { SoMFColor_SoSFVec3f, "SoMFColor", "SoSFVec3f" },
+    { SoMFVec3f_SoSFColor, "SoMFVec3f", "SoSFColor" },
+    { SoMFFloat_SoSFInt32, "SoMFFloat", "SoSFInt32" },
+    { SoMFInt32_SoSFFloat, "SoMFInt32", "SoSFFloat" },
+    { SoMFFloat_SoSFShort, "SoMFFloat", "SoSFShort" },
+    { SoMFShort_SoSFFloat, "SoMFShort", "SoSFFloat" },
+    { SoMFFloat_SoSFUInt32, "SoMFFloat", "SoSFUInt32" },
+    { SoMFUInt32_SoSFFloat, "SoMFUInt32", "SoSFFloat" },
+    { SoMFFloat_SoSFUShort, "SoMFFloat", "SoSFUShort" },
+    { SoMFUShort_SoSFFloat, "SoMFUShort", "SoSFFloat" },
+    { SoMFInt32_SoSFShort, "SoMFInt32", "SoSFShort" },
+    { SoMFShort_SoSFInt32, "SoMFShort", "SoSFInt32" },
+    { SoMFInt32_SoSFUInt32, "SoMFInt32", "SoSFUInt32" },
+    { SoMFUInt32_SoSFInt32, "SoMFUInt32", "SoSFInt32" },
+    { SoMFInt32_SoSFUShort, "SoMFInt32", "SoSFUShort" },
+    { SoMFUShort_SoSFInt32, "SoMFUShort", "SoSFInt32" },
+    { SoMFShort_SoSFUInt32, "SoMFShort", "SoSFUInt32" },
+    { SoMFUInt32_SoSFShort, "SoMFUInt32", "SoSFShort" },
+    { SoMFShort_SoSFUShort, "SoMFShort", "SoSFUShort" },
+    { SoMFUShort_SoSFShort, "SoMFUShort", "SoSFShort" },
+    { SoMFUInt32_SoSFUShort, "SoMFUInt32", "SoSFUShort" },
+    { SoMFUShort_SoSFUInt32, "SoMFUShort", "SoSFUInt32" },
+    { SoMFFloat_SoSFTime, "SoMFFloat", "SoSFTime" },
+    { SoMFTime_SoSFFloat, "SoMFTime", "SoSFFloat" },
+    { SoMFBool_SoMFFloat, "SoMFBool", "SoMFFloat" },
+    { SoMFFloat_SoMFBool, "SoMFFloat", "SoMFBool" },
+    { SoMFBool_SoMFInt32, "SoMFBool", "SoMFInt32" },
+    { SoMFInt32_SoMFBool, "SoMFInt32", "SoMFBool" },
+    { SoMFBool_SoMFShort, "SoMFBool", "SoMFShort" },
+    { SoMFShort_SoMFBool, "SoMFShort", "SoMFBool" },
+    { SoMFBool_SoMFUInt32, "SoMFBool", "SoMFUInt32" },
+    { SoMFUInt32_SoMFBool, "SoMFUInt32", "SoMFBool" },
+    { SoMFBool_SoMFUShort, "SoMFBool", "SoMFUShort" },
+    { SoMFUShort_SoMFBool, "SoMFUShort", "SoMFBool" },
+    { SoMFColor_SoMFVec3f, "SoMFColor", "SoMFVec3f" },
+    { SoMFVec3f_SoMFColor, "SoMFVec3f", "SoMFColor" },
+    { SoMFFloat_SoMFInt32, "SoMFFloat", "SoMFInt32" },
+    { SoMFInt32_SoMFFloat, "SoMFInt32", "SoMFFloat" },
+    { SoMFFloat_SoMFShort, "SoMFFloat", "SoMFShort" },
+    { SoMFShort_SoMFFloat, "SoMFShort", "SoMFFloat" },
+    { SoMFFloat_SoMFUInt32, "SoMFFloat", "SoMFUInt32" },
+    { SoMFUInt32_SoMFFloat, "SoMFUInt32", "SoMFFloat" },
+    { SoMFFloat_SoMFUShort, "SoMFFloat", "SoMFUShort" },
+    { SoMFUShort_SoMFFloat, "SoMFUShort", "SoMFFloat" },
+    { SoMFInt32_SoMFShort, "SoMFInt32", "SoMFShort" },
+    { SoMFShort_SoMFInt32, "SoMFShort", "SoMFInt32" },
+    { SoMFInt32_SoMFUInt32, "SoMFInt32", "SoMFUInt32" },
+    { SoMFUInt32_SoMFInt32, "SoMFUInt32", "SoMFInt32" },
+    { SoMFInt32_SoMFUShort, "SoMFInt32", "SoMFUShort" },
+    { SoMFUShort_SoMFInt32, "SoMFUShort", "SoMFInt32" },
+    { SoMFShort_SoMFUInt32, "SoMFShort", "SoMFUInt32" },
+    { SoMFUInt32_SoMFShort, "SoMFUInt32", "SoMFShort" },
+    { SoMFShort_SoMFUShort, "SoMFShort", "SoMFUShort" },
+    { SoMFUShort_SoMFShort, "SoMFUShort", "SoMFShort" },
+    { SoMFUInt32_SoMFUShort, "SoMFUInt32", "SoMFUShort" },
+    { SoMFUShort_SoMFUInt32, "SoMFUShort", "SoMFUInt32" },
+    { SoMFFloat_SoMFTime, "SoMFFloat", "SoMFTime" },
+    { SoMFTime_SoMFFloat, "SoMFTime", "SoMFFloat" },
+    { SoSFMatrix_SoSFRotation, "SoSFMatrix", "SoSFRotation" },
+    { SoMFMatrix_SoSFRotation, "SoMFMatrix", "SoSFRotation" },
+    { SoSFMatrix_SoMFRotation, "SoSFMatrix", "SoMFRotation" },
+    { SoMFMatrix_SoMFRotation, "SoMFMatrix", "SoMFRotation" },
+    { SoSFRotation_SoSFMatrix, "SoSFRotation", "SoSFMatrix" },
+    { SoMFRotation_SoSFMatrix, "SoMFRotation", "SoSFMatrix" },
+    { SoSFRotation_SoMFMatrix, "SoSFRotation", "SoMFMatrix" },
+    { SoMFRotation_SoMFMatrix, "SoMFRotation", "SoMFMatrix" },
+    { sftime_to_sfstring, "SoSFTime", "SoSFString" },
+    { sftime_to_mfstring, "SoSFTime", "SoMFString" },
+    { mftime_to_sfstring, "SoMFTime", "SoSFString" },
+    { mftime_to_mfstring, "SoMFTime", "SoMFString" },
+    { SoSFVec2s_to_SoSFVec2f, "SoSFVec2s", "SoSFVec2f" },
+    { SoSFVec2s_to_SoMFVec2f, "SoSFVec2s", "SoMFVec2f" },
+    { SoSFVec2f_to_SoSFVec2s, "SoSFVec2f", "SoSFVec2s" },
+    { SoMFVec2f_to_SoSFVec2s, "SoMFVec2f", "SoSFVec2s" },
+    { SoSFVec3s_to_SoSFVec3f, "SoSFVec3s", "SoSFVec3f" },
+    { SoSFVec3s_to_SoMFVec3f, "SoSFVec3s", "SoMFVec3f" },
+    { SoSFVec3s_to_SoSFVec3d, "SoSFVec3s", "SoSFVec3d" },
+    { SoSFVec3s_to_SoMFVec3d, "SoSFVec3s", "SoMFVec3d" },
+    { SoSFVec3f_to_SoSFVec3s, "SoSFVec3f", "SoSFVec3s" },
+    { SoMFVec3f_to_SoSFVec3s, "SoMFVec3f", "SoSFVec3s" },
+    { SoSFVec3f_to_SoSFVec3d, "SoSFVec3f", "SoSFVec3d" },
+    { SoSFVec3f_to_SoMFVec3d, "SoSFVec3f", "SoMFVec3d" },
+    { SoMFVec3f_to_SoSFVec3d, "SoMFVec3f", "SoSFVec3d" },
+    { SoMFVec3f_to_SoMFVec3d, "SoMFVec3f", "SoMFVec3d" },
+    { SoSFVec3d_to_SoSFVec3s, "SoSFVec3d", "SoSFVec3s" },
+    { SoMFVec3d_to_SoSFVec3s, "SoMFVec3d", "SoSFVec3s" },
+    { SoSFVec3d_to_SoSFVec3f, "SoSFVec3d", "SoSFVec3f" },
+    { SoSFVec3d_to_SoMFVec3f, "SoSFVec3d", "SoMFVec3f" },
+    { SoMFVec3d_to_SoSFVec3f, "SoMFVec3d", "SoSFVec3f" },
+    { SoMFVec3d_to_SoMFVec3f, "SoMFVec3d", "SoMFVec3f" }
+  };
 
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBitMask, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBool, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFColor, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFEnum, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFFloat, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFInt32, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFMatrix, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFName, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFNode, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFPath, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFPlane, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFRotation, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUInt32, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec2f, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec3f, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec4f, SoSFString);
-
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFBitMask, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFBool, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFColor, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFEnum, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFFloat, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFInt32, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFMatrix, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFName, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFNode, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFPath, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFPlane, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFRotation, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUInt32, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec2s, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec2f, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3s, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3f, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3d, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec4f, SoSFString);
-
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBitMask, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBool, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFColor, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFEnum, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFFloat, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFInt32, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFMatrix, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFName, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFNode, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFPath, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFPlane, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFRotation, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUInt32, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec2s, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec2f, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3s, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3f, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3d, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec4f, SoMFString);
-
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBitMask, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBool, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFColor, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFEnum, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFFloat, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFInt32, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFMatrix, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFName, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFNode, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFPath, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFPlane, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFRotation, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUInt32, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec2f, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec3f, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec3d, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec4f, SoMFString);
-
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBitMask);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFColor);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFEnum);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFMatrix);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFName);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFNode);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFPath);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFPlane);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFRotation);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFTime);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec2s);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec2f);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec3d);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec4f);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFBitMask);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFColor);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFEnum);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFMatrix);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFName);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFNode);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFPath);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFPlane);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFRotation);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFTime);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec2f);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec4f);
-
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBitMask);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFColor);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFEnum);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFMatrix);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFName);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFNode);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFPath);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFPlane);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFRotation);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFTime);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec2s);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec2f);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec4f);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3d);
-
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBitMask);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFColor);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFEnum);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFMatrix);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFName);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFNode);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFPath);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFPlane);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFRotation);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFTime);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec2f);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec4f);
-
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFFloat, SoSFBool, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFFloat, SoSFBool, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFBool, SoSFFloat, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFBool, SoSFFloat, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFInt32, SoSFBool, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFInt32, SoSFBool, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFBool, SoSFInt32, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFBool, SoSFInt32, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFShort, SoSFBool, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFShort, SoSFBool, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFBool, SoSFShort, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFBool, SoSFShort, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFUInt32, SoSFBool, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFUInt32, SoSFBool, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFBool, SoSFUInt32, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFBool, SoSFUInt32, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFUShort, SoSFBool, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFUShort, SoSFBool, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFBool, SoSFUShort, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFBool, SoSFUShort, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoSFVec3f, SoSFColor, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoMFVec3f, SoSFColor, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoSFColor, SoSFVec3f, SoSFColor);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoMFColor, SoSFVec3f, SoMFColor);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFInt32, SoSFFloat, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFInt32, SoSFFloat, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFFloat, SoSFInt32, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFFloat, SoSFInt32, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFShort, SoSFFloat, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFShort, SoSFFloat, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFFloat, SoSFShort, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFFloat, SoSFShort, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFUInt32, SoSFFloat, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFUInt32, SoSFFloat, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFFloat, SoSFUInt32, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFFloat, SoSFUInt32, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFUShort, SoSFFloat, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFUShort, SoSFFloat, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFFloat, SoSFUShort, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFFloat, SoSFUShort, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFShort, SoSFInt32, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFShort, SoSFInt32, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFInt32, SoSFShort, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFInt32, SoSFShort, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFUInt32, SoSFInt32, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFUInt32, SoSFInt32, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFInt32, SoSFUInt32, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFInt32, SoSFUInt32, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFUShort, SoSFInt32, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFUShort, SoSFInt32, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFInt32, SoSFUShort, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFInt32, SoSFUShort, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFUInt32, SoSFShort, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFUInt32, SoSFShort, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFShort, SoSFUInt32, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFShort, SoSFUInt32, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFUShort, SoSFShort, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFUShort, SoSFShort, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFShort, SoSFUShort, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFShort, SoSFUShort, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFUShort, SoSFUInt32, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFUShort, SoSFUInt32, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFUInt32, SoSFUShort, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFUInt32, SoSFUShort, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFTime, SoSFFloat, SoSFTime);
-  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFTime, SoSFFloat, SoMFTime);
-  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoSFFloat, SoSFTime, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoMFFloat, SoSFTime, SoMFFloat);
-
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFFloat, SoMFBool, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFBool, SoMFFloat, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFInt32, SoMFBool, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFBool, SoMFInt32, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFShort, SoMFBool, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFBool, SoMFShort, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFUInt32, SoMFBool, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFBool, SoMFUInt32, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFUShort, SoMFBool, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFBool, SoMFUShort, SoSFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoSFVec3f, SoMFColor, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoSFColor, SoMFVec3f, SoSFColor);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFInt32, SoMFFloat, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFFloat, SoMFInt32, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFShort, SoMFFloat, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFFloat, SoMFShort, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFUInt32, SoMFFloat, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFFloat, SoMFUInt32, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFUShort, SoMFFloat, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFFloat, SoMFUShort, SoSFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFShort, SoMFInt32, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFInt32, SoMFShort, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFUInt32, SoMFInt32, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFInt32, SoMFUInt32, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFUShort, SoMFInt32, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFInt32, SoMFUShort, SoSFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFUInt32, SoMFShort, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFShort, SoMFUInt32, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFUShort, SoMFShort, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFShort, SoMFUShort, SoSFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFUShort, SoMFUInt32, SoSFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFUInt32, SoMFUShort, SoSFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFTime, SoMFFloat, SoSFTime);
-  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoSFFloat, SoMFTime, SoSFFloat);
-
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFFloat, SoMFBool, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFBool, SoMFFloat, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFInt32, SoMFBool, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFBool, SoMFInt32, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFShort, SoMFBool, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFBool, SoMFShort, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFUInt32, SoMFBool, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFBool, SoMFUInt32, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFUShort, SoMFBool, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFBool, SoMFUShort, SoMFBool);
-  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoMFVec3f, SoMFColor, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoMFColor, SoMFVec3f, SoMFColor);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFInt32, SoMFFloat, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFFloat, SoMFInt32, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFShort, SoMFFloat, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFFloat, SoMFShort, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFUInt32, SoMFFloat, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFFloat, SoMFUInt32, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFUShort, SoMFFloat, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFFloat, SoMFUShort, SoMFFloat);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFShort, SoMFInt32, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFInt32, SoMFShort, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFUInt32, SoMFInt32, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFInt32, SoMFUInt32, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFUShort, SoMFInt32, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFInt32, SoMFUShort, SoMFInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFUInt32, SoMFShort, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFShort, SoMFUInt32, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFUShort, SoMFShort, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFShort, SoMFUShort, SoMFShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFUShort, SoMFUInt32, SoMFUShort);
-  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFUInt32, SoMFUShort, SoMFUInt32);
-  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFTime, SoMFFloat, SoMFTime);
-  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoMFFloat, SoMFTime, SoMFFloat);
-
-  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoSFRotation, SoSFMatrix, SoSFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoSFRotation, SoMFMatrix, SoSFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoMFRotation, SoSFMatrix, SoMFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoMFRotation, SoMFMatrix, SoMFRotation);
-  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoSFMatrix, SoSFRotation, SoSFMatrix);
-  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoSFMatrix, SoMFRotation, SoSFMatrix);
-  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoMFMatrix, SoSFRotation, SoMFMatrix);
-  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoMFMatrix, SoMFRotation, SoMFMatrix);
-
-  SOCONVERTALL_ADDCONVERTER(sftime_to_sfstring, SoSFTime, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(sftime_to_mfstring, SoSFTime, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mftime_to_sfstring, SoMFTime, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(mftime_to_mfstring, SoMFTime, SoMFString);
-
-  SOCONVERTALL_ADDCONVERTER(SoSFVec2s_to_SoSFVec2f, SoSFVec2s, SoSFVec2f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec2s_to_SoMFVec2f, SoSFVec2s, SoMFVec2f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec2f_to_SoSFVec2s, SoSFVec2f, SoSFVec2s);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec2f_to_SoSFVec2s, SoMFVec2f, SoSFVec2s);
-
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3s_to_SoSFVec3f, SoSFVec3s, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3s_to_SoMFVec3f, SoSFVec3s, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3s_to_SoSFVec3d, SoSFVec3s, SoSFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3s_to_SoMFVec3d, SoSFVec3s, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_to_SoSFVec3s, SoSFVec3f, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_to_SoSFVec3s, SoMFVec3f, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_to_SoSFVec3d, SoSFVec3f, SoSFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_to_SoMFVec3d, SoSFVec3f, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_to_SoSFVec3d, SoMFVec3f, SoSFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_to_SoMFVec3d, SoMFVec3f, SoMFVec3d);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_to_SoSFVec3s, SoSFVec3d, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_to_SoSFVec3s, SoMFVec3d, SoSFVec3s);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_to_SoSFVec3f, SoSFVec3d, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_to_SoMFVec3f, SoSFVec3d, SoMFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_to_SoSFVec3f, SoMFVec3d, SoSFVec3f);
-  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_to_SoMFVec3f, SoMFVec3d, SoMFVec3f);
-
-#undef SOCONVERTALL_ADDCONVERTER
+  for (unsigned int i=0; i < sizeof(allconverters) / sizeof(allconverters[0]); i++) {
+    register_convertfunc(allconverters[i].func,
+                         SoType::fromName(allconverters[i].from),
+                         SoType::fromName(allconverters[i].to));
+    // Performance note: it may look slow to do all that
+    // SoType::fromName()'ing, but the full loop only takes about 2
+    // milliseconds on an 850MHz x86 CPU, so there would be little use
+    // in trying to optimize this.
+  }
 
   // Now add conversion to and from SoSFTrigger for all other
   // non-abstract field types (all conversions done by the same
