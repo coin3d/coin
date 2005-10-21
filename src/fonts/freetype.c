@@ -545,6 +545,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     }
 
     foundfile = strdup((const char*)filename);
+    assert(flwft_tessellator.malloclist);
     cc_list_append(flwft_tessellator.malloclist, (void*) foundfile); /* to avoid mem leaks */
 
     cc_fcglue_FcPatternDestroy(font_pattern);
