@@ -5061,3 +5061,17 @@ IndexedLineSet {
     
     20051020 pederb
 =====================================================================
+
+208 Too high tessellation by default for 3D text?
+
+    The 06.3.Complex3DText example updates at a very slow framerate,
+    so it seems like our default settings for 3D text complexity is
+    too high.
+
+    Investigate, compare with SGI Inventor.
+
+    Not particularly high priority item.
+
+    20051021 mortene.
+
+=====================================================================
