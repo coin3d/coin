@@ -443,7 +443,7 @@ cc_flwft_initialize(void)
     cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
   }
 
-  /* Setup temporary glyph-struct used during for tessellation */
+  /* Setup temporary glyph-struct used during tessellation */
   flwft_tessellator.vertexlist = NULL;
   flwft_tessellator.faceindexlist = NULL;
   flwft_tessellator.edgeindexlist = NULL;
@@ -544,9 +544,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
       cc_fcglue_FcPatternPrint(matched_pattern);
     }
 
-    foundfile = strdup((const char*)filename);
-    assert(flwft_tessellator.malloclist);
-    cc_list_append(flwft_tessellator.malloclist, (void*) foundfile); /* to avoid mem leaks */
+    foundfile = cc_namemap_get_address(filename);
 
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);
