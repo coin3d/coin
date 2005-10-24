@@ -1401,8 +1401,12 @@ flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4
 }
 
 static void
-flwft_errorCallback(GLenum error_code)
+flwft_errorCallback(GLenum errcode)
 {
+  const GLubyte * str = GLUWrapper()->gluGetString(errcode);
+  cc_debugerror_post("flwft_errorCallback",
+                     "Got following error from GLU when tessellating FreeType glyph: '%s'",
+                     str);
 }
 
 static void
