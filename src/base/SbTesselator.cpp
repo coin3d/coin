@@ -131,7 +131,7 @@ SbTesselator::heap_evaluate(void *v)
   SbTVertex *vertex = (SbTVertex*)v;
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if (vertex->thisp->area(vertex) > PRIVATE(vertex->thisp)->epsilon &&
+    if ((vertex->thisp->area(vertex) > PRIVATE(vertex->thisp)->epsilon) &&
         vertex->thisp->isTriangle(vertex) &&
         vertex->thisp->clippable(vertex)) {
 #if 0 // testing code to avoid empty triangles
@@ -460,8 +460,28 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
 
-#if 1
-  if (this->keepVertices && tst == FALSE) {
+  // the pointInTriangle test might fail for vertices that are on one
+  // of the triangle edges. Do a point_on_edge test for all three
+  // edges to handle this case. Example model that fails without this
+  // test:
+  // 
+  //  ShapeHints { faceType UNKNOWN_FACE_TYPE vertexOrdering CLOCKWISE }
+  //  IndexedFaceSet {
+  //    vertexProperty
+  //    VertexProperty {
+  //      vertex [ -0.3 0.05 0.0,
+  //                0.3   0.05  0.0,
+  //                0.3   0.1   0.0,
+  //                0.5   0.0   0.0,
+  //                0.3  -0.1   0.0,
+  //                0.3  -0.05  0.0,
+  //               -0.3  -0.05  0.0,
+  //               -0.3  -0.1   0.0,
+  //               -0.5   0.0   0.0,
+  //               -0.3   0.1   0.0 ]
+  //    }
+  //    coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1]
+  if (tst == FALSE) {
     if (point_on_edge(x,y,t->v.getValue(),
                       t->next->v.getValue(),X,Y, PRIVATE(this)->epsilon))
       return TRUE;
@@ -472,8 +492,6 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
                       t->v.getValue(),X,Y, PRIVATE(this)->epsilon))
       return TRUE;
   }
-#endif
-
   return tst;
 }
 
@@ -534,7 +552,6 @@ SbTesselator::emitTriangle(SbTVertex *t)
 
   this->callback(t->data, t->next->data, t->next->next->data,
                  this->callbackData);
-
   this->cutTriangle(t);
 }
 
