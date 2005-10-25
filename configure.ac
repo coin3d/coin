@@ -1140,27 +1140,31 @@ AC_TRY_LINK([
 
 coin_can_do_runtime_linking=false
 
-# Mac OS X versions < 10.4 did not support dlopen() so we use our 
-# own implementation based on built-in dyld functions there.
+# On Mac OS X < 10.4, dlopen() is missing and has to be emulated; from
+# 10.4 on, we can use dlopen() directly. Note that the latter does not 
+# obsolete the dyld check, since we also use other dyld functionility.
+SIM_AC_CHECK_DYLD([
+  AC_DEFINE_UNQUOTED([HAVE_DYLD_RUNTIME_BINDING],1,
+                     [define if the Mac OS X dyld can be used for runtime binding])
+    coin_can_do_runtime_linking=true
+])
+
 case ${MACOSX_DEPLOYMENT_TARGET} in
   10.[[0123]])
-    SIM_AC_CHECK_DYLD([
-      AC_DEFINE_UNQUOTED([HAVE_DYLD_RUNTIME_BINDING],1,
-                         [define if the Mac OS X dyld can be used for runtime binding])
+    # Do *not* pick up dlopen() support when building on 10.4 for earlier
+    # Mac OS X versions (< 10.4 did not support dlopen(), so we have to use 
+    # our own implementation based on built-in dyld functions there).
+    ;;
+  *)
+    SIM_AC_CHECK_DL([
+      AC_DEFINE_UNQUOTED([HAVE_DL_LIB],1, [define if you have the dl library])
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
       coin_can_do_runtime_linking=true
     ])
     ;;
 esac
-
-if ! $coin_can_do_runtime_linking; then
-  SIM_AC_CHECK_DL([
-    AC_DEFINE_UNQUOTED([HAVE_DL_LIB],1, [define if you have the dl library])
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
-    coin_can_do_runtime_linking=true
-  ])
-fi
 
 if ! $coin_can_do_runtime_linking; then
   SIM_AC_CHECK_LOADLIBRARY([

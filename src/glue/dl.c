@@ -117,11 +117,11 @@
 #ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
 #include <mach-o/ldsyms.h>
-#else
+#endif /* HAVE_MACH_O_DYLD_H */
+
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h> /* Programming interface to libdl. */
 #endif /* HAVE_DLFCN_H */
-#endif /* HAVE_MACH_O_DYLD_H */
 
 #ifdef HAVE_DLD_LIB
 #include <dl.h> /* Programming interface to libdld on HP-UX 10 & 11. */
@@ -397,6 +397,22 @@ cc_dl_open(const char * filename)
 #ifdef HAVE_DL_LIB
 
   h->nativehnd = dlopen(filename, RTLD_LAZY);
+
+#ifdef HAVE_DYLD_RUNTIME_BINDING
+  /* Mac OS X: Search for library shipped with Inventor framework. */
+  if (h->nativehnd == NULL) {
+    const char * fullpath;
+    const struct stat * filestat = cc_find_file(filename, &fullpath);
+
+    if (filestat) {
+      if (cc_dl_debugging()) {
+        cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+      }
+      h->nativehnd = dlopen(fullpath, RTLD_LAZY);      
+    }
+  }
+#endif /* HAVE_DYLD_RUNTIME_BINDING */
+
   /*
     If dlopen() fails for any reason than not being able to find the
     dynamic link-library given by "filename" on disk, we should really
