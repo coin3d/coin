@@ -44,6 +44,10 @@
 #include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/glue/gl_agl.h>
 
+#ifdef HAVE_CGL
+#include <OpenGL/CGLCurrent.h>
+#endif
+
 /* ********************************************************************** */
 
 #ifndef HAVE_AGL
@@ -182,10 +186,9 @@ aglglue_get_pbuffer_enable(void)
 
 
 struct aglglue_contextdata {
+  CGLContextObj storedcontext;
   AGLDrawable drawable;
   AGLContext aglcontext;
-  AGLContext storedcontext;
-  AGLDrawable storeddrawable;
   AGLPixelFormat pixformat;
   Rect bounds;
   CGrafPtr savedport;
@@ -205,7 +208,6 @@ aglglue_contextdata_init(unsigned int width, unsigned int height)
   ctx->drawable = NULL;
   ctx->aglcontext = NULL;
   ctx->storedcontext = NULL;
-  ctx->storeddrawable = NULL;
   ctx->pixformat = NULL;
   ctx->savedport = NULL;
   ctx->savedgdh = NULL;
@@ -454,16 +456,13 @@ aglglue_context_make_current(void * ctx)
     PixMapHandle pixmap;
 
     if (context->aglcontext) {
-      context->storedcontext = aglGetCurrentContext();
-      context->storeddrawable = aglGetDrawable(context->storedcontext);
+      context->storedcontext = CGLGetCurrentContext();
     }
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("aglglue_make_context_current",
-                             "store current status first => context==%p, "
-                             "drawable==%p",
-                             context->storedcontext,
-                             context->storeddrawable);
+                             "store current status first => context==%p",
+                             context->storedcontext);
     }
 
     pixmap = GetGWorldPixMap((GWorldPtr)context->drawable);
@@ -483,7 +482,7 @@ aglglue_context_make_current(void * ctx)
 
   } else { /* pBuffer support available */
 
-    context->storedcontext = aglGetCurrentContext();
+    context->storedcontext = CGLGetCurrentContext();
     if (!aglSetCurrentContext (context->aglcontext)) {
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
@@ -531,19 +530,17 @@ aglglue_context_reinstate_previous(void * ctx)
 
       if (coin_glglue_debug()) {
         cc_debugerror_postinfo("aglglue_context_reinstate_previous",
-                               "restoring context %p to be current "
-                               "(drawable==%p)",
-                               context->storedcontext,
-                               context->storeddrawable);
+                               "restoring context %p to be current",
+                               context->storedcontext);
       }
 
-      aglSetCurrentContext(context->storedcontext);
+      CGLSetCurrentContext(context->storedcontext);
     }
 
   } else { /* pBuffer support available */
 
-    if (context->storedcontext) aglSetCurrentContext(context->storedcontext);
-    else aglSetCurrentContext(NULL);
+    if (context->storedcontext) CGLSetCurrentContext(context->storedcontext);
+    else CGLSetCurrentContext(NULL);
 
   } 
 }
@@ -577,7 +574,7 @@ aglglue_context_bind_pbuffer(void * ctx)
   /* FIXME: I don't think this needs to be here. pederb, 2003-11-27 */ 
   /* aglglue_context_reinstate_previous(context); */
 
-  aglglue_aglTexImagePBuffer (context->storedcontext, context->aglpbuffer, GL_FRONT);
+  aglglue_aglTexImagePBuffer((AGLContext)context->storedcontext, context->aglpbuffer, GL_FRONT);
   context->pbufferisbound = TRUE;
   error = aglGetError();  
   if (error != AGL_NO_ERROR) {    
