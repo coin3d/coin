@@ -1608,7 +1608,7 @@ SIM_AC_CHECK_OPENGL(
   #
   # On Mac OS X/Darwin, we want to link either with GLX or AGL, 
   # depending on whether Coin is built against X11 or not. (X11 is 
-  # only needed if you want to use SoXt, an must be enabled explicitly
+  # only needed if you want to use SoXt, and must be enabled explicitly
   # by passing the --enable-darwin-x11 configure flag.)
   #
   # Else, the tests for WGL/GLX below are nested, so we're guaranteed 
@@ -1628,10 +1628,17 @@ SIM_AC_CHECK_OPENGL(
           if $COIN_STATIC; then
             COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
           fi
+          AC_CHECK_HEADERS(
+            [OpenGL/CGLCurrent.h],
+            [AC_DEFINE_UNQUOTED([HAVE_CGL],1,
+                                [define if CGL is available on the system])],
+            [AC_MSG_ERROR([AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no.])], [ ]
+          )
           SIM_AC_HAVE_AGL_PBUFFER([
             AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
                                [define if AGL pBuffers are available on the system])
-          ])], [SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against AGL. The SoOffscreenRenderer functionality will be disabled. ])])
+            ])], [SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against AGL. The SoOffscreenRenderer functionality will be disabled. ])
+        ])
       fi
     ;;
     * )  
