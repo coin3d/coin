@@ -544,7 +544,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
       cc_fcglue_FcPatternPrint(matched_pattern);
     }
 
-    foundfile = cc_namemap_get_address(filename);
+    foundfile = cc_namemap_get_address((const char *)filename);
 
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);
