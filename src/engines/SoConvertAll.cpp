@@ -1047,7 +1047,8 @@ SoConvertAll::initClass(void)
     { SoMFVec3d_to_SoMFVec3f, "SoMFVec3d", "SoMFVec3f" }
   };
 
-  for (unsigned int i=0; i < sizeof(allconverters) / sizeof(allconverters[0]); i++) {
+  int i;
+  for (i = 0; i < int(sizeof(allconverters) / sizeof(allconverters[0])); i++) {
     register_convertfunc(allconverters[i].func,
                          SoType::fromName(allconverters[i].from),
                          SoType::fromName(allconverters[i].to));
@@ -1064,7 +1065,7 @@ SoConvertAll::initClass(void)
   SoTypeList allfieldtypes;
   int nrfieldtypes = SoType::getAllDerivedFrom(SoField::getClassTypeId(),
                                                allfieldtypes);
-  for (int i=0; i < nrfieldtypes; i++) {
+  for (i=0; i < nrfieldtypes; i++) {
     if (allfieldtypes[i].canCreateInstance() &&
         allfieldtypes[i] != SoSFTrigger::getClassTypeId()) {
       register_convertfunc(to_and_from_sftrigger,
