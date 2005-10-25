@@ -44,7 +44,7 @@
 #include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/glue/gl_agl.h>
 
-#ifdef HAVE_CGL
+#ifdef HAVE_OPENGL_CGLCURRENT_H
 #include <OpenGL/CGLCurrent.h>
 #endif
 

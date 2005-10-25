@@ -1630,8 +1630,7 @@ SIM_AC_CHECK_OPENGL(
           fi
           AC_CHECK_HEADERS(
             [OpenGL/CGLCurrent.h],
-            [AC_DEFINE_UNQUOTED([HAVE_CGL],1,
-                                [define if CGL is available on the system])],
+            [],
             [AC_MSG_ERROR([AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no.])], [ ]
           )
           SIM_AC_HAVE_AGL_PBUFFER([
