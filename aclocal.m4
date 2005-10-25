@@ -365,7 +365,7 @@ if $sim_ac_make_dsp; then
       else
         $1_DSP_DEFS="[$]$1_DSP_DEFS /D \"$define\""
       fi
-      if echo $define | grep _MAKE_DLL; then
+      if (echo $define | grep _MAKE_DLL) >/dev/null 2>&1; then
         :
       else
         if test x"[$]$1_DSP_DEFS" = x""; then

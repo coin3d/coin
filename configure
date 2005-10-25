@@ -29475,8 +29475,9 @@ rm -f conftest.err conftest.$ac_objext \
 
 coin_can_do_runtime_linking=false
 
-# Try to use Mac OS X dyld first, since libdl has problems on Mac OS X.
-
+# On Mac OS X < 10.4, dlopen() is missing and has to be emulated; from
+# 10.4 on, we can use dlopen() directly. Note that the latter does not
+# obsolete the dyld check, since we also use other dyld functionility.
 
 # Check whether --enable-dyld or --disable-dyld was given.
 if test "${enable_dyld+set}" = set; then
@@ -29708,7 +29709,7 @@ cat >>confdefs.h <<_ACEOF
 #define HAVE_DYLD_RUNTIME_BINDING 1
 _ACEOF
 
-  coin_can_do_runtime_linking=true
+    coin_can_do_runtime_linking=true
 
   else
     :
@@ -29716,7 +29717,13 @@ _ACEOF
 fi
 
 
-if ! $coin_can_do_runtime_linking; then
+case ${MACOSX_DEPLOYMENT_TARGET} in
+  10.[0123])
+    # Do *not* pick up dlopen() support when building on 10.4 for earlier
+    # Mac OS X versions (< 10.4 did not support dlopen(), so we have to use
+    # our own implementation based on built-in dyld functions there).
+    ;;
+  *)
 
 
 # Check whether --with-dl or --without-dl was given.
@@ -29976,10 +29983,10 @@ cat >>confdefs.h <<_ACEOF
 #define HAVE_DL_LIB 1
 _ACEOF
 
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
-    coin_can_do_runtime_linking=true
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
+      coin_can_do_runtime_linking=true
 
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -29989,7 +29996,8 @@ _ACEOF
   fi
 fi
 
-fi
+    ;;
+esac
 
 if ! $coin_can_do_runtime_linking; then
 
@@ -35381,7 +35389,7 @@ fi
   #
   # On Mac OS X/Darwin, we want to link either with GLX or AGL,
   # depending on whether Coin is built against X11 or not. (X11 is
-  # only needed if you want to use SoXt, an must be enabled explicitly
+  # only needed if you want to use SoXt, and must be enabled explicitly
   # by passing the --enable-darwin-x11 configure flag.)
   #
   # Else, the tests for WGL/GLX below are nested, so we're guaranteed
@@ -35552,6 +35560,76 @@ _ACEOF
             COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
           fi
 
+for ac_header in OpenGL/CGLCurrent.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  eval "$as_ac_Header=yes"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+eval "$as_ac_Header=no"
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_CGL 1
+_ACEOF
+
+else
+  { { echo "$as_me:$LINENO: error: AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no." >&5
+echo "$as_me: error: AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+done
+
+
   echo "$as_me:$LINENO: checking whether we can use AGL pBuffers" >&5
 echo $ECHO_N "checking whether we can use AGL pBuffers... $ECHO_C" >&6
 if test "${sim_cv_agl_pbuffer_avail+set}" = set; then
@@ -35626,6 +35704,7 @@ if test x"${sim_ac_configuration_warnings+set}" = x"set"; then
 else
   sim_ac_configuration_warnings="Could not find or compile or link against AGL. The SoOffscreenRenderer functionality will be disabled. "
 fi
+
 
 fi
 
@@ -37268,7 +37347,7 @@ fi
       else
         COIN_DSP_DEFS="$COIN_DSP_DEFS /D \"$define\""
       fi
-      if echo $define | grep _MAKE_DLL; then
+      if (echo $define | grep _MAKE_DLL) >/dev/null 2>&1; then
         :
       else
         if test x"$COIN_DSP_DEFS" = x""; then

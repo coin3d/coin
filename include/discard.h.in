@@ -114,6 +114,9 @@
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
 
+/* define if CGL is available on the system */
+#undef HAVE_CGL
+
 /* The CPP compiler has a variable containing the current function name */
 #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
 
@@ -251,6 +254,9 @@
 
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
+
+/* Define to 1 if you have the <OpenGL/CGLCurrent.h> header file. */
+#undef HAVE_OPENGL_CGLCURRENT_H
 
 /* define if the GLEXT header should be included as OpenGL/glext.h */
 #undef HAVE_OPENGL_GLEXT_H
