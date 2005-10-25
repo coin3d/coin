@@ -35617,10 +35617,6 @@ if test `eval echo '${'$as_ac_Header'}'` = yes; then
 #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
 
-cat >>confdefs.h <<_ACEOF
-#define HAVE_CGL 1
-_ACEOF
-
 else
   { { echo "$as_me:$LINENO: error: AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no." >&5
 echo "$as_me: error: AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no." >&2;}
