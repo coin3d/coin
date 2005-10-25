@@ -90,6 +90,9 @@
 /* define if you have AGL OpenGL bindings */
 #undef HAVE_AGL
 
+/* define if CGL is available on the system */
+#undef HAVE_CGL
+
 /* define if AGL pBuffers are available on the system */
 #undef HAVE_AGL_PBUFFER
 
