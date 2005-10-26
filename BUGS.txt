@@ -5060,6 +5060,14 @@ IndexedLineSet {
     that has shapes which is rendered using VBOs.
     
     20051020 pederb
+
+    UPDATE 20051026 mortene: also crashes on the Linux driver on the
+    same gfx card as I listed above. Full specs:
+
+        GL_VERSION=='1.3.4641 (X4.3.0-3.14.1)'
+        GL_VENDOR=='ATI Technologies Inc.'
+        GL_RENDERER=='MOBILITY RADEON 9700 Generic'
+
 =====================================================================
 
 208 Too high tessellation by default for 3D text?
