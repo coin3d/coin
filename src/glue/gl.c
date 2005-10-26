@@ -1631,6 +1631,24 @@ glglue_check_trident_clampedge_bug(const char * vendor,
     (strcmp(version, "1.2.1") == 0);
 }
 
+static SbBool
+glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
+                                        const char * renderer,
+                                        const char * version)
+{
+  /* 
+   * FIXME: is there a better way to test if we're on Mac OS X 
+   * pederb, 20051026
+   */
+#ifndef HAVE_AGL /* bug is not present on Mac OS X */
+  /* FIXME: Check version string if ATI ever fixes this bug */
+  return
+    (strcmp(vendor, "ATI Technologies Inc.") == 0);
+#else /* ATI driver bug */
+  return FALSE;
+#endif /* Mac OS X drivers are ok */
+}
+
 /* Give warnings on known faulty drivers. */
 static void
 glglue_check_driver(const char * vendor, const char * renderer,
@@ -1979,9 +1997,13 @@ cc_glglue_instance(int contextid)
                                gi->can_do_anisotropic_filtering ? "TRUE" : "FALSE",
                                gi->max_anisotropy);
       }
-
     }
 
+    /* check for ATI vbo in displaylist bug */
+    gi->vbo_in_displaylist_ok = !glglue_check_ati_vbo_in_displaylist_bug(gi->vendorstr,
+                                                                         gi->rendererstr,
+                                                                         gi->versionstr);
+    
     glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
 
     /* Resolve our function pointers. */
@@ -4443,6 +4465,12 @@ coin_gl_current_context(void)
 #endif /* HAVE_AGL */
 
   return ctx;
+}
+
+SbBool 
+coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
+{
+  return glw->vbo_in_displaylist_ok;
 }
 
 /* ********************************************************************** */

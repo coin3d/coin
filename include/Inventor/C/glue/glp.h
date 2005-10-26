@@ -764,6 +764,7 @@ struct cc_glglue {
   SbBool has_arb_shader_objects;
   SbBool has_texture_env_combine;
 
+  SbBool vbo_in_displaylist_ok;
   int max_lights;
   float line_width_range[2];
   float point_size_range[2];
@@ -815,6 +816,7 @@ GLint coin_glglue_get_internal_texture_format(int numcomponents,
                                             SbBool compress);
 
 GLenum coin_glglue_get_texture_format(int numcomponents);
+SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);
 
 #ifdef __cplusplus
 }
