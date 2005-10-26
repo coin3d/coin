@@ -244,6 +244,9 @@
 /* define if you have OpenGL */
 #define HAVE_OPENGL 1
 
+/* Define to 1 if you have the <OpenGL/CGLCurrent.h> header file. */
+/* #undef HAVE_OPENGL_CGLCURRENT_H */
+
 /* define if the GLEXT header should be included as OpenGL/glext.h */
 /* #undef HAVE_OPENGL_GLEXT_H */
 
