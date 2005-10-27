@@ -171,7 +171,8 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
 
   const int numpts = coords->getNum();
   
-  SbBool dova = (numpts >= SoVBO::getVertexCountMinLimit()) && cc_glglue_has_vertex_array(glue);
+  // no point setting up OpenGL for vertex arrays for fewer than 20 points
+  SbBool dova = (numpts >= 20) && cc_glglue_has_vertex_array(glue);
   
   if (dova && matpervertex) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);

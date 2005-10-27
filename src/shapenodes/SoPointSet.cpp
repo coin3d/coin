@@ -239,8 +239,9 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   if (numpts < 0) numpts = coords->getNum() - idx;
   
   const cc_glglue * glue = sogl_glue_instance(state);
-  
-  SbBool dova = (numpts >= SoVBO::getVertexCountMinLimit()) && cc_glglue_has_vertex_array(glue);
+
+  // no point setting up OpenGL for vertex arrays for fewer than 20 points
+  SbBool dova = (numpts >= 20) && cc_glglue_has_vertex_array(glue);
   
   if (dova && (mbind == PER_VERTEX)) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
@@ -274,7 +275,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
                          doTextures ? &tb : NULL,
                          numpts, idx);
   }
-  if (didpush)
+  if (didpush) 
     state->pop();
 
   // send approx number of points for autocache handling. Divide
