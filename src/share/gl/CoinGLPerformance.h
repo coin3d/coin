@@ -29,9 +29,36 @@
 
 // *************************************************************************
 
-typedef void cc_perf_pre_cb(const cc_glglue * g, void * userdata);
-typedef void cc_perf_render_cb(const cc_glglue * g, void * userdata);
-typedef void cc_perf_post_cb(const cc_glglue * g, void * userdata);
+/* List of all modules using this code, and under what prefix: */
+
+#ifdef COIN_INTERNAL
+#define COINSHAREPREFIX coin
+#endif /* COIN_INTERNAL */
+
+#ifdef SIMVOLEON_INTERNAL
+#define COINSHAREPREFIX voleon
+#endif /* SIMVOLEON_INTERNAL */
+
+/* (We need different prefixes to avoid the possibility of namespace
+   clashes for the linker. At least the OS X linker will complain of
+   symbols defined multiple times, under its default configuration.)
+*/
+
+// *************************************************************************
+
+#define CC_PERF_PRE_CB SO__CONCAT(COINSHAREPREFIX,_perf_pre_cb)
+#define CC_PERF_RENDER_CB SO__CONCAT(COINSHAREPREFIX,_perf_render_cb)
+#define CC_PERF_POST_CB SO__CONCAT(COINSHAREPREFIX,_perf_post_cb)
+
+#define cc_perf_gl_timer SO__CONCAT(COINSHAREPREFIX,_perf_gl_timer)
+
+#undef COINSHAREPREFIX
+
+// *************************************************************************
+
+typedef void CC_PERF_PRE_CB(const cc_glglue * g, void * userdata);
+typedef void CC_PERF_RENDER_CB(const cc_glglue * g, void * userdata);
+typedef void CC_PERF_POST_CB(const cc_glglue * g, void * userdata);
 
 // *************************************************************************
 
@@ -39,7 +66,11 @@ typedef void cc_perf_post_cb(const cc_glglue * g, void * userdata);
   Usage example from SIM Voleon:
 
   \code
-      const cc_perf_render_cb * perfchkfuncs[2] = {
+      #include <[...]/CoinGLPerformance.h>
+
+      // [...]
+
+      const CC_PERF_RENDER_CB * perfchkfuncs[2] = {
         SoVolumeRenderP::render2DTexturedTriangles,
         SoVolumeRenderP::render3DTexturedTriangles
       };
@@ -80,16 +111,17 @@ typedef void cc_perf_post_cb(const cc_glglue * g, void * userdata);
   slowdowns on other systems.
 */
 
-const SbTime cc_perf_gl_timer(const cc_glglue * glue,
-                              const unsigned int nrrendercbs,
-                              cc_perf_render_cb * rendercbs[],
-                              double averagerendertime[],
+const SbTime
+cc_perf_gl_timer(const cc_glglue * glue,
+                 const unsigned int nrrendercbs,
+                 CC_PERF_RENDER_CB * rendercbs[],
+                 double averagerendertime[],
 
-                              cc_perf_pre_cb * precb = NULL,
-                              cc_perf_post_cb * postcb = NULL,
-                              const unsigned int maxruns = 10,
-                              const SbTime maxtime = SbTime(0.5),
-                              void * userdata = NULL);
+                 CC_PERF_PRE_CB * precb = NULL,
+                 CC_PERF_POST_CB * postcb = NULL,
+                 const unsigned int maxruns = 10,
+                 const SbTime maxtime = SbTime(0.5),
+                 void * userdata = NULL);
 
 // *************************************************************************
 

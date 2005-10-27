@@ -99,9 +99,10 @@ get_average_performance_time(const SbList<double> & l)
 const SbTime
 cc_perf_gl_timer(const cc_glglue * glue,
                  const unsigned int nrrendercbs,
-                 cc_perf_render_cb * rendercbs[],
+                 CC_PERF_RENDER_CB * rendercbs[],
                  double averagerendertime[],
-                 cc_perf_pre_cb * precb, cc_perf_post_cb * postcb,
+                 CC_PERF_PRE_CB * precb,
+                 CC_PERF_POST_CB * postcb,
                  const unsigned int maxruns, const SbTime maxtime,
                  void * userdata)
 {
