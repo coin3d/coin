@@ -50,28 +50,54 @@
         direction 0 0 -1
     }
   \endcode
+
+
+  A common thing to do with an SoDirectionalLight is to connect it to
+  a camera, so it works in the style of a head light to that camera.
+  This can easily be accomplished by linking an SoRotation::rotation
+  field, influencing the light, to the SoCamera::orientation
+  field. Here is a complete example iv-file demonstrating the
+  technique:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  DEF mycam PerspectiveCamera { }
+  
+  TransformSeparator {
+     SoRotation { rotation = USE mycam.orientation }
+     DirectionalLight { direction 0 0 -1 }
+  }
+  
+  Cube { }
+  \endverbatim
+
+  (The SoTransformSeparator is included to keep the effect of the
+  SoRotation node within a scope where it will only influence the
+  light, and not the geometry following the light in the scene graph.)
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoLightElement.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+// *************************************************************************
 
 /*!
   \var SoSFVec3f SoDirectionalLight::direction
@@ -80,10 +106,11 @@
   negative z-axis.
 */
 
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoDirectionalLight);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -108,6 +135,8 @@ SoDirectionalLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLight, SO_FROM_INVENTOR_1|SoNode::VRML1);
 }
+
+// *************************************************************************
 
 // Doc from superclass.
 void
@@ -155,3 +184,5 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_LINEAR_ATTENUATION, 0);
   glLightf(light, GL_QUADRATIC_ATTENUATION, 0);
 }
+
+// *************************************************************************
