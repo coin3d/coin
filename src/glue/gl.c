@@ -1641,7 +1641,90 @@ glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
    * pederb, 20051026
    */
 #ifndef HAVE_AGL /* bug is not present on Mac OS X */
-  /* FIXME: Check version string if ATI ever fixes this bug */
+  /*
+   * The ATI Windows/Linux driver has a nasty bug which causes a crash
+   * in OpenGL whenever a VBO render call is added to a display
+   * list. This has been confirmed on several ATI drivers.  (tested
+   * drivers on Windows: 1.4.4145, 1.4.4054, and on Linux: 1.3.4641)
+   *
+   * FIXME: Check version string if ATI ever fixes this bug. The
+   * scene graph below can be used to reproduce the bug:
+
+   #Inventor V2.1 ascii
+
+   MaterialBinding { value PER_VERTEX_INDEXED }
+   LightModel { model BASE_COLOR }
+
+   BaseColor {
+     rgb [
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0,
+      1 0 0, 0 1 0, 0 0 1, 1 1 0
+      ]
+   }
+   Coordinate3 {
+     point [
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0,
+      0 0 0, 1 0 0, 1 1 0, 0 1 0
+     ]
+   }
+   PointSet {
+     numPoints 44
+   }
+   ShapeHints {
+     vertexOrdering COUNTERCLOCKWISE
+     faceType CONVEX
+     shapeType UNKNOWN_SHAPE_TYPE
+   }
+   IndexedFaceSet {
+     coordIndex [
+       0,1,2,3,-1,
+       4,5,6,7, -1,
+       8,9,10,11, -1,
+       12,13,14,15, -1,
+       16,17,18,19,-1,
+       20,21,22,23,-1,
+       24,25,26,27,-1,
+       28,29,30,31,-1,
+       32,33,34,35,-1,
+       36,37,38,39,-1,
+       40,41,42,43,-1
+     ]
+   }
+   IndexedLineSet {
+     coordIndex [
+       0,1,2,3,-1,
+       4,5,6,7, -1,
+       8,9,10,11, -1,
+       12,13,14,15, -1,
+       16,17,18,19,-1,
+       20,21,22,23,-1,
+       24,25,26,27,-1,
+       28,29,30,31,-1,
+       32,33,34,35,-1,
+       36,37,38,39,-1,
+       40,41,42,43,-1
+     ]
+   } 
+  *
+  */
   return
     (strcmp(vendor, "ATI Technologies Inc.") == 0);
 #else /* ATI driver bug */
