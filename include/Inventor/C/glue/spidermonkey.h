@@ -49,6 +49,7 @@ extern "C" {
 typedef int JSBool;
 typedef long jsword;
 typedef jsword jsval;
+typedef int intN;
 typedef unsigned int uintN;
 typedef uint16_t jschar;
 
@@ -324,6 +325,7 @@ typedef JSBool (* JS_GetPropertyAttributes_t)(JSContext *, JSObject *, const cha
 typedef JSClass * (* JS_GetClass_t)(JSObject *);
 typedef JSObject * (* JS_GetPrototype_t)(JSContext *, JSObject *);
 typedef JSObject * (* JS_SetPrototype_t)(JSContext *, JSObject *, JSObject *);
+typedef intN (* JS_CompareStrings_t)(JSString *, JSString *);
 
 
 
@@ -414,6 +416,7 @@ typedef struct {
   JS_GetPropertyAttributes_t JS_GetPropertyAttributes;
   JS_GetPrototype_t JS_GetPrototype;
   JS_SetPrototype_t JS_SetPrototype;
+  JS_CompareStrings_t JS_CompareStrings;
 
 } SpiderMonkey_t;
 
