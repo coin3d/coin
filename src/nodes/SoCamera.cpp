@@ -1006,6 +1006,11 @@ SoCamera::getStereoMode(void) const
   of the scene, but rather use a stereo offset based on the scale of              
   the individual objects/details you want to examine. 
 
+  Please note that it's important to set a sensible focal distance
+  when doing stereo rendering. See setBalanceAdjustment() for
+  information about how the focal distance affects the stereo
+  rendering.
+
   \sa setBalanceAdjustment() 
 */
 void
@@ -1027,11 +1032,14 @@ SoCamera::getStereoAdjustment(void) const
 
 /*!
   Sets the stereo balance adjustment. This is a factor that enables you to
-  move the zero parallax plane. Objects in front of the zero parallax plane
-  appears to be in front of the screen.
+  move the zero parallax plane. Geometry in front of the zero parallax plane
+  will appear to be in front of the screen.
 
-  The default value is 1.0, and the zero parallax plane is then at the focal
-  point (see SoCamera::focalDistance).
+  The balance adjustment is multiplied with the focal distance to find
+  the zero parallax plane. The default value is 1.0, and the zero
+  parallax plane is then at the focal point.
+
+  \sa SoCamera::focalDistance
 */
 void
 SoCamera::setBalanceAdjustment(float adjustment)
