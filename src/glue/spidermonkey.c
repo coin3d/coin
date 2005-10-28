@@ -293,6 +293,7 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetClass, JS_GetClass_t);
   REGISTER_FUNC(JS_GetPrototype, JS_GetPrototype_t);
   REGISTER_FUNC(JS_SetPrototype, JS_SetPrototype_t);
+  REGISTER_FUNC(JS_CompareStrings, JS_CompareStrings_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);
