@@ -985,6 +985,28 @@ SoCamera::getStereoMode(void) const
 /*!
   Sets the stereo adjustment. This is the distance between the left
   and right "eye" when doing stereo rendering.
+
+  When doing stereo rendering, Coin will render two views, one for the
+  left eye, and one for the right eye. The stereo adjustment is, a bit
+  simplified, how much the camera is translated along the local X-axis
+  between the left and the right view.
+
+  The default distance is 0.1, which is chosen since it's the
+  approximate distance between the human eyes.
+
+  To create a nice looking and visible stereo effect, the application
+  programmer will often have to adjust this value. If all you want to
+  do is examine simple stand-alone 3D objects, it is possible to
+  calculate a stereo offset based on the bounding box of the 3D model
+  (or scale the model down to an appropriate size).
+  
+  However, if you have a large scene, where you want to fly around in             
+  the scene, and see stereo on different objects as you approach them,            
+  you can't calculate the stereo offset based on the bounding box                 
+  of the scene, but rather use a stereo offset based on the scale of              
+  the individual objects/details you want to examine. 
+
+  \sa setBalanceAdjustment() 
 */
 void
 SoCamera::setStereoAdjustment(float adjustment)
