@@ -220,6 +220,7 @@
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/base/list.h>
 
 /* ********************************************************************** */
 
@@ -232,6 +233,7 @@ extern "C" {
 #endif
 
 static cc_libhandle gl_handle = NULL;
+static cc_list * gl_instance_created_cblist = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
@@ -1972,6 +1974,8 @@ cc_glglue_instance(int contextid)
     memset(gi, 0, sizeof(cc_glglue));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
+    gi->contextid = (uint32_t) contextid;
+
     /* create dict that makes a quick lookup for GL extensions */
     gi->glextdict = cc_dict_construct(256, 0.75f);
 
@@ -2097,6 +2101,15 @@ cc_glglue_instance(int contextid)
   }
 
   CC_SYNC_END(cc_glglue_instance);
+
+  if (!found && gl_instance_created_cblist) {
+    int i, n = cc_list_get_length(gl_instance_created_cblist) / 2;
+    for (i = 0; i < n; i++) {
+      coin_glglue_instance_created_cb * cb = 
+        (coin_glglue_instance_created_cb *) cc_list_get(gl_instance_created_cblist, i*2);
+      cb(gi, cc_list_get(gl_instance_created_cblist, i*2+1));
+    }
+  }
   return gi;
 }
 
@@ -4550,10 +4563,40 @@ coin_gl_current_context(void)
   return ctx;
 }
 
+/* ********************************************************************** */
+
 SbBool 
 coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 {
   return glw->vbo_in_displaylist_ok;
+}
+
+/* ********************************************************************** */
+
+uint32_t 
+coin_glglue_get_contextid(const cc_glglue * glue)
+{
+  return glue->contextid;
+}
+
+/* ********************************************************************** */
+
+static void cleanup_instance_created_list(void)
+{
+  cc_list_destruct(gl_instance_created_cblist);
+  gl_instance_created_cblist = NULL;
+}
+
+void 
+coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
+                                          void * closure)
+{
+  if (gl_instance_created_cblist == NULL) {
+    gl_instance_created_cblist = cc_list_construct();
+    coin_atexit((coin_atexit_f *)cleanup_instance_created_list, 0);
+  }
+  cc_list_append(gl_instance_created_cblist, (void*)cb);
+  cc_list_append(gl_instance_created_cblist, (void*)closure);
 }
 
 /* ********************************************************************** */

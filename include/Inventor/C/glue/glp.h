@@ -540,6 +540,7 @@ struct cc_glxglue {
    initialized for each new GL context id. */
 struct cc_glglue {
 
+  uint32_t contextid;
   struct { /* OpenGL versioning. */
     unsigned int major, minor, release;
   } version;
@@ -774,6 +775,11 @@ struct cc_glglue {
 
 /* ********************************************************************** */
 
+/* Find contextid from a glglue instance */
+uint32_t coin_glglue_get_contextid(const cc_glglue * glue);
+
+/* ********************************************************************** */
+
 /* Primarily used internally from functions that are badly designed,
    lacking a cc_glglue* argument in the function signature.
 
@@ -817,6 +823,12 @@ GLint coin_glglue_get_internal_texture_format(int numcomponents,
 
 GLenum coin_glglue_get_texture_format(int numcomponents);
 SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);
+
+/* context creation callback */
+typedef void coin_glglue_instance_created_cb(const cc_glglue * glue, void * closure);
+void coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
+                                               void * closure);
+
 
 #ifdef __cplusplus
 }
