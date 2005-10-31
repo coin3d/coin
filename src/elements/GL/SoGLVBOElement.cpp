@@ -241,9 +241,8 @@ SbBool
 SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
-  if (cc_glglue_has_vertex_buffer_object(glue)) {
-    return SoVBO::shouldCreateVBO((uint32_t) SoGLCacheContextElement::get(state), numdata);
-  }
-  return FALSE;
+  return 
+    cc_glglue_has_vertex_buffer_object(glue) &&
+    SoVBO::shouldCreateVBO((uint32_t) SoGLCacheContextElement::get(state), numdata);
 }
 
