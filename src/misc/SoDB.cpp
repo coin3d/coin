@@ -350,6 +350,7 @@
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
+#include "SoVBO.h"
 
 #include <coindefs.h> // COIN_STUB()
 
@@ -657,8 +658,8 @@ SoDB::init(void)
   SoGLBigImage::initClass();
 
   SoHardCopy::init();
-
   SoShader::init();
+  SoVBO::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();

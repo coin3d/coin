@@ -37,6 +37,8 @@ class SoVBO {
   SoVBO(const GLenum target = GL_ARRAY_BUFFER,
         const GLenum usage = GL_STATIC_DRAW);
   ~SoVBO();
+
+  static void init(void);
   
   void setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid = 0);  
   void * allocBufferData(intptr_t size, uint32_t dataid = 0);  
@@ -48,7 +50,12 @@ class SoVBO {
   static int getVertexCountMinLimit(void);
   static int getVertexCountMaxLimit(void);
 
+  static void testGLPerformance(const uint32_t contextid);
+  static SbBool shouldCreateVBO(const uint32_t contextid, const int numdata);
+
  private:
+  static void context_created(const cc_glglue * glue, void * closure);
+  static SbBool isVBOFast(const uint32_t contextid);
   static void context_destruction_cb(uint32_t context, void * userdata);
   static void vbo_schedule(const uint32_t & key,
                            const GLuint & value,

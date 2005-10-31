@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
@@ -240,9 +241,9 @@ SbBool
 SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
-  return 
-    (numdata >= SoVBO::getVertexCountMinLimit()) &&
-    (numdata <= SoVBO::getVertexCountMaxLimit()) &&
-    cc_glglue_has_vertex_buffer_object(glue);
+  if (cc_glglue_has_vertex_buffer_object(glue)) {
+    return SoVBO::shouldCreateVBO((uint32_t) SoGLCacheContextElement::get(state), numdata);
+  }
+  return FALSE;
 }
 
