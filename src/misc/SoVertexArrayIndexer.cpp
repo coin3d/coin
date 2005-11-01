@@ -21,14 +21,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVertexArrayIndexer
+  \brief The SoVertexArrayIndexer class is used to simplify index handling for vertex array rendering.
+  
+  FIXME: more doc. when/if this class is made public, pederb 20050111
+*/
+
 #include "SoVertexArrayIndexer.h"
 #include "SoVBO.h"
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
-#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
+/*!
+  Constructor
+*/
 SoVertexArrayIndexer::SoVertexArrayIndexer(void)
   : target(0),
     next(NULL),
@@ -36,12 +45,18 @@ SoVertexArrayIndexer::SoVertexArrayIndexer(void)
 {
 }
 
+/*!
+  Destructor
+*/
 SoVertexArrayIndexer::~SoVertexArrayIndexer()
 {
   delete this->vbo;
   delete this->next;
 }
 
+/*!
+  Adds a line to be indexed.
+*/
 void 
 SoVertexArrayIndexer::addLine(const int32_t v0,
                               const int32_t v1)
@@ -56,6 +71,9 @@ SoVertexArrayIndexer::addLine(const int32_t v0,
   }
 }
 
+/*!
+  Adds a point to be indexed.
+*/
 void 
 SoVertexArrayIndexer::addPoint(const int32_t v0)
 {
@@ -68,6 +86,9 @@ SoVertexArrayIndexer::addPoint(const int32_t v0)
   }
 }
 
+/*!
+  Adds a triangle to be indexed.
+*/
 void
 SoVertexArrayIndexer::addTriangle(const int32_t v0,
                                   const int32_t v1,
@@ -84,6 +105,9 @@ SoVertexArrayIndexer::addTriangle(const int32_t v0,
   }
 }
 
+/*!
+  Adds a quad to be indexed.
+*/
 void
 SoVertexArrayIndexer::addQuad(const int32_t v0,
                               const int32_t v1,
@@ -102,6 +126,14 @@ SoVertexArrayIndexer::addQuad(const int32_t v0,
   }
 }
 
+/*!
+  Sets up indexer for new indices of type \a targetin. Use 
+  targetVertex() to add indices, and finish the target by using
+  endTarget().
+
+  \sa targetVertex()
+  \sa endTarget()
+*/
 void
 SoVertexArrayIndexer::beginTarget(GLenum targetin)
 {
@@ -114,6 +146,12 @@ SoVertexArrayIndexer::beginTarget(GLenum targetin)
   }
 }
 
+/*!
+  Adds an index to the indexer.
+  
+  \sa beginTarget()
+  \sa endTarget()
+*/
 void
 SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
 {
@@ -127,6 +165,12 @@ SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
   }
 }
 
+/*!
+  Ends the current target.
+  
+  \sa beginTarget()
+  \sa targetVertex()
+*/
 void
 SoVertexArrayIndexer::endTarget(GLenum targetin)
 {
@@ -139,6 +183,11 @@ SoVertexArrayIndexer::endTarget(GLenum targetin)
   }
 }
 
+/*!
+  Closes the indexer. This will reallocate the growable arrays to use as little
+  memory as possible. The indexer will also sort triangles and lines to
+  optimize rendering.
+*/
 void
 SoVertexArrayIndexer::close(void)
 {
@@ -163,6 +212,9 @@ SoVertexArrayIndexer::close(void)
   if (this->next) this->next->close();
 }
 
+/*!
+  Render all added targets/indices.
+*/
 void
 SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
 {
@@ -223,6 +275,9 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
   if (this->next) this->next->render(glue, renderasvbo, contextid);
 }
 
+/*!
+  Returns the total number of vertex indices added to the indexer.
+*/
 int
 SoVertexArrayIndexer::getNumVertices(void)
 {
@@ -231,6 +286,11 @@ SoVertexArrayIndexer::getNumVertices(void)
   return count;
 }
 
+//
+//  Returns the next indexer. If more than one target type is added to
+//  an indexer, the indexer will automatically create a new indexer to
+//  store the new target type.
+//
 SoVertexArrayIndexer *
 SoVertexArrayIndexer::getNext(void)
 {
@@ -325,6 +385,9 @@ compare_line(const void * v0, const void * v1)
 }
 }
 
+//
+// sort triangles to optimize rendering
+//
 void
 SoVertexArrayIndexer::sort_triangles(void)
 {
@@ -340,6 +403,9 @@ SoVertexArrayIndexer::sort_triangles(void)
   }
 }
 
+//
+// sort lines to optimize rendering
+//
 void
 SoVertexArrayIndexer::sort_lines(void)
 {
@@ -353,3 +419,37 @@ SoVertexArrayIndexer::sort_lines(void)
   }
 
 }
+
+/*!
+  Returns the number of indices in the indexer. 
+*/
+int 
+SoVertexArrayIndexer::getNumIndices(void) const
+{
+  return this->indexarray.getLength();
+
+}
+
+/*!
+  Returns a pointer to the index array.
+*/
+const int32_t * 
+SoVertexArrayIndexer::getIndices(void) const
+{
+  return this->indexarray.getArrayPtr();
+}
+
+/*!
+  Returns a pointer to the index array. It's allowed to reorganize
+  these indices to change the rendering order. Calling this function
+  will invalidate any VBO caches used by the indexer.
+*/
+int32_t * 
+SoVertexArrayIndexer::getWriteableIndices(void)
+{
+  delete this->vbo;
+  this->vbo = NULL;
+  return (int32_t*) this->indexarray.getArrayPtr();
+}
+
+

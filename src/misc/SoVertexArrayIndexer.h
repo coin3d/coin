@@ -61,6 +61,9 @@ public:
   void render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t vbocontextid);
 
   int getNumVertices(void);
+  int getNumIndices(void) const;
+  const int32_t * getIndices(void) const;
+  int32_t * getWriteableIndices(void);
 
 private:
 
