@@ -38,6 +38,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "SoVertexArrayIndexer.h"
 #include "../share/gl/CoinGLPerformance.h"
 #include <stdio.h>
@@ -331,7 +332,7 @@ typedef struct {
 } vbo_performance_test_data;
 
 // how many times the geometry is rendered in the performance test callbacks
-#define PERF_NUM_LOOP 5
+#define PERF_NUM_LOOP 10
 
 // rendering loop used to test vertex array and VBO rendering speed
 static void 
@@ -419,8 +420,8 @@ SoVBO::testGLPerformance(const uint32_t contextid)
 
   const cc_glglue * glue = cc_glglue_instance(contextid);
   if (cc_glglue_has_vertex_buffer_object(glue)) {
-    // create a regular grid with 256x256 points to test the performance on
-    const int size = 256;
+    // create a regular grid with 64x64 points to test the performance
+    const int size = 64;
     const int half = size / 2;
     SbVec3f * vertexarray = new SbVec3f[size*size];
     SoVertexArrayIndexer * idx = new SoVertexArrayIndexer;
@@ -467,6 +468,15 @@ SoVBO::testGLPerformance(const uint32_t contextid)
                      averagerendertime,
                      NULL, NULL, 10, SbTime(0.2),
                      &data);
+
+#if defined(COIN_DEBUG) && 0
+    SoDebugError::postInfo("SoVBO::testGLPerformance",
+                           "render times: %g %g %g",
+                           averagerendertime[0],
+                           averagerendertime[1],
+                           averagerendertime[2]);
+#endif
+
     delete vbo;
     delete idx;
     delete[] vertexarray;
@@ -479,5 +489,8 @@ SoVBO::testGLPerformance(const uint32_t contextid)
   }
   vbo_isfast_hash->put(contextid, isfast);
 }
+
+
+
 
 
