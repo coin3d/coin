@@ -142,6 +142,16 @@ unsigned long coin_geq_prime_number(unsigned long num);
 
 /* ********************************************************************** */
 
+enum CoinOSType { 
+  COIN_UNIX, 
+  COIN_OS_X, 
+  COIN_MSWINDOWS 
+};
+
+int coin_runtime_os(void);
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

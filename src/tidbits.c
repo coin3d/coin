@@ -1704,6 +1704,28 @@ coin_geq_prime_number(unsigned long num)
 
 /**************************************************************************/
 
+int 
+coin_runtime_os(void)
+{
+  /*
+   * FIXME: this implementation should be replaced by something that
+   * does a runtime check. Kyrah suggested using sysctl() or uname()
+   * (both part of the C runtime library) which sounds like a good
+   * idea. pederb, 20051101
+   *
+   */
+#if defined(__APPLE__)
+  return COIN_OS_X;
+#elif defined(HAVE_WIN32_API)
+  return COIN_MSWINDOWS;
+#else
+  return COIN_UNIX;
+#endif
+}
+
+/**************************************************************************/
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
