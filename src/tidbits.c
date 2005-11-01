@@ -1699,7 +1699,8 @@ coin_geq_prime_number(unsigned long num)
       return coin_prime_table[i];
     }
   }
-  return coin_prime_table[31];
+  /* just return num if we can't find a bigger prime number */
+  return num;
 }
 
 /**************************************************************************/
