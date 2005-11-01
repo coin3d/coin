@@ -50,32 +50,16 @@
 #include <Inventor/elements/SoCacheHintElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/SbPlane.h>
-#include <Inventor/misc/SoContextHandler.h>
+#include "../misc/SoVBO.h"
+#include "../misc/SoVertexArrayIndexer.h"
 
 // *************************************************************************
-
-#define MAX_UNITS 16
-
-// FIXME: make it possible to control this constant. pederb, 2004-01-10
-#define CACHE_HINT_LIMIT 0.51f
-
-typedef struct  {
-  GLuint triangleindex;
-  GLuint vertex;
-  GLuint normal;
-  GLuint texcoord0;
-  GLuint rgba;
-  GLuint multitex[MAX_UNITS];
-} SoPrimitiveVertexCache_vboidx;
-
-static unsigned long total_vbo_memory = 0;
-static unsigned long COIN_MAX_VBO_MEMORY = 0;
-static int COIN_ENABLE_VBO = -2;
 
 class SoPrimitiveVertexCacheP {
 public:
@@ -85,10 +69,15 @@ public:
       texcoordlist(256),
       bumpcoordlist(256),
       rgbalist(256),
-      indices(1024),
       vhash(1024),
-      vbodict(4),
-      deptharray(NULL)
+      deptharray(NULL),
+      triangleindexer(NULL),
+      lineindexer(NULL),
+      pointindexer(NULL),
+      vertexvbo(NULL),
+      normalvbo(NULL),
+      texcoord0vbo(NULL),
+      rgbavbo(NULL)
   { }
 
   SbList <SoPrimitiveVertexCache::Vertex> vertices;
@@ -98,10 +87,6 @@ public:
   SbList <SbVec4f> texcoordlist;
   SbList <SbVec2f> bumpcoordlist;
   SbList <uint8_t> rgbalist;
-
-  SbList <int32_t> indices;
-  SbList <int32_t> lineindices;
-  SbList <int32_t> pointindices;
   SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
   
   const SbVec2f * bumpcoords;
@@ -123,9 +108,17 @@ public:
   const SoMultiTextureCoordinateElement * multielem;
   SbList <SbVec4f> * multitexcoords;
   SoState * state;
-  SbHash<SoPrimitiveVertexCache_vboidx *, uint32_t> vbodict;
   SbPlane prevsortplane;
   float * deptharray;
+
+  SoVertexArrayIndexer * triangleindexer;
+  SoVertexArrayIndexer * lineindexer;
+  SoVertexArrayIndexer * pointindexer;
+  SoVBO * vertexvbo;
+  SoVBO * normalvbo;
+  SoVBO * texcoord0vbo;
+  SoVBO * rgbavbo;
+  SbList <SoVBO*> multitexvbo;
 
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
 
@@ -163,9 +156,6 @@ public:
                              const SbBool texture, const SbBool * enabled,
                              const int lastenabled);
 
-  static void vbo_schedule(const uint32_t & key, SoPrimitiveVertexCache_vboidx * const & value, void * closure);
-  static void vbo_delete(void * closure, uint32_t contextid);
-  static void contextCleanup(uint32_t context, void * closure);
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -180,8 +170,6 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 {
   PRIVATE(this) = new SoPrimitiveVertexCacheP;
   PRIVATE(this)->state = state;
-  SoContextHandler::addContextDestructionCallback(SoPrimitiveVertexCacheP::contextCleanup, 
-                                                  PRIVATE(this));
   const SoBumpMapCoordinateElement * belem =
     SoBumpMapCoordinateElement::getInstance(state);
 
@@ -230,21 +218,6 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     // triangle callback. SoTextureCoordinateBundle might push a new
     // element.
   }
-
-  if (COIN_MAX_VBO_MEMORY == 0) {
-    COIN_MAX_VBO_MEMORY = 0xffffffff;
-    const char * env = coin_getenv("COIN_MAX_VBO_MEMORY");
-    if (env) {
-      COIN_MAX_VBO_MEMORY = (unsigned long) atol(env);
-    }
-  }
-  if (COIN_ENABLE_VBO == -2) {
-    COIN_ENABLE_VBO = -1;
-    const char * env = coin_getenv("COIN_ENABLE_VBO");
-    if (env) {
-      COIN_ENABLE_VBO = atoi(env);
-    }
-  }
 }
 
 /*!
@@ -252,10 +225,17 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
-  SoContextHandler::removeContextDestructionCallback(SoPrimitiveVertexCacheP::contextCleanup, 
-                                                     PRIVATE(this));
+  delete PRIVATE(this)->triangleindexer;
+  delete PRIVATE(this)->lineindexer;
+  delete PRIVATE(this)->pointindexer;
+  delete PRIVATE(this)->vertexvbo;
+  delete PRIVATE(this)->normalvbo;
+  delete PRIVATE(this)->texcoord0vbo;
+  delete PRIVATE(this)->rgbavbo;
 
-  PRIVATE(this)->vbodict.apply(SoPrimitiveVertexCacheP::vbo_schedule, NULL);
+  for (int i = 0; i < PRIVATE(this)->multitexvbo.getLength(); i++) {
+    delete PRIVATE(this)->multitexvbo[i];
+  }
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
@@ -281,44 +261,26 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance((int) contextid);
   
-  float memcaching;
-  float gfxcaching;
-  
-  SoCacheHintElement::get(state, memcaching, gfxcaching);
-
   SbBool renderasvbo = 
-    ((COIN_ENABLE_VBO == 1) || (COIN_ENABLE_VBO == -1) ||
-     ((COIN_ENABLE_VBO != 0) && gfxcaching >= CACHE_HINT_LIMIT)) &&
-    cc_glglue_has_vertex_buffer_object(glue);
-     
-  if (renderasvbo) {
-    unsigned long size = PRIVATE(this)->countVBOSize(glue, contextid, color,
-                                                     normal, texture, enabled, lastenabled);
-    if (total_vbo_memory + size > COIN_MAX_VBO_MEMORY) {
-      renderasvbo = FALSE;
-    }
-    else {
-      total_vbo_memory += size;
-    }
-  }
+    PRIVATE(this)->vertexvbo || 
+    SoGLVBOElement::shouldCreateVBO(state, PRIVATE(this)->vertexlist.getLength());
 
   if (renderasvbo) {
     PRIVATE(this)->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
-    cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, NULL);
+    PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
   else if (cc_glglue_has_vertex_array(glue)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
-                             (const GLvoid*) this->getIndices());
+    PRIVATE(this)->triangleindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
     glBegin(GL_TRIANGLES);
     PRIVATE(this)->renderImmediate(glue,
-                                   PRIVATE(this)->indices.getArrayPtr(),
-                                   PRIVATE(this)->indices.getLength(),
+                                   this->getIndices(),
+                                   this->getNumIndices(),
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
@@ -345,19 +307,19 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
     enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   }
   const cc_glglue * glue = sogl_glue_instance(state);
+  const uint32_t contextid = SoGLCacheContextElement::get(state);
 
   if (cc_glglue_has_vertex_array(glue)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    cc_glglue_glDrawElements(glue, GL_LINES, n, GL_UNSIGNED_INT,
-                             (const GLvoid*) this->getLineIndices());
+    PRIVATE(this)->lineindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
     glBegin(GL_TRIANGLES);
     PRIVATE(this)->renderImmediate(glue,
-                                   PRIVATE(this)->lineindices.getArrayPtr(),
-                                   PRIVATE(this)->lineindices.getLength(),
+                                   this->getLineIndices(),
+                                   this->getNumLineIndices(),
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
@@ -383,19 +345,19 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
     enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   }
   const cc_glglue * glue = sogl_glue_instance(state);
+  const uint32_t contextid = SoGLCacheContextElement::get(state);
 
   if (cc_glglue_has_vertex_array(glue)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    cc_glglue_glDrawElements(glue, GL_POINTS, n, GL_UNSIGNED_INT,
-                             (const GLvoid*) this->getPointIndices());
+    PRIVATE(this)->pointindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
     glBegin(GL_POINTS);
     PRIVATE(this)->renderImmediate(glue,
-                                   PRIVATE(this)->pointindices.getArrayPtr(),
-                                   PRIVATE(this)->pointindices.getLength(),
+                                   this->getPointIndices(),
+                                   this->getNumPointIndices(),
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
@@ -418,6 +380,8 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
   }
   const SoPrimitiveVertex *vp[3] = { v0, v1, v2 };
+
+  int32_t triangleindices[3];
 
   for (int i = 0; i < 3; i++) {
     Vertex v;
@@ -464,7 +428,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       idx = PRIVATE(this)->vertexlist.getLength();
       PRIVATE(this)->vhash.put(v, idx);
       PRIVATE(this)->addVertex(v);
-      PRIVATE(this)->indices.append(idx);
+      triangleindices[i] = idx;
 
       // update texture coordinates for unit 1-n
       for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
@@ -481,9 +445,15 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       }
     }
     else {
-      PRIVATE(this)->indices.append(idx);
+      triangleindices[i] = idx;
     }
   }
+  if (PRIVATE(this)->triangleindexer == NULL) {
+    PRIVATE(this)->triangleindexer = new SoVertexArrayIndexer;
+  }
+  PRIVATE(this)->triangleindexer->addTriangle(triangleindices[0],
+                                              triangleindices[1],
+                                              triangleindices[2]);
 }
 
 void
@@ -495,6 +465,8 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
     PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
   }
   const SoPrimitiveVertex *vp[2] = { v0,v1 };
+
+  int32_t lineindices[2];
 
   for (int i = 0; i < 2; i++) {
     Vertex v;
@@ -540,7 +512,7 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
       idx = PRIVATE(this)->vertexlist.getLength();
       PRIVATE(this)->vhash.put(v, idx);
       PRIVATE(this)->addVertex(v);
-      PRIVATE(this)->lineindices.append(idx);
+      lineindices[i] = idx;
 
       // update texture coordinates for unit 1-n
       for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
@@ -557,9 +529,13 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
       }
     }
     else {
-      PRIVATE(this)->lineindices.append(idx);
+      lineindices[i] = idx;
     }
   }
+  if (PRIVATE(this)->lineindexer == NULL) {
+    PRIVATE(this)->lineindexer = new SoVertexArrayIndexer;
+  }
+  PRIVATE(this)->lineindexer->addLine(lineindices[0], lineindices[1]);
 }
 
 void
@@ -604,12 +580,16 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
     }
   }
 
+  if (PRIVATE(this)->pointindexer == NULL) {
+    PRIVATE(this)->pointindexer = new SoVertexArrayIndexer;
+  }
+
   int32_t idx;
   if (!PRIVATE(this)->vhash.get(v, idx)) {
     idx = PRIVATE(this)->vertexlist.getLength();
     PRIVATE(this)->vhash.put(v, idx);
     PRIVATE(this)->addVertex(v);
-    PRIVATE(this)->pointindices.append(idx);
+    PRIVATE(this)->pointindexer->addPoint(idx);
 
     // update texture coordinates for unit 1-n
     for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
@@ -626,7 +606,7 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
     }
   }
   else {
-    PRIVATE(this)->pointindices.append(idx);
+    PRIVATE(this)->pointindexer->addPoint(idx);
   }
 }
 
@@ -669,19 +649,21 @@ SoPrimitiveVertexCache::getColorArray(void) const
 int
 SoPrimitiveVertexCache::getNumIndices(void) const
 {
-  return PRIVATE(this)->indices.getLength();
+  return PRIVATE(this)->triangleindexer ? PRIVATE(this)->triangleindexer->getNumIndices() : 0;
 }
 
 const int32_t *
 SoPrimitiveVertexCache::getIndices(void) const
 {
-  return PRIVATE(this)->indices.getArrayPtr();
+  assert(PRIVATE(this)->triangleindexer);
+  return PRIVATE(this)->triangleindexer->getIndices();
 }
 
 int32_t
 SoPrimitiveVertexCache::getIndex(const int idx) const
 {
-  return PRIVATE(this)->indices[idx];
+  assert(PRIVATE(this)->triangleindexer);
+  return PRIVATE(this)->triangleindexer->getIndices()[idx];
 }
 
 SbBool
@@ -700,99 +682,28 @@ SoPrimitiveVertexCache::getMultiTextureCoordinateArray(const int unit) const
 int
 SoPrimitiveVertexCache::getNumLineIndices(void) const
 {
-  return PRIVATE(this)->lineindices.getLength();
+  return PRIVATE(this)->lineindexer ? PRIVATE(this)->lineindexer->getNumIndices() : 0;
 }
 
 int
 SoPrimitiveVertexCache::getNumPointIndices(void) const
 {
-  return PRIVATE(this)->pointindices.getLength();
+  return PRIVATE(this)->pointindexer ? PRIVATE(this)->pointindexer->getNumIndices() : 0;
 }
 
 
 const int32_t *
 SoPrimitiveVertexCache::getLineIndices(void) const
 {
-  return PRIVATE(this)->lineindices.getArrayPtr();
+  assert(PRIVATE(this)->lineindexer);
+  return PRIVATE(this)->lineindexer->getIndices();
 }
 
 const int32_t *
 SoPrimitiveVertexCache::getPointIndices(void) const
 {
-  return PRIVATE(this)->pointindices.getArrayPtr();
-}
-
-// sort an array of three integers
-static void sort3(int32_t * arr)
-{
-  // simple bubble-sort
-  int32_t tmp;
-  if (arr[1] < arr[0]) {
-    tmp = arr[0];
-    arr[0] = arr[1];
-    arr[1] = tmp;
-  }
-  if (arr[2] < arr[1]) {
-    tmp = arr[1];
-    arr[1] = arr[2];
-    arr[2] = tmp;
-  }
-  if (arr[1] < arr[0]) {
-    tmp = arr[0];
-    arr[0] = arr[1];
-    arr[1] = tmp;
-  }
-}
-
-// qsort callback used for sorting triangles based on vertex indices
-extern "C" {
-static int
-compare_triangle(const void * v0, const void * v1)
-{
-  int i;
-  int32_t * t0 = (int32_t*) v0;
-  int32_t * t1 = (int32_t*) v1;
-
-  int32_t ti0[3];
-  int32_t ti1[3];
-  for (i = 0; i < 3; i++) {
-    ti0[i] = t0[i];
-    ti1[i] = t1[i];
-  }
-  sort3(ti0);
-  sort3(ti1);
-
-  for (i = 0; i < 3; i++) {
-    int32_t diff = ti0[i] - ti1[i];
-    if (diff != 0) return diff;
-  }
-  return 0;
-}
-}
-
-// qsort callback used for sorting line segments based on vertex
-// indices
-extern "C" {
-static int
-compare_line_segment(const void * v0, const void * v1)
-{
-  int i;
-  int32_t * l0 = (int32_t*) v0;
-  int32_t * l1 = (int32_t*) v1;
-  int32_t li0[2];
-  int32_t li1[2];
-  
-  li0[0] = SbMin(l0[0], l0[1]);
-  li0[1] = SbMax(l0[0], l0[1]);
-  li1[0] = SbMin(l1[0], l1[1]);
-  li1[1] = SbMax(l1[0], l1[1]);
-
-  for (i = 0; i < 2; i++) {
-    int diff = li0[i] - li1[i];
-    if (diff) return diff;
-  }
-  return 0;
-}
+  assert(PRIVATE(this)->pointindexer);
+  return PRIVATE(this)->pointindexer->getIndices();
 }
 
 void
@@ -803,37 +714,18 @@ SoPrimitiveVertexCache::fit(void)
   PRIVATE(this)->texcoordlist.fit();
   PRIVATE(this)->bumpcoordlist.fit();
   PRIVATE(this)->rgbalist.fit();
-  PRIVATE(this)->indices.fit();
-  PRIVATE(this)->lineindices.fit();
-  PRIVATE(this)->pointindices.fit();
   PRIVATE(this)->vhash.clear();
 
-
-  // sort triangles based on vertex indices to get more hits in the
-  // GPU vertex cache. Not the optimal solution, but should work
-  // pretty well. Example: bunny.iv (~70000 triangles) went from 238
-  // fps with no sorting to 380 fps with sorting.
-  if (PRIVATE(this)->indices.getLength()) {
-    qsort((void*) PRIVATE(this)->indices.getArrayPtr(),
-          PRIVATE(this)->indices.getLength() / 3,
-          sizeof(int32_t) * 3,
-          compare_triangle);
-  }
-  
-  // sort lines as well
-  if (PRIVATE(this)->lineindices.getLength()) {
-    qsort((void*) PRIVATE(this)->lineindices.getArrayPtr(),
-          PRIVATE(this)->lineindices.getLength() / 2,
-          sizeof(int32_t) * 2,
-          compare_line_segment);
-  }
+  if (PRIVATE(this)->triangleindexer) PRIVATE(this)->triangleindexer->close();
+  if (PRIVATE(this)->lineindexer) PRIVATE(this)->lineindexer->close();
+  if (PRIVATE(this)->pointindexer) PRIVATE(this)->pointindexer->close();
 }
 
 void 
 SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
 {
   int numv = PRIVATE(this)->vertexlist.getLength();
-  int numtri = PRIVATE(this)->indices.getLength() / 3;
+  int numtri = PRIVATE(this)->triangleindexer->getNumIndices() / 3;
   if (numv == 0 || numtri == 0) return;
   
   SbPlane sortplane = SoViewVolumeElement::get(state).getPlane(0.0);
@@ -848,7 +740,7 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
     PRIVATE(this)->prevsortplane = sortplane;
     float * darray = PRIVATE(this)->deptharray;
     const SbVec3f * vptr = PRIVATE(this)->vertexlist.getArrayPtr();
-    int32_t * iptr = (int32_t*) PRIVATE(this)->indices.getArrayPtr();
+    int32_t * iptr = PRIVATE(this)->triangleindexer->getWriteableIndices();
     int i,j;
     for (i = 0; i < numtri; i++) {
       float acc = 0.0;
@@ -881,16 +773,6 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
         iptr[j*3] = itmp[0];
         iptr[j*3+1] = itmp[1];
         iptr[j*3+2] = itmp[2];
-      }
-    }
-    const uint32_t contextid = SoGLCacheContextElement::get(state);
-    const cc_glglue * glue = cc_glglue_instance((int) contextid);
- 
-    SoPrimitiveVertexCache_vboidx * vbo;
-    if (PRIVATE(this)->vbodict.get(contextid, vbo)) {
-      if (vbo->triangleindex) {
-        cc_glglue_glDeleteBuffers(glue, 1, &vbo->triangleindex);
-        vbo->triangleindex = 0;        
       }
     }
   } 
@@ -1006,59 +888,39 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                                     const SbBool texture, const SbBool * enabled,
                                     const int lastenabled)
 {
-  SoPrimitiveVertexCache_vboidx * vbo;
-  if (!this->vbodict.get(contextid, vbo)) {
-    vbo = new SoPrimitiveVertexCache_vboidx;
-    memset(vbo, 0, sizeof(SoPrimitiveVertexCache_vboidx));
-    (void) this->vbodict.put(contextid, vbo);
-  }
-
   int i;
   if (color) {
-    if (vbo->rgba == 0) {
-      cc_glglue_glGenBuffers(glue, 1, &vbo->rgba);
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->rgba);
-      cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                             this->rgbalist.getLength() * sizeof(uint8_t),
-                             this->rgbalist.getArrayPtr(),
-                             GL_STATIC_DRAW);
+    if (this->rgbavbo == NULL) {
+      this->rgbavbo = new SoVBO;
+      this->rgbavbo->setBufferData(this->rgbalist.getArrayPtr(), 
+                                   this->rgbalist.getLength() * sizeof(uint8_t));
     }
-    else {
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->rgba);
-    }
+    this->rgbavbo->bindBuffer(contextid);
     cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
   if (texture) {
-    if (vbo->texcoord0 == 0) {
-      cc_glglue_glGenBuffers(glue, 1, &vbo->texcoord0);
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->texcoord0);
-      cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                             this->texcoordlist.getLength()*4*sizeof(float),
-                             this->texcoordlist.getArrayPtr(),
-                             GL_STATIC_DRAW);
+    if (this->texcoord0vbo == NULL) {
+      this->texcoord0vbo = new SoVBO;
+      this->texcoord0vbo->setBufferData(this->texcoordlist.getArrayPtr(),
+                                        this->texcoordlist.getLength()*4*sizeof(float));
     }
-    else {
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->texcoord0);
-    }
-
+    this->texcoord0vbo->bindBuffer(contextid);
     cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
     for (i = 1; i <= lastenabled; i++) {
+      while (this->multitexvbo.getLength() <= i) {
+        this->multitexvbo.append(NULL);
+      }
       if (enabled[i]) {
-        if (vbo->multitex[i] == 0) {
-          cc_glglue_glGenBuffers(glue, 1, &vbo->multitex[i]);
-          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->multitex[i]);
-          cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                                 this->multitexcoords[i].getLength()*4*sizeof(float),
-                                 this->multitexcoords[i].getArrayPtr(),
-                                 GL_STATIC_DRAW);
+        if (this->multitexvbo[i] == NULL) {
+          SoVBO * vbo = new SoVBO;
+          vbo->setBufferData(this->multitexcoords[i].getArrayPtr(),
+                             this->multitexcoords[i].getLength()*4*sizeof(float));
+          this->multitexvbo[i] = vbo;
         }
-        else {
-          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->multitex[i]);
-        }
-
+        this->multitexvbo[i]->bindBuffer(contextid);
         cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
         cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0, NULL);
         cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -1066,48 +928,25 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
     }
   }
   if (normal) {
-    if (vbo->normal == 0) {
-      cc_glglue_glGenBuffers(glue, 1, &vbo->normal);
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->normal);
-      cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                             this->normallist.getLength()*3*sizeof(float),
-                             this->normallist.getArrayPtr(),
-                             GL_STATIC_DRAW);
+    if (this->normalvbo == NULL) {
+      this->normalvbo = new SoVBO;
+      this->normalvbo->setBufferData(this->normallist.getArrayPtr(),
+                                     this->normallist.getLength()*3*sizeof(float));
     }
-    else {
-      cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->normal);
-    }
-
+    this->normalvbo->bindBuffer(contextid);
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
 
-  if (vbo->triangleindex == 0) {
-    cc_glglue_glGenBuffers(glue, 1, &vbo->triangleindex);
-    cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
-    cc_glglue_glBufferData(glue, GL_ELEMENT_ARRAY_BUFFER,
-                           this->indices.getLength()*sizeof(int32_t),
-                           this->indices.getArrayPtr(),
-                           GL_STATIC_DRAW);
+  if (this->vertexvbo == NULL) {
+    this->vertexvbo = new SoVBO;
+    this->vertexvbo->setBufferData(this->vertexlist.getArrayPtr(),
+                                   this->vertexlist.getLength()*3*sizeof(float));
   }
-  else {
-    cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
-  }
-  if (vbo->vertex == 0) {
-    cc_glglue_glGenBuffers(glue, 1, &vbo->vertex);
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
-    cc_glglue_glBufferData(glue, GL_ARRAY_BUFFER,
-                           this->vertexlist.getLength()*3*sizeof(float),
-                           this->vertexlist.getArrayPtr(),
-                           GL_STATIC_DRAW);
-  }
-  else {
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);
-  }
+  this->vertexvbo->bindBuffer(contextid);
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
-
 
 void
 SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
@@ -1117,108 +956,6 @@ SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
 {
   this->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
-  cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0); // Reset VBO binding
-}
-
-unsigned long
-SoPrimitiveVertexCacheP::countVBOSize(const cc_glglue * glue,
-                                      const uint32_t contextid,
-                                      const SbBool color, const SbBool normal,
-                                      const SbBool texture, const SbBool * enabled,
-                                      const int lastenabled)
-{
-  unsigned long size = 0;
-  SoPrimitiveVertexCache_vboidx * vbo;
-  if (!this->vbodict.get(contextid, vbo)) {
-    vbo = new SoPrimitiveVertexCache_vboidx;
-    memset(vbo, 0, sizeof(SoPrimitiveVertexCache_vboidx));
-    (void) this->vbodict.put(contextid, vbo);
-  }
-
-  int i;
-  if (vbo->vertex == 0) {
-    size +=  this->vertexlist.getLength()*3*sizeof(float);
-  }
-  if (color) {
-    if (vbo->rgba == 0) {
-      size += this->rgbalist.getLength() * sizeof(uint8_t);
-    }
-  }
-  if (texture) {
-    if (vbo->texcoord0 == 0) {
-      size += this->texcoordlist.getLength()*4*sizeof(float);
-    }
-    for (i = 1; i <= lastenabled; i++) {
-      if (enabled[i]) {
-        if (vbo->multitex[i] == 0) {
-          size += this->multitexcoords[i].getLength()*4*sizeof(float);
-        }
-      }
-    }
-  }
-  if (normal) {
-    if (vbo->normal == 0) {
-      size += this->normallist.getLength()*3*sizeof(float);
-    }
-  }
-  if (vbo->triangleindex == 0) {
-    size += this->indices.getLength()*sizeof(int32_t);
-  }
-  return size;
-}
-
-void
-SoPrimitiveVertexCacheP::vbo_schedule(const uint32_t & key,
-                                      SoPrimitiveVertexCache_vboidx * const & value,
-                                      void * closure)
-{
-  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, value);
-}
-
-void
-SoPrimitiveVertexCacheP::vbo_delete(void * closure, uint32_t contextid)
-{
-  SoPrimitiveVertexCache_vboidx * vbo =
-    (SoPrimitiveVertexCache_vboidx *) closure;
-
-  const cc_glglue * glue = cc_glglue_instance((int)contextid);
-  if (vbo->triangleindex) {
-    cc_glglue_glDeleteBuffers(glue, 1, &vbo->triangleindex);
-  }
-  if (vbo->vertex) {
-    cc_glglue_glDeleteBuffers(glue, 1, &vbo->vertex);
-  }
-  if (vbo->normal) {
-    cc_glglue_glDeleteBuffers(glue, 1, &vbo->normal);
-  }
-  if (vbo->texcoord0) {
-    cc_glglue_glDeleteBuffers(glue, 1, &vbo->texcoord0);
-  }
-  if (vbo->rgba) {
-    cc_glglue_glDeleteBuffers(glue, 1, &vbo->rgba);
-  }
-
-  for (int i = 1; i < MAX_UNITS; i++) {
-    if (vbo->multitex[i]) {
-      cc_glglue_glDeleteBuffers(glue, 1, &vbo->multitex[i]);
-    }
-  }
-  delete vbo;
-}
-
-//
-// Callback from SoContextHandler
-//
-void 
-SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
-{
-  SoPrimitiveVertexCacheP * thisp = (SoPrimitiveVertexCacheP*) closure;
-
-  SoPrimitiveVertexCache_vboidx * tmp;
-  if (thisp->vbodict.get(context, tmp)) {
-    SoPrimitiveVertexCacheP::vbo_delete(tmp, context);
-    thisp->vbodict.remove(context);
-  }
 }
 
 void 
@@ -1269,7 +1006,4 @@ SoPrimitiveVertexCacheP::renderImmediate(const cc_glglue * glue,
   }
 }
 
-
-#undef MAX_UNITS
-#undef CACHE_HINT_LIMIT
 #undef PRIVATE
