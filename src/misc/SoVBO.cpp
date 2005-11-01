@@ -420,7 +420,10 @@ SoVBO::testGLPerformance(const uint32_t contextid)
 
   const cc_glglue * glue = cc_glglue_instance(contextid);
   if (cc_glglue_has_vertex_buffer_object(glue)) {
-    // create a regular grid with 64x64 points to test the performance
+    // create a regular grid with 64x64 points to test the
+    // performance. This size was chosen since it's fairly quick to
+    // render on most gfx cards (important to avoid that the
+    // application freezes up for too long while running this test).
     const int size = 64;
     const int half = size / 2;
     SbVec3f * vertexarray = new SbVec3f[size*size];
