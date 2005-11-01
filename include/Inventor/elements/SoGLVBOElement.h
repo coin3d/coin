@@ -29,7 +29,7 @@
 class SoVBO;
 class SoGLVBOElementP;
 
-class SoGLVBOElement : public SoElement {
+class COIN_DLL_API SoGLVBOElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLVBOElement);
