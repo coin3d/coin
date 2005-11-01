@@ -407,6 +407,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   // A check for fragment- and vertex-program support has already
   // been done in SoShape::shouldGLRender().
   //
+  const int n = cache->getNumIndices();
+  if (n == 0) return;
 
   const cc_glglue * glue = sogl_glue_instance(state);
   const SbColor spec = SoLazyElement::getSpecular(state);
@@ -499,7 +501,6 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
-  const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tptr = this->tangentlist.getArrayPtr();
 
@@ -575,6 +576,9 @@ soshape_bumprender::renderBump(SoState * state,
                                const SoPrimitiveVertexCache * cache,
                                SoLight * light, const SbMatrix & toobjectspace)
 {
+  const int n = cache->getNumIndices();
+  if (n == 0) return;
+
   this->initLight(light, toobjectspace);
 
   const cc_glglue * glue = sogl_glue_instance(state);
@@ -637,7 +641,6 @@ soshape_bumprender::renderBump(SoState * state,
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_DOT3_RGB);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 
-  const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tsptr = this->tangentlist.getArrayPtr();
 
@@ -750,6 +753,9 @@ void
 soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 {
   int i;
+  const int numi = cache->getNumIndices();
+  if (numi == 0) return;
+
 
   const int numv = cache->getNumVertices();
   const int32_t * idxptr = cache->getIndices();
@@ -763,7 +769,6 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
     this->tangentlist.append(SbVec3f(0.0f, 0.0f, 0.0f));
     this->tangentlist.append(SbVec3f(0.0f, 0.0f, 0.0f));
   }
-  const int numi = cache->getNumIndices();
 
   SbVec3f sTangent;
   SbVec3f tTangent;
