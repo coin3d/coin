@@ -3369,6 +3369,12 @@ main(int argc, char* argv[])
 
     20040831 mortene.
 
+    Update: I recently fixed a bug in soshape_primidata.cpp. Line
+    segments would sometimes get SoPointDetail pointers instead of
+    SoLineDetail pointers, so this bug is probably fixed now.
+   
+    20051103 pederb
+
 =====================================================================
 
 135 Elements used by <node>::doAction() functions not automatically
