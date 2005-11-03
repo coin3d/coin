@@ -1710,7 +1710,7 @@ coin_runtime_os(void)
 {
   /*
    * FIXME: this implementation should be replaced by something that
-   * does a runtime check. Kyrah suggested using sysctl() or uname()
+   * does a runtime check. kyrah suggested using sysctl() or uname()
    * (both part of the C runtime library) which sounds like a good
    * idea. pederb, 20051101
    *
