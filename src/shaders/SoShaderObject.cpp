@@ -453,10 +453,38 @@ SbBool
 SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glglue * glue)
 {
   if (this->owner->isVertexShader()) {
-    return SoVertexShader::isSupported(sourceType);    
+    // don't call this function. It's not context safe. pederb, 20051103
+    // return SoVertexShader::isSupported(sourceType);    
+
+    if (sourceType == SoShaderObject::ARB_PROGRAM) {
+      return cc_glglue_has_arb_vertex_program(glue);
+    }
+    else if (sourceType == SoShaderObject::GLSL_PROGRAM) {
+      // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
+      // handegar)
+      return cc_glglue_has_arb_shader_objects(glue);
+    }
+    // FIXME: Add support for detecting missing Cg support
+    // (20050427 handegar)
+    else if (sourceType == SoShaderObject::CG_PROGRAM) return TRUE;
+    return FALSE;
   }
   else {
-    return SoFragmentShader::isSupported(sourceType);
+    // don't call this function. It's not context safe. pederb, 20051103
+    // return SoFragmentShader::isSupported(sourceType);
+
+    if (sourceType == SoShaderObject::ARB_PROGRAM) {
+      return cc_glglue_has_arb_fragment_program(glue);
+    }
+    else if (sourceType == SoShaderObject::GLSL_PROGRAM) {    
+      // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
+      // handegar)
+      return cc_glglue_has_arb_shader_objects(glue);
+    } 
+    // FIXME: Add support for detecting missing Cg support (20050427
+    // handegar)
+    else if (sourceType == SoShaderObject::CG_PROGRAM) return TRUE;
+    return FALSE;
   }
 }
 
