@@ -69,6 +69,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
@@ -79,6 +80,7 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/C/glue/gl.h>
 #include <assert.h>
 #include <string.h>
 
@@ -258,8 +260,23 @@ translateWrap(const SoTexture3::Wrap wrap)
 void
 SoTexture3::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: consider sharing textures among contexts, pederb
   SoState * state = action->getState();
+
+  const cc_glglue * glue = cc_glglue_instance((uint32_t) SoGLCacheContextElement::get(state)); 
+  
+  if (!cc_glglue_has_3d_textures(glue)) {
+    static SbBool first = TRUE;
+    if (first) {
+      SoDebugError::postWarning("SoTexture3::GLRender",
+                                "The current OpenGL context does not support 3D textures "
+                                "(This warning message is only shown once, but "
+                                "there could be more cases of this in the "
+                                "scene graph.).");
+      first = FALSE;
+    }
+    return;
+  }
+
 
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
