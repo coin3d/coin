@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
+#include <float.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -184,6 +185,7 @@ SbBool
 SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & point)
 {
   if (this->needSetup) this->setupTolerance();
+
   // check if behind tolerance plane
   if (!this->tolPlane.isInHalfSpace(point)) return FALSE;
 
@@ -217,6 +219,15 @@ SbCylinderSectionProjector::setupTolerance(void)
 
   // find plane direction perpendicular to line
   this->planeDir = somept - ptonaxis;
+  if (this->planeDir.sqrLength() < FLT_EPSILON) {
+    // the cylinder axis is parallel to the view direction. This is a
+    // special case, and not really supported by the projector. Just
+    // create a tilted plane to make it possible to rotate the
+    // cylinder even for this case.
+    this->planeDir = this->viewVol.getViewUp() + 
+      this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);    
+  }
   this->planeDir.normalize();
   if (!this->intersectFront) {
     this->planeDir = -this->planeDir;
