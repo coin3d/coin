@@ -472,6 +472,10 @@ Now, for the list of known bugs in the core Coin library:
     UPDATE 20040804 mortene: my idea mentioned above for a fix had a
     fatal flaw, so this problem is still unresolved.
 
+    UPDATE 20051103 pederb: SoGLLineWidthElement now checks the 
+    supported OpenGL range, and clamps the line width to be inside 
+    that range. Bug seems to be fixed.
+
 =====================================================================
 
 036 This program will hit an assert if we interact with the
