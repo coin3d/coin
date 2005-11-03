@@ -119,9 +119,21 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   error.setDebugString("Coin read error: ");
   error.appendToDebugString(formatstr.getString());
   error.appendToDebugString("\n");
+  
   SbString s;
   in->getLocationString(s);
   error.appendToDebugString(s.getString());
+
+  // for some reason the getIVVersion() function is not const. We
+  // therefore need to make the SoInput cast here to be able to test
+  // for Inventor V1.0 files
+  if (((SoInput*)in)->getIVVersion() == 1.0f) {
+    error.appendToDebugString("\nThis operation might have failed due to limited "
+                              "support for old Inventor files. If this is the case, "
+                              "please get in touch with Systems in Motion "
+                              "at <coin-support@coin3d.org>, and we will "
+                              "rectify the situation.");
+  }
 
   if (SoReadError::callback != SoError::defaultHandlerCB) {
     SoReadError::callback(&error, SoReadError::callbackData);
