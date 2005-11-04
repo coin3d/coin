@@ -286,6 +286,9 @@ SoVRMLImageTexture::initClass(void) // static
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
   imagedata_maxage = 500;
 
+  SoType type = SoVRMLImageTexture::getClassTypeId();
+  SoRayPickAction::addMethod(type, SoNode::rayPickS);
+
 #ifdef COIN_THREADSAFE
   imagetexture_scheduler = cc_sched_construct(1);
   coin_atexit((coin_atexit_f*) imagetexture_cleanup, 0);

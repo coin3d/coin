@@ -136,6 +136,9 @@ void
 SoVRMLPixelTexture::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLPixelTexture, SO_VRML97_NODE_TYPE);
+
+  SoType type = SoVRMLPixelTexture::getClassTypeId();
+  SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }
 
 #define PRIVATE(obj) ((obj)->pimpl)
