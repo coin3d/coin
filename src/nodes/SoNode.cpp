@@ -1525,7 +1525,13 @@ init_action_methods(void)
   SoRayPickAction::addMethod(SoLOD::getClassTypeId(), SoNode::rayPickS);
   SoRayPickAction::addMethod(SoLevelOfDetail::getClassTypeId(), SoNode::rayPickS);
   SoRayPickAction::addMethod(SoShape::getClassTypeId(), SoNode::rayPickS);
-
+  SoRayPickAction::addMethod(SoTexture2::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoBumpMap::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoImage::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoSceneTexture2::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoSceneTextureCubeMap::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoTextureCubeMap::getClassTypeId(), SoNode::rayPickS);
+ 
   SoSearchAction::addMethod(SoNode::getClassTypeId(), SoNode::searchS);
   SoWriteAction::addMethod(SoNode::getClassTypeId(), SoNode::writeS);
 
