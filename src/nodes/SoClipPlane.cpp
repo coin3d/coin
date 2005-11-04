@@ -68,6 +68,27 @@
   }
   \endverbatim
 
+  Note that SoClipPlane is a state-changing appearance node, and as
+  such, it will only assert its effects under the current SoSeparator
+  node (as the SoSeparator pops the state stack when traversal returns
+  above it), as can be witnessed by loading this simple example file
+  into a Coin viewer:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     ClipPlane { }
+     Cube { }
+  }
+  
+  Separator {
+     Translation { translation -3 0 0 }
+     Cube { }
+  }
+  \endverbatim
+
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     ClipPlane {
