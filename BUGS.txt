@@ -7,7 +7,7 @@ For the Coin satellite libraries, extensions and example programs:
 
         simage/BUGS.txt
         SoQt/BUGS.txt
-        SoQt/src/Inventor/Qt/common/BUGS.txt
+        So[Qt|Xt|Win]/src/Inventor/Qt/common/BUGS.txt
         SoWin/BUGS.txt
         SoXt/BUGS.txt
         SIMVoleon/BUGS.txt
@@ -4952,35 +4952,5 @@ Text2 {
     Not particularly high priority item.
 
     20051021 mortene.
-
-=====================================================================
-
-209 Bug in SoRotateCylindricalDragger.
-
-    Loading the model below into the
-    SoGuiExamples/components/examinerviewer, then start dragging the
-    cylinder _before_ moving the camera, a stream of warnings about
-    invalid geometry operations will fall out.
-
-    -----8<-------------------- [snip] -----------------------------
-    #Inventor V2.1 ascii
-
-    RotationXYZ { angle 1.5707964  axis X }
-    RotateCylindricalDragger { }
-    -----8<-------------------- [snip] -----------------------------
-
-    Setting a breakpoint on the first warning, this is the relevant
-    parts of the callstack:
-
-        #8  0x401aa8d6 in SbVec3f::normalize (this=0x80cb2bc) at [...]/src/base/SbVec3f.cpp:365
-        #9  0x406afd4c in SbCylinderSectionProjector::setupTolerance (this=0x80cb128) at [...]/src/projectors/SbCylinderSectionProjector.cpp:220
-        #10 0x406aea24 in SbCylinderPlaneProjector::project (this=0x80cb128, point=@0xbfffe600) at [...]/src/projectors/SbCylinderPlaneProjector.cpp:74
-        #11 0x40259731 in SoRotateCylindricalDragger::drag (this=0x80c8e58) at [...]/src/draggers/SoRotateCylindricalDragger.cpp:374
-        #12 0x40259cce in SoRotateCylindricalDragger::motionCB (f=0x0, d=0x80c8e58) at [...]/src/draggers/SoRotateCylindricalDragger.cpp:319
-        #13 0x40541ce5 in SoCallbackList::invokeCallbacks (this=0x80c96e4, callbackdata=0x80c8e58) at [...]/src/lists/SoCallbackList.cpp:136
-        #14 0x4023c73f in SoDragger::handleEvent (this=0x80c8e58, action=0x80d4bb0) at [...]/src/draggers/SoDragger.cpp:1649
-        #15 0x405d8509 in SoNode::handleEventS (action=0x80d4bb0, node=0x80c8e58) at [...]/src/nodes/SoNode.cpp:1041
-
-    20051028 mortene.
 
 =====================================================================
