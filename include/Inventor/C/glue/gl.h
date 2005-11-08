@@ -576,6 +576,29 @@ COIN_DLL_API SbBool cc_glglue_context_can_render_to_texture(void * ctx);
 
 /* ********************************************************************** */
 
+/* Interface for setting external offscreen renderer functionality:
+ * Makes it possible to provide an external implementation for doing
+ * offscreen rendering (such as accelerated rendering into a hidden
+ * window). This is useful to avoid having to do slow software
+ * rendering when pBuffers cannot be used (not available on the
+ * system, buggy implementation, mismatch of onscreen context and
+ * offscreen context).
+ */
+
+typedef void * cc_glglue_offscreen_data;
+
+typedef struct cc_glglue_offscreen_cb_functions {
+    cc_glglue_offscreen_data (*create_offscreen)(unsigned int width, unsigned int height);
+    SbBool (*make_current)(cc_glglue_offscreen_data context);
+    void (*reinstate_previous)(cc_glglue_offscreen_data context);
+    void (*destruct)(cc_glglue_offscreen_data context);
+} cc_glglue_offscreen_cb_functions; 
+
+/* Set callback functions for external offscreen rendering. Pass NULL 
+   to restore default, built-in offscreen rendering. 
+ */
+COIN_DLL_API void cc_glglue_context_set_offscreen_cb_functions(cc_glglue_offscreen_cb_functions* p);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

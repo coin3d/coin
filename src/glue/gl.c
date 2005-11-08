@@ -3972,9 +3972,22 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
   }
 */
 
+/* offscreen rendering callback handling */
+
+static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
+
+void 
+cc_glglue_context_set_offscreen_cb_functions(cc_glglue_offscreen_cb_functions* p)
+{
+  offscreen_cb = p;
+}
+
 void *
 cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
+  if (offscreen_cb && offscreen_cb->create_offscreen) {
+    return (*offscreen_cb->create_offscreen)(width, height);
+  } else {
 #ifdef HAVE_GLX
   return glxglue_context_create_offscreen(width, height);
 #elif defined(HAVE_AGL)
@@ -3985,11 +3998,15 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
   assert(FALSE && "unimplemented");
   return NULL;
 #endif
+  }
 }
 
 SbBool
 cc_glglue_context_make_current(void * ctx)
 {
+  if (offscreen_cb && offscreen_cb->make_current) {
+    return (*offscreen_cb->make_current)(ctx);
+  } else {
 #ifdef HAVE_GLX
   return glxglue_context_make_current(ctx);
 #elif defined(HAVE_AGL)
@@ -4000,6 +4017,7 @@ cc_glglue_context_make_current(void * ctx)
   assert(FALSE && "unimplemented");
   return FALSE;
 #endif
+  }
 }
 
 void
@@ -4016,6 +4034,9 @@ cc_glglue_context_reinstate_previous(void * ctx)
 
      20040621 mortene. */
 
+  if (offscreen_cb && offscreen_cb->reinstate_previous) {
+    (*offscreen_cb->reinstate_previous)(ctx);
+  } else { 
 #ifdef HAVE_GLX
   glxglue_context_reinstate_previous(ctx);
 #elif defined(HAVE_AGL)
@@ -4025,11 +4046,15 @@ cc_glglue_context_reinstate_previous(void * ctx)
 #else
   assert(FALSE && "unimplemented");
 #endif
+  }
 }
 
 void
 cc_glglue_context_destruct(void * ctx)
 {
+  if (offscreen_cb && offscreen_cb->destruct) {
+    (*offscreen_cb->destruct)(ctx);
+  } else { 
 #ifdef HAVE_GLX
   glxglue_context_destruct(ctx);
 #elif defined(HAVE_AGL)
@@ -4039,6 +4064,7 @@ cc_glglue_context_destruct(void * ctx)
 #else
   assert(FALSE && "unimplemented");
 #endif
+  }
 }
 
 /*!
@@ -4223,28 +4249,35 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 SbBool
 cc_glglue_context_can_render_to_texture(void * ctx)
 {
+  /* No render-to-texture support in external offscreen rendering. */
+  if (offscreen_cb) return FALSE;
+
 #if defined(HAVE_AGL)
   return aglglue_context_can_render_to_texture(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_can_render_to_texture(ctx);
-#endif
+#else
   /* GLX */
   return FALSE; 
+#endif
 }
 
 
 void
 cc_glglue_context_bind_pbuffer(void * ctx)
 {
-  /* FIXME: Implement for GLX.  The problem is that in GLX, there is
-     no way to bind a PBuffer as a texture (i.e. there is no
-     equivalent to the aglTexImagePBuffer() and wglBindTexImageARB()
-     calls).  kyrah 20031123. */
+  /* No render-to-texture support in external offscreen rendering. */
+  if (offscreen_cb) return;
+
 #if defined(HAVE_AGL)
   aglglue_context_bind_pbuffer(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_bind_pbuffer(ctx);
 #else
+  /* FIXME: Implement for GLX.  The problem is that in GLX, there is
+     no way to bind a PBuffer as a texture (i.e. there is no
+     equivalent to the aglTexImagePBuffer() and wglBindTexImageARB()
+     calls).  kyrah 20031123. */
   assert(FALSE && "unimplemented");
 #endif
 }
@@ -4252,12 +4285,15 @@ cc_glglue_context_bind_pbuffer(void * ctx)
 void
 cc_glglue_context_release_pbuffer(void * ctx)
 {
-  /* FIXME: Implement for GLX. kyrah 20031123. */
+  /* No render-to-texture support in external offscreen rendering. */
+  if (offscreen_cb) return;
+
 #if defined(HAVE_AGL)
   aglglue_context_release_pbuffer(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_release_pbuffer(ctx);
 #else
+  /* FIXME: Implement for GLX. kyrah 20031123. */
   assert(FALSE && "unimplemented");
 #endif
 }
@@ -4265,12 +4301,15 @@ cc_glglue_context_release_pbuffer(void * ctx)
 SbBool
 cc_glglue_context_pbuffer_is_bound(void * ctx)
 {
-  /* FIXME: Implement for GLX. kyrah 20031123. */
+  /* No render-to-texture support in external offscreen rendering. */
+  if (offscreen_cb) return FALSE;
+
 #if defined(HAVE_AGL)
   return aglglue_context_pbuffer_is_bound(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_pbuffer_is_bound(ctx);
 #else
+  /* FIXME: Implement for GLX. kyrah 20031123. */
   assert(FALSE && "unimplemented");
   return FALSE;
 #endif
