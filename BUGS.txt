@@ -3514,9 +3514,10 @@ incremented during the copy, but never decremented :(
     e.g. SoOffscreenRenderer will fail if different window system GL
     bindings are used in libCoin vs the main windows system binding.
 
-    We run into this on Mac OS X, where Sc21 uses NSOpenGLContext, and
-    libCoin attempts to check (and restore) the current context with
-    aglGetCurrentContext().
+    [We used to run into this on Mac OS X, where Sc21 uses
+    NSOpenGLContext, and libCoin attempts to check (and restore) the
+    current context with aglGetCurrentContext(), but this is now
+    fixed, see update below.]
 
     We can in theory also get the same problem for other combinations,
     e.g. SoXt for a X11/GLX binding for the application on a Windows
@@ -3528,7 +3529,7 @@ incremented during the copy, but never decremented :(
     problem areas and issues to cover:
 
         Cases in which this has potential of breaking Coin:
-        o Offscreen rendering w/Cocoa
+        o Offscreen rendering w/Cocoa [fixed]
         o Offscreen rendering using a window system layer on top of
           the native system (as Morten also pointed out), e.g. SoXt
           under Windows.
@@ -3575,6 +3576,15 @@ incremented during the copy, but never decremented :(
         just that you wouldn't be able to translate makeCurrent() into
         Lock() calls without pairing every Lock() up with Unlock() of
         the previous context...
+
+    Update 20051108 kyrah:
+
+        Part of this problem (offscreen rendering in Sc21) has 
+        been fixed by adding a callback interface for providing an 
+        external offscreen rendering implementation (see gl.c: 
+        cc_glglue_context_set_offscreen_cb_functions()). Note that 
+        the other issues mentioned above ("stacked" offscreen 
+        renderers, GLX-on-Windows) still remain to be resolved.
 
 =====================================================================
 
