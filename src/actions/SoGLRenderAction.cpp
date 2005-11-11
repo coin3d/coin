@@ -938,8 +938,11 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     return;
   }
 
-  // FIXME: this is for testing if it's a good idea to always apply an
-  // SoGetBoundingBoxAction before rendering. pederb, 2005-05-20
+  // If the environment variable COIN_GLBBOX is set to 1, apply a bbox
+  // action before rendering.  This will make sure bounding box caches
+  // are updated (needed for view frustum culling). The default
+  // SoQt/SoWin/SoXt viewers will also apply a SoGetBoundingBoxAction
+  // so we don't do this by default yet.
   if (COIN_GLBBOX) {
     THIS->bboxaction->apply(node);
   }
@@ -1306,9 +1309,9 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
   
   Sets the strategy used for sorting transparent objects.
 
-  The \e CUSTOM_CALLBACK strategy enabled the user to supply a
+  The \e CUSTOM_CALLBACK strategy enables the user to supply a
   callback which is called for each transparent shape. This strategy
-  can be used if the built in sorting strategies isn't sufficient.
+  can be used if the built in sorting strategies aren't sufficient.
 
   The callback should return a floating point value to be used when
   sorting the objects in Coin. This floating point value is
