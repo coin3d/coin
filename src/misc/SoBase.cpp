@@ -1293,6 +1293,13 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     out->write(USE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
     out->write(writename.getString());
+
+    if (debug_writerefs()) {
+      SbString tmp;
+      tmp.sprintf(" # writeref: %d\n",
+                  SoWriterefCounter::instance(out)->getWriteref(this));
+      out->write(tmp.getString());
+    }
   }
   else {
     if (name.getLength() || multiref) {
@@ -1334,6 +1341,12 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
     else {
       out->write(" {");
+      if (debug_writerefs()) {
+        SbString tmp;
+        tmp.sprintf(" # writeref: %d\n",
+                    SoWriterefCounter::instance(out)->getWriteref(this));
+        out->write(tmp.getString());
+      }
       out->write(END_OF_LINE);
       out->incrementIndent();
     }
