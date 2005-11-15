@@ -200,6 +200,8 @@
 #include <Inventor/nodes/SoTextureScalePolicy.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -1215,13 +1217,42 @@ SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
 
+  SoNode * node = this;
+
+  SoProtoInstance * proto = SoProtoInstance::findProtoInstance(this);
+  if (proto) { node = proto; }
+
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    this->addWriteReference(out, FALSE);
+    node->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    if (this->writeHeader(out, FALSE, FALSE)) return;
-    this->getFieldData()->write(out, this);
-    this->writeFooter(out);
+    if (node->writeHeader(out, FALSE, FALSE)) return;
+
+    // check for special case where we actually have to write out an
+    // SoEngineOutput "field". An engine output might be connected via
+    // an IS reference in a PROTO, and we then need to write back this
+    // IS reference when exporting the VRML file.
+    SoProto * proto = out->getCurrentProto();    
+    if (proto && node->isOfType(SoNodeEngine::getClassTypeId())) {
+      SoEngineOutputList l;
+      const int num = ((SoNodeEngine*)node)->getOutputs(l);
+      
+      for (int i = 0; i < num; i++) {
+        SbName name;
+        if (((SoNodeEngine*)node)->getOutputName(l[i], name)) {
+          SbName pname = proto->findISReference(node, name);
+          if (pname.getLength()) {
+            out->indent();
+            out->write(name.getString());
+            out->write(" IS ");
+            out->write(pname.getString());
+            out->write("\n");
+          }
+        }
+      }
+    }
+    node->getFieldData()->write(out, node);
+    node->writeFooter(out);
   }
   else assert(0 && "unknown stage");
 }

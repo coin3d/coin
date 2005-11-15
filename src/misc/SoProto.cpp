@@ -95,6 +95,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include "../io/SoWriterefCounter.h"
 
 // *************************************************************************
 
@@ -397,6 +398,17 @@ SoProto::destroy(void)
   SoBase::destroy();
 }
 
+static SbBool
+debug_writerefs(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
 // doc in parent
 void
 SoProto::write(SoWriteAction * action)
@@ -409,12 +421,22 @@ SoProto::write(SoWriteAction * action)
     if (PRIVATE(this)->defroot && !PRIVATE(this)->externurl) {
       this->writeDefinition(action);
     }
+    this->writeInterface(out);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    out->indent();
+    int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
+
     out->write(PRIVATE(this)->externurl ? "EXTERNPROTO " : "PROTO ");
     out->write(PRIVATE(this)->name.getString());
-    out->write(" [\n");
+    if (debug_writerefs()) {
+      SbString tmp;
+      tmp.sprintf(" [ # writeref: %d\n",
+                  writerefcount);
+      out->write(tmp.getString());
+    }
+    else {
+      out->write(" [\n");
+    }
     out->incrementIndent();
 
     this->writeInterface(out);
@@ -436,8 +458,10 @@ SoProto::write(SoWriteAction * action)
       out->resolveRoutes();
       out->decrementIndent();
       out->indent();
-      out->write("}\n");
+      out->write("}");
     }
+    writerefcount--;
+    SoWriterefCounter::instance(out)->setWriteref(this, writerefcount);
   }
   else assert(0 && "unknown stage");
 
@@ -452,58 +476,76 @@ SoProto::writeInterface(SoOutput * out)
 {
   const SoFieldData * fd = PRIVATE(this)->fielddata;
 
-  for (int i = 0; i < fd->getNumFields(); i++) {
-    out->indent();
-    SoField * f = fd->getField(this, i);
-    SoType t = f->getTypeId();
-    switch (f->getFieldType()) {
-    case SoField::NORMAL_FIELD:
-      out->write("field ");
-      out->write(t.getName().getString());
-      if (PRIVATE(this)->externurl) {
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    for (int i = 0; i < fd->getNumFields(); i++) {
+      SoField * f = fd->getField(this, i);
+      switch (f->getFieldType()) {
+      case SoField::NORMAL_FIELD:
+      case SoField::EXPOSED_FIELD:
+        if (!PRIVATE(this)->externurl) {
+          SbBool fieldwasdefault = f->isDefault();
+          if (fieldwasdefault) f->setDefault(FALSE);
+          f->write(out, fd->getFieldName(i));
+          if (fieldwasdefault) f->setDefault(TRUE);
+        }
+        break;
+      }
+    }
+  }
+  else {
+    for (int i = 0; i < fd->getNumFields(); i++) {
+      out->indent();
+      SoField * f = fd->getField(this, i);
+      SoType t = f->getTypeId();
+      switch (f->getFieldType()) {
+      case SoField::NORMAL_FIELD:
+        out->write("field ");
+        out->write(t.getName().getString());
+        if (PRIVATE(this)->externurl) {
+          out->write(' ');
+          out->write(fd->getFieldName(i).getString());
+          out->write("\n");
+        }
+        else {
+          // field values are tagged as default for proto interface instances,
+          // but needs to be written to file anyway -- 20040115 larsa
+          SbBool fieldwasdefault = f->isDefault();
+          if ( fieldwasdefault ) f->setDefault(FALSE);
+          f->write(out, fd->getFieldName(i));
+          if ( fieldwasdefault ) f->setDefault(TRUE);
+        }
+        break;
+      case SoField::EXPOSED_FIELD:
+        out->write("exposedField ");
+        out->write(t.getName().getString());
+        if (PRIVATE(this)->externurl) {
+          out->write(' ');
+          out->write(fd->getFieldName(i).getString());
+          out->write("\n");
+        }
+        else {
+          SbBool fieldwasdefault = f->isDefault();
+          if ( fieldwasdefault ) f->setDefault(FALSE);
+          f->write(out, fd->getFieldName(i));
+          if ( fieldwasdefault ) f->setDefault(TRUE);
+        }
+        break;
+      case SoField::EVENTIN_FIELD:
+        out->write("eventIn ");
+        out->write(t.getName().getString());
         out->write(' ');
         out->write(fd->getFieldName(i).getString());
-        out->write("\n");
-      }
-      else {
-        // field values are tagged as default for proto interface instances,
-        // but needs to be written to file anyway -- 20040115 larsa
-        SbBool fieldwasdefault = f->isDefault();
-        if ( fieldwasdefault ) f->setDefault(FALSE);
-        f->write(out, fd->getFieldName(i));
-        if ( fieldwasdefault ) f->setDefault(TRUE);
-      }
-      break;
-    case SoField::EXPOSED_FIELD:
-      out->write("exposedField ");
-      out->write(t.getName().getString());
-      if (PRIVATE(this)->externurl) {
+        break;
+      case SoField::EVENTOUT_FIELD:
+        out->write("eventOut ");
+        out->write(t.getName().getString());
         out->write(' ');
         out->write(fd->getFieldName(i).getString());
-        out->write("\n");
+        break;
+      default:
+        assert(0 && "invalid field type");
+        break;
       }
-      else {
-        SbBool fieldwasdefault = f->isDefault();
-        if ( fieldwasdefault ) f->setDefault(FALSE);
-        f->write(out, fd->getFieldName(i));
-        if ( fieldwasdefault ) f->setDefault(TRUE);
-      }
-      break;
-    case SoField::EVENTIN_FIELD:
-      out->write("eventIn ");
-      out->write(t.getName().getString());
-      out->write(' ');
-      out->write(fd->getFieldName(i).getString());
-      break;
-    case SoField::EVENTOUT_FIELD:
-      out->write("eventOut ");
-      out->write(t.getName().getString());
-      out->write(' ');
-      out->write(fd->getFieldName(i).getString());
-      break;
-    default:
-      assert(0 && "invalid field type");
-      break;
     }
   }
   return TRUE;
@@ -949,13 +991,23 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         // is to have to locate the PROTO instance object yourself, and
         // modify the fields on it directly - 20040115 larsa
         SbBool srcisdefault = srcfield->isDefault();
+        srcfield->setDefault(FALSE);
         dstfield->connectFrom(srcfield);
+#if 1 // start of problematic code
+        // this piece of code causes problems when writing PROTO
+        // instances, since the PROTO instance is counted once for
+        // each IS connection. The code is enabled for now, but I'll
+        // investigate more if this bidirectional connection is really
+        // necessary and if we should handle this case when counting
+        // write references. pederb, 2005-11-15
+
         // propagate value immediately, before setting up reverse connection
         dstfield->evaluate();
         srcfield->connectFrom(dstfield, FALSE, TRUE);
         // propagate value immediately, so we can tag field as default
         srcfield->evaluate();
         if ( srcisdefault ) srcfield->setDefault(TRUE);
+#endif // end of problemetic code
       }
     }
     else {

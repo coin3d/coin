@@ -254,6 +254,7 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
       cp->copyFrom(*f);
       cp->fixCopy(TRUE);
     }
+    cp->setFieldType(f->getFieldType());
     cp->setDefault(f->isDefault());
   }
   SoFieldContainer::copyDone();
