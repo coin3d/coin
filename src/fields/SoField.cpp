@@ -237,8 +237,10 @@ is_vrml2_field(const SoField * f)
   SoFieldContainer * fc = f->getContainer();
   // test fc to support fields with no container
   if (fc && fc->isOfType(SoNode::getClassTypeId())) {
+    if (fc->isOfType(SoProtoInstance::getClassTypeId())) return TRUE;
     if (((SoNode*)fc)->getNodeType() & SoNode::VRML2) return TRUE;
   }
+
   return FALSE;
 }
 
@@ -1535,9 +1537,10 @@ SoField::shouldWrite(void) const
                          finfo.getString(), this->isDefault(),
                          this->isIgnored(), this->isConnected());
 #endif // debug
-
+  
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
+
   if (this->isConnected()) {
     SoFieldContainer * thecontainer = this->getContainer();
     if ( thecontainer != NULL &&
@@ -1911,8 +1914,9 @@ SoField::write(SoOutput * out, const SbName & name) const
       // connected
       if (this->isDefault()) return;
     }
-    // never write eventIn fields
-    if (this->getFieldType() == SoField::EVENTIN_FIELD) return;
+    // never write eventIn or eventOut fields
+    if ((this->getFieldType() == SoField::EVENTIN_FIELD) ||
+        (this->getFieldType() == SoField::EVENTOUT_FIELD)) return;
   }
   
   // ASCII write.
