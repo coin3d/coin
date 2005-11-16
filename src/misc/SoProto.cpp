@@ -245,6 +245,7 @@ SoProto::initClass(void)
                                     SbName("SoProto"), NULL,
                                     SoNode::nextActionMethodIndex++);
   protolist = new SbList<SoProto*>;
+
   cc_coin_atexit((coin_atexit_f*) soproto_cleanup);
   // this will set a default callback
   SoProto::setFetchExternProtoCallback(NULL, NULL);
@@ -398,17 +399,6 @@ SoProto::destroy(void)
   SoBase::destroy();
 }
 
-static SbBool
-debug_writerefs(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
-    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
-  }
-  return dbg;
-}
-
 // doc in parent
 void
 SoProto::write(SoWriteAction * action)
@@ -428,7 +418,7 @@ SoProto::write(SoWriteAction * action)
 
     out->write(PRIVATE(this)->externurl ? "EXTERNPROTO " : "PROTO ");
     out->write(PRIVATE(this)->name.getString());
-    if (debug_writerefs()) {
+    if (SoWriterefCounter::debugWriterefs()) {
       SbString tmp;
       tmp.sprintf(" [ # writeref: %d\n",
                   writerefcount);
@@ -1000,7 +990,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         // investigate more if this bidirectional connection is really
         // necessary and if we should handle this case when counting
         // write references. pederb, 2005-11-15
-
+        
         // propagate value immediately, before setting up reverse connection
         dstfield->evaluate();
         srcfield->connectFrom(dstfield, FALSE, TRUE);

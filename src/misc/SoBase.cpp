@@ -245,20 +245,6 @@ uint32_t SoBase::writecounter = 0;
 
 /**********************************************************************/
 
-
-static SbBool
-debug_writerefs(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
-    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
-  }
-  return dbg;
-}
-
-/**********************************************************************/
-
 // This can be any "magic" bitpattern of 4 bits which seems unlikely
 // to be randomly assigned to a memory byte upon destruction. I chose
 // "1101".
@@ -992,7 +978,7 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
   int refcount = SoWriterefCounter::instance(out)->getWriteref(this);
 
 #if COIN_DEBUG
-  if (debug_writerefs()) {
+  if (SoWriterefCounter::debugWriterefs()) {
     SoDebugError::postInfo("SoBase::addWriteReference",
                            "%p/%s/'%s': %d -> %d",
                            this, this->getTypeId().getName().getString(),
@@ -1294,7 +1280,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     if (!out->isBinary()) out->write(' ');
     out->write(writename.getString());
 
-    if (debug_writerefs()) {
+    if (SoWriterefCounter::debugWriterefs()) {
       SbString tmp;
       tmp.sprintf(" # writeref: %d\n",
                   SoWriterefCounter::instance(out)->getWriteref(this));
@@ -1341,7 +1327,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
     else {
       out->write(" {");
-      if (debug_writerefs()) {
+      if (SoWriterefCounter::debugWriterefs()) {
         SbString tmp;
         tmp.sprintf(" # writeref: %d\n",
                     SoWriterefCounter::instance(out)->getWriteref(this));
@@ -1355,7 +1341,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
   int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
   
 #if COIN_DEBUG
-  if (debug_writerefs()) {
+  if (SoWriterefCounter::debugWriterefs()) {
     SoDebugError::postInfo("SoBase::writeHeader",
                            "%p/%s/'%s': %d -> %d",
                            this,
