@@ -37,6 +37,19 @@
   will be split into several small subtextures before the geometry
   using the texture is rendered.
 
+  Setting SoTextureScalePolicy::policy to
+  SoTextureScalePolicy::FRACTURE will also cause the internal texture
+  handling unit in Coin to automatically downsample the individual
+  subtextures to not use more graphics card memory than necessary to
+  cover the current screen size of the texture.
+
+  These two aspects of SoTextureScalePolicy::FRACTURE rendering
+  together, subtexture fracturing and automatic downsampling, makes it
+  possible to have textures with almost unlimited size. The only real
+  limit is the amount of memory on the system, since the entire
+  texture must fit into CPU memory.
+
+
   The SoTextureScalePolicy::FRACTURE policy is also very handy for
   using the Coin library's built-in handling of non-power-of-2
   textures. This will then be done completely transparent to the
@@ -115,33 +128,39 @@
   \var SoTextureScalePolicy::Policy SoTextureScalePolicy::FRACTURE
 
   Splits the texture into several subtextures, and clips the geometry
-  into each subtexture. This makes it possible to have textures with
-  almost unlimited size (the only real limit is the amount on memory on
-  the system, since the entire texture most fit into memory).
+  into each subtexture. Also automatically downsamples the subtextures
+  to not use more graphics card memory than necessary versus the
+  current screen size of the texture.
 
-  Be aware that the rendering is quite slow if you have lots of
-  triangles.
+  These two features makes it possible to have textures with almost
+  unlimited size. The only real limit is the amount of memory on the
+  system, since the entire texture must fit into CPU memory.
+
+  Be aware that the rendering is quite slow with this mode if the
+  texture(s) will be mapped onto lots of polygon primitives.
 */
 
 /*!
   \var SoSFEnum SoTextureScalePolicy::policy
 
   The policy setting. Default value is USE_TEXTURE_QUALITY.
-  USE_TEXTURE_QUALITY means that Complexity::textureQuality will be
+
+  USE_TEXTURE_QUALITY means that SoComplexity::textureQuality will be
   used to decide if the texture should be scaled up or down.
-  textureQuality >= 0.7 means scale up, while < 0.7 means scale
-  down. Textures smaller than 256 pixels are never scaled down since
-  you lose too much information.
+  SoComplexity::textureQuality >= 0.7 means scale up, while < 0.7
+  means scale down. Textures smaller than 256 pixels are never scaled
+  down since you lose too much information.
 */
 
 /*!
   \var SoSFFloat SoTextureScalePolicy::quality
   
-  The texture scale/resize quality. Default value is 0.5.  This field
-  can be used to force Coin to use a lower quality (but much faster)
-  image resize function.  Currently, if you set this field to a value
-  < 0.5, a low quality resize function will be used, otherwise a high
-  quality (but slow) function will be used.
+  The texture scale/resize quality. Default value is 0.5.
+
+  This field can be used to force Coin to use a lower quality (but
+  much faster) image resize function.  Currently, if you set this
+  field to a value < 0.5, a low quality resize function will be used,
+  otherwise a high quality (but slow) function will be used.
 */
 
 // *************************************************************************
