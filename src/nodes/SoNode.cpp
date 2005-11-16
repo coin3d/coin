@@ -1333,13 +1333,7 @@ SoNode::getNodeId(void) const
   return this->uniqueId;
 }
 
-// Note that this documentation will also be used for all subclasses
-// which reimplements the method, so keep the doc "generic enough".
-/*!
-  This method is called from write() if the actual writing pass of the
-  write action is taking place. It dumps the node to the given \a out
-  output stream.
-*/
+// Documentation in superclass.
 void
 SoNode::writeInstance(SoOutput * out)
 {

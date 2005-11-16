@@ -626,10 +626,24 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 }
 
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Writes all the fields contained in this instance to the output stream
   within \a out.
- */
+
+  This method is solely called from the write methods of fields.
+
+  Either from SoField if the write is done because of a field-to-field
+  connection, or from one of the fields which may actually write
+  SoFieldContainer instances, i.e. SoSFNode, SoMFNode, SoSFEngine,
+  SoMFEngine, SoSFPath and SoMFPath.
+
+  This method, in addition to the ordinary write() method of SoNode,
+  needs to be present since the fields don't have a write action
+  instance in their writeValue() method, and writeInstance() will
+  create a new SoWriteAction and call continueToApply() on it.
+*/
 void
 SoFieldContainer::writeInstance(SoOutput * out)
 {
