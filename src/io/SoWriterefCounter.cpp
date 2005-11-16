@@ -586,5 +586,22 @@ SoWriterefCounter::removeSoBase2IdRef(const SoBase * base)
   PRIVATE(this)->sobase2id->remove(base);
 }
 
+/*!
+  Returns TRUE if the user wants extra debugging information regarding
+  writerefs (COIN_DBUG_WRITEREFS=1)
+*/
+SbBool
+SoWriterefCounter::debugWriterefs(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
+/**********************************************************************/
+
 
 #undef PRIVATE

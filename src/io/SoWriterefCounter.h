@@ -71,6 +71,8 @@ public:
   void setReference(const SoBase * base, int refid);
   void removeSoBase2IdRef(const SoBase * base);
 
+  static SbBool debugWriterefs(void);
+
 protected:
   SoWriterefCounter(SoOutput * out, SoOutput * copyfrom);
   ~SoWriterefCounter();
