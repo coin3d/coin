@@ -402,7 +402,7 @@ SoBase::destroy(void)
   SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
 #endif // debug
 
-  // Sjølmord.
+  // Harakiri
   delete this;
 
 #if COIN_DEBUG && 0 // debug
