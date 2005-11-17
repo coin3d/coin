@@ -28,20 +28,104 @@
 
   Only certain elements can be overridden.
 
-  Coin has an optional feature that makes it possible to have separate
-  diffuse color and transparency override settings. Set the
-  environment variable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to
-  "1" to enable this feature. Please note that this feature will not
-  work when the PackedColor or VertexProperty node is used to specify
-  diffuse color and transparency.
+
+  The remaining class documentation describes a single, special case:
+
+  A common request for functionality is to override only the
+  transparency of the full scene graph, or parts of the scene
+  graph.
+
+  In the original SGI Inventor, this is nigh impossible, as the API
+  was designed to only make it possible to override all or none of the
+  fields of a node. So calling SoNode::setOverride() on an SoMaterial
+  node will cause all material settings of that node to override all
+  material settings further on in the scene graph, and there is no way
+  to override only the transparency settings.
+
+  In Coin, we have added in a little hack to overcome this problem,
+  since it is such a common request for functionality: to have
+  separate transparency override settings, set the environment
+  variable \c COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to "1" to
+  enable this hack.
+
+  (Do however note that this will not work when the SoPackedColor or
+  SoVertexProperty node is used to specify diffuse color and
+  transparency -- only with the SoMaterial node.)
+
+  Here is a complete, stand-alone example which demonstrates how to
+  accomplish this:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoMaterial.h>
+  
+  // *************************************************************************
+  
+  const char * scene = "#Inventor V2.1 asci\n"
+  "\n"
+  "Separator {"
+  "   Cone { }"
+  "   Translation { translation 1 0 5 }"
+  ""
+  "   DEF OVERRIDEMATERIAL Material { transparency 0.5 }"
+  ""
+  "   DEF OBJMATERIAL Material {"
+  "      diffuseColor 0.5 0 0"
+  "      transparency 0"
+  "   }"
+  "   Sphere { }"
+  "}"
+  ;
+  
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * window = SoQt::init(argv[0]);
+  
+    (void)coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
+  
+    SoInput * in = new SoInput;
+    in->setBuffer((void *)scene, strlen(scene));
+    SoSeparator * root = SoDB::readAll(in);
+    assert(root);
+    delete in;
+  
+    root->ref();
+  
+    SoMaterial * overridemat = (SoMaterial *)
+      SoBase::getNamedBase("OVERRIDEMATERIAL", SoMaterial::getClassTypeId());
+    assert(overridemat);
+  
+    overridemat->diffuseColor.setIgnored(TRUE);
+    overridemat->setOverride(TRUE);
+  
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+    viewer->setSceneGraph(root);
+    viewer->show();
+  
+    SoQt::show(window);
+    SoQt::mainLoop();
+  
+    delete viewer;
+    root->unref();
+  
+    return 0;
+  }
+  \endcode
 */
+
+// *************************************************************************
 
 #include <Inventor/elements/SoOverrideElement.h>
 
-#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <stdlib.h>
 
+#include <Inventor/C/tidbits.h>
+
+// *************************************************************************
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
@@ -56,8 +140,11 @@ if (element && override) \
 else if (element) \
   element->flags &= ~flag
 
+// *************************************************************************
 
 static int COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = -1;
+
+// *************************************************************************
 
 static SbBool
 use_separate_transp_diffuse(void)
@@ -74,6 +161,8 @@ use_separate_transp_diffuse(void)
   return COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE ?
     TRUE : FALSE;
 }
+
+// *************************************************************************
 
 /*!
 \enum SoOverrideElement::FlagBits
