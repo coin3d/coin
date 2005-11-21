@@ -395,6 +395,25 @@ public:
 
 // *************************************************************************
 
+// add type and all shapes inheriting type to the list of shapes
+// already handled by the action
+static void add_shape_handled(const SoType & type, SoTypeList & addlist)
+{
+  SoTypeList shapes;
+  (void) SoType::getAllDerivedFrom(type, shapes);
+  int i;
+  
+  for (i = 0; i < shapes.getLength(); i++) {
+    SoType s = shapes[i];
+    if (s.canCreateInstance() && (addlist.find(s) < 0)) {
+      addlist.append(s);
+    }
+  }
+}
+
+// *************************************************************************
+
+
 SoToVRML2Action::SoToVRML2Action(void)
 {
   SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
@@ -411,10 +430,11 @@ SoToVRML2Action::SoToVRML2Action(void)
   PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, PRIVATE(this))
 #define ADD_SHAPE_CB(_node_, _cb_) \
   ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
-  shapehandledlist.append(_node_::getClassTypeId());
+  add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
+
 #define ADD_SO_TO_IFS(_node_) \
   ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
-  shapehandledlist.append(_node_::getClassTypeId());
+  add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
 
   SoTypeList shapehandledlist;
 
@@ -1466,7 +1486,7 @@ SoCallbackAction::Response
 SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   if (action->getDrawStyle() != SoDrawStyle::FILLED) {
-      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
+    return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
 
@@ -1481,29 +1501,32 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
     ((SoVertexProperty *)oldps->vertexProperty.getValue())->callback(action);
   }
 
+
   const SoCoordinateElement * coordElem = SoCoordinateElement::getInstance(action->getState());
-  if (coordElem->getNum() > 0) {
+
+  int numpts = oldps->numPoints.getValue();
+  // if numPts == -1, use all coordinates on the stack
+  if (numpts < 0 || numpts > coordElem->getNum()) numpts = coordElem->getNum();
+
+  if (numpts) {
     if (coordElem->getArrayPtr3() != NULL) {
-      ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr3(),
-                                                  SbMin(coordElem->getNum(),
-                                                        oldps->numPoints.getValue()));
-    } else {
-      ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr4(),
-                                                  SbMin(coordElem->getNum(),
-                                                        oldps->numPoints.getValue()));
+      ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr3(), numpts);
+    } 
+    else {
+      ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr4(), numpts);
     }
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
     const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
-    int n = ((SoVRMLCoordinate*)ps->coord.getValue())->point.getNum();
-    if (colorElem->getNumDiffuse() >= n) {
+    if (colorElem->getNumDiffuse() >= numpts) {
       if (colorElem->isPacked()) {
         ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
-                                               n);
-      } else {
+                                               numpts);
+      } 
+      else {
         ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
-                                               n);
+                                               numpts);
       }
     }
   }
