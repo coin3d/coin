@@ -26,10 +26,39 @@
   \brief The SoNurbsCurve class is a node for representing smooth curves.
   \ingroup nodes
 
-  Explaining NURBS is beyond the scope of this documentation. If you
-  are unfamiliar with the principles of representing smooth curves and
-  surfaces when doing 3D visualization, we recommend finding a good
-  book on the subject.
+  Explaining NURBS is in general beyond the scope of this
+  documentation.  If you are unfamiliar with the principles of
+  representing smooth curves and surfaces when doing 3D visualization,
+  we recommend finding a good book on the subject.
+
+  Also, consult chapter 8 of «The Inventor Mentor», which covers NURBS
+  curve and surface rendering in some detail.
+
+  A small usage example:
+
+  \code
+  #Inventor V2.1 ascii
+  
+  Coordinate3 {
+     point [
+      1 0 0, 1 1 0, 0 1 0,
+      -1 1 0, -1 0 0, -1 -1 0
+      0 -1 0, 1 -1 0, 1 0 0
+     ]
+  }
+  
+  NurbsCurve {
+     numControlPoints 9
+     knotVector [ 0, 0, 0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1, 1, 1 ]
+  }
+  
+  # debug: show all the control points
+  BaseColor { rgb 1 1 0 }
+  DrawStyle { pointSize 3 }
+  PointSet { numPoints 9 }
+  \endcode
+
+  <center><img src="http://doc.coin3d.org/images/[PATH]/[FILENAME]"></center>
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -42,34 +71,36 @@
 */
 // FIXME: recommend the book pederb bought about the subject? If so,
 // also add to class doc for SoNurbsSurface (and others?). Plus, add a
-// usage exaple. 20010909 mortene.
+// usage example. 20010909 mortene.
 
 #include <Inventor/nodes/SoNurbsCurve.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-#include <coindefs.h> // COIN_OBSOLETED()
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/GLUWrapper.h>
+#include <coindefs.h> // COIN_OBSOLETED()
+
+// *************************************************************************
 
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
