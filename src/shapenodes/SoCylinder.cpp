@@ -56,17 +56,17 @@
 
   \code
   #Inventor V2.1 ascii
-
+  
+  ShapeHints { # to get two-sided lighting on the disc
+     vertexOrdering COUNTERCLOCKWISE
+     shapeType UNKNOWN_SHAPE_TYPE
+  }
+  
   Cylinder {
      height 0
      parts TOP
   }
   \endcode
-
-  Note that for a two-sided disc, i.e. with SoCylinder::parts using
-  both SoCylinder::TOP and SoCylinder::BOTTOM, height equal to zero
-  will result in rendering artifacts due to z-buffer fighting. In this
-  case, try with a height value just slightly larger than zero.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -236,17 +236,6 @@ SoCylinder::GLRender(SoGLRenderAction * action)
     flags |= SOGL_MATERIAL_PER_PART;
 
   float complexity = this->getComplexityValue(action);
-
-  // FIXME: a nifty trick would be to let SoCylinder::height==0 and
-  // ((parts&TOP)|(parts&BOTTOM)) lead to a disc being rendered -- as
-  // now, but without the z-buffer fighting when *both* TOP and
-  // *BOTTOM* is specified. (I.e. with two-sided lighting, or by
-  // rendering only the side facing the camera).
-  //
-  // Update the class documentation at the top of this file, if this
-  // FIXME is taken care of.
-  //
-  // 20051124 mortene.
 
   sogl_render_cylinder(this->radius.getValue(),
                        this->height.getValue(),
