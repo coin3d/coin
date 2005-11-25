@@ -1069,14 +1069,16 @@ static void SFNodeDestructor(JSContext * cx, JSObject * obj)
   // FIXME: We cannot assume this since the class object itself is an
   // instance of this JSClass. kintel 20050804.
   //  assert(container != NULL);
-  if (container) container->unref();
+  if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
+    if (container) container->unref();
 }
 
 static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 {
   JSObject * obj = spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFNode.cls, NULL, NULL);
   spidermonkey()->JS_SetPrivate(cx, obj, container);
-  container->ref();
+  if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
+    container->ref();
   return obj;
 }
 

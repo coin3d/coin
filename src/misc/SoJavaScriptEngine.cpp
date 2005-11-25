@@ -58,10 +58,12 @@ public:
 
   SbList<JavascriptHandler> handlerList;
   SoJavaScriptEngine * master;
+  SbBool autonodeunref;
 };
 
 JSRuntime * SoJavaScriptEngineP::runtime = NULL;
 size_t SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
+
 
 /*!
   Execute a compiled script.
@@ -173,6 +175,7 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * obj,
   return JS_TRUE;
 }
 
+
 /*!
   Constructor. Will create a new context and global spidermonkey object
   for this object.
@@ -180,6 +183,7 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * obj,
 SoJavaScriptEngine::SoJavaScriptEngine()
 {
   PRIVATE(this) = new SoJavaScriptEngineP(this); 
+  PRIVATE(this)->autonodeunref = FALSE;
 
   JSContext * cx = PRIVATE(this)->context = 
     spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), 
@@ -354,6 +358,19 @@ SoJavaScriptEngine::debug(void)
   }
   return d ? TRUE : FALSE;
 }
+
+void
+SoJavaScriptEngine::enableAutoNodeUnref(SbBool onoff)
+{
+  PRIVATE(this)->autonodeunref = onoff;
+}
+
+SbBool
+SoJavaScriptEngine::getAutoNodeUnrefState()
+{
+  return PRIVATE(this)->autonodeunref;
+}
+
 
 /*!
   Compile and execute a string containing a script.
