@@ -1012,12 +1012,20 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
       SoJavaScriptEngine::getEngine(cx)->field2jsval(out, rval);
       return JSVAL_TRUE;
     }
-    else {
-      spidermonkey()->JS_ReportError(cx, "field %s does not exists", str.getString());
-    }
   }
   
-  return JSVAL_FALSE;
+  /* Note: If we're unable to find the field, we return JSVAL_TRUE
+     instead of JSVAL_FALSE, which might seem as the logical choice
+     for indicating a failure. If we return JSVAL_FALSE, execution of
+     the script will halt. One side-effect of this is that it is not
+     possible to extend the SFNode JavaScript object by adding
+     properties, which can be very useful in some cases. This is also
+     more in line with the JavaScript philosophy that one can
+     dynamically add and remove properties for any object at any time.
+
+     2005-11-23 thammer.
+  */
+  return JSVAL_TRUE;
 }
 
 static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
@@ -1048,14 +1056,11 @@ static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
       if (SoJavaScriptEngine::debug()) {
         SoDebugError::postInfo("SFNode_set", "setting field %s", str.getString());
       }
-      return JSVAL_TRUE;
-    }
-    else {
-      spidermonkey()->JS_ReportError(cx, "field %s does not exists", str.getString());
     }
   }
   
-  return JSVAL_FALSE;
+  // See note in SFNode_get() about return value. 2005-11-23 thammer.
+  return JSVAL_TRUE;
 }
 
 static void SFNodeDestructor(JSContext * cx, JSObject * obj)
