@@ -183,7 +183,7 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * obj,
 SoJavaScriptEngine::SoJavaScriptEngine()
 {
   PRIVATE(this) = new SoJavaScriptEngineP(this); 
-  PRIVATE(this)->autonodeunref = FALSE;
+  PRIVATE(this)->autonodeunref = TRUE;
 
   JSContext * cx = PRIVATE(this)->context = 
     spidermonkey()->JS_NewContext(SoJavaScriptEngine::getRuntime(), 
