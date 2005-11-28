@@ -115,7 +115,9 @@ typedef struct {
 /* ********************************************************************** */
 
 static cc_cgglue_t * cg_instance = NULL;
+/* Cg is split into two dll's under Windows. Need two libhandles */
 static cc_libhandle cg_libhandle = NULL;
+static cc_libhandle cg_libhandle2 = NULL;
 static int cg_failed_to_load = 0;
 
 /* ********************************************************************** */
@@ -126,6 +128,7 @@ cgglue_cleanup(void)
 {
 #ifdef CGLIB_RUNTIME_LINKING
   if (cg_libhandle) { cc_dl_close(cg_libhandle); }
+  if (cg_libhandle2) { cc_dl_close(cg_libhandle2); }
 #endif /* CGLIB_RUNTIME_LINKING */
   assert(cg_instance);
   free(cg_instance);
@@ -133,6 +136,7 @@ cgglue_cleanup(void)
   /* restore variables to initial value */
   cg_instance = NULL;
   cg_libhandle = NULL;
+  cg_libhandle2 = NULL;
   cg_failed_to_load = 0;
 }
 
@@ -179,12 +183,20 @@ cgglue_init(void)
         zi->available = 0;
         cg_failed_to_load = 1;
       }
+      /* Cg is split into two dll's under Windows */
+      if (cg_libhandle) {
+        /* FIXME: do a proper possiblenames while loop? pederb, 2005-11-28 */
+        cg_libhandle2 = cc_dl_open("Cg");
+      }
     }
     /* Define CGGLUE_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
 #define CGGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     do { \
       zi->_funcname_ = (_funcsig_)cc_dl_sym(cg_libhandle, SO__QUOTE(_funcname_)); \
+      if (!zi->_funcname_ && cg_libhandle2) { \
+        zi->_funcname_ = (_funcsig_)cc_dl_sym(cg_libhandle2, SO__QUOTE(_funcname_)); \
+      } \
       if (zi->_funcname_ == NULL) zi->available = 0; \
     } while (0)
 
