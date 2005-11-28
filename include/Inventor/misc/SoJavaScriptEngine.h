@@ -71,8 +71,8 @@ public:
   static SbBool debug(void);
 
   static JSRuntime * getRuntime(void);
-  JSContext * getContext(void);
-  JSObject * getGlobal(void);
+  JSContext * getContext(void) const;
+  JSObject * getGlobal(void) const;
 
   void addHandler(const SoType & type, SoJSWrapperInitFunc * init, 
                   SoJSfield2jsvalFunc * field2jsval, 

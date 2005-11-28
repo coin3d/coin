@@ -279,7 +279,7 @@ SoJavaScriptEngine::setRuntime(JSRuntime * runtime)
   Returns spidermonkey context for this object.
  */
 JSContext *
-SoJavaScriptEngine::getContext(void)
+SoJavaScriptEngine::getContext(void) const
 {
   return PRIVATE(this)->context;
 }
@@ -298,7 +298,7 @@ SoJavaScriptEngine::setContext(JSContext * context)
   Returns spidermonkey global object for this object.
  */
 JSObject *
-SoJavaScriptEngine::getGlobal(void)
+SoJavaScriptEngine::getGlobal(void) const
 {
   // FIXME: Get using JS_GetGlobalObject()? kintel 20050920
   return PRIVATE(this)->global;
@@ -359,12 +359,23 @@ SoJavaScriptEngine::debug(void)
   return d ? TRUE : FALSE;
 }
 
+/*!
+  Turn on/off the automatic reference-count handling of Coin nodes
+  created in JavaScript. When switched off, the programmer must
+  explicitly call ref()/unref() for the Coin nodes JavaScript.
+  
+  Default state is TRUE.
+*/
 void
 SoJavaScriptEngine::enableAutoNodeUnref(SbBool onoff)
 {
   PRIVATE(this)->autonodeunref = onoff;
 }
 
+/*!
+  Returns the current state (on/off) of the automatic ref/unref
+  mechanism for Coin nodes created by JavaScript.
+*/
 SbBool
 SoJavaScriptEngine::getAutoNodeUnrefState() const
 {
