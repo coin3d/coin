@@ -1288,7 +1288,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
   beginShape() and endShape(). For instance, to generate primitives
   for a triangle you'd do something like this:
 
-  \begin verbatim
+  \verbatim
   SoPrimitiveVertex vertex;
 
   this->beginShape(action, SoShape::POLYGON);
@@ -1299,7 +1299,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
   vertex.setPoint(SbVec3f(1.0f, 1.0f, 0.0f));
   this->shapeVertex(&vertex);
   this->endShape();
-  \end verbatim
+  \endverbatim
 
   Note that the SoPrimitiveVertex instance can simply be placed on the
   stack and not allocated. SoShape will copy the needed information
