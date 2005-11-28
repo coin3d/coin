@@ -351,7 +351,7 @@ struct CoinVrmlJsMFHandler {
       }
     }
 
-    return JS_FALSE;
+    return JS_TRUE;
   }
 
   static JSBool set(JSContext * cx, JSObject * obj, jsval id, jsval * val)
@@ -987,7 +987,7 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
     if (JSVAL_IS_STRING(id)) {
       const char * str = spidermonkey()->JS_GetStringBytes(JSVAL_TO_STRING(id));
       if (SbName("constructor") == str) {
-        return JS_FALSE;
+        return JS_TRUE;
       }
     }
     spidermonkey()->JS_ReportError(cx, "node is undefined");
