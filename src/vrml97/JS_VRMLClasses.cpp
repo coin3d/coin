@@ -1118,7 +1118,9 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
       return JSVAL_FALSE;
     }
 
-    group->ref();
+    if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
+      group->ref();
+
     spidermonkey()->JS_SetPrivate(cx, obj, group);
 
     return JSVAL_TRUE;
