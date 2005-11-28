@@ -366,7 +366,7 @@ SoJavaScriptEngine::enableAutoNodeUnref(SbBool onoff)
 }
 
 SbBool
-SoJavaScriptEngine::getAutoNodeUnrefState()
+SoJavaScriptEngine::getAutoNodeUnrefState() const
 {
   return PRIVATE(this)->autonodeunref;
 }

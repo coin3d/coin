@@ -64,7 +64,7 @@ public:
   SbBool field2jsval(const SoField * f, jsval * v) const;
   SbBool jsval2field(const jsval v, SoField * f) const;
   void enableAutoNodeUnref(SbBool onoff);
-  SbBool getAutoNodeUnrefState(void);
+  SbBool getAutoNodeUnrefState(void) const;
 
   static void init(uint32_t maxbytes = COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
   static void shutdown(void);
