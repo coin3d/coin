@@ -230,10 +230,20 @@ struct JSErrorReport {
 #define JSVAL_FALSE  BOOLEAN_TO_JSVAL(JS_FALSE)
 #define JSVAL_TRUE   BOOLEAN_TO_JSVAL(JS_TRUE)
 
-#define JSCLASS_HAS_PRIVATE (1<<0)
+#define JSCLASS_HAS_PRIVATE             (1<<0)
+#define JSCLASS_NEW_ENUMERATE           (1<<1)
+#define JSCLASS_NEW_RESOLVE             (1<<2)
+#define JSCLASS_PRIVATE_IS_NSISUPPORTS  (1<<3)
+#define JSCLASS_SHARE_ALL_PROPERTIES    (1<<4)
+#define JSCLASS_NEW_RESOLVE_GETS_START  (1<<5)
 
 #define JSFUN_BOUND_METHOD 0x40
 
+#define JSOPTION_STRICT                 JS_BIT(0)
+#define JSOPTION_WERROR                 JS_BIT(1)
+#define JSOPTION_VAROBJFIX              JS_BIT(2)
+#define JSOPTION_PRIVATE_IS_NSISUPPORTS JS_BIT(3)
+#define JSOPTION_COMPILE_N_GO           JS_BIT(4)
 
 /* Function typedefs. *************************************************** */
 
@@ -326,8 +336,9 @@ typedef JSClass * (* JS_GetClass_t)(JSObject *);
 typedef JSObject * (* JS_GetPrototype_t)(JSContext *, JSObject *);
 typedef JSObject * (* JS_SetPrototype_t)(JSContext *, JSObject *, JSObject *);
 typedef intN (* JS_CompareStrings_t)(JSString *, JSString *);
-
-
+typedef uint32_t (* JS_GetOptions_t)(JSContext *);
+typedef uint32_t (* JS_SetOptions_t)(JSContext *, uint32_t);
+typedef uint32_t (* JS_ToggleOptions_t)(JSContext *, uint32_t);
 
 /* Access interface. **************************************************** */
 
@@ -417,6 +428,9 @@ typedef struct {
   JS_GetPrototype_t JS_GetPrototype;
   JS_SetPrototype_t JS_SetPrototype;
   JS_CompareStrings_t JS_CompareStrings;
+  JS_GetOptions_t JS_GetOptions;
+  JS_SetOptions_t JS_SetOptions;
+  JS_ToggleOptions_t JS_ToggleOptions;
 
 } SpiderMonkey_t;
 

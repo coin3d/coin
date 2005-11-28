@@ -294,6 +294,9 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetPrototype, JS_GetPrototype_t);
   REGISTER_FUNC(JS_SetPrototype, JS_SetPrototype_t);
   REGISTER_FUNC(JS_CompareStrings, JS_CompareStrings_t);
+  REGISTER_FUNC(JS_GetOptions, JS_GetOptions_t);
+  REGISTER_FUNC(JS_SetOptions, JS_SetOptions_t);
+  REGISTER_FUNC(JS_ToggleOptions, JS_ToggleOptions_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);
