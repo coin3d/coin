@@ -538,6 +538,12 @@ SoAction::apply(SoNode * root)
 /*!
   Applies the action to the parts of the graph defined by \a path.
 
+  Note that an SoPath will also contain all nodes that may influence
+  e.g. geometry nodes in the path. So for instance applying an
+  SoGLRenderAction on an SoPath will render that path as expected in
+  the view, where geometry will get its materials, textures, and other
+  appearance settings correctly.
+
   If the \a path ends in an SoGroup node, the action will also
   traverse the tail node's children.
 */
@@ -607,6 +613,8 @@ SoAction::apply(SoPath * path)
   All paths must start at the same head node. All paths must be sorted
   in traversal order. The paths must be unique. No path can continue
   through the end point of another path.
+
+  \sa SoAction::apply(SoPath * path)
 */
 void
 SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
