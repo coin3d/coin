@@ -4964,3 +4964,15 @@ Text2 {
     20051021 mortene.
 
 =====================================================================
+
+209 SoVRMLImageTexture asynchronous loading doesn't work in default
+    config.
+
+    It doesn't work unless Coin's configure was given the
+    "--enable-threadsafe". This is actually too strict, it is really
+    sufficient that the multiplatform thread abstractions are
+    available.
+
+    20051129 mortene.
+
+=====================================================================
