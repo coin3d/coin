@@ -1135,6 +1135,9 @@ static void SFNodeDestructor(JSContext * cx, JSObject * obj)
 {
   // Delete all SoNodeSensors which no longer has a node attached.
   cleanupObsoleteNodeSensors();
+  if(garbagecollectedobjects.find(obj) != -1) { // Pointer is marked as garbage-collected
+    garbagecollectedobjects.removeItem(obj);
+  }
 
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
   // FIXME: We cannot assume this since the class object itself is an
