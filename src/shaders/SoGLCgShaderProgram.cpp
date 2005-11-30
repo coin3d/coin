@@ -43,21 +43,19 @@ SoGLCgShaderProgram::~SoGLCgShaderProgram()
 void
 SoGLCgShaderProgram::addShaderObject(SoGLCgShaderObject * shaderObject)
 {
-  if (shaderObject->isVertexShader())
+  if (shaderObject->isVertexShader()) {
     this->vertexShader = shaderObject;
-  else
+  }
+  else {
     this->fragmentShader = shaderObject;
+  }
 }
 
 void
-SoGLCgShaderProgram::removeShaderObject(SoGLCgShaderObject * shaderObject)
+SoGLCgShaderProgram::removeShaderObjects(void)
 {
-  if (shaderObject == NULL) return;
-
-  if (shaderObject->isVertexShader())
-    this->vertexShader = NULL;
-  else 
-    this->fragmentShader = NULL;
+  this->vertexShader = NULL;
+  this->fragmentShader = NULL;
 }
 
 void

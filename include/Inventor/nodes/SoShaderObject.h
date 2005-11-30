@@ -61,21 +61,11 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void search(SoSearchAction * action);
 
-  void updateParameters(int start, int num);
-  void updateAllParameters(void);
-  void updateStateMatrixParameters(void);
-
-  SbBool containStateMatrixParameters(void) const;
-
-  SoGLShaderObject * getGLShaderObject(void) const;
-
+  void updateParameters(const uint32_t cachecontext);
   virtual SbBool isVertexShader(void) const = 0;
 
   SourceType getSourceType(void) const;
   SbString getSourceProgram(void) const;
-
-  // additional non TGS API:  (FIXME: do we need this? 20050120 mortene.)
-  void removeGLShaderFromGLProgram(SoGLShaderProgram * glProgram);
 
 protected:
   SoShaderObject(void);

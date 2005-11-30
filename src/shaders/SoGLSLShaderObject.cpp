@@ -29,11 +29,12 @@
 
 // *************************************************************************
 
-SoGLSLShaderObject::SoGLSLShaderObject(const cc_glglue * g)
-  : SoGLShaderObject(g)
+SoGLSLShaderObject::SoGLSLShaderObject(const uint32_t cachecontext)
+  : SoGLShaderObject(cachecontext)
 {
   this->programHandle = 0;
   this->shaderHandle = 0;
+  this->isattached = FALSE;
 }
 
 SoGLSLShaderObject::~SoGLSLShaderObject()
@@ -112,6 +113,7 @@ SoGLSLShaderObject::attach(COIN_GLhandle programHandle)
   if (this->shaderHandle) {
     this->programHandle = programHandle;
     this->glctx->glAttachObjectARB(this->programHandle, this->shaderHandle);
+    this->isattached = TRUE;
   }
 }
 
@@ -120,7 +122,14 @@ SoGLSLShaderObject::detach(void)
 {
   if (this->programHandle && this->shaderHandle) {
     this->glctx->glDetachObjectARB(this->programHandle, this->shaderHandle);
+    this->isattached = FALSE;
   }
+}
+
+SbBool 
+SoGLSLShaderObject::isAttached(void) const
+{
+  return this->isattached;
 }
 
 void

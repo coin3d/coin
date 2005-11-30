@@ -30,8 +30,8 @@
 
 // *************************************************************************
 
-SoGLARBShaderObject::SoGLARBShaderObject(const cc_glglue * g)
-  : SoGLShaderObject(g)
+SoGLARBShaderObject::SoGLARBShaderObject(const uint32_t cachecontext)
+  : SoGLShaderObject(cachecontext)
 {
   this->arbProgramID = 0;
 }

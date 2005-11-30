@@ -42,23 +42,21 @@ SoGLARBShaderProgram::SoGLARBShaderProgram(void)
 }
 
 void
-SoGLARBShaderProgram::addShaderObject(SoGLARBShaderObject *shaderObject)
+SoGLARBShaderProgram::addShaderObject(SoGLARBShaderObject * shaderObject)
 {
-  if (shaderObject->isVertexShader())
+  if (shaderObject->isVertexShader()) {
     this->vertexShader = shaderObject;
-  else
+  }
+  else {
     this->fragmentShader = shaderObject;
+  }
 }
 
 void
-SoGLARBShaderProgram::removeShaderObject(SoGLARBShaderObject *shader)
+SoGLARBShaderProgram::removeShaderObjects(void)
 {
-  if (shader == NULL) return;
-
-  if (shader->isVertexShader())
-    this->vertexShader = NULL;
-  else
-    this->fragmentShader = NULL;
+  this->vertexShader = NULL;
+  this->fragmentShader = NULL;
 }
 
 void

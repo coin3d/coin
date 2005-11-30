@@ -41,9 +41,10 @@ class SoGLShaderParameter;
 class SoGLShaderObject
 {
 public:
-  SoGLShaderObject(const cc_glglue * g);
+  SoGLShaderObject(const uint32_t cachecontext);
 
   const cc_glglue * GLContext(void) const;
+  uint32_t getCacheContext(void) const;
 
   virtual SbBool isLoaded(void) const = 0;
   virtual void load(const char * sourceString) = 0;
@@ -61,16 +62,22 @@ public:
   void setIsActive(SbBool flag);
   SbBool isActive(void) const;
 
+  void setParametersDirty(SbBool flag);
+  SbBool getParametersDirty(void) const;
+
 #if defined(SOURCE_HINT)
   SbString sourceHint; // either the file name or the first line of source code
 #endif
 
 protected:
   const cc_glglue * glctx;
+  uint32_t cachecontext;
 
 private:
-  SbBool isVertexShaderFlag;
-  SbBool isActiveFlag;
+  SbBool isVertexShaderFlag : 1;
+  SbBool isActiveFlag : 1;
+  SbBool paramsdirty : 1;
 };
 
 #endif /* ! COIN_SOGLSHADEROBJECT_H */
+

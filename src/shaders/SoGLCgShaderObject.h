@@ -40,7 +40,7 @@
 class SoGLCgShaderObject : public SoGLShaderObject
 {
 public:
-  SoGLCgShaderObject(const cc_glglue * g);
+  SoGLCgShaderObject(const uint32_t cachecontext);
   virtual ~SoGLCgShaderObject();
 
   virtual SbBool isLoaded(void) const;
@@ -48,12 +48,12 @@ public:
   virtual void unload(void);
   virtual SoShader::Type shaderType(void) const;
   virtual SoGLShaderParameter* getNewParameter(void) const;
+  
+  void enable(void);
+  void disable(void);
 
 private:
   CGprofile getProfile(void) const;
-
-  virtual void enable(void);
-  virtual void disable(void);
 
   CGprogram cgProgram;
   CGprofile cgProfile;

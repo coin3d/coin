@@ -43,10 +43,9 @@ public:
   SoGLShaderProgram(void);
   ~SoGLShaderProgram();
   void addShaderObject(SoGLShaderObject * shaderObject);
-  void removeShaderObject(SoGLShaderObject * shaderObject);
+  void removeShaderObjects(void);
   void enable(const cc_glglue * g);
   void disable(const cc_glglue * g);
-  void postShouldLink(void);
 
 #if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
   SbString getSourceHint(void);

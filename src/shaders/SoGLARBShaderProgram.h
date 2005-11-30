@@ -40,7 +40,7 @@ public:
   SoGLARBShaderProgram(void);
 
   virtual void addShaderObject(SoGLARBShaderObject * shaderObject);
-  virtual void removeShaderObject(SoGLARBShaderObject * shaderObject);
+  virtual void removeShaderObjects(void);
 
   virtual void enable(void);
   virtual void disable(void);

@@ -65,21 +65,11 @@ SoGLShaderProgram::addShaderObject(SoGLShaderObject *shader)
 }
 
 void
-SoGLShaderProgram::removeShaderObject(SoGLShaderObject *shader)
+SoGLShaderProgram::removeShaderObjects(void)
 {
-  switch (shader->shaderType()) {
-  case SoShader::ARB_SHADER:
-    this->arbShaderProgram->removeShaderObject((SoGLARBShaderObject*)shader);
-    break;
-  case SoShader::CG_SHADER:
-    this->cgShaderProgram->removeShaderObject((SoGLCgShaderObject*)shader);
-    break;
-  case SoShader::GLSL_SHADER:
-    this->glslShaderProgram->removeShaderObject((SoGLSLShaderObject*)shader);
-    break;
-  default:
-    assert(FALSE && "shaderType unknown!");
-  }
+  this->arbShaderProgram->removeShaderObjects();
+  this->cgShaderProgram->removeShaderObjects();
+  this->glslShaderProgram->removeShaderObjects();
 }
 
 void
@@ -96,13 +86,6 @@ SoGLShaderProgram::disable(const cc_glglue * g)
   this->arbShaderProgram->disable();
   this->cgShaderProgram->disable();
   this->glslShaderProgram->disable(g);
-}
-
-void
-SoGLShaderProgram::postShouldLink(void)
-{
-  // this is only neccessary for GLSLang
-  this->glslShaderProgram->postShouldLink();
 }
 
 #if defined(SOURCE_HINT)

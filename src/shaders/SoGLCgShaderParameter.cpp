@@ -25,6 +25,7 @@
 #include "SoGLCgShaderObject.h"
 
 #include <string.h>
+#include <stdio.h>
 #include <assert.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -78,7 +79,7 @@ void
 SoGLCgShaderParameter::set3f(const SoGLShaderObject * shader, const float * v,
                              const char* name, const int)
 {
-  if (this->isValid(shader, name, CG_FLOAT3))
+  if (this->isValid(shader, name, CG_FLOAT3)) 
     glue_cgGLSetParameter3f(this->cgParameter, v[0], v[1], v[2]);
 }
 

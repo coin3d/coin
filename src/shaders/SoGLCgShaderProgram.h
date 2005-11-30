@@ -41,7 +41,7 @@ public:
   ~SoGLCgShaderProgram();
 
   void addShaderObject(SoGLCgShaderObject * shaderObject);
-  void removeShaderObject(SoGLCgShaderObject * shaderObject);
+  void removeShaderObjects(void);
 
   void enable(void);
   void disable(void);

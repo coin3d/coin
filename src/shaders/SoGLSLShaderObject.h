@@ -40,7 +40,7 @@ class SoGLSLShaderObject : public SoGLShaderObject
 {
   friend class SoGLSLShaderParameter;
 public:
-  SoGLSLShaderObject(const cc_glglue * g);
+  SoGLSLShaderObject(const uint32_t cachecontext);
   virtual ~SoGLSLShaderObject();
 
   virtual SoShader::Type shaderType(void) const;
@@ -52,6 +52,7 @@ public:
 
   void attach(COIN_GLhandle programHandle);
   void detach(void);
+  SbBool isAttached(void) const;
 
   // objType 0: program 1: vertexShader 2: fragmentShader
   static SbBool didOpenGLErrorOccur(int objType);
@@ -60,6 +61,7 @@ public:
 private:
   COIN_GLhandle programHandle;
   COIN_GLhandle shaderHandle;
+  SbBool isattached;
 };
 
 #endif /* ! COIN_SOGLSLSHADEROBJECT_H */

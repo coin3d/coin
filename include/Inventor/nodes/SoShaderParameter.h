@@ -83,6 +83,7 @@ protected:
 /* **************************************************************************
  * *** SoUniformShaderParameter ***
  * **************************************************************************/
+class SoUniformShaderParameterP;
 
 class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
   typedef SoShaderParameter inherited;
@@ -98,9 +99,12 @@ protected:
   virtual ~SoUniformShaderParameter();
 
   SbBool isRegularBehaviorFlag; 
-  SoGLShaderParameter * parameter;
 
+  SoGLShaderParameter * getGLShaderParameter(const uint32_t cachecontext);
   void ensureParameter(SoGLShaderObject * shader);
+
+private:
+  SoUniformShaderParameterP * pimpl;
 };
 
 /* **************************************************************************

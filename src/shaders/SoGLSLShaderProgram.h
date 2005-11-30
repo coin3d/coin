@@ -41,7 +41,7 @@ class SoGLSLShaderProgram
 {
 public:
   void addShaderObject(SoGLSLShaderObject *shaderObject);
-  void removeShaderObject(SoGLSLShaderObject *shaderObject);
+  void removeShaderObjects(void);
   void enable(const cc_glglue * g);
   void disable(const cc_glglue * g);
   void postShouldLink(void);
@@ -55,12 +55,11 @@ public:
   ~SoGLSLShaderProgram();
 
 protected:
-  SbList<SoGLSLShaderObject *> shaderObjects;
+  SbList <SoGLSLShaderObject *> shaderObjects;
   COIN_GLhandle programHandle;
-  SbBool shouldLink;
   SbBool isExecutable;
 
-  int indexOfShaderObject(SoGLSLShaderObject *shaderObject);
+  int indexOfShaderObject(SoGLSLShaderObject * shaderObject);
   void ensureLinking(const cc_glglue * g);
   void ensureProgramHandle(const cc_glglue * g);
 };

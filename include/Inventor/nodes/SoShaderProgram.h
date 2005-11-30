@@ -48,9 +48,6 @@ SoEXTENDER public:
 SoINTERNAL public:
   static void initClass();
 
-  void updateStateMatrixParameters(SoState * state);
-  SbBool containStateMatrixParameters(void) const;
-
 protected:  
   virtual ~SoShaderProgram();
 

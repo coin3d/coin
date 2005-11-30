@@ -45,11 +45,12 @@ public:
   virtual void unload(void);
   virtual SoShader::Type shaderType(void) const;
   virtual SoGLShaderParameter* getNewParameter(void) const;
-public:
-  SoGLARBShaderObject(const cc_glglue * g);
-  virtual ~SoGLARBShaderObject();
+
   void enable(void);
   void disable(void);
+public:
+  SoGLARBShaderObject(const uint32_t cachecontext);
+  virtual ~SoGLARBShaderObject();
 
 private:
   GLuint arbProgramID;

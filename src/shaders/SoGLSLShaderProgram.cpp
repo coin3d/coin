@@ -35,7 +35,6 @@
 SoGLSLShaderProgram::SoGLSLShaderProgram(void)
 {
   this->programHandle = 0;
-  this->shouldLink = FALSE;
   this->isExecutable = FALSE;
 }
 
@@ -49,20 +48,20 @@ SoGLSLShaderProgram::addShaderObject(SoGLSLShaderObject *shaderObject)
   if (shaderObject!=NULL) {
     if (this->indexOfShaderObject(shaderObject) < 0) {
       this->shaderObjects.append(shaderObject);
-      this->shouldLink = TRUE;
     }
   }
 }
-
 void
-SoGLSLShaderProgram::removeShaderObject(SoGLSLShaderObject *shaderObject)
+SoGLSLShaderProgram::removeShaderObjects(void)
 {
-  int idx = this->indexOfShaderObject(shaderObject);
-  if (idx >= 0) {
-    this->shaderObjects[idx]->unload(); // detach();
-    this->shaderObjects.remove(idx);
-    this->shouldLink = TRUE;
-  }
+//    int idx = this->indexOfShaderObject(shaderObject);
+//    if (idx >= 0) {
+//      this->shaderObjects[idx]->unload(); // detach();
+//      this->shaderObjects.remove(idx);
+//      this->shouldLink = TRUE;
+//    }
+  
+  this->shaderObjects.truncate(0);  
 }
 
 void
@@ -81,12 +80,6 @@ SoGLSLShaderProgram::disable(const cc_glglue * g)
   if (this->isExecutable) {
     g->glUseProgramObjectARB(0);
   }
-}
-
-void
-SoGLSLShaderProgram::postShouldLink(void)
-{
-  this->shouldLink = TRUE;
 }
 
 #if defined(SOURCE_HINT)
@@ -109,7 +102,12 @@ SoGLSLShaderProgram::getSourceHint(void) const
 void
 SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
 {
-  if (!this->shouldLink) return;
+  SbBool shouldlink = FALSE;
+  for (int i = 0; i < this->shaderObjects.getLength() && !shouldlink; i++) {
+    if (!this->shaderObjects[i]->isAttached()) shouldlink = TRUE;
+  }
+
+  if (!shouldlink) return;
 
   this->isExecutable = FALSE;
   this->ensureProgramHandle(g);
@@ -131,7 +129,6 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
                                  GL_OBJECT_LINK_STATUS_ARB,&didLink);
 
     this->isExecutable = didLink;
-    this->shouldLink = FALSE;
   }
 }
 
@@ -150,6 +147,7 @@ SoGLSLShaderProgram::indexOfShaderObject(SoGLSLShaderObject *shaderObject)
 void
 SoGLSLShaderProgram::ensureProgramHandle(const cc_glglue * g)
 {
-  if (this->programHandle == 0) 
+  if (this->programHandle == 0) {
     this->programHandle = g->glCreateProgramObjectARB();
+  }
 }

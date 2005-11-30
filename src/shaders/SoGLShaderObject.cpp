@@ -31,17 +31,25 @@
 
 // *************************************************************************
 
-SoGLShaderObject::SoGLShaderObject(const cc_glglue * g)
+SoGLShaderObject::SoGLShaderObject(const uint32_t cachecontext)
 {
   this->isActiveFlag = TRUE;
   this->isVertexShaderFlag = TRUE;
-  this->glctx = g;
+  this->paramsdirty = TRUE;
+  this->glctx = cc_glglue_instance(cachecontext);
+  this->cachecontext = cachecontext;
 }
 
 const cc_glglue *
 SoGLShaderObject::GLContext(void) const
 {
   return this->glctx;
+}
+
+uint32_t 
+SoGLShaderObject::getCacheContext(void) const
+{
+  return this->cachecontext;
 }
 
 void
@@ -91,3 +99,17 @@ SoGLShaderObject::isActive(void) const
 {
   return (!this->isLoaded()) ? FALSE : this->isActiveFlag;
 }
+
+void 
+SoGLShaderObject::setParametersDirty(SbBool flag)
+{
+  this->paramsdirty = flag;
+}
+
+SbBool 
+SoGLShaderObject::getParametersDirty(void) const
+{
+  return this->paramsdirty;
+}
+
+

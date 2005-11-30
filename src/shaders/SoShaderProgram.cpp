@@ -46,19 +46,13 @@ public:
   ~SoShaderProgramP();
 
   void GLRender(SoGLRenderAction * action);
-  void updateStateMatrixParameters(void);
-  SbBool doesContainStateMatrixParameters;
 
 private:
   SoShaderProgram * owner;
-  SoNodeList previousChildren;
   SoGLShaderProgram glShaderProgram;
 
   static void sensorCB(void * data, SoSensor *);
   SoNodeSensor * sensor;
-  SbBool shouldTraverseShaderObjects;
-  void updateProgramAndPreviousChildren(void);
-  void removeFromPreviousChildren(SoNode * shader);
 };
 
 #define PRIVATE(p) ((p)->pimpl)
@@ -84,7 +78,8 @@ SoShaderProgram::SoShaderProgram(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderProgram);
 
   SO_NODE_ADD_FIELD(shaderObject, (NULL));
-  this->shaderObject.deleteValues(0, 1);
+  this->shaderObject.setNum(0);
+  this->shaderObject.setDefault(TRUE);
 
   PRIVATE(this) = new SoShaderProgramP(this);
 }
@@ -125,18 +120,6 @@ SoShaderProgram::search(SoSearchAction * action)
   }
 }
 
-void
-SoShaderProgram::updateStateMatrixParameters(SoState * state)
-{
-  PRIVATE(this)->updateStateMatrixParameters();
-}
-
-SbBool
-SoShaderProgram::containStateMatrixParameters(void) const
-{
-  return PRIVATE(this)->doesContainStateMatrixParameters;
-}
-
 // *************************************************************************
 
 SoShaderProgramP::SoShaderProgramP(SoShaderProgram * ownerptr)
@@ -144,9 +127,6 @@ SoShaderProgramP::SoShaderProgramP(SoShaderProgram * ownerptr)
   PUBLIC(this) = ownerptr;
   this->sensor = new SoNodeSensor(SoShaderProgramP::sensorCB, this);
   this->sensor->attach(ownerptr);
-
-  this->shouldTraverseShaderObjects = TRUE;
-  this->doesContainStateMatrixParameters = FALSE;
 }
 
 SoShaderProgramP::~SoShaderProgramP()
@@ -162,96 +142,40 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   // FIXME: (Martin 2004-09-21) find an alternative to invalidating the cache
   SoCacheElement::invalidate(state);
 
-  const cc_glglue * glctx =
-    cc_glglue_instance(SoGLCacheContextElement::get(state));
+  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glctx = cc_glglue_instance(cachecontext);
 
-  SoGLShaderProgram* oldProgram = SoGLShaderProgramElement::get(state);
-  if (oldProgram) oldProgram->disable(glctx);
-
+  this->glShaderProgram.removeShaderObjects();
   SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
 
   int i, cnt = PUBLIC(this)->shaderObject.getNum();
 
   // load shader objects
-  if (this->shouldTraverseShaderObjects) {
-    for (i=0; i<cnt; i++) {
-      SoNode *node = PUBLIC(this)->shaderObject[i];
-      if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        this->removeFromPreviousChildren(node);
-        ((SoShaderObject *)node)->GLRender(action);
-      }
+  for (i = 0; i <cnt; i++) {
+    SoNode * node = PUBLIC(this)->shaderObject[i];
+    if (node->isOfType(SoShaderObject::getClassTypeId())) {
+      ((SoShaderObject *)node)->GLRender(action);
     }
-    this->updateProgramAndPreviousChildren();
   }
-
-  // enable shader
+  // update parameters after all shader objects have been added and enabled
   this->glShaderProgram.enable(glctx);
 
-  // update shader object parameters
-  if (this->shouldTraverseShaderObjects) {
-    SbBool flag = FALSE;
-
-    for (i=0; i<cnt; i++) {
-      SoShaderObject *node = (SoShaderObject *)PUBLIC(this)->shaderObject[i];
-      if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        node->updateAllParameters();
-        if (node->containStateMatrixParameters()) flag = TRUE;
-      }
-    }
-    this->doesContainStateMatrixParameters = flag;
-  }
-  else if (this->doesContainStateMatrixParameters)
-    this->updateStateMatrixParameters();
-
-  this->shouldTraverseShaderObjects = FALSE;
-  SoGLTextureEnabledElement::set(state, TRUE);
-}
-
-void
-SoShaderProgramP::updateStateMatrixParameters(void)
-{
-  int i, cnt = PUBLIC(this)->shaderObject.getNum();
-
-  for (i=0; i<cnt; i++) {
-    SoNode *node = PUBLIC(this)->shaderObject[i];
-    if (node->isOfType(SoShaderObject::getClassTypeId())) {
-      ((SoShaderObject*)node)->updateStateMatrixParameters();
-    }
-  }
-}
-
-void
-SoShaderProgramP::updateProgramAndPreviousChildren(void)
-{
-  int i, cnt = this->previousChildren.getLength();
-
-  for (i=cnt-1; i>=0; i--) {
-    SoShaderObject *node = (SoShaderObject*)this->previousChildren[i];
-    node->removeGLShaderFromGLProgram(&this->glShaderProgram);
-    this->previousChildren.remove(i);
-  }
-  assert(this->previousChildren.getLength() == 0);
-  cnt = PUBLIC(this)->shaderObject.getNum();
-  for (i=0; i<cnt; i++) {
+  for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
-    if (node->isOfType(SoShaderObject::getClassTypeId()))
-      this->previousChildren.append(node);
+    if (node->isOfType(SoShaderObject::getClassTypeId())) {
+      ((SoShaderObject *)node)->updateParameters(cachecontext);
+    }
   }
-  this->previousChildren.truncate(this->previousChildren.getLength());
-}
 
-void
-SoShaderProgramP::removeFromPreviousChildren(SoNode * shader)
-{
-  if (this->previousChildren.getLength() == 0) return;
-
-  int idx = this->previousChildren.find(shader);
-
-  if (idx >= 0) this->previousChildren.remove(idx);
+  SoGLTextureEnabledElement::set(state, TRUE);
 }
 
 void
 SoShaderProgramP::sensorCB(void * data, SoSensor *)
 {
-  ((SoShaderProgramP *)data)->shouldTraverseShaderObjects = TRUE;
+  // nothing to do now
 }
+
+
+
+

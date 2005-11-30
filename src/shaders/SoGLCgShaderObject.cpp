@@ -33,8 +33,8 @@
 CGcontext SoGLCgShaderObject::cgContext = NULL;
 int SoGLCgShaderObject::instanceCount = 0;
 
-SoGLCgShaderObject::SoGLCgShaderObject(const cc_glglue * g)
-  : SoGLShaderObject(g)
+SoGLCgShaderObject::SoGLCgShaderObject(const uint32_t cachecontext)
+  : SoGLShaderObject(cachecontext)
 {
   SoGLCgShaderObject::instanceCount++;
   this->cgProgram = NULL;

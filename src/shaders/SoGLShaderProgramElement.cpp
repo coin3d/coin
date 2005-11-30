@@ -58,7 +58,15 @@ SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
 {
   SoGLShaderProgramElement* element = 
     (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex,node);
-  element->shaderProgram = program;
+  if (program != element->shaderProgram) {
+    const cc_glglue * glctx =
+      cc_glglue_instance(SoGLCacheContextElement::get(state));
+
+    if (element->shaderProgram) element->shaderProgram->disable(glctx);
+    element->shaderProgram = program;
+    // don't enable new program here. The node will call enable()
+    // after setting up all the objects
+  }
 }
 
 SoGLShaderProgram *
@@ -72,26 +80,22 @@ SoGLShaderProgramElement::get(SoState *state)
 void
 SoGLShaderProgramElement::push(SoState * state)
 {
-  const cc_glglue * glctx =
-    cc_glglue_instance(SoGLCacheContextElement::get(state));
-
-  inherited::push(state);
-
-  SoGLShaderProgramElement *last=(SoGLShaderProgramElement *)getNextInStack();
-  assert(last);
-
-  if (last->shaderProgram) last->shaderProgram->disable(glctx);
+  SoGLShaderProgramElement * prev = (SoGLShaderProgramElement *) getNextInStack();
+  assert(prev);
+  this->shaderProgram = prev->shaderProgram;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 void
-SoGLShaderProgramElement::pop(SoState * state, const SoElement *prev)
+SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-  const cc_glglue * glctx =
-    cc_glglue_instance(SoGLCacheContextElement::get(state));
-
-  SoGLShaderProgramElement *elem = (SoGLShaderProgramElement *)prev;
-  if (elem->shaderProgram) elem->shaderProgram->disable(glctx);
-  if (this->shaderProgram) this->shaderProgram->enable(glctx);
-
-  inherited::pop(state, prev);
+  SoGLShaderProgramElement * elem = (SoGLShaderProgramElement *)prevTopElement;
+  if (this->shaderProgram != elem->shaderProgram) {
+    const cc_glglue * glctx =
+      cc_glglue_instance(SoGLCacheContextElement::get(state));
+    if (elem->shaderProgram) elem->shaderProgram->disable(glctx);
+    if (this->shaderProgram) this->shaderProgram->enable(glctx);
+  }
 }
