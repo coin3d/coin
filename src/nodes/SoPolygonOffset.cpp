@@ -75,26 +75,34 @@
   
   Separator {
      Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
-  
-     BaseColor { rgb 1 1 0 }
-     IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, 2, -1, 1, 3 -1 ] }
-  
-     PolygonOffset {
-       styles FILLED
-       factor 1.0
-       units 1.0
+     
+     Separator {
+        BaseColor { rgb 1 1 0 }
+        # needs to draw polygons-as-line, and not "real" lines -- see
+        # documentation below on why this is so:
+        DrawStyle { style LINES }
+        # draw two triangles, to get a line crossing the face of the
+        # polygon:
+        IndexedFaceSet { coordIndex [ 0, 1, 2, -1, 0, 2, 3 -1 ] }
      }
-  
+     
+     PolygonOffset {
+        styles FILLED
+        factor 1.0
+        units 1.0
+     }
+     
      BaseColor { rgb 0 0.5 0 }
      FaceSet { numVertices [ 4 ] }
   }
   \endverbatim
 
-  Without the polygonoffset node in the above example, the line will
-  look irregularly stippled, as parts of it will show through the
-  faceset, others not. This happen on seemingly random parts, as the
-  z-buffer floating point calculations will be fickle with regard to
-  whether or not the polygon or the line will be closer to the camera.
+  Without the polygonoffset node in the above example, the lines may
+  look irregularly stippled with some graphics card drivers, as parts
+  of it will show through the faceset, others not. This happen on
+  seemingly random parts, as the z-buffer floating point calculations
+  will be fickle with regard to whether or not the polygon or the line
+  will be closer to the camera.
 
   See the API documentation of the SoPolygonOffset::styles field below
   for a discussion of one important limitation of OpenGL's Z-buffer
