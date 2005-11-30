@@ -1043,7 +1043,7 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
   
   if (garbagecollectedobjects.find(obj) != -1) {
     spidermonkey()->JS_ReportError(cx, "Trying to access an object with refcount=0.");
-    return JSVAL_FALSE;
+    return JS_FALSE;
   }
 
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
