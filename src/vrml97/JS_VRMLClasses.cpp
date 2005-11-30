@@ -51,7 +51,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/sensors/SoNodeSensor.h>
 
 // FIXME: toString() missing for all classes
 
@@ -121,6 +121,9 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container);
 static JSObject * SFRotationFactory(JSContext * cx, const SbRotation & self);
 static JSObject * SFVec2fFactory(JSContext * cx, const SbVec2f & self);
 static JSObject * SFVec3fFactory(JSContext * cx, const SbVec3f & self);
+
+static SbList <JSObject *> garbagecollectedobjects;
+static SbList <SoNodeSensor *> nodesensorstobedeleted;
 
 // getIndex returns -1 if id is not an alias or in range 0-max
 static JSBool getIndex(JSContext * cx, jsval id, char * aliases[], int max)
@@ -515,6 +518,59 @@ static JSBool SFRotationConstructor(JSContext * cx, JSObject * obj,
 // *************************************************************************
 // functions
 
+static JSBool SFNode_ref(JSContext * cx, JSObject * obj, uintN argc, 
+                         jsval * argv, jsval * rval)
+{
+  // Check if the JS object has already been garbage collected. This
+  // must be done to prevent a Java script from crashing the
+  // application.
+  if (garbagecollectedobjects.find(obj) != -1) {
+    if (SoJavaScriptEngine::debug()) 
+      SoDebugError::postInfo("SFNode_ref", "WARNING! Trying to ref a deleted node.");
+    return JSVAL_FALSE;
+  }
+
+  SoNode & node = *(SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
+  node.ref();  
+  return JSVAL_TRUE;
+}
+
+static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN argc, 
+                           jsval * argv, jsval * rval)
+{
+  // Check if the JS object has already been garbage collected. This
+  // must be done to prevent a Java script from crashing the
+  // application.
+  if (garbagecollectedobjects.find(obj) != -1) {
+    if (SoJavaScriptEngine::debug()) 
+      SoDebugError::postInfo("SFNode_unref", "WARNING! Trying to unref an already deleted node.");
+    return JSVAL_FALSE;
+  }
+
+  SoNode & node = *(SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);  
+  node.unref();
+  return JSVAL_TRUE;
+}
+
+static void SFNode_deleteCB(void * data, SoSensor * sensor)
+{
+  JSObject * obj = (JSObject *) data;
+  garbagecollectedobjects.append(obj);
+  // Store the sensor-pointer so that it can be properly deleted later
+  nodesensorstobedeleted.append((SoNodeSensor *) sensor);
+}
+
+static void cleanupObsoleteNodeSensors(void)
+{
+  // Delete all SoNodeSensors which no longer have a node attached.
+  while(nodesensorstobedeleted.getLength() > 0) {
+    SoNodeSensor * ns = (SoNodeSensor *) nodesensorstobedeleted[0];
+    nodesensorstobedeleted.removeItem(ns);
+    delete ns;
+  }
+}
+
+
 static JSBool SFVec2f_add(JSContext * cx, JSObject * obj, uintN argc, 
                            jsval * argv, jsval * rval)
 {
@@ -660,7 +716,7 @@ static JSBool SFVec3f_multiply(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN argc, 
-                                     jsval * argv, jsval * rval)
+                                jsval * argv, jsval * rval)
 {
   SbVec2f vec = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.normalize();
@@ -853,6 +909,12 @@ static JSBool SFRotation_slerp(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
+static JSFunctionSpec SFNodeFunctions[] = {
+  {"ref", SFNode_ref, 0, 0, 0},
+  {"unref", SFNode_unref, 0, 0, 0},
+  {NULL, NULL, 0, 0, 0}
+};
+
 static JSFunctionSpec SFVec2fFunctions[] = {
   {"add", SFVec2f_add, 1, 0, 0},
   {"divide", SFVec2f_divide, 1, 0, 0},
@@ -978,6 +1040,12 @@ static JSObject * SFRotation_init(JSContext * cx, JSObject * obj)
 
 static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
 { 
+  
+  if (garbagecollectedobjects.find(obj) != -1) {
+    spidermonkey()->JS_ReportError(cx, "Trying to access an object with refcount=0.");
+    return JSVAL_FALSE;
+  }
+
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
 
   if (container == NULL) {
@@ -1065,6 +1133,9 @@ static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
 
 static void SFNodeDestructor(JSContext * cx, JSObject * obj)
 {
+  // Delete all SoNodeSensors which no longer has a node attached.
+  cleanupObsoleteNodeSensors();
+
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
   // FIXME: We cannot assume this since the class object itself is an
   // instance of this JSClass. kintel 20050804.
@@ -1075,18 +1146,36 @@ static void SFNodeDestructor(JSContext * cx, JSObject * obj)
 
 static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 {
+
+  // Delete all SoNodeSensors which no longer has a node attached.
+  cleanupObsoleteNodeSensors();
+
   JSObject * obj = spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFNode.cls, NULL, NULL);
+
+  if(garbagecollectedobjects.find(obj) != -1) // Pointer has been used before. Remove from list.
+    garbagecollectedobjects.removeItem(obj);
+
   spidermonkey()->JS_SetPrivate(cx, obj, container);
+  spidermonkey()->JS_DefineFunctions(cx, obj, SFNodeFunctions);
+
+  SoNodeSensor * ns = new SoNodeSensor();
+  ns->setDeleteCallback(SFNode_deleteCB, obj);
+  ns->attach(container);
+
   if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
     container->ref();
+
   return obj;
 }
 
 static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj, 
                                 uintN argc, jsval * argv, jsval *rval)
 {
-  // spidermonkey ignores the return value
 
+  // Delete all SoNodeSensors which no longer has a node attached.
+  cleanupObsoleteNodeSensors();
+
+  // spidermonkey ignores the return value
   if (argc >= 1 && JSVAL_IS_STRING(argv[0])) {
     JSString * js = JSVAL_TO_STRING(argv[0]);
     char * str = spidermonkey()->JS_GetStringBytes(js);
@@ -1099,7 +1188,6 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
                              "creating new node with str = '%s'", str);
     }
                              
-
     SoInput input;
     const char * array[2];
     array[0] = str;
@@ -1118,10 +1206,19 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
       return JS_FALSE;
     }
 
+    if(garbagecollectedobjects.find(obj) != -1) { // Pointer has been used before. Remove from list.
+      garbagecollectedobjects.removeItem(obj);
+    }
+    
+    SoNodeSensor * ns = new SoNodeSensor();
+    ns->setDeleteCallback(SFNode_deleteCB, obj);
+    ns->attach(group);
+    
     if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
       group->ref();
 
     spidermonkey()->JS_SetPrivate(cx, obj, group);
+    spidermonkey()->JS_DefineFunctions(cx, obj, SFNodeFunctions);
 
     return JS_TRUE;
   }
