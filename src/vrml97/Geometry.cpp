@@ -41,34 +41,34 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
+
 class SoVRMLGeometryP {
 public:  
   SoChildList * childlist;
   SbBool childlistvalid;
+
 #ifdef COIN_THREADSAFE
   SbMutex childlistmutex;
-#endif // COIN_THREADSAFE
-  void lockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lockChildList(void) { this->childlistmutex.lock(); }
+  void unlockChildList(void) { this->childlistmutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lockChildList(void) { }
+  void unlockChildList(void) { }
+#endif // !COIN_THREADSAFE
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_ABSTRACT_SOURCE(SoVRMLGeometry);
+
+// *************************************************************************
 
 // Doc in parent
 void

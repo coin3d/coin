@@ -113,9 +113,9 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/glp.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
 // *************************************************************************
 
@@ -158,9 +158,6 @@ public:
   }
 
   SoBoundingBoxCache * bboxcache;
-#ifdef COIN_THREADSAFE
-  SbMutex mutex;
-#endif // !COIN_THREADSAFE
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
     sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) tls;
@@ -178,16 +175,14 @@ public:
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
   }
 
-  void lock(void) {
 #ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  SbMutex mutex;
+  void lock(void) { this->mutex.lock(); }
+  void unlock(void) { this->mutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lock(void) {  }
+  void unlock(void) { }
+#endif // !COIN_THREADSAFE
 };
 
 SoGLCacheList *

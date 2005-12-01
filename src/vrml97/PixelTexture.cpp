@@ -103,33 +103,33 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoVRMLPixelTextureP {
 public:
   SoGLImage * glimage;
   SbBool glimagevalid;
   int readstatus;
+
 #ifdef COIN_THREADSAFE
   SbMutex glimagemutex;
-#endif // COIN_THREADSAFE
+  void lock_glimage(void) { this->glimagemutex.lock(); }
+  void unlock_glimage(void) { this->glimagemutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lock_glimage(void) { }
+  void unlock_glimage(void) { }
+#endif // !COIN_THREADSAFE
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
-#ifdef COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.lock()
-#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.unlock()
-#else // COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_)
-#define UNLOCK_GLIMAGE(_thisp_)
-#endif // COIN_THREADSAFE
+// *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLPixelTexture);
+
+// *************************************************************************
 
 // Doc in parent
 void
@@ -225,7 +225,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
   float quality = SoTextureQualityElement::get(state);
 
-  LOCK_GLIMAGE(this);
+  PRIVATE(this)->lock_glimage();
 
   if (!PRIVATE(this)->glimagevalid) {
     int nc;
@@ -267,7 +267,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     }
   }
 
-  UNLOCK_GLIMAGE(this);
+  PRIVATE(this)->unlock_glimage();
 
   SoGLTextureImageElement::set(state, this,
                                PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
@@ -310,7 +310,5 @@ SoVRMLPixelTexture::notify(SoNotList * list)
 }
 
 #undef PRIVATE
-#undef LOCK_GLIMAGE
-#undef UNLOCK_GLIMAGE
 
 #endif // HAVE_VRML97

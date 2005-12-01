@@ -75,58 +75,54 @@
 #include <stddef.h>
 
 #include <Inventor/VRMLnodes/SoVRMLSwitch.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/VRMLnodes/SoVRMLParent.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/actions/SoAudioRenderAction.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoSoundElement.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/misc/SoChildList.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
 
 #include "../nodes/SoSoundElementHelper.h"
+#include <Inventor/SoOutput.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/VRMLnodes/SoVRMLParent.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/elements/SoSoundElement.h>
+#include <Inventor/elements/SoSwitchElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
-#ifndef DOXYGEN_SKIP_THIS
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbMutex.h>
+#endif // HAVE_THREADS
+
+// *************************************************************************
+
 class SoVRMLSwitchP : public SoSoundElementHelper {
 public:
   SbBool childlistvalid;
+
 #ifdef COIN_THREADSAFE
   SbMutex childlistmutex;
-#endif // COIN_THREADSAFE
-  void lockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lockChildList(void) { this->childlistmutex.lock(); }
+  void unlockChildList(void) { this->childlistmutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lockChildList(void) { }
+  void unlockChildList(void) { }
+#endif // !COIN_THREADSAFE
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLSwitch);
+
+// *************************************************************************
 
 // Doc in parent
 void

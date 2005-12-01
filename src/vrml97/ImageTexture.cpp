@@ -84,6 +84,9 @@
   [0.0, 1.0] range. The repeatT field is analogous to the repeatS
   field.
 
+
+  \ENDWEB3D
+
   One common flaw with many programs that has support for exporting
   VRML or Inventor files, is that the same texture file is exported
   several times, but as different nodes. This can cause excessive
@@ -160,55 +163,59 @@
   \endcode
 */
 
+// *************************************************************************
+
 /*!
   SoMFString SoVRMLImageTexture::url
   The texture file URL.
 */
 
-#include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+// *************************************************************************
 
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoMultiTextureImageElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/lists/SbStringList.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/sensors/SoOneShotSensor.h>
+#include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+
+#include <assert.h>
+
+#include <Inventor/C/glue/simage_wrapper.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/C/tidbitsp.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureScalePolicyElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <assert.h>
-#include <Inventor/C/glue/simage_wrapper.h>
+
+#ifdef HAVE_THREADS
+#include <Inventor/C/threads/sched.h>
+#include <Inventor/threads/SbMutex.h>
+#endif // HAVE_THREADS
+
+// *************************************************************************
 
 static int imagedata_maxage = 0;
 static VRMLPrequalifyFileCallback * imagetexture_prequalify_cb = NULL;
 static void * imagetexture_prequalify_closure = NULL;
 static SbBool imagetexture_delay_fetch = TRUE;
-static SbBool imagetexture_is_exiting = FALSE;
 
-#ifdef COIN_THREADSAFE
-
-#include <Inventor/C/threads/sched.h>
-#include <Inventor/threads/SbMutex.h>
-
-static cc_sched * imagetexture_scheduler = NULL;
-
-#endif // COIN_THREADSAFE
+// *************************************************************************
 
 class SoVRMLImageTextureP {
 public:
@@ -228,13 +235,7 @@ public:
 
   void readimage_cleanup(void);
   SbBool isdestructing;
-#ifdef COIN_THREADSAFE
-  static SbMutex * glimagemutex;
-  static void cleanup(void) {
-    delete glimagemutex;
-    glimagemutex = NULL;
-  }
-#endif // COIN_THREADSAFE
+
   SbStringList searchdirs;
 
   void clearSearchDirs(void) {
@@ -251,33 +252,41 @@ public:
       this->searchdirs.append(new SbString(*sl[i]));
     }
   }
+
+  static SbBool is_exiting;
+
+#ifdef COIN_THREADSAFE
+  static SbMutex * glimagemutex;
+  static cc_sched * scheduler;
+
+  static void cleanup(void)
+  {
+    delete glimagemutex;
+    glimagemutex = NULL;
+
+    is_exiting = TRUE;
+    if (scheduler) { cc_sched_destruct(scheduler); }
+  }
+  void lock_glimage(void) { this->glimagemutex->lock(); }
+  void unlock_glimage(void) { this->glimagemutex->unlock(); }
+#else // !COIN_THREADSAFE
+  void lock_glimage(void) { }
+  void unlock_glimage(void) { }
+#endif // !COIN_THREADSAFE
+
 };
 
 #ifdef COIN_THREADSAFE
-SbMutex * SoVRMLImageTextureP::glimagemutex;
+SbMutex * SoVRMLImageTextureP::glimagemutex = NULL;
+cc_sched * SoVRMLImageTextureP::scheduler = NULL;
 #endif // COIN_THREADSAFE
+SbBool SoVRMLImageTextureP::is_exiting = FALSE;
 
-
-#ifdef COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex->lock()
-#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex->unlock()
-#else // COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_)
-#define UNLOCK_GLIMAGE(_thisp_)
-#endif // COIN_THREADSAFE
+// *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLImageTexture);
 
-static void
-imagetexture_cleanup(void)
-{
-#ifdef COIN_THREADSAFE
-  imagetexture_is_exiting = TRUE;
-  if (imagetexture_scheduler) {
-    cc_sched_destruct(imagetexture_scheduler);
-  }
-#endif // COIN_THREADSAFE
-}
+// *************************************************************************
 
 // Doc in parent
 void
@@ -290,14 +299,17 @@ SoVRMLImageTexture::initClass(void) // static
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
 
 #ifdef COIN_THREADSAFE
-  imagetexture_scheduler = cc_sched_construct(1);
-  coin_atexit((coin_atexit_f*) imagetexture_cleanup, 0);
+  SoVRMLImageTextureP::scheduler = cc_sched_construct(1);
   SoVRMLImageTextureP::glimagemutex = new SbMutex;
   coin_atexit((coin_atexit_f*) SoVRMLImageTextureP::cleanup, 0);
 #endif // COIN_THREADSAFE
 }
 
+// *************************************************************************
+
 #define PRIVATE(x) (x)->pimpl
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -334,9 +346,9 @@ SoVRMLImageTexture::~SoVRMLImageTexture()
   delete PRIVATE(this)->timersensor;
 #ifdef COIN_THREADSAFE
   // just wait for all threads to finish reading
-  if (imagetexture_scheduler) {
+  if (SoVRMLImageTextureP::scheduler) {
     PRIVATE(this)->isdestructing = TRUE; // signal thread that we are destructing
-    cc_sched_wait_all(imagetexture_scheduler);
+    cc_sched_wait_all(SoVRMLImageTextureP::scheduler);
   }
 #endif // COIN_THREADSAFE  
 
@@ -345,6 +357,8 @@ SoVRMLImageTexture::~SoVRMLImageTexture()
   delete PRIVATE(this)->urlsensor;
   delete PRIVATE(this);
 }
+
+// *************************************************************************
 
 /*!
   Sets the prequalify callback for ImageTexture nodes. This is a callback
@@ -465,7 +479,7 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
   SoGLTexture3EnabledElement::set(state, this, FALSE);
   float quality = SoTextureQualityElement::get(state);
 
-  LOCK_GLIMAGE(this);
+  PRIVATE(this)->lock_glimage();
   
   if (!PRIVATE(this)->glimagevalid) {
     SoTextureScalePolicyElement::Policy scalepolicy =
@@ -513,7 +527,7 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
     SoCacheElement::invalidate(state);
   }
 
-  UNLOCK_GLIMAGE(this);
+  PRIVATE(this)->unlock_glimage();
 
   SoGLTextureImageElement::set(state, this,
                                PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
@@ -644,7 +658,7 @@ SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure,
                                           SoVRMLImageTexture * thisp)
 {
   SbBool ret = TRUE;
-  if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
+  if (!SoVRMLImageTextureP::is_exiting && !PRIVATE(thisp)->isdestructing) {
     ret = PRIVATE(thisp)->image.readFile(url);
   }
   return ret;
@@ -701,10 +715,10 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
 
 #if defined(COIN_THREADSAFE)
   // use a separate thread to load the image  
-  cc_sched_schedule(imagetexture_scheduler,
+  cc_sched_schedule(SoVRMLImageTextureP::scheduler,
                     read_thread, data, 0);
   return TRUE;
-#else // COIN_THREADSAFE
+#else // !COIN_THREADSAFE
   // trigger a sensor to read the image
   SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
   sensor->schedule();
@@ -733,7 +747,7 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
       // wait for threads to finish in case a new thread is used to
       // load the previous image, and the thread has not finished yet.
 #ifdef COIN_THREADSAFE
-      cc_sched_wait_all(imagetexture_scheduler);
+      cc_sched_wait_all(SoVRMLImageTextureP::scheduler);
 #endif // COIN_THREADSAFE
       thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
       thisp->pimpl->glimagevalid = FALSE;
@@ -807,8 +821,5 @@ SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * sensor)
 }
 
 #undef PRIVATE
-
-#undef LOCK_GLIMAGE
-#undef UNLOCK_GLIMAGE
 
 #endif // HAVE_VRML97

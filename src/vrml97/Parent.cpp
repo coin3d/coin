@@ -44,9 +44,11 @@
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/C/tidbitsp.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
+
+// *************************************************************************
 
 /*!
   \var SoMFNode SoVRMLParent::children
@@ -63,7 +65,7 @@
   An event in that is used to remove children from this node.
 */
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoVRMLParentP {
 public:
@@ -73,20 +75,13 @@ public:
 
 #ifdef COIN_THREADSAFE
   SbMutex childlistmutex;
-#endif // COIN_THREADSAFE
-  void lockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlockChildList(void) {
-#ifdef COIN_THREADSAFE
-    this->childlistmutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lockChildList(void) { this->childlistmutex.lock(); }
+  void unlockChildList(void) { this->childlistmutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lockChildList(void) { }
+  void unlockChildList(void) { }
+#endif // !COIN_THREADSAFE
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 static SoInfo * vrmlparent_nullnode = NULL;
 
@@ -97,7 +92,11 @@ vrmlparent_cleanup(void)
   vrmlparent_nullnode = NULL;
 }
 
+// *************************************************************************
+
 SO_NODE_ABSTRACT_SOURCE(SoVRMLParent);
+
+// *************************************************************************
 
 // Doc in parent
 void

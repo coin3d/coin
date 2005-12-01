@@ -280,12 +280,11 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
-
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoVRMLElevationGridP {
 public:
@@ -298,39 +297,30 @@ public:
   { }
 
   SbBool dirty;
-#ifdef COIN_THREADSAFE
-  SbRWMutex mutex;
-#endif // COIN_THREADSAFE
   SoNormalGenerator ngen;
   SoVRMLElevationGrid::Binding nbind;
 
-  void readLockNormalCache(void) {
 #ifdef COIN_THREADSAFE
-    this->mutex.readLock();
-#endif // COIN_THREADSAFE
-  }
-  void readUnlockNormalCache(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.readUnlock();
-#endif // COIN_THREADSAFE
-  }
-  void writeLockNormalCache(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.writeLock();
-#endif // COIN_THREADSAFE
-  }
-  void writeUnlockNormalCache(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.writeUnlock();
-#endif // COIN_THREADSAFE
-  }
+  SbRWMutex mutex;
+  void readLockNormalCache(void) { this->mutex.readLock(); }
+  void readUnlockNormalCache(void) { this->mutex.readUnlock(); }
+  void writeLockNormalCache(void) { this->mutex.writeLock(); }
+  void writeUnlockNormalCache(void) { this->mutex.writeUnlock(); }
+#else // ! COIN_THREADSAFE
+  void readLockNormalCache(void) { }
+  void readUnlockNormalCache(void) { }
+  void writeLockNormalCache(void) { }
+  void writeUnlockNormalCache(void) { }
+#endif // ! COIN_THREADSAFE
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLElevationGrid);
+
+// *************************************************************************
 
 // Doc in parent
 void

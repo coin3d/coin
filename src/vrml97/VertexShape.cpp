@@ -74,16 +74,14 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
+
 class SoVRMLVertexShapeP {
 public:
   SoVRMLVertexShapeP(void) 
@@ -97,11 +95,14 @@ public:
   SbRWMutex normalcachemutex;
 #endif // COIN_THREADSAFE
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_ABSTRACT_SOURCE(SoVRMLVertexShape);
+
+// *************************************************************************
 
 // Doc in parent
 void

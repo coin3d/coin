@@ -206,41 +206,40 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/caches/SoConvexDataCache.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/misc/SoGL.h>
+
+#include "../misc/SoVBO.h"
+#include "../misc/SoVertexArrayIndexer.h"
+#include <Inventor/C/glue/glp.h>
+#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/caches/SoConvexDataCache.h>
+#include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/misc/SoGL.h>
-#include "../misc/SoVertexArrayIndexer.h"
-#include "../misc/SoVBO.h"
-
-#include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
-
-#if COIN_DEBUG
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/system/gl.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
+
+// *************************************************************************
 
 // for concavestatus
 #define STATUS_UNKNOWN 0
@@ -249,6 +248,8 @@
 
 #define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
 #define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()
+
+// *************************************************************************
 
 class SoVRMLIndexedFaceSetP {
 public:
@@ -260,36 +261,28 @@ public:
   SoVertexArrayIndexer * vaindexer;
   SoConvexDataCache * convexCache;
   int concavestatus;
+
 #ifdef COIN_THREADSAFE
   SbRWMutex convexmutex;
-#endif // COIN_THREADSAFE
-
-  void readLockConvexCache(void) {
-#ifdef COIN_THREADSAFE
-    this->convexmutex.readLock();
-#endif // COIN_THREADSAFE
-  }
-  void readUnlockConvexCache(void) {
-#ifdef COIN_THREADSAFE
-    this->convexmutex.readUnlock();
-#endif // COIN_THREADSAFE
-  }
-  void writeLockConvexCache(void) {
-#ifdef COIN_THREADSAFE
-    this->convexmutex.writeLock();
-#endif // COIN_THREADSAFE
-  }
-  void writeUnlockConvexCache(void) {
-#ifdef COIN_THREADSAFE
-    this->convexmutex.writeUnlock();
-#endif // COIN_THREADSAFE
-  }
+  void readLockConvexCache(void) { this->convexmutex.readLock(); }
+  void readUnlockConvexCache(void) { this->convexmutex.readUnlock(); }
+  void writeLockConvexCache(void) { this->convexmutex.writeLock(); }
+  void writeUnlockConvexCache(void) { this->convexmutex.writeUnlock(); }
+#else // !COIN_THREADSAFE
+  void readLockConvexCache(void) { }
+  void readUnlockConvexCache(void) { }
+  void writeLockConvexCache(void) { }
+  void writeUnlockConvexCache(void) { }
+#endif // !COIN_THREADSAFE
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+// *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLIndexedFaceSet);
+
+// *************************************************************************
 
 // Doc in parent
 void

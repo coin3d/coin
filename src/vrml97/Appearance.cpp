@@ -93,11 +93,12 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
+
 class SoVRMLAppearanceP {
 public:
   SoChildList * childlist;
@@ -105,24 +106,22 @@ public:
 
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
-#endif // COIN_THREADSAFE
-  void lock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lock(void) { this->mutex.lock(); }
+  void unlock(void) { this->mutex.unlock(); }
+#else // !COIN_THREADSAFE
+  void lock(void) {  }
+  void unlock(void) { }
+#endif // !COIN_THREADSAFE
   uint32_t fakecolor;
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLAppearance);
+
+// *************************************************************************
 
 // doc in parent
 void

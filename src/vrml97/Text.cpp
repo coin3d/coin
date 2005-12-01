@@ -114,36 +114,36 @@
 #include <string.h>
 
 #include <Inventor/VRMLnodes/SoVRMLText.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
 
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-
+#include "../fonts/glyph3d.h"
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/details/SoTextDetail.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGlyph.h>
-#include <Inventor/system/gl.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/caches/SoGlyphCache.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/system/gl.h>
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
 
-#include "../fonts/glyph3d.h"
+// *************************************************************************
 
 class SoVRMLTextP {
 public:
@@ -172,25 +172,24 @@ public:
   int fontfamily;
   int fontstyle;
 
-  void lock(void) {
 #ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lock(void) { this->mutex.lock(); }
+  void unlock(void) { this->mutex.unlock(); }
 private:
-#ifdef COIN_THREADSAFE
   SbMutex mutex;
-#endif // COIN_THREADSAFE
+#else // !COIN_THREADSAFE
+  void lock(void) { }
+  void unlock(void) { }
+#endif // !COIN_THREADSAFE
 };
 
 #define PRIVATE(obj) (obj->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLText);
+
+// *************************************************************************
 
 // Doc in parent
 void
