@@ -35,8 +35,13 @@
 
   2003-02-04 thammer.  */
 
+// *************************************************************************
+
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoSoundElement.h>
+#include <Inventor/misc/SoChildList.h>
+
+// *************************************************************************
 
 class SoSoundElementHelper {
 public:
