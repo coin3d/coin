@@ -54,13 +54,6 @@ SoGLSLShaderProgram::addShaderObject(SoGLSLShaderObject *shaderObject)
 void
 SoGLSLShaderProgram::removeShaderObjects(void)
 {
-//    int idx = this->indexOfShaderObject(shaderObject);
-//    if (idx >= 0) {
-//      this->shaderObjects[idx]->unload(); // detach();
-//      this->shaderObjects.remove(idx);
-//      this->shouldLink = TRUE;
-//    }
-  
   this->shaderObjects.truncate(0);  
 }
 

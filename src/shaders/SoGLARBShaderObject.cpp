@@ -81,6 +81,8 @@ void
 SoGLARBShaderObject::unload(void)
 {
   if (cc_glglue_glIsProgram(this->glctx, this->arbProgramID)) {
+    // FIXME: make sure this is only called when in the correct, valid
+    // GL context. 20050120 mortene.
     cc_glglue_glDeletePrograms(this->glctx, 1, &this->arbProgramID);
     this->arbProgramID = 0;
   }

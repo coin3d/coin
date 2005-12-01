@@ -1,4 +1,4 @@
-mortene ("x" means "done"):
+mortene ("x" means "done" or "fixed"):
 
         x get rid of C++ stream usage
         x kill SO_ARB_SHADER_SUPPORT define
@@ -6,7 +6,7 @@ mortene ("x" means "done"):
         x kill SO_CG_SHADER_SUPPORT define
         x dynamic pickup of libCg.so / cg.dll(?)
         x make all nodes conform to identification mechs for internal Coin nodes
-        - make programs context sensitive. Each cache context must have its
+        x make programs context sensitive. Each cache context must have its
           own copy to handle use of the scene graph in multiple contexts.
           It might be easiest to do this by managing several several
           SoGLShaderObjects in SoShaderObject.cpp ??
