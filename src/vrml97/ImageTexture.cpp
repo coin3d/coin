@@ -202,9 +202,11 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-
-#ifdef HAVE_THREADS
 #include <Inventor/C/threads/sched.h>
+
+// FIXME: should be able to include file without
+// #ifdef-wrapper. 20051202 mortene.
+#ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
 
@@ -254,19 +256,10 @@ public:
   }
 
   static SbBool is_exiting;
+  static cc_sched * scheduler;
 
 #ifdef COIN_THREADSAFE
   static SbMutex * glimagemutex;
-  static cc_sched * scheduler;
-
-  static void cleanup(void)
-  {
-    delete glimagemutex;
-    glimagemutex = NULL;
-
-    is_exiting = TRUE;
-    if (scheduler) { cc_sched_destruct(scheduler); }
-  }
   void lock_glimage(void) { this->glimagemutex->lock(); }
   void unlock_glimage(void) { this->glimagemutex->unlock(); }
 #else // !COIN_THREADSAFE
@@ -274,12 +267,24 @@ public:
   void unlock_glimage(void) { }
 #endif // !COIN_THREADSAFE
 
+  static void cleanup(void)
+  {
+    is_exiting = TRUE;
+
+#ifdef COIN_THREADSAFE
+    delete glimagemutex;
+    glimagemutex = NULL;
+#endif // COIN_THREADSAFE
+
+    if (scheduler) { cc_sched_destruct(scheduler); }
+  }
 };
 
 #ifdef COIN_THREADSAFE
 SbMutex * SoVRMLImageTextureP::glimagemutex = NULL;
-cc_sched * SoVRMLImageTextureP::scheduler = NULL;
 #endif // COIN_THREADSAFE
+
+cc_sched * SoVRMLImageTextureP::scheduler = NULL;
 SbBool SoVRMLImageTextureP::is_exiting = FALSE;
 
 // *************************************************************************
@@ -298,11 +303,15 @@ SoVRMLImageTexture::initClass(void) // static
   SoType type = SoVRMLImageTexture::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
 
+  if (cc_thread_implementation() != CC_NO_THREADS) {
+    SoVRMLImageTextureP::scheduler = cc_sched_construct(1);
+  }
+
 #ifdef COIN_THREADSAFE
-  SoVRMLImageTextureP::scheduler = cc_sched_construct(1);
   SoVRMLImageTextureP::glimagemutex = new SbMutex;
-  coin_atexit((coin_atexit_f*) SoVRMLImageTextureP::cleanup, 0);
 #endif // COIN_THREADSAFE
+
+  coin_atexit((coin_atexit_f *)SoVRMLImageTextureP::cleanup, 0);
 }
 
 // *************************************************************************
@@ -327,7 +336,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   PRIVATE(this)->allowprequalifycb = TRUE;
   PRIVATE(this)->timersensor = 
     new SoTimerSensor(SoVRMLImageTextureP::timersensor_cb, PRIVATE(this));
-  PRIVATE(this)->timersensor->setInterval(SbTime(1.0));
+  PRIVATE(this)->timersensor->setInterval(SbTime(0.5));
   
   // use field sensor for url since we will load an image if
   // filename changes. This is a time-consuming task which should
@@ -344,13 +353,12 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 SoVRMLImageTexture::~SoVRMLImageTexture()
 {
   delete PRIVATE(this)->timersensor;
-#ifdef COIN_THREADSAFE
+
   // just wait for all threads to finish reading
   if (SoVRMLImageTextureP::scheduler) {
     PRIVATE(this)->isdestructing = TRUE; // signal thread that we are destructing
     cc_sched_wait_all(SoVRMLImageTextureP::scheduler);
   }
-#endif // COIN_THREADSAFE  
 
   if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
   PRIVATE(this)->clearSearchDirs();
@@ -704,8 +712,8 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&PRIVATE(thisp)->image == image);
   
-  // start a timer sensor that triggers each second and tests if the
-  // thread that loads images has finished loading this image.
+  // start a timer sensor which polls the thread that loads images, to
+  // detect when it's done:
   PRIVATE(thisp)->finishedloading = FALSE; // this will be TRUE when finished
   PRIVATE(thisp)->timersensor->schedule();
 
@@ -713,17 +721,19 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   data->thisp = thisp;
   data->filename = filename;
 
-#if defined(COIN_THREADSAFE)
-  // use a separate thread to load the image  
-  cc_sched_schedule(SoVRMLImageTextureP::scheduler,
-                    read_thread, data, 0);
+  if (SoVRMLImageTextureP::scheduler) {
+    // use a separate thread to load the image
+    cc_sched_schedule(SoVRMLImageTextureP::scheduler,
+                      read_thread, data, 0);
+  }
+  else {
+    // schedule a sensor to read the image as soon as the delay sensor
+    // queue is processed (typically when the run-time system is idle)
+    SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
+    sensor->schedule();
+  }
+
   return TRUE;
-#else // !COIN_THREADSAFE
-  // trigger a sensor to read the image
-  SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
-  sensor->schedule();
-  return TRUE;
-#endif // ! COIN_THREADSAFE
 }
 
 //
@@ -746,9 +756,10 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
     if (thisp->url.getNum() == 0 || thisp->url[0].getLength() == 0) {
       // wait for threads to finish in case a new thread is used to
       // load the previous image, and the thread has not finished yet.
-#ifdef COIN_THREADSAFE
-      cc_sched_wait_all(SoVRMLImageTextureP::scheduler);
-#endif // COIN_THREADSAFE
+      if (SoVRMLImageTextureP::scheduler) {
+        cc_sched_wait_all(SoVRMLImageTextureP::scheduler);
+      }
+
       thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
       thisp->pimpl->glimagevalid = FALSE;
       if (PRIVATE(thisp)->glimage) {
