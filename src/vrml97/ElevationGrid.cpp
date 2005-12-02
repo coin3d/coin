@@ -290,10 +290,10 @@ class SoVRMLElevationGridP {
 public:
   SoVRMLElevationGridP(void)
     : dirty(TRUE),
+      ngen(TRUE),
 #ifdef COIN_THREADSAFE
-      mutex(SbRWMutex::READ_PRECEDENCE),
+      mutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
-      ngen(TRUE)
   { }
 
   SbBool dirty;
