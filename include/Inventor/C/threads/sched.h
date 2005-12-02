@@ -27,6 +27,16 @@
 #include <Inventor/C/basic.h>  /* COIN_DLL_API */
 #include <Inventor/C/threads/common.h>  /* cc_sched */
 
+/* ********************************************************************** */
+
+/* Implementation note: it is important that this header file can be
+   included even when Coin was built with no threads support.
+
+   (This simplifies client code, as we get away with far less #ifdef
+   HAVE_THREADS wrapping.) */
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

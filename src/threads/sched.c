@@ -22,15 +22,40 @@
 \**************************************************************************/
 
 #include <Inventor/C/threads/sched.h>
-#include <Inventor/C/threads/schedp.h>
-#include <Inventor/C/threads/wpool.h>
-#include <Inventor/C/threads/mutex.h>
-#include <Inventor/C/threads/condvar.h>
-#include <Inventor/C/threads/thread.h>
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#ifndef HAVE_THREADS
+
+/* FIXME: instead of disallowing the use of these completely when
+   thread support is not available (that's why there are asserts
+   within them), could we perhaps implement in such a manner that they
+   still work, but within only the calling thread?
+
+   20051202 mortene. */
+
+cc_sched * cc_sched_construct(int numthreads) { assert(FALSE); return NULL; }
+void cc_sched_destruct(cc_sched * sched) { assert(FALSE); }
+void cc_sched_set_num_threads(cc_sched * sched, int num) { assert(FALSE); }
+int cc_sched_get_num_threads(cc_sched * sched) { assert(FALSE); return 0; }
+void cc_sched_schedule(cc_sched * sched, 
+                       void (*workfunc)(void *), void * closure,
+                       unsigned int priority) { assert(FALSE); }
+void cc_sched_wait_all(cc_sched * sched) { assert(FALSE); }
+
+#else /* HAVE_THREADS */
+
+#include <stdlib.h>
 
 #include <Inventor/C/errors/debugerror.h>
-#include <stdlib.h>
-#include <assert.h>
+#include <Inventor/C/threads/condvar.h>
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/schedp.h>
+#include <Inventor/C/threads/thread.h>
+#include <Inventor/C/threads/wpool.h>
 
 /* ********************************************************************** */
 
@@ -191,3 +216,5 @@ cc_sched_wait_all(cc_sched * sched)
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#endif /* HAVE_THREADS */

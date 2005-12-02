@@ -21,6 +21,16 @@
  *
 \**************************************************************************/
 
+/* FIXME: should provide dummy implementations of the (few) internal
+   public cc_mutex_*() calls, so one can include the header files
+   mutex.h and SbMutex.h without #ifdef checks, and also declare
+   e.g. SbMutex instances when thread-support is missing.
+
+   This would clean up source code everywhere we're using mutex'es.
+
+   20050516 mortene.
+*/
+
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
 
