@@ -297,6 +297,8 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetOptions, JS_GetOptions_t);
   REGISTER_FUNC(JS_SetOptions, JS_SetOptions_t);
   REGISTER_FUNC(JS_ToggleOptions, JS_ToggleOptions_t);
+  REGISTER_FUNC(JS_Enumerate, JS_Enumerate_t);
+  REGISTER_FUNC(JS_IdToValue, JS_IdToValue_t);
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);

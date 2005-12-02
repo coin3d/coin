@@ -49,6 +49,7 @@ extern "C" {
 typedef int JSBool;
 typedef long jsword;
 typedef jsword jsval;
+typedef jsword jsid;
 typedef int intN;
 typedef unsigned int uintN;
 typedef uint16_t jschar;
@@ -84,6 +85,11 @@ typedef enum JSGCStatus {
   JSGC_MARK_END,
   JSGC_FINALIZE_END
 } JSGCStatus;
+
+struct JSIdArray {
+    int32_t length;
+    jsid vector[1];
+};
 
 typedef void JSRuntime;
 typedef void JSContext;
@@ -339,6 +345,9 @@ typedef intN (* JS_CompareStrings_t)(JSString *, JSString *);
 typedef uint32_t (* JS_GetOptions_t)(JSContext *);
 typedef uint32_t (* JS_SetOptions_t)(JSContext *, uint32_t);
 typedef uint32_t (* JS_ToggleOptions_t)(JSContext *, uint32_t);
+typedef struct JSIdArray * (* JS_Enumerate_t)(JSContext *, JSObject *);
+typedef JSBool (* JS_IdToValue_t)(JSContext *, jsid, jsval *);
+
 
 /* Access interface. **************************************************** */
 
@@ -431,6 +440,8 @@ typedef struct {
   JS_GetOptions_t JS_GetOptions;
   JS_SetOptions_t JS_SetOptions;
   JS_ToggleOptions_t JS_ToggleOptions;
+  JS_Enumerate_t JS_Enumerate;
+  JS_IdToValue_t JS_IdToValue;
 
 } SpiderMonkey_t;
 
