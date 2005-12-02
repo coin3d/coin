@@ -30,13 +30,31 @@
   geometry in the scene graph will use values from the material "pool"
   of the traversal state set up from nodes of this type.
 
+  For detailed information on the various components, see the OpenGL
+  color model, presented in the chapter "Colors and Coloring" (chapter
+  2.13 in the OpenGL 1.4 specification).
+
   Note that values from a material node will \e replace the previous
-  values from the traversal state, they will \e not accumulate.
+  values from the traversal state, they will \e not accumulate. That's
+  the case even when e.g. material changes are \e implicit in an
+  iv-file, as illustrated by the following example:
 
-  See also the information on the OpenGL color model, presented in the
-  chapter "Colors and Coloring" (chapter 2.13 in the OpenGL 1.4
-  specification).
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Material { ambientColor 1 0 0 }
+  Cone { }
+  
+  Translation { translation 5 0 0 }
+  
+  Material { }
+  Sphere { }
+  \endverbatim
 
+  (The SoSphere will not "inherit" the SoMaterial::ambientColor from
+  the first SoMaterial node, even though it is not explicitly set in
+  the second material node. The default value of
+  SoMaterial::ambientColor will be used.)
 
   Note that nodes imported as part of a VRML V1.0 file has a special
   case, where the fields SoMaterial::ambientColor,

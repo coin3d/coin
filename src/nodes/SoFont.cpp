@@ -39,21 +39,45 @@
 
   Spaces before or after the ":" will be ignored.
 
-  If the chosen font cannot be found, the default font will be loaded
-  instead. The default 2D font is a builtin 8x12 points font. The 3D
-  font is a serif font ala Times New Roman. It is not possible to
-  apply styles to any of the builtin fonts. It is not possible to
-  specify a size for the default 2D font. 
+  If a good match for the chosen font cannot be found, the default
+  font will be loaded instead. The default 2D font is a builtin 8x12
+  points font. The 3D font is a serif font ala Times New Roman. It is
+  not possible to apply styles to any of the builtin fonts. It is not
+  possible to specify a size for the default 2D font.
   
   One can explicitly select the default font by setting "defaultFont"
-  as the font name. The default fonts are always accessible by Coin
-  as they are compiled into the library. If one needs to guarantee that
-  the text will have the same appearance under all circumstances, the
-  default font will be a safe choice. Another solution might be to use
-  the \e FreeType font engine and explicitly name a font-file (This is
-  closer described below).
+  as the font name, or by just leaving the SoFont::name field alone,
+  as it has that value by default. In that regard, note that SoFont
+  does not inherit / accumulate any parts from earlier SoFont-nodes,
+  even when one or both of its fields are left blank in e.g. an
+  iv-file, like this:
 
-  Here is a simple example on how to print a string using a bold &
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Font { name "Helvetica"  size 50 }
+  Text2 { string "hepp" }
+  
+  Translation { translation 5 80 0 }
+  
+  BaseColor { rgb 1 1 0 }
+  
+  Font { size 30 }
+  Text2 { string "svupp" }
+  \endverbatim
+
+  (The second string in the above example will be rendered with the
+  default built-in font, not in Helvetica.)
+
+
+  The default fonts are always accessible by Coin as they are embedded
+  into the run-time library. If one needs to guarantee that the text
+  will have the same appearance under all circumstances, the default
+  font will be a safe choice. Another solution might be to use the \e
+  FreeType font engine and explicitly name a font-file. This is
+  described in more detail below.
+
+  Here is a simple example on how to print a string using a bold and
   italic Arial font:
 
   \verbatim
