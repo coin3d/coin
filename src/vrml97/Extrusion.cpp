@@ -371,9 +371,9 @@ public:
      tcoord(32),
      idx(32),
      gen(TRUE),
-     dirty(TRUE),
+     dirty(TRUE)
 #ifdef COIN_THREADSAFE
-     rwmutex(SbRWMutex::READ_PRECEDENCE)
+     , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
   {
     this->tess.setCallback(tess_callback, this);
