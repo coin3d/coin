@@ -72,6 +72,10 @@ typedef void (*glue_cgGLSetMatrixParameterArrayfc_t)(CGparameter, long, long, co
 typedef int (*glue_cgGetArrayDimension_t)(CGparameter);
 typedef int (*glue_cgGetArraySize_t)(CGparameter, int);
 
+/* texture parameters */
+typedef void (*glue_cgGLSetManageTextureParameters_t)(CGcontext, CGbool flag);
+
+/* CgFX */
 typedef CGeffect (*glue_cgCreateEffect_t)(CGcontext, const char *, const char **);
 typedef CGprogram (*glue_cgCreateProgramFromEffect_t)(CGeffect, CGprofile, const char * entry, const char ** args);
 typedef void (*glue_cgDestroyEffect_t)(CGeffect);
@@ -128,6 +132,10 @@ typedef struct {
   glue_cgGetArrayDimension_t cgGetArrayDimension;
   glue_cgGetArraySize_t cgGetArraySize;
 
+  /* texture parameters */
+  glue_cgGLSetManageTextureParameters_t cgGLSetManageTextureParameters; 
+
+  /* CgFX */
   glue_cgCreateEffect_t cgCreateEffect;
   glue_cgCreateProgramFromEffect_t cgCreateProgramFromEffect;
   glue_cgDestroyEffect_t cgDestroyEffect;
@@ -303,6 +311,8 @@ cgglue_init(void)
       CGGLUE_REGISTER_FUNC(glue_cgGLSetMatrixParameterArrayfc_t, cgGLSetMatrixParameterArrayfc);
       CGGLUE_REGISTER_FUNC(glue_cgGetArrayDimension_t, cgGetArrayDimension);
       CGGLUE_REGISTER_FUNC(glue_cgGetArraySize_t, cgGetArraySize);
+
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetManageTextureParameters_t, cgGLSetManageTextureParameters);
 
       /* CgFX */
       CGGLUE_REGISTER_FXFUNC(glue_cgCreateEffect_t, cgCreateEffect);
@@ -550,6 +560,14 @@ glue_cgGetArraySize(CGparameter p, int dim)
   return cg_instance->cgGetArraySize(p, dim);
 }
 
+/* texture parameters */
+void 
+glue_cgGLSetManageTextureParameters(CGcontext context, CGbool flag)
+{
+  cg_instance->cgGLSetManageTextureParameters(context, flag);
+}
+
+/* CgFX */
 CGeffect 
 glue_cgCreateEffect(CGcontext context, const char * program, const char ** args)
 {

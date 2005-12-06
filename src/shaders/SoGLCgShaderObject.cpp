@@ -27,6 +27,7 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include "SoGLCgShaderParameter.h"
+#include <Inventor/C/glue/cg.h>
 
 // *************************************************************************
 
@@ -83,7 +84,7 @@ SoGLCgShaderObject::load(const char* sourceString)
     glue_cgCreateProgram(SoGLCgShaderObject::cgContext,
                          CG_SOURCE, 
                          sourceString,
-                         this->cgProfile, 
+                         this->cgProfile,
                          "main", // entry's function name
                          NULL); // argument names
   errorCode = glue_cgGetError();
@@ -177,6 +178,7 @@ SoGLCgShaderObject::ensureCgContext(void)
 {
   if (!glue_cgIsContext(SoGLCgShaderObject::cgContext)) {
     SoGLCgShaderObject::cgContext = glue_cgCreateContext();
+    glue_cgGLSetManageTextureParameters(cgContext, TRUE);
     glue_cgSetErrorCallback(SoGLCgShaderObject::cgErrorCallback);
   }
 }

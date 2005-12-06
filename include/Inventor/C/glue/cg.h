@@ -178,6 +178,9 @@ void glue_cgGLSetMatrixParameterArrayfc(CGparameter, long, long, const float *);
 int glue_cgGetArrayDimension(CGparameter);
 int glue_cgGetArraySize(CGparameter, int);
 
+/* texture parameters */
+void glue_cgGLSetManageTextureParameters(CGcontext, CGbool);
+
 /* CgFx */
 int glue_cgglue_cgfx_available();
 CGeffect glue_cgCreateEffect(CGcontext, const char *, const char **);
