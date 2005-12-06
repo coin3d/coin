@@ -72,9 +72,26 @@ typedef void (*glue_cgGLSetMatrixParameterArrayfc_t)(CGparameter, long, long, co
 typedef int (*glue_cgGetArrayDimension_t)(CGparameter);
 typedef int (*glue_cgGetArraySize_t)(CGparameter, int);
 
+typedef CGeffect (*glue_cgCreateEffect_t)(CGcontext, const char *, const char **);
+typedef CGprogram (*glue_cgCreateProgramFromEffect_t)(CGeffect, CGprofile, const char * entry, const char ** args);
+typedef void (*glue_cgDestroyEffect_t)(CGeffect);
+typedef CGbool (*glue_cgIsEffect_t)(CGeffect);
+typedef void (*glue_cgGLRegisterStates_t)(CGcontext);
+
+typedef CGtechnique (*glue_cgGetFirstTechnique_t)(CGeffect);
+typedef CGtechnique (*glue_cgGetNextTechnique_t)(CGtechnique);
+typedef CGbool (*glue_cgValidateTechnique_t)(CGtechnique);
+
+typedef CGpass (*glue_cgGetFirstPass_t)(CGtechnique);
+typedef CGpass (*glue_cgGetNextPass_t)(CGpass);
+typedef void (*glue_cgSetPassState_t)(CGpass);
+typedef void (*glue_cgResetPassState_t)(CGpass);
+
+
 
 typedef struct {
   int available;
+  int cgfx_available;
 
   glue_cgCreateContext_t cgCreateContext;
   glue_cgDestroyContext_t cgDestroyContext;
@@ -110,6 +127,22 @@ typedef struct {
   glue_cgGLSetMatrixParameterArrayfc_t cgGLSetMatrixParameterArrayfc;
   glue_cgGetArrayDimension_t cgGetArrayDimension;
   glue_cgGetArraySize_t cgGetArraySize;
+
+  glue_cgCreateEffect_t cgCreateEffect;
+  glue_cgCreateProgramFromEffect_t cgCreateProgramFromEffect;
+  glue_cgDestroyEffect_t cgDestroyEffect;
+  glue_cgIsEffect_t cgIsEffect;
+  glue_cgGLRegisterStates_t cgGLRegisterStates;
+
+  glue_cgGetFirstTechnique_t cgGetFirstTechnique;
+  glue_cgGetNextTechnique_t cgGetNextTechnique;
+  glue_cgValidateTechnique_t cgValidateTechnique;
+  
+  glue_cgGetFirstPass_t cgGetFirstPass;
+  glue_cgGetNextPass_t cgGetNextPass;
+  glue_cgSetPassState_t cgSetPassState;
+  glue_cgResetPassState_t cgResetPassState;
+
 } cc_cgglue_t;
 
 /* ********************************************************************** */
@@ -156,6 +189,7 @@ cgglue_init(void)
        the linking process or we're successfully going to link it
        in. */
     zi->available = 1;
+    zi->cgfx_available = 1;
 
 #ifdef CGLIB_RUNTIME_LINKING
     {
@@ -181,6 +215,7 @@ cgglue_init(void)
 
       if (!cg_libhandle) {
         zi->available = 0;
+        zi->cgfx_available = 0;
         cg_failed_to_load = 1;
       }
       /* Cg is split into two dll's under Windows */
@@ -197,7 +232,20 @@ cgglue_init(void)
       if (!zi->_funcname_ && cg_libhandle2) { \
         zi->_funcname_ = (_funcsig_)cc_dl_sym(cg_libhandle2, SO__QUOTE(_funcname_)); \
       } \
-      if (zi->_funcname_ == NULL) zi->available = 0; \
+      if (zi->_funcname_ == NULL) { \
+        zi->available = 0; \
+        zi->cgfx_available = 0; \
+      } \
+    } while (0)
+#define CGGLUE_REGISTER_FXFUNC(_funcsig_, _funcname_) \
+    do { \
+      zi->_funcname_ = (_funcsig_)cc_dl_sym(cg_libhandle, SO__QUOTE(_funcname_)); \
+      if (!zi->_funcname_ && cg_libhandle2) { \
+        zi->_funcname_ = (_funcsig_)cc_dl_sym(cg_libhandle2, SO__QUOTE(_funcname_)); \
+      } \
+      if (zi->_funcname_ == NULL) { \
+        zi->cgfx_available = 0; \
+      } \
     } while (0)
 
 #elif defined(HAVE_CGLIB) /* no dynamic linking, but static linking possible */
@@ -206,10 +254,16 @@ cgglue_init(void)
 #define CGGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     zi->_funcname_ = (_funcsig_)_funcname_
 
+#define CGGLUE_REGISTER_FXFUNC(_funcsig_, _funcname_) \
+    zi->_funcname_ = (_funcsig_)_funcname_
+
 #else /* no dynamic linking, and Cg-lib not available for static linking */
     zi->available = 0;
+    zi->cgfx_available = 0;
     /* Define CGGLUE_REGISTER_FUNC macro. */
 #define CGGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
+    zi->_funcname_ = NULL
+#define CGGLUE_REGISTER_FXFUNC(_funcsig_, _funcname_) \
     zi->_funcname_ = NULL
 
 #endif /* no linking */
@@ -249,6 +303,20 @@ cgglue_init(void)
       CGGLUE_REGISTER_FUNC(glue_cgGLSetMatrixParameterArrayfc_t, cgGLSetMatrixParameterArrayfc);
       CGGLUE_REGISTER_FUNC(glue_cgGetArrayDimension_t, cgGetArrayDimension);
       CGGLUE_REGISTER_FUNC(glue_cgGetArraySize_t, cgGetArraySize);
+
+      /* CgFX */
+      CGGLUE_REGISTER_FXFUNC(glue_cgCreateEffect_t, cgCreateEffect);
+      CGGLUE_REGISTER_FXFUNC(glue_cgCreateProgramFromEffect_t, cgCreateProgramFromEffect);
+      CGGLUE_REGISTER_FXFUNC(glue_cgDestroyEffect_t, cgDestroyEffect);
+      CGGLUE_REGISTER_FXFUNC(glue_cgIsEffect_t, cgIsEffect);
+      CGGLUE_REGISTER_FXFUNC(glue_cgGLRegisterStates_t, cgGLRegisterStates);
+      CGGLUE_REGISTER_FXFUNC(glue_cgGetFirstTechnique_t, cgGetFirstTechnique);
+      CGGLUE_REGISTER_FXFUNC(glue_cgGetNextTechnique_t, cgGetNextTechnique);
+      CGGLUE_REGISTER_FXFUNC(glue_cgValidateTechnique_t, cgValidateTechnique);      
+      CGGLUE_REGISTER_FXFUNC(glue_cgGetFirstPass_t, cgGetFirstPass);
+      CGGLUE_REGISTER_FXFUNC(glue_cgGetNextPass_t, cgGetNextPass);
+      CGGLUE_REGISTER_FXFUNC(glue_cgSetPassState_t, cgSetPassState);
+      CGGLUE_REGISTER_FXFUNC(glue_cgResetPassState_t, cgResetPassState);
     }
     /* Do this late, so we can detect recursive calls to this function. */
     cg_instance = zi;
@@ -265,6 +333,14 @@ cc_cgglue_available(void)
   if (cg_instance && cg_instance->available) { return 1; }
   else { cgglue_init(); }
   return (cg_instance && cg_instance->available);
+}
+
+int
+glue_cgglue_cgfx_available()
+{
+  if (cg_instance && cg_instance->available && cg_instance->cgfx_available) { return 1; }
+  else { cgglue_init(); }
+  return (cg_instance && cg_instance->available && cg_instance->cgfx_available);
 }
 
 /* ********************************************************************** */
@@ -472,6 +548,38 @@ int
 glue_cgGetArraySize(CGparameter p, int dim)
 {
   return cg_instance->cgGetArraySize(p, dim);
+}
+
+CGeffect 
+glue_cgCreateEffect(CGcontext context, const char * program, const char ** args)
+{
+  assert(cg_instance);
+  return cg_instance->cgCreateEffect(context, program, args);
+}
+
+CGprogram 
+glue_cgCreateProgramFromEffect(CGeffect effect, CGprofile profile, const char * entry, const char ** args)
+{
+  assert(cg_instance);
+  return cg_instance->cgCreateProgramFromEffect(effect, profile, entry, args);
+}
+
+void 
+glue_cgDestroyEffect(CGeffect effect)
+{
+}
+
+CGbool 
+glue_cgIsEffect(CGeffect effect)
+{
+  return FALSE;
+}
+
+void 
+glue_cgGLRegisterStates(CGcontext c)
+{
+  assert(cg_instance);
+  cg_instance->cgGLRegisterStates(c);
 }
 
 /* ********************************************************************** */

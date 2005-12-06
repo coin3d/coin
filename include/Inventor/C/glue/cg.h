@@ -62,6 +62,9 @@ extern "C" {
 
 /* typedef struct _CGprogram * CGprogram; XXX */
 typedef void * CGprogram;
+typedef void * CGeffect;
+typedef void * CGtechnique;
+typedef void * CGpass;
 
 /* typedef struct _CGcontext * CGcontext; XXX */
 typedef void * CGcontext;
@@ -71,7 +74,8 @@ typedef void * CGparameter;
 
 typedef enum {
   CG_PROFILE_ARBVP1 = 6150,
-  CG_PROFILE_ARBFP1 = 7000
+  CG_PROFILE_ARBFP1 = 7000,
+  CG_GENERIC = 7002
 } CGprofile;
 
 typedef enum {
@@ -136,6 +140,7 @@ CGprogram glue_cgCreateProgram(CGcontext, CGenum, const char *, CGprofile,
 void glue_cgDestroyProgram(CGprogram);
 CGbool glue_cgIsProgram(CGprogram);
 
+
 const char * glue_cgGetProfileString(CGprofile);
 
 CGerror glue_cgGetError(void);
@@ -173,7 +178,22 @@ void glue_cgGLSetMatrixParameterArrayfc(CGparameter, long, long, const float *);
 int glue_cgGetArrayDimension(CGparameter);
 int glue_cgGetArraySize(CGparameter, int);
 
+/* CgFx */
+int glue_cgglue_cgfx_available();
+CGeffect glue_cgCreateEffect(CGcontext, const char *, const char **);
+CGprogram glue_cgCreateProgramFromEffect(CGeffect, CGprofile, const char * entry, const char ** args);
+void glue_cgDestroyEffect(CGeffect);
+CGbool glue_cgIsEffect(CGeffect);
+void glue_cgGLRegisterStates(CGcontext);
 
+CGtechnique glue_cgGetFirstTechnique(CGeffect);
+CGtechnique glue_cgGetNextTechnique(CGtechnique);
+CGbool glue_cgValidateTechnique(CGtechnique);
+
+CGpass glue_cgGetFirstPass(CGtechnique);
+CGpass glue_cgGetNextPass(CGpass);
+void glue_cgSetPassState(CGpass);
+void glue_cgResetPassState(CGpass);
 
 #ifdef __cplusplus
 }
