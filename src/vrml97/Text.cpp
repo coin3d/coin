@@ -184,6 +184,7 @@ private:
 };
 
 #define PRIVATE(obj) (obj->pimpl)
+#define PUBLIC(obj) (obj->master)
 
 // *************************************************************************
 
@@ -244,7 +245,7 @@ float
 SoVRMLTextP::getWidth(const int idx, const float fontsize)
 {
   float w = this->glyphwidths[idx];
-  float maxe = this->master->maxExtent.getValue();
+  float maxe = PUBLIC(this)->maxExtent.getValue();
   if (maxe > 0.0f && w > maxe) w = maxe;
   return w;
 }
@@ -955,48 +956,48 @@ SoVRMLText::generatePrimitives(SoAction * action)
   PRIVATE(this)->unlock();
 }
 
-#undef PRIVATE
-
 void
 SoVRMLTextP::updateFontStyle(void)
 {
-  SoVRMLFontStyle * fs = (SoVRMLFontStyle*) this->master->fontStyle.getValue();
-  if (!fs) {
-    this->textsize = 1.0f;
-    this->textspacing = 1.0f;
-    this->lefttorighttext = TRUE;
-    this->toptobottomtext = TRUE;
-    this->horizontaltext = TRUE;
-    this->justificationmajor = SoAsciiText::LEFT;
-    this->justificationminor = SoAsciiText::LEFT;
-    this->fontfamily = SoVRMLFontStyle::SERIF;
-    this->fontstyle = SoVRMLFontStyle::PLAIN;
-    return;
-  }
+  // the defaults
+  this->textsize = 1.0f;
+  this->textspacing = 1.0f;
+  this->lefttorighttext = TRUE;
+  this->toptobottomtext = TRUE;
+  this->horizontaltext = TRUE;
+  this->justificationmajor = SoAsciiText::LEFT;
+  this->justificationminor = SoAsciiText::LEFT;
+  this->fontfamily = SoVRMLFontStyle::SERIF;
+  this->fontstyle = SoVRMLFontStyle::PLAIN;
 
-  // Major mode
-  if (!strcmp(fs->justify[0].getString(),"BEGIN") || 
-      !strcmp(fs->justify[0].getString(),"FIRST") ||
-      (fs->justify[0].getLength() == 0)) {
-    this->justificationmajor = SoAsciiText::LEFT;  
-  } 
-  else if (!strcmp(fs->justify[0].getString(),"MIDDLE")) {
-    this->justificationmajor = SoAsciiText::CENTER;
-  } 
-  else if (!strcmp(fs->justify[0].getString(),"END")) {
-    this->justificationmajor = SoAsciiText::RIGHT;
+  SoVRMLFontStyle * fs = (SoVRMLFontStyle *)PUBLIC(this)->fontStyle.getValue();
+  if (!fs) { return; }
+
+  if (fs->justify.getNum() > 0) {
+    // Major mode
+    SbString s = fs->justify[0];
+    if ((s == "BEGIN") || (s == "FIRST") || (s == "")) {
+      this->justificationmajor = SoAsciiText::LEFT;  
+    } 
+    else if (s == "MIDDLE") {
+      this->justificationmajor = SoAsciiText::CENTER;
+    } 
+    else if (s == "END") {
+      this->justificationmajor = SoAsciiText::RIGHT;
+    }
+    // FIXME: else... Improve robustness & error reporting. 20051207 mortene.
   }
     
-  // Minor mode
   if (fs->justify.getNum() > 1) {
-    if (!strcmp(fs->justify[1].getString(),"BEGIN") || 
-        !strcmp(fs->justify[1].getString(),"FIRST") ||
-        (fs->justify[1].getLength() == 0))
+    // Minor mode
+    SbString s = fs->justify[1];
+    if ((s == "BEGIN") || (s == "FIRST") || (s == ""))
       this->justificationminor = SoAsciiText::LEFT;  
-    else if (!strcmp(fs->justify[1].getString(),"MIDDLE")) 
+    else if (s == "MIDDLE")
       this->justificationminor = SoAsciiText::CENTER;
-    else if (!strcmp(fs->justify[1].getString(),"END")) 
+    else if (s == "END")
       this->justificationminor = SoAsciiText::RIGHT;
+    // FIXME: else... Improve robustness & error reporting. 20051207 mortene.
   }
   
   this->lefttorighttext = fs->leftToRight.getValue();
@@ -1116,5 +1117,8 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   // unref old cache after creating the new one to avoid recreating glyphs
   if (oldcache) oldcache->unref();
 }
+
+#undef PRIVATE
+#undef PUBLIC
 
 #endif // HAVE_VRML97
