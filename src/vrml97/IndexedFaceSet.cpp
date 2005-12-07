@@ -124,7 +124,7 @@
   If the color field is NULL, the geometry shall be rendered normally
   using the Material and texture defined in the Appearance node (see
   4.14, Lighting model, for details
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.5).
+  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.5).
 
   If the normal field is not NULL, it shall contain a Normal node
   whose normals are applied to the vertices or faces of the
@@ -169,17 +169,17 @@
   texture image used on the IndexedFaceSet used in Figure 6.10.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/IFStexture.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/IFStexture.gif">
   Figure 6.10
   </center>
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/IFStexture2.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/IFStexture2.gif">
   Figure 6.11
   </center>
 
   Subclause 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.5>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.5>),
   provides a description of the ccw, solid, convex, and creaseAngle
   fields.
 

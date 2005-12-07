@@ -58,10 +58,10 @@
 
   A detailed description of ambientIntensity, color, intensity, and
   VRML's lighting equations is provided in 4.6.6, Light sources
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.6>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.6>).
   More information on lighting concepts can be found in 4.14, Lighting
   model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.14>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.14>),
   including a detailed description of the VRML lighting equations.
 
   The \e location field specifies a translation offset of the centre
@@ -125,7 +125,7 @@
   and radius fields of the SpotLight node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/spotlight.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/spotlight.gif">
   Figure 6.16 -- SpotLight node 
   </center>
   
@@ -141,7 +141,7 @@
   (0, 0, 0) is identical to (1, 0, 0). Attenuation values shall be
   greater than or equal to zero. A detailed description of VRML's
   lighting equations is contained in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.14>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.14>).
 
 */
 

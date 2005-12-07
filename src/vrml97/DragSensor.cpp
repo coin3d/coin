@@ -39,7 +39,7 @@
   For more information, a detailed discussion of drag sensors is
   available in section 4.6.7.4 of the VRML97 specification:
 
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.7.4>.
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.7.4>.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLDragSensor.h>

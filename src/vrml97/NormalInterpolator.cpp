@@ -58,7 +58,7 @@
   equal length. The results are undefined if P and Q are diagonally
   opposite.  A more detailed discussion of interpolators is provided
   in 4.6.8, Interpolator nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.8>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.8>).
   
 */
 

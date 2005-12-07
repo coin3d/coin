@@ -74,7 +74,7 @@
   FontStyle node example
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/FontStylespacing.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/FontStylespacing.gif">
   Figure 6.7 -- Text size and spacing fields
   </center>
 
@@ -149,7 +149,7 @@
   the major alignment enumerant. For minor alignment, the block of
   text representing all lines together is positioned according to the
   minor alignment enumerant. Tables 6.2-6.5 at
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/nodesRef.html#Table6.2>
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/nodesRef.html#Table6.2>
   describe the behaviour in terms of which portion of the text is at
   the origin.
 
@@ -161,19 +161,19 @@
   text. Figure 6.8 describes the symbols used in Tables 6.6 and 6.7.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/key.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/key.gif">
   Figure 6.8 -- Key for Tables 6.6 and 6.7
   </center>
 
 
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/horizontal.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/horizontal.gif">
   Table 6.6 -- horizontal = TRUE
   </center>
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/vertical.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/vertical.gif">
   Table 6.7 -- horizontal = FALSE
   </center>
 
@@ -184,7 +184,7 @@
   10646-1:1993, the language field is needed to provide a proper
   language attribute of the text string. The format is based on RFC
   1766: language[_territory]
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html#[1766]>.
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html#[1766]>.
   The value for the language tag is based on ISO 639:1988 (e.g., 'zh'
   for Chinese, 'jp' for Japanese, and 'sc' for Swedish.) The territory
   tag is based on ISO 3166:1993 country codes (e.g., 'TW' for Taiwan
@@ -192,14 +192,14 @@
   language field is empty (""), local language bindings are used.
 
   See
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html>,
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html>,
   for more information on RFC 1766
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html#[1766]>,
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html#[1766]>,
   ISO/IEC 10646:1993
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html#[UTF8]>,
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html#[UTF8]>,
   ISO/IEC 639:1998
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html#[I639]>,
-  and ISO 3166:1993 <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/references.html#[I3166]>.
+  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html#[I639]>,
+  and ISO 3166:1993 <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/references.html#[I3166]>.
 */
 
 /*!

@@ -50,7 +50,7 @@
   characteristics of the viewer's avatar and viewing
   model. NavigationInfo node is a bindable node (see 4.6.10, Bindable
   children nodes:
-  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10).
+  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.10).
   Thus, there exists a NavigationInfo node stack in which the top-most
   NavigationInfo node on the stack is the currently bound
   NavigationInfo node. The current NavigationInfo node is considered
@@ -74,7 +74,7 @@
   event, and pops to the next entry in the stack which shall be
   re-parented to the current Viewpoint node. 4.6.10, Bindable children
   nodes, has more details on binding stacks
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.10>).
 
   The type field specifies an ordered list of navigation paradigms
   that specify a combination of navigation types and the initial
@@ -106,7 +106,7 @@
   SoVRMLViewpoint) are triggered by the Anchor node (see SoVRMLAnchor)
   or the loadURL()scripting method (see 4.12.10, Browser script
   interface: 
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.10>).
 
   WALK navigation is used for exploring a virtual world
   on foot or in a vehicle that rests on or hovers above the ground. It
