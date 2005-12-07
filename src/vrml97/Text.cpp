@@ -348,10 +348,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       }
 
       switch (PRIVATE(this)->justificationminor) {
+        // FIXME: shouldn't the calculations below take the
+        // FontStyle::topToBottom field into account? 20051207 mortene.
+
       case SoAsciiText::LEFT:
         break;
       case SoAsciiText::CENTER:
-        ypos = (i * spacing) + ((n-1) * spacing) * 0.5f;
+        {
+          const float VERTICALSIZE = spacing * n;
+          const float FIRSTLINEPOS = -(VERTICALSIZE / 2);
+          ypos = FIRSTLINEPOS + (i * spacing);
+        }
         break;
       case SoAsciiText::RIGHT:
         ypos = (i * spacing) + ((n-1) * spacing);
