@@ -980,7 +980,8 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
   if (shapedata->primdata->faceDetail) {
     return shapedata->primdata->createPickDetail();
   }
-#if COIN_DEBUG
+  // don't warn here. SoDetail instances are optional for extension nodes.
+#if COIN_DEBUG && 0
   SoDebugError::postInfo("SoShape::createTriangleDetail",
                          "Unable to create triangle detail.");
 #endif // COIN_DEBUG
@@ -1013,7 +1014,8 @@ SoShape::createLineSegmentDetail(SoRayPickAction * action,
   if (shapedata->primdata->lineDetail) {
     return shapedata->primdata->createPickDetail();
   }
-#if COIN_DEBUG
+  // don't warn here. SoDetail instances are optional for extension nodes.
+#if COIN_DEBUG && 0
   SoDebugError::postInfo("SoShape::createLineSegmentDetail",
                          "Unable to create line segment detail.");
 #endif // COIN_DEBUG
@@ -1079,6 +1081,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
             v1->getTextureCoords() * barycentric[0] +
             v2->getTextureCoords() * barycentric[1] +
             v3->getTextureCoords() * barycentric[2];
+
           pp->setObjectTextureCoords(tc);
 
           // material index need to be approximated, since there is no
