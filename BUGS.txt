@@ -5204,4 +5204,14 @@ diff -u -r1.3 newNodes.cpp.in
 
     20051212 mortene.
 
+  Update 200051212 pederb:
+    
+   Actually it works in Coin (the shape is pickable). However, a
+   warning is printed since the createTriangleDetail() method is not
+   implemented. SGI Inventor just silently ignores this. We might
+   consider disabling this warning too.
+
+   The createTriangleDetail() method should be implemented if detail
+   info isn't included in generatePrimitives().
+
 =====================================================================
