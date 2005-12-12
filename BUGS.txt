@@ -5130,3 +5130,78 @@ int main()
     20051212 mortene.
 
 =====================================================================
+
+212 SoShape-derived extension classes does not work properly in Coin.
+
+    A bug reported by Martin Kavalar: the Pyramid extension node from
+    the Inventor Toolmaker does not work properly in all respects in
+    Coin, while it does in SGI Inventor.
+
+    The case in point is that when it is attempted selected (i.e. an
+    SoRayPickAction is used, I would guess),
+    SoShape::createTriangleDetail() complains with the following error
+    message:
+
+        Coin info in SoShape::createTriangleDetail(): Unable to create
+        triangle detail.
+
+    ..and the geometry is not selected. With SGI Inventor, it works
+    properly.
+
+    (My initial guess would be that pederb has added something
+    Coin-specific in the primitive generation process which is causing
+    this incompatibility.)
+
+    To reproduce the problem, apply the following patch to the
+    IvExamples/Toolmaker/02.Nodes/newNodes.cpp.in file, build it, then
+    try to select one of the pyramids.
+
+----------------8<---------------- [snip] ------------------8<--------------
+Index: newNodes.cpp.in
+===================================================================
+RCS file: /export/cvsroot/IvExamples/Toolmaker/02.Nodes/newNodes.cpp.in,v
+retrieving revision 1.3
+diff -u -r1.3 newNodes.cpp.in
+--- newNodes.cpp.in	11 Aug 2003 13:15:09 -0000	1.3
++++ newNodes.cpp.in	12 Dec 2005 13:27:25 -0000
+@@ -51,7 +51,9 @@
+ #include <Inventor/@Gui@/So@Gui@.h>
+ #include <Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h>
+ #include <Inventor/actions/SoWriteAction.h>
++#include <Inventor/actions/SoBoxHighlightRenderAction.h>
+ #include <Inventor/nodes/SoSeparator.h>
++#include <Inventor/nodes/SoSelection.h>
+ 
+ // Header files for new node classes
+ #include "Glow.h"
+@@ -84,7 +86,9 @@
+       return 2;
+    }
+ 
+-   root->ref();
++   SoSelection * sel = new SoSelection;
++   sel->ref();
++   sel->addChild(root);
+ 
+    // Write the graph to stdout
+    SoWriteAction wa;
+@@ -93,8 +97,12 @@
+    // Render it
+    So@Gui@ExaminerViewer *myViewer =
+       new So@Gui@ExaminerViewer(myWindow);
+-   myViewer->setSceneGraph(root);
+-   
++
++   SoBoxHighlightRenderAction * renderaction = new SoBoxHighlightRenderAction;
++   myViewer->setGLRenderAction(renderaction);
++
++   myViewer->setSceneGraph(sel);
++
+    //The following results in high quality transparency and will permit
+    //PER_PART material binding to vary transparency.  Delete it and
+    //the pyramid will be rendered with the same SCREEN_DOOR transparency
+----------------8<---------------- [snip] ------------------8<--------------
+
+    20051212 mortene.
+
+=====================================================================
