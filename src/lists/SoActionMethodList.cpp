@@ -117,6 +117,11 @@ SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
   THIS->unlock();
 }
 
+// dummy method used for detecting unset action methods
+static void unsetActionMethod(SoAction *, SoNode *)
+{
+}
+
 /*!
   This method must be called as the last initialization step before
   using the list. It fills in \c NULL entries with the parent's
@@ -127,44 +132,58 @@ SoActionMethodList::setUp(void)
 {
   THIS->lock();
   if (THIS->setupnumtypes != SoType::getNumTypes()) {
-    THIS->setupnumtypes = SoType::getNumTypes();
-    this->truncate(0);
+    int i, n;
 
-    SoTypeList derivedtypes;
-    int i, n = THIS->addedtypes.getLength();
+    this->truncate(0); // clear action method list
+
+    // first set all methods that have been set directly through SO_ACTION_ADD_METHOD()
+    n = THIS->addedtypes.getLength();
     for (i = 0; i < n; i++) {
-      SoType type = THIS->addedtypes[i];
-      const SoActionMethod method = THIS->addedmethods[i];
-      (*this)[(int)type.getData()] = method;
-
-      // also set this method for all nodes that inherits this node
-      derivedtypes.truncate(0);
-      int numderived = SoType::getAllDerivedFrom(THIS->addedtypes[i], derivedtypes);
-      for (int j = 0; j < numderived; j++) {
-        int idx = (int) derivedtypes[j].getData();
-        (*this)[idx] = method;
+      (*this)[SoNode::getActionMethodIndex(THIS->addedtypes[i])] = THIS->addedmethods[i];
+    }
+    
+    // make sure SoNode's action method is set to avoid a NULL action method
+    i = SoNode::getActionMethodIndex(SoNode::getClassTypeId());
+    if ((*this)[i] == NULL) {
+      if (THIS->parent == NULL) {
+        (*this)[i] = SoAction::nullAction;
+      }
+      else {
+        // set to a dummy method to detect unset methods in the final pass
+        (*this)[i] = unsetActionMethod;
       }
     }
 
-    // fill in nullAction for all nodetypes with method == NULL
-    derivedtypes.truncate(0);
-    (void) SoType::getAllDerivedFrom(SoNode::getClassTypeId(), derivedtypes);
+    // for node types with no action method, inherit from parent nodetype(s)
+    SoTypeList allnodes;
+    SoType::getAllDerivedFrom(SoNode::getClassTypeId(), allnodes);
+    n = allnodes.getLength();
 
-    for (i = 0; i < this->getLength(); i++) {
-      if ((*this)[i] == NULL) (*this)[i] = SoAction::nullAction;
-    }
-    for (i = this->getLength(); i < derivedtypes.getLength(); i++) {
-      this->append((void*) SoAction::nullAction);
+    for (i = 0; i < n; i++) {
+      SoType type = allnodes[i];
+      int idx = SoNode::getActionMethodIndex(type);
+      SoActionMethod m = (*this)[idx];
+      if (m == NULL) {
+        do {
+          type = type.getParent();
+          m = (*this)[SoNode::getActionMethodIndex(type)];
+        } while (m == NULL);
+        (*this)[idx] = m;
+      }
     }
 
-    // fill in empty slots with parent method
-    if (THIS->parent) {
+    // inherit unset methods from parent action
+    if (THIS->parent != NULL) {
       THIS->parent->setUp();
-      n = THIS->parent->getLength();
+      n = this->getLength();
       for (i = 0; i < n; i++) {
-        if ((*this)[i] == SoAction::nullAction) (*this)[i] = (*(THIS->parent))[i];
+        if ((*this)[i] == unsetActionMethod) {
+          (*this)[i] = (*THIS->parent)[i];
+        }
       }
     }
+    // used to detect when a new node has been added
+    THIS->setupnumtypes = SoType::getNumTypes();
   }
   THIS->unlock();
 }
