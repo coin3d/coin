@@ -4998,3 +4998,135 @@ Sphere { radius 0.4 }
     20051208 mortene.
 
 =====================================================================
+
+210 SoText2 font size policy in Coin incompatible with SGI / TGS
+    Inventor?
+
+    According to Frank Hibbeln:
+
+> The doc's for SoFont indicate the size for Text2 nodes is
+> interpreted as pixels whereas the TGS Inventor doc's indicate it's
+> "printer points" (ie i point = 1/72 inch ).
+   
+    Should investigate this with SGI Inventor, and see if we need to
+    fix anything for Coin.
+
+    20051212 mortene.
+
+=====================================================================
+
+211 SO_ACTION_ADD_METHOD needs to be called in a particular order.
+
+    The following program from Kunsadi Liem demonstrates how the order
+    SO_ACTION_ADD_METHOD is called in can cause a bug in Coin (it
+    has been tested to work correctly with SGI Inventor):
+
+----------------8<---------------- [snip] ------------------8<--------------
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/actions/SoSubAction.h>
+
+#include <iostream>
+using namespace std;
+
+class PrintVolumeAction : public SoAction {
+  SO_ACTION_HEADER(PrintVolumeAction);
+public:
+  static void initClass();
+
+  PrintVolumeAction() {
+    SO_ACTION_CONSTRUCTOR(PrintVolumeAction);
+  }
+  ~PrintVolumeAction() {}
+
+private:
+  static void printCubeVolume(SoAction *, SoNode *);
+  static void printSphereVolume(SoAction *, SoNode *);
+  static void callDoAction(SoAction *, SoNode *);
+};
+
+SO_ACTION_SOURCE(PrintVolumeAction);
+
+void PrintVolumeAction::initClass()
+{
+  SO_ACTION_INIT_CLASS(PrintVolumeAction, SoAction);
+
+#if 0 // ok in this order
+  SO_ACTION_ADD_METHOD(SoNode, nullAction);
+  SO_ACTION_ADD_METHOD(SoCube, printCubeVolume);
+  SO_ACTION_ADD_METHOD(SoSphere, printSphereVolume);
+  SO_ACTION_ADD_METHOD(SoGroup, callDoAction);
+#else // but *not* in this order -- BUG!
+  SO_ACTION_ADD_METHOD(SoCube, printCubeVolume);
+  SO_ACTION_ADD_METHOD(SoSphere, printSphereVolume);
+  SO_ACTION_ADD_METHOD(SoGroup, callDoAction);
+  SO_ACTION_ADD_METHOD(SoNode, nullAction);
+#endif
+}
+
+void PrintVolumeAction::printCubeVolume(SoAction *, SoNode *node)
+{
+  SoCube *cube = (SoCube*) node;
+  float vol = cube->width.getValue() * cube->height.getValue() * 
+    cube->depth.getValue();
+  cout << "Cube volume : " << vol << endl;
+}
+
+void PrintVolumeAction::printSphereVolume(SoAction *, SoNode *node)
+{
+  SoSphere *sphere = (SoSphere*) node;
+  float vol = 4.f/3.f * 3.14f * sphere->radius.getValue() *
+    sphere->radius.getValue() * sphere->radius.getValue();
+  cout << "Sphere volume : " << vol << endl;
+}
+
+void PrintVolumeAction::callDoAction(SoAction *action, SoNode *node)
+{
+  node->doAction(action);
+}
+
+int main()
+{
+  SoDB::init();
+  PrintVolumeAction::initClass();
+
+	SoGroup *root = new SoGroup;
+	root->ref();
+
+  SoCube *cube = new SoCube;
+  cube->width.setValue(1.0f);
+  root->addChild(cube);
+
+  cube = new SoCube;
+  cube->width.setValue(2.0f);
+  root->addChild(cube);
+
+  SoSphere *sphere = new SoSphere;
+  sphere->radius.setValue(1.0f);
+  root->addChild(sphere);
+
+  SoSeparator *sep = new SoSeparator;
+  root->addChild(sep);
+  
+  cube = new SoCube;
+  cube->width.setValue(3.0f);
+  sep->addChild(cube);
+
+  sphere = new SoSphere;
+  sphere->radius.setValue(2.0f);
+  sep->addChild(sphere);
+
+  PrintVolumeAction *printVolAct = new PrintVolumeAction;
+
+  printVolAct->apply(root);
+
+  cout << "=========== FINISH ============" << endl;
+
+  return 0;
+}
+----------------8<---------------- [snip] ------------------8<--------------
+
+    20051212 mortene.
+
+=====================================================================
