@@ -981,10 +981,13 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
   detail.setPart(part);
   vertex.setDetail(&detail);
 
+  // we might get here from getPrimitiveCount(). We therefore need to
+  // check if lazy element is enabled
   if (SoMaterialBindingElement::get(state) != 
-      SoMaterialBindingElement::OVERALL) {
-
-    SoLazyElement * lazyelement = SoLazyElement::getWInstance(state);
+      SoMaterialBindingElement::OVERALL &&
+      state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
+    
+    SoLazyElement * lazyelement = SoLazyElement::getInstance(state);
     const int numdiffuse = lazyelement->getNumDiffuse();    
 
     if (part == SoText3::SIDES && (numdiffuse > 1)) 
