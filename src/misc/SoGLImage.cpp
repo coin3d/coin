@@ -87,6 +87,12 @@
   unreproducable cases.  It could be a bug in our glTexSubImage()
   code, of course. :)
 
+  \li COIN_TEX2_USE_SGIS_GENERATE_MIPMAP: When set, use the
+  GL_SGIS_generate_mip extension (if available) to generate mipmaps,
+  otherwise use a fast internal routine to generate them. Use of
+  SGIS_generate_mipmap is not enabled by default since we suspect some
+  ATi drivers have problems with this extensions.
+
   \li COIN_ENABLE_CONFORMANT_GL_CLAMP: When set, GL_CLAMP will be used
   when SoGLImage::CLAMP is specified as the texture wrap mode. By
   default GL_CLAMP_TO_EDGE is used, since this is usually what people
@@ -100,8 +106,7 @@
 
   \COIN_CLASS_EXTENSION
 
-  \since Coin 2.0
-*/
+  \since Coin 2.0 */
 
 // *************************************************************************
 
@@ -220,6 +225,7 @@ static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static float COIN_TEX2_ANISOTROPIC_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
+static int COIN_TEX2_USE_SGIS_GENERATE_MIPMAP = -1;
 static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1; 
 
 // *************************************************************************
@@ -752,6 +758,14 @@ SoGLImage::SoGLImage(void)
     }
     else COIN_TEX2_USE_GLTEXSUBIMAGE = 0;
   }
+  if (COIN_TEX2_USE_SGIS_GENERATE_MIPMAP < 0) {
+    const char *env = coin_getenv("COIN_TEX2_USE_SGIS_GENERATE_MIPMAP");
+    if (env && atoi(env) == 1) {
+      COIN_TEX2_USE_SGIS_GENERATE_MIPMAP = 1;
+    }
+    else COIN_TEX2_USE_SGIS_GENERATE_MIPMAP = 0;
+  }
+
   if (COIN_ENABLE_CONFORMANT_GL_CLAMP < 0) {
     const char * env = coin_getenv("COIN_ENABLE_CONFORMANT_GL_CLAMP");
     if (env && atoi(env) == 1) {
@@ -1717,7 +1731,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       else mipmapfilter = FALSE;
     }
 
-    else if (mipmap && cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
+    else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP && 
+             cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
       mipmapimage = FALSE;
     }
