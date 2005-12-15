@@ -821,7 +821,7 @@ SoLineSet::generatePrimitives(SoAction *action)
   }
   else {
     while (ptr < end) {
-      lineDetail.setLineIndex(0);
+      lineDetail.setPartIndex(0);
       int n = *ptr++;
       if (n < 2) {
         idx += n;
