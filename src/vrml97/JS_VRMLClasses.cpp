@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/misc/SoJavaScriptEngine.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/spidermonkey.h>
 
 #include <Inventor/fields/SoSFBool.h>
@@ -45,7 +46,6 @@
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFRotation.h>
-
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -79,6 +79,14 @@ struct CoinVrmlJs {
   static ClassDescriptor MFVec2f;
   static ClassDescriptor MFVec3f;
 };
+
+// Struct and SbHash for keeping track of SoNodeSensors for recycling
+// purposes.
+struct CoinVrmlJs_SensorInfo {
+  SbList <JSObject *> objects;
+};
+SbHash <void *, unsigned long> * CoinVrmlJs_sensorinfohash = NULL;
+
 
 char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
 char * CoinVrmlJs_SFRotationAliases[] = {"x", "y", "z", "angle"};
@@ -553,11 +561,27 @@ static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static void SFNode_deleteCB(void * data, SoSensor * sensor)
-{
-  JSObject * obj = (JSObject *) data;
-  garbagecollectedobjects.append(obj);
+{ 
+  SoNode * node = ((SoNodeSensor *) sensor)->getAttachedNode();
+  void * tmp;
+  if(!CoinVrmlJs_sensorinfohash->get((unsigned long) node, tmp)) {
+    assert(FALSE && "Trying to delete an unregistered SoNodeSensor. Internal error.");
+    return;
+  }
+
+  CoinVrmlJs_SensorInfo * si = (CoinVrmlJs_SensorInfo *) tmp;
+
+  // Delete all JSObjects which were connected to this SoNode
+  while (si->objects.getLength()) {
+    JSObject * obj = si->objects[0];
+    garbagecollectedobjects.append(obj);
+    si->objects.removeFast(0);
+  }
+
   // Store the sensor-pointer so that it can be properly deleted later
   nodesensorstobedeleted.append((SoNodeSensor *) sensor);
+  CoinVrmlJs_sensorinfohash->remove((unsigned long) node);
+  delete si;
 }
 
 static void cleanupObsoleteNodeSensors(void)
@@ -570,9 +594,8 @@ static void cleanupObsoleteNodeSensors(void)
   }
 }
 
-
 static JSBool SFVec2f_add(JSContext * cx, JSObject * obj, uintN argc, 
-                           jsval * argv, jsval * rval)
+                          jsval * argv, jsval * rval)
 {
   SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -587,7 +610,7 @@ static JSBool SFVec2f_add(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3f_add(JSContext * cx, JSObject * obj, uintN argc, 
-                           jsval * argv, jsval * rval)
+                          jsval * argv, jsval * rval)
 {
   SbVec3f & vec1 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -602,7 +625,7 @@ static JSBool SFVec3f_add(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec2f_divide(JSContext * cx, JSObject * obj, uintN argc, 
-                                jsval * argv, jsval * rval)
+                             jsval * argv, jsval * rval)
 {
   SbVec2f & vec = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -618,7 +641,7 @@ static JSBool SFVec2f_divide(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3f_divide(JSContext * cx, JSObject * obj, uintN argc, 
-                                jsval * argv, jsval * rval)
+                             jsval * argv, jsval * rval)
 {
   SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -634,7 +657,7 @@ static JSBool SFVec3f_divide(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec2f_dot(JSContext *cx, JSObject *obj, uintN argc, 
-                                  jsval *argv, jsval *rval)
+                          jsval *argv, jsval *rval)
 {
   SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -649,7 +672,7 @@ static JSBool SFVec2f_dot(JSContext *cx, JSObject *obj, uintN argc,
 }
 
 static JSBool SFVec3f_dot(JSContext *cx, JSObject *obj, uintN argc, 
-                                  jsval *argv, jsval *rval)
+                          jsval *argv, jsval *rval)
 {
   SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -665,7 +688,7 @@ static JSBool SFVec3f_dot(JSContext *cx, JSObject *obj, uintN argc,
 }
 
 static JSBool SFVec2_length(JSContext * cx, JSObject * obj, uintN argc, 
-                                  jsval * argv, jsval * rval)
+                            jsval * argv, jsval * rval)
 {
   SbVec2f * vec = (SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
   JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
@@ -673,7 +696,7 @@ static JSBool SFVec2_length(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3_length(JSContext * cx, JSObject * obj, uintN argc, 
-                                  jsval * argv, jsval * rval)
+                            jsval * argv, jsval * rval)
 {
   SbVec3f * vec = (SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
   JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
@@ -681,7 +704,7 @@ static JSBool SFVec3_length(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec2f_multiply(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                               jsval * argv, jsval * rval)
 {
   
   SbVec2f & vec = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
@@ -700,7 +723,7 @@ static JSBool SFVec2f_multiply(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3f_multiply(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                               jsval * argv, jsval * rval)
 {
   SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -725,7 +748,7 @@ static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3f_normalize(JSContext * cx, JSObject * obj, uintN argc, 
-                                     jsval * argv, jsval * rval)
+                                jsval * argv, jsval * rval)
 {
   SbVec3f vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.normalize();
@@ -743,7 +766,7 @@ static JSBool SFVec3f_negate(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec2f_substract(JSContext * cx, JSObject * obj, uintN argc, 
-                                 jsval * argv, jsval * rval)
+                                jsval * argv, jsval * rval)
 {
   SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -757,7 +780,7 @@ static JSBool SFVec2f_substract(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFVec3f_substract(JSContext * cx, JSObject * obj, uintN argc, 
-                                   jsval * argv, jsval * rval)
+                                jsval * argv, jsval * rval)
 {
   SbVec3f & vec1 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -772,7 +795,7 @@ static JSBool SFVec3f_substract(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFColor_setHSV(JSContext * cx, JSObject * obj, uintN argc, 
-                                   jsval * argv, jsval * rval)
+                             jsval * argv, jsval * rval)
 {
   if (argc != 3) {
     return JS_FALSE;
@@ -795,7 +818,7 @@ static JSBool SFColor_setHSV(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFColor_getHSV(JSContext * cx, JSObject * obj, uintN argc, 
-                                jsval * argv, jsval * rval)
+                             jsval * argv, jsval * rval)
 {
   SbColor & color = *(SbColor *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -813,7 +836,7 @@ static JSBool SFColor_getHSV(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_getAxis(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                                 jsval * argv, jsval * rval)
 {
   SbVec4f & rot = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
   SbVec3f axis(rot[0], rot[1], rot[2]);
@@ -822,7 +845,7 @@ static JSBool SFRotation_getAxis(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_inverse(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                                 jsval * argv, jsval * rval)
 {
   SbVec4f & rot = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -835,7 +858,7 @@ static JSBool SFRotation_inverse(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_multiply(JSContext * cx, JSObject * obj, uintN argc, 
-                                     jsval * argv, jsval * rval)
+                                  jsval * argv, jsval * rval)
 {
   SbVec4f & vec1 = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -852,7 +875,7 @@ static JSBool SFRotation_multiply(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_multVec(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                                 jsval * argv, jsval * rval)
 {
   SbVec4f & vec = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
   SbVec3f axis(vec[0], vec[1], vec[2]);
@@ -870,7 +893,7 @@ static JSBool SFRotation_multVec(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_setAxis(JSContext * cx, JSObject * obj, uintN argc, 
-                                    jsval * argv, jsval * rval)
+                                 jsval * argv, jsval * rval)
 {
   SbVec4f & rot = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -887,7 +910,7 @@ static JSBool SFRotation_setAxis(JSContext * cx, JSObject * obj, uintN argc,
 }
 
 static JSBool SFRotation_slerp(JSContext * cx, JSObject * obj, uintN argc, 
-                                  jsval * argv, jsval * rval)
+                               jsval * argv, jsval * rval)
 {
   SbVec4f & vec = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
   SbVec3f axis(vec[0], vec[1], vec[2]);
@@ -1147,9 +1170,43 @@ static void SFNodeDestructor(JSContext * cx, JSObject * obj)
     if (container) container->unref();
 }
 
+// Called via coin_atexit() when Coin exits.
+static void deleteSensorInfoHash(void)
+{
+  CoinVrmlJs_sensorinfohash->clear();
+  delete CoinVrmlJs_sensorinfohash;
+}
+
+/*
+  Attach an SoNodeSensor to node. Adds a 'delete callback' to the
+  sensor which includes the 'obj' parameter.
+*/
+static void attachSensorToNode(SoNode * node, JSObject * obj)
+{     
+  // Has the hash-table been initialized?  
+  if (!CoinVrmlJs_sensorinfohash) {
+    CoinVrmlJs_sensorinfohash = new SbHash <void *, unsigned long>;
+    coin_atexit(deleteSensorInfoHash, 0);
+  }
+
+  // Is a sensor already attached to this SoNode?
+  void * tmp;
+  if (CoinVrmlJs_sensorinfohash->get((unsigned long) node, tmp)) {
+    CoinVrmlJs_SensorInfo * si = (CoinVrmlJs_SensorInfo *) tmp;
+    si->objects.append(obj);
+  }
+  else {
+    SoNodeSensor * ns = new SoNodeSensor();
+    ns->setDeleteCallback(SFNode_deleteCB, obj);
+    ns->attach(node);    
+    CoinVrmlJs_SensorInfo * si = new CoinVrmlJs_SensorInfo;
+    si->objects.append(obj);
+    CoinVrmlJs_sensorinfohash->put((unsigned long) node, si);
+  }
+}
+
 static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 {
-
   // Delete all SoNodeSensors which no longer has a node attached.
   cleanupObsoleteNodeSensors();
 
@@ -1161,9 +1218,7 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
   spidermonkey()->JS_SetPrivate(cx, obj, container);
   spidermonkey()->JS_DefineFunctions(cx, obj, SFNodeFunctions);
 
-  SoNodeSensor * ns = new SoNodeSensor();
-  ns->setDeleteCallback(SFNode_deleteCB, obj);
-  ns->attach(container);
+  attachSensorToNode(container, obj);
 
   if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
     container->ref();
@@ -1174,7 +1229,6 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj, 
                                 uintN argc, jsval * argv, jsval *rval)
 {
-
   // Delete all SoNodeSensors which no longer has a node attached.
   cleanupObsoleteNodeSensors();
 
@@ -1212,10 +1266,8 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
     if(garbagecollectedobjects.find(obj) != -1) { // Pointer has been used before. Remove from list.
       garbagecollectedobjects.removeItem(obj);
     }
-    
-    SoNodeSensor * ns = new SoNodeSensor();
-    ns->setDeleteCallback(SFNode_deleteCB, obj);
-    ns->attach(group);
+        
+    attachSensorToNode(group, obj);
     
     if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
       group->ref();
