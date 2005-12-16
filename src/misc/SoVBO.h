@@ -54,7 +54,7 @@ class SoVBO {
   static SbBool shouldCreateVBO(const uint32_t contextid, const int numdata);
 
  private:
-  static void context_created(const cc_glglue * glue, void * closure);
+  static void context_created(const uint32_t contextid, void * closure);
   static SbBool isVBOFast(const uint32_t contextid);
   static void context_destruction_cb(uint32_t context, void * userdata);
   static void vbo_schedule(const uint32_t & key,

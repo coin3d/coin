@@ -316,9 +316,9 @@ SoVBO::isVBOFast(const uint32_t contextid)
 // callback from glglue (when a new glglue instance is created)
 //
 void 
-SoVBO::context_created(const cc_glglue * glue, void * closure)
+SoVBO::context_created(const uint32_t contextid, void * closure)
 {
-  SoVBO::testGLPerformance(coin_glglue_get_contextid(glue));
+  SoVBO::testGLPerformance(contextid);
 }
 
 /* **********************************************************************************************/
