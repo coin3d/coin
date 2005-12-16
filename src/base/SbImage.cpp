@@ -479,16 +479,18 @@ SbImage::operator==(const SbImage & image) const
   this->readLock();
   int ret = 0;
   if (!PRIVATE(this)->schedulecb && !PRIVATE(&image)->schedulecb) {
-    if (PRIVATE(this)->size != PRIVATE(&image)->size) return FALSE;
-    if (PRIVATE(this)->bpp != PRIVATE(&image)->bpp) return FALSE;
-    if (PRIVATE(this)->bytes == NULL || PRIVATE(&image)->bytes == NULL) {
-      return (PRIVATE(this)->bytes == PRIVATE(&image)->bytes);
+    if (PRIVATE(this)->size != PRIVATE(&image)->size) ret = 0;
+    else if (PRIVATE(this)->bpp != PRIVATE(&image)->bpp) ret = 0;
+    else if (PRIVATE(this)->bytes == NULL || PRIVATE(&image)->bytes == NULL) {
+      ret = (PRIVATE(this)->bytes == PRIVATE(&image)->bytes);
     }
-    SbBool ret = memcmp(PRIVATE(this)->bytes, PRIVATE(&image)->bytes,
-                        int(PRIVATE(this)->size[0]) *
-                        int(PRIVATE(this)->size[1]) *
-                        int(PRIVATE(this)->size[2]==0?1:PRIVATE(this)->size[2]) * 
-                        PRIVATE(this)->bpp) == 0;
+    else {
+      ret = memcmp(PRIVATE(this)->bytes, PRIVATE(&image)->bytes,
+                   int(PRIVATE(this)->size[0]) *
+                   int(PRIVATE(this)->size[1]) *
+                   int(PRIVATE(this)->size[2]==0?1:PRIVATE(this)->size[2]) * 
+                   PRIVATE(this)->bpp) == 0;
+    }
   }
   this->readUnlock();
   return ret;
