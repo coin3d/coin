@@ -349,14 +349,11 @@ GLUWrapper(void)
 
 #ifdef GLU_RUNTIME_LINKING
 
-#ifndef GLU_IS_PART_OF_GL
-
   {
     int idx;
+    char * libname;
 
-    /* On Mac OS X, the glu* functions are part of the OpenGL framework,
-       which at this point is already loaded, so no need to try and open
-       the library here... */
+#ifndef GLU_IS_PART_OF_GL
 
     /* FIXME: should we get the system shared library name from an
        Autoconf check? 20000930 mortene. */
@@ -378,6 +375,25 @@ GLUWrapper(void)
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
+    libname = possiblelibnames[idx-1];
+
+#elif (defined HAVE_OPENGL_GLU_H)
+
+  /* On Mac OS X, GLU is part of the OpenGL framework, which at this
+     point is alrady loaded -> We can resolve symbols from the current
+     process image. */
+  GLU_libhandle = cc_dl_open(NULL);
+  libname = "OpenGL.framework/Libraries/libGLU.dylib";
+
+#endif /* !GLU_IS_PART_OF_GL */
+
+  /* FIXME: Resolving GLU functions will fail on other platforms where
+     GLU is considered part of OpenGL, since we never set GLU_libhandle. 
+     We should probably try to dlopen the GL image (or the current
+     process image as on Mac OS X?) on these platforms.  
+
+     I don't know any platforms other than OS X that have GLU as part
+     of GL though... 20051216 kyrah. */
 
     if (!GLU_libhandle) {
       gi->available = 0;
@@ -392,12 +408,11 @@ GLUWrapper(void)
       else {
         cc_debugerror_postinfo("GLUWrapper",
                                "Dynamically loaded GLU library as '%s'.",
-                               possiblelibnames[idx-1]);
+                               libname);
       }
     }
   }
 
-#endif /* !GLU_IS_PART_OF_GL */
 
   /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
      necessary for this file to be compatible with C++ compilers. */
