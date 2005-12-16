@@ -64,8 +64,6 @@ typedef struct cc_glglue cc_glglue;
   doesn't crash with those.)
 */
 COIN_DLL_API const cc_glglue * cc_glglue_instance(int contextid);
-COIN_DLL_API const cc_glglue * cc_glglue_instance_from_context_ptr(void * ctx);
-
 
 /*** General interface. ***********************************************/
 

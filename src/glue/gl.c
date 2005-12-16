@@ -2107,7 +2107,7 @@ cc_glglue_instance(int contextid)
     for (i = 0; i < n; i++) {
       coin_glglue_instance_created_cb * cb = 
         (coin_glglue_instance_created_cb *) cc_list_get(gl_instance_created_cblist, i*2);
-      cb(gi, cc_list_get(gl_instance_created_cblist, i*2+1));
+      cb(contextid, cc_list_get(gl_instance_created_cblist, i*2+1));
     }
   }
   return gi;
@@ -2128,6 +2128,23 @@ cc_glglue_instance_from_context_ptr(void * ctx)
   const int id = (int)cast_aid;
 
   return cc_glglue_instance(id);
+}
+
+void 
+coin_glglue_destruct(uint32_t contextid)
+{
+  SbBool found;
+  void * ptr;
+  CC_SYNC_BEGIN(cc_glglue_instance);
+  found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+  if (found) {
+    cc_glglue * glue = (cc_glglue*) ptr;
+    if (glue->normalizationcubemap) {
+      cc_glglue_glDeleteTextures(glue, 1, &glue->normalizationcubemap);
+    }
+    (void)cc_dict_remove(gldict, (uintptr_t)contextid);
+  }
+  CC_SYNC_END(cc_glglue_instance);
 }
 
 SbBool

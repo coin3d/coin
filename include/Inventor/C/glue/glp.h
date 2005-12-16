@@ -775,8 +775,10 @@ struct cc_glglue {
 
 /* ********************************************************************** */
 
-/* Find contextid from a glglue instance */
-uint32_t coin_glglue_get_contextid(const cc_glglue * glue);
+/* Called from SoContextHandler::destructingContext() to be able
+   to deallocated the cc_glglue instance. */
+
+void coin_glglue_destruct(uint32_t contextid);
 
 /* ********************************************************************** */
 
@@ -786,6 +788,14 @@ uint32_t coin_glglue_get_contextid(const cc_glglue * glue);
    Note: you should try to avoid using this function if possible! */
 
 void * coin_gl_current_context(void);
+
+/* ********************************************************************** */
+
+/*
+ * Needed for a hack in SoVertexShader and SoFramgmentShader
+ * Will be removed soon.
+ */
+const cc_glglue * cc_glglue_instance_from_context_ptr(void * ptr);
 
 /* ********************************************************************** */
 
@@ -825,7 +835,7 @@ GLenum coin_glglue_get_texture_format(int numcomponents);
 SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);
 
 /* context creation callback */
-typedef void coin_glglue_instance_created_cb(const cc_glglue * glue, void * closure);
+typedef void coin_glglue_instance_created_cb(const uint32_t contextid, void * closure);
 void coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
                                                void * closure);
 
