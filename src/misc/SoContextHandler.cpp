@@ -55,6 +55,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/glue/glp.h>
 #include <stdlib.h>
 
 // *************************************************************************
@@ -195,6 +196,9 @@ SoContextHandler::destructingContext(uint32_t contextid)
     const socontexthandler_cbitem & item = listcopy[i];
     item.func(contextid, item.closure);
   }
+
+  // tell glglue that this context is dead
+  coin_glglue_destruct(contextid);
 }
 
 // *************************************************************************
