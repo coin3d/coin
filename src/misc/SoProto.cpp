@@ -983,7 +983,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         SbBool srcisdefault = srcfield->isDefault();
         srcfield->setDefault(FALSE);
         dstfield->connectFrom(srcfield);
-#if 1 // start of problematic code
+#if 0 // start of problematic code
         // this piece of code causes problems when writing PROTO
         // instances, since the PROTO instance is counted once for
         // each IS connection. The code is enabled for now, but I'll
@@ -991,6 +991,12 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         // necessary and if we should handle this case when counting
         // write references. pederb, 2005-11-15
         
+        // update 2005-12-16, pederb:
+        // This bidirectional thingie also causes bugs when importing
+        // gator_1.wrl (the connections are not set up correctly, or
+        // are messed up). It seems like we probably should disable
+        // this code since it causes a lot of problems.
+
         // propagate value immediately, before setting up reverse connection
         dstfield->evaluate();
         srcfield->connectFrom(dstfield, FALSE, TRUE);
