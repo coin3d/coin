@@ -375,15 +375,15 @@ GLUWrapper(void)
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
-    libname = possiblelibnames[idx-1];
+    libname = (char *)possiblelibnames[idx-1];
 
 #elif (defined HAVE_OPENGL_GLU_H)
 
-  /* On Mac OS X, GLU is part of the OpenGL framework, which at this
-     point is alrady loaded -> We can resolve symbols from the current
-     process image. */
-  GLU_libhandle = cc_dl_open(NULL);
-  libname = "OpenGL.framework/Libraries/libGLU.dylib";
+    /* On Mac OS X, GLU is part of the OpenGL framework, which at this
+       point is alrady loaded -> We can resolve symbols from the current
+       process image. */
+    GLU_libhandle = cc_dl_open(NULL);
+    libname = "OpenGL.framework/Libraries/libGLU.dylib";
 
 #endif /* !GLU_IS_PART_OF_GL */
 
