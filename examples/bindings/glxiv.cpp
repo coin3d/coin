@@ -58,6 +58,7 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
+#include <Inventor/SbTime.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/SoSceneManager.h>
@@ -80,9 +81,14 @@ typedef struct {
 
 // *************************************************************************
 
+SbTime * starttime = NULL;
+unsigned int rendercounter = 0;
+
 static void
 draw_scene(void * userdata, SoSceneManager * scenemanager)
 {
+  if (starttime->getValue() == 0) { *starttime = SbTime::getTimeOfDay(); }
+
   // FIXME: should set near and far planes properly before
   // rendering. 20031113 mortene.
 
@@ -90,6 +96,15 @@ draw_scene(void * userdata, SoSceneManager * scenemanager)
 
   WindowData * win = (WindowData *)userdata;
   glXSwapBuffers(win->display, win->window);
+
+  rendercounter++;
+  SbTime currenttime = SbTime::getTimeOfDay();
+  SbTime interval = currenttime - *starttime;
+  if (interval > 1.0) {
+    (void)fprintf(stdout, "fps %f\n", rendercounter / interval.getValue());
+    *starttime = currenttime;
+    rendercounter = 0;
+  }
 }
 
 // *************************************************************************
@@ -262,10 +277,14 @@ main(int argc, char *argv[])
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
 
+  starttime = new SbTime(0.0);
+
   event_loop(&win);
 
-  glXDestroyContext(win.display, win.context);
+  delete starttime;
+
   XDestroyWindow(win.display, win.window);
+  glXDestroyContext(win.display, win.context);
   XCloseDisplay(win.display);
 
   return 0;
