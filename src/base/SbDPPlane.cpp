@@ -71,7 +71,8 @@ SbDPPlane::SbDPPlane(const SbVec3d & normalref, const double D)
 #endif // COIN_DEBUG
 
   this->normal = normalref;
-  this->normal.normalize();
+  // we test for a null vector above, just normalize
+  (void) this->normal.normalize();
   this->distance = D;
 }
 
@@ -90,7 +91,9 @@ SbDPPlane::SbDPPlane(const SbVec3d & p0, const SbVec3d & p1, const SbVec3d & p2)
 #endif // COIN_DEBUG
 
   this->normal = (p1 - p0).cross(p2 - p0);
-  this->normal.normalize();
+
+  // we test and warn about a null vector above
+  (void) this->normal.normalize();
 
   //     N·point
   // d = -------, |N| == 1
@@ -113,7 +116,8 @@ SbDPPlane::SbDPPlane(const SbVec3d & normalref, const SbVec3d & point)
 #endif // COIN_DEBUG
 
   this->normal = normalref;
-  this->normal.normalize();
+  // we test and warn about a null vector above
+  (void) this->normal.normalize();
 
   //     N·point
   // d = -------, |N| == 1
@@ -198,7 +202,12 @@ SbDPPlane::transform(const SbDPMatrix & matrix)
   // the point should be transformed using the original matrix
   matrix.multVecMatrix(ptInPlane, ptInPlane);
 
-  this->normal.normalize();
+  if (this->normal.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbPlane::transform",
+                              "The transformation invalidated the plane.");
+#endif // COIN_DEBUG
+  }
   this->distance = this->normal.dot(ptInPlane);
 }
 
