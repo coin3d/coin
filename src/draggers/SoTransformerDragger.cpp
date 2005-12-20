@@ -1436,7 +1436,7 @@ SoTransformerDragger::dragScale()
     SbVec3f tmp = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f));
     SbVec3f dir = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f) + normmove);
     dir -= tmp;
-    dir.normalize();
+    (void) dir.normalize(); // ok if null (no movement)
     this->getWorldToWorkingMatrix().multDirMatrix(dir, dir);
     int biggest = 0;
     double bigval = fabs(dir[0]);
@@ -1625,18 +1625,18 @@ SoTransformerDragger::dragRotate(void)
     worldprojpt -= worldcenter;
     prevworldprojpt -= worldcenter;
 
-    // Normalize the vectors before finding the dotproduct angle
-    // between them.
-    worldprojpt.normalize();
-    prevworldprojpt.normalize();
-
     // FIXME: Without this test, the rotation behaves very strange,
     // especially at the edge/outside of the sphere. I will
     // investigate this some more to understand what happens. 
     // 20040804 jornskaa
-    if (worldprojpt.dot(prevworldprojpt) > 0.8f) {
-      THIS->prevWorldHitPt = wppt;
 
+    // Normalize the vectors before finding the dotproduct angle
+    // between them.
+    if ((worldprojpt.normalize() > 0.0f) &&
+        (prevworldprojpt.normalize() > 0.0f) && 
+        (worldprojpt.dot(prevworldprojpt) > 0.8f)) {
+      THIS->prevWorldHitPt = wppt;
+      
       // Calculate the rotation from previous prevworldprojpt to
       // worldprojpt
       SbRotation rot(prevworldprojpt, worldprojpt);
@@ -1722,11 +1722,6 @@ SoTransformerDragger::dragRotate(void)
     // and there is little room for error that might happen when the
     // vectors come very close to the rotation center.
     if (projpt.sqrLength() > 0.1f) {
-      // Normalize the vectors before finding the dotproduct angle
-      // between them.
-      prevworldprojpt.normalize();
-      worldprojpt.normalize();
-
       // Since we are using incremental changes, the changes will
       // never be very big, and the dot product between the
       // rotation-vectors should always be above zero, and never
@@ -1734,7 +1729,12 @@ SoTransformerDragger::dragRotate(void)
       // is above PI/2. This might happen if dragging is done over the
       // rotation center, but we do not allow that and just wait until
       // the locater comes into the valid range before rotating.
-      if (prevworldprojpt.dot(worldprojpt) > 0.3f) { // 0.3 == 72.5degrees
+
+      // Normalize the vectors before finding the dotproduct angle
+      // between them.
+      if ((prevworldprojpt.normalize() > 0.0f) &&
+          (worldprojpt.normalize() > 0.0f) &&
+          (prevworldprojpt.dot(worldprojpt) > 0.3f)) { // 0.3 == 72.5degrees
         THIS->prevWorldHitPt = wppt;
         
         // Rotate between the two points in the plane
