@@ -203,7 +203,9 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
 
   SbVec3f linepos = l.getPosition();
   SbVec3f linedir = l.getDirection();
-  linedir.normalize();
+
+  // just normalize, line will be treated as a point if it has no direction
+  (void) linedir.normalize();
   SbVec3f scenter = this->getCenter();
   float r = this->getRadius();
 
