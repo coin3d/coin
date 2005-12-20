@@ -89,6 +89,7 @@
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <stdio.h>
 #include <limits.h>
 #include <assert.h>
@@ -672,8 +673,13 @@ SbTesselator::calcPolygonNormal()
   polyNormal[0] += (vert1[1] - vert2[1]) * (vert1[2] + vert2[2]);
   polyNormal[1] += (vert1[2] - vert2[2]) * (vert1[0] + vert2[0]);
   polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);
-
-  polyNormal.normalize();
+  
+  if (polyNormal.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbTesselator::calcPolygonNormal",
+                              "Polygon has no normal.");
+#endif // COIN_DEBUG
+  }
 }
 
 //
