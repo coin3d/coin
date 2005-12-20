@@ -122,7 +122,8 @@ SbClip::clip(const SbPlane & plane)
 
     if (d0 >= 0.0f && d1 < 0.0f) { // exit plane
       SbVec3f dir = v1-v0;
-      dir.normalize();
+      // we know that v0 != v1 since we got here
+      (void) dir.normalize();
       float dot = dir.dot(planeN);
       SbVec3f newvertex = v0 - dir * (d0/dot);
       void * newdata = NULL;
@@ -133,7 +134,8 @@ SbClip::clip(const SbPlane & plane)
     }
     else if (d0 < 0.0f && d1 >= 0.0f) { // enter plane
       SbVec3f dir = v1-v0;
-      dir.normalize();
+      // we know that v0 != v1 since we got here
+      (void) dir.normalize();
       float dot = dir.dot(planeN);
       SbVec3f newvertex = v0 - dir * (d0/dot);
       void * newdata = NULL;
