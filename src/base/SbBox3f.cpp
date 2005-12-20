@@ -385,7 +385,15 @@ SbBox3f::getSpan(const SbVec3f & dir, float & dmin, float & dmax) const
   SbVec3f points[2]={this->min, this->max};
   SbVec3f corner;
   SbVec3f normdir(dir);
-  normdir.normalize(); // To avoid a division
+  if (normdir.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbBox3f::getSpan",
+                              "The direction is a null vector.");
+#endif // COIN_DEBUG
+
+    dmin = dmax = 0.0f;
+    return;
+  }
 
   for (int i=0;i<8;i++) {
     //Find all corners the "binary" way :-)
