@@ -197,9 +197,9 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // product anyhow, so use this instead of the dot product to determine
   // if they are parallel or not.
   SbVec3f n = l.getDirection().cross(this->axis.getDirection());
-  float len = n.length();
+  float len = n.normalize();
 
-  if(len == 0.0f) {
+  if (len == 0.0f) {
     // They are parallel, check if we're inside or outside the cylinder
     // by getting the distance between the cylinder axis and the ray.
 #if 0
@@ -223,23 +223,23 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // Check the closest distance from the ray to the cylinder axis. If
   // this distance is larger than the radius of the cylinder, there's
   // of course no intersection.
-  n.normalize();
   float d = (float)fabs(cv.dot(n));
-  if(d > this->radius) return FALSE;
+  if (d > this->radius) return FALSE;
 
   // There's an intersection, now find the parameter for the plane
   // equation.
   SbVec3f tmp = cv.cross(this->axis.getDirection());
   float t = -tmp.dot(n)/len;
   tmp = n.cross(this->axis.getDirection());
-  tmp.normalize();
+  // we know that n is not parallel with axis, just normalize
+  (void) tmp.normalize();
 
   float s = (float)fabs(sqrt(this->radius*this->radius - d*d) /
                         l.getDirection().dot(tmp));
 
   float enterparam = t - s;
   float exitparam = t + s;
-  if(enterparam > exitparam) SbSwap(enterparam, exitparam);
+  if (enterparam > exitparam) SbSwap(enterparam, exitparam);
 
   enter = l.getPosition() + enterparam * l.getDirection();
   exit = l.getPosition() + exitparam * l.getDirection();
