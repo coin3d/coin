@@ -79,6 +79,10 @@
 
 #include <data/draggerDefaults/trackballDragger.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SoSFRotation SoTrackballDragger::rotation
 
@@ -544,7 +548,13 @@ SoTrackballDragger::dragStart(void)
                                          hitPt.length()));
 
     if (THIS->whatkind == WHATKIND_USERAXIS) {
-      hitPt.normalize();
+      if (hitPt.normalize() == 0.0f) {
+#if COIN_DEBUG
+        SoDebugError::postWarning("SoTrackballDragger::dragStart",
+                                  "Unable to find hitpoint direction.");
+        
+#endif // COIN_DEBUG
+      }
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
         SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), hitPt);
     }
@@ -608,7 +618,12 @@ SoTrackballDragger::drag(void)
     THIS->sphereProj->setViewVolume(this->getViewVolume());
     THIS->sphereProj->setWorkingSpace(wk2ws);
     SbVec3f vec = THIS->sphereProj->project(this->getNormalizedLocaterPosition());
-    vec.normalize();
+    if (vec.normalize() == 0.0f) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoTrackballDragger::drag",
+                                "Unable to find drag direction.");
+#endif // COIN_DEBUG
+    }
     SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
       SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), vec);
   }
@@ -808,8 +823,12 @@ SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
     SbRotation rot =
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation.getValue();
     rot.multVec(vec, vec);
-    vec.normalize();
-
+    if (vec.normalize() == 0.0f) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoTrackballDragger::updateUseAxisSwitches",
+                                "Invalid use axis rotation.");
+#endif // COIN_DEBUG
+    }
     if (vec[0] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;
     else if (vec[1] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;
     else if (vec[2] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;
