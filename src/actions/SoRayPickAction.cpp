@@ -327,6 +327,13 @@ void
 SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
                         float neardistance, float fardistance)
 {
+#if COIN_DEBUG
+  if (direction == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SoDebugError::postWarning("SoRayPickAction::setRay",
+                              "Ray has no direction");
+    
+  }
+#endif // COIN_DEBUG
   if (neardistance >= 0.0f) PRIVATE(this)->setFlag(SoRayPickActionP::CLIP_NEAR);
   else {
     PRIVATE(this)->clearFlag(SoRayPickActionP::CLIP_NEAR);
@@ -351,7 +358,7 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 
   PRIVATE(this)->raystart.setValue(start);
   PRIVATE(this)->raydirection.setValue(direction);
-  PRIVATE(this)->raydirection.normalize();
+  (void) PRIVATE(this)->raydirection.normalize();
   PRIVATE(this)->raynear = neardistance;
   PRIVATE(this)->rayfar = fardistance;
   PRIVATE(this)->wsline = SbDPLine(PRIVATE(this)->raystart, 
@@ -500,7 +507,8 @@ SoRayPickAction::computeWorldSpaceRay(void)
     PRIVATE(this)->rayradiusdelta = 0.0;
     if (vv.getProjectionType() == SbViewVolume::PERSPECTIVE) {
       SbVec3d dir(0.0f, vv.getHeight()*0.5f, vv.getNearDist());
-      dir.normalize();
+      // no need to test here, we know vv isn't empty
+      (void) dir.normalize();
       SbVec3d upperfar = dir * (vv.getNearDist()+vv.getDepth()) /
         dir.dot(SbVec3d(0.0f, 0.0f, 1.0f));
 
