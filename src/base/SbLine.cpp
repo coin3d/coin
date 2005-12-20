@@ -99,7 +99,8 @@ SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
   }
 #endif // COIN_DEBUG
 
-  this->dir.normalize();
+  // we test for a null vector above, just normalize
+  (void) this->dir.normalize();
 }
 
 /*!
@@ -264,7 +265,9 @@ SbLine::getClosestPoints(const SbLine& line2,
   SbVec3f D0 = this->dir;
   SbVec3f D1 = line2.dir;
   SbVec3f D0N = D0;
-  D0N.normalize();
+
+  // we warn about lines with no direction above, just normalize
+  (void) D0N.normalize();
 
   float c[3], d[3];
 
