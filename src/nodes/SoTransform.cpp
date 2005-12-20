@@ -54,6 +54,9 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // *************************************************************************
 
@@ -145,10 +148,17 @@ SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
   
   this->translation = frompoint;  
   SbVec3f dir = topoint - frompoint;
-  dir.normalize();
-  
-  SbRotation rot(SbVec3f(0.0f, 0.0f, -1.0f), dir);
-  this->rotation = rot;
+  if (dir.normalize() != 0.0f) {
+    SbRotation rot(SbVec3f(0.0f, 0.0f, -1.0f), dir);
+    this->rotation = rot;
+  }
+#if COIN_DEBUG
+  else {
+    SoDebugError::postWarning("SoTransform::pointAt",
+                              "frompt == topoint");
+
+  }
+#endif // COIN_DEBUG
 }
 
 /*!
