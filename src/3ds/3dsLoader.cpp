@@ -1472,7 +1472,9 @@ SbVec3f Vertex::getNormal(tagContext *con, uint16_t myIndex) const
   SbVec3f normal(0.f,0.f,0.f);
   for (int i=0; i<c; i++)
     normal += this->faceList[i]->getWeightedNormal(con, myIndex);
-  normal.normalize();
+  // ok to have a null vector here, it probably just means that we
+  // have an empty triangle.
+  (void) normal.normalize();
   return normal;
 }
 
