@@ -313,8 +313,9 @@ SoRotateDiscDragger::drag(void)
   plane.intersect(line, center);
   startPt -= center;
   projPt -= center;
-  startPt.normalize();
-  projPt.normalize();
+  // just normalize, null vector are ok (the angle will 0)
+  (void) startPt.normalize();
+  (void) projPt.normalize();
   SbVec3f dir = startPt.cross(projPt);
   float angle = (float) acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
   if (dir[2] < 0.0f) angle = -angle;
