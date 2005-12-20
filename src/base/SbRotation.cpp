@@ -208,7 +208,13 @@ SbRotation::setValue(const float q0, const float q1,
   this->quat[1] = q1;
   this->quat[2] = q2;
   this->quat[3] = q3;
-  this->quat.normalize();
+  if (this->quat.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbRotation::setValue",
+                              "Quarternion has zero length => "
+                              "undefined rotation.");
+#endif // COIN_DEBUG    
+  }
   return *this;
 }
 
@@ -341,7 +347,13 @@ SbRotation::setValue(const float q[4])
   this->quat[1] = q[1];
   this->quat[2] = q[2];
   this->quat[3] = q[3];
-  this->quat.normalize();
+  if (this->quat.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbRotation::setValue",
+                              "Quarternion has zero length => "
+                              "undefined rotation.");
+#endif // COIN_DEBUG    
+  }
   return *this;
 }
 
@@ -410,7 +422,8 @@ SbRotation::setValue(const SbVec3f & axis, const float radians)
 
   const float sineval = (float)sin(radians/2);
   SbVec3f a = axis;
-  a.normalize();
+  // we test for a null vector above
+  (void) a.normalize();
   this->quat[0] = a[0] * sineval;
   this->quat[1] = a[1] * sineval;
   this->quat[2] = a[2] * sineval;
@@ -444,13 +457,15 @@ SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 #endif // COIN_DEBUG
 
   SbVec3f from(rotateFrom);
-  from.normalize();
+  // we test for a null vector above
+  (void) from.normalize();
   SbVec3f to(rotateTo);
-  to.normalize();
+  // we test for a null vector above
+  (void) to.normalize();
 
   const float dot = from.dot(to);
   SbVec3f crossvec = from.cross(to);
-  const float crosslen = crossvec.length();
+  const float crosslen = crossvec.normalize();
 
   if (crosslen == 0.0f) { // Parallel vectors
     // Check if they are pointing in the same direction.
@@ -463,14 +478,14 @@ SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
       // Try crossing with x axis.
       SbVec3f t = from.cross(SbVec3f(1.0f, 0.0f, 0.0f));
       // If not ok, cross with y axis.
-      if(t.length() == 0.0f) t = from.cross(SbVec3f(0.0f, 1.0f, 0.0f));
-
-      t.normalize();
+      if (t.normalize() == 0.0f) {
+        t = from.cross(SbVec3f(0.0f, 1.0f, 0.0f));
+        (void) t.normalize();
+      }
       this->setValue(t[0], t[1], t[2], 0.0f);
     }
   }
   else { // Vectors are not parallel
-    crossvec.normalize();
     // The fabs() wrapping is to avoid problems when `dot' "overflows"
     // a tiny wee bit, which can lead to sqrt() returning NaN.
     crossvec *= (float)sqrt(0.5f * fabs(1.0f - dot));
