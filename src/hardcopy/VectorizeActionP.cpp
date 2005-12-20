@@ -819,7 +819,9 @@ SoVectorizeActionP::shade_vertex(SoState * state,
 
   if (vnormal == SbVec3f(0.0f, 0.0f, 0.0f)) return vcolor;
   this->shapetovrc.multDirMatrix(vnormal, n);
-  n.normalize();
+  
+  // a null vector is ok here
+  (void) n.normalize();
 
   const ShapeMaterial & m = this->shapematerial;
   const Environment & e = this->environment;
@@ -845,7 +847,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
       d = -d;
       // move vector to the world coordinate system
       lighttoworld.multDirMatrix(d, d);
-      d.normalize();
+      (void) d.normalize(); // a null vector is ok here
       att = 1.0f;
     }
     else {
@@ -861,7 +863,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
       lighttoworld.multVecMatrix(lpos, lpos);
       d = lpos - vpos;
       dist = d.length();
-      if (dist >= 1E-2) d.normalize();
+      (void) d.normalize(); // a null vector is ok
       att = 1.0f / (e.attenuation[0] + dist*(e.attenuation[1]+
                                              e.attenuation[2]));
     }
@@ -1023,7 +1025,7 @@ SoVectorizeActionP::calc_new_vertexdata(vertexdata * vd,
 
     float t = (newvertex-vd0->point).length() / len;
     vd->normal = vd0->normal * (1.0f - t) + vd1->normal * t;
-    vd->normal.normalize();
+    (void) vd->normal.normalize(); // a null vector is ok
     
     SbColor4f res = c0 * (1.0f-t) + c1 * t;
     vd->diffuse = res.getPackedValue();
@@ -1139,10 +1141,12 @@ SoVectorizeActionP::clip_line(vertexdata * v0, vertexdata * v1, const SbPlane & 
   }
   const SbVec3f & planeN = plane.getNormal();
   SbVec3f dir = v1->point - v0->point;
-  dir.normalize();
+
+  // since we got here, we know that v0 != v1
+  (void) dir.normalize(); 
   float dot = dir.dot(planeN);
   SbVec3f newvertex = v0->point - dir * (d0/dot);
-
+  
   if (d0 < 0.0f) {
     calc_new_vertexdata(v0, newvertex, v0, v1);
   }
