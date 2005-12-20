@@ -226,6 +226,17 @@ SbDPViewVolume::getMatrices(SbDPMatrix& affine, SbDPMatrix& proj) const
 #endif // COIN_DEBUG
   SbVec3d rightvec = this->lrf - this->llf;
 
+#if COIN_DEBUG
+  if (rightvec == SbVec3d(0.0, 0.0, 0.0)) {
+    SoDebugError::postWarning("SbDPViewVolume::getMatrices",
+                              "empty frustum!");
+    affine = SbDPMatrix::identity();
+    proj = SbDPMatrix::identity();
+    return;
+  }
+#endif // COIN_DEBUG
+
+  // we test vectors above, just normalize
   (void) upvec.normalize();
   (void) rightvec.normalize();
 
@@ -347,27 +358,6 @@ void
 SbDPViewVolume::projectPointToLine(const SbVec2d& pt,
                                    SbVec3d & line0, SbVec3d & line1) const
 {
-#if 0 // OBSOLETED, pederb 19991215. More efficient version below
-  SbVec3d scr_n(pt[0], pt[1], -1.0f);
-  SbVec3d scr_f(pt[0], pt[1], 1.0f);
-
-  scr_n[0] -= 0.5f;
-  scr_n[1] -= 0.5f;
-  scr_f[0] -= 0.5f;
-  scr_f[1] -= 0.5f;
-
-  scr_n[0] *= 2.0f;
-  scr_n[1] *= 2.0f;
-  scr_f[0] *= 2.0f;
-  scr_f[1] *= 2.0f;
-
-  SbDPMatrix m = this->getMatrix().inverse();
-
-  m.multVecMatrix(scr_n, line0);
-  m.multVecMatrix(scr_f, line1);
-
-#else // new, faster version
-
   SbVec3d dx = this->lrf - this->llf;
   SbVec3d dy = this->ulf - this->llf;
 
@@ -383,14 +373,14 @@ SbDPViewVolume::projectPointToLine(const SbVec2d& pt,
   SbVec3d dir;
   if (this->type == PERSPECTIVE) {
     dir = line0 - this->projPoint;
-    dir.normalize();
+    // a null vector is ok here, just normalize
+    (void) dir.normalize();
     line1 = line0 + dir * this->getDepth() / dir.dot(this->projDir);
   }
   else {
     dir = this->projDir;
     line1 = line0 + dir*this->getDepth();
   }
-#endif // faster version
 }
 
 /*!
@@ -454,7 +444,7 @@ SbDPViewVolume::getSightPoint(const double distFromEye) const
  */
 SbVec3d
 SbDPViewVolume::getPlanePoint(const double distFromEye,
-                            const SbVec2d & normPoint) const
+                              const SbVec2d & normPoint) const
 {
   SbVec3d volpt;
 
@@ -478,12 +468,21 @@ SbDPViewVolume::getPlanePoint(const double distFromEye,
       this->llf +
       (this->lrf - this->llf) * normPoint[0] +
       (this->ulf - this->llf) * normPoint[1];
-    dvec.normalize();
 
-    // Distance to point.
-    double d = distFromEye/dvec.dot(this->getProjectionDirection());
-
-    volpt = d * dvec + this->getProjectionPoint();
+    if (dvec.normalize() == 0.0) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbDPViewVolume::getPlanePoint",
+                                "Frustum is invalid, point set to the projection point.");
+#endif // COIN_DEBUG
+      // just set volpt to the projection point
+      volpt = this->getProjectionPoint();
+    }
+    else {
+      // Distance to point.
+      double d = distFromEye/dvec.dot(this->getProjectionDirection());
+      
+      volpt = d * dvec + this->getProjectionPoint();
+    }
   }
 
   return volpt;
@@ -665,9 +664,15 @@ SbDPViewVolume::narrow(double left, double bottom,
   double h = nvw.getHeight();
 
   SbVec3d xvec = this->lrf - this->llf;
-  xvec.normalize();
   SbVec3d yvec = this->ulf - this->llf;
-  yvec.normalize();
+  
+  if (yvec.normalize() == 0.0 || xvec.normalize() == 0.0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbDPViewVolume::narrow",
+                              "View volume was empty before narrowing.");
+    
+#endif // COIN_DEBUG
+  }
 
   nvw.ulf = nvw.llf + (xvec * left * w + yvec * top * h);
   nvw.lrf =
@@ -954,7 +959,12 @@ SbDPViewVolume::scaleWidth(double ratio)
   double wdiff = (neww - w)/2.0f;
 
   SbVec3d xvec = this->lrf - this->llf;
-  xvec.normalize();
+  if (xvec.normalize() == 0.0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbDPViewVolume::scaleWidth",
+                              "View volume had no width before scaling.");
+#endif // COIN_DEBUG
+  }
   SbVec3d diffvec = xvec * wdiff;
 
   this->llf -= diffvec;
@@ -985,7 +995,12 @@ SbDPViewVolume::scaleHeight(double ratio)
   double hdiff = (newh - h)/2.0f;
 
   SbVec3d upvec = this->ulf - this->llf;
-  upvec.normalize();
+  if (upvec.normalize() == 0.0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbDPViewVolume::scaleHeight",
+                              "View volume had no height before scaling.");
+#endif // COIN_DEBUG
+  }
   SbVec3d diffvec = upvec * hdiff;
 
   this->llf -= diffvec;
@@ -1233,7 +1248,12 @@ SbVec3d
 SbDPViewVolume::getViewUp(void) const
 {
   SbVec3d v = this->ulf - this->llf;
-  (void) v.normalize();
+  if (v.normalize() == 0.0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbDPViewVolume::getViewUp",
+                              "View volume is empty.");
+#endif // COIN_DEBUG
+  }
   return v;
 }
 
@@ -1250,23 +1270,34 @@ SbDPViewVolume::getPlaneRectangle(const double distance, SbVec3d & lowerleft,
 {
   SbVec3d near_ur = this->ulf + (this->lrf-this->llf);
 
+#if COIN_DEBUG
+  if (this->llf == SbVec3d(0.0, 0.0, 0.0) ||
+      this->lrf == SbVec3d(0.0, 0.0, 0.0) ||
+      this->ulf == SbVec3d(0.0, 0.0, 0.0) ||
+      near_ur == SbVec3d(0.0, 0.0, 0.0)) {
+    SoDebugError::postWarning("SbDPViewVolume::getPlaneRectangle",
+                              "Invalid frustum.");
+    
+  }
+#endif // COIN_DEBUG
+
   if (this->type == PERSPECTIVE) {
     double depth = this->nearDist + distance;
     SbVec3d dir;
     dir = this->llf;
-    dir.normalize();
+    (void) dir.normalize(); // safe to normalize here
     lowerleft = dir * depth / dir.dot(this->projDir);
 
     dir = this->lrf;
-    dir.normalize();
+    dir.normalize(); // safe to normalize here
     lowerright = dir * depth / dir.dot(this->projDir);
 
     dir = this->ulf;
-    dir.normalize();
+    (void) dir.normalize(); // safe to normalize here
     upperleft = dir * depth / dir.dot(this->projDir);
-
+    
     dir = near_ur;
-    dir.normalize();
+    (void) dir.normalize(); // safe to normalize here
     upperright = dir * depth / dir.dot(this->projDir);
   }
   else {
