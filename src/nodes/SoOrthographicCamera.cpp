@@ -184,7 +184,7 @@ SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
   // Move the camera to the edge of the bounding sphere, while still
   // pointing at the scene.
   SbVec3f direction = this->position.getValue() - box.getCenter();
-  direction.normalize();
+  (void) direction.normalize(); // we know this is not a null vector
   this->position.setValue(box.getCenter() + direction * radius);
 
 
