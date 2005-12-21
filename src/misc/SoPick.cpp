@@ -117,12 +117,11 @@ sopick_pick_cone(const float bottomRadius,
           SbVec3f ptonaxis(0.0f, npoint[1], 0.0f);
 
           // calculate some vectors to help find the normal
-          // these calculations can be optimized, but who cares...
           SbVec3f v0 = npoint-ptonaxis;
           SbVec3f v1 = v0.cross(SbVec3f(0.0f, -1.0f, 0.0f));
-          v1.normalize();
+          (void) v1.normalize();
           SbVec3f n = npoint.cross(v1);
-          n.normalize();
+          (void) n.normalize();
           pp->setObjectNormal(n);
           pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
                                                       (1.0 / (2.0 * M_PI)) + 0.5),
@@ -170,7 +169,7 @@ set_side_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
   // the normal vector for a cylinder side is the intersection point,
   // without the y-component, of course.
   SbVec3f normal(isect[0], 0.0f, isect[2]);
-  normal.normalize();
+  (void) normal.normalize();
   pp->setObjectNormal(normal);
 
   // just reverse the way texture coordinates are generated to find
@@ -303,7 +302,7 @@ try_add_intersection(SoRayPickAction * action, const SbVec3f & pt)
     SoPickedPoint * pp = action->addIntersection(pt);
     if (pp) {
       SbVec3f normal = pt;
-      normal.normalize();
+      (void) normal.normalize();
       pp->setObjectNormal(normal);
       SbVec4f tc((float) (atan2(pt[0], pt[2]) * (1.0 / (2.0*M_PI)) + 0.5),
                  (float) (atan2(pt[1], sqrt(pt[0]*pt[0] + pt[2]*pt[2])) * (1.0/M_PI) + 0.5),
