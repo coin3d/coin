@@ -32,6 +32,7 @@
 #include <Inventor/misc/SoNormalGenerator.h>
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbitsp.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <stdio.h>
 
@@ -192,6 +193,12 @@ SoNormalGenerator::generate(const float creaseAngle,
                             const int32_t *striplens,
                             const int numstrips)
 {
+  // just ignore the warnings from normalize(). A null vector just
+  // means that we have an empty triangle which will be ignored by
+  // OpenGL anyway. It's also common to have empty triangles in for
+  // instance triangle strips (they're used as a trick to generate
+  // longer triangle strips).
+
   int i;
 
   // for each vertex, store all faceindices the vertex is a part of
@@ -204,7 +211,7 @@ SoNormalGenerator::generate(const float creaseAngle,
   }
 
   float threshold = (float)cos(SbClamp(creaseAngle, 0.0f, (float) M_PI));
-  
+
   if (striplens) {
     i = 0;
     for (int j = 0; j < numstrips; j++) {
@@ -214,13 +221,13 @@ SoNormalGenerator::generate(const float creaseAngle,
                       this->vertexFace[i],
                       vertexFaceArray[vertexList[i]],
                       threshold, tmpvec);
-      tmpvec.normalize();
+      (void) tmpvec.normalize();
       this->vertexNormals.append(tmpvec);
       calc_normal_vec(this->faceNormals.getArrayPtr(),
                       this->vertexFace[i+1],
                       vertexFaceArray[vertexList[i+1]],
                       threshold, tmpvec);
-      tmpvec.normalize();
+      (void) tmpvec.normalize();
       this->vertexNormals.append(tmpvec);
 
       int num = striplens[j] - 2;
@@ -232,7 +239,7 @@ SoNormalGenerator::generate(const float creaseAngle,
                         this->vertexFace[i],
                         vertexFaceArray[vertexList[i]],
                         threshold, tmpvec);
-        tmpvec.normalize();
+        (void) tmpvec.normalize();
         this->vertexNormals.append(tmpvec);
         i++;
       }
@@ -245,7 +252,7 @@ SoNormalGenerator::generate(const float creaseAngle,
                       this->vertexFace[i],
                       vertexFaceArray[vertexList[i]],
                       threshold, tmpvec);
-      tmpvec.normalize();
+      (void) tmpvec.normalize();
       this->vertexNormals.append(tmpvec);
     }
   }
@@ -275,7 +282,7 @@ SoNormalGenerator::generatePerStrip(const int32_t * striplens,
       acc += this->faceNormals[cnt++];
       n--;
     }
-    acc.normalize();
+    (void) acc.normalize();
     // use face normal array to store strip normals
     this->faceNormals[i] = acc;
   }
@@ -308,7 +315,7 @@ SoNormalGenerator::generateOverall(void)
   const SbVec3f * normals = this->faceNormals.getArrayPtr();
   SbVec3f acc(0.0f, 0.0f, 0.0f);
   for (int i = 0; i < n; i++) acc += normals[i];
-  acc.normalize();
+  (void) acc.normalize();
   this->faceNormals.truncate(0, TRUE);
   this->faceNormals.append(acc);
 
@@ -410,24 +417,26 @@ SoNormalGenerator::calcFaceNormal(void)
     if (!this->ccw) ret = -ret;
   }
 
-  if (ret.length() > 0.0f) { ret.normalize(); }
+  if (ret.normalize() == 0.0f) {
 #if COIN_DEBUG
-  else {
-    SbString s;
-    for (int i = 0; i < num; i++) {
-      const SbVec3f v = coords[cind[i]];
-      SbString c;
-      c.sprintf(" <%f, %f, %f>", v[0], v[1], v[2]);
-      s += c;
+    // make this an optional warning since it's really ok (in most
+    // cases) to have empty triangles. pederb, 2005-12-21
+    if (coin_debug_extra()) {
+      SbString s;
+      for (int i = 0; i < num; i++) {
+        const SbVec3f v = coords[cind[i]];
+        SbString c;
+        c.sprintf(" <%f, %f, %f>", v[0], v[1], v[2]);
+        s += c;
+      }
+      SoDebugError::postWarning("SoNormalGenerator::calcFaceNormal",
+                                "Normal vector found to be of zero length "
+                                "for face with vertex coordinates:%s",
+                                s.getString());
     }
-    SoDebugError::postWarning("SoNormalGenerator::calcFaceNormal",
-                              "Normal vector found to be of zero length "
-                              "for face with vertex coordinates:%s",
-                              s.getString());
-    // Set to a dummy value to avoid secondary warnings.
-    ret.setValue(1.0f, 0.0f, 0.0f);
+#endif // COIN_DEBUG      
+    // set to (0,0,0) so that this face will not influence normal smoothing
+    ret.setValue(0.0f, 0.0f, 0.0f);
   }
-#endif // COIN_DEBUG
-
   return ret;
 }
