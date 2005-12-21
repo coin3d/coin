@@ -376,8 +376,12 @@ SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
 
   SbVec3f direction(0.0f, 0.0f, -1.0f);
   matrix.multDirMatrix(direction, direction);
-  direction.normalize();
-
+  if (direction.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::valueChangedCB",
+                       "Invalid motion matrix.");
+#endif // debug
+  }
   thisp->attachSensors(FALSE);
   if (thisp->location.getValue() != t) {
     thisp->location = t;

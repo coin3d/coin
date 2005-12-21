@@ -352,8 +352,12 @@ SoDirectionalLightManip::valueChangedCB(void * m, SoDragger * dragger)
   SbMatrix matrix = dragger->getMotionMatrix();
   SbVec3f direction(0.0f, 0.0f, -1.0f);
   matrix.multDirMatrix(direction, direction);
-  direction.normalize();
-
+  if (direction.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::post("SoDirectionalLightManip::valueChangedCB",
+                       "Invalid motion matrix.");
+#endif // debug
+  }
   thisp->attachSensors(FALSE);
   if (thisp->direction.getValue() != direction) {
     thisp->direction = direction;
