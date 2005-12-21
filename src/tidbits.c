@@ -38,6 +38,7 @@
 #include <locale.h>
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
+#include <stdlib.h> /* atio() */
 #include <ctype.h> /* tolower() */
 #include <stdlib.h> /* atexit(), putenv(), qsort(), atof() */
 #ifdef HAVE_WINDOWS_H
@@ -148,6 +149,10 @@ extern "C" {
 static cc_mutex * atexit_list_monitor = NULL;
 #endif /* COIN_THREADSAFE */
 
+
+static int COIN_DEBUG_EXTRA = -1;
+static int COIN_DEBUG_NORMALIZE = -1;
+
 /* ********************************************************************** */
 
 /* Called from SoDB::init() exactly once, a call which is guaranteed
@@ -155,9 +160,25 @@ static cc_mutex * atexit_list_monitor = NULL;
 void
 coin_init_tidbits(void)
 {
+  const char * env;
 #ifdef COIN_THREADSAFE
   atexit_list_monitor = cc_mutex_construct();
 #endif /* COIN_THREADSAFE */
+
+  env  = coin_getenv("COIN_DEBUG_EXTRA");
+  if (env && atoi(env) == 1) {
+    COIN_DEBUG_EXTRA = 1;
+  }
+  else {
+    COIN_DEBUG_EXTRA = 0;
+  }
+  env = coin_getenv("COIN_DEBUG_NORMALIZE");
+  if (env && atoi(env) == 1) {
+    COIN_DEBUG_NORMALIZE = 1;
+  }
+  else {
+    COIN_DEBUG_NORMALIZE = 0;
+  }
 }
 
 /* ********************************************************************** */
@@ -1722,6 +1743,40 @@ coin_runtime_os(void)
 #else
   return COIN_UNIX;
 #endif
+}
+
+/**************************************************************************/
+
+/*
+ * Will return TRUE if extra debugging information is enabled. These
+ * are typically debugging messages extra for Coin and not found in
+ * SGI Inventor. Also, these debugging message will not necessarily
+ * mean that anything is wrong, but they can be useful for debugging
+ * anyway.
+ */
+int 
+coin_debug_extra(void)
+{
+#if COIN_DEBUG
+  return COIN_DEBUG_EXTRA;
+#else /* COIN_DEBUG */
+  return 0;
+#endif /* !COIN_DEBUG */ 
+}
+
+/*
+ * Will return TRUE if SbVec*::normalize() debugging is enabled.
+ * This can be enabled using the COIN_DEBUG_NORMALIZE environment
+ * variable.
+ */
+int 
+coin_debug_normalize(void)
+{
+#if COIN_DEBUG
+  return COIN_DEBUG_NORMALIZE;
+#else /* COIN_DEBUG */
+  return 0;
+#endif /* !COIN_DEBUG */
 }
 
 /**************************************************************************/

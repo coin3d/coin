@@ -152,6 +152,11 @@ int coin_runtime_os(void);
 
 /* ********************************************************************** */
 
+int coin_debug_extra(void);
+int coin_debug_normalize(void);
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
