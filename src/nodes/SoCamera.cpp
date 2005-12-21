@@ -406,7 +406,13 @@ void
 SoCamera::pointAt(const SbVec3f & targetpoint)
 {
   SbVec3f dir = targetpoint - this->position.getValue();
-  if (dir.normalize() == 0.0f) return;
+  if (dir.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoCamera::pointAt",
+                           "targetpoint == camera position.");
+#endif // debug
+    return;
+  }
 
   SbVec3f up(0.0f, 1.0f, 0.0f);
 
@@ -425,7 +431,13 @@ void
 SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
 {
   SbVec3f dir = targetpoint - this->position.getValue();
-  if (dir.normalize() == 0.0f) return;
+  if (dir.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoCamera::pointAt",
+                           "targetpoint == camera position.");
+#endif // debug
+    return;
+  }
   this->lookAt(dir, upvector);
 }
 
@@ -555,7 +567,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
       float offset = this->stereoadjustment * 0.5f;
       if (this->stereomode == LEFT_VIEW) offset = -offset;
       SbVec3f r = vv.getProjectionDirection().cross(vv.getViewUp());
-      r.normalize();
+      (void) r.normalize();
 
       // get the current camera transformation/size
       vv.getMatrices(affine, proj);
@@ -1071,8 +1083,17 @@ SoCamera::lookAt(const SbVec3f & dir, const SbVec3f & up)
   y = z.cross(x);
 
   // normalize x and y to create an orthonormal coord system
-  y.normalize();
-  x.normalize();
+  if ((y.normalize() == 0.0f) ||
+      (x.normalize() == 0.0f)) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoCamera::lookAt",
+                           "Unable to create a rotation matrix "
+                           "(dir = %g %g %g, up = %g %g %g)\n",
+                           dir[0], dir[1], dir[2],
+                           up[0], up[1], up[2]);
+#endif // debug
+    return;
+  }
 
   // create a rotation matrix
   SbMatrix rot = SbMatrix::identity();
