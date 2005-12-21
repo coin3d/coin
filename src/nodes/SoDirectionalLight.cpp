@@ -154,7 +154,8 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
 #endif // COIN_DEBUG
     return;
   }
-  
+
+
   SoLightElement::add(state, this, SoModelMatrixElement::get(state) * 
                       SoViewingMatrixElement::get(state));
   
@@ -172,8 +173,12 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
 
   // GL directional light is specified towards light source
   SbVec3f dir = - this->direction.getValue();
-  dir.normalize();
-
+  if (dir.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoDirectionalLight::GLRender",
+                              "Direction is a null vector.");
+#endif // COIN_DEBUG
+  }
   // directional when w = 0.0
   SbVec4f dirvec(dir[0], dir[1], dir[2], 0.0f);
   glLightfv(light, GL_POSITION, dirvec.getValue());
