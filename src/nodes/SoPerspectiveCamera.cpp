@@ -153,7 +153,7 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   // Move the camera to the edge of the bounding sphere, while still
   // pointing at the scene.
   SbVec3f direction = this->position.getValue() - box.getCenter();
-  direction.normalize();
+  (void) direction.normalize(); // we know this is not a null vector
   float movelength =
     aspectradius + (aspectradius/float(atan(this->heightAngle.getValue())));
   this->position.setValue(box.getCenter() + direction * movelength);
