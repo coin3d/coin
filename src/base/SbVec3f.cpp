@@ -57,6 +57,7 @@
 #include <float.h> // FLT_MAX
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec3d.h>
+#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -312,19 +313,25 @@ SbVec3f::negate(void)
   length of the vector before normalization.
 
   If the vector is the null vector, no attempt at normalization will
-  be done, and if the Coin library was built in a debug version, this
-  error message will then be shown:
+  be done. If the Coin library was built in a debug version, and
+  the COIN_DEBUG_NORMALIZE environment variable is set, this error
+  message will then be shown:
 
   \verbatim
     Coin warning in SbVec3f::normalize(): The length of the vector
     should be > 0.0f to be able to normalize.
   \endverbatim
 
-  We've made Coin spit out a warning when an attempt at normalizing a
-  null-vector is made, as that seems to always be a symptom caused by
-  some graver error somewhere else -- either an internal error in Coin
-  code, a programming error in application code, or an error in an
-  input file (like for instance invalid polygon specifications).
+  We've made it possible for Coin to spit out a warning when an
+  attempt at normalizing a null-vector is made, as that seems to
+  sometimes be a symptom caused by some graver error somewhere else --
+  either an internal error in Coin code, a programming error in
+  application code, or an error in an input file (like for instance
+  invalid polygon specifications).
+
+  If you run into bugs/problems with your application or with Coin, it could be a
+  good idea to set COIN_DEBUG_NORMALIZE=1, and then restart the
+  application to see if you get any warnings from normalize().
 
   If this happens, you should run the application in a debugger and see
   how the call-stack backtrace looks when it hits. An easy way of
@@ -359,7 +366,7 @@ SbVec3f::normalize(void)
     operator/=(len);
   }
 #if COIN_DEBUG
-  else {
+  else if (coin_debug_normalize()) {
     SoDebugError::postWarning("SbVec3f::normalize",
                               "The length of the vector should be > 0.0f "
                               "to be able to normalize.");

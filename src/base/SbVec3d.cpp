@@ -58,6 +58,7 @@
 #include <assert.h>
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -222,14 +223,16 @@ double
 SbVec3d::normalize(void)
 {
   double len = this->length();
+  if (len > 0.0) {
+    operator/=(len);
+  }
 #if COIN_DEBUG
-  if (!(len > 0.0))
+  else if (coin_debug_normalize()) {
     SoDebugError::postWarning("SbVec3d::normalize",
                               "The length of the vector should be > 0.0 "
                               "to be able to normalize.");
+  }
 #endif // COIN_DEBUG
-
-  if (len > 0.0) operator/=(len);
   return len;
 }
 

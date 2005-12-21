@@ -35,6 +35,7 @@
 
 #include <assert.h>
 #include <Inventor/SbVec2f.h>
+#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -164,13 +165,12 @@ SbVec2f::normalize(void)
     operator/=(len);
   }
 #if COIN_DEBUG
-  else {
+  else if (coin_debug_normalize()) {
     SoDebugError::postWarning("SbVec2f::normalize",
                               "The length of the vector should be > 0.0f "
                               "to be able to normalize.");
   }
 #endif // COIN_DEBUG
-
   return len;
 }
 
