@@ -219,7 +219,7 @@ convert_heightmap_to_normalmap(const unsigned char * srcptr,
       n[0] = -dx;
       n[1] = -dy;
       n[2] = 1.0f;
-      n.normalize();
+      (void) n.normalize();
             
       *dstptr++ = (unsigned char) SbMin((n[0]+1.0f) * 128.0f, 255.0f); 
       *dstptr++ = (unsigned char) SbMin((n[1]+1.0f) * 128.0f, 255.0f); 
