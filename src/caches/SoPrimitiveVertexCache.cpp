@@ -725,7 +725,7 @@ void
 SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
 {
   int numv = PRIVATE(this)->vertexlist.getLength();
-  int numtri = PRIVATE(this)->triangleindexer->getNumIndices() / 3;
+  int numtri = this->getNumIndices() / 3;
   if (numv == 0 || numtri == 0) return;
   
   SbPlane sortplane = SoViewVolumeElement::get(state).getPlane(0.0);
