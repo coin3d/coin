@@ -219,7 +219,7 @@ SbCylinderSectionProjector::setupTolerance(void)
 
   // find plane direction perpendicular to line
   this->planeDir = somept - ptonaxis;
-  if (this->planeDir.sqrLength() < FLT_EPSILON) {
+  if (this->planeDir.normalize() < FLT_EPSILON) {
     // the cylinder axis is parallel to the view direction. This is a
     // special case, and not really supported by the projector. Just
     // create a tilted plane to make it possible to rotate the
@@ -228,7 +228,7 @@ SbCylinderSectionProjector::setupTolerance(void)
       this->viewVol.getProjectionDirection();
     this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);    
   }
-  this->planeDir.normalize();
+  
   if (!this->intersectFront) {
     this->planeDir = -this->planeDir;
   }

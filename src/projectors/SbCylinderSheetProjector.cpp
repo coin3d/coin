@@ -33,6 +33,7 @@
 // should of course be used. 20000308 mortene.
 
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
+#include <float.h> // FLT_EPSILON
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -196,7 +197,18 @@ SbCylinderSheetProjector::setupPlane(void)
   SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
 
   this->planeDir = somePt - ptOnAxis;
-  this->planeDir.normalize();
+
+  if (this->planeDir.normalize() < FLT_EPSILON) {
+    // the cylinder axis is parallel to the view direction. This is a
+    // special case, and not really supported by the projector. Just
+    // create a tilted plane to make it possible to rotate the
+    // cylinder even for this case.
+    this->planeDir = this->viewVol.getViewUp() + 
+      this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);    
+    (void) this->planeDir.normalize();
+  }
+
   if (!this->intersectFront) this->planeDir = -this->planeDir;
 
   this->tolPlane = SbPlane(this->planeDir, axis.getPosition());
