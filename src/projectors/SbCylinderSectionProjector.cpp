@@ -227,6 +227,7 @@ SbCylinderSectionProjector::setupTolerance(void)
     this->planeDir = this->viewVol.getViewUp() + 
       this->viewVol.getProjectionDirection();
     this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);    
+    (void) this->planeDir.normalize();
   }
   
   if (!this->intersectFront) {
