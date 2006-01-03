@@ -113,7 +113,13 @@ SbSpherePlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
   if (tol1 && tol2) return inherited::getRotation(point1, point2);
   SbVec3f vec = point2 - point1;
   SbVec3f axis = vec.cross(this->planeDir);
-  axis.normalize();
+  if (axis.normalize() == 0.0f) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbSpherePlaneProjector::getRotation",
+                              "Unable to find rotation axis.");
+#endif // COIN_DEBUG
+    return SbRotation::identity();
+  }
 
   float angle = 0.0f;
 
@@ -135,12 +141,20 @@ SbSpherePlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     }
 
     SbVec3f dir = planePt - this->planePoint;
-    dir.normalize();
+    if (dir.normalize() == 0.0f) {
+      // no movement = no rotation
+      return SbRotation::identity();
+    }
     SbVec3f tolpt = this->planePoint + dir * this->tolDist;
     SbVec3f vec1 = tolpt - this->sphere.getCenter();
     SbVec3f vec2 = spherePt - this->sphere.getCenter();
-    vec1.normalize();
-    vec2.normalize();
+    if (vec1.normalize() == 0.0f || vec2.normalize() == 0.0f) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbSpherePlaneProjector::getRotation",
+                                "Unable to find angle on projection sphere.");
+#endif // COIN_DEBUG
+      return SbRotation::identity();
+    }
     float cosval = vec1.dot(vec2);
     if (cosval > 1.0f) cosval = 1.0f;
     else if (cosval < -1.0f) cosval = -1.0f;
