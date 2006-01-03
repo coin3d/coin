@@ -230,7 +230,13 @@ SbSphereSheetProjector::setupPlane(void)
   if (this->orientToEye) {
     this->planeDir = -this->viewVol.getProjectionDirection();
     this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);
-    this->planeDir.normalize();
+    if (this->planeDir.normalize() == 0.0f) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbSphereSectionProjector::setupPlane",
+                                "worldToWorking matrix seems to be invalid.");
+#endif // COIN_DEBUG
+      this->planeDir.setValue(0.0f, 0.0f, 1.0f);
+    }
   }
   else {
     this->planeDir.setValue(0.0f, 0.0f, 1.0f);
