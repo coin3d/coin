@@ -234,7 +234,7 @@
 
   \endvarbatim
 
-  \since Coin 3.0
+  \since Coin 2.5
 
 */
 
@@ -823,11 +823,15 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
     return;
   }
 
-
+  SoVRMLIndexedFaceSet * oldifs = (SoVRMLIndexedFaceSet*) path->getTail();
+  assert(oldifs->isOfType(SoVRMLIndexedFaceSet::getClassTypeId()));
   SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
   ifs->ref();
   ifs->normalPerVertex = this->lighting;
   ifs->colorPerVertex = this->pvcache->colorPerVertex();
+  ifs->ccw = oldifs->ccw;
+  ifs->solid = oldifs->solid;
+  ifs->creaseAngle = oldifs->creaseAngle;
   
   int numv = this->pvcache->getNumVertices();
   
