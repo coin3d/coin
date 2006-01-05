@@ -302,9 +302,12 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
   
+  const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
+
   SbBool dova = 
-    (numindices > 50) &&
+    !drawPoints && 
+    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     (!doTextures || (tindices == cindices)) &&
     ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
@@ -363,7 +366,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
     
     if (PRIVATE(this)->vaindexer) {
-      const uint32_t contextid = action->getCacheContext();
       PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);

@@ -513,9 +513,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
           cc_glglue_has_vertex_array(sogl_glue_instance(state)));
 #endif
 
+  const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
-  SbBool dova = 
-    (numindices > 50) &&
+  SbBool dova =
+    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
     !convexcacheused && !normalCacheUsed &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
@@ -585,7 +586,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     if (THIS->vaindexer) {
-      const uint32_t contextid = action->getCacheContext();
       THIS->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);

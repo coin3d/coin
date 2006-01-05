@@ -312,9 +312,11 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // make sure we have the correct material
  
   SoGLLazyElement * lelem = NULL;
+  const uint32_t contextid = action->getCacheContext();
+
   SbBool dova = 
     !drawPoints &&
-    (numindices > 30) &&
+    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
     cc_glglue_has_vertex_array(sogl_glue_instance(state));
   
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
@@ -371,7 +373,6 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
     
     if (PRIVATE(this)->vaindexer) {
-      const uint32_t contextid = action->getCacheContext();
       PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);

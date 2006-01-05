@@ -239,9 +239,11 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   if (numpts < 0) numpts = coords->getNum() - idx;
   
   const cc_glglue * glue = sogl_glue_instance(state);
+  const uint32_t contextid = action->getCacheContext();
 
-  // no point setting up OpenGL for vertex arrays for fewer than 20 points
-  SbBool dova = (numpts >= 20) && cc_glglue_has_vertex_array(glue);
+  SbBool dova = 
+    SoVBO::shouldRenderAsVertexArrays(contextid, numpts) && 
+    cc_glglue_has_vertex_array(glue);
   
   if (dova && (mbind == PER_VERTEX)) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
