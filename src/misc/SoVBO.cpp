@@ -297,6 +297,7 @@ SoVBO::getVertexCountMaxLimit(void)
 SbBool 
 SoVBO::shouldCreateVBO(const uint32_t contextid, const int numdata)
 {
+  // return SoVBO::isVBOFast(contextid);
   int minv = SoVBO::getVertexCountMinLimit();
   int maxv = SoVBO::getVertexCountMaxLimit();
   return (numdata >= minv) && (numdata <= maxv) && SoVBO::isVBOFast(contextid);
@@ -332,7 +333,7 @@ typedef struct {
 } vbo_performance_test_data;
 
 // how many times the geometry is rendered in the performance test callbacks
-#define PERF_NUM_LOOP 10
+#define PERF_NUM_LOOP 4
 
 // rendering loop used to test vertex array and VBO rendering speed
 static void 
@@ -420,11 +421,11 @@ SoVBO::testGLPerformance(const uint32_t contextid)
 
   const cc_glglue * glue = cc_glglue_instance(contextid);
   if (cc_glglue_has_vertex_buffer_object(glue)) {
-    // create a regular grid with 64x64 points to test the
+    // create a regular grid with 128x128 points to test the
     // performance. This size was chosen since it's fairly quick to
     // render on most gfx cards (important to avoid that the
     // application freezes up for too long while running this test).
-    const int size = 64;
+    const int size = 128;
     const int half = size / 2;
     SbVec3f * vertexarray = new SbVec3f[size*size];
     SoVertexArrayIndexer * idx = new SoVertexArrayIndexer;
