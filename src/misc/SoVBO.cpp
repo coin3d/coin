@@ -47,6 +47,9 @@
 
 static int vbo_vertex_count_min_limit = -1;
 static int vbo_vertex_count_max_limit = -1;
+static int vbo_render_as_vertex_arrays = -1;
+static int vbo_enabled = -1;
+
 static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
 
 /*!
@@ -93,6 +96,50 @@ SoVBO::init(void)
 
   vbo_isfast_hash = new SbHash <SbBool, uint32_t> (3);
   coin_atexit(vbo_atexit_cleanup, 0);
+
+  // use COIN_VBO_MAX_LIMIT to set the largest VBO we create
+  if (vbo_vertex_count_max_limit < 0) {
+    const char * env = coin_getenv("COIN_VBO_MAX_LIMIT");
+    if (env) {
+      vbo_vertex_count_max_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_max_limit = 10000000;
+    }
+  }
+
+  // use COIN_VBO_MIN_LIMIT to set the smallest VBO we create
+  if (vbo_vertex_count_min_limit < 0) {
+    const char * env = coin_getenv("COIN_VBO_MIN_LIMIT");
+    if (env) {
+      vbo_vertex_count_min_limit = atoi(env);
+    }
+    else {
+      vbo_vertex_count_min_limit = 40;
+    }
+  }
+
+  // use COIN_VERTEX_ARRAYS to globally disable vertex array rendering
+  if (vbo_render_as_vertex_arrays < 0) {
+    const char * env = coin_getenv("COIN_VERTEX_ARRAYS");
+    if (env) {
+      vbo_render_as_vertex_arrays = atoi(env);
+    }
+    else {
+      vbo_render_as_vertex_arrays = 1;
+    }
+  }
+
+  // use COIN_VBO to globally disable VBOs when doing vertex array rendering
+  if (vbo_enabled < 0) {
+    const char * env = coin_getenv("COIN_VBO");
+    if (env) {
+      vbo_enabled = atoi(env);
+    }
+    else {
+      vbo_enabled = 1;
+    }
+  }
 }
 
 /*!
@@ -262,15 +309,6 @@ SoVBO::setVertexCountLimits(const int minlimit, const int maxlimit)
 int 
 SoVBO::getVertexCountMinLimit(void)
 {
-  if (vbo_vertex_count_min_limit < 0) {
-    const char * env = coin_getenv("COIN_VBO_MIN_LIMIT");
-    if (env) {
-      vbo_vertex_count_min_limit = atoi(env);
-    }
-    else {
-      vbo_vertex_count_min_limit = 40;
-    }
-  } 
   return vbo_vertex_count_min_limit;
 }
 
@@ -282,27 +320,29 @@ SoVBO::getVertexCountMinLimit(void)
 int 
 SoVBO::getVertexCountMaxLimit(void)
 {
-  if (vbo_vertex_count_max_limit < 0) {
-    const char * env = coin_getenv("COIN_VBO_MAX_LIMIT");
-    if (env) {
-      vbo_vertex_count_max_limit = atoi(env);
-    }
-    else {
-      vbo_vertex_count_max_limit = 10000000;
-    }
-  }
   return vbo_vertex_count_max_limit;
 }
 
 SbBool 
 SoVBO::shouldCreateVBO(const uint32_t contextid, const int numdata)
 {
-  // return SoVBO::isVBOFast(contextid);
+  if (!vbo_enabled || !vbo_render_as_vertex_arrays) return FALSE;
   int minv = SoVBO::getVertexCountMinLimit();
   int maxv = SoVBO::getVertexCountMaxLimit();
   return (numdata >= minv) && (numdata <= maxv) && SoVBO::isVBOFast(contextid);
 }
 
+SbBool 
+SoVBO::shouldRenderAsVertexArrays(const uint32_t contextid,
+                                  const int numdata)
+{
+  // FIXME: consider also using results from the performance tests
+  
+  // don't render as vertex arrays if there are very few elements to
+  // be rendered. The VA setup overhead would make it slower than just
+  // doing plain immediate mode rendering.
+  return (numdata >= 50) && vbo_render_as_vertex_arrays;
+}
 
 SbBool 
 SoVBO::isVBOFast(const uint32_t contextid)

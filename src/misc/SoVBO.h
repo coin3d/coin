@@ -52,6 +52,8 @@ class SoVBO {
 
   static void testGLPerformance(const uint32_t contextid);
   static SbBool shouldCreateVBO(const uint32_t contextid, const int numdata);
+  static SbBool shouldRenderAsVertexArrays(const uint32_t contextid,
+                                           const int numdata);
 
  private:
   static void context_created(const uint32_t contextid, void * closure);
