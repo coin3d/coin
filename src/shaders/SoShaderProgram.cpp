@@ -39,7 +39,7 @@
 
 // *************************************************************************
 
-class SoShaderProgramP 
+class SoShaderProgramP
 {
 public:
   SoShaderProgramP(SoShaderProgram * ownerptr);
@@ -102,7 +102,9 @@ SoShaderProgram::search(SoSearchAction * action)
   SoNode::search(action);
   if (action->isFound()) return;
 
-  // If we're not the one being sought after, try shader objects.
+  // we really can't do this since this node hasn't got an SoChildList
+  // instance
+#if 0 // disabled, not possible to search under this node
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
@@ -118,6 +120,7 @@ SoShaderProgram::search(SoSearchAction * action)
       if (action->isFound()) return;
     }
   }
+#endif // disabled
 }
 
 // *************************************************************************
@@ -175,7 +178,3 @@ SoShaderProgramP::sensorCB(void * data, SoSensor *)
 {
   // nothing to do now
 }
-
-
-
-
