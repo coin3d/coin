@@ -262,6 +262,7 @@ RegularSources = \
 	win32.c \
 	freetype.c \
 	fontspec.c \
+	glyph.c \
 	glyph2d.c \
 	glyph3d.c \
 	default3dfont.c \
@@ -280,6 +281,7 @@ PrivateHeaders = \
 	win32.h \
 	freetype.h \
 	fontspec.h \
+	glyph.h \
 	glyph2d.h \
 	glyph3d.h \
 	defaultfonts.h \
@@ -361,55 +363,56 @@ LIBRARIES = $(noinst_LIBRARIES)
 fonts_lst_AR = $(AR) cru
 fonts_lst_LIBADD =
 am__fonts_lst_SOURCES_DIST = fontlib_wrapper.c win32.c freetype.c \
-	fontspec.c glyph2d.c glyph3d.c default3dfont.c default2dfont.c \
-	common.c all-fonts-c.c
+	fontspec.c glyph.c glyph2d.c glyph3d.c default3dfont.c \
+	default2dfont.c common.c all-fonts-c.c
 am__objects_1 = all-fonts-c.$(OBJEXT)
 am__objects_2 = fontlib_wrapper.$(OBJEXT) win32.$(OBJEXT) \
-	freetype.$(OBJEXT) fontspec.$(OBJEXT) glyph2d.$(OBJEXT) \
-	glyph3d.$(OBJEXT) default3dfont.$(OBJEXT) \
+	freetype.$(OBJEXT) fontspec.$(OBJEXT) glyph.$(OBJEXT) \
+	glyph2d.$(OBJEXT) glyph3d.$(OBJEXT) default3dfont.$(OBJEXT) \
 	default2dfont.$(OBJEXT) common.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_fonts_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_fonts_lst_SOURCES_DIST = fontlib_wrapper.h win32.h freetype.h \
-	fontspec.h glyph2d.h glyph3d.h defaultfonts.h builtin2dfonts.ic \
-	font13.ic font17.ic font25.ic font33.ic common.h all-fonts-c.c \
-	fontlib_wrapper.c win32.c freetype.c fontspec.c glyph2d.c \
-	glyph3d.c default3dfont.c default2dfont.c common.c
+	fontspec.h glyph.h glyph2d.h glyph3d.h defaultfonts.h \
+	builtin2dfonts.ic font13.ic font17.ic font25.ic font33.ic \
+	common.h all-fonts-c.c fontlib_wrapper.c win32.c freetype.c \
+	fontspec.c glyph.c glyph2d.c glyph3d.c default3dfont.c \
+	default2dfont.c common.c
 fonts_lst_OBJECTS = $(am_fonts_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libfonts_la_LDFLAGS =
 libfonts_la_LIBADD =
 am__libfonts_la_SOURCES_DIST = fontlib_wrapper.c win32.c freetype.c \
-	fontspec.c glyph2d.c glyph3d.c default3dfont.c default2dfont.c \
-	common.c all-fonts-c.c
+	fontspec.c glyph.c glyph2d.c glyph3d.c default3dfont.c \
+	default2dfont.c common.c all-fonts-c.c
 am__objects_6 = all-fonts-c.lo
 am__objects_7 = fontlib_wrapper.lo win32.lo freetype.lo fontspec.lo \
-	glyph2d.lo glyph3d.lo default3dfont.lo default2dfont.lo \
-	common.lo
+	glyph.lo glyph2d.lo glyph3d.lo default3dfont.lo \
+	default2dfont.lo common.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libfonts_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts_la_SOURCES_DIST = fontlib_wrapper.h win32.h \
-	freetype.h fontspec.h glyph2d.h glyph3d.h defaultfonts.h \
-	builtin2dfonts.ic font13.ic font17.ic font25.ic font33.ic \
-	common.h all-fonts-c.c fontlib_wrapper.c win32.c freetype.c \
-	fontspec.c glyph2d.c glyph3d.c default3dfont.c default2dfont.c \
-	common.c
+	freetype.h fontspec.h glyph.h glyph2d.h glyph3d.h \
+	defaultfonts.h builtin2dfonts.ic font13.ic font17.ic font25.ic \
+	font33.ic common.h all-fonts-c.c fontlib_wrapper.c win32.c \
+	freetype.c fontspec.c glyph.c glyph2d.c glyph3d.c \
+	default3dfont.c default2dfont.c common.c
 libfonts_la_OBJECTS = $(am_libfonts_la_OBJECTS)
 libfonts@SUFFIX@LINKHACK_la_LDFLAGS =
 libfonts@SUFFIX@LINKHACK_la_LIBADD =
 am__libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.c win32.c \
-	freetype.c fontspec.c glyph2d.c glyph3d.c default3dfont.c \
-	default2dfont.c common.c all-fonts-c.c
+	freetype.c fontspec.c glyph.c glyph2d.c glyph3d.c \
+	default3dfont.c default2dfont.c common.c all-fonts-c.c
 am_libfonts@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.h \
-	win32.h freetype.h fontspec.h glyph2d.h glyph3d.h \
+	win32.h freetype.h fontspec.h glyph.h glyph2d.h glyph3d.h \
 	defaultfonts.h builtin2dfonts.ic font13.ic font17.ic font25.ic \
 	font33.ic common.h all-fonts-c.c fontlib_wrapper.c win32.c \
-	freetype.c fontspec.c glyph2d.c glyph3d.c default3dfont.c \
-	default2dfont.c common.c
+	freetype.c fontspec.c glyph.c glyph2d.c glyph3d.c \
+	default3dfont.c default2dfont.c common.c
 libfonts@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libfonts@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -424,6 +427,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/fontlib_wrapper.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fontspec.Plo ./$(DEPDIR)/fontspec.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/freetype.Plo ./$(DEPDIR)/freetype.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/glyph.Plo ./$(DEPDIR)/glyph.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/glyph2d.Plo ./$(DEPDIR)/glyph2d.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/glyph3d.Plo ./$(DEPDIR)/glyph3d.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/win32.Plo ./$(DEPDIR)/win32.Po
@@ -519,6 +523,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fontspec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freetype.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freetype.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph2d.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph2d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph3d.Plo@am__quote@

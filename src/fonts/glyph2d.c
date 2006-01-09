@@ -36,24 +36,23 @@
 
 #include "fontlib_wrapper.h"
 #include "glyph2d.h"
+#include "glyph.h"
 
 static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 
 struct cc_glyph2d {
-  int fontidx;    
-  int glyphidx;
-  uint32_t character;
-  float angle;
-  unsigned short width;
+  struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
+
+  float angle; /* FIXME: is this one really in use? 20060109 mortene. */
+  unsigned short width; /* FIXME: is this one really in use? 20060109 mortene. */
+
   unsigned short height;
   unsigned short bitmapwidth;
   unsigned short bitmapheight;
   short bitmapoffsetx;
   short bitmapoffsety;
-  cc_font_specification * fontspec;
   unsigned char * bitmap;
-  int refcount;
-  int fontid;
+  int fontid; /* FIXME: is this one really in use? 20060109 mortene. */
   SbBool mono;
 };
 
@@ -139,9 +138,9 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     glyphlist = (cc_list *) val;
     for (i = 0; i < cc_list_get_length(glyphlist); ++i) {
       glyph = (cc_glyph2d *) cc_list_get(glyphlist, i);
-      if (glyph2d_specmatch(spec, glyph->fontspec)) {
+      if (glyph2d_specmatch(spec, glyph->c.fontspec)) {
         GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
-        glyph->refcount++;
+        glyph->c.refcount++;
         return glyph;
       }
     }    
@@ -157,13 +156,13 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
 
   /* build a new glyph struct with bitmap */    
   glyph = (cc_glyph2d *) malloc(sizeof(cc_glyph2d));
-  glyph->character = character;
+  glyph->c.character = character;
   
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
   assert(newspec);
   cc_fontspec_copy(spec, newspec);
 
-  glyph->fontspec = newspec;
+  glyph->c.fontspec = newspec;
 
   /* FIXME: fonttoload variable should be allocated on the
      stack. 20030921 mortene. */
@@ -205,8 +204,8 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
 
-  glyph->glyphidx = glyphidx;
-  glyph->fontidx = fontidx;
+  glyph->c.glyphidx = glyphidx;
+  glyph->c.fontidx = fontidx;
   glyph->angle = angle;
 
   bm = cc_flw_get_bitmap(fontidx, glyphidx);
@@ -219,7 +218,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   glyph->bitmapoffsety = bm->bearingY;
   glyph->bitmap = bm->buffer;
   glyph->mono = bm->mono;
-  glyph->refcount = 1;
+  glyph->c.refcount = 1;
   
   /* Store newly created glyph in the list for this character */
   cc_list_append(glyphlist, glyph);
@@ -228,39 +227,10 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   return glyph;
 }
 
-void 
+void
 cc_glyph2d_unref(cc_glyph2d * glyph)
 {
-  glyph->refcount--;
-  if (glyph->refcount == 0) {
-  
-    cc_list * glyphlist;
-    int ret;
-    void * tmp;
-    int i;
-
-    ret = cc_dict_get(glyph2d_fonthash, (uintptr_t)glyph->character, &tmp);
-    assert(ret);
-    glyphlist = (cc_list*) tmp;
-    
-    for (i = 0; i < cc_list_get_length(glyphlist); i++) {
-      if (glyph == (cc_glyph2d*) cc_list_get(glyphlist, i)) break;
-    }    
-    assert(i < cc_list_get_length(glyphlist));
-
-    cc_list_remove_fast(glyphlist, i);
-    if (cc_list_get_length(glyphlist) == 0) {
-      (void) cc_dict_remove(glyph2d_fonthash, (uintptr_t)glyph->character);
-      cc_list_destruct(glyphlist);
-    }
-
-    cc_fontspec_clean(glyph->fontspec);
-    free(glyph->fontspec);
-    cc_flw_done_glyph(glyph->fontidx, glyph->glyphidx);
-
-    cc_flw_unref_font(glyph->fontid);
-    free(glyph);
-  }
+  cc_glyph_unref(glyph2d_fonthash, &(glyph->c), NULL);
 }
 
 static SbBool 
@@ -283,13 +253,13 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 void 
 cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y)
 {
-  cc_flw_get_bitmap_advance(g->fontidx, g->glyphidx, x, y);
+  cc_flw_get_bitmap_advance(g->c.fontidx, g->c.glyphidx, x, y);
 }
 
 void 
 cc_glyph2d_getkerning(const cc_glyph2d * left, const cc_glyph2d * right, int * x, int * y)
 {
-  cc_flw_get_bitmap_kerning(right->fontidx, left->glyphidx, right->glyphidx, x, y);
+  cc_flw_get_bitmap_kerning(right->c.fontidx, left->c.glyphidx, right->c.glyphidx, x, y);
 }
 
 unsigned int 

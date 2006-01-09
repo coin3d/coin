@@ -3,6 +3,7 @@ RegularSources = \
 	win32.c \
 	freetype.c \
 	fontspec.c \
+	glyph.c \
 	glyph2d.c \
 	glyph3d.c \
 	default3dfont.c \
@@ -19,6 +20,7 @@ PrivateHeaders = \
 	win32.h \
 	freetype.h \
 	fontspec.h \
+	glyph.h \
 	glyph2d.h \
 	glyph3d.h \
 	defaultfonts.h \

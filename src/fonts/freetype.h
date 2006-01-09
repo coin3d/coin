@@ -31,6 +31,14 @@
   the FreeType font library.
 */
 
+/* ********************************************************************** */
+
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* ! COIN_INTERNAL */
+
+/* ********************************************************************** */
+
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 

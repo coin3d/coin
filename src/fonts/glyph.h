@@ -1,5 +1,5 @@
-#ifndef COIN_DEFAULTFONTS_H
-#define COIN_DEFAULTFONTS_H
+#ifndef COIN_GLYPH_H
+#define COIN_GLYPH_H
 
 /**************************************************************************\
  *
@@ -24,29 +24,55 @@
  *
 \**************************************************************************/
 
+/*
+  The interface below collects functionality for glyph-handling common
+  for 2D and 3D glyphs.
+*/
+
+/* ********************************************************************** */
+
 #ifndef COIN_INTERNAL
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
 /* ********************************************************************** */
 
-#include <Inventor/system/inttypes.h>
+#include <Inventor/C/base/dict.h>
+
+#include "fontspec.h"
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */
+#endif
 
-int coin_default2dfont_get_height(float size);
-int coin_default2dfont_get_width(float size);
-const unsigned char * coin_default2dfont_get_data(float size);
+#if 0 /* hack for emacs indentation */
+}
+#endif
 
-const float ** coin_default3dfont_get_coords(void);
-const int ** coin_default3dfont_get_faceidx(void);
-const int ** coin_default3dfont_get_edgeidx(void);
-float coin_default3dfont_get_advance(int charidx);
+struct cc_glyph {
+  int refcount;
+
+  int glyphidx;
+  uint32_t character;
+
+  int fontidx;    
+  cc_font_specification * fontspec;
+};
+
+typedef struct cc_glyph cc_glyph;
+
+/* ********************************************************************** */
+
+typedef void cc_glyph_finalize(cc_glyph *);
+
+void cc_glyph_unref(cc_dict * d, cc_glyph * g, cc_glyph_finalize * f);
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */
+}
+#endif
 
-#endif /* COIN_DEFAULTSFONTS_H */
+#endif /* !COIN_GLYPH_H */
