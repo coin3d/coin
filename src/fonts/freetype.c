@@ -75,7 +75,7 @@ void cc_flwft_done_font(void * font) { assert(FALSE); }
 int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
 const char * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
 void cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); }
-void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); }
+void cc_flwft_set_char_size(void * font, int height) { assert(FALSE); }
 
 
 void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
