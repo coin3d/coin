@@ -552,6 +552,7 @@ else
   SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [No  (enable with --enable-threadsafe)])
 fi
 
+# for coin.cfg
 AC_SUBST([HAVE_THREADSAFE])
 
 # *******************************************************************
