@@ -32,7 +32,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef COIN_THREADSAFE
+#ifdef HAVE_THREADS
 
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
@@ -65,7 +65,7 @@
 #define CC_GLOBAL_LOCK cc_mutex_global_lock()
 #define CC_GLOBAL_UNLOCK cc_mutex_global_unlock()
 
-#else /* ! COIN_THREADSAFE */
+#else /* ! HAVE_THREADS */
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_)  do { } while (0)
 #define CC_MUTEX_DESTRUCT(_mymutex_)  do { } while (0)
@@ -76,6 +76,6 @@
 #define CC_GLOBAL_LOCK  do { } while (0)
 #define CC_GLOBAL_UNLOCK  do { } while (0)
 
-#endif /* ! COIN_THREADSAFE */
+#endif /* ! HAVE_THREADS */
 
 #endif /* CC_THREADUTILP_H */
