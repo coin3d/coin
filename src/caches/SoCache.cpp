@@ -31,8 +31,26 @@
   cache. If any of the elements have changed since the cache was
   created, the cache is invalid.
 
-  There are some steps you have to do when creating a cache to make
-  the cache dependencies work. Basically you have to do it like this:
+  The cache element test algorithm in Coin works like this:
+
+  Every element that is read before it's written when a cache is
+  created is stored in the SoCache's element list. This is done to
+  detect when something outside the cache changes.
+
+  Example: you have a SoCoordinate3 node outside an SoSeparator, but
+  an SoIndexedFaceSet inside the SoSeparator. If the SoSeparator
+  creates a cache, SoIndexedFaceSet will read SoCoordinateElement, and
+  since SoCoordinateElement hasn't been set after the cache was
+  opened, the cache stores that element in the cache's list of element
+  dependencies.
+
+  At the next frame, the SoSeparator will test if the cache is valid,
+  and will then test all dependency elements. If one of the elements
+  doesn't match, the cache is not valid and can't be used.
+
+  That's the basics. There are some steps you have to do when creating
+  a cache to make the cache dependencies work. Basically you have to
+  do it like this:
   
   \begin verbatim
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
