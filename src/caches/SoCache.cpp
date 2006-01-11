@@ -105,6 +105,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -193,10 +195,12 @@ SoCache::addElement(const SoElement * const elem)
     int flag = 0x1 << (idx & 0x7);
     idx >>= 3; // get byte number
     if (!(PRIVATE(this)->elementflags[idx] & flag)) {
-#if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoCache::addElement",
-                             "cache: %p, elem: %s", this,
-                             elem->getTypeId().getName().getString());
+#if COIN_DEBUG // debug
+      if (debugCachingLevel() > 1) {
+        SoDebugError::postInfo("SoCache::addElement",
+                               "cache: %p, elem: %s", this,
+                               elem->getTypeId().getName().getString());
+      }
 #endif // debug
       SoElement * copy = elem->copyMatchInfo();
       if (copy) PRIVATE(this)->elements.append(copy);
@@ -249,10 +253,12 @@ SoCache::getInvalidElement(const SoState * const state) const
   for (int i = 0; i < n; i++) {
     elem = ptr[i];
     if (!elem->matches(state->getConstElement(elem->getStackIndex()))) {
-#if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoCache::getInvalidElement",
-                             "cache: %p, invalid element: %s", this,
-                             elem->getTypeId().getName().getString());
+#if COIN_DEBUG
+      if (debugCachingLevel() > 0) {
+        SoDebugError::postInfo("SoCache::getInvalidElement",
+                               "cache: %p, invalid element: %s", this,
+                               elem->getTypeId().getName().getString());
+      }
 #endif // debug
       return elem;
     }
@@ -278,6 +284,27 @@ SoCache::destroy(SoState *)
 {
 }
 
+/*!
+  Used for debugging caching.
+*/
+int 
+SoCache::debugCachingLevel(void)
+{
+#if COIN_DEBUG
+  static int COIN_DEBUG_CACHING = -1;
+  if (COIN_DEBUG_CACHING < 0) {
+    const char * env = coin_getenv("COIN_DEBUG_CACHING");
+    if (env) COIN_DEBUG_CACHING = atoi(env);
+    else COIN_DEBUG_CACHING = 0;
+  }
+  return COIN_DEBUG_CACHING;
+#else // debug
+  return 0;
+#endif // !debug
+}
+
+
 #undef PRIVATE
 
 // *************************************************************************
+
