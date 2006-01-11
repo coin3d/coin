@@ -299,6 +299,9 @@ public:
   }
 
   SoBoundingBoxCache * bboxcache;
+  uint32_t bboxcache_usecount;
+  uint32_t bboxcache_destroycount;
+
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // !COIN_THREADSAFE
@@ -406,6 +409,8 @@ SoSeparator::commonConstructor(void)
   }
 
   PRIVATE(this)->bboxcache = NULL;
+  PRIVATE(this)->bboxcache_usecount = 0;
+  PRIVATE(this)->bboxcache_destroycount = 0;
 
   // This environment variable used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
@@ -489,6 +494,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 
   if (iscaching && validcache) {
     SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
+    PRIVATE(this)->bboxcache_usecount++;
     childrenbbox = PRIVATE(this)->bboxcache->getBox();
     childrencenterset = PRIVATE(this)->bboxcache->isCenterSet();
     childrencenter = PRIVATE(this)->bboxcache->getCenter();
@@ -500,6 +506,14 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     SbXfBox3f abox = action->getXfBoundingBox();
 
     SbBool storedinvalid = FALSE;
+
+    // check if we should disable auto caching
+    if (PRIVATE(this)->bboxcache_destroycount > 10 && this->boundingBoxCaching.getValue() == AUTO) {
+      if (float(PRIVATE(this)->bboxcache_usecount) / float(PRIVATE(this)->bboxcache_destroycount) < 5.0f) { 
+        iscaching = FALSE;
+      }
+    }
+
     if (iscaching) {
       storedinvalid = SoCacheElement::setInvalid(FALSE);
     }
@@ -510,7 +524,10 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
       // function can be used by another thread.
       PRIVATE(this)->lock();
       // if we get here, we know bbox cache is not created or is invalid
-      if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+      if (PRIVATE(this)->bboxcache) {
+        PRIVATE(this)->bboxcache_destroycount++;
+        PRIVATE(this)->bboxcache->unref();
+      }
       PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
       PRIVATE(this)->bboxcache->ref();
       PRIVATE(this)->unlock();
