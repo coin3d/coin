@@ -1535,6 +1535,8 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     PRIVATE(this)->bboxcache->unref();
     PRIVATE(this)->bboxcache = NULL;
     PRIVATE(this)->unlock();
+    // don't create bbox caches for shapes that change
+    PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
   }
   
   SbBool shouldcache = (PRIVATE(this)->flags & SoShapeP::SHOULD_BBOX_CACHE) != 0;
