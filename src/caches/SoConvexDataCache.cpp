@@ -40,6 +40,7 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -71,7 +72,7 @@ SoConvexDataCache::SoConvexDataCache(SoState * const state)
 {
   PRIVATE(this) = new SoConvexDataCacheP;
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoConvexDataCache::SoConvexDataCache",
                            "Cache created: %p", this);
     
@@ -85,7 +86,7 @@ SoConvexDataCache::SoConvexDataCache(SoState * const state)
 SoConvexDataCache::~SoConvexDataCache()
 {
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoConvexDataCache::~SoConvexDataCache",
                            "Cache destructed: %p", this);
     

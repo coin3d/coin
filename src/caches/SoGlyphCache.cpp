@@ -34,6 +34,7 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
 class SoGlyphCacheP {
@@ -52,7 +53,7 @@ SoGlyphCache::SoGlyphCache(SoState * state)
   PRIVATE(this)->fontspec = NULL;
 
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGlyphCache::SoGlyphCache",
                            "Cache constructed: %p", this);
     
@@ -63,7 +64,7 @@ SoGlyphCache::SoGlyphCache(SoState * state)
 SoGlyphCache::~SoGlyphCache()
 {
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGlyphCache::~SoGlyphCache",
                            "Cache destructed: %p", this);
     

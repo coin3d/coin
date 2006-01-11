@@ -32,6 +32,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/caches/SoGLRenderCache.h>
@@ -130,7 +131,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
   SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, PRIVATE(this));
 
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGLCacheList::SoGLCacheList",
                            "Cache list created: %p", this);
   }
@@ -143,7 +144,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
 SoGLCacheList::~SoGLCacheList()
 {
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGLCacheList::~SoGLCacheList",
                            "Cache list destructed: %p", this);
   }
@@ -413,7 +414,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
     }
   }
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGLCacheList::call",
                            "no valid cache found for %p. Node has %d caches",
                            this, n);
@@ -494,7 +495,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
         shouldcreate = TRUE;
       }
 #if COIN_DEBUG
-      if (SoCache::debugCachingLevel() > 0 && PRIVATE(this)->numframesok >= 2) {
+      if (coin_debug_caching_level() > 0 && PRIVATE(this)->numframesok >= 2) {
         SoDebugError::postInfo("SoGLCacheList::open",
                                "consider cache create: %p. numframesok: %d, numused: %d, numdiscarded: %d",
                                this, PRIVATE(this)->numframesok, PRIVATE(this)->numused, PRIVATE(this)->numdiscarded);
@@ -536,7 +537,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     (void) SoShapeStyleElement::get(state);
 
 #if COIN_DEBUG // debug
-    if (SoCache::debugCachingLevel() > 0) {
+    if (coin_debug_caching_level() > 0) {
       SoDebugError::postInfo("SoGLCacheList::open",
                              "trying to create cache: %p", this);
     }
@@ -573,7 +574,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
       PRIVATE(this)->numdiscarded += 1;
 
 #if COIN_DEBUG
-      if (SoCache::debugCachingLevel() > 0) {
+      if (coin_debug_caching_level() > 0) {
         SoDebugError::postInfo("SoGLCacheList::close",
                                "failed to create cache: %p", this);
       }
@@ -587,7 +588,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
   // open cache is ok, add it to the cache list
   if (PRIVATE(this)->opencache) {
 #if COIN_DEBUG
-    if (SoCache::debugCachingLevel() > 0) {
+    if (coin_debug_caching_level() > 0) {
       SoDebugError::postInfo("SoGLCacheList::close",
                              "new cache created: %p", this);
     }
@@ -611,7 +612,7 @@ SoGLCacheList::invalidateAll(void)
 {
   int n = PRIVATE(this)->itemlist.getLength();
 #if COIN_DEBUG
-  if (n && SoCache::debugCachingLevel() > 1) {
+  if (n && coin_debug_caching_level() > 1) {
     SoDebugError::postInfo("SoGLCacheList::invalidateAll",
                            "invalidate all: %p (num caches = %d)", this, n);
   }

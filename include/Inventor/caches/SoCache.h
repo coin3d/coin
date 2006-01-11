@@ -52,10 +52,6 @@ protected:
 
 private:
   SoCacheP * pimpl;
-
-public:
-  static int debugCachingLevel(void);
-
 };
 
 #endif // !COIN_SOCACHE_H

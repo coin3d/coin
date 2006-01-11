@@ -36,6 +36,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -220,7 +221,7 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     // element.
   }
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoPrimitiveVertexCache::SoPrimitiveVertexCache",
                            "Cache constructed: %p", this);
     
@@ -234,7 +235,7 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoPrimitiveVertexCache::~SoPrimitiveVertexCache",
                            "Cache destructed: %p", this);
     

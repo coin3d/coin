@@ -32,6 +32,7 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -59,7 +60,7 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
   PRIVATE(this)->linesorpoints = 0;
 
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoBoundingBoxCache::SoBoundingBoxCache",
                            "Cache created: %p", this);
     
@@ -73,7 +74,7 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
 SoBoundingBoxCache::~SoBoundingBoxCache()
 {
 #if COIN_DEBUG
-  if (SoCache::debugCachingLevel() > 0) {
+  if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoBoundingBoxCache::~SoBoundingBoxCache",
                            "Cache destructed: %p", this);
   }
