@@ -1779,6 +1779,26 @@ coin_debug_normalize(void)
 #endif /* !COIN_DEBUG */
 }
 
+
+/*!
+  Used for debugging caching.
+*/
+int 
+coin_debug_caching_level(void)
+{
+#if COIN_DEBUG
+  static int COIN_DEBUG_CACHING = -1;
+  if (COIN_DEBUG_CACHING < 0) {
+    const char * env = coin_getenv("COIN_DEBUG_CACHING");
+    if (env) COIN_DEBUG_CACHING = atoi(env);
+    else COIN_DEBUG_CACHING = 0;
+  }
+  return COIN_DEBUG_CACHING;
+#else // debug
+  return 0;
+#endif // !debug
+}
+
 /**************************************************************************/
 
 #ifdef __cplusplus
