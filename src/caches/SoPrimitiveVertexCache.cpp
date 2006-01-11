@@ -58,6 +58,7 @@
 #include <Inventor/SbPlane.h>
 #include "../misc/SoVBO.h"
 #include "../misc/SoVertexArrayIndexer.h"
+#include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
@@ -218,6 +219,13 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     // triangle callback. SoTextureCoordinateBundle might push a new
     // element.
   }
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoPrimitiveVertexCache::SoPrimitiveVertexCache",
+                           "Cache constructed: %p", this);
+    
+  }
+#endif // debug
 }
 
 /*!
@@ -225,6 +233,14 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoPrimitiveVertexCache::~SoPrimitiveVertexCache",
+                           "Cache destructed: %p", this);
+    
+  }
+#endif // debug
+
   delete PRIVATE(this)->triangleindexer;
   delete PRIVATE(this)->lineindexer;
   delete PRIVATE(this)->pointindexer;

@@ -70,6 +70,13 @@ SoConvexDataCache::SoConvexDataCache(SoState * const state)
   : SoCache(state)
 {
   PRIVATE(this) = new SoConvexDataCacheP;
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoConvexDataCache::SoConvexDataCache",
+                           "Cache created: %p", this);
+    
+  }
+#endif // debug
 }
 
 /*!
@@ -77,6 +84,13 @@ SoConvexDataCache::SoConvexDataCache(SoState * const state)
 */
 SoConvexDataCache::~SoConvexDataCache()
 {
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoConvexDataCache::~SoConvexDataCache",
+                           "Cache destructed: %p", this);
+    
+  }
+#endif // debug
   delete PRIVATE(this);
 }
 

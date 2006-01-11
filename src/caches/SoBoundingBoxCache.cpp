@@ -31,6 +31,7 @@
 
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
@@ -56,6 +57,14 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
   PRIVATE(this) = new SoBoundingBoxCacheP;
   PRIVATE(this)->centerset = 0;
   PRIVATE(this)->linesorpoints = 0;
+
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoBoundingBoxCache::SoBoundingBoxCache",
+                           "Cache created: %p", this);
+    
+  }
+#endif // debug
 }
 
 /*!
@@ -63,6 +72,13 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
 */
 SoBoundingBoxCache::~SoBoundingBoxCache()
 {
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoBoundingBoxCache::~SoBoundingBoxCache",
+                           "Cache destructed: %p", this);
+  }
+#endif // debug
+
   delete PRIVATE(this);
 }
 

@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
 class SoGlyphCacheP {
@@ -49,10 +50,26 @@ SoGlyphCache::SoGlyphCache(SoState * state)
 {
   PRIVATE(this) = new SoGlyphCacheP;
   PRIVATE(this)->fontspec = NULL;
+
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoGlyphCache::SoGlyphCache",
+                           "Cache constructed: %p", this);
+    
+  }
+#endif // debug
 }
 
 SoGlyphCache::~SoGlyphCache()
 {
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoGlyphCache::~SoGlyphCache",
+                           "Cache destructed: %p", this);
+    
+  }
+#endif // debug
+
   int i;
   this->readFontspec(NULL);
   for (i = 0; i < PRIVATE(this)->glyphlist2d.getLength(); i++) {

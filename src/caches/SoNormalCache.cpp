@@ -83,6 +83,14 @@ SoNormalCache::SoNormalCache(SoState * const state)
   PRIVATE(this) = new SoNormalCacheP;
   PRIVATE(this)->normalData.normals = NULL;
   PRIVATE(this)->numNormals = 0;
+
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoNormalCache::SoNormalCache",
+                           "Cache created: %p", this);
+    
+  }
+#endif // debug
 }
 
 /*!
@@ -90,6 +98,14 @@ SoNormalCache::SoNormalCache(SoState * const state)
 */
 SoNormalCache::~SoNormalCache()
 {
+#if COIN_DEBUG
+  if (SoCache::debugCachingLevel() > 0) {
+    SoDebugError::postInfo("SoNormalCache::~SoNormalCache",
+                           "Cache destructed: %p", this);
+    
+  }
+#endif // debug
+
   this->clearGenerator();
   delete PRIVATE(this);
 }
