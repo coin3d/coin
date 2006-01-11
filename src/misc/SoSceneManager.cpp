@@ -73,6 +73,8 @@ public:
     FLAG_ACTIVE = 0x0002
   };
 
+  SbBool isActive(void) const { return this->flags & SoSceneManagerP::FLAG_ACTIVE; }
+
   static void nodesensorCB(void * data, SoSensor * sensor);
   static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
 
@@ -406,7 +408,7 @@ void
 SoSceneManager::scheduleRedraw(void)
 {
   PRIVATE(this)->lock();
-  if ((PRIVATE(this)->flags & SoSceneManagerP::FLAG_ACTIVE) && PRIVATE(this)->rendercb) {
+  if (PRIVATE(this)->isActive() && PRIVATE(this)->rendercb) {
     if (!PRIVATE(this)->redrawshot) {
       PRIVATE(this)->redrawshot =
         new SoOneShotSensor(SoSceneManagerP::redrawshotTriggeredCB, this);
@@ -429,7 +431,7 @@ SoSceneManager::scheduleRedraw(void)
 int
 SoSceneManager::isActive(void) const
 {
-  return (PRIVATE(this)->flags & SoSceneManagerP::FLAG_ACTIVE) != 0;
+  return PRIVATE(this)->isActive();
 }
 
 /*!
@@ -920,7 +922,11 @@ SoSceneManagerP::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
   SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
 #endif // debug
 
-  ((SoSceneManager *)data)->redraw();
+  SoSceneManager * sm = (SoSceneManager *)data;
+
+  // Need to recheck the "active" flag, as it could have changed since
+  // it was tested in the SoSceneManager::scheduleRedraw() call.
+  if (PRIVATE(sm)->isActive()) { sm->redraw(); }
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
