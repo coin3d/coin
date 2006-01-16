@@ -226,7 +226,6 @@ public:
   
   int readstatus;
   class SoGLImage * glimage;
-  SbBool glimagevalid;
   SbImage image;
   SoFieldSensor * urlsensor;
   SbBool allowprequalifycb;
@@ -331,7 +330,6 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
   PRIVATE(this)->glimage = NULL;
-  PRIVATE(this)->glimagevalid = FALSE;
   PRIVATE(this)->readstatus = 1;
   PRIVATE(this)->allowprequalifycb = TRUE;
   PRIVATE(this)->timersensor = 
@@ -488,36 +486,28 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
   float quality = SoTextureQualityElement::get(state);
 
   PRIVATE(this)->lock_glimage();
-  
-  if (!PRIVATE(this)->glimagevalid) {
-    SoTextureScalePolicyElement::Policy scalepolicy =
-      SoTextureScalePolicyElement::get(state);      
-    SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
 
-    if (needbig &&
-        (PRIVATE(this)->glimage == NULL ||
-         PRIVATE(this)->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (PRIVATE(this)->glimage) {
-        PRIVATE(this)->glimage->setEndFrameCallback(NULL, NULL);
-        PRIVATE(this)->glimage->unref(state);
-      }
+  SoTextureScalePolicyElement::Policy scalepolicy =
+    SoTextureScalePolicyElement::get(state);      
+  SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
+  SbBool isbig = 
+    PRIVATE(this)->glimage && 
+    PRIVATE(this)->glimage->getTypeId() == SoGLBigImage::getClassTypeId();
+  
+  if (!PRIVATE(this)->glimage || (needbig != isbig)) {
+    if (PRIVATE(this)->glimage) {
+      PRIVATE(this)->glimage->unref(state);
+    }
+    if (needbig) {
       PRIVATE(this)->glimage = new SoGLBigImage();
     }
-    else if (!needbig &&
-             (PRIVATE(this)->glimage == NULL ||
-              PRIVATE(this)->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (PRIVATE(this)->glimage) {
-        PRIVATE(this)->glimage->setEndFrameCallback(NULL, NULL);
-        PRIVATE(this)->glimage->unref(state);
-      }
+    else {
       PRIVATE(this)->glimage = new SoGLImage();
     }
-
     if (scalepolicy == SoTextureScalePolicyElement::SCALE_DOWN) {
       PRIVATE(this)->glimage->setFlags(PRIVATE(this)->glimage->getFlags()|SoGLImage::SCALE_DOWN);
     }
 
-    PRIVATE(this)->glimagevalid = TRUE;
     PRIVATE(this)->glimage->setData(&PRIVATE(this)->image,
                                     imagetexture_translate_wrap(this->repeatS.getValue()),
                                     imagetexture_translate_wrap(this->repeatT.getValue()),
@@ -538,11 +528,11 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
   PRIVATE(this)->unlock_glimage();
 
   SoGLTextureImageElement::set(state, this,
-                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
+                               PRIVATE(this)->glimage,
                                SoTextureImageElement::MODULATE,
                                SbColor(1.0f, 1.0f, 1.0f));
 
-  SbBool enable = PRIVATE(this)->glimagevalid &&
+  SbBool enable = PRIVATE(this)->glimage &&
     quality > 0.0f &&
     PRIVATE(this)->glimage->getImage() &&
     PRIVATE(this)->glimage->getImage()->hasData();
@@ -611,7 +601,12 @@ SoVRMLImageTexture::setReadStatus(int status)
 SbBool
 SoVRMLImageTexture::loadUrl(void)
 {
-  PRIVATE(this)->glimagevalid = FALSE; // recreate GL image in next GLRender()
+  PRIVATE(this)->lock_glimage();
+  if (PRIVATE(this)->glimage) {
+    PRIVATE(this)->glimage->unref(NULL);
+    PRIVATE(this)->glimage = NULL;
+  }
+  PRIVATE(this)->unlock_glimage();
 
   SbBool retval = TRUE;
   if (this->url.getNum() && this->url[0].getLength()) {
@@ -640,6 +635,15 @@ SoVRMLImageTexture::loadUrl(void)
   return retval;
 }
 
+// sensor callback used for deleting old GLImage instances
+static void 
+imagetexture_glimage_delete(void * closure, SoSensor * s)
+{
+  SoGLImage * img = (SoGLImage*) closure;
+  img->unref(NULL);
+  delete s;
+}
+
 //
 // used for multithread loading.
 //
@@ -648,16 +652,28 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 {
 #ifdef COIN_THREADSAFE
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
+  PRIVATE(thisp)->lock_glimage();
   if (PRIVATE(thisp)->glimage) {
     int age = PRIVATE(thisp)->glimage->getNumFramesSinceUsed();
     if (age > imagedata_maxage) {
-      PRIVATE(thisp)->glimagevalid = FALSE;
-      assert(PRIVATE(thisp)->glimage);
-      PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
+      // we can't delete the glimage here, since it's locked by
+      // SoGLImage. Use a sensor to delete it the next time the
+      // delayqueue sensors are processed.
+      if (PRIVATE(thisp)->glimage) {
+        PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
+        // allocate new sensor. It will be deleted in the sensor callback
+        SoOneShotSensor * s = new SoOneShotSensor(imagetexture_glimage_delete, PRIVATE(thisp)->glimage);
+        s->schedule();
+        // clear the GLImage in this node
+        PRIVATE(thisp)->glimage = NULL;
+      }
+      PRIVATE(thisp)->unlock_glimage();
       PRIVATE(thisp)->image.setValue(SbVec2s(0,0), 0, NULL);
       (void) thisp->loadUrl();
+      return;
     }
   }
+  PRIVATE(thisp)->unlock_glimage();
 #endif // COIN_THREADSAFE
 }
 
@@ -743,7 +759,14 @@ void
 SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
 {
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) data;
-
+  
+  PRIVATE(thisp)->lock_glimage();
+  if (PRIVATE(thisp)->glimage) {
+    PRIVATE(thisp)->glimage->unref(NULL);
+    PRIVATE(thisp)->glimage = NULL;
+  }
+  PRIVATE(thisp)->unlock_glimage();
+  
   thisp->setReadStatus(1);
   if (thisp->url.getNum() && thisp->url[0].getLength() &&
       !thisp->loadUrl()) {
@@ -761,10 +784,6 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
       }
 
       thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
-      thisp->pimpl->glimagevalid = FALSE;
-      if (PRIVATE(thisp)->glimage) {
-        PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
-      }
     }
   }
 }
@@ -782,9 +801,13 @@ SoVRMLImageTexture::readImage(const SbString & filename)
   else {
     retval = default_prequalify_cb(filename, NULL, this); 
   }
+  PRIVATE(this)->lock_glimage();
   if (PRIVATE(this)->glimage) {
-    PRIVATE(this)->glimagevalid = FALSE;
+    PRIVATE(this)->glimage->unref(NULL);
+    PRIVATE(this)->glimage = NULL;
   }
+  PRIVATE(this)->unlock_glimage();
+
   // set flag that timer sensor will test. 
   PRIVATE(this)->finishedloading = TRUE;
   return retval;
@@ -798,7 +821,12 @@ void
 SoVRMLImageTexture::setImage(const SbImage & image)
 {
   PRIVATE(this)->image = image;
-  PRIVATE(this)->glimagevalid = FALSE;
+  PRIVATE(this)->lock_glimage();
+  if (PRIVATE(this)->glimage) {
+    PRIVATE(this)->glimage->unref(NULL);
+    PRIVATE(this)->glimage = NULL;
+  }
+  PRIVATE(this)->unlock_glimage();
   this->touch(); // destroy caches using this node
 }
 
