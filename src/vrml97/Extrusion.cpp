@@ -328,6 +328,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -578,7 +579,10 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
 
   SoState * state = action->getState();
   state->push();
-  
+
+  SbBool ccw = this->ccw.getValue();
+  SbBool solid = this->solid.getValue();
+
   if (SoTextureCoordinateElement::getType(state) !=
       SoTextureCoordinateElement::FUNCTION) {
     SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
@@ -599,14 +603,39 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
       }
     }
   }
+  SoShapeHintsElement::set(state, this,
+                           this->ccw.getValue() ?
+                           SoShapeHintsElement::COUNTERCLOCKWISE :
+                           SoShapeHintsElement::CLOCKWISE,
+                           this->solid.getValue() ?
+                           SoShapeHintsElement::SOLID :
+                           SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,
+                           this->convex.getValue() ?
+                           SoShapeHintsElement::CONVEX :
+                           SoShapeHintsElement::UNKNOWN_FACE_TYPE);
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
   SbBool istexfunc = tb.isFunction();
   SoPrimitiveVertex vertex;
 
-  int idx;
   this->beginShape(action, TRIANGLES);
+  TriangleShape shapetype = LINES; // set it to some impossible value
+
+  int idx;
   while (iptr < endptr) {
+
+    // we generate either triangles or quads, so this test is safe
+    SbBool isquad = iptr[3] >= 0;
+    if (isquad && (shapetype != QUADS)) {
+      if (shapetype == TRIANGLES) this->endShape();
+      this->beginShape(action, QUADS);
+      shapetype = QUADS;
+    }
+    if (!isquad && (shapetype != TRIANGLES)) {
+      if (shapetype == QUADS) this->endShape();
+      this->beginShape(action, TRIANGLES);
+      shapetype = TRIANGLES;
+    }
     idx = *iptr++;
     while (idx >= 0) {
       vertex.setNormal(*normals);
@@ -622,7 +651,8 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
       normals++;
     }
   }
-  this->endShape();
+  if ((shapetype == TRIANGLES) || (shapetype == QUADS)) this->endShape();
+
   state->pop();
   PRIVATE(this)->readUnlock();
 }
