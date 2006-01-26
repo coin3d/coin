@@ -496,8 +496,6 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_SO_TO_IFS(SoIndexedNurbsCurve);
   ADD_SO_TO_IFS(SoIndexedNurbsSurface);
 
-  ADD_SO_TO_IFS(SoProfile); // FIXME: Should this be here? 20020805 kristian.
-
   // find all shapes not handled earlier, and add generic triangle
   // handling for them
   //
