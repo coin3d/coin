@@ -355,8 +355,8 @@ SoVRMLSwitch::doAction(SoAction * action)
         if (idx >= this->getNumChildren()) {
 #if COIN_DEBUG
           SoDebugError::post("SoVRMLSwitch::doAction",
-                             "whichChoice %d out of range (0-%d).",
-                             idx, this->getNumChildren());
+                             "whichChoice %d out of range (-1 - %d).",
+                             idx, this->getNumChildren()-1);
 #endif // COIN_DEBUG
         }
         else {
