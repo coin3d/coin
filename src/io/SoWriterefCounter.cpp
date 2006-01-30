@@ -130,6 +130,21 @@ public:
     this->outputdata->unref();
     delete this->sobase2id;
   }
+  void appendPostfix(const SoBase *base, SbString &name, int refid)
+  {
+    // Fix to avoid writing DEFs starting with an illegal
+    // character (e.g. '+') in VRML2.
+    if (name.getLength() == 0 &&
+        base->isOfType(SoNode::getClassTypeId()) &&
+        ((SoNode *)base)->getNodeType() == SoNode::VRML2 &&
+        !SbName::isBaseNameStartChar((*refwriteprefix)[0])) {
+      name += "_";
+    }
+    
+    name += SoWriterefCounterP::refwriteprefix->getString();
+    name.addIntString(refid);
+  }
+
   SoWriterefCounter * master;
   SoOutput * out;
   SoWriterefCounterOutputData * outputdata;
@@ -505,8 +520,7 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
       writename = name.getString();
       // We have used a suffix when DEF'ing the node
       if (refid != (int) NOSUFFIX) {
-        writename += SoWriterefCounterP::refwriteprefix->getString();
-        writename.addIntString(refid);
+        PRIVATE(this)->appendPostfix(base, writename, refid);
       }
       // Detects last USE of a node, enables reuse of DEF's
       if (!multiref) out->removeDEFNode(SbName(writename));
@@ -521,25 +535,16 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
       }
       else {
         // Node name is already DEF'ed or an unnamed multiref => use a suffix.
-        writename += SoWriterefCounterP::refwriteprefix->getString();
-        writename.addIntString(out->addReference(base));
+        PRIVATE(this)->appendPostfix(base, writename, out->addReference(base));
         out->addDEFNode(SbName(writename));
       }
     }
   }
   else { // Default OIV behavior
     if (multiref && firstwrite) refid = out->addReference(base);
-    if (!firstwrite) {
-      writename = name.getString();
-      writename += SoWriterefCounterP::refwriteprefix->getString();
-      writename.addIntString(refid);
-    }
-    else {
-      writename = name.getString();
-      if (multiref) {
-        writename += SoWriterefCounterP::refwriteprefix->getString();
-        writename.addIntString(refid);
-      }
+    writename = name.getString();
+    if (!firstwrite || multiref) {
+      PRIVATE(this)->appendPostfix(base, writename, refid);
     }
   }
   return writename;
