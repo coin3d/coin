@@ -2908,6 +2908,9 @@ Separator {
 
     20040705 mortene.
 
+    UPDATE 20051220 mortene: the same also seems to be the case for
+    the So*-libraries' so*.cfg files.
+
 =====================================================================
 
 121 SoOffscreenRenderer tiled rendering causes problems with
@@ -4737,6 +4740,63 @@ Transform {
     UPDATE 20050711 mortene: see also item #162, which seems to be the
     same issue.
 
+    UPDATE 20060130 mortene:
+
+      This is a /really/ tricky issue, and one which we don't really
+      know yet how to fix:
+
+      The source of the problem is that VRML nodes use SoSFNode and
+      SoMFNode *fields* to keep track of their child nodes, while the
+      "traditional" Inventor nodes use the SoChildList class.
+
+      For certain functionality of the library, we do however need a
+      SoChildList -- like for e.g. SoPath-instances being able to
+      track their way down through the scene graph.
+
+      So to work around this problem, there is a hack in place at
+      various spots in the VRML nodes with MFNode "children" field(s):
+      the node internally keeps an SoChildList, which is attempted
+      kept synchronized with the MFNode field. This SoChildList
+      instance is then available through the virtual
+      SoNode::getChildren() method, just as for the "normal" Inventor
+      nodes.
+
+      This hack does however have certain ugly weaknesses:
+
+        * it has not been set up everywhere it is probably needed
+          (none or few of the nodes with SoSFNode fields have an
+          SoChildList "on the side", for instance)
+
+        * it causes various problems with the SoPath class, which has
+          no knowledge of SoSFNode / SoMFNode, and is completely and
+          utterly geared towards going through SoChildList
+
+        * there is copy'n'paste-jobs of code for
+          SoChildList<->SoMFNode synchronization at various places --
+          code which is not straightforward to bug-fix and maintain
+
+        * the SoNode::getChildren() method returns a mutable
+          SoChildList (!)
+
+      So, this is one of the really major design flaws of the library,
+      and it looks like we need a stroke of genius to resolve this
+      knot.
+
+      One venue which may be interesting to investigate would be to
+      see if letting SoChildList take care of the synchronization vs
+      SoSFNode & SoMFNode fields would be sensible. Or perhaps let the
+      SoMFNode and SoSFNode classes have a built-in SoChildList which
+      they could auto-sync?
+
+      Another option which may be a possibility would be to let SoPath
+      know about SoMFNode and SoSFNode. My gut feeling about that one
+      is that it would quickly make the SoPath API a lot uglier, tho'.
+
+      I've been asked for an estimate on this task, but given that we
+      don't yet know /how/ to fix it, makes this impossible as of
+      now. I'm quite certain however that we are talking about > 1
+      week of efficient coding and testing.
+
 =====================================================================
 
 197 Compatibility issue: SoDB::threadInit() not implemented in Coin.
@@ -4793,6 +4853,15 @@ Text2 {
     character.
 
     20050627 mortene.
+
+    UPDATE 20060130 mortene:
+
+        I've been asked for an estimate on this task. It seems quite
+        straight-forward -- at least if one does not get entangled
+        into making the task a more far-reaching clean-up job in
+        SoInput and its related classes.
+
+        So I'd say this is on the order of just a few hours.
 
 =====================================================================
 
@@ -4894,6 +4963,20 @@ Text2 {
     This problem reduces the value of an otherwise very useful node.
 
     20050630 mortene.
+
+    UPDATE 20060130 mortene:
+
+      I'm not sure whether or not we actually *want* to render to the
+      front buffer -- couldn't just "grabbing" the front-buffer
+      resource bring along other problems?
+
+      Also, is this optimization really useful? I can't see it make
+      much difference unless there is so much geometry in the scene
+      that a full re-render takes a lot of time -- and a lot more than
+      just rendering the highlighted part(s). And if the application
+      has that problem, it usually has other, more pressing issues to
+      take care of anyway -- like getting "normal" rendering to be
+      faster.
 
 =====================================================================
 
@@ -4997,6 +5080,14 @@ Sphere { radius 0.4 }
 
     20051208 mortene.
 
+    UPDATE 20060130 mortene:
+
+      As for an estimate on this bug, I expect it to be on the order
+      of just a few hours to fix. Need to investigate and figure out
+      why it happens, and the fix is likely to just be a little
+      modification of the internal default geometry for the dragger,
+      i.e. to the Coin/data/draggerDefaults/translate1Dragger.iv file.
+
 =====================================================================
 
 210 SoText2 font size policy in Coin incompatible with SGI / TGS
@@ -5013,11 +5104,4 @@ Sphere { radius 0.4 }
 
     20051212 mortene.
 
-
-
-
-
-
-
-
-
+=====================================================================
