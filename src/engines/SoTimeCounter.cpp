@@ -188,7 +188,9 @@ SoTimeCounter::writeInstance(SoOutput * out)
 
   // Re-connect to realTime field.
   if (connectfromrealTime) {
-    this->timeIn.connectFrom(connectfield);
+    // Don't send notification when reconnecting to preserve the state
+    // of the scenegraph between write passes.
+    this->timeIn.connectFrom(connectfield, TRUE);
     this->timeIn.setDefault(defaultflag);
   }
 }
