@@ -123,6 +123,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -137,10 +138,16 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <float.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+// default values for cases where a viewport is needed
+#define DEFAULT_VIEWPORT_WIDTH 1024
+#define DEFAULT_VIEWPORT_HEIGHT 768
+
 
 // *************************************************************************
 
@@ -280,6 +287,7 @@ public:
     this->reuseGeometryNodes = FALSE;
     this->vrml2path = NULL;
     this->vrml2root = NULL;
+    this->bboxaction = NULL;
   }
 
   void init(void)
@@ -314,6 +322,29 @@ public:
     this->vrml2path->setHead(this->vrml2root);
   }
 
+  SoGetBoundingBoxAction * getBBoxAction(void) {
+    if (this->bboxaction == NULL) {
+      SbViewportRegion vp(DEFAULT_VIEWPORT_WIDTH, DEFAULT_VIEWPORT_HEIGHT);
+      this->bboxaction = new SoGetBoundingBoxAction(vp);
+    }
+    return this->bboxaction;
+  }
+  float getBBoxDistance(const SbViewVolume & vv, const float screenarea, const float h) {
+    const float h2 = h * 0.5f; // use half the height for simplicity
+    float screenheight = float(sqrt(screenarea)) * 0.5f; // wanted height in pixels
+    float vvheight = vv.getHeight() * 0.5f; // total height of view volume    
+    float neardist = vv.getNearDist();
+
+    float projheight = (screenheight / 768.0f) * vvheight; // wanted projected height
+
+    // now, find the distance the bbox must be at the achieve this projheight
+    if (projheight > 0.0f) { 
+      return (neardist / projheight) * h2;
+    }
+    return FLT_MAX; // never switch
+  }
+
+
   SoToVRML2Action * master;
   SbBool nodefuse;
   SbBool reuseAppearanceNodes;
@@ -330,6 +361,7 @@ public:
   SbList <int32_t> * normalidx;
   SbList <int32_t> * texidx;
   SbList <int32_t> * coloridx;
+  SoGetBoundingBoxAction * bboxaction;
 
   SoTexture2 * recentTex2;
   SbBool do_post_primitives;
@@ -379,6 +411,7 @@ public:
   static SoCallbackAction::Response push_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response pop_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response push_lod_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response push_levelofdetail_cb(void *, SoCallbackAction *, const SoNode *);
 
   // Other nodes
   static SoCallbackAction::Response sopercam_cb(void *, SoCallbackAction *, const SoNode *);
@@ -474,6 +507,7 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_PRE_CB(SoSwitch, push_switch_cb);
   ADD_POST_CB(SoSwitch, pop_switch_cb);
   ADD_PRE_CB(SoLOD, push_lod_cb);
+  ADD_PRE_CB(SoLevelOfDetail, push_levelofdetail_cb);
   ADD_UNSUPPORTED(SoWWWAnchor); // Convert to SoVRMLAnchor
 
   // Other nodes
@@ -523,6 +557,9 @@ SoToVRML2Action::SoToVRML2Action(void)
 
 SoToVRML2Action::~SoToVRML2Action(void)
 {
+  if (PRIVATE(this)->bboxaction) {
+    delete PRIVATE(this)->bboxaction;
+  }
   if (PRIVATE(this)->vrml2path) {
     PRIVATE(this)->vrml2path->unref();
   }
@@ -973,6 +1010,65 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
 
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoGroup * prevgroup = THISP(closure)->get_current_tail();
+
+  SoGroup * vp;
+  if (THISP(closure)->dict.get(node, vp)) {
+    // Re-use previous subgraph
+    prevgroup->addChild(vp);
+    return SoCallbackAction::PRUNE;
+  }
+
+  const SoLevelOfDetail * oldlod = (const SoLevelOfDetail *) node;
+  SoVRMLLOD * newlod = NEW_NODE(SoVRMLLOD, node);
+
+  // calculate bbox of children to find a reasonable conversion to range 
+  SoGetBoundingBoxAction * bboxAction = thisp->getBBoxAction();
+  SbViewportRegion viewport(DEFAULT_VIEWPORT_WIDTH, DEFAULT_VIEWPORT_HEIGHT);
+  bboxAction->setViewportRegion(viewport);
+  // need to apply on the current path, not on the node, since we
+  // might need coordinates from the state. Also, we need to set the
+  // reset path so that we get the local bounding box for the nodes
+  // below this node.
+  bboxAction->setResetPath(action->getCurPath());
+  bboxAction->apply((SoPath*) action->getCurPath()); // find bbox of all children
+  SbBox3f bbox = bboxAction->getBoundingBox();
+
+  float dx, dy, dz;
+  bbox.getSize(dx,dy,dz);
+  const float h = SbMax(SbMax(dx,dy), dz);
+
+  // create a typical view volume
+  SbViewVolume vv;
+  vv.perspective(float(M_PI)/4.0f, DEFAULT_VIEWPORT_WIDTH/DEFAULT_VIEWPORT_HEIGHT,
+                 1.0f, 10.0f);
+
+
+  newlod->range.setNum(oldlod->screenArea.getNum());
+  float * rangeptr = newlod->range.startEditing();
+  for (int i = 0; i < oldlod->screenArea.getNum(); i++) {
+    rangeptr[i] = thisp->getBBoxDistance(vv, oldlod->screenArea[i], h);
+  }
+  newlod->range.finishEditing();
+
+  prevgroup->addChild(newlod);
+  thisp->vrml2path->append(newlod);
+
+  // Traverse all children separately, that is, save and restore state between each
+  int n = oldlod->getNumChildren();
+  for (int i=0; i < n; i++) {
+    action->switchToNodeTraversal(oldlod->getChild(i));
+  }
+
+  thisp->vrml2path->pop();
+  THISP(closure)->dict.put(node, newlod);
+  return SoCallbackAction::PRUNE;
 }
 
 SoCallbackAction::Response
@@ -1895,4 +1991,8 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 }
 
 #undef NEW_NODE
+#undef DEFAULT_VIEWPORT_WIDTH
+#undef DEFAULT_VIEWPORT_HEIGHT
+
 #endif // HAVE_VRML97
+
