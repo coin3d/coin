@@ -102,6 +102,8 @@
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "../io/SoWriterefCounter.h"
 
 SO_ACTION_SOURCE(SoWriteAction);
@@ -192,6 +194,15 @@ SoWriteAction::continueToApply(SoPath * path)
   this->continuing = wascontinuing;
 }
 
+#if COIN_DEBUG
+static void sensorCB(void * data, SoSensor * sensor)
+{
+  SoDebugError::postInfo("SoWriteAction::SoWriteAction", 
+                         "Warning: "
+                         "Scenegraph changed during SoWriteAction().\n");
+}
+#endif
+
 // Documented for Doxygen in superclass.
 //
 // Overridden from parent class, as the write action is actually done
@@ -203,11 +214,23 @@ SoWriteAction::continueToApply(SoPath * path)
 void
 SoWriteAction::beginTraversal(SoNode * node)
 {
+#if COIN_DEBUG
+  SoNodeSensor *sensor = NULL;
+#endif
   if (this->continuing == FALSE) { // Run through both stages.
     // call SoWriterefCounter::instance() before traversing to set the
     // "current" pointer in SoWriterefCounter. This is needed to be
     // backwards compatible with old code that uses the writeref
     // system in SoBase.
+
+#if COIN_DEBUG
+    if (SoWriterefCounter::debugWriterefs()) {
+      sensor = new SoNodeSensor(sensorCB, NULL);
+      sensor->setPriority(0);
+      sensor->attach(node);
+    }
+#endif
+
     (void) SoWriterefCounter::instance(this->getOutput());
     this->outobj->setStage(SoOutput::COUNT_REFS);
     this->traverse(node);
@@ -220,6 +243,9 @@ SoWriteAction::beginTraversal(SoNode * node)
   }
   if (!this->continuing) {
     SoWriterefCounter::instance(this->getOutput())->debugCleanup();
+#if COIN_DEBUG
+    delete sensor;
+#endif
   }
 }
 
