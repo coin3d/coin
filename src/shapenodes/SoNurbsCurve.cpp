@@ -423,7 +423,11 @@ SoNurbsCurveP::tessBegin(int type, void * data)
     break;
   case GL_LINE_LOOP:
     shapetype = SoShape::LINE_STRIP; // will not be closed...
-    // FIXME: implement this functionality. 20010909 mortene.
+    // FIXME: implement this functionality. 20010909 mortene.  
+    // Update 20060130 kyrah: According to gluNurbsCallback(3), the
+    // only valid arguments we can expect here are GL_LINES or
+    // GL_LINE_STRIP, so this should really be an assert. (See also
+    // FIXME from 20010909 below - yes, it should be an assert.)
 
     // FIXME: un-commenting the following line exposes a _weird_ HP-UX
     // aCC bug -- should investigate closer.  (Detected with aCC
