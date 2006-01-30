@@ -41,6 +41,7 @@
 
 #include <Inventor/fields/SoGlobalField.h>
 
+#include <Inventor/SoDB.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
@@ -316,7 +317,11 @@ void
 SoGlobalField::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(this->classfielddata);
-  inherited::addWriteReference(out, FALSE);
+  // The global realTime field will never be written to file and
+  // should thus never be writeref'ed.
+  if (getGlobalField() != SoDB::getGlobalField("realTime")) {
+    inherited::addWriteReference(out, FALSE);
+  }
 }
 
 
