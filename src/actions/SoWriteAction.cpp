@@ -197,9 +197,8 @@ SoWriteAction::continueToApply(SoPath * path)
 #if COIN_DEBUG
 static void sensorCB(void * data, SoSensor * sensor)
 {
-  SoDebugError::postInfo("SoWriteAction::SoWriteAction", 
-                         "Warning: "
-                         "Scenegraph changed during SoWriteAction().\n");
+  SoDebugError::postWarning("SoWriteAction::SoWriteAction", 
+                            "Scenegraph changed during SoWriteAction().");
 }
 #endif
 
