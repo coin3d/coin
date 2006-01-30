@@ -94,7 +94,7 @@ private:
     if (name == "") name = "<noname>";
     
     SoDebugError::postWarning("SoWriterefCounter::<cleanup>",
-                              "Not removed from writedict: %p, %s:%s",
+                              "Not removed from writerefdict: %p, %s:%s",
                               base, base->getTypeId().getName().getString(), name.getString());
 #endif // COIN_DEBUG
   }
