@@ -4639,6 +4639,23 @@ Group {
 
     20050602 mortene.
 
+     UPDATE 20060130 mortene:
+
+        I made a small amount of fixes, some important, but most of
+        them syntactic (making their original C code also compilable
+        by a C++ compiler, for instance) when I grabbed the GLU source
+        code and made the "superglu" repository.
+
+        So to sync up, one should really first do something like a
+        "cvs diff -u -r <start> -r <today>" on the repository, sort
+        through the diff and pass on to the responsible SGI engineer.
+
+        Then sync with the changes made to GLU between our fork date
+        and today.
+
+        It's a non-trivial task, partly because I've been sloppy
+        enough to let it drift / rot.
+
 =====================================================================
 
 194 SoOffscreenRenderer in tile-mode asserts on VRML97 scene graph.
@@ -4854,7 +4871,7 @@ Text2 {
 
     There's an add-on to NVidia's drivers at
 
-      http://www.nvidia.com/object/3dstereo_71.89 
+      http://www.nvidia.com/object/3dstereo_71.89
 
     ..which I assume uses some kind of trick to make a stereo signal
     out of a mono GL scene (intercepting and transforming the camera-
@@ -4929,7 +4946,7 @@ Text2 {
         Task is not possible (Win98) and so I have to make a hard
         reset.
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
-    
+
 
     20050627 mortene. Reported by Sascha Schneider.
 
@@ -5083,7 +5100,7 @@ Sphere { radius 0.4 }
 > The doc's for SoFont indicate the size for Text2 nodes is
 > interpreted as pixels whereas the TGS Inventor doc's indicate it's
 > "printer points" (ie i point = 1/72 inch ).
-   
+
     Should investigate this with SGI Inventor, and see if we need to
     fix anything for Coin.
 
