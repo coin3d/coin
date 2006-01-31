@@ -302,6 +302,7 @@ public:
 
     recentTex2 = NULL;
     do_post_primitives = FALSE;
+    didpush = FALSE;
 
     this->vrmlcoords = new SbList <SoVRMLCoordinate *>;
     this->vrmlnormals = new SbList <SoVRMLNormal *>;
@@ -365,6 +366,7 @@ public:
 
   SoTexture2 * recentTex2;
   SbBool do_post_primitives;
+  SbBool didpush;
 
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
 
@@ -1283,10 +1285,6 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
                                                        texcoordElem->getNum());
   }
 
-  if (oldifs->vertexProperty.getValue() != NULL) {
-    action->getState()->pop();
-  }
-
   ifs->coordIndex.setValues(0, oldifs->coordIndex.getNum(),
                             oldifs->coordIndex.getValues(0));
   if (!oldifs->textureCoordIndex.isDefault() &&
@@ -1304,6 +1302,13 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   }
 
   THISP(closure)->insert_shape(action, ifs);
+
+  // it's important to pop state _after_ inserting the shape to get
+  // the correct material from SoVertexProperty nodes.
+  if (oldifs->vertexProperty.getValue() != NULL) {
+    action->getState()->pop();
+  }
+
   return SoCallbackAction::PRUNE;
 }
 
@@ -1457,11 +1462,14 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     ils->colorPerVertex = TRUE;
   }
 
+  THISP(closure)->insert_shape(action, ils);
+
+  // it's important to pop state _after_ inserting the shape to get
+  // the correct material from SoVertexProperty nodes.
   if (oldils->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
 
-  THISP(closure)->insert_shape(action, ils);
   return SoCallbackAction::PRUNE;
 }
 
@@ -1580,11 +1588,13 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     ils->colorPerVertex = TRUE;
   }
 
+  THISP(closure)->insert_shape(action, ils);
+
+  // it's important to pop state _after_ inserting the shape to get
+  // the correct material from SoVertexProperty nodes.
   if (oldls->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
-
-  THISP(closure)->insert_shape(action, ils);
   return SoCallbackAction::PRUNE;
 }
 
@@ -1637,11 +1647,13 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
     }
   }
 
+  THISP(closure)->insert_shape(action, ps);
+  // it's important to pop state _after_ inserting the shape to get
+  // the correct material from SoVertexProperty nodes.
   if (oldps->vertexProperty.getValue() != NULL) {
     action->getState()->pop();
   }
 
-  THISP(closure)->insert_shape(action, ps);
   return SoCallbackAction::PRUNE;
 }
 
@@ -1794,6 +1806,16 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
   SoGroup * tail = thisp->get_current_tail();
 
+  thisp->didpush = FALSE;
+  // push state to handle SoVertexProperty node
+  if (node->isOfType(SoVertexShape::getClassTypeId())) {
+    SoVertexProperty * vp = (SoVertexProperty*) (((SoVertexShape*) node)->vertexProperty.getValue());
+    if (vp) {
+      action->getState()->push();
+      vp->callback(action);
+      thisp->didpush = TRUE;
+    }
+  }
   thisp->bsptree = new SbBSPTree;
   thisp->bsptreenormal = new SbBSPTree;
 
@@ -1987,6 +2009,10 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
   delete thisp->coloridx; thisp->coloridx = NULL;
 
   thisp->insert_shape(action, is);
+
+  if (thisp->didpush) {
+    action->getState()->pop();
+  }
   return SoCallbackAction::CONTINUE;
 }
 
