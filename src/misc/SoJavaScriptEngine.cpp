@@ -120,11 +120,13 @@ static void printJSException(JSContext *cx)
     return;
   }
 
+  SbBool ok;
   /* Todo: we loose unicode information here */
   cstr = spidermonkey()->JS_GetStringBytes(s);
   if (!cstr) {
     SoDebugError::postWarning("printJSException", "could not get string bytes");
-    assert(spidermonkey()->JS_RemoveRoot(cx, &s));
+    ok = spidermonkey()->JS_RemoveRoot(cx, &s);
+    assert(ok && "JS_RemoveRoot failed");
     return;
   }
   len = spidermonkey()->JS_GetStringLength(s);
@@ -136,7 +138,8 @@ static void printJSException(JSContext *cx)
   // FIXME: this looks ugly. 20050719 erikgors.
   fwrite(cstr, 1, spidermonkey()->JS_GetStringLength(s), stderr);
   fprintf(stderr, "\n");
-  assert(spidermonkey()->JS_RemoveRoot(cx, &s));
+  ok = spidermonkey()->JS_RemoveRoot(cx, &s);
+  assert(ok && "JS_RemoveRoot failed");
 }
 
 /*!
