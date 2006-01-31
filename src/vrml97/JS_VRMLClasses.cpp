@@ -176,7 +176,8 @@ struct CoinVrmlJsSFHandler {
     Base * data = (Base *)spidermonkey()->JS_GetPrivate(cx, obj);
     assert(data != NULL);
     float var = (*data)[index];
-    assert(spidermonkey()->JS_NewDoubleValue(cx, (double)var, rval));
+    SbBool ok = spidermonkey()->JS_NewDoubleValue(cx, (double)var, rval);
+    assert(ok && "JS_NewDoubleValue failed");
     return JS_TRUE;
   }
 
@@ -242,7 +243,8 @@ struct CoinVrmlJsMFHandler {
     jsval * val = new jsval;
     JSObject * array = spidermonkey()->JS_NewArrayObject(cx, 0, NULL);
     *val = OBJECT_TO_JSVAL(array);
-    assert(spidermonkey()->JS_AddRoot(cx, val));
+    SbBool ok = spidermonkey()->JS_AddRoot(cx, val);
+    assert(ok && "JS_AddRoot failed");
     spidermonkey()->JS_SetPrivate(cx, obj, val);
 
     SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
@@ -250,7 +252,8 @@ struct CoinVrmlJsMFHandler {
 
     for (i=0; i<argc; ++i) {
       if (SoJavaScriptEngine::getEngine(cx)->jsval2field(argv[i], field)) {
-        assert(spidermonkey()->JS_SetElement(cx, array, i, &argv[i]));
+        SbBool ok = spidermonkey()->JS_SetElement(cx, array, i, &argv[i]);
+        assert(ok && "JS_SetElement failed");
       }
       else {
         // FIXME: should we insert a default value? 20050727 erikgors.
@@ -265,7 +268,8 @@ struct CoinVrmlJsMFHandler {
   {
     jsval * val = (jsval *)spidermonkey()->JS_GetPrivate(cx, obj);
     if (val != NULL) {
-      assert(spidermonkey()->JS_RemoveRoot(cx, val));
+      SbBool ok = spidermonkey()->JS_RemoveRoot(cx, val);
+      assert(ok && "JS_RemoveRoot failed");
       delete val;
     }
   }
@@ -280,7 +284,8 @@ struct CoinVrmlJsMFHandler {
   static void resize(JSContext * cx, JSObject * array, uint32_t newLength)
   {
     uint32_t length;
-    assert(spidermonkey()->JS_GetArrayLength(cx, array, &length));
+    SbBool ok = spidermonkey()->JS_GetArrayLength(cx, array, &length);
+    assert(ok && "JS_GetArrayLength failed");
 
     if (length > newLength) {
       spidermonkey()->JS_SetArrayLength(cx, array, newLength);
@@ -335,8 +340,8 @@ struct CoinVrmlJsMFHandler {
         else {
           assert(0 && "this should not happen");
         }
-
-        assert(spidermonkey()->JS_SetElement(cx, array, length, &val));
+        SbBool ok = spidermonkey()->JS_SetElement(cx, array, length, &val);
+        assert(ok && "JS_SetElement failed");
       }
     }
   }
@@ -356,7 +361,8 @@ struct CoinVrmlJsMFHandler {
       if (SbName("length") == str) {
         assert(array != NULL);
         uint32_t length;
-        assert(spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length));
+        SbBool ok = spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length);
+        assert(ok && "JS_GetArrayLength failed");
         *rval = INT_TO_JSVAL(length);
         return JS_TRUE;
       }
@@ -379,7 +385,8 @@ struct CoinVrmlJsMFHandler {
 
       // resize if necessary
       uint32_t length;
-      assert(spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length));
+      SbBool ok = spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &length);
+      assert(ok && "JS_GetArrayLength failed");
       if (index >= (int)length) {
         resize(cx, JSVAL_TO_OBJECT(*array), index+1);
       }
@@ -388,7 +395,8 @@ struct CoinVrmlJsMFHandler {
       // Check if val is not of wrong type
       if (SoJavaScriptEngine::getEngine(cx)->jsval2field(*val, field)) {
         // assign it
-        assert(spidermonkey()->JS_SetElement(cx, JSVAL_TO_OBJECT(*array), index, val));
+        SbBool ok = spidermonkey()->JS_SetElement(cx, JSVAL_TO_OBJECT(*array), index, val);
+        assert(ok && "JS_SetElement failed");
         return JS_TRUE;
       }
       delete field;
@@ -431,7 +439,8 @@ struct CoinVrmlJsMFHandler {
         ok = spidermonkey()->JS_GetElement(cx, obj, i, &element);
         assert(ok);
 
-        assert(SoJavaScriptEngine::getEngine(cx)->jsval2field(element, field));
+        ok = SoJavaScriptEngine::getEngine(cx)->jsval2field(element, field);
+        assert(ok && "jsval2field failed");
         ((MFFieldClass *)f)->set1Value(i, field->getValue());
       }
       delete field;
@@ -453,7 +462,8 @@ struct CoinVrmlJsMFHandler {
     SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
     for (int i=0; i<num; ++i) {
       field->setValue(mf[i]);
-      assert(SoJavaScriptEngine::getEngine(cx)->field2jsval(field, &vals[i]));
+      SbBool ok = SoJavaScriptEngine::getEngine(cx)->field2jsval(field, &vals[i]);
+      assert(ok && "field2jsval failed");
     }
 
     jsval rval;
