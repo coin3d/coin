@@ -450,6 +450,13 @@ GLUWrapper(void)
   GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
   GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
 #if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
+  // Note: nurbs tessellation is also available if the GLU_EXTENSION
+  // string contains GLU_EXT_nurbs_tessellator, but most platforms
+  // should have GLU 1.3, and on Windows -- the sole platform we know
+  // of where a GLU older than 1.3 is common -- the extension is not
+  // available. So we don't bother. Yet.
+  //
+  // mortene & kyrah.
   GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
 #else /* !gluNurbsCallbackData */
   gi->gluNurbsCallbackData = NULL;
