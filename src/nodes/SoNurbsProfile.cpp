@@ -29,6 +29,60 @@
   Use nodes of this type if you want to set up profiles that are
   smooth curves.
 
+  A typical usage case for SoNurbsProfile is to specify NURBS trimming
+  curves. For example:
+
+  \code
+  #Inventor V2.1 ascii
+
+  ShapeHints {
+    vertexOrdering COUNTERCLOCKWISE
+  }
+
+  Complexity {
+    value 1
+  }
+
+  Coordinate3 {
+    point [ 
+      -3 -3 -3, -3 -1 -3, -3 1 -3, -3 3 -3,
+      -1 -3 -3, -1 -1  3, -1 1  3, -1 3 -3,
+       1 -3 -3,  1 -1  3,  1 1  3,  1 3 -3,
+       3 -3 -3,  3 -1 -3,  3 1 -3,  3 3 -3
+     ]
+  }
+
+  ProfileCoordinate2 {
+    point [ 0.0 0.0 ,
+            0.75 0.0,
+            0.75 0.75 ,
+            0.25 0.75 ,
+            0.0 0.0  ]
+  }
+
+  NurbsProfile {
+     index [ 0 , 1 , 2 , 3, 4 ]
+     linkage START_NEW
+     knotVector [ 0, 0, 0, 0, 0.5, 1, 1, 1, 1 ]
+  }
+
+  NurbsSurface {
+    numUControlPoints 4
+    numVControlPoints 4
+    uKnotVector [ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0 ]
+    vKnotVector [ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0 ]
+  }
+  \endcode
+
+  <!-- FIXME: Add screenshot -->
+
+  A general explanation of NURBS is beyond the scope of the Coin
+  documentation. For detailed information, refer to the specialized
+  literature on the topic (for example "An Introduction to NURBS: With
+  Historical Perspective" by David F. Rogers). A basic overview of
+  curve and surface rendering using NURBS can be found in chapter 8 of
+  "The Inventor Mentor".
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     NurbsProfile {
