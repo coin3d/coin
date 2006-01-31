@@ -622,10 +622,14 @@ SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    this->addWriteReference(out);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
-    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) SoGroup::doAction((SoAction *)action);
+    int ref = SoWriterefCounter::instance(out)->getWriteref(this);
+    if (ref <= 1) {
+      this->addWriteReference(out);
+      // Traverse hierarchy only first time around
+      if (ref == 0) SoGroup::doAction((SoAction *)action);
+    }
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;

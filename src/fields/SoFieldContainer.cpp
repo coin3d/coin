@@ -619,7 +619,8 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 
   // Avoid doing too many references to fields (and nodes, engines and
   // paths _within_ certain field types).
-  if (countfields) {
+  if (countfields && 
+      !SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) {
     const SoFieldData * fd = this->getFieldData();
     if (fd) fd->write(out, this);
   }
