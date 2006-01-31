@@ -33,9 +33,12 @@
   curve and surface rendering using NURBS can be found in chapter 8 of
   "The Inventor Mentor".
 
-  Note: Knot values should be specified as [0, 1, 2,..., a] rather
-  than [0, 1/a, 2/a,..., 1] to avoid tesselation errors due to floating
-  point precision problems.
+  Note that knot values should be specified as [0, 1, 2,..., a] rather
+  than [0, 1/a, 2/a,..., 1] to avoid tesselation errors due to
+  floating point precision problems. (Even if the rendered surface
+  <i>looks</i> correct, such issues might surface when e.g. doing
+  picking, since the tesselated representation used internally is not
+  the same as the one you see rendered by OpenGL on-screen.)
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
