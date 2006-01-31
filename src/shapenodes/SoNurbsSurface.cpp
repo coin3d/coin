@@ -40,6 +40,34 @@
   picking, since the tesselated representation used internally is not
   the same as the one you see rendered by OpenGL on-screen.)
 
+  A basic usage example:
+
+  \code
+  #Inventor V2.1 ascii
+
+  ShapeHints {
+    vertexOrdering COUNTERCLOCKWISE
+  }
+
+  Coordinate3 {
+     point [ 
+       -3 -3 -3, -3 -1 -3, -3  1 -3, -3  3 -3,
+       -1 -3 -3, -1 -1  3, -1  1  3, -1  3 -3,
+        1 -3 -3,  1 -1  3,  1  1  3,  1  3 -3,
+        3 -3 -3,  3 -1 -3,  3  1 -3,  3  3 -3
+      ]
+  }
+
+  NurbsSurface {
+     numUControlPoints 4
+     numVControlPoints 4
+     uKnotVector [ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0 ]
+     vKnotVector [ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0 ]
+  }
+  \endcode
+
+  <!-- FIXME: Add screenshot -->
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     NurbsSurface {
@@ -55,9 +83,6 @@
   \endcode
 
 */
-// FIXME: recommend the book pederb bought about the subject? If so,
-// also add to class doc for SoNurbsSurface (and others?). Plus, add a
-// usage exaple. 20010909 mortene.
 
 #include <Inventor/nodes/SoNurbsSurface.h>
 #include <Inventor/nodes/SoSubNodeP.h>
