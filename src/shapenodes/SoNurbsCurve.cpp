@@ -26,30 +26,33 @@
   \brief The SoNurbsCurve class is a node for representing smooth curves.
   \ingroup nodes
 
-  Explaining NURBS is in general beyond the scope of this
-  documentation.  If you are unfamiliar with the principles of
-  representing smooth curves and surfaces when doing 3D visualization,
-  we recommend finding a good book on the subject.
+  A general explanation of NURBS is beyond the scope of the Coin
+  documentation. For detailed information, refer to the specialized
+  literature on the topic (for example "An Introduction to NURBS: With
+  Historical Perspective" by David F. Rogers). A basic overview of
+  curve and surface rendering using NURBS can be found in chapter 8 of
+  "The Inventor Mentor".
 
-  Also, consult chapter 8 of «The Inventor Mentor», which covers NURBS
-  curve and surface rendering in some detail.
-
-  A small usage example:
+  A small usage example (drawing a circle using a rational curve):
 
   \code
   #Inventor V2.1 ascii
   
-  Coordinate3 {
+  Coordinate4 {
      point [
-      1 0 0, 1 1 0, 0 1 0,
-      -1 1 0, -1 0 0, -1 -1 0
-      0 -1 0, 1 -1 0, 1 0 0
+       0.0 -5.0     0.0 1.0,
+       2.5 -2.5     0.0 0.5,
+       2.5 -0.66987 0.0 1.0,
+       0.0  1.94013 0.0 0.5,
+      -2.5 -0.66987 0.0 1.0,
+      -2.5 -2.5     0.0 0.5,
+       0.0 -5.0     0.0 1.0
      ]
   }
   
   NurbsCurve {
-     numControlPoints 9
-     knotVector [ 0, 0, 0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1, 1, 1 ]
+     numControlPoints 7
+     knotVector [ 0, 0, 0, 1, 1, 2, 2, 3, 3, 3 ]
   }
   
   # debug: show all the control points
@@ -58,7 +61,7 @@
   PointSet { numPoints 9 }
   \endcode
 
-  <center><img src="http://doc.coin3d.org/images/[PATH]/[FILENAME]"></center>
+  <!-- FIXME: Add screenshot -->
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -69,9 +72,6 @@
   \endcode
 
 */
-// FIXME: recommend the book pederb bought about the subject? If so,
-// also add to class doc for SoNurbsSurface (and others?). Plus, add a
-// usage example. 20010909 mortene.
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 
@@ -108,7 +108,11 @@
 */
 /*!
   \var SoMFFloat SoNurbsCurve::knotVector
-  The knot vector.
+  The knot vector. 
+
+  Note: Values should be specified as [0, 1, 2,..., a] rather than [0,
+  1/a, 2/a,..., 1] to avoid tesselation errors due to floating point
+  precision problems.
 */
 
 // *************************************************************************

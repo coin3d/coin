@@ -26,10 +26,16 @@
   \brief The SoNurbsSurface class is used to render smooth surfaces.
   \ingroup nodes
 
-  Explaining NURBS is beyond the scope of this documentation. If you
-  are unfamiliar with the principles of representing smooth curves and
-  surfaces when doing 3D visualization, we recommend finding a good
-  book on the subject.
+  A general explanation of NURBS is beyond the scope of the Coin
+  documentation. For detailed information, refer to the specialized
+  literature on the topic (for example "An Introduction to NURBS: With
+  Historical Perspective" by David F. Rogers). A basic overview of
+  curve and surface rendering using NURBS can be found in chapter 8 of
+  "The Inventor Mentor".
+
+  Note: Knot values should be specified as [0, 1, 2,..., a] rather
+  than [0, 1/a, 2/a,..., 1] to avoid tesselation errors due to floating
+  point precision problems.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
