@@ -1462,14 +1462,6 @@ Now, for the list of known bugs in the core Coin library:
 
     20031119 mortene. Problem reported by Cristian Luciano.
 
-    Update 20060131 kyrah: It's even more serious - when GLU version
-    is < 1.3, GLU_NURBS_TESSELLATOR is not available, so operations
-    such as picking, triangle callback, etc. will not work. 
-
-    We should check for the availability of GLU_EXT_nurbs_tesselator
-    and use this if possible - and if not, spit out a fat warning
-    asking people to get superglu instead. 
-
 =====================================================================
 
 087 Scene graph with SoNurbsProfile hangs (?) rendering.
