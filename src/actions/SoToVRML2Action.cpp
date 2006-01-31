@@ -1054,7 +1054,8 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
 
   newlod->range.setNum(oldlod->screenArea.getNum());
   float * rangeptr = newlod->range.startEditing();
-  for (int i = 0; i < oldlod->screenArea.getNum(); i++) {
+  int i;
+  for (i = 0; i < oldlod->screenArea.getNum(); i++) {
     rangeptr[i] = thisp->getBBoxDistance(vv, oldlod->screenArea[i], h);
   }
   newlod->range.finishEditing();
@@ -1064,7 +1065,7 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
 
   // Traverse all children separately, that is, save and restore state between each
   int n = oldlod->getNumChildren();
-  for (int i=0; i < n; i++) {
+  for (i=0; i < n; i++) {
     action->switchToNodeTraversal(oldlod->getChild(i));
   }
 
