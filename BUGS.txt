@@ -4544,39 +4544,6 @@ Transform {
 
 =====================================================================
 
-199 Backslash-quoting in iv-file strings does not work properly.
-
-    The following causes a read error upon import:
-
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-#Inventor V2.1 ascii
-
-Text2 {
-   string "\\"
-}
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-
-    The error message is
-
-        Coin read error: Missing terminating quote-character (")
-                Occurred at line  11 in text.iv
-
-    ...because the parser "reuses" the last backslash, on the quote
-    character.
-
-    20050627 mortene.
-
-    UPDATE 20060130 mortene:
-
-        I've been asked for an estimate on this task. It seems quite
-        straight-forward -- at least if one does not get entangled
-        into making the task a more far-reaching clean-up job in
-        SoInput and its related classes.
-
-        So I'd say this is on the order of just a few hours.
-
-=====================================================================
-
 200 "Fake" NVidia stereo reported to not work with Coin / SoWin/SoQt.
 
     There's an add-on to NVidia's drivers at

@@ -1241,17 +1241,29 @@ SoInput::read(SbString & s)
 
         if (*buf == '\\') {
           if (!fi->get(c)) return FALSE;
-          // for VRML97, \\ and \" should be converted to \ and ".
-          // for VRML 1.0 and Inventor, only \" should be converted.
-          if (c == '\"' || (c == '\\' && this->isFileVRML2())) {
-            *buf = c;
+          if (c == '\"') {
+            // VRML 2.0 allows for strings to contain literal
+            // newlines, Inventor/VRML V1.0 doesn't.  This also checks
+            // for a special case in Inventor/VRML 1.0 files where the
+            // last two characters of a line containing a quoted
+            // string is \". In this case, the backslash should be
+            // considered literal and the quote should terminate the
+            // string.
+            if (!this->isFileVRML2() && fi->get(c) && c == '\n') {
+              fi->putBack(c);
+              fi->putBack('\"');
+            }
+            else {
+              *buf = c;
+            }
           }
-          else {
-            *buf = '\\';
+          // In VRML V2.0, backslashes must be quoted.
+          else if (c != '\\' || !this->isFileVRML2()) {
             fi->putBack(c);
           }
         }
       }
+      // Unquoted strings end on first encountered whitespace
       else if (fi->isSpace(*buf)) {
         fi->putBack(*buf);
         break;
