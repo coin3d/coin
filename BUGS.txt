@@ -3756,6 +3756,15 @@ end
 
     20041105 mortene, found by sit.
 
+    UPDATE 20060131 kintel: The reason the error message is cryptic
+    in the dragger case is that SoBaseKitP::readUnknownFields()
+    calls SoInput::read(SbName, bool) with the second parameter set
+    to FALSE to allow for "." character in field references.
+    This effectively skips the checks for whether the names read are
+    actually valid field names. The 0xa0 character and the following '}'
+    are therefore interpreted as a field name, but EOF is encountered
+    before the full field declaration can be read.
+
 =====================================================================
 
 167 Memory read error for PROTO-based data in VRML97 scene.
