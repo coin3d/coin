@@ -2452,6 +2452,9 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
     20040220 mortene.
 
+    UPDATE 20060131 kintel: I think this problem is the same or closely
+    related to bug #165.
+
 =====================================================================
 
 108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
