@@ -450,6 +450,19 @@ SoProto::write(SoWriteAction * action)
       out->indent();
       out->write("}");
     }
+
+#if COIN_DEBUG
+    if (SoWriterefCounter::debugWriterefs()) {
+      int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
+      SoDebugError::postInfo("SoProto::write",
+                             "%p/%s/'%s': %d -> %d",
+                             this,
+                             this->getTypeId().getName().getString(),
+                             this->getName().getString(),
+                             writerefcount, writerefcount - 1);
+    }
+#endif // COIN_DEBUG
+
     writerefcount--;
     SoWriterefCounter::instance(out)->setWriteref(this, writerefcount);
   }
