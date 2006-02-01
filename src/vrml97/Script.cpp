@@ -485,10 +485,11 @@ SoVRMLScript::write(SoWriteAction * action)
           out->write(fieldname.getString());
         }
         out->write("\n");
-        ((SoField*)f)->setDefault(TRUE); // don't write again when we do a SoFieldData::write later. 
+      }
+      else if (f->shouldWrite()){
+        f->write(out, fieldname);
       }
     }
-    fd->write(out, this);
     this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
