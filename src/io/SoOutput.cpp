@@ -1483,9 +1483,34 @@ SoOutput::resolveRoutes(void)
       this->write(toname.getString());
       this->write("\n");
 
+#if COIN_DEBUG
+      if (SoWriterefCounter::debugWriterefs()) {
+        int writerefcount = PRIVATE(this)->counter->getWriteref(fromc);
+        SoDebugError::postInfo("SoOutput::resolveRoutes",
+                               "%p/%s/'%s': %d -> %d",
+                               fromc,
+                               fromc->getTypeId().getName().getString(),
+                               fromc->getName().getString(),
+                               writerefcount, writerefcount - 1);
+      }
+#endif // COIN_DEBUG
+
+#if COIN_DEBUG
+      if (SoWriterefCounter::debugWriterefs()) {
+        int writerefcount = PRIVATE(this)->counter->getWriteref(toc);
+        SoDebugError::postInfo("SoOutput::resolveRoutes",
+                               "%p/%s/'%s': %d -> %d",
+                               toc,
+                               toc->getTypeId().getName().getString(),
+                               toc->getName().getString(),
+                               writerefcount, writerefcount - 1);
+      }
+#endif // COIN_DEBUG
+
       // remove write references again
       PRIVATE(this)->counter->decrementWriteref(fromc);
       PRIVATE(this)->counter->decrementWriteref(toc);
+
     }
     list->truncate(0);
   }
