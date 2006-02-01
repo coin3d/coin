@@ -31,17 +31,35 @@
   the speed of the time source plus logic to reset, stop and restart
   it.
 
+  Simple usage example, combined with SoComposeRotation:
+
+  \code
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Transform {
+        rotation =
+        ComposeRotation { axis 0 1 0  angle =
+           ElapsedTime { }.timeOut
+        }.rotation
+     }
+     Cube { }
+  }
+  \endcode
+
   \sa SoTimeCounter
 */
 
+// *************************************************************************
+
 #include <Inventor/engines/SoElapsedTime.h>
-#include <Inventor/lists/SoEngineOutputList.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoSubEngineP.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/lists/SoEngineOutputList.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFTime SoElapsedTime::timeIn
@@ -77,7 +95,11 @@
   (SoSFTime) Output time value. Starts at 0.
 */
 
+// *************************************************************************
+
 SO_ENGINE_SOURCE(SoElapsedTime);
+
+// *************************************************************************
 
 // Documented in superclass.
 void
@@ -115,6 +137,8 @@ SoElapsedTime::SoElapsedTime(void)
 SoElapsedTime::~SoElapsedTime()
 {
 }
+
+// *************************************************************************
 
 // Documented in superclass.
 void
@@ -202,3 +226,5 @@ SoElapsedTime::writeInstance(SoOutput * out)
     this->timeIn.setDefault(defaultflag);
   }
 }
+
+// *************************************************************************

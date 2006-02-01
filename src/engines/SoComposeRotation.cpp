@@ -25,6 +25,22 @@
   \class SoComposeRotation SoCompose.h Inventor/engines/SoCompose.h
   \brief The SoComposeRotation class is used to compose rotations from angle and axis.
   \ingroup engines
+
+  Simple usage example:
+
+  \code
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Transform {
+        rotation =
+        ComposeRotation { axis 0 1 0  angle =
+           ElapsedTime { }.timeOut
+        }.rotation
+     }
+     Cube { }
+  }
+  \endcode
 */
 
 #include <Inventor/engines/SoComposeRotation.h>
@@ -32,7 +48,7 @@
 #include <Inventor/fields/SoMFRotation.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
-SO_ENGINE_SOURCE(SoComposeRotation);
+// *************************************************************************
 
 /*!
   \var SoMFVec3f SoComposeRotation::axis
@@ -49,8 +65,11 @@ SO_ENGINE_SOURCE(SoComposeRotation);
   fields.
 */
 
+// *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+SO_ENGINE_SOURCE(SoComposeRotation);
+
+// *************************************************************************
 
 SoComposeRotation::SoComposeRotation()
 {
@@ -76,6 +95,8 @@ SoComposeRotation::~SoComposeRotation()
 {
 }
 
+// *************************************************************************
+
 // Documented in superclass.
 void
 SoComposeRotation::evaluate()
@@ -98,4 +119,4 @@ SoComposeRotation::evaluate()
   }
 }
 
-#endif // !DOXYGEN_SKIP_THIS
+// *************************************************************************
