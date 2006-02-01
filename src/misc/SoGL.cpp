@@ -1966,6 +1966,15 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
                                 "Proper NURBS rendering requires\n"
                                 "GLU version 1.3. Continuing, but "
                                 "SoComplexity settings will be ignored...");
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                     (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_PARAMETRIC_ERROR);
+      // use the default setting for GLU_PARAMETRIC_TOLERANCE (0.5)
+
+      // FIXME: Should we calculate a GLU_PARAMETRIC_TOLERANCE value
+      // based on the SoComplexity value? (Personally, I think just
+      // asking people to upgrade GLU is the better answer.) 20060102
+      // kyrah.
     }
     return;
   }
