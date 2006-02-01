@@ -78,12 +78,12 @@ soshape_primdata::beginShape(SoShape * shapeptr, SoAction * actionptr,
   // need to test for PER_FACE bindings since special rules need to followed 
   // to get the correct per vertex material and normal indices in these cases
   // (basically the same rules as when sending geometry to OpenGL)
-  this->matPerFace = mbind == 
-    SoMaterialBindingElement::PER_FACE ||
-    SoMaterialBindingElement::PER_FACE_INDEXED;
-  this->normPerFace = nbind == 
-    SoNormalBindingElement::PER_FACE ||
-    SoNormalBindingElement::PER_FACE_INDEXED;
+  this->matPerFace = 
+    (mbind == SoMaterialBindingElement::PER_FACE) ||
+    (mbind == SoMaterialBindingElement::PER_FACE_INDEXED);
+  this->normPerFace = 
+    (nbind == SoNormalBindingElement::PER_FACE) ||
+    (nbind == SoNormalBindingElement::PER_FACE_INDEXED);
     
 }
 
