@@ -90,6 +90,7 @@
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/threads/SbStorage.h>
 #include "../misc/SoVBO.h"
 #include <Inventor/elements/SoGLVBOElement.h>
@@ -380,10 +381,25 @@ SoShape::GLRender(SoGLRenderAction * action)
   // implement the GLRender() method.  pederb, 20000612
 
   if (!this->shouldGLRender(action)) return;
+
+  // test for SoVertexShape node and push data onto the state before
+  // calling generatePrimitives(). This is needed for SoMaterialBundle
+  // to work correctly.
+  SoVertexProperty * vp = NULL;
+  if (this->isOfType(SoVertexShape::getClassTypeId())) {
+    vp = (SoVertexProperty*) ((SoVertexShape*)this)->vertexProperty.getValue();
+  }
+
+  if (vp) {
+    action->getState()->push();
+    vp->doAction(action);
+  }
   SoMaterialBundle mb(action);
   mb.sendFirst();
   soshape_get_staticdata()->currentbundle = &mb;  // needed in the primitive callbacks
   this->generatePrimitives(action);
+
+  if (vp) action->getState()->pop();
 }
 
 // Doc in parent.
