@@ -64,6 +64,9 @@ private:
   SoDetail * createPickDetail(void);
   static void tess_callback(void * v0, void * v1, void * v2, void * data);
 
+  void copyMaterialIndex(const int lastvertex);
+  void copyNormalIndex(const int lastvertex);
+
 private:
   friend class SoShape;
 
@@ -78,6 +81,9 @@ private:
   int counter;
   SbTesselator * tess;
   int faceCounter;
+
+  SbBool matPerFace;
+  SbBool normPerFace;
 };
 
 

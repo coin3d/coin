@@ -27,6 +27,8 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <string.h>
@@ -43,6 +45,8 @@ soshape_primdata::soshape_primdata(void)
   this->tess = new SbTesselator();
   this->faceDetail = NULL;
   this->lineDetail = NULL;
+  this->matPerFace = FALSE;
+  this->normPerFace = FALSE;
 }
 
 soshape_primdata::~soshape_primdata()
@@ -65,6 +69,22 @@ soshape_primdata::beginShape(SoShape * shapeptr, SoAction * actionptr,
   this->faceDetail = (SoFaceDetail *)detail;
   this->lineDetail = (SoLineDetail *)detail;
   this->counter = 0;
+
+  SoState * state = action->getState();
+
+  SoMaterialBindingElement::Binding mbind = SoMaterialBindingElement::get(state);
+  SoNormalBindingElement::Binding nbind = SoNormalBindingElement::get(state);
+
+  // need to test for PER_FACE bindings since special rules need to followed 
+  // to get the correct per vertex material and normal indices in these cases
+  // (basically the same rules as when sending geometry to OpenGL)
+  this->matPerFace = mbind == 
+    SoMaterialBindingElement::PER_FACE ||
+    SoMaterialBindingElement::PER_FACE_INDEXED;
+  this->normPerFace = nbind == 
+    SoNormalBindingElement::PER_FACE ||
+    SoNormalBindingElement::PER_FACE_INDEXED;
+    
 }
 
 void
@@ -180,6 +200,8 @@ soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
   case SoShape::QUAD_STRIP:
     this->setVertex(this->counter++, v);
     if (counter == 4) {
+      if (this->matPerFace) this->copyMaterialIndex(3);
+      if (this->normPerFace) this->copyNormalIndex(3);
       // can't use handleFaceDetail(), because of the vertex
       // order.
       if (this->faceDetail) {
@@ -260,6 +282,11 @@ soshape_primdata::setVertex(const int idx, const SoPrimitiveVertex * const v)
 void
 soshape_primdata::handleFaceDetail(const int numv)
 {
+  // if PER_FACE binding, copy indices from the last vertex we
+  // received to the other vertices
+  if (this->matPerFace) this->copyMaterialIndex(numv-1);
+  if (this->normPerFace) this->copyNormalIndex(numv-1);
+
   if (this->faceDetail) {
     this->faceDetail->setNumPoints(numv);
     for (int i = 0; i < numv; i++) {
@@ -349,4 +376,25 @@ soshape_primdata::tess_callback(void * v0, void * v1, void * v2, void * data)
                                         (SoPrimitiveVertex *)v0,
                                         (SoPrimitiveVertex *)v1,
                                         (SoPrimitiveVertex *)v2);
+}
+
+void 
+soshape_primdata::copyMaterialIndex(const int lastvertex)
+{
+  int i;
+  int matidx = this->vertsArray[lastvertex].getMaterialIndex();
+  for (i = 0; i < lastvertex; i++) {
+    this->vertsArray[i].setMaterialIndex(matidx);
+    this->pointDetails[i].setMaterialIndex(matidx);
+  } 
+}
+
+void 
+soshape_primdata::copyNormalIndex(const int lastvertex)
+{
+  int i;
+  int normidx = this->pointDetails[lastvertex].getNormalIndex();
+  for (i = 0; i < lastvertex; i++) {
+    this->pointDetails[i].setNormalIndex(normidx);
+  } 
 }
