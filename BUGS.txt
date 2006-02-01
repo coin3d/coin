@@ -202,39 +202,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-029 SoSFEnum / SoMFEnum / SoSFBitMask / SoMFBitMask can't be used for
-    SoUnknownNode. The following will not import properly in Coin, but
-    rather elicit a read error message:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #Inventor V2.1 ascii
-
-    MarkerKit {
-       fields [ SFEnum outerShape ]
-       outerShape 0
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    The error message is:
-
-        Coin read error: no mappings available for SoSFEnum field
-        outerShape
-
-    The reason for this problem is that the import code expects to use
-    an SoSFEnum field that has been set up with a full set of enum
-    values <-> names mappings. This is not the case for SoUnknownNode
-    fields.
-
-    What should be done about this is probably to be more "slack"
-    about allowing SoSFEnum et al to be used _without_ name mappings
-    (at least in certain contexts).
-
-    Consider this bug a low priority item.
-
-    20020923 mortene.
-
-=====================================================================
-
 031 Setting up the alpha channel for the offscreen renderer doesn't
     consistently (between hosts) produce a transparent background when
     using setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY).  It
@@ -510,6 +477,9 @@ Now, for the list of known bugs in the core Coin library:
     import process.
 
     20021015 mortene.
+
+    UPDATE 20060131 kintel: We don't crash anymore, but we don't give
+    any error messages either.
 
 =====================================================================
 
