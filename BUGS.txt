@@ -3502,6 +3502,26 @@ end
 
     20041105 mortene.
 
+    UPDATE 20060201 kintel: The following minimal example seems to
+    exhibit the same behavior
+
+    #VRML V2.0 utf8
+    PROTO MyProto [
+     eventIn SFFloat i
+     exposedField MFFloat k [ 0 1 ] 
+     exposedField MFRotation v []
+    ] {
+       OrientationInterpolator {
+          set_fraction IS i
+          key IS k
+          keyValue IS v
+      }
+    }
+    
+    MyProto {
+      v [ 0 0 1 0, 0 0 -1 .17 ] 
+    }
+
 =====================================================================
 
 168 Memory read/write errors for VRML97 Group / Parent / Switch nodes.
