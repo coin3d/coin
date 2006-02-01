@@ -483,6 +483,11 @@ SoVRMLScript::write(SoWriteAction * action)
         }
         else {
           out->write(fieldname.getString());
+          // the write() call below is needed to resolve
+          // ROUTES. SoField::write() will not write anything since if
+          // we get here, the field is either an EVENTIN or an
+          // EVENTOUT field
+          f->write(out, fieldname); 
         }
         out->write("\n");
       }
