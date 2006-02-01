@@ -1958,6 +1958,18 @@ sogl_get_tmptexcoordlist(void)
 static void
 sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer)
 {
+  if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("sogl_set_nurbs_complexity",
+                                "Proper NURBS rendering requires\n"
+                                "GLU version 1.3. Continuing, but "
+                                "SoComplexity settings will be ignored...");
+    }
+    return;
+  }
+
   SoState * state = action->getState();
 
   switch (SoComplexityTypeElement::get(state)) {
@@ -1982,9 +1994,11 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
       complexity *= maxpix;
       complexity = diag * 0.5f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                     (GLenum) GLU_SAMPLING_METHOD,
                                      GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                     (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }
@@ -2005,9 +2019,11 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
       if (complexity < 0.0001f) complexity = 0.0001f;
       complexity = diag * 0.01f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                     (GLenum) GLU_SAMPLING_METHOD,
                                      GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                     (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }
