@@ -32,6 +32,15 @@
 
   The priority values can be used to queue events by their importance,
   so the sensors are triggered in the sequence you want.
+
+  The queue of delay sensors (i.e. instances of subclasses of
+  SoDelayQueueSensor) will be processed as soon as either the run-time
+  system is idle, or if it is continually busy they will be processed
+  within a fixed amount of time.
+
+  This time interval is by default 1/12th of a second, but can be
+  controlled with the SoSensorManager::setDelaySensorTimeout()
+  interface.
 */
 
 #include <assert.h>
