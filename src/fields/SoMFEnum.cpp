@@ -114,30 +114,50 @@ SoMFEnum::initClass(void)
 SbBool
 SoMFEnum::read1Value(SoInput * in, int idx)
 {
-  // FIXME: in this case, perhaps we should rather accept numeric
-  // values instead of demanding mnemonics? 20020630 mortene.
-  if (!this->legalValuesSet) {
-    SbName name;
-    SoFieldContainer * thecontainer = this->getContainer();
-    SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
-    SoReadError::post(in,
-                      "no mappings available for SoMFEnum field %s",
-                      fname ? name.getString() : "");
-    return FALSE;
-  }
-
   SbName n;
+  int val;
+
   // Read mnemonic value as a character string identifier
   if (!in->read(n, TRUE)) {
-    SoReadError::post(in, "Couldn't read enumeration name");
-    return FALSE;
+    // If we don't have any legal values for this field,
+    // give some slack and accept integer values.
+    if (this->legalValuesSet || !in->read(val)) {
+      SoReadError::post(in, "Couldn't read enumeration name");
+      return FALSE;
+    }
+  }
+  else {
+    if (!this->findEnumValue(n, val)) {
+      // If we read an enum field written by an extension node,
+      // we won't have any defined enum values. This is indicated by
+      // this->legalValuesSet == FALSE. If this is the case, define
+      // any encountered enum values on the fly but keep legalValuesSet
+      // to FALSE in order not to fool built-in enum field to accept
+      // illegal values.
+      if (!this->legalValuesSet) {
+        int *newvalues = new int[this->numEnums+1];
+        SbName *newnames = new SbName[this->numEnums+1];
+        int i;
+        for (i = 0; i < this->numEnums; i++) {
+          newvalues[i] = this->enumValues[i];
+          newnames[i] = this->enumNames[i];
+        }
+        newvalues[i] = i;
+        newnames[i] = n;
+        delete[] this->enumValues;
+        delete[] this->enumNames;
+        this->enumValues = newvalues;
+        this->enumNames = newnames;
+        this->numEnums += 1;
+        val = i;
+      }
+      else {
+        SoReadError::post(in, "Unknown enumeration value \"%s\"", n.getString());
+        return FALSE;
+      }
+    }
   }
 
-  int val;
-  if (!this->findEnumValue(n, val)) {
-    SoReadError::post(in, "Unknown enumeration value \"%s\"", n.getString());
-    return FALSE;
-  }
   assert(idx < this->maxNum);
   this->values[idx] = val;
   return TRUE;
@@ -148,11 +168,16 @@ void
 SoMFEnum::write1Value(SoOutput * out, int idx) const
 {
   int val = (*this)[idx];
-  for (int i = 0; i < this->numEnums; i++) {
-    if (this->enumValues[i] == val) {
-      out->write((char *)this->enumNames[i].getString());
-      return;
-    }
+  const SbName *enumname;
+  if (findEnumName(val, enumname)) {
+    out->write((char *)enumname->getString());
+    return;
+  }
+  // If we don't have any legal values for this field,
+  // pass through read integer values.
+  if (!this->legalValuesSet) {
+    out->write(val);
+    return;
   }
 
 #if COIN_DEBUG
