@@ -35,6 +35,27 @@
   used directly -- use one of it's subclasses.
 */
 
+// *************************************************************************
+
+#include <Inventor/manips/SoTransformManip.h>
+
+#include <Inventor/SoNodeKitPath.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/draggers/SoDragger.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
+// *************************************************************************
+
 /*!
   \var SoFieldSensor * SoTransformManip::rotateFieldSensor
   \COININTERNAL
@@ -65,27 +86,11 @@
   \COININTERNAL
 */
 
-#include <Inventor/manips/SoTransformManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/draggers/SoDragger.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+// *************************************************************************
 
 SO_NODE_SOURCE(SoTransformManip);
 
+// *************************************************************************
 
 // Documented in superclass
 void
@@ -135,6 +140,8 @@ SoTransformManip::~SoTransformManip()
   delete this->children;
 }
 
+// *************************************************************************
+
 // Note: this documentation is also shared by some of the subclasses,
 // so keep it general enough to also be valid for those.
 /*!
@@ -179,6 +186,8 @@ SoTransformManip::getDragger(void)
   }
   return NULL;
 }
+
+// *************************************************************************
 
 /*!
   Replaces a node at the tail end of \a path with this manipulator.
@@ -271,10 +280,21 @@ SoTransformManip::replaceNode(SoPath * path)
   return TRUE;
 }
 
+// *************************************************************************
+
 // Documented in superclass
 void
 SoTransformManip::doAction(SoAction * action)
 {
+  // Robustness. Catches an easily made user error:
+  if (this->getTypeId() == SoTransformManip::getClassTypeId()) {
+    SoDebugError::postWarning("SoTransformManip::replaceNode",
+                              "SoTransformManip is an abstract manipulator "
+                              "class, which should not be used in the scene "
+                              "graph. Use one of its subclasses instead.");
+  }
+  // </robustness>
+
   int numindices;
   const int *indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
@@ -386,6 +406,8 @@ SoTransformManip::search(SoSearchAction * action)
   if (action->isFound()) return;
   SoTransformManip::doAction(action);
 }
+
+// *************************************************************************
 
 /*!
   Returns the children of this node. This node only has the dragger
@@ -528,3 +550,5 @@ SoTransformManip::attachSensors(const SbBool onoff)
     this->scaleOrientFieldSensor->detach();
   }
 }
+
+// *************************************************************************
