@@ -39,10 +39,6 @@
     vertexOrdering COUNTERCLOCKWISE
   }
 
-  Complexity {
-    value 1
-  }
-
   Coordinate3 {
     point [ 
       -3 -3 -3, -3 -1 -3, -3 1 -3, -3 3 -3,
@@ -76,12 +72,56 @@
 
   <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbsprofile.png"></center>
 
-  A general explanation of NURBS is beyond the scope of the Coin
-  documentation. For detailed information, refer to the specialized
-  literature on the topic (for example "An Introduction to NURBS: With
-  Historical Perspective" by David F. Rogers). A basic overview of
-  curve and surface rendering using NURBS can be found in chapter 8 of
-  "The Inventor Mentor".
+  Note that the coordinates of the NurbsProfile live in the parametric
+  space of the trimmed SoNurbsSurface, and that the same complexity
+  setting (which is calculated based on the dimensions of the bounding
+  box of the nurbs surface) is used to determine the sampling
+  tolerance both for the SoNurbsSurface and the SoNurbsProfile.
+
+  This means that if you want to change the tessellation of the
+  trimming curve <i>itself</i> (i.e. increase or decrease the
+  resolution of the boundaries of the "cut-out"), you should not
+  change the SoComplexity setting but rather adapt the parametric
+  scale in relation to the trimmed surface.
+
+  As an example, to increase the resolution of the curve in the above
+  example, replace...
+
+  \code
+  ProfileCoordinate2 {
+    point [ 0.0 0.0, 0.75 0.0, 0.75 0.75, 0.25 0.75, 0.0 0.0 ]
+  }
+  \endcode
+
+  .. with... 
+
+  \code
+  ProfileCoordinate2 {
+    point [ 0.0 0.0, 7.5 0.0, 7.5 7.5, 2.5 7.5, 0.0 0.0 ]
+  }
+  \endcode
+
+  and change the uKnotVector and vKnotVector of the NurbsSurface to be
+
+  \code
+    uKnotVector [ 0.0, 0.0, 0.0, 0.0, 10, 10, 10, 10 ]
+    vKnotVector [ 0.0, 0.0, 0.0, 0.0, 10, 10, 10, 10 ]
+  \endcode
+
+  However, keep in mind that increasing the accuracy of the trimming
+  curve results in a much more complex tesselation of the trimmed
+  surface. As a general rule of thumb, the extent of the trimming
+  curve coordinates should never be greater than its "real" extents in
+  relation to the trimmed surface, and often can be much lower.
+
+  If you find the above confusing, you probably do not want to use
+  NURBS without reading up on the general concepts first.  An
+  explanation of NURBS is beyond the scope of the Coin documentation;
+  for detailed information, refer to the specialized literature on the
+  topic (for example "An Introduction to NURBS: With Historical
+  Perspective" by David F. Rogers). A basic overview of curve and
+  surface rendering using NURBS can also be found in chapter 8 of "The
+  Inventor Mentor".
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
