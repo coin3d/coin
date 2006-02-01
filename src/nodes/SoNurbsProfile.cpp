@@ -74,7 +74,7 @@
   }
   \endcode
 
-  <!-- FIXME: Add screenshot -->
+  <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbsprofile.png"></center>
 
   A general explanation of NURBS is beyond the scope of the Coin
   documentation. For detailed information, refer to the specialized
