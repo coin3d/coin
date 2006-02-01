@@ -66,7 +66,7 @@
   }
   \endcode
 
-  <!-- FIXME: Add screenshot -->
+  <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbssurface.png"></center>
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
