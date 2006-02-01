@@ -593,7 +593,7 @@ SoWriterefCounter::removeSoBase2IdRef(const SoBase * base)
 
 /*!
   Returns TRUE if the user wants extra debugging information regarding
-  writerefs (COIN_DBUG_WRITEREFS=1)
+  writerefs (COIN_DEBUG_WRITEREFS=1)
 */
 SbBool
 SoWriterefCounter::debugWriterefs(void)
