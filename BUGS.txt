@@ -478,8 +478,24 @@ Now, for the list of known bugs in the core Coin library:
 
     20021015 mortene.
 
-    UPDATE 20060131 kintel: We don't crash anymore, but we don't give
-    any error messages either.
+    UPDATE 20060201 kintel: New and smaller example:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #VRML V2.0 utf8
+    
+    PROTO Surface [
+      field SFNode c NULL
+    ]
+    {
+      IndexedFaceSet {
+        coord IS c
+        coord Coordinate { point IS p }
+      }
+    }
+    
+    Surface {
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
 =====================================================================
 
