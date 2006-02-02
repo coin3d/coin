@@ -1993,7 +1993,8 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     int idx = fl.find(to);
     if (idx != -1) {
 #if COIN_DEBUG
-      SoDebugError::postWarning("Tried to connect a ROUTE multiple times "
+      SoDebugError::postWarning("SoDB::createRoute",
+                                "Tried to connect a ROUTE multiple times "
                                 "(from %s.%s to %s.%s)",
                                 fromnodename.getString(), fromfieldname.getString(),
                                 tonodename.getString(), tofieldname.getString());
@@ -2008,7 +2009,8 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
       SoType convtype = SoDB::getConverter(fromtype, totype);
       if (convtype == SoType::badType()) {
 #if COIN_DEBUG
-        SoDebugError::postWarning("Tried to connect a ROUTE between entities "
+        SoDebugError::postWarning("SoDB::createRoute",
+                                  "Tried to connect a ROUTE between entities "
                                   "that can not be connected (due to lack of "
                                   "field type converter): %s.%s is of type "
                                   "%s, and %s.%s is of type %s",
@@ -2027,6 +2029,14 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     // Both known possible failure points are caught above.
     assert(ok && "unexpected connection error");
   }
+#if COIN_DEBUG
+  else {
+    SoDebugError::postWarning("SoDB::createRoute",
+                              "Unable to create route: %s.%s TO %s.%s",
+                              fromnodename.getString(), eventout,
+                              tonodename.getString(), eventin);
+  }
+#endif  // COIN_DEBUG
 }
 
 /*!
@@ -2068,14 +2078,14 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
     if (from) to->disconnect(from);
     else to->disconnect(output);
   }
-  else { // some error occured
 #if COIN_DEBUG
+  else { // some error occured
     SoDebugError::postWarning("SoDB::removeRoute",
                               "Unable to remove route: %s.%s TO %s.%s",
                               fromnodename.getString(), eventout,
                               tonodename.getString(), eventin);
-#endif // COIN_DEBUG
   }
+#endif // COIN_DEBUG
 }
 
 // *************************************************************************
