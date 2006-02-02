@@ -157,8 +157,10 @@ static const char CONNECTIONCHAR = '=';
 class SoConnectStorage {
 public:
   SoConnectStorage(SoFieldContainer * c, SoType t)
-    : container(c), fieldtype(t),
-      maptoconverter(13) // save about ~1kB vs default nr of buckets
+    : container(c), 
+    lastnotify(NULL),
+    fieldtype(t),
+    maptoconverter(13) // save about ~1kB vs default nr of buckets
     {
     }
 
@@ -189,6 +191,9 @@ public:
   // Direct auditors of us.
   SoAuditorList auditors;
 
+  // used to track the last notification (for fanIn handling)
+  void * lastnotify;
+
   // Convenience functions for adding, removing and finding mappings.
 
   void addConverter(const void * item, SoFieldConverter * converter)
@@ -213,7 +218,30 @@ public:
     if (!this->maptoconverter.get(item, val)) { return NULL; }
     return val;
   }
-  
+
+  SbBool hasFanIn(void) {
+    return (this->masterfields.getLength() + this->masterengineouts.getLength()) > 1;
+  }
+  int findFanInEngine(void) const {
+    for (int i = 0; i < this->masterengineouts.getLength(); i++) {
+      SoEngineOutput * o = this->masterengineouts[i];
+      if (o->isNodeEngineOutput()) {
+        if (((void*)(o->getNodeContainer())) == this->lastnotify) return i;
+      }
+      else {
+        if (((void*)(o->getContainer())) == this->lastnotify) return i;
+      }
+    }
+    return -1;
+  }
+  int findFanInField(void) const {
+    for (int i = 0; i < this->masterfields.getLength(); i++) {
+      if (((void*)this->masterfields[i]->getContainer() == this->lastnotify)) return i; 
+    }
+    return -1;
+  }
+
+
   // Provides us with a hack to get at a master field's type in code
   // called from its constructor (SoField::getTypeId() is virtual and
   // can't be used).
@@ -221,12 +249,12 @@ public:
   // (Used in the master::~SoField() -> slave::disconnect(master)
   // chain.)
   SoType fieldtype;
-
   void add_vrml2_routes(SoOutput * out, const SoField * f);
 
 private:
   // Dictionary of void* -> SoFieldConverter* mappings.
   SbHash<SoFieldConverter *, const void *> maptoconverter;
+
 };
 
 // helper function. Used to check if field is in a vrml2 node
@@ -1354,17 +1382,21 @@ SoField::notify(SoNotList * nlist)
   }
 #endif // COIN_DEBUG
 
-  // don't process the notification if we're notified from a
-  // connection, and connection is disabled (through
-  // enableConnection())
-  if (!this->isConnectionEnabled()) {
-    // check NotRec type to find if the notification was from a
-    // connection. If someone changes the field directly we should
-    // just continue.
-    SoNotRec * rec = nlist->getLastRec();
-    if (rec) {
-      SoNotRec::Type t = nlist->getLastRec()->getType();
-      if (t == SoNotRec::ENGINE || t == SoNotRec::FIELD) return;
+  // check NotRec type to find if the notification was from a
+  // connection. If someone changes the field directly we should
+  // just continue.
+
+  SoNotRec * rec = nlist->getLastRec();
+  if (rec) {
+    SoNotRec::Type t = nlist->getLastRec()->getType();  
+    if (t == SoNotRec::ENGINE || t == SoNotRec::FIELD) {
+      if (this->hasExtendedStorage()) {
+        this->storage->lastnotify = (void*) rec->getBase();
+      }
+      // don't process the notification if we're notified from a
+      // connection, and connection is disabled (through
+      // enableConnection())
+      if (!this->isConnectionEnabled()) return;
     }
   }
 
@@ -2340,42 +2372,46 @@ SoField::resolveWriteConnection(SbName & mastername) const
 void
 SoField::evaluateConnection(void) const
 {
+  SbBool fanin = this->storage->hasFanIn();
+  SbBool didevaluate = FALSE;
+
   // FIXME: should we evaluate from all masters in turn? 19990623 mortene.
   if (this->isConnectedFromField()) {
-    int idx = this->storage->masterfields.getLength() - 1;
-    SoField * master = this->storage->masterfields[idx];
-    // don't copy if master is destructing, or if master is currently
-    // evaluating. The master might be evaluating if we have circular
-    // field connections. If this is the case, the field will already
-    // contain the correct value, and we should not copy again.
-    if (!master->isDestructing() && !master->getStatus(FLAG_ISEVALUATING)) {
-      SoFieldConverter * converter = this->storage->findConverter(master);
-      if (converter) converter->evaluateWrapper();
-      else {
-        SoField * that = (SoField *)this; // cast away const
-        // Copy data. Disable notification first since notification
-        // has already been sent from the master.
-        SbBool oldnotify = that->enableNotify(FALSE);
-        that->copyFrom(*master);
-        (void) that->enableNotify(oldnotify);
+    int idx = fanin ? this->storage->findFanInField() : this->storage->masterfields.getLength() - 1;
+    if (idx >= 0) {
+      didevaluate = TRUE;
+      SoField * master = this->storage->masterfields[idx];
+      // don't copy if master is destructing, or if master is currently
+      // evaluating. The master might be evaluating if we have circular
+      // field connections. If this is the case, the field will already
+      // contain the correct value, and we should not copy again.
+      if (!master->isDestructing() && !master->getStatus(FLAG_ISEVALUATING)) {
+        SoFieldConverter * converter = this->storage->findConverter(master);
+        if (converter) converter->evaluateWrapper();
+        else {
+          SoField * that = (SoField *)this; // cast away const
+          // Copy data. Disable notification first since notification
+          // has already been sent from the master.
+          SbBool oldnotify = that->enableNotify(FALSE);
+          that->copyFrom(*master);
+          (void) that->enableNotify(oldnotify);
+        }
       }
     }
   }
-  else if (this->isConnectedFromEngine()) {
-    int idx = this->storage->masterengineouts.getLength() - 1;
-    SoEngineOutput * master = this->storage->masterengineouts[idx];
-    SoFieldConverter * converter = this->storage->findConverter(master);
-    if (converter) converter->evaluateWrapper();
-    else if (master->isNodeEngineOutput()) {
-      master->getNodeContainer()->evaluateWrapper();
+  if (this->isConnectedFromEngine() && !didevaluate) {
+    int idx = fanin ? this->storage->findFanInEngine() : this->storage->masterengineouts.getLength() - 1;
+    if (idx >= 0) {
+      SoEngineOutput * master = this->storage->masterengineouts[idx];
+      SoFieldConverter * converter = this->storage->findConverter(master);
+      if (converter) converter->evaluateWrapper();
+      else if (master->isNodeEngineOutput()) {
+        master->getNodeContainer()->evaluateWrapper();
+      }
+      else {
+        master->getContainer()->evaluateWrapper();
+      }
     }
-    else {
-      master->getContainer()->evaluateWrapper();
-    }
-  }
-  else {
-    // Should never happen.
-    assert(0);
   }
 }
 
