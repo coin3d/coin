@@ -1954,32 +1954,51 @@ sogl_get_tmptexcoordlist(void)
   return *ptr;
 }
 
+// Toggle extra debugging output for nurbs complexity settings code.
+static SbBool
+sogl_nurbs_debugging(void)
+{
+  static int COIN_DEBUG_NURBS_COMPLEXITY = -1;
+  if (COIN_DEBUG_NURBS_COMPLEXITY == -1) {
+    const char * str = coin_getenv("COIN_DEBUG_NURBS_COMPLEXITY");
+    COIN_DEBUG_NURBS_COMPLEXITY = str ? atoi(str) : 0;
+  }
+  return (COIN_DEBUG_NURBS_COMPLEXITY == 0) ? FALSE : TRUE;
+}
 
 static void
 sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer)
 {
-  if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    static SbBool first = TRUE;
-    if (first) {
-      first = FALSE;
-      SoDebugError::postWarning("sogl_set_nurbs_complexity",
-                                "Proper NURBS rendering requires\n"
-                                "GLU version 1.3. Continuing, but "
-                                "SoComplexity settings will be ignored...");
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                     (GLenum) GLU_SAMPLING_METHOD,
-                                     GLU_PARAMETRIC_ERROR);
-      // use the default setting for GLU_PARAMETRIC_TOLERANCE (0.5)
+  SoState * state = action->getState();
 
-      // FIXME: Should we calculate a GLU_PARAMETRIC_TOLERANCE value
-      // based on the SoComplexity value? (Personally, I think just
-      // asking people to upgrade GLU is the better answer.) 20060102
-      // kyrah.
+  if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    // GLU < 1.3 does not support view-independent error metrics
+    // for tesselation accuracy. => Fall back to pixel-based metric.
+
+    // Settings chosen by visual inspection of same sample curves and
+    // surfaces, and comparison with the result of using the object-
+    // space metric. The -0.5 is there because for an SoComplexity
+    // value of 1, we should have an error of less than one pixel.
+    float complexity = SoComplexityElement::get(state);
+    complexity = 1.0/(complexity*complexity) - 0.5;
+
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                   (GLenum) GLU_SAMPLING_METHOD,
+                                   GLU_PARAMETRIC_ERROR);
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+                                   (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+                                   complexity);
+    
+    static SbBool first = TRUE;
+    if (sogl_nurbs_debugging() && first) {
+      first = FALSE;
+        SoDebugError::postInfo("sogl_set_nurbs_complexity",
+                               "sampling method = GLU_PARAMETRIC_ERROR, " 
+                               "GLU_PARAMETRIC_TOLERANCE = %.4f",
+                               complexity);
     }
     return;
   }
-
-  SoState * state = action->getState();
 
   switch (SoComplexityTypeElement::get(state)) {
   case SoComplexityTypeElement::SCREEN_SPACE:
@@ -2002,6 +2021,15 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
       if (complexity < 0.0001f) complexity = 0.0001f;
       complexity *= maxpix;
       complexity = diag * 0.5f / complexity;
+
+      static SbBool first = TRUE;
+      if (sogl_nurbs_debugging() && first) {
+        first = FALSE;
+        SoDebugError::postInfo("sogl_set_nurbs_complexity",
+                               "sampling method = GLU_OBJECT_PARAMETRIC_ERROR,"
+                               " GLU_PARAMETRIC_TOLERANCE = %.4f",
+                               complexity);
+      }
 
       GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
                                      (GLenum) GLU_SAMPLING_METHOD,
@@ -2027,6 +2055,14 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
       complexity *= complexity;
       if (complexity < 0.0001f) complexity = 0.0001f;
       complexity = diag * 0.01f / complexity;
+
+      static SbBool first = TRUE;
+      if (sogl_nurbs_debugging() && first) {
+        first = FALSE;
+        SoDebugError::postInfo("sogl_set_nurbs_complexity",
+                               "sampling method = GLU_OBJECT PARAMETRIC_ERROR,"                                " GLU_PARAMETRIC_TOLERANCE = %.4f",
+                               complexity);
+      }
 
       GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
                                      (GLenum) GLU_SAMPLING_METHOD,
