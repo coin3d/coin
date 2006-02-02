@@ -1123,7 +1123,7 @@ Optional Packages:
   --with-zlib=PATH        enable/disable zlib support
   --with-bzip2=PATH       enable/disable bzip2 support
   --with-x                use the X Window System
-  --with-mesa             prefer MesaGL (if found) over OpenGL [default=yes]
+  --with-mesa             prefer MesaGL (if found) over OpenGL [default=no]
   --with-opengl=DIR       OpenGL/Mesa installation directory
   --with-glu=DIR          use the OpenGL utility library [default=yes]
 
@@ -21489,6 +21489,7 @@ fi
 
 fi
 
+# for coin.cfg
 
 
 # *******************************************************************
@@ -34611,7 +34612,7 @@ if test "${with_mesa+set}" = set; then
   withval="$with_mesa"
 
 else
-  with_mesa=yes
+  with_mesa=no
 fi;
 
 

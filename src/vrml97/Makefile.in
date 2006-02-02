@@ -325,7 +325,9 @@ RegularSources = \
 	VertexShape.cpp \
 	Viewpoint.cpp \
 	VisibilitySensor.cpp \
-	WorldInfo.cpp
+	WorldInfo.cpp \
+	\
+	JS_VRMLClasses.cpp
 
 
 LinkHackSources = \
@@ -333,7 +335,11 @@ LinkHackSources = \
 
 
 PublicHeaders = 
-PrivateHeaders = 
+
+PrivateHeaders = \
+	JS_VRMLClasses.h
+
+
 ObsoleteHeaders = 
 
 
@@ -415,7 +421,8 @@ am__vrml97_lst_SOURCES_DIST = Anchor.cpp Appearance.cpp AudioClip.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp \
+	all-vrml97-cpp.cpp
 am__objects_1 = all-vrml97-cpp.$(OBJEXT)
 am__objects_2 = Anchor.$(OBJEXT) Appearance.$(OBJEXT) \
 	AudioClip.$(OBJEXT) Background.$(OBJEXT) Billboard.$(OBJEXT) \
@@ -442,19 +449,21 @@ am__objects_2 = Anchor.$(OBJEXT) Appearance.$(OBJEXT) \
 	TextureTransform.$(OBJEXT) TimeSensor.$(OBJEXT) \
 	TouchSensor.$(OBJEXT) Transform.$(OBJEXT) VertexLine.$(OBJEXT) \
 	VertexPoint.$(OBJEXT) VertexShape.$(OBJEXT) Viewpoint.$(OBJEXT) \
-	VisibilitySensor.$(OBJEXT) WorldInfo.$(OBJEXT)
+	VisibilitySensor.$(OBJEXT) WorldInfo.$(OBJEXT) \
+	JS_VRMLClasses.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_vrml97_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_vrml97_lst_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
-	Appearance.cpp AudioClip.cpp Background.cpp Billboard.cpp \
-	Box.cpp Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
-	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
-	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
-	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
-	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
-	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
-	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_vrml97_lst_SOURCES_DIST = JS_VRMLClasses.h all-vrml97-cpp.cpp \
+	Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
+	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
+	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
+	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
+	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
+	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
+	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
+	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -464,7 +473,7 @@ am__EXTRA_vrml97_lst_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp
 vrml97_lst_OBJECTS = $(am_vrml97_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -488,7 +497,8 @@ am__libvrml97_la_SOURCES_DIST = Anchor.cpp Appearance.cpp AudioClip.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp \
+	all-vrml97-cpp.cpp
 am__objects_6 = all-vrml97-cpp.lo
 am__objects_7 = Anchor.lo Appearance.lo AudioClip.lo Background.lo \
 	Billboard.lo Box.lo Collision.lo Color.lo ColorInterpolator.lo \
@@ -507,19 +517,20 @@ am__objects_7 = Anchor.lo Appearance.lo AudioClip.lo Background.lo \
 	Texture.lo TextureCoordinate.lo TextureTransform.lo \
 	TimeSensor.lo TouchSensor.lo Transform.lo VertexLine.lo \
 	VertexPoint.lo VertexShape.lo Viewpoint.lo VisibilitySensor.lo \
-	WorldInfo.lo
+	WorldInfo.lo JS_VRMLClasses.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libvrml97_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97_la_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
-	Appearance.cpp AudioClip.cpp Background.cpp Billboard.cpp \
-	Box.cpp Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
-	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
-	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
-	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
-	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
-	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
-	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_libvrml97_la_SOURCES_DIST = JS_VRMLClasses.h \
+	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
+	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
+	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
+	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
+	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
+	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
+	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
+	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -529,7 +540,7 @@ am__EXTRA_libvrml97_la_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp
 libvrml97_la_OBJECTS = $(am_libvrml97_la_OBJECTS)
 libvrml97@SUFFIX@LINKHACK_la_LDFLAGS =
 libvrml97@SUFFIX@LINKHACK_la_LIBADD =
@@ -551,11 +562,12 @@ am__libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = Anchor.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp \
+	all-vrml97-cpp.cpp
 am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = all-vrml97-cpp.cpp \
-	Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
-	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = JS_VRMLClasses.h \
+	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
+	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
@@ -572,7 +584,7 @@ am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = all-vrml97-cpp.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp
+	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp
 libvrml97@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -619,7 +631,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/IndexedShape.Po ./$(DEPDIR)/Init.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/Init.Po ./$(DEPDIR)/Inline.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/Inline.Po ./$(DEPDIR)/Interpolator.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/Interpolator.Po ./$(DEPDIR)/LOD.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/Interpolator.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/JS_VRMLClasses.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/JS_VRMLClasses.Po ./$(DEPDIR)/LOD.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/LOD.Po ./$(DEPDIR)/Light.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/Light.Po ./$(DEPDIR)/Material.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/Material.Po \
@@ -686,6 +700,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__vrml97_lst_SOURCES_DIST) \
 	$(am__EXTRA_vrml97_lst_SOURCES_DIST) \
 	$(am__libvrml97_la_SOURCES_DIST) \
@@ -694,7 +715,7 @@ DIST_SOURCES = $(am__vrml97_lst_SOURCES_DIST) \
 	$(am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST)
 HEADERS = $(libvrml97inc_HEADERS)
 
-DIST_COMMON = $(libvrml97inc_HEADERS) Makefile.am Makefile.in TODO
+DIST_COMMON = $(libvrml97inc_HEADERS) Makefile.am Makefile.in
 SOURCES = $(vrml97_lst_SOURCES) $(EXTRA_vrml97_lst_SOURCES) $(libvrml97_la_SOURCES) $(EXTRA_libvrml97_la_SOURCES) $(libvrml97@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
@@ -817,6 +838,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Inline.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Interpolator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Interpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JS_VRMLClasses.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JS_VRMLClasses.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LOD.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LOD.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Light.Plo@am__quote@
