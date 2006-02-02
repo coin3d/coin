@@ -1433,23 +1433,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-086 GLU bug in our NURBS code.
-
-    In SoGL.cpp:sogl_set_nurbs_complexity(), we use the
-    GLU_OBJECT_PARAMETRIC_ERROR enum to gluNurbsProperty() to set the
-    GLU_SAMPLING_METHOD for tessellation.
-
-    But this enum is only supported by versions of the GLU library
-    that supports the GLU_EXT_object_space_tess extension. Microsoft's
-    GLU library (version 1.2.2.0) does at least not support this
-    extension, which means most developers using Coin on Windows will
-    see no effect of modifying SoComplexity::value. So this bug is
-    somewhat serious.
-
-    20031119 mortene. Problem reported by Cristian Luciano.
-
-=====================================================================
-
 090 Scene graph copy behavior deviates from SGI Inventor.
 
     For the code example below, we get different behavior on
