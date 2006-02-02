@@ -1349,6 +1349,11 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
 
   PRIVATE(ext)->somefacesvisible = FALSE;
 
+  if (SoPickStyleElement::get(action->getState()) == 
+      SoPickStyleElement::UNPICKABLE) {
+    return SoCallbackAction::PRUNE;
+  }
+
   return PRIVATE(ext)->testShape(action, (const SoShape*) node);
 }
 
@@ -1363,9 +1368,11 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   switch (ext->lassoPolicy.getValue()) {
   case SoExtSelection::FULL:
     hit = PRIVATE(ext)->primcbdata.allhit;
+    PRIVATE(ext)->primcbdata.allhit = FALSE;
     break;
   case SoExtSelection::PART:
     hit = PRIVATE(ext)->primcbdata.hit;
+    PRIVATE(ext)->primcbdata.hit = FALSE;
     break;
   default:
     break;

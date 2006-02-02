@@ -4345,20 +4345,6 @@ Transform {
 
 =====================================================================
 
-206 SoExtSelection doesn't heed SoPickStyle::style==UNPICKABLE.
-
-    It seems to me it would be proper behavior of SoExtSelection to
-    not consider areas of the scene graph with that setting for
-    inclusion in the set of picked geometry.
-
-    Could perhaps ask someone with access to TGS Inventor to check
-    their policy on this issue, so Coin is compatible. (SoExtSelection
-    is a node we implemented from TGS' API.)
-
-    20050902 mortene.
-
-=====================================================================
-
 208 Too high tessellation by default for 3D text?
 
     The 06.3.Complex3DText example updates at a very slow framerate,
