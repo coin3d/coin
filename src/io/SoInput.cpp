@@ -1249,9 +1249,10 @@ SoInput::read(SbString & s)
             // string is \". In this case, the backslash should be
             // considered literal and the quote should terminate the
             // string.
-            if (!this->isFileVRML2() && fi->get(c) && c == '\n') {
+            if (!this->isFileVRML2() && fi->get(c)) {
               fi->putBack(c);
-              fi->putBack('\"');
+              if (c == '\n') fi->putBack('\"');
+              else *buf = '\"';
             }
             else {
               *buf = c;
