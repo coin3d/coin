@@ -1107,7 +1107,8 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   stream is a '}' to detect the latter case.
 
   3. A child was given as the \c NULL keyword. This can happen when
-  reading the contents of SoSFNode or SoMFNode fields.
+  reading the contents of SoSFNode fields (note that NULL is not
+  allowed for SoMFNode)
 
   If \c TRUE is returned and \a base is not \c NULL upon return, the
   instance was allocated and initialized according to what was read
@@ -1159,7 +1160,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   while (result && name == ROUTE_KEYWORD) {
     result = SoBase::readRoute(in);
     // read next ROUTE keyword
-    if (result ) result = in->read(name, TRUE);
+    if (result) result = in->read(name, TRUE);
     else return FALSE; // error while reading ROUTE
   }
 
