@@ -336,6 +336,8 @@
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/fields/SoGlobalField.h>
@@ -1902,6 +1904,37 @@ SoDB::writeunlock(void)
 
 // *************************************************************************
 
+//
+// helper function for createRoute(). First test the actual fieldname,
+// then set set_<fieldname>, then <fieldname>_changed.
+//
+static SoField *
+find_route_field(SoNode * node, const SbName & fieldname)
+{
+  SoField * field = node->getField(fieldname);
+
+  if (!field) {
+    if (strncmp(fieldname.getString(), "set_", 4) == 0) {
+      SbName newname = fieldname.getString() + 4;
+      field = node->getField(newname);
+    }
+    else {
+      SbString str = fieldname.getString();
+      int len = str.getLength();
+      const char CHANGED[] = "_changed";
+      const int changedsize = sizeof(CHANGED) - 1;
+
+      if (len > changedsize && strcmp(str.getString()+len-changedsize,
+                                      CHANGED) == 0) {
+        SbString substr = str.getSubString(0, len-(changedsize+1));
+        SbName newname = substr.getString();
+        field = node->getField(newname);
+      }
+    }
+  }
+  return field;
+}
+
 /*!
   Create a connection from one VRML97 node field to another.
 
@@ -1917,27 +1950,83 @@ SoDB::writeunlock(void)
   \since TGS Inventor 2.6
 */
 void
-SoDB::createRoute(SoNode * from, const char * eventout,
-                  SoNode * to, const char * eventin)
+SoDB::createRoute(SoNode * fromnode, const char * eventout,
+                  SoNode * tonode, const char * eventin)
 {
-  assert(from && to && eventout && eventin);
-  SoField * out = from->getEventOut(eventout);
-  SoField * in = to->getEventIn(eventin);
+  assert(fromnode && tonode && eventout && eventin);
 
-  if (out == NULL) {
-    SoDebugError::postWarning("SoDB::createRoute",
-                              "no eventout field named '%s' for '%s'",
-                              eventout, from->getTypeId().getName().getString());
-    return;
+  SbName fromfieldname(eventout);
+  SbName tofieldname(eventin);
+
+  SoField * from = find_route_field(fromnode, fromfieldname);
+  SoField * to = find_route_field(tonode, tofieldname);
+
+  SbName fromnodename = fromnode->getName();
+  if (fromnodename == "") {
+    fromnodename = "<noname>";
   }
-  if (in == NULL) {
-    SoDebugError::postWarning("SoDB::createRoute",
-                              "no eventin field named '%s' for '%s'",
-                              eventin, to->getTypeId().getName().getString());
-    return;
+  SbName tonodename = tonode->getName();
+  if (tonodename == "") {
+    tonodename = "<noname>";
+  }
+  SoEngineOutput * output = NULL;
+  if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+    output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
   }
 
-  in->connectFrom(out);
+  if (to && (from || output)) {
+    SbBool notnotify = FALSE;
+    SbBool append = FALSE;
+    if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
+      notnotify = TRUE;
+    }
+#if 0 // seems like (reading the VRML97 spec.) fanIn in allowed even to regular fields
+    if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
+#else // fanIn
+    append = TRUE;
+#endif // fanIn fix
+    
+    // Check if we're already connected.
+    SoFieldList fl;
+    if (from) from->getForwardConnections(fl);
+    else output->getForwardConnections(fl);
+    int idx = fl.find(to);
+    if (idx != -1) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("Tried to connect a ROUTE multiple times "
+                                "(from %s.%s to %s.%s)",
+                                fromnodename.getString(), fromfieldname.getString(),
+                                tonodename.getString(), tofieldname.getString());
+#endif // COIN_DEBUG
+      return;
+    }
+
+    // Check that there exists a field converter, if one is needed.
+    SoType totype = to->getTypeId();
+    SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
+    if (totype != fromtype) {
+      SoType convtype = SoDB::getConverter(fromtype, totype);
+      if (convtype == SoType::badType()) {
+#if COIN_DEBUG
+        SoDebugError::postWarning("Tried to connect a ROUTE between entities "
+                                  "that can not be connected (due to lack of "
+                                  "field type converter): %s.%s is of type "
+                                  "%s, and %s.%s is of type %s",
+                                  fromnodename.getString(), fromfieldname.getString(),
+                                  fromtype.getName().getString(),
+                                  tonodename.getString(), tofieldname.getString(),
+                                  totype.getName().getString());
+#endif // COIN_DEBUG
+        return;
+      }
+    }
+    
+    SbBool ok;
+    if (from) ok = to->connectFrom(from, notnotify, append);
+    else ok = to->connectFrom(output, notnotify, append);
+    // Both known possible failure points are caught above.
+    assert(ok && "unexpected connection error");
+  }
 }
 
 /*!
@@ -1950,14 +2039,43 @@ SoDB::createRoute(SoNode * from, const char * eventout,
   \since TGS Inventor 2.6
 */
 void
-SoDB::removeRoute(SoNode * from, const char * eventout,
-                  SoNode * to, const char * eventin)
+SoDB::removeRoute(SoNode * fromnode, const char * eventout,
+                  SoNode * tonode, const char * eventin)
 {
-  assert(from && to && eventout && eventin);
-  SoField * out = from->getEventOut(eventout);
-  SoField * in = to->getEventIn(eventin);
-  assert(out && in);
-  in->disconnect(out);
+  assert(fromnode && tonode && eventout && eventin);
+
+  SbName fromfieldname(eventout);
+  SbName tofieldname(eventin);
+  
+  SoField * from = find_route_field(fromnode, fromfieldname);
+  SoField * to = find_route_field(tonode, tofieldname);
+  
+  SoEngineOutput * output = NULL;
+  if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+    output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
+  }
+
+  SbName fromnodename = fromnode->getName();
+  if (fromnodename == "") {
+    fromnodename = "<noname>";
+  }
+  SbName tonodename = tonode->getName();
+  if (tonodename == "") {
+    tonodename = "<noname>";
+  }
+
+  if (to && (from || output)) {
+    if (from) to->disconnect(from);
+    else to->disconnect(output);
+  }
+  else { // some error occured
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoDB::removeRoute",
+                              "Unable to remove route: %s.%s TO %s.%s",
+                              fromnodename.getString(), eventout,
+                              tonodename.getString(), eventin);
+#endif // COIN_DEBUG
+  }
 }
 
 // *************************************************************************
