@@ -1830,7 +1830,11 @@ SoBase::connectRoute(SoInput * in,
       if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
         notnotify = TRUE;
       }
+#if 0 // seems like (reading the VRML97 spec.) fanIn in allowed even to regular fields
       if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
+#else // fanIn
+      append = TRUE;
+#endif // fanIn fix
 
       // Check if we're already connected.
       SoFieldList fl;
