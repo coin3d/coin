@@ -1116,6 +1116,28 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 SbBool
 SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 {
+  // FIXME: the interface design for this function is goddamn _awful_!
+  // We need to keep it like this, though, to be compatible with SGI
+  // Inventor. What we however /could/ do about it is:
+  //
+  // First, split out the SoBaseP class definition to a separate
+  // interface, which can be accessed internally from Coin lirbary
+  // code.
+  //
+  // Then, in this, write up /sensibly designed/ read()-function(s)
+  // which implements the actually needed functionality of this
+  // method.
+  //
+  // Third, make this function use those new functions in SoBaseP (to
+  // avoid code duplication) -- and mangle the results so that this
+  // function still conforms to the SGI Inventor behavior.
+  //
+  // Finally, start using the SoBaseP::read()-function(s) from
+  // internal Coin code instead, to clean up the messy interaction
+  // with this function from everywhere else.
+  //
+  // 20060202 mortene.
+
   assert(expectedtype != SoType::badType());
   base = NULL;
 
