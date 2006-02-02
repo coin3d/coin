@@ -29,7 +29,7 @@
   
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 
 #include "../vrml97/JS_VRMLClasses.h"
 
