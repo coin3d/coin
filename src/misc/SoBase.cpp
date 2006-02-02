@@ -1791,37 +1791,6 @@ SoBase::flushInput(SoInput * in)
 #endif // obsoleted
 }
 
-//
-// helper function for connectRoute(). First test the actual fieldname,
-// then set set_<fieldname>, then <fieldname>_changed.
-//
-static SoField *
-find_field(SoNode * node, const SbName & fieldname)
-{
-  SoField * field = node->getField(fieldname);
-
-  if (!field) {
-    if (strncmp(fieldname.getString(), "set_", 4) == 0) {
-      SbName newname = fieldname.getString() + 4;
-      field = node->getField(newname);
-    }
-    else {
-      SbString str = fieldname.getString();
-      int len = str.getLength();
-      const char CHANGED[] = "_changed";
-      const int changedsize = sizeof(CHANGED) - 1;
-
-      if (len > changedsize && strcmp(str.getString()+len-changedsize,
-                                      CHANGED) == 0) {
-        SbString substr = str.getSubString(0, len-(changedsize+1));
-        SbName newname = substr.getString();
-        field = node->getField(newname);
-      }
-    }
-  }
-  return field;
-}
-
 /*!
   Connect a route from the node named \a fromnodename's field \a
   fromfieldname to the node named \a tonodename's field \a
@@ -1840,70 +1809,12 @@ SoBase::connectRoute(SoInput * in,
   SoNode * fromnode = SoNode::getByName(fromnodename);
   SoNode * tonode = SoNode::getByName(tonodename);
   if (fromnode && tonode) {
-    SoField * from = find_field(fromnode, fromfieldname);
-    SoField * to = find_field(tonode, tofieldname);
-    SoEngineOutput * output = NULL;
-    if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
-      output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
-    }
-
-    if (to && (from || output)) {
-      SbBool notnotify = FALSE;
-      SbBool append = FALSE;
-      if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
-        notnotify = TRUE;
-      }
-#if 0 // seems like (reading the VRML97 spec.) fanIn in allowed even to regular fields
-      if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
-#else // fanIn
-      append = TRUE;
-#endif // fanIn fix
-
-      // Check if we're already connected.
-      SoFieldList fl;
-      if (from) from->getForwardConnections(fl);
-      else output->getForwardConnections(fl);
-      int idx = fl.find(to);
-      if (idx != -1) {
-        SoReadError::post(in,
-                          "Tried to connect a ROUTE multiple times "
-                          "(from %s.%s to %s.%s)",
-                          fromnodename.getString(), fromfieldname.getString(),
-                          tonodename.getString(), tofieldname.getString());
-        return FALSE;
-      }
-
-      // Check that there exists a field converter, if one is needed.
-      SoType totype = to->getTypeId();
-      SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
-      if (totype != fromtype) {
-        SoType convtype = SoDB::getConverter(fromtype, totype);
-        if (convtype == SoType::badType()) {
-          SoReadError::post(in,
-                            "Tried to connect a ROUTE between entities "
-                            "that can not be connected (due to lack of "
-                            "field type converter): %s.%s is of type "
-                            "%s, and %s.%s is of type %s",
-                            fromnodename.getString(), fromfieldname.getString(),
-                            fromtype.getName().getString(),
-                            tonodename.getString(), tofieldname.getString(),
-                            totype.getName().getString());
-          return FALSE;
-        }
-      }
-
-      SbBool ok;
-      if (from) ok = to->connectFrom(from, notnotify, append);
-      else ok = to->connectFrom(output, notnotify, append);
-      // Both known possible failure points are caught above.
-      assert(ok && "unexpected connection error");
-
-      return TRUE;
-    }
+    SoDB::createRoute(fromnode, fromfieldname.getString(), 
+                      tonode, tofieldname.getString());
+    return TRUE;
   }
   return FALSE;
 }
-
 
 /*!
   \COININTERNAL
