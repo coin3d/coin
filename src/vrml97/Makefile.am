@@ -67,13 +67,18 @@ RegularSources = \
 	VertexShape.cpp \
 	Viewpoint.cpp \
 	VisibilitySensor.cpp \
-	WorldInfo.cpp
+	WorldInfo.cpp \
+	\
+	JS_VRMLClasses.cpp
 
 LinkHackSources = \
 	all-vrml97-cpp.cpp
 
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = \
+	JS_VRMLClasses.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(vrml97, VRMLnodes)

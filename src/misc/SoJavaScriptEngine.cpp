@@ -31,8 +31,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbitsp.h>
 
-// FIXME: Do this in a nicer way. 20050714 erikgors.
-#include "../vrml97/JS_VRMLClasses.cpp"
+#include "../vrml97/JS_VRMLClasses.h"
+
+// *************************************************************************
 
 #undef PRIVATE
 #undef PUBLIC
@@ -64,6 +65,7 @@ public:
 JSRuntime * SoJavaScriptEngineP::runtime = NULL;
 size_t SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
 
+// *************************************************************************
 
 /*!
   Execute a compiled script.
