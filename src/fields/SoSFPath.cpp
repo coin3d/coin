@@ -171,6 +171,10 @@ SoSFPath::readValue(SoInput * in)
     SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
+  if (!baseptr) {
+    SoReadError::post(in, "Unable to read value for SoSFPath");
+    return FALSE;
+  }
 
   this->setValue((SoPath *)baseptr);
   return TRUE;

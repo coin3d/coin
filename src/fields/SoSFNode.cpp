@@ -162,11 +162,24 @@ SoSFNode::operator==(const SoSFNode & field) const
 SbBool
 SoSFNode::readValue(SoInput * in)
 {
+  // Since we cannot differ between the different cases where
+  // SoBase::read() returns a NULL baseptr, we need to manually check
+  // for the only valid NULL case here.
+  SbName name;
+  if (in->read(name, TRUE)) {
+    if (name == "NULL") {
+      this->setValue(NULL);
+      return TRUE;
+    }
+    in->putBack(name.getString());
+  }
+
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
 
-  if (in->eof()) {
-    SoReadError::post(in, "Premature end of file");
+  if (!baseptr) {
+    if (in->eof()) SoReadError::post(in, "Premature end of file");
+    else SoReadError::post(in, "Unable to read value for SoSFNode");
     return FALSE;
   }
 

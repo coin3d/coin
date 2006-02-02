@@ -1084,6 +1084,11 @@ SoPath::readInstance(SoInput * in, unsigned short flags)
 {
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
+  if (!baseptr) {
+    if (in->eof()) SoReadError::post(in, "Premature end of file");
+    else SoReadError::post(in, "Unable to read value for SoPath");
+    return FALSE;
+  }
   this->setHead((SoNode *)baseptr);
 
   int nrindices;
