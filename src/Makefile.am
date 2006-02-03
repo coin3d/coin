@@ -110,14 +110,20 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 # Installation information.
 
 # On Mac OS 10.2 or later, create two-level namespace binaries and use
-# prebinding. Also pad the install_name to make it possible to change it
-# later (e.g. to include the library in an app bundle).
+# prebinding. Also pad the install_name to make it possible to change
+# it later (e.g. to include the library in an app bundle).  On Mac OS
+# 10.3 or later, use -undefined dynamic_lookup to delay symbol lookup
+# to runtime (needed to make enable_hacking work)
+
 if MACOSX_10_2FF
+if MACOSX_10_3FF
+LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+else
 LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+endif
 else
 LibtoolLinkArgs = -no-undefined
 endif
-
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \

@@ -91,6 +91,11 @@ demonstration purposes):
         subdirectory under $WORKDIR/compile/Coin/src/. The brilliance of
         this little trick will be explained later in the walk-through.
 
+        Note for Mac OS X users: --enable-hacking requires Mac OS 
+        version 10.3 or higher. You also need to set the
+        MACOSX_DEPLOYMENT_TARGET environment variable to 10.3 or
+        higher. 
+
   $ make install
 
         Building will take quite some time, go for a coffee.

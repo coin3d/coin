@@ -245,35 +245,41 @@ fi
 # Detect Mac OS X in general and Mac OS 10.2 "Jaguar" or 10.3
 # "Panther" in particular
 case $host_os in
-darwin6.* )
+darwin6.* ) # Mac OS 10.2 "Jaguar"
   sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_10_3ff=false
   sim_ac_macosx_name="Jaguar"
   ;;
-darwin7.* )
+darwin7.* ) # Mac OS 10.3 "Panther"
   sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_10_3ff=true
   sim_ac_macosx_name="Panther"
   ;;
-darwin8.* )
+darwin8.* ) # Mac OS 10.4 "Tiger"
   sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_10_3ff=true
   sim_ac_macosx_name="Tiger"
   ;;
-darwin* )
+darwin* ) # earlier Mac OS X versions 
   sim_ac_macosx=true
   sim_ac_macosx_10_2ff=false
+  sim_ac_macosx_10_3ff=false
   sim_ac_macosx_name=""
   ;;
-* )
+* ) # not a Mac OS X
   sim_ac_macosx=false
   sim_ac_macosx_10_2ff=false 
+  sim_ac_macosx_10_3ff=false
   sim_ac_macosx_name=""
   ;;
 esac
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
+AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
 AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
 AC_SUBST([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
@@ -1769,6 +1775,24 @@ AC_ARG_ENABLE(hacking,
 AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
 if test x"$enable_hacking" = x"yes"; then
+
+  # enable_hacking requires runtime symbol lookup, which is not available
+  # on Mac OS X < 10.3 and requires the deployment target to be >= 10.3.
+
+  if test x"$sim_ac_macosx" = x"true"; then
+    if test x"$sim_ac_macosx_10_3ff" = x"true"; then
+      case ${MACOSX_DEPLOYMENT_TARGET} in
+      10.[[34]])
+        ;;
+      *)
+        AC_MSG_ERROR([--enable-hacking requires MACOSX_DEPLOYMENT_TARGET>=10.3])
+      ;;
+      esac
+    else 
+      AC_MSG_ERROR([--enable-hacking requires Mac OS X version >= 10.3])
+    fi
+  fi 
+
   for dir in \
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
