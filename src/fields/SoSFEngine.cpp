@@ -268,9 +268,9 @@ SoSFEngine::fixCopy(SbBool copyconnections)
 #if defined(COIN_INTERNAL_SOSFNODE) || defined(COIN_INTERNAL_SOSFENGINE)
   SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
 #if COIN_DEBUG
-  fc->assertAlive();
+  if (fc) fc->assertAlive();
 #endif // COIN_DEBUG
-  this->setValue((SoEngine *)fc);
+  if (fc) this->setValue((SoEngine *)fc);
 #endif // COIN_INTERNAL_SOSFNODE || COIN_INTERNAL_SOSFENGINE
 
 #ifdef COIN_INTERNAL_SOSFPATH

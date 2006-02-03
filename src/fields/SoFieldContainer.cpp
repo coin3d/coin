@@ -828,7 +828,12 @@ SoFieldContainer::checkCopy(const SoFieldContainer * orig)
   the copy outside of this method, this will go undetected and the
   guts of \a orig will be copied multiple times into its copy.
 
-  \sa checkCopy()
+  If copyContents() is called directly (instead of using copy()), it's
+  assumed that the user only wants to copy the field values, and we
+  just return NULL here. This is done to match how it's done in SGI
+  Inventor.
+
+  \sa checkCopy() 
 */
 SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * orig,
@@ -836,6 +841,12 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 {
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
+
+  // Sometimes copyContents() is called directly (initCopyDict() is
+  // not called first) to just copy the fields of a single node. This
+  // is often done in SGI example code. We should just return NULL
+  // here in those cases to be compatible with SGI Inventor.
+  if (copydict->copiedinstancestack->getLength() == 0) return NULL;
 
   SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
