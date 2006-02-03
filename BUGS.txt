@@ -1,9 +1,6 @@
 There are additional buglists which may contain important bugs and
-unsupported features for Coin:
-
-        Coin/src/vrml97/TODO
-
-For the Coin satellite libraries, extensions and example programs:
+unsupported features for Coin. For the Coin satellite libraries,
+extensions and example programs:
 
         simage/BUGS.txt
         SoQt/BUGS.txt
@@ -19,20 +16,17 @@ For the Coin satellite libraries, extensions and example programs:
         SoGtk/BUGS.txt
         Cute/BUGS.txt
 
-Now, for the list of known bugs in the core Coin library:
+
+Also, a number of bugs deemed to be obsolete due to age or obscurity
+of environment they can be reproduced in, has been moved out of this
+file. So also for bugs of little consequence, or for other reasons of
+being of very low priority. They have been moved into catalogs under:
+
+        Coin/docs/bugs/
 
 
-=====================================================================
-
-003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
-    graphics hardware.
-
-    Can at least be seen on the SoGuiExamples/nodes/texture
-    example. Reported by Dan Stewart on coin-discuss. Cause not yet
-    known. Hard to debug and fix without access to the platform in
-    question.
-
-    <mortene@sim.no> 20020205.
+Now, for the list of (possibly) significant bugs in the core Coin
+library:
 
 =====================================================================
 
@@ -56,149 +50,6 @@ Now, for the list of known bugs in the core Coin library:
     Consider this bug a low priority item.
 
     mortene 20020625.
-
-=====================================================================
-
-020 There is a crash bug when changing the parts of an
-    SoTransformBoxDragger. It can be reproduced with this stand-alone
-    example:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #include <Inventor/Qt/SoQt.h>
-    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-    #include <Inventor/draggers/SoTransformBoxDragger.h>
-    #include <Inventor/nodes/SoSeparator.h>
-
-
-    int
-    main(int argc, char ** argv)
-    {
-      QWidget * window = SoQt::init(argv[0]);
-
-      SoTransformBoxDragger * dragger = new SoTransformBoxDragger;
-
-      SbString str;
-      for (int i = 1; i <= 6; i++) {
-        str.sprintf("translator%d.translator", i);
-        dragger->setPart(str.getString(), new SoSeparator);
-      }
-
-      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
-      viewer->setSceneGraph(dragger);
-      viewer->show();
-      SoQt::show(window);
-
-      SoQt::mainLoop();
-
-      delete viewer;
-      return 0;
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    The bugs pop up at application *exit*, but not every time -- you
-    will typically have to try 4 or 5 times to get it to bug out.
-
-    Here's the backtrace from the first indication that something is
-    wrong (ie the first SoDebugError posting):
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    Coin error in SoChildList::removePathAuditor(): no SoPath 0x80f5fd8 is auditing list 0x80a3038! (of parent 0x80a2b70 (Dragger))
-    test: /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216: void check_breakpoints(const char *): Assertion `0 && "Coin debug break"' failed.
-
-    Program received signal SIGABRT, Aborted.
-    [Switching to Thread 1024 (LWP 2619)]
-    0x40d7c9f1 in kill () from /lib/libc.so.6
-    (gdb) bt
-    [snip]
-    #5  0x408cbceb in SoDebugError::post (
-        source=0x409d07c0 "SoChildList::removePathAuditor",
-        format=0x409d0780 "no SoPath %p is auditing list %p! (of parent %p (%s))")
-        at /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216
-    #6  0x4097bfe5 in SoChildList::removePathAuditor (this=0x80a3038,
-        path=0x80f5fd8)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:364
-    #7  0x409bd29f in SoPath::truncate (this=0x80f5fd8, length=0, donotify=1)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:499
-    #8  0x409bd1fb in SoPath::truncate (this=0x80f5fd8, length=0)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:473
-    #9  0x409bca5b in SoPath::~SoPath (this=0x80f5fd8, __in_chrg=3)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:154
-    #10 0x40978786 in SoBase::destroy (this=0x80f5fd8)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:383
-    #11 0x40978be5 in SoBase::unref (this=0x80f5fd8)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:501
-    #12 0x407a1db7 in SoDragger::~SoDragger (this=0x80a2b70, __in_chrg=3)
-        at /home/sigma/mortene/code/coin-head/src/draggers/SoDragger.cpp:179
-    #13 0x407dbbb6 in SoTransformBoxDragger::~SoTransformBoxDragger (
-        this=0x80a2b70, __in_chrg=3)
-        at /home/sigma/mortene/code/coin-head/src/draggers/SoTransformBoxDragger.cpp:216
-    [snip]
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-
-    20020821 mortene.
-
-    UPDATE 20021010 mortene: pederb fixed a bug that seems to be
-    caused by the same error as this one. The bug was never really
-    *understood*, though, which seems dangerous.. see the FIXME code
-    comment in SoChildList::remove().
-
-    UPDATE 20021014 rolvs: I tried to reintroduce the bug by undoing
-    the change done by pederb as described in SoChildList::remove()
-    FIXME. I was not able to reproduce the described effect. I'm
-    investigating this further, as there seem to be some gravel in the
-    list-machinery. (See FIXME in SoChildList::insert)
-
-    UPDATE 20021209 rolvs: Consider this fixed and remove from BUGS?
-    (Still unable to reproduce)
-
-=====================================================================
-
-025 Import hangs on invalid scenegraph. This reproduces the problem:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #VRML V2.0 utf8
-
-    Group {
-       children [
-          *
-       ]
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    The '*' character can be replaced by any character not valid in
-    identifier names, and the bug will still be present.
-
-    Should of course never hang, but rather spit out an error message
-    and abort the import process.
-
-    20020911 mortene.
-
-    UPDATE 20050526 mortene: due to various fixes in SoInput-related
-    code, the status for this bug has changed. Import no longer hangs,
-    but fails -- as it should, but the first error message seems
-    bogus:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    embla:~/tmp$ ./examinerviewer bug.wrl
-    Coin read error: Expected '{'; got ']'
-            Occurred at line   6 in bug.wrl
-    Coin read error: Couldn't read value for field "children" of VRMLGroup
-            Occurred at line   6 in bug.wrl
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-=====================================================================
-
-026 Bounding box calculation: the bbox for the Barcelona.iv model is
-    _very_ sub-optimal. (SGI Inventor seems to make a perfect fit.)
-
-    Update, some further investigations made: the bug disappears if we
-    remove the invalid face (there are two "-1" in a row in the
-    coordIndex field). Bbox-calculation code should match the
-    rendering code in what action to take when detecting this case, so
-    bboxes matches the geometry that actually gets rendered.
-
-    20020915 mortene.
 
 =====================================================================
 
@@ -244,176 +95,10 @@ Now, for the list of known bugs in the core Coin library:
     is nevertheless bogus (with GLX at least), and should be fixed so
     the best possible context is created.
 
-=====================================================================
-
-033 Some of the default geometry files for dragger geometries uses an
-    SoDrawStyle::lineWidth > 1.0. This can be outside the legal range
-    of the OpenGL implementation, which only guarantees that 1.0 can
-    be used. (We have indeed received at least one problem report due
-    to this.)
-
-    I'm working on a solution for this, which involves setting up some
-    new global fields which contains the legal ranges of glLineWidth()
-    and glPointSize(). From .iv-files, one can then connect to these
-    global fields.
-
-    20020930 mortene.
-
-    UPDATE 20040804 mortene: my idea mentioned above for a fix had a
-    fatal flaw, so this problem is still unresolved.
-
-    UPDATE 20051103 pederb: SoGLLineWidthElement now checks the 
-    supported OpenGL range, and clamps the line width to be inside 
-    that range. Bug seems to be fixed.
-
-=====================================================================
-
-036 This program will hit an assert if we interact with the
-    SoTrackballDragger at the same time as it is removed from the
-    scenegraph:
-
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    #include <Inventor/Qt/SoQt.h>
-    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-    #include <Inventor/nodes/SoNodes.h>
-    #include <Inventor/sensors/SoTimerSensor.h>
-    #include <Inventor/draggers/SoTrackballDragger.h>
-
-    static void deleteObjectCB(void *d, SoSensor *sensor)
-    {
-      SoSeparator * root = (SoSeparator *)d;
-      if (root->getNumChildren() > 0) { root->removeChild(0); }
-
-      SoNode * n = new SoTrackballDragger;
-      root->addChild(n);
-    }
-
-    int
-    main(int argc, char **argv)
-    {
-      QWidget * mainWindow = SoQt::init(argv[0]);
-
-      SoSeparator * root = new SoSeparator;
-      root->ref();
-
-      SoTimerSensor * sensor = new SoTimerSensor(deleteObjectCB, root);
-      sensor->setInterval(1);
-      sensor->schedule();
-
-      SoQtExaminerViewer *viewer = new SoQtExaminerViewer(mainWindow);
-      viewer->setSceneGraph(root);
-      viewer->viewAll();
-      viewer->show();
-      SoQt::show(mainWindow);
-      SoQt::mainLoop();
-
-      delete sensor;
-      delete viewer;
-      root->unref();
-
-      return 0;
-    }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-
-    Should of course be robust and handle this properly without
-    crashing, even though this is a rather obscure problem.
-
-    (Consider this bug a low-priority item.)
-
-    I did some quick checking on a few other draggers, and they seem
-    to handle getting destructed while they are interacted
-    with. Should check all of them after fixing this
-    SoTrackballDragger bug, though.
-
-    20021011 mortene.
-
-=====================================================================
-
-038 One particular .iv-file with SoIndexedNurbsSurface node causes
-    crash on rendering.
-
-    This scenegraph causes any Coin viewer to crash on first attempt
-    at rendering:
-
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    #Inventor V2.1 ascii
-
-    Separator {
-
-       Texture2 { image 2 2 4 0xff0000ff 0x00ff00ff 0x0000ffff 0xff00ffff }
-
-       Coordinate3 {
-          point [
-           0 0 0,
-           0 0 0,
-           -4.5 -2.0  8.0,
-           -2.0  1.0  8.0,
-           2.0 -3.0  6.0,
-           5.0 -1.0  8.0,
-           -3.0  3.0  4.0,
-           0.0 -1.0  4.0,
-           1.0 -1.0  4.0,
-           3.0  2.0  4.0,
-           -5.0 -2.0 -2.0,
-           -2.0 -4.0 -2.0,
-           2.0 -1.0 -2.0,
-           5.0  0.0 -2.0,
-           -4.5  2.0 -6.0,
-           -2.0 -4.0 -5.0,
-           2.0  3.0 -5.0,
-           4.5 -2.0 -6.0
-          ]
-       }
-
-       TextureCoordinate2 {
-          point [
-           0 0,
-           0 0,
-           0 0,
-           -4.5 8.0,
-           -2.0 8.0,
-           2.0 6.0,
-           5.0 8.0,
-           -3.0 4.0,
-           0.0 4.0,
-           1.0 4.0,
-           3.0 4.0,
-           -5.0 -2.0,
-           -2.0 -2.0,
-           2.0 -2.0,
-           5.0 -2.0,
-           -4.5 -6.0,
-           -2.0 -5.0,
-           2.0 -5.0,
-           4.5 -6.0
-          ]
-       }
-
-
-       IndexedNurbsSurface {
-          numUControlPoints 4
-          numVControlPoints 4
-          uKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
-          vKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
-          numSControlPoints 4
-          numTControlPoints 4
-          sKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
-          tKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
-          coordIndex [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
-          textureCoordIndex [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ]
-       }
-    }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-
-    If we remove all texture-related stuff in the file, it will no
-    longer crash.
-
-    Investigate to find the exact cause. If it's our bug, fix. If it's
-    a bug in the file, try to make code more robust (at least insert
-    an assert(), but preferably handle with just a warning and no
-    crash).
-
-    20021015 mortene.
+    UPDATE 20060203 mortene: a *lot* has been improved about offscreen
+    rendering contexts since the last update on this bug, but the
+    selection process among the available contexts has still not been
+    fixed, nor exposed to the user in the form of any public API.
 
 =====================================================================
 
@@ -601,77 +286,6 @@ Now, for the list of known bugs in the core Coin library:
     UPDATE 20021209 rolvs : This bug is caused by intended behaviour:
     The real-time field is updated every frame (TGS and
     SGI). Investigate to find the correct update policy.
-
-=====================================================================
-
-041 Circular field connections not always handled.
-
-    Circular field connections are legal, but the following example
-    shows off a case where it fails (just build and run to see how):
-
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    #include <Inventor/SoDB.h>
-    #include <Inventor/nodes/SoCone.h>
-    #include <Inventor/nodes/SoMaterial.h>
-    #include <Inventor/nodes/SoSeparator.h>
-    #include <Inventor/engines/SoInterpolateVec3f.h>
-    #include <Inventor/nodes/SoTranslation.h>
-    #include <Inventor/engines/SoCompose.h>
-
-    int main(int argc, char *argv[])
-    {
-      SoDB::init();
-
-      SoSeparator *root = new SoSeparator;
-      root->ref();
-
-      SoSeparator *test = new SoSeparator;
-      SoTranslation *redball = new SoTranslation;
-      test->addChild(redball);
-
-      SoSeparator *scene = new SoSeparator;
-      SoMaterial *mat = new SoMaterial;
-      scene->addChild(mat);
-
-      root->addChild(test);
-      root->addChild(scene);
-
-      SoDecomposeVec3f *dv = NULL;
-      SoComposeVec3f *cv = NULL;
-      SoInterpolateVec3f *interpred = NULL;
-
-      dv = new SoDecomposeVec3f;
-      interpred = new SoInterpolateVec3f;
-
-      interpred->input0.setValue(0.0, -0.5, 0.0);
-      interpred->input1.setValue(0.0, 0.5, 0.0);
-      interpred->alpha.connectFrom(&dv->x);
-      redball->translation.connectFrom(&interpred->output);
-
-      cv = new SoComposeVec3f;
-      cv->ref();
-      cv->x.connectFrom(&dv->x);
-      cv->y.connectFrom(&dv->y);
-      cv->z.connectFrom(&dv->z);
-
-      dv->vector.connectFrom(&mat->diffuseColor);
-      mat->diffuseColor.connectFrom(&cv->vector);
-
-      root->unref();
-
-      return 0;
-    }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-
-    (Example code from kintel.)
-
-    Needs to analyze the code which spits out the warning and find the
-    exact cause of why this is found to be problematic.
-
-    Using circular connections for fields is pretty obscure, so
-    consider this bug fairly low-priority to fix.
-
-    20021016 mortene.
 
 =====================================================================
 
