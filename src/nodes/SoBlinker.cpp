@@ -51,6 +51,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
 
 // *************************************************************************
 
@@ -70,24 +71,54 @@ SO_NODE_SOURCE(SoBlinker);
 
 // *************************************************************************
 
+#define PRIVATE(_obj_) (_obj_)->pimpl
+
+class SoBlinkerP {
+public:
+  SoBlinkerP(SoBlinker * master) : master(master) { }
+
+  static void whichChildCB(void * closure, SoSensor * sensor) {
+    SoBlinkerP * thisp = (SoBlinkerP*) closure;
+    thisp->counter->reset.setValue(thisp->whichvalue);
+
+    // if sensor/blinker isn't enabled, we need to manually set the whichChild field
+    if (!thisp->counter->on.getValue()) {
+      SbBool old = thisp->master->whichChild.enableNotify(FALSE);
+      thisp->master->whichChild = thisp->whichvalue;
+      thisp->master->whichChild.enableNotify(old);
+    }
+  }
+  SoBlinker * master;
+  int whichvalue;
+  SoTimeCounter * counter;
+  SoOneShotSensor * whichChildSensor;
+};
+
+// *************************************************************************
+
 /*!
   Constructor.
 */
 SoBlinker::SoBlinker(void)
 {
+  PRIVATE(this) = new SoBlinkerP(this);
+  PRIVATE(this)->counter = new SoTimeCounter;
+  PRIVATE(this)->counter->ref();
+  PRIVATE(this)->counter->min = SO_SWITCH_NONE;
+  PRIVATE(this)->counter->max = SO_SWITCH_NONE;
+  PRIVATE(this)->counter->frequency.connectFrom(&this->speed);
+  PRIVATE(this)->counter->on.connectFrom(&this->on);
+  PRIVATE(this)->whichChildSensor = 
+    new SoOneShotSensor(SoBlinkerP::whichChildCB, PRIVATE(this));
+  PRIVATE(this)->whichChildSensor->setPriority(1);
+  PRIVATE(this)->whichvalue = SO_SWITCH_NONE;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBlinker);
 
   SO_NODE_ADD_FIELD(speed, (1));
   SO_NODE_ADD_FIELD(on, (TRUE));
-
-  this->counter = new SoTimeCounter;
-  this->counter->ref();
-  this->counter->min = SO_SWITCH_NONE;
-  this->counter->max = SO_SWITCH_NONE;
-  this->counter->frequency.connectFrom(&this->speed);
-  this->counter->on.connectFrom(&this->on);
-
-  this->whichChild.connectFrom(&this->counter->output, TRUE);
+  
+  this->whichChild.connectFrom(&PRIVATE(this)->counter->output, TRUE);
 }
 
 /*!
@@ -95,7 +126,9 @@ SoBlinker::SoBlinker(void)
 */
 SoBlinker::~SoBlinker()
 {
-  this->counter->unref();
+  delete PRIVATE(this)->whichChildSensor;
+  PRIVATE(this)->counter->unref();
+  delete PRIVATE(this);
 }
 
 // doc in parent
@@ -142,32 +175,38 @@ SoBlinker::notify(SoNotList * nl)
   // See if the whichChild field was "manually" set.
   if (nl->getFirstRec()->getBase() == this &&
       nl->getLastField() == &this->whichChild) {
-    this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
-    this->counter->reset.setValue(this->whichChild.getValue());
-    this->counter->enableNotify(TRUE);
+    // delay whichChild reset with the one shot sensor (to enable
+    // children to be added before the reset is actually done)
+
+    // disable connection while reading whichChild to get the actual value set
+    SbBool old = this->whichChild.isConnectionEnabled();
+    this->whichChild.enableConnection(FALSE);
+    PRIVATE(this)->whichvalue = this->whichChild.getValue();
+    this->whichChild.enableConnection(old);
+    PRIVATE(this)->whichChildSensor->schedule();
   }
 
   // Check if a child was added or removed.
   int lastchildidx = this->getNumChildren() - 1;
-  if (this->counter->max.getValue() != lastchildidx) {
+
+  if (PRIVATE(this)->counter->max.getValue() != lastchildidx) {
     // Wrap to avoid recursive invocation.
-    this->counter->enableNotify(FALSE);
+    PRIVATE(this)->counter->enableNotify(FALSE);
 
     // Note that if we have one child, the counting should go from -1
     // to 0 (so the child is toggled on and off).
-    this->counter->min.setValue(lastchildidx > 0 ? 0 : SO_SWITCH_NONE);
-    this->counter->max.setValue(lastchildidx >= 0 ? lastchildidx : SO_SWITCH_NONE);
+    PRIVATE(this)->counter->min.setValue(lastchildidx > 0 ? 0 : SO_SWITCH_NONE);
+    PRIVATE(this)->counter->max.setValue(lastchildidx >= 0 ? lastchildidx : SO_SWITCH_NONE);
 
     // To avoid SoSwitch getting an out-of-range whichChild value, in
     // case whichChild was at the end.
     if (lastchildidx < this->whichChild.getValue()) {
-      this->counter->reset.setValue(lastchildidx);
+      PRIVATE(this)->counter->reset.setValue(lastchildidx);
       this->whichChild.setDirty(TRUE); // Force evaluate() on the field.
     }
-
-    this->counter->enableNotify(TRUE);
+    PRIVATE(this)->counter->enableNotify(TRUE);
   }
-
+  
   inherited::notify(nl);
 }
 
@@ -207,11 +246,11 @@ SoBlinker::deconnectInternalEngine(void)
 {
   // Do this first, to avoid field being set due to subsequent engine
   // input value change.
-  this->whichChild.disconnect(&this->counter->output);
+  this->whichChild.disconnect(&PRIVATE(this)->counter->output);
 
-  this->counter->on.disconnect(&this->on);
-  this->counter->on = FALSE;
-  this->counter->frequency.disconnect(&this->speed);
+  PRIVATE(this)->counter->on.disconnect(&this->on);
+  PRIVATE(this)->counter->on = FALSE;
+  PRIVATE(this)->counter->frequency.disconnect(&this->speed);
 }
 
 
@@ -219,8 +258,10 @@ SoBlinker::deconnectInternalEngine(void)
 void
 SoBlinker::reconnectInternalEngine(void)
 {
-  this->counter->frequency.connectFrom(&this->speed);
-  this->counter->on.connectFrom(&this->on);
+  PRIVATE(this)->counter->frequency.connectFrom(&this->speed);
+  PRIVATE(this)->counter->on.connectFrom(&this->on);
 
-  this->whichChild.connectFrom(&this->counter->output, TRUE);
+  this->whichChild.connectFrom(&PRIVATE(this)->counter->output, TRUE);
 }
+
+#undef PRIVATE

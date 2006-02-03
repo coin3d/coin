@@ -29,9 +29,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-class SoSensor;
-class SoOneShotSensor;
-class SoTimeCounter;
+class SoBlinkerP;
 
 class COIN_DLL_API SoBlinker : public SoSwitch {
   typedef SoSwitch inherited;
@@ -57,7 +55,7 @@ private:
   void deconnectInternalEngine(void);
   void reconnectInternalEngine(void);
 
-  SoTimeCounter * counter;
+  SoBlinkerP * pimpl;
 };
 
 #endif // !COIN_SOBLINKER_H
