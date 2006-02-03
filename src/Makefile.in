@@ -148,6 +148,8 @@ LT_REVISION = @LT_REVISION@
 MACOSX_10_2FF = @MACOSX_10_2FF@
 MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
 MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
+MACOSX_10_3FF_FALSE = @MACOSX_10_3FF_FALSE@
+MACOSX_10_3FF_TRUE = @MACOSX_10_3FF_TRUE@
 MACOSX_FALSE = @MACOSX_FALSE@
 MACOSX_NAME = @MACOSX_NAME@
 MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
@@ -354,15 +356,19 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	foreignfiles/foreignfiles.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
+@MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
+
 
 # **************************************************************************
 # Installation information.
 
 # On Mac OS 10.2 or later, create two-level namespace binaries and use
-# prebinding. Also pad the install_name to make it possible to change it
-# later (e.g. to include the library in an app bundle).
-@MACOSX_10_2FF_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
-@MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
+# prebinding. Also pad the install_name to make it possible to change
+# it later (e.g. to include the library in an app bundle).  On Mac OS
+# 10.3 or later, use -undefined dynamic_lookup to delay symbol lookup
+# to runtime (needed to make enable_hacking work)
+@MACOSX_10_2FF_TRUE@@MACOSX_10_3FF_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+@MACOSX_10_2FF_TRUE@@MACOSX_10_3FF_FALSE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \
