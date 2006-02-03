@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include "JS_VRMLClasses.h"
+
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/spidermonkey.h>
