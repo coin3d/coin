@@ -2748,31 +2748,6 @@ Text2 { string "test" }
 
 =====================================================================
 
-158 Error in SoExtSelection when trying to select a point.
-
-    Using the VISIBLE_SHAPE selection mode in the
-    SoGuiExamples/nodes/extselection example (hit 'v'), then trying to
-    select the point from the following iv-file, will fail with a lot
-    of warnings:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#Inventor V2.1 ascii
-
-Coordinate3 { point [ 0 0 0 ] }
-PointSet { }
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    The warnings and error is probably due to the bounding box of the
-    scene is a simple point. This is not robust enough, and needs to
-    be fixed.
-
-    When correcting this error, make sure to also make SoExtSelection
-    work properly when the bbox of the scene is empty.
-
-    20041102 mortene.
-
-=====================================================================
-
 162 Inconsistent traversal behavior upon traversal of VRML97-nodes
     with SoSFNode and/or SoMFNode fields.
 
