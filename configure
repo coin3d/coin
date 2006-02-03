@@ -37289,8 +37289,14 @@ fi
     COIN_EXTRA_CPPFLAGS=
     COIN_EXTRA_CFLAGS=
     COIN_EXTRA_CXXFLAGS=
-    COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME"
-    COIN_EXTRA_LIBS=
+    if test x"$enable_hacking" = x"yes"; then
+      COIN_EXTRA_LDFLAGS="-L$frameworkdir/Libraries"
+    else
+      # we don't want -lCoin when doing framework build
+      COIN_EXTRA_LIBS=
+      COIN_EXTRA_LDFLAGS=
+    fi
+    COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME" $COIN_EXTRA_LDFLAGS
     # adjust for OpenGL usage
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
