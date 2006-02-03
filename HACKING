@@ -96,6 +96,10 @@ demonstration purposes):
         MACOSX_DEPLOYMENT_TARGET environment variable to 10.3 or
         higher. 
 
+        The --enable-hacking hack also works with the Mac OS X
+        framework build, however note that you'll need to set your
+        DYLD_LIBRARY_PATH to include Inventor.framework/Libraries.
+
   $ make install
 
         Building will take quite some time, go for a coffee.
