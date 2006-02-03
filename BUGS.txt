@@ -557,40 +557,6 @@ library:
 
 =====================================================================
 
-070 SoNode::copyContents() bug.
-
-    This bug report came on coin-discuss:
-
-    --------------8<----------- [snip] ------------------8<--------
-    I'm trying to port ivperf to Windows, and came across this strange
-    problem -
-
-    When it calls SoNode::copyContents, I get an assert thrown in
-    SoFieldContainer::findCopy (which was called from
-    SoMFNode::fixCopy).  It complains that the "copiedinstancestack"
-    hasn't been created. (line 735)
-
-    Now, looking at the code, it appears that the copiedinstancestack
-    and friends only get created by a call from SoNode::copy, not
-    SoNode::copyContents.  Is this a bug in Coin or ivperf?
-
-    I had a brief look through the SGI Inventor source, and it appears
-    that their findCopy would return NULL if the dictionary hadn't
-    been created. Is this the correct behaviour?
-
-    --------------8<----------- [snip] ------------------8<--------
-
-    We should probably match the semantics of SoNode::copyContents()
-    in SGI Inventor 100% -- that is, _unless_ the "return NULL"
-    strategy is just a stupid robustness bug work-around in SGI
-    Inventor.
-
-    Investigate.
-
-    20030520 mortene.
-
-=====================================================================
-
 072 Assert failure when writing extension nodekit in binary format.
 
     Running the example program below causes the following assert to
