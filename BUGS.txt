@@ -3925,65 +3925,6 @@ Cube {
 
 =====================================================================
 
-192 VRML97 fan-in doesn't work.
-
-    Reproduce with the example below, in any viewer. It should be
-    possible to switch on the PointLight with both clicking on the
-    Sphere and on the Text, but only the link of the latest ROUTE
-    connection works (as that probably just replaces the previous
-    connection to the PointLight "on" field).
-
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-#VRML V2.0 utf8
-
-Group {
-   children [
-      Transform {
-         children [
-            DEF light PointLight {
-               intensity 1
-               on FALSE
-            }
-
-            Transform {
-               translation -2 0 -2
-               children [
-                  Shape {
-                     appearance Appearance {
-                        material Material {
-                           diffuseColor 1 0 1
-                           specularColor 1 1 1
-                           shininess 0.9
-                        }
-                     }
-                     geometry Sphere { }
-                  }
-                  DEF touchsensor0 TouchSensor { }
-               ]
-            }
-         ]
-      }
-      Transform {
-         children [
-            Shape {
-               appearance Appearance {
-                  material Material { emissiveColor 1 1 0 }
-               }
-               geometry Text { string "CLICK" }
-            }
-            DEF touchsensor1 TouchSensor { }
-         ]
-      }
-   ]
-   ROUTE touchsensor0.isActive TO light.set_on
-   ROUTE touchsensor1.isActive TO light.set_on
-}
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-
-    20050526 mortene.
-
-=====================================================================
-
 193 superglu should be sync'ed against SGI GLU.
 
     This should be done with regular intervals, to get any bug fixes
