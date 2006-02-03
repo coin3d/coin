@@ -35,6 +35,9 @@
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
 
+  If FetchURLCallBack isn't set, the alternateRep will be rendered
+  instead.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     WWWInline {
@@ -146,7 +149,7 @@ SbColor * SoWWWInline::bboxcolor;
 static SoColorPacker * wwwinline_colorpacker = NULL;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
 
-SbBool SoWWWInline::readassofile = TRUE;
+SbBool SoWWWInline::readassofile = FALSE;
 
 void
 SoWWWInline::cleanup(void)
@@ -164,8 +167,8 @@ class SoWWWInlineP {
   }
   SoWWWInline * owner;
   SoChildList * children;
-  SbBool readNamedFile(SoInput * in);
-  SbBool readChildren(SoInput * in = NULL);
+  SbBool readNamedFile();
+  SbBool readChildren();
   SbString fullname;
   SbBool didrequest;
 
@@ -269,8 +272,7 @@ SoWWWInline::requestURLData(void)
 {
   if (!THIS->didrequest) {
     THIS->didrequest = TRUE;
-    SoInput in;
-    (void) THIS->readChildren(&in);
+    (void) THIS->readChildren();
   }
 }
 
@@ -285,8 +287,8 @@ SoWWWInline::isURLDataRequested(void) const
 }
 
 /*!
-  Return \c TRUE if the current child data has been read from file an
-  URL.
+  Return \c TRUE if the current child data has been read from file/URL
+  and set using setChildData().
 */
 SbBool
 SoWWWInline::isURLDataHere(void) const
@@ -309,7 +311,8 @@ SoWWWInline::cancelURLDataRequest(void)
 }
 
 /*!
-  Manually set up the subgraph for this node.
+  Manually set up the subgraph for this node. This should be used
+  by the application to set the data that was read from the file/URL.
 */
 void
 SoWWWInline::setChildData(SoNode * urldata)
@@ -334,6 +337,8 @@ SoWWWInline::getChildData(void) const
   Sets the URL fetch callback. This will be used in
   SoWWWInline::readInstance() or when the user calls
   SoWWWInline::requestURLData().
+// FIXME: Shouldn't called on readInstance(), only when we need to
+// render the node (or calculate the bbox if we don't have one). kintel 20060203.
 */
 void
 SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f,
@@ -345,6 +350,7 @@ SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f,
 
 /*!
   Sets the bounding box visibility strategy.
+  The default is UNTIL_LOADED.
 */
 void
 SoWWWInline::setBoundingBoxVisibility(BboxVisibility b)
@@ -635,7 +641,7 @@ SoWWWInline::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
-    ret = THIS->readChildren(in);
+    ret = THIS->readChildren();
   }
   return ret;
 }
@@ -663,19 +669,19 @@ SoWWWInline::copyContents(const SoFieldContainer * fromfc,
 
 // *************************************************************************
 
-// Read the file named in the name field. Based on SoFile::readNamedFile
+// Read the file named in the name field.
 SbBool
-SoWWWInlineP::readNamedFile(SoInput * in)
+SoWWWInlineP::readNamedFile()
 {
   // If we can't find file, ignore it. Note that this does not match
   // the way Inventor works, which will make the whole read process
   // exit with a failure code.
+  SoInput in;
 
   SbString name = this->owner->getFullURLName();
+  if (!in.openFile(name.getString())) return TRUE;
 
-  if (!in->pushFile(name.getString())) return TRUE;
-
-  SoSeparator * node = SoDB::readAll(in);
+  SoSeparator * node = SoDB::readAll(&in);
 
   // Popping the file off the stack again is done implicit in SoInput
   // upon hitting EOF (unless the read fails, see below).
@@ -685,56 +691,43 @@ SoWWWInlineP::readNamedFile(SoInput * in)
     this->children->append((SoNode *)node);
   }
   else {
-    // Take care of popping the file off the stack. This is a bit
-    // "hack-ish", but its done this way instead of loosening the
-    // protection of SoInput::popFile().
-    if (in->getCurFileName() == name) {
-      char dummy;
-      while (!in->eof() && in->get(dummy));
-
-      assert(in->eof());
-
-      // Make sure the stack is really popped on EOF. Popping happens
-      // when attempting to read when the current file in the stack is
-      // at EOF.
-      SbBool gotchar = in->get(dummy);
-      if (gotchar) in->putBack(dummy);
-    }
-
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
-    SoReadError::post(in, "Unable to read subfile: ``%s''",
+    SoReadError::post(&in, "Unable to read subfile: ``%s''",
                       name.getString());
   }
 
   return TRUE;
 }
 
-// read children, either using the URL callback or by reading from
-// local file directly.
+/*!
+  Read children, either using the URL callback or by reading from
+  local file directly.
+
+       fetchURLCB is NULL:   Use alternaterep. NB! Always uses alternate rep 
+                             in this case.
+  else name not set:         Do nothing
+  else readassofile is TRUE: Assume name points to a local file and load
+                             automatically without using fetchURLCB.
+
+*/
 SbBool
-SoWWWInlineP::readChildren(SoInput * in)
+SoWWWInlineP::readChildren()
 {
-  if (in && SoWWWInline::readassofile &&
-      this->owner->name.getValue() != SoWWWInlineP::UNDEFINED_FILE) {
-    if (!this->readNamedFile(in)) {
-      if (this->owner->alternateRep.getValue()) {
-#if COIN_DEBUG
-        SoDebugError::postInfo("SoWWWInline::readInstance",
-                               "Using alternate representation");
-#endif // COIN_INSTANCE
-        this->owner->setChildData(this->owner->alternateRep.getValue());
-      }
+  if (!SoWWWInline::fetchurlcb) {
+    if (this->owner->alternateRep.getValue()) {
+      this->owner->setChildData(this->owner->alternateRep.getValue());
     }
   }
-  else if (!SoWWWInline::readassofile) {
-    if (SoWWWInline::fetchurlcb) {
+  else if (this->owner->name.getValue() != SoWWWInlineP::UNDEFINED_FILE) {
+    if (SoWWWInline::readassofile) {
+      return this->readNamedFile();
+    }
+    else {
       SoWWWInline::fetchurlcb(this->owner->getFullURLName(),
                               SoWWWInline::fetchurlcbdata,
                               this->owner);
     }
   }
-  return TRUE; // always return TRUE
+  return TRUE;
 }
-
-// *************************************************************************
