@@ -319,7 +319,10 @@ SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   if (!this->shouldPrimitiveCount(action)) return;
   int num = this->numPoints.getValue();
   if (num < 0) {
-    SoVertexProperty *vp = (SoVertexProperty*) this->vertexProperty.getValue();
+    SoNode *vpnode = this->vertexProperty.getValue();
+    SoVertexProperty *vp = 
+      (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+      (SoVertexProperty *)vpnode : NULL;
     if (vp && vp->vertex.getNum()) {
       num = vp->vertex.getNum() - this->startIndex.getValue();
     }

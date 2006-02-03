@@ -341,9 +341,10 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE)
     ccw = FALSE;
 
-  SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
-  assert(!vp ||
-         vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
+  SoNode *vpnode = this->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
   SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
   SbBool vpnorm = vp && (vp->normal.getNum() > 0);
 

@@ -2704,22 +2704,6 @@ int main(int argc, char ** argv)
 
 =====================================================================
 
-156 Setting a node that is not of SoVertexProperty type in
-    the SoVertexShape::vertexProperty field causes assert failure.
-
-    Should be robust. The assert seen was:
-
-> SoIndexedShape.cpp:133: virtual void
-> SoIndexedShape::computeBBox(SoAction*, SbBox3f&, SbVec3f&): Assertion `!vp
-> || vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId())'
-> failed.
-
-    ..but there could be more of these. Audit, fix, test.
-
-    20041028 mortene.
-
-=====================================================================
-
 157 SoFont does not support styles under Windows.
 
     When adding a style to a fontname, the fallback font is used

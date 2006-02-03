@@ -89,9 +89,10 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
   const SoCoordinateElement *coordelem =
     SoCoordinateElement::getInstance(action->getState());
 
-  SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
-  assert(!vp ||
-         vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
+  SoNode *vpnode = this->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
   SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
 
   const int numCoords = vpvtx ?

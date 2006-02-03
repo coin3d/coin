@@ -1233,9 +1233,13 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   ifs->convex = action->getFaceType() == SoShapeHints::CONVEX;
 
   // If there is a VertexProperty node set we need to put it on the state stack
-  if (oldifs->vertexProperty.getValue() != NULL) {
+  SoNode *vpnode = oldifs->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
+  if (vp) {
     action->getState()->push();
-    ((SoVertexProperty *)oldifs->vertexProperty.getValue())->callback(action);
+    vp->callback(action);
   }
 
   const SoCoordinateElement * coordElem = SoCoordinateElement::getInstance(action->getState());
@@ -1306,7 +1310,7 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
 
   // it's important to pop state _after_ inserting the shape to get
   // the correct material from SoVertexProperty nodes.
-  if (oldifs->vertexProperty.getValue() != NULL) {
+  if (vp) {
     action->getState()->pop();
   }
 
@@ -1331,9 +1335,13 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
   SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
-  if (oldils->vertexProperty.getValue() != NULL) {
+  SoNode *vpnode = oldils->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
+  if (vp) {
     action->getState()->push();
-    ((SoVertexProperty *)oldils->vertexProperty.getValue())->callback(action);
+    vp->callback(action);
   }
 
   SoVRMLCoordinate * newcoord = NULL;
@@ -1467,7 +1475,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
 
   // it's important to pop state _after_ inserting the shape to get
   // the correct material from SoVertexProperty nodes.
-  if (oldils->vertexProperty.getValue() != NULL) {
+  if (vp) {
     action->getState()->pop();
   }
 
@@ -1491,9 +1499,13 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
   SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
-  if (oldls->vertexProperty.getValue() != NULL) {
+  SoNode *vpnode = oldls->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
+  if (vp) {
     action->getState()->push();
-    ((SoVertexProperty *)oldls->vertexProperty.getValue())->callback(action);
+    vp->callback(action);
   }
 
   const SoCoordinateElement * coordElem = SoCoordinateElement::getInstance(action->getState());
@@ -1593,7 +1605,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 
   // it's important to pop state _after_ inserting the shape to get
   // the correct material from SoVertexProperty nodes.
-  if (oldls->vertexProperty.getValue() != NULL) {
+  if (vp) {
     action->getState()->pop();
   }
   return SoCallbackAction::PRUNE;
@@ -1613,9 +1625,13 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
-  if (oldps->vertexProperty.getValue() != NULL) {
+  SoNode *vpnode = oldps->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
+  if (vp) {
     action->getState()->push();
-    ((SoVertexProperty *)oldps->vertexProperty.getValue())->callback(action);
+    vp->callback(action);
   }
 
 
@@ -1651,7 +1667,7 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   THISP(closure)->insert_shape(action, ps);
   // it's important to pop state _after_ inserting the shape to get
   // the correct material from SoVertexProperty nodes.
-  if (oldps->vertexProperty.getValue() != NULL) {
+  if (vp) {
     action->getState()->pop();
   }
 
@@ -1810,7 +1826,10 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   thisp->didpush = FALSE;
   // push state to handle SoVertexProperty node
   if (node->isOfType(SoVertexShape::getClassTypeId())) {
-    SoVertexProperty * vp = (SoVertexProperty*) (((SoVertexShape*) node)->vertexProperty.getValue());
+    SoNode *vpnode = ((SoVertexShape *) node)->vertexProperty.getValue();
+    SoVertexProperty *vp =
+      (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+      (SoVertexProperty *)vpnode : NULL;
     if (vp) {
       action->getState()->push();
       vp->callback(action);

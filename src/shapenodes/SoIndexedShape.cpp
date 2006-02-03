@@ -132,9 +132,10 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SoState * state = action->getState();
 
   const SoCoordinateElement * coordelem = NULL;
-  SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
-  assert(!vp ||
-         vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
+  SoNode *vpnode = this->vertexProperty.getValue();
+  SoVertexProperty *vp = 
+    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
+    (SoVertexProperty *)vpnode : NULL;
   SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
   if (!vpvtx) {
     coordelem = SoCoordinateElement::getInstance(state);
