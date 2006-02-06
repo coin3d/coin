@@ -95,47 +95,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-003 mutex.c:145: failed assertion `ok == CC_OK'
-
-    ...when doing this:
-    
-    #include <Inventor/SoDB.h>
-    #include <stdio.h>
-    
-    int main(int argc, char *argv[])
-    {
-      printf("Press key....\n");
-      getchar();
-    
-      for (int i=0;i<2;i++) {
-        SoDB::init();
-        SoDB::finish();
-      }
-      printf("Check for leaks.\n");
-      getchar();
-      return 0;
-    }
-
-    20060206 kintel.
-
-=====================================================================
-
-004 Crash in dict_get_index()
-
-    Same file as #003 results in a bus error with the following stack trace:
-
-    #1  0x0034a3e8 in dict_get_index (ht=0x2b01880, key=5531720) at ../../../../checkout/Coin/src/base/dict.c:51
-    #2  0x00349ef0 in cc_dict_get (ht=0x2b01880, key=5531720, val=0xbffff720) at ../../../../checkout/Coin/src/base/dict.c:213
-    #3  0x002890c0 in cc_sync_begin (id=0x546848) at ../../../../checkout/Coin/src/threads/sync.c:86
-    #4  0x00546870 in cgglue_init () at ../../../../checkout/Coin/src/glue/cg.c:189
-    #5  0x005483e4 in cc_cgglue_available () at ../../../../checkout/Coin/src/glue/cg.c:344
-    #6  0x029dad74 in SoShader::init() () at ../../../../checkout/Coin/src/shaders/SoShader.cpp:43
-    #7  0x02dcec2c in SoDB::init() () at ../../../../checkout/Coin/src/misc/SoDB.cpp:663
-
-    20060206 kintel.
-
-=====================================================================
-
 005 Possible memory corruption in cc_rbptree_init()
 
     This code looks suspicious:
