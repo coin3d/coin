@@ -394,6 +394,7 @@ public:
     SbBool allhit;
     SbBool onlyrect;
     SbBool allshapes;
+    SbBool hasgeometry;
   } primcbdata_t;
   primcbdata_t primcbdata;
 
@@ -1432,7 +1433,8 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   SbBool hit = FALSE;
   switch (ext->lassoPolicy.getValue()) {
   case SoExtSelection::FULL:
-    hit = PRIVATE(ext)->primcbdata.allhit;
+    hit = (PRIVATE(ext)->primcbdata.allhit && 
+           PRIVATE(ext)->primcbdata.hasgeometry);
     PRIVATE(ext)->primcbdata.allhit = FALSE;
     break;
   case SoExtSelection::PART:
@@ -1659,6 +1661,7 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
   this->primcbdata.vpsize = SoViewportRegionElement::get(action->getState()).getViewportSizePixels();
   this->primcbdata.abort = FALSE;
   this->primcbdata.onlyrect = (this->runningselection.mode == SelectionState::LASSO);
+  this->primcbdata.hasgeometry = FALSE;
   // signal to callback action that we want to generate primitives for
   // this shape
   return SoCallbackAction::CONTINUE;
@@ -1703,6 +1706,7 @@ SoExtSelectionP::triangleCB(void * userData,
 
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
 
+  thisp->primcbdata.hasgeometry = TRUE;
   thisp->drawcallbackcounter++;
 
   if (!thisp->applyonlyonselectedtriangles) {
@@ -1918,6 +1922,8 @@ SoExtSelectionP::lineSegmentCB(void *userData,
                                const SoPrimitiveVertex * v2)
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+
+  thisp->primcbdata.hasgeometry = TRUE;
   thisp->drawcallbackcounter++;
 
   if (!thisp->applyonlyonselectedtriangles) {
@@ -2084,6 +2090,8 @@ SoExtSelectionP::pointCB(void *userData,
                          const SoPrimitiveVertex * v)
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+ 
+  thisp->primcbdata.hasgeometry = TRUE;
   thisp->drawcallbackcounter++;
 
   if (!thisp->applyonlyonselectedtriangles) {
