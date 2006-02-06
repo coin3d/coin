@@ -2038,27 +2038,20 @@ Separator {
 
 =====================================================================
 
-132 SoExtSelection::select()
+132 SoExtSelection: Unimplemented methods
 
-    This function hasn't been implemented.  One should be able to
-    programmatically manage the selection through e.g. this piece of
-    code:
+    The following methods has been stubbed but not implemented:
 
-      // get selected node
-      SoNode *pNode = pViewer->getSceneManager()->getSceneGraph();
-
-      // m_pSel is a local SoExtSelection node
-      m_pSel->enableNotify( false );
-      m_pSel->addChild( pNode );
-      m_pSel->setPointFilterCallback(  _pointSelCB, this );
-      m_pSel->select ( m_pSel, 4, normPos, m_vpRegion, false );
-      m_pSel->setPointFilterCallback(  0, this );
-      m_pSel->removeChild( pNode );
-      m_pSel->enableNotify( true );
-
-    We should at least stub it for the next minor release...
+    void select(SoNode * root, int numcoords, SbVec2f * lasso, 
+                const SbViewportRegion & vp, SbBool shiftpolicy)
+    void select(SoNode * root, int numcoords, SbVec3f * lasso,
+                const SbViewportRegion & vp, SbBool shiftkeypolicy);
+    const SbVec2s * getLassoCoordsDC(int & numCoords);
+    const SbVec3f * getLassoCoordsWC(int & numCoords);
+    const SoPathList & getSelectionPathList() const;
 
     20040831 larsa.
+    Updated 20060206 kintel.
 
 =====================================================================
 
