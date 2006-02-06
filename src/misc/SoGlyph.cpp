@@ -427,6 +427,7 @@ static void
 SoGlyph_cleanup(void)
 {
   delete activeGlyphs;
+  activeGlyphs = NULL;
   CC_MUTEX_DESTRUCT(SoGlyph_mutex);
 }
 

@@ -137,10 +137,15 @@ static void
 fcglue_cleanup(void)
 {
 #ifdef FONTCONFIG_RUNTIME_LINKING
-  if (fontconfig_libhandle) { cc_dl_close(fontconfig_libhandle); }
+  if (fontconfig_libhandle) {
+    cc_dl_close(fontconfig_libhandle);
+    fontconfig_libhandle = NULL;
+  }
 #endif /* FREETYPE_RUNTIME_LINKING */
   assert(fontconfig_instance);
   free(fontconfig_instance);
+  fontconfig_instance = NULL;
+  fontconfig_failed_to_load = 0;
 }
 
 static const cc_fcglue_t *
@@ -311,10 +316,15 @@ static void
 ftglue_cleanup(void)
 {
 #ifdef FREETYPE_RUNTIME_LINKING
-  if (freetype_libhandle) { cc_dl_close(freetype_libhandle); }
+  if (freetype_libhandle) {
+    cc_dl_close(freetype_libhandle);
+    freetype_libhandle = NULL;
+  }
 #endif /* FREETYPE_RUNTIME_LINKING */
   assert(freetype_instance);
   free(freetype_instance);
+  freetype_instance = NULL;
+  freetype_failed_to_load = 0;
 }
 
 static const cc_ftglue_t *

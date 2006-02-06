@@ -82,7 +82,9 @@ static void
 sokeyboardevent_cleanup(void)
 {
   delete converttoprintable;
+  converttoprintable = NULL;
   delete converttoprintable_shift;
+  converttoprintable_shift = NULL;
 }
 
 static void

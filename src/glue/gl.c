@@ -237,6 +237,7 @@ static cc_list * gl_instance_created_cblist = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
+static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
 
 /* ********************************************************************** */
 
@@ -495,7 +496,13 @@ glglue_cleanup(void)
 {
   cc_dict_apply(gldict, free_glglue_instance, NULL);
   cc_dict_destruct(gldict);
-  if (gl_handle) cc_dl_close(gl_handle);
+  gldict = NULL;
+  if (gl_handle) {
+    cc_dl_close(gl_handle);
+    gl_handle = NULL;
+  }
+  glglue_tried_open_self = FALSE;
+  offscreen_cb = NULL;
 }
 
 /*
@@ -3990,8 +3997,6 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 */
 
 /* offscreen rendering callback handling */
-
-static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
 
 void 
 cc_glglue_context_set_offscreen_cb_functions(cc_glglue_offscreen_cb_functions* p)

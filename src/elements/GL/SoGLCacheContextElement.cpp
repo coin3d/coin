@@ -101,6 +101,8 @@ static void soglcachecontext_cleanup(void)
     SoContextHandler::removeContextDestructionCallback(soglcache_contextdestructioncb, NULL);
     soglcache_contextdestructioncb = NULL;
   }
+
+  biggest_cache_context_id = 0;
 }
 
 //

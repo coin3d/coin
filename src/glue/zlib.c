@@ -135,10 +135,15 @@ static void
 zlibglue_cleanup(void)
 {
 #ifdef ZLIB_RUNTIME_LINKING
-  if (zlib_libhandle) { cc_dl_close(zlib_libhandle); }
+  if (zlib_libhandle) {
+    cc_dl_close(zlib_libhandle);
+    zlib_libhandle = NULL;
+  }
 #endif /* ZLIB_RUNTIME_LINKING */
   assert(zlib_instance);
   free(zlib_instance);
+  zlib_instance = NULL;
+  zlib_failed_to_load = 0;
 }
 
 static const cc_zlibglue_t *

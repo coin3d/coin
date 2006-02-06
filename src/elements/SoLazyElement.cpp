@@ -84,6 +84,7 @@ lazyelement_cleanup(void)
   delete lazy_defaultindex;
   delete lazy_defaultpacked;
   delete lazy_unpacked;
+  lazy_defaultdiffuse = NULL; // Only need to NULL this; see initClass().
 }
 
 // helper functions to handle default diffuse/transp values

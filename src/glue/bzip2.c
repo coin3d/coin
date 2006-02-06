@@ -96,10 +96,15 @@ static void
 bzglue_cleanup(void)
 {
 #ifdef LIBBZIP2_RUNTIME_LINKING
-  if (bzlib_libhandle) { cc_dl_close(bzlib_libhandle); }
+  if (bzlib_libhandle) { 
+    cc_dl_close(bzlib_libhandle); 
+    bzlib_libhandle = NULL;
+  }
 #endif /* LIBBZIP2_RUNTIME_LINKING */
   assert(bzlib_instance);
   free(bzlib_instance);
+  bzlib_instance = NULL;
+  bzlib_failed_to_load = 0;
 }
 
 static const cc_bzglue_t *

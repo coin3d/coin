@@ -58,18 +58,24 @@
 static openal_wrapper_t * openal_instance = NULL;
 static cc_libhandle openal_libhandle = NULL;
 static int openal_failed_to_load = 0;
-
+static int openal_is_initializing = 0;
 
 /* Cleans up at exit. */
 static void
 openal_wrapper_cleanup(void)
 {
 #ifdef OPENAL_RUNTIME_LINKING
-  if (openal_libhandle) { cc_dl_close(openal_libhandle); }
+  if (openal_libhandle) {
+    cc_dl_close(openal_libhandle);
+    openal_libhandle = NULL;
+  }
 #endif /* OPENAL_RUNTIME_LINKING */
 
   assert(openal_instance);
   free(openal_instance);
+  openal_instance = NULL;
+  openal_failed_to_load = 0;
+  openal_is_initializing = 0;
 }
 
 /* Implemented by using the singleton pattern. */
@@ -88,9 +94,8 @@ openal_wrapper(void)
 
     /* Detect recursive calls. */
     {
-      static int is_initializing = 0;
-      assert(is_initializing == 0);
-      is_initializing = 1;
+      assert(openal_is_initializing == 0);
+      openal_is_initializing = 1;
     }
 
     /* The common case is that simage is either available from the

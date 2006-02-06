@@ -57,7 +57,6 @@
 
 static void * flw_global_lock = NULL;
 static int flw_global_font_index = 0;
-static unsigned int flw_global_glyph_index = 0;
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
    will typically happen for one out of two reasons:
@@ -366,6 +365,7 @@ flw_exit(void)
   cc_dynarray_destruct(fontarray);
 
   CC_MUTEX_DESTRUCT(flw_global_lock);
+  flw_global_font_index = 0;
 }
 
 static void

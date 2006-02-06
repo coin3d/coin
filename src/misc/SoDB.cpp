@@ -387,6 +387,7 @@ static SbString * coin_versionstring = NULL;
 static void cleanup_func(void)
 {
   delete coin_versionstring;
+  coin_versionstring = NULL;
 }
 
 // *************************************************************************

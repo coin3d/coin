@@ -64,6 +64,7 @@ extern "C" {
 static SpiderMonkey_t * spidermonkey_instance = NULL;
 static cc_libhandle spidermonkey_libhandle = NULL;
 static SbBool spidermonkey_failed_to_load = FALSE;
+static int spidermonkey_is_initializing = 0;
 
 /* ******************************************************************** */
 
@@ -85,11 +86,17 @@ static void
 spidermonkey_cleanup(void)
 {
 #ifdef SPIDERMONKEY_RUNTIME_LINKING
-  if (spidermonkey_libhandle) { cc_dl_close(spidermonkey_libhandle); }
+  if (spidermonkey_libhandle) {
+    cc_dl_close(spidermonkey_libhandle);
+    spidermonkey_libhandle = NULL;
+  }
 #endif /* SPIDERMONKEY_RUNTIME_LINKING */
 
   assert(spidermonkey_instance);
   free(spidermonkey_instance);
+  spidermonkey_instance = NULL;
+  spidermonkey_failed_to_load = FALSE;
+  spidermonkey_is_initializing = 0;
 }
 
 /* ******************************************************************** */
@@ -106,9 +113,8 @@ spidermonkey(void)
 
   /* Detect recursive calls. */
   {
-    static int is_initializing = 0;
-    assert(is_initializing == 0);
-    is_initializing = 1;
+    assert(spidermonkey_is_initializing == 0);
+    spidermonkey_is_initializing = 1;
   }
 
 

@@ -362,7 +362,7 @@ SbHash<char **, char *> * SoFieldP::ptrhash = NULL;
 SbHash<char **, char *> *
 SoFieldP::getReallocHash(void)
 {
-  // XXX protect with mutex?
+  // FIXME: protect with mutex?
   if (SoFieldP::ptrhash == NULL) {
     SoFieldP::ptrhash = new SbHash<char **, char *>;
     coin_atexit((coin_atexit_f *)SoFieldP::hashExitCleanup, 0);

@@ -157,6 +157,7 @@ public:
   static SbString * refwriteprefix;
   
   static void atexit_cleanup(void) {
+    current = NULL;
     delete refwriteprefix;
     refwriteprefix = NULL;
     delete outputdict;
@@ -168,7 +169,7 @@ public:
 
 void * SoWriterefCounterP::mutex;
 SoOutput2SoWriterefCounterMap *  SoWriterefCounterP::outputdict;
-SoWriterefCounter *  SoWriterefCounterP::current; // used to be backwards compatible
+SoWriterefCounter *  SoWriterefCounterP::current = NULL; // used to be backwards compatible
 SbString *  SoWriterefCounterP::refwriteprefix;
 
 #define PRIVATE(obj) obj->pimpl

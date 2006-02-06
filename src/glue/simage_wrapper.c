@@ -61,6 +61,8 @@ extern "C" {
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
+static int simage_is_initializing = 0;
+
 
 /* Return value of COIN_DEBUG_SIMAGE environment variable. */
 static int
@@ -79,13 +81,17 @@ static void
 simage_wrapper_cleanup(void)
 {
 #ifdef SIMAGE_RUNTIME_LINKING
-  if (simage_libhandle) { cc_dl_close(simage_libhandle); }
-  simage_libhandle = NULL;
+  if (simage_libhandle) {
+    cc_dl_close(simage_libhandle);
+    simage_libhandle = NULL;
+  }
 #endif /* SIMAGE_RUNTIME_LINKING */
 
   assert(simage_instance);
   free(simage_instance);
   simage_instance = NULL;
+  simage_failed_to_load = 0;
+  simage_is_initializing = 0;
 }
 
 /* backup-functions. More robust when simage is an old version, or not
@@ -245,16 +251,13 @@ simage_wrapper(void)
      this. 20020628 mortene. */
 
   if (!simage_instance && !simage_failed_to_load) {
-
-    static int is_initializing = 0;
-
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
     (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup, 0);
 
     /* Detect recursive calls. */
-    assert(is_initializing == 0);
-    is_initializing = 1;
+    assert(simage_is_initializing == 0);
+    simage_is_initializing = 1;
 
     si->versionMatchesAtLeast = simage_wrapper_versionMatchesAtLeast;
 
@@ -428,7 +431,7 @@ simage_wrapper(void)
         si->s_stream_params = NULL;
       }
     }
-    is_initializing = 0;
+    simage_is_initializing = 0;
   }
   CC_SYNC_END(simage_wrapper);
   return simage_instance;
