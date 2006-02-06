@@ -29,27 +29,32 @@
   FIXME: write doc.
 */
 
+// *************************************************************************
+
+#include <Inventor/elements/SoGLLightIdElement.h>
+
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/system/gl.h>
 
+// *************************************************************************
+
+// FIXME: no longer in use, was part of a bogus interface. 20060206 mortene.
 int32_t SoGLLightIdElement::maxGLSources = -1;
 
-/*!
-  \fn SoGLLightIdElement::maxGLSources
-
-  FIXME: write doc.
-*/
+// *************************************************************************
 
 SO_ELEMENT_SOURCE(SoGLLightIdElement);
+
+// *************************************************************************
 
 /*!
   This static method initializes static data for the
@@ -120,12 +125,6 @@ SoGLLightIdElement::increment(SoState * const state,
     element->data++;
     int maxl = cc_glglue_get_max_lights(glue);
 
-    // update static variable in case somebody uses the maxGLLights()
-    // function
-    if (SoGLLightIdElement::maxGLSources != maxl) {
-      SoGLLightIdElement::maxGLSources = maxl;
-    }
-
     if (element->data >= maxl) {
       element->data--;
 #if COIN_DEBUG
@@ -146,7 +145,7 @@ SoGLLightIdElement::increment(SoState * const state,
                                   "shape nodes -- audit your GLRender() "
                                   "method(s)).",
 
-                                  SoGLLightIdElement::getMaxGLSources());
+                                  maxl);
       }
 #endif
       return -1;
@@ -166,20 +165,21 @@ SoGLLightIdElement::getMaxGLSources(void)
   // FIXME: should also make a likewise method available as part of
   // the So*GLWidget classes. 20020802 mortene.
 
-  // FIXME: consider context. pederb, 20001012
-  if (SoGLLightIdElement::maxGLSources == -1) {
-    // NB: don't try to be clever and move this code to the
-    // initClass() method, as it won't work -- there will be no
-    // current GL context.
-    GLint val;
-    glGetIntegerv(GL_MAX_LIGHTS, &val);
-    assert(glGetError() == GL_NO_ERROR &&
-           "GL error when calling glGetInteger() -- no current GL context?");
+  SoDebugError::postWarning("SoGLLightIdElement::getMaxGLSources",
+                            "This function is obsoleted. It should not "
+                            "be used because its interface is fubar: "
+                            "the number of light sources available from "
+                            "the OpenGL driver depends on the context, and "
+                            "this function does not know which context this "
+                            "information is requested for.");
 
-    SoGLLightIdElement::maxGLSources = (int32_t)val;
-  }
+  GLint val;
+  glGetIntegerv(GL_MAX_LIGHTS, &val);
 
-  return SoGLLightIdElement::maxGLSources;
+  assert(glGetError() == GL_NO_ERROR &&
+         "GL error when calling glGetInteger() -- no current GL context?");
+
+  return (int32_t)val;
 }
 
 //! FIXME: write doc.

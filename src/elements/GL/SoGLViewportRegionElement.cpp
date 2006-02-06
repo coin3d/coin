@@ -120,7 +120,7 @@ SoGLViewportRegionElement::updategl() const
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoGLViewportRegionElement::updategl",
-                           "glViewport: %d %d %d %d\n",
+                           "glViewport: %d %d %d %d",
                            origin[0], origin[1], size[0], size[1]);
 #endif // debug
   }

@@ -50,8 +50,6 @@ public:
   static int32_t getMaxGLSources();
 
 protected:
-  static int32_t maxGLSources;
-
 };
 
 #endif // !COIN_SOGLLIGHTIDELEMENT_H

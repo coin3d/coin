@@ -46,8 +46,6 @@ protected:
                         const SbMatrix & modelMatrix);
 
 private:
-  static int maxGLPlanes;
-
 };
 
 #endif // !COIN_SOGLCLIPPLANEELEMENT_H

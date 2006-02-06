@@ -36,11 +36,19 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <Inventor/errors/SoDebugError.h>
+
+// *************************************************************************
 
 // static variables
+// FIXME: not used, fubar interface. 20060206 mortene.
 int SoGLClipPlaneElement::maxGLPlanes = -1;
 
+// *************************************************************************
+
 SO_ELEMENT_SOURCE(SoGLClipPlaneElement);
+
+// *************************************************************************
 
 /*!
   This static method initializes static data for the SoGLClipPlaneElement
@@ -94,20 +102,21 @@ SoGLClipPlaneElement::getMaxGLPlanes(void)
   // FIXME: should also make a likewise method available as part of
   // the So*GLWidget classes. 20020802 mortene.
 
-  if (SoGLClipPlaneElement::maxGLPlanes == -1) {
-    // NB: don't try to be clever and move this code to the
-    // initClass() method, as it won't work -- the GL variables may
-    // not have been initialized yet when it's called. --mortene
-    GLint val;
+  SoDebugError::postWarning("SoGLClipPlaneElement::getMaxGLPlanes",
+                            "This function is obsoleted. It should not "
+                            "be used because its interface is fubar: "
+                            "the number of clip planes available from "
+                            "the OpenGL driver depends on the context, and "
+                            "this function does not know which context this "
+                            "information is requested for.");
 
-    // FIXME: this needs a valid OpenGL context to work -- which we
-    // either should make sure we have, or post an error or warning if
-    // we don't. 20011011 mortene.
-    glGetIntegerv(GL_MAX_CLIP_PLANES, &val);
-    SoGLClipPlaneElement::maxGLPlanes = val;
-  }
+  GLint val;
+  glGetIntegerv(GL_MAX_CLIP_PLANES, &val);
 
-  return SoGLClipPlaneElement::maxGLPlanes;
+  assert(glGetError() == GL_NO_ERROR &&
+         "GL error when calling glGetInteger() -- no current GL context?");
+
+  return (int)val;
 }
 
 //! FIXME: write doc.

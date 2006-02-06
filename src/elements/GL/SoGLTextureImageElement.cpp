@@ -29,34 +29,41 @@
   This is a lazy element. It is evaluated in SoShape::shouldGLRender().
 */
 
+// *************************************************************************
+
 #include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h> // GL wrapper.
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/SbImage.h>
-#include <Inventor/C/tidbits.h>
+
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if COIN_DEBUG
+#include <Inventor/C/glue/glp.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbImage.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/misc/SoGL.h> // GL wrapper.
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/misc/SoGLImage.h>
+
+// *************************************************************************
 
 // Can be used as a workaround for buggy PROXY texture handling (bug
 // in our code or in the OpenGL driver).
 static int COIN_MAXIMUM_TEXTURE2_SIZE = 0;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = 0;
 
+// *************************************************************************
+
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
+
+// *************************************************************************
 
 /*!
   This static method initializes static data in the
@@ -211,14 +218,17 @@ SoGLTextureImageElement::hasTransparency(void) const
 int32_t
 SoGLTextureImageElement::getMaxGLTextureSize(void)
 {
-  static int32_t maxGLTextureSize = -1;
+  SoDebugError::postWarning("SoGLTextureImageElement::getMaxGLTextureSize",
+                            "This function is obsoleted. It should not "
+                            "be used because its interface is fubar: "
+                            "the maximum texture size handled by "
+                            "the OpenGL driver depends on the context, and "
+                            "this function does not know which context this "
+                            "information is requested for.");
 
-  if (maxGLTextureSize == -1) {
-    GLint val;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
-    maxGLTextureSize = (int32_t)val;
-  }
-  return maxGLTextureSize;
+  GLint val;
+  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+  return (int32_t)val;
 }
 
 /*!
