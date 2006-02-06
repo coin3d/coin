@@ -277,22 +277,6 @@ darwin* ) # earlier Mac OS X versions
   ;;
 esac
 
-sim_ac_macosx_target_10_3ff=false
-case ${MACOSX_DEPLOYMENT_TARGET} in
-  10.[[012]])
-    sim_ac_macosx_target_10_3ff=false
-    ;;
-  10.*)
-    sim_ac_macosx_target_10_3ff=true
-    ;;
-  *)
-    sim_ac_macosx_target_10_3ff=false
-    ;;
-esac
-# linker flag -undefined dynamic_lookup, needed for --enable-hacking
-AM_CONDITIONAL([MACOSX_USE_DYNAMIC_LOOKUP], [
-test x$sim_ac_macosx_10_3ff = xtrue -a x$sim_ac_macosx_target_10_3ff = xtrue])
-
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
@@ -1790,20 +1774,23 @@ AC_ARG_ENABLE(hacking,
 
 AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
-if test x"$enable_hacking" = x"yes"; then
+# enable_hacking requires runtime symbol lookup, which is not available
+# on Mac OS X < 10.3 and requires the deployment target to be >= 10.3.
+sim_ac_macosx_use_dynamic_lookup=false
 
-  # enable_hacking requires runtime symbol lookup, which is not available
-  # on Mac OS X < 10.3 and requires the deployment target to be >= 10.3.
+if test x"$enable_hacking" = x"yes"; then
 
   if test x"$sim_ac_macosx" = x"true"; then
     if test x"$sim_ac_macosx_10_3ff" = x"true"; then
+      sim_ac_macosx_use_dynamic_lookup=true
       case ${MACOSX_DEPLOYMENT_TARGET} in
       10.[[34]])
         ;;
       *)
-        AC_MSG_ERROR([--enable-hacking requires MACOSX_DEPLOYMENT_TARGET>=10.3])
+        SIM_AC_CONFIGURATION_WARNING([Using MACOSX_DEPLOYMENT_TARGET=10.3 (required by --enable-hacking)])
       ;;
       esac
+      AC_SUBST([MACOSX_DEPLOYMENT_TARGET], [10.3])
     else 
       AC_MSG_ERROR([--enable-hacking requires Mac OS X version >= 10.3])
     fi
@@ -1845,6 +1832,10 @@ if test x"$enable_hacking" = x"yes"; then
 fi
 
 AC_SUBST(COIN_HACKING_LIBDIRS)
+
+# linker flag -undefined dynamic_lookup, needed for --enable-hacking
+AM_CONDITIONAL([MACOSX_USE_DYNAMIC_LOOKUP], 
+               [test x$sim_ac_macosx_use_dynamic_lookup = xtrue])
 
 
 # *******************************************************************
