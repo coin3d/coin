@@ -2046,6 +2046,13 @@ COIN_COMPILER="$CXX"
   # Mac OS X tweaks
   #
 
+  # Disallow static libraries in framework (doesn't make sense)
+  if $sim_ac_framework; then
+    if test x$enable_static = xyes; then
+      AC_MSG_ERROR([Creation of static libraries requested, but this is incompatible with the Mac OS X framework setup. Use --without-framework to do UNIX-style build.])
+    fi
+  fi 
+
   if $sim_ac_framework; then
     SIM_AC_CONFIGURATION_SETTING([Coin build type], [Mac OS X framework])
   elif $sim_ac_path_problem; then
