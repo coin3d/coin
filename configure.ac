@@ -291,7 +291,7 @@ case ${MACOSX_DEPLOYMENT_TARGET} in
 esac
 # linker flag -undefined dynamic_lookup, needed for --enable-hacking
 AM_CONDITIONAL([MACOSX_USE_DYNAMIC_LOOKUP], [
-test x$sim_ac_macosx_10_3ff=xtrue -a x$sim_ac_macosx_target_10_3ff=x"true"])
+test x$sim_ac_macosx_10_3ff = xtrue -a x$sim_ac_macosx_target_10_3ff = xtrue])
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
