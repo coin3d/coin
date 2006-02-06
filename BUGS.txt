@@ -1491,57 +1491,6 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
 =====================================================================
 
-104 Unhelpful read error message.
-
-    Trying to load the faulty iv-file below will correctly terminate
-    the import operation with an error message, but the error message
-    is really lousy:
-
-    --------8<------------- [snip] --------------8<------------- [snip]
-    #Inventor V2.1 ascii
-
-    SeparatorKit {
-      childList {
-        ShapeKit {
-          shape Cone{}
-        }
-      }
-    }
-    --------8<------------- [snip] --------------8<------------- [snip]
-
-    Results in:
-
-        Coin read error: Expected '}'; got '{'
-                Occurred at line   4 in hepp.iv
-
-    ...which just seems wrong, or at least completely unhelpful.
-
-    This is a low priority item.
-
-    Just for reference, the corrected iv-file in this case would look
-    something like this:
-
-    --------8<------------- [snip] --------------8<------------- [snip]
-    #Inventor V2.1 ascii
-
-    SeparatorKit {
-      childList NodeKitListPart {
-        containerNode Group {
-          ShapeKit {
-            shape Cone { }
-          }
-        }
-      }
-    }
-    --------8<------------- [snip] --------------8<------------- [snip]
-
-    20040220 mortene.
-
-    UPDATE 20060131 kintel: I think this problem is the same or closely
-    related to bug #165.
-
-=====================================================================
-
 108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
     with SoOffscreenRenderer.
 
@@ -1870,45 +1819,6 @@ Separator {
 
 =====================================================================
 
-128 Worse performance in more recent Coin versions?
-
-    Hannes Kaufmann reports that recent Coin versions seem to have
-    worse performance:
-
-    --------8<------------- [snip] --------------8<------------- [snip]
-
-    I am using a Quadro4 900XGL and within our Studierstube framework
-    we currently still use Qt 3.0.3 under windows.
-
-    No matter which NVidia driver I use, I always get pretty much the
-    same result.  With a Coin version from early this year (February,
-    March) I get a 25% higher frame rate (sometimes even more) than
-    with versions from late June/July.  I am running exactly the same
-    application with exactly the same setup. I just rename folders to
-    enable one or another coin version. There can be no flaw in my
-    test setup, I always run exactly the same and only exchange coin
-    versions (plus simage plus soqt) and nothing else.
-
-    On my machine COIN_ENABLE_VBO is set to 1 as well as
-    COIN_USE_GL_VERTEX_ARRAYS (I think these features were already
-    implemented in February and are supported by both versions that
-    I'm testing)
-
-    This problem is not application specific. I see the same drop of
-    framerate with other applications and on other machines.
-
-    --------8<------------- [snip] --------------8<------------- [snip]
-
-    I've suggested to try turning off those envvars (VBOs and vertex
-    arrays are known to cause worse performance with certain drivers /
-    cards), and upgrade his version of SoQt (pederb recently fixed a
-    problem with idle processing and Qt timers). Currently awaiting
-    reply.
-
-    20040805 mortene.
-
-=====================================================================
-
 129 Dragger bugs. This is a collection of bugs mostly related to
     scaling of draggers.
 
@@ -2071,22 +1981,6 @@ Separator {
     UPDATE 20040831 mortene: This is a high priority item, as it
     causes Coin to be unusable when using multiple views and
     SoExtSelection together.
-
-=====================================================================
-
-134 SoExtSelection::setLineSegmentFilterCallback() bogus return
-
-    It has been reported a compatibility issue (vs TGS) / bug, where
-    this return SoVertexPrimitive with SoPointDetail instead of
-    SoLineDetail. Investigate.
-
-    20040831 mortene.
-
-    Update: I recently fixed a bug in soshape_primidata.cpp. Line
-    segments would sometimes get SoPointDetail pointers instead of
-    SoLineDetail pointers, so this bug is probably fixed now.
-   
-    20051103 pederb
 
 =====================================================================
 
@@ -2696,45 +2590,6 @@ Text2 { string "test" }
 
     UPDATE 20050711 mortene: see also item #196, which seems to be the
     same issue.
-
-=====================================================================
-
-165 Faulty error reporting upon reading bad file.
-
-    Trying to read the file below with e.g. SoDB::readAll() correctly
-    stops parsing when finding a control character (0xa0) within the
-    '{...}'-brackets, but the error message is bogus:
-
-        Premature end of file
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-begin 644 rotdisc.iv
-L(TEN=F5N=&]R(%8R+C$@87-C:6D*"E)O=&%T941I<V-$<F%G9V5R('N@?0H`
-`
-end
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    Surprisingly, when swapping "RotateDiscDragger" with "Sphere", the
-    error is correctly identified, and we get an
-
-         Expected '}'; got ' ' for Sphere
-
-    (This could however also be improved upon; we shouldn't just use
-    %c to print the faulty character, but print a hex code if outside
-    the visible ASCII range.)
-
-    This is a low priority bug item.
-
-    20041105 mortene, found by sit.
-
-    UPDATE 20060131 kintel: The reason the error message is cryptic
-    in the dragger case is that SoBaseKitP::readUnknownFields()
-    calls SoInput::read(SbName, bool) with the second parameter set
-    to FALSE to allow for "." character in field references.
-    This effectively skips the checks for whether the names read are
-    actually valid field names. The 0xa0 character and the following '}'
-    are therefore interpreted as a field name, but EOF is encountered
-    before the full field declaration can be read.
 
 =====================================================================
 
