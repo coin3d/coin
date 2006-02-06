@@ -817,6 +817,7 @@ SoGLImage::cleanupClass(void)
 
   SoGLImageP::resizecb = NULL;
   SoGLImageP::resizeclosure = NULL;
+  SoGLImageP::current_glimageid = 1;
 }
 
 /*!
@@ -1941,6 +1942,7 @@ regimage_cleanup(void)
 {
   delete glimage_reglist;
   glimage_reglist = NULL;
+  glimage_maxage = 60;
 }
 
 /*!
