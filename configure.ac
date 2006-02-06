@@ -277,6 +277,22 @@ darwin* ) # earlier Mac OS X versions
   ;;
 esac
 
+sim_ac_macosx_target_10_3ff=false
+case ${MACOSX_DEPLOYMENT_TARGET} in
+  10.[[012]])
+    sim_ac_macosx_target_10_3ff=false
+    ;;
+  10.*)
+    sim_ac_macosx_target_10_3ff=true
+    ;;
+  *)
+    sim_ac_macosx_target_10_3ff=false
+    ;;
+esac
+# linker flag -undefined dynamic_lookup, needed for --enable-hacking
+AM_CONDITIONAL([MACOSX_USE_DYNAMIC_LOOKUP], [
+test x$sim_ac_macosx_10_3ff=xtrue -a x$sim_ac_macosx_target_10_3ff=x"true"])
+
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
