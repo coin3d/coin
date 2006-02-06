@@ -64,7 +64,7 @@ protected:
 
 private:
   void performRotation(SoState * state) const;
-
-}; // class SoVRMLBillboard
+  class SoVRMLBillboardP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLBILLBOARD_H
