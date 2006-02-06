@@ -231,3 +231,115 @@ main(int argc, char ** argv)
 
 =====================================================================
 
+012 Memory leak in SoForeignFileKit
+
+    SoForeignFileKit::fileexts leaks.
+
+    20060206 kintel.
+
+=====================================================================
+
+013 Memory leak in cc_get_full_path()
+
+    The following resources leak/are not reset on cleanup:
+
+    static const char * list = 0;
+    static const char * path[MAX_NR_PATH_ENTRIES] = { 0 };
+    static int end_reached = 0;
+
+    20060206 kintel.
+
+=====================================================================
+
+014 cc_flww32_initialize(): Uninitialized variable used
+
+    cc_flww32_globals.devctx is used before being initialized:
+
+    (void)EnumFontFamiliesEx(cc_flww32_globals.devctx,
+                             (LPLOGFONT)&logfont,
+                             (FONTENUMPROC)font_enum_proc,
+                             0, /* user data for callback */
+                             0); /* reserved, must be zero */
+
+    20060206 kintel.
+
+=====================================================================
+
+015 Resource leaks in aglglue
+
+    The following resources are not freed/reset:
+
+    static COIN_AGLCREATEPBUFFER aglglue_aglCreatePBuffer = NULL;
+    static COIN_AGLDESTROYPBUFFER aglglue_aglDestroyPBuffer = NULL;
+    static COIN_AGLSETPBUFFER aglglue_aglSetPBuffer = NULL;
+    static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
+    static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
+    static cc_libhandle glhnd = NULL;
+    static SbBool tried_fetching_handle = FALSE;
+
+    20060206 kintel.
+
+=====================================================================
+
+016 SoHardCopy: Static variable in function not reset on cleanup
+
+    SoHardCopy::init(void)
+    {
+      static SbBool first = TRUE;
+      if (!first) { return; }
+      first = FALSE;
+    
+      SoVectorizeAction::initClass();
+      SoVectorizePSAction::initClass();
+      SoVectorizeCGMAction::initClass();
+      SoVectorizeHPGLAction::initClass();
+      SoVectorizeGDIAction::initClass();
+    }
+
+    20060206 kintel.
+
+=====================================================================
+
+017 SoGLBigImage: static variable CHANGELIMIT not reset on cleanup
+
+    static int CHANGELIMIT = 4;
+
+    20060206 kintel.
+
+=====================================================================
+
+018 SoJavaScriptEngine resource corruption
+
+    The following static variable defined within the constructor
+    might not contain valid values on the second SoDB::init().
+
+    static JSClass jclass = {
+      "SoJavaScriptEngine_global", 0,
+      spidermonkey()->JS_PropertyStub,
+      spidermonkey()->JS_PropertyStub,
+      spidermonkey()->JS_PropertyStub,
+      spidermonkey()->JS_PropertyStub,
+      spidermonkey()->JS_EnumerateStub,
+      spidermonkey()->JS_ResolveStub,
+      spidermonkey()->JS_ConvertStub, 
+      spidermonkey()->JS_FinalizeStub,
+      NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
+    };
+
+
+    20060206 kintel.
+
+=====================================================================
+
+019 SoOffscreenGLXData: Static variable in function not reset on cleanup
+
+    SoOffscreenGLXData::getDisplay(void)
+    {
+      static SbBool first = TRUE;
+      if (first) {
+        first = FALSE;
+        [...]
+
+    20060206 kintel.
+
+=====================================================================
