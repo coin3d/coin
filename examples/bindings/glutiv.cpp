@@ -36,7 +36,7 @@
 // GLUT framework, like so:
 // 
 //  $ export LDFLAGS="-framework GLUT -lobjc"
-//  $ coin-config --build glutiv glutiv.cpp 
+//  $ coin-config --build-app glutiv glutiv.cpp 
 
 
 // *************************************************************************
