@@ -1980,8 +1980,8 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
     // space metric. The -0.5 is there because for an SoComplexity
     // value of 1, we should have an error of less than one pixel.
     float complexity = SoComplexityElement::get(state);
-    complexity = 1.0/(complexity*complexity) - 0.5;
-    if (complexity < 0.5) complexity = 0.5;
+    complexity = float(1.0/(complexity*complexity) - 0.5);
+    if (complexity < 0.5f) complexity = 0.5f;
 
     GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
                                    (GLenum) GLU_SAMPLING_METHOD,
