@@ -72,6 +72,11 @@ libCoin@SUFFIX@_la_LIBADD = \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
+# This one must be exported, since it is required by the linker to 
+# allow the -undefined dynamic_lookup flag (which we need for 
+# --enable-hacking to work on Mac OS X).
+export MACOSX_DEPLOYMENT_TARGET=@MACOSX_DEPLOYMENT_TARGET@
+
 # **************************************************************************
 # Source code files for local build & dist.
 
