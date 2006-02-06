@@ -113,7 +113,6 @@ soproto_cleanup(void)
   delete protolist;
   protolist = NULL;
   CC_MUTEX_DESTRUCT(soproto_mutex);
-  soproto_mutex = NULL;
 }
 
 static SoProto *

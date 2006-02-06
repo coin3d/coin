@@ -50,6 +50,7 @@ sync_cleanup(void)
 {
   cc_dict_apply(sync_hash_table, sync_hash_cb, NULL);
   cc_dict_destruct(sync_hash_table);
+  sync_hash_table = NULL;
 }
 
 /*

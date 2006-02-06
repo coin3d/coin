@@ -84,7 +84,6 @@ static void
 cc_glyph2d_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(glyph2d_fonthash_lock);
-  glyph2d_fonthash_lock = NULL;
   cc_dict_destruct(glyph2d_fonthash);
   glyph2d_fonthash = NULL;
 }

@@ -585,7 +585,6 @@ static void
 field_mutex_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(sofield_mutex);
-  sofield_mutex = NULL;
 }
 
 /*!

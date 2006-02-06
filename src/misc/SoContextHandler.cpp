@@ -142,7 +142,6 @@ socontexthandler_cleanup(void)
   socontexthandler_hashlist = NULL;
   socontexthandler_idx = 0;
   CC_MUTEX_DESTRUCT(socontexthandler_mutex);
-  socontexthandler_mutex = NULL;
 }
 
 // *************************************************************************

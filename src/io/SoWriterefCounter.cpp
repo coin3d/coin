@@ -162,7 +162,6 @@ public:
     delete outputdict;
     outputdict = NULL;
     CC_MUTEX_DESTRUCT(mutex);
-    mutex = NULL;
   }
 
 };

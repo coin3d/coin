@@ -99,7 +99,6 @@ static void
 cc_glyph3d_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(glyph3d_fonthash_lock);
-  glyph3d_fonthash_lock = NULL;
   cc_dict_destruct(glyph3d_fonthash);
   glyph3d_fonthash = NULL;
 }
