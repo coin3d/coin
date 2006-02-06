@@ -359,16 +359,6 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	foreignfiles/foreignfiles.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
-
-
-# **************************************************************************
-# Installation information.
-
-# On Mac OS 10.2 or later, create two-level namespace binaries and use
-# prebinding. Also pad the install_name to make it possible to change
-# it later (e.g. to include the library in an app bundle).  On Mac OS
-# 10.3 or later, use -undefined dynamic_lookup to delay symbol lookup
-# to runtime (needed to make enable_hacking work)
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 @MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_FALSE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
@@ -1250,6 +1240,19 @@ uninstall-info: uninstall-info-recursive
 	uninstall-libCoinincHEADERS uninstall-libLIBRARIES \
 	uninstall-libLTLIBRARIES uninstall-local uninstall-recursive
 
+
+# **************************************************************************
+# Installation information.
+
+# On Mac OS 10.2 or later, create two-level namespace binaries and use
+# prebinding. Also pad the install_name to make it possible to change
+# it later (e.g. to include the library in an app bundle).  On Mac OS
+# 10.3 or later, use -undefined dynamic_lookup to delay symbol lookup
+# to runtime (needed to make enable_hacking work)
+
+# Must export deployment target environment, since it is required by
+# the linker to allow the -undefined dynamic_lookup flag.
+@MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@export MACOSX_DEPLOYMENT_TARGET=@MACOSX_DEPLOYMENT_TARGET@
 
 # **************************************************************************
 # Custom rule for linking a Visual C++ (MS Windows) library.
