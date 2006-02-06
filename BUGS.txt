@@ -2870,16 +2870,6 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
 
 =====================================================================
 
-185 SoVRMLBillboard buggy with axisOfRotation field set.
-
-    Warnings if axisOfRotation is parallel with vector-to-camera,
-    typically (0, 0, 1) for our standard viewers. Their cross product
-    will give a null vector, which causes errors in the calculations.
-
-    20050103 sit.
-
-=====================================================================
-
 187 Mac OS X: Frameworks containing static libaries should be disallowed
 
     Putting a static library into a framework does not work, so
