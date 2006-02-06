@@ -48,7 +48,8 @@
   } while (0)
 
 #define CC_MUTEX_DESTRUCT(_mymutex_) \
-  cc_mutex_destruct((cc_mutex*) _mymutex_)
+  cc_mutex_destruct((cc_mutex*) _mymutex_);     \
+  _mymutex_ = NULL
 
 #define CC_MUTEX_LOCK(_mymutex_) \
   cc_mutex_lock((cc_mutex*) _mymutex_)
