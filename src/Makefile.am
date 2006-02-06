@@ -72,11 +72,6 @@ libCoin@SUFFIX@_la_LIBADD = \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
-# This one must be exported, since it is required by the linker to 
-# allow the -undefined dynamic_lookup flag (which we need for 
-# --enable-hacking to work on Mac OS X).
-export MACOSX_DEPLOYMENT_TARGET=@MACOSX_DEPLOYMENT_TARGET@
-
 # **************************************************************************
 # Source code files for local build & dist.
 
@@ -122,6 +117,9 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 if MACOSX_10_2FF
 if MACOSX_USE_DYNAMIC_LOOKUP
+# Must export deployment target environment, since it is required by
+# the linker to allow the -undefined dynamic_lookup flag.
+export MACOSX_DEPLOYMENT_TARGET=@MACOSX_DEPLOYMENT_TARGET@
 LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 else
 LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
