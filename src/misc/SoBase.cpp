@@ -1324,10 +1324,19 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       SbString nodename(this->getFileFormatName());
       if (nodename.getLength() > 4) {
         SbString vrml = nodename.getSubString(0, 3);
+        const char vrml2headerprefix[] = "#VRML V2.0 utf8";
+        const size_t len = sizeof(vrml2headerprefix) - 1;
+        const SbString fullheader = SoOutput_getHeaderString(out->pimpl);
+        const SbString fileid = ((size_t)fullheader.getLength() < len) ?
+          fullheader : fullheader.getSubString(0, len - 1);
         // FIXME: using a temporary workaround to test if we're
         // exporting a VRML97 file. pederb, 2003-03-18
-        if ((vrml == "VRML") &&
-            (SoOutput_getHeaderString(out->pimpl) == "#VRML V2.0 utf8")) {
+        //
+        // UPDATE 20060207 mortene: a better solution would be to
+        // carry along the format information in the SoOutput (or an
+        // internal private SoOutputP class?) as an enum or something,
+        // methinks.
+        if ((vrml == "VRML") && (fileid == vrml2headerprefix)) {
           SbString substring = nodename.getSubString(4);
           out->write(substring.getString());
         }
