@@ -35,6 +35,8 @@
 
 class SbColor;
 class SbVec3f;
+class SbVec2f;
+class SbVec2s;
 class SbViewportRegion;
 class SoPrimitiveVertex;
 
@@ -105,8 +107,13 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
 
+  void select(SoNode * root, int numcoords, SbVec2f * lasso, 
+              const SbViewportRegion & vp, SbBool shiftpolicy);
   void select(SoNode * root, int numcoords, SbVec3f * lasso,
               const SbViewportRegion & vp, SbBool shiftkeypolicy);
+  const SbVec2s * getLassoCoordsDC(int & numCoords);
+  const SbVec3f * getLassoCoordsWC(int & numCoords);
+  const SoPathList & getSelectionPathList() const;
 
   void setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata = NULL,
                               const SbBool callonlyifselectable = TRUE);

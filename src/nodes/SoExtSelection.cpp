@@ -435,6 +435,7 @@ public:
   unsigned int drawcounter;
   SoPathList *visitedshapepaths;
   SbBool somefacesvisible;
+  SoPathList dummypathlist;
 
 private:
   SoExtSelection * master;
@@ -1231,6 +1232,70 @@ SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbVi
 #error start including this function only at the point of a minor release.
 #endif
   COIN_STUB_ONCE();
+}
+
+/*!
+  Simulate lasso selection programmatically.
+
+  This function is currently just stubbed.
+*/
+
+void
+SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+{
+  // FIXME: Implement this for TGS compatibility...
+#ifndef COIN_BETA_VERSION
+#error start including this function only at the point of a minor release.
+#endif
+  COIN_STUB_ONCE();
+}
+
+/*!
+  Returns lasso coordinates in device coordinates.
+
+  This function is currently just stubbed.
+*/
+const SbVec2s *
+SoExtSelection::getLassoCoordsDC (int &numCoords)
+{
+  // FIXME: Implement this for TGS compatibility...
+#ifndef COIN_BETA_VERSION
+#error start including this function only at the point of a minor release.
+#endif
+  COIN_STUB_ONCE();
+  return NULL;
+}
+
+/*!
+  Returns lasso coordinates in world coordinates.
+
+  This function is currently just stubbed.
+*/
+const SbVec3f *
+SoExtSelection::getLassoCoordsWC (int &numCoords)
+{
+  // FIXME: Implement this for TGS compatibility...
+#ifndef COIN_BETA_VERSION
+#error start including this function only at the point of a minor release.
+#endif
+  COIN_STUB_ONCE();
+  return NULL;
+}
+
+/*!
+  Returns a pathlist containing selected objects.
+
+  This function is currently just stubbed.
+*/
+const SoPathList &
+SoExtSelection::getSelectionPathList () const
+{
+  // FIXME: Implement this for TGS compatibility...
+#ifndef COIN_BETA_VERSION
+#error start including this function only at the point of a minor release.
+#endif
+  COIN_STUB_ONCE();
+  return PRIVATE(this)->dummypathlist;
 }
 
 /*!
