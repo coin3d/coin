@@ -28,16 +28,17 @@
 #include <Inventor/C/glue/spidermonkey.h>
 #include <Inventor/lists/SbList.h>
 
+// *************************************************************************
+
 #define COIN_JAVASCRIPT_RUNTIME_MAXBYTES 4194304
 
-// FIXME: change this to use the Cheshire Cat/Bridge Pattern.
-// 20050721 erikgors.
-// UPDATE: Pimpl class added. Which methods can be moved? (20050830
-// handegar)
+// *************************************************************************
 
 typedef void SoJSfield2jsvalFunc(JSContext *, const SoField *, jsval *);
 typedef SbBool SoJSjsval2field2Func(JSContext *, const jsval, SoField *);
 typedef JSObject * SoJSWrapperInitFunc(JSContext *, JSObject * obj);
+
+// *************************************************************************
 
 class COIN_DLL_API SoJavaScriptEngine : public SoScriptEngine {
 
@@ -66,7 +67,7 @@ public:
   void enableAutoNodeUnref(SbBool onoff);
   SbBool getAutoNodeUnrefState(void) const;
 
-  static void init(uint32_t maxbytes = COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
+  static SbBool init(uint32_t maxbytes = COIN_JAVASCRIPT_RUNTIME_MAXBYTES);
   static void shutdown(void);
   static SbBool debug(void);
 

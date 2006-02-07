@@ -322,19 +322,31 @@ SoJavaScriptEngine::setGlobal(JSObject * global)
 /*!
  Init the spidermonkey runtime.
  */
-void
+SbBool
 SoJavaScriptEngine::init(uint32_t maxBytes)
 {
   assert(SoJavaScriptEngine::getRuntime() == NULL);
+
+  if (!spidermonkey()->available) {
+    SoDebugError::postWarning("SoJavaScriptEngine::init",
+                              "Coin configured to support Javascript for "
+                              "VRML Script nodes, but SpiderMonkey Javascript "
+                              "engine not available. Javascript scripts will "
+                              "be ignored.");
+    return FALSE;
+  }
+
   JSRuntime * rt = spidermonkey()->JS_NewRuntime(maxBytes);
 
   if (rt == NULL) {
-    SoDebugError::postWarning("SoJavaScriptEngine::init",
-                              "SpiderMonkey Javascript engine available, "
-                              "but failed to instantiate a JSRuntime!");
-    return;
+    SoDebugError::post("SoJavaScriptEngine::init",
+                       "SpiderMonkey Javascript engine available, "
+                       "but failed to instantiate a JSRuntime!");
+    return FALSE;
   }
+
   SoJavaScriptEngine::setRuntime(rt);
+  return TRUE;
 }
 
 /*!
@@ -502,6 +514,10 @@ SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v) const
 SoJavaScriptEngine *
 SoJavaScriptEngine::getEngine(JSContext * cx)
 {
+  // FIXME: should use an internal SbHash dict instead, so we don't
+  // cripple the GetContextPrivate() / SetContextPrivate()
+  // functionality. (Which would give one less way of f*cking up for
+  // those using the SoJavaScriptEngine interface.)  20060207 mortene.
   return (SoJavaScriptEngine *)spidermonkey()->JS_GetContextPrivate(cx);
 }
 
