@@ -275,7 +275,14 @@ public:
     glimagemutex = NULL;
 #endif // COIN_THREADSAFE
 
-    if (scheduler) { cc_sched_destruct(scheduler); }
+    if (scheduler) {
+      cc_sched_destruct(scheduler);
+      scheduler = NULL;
+    }
+
+    imagetexture_delay_fetch = TRUE;
+    imagetexture_prequalify_cb = NULL;
+    imagetexture_prequalify_closure = NULL;
   }
 };
 
@@ -296,6 +303,7 @@ SO_NODE_SOURCE(SoVRMLImageTexture);
 void
 SoVRMLImageTexture::initClass(void) // static
 {
+  SoVRMLImageTextureP::is_exiting = FALSE;
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
   imagedata_maxage = 500;
 

@@ -101,21 +101,20 @@ cc_glyph3d_cleanup(void)
   CC_MUTEX_DESTRUCT(glyph3d_fonthash_lock);
   cc_dict_destruct(glyph3d_fonthash);
   glyph3d_fonthash = NULL;
+  glyph3d_initialized = FALSE;
 }
 
 static void
 cc_glyph3d_initialize()
 {
-
-  static SbBool initialized = FALSE;
   CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   
-  if (initialized) {
+  if (glyph3d_initialized) {
     GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
     return;
   }
-  initialized = TRUE;
+  glyph3d_initialized = TRUE;
   
   glyph3d_fonthash = cc_dict_construct(15, 0.75);
 

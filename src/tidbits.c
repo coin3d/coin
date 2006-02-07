@@ -461,6 +461,8 @@ envlist_cleanup(void)
     ptr = ptr->next;
     free(tmp);
   }
+  envlist_head = NULL;
+  envlist_tail = NULL;
 }
 
 #else

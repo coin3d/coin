@@ -57,6 +57,7 @@ struct cc_glyph2d {
 };
 
 static cc_dict * glyph2d_fonthash = NULL;
+static SbBool glyph2d_initialized = FALSE;
 
 /*
   Mutex lock for the static ang global font hash
@@ -86,21 +87,20 @@ cc_glyph2d_cleanup(void)
   CC_MUTEX_DESTRUCT(glyph2d_fonthash_lock);
   cc_dict_destruct(glyph2d_fonthash);
   glyph2d_fonthash = NULL;
+  glyph2d_initialized = FALSE;
 }
 
 static void
 cc_glyph2d_initialize()
 {
-
-  static SbBool initialized = FALSE;
   CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
   
-  if (initialized) {
+  if (glyph2d_initialized) {
     GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
     return;
   }
-  initialized = TRUE;
+  glyph2d_initialized = TRUE;
   
   glyph2d_fonthash = cc_dict_construct(15, 0.75);
   coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, 0);

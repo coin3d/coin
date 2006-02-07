@@ -559,7 +559,7 @@ public:
 
 SO_ACTION_SOURCE(SoGLRenderAction);
 
-static int COIN_GLBBOX = -1;
+static int COIN_GLBBOX = 0;
 // *************************************************************************
 
 // Override from parent class.

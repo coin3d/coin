@@ -67,6 +67,7 @@ extern "C" {
 static GLUWrapper_t * GLU_instance = NULL;
 static cc_libhandle GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
+static int GLU_is_initializing = 0;
 
 /* ******************************************************************** */
 
@@ -88,11 +89,17 @@ static void
 GLUWrapper_cleanup(void)
 {
 #ifdef GLU_RUNTIME_LINKING
-  if (GLU_libhandle) cc_dl_close(GLU_libhandle);
+  if (GLU_libhandle) {
+    cc_dl_close(GLU_libhandle);
+    GLU_libhandle = NULL;
+  }
 #endif /* GLU_RUNTIME_LINKING */
 
   assert(GLU_instance);
   free(GLU_instance);
+  GLU_instance = NULL;
+  GLU_failed_to_load = 0;
+  GLU_is_initializing = 0;
 }
 
 /* ******************************************************************** */
@@ -329,11 +336,8 @@ GLUWrapper(void)
   if (GLU_instance || GLU_failed_to_load) { goto wrapperexit; }
 
   /* Detect recursive calls. */
-  {
-    static int is_initializing = 0;
-    assert(is_initializing == 0);
-    is_initializing = 1;
-  }
+  assert(GLU_is_initializing == 0);
+  GLU_is_initializing = 1;
 
 
   /* First invocation, do initializations. */

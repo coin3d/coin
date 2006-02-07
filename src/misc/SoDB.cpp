@@ -806,7 +806,7 @@ SoDBP::clean(void)
 
   // Must be done /before/ killing off the SoSensorManager instance,
   // in case there is an SoFieldSensor attached to the realTime global
-  // field.
+  // field. Will delete the field.
   SoDB::renameGlobalField("realTime", "");
 
   delete SoDBP::sensormanager;

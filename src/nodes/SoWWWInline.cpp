@@ -143,19 +143,25 @@
 // *************************************************************************
 
 // static members
-SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
-void * SoWWWInline::fetchurlcbdata;
-SbColor * SoWWWInline::bboxcolor;
+SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb = NULL;
+void * SoWWWInline::fetchurlcbdata = NULL;
+SbColor * SoWWWInline::bboxcolor = NULL;
 static SoColorPacker * wwwinline_colorpacker = NULL;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
-
 SbBool SoWWWInline::readassofile = FALSE;
 
 void
 SoWWWInline::cleanup(void)
 {
   delete SoWWWInline::bboxcolor;
+  SoWWWInline::bboxcolor = NULL;
   delete wwwinline_colorpacker;
+  wwwinline_colorpacker = NULL;
+
+  SoWWWInline::fetchurlcb = NULL;
+  SoWWWInline::fetchurlcbdata = NULL;
+  SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
+  SoWWWInline::readassofile = FALSE;
 }
 
 // *************************************************************************

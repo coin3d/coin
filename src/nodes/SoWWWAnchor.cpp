@@ -126,10 +126,10 @@ class SoWWWAnchorP {
 };
 
 // static members
-SoWWWAnchorCB * SoWWWAnchorP::fetchfunc;
-void * SoWWWAnchorP::fetchdata;
-SoWWWAnchorCB * SoWWWAnchorP::highlightfunc;
-void * SoWWWAnchorP::highlightdata;
+SoWWWAnchorCB * SoWWWAnchorP::fetchfunc = NULL;
+void * SoWWWAnchorP::fetchdata = NULL;
+SoWWWAnchorCB * SoWWWAnchorP::highlightfunc = NULL;
+void * SoWWWAnchorP::highlightdata = NULL;
 
 #endif // DOXYGEN_SKIP_THIS
 

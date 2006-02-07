@@ -153,8 +153,6 @@
 
 #include "../fonts/glyph2d.h"
 
-static const unsigned int NOT_AVAILABLE = UINT_MAX;
-
 /*!
   \enum SoText2::Justification
 

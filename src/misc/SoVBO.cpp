@@ -87,6 +87,10 @@ static void vbo_atexit_cleanup(void)
 {
   delete vbo_isfast_hash;
   vbo_isfast_hash = NULL;
+  vbo_vertex_count_min_limit = -1;
+  vbo_vertex_count_max_limit = -1;
+  vbo_render_as_vertex_arrays = -1;
+  vbo_enabled = -1;
 }
 
 void 

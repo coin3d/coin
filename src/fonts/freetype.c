@@ -469,11 +469,14 @@ cc_flwft_exit(void)
     free(cc_dynarray_get(cc_flwft_globals.fontfiledirs, i));
   }
   cc_dynarray_destruct(cc_flwft_globals.fontfiledirs);
+  cc_flwft_globals.fontfiledirs = NULL;
 
   cc_dict_apply(cc_flwft_globals.fontname2filename, clean_fontmap_hash, NULL);
   cc_dict_destruct(cc_flwft_globals.fontname2filename);
+  cc_flwft_globals.fontname2filename = NULL;
 
   cc_ftglue_FT_Done_FreeType(library);
+  library = NULL;
 }
 
 static const char *
@@ -1026,11 +1029,11 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   g = (FT_OutlineGlyph)tmp;
   outline = g->outline;
 
-  if ( flwft_tessellator.vertexlist == NULL)
+  if (flwft_tessellator.vertexlist == NULL)
      flwft_tessellator.vertexlist = cc_list_construct();
-  if ( flwft_tessellator.faceindexlist == NULL)
+  if (flwft_tessellator.faceindexlist == NULL)
      flwft_tessellator.faceindexlist = cc_list_construct();
-  if ( flwft_tessellator.edgeindexlist == NULL)
+  if (flwft_tessellator.edgeindexlist == NULL)
      flwft_tessellator.edgeindexlist = cc_list_construct();
   if (flwft_tessellator.malloclist == NULL) {
     flwft_tessellator.malloclist = cc_list_construct();

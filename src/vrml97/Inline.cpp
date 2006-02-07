@@ -154,10 +154,13 @@ static SbColor * sovrmlinline_bboxcolor = NULL;
 static SbBool sovrmlinline_readassofile = TRUE;
 
 static void
-sovrmlinline_cleanup_color(void)
+sovrmlinline_cleanup(void)
 {
   delete sovrmlinline_bboxcolor;
   sovrmlinline_bboxcolor = NULL;
+  sovrmlinline_bboxvisibility = SoVRMLInline::UNTIL_LOADED;
+  sovrmlinline_fetchurlcb = NULL;  
+  sovrmlinline_readassofile = TRUE;
 }
 
 SO_NODE_SOURCE(SoVRMLInline);
@@ -168,7 +171,7 @@ SoVRMLInline::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLInline, SO_VRML97_NODE_TYPE);
   sovrmlinline_bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
-  coin_atexit((coin_atexit_f*) sovrmlinline_cleanup_color, 0);
+  coin_atexit((coin_atexit_f*) sovrmlinline_cleanup, 0);
   SoAudioRenderAction::addMethod(SoVRMLInline::getClassTypeId(),
                                  SoAudioRenderAction::callDoAction);
 }
