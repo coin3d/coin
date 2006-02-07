@@ -115,13 +115,18 @@ _class_::atexit_cleanup(void) \
 { \
   delete _class_::fieldData; \
   _class_::fieldData = NULL; \
+  _class_::parentFieldData = NULL; \
   _class_::classTypeId STATIC_SOTYPE_INIT; \
+  _class_::classinstances = 0; \
 }
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_SOURCE(_class_) \
 SO_NODE_ABSTRACT_SOURCE(_class_); \
  \
+/*! \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * \
 _class_::createInstance(void) \
 { \
