@@ -88,7 +88,7 @@ void * SoDebugError::callbackData = NULL;
 #if COIN_DEBUG
 
 // variables for run-time breakpoints
-static int num_breakpoints = -1;
+static int num_breakpoints = 0;
 static char ** breakpoints = NULL;
 
 static void
@@ -99,6 +99,7 @@ debug_break_cleanup(void)
   }
   delete[] breakpoints;
   breakpoints = NULL;
+  num_breakpoints = 0;
 }
 
 #endif // COIN_DEBUG
@@ -123,45 +124,41 @@ SoDebugError::initClass(void)
   // out and moved to e.g. SbStringList? 20030820 mortene.
 
 #if COIN_DEBUG
-  // parse breakpoints only the first time we get here.
-  if (num_breakpoints < 0) {
-    num_breakpoints = 0;
-    const char * env = coin_getenv("COIN_DEBUG_BREAK");
-    if (env) {
-      num_breakpoints = 1;
-      const char * ptr = env;
-      while (*ptr) {
-        if (*ptr == ' ' || *ptr == ',') num_breakpoints++;
-        ptr++;
-      }
-      breakpoints = new char*[num_breakpoints];
-      coin_atexit((coin_atexit_f *)debug_break_cleanup, 0);
-      const size_t envstrlen = strlen(env);
-      char * cpy = new char[envstrlen + 1];
-      (void)strcpy(cpy, env);
-      ptr = cpy;
-      const char * end = strchr(ptr, ' ');
-      const char * tst = strchr(ptr, ',');
-      if (end == NULL || (tst && tst < end)) end = tst;
-      if (end == NULL) end = strchr(ptr, '\0');
-      int i = 0;
-      while (end && i < num_breakpoints) {
-        const ptrdiff_t len = end - ptr;
-        breakpoints[i] = new char[len + 1];
-        (void)memcpy(breakpoints[i], ptr, len);
-        breakpoints[i][len] = '\0';
-        i++;
-        ptr = end+1;
-        if (ptr < (cpy + envstrlen)) {
-          end = strchr(ptr, ' ');
-          tst = strchr(ptr, ',');
-          if (end == NULL || (tst && tst < end)) end = tst;
-          if (end == NULL) end = strchr(ptr, 0);
-        }
-      }
-      num_breakpoints = i; // just in case parsing failed for some reason
-      delete[] cpy;
+  const char * env = coin_getenv("COIN_DEBUG_BREAK");
+  if (env) {
+    num_breakpoints = 1;
+    const char * ptr = env;
+    while (*ptr) {
+      if (*ptr == ' ' || *ptr == ',') num_breakpoints++;
+      ptr++;
     }
+    breakpoints = new char*[num_breakpoints];
+    coin_atexit((coin_atexit_f *)debug_break_cleanup, 0);
+    const size_t envstrlen = strlen(env);
+    char * cpy = new char[envstrlen + 1];
+    (void)strcpy(cpy, env);
+    ptr = cpy;
+    const char * end = strchr(ptr, ' ');
+    const char * tst = strchr(ptr, ',');
+    if (end == NULL || (tst && tst < end)) end = tst;
+    if (end == NULL) end = strchr(ptr, '\0');
+    int i = 0;
+    while (end && i < num_breakpoints) {
+      const ptrdiff_t len = end - ptr;
+      breakpoints[i] = new char[len + 1];
+      (void)memcpy(breakpoints[i], ptr, len);
+      breakpoints[i][len] = '\0';
+      i++;
+      ptr = end+1;
+      if (ptr < (cpy + envstrlen)) {
+        end = strchr(ptr, ' ');
+        tst = strchr(ptr, ',');
+        if (end == NULL || (tst && tst < end)) end = tst;
+        if (end == NULL) end = strchr(ptr, 0);
+      }
+    }
+    num_breakpoints = i; // just in case parsing failed for some reason
+    delete[] cpy;
   }
 #endif // COIN_DEBUG
 }
