@@ -198,18 +198,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-013 Memory leak in cc_get_full_path()
-
-    The following resources leak/are not reset on cleanup:
-
-    static const char * list = 0;
-    static const char * path[MAX_NR_PATH_ENTRIES] = { 0 };
-    static int end_reached = 0;
-
-    20060206 kintel.
-
-=====================================================================
-
 014 cc_flww32_initialize(): Uninitialized variable used
 
     cc_flww32_globals.devctx is used before being initialized:
