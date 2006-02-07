@@ -368,3 +368,80 @@ main(int argc, char ** argv)
     20060207 kintel.
 
 =====================================================================
+
+027 SoSubNodeEngine.h: Memory leak from static variable
+
+    static SoEngineOutputData * outputdata;
+
+    20060207 kintel.
+
+=====================================================================
+
+028 SoLockManager: Memory leak from static variable
+
+    static class SoLockManager_pimpl * pimpl;
+
+    20060207 kintel.
+
+=====================================================================
+
+029 SoNodeKit: Static variable not reset on cleanup
+
+    SbBool SoNodeKit::isinitialized = FALSE;
+
+    20060207 kintel.
+
+=====================================================================
+
+030 SoLocateHighlight: Possible memory leak from static variable
+
+    SoFullPath * SoLocateHighlight::currenthighlight = NULL;
+
+    20060207 kintel.
+
+=====================================================================
+
+031 SoSubNode.h: Possible memory leak from static variable
+
+    The following comments at SoSubNode.h:147 suggest there is
+    a memory leak but the code looks OK.
+    Write a test app with an extension node to verify.
+
+      /* FIXME: this is a "static" memory leak. 20030131 mortene. */ \
+      /* Internal Coin nodes are handled properly though. pederb, 20041122 */ \
+      _class_::fieldData = \
+        new SoFieldData(_class_::parentFieldData ? \
+                        *_class_::parentFieldData : NULL); \
+
+    20060207 kintel.
+
+=====================================================================
+
+032 SoInteraction: Static variable not reset on cleanup
+
+    SbBool SoInteraction::isinitialized = FALSE;
+
+    20060207 kintel.
+
+=====================================================================
+
+033 SoSubKit.h: Memory leak from static variable
+
+    This static variable leaks:
+      static SoNodekitCatalog * classcatalog;
+
+    ..and this is not reset on cleanup:
+      static const SoNodekitCatalog ** parentcatalogptr
+
+    20060207 kintel.
+
+=====================================================================
+
+034 SoVRMLShape: Static variable not reset on cleanup
+
+    int SoVRMLShape::numrendercaches;
+
+    20060207 kintel.
+
+=====================================================================
+
