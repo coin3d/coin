@@ -132,8 +132,8 @@ static JSObject * SFRotationFactory(JSContext * cx, const SbRotation & self);
 static JSObject * SFVec2fFactory(JSContext * cx, const SbVec2f & self);
 static JSObject * SFVec3fFactory(JSContext * cx, const SbVec3f & self);
 
-static SbList <JSObject *> garbagecollectedobjects;
-static SbList <SoNodeSensor *> nodesensorstobedeleted;
+static SbList <JSObject *> * garbagecollectedobjects = NULL;
+static SbList <SoNodeSensor *> * nodesensorstobedeleted = NULL;
 
 // getIndex returns -1 if id is not an alias or in range 0-max
 static JSBool getIndex(JSContext * cx, jsval id, char * aliases[], int max)
@@ -544,7 +544,7 @@ static JSBool SFNode_ref(JSContext * cx, JSObject * obj, uintN argc,
   // Check if the JS object has already been garbage collected. This
   // must be done to prevent a Java script from crashing the
   // application.
-  if (garbagecollectedobjects.find(obj) != -1) {
+  if (garbagecollectedobjects->find(obj) != -1) {
     if (SoJavaScriptEngine::debug())
       SoDebugError::postInfo("SFNode_ref", "WARNING! Trying to ref a deleted node.");
     return JSVAL_FALSE;
@@ -561,7 +561,7 @@ static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN argc,
   // Check if the JS object has already been garbage collected. This
   // must be done to prevent a Java script from crashing the
   // application.
-  if (garbagecollectedobjects.find(obj) != -1) {
+  if (garbagecollectedobjects->find(obj) != -1) {
     if (SoJavaScriptEngine::debug())
       SoDebugError::postInfo("SFNode_unref", "WARNING! Trying to unref an already deleted node.");
     return JSVAL_FALSE;
@@ -586,12 +586,12 @@ static void SFNode_deleteCB(void * data, SoSensor * sensor)
   // Delete all JSObjects which were connected to this SoNode
   while (si->objects.getLength()) {
     JSObject * obj = si->objects[0];
-    garbagecollectedobjects.append(obj);
+    garbagecollectedobjects->append(obj);
     si->objects.removeFast(0);
   }
 
   // Store the sensor-pointer so that it can be properly deleted later
-  nodesensorstobedeleted.append((SoNodeSensor *) sensor);
+  nodesensorstobedeleted->append((SoNodeSensor *) sensor);
   CoinVrmlJs_sensorinfohash->remove((unsigned long) node);
   delete si;
 }
@@ -599,9 +599,9 @@ static void SFNode_deleteCB(void * data, SoSensor * sensor)
 static void cleanupObsoleteNodeSensors(void)
 {
   // Delete all SoNodeSensors which no longer have a node attached.
-  while(nodesensorstobedeleted.getLength() > 0) {
-    SoNodeSensor * ns = (SoNodeSensor *) nodesensorstobedeleted[0];
-    nodesensorstobedeleted.removeItem(ns);
+  while(nodesensorstobedeleted->getLength() > 0) {
+    SoNodeSensor * ns = (SoNodeSensor *) (*nodesensorstobedeleted)[0];
+    nodesensorstobedeleted->removeItem(ns);
     delete ns;
   }
 }
@@ -1076,7 +1076,7 @@ static JSObject * SFRotation_init(JSContext * cx, JSObject * obj)
 static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
 {
 
-  if (garbagecollectedobjects.find(obj) != -1) {
+  if (garbagecollectedobjects->find(obj) != -1) {
     spidermonkey()->JS_ReportError(cx, "Trying to access an object with refcount=0.");
     return JS_FALSE;
   }
@@ -1170,8 +1170,8 @@ static void SFNodeDestructor(JSContext * cx, JSObject * obj)
 {
   // Delete all SoNodeSensors which no longer has a node attached.
   cleanupObsoleteNodeSensors();
-  if(garbagecollectedobjects.find(obj) != -1) { // Pointer is marked as garbage-collected
-    garbagecollectedobjects.removeItem(obj);
+  if(garbagecollectedobjects->find(obj) != -1) { // Pointer is marked as garbage-collected
+    garbagecollectedobjects->removeItem(obj);
   }
 
   SoNode * container = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
@@ -1224,8 +1224,8 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
 
   JSObject * obj = spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFNode.cls, NULL, NULL);
 
-  if(garbagecollectedobjects.find(obj) != -1) // Pointer has been used before. Remove from list.
-    garbagecollectedobjects.removeItem(obj);
+  if(garbagecollectedobjects->find(obj) != -1) // Pointer has been used before. Remove from list.
+    garbagecollectedobjects->removeItem(obj);
 
   spidermonkey()->JS_SetPrivate(cx, obj, container);
   spidermonkey()->JS_DefineFunctions(cx, obj, SFNodeFunctions);
@@ -1275,8 +1275,8 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
       return JS_FALSE;
     }
 
-    if(garbagecollectedobjects.find(obj) != -1) { // Pointer has been used before. Remove from list.
-      garbagecollectedobjects.removeItem(obj);
+    if(garbagecollectedobjects->find(obj) != -1) { // Pointer has been used before. Remove from list.
+      garbagecollectedobjects->removeItem(obj);
     }
 
     attachSensorToNode(group, obj);
@@ -1731,11 +1731,31 @@ CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec3f = {
 
 
 // *************************************************************************
+
+// cleans up static / one-off resource allocations
+static void
+js_vrmlclasses_cleanup(void)
+{
+  delete garbagecollectedobjects;
+  delete nodesensorstobedeleted;
+
+  garbagecollectedobjects = NULL;
+  nodesensorstobedeleted = NULL;
+}
+
+// *************************************************************************
 // helper function to add all classes to engine
 
 void
 JS_addVRMLclasses(SoJavaScriptEngine * engine)
 {
+  // init static data
+  if (garbagecollectedobjects == NULL) {
+    garbagecollectedobjects = new SbList <JSObject *>;
+    nodesensorstobedeleted = new SbList <SoNodeSensor *>;
+    coin_atexit((coin_atexit_f *)js_vrmlclasses_cleanup, 0);
+  }
+
   // Bool
   engine->addHandler(
     SoSFBool::getClassTypeId(), NULL,
