@@ -1492,34 +1492,22 @@ static void SFVec3f_field2jsval(JSContext * cx, const SoField * f, jsval *v)
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFColor = {
   {
-    "SFColor", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    SFColorHandler::get,
-    SFColorHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "SFColor", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFColorHandler::get, SFColorHandler::set,
+    NULL, NULL, NULL,
     SFColorHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   SFColorFunctions
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFNode = {
   {
-    "SFNode", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    SFNode_get,
-    SFNode_set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "SFNode", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFNode_get, SFNode_set,
+    NULL, NULL, NULL,
     SFNodeDestructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   NULL
 };
@@ -1527,208 +1515,144 @@ CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFNode = {
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFRotation = {
   {
-    "SFRotation", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    SFRotationHandler::get,
-    SFRotationHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "SFRotation", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFRotationHandler::get, SFRotationHandler::set,
+    NULL, NULL, NULL,
     SFRotationHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   SFRotationFunctions
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFVec2f = {
   {
-    "SFVec2f", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    SFVec2fHandler::get,
-    SFVec2fHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "SFVec2f", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFVec2fHandler::get, SFVec2fHandler::set,
+    NULL, NULL, NULL,
     SFVec2fHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   SFVec2fFunctions
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFVec3f = {
   {
-    "SFVec3f", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    SFVec3fHandler::get,
-    SFVec3fHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "SFVec3f", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFVec3fHandler::get, SFVec3fHandler::set,
+    NULL, NULL, NULL,
     SFVec3fHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   SFVec3fFunctions
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFColor = {
   {
-    "MFColor", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFColorHandler::get,
-    MFColorHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFColor", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFColorHandler::get, MFColorHandler::set,
+    NULL, NULL, NULL,
     MFColorHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFFloat = {
   {
-    "MFFloat", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFFloatHandler::get,
-    MFFloatHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFFloat", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFFloatHandler::get, MFFloatHandler::set,
+    NULL, NULL, NULL,
     MFFloatHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFInt32 = {
   {
-    "MFInt32", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFInt32Handler::get,
-    MFInt32Handler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFInt32", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFInt32Handler::get, MFInt32Handler::set,
+    NULL, NULL, NULL,
     MFInt32Handler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFNode = {
   {
-    "MFNode", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFNodeHandler::get,
-    MFNodeHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFNode", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFNodeHandler::get, MFNodeHandler::set,
+    NULL, NULL, NULL,
     MFNodeHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFRotation = {
   {
-    "MFRotation", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFRotationHandler::get,
-    MFRotationHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFRotation", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFRotationHandler::get, MFRotationHandler::set,
+    NULL, NULL, NULL,
     MFRotationHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFString = {
   {
-    "MFString", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFStringHandler::get,
-    MFStringHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFString", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFStringHandler::get, MFStringHandler::set,
+    NULL, NULL, NULL,
     MFStringHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFTime = {
   {
-    "MFTime", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFTimeHandler::get,
-    MFTimeHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFTime", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFTimeHandler::get, MFTimeHandler::set,
+    NULL, NULL, NULL,
     MFTimeHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec2f = {
   {
-    "MFVec2f", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFVec2fHandler::get,
-    MFVec2fHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFVec2f", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFVec2fHandler::get, MFVec2fHandler::set,
+    NULL, NULL, NULL,
     MFVec2fHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec3f = {
   {
-    "MFVec3f", JSCLASS_HAS_PRIVATE,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    MFVec3fHandler::get,
-    MFVec3fHandler::set,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub,
+    "MFVec3f", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFVec3fHandler::get, MFVec3fHandler::set,
+    NULL, NULL, NULL,
     MFVec3fHandler::destructor,
-    NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, 0
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   MFFunctions,
 };
 
+
+CoinVrmlJs::ClassDescriptor * CLASSDESCRIPTORS[] = {
+  &CoinVrmlJs::SFColor, &CoinVrmlJs::SFNode, &CoinVrmlJs::SFRotation,
+  &CoinVrmlJs::SFVec2f, &CoinVrmlJs::SFVec3f, &CoinVrmlJs::MFColor,
+  &CoinVrmlJs::MFFloat, &CoinVrmlJs::MFInt32, &CoinVrmlJs::MFNode,
+  &CoinVrmlJs::MFRotation, &CoinVrmlJs::MFString, &CoinVrmlJs::MFTime,
+  &CoinVrmlJs::MFVec2f, &CoinVrmlJs::MFVec3f
+};
 
 // *************************************************************************
 
@@ -1754,6 +1678,19 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     garbagecollectedobjects = new SbList <JSObject *>;
     nodesensorstobedeleted = new SbList <SoNodeSensor *>;
     coin_atexit((coin_atexit_f *)js_vrmlclasses_cleanup, 0);
+
+    // set up default function stubs for Spidermonkey classes we
+    // make. must be done at run-time to avoid calling spidermonkey()
+    // early (i.e. not on demand).
+    const size_t NRELEMENTS = sizeof(CLASSDESCRIPTORS) / sizeof(CLASSDESCRIPTORS[0]);
+    for (size_t i=0; i < NRELEMENTS; i++) {
+      CoinVrmlJs::ClassDescriptor * desc = CLASSDESCRIPTORS[i];
+      desc->cls.addProperty = spidermonkey()->JS_PropertyStub;
+      desc->cls.delProperty = spidermonkey()->JS_PropertyStub;
+      desc->cls.enumerate = spidermonkey()->JS_EnumerateStub;
+      desc->cls.resolve = spidermonkey()->JS_ResolveStub;
+      desc->cls.convert = spidermonkey()->JS_ConvertStub;
+    }
   }
 
   // Bool
