@@ -1013,4 +1013,20 @@ glxglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 
 /* ********************************************************************** */
 
+void glxglue_cleanup(void)
+{
+  glxglue_screen = -1;
+  glxglue_glXGetProcAddress = NULL;
+  tried_bind_glXGetProcAddress = FALSE;
+
+  glxglue_context_create = NULL;
+
+  glxglue_glXChooseFBConfig = NULL;
+  glxglue_glXCreateNewContext = NULL;
+  glxglue_glXGetFBConfigAttrib = NULL; 
+  glxglue_glXCreatePbuffer_GLX_1_3 = NULL;
+  glxglue_glXCreateGLXPbufferSGIX = NULL;
+  glxglue_glXDestroyPbuffer = NULL;
+}
+
 #endif /* HAVE_GLX */

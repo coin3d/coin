@@ -46,6 +46,7 @@ SbBool wglglue_context_can_render_to_texture(void * ctx);
 
 SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims);
 
+void wglglue_cleanup(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

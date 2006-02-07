@@ -224,22 +224,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-015 Resource leaks in aglglue
-
-    The following resources are not freed/reset:
-
-    static COIN_AGLCREATEPBUFFER aglglue_aglCreatePBuffer = NULL;
-    static COIN_AGLDESTROYPBUFFER aglglue_aglDestroyPBuffer = NULL;
-    static COIN_AGLSETPBUFFER aglglue_aglSetPBuffer = NULL;
-    static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
-    static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
-    static cc_libhandle glhnd = NULL;
-    static SbBool tried_fetching_handle = FALSE;
-
-    20060206 kintel.
-
-=====================================================================
-
 016 SoHardCopy: Static variable in function not reset on cleanup
 
     SoHardCopy::init(void)

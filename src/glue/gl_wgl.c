@@ -170,6 +170,7 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 
 static cc_libhandle glhnd = NULL;
 static SbBool tried_fetching_handle = FALSE;
+static SbBool attemptedextresolved = FALSE;
 
 /* ********************************************************************** */
 
@@ -184,7 +185,6 @@ coin_wgl_getprocaddress(const char * fname)
 
   if (ptr == NULL) {
     if (!tried_fetching_handle) {
-      /* FIXME: never released -- one-off resource leak. 20041208 mortene.*/
       glhnd = cc_dl_handle_with_gl_symbols();
       tried_fetching_handle = TRUE;
 
@@ -253,10 +253,8 @@ wglglue_ext_supported(struct wglglue_contextdata * context, const char * reqext)
    * ..so we try to get hold of wglGetExtensionsString[ARB|EXT]() and
    * use that aswell.
    */
-  static SbBool attemptedresolved = FALSE;
-
-  if (!attemptedresolved) {
-    attemptedresolved = TRUE;
+  if (!attemptedextresolved) {
+    attemptedextresolved = TRUE;
 #ifdef WGL_ARB_extensions_string
     wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(wglGetExtensionsStringARB);
 #endif /* WGL_ARB_extensions_string */
@@ -643,6 +641,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
   else { context->noappglcontextavail = TRUE; }
 
   if (context->noappglcontextavail) {
+    /* FIXME: This should be reset in wglglue_cleanup() once we
+       also properly unregister there... 20060207 kyrah */
     static int didregister = 0;
     if (!didregister) {
       WNDCLASS wc;
@@ -1112,6 +1112,39 @@ wglglue_context_pbuffer_max(void * c, unsigned int * lims)
   }
   return TRUE;
 }
+
+/* ********************************************************************** */
+
+void wglglue_cleanup(void)
+{
+  wglglue_context_create = NULL;
+
+  wglglue_wglCreatePbuffer = NULL;
+  wglglue_wglGetPbufferDC = NULL;
+  wglglue_wglReleasePbufferDC = NULL;
+  wglglue_wglDestroyPbuffer = NULL;
+  wglglue_wglQueryPbuffer = NULL;
+  wglglue_wglBindTexImageARB = NULL;
+  wglglue_wglReleaseTexImageARB = NULL;
+
+  wglglue_wglChoosePixelFormat = NULL;
+  wglglue_wglGetPixelFormatAttribiv = NULL;
+
+  wglglue_wglGetExtensionsString = NULL;
+
+  if (glhnd) { 
+    cc_dl_close(glhnd); 
+    glhnd = NULL; 
+  }
+  tried_fetching_handle = FALSE;
+  attemptedextresolved = FALSE;
+
+  /* FIXME: We should probably do an UnregisterClass() here (see
+     wglglue_context_create_pbuffer()) -- but since I don't know the
+     details of how to do this, I'll leave it to one of the Windows
+     gurus...  20060207 kyrah */
+}
+
 
 #endif /* HAVE_WGL */
 

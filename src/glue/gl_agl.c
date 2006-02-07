@@ -137,14 +137,13 @@ static SbBool tried_fetching_handle = FALSE;
 
 /* 
  * Since AGL does not have an aglGetProcAddress() as such, this is
- * simply a wrapper around cc_dl_*. Prsent here for consistency with
+ * simply a wrapper around cc_dl_*. Present here for consistency with
  * WGL and GLX implementations.
  */
 void *
 aglglue_getprocaddress(const char * fname)
 {
   if (!tried_fetching_handle) {
-    /* FIXME: never released -- one-off resource leak. 20041208 mortene.*/
     glhnd = cc_dl_handle_with_gl_symbols();
     tried_fetching_handle = TRUE;
   }
@@ -604,7 +603,22 @@ aglglue_context_can_render_to_texture(void * ctx)
   return context->aglpbuffer != NULL;
 }
 
+void 
+aglglue_cleanup(void)
+{
+  aglglue_aglCreatePBuffer = NULL;
+  aglglue_aglDestroyPBuffer = NULL;
+  aglglue_aglSetPBuffer = NULL;
+  aglglue_aglTexImagePBuffer = NULL;
 
+  aglglue_context_create = NULL;
+
+  if (glhnd) { 
+    cc_dl_close(glhnd); 
+    glhnd = NULL; 
+  }
+  tried_fetching_handle = FALSE;
+}
 #endif /* HAVE_AGL */
 
 

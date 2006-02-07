@@ -503,6 +503,14 @@ glglue_cleanup(void)
   }
   glglue_tried_open_self = FALSE;
   offscreen_cb = NULL;
+
+#ifdef HAVE_GLX
+  glxglue_cleanup();
+#elif defined(HAVE_AGL)
+  aglglue_cleanup();
+#elif defined(HAVE_WGL)
+  wglglue_cleanup();
+#endif
 }
 
 /*

@@ -43,7 +43,7 @@ void aglglue_context_bind_pbuffer(void * ctx);
 void aglglue_context_release_pbuffer(void * ctx);
 SbBool aglglue_context_pbuffer_is_bound(void * ctx);
 SbBool aglglue_context_can_render_to_texture(void * ctx);
-
+void aglglue_cleanup(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

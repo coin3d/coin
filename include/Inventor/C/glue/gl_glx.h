@@ -46,6 +46,7 @@ void glxglue_context_destruct(void * ctx);
 
 SbBool glxglue_context_pbuffer_max(void * ctx, unsigned int * lims);
 
+void glxglue_cleanup(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
