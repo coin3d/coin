@@ -192,12 +192,12 @@ public:
   }
 
   static SbBool debug(void);
+  static void cleanup(void);
 
 #ifdef COIN_HAVE_JAVASCRIPT
   void initialize(void);
   void shutdown(void);
 
-  static void cleanup(void);
   static SbBool allowSpiderMonkey(void);
   static SbBool useSpiderMonkey(void);
 #endif // !COIN_HAVE_JAVASCRIPT
@@ -213,6 +213,8 @@ public:
   SoJavaScriptEngine * engine;
 #endif // !COIN_HAVE_JAVASCRIPT
 
+  static SbBool spidermonkey_init_failed;
+
 private:
   SoVRMLScript * master;
 };
@@ -220,10 +222,14 @@ private:
 #define PUBLIC(p) ((p)->master)
 #define PRIVATE(p) ((p)->pimpl)
 
-#ifdef COIN_HAVE_JAVASCRIPT
+SbBool SoVRMLScriptP::spidermonkey_init_failed = FALSE;
+
+// *************************************************************************
+
 void
 SoVRMLScriptP::cleanup(void)
 {
+#ifdef COIN_HAVE_JAVASCRIPT
   // FIXME: need to make sure this is added to atexit only after
   // the engine has started. 20050720 erikgors.
   if (SoJavaScriptEngine::getRuntime() == NULL)
@@ -233,8 +239,11 @@ SoVRMLScriptP::cleanup(void)
     // Destroy javascript runtime
     SoJavaScriptEngine::shutdown();
   }
-}
 #endif // !COIN_HAVE_JAVASCRIPT
+
+  // reset static var
+  SoVRMLScriptP::spidermonkey_init_failed = FALSE;
+}
 
 // *************************************************************************
 
@@ -298,10 +307,17 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
+  coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 0);
+
 #ifdef COIN_HAVE_JAVASCRIPT
-  if (!SoJavaScriptEngine::getRuntime() && SoVRMLScriptP::allowSpiderMonkey()) {
-    SoJavaScriptEngine::init();
-    coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 0);
+  if (SoVRMLScriptP::allowSpiderMonkey() &&
+      !SoVRMLScriptP::spidermonkey_init_failed &&
+      // FIXME: next line is a hack-ish way of checking whether init()
+      // has already been done on the SoJavaScriptEngine class.
+      // 20060207 mortene.
+      (SoJavaScriptEngine::getRuntime() == NULL)) {
+    SbBool ok = SoJavaScriptEngine::init();
+    if (!ok) { SoVRMLScriptP::spidermonkey_init_failed = TRUE; }
   }
 #endif // !COIN_HAVE_JAVASCRIPT
 
@@ -714,10 +730,10 @@ void
 SoVRMLScriptP::initialize(void)
 {
   if (this->engine != NULL) {
-      if (SoVRMLScriptP::debug()) {
-        SoDebugError::postInfo("SoVRMLScriptP::initialize",
-                               "restarting script engine");
-      }
+    if (SoVRMLScriptP::debug()) {
+      SoDebugError::postInfo("SoVRMLScriptP::initialize",
+                             "restarting script engine");
+    }
     this->shutdown();
   }
 
@@ -734,7 +750,8 @@ SoVRMLScriptP::initialize(void)
       if (!SoVRMLScriptP::useSpiderMonkey()) {
         if (SoVRMLScriptP::debug()) {
           SoDebugError::postInfo("SoVRMLScriptP::initialize",
-                                 "SpiderMonkey Javascript engine not available");
+                                 "Only the SpiderMonkey Javascript engine "
+                                 "currently supported.");
         }
         continue;
       }
@@ -746,9 +763,9 @@ SoVRMLScriptP::initialize(void)
   }
 
   if (this->engine == NULL) {
-      SoDebugError::postWarning("SoVRMLScript::initialize",
-                                "No script language evaluation engine available.");
-      return;
+    SoDebugError::postWarning("SoVRMLScript::initialize",
+                              "No script language evaluation engine available.");
+    return;
   }
 
   // FIXME: should scriptFields be set before or after the script has been
