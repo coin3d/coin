@@ -225,146 +225,109 @@ cc_dirname(const char *path) {
 
 /* Returns a string containing the search directories for
    dynamic libraries, separated by ':'. Needed since Mac OS X
-   wants to have a full path to the library when loading it. */
+   requires to have a full path to the library when loading it. */
 
-static const char * 
+static cc_string * 
 cc_build_search_list(const char * libname)
 {
-  int image_count = _dyld_image_count();
-  int i;
-  size_t length;
-  char * res_path = NULL;
-  const char * p = NULL;
-  char * path, * framework_path, * dyld_path, * default_path;
+  int i, image_count = _dyld_image_count();
+  cc_string res_path, framework_path, dyld_path;
+  cc_string * path = cc_string_construct_new();
 
-  
-  /* First, let's see if we have this library as Framework in
-     /Library/Frameworks/$libname.framework/$libname. 
+  /* We search for libraries in 3 locations: 
 
-     Note that this will only work if the framework is installed in
-     /Library/Frameworks.  The more correct thing to do would maybe be
-     to search within the DYLD_FRAMEWORK_PATH, but then again, loading
-     frameworks at runtime is not something you are supposed to do in
-     general, even though it is technically possible. (The "Foo" file
-     in Foo.framework/Foo is nothing but a plain MH_DYLIB file, so we
-     can open it as if it was a *.dylib)
+    (1) We check if the library exists as a framework in 
+        /Library/Frameworks/$libname.framework/$libname.     
+        (This is actually quite an ugly hack, since frameworks 
+        are not meant to be dlopen'ed -- but we need this for 
+        dynamic loading of OpenAL symbols.)
 
-     Actually, this is a hack created for OpenAL, since the source
-     distribution is major PITA to set up (at least for $Mac_user),
-     and the binary installer by Creative installs OpenAL as
-     framework. 
+    (2) the default search paths for libraries
 
-     kyrah 20030311 */
+    (3) If we cannot find the library on the system, we might have a
+        fallback shipped with Coin / the Inventor.framework: Get the
+        file system path to the actually loaded Inventor.framework,
+        and look for the library in its Resources folder.
+  */ 
 
+  /* (1) check if library exists as framework */
+
+  cc_string_construct(&framework_path);
   const char * framework_prefix = "/Library/Frameworks/";
   const char * framework_ext = ".framework";
-  /* FIXME: it'd be simpler, cleaner and safer to use the
-     cc_string_sprintf() function. 20030804 mortene. */
-  length = strlen(framework_prefix) + strlen(framework_ext) +
-    strlen(libname) + 1;
-  framework_path = malloc(length);
-  snprintf(framework_path, length, "%s%s%s", framework_prefix,
-           libname, framework_ext);
-  
+  cc_string_sprintf(&framework_path, "%s%s%s%s", framework_prefix,
+                    libname, framework_ext, ":");
+  cc_string_append_string(path, &framework_path);
+  cc_string_clean(&framework_path); 
 
-  /* We also want to search in the default locations (specified by
-     DYLD_LIBRARY_PATH, and the system's library path). */
+  /* (2) default library search path  */
 
-  dyld_path = getenv("DYLD_LIBRARY_PATH"); 
-  if (!dyld_path) dyld_path = "";
-  
-  default_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
-  if (!default_path) default_path = "/lib:/usr/lib";
-
-  if (cc_dl_debugging()) {
-    cc_debugerror_postinfo("cc_build_search_list", 
-			   "Using library path \"%s\" (fallback: \"%s\")",
-			   dyld_path, default_path);
+  cc_string_construct(&dyld_path);
+  char * dyld_library_path = getenv("DYLD_LIBRARY_PATH"); 
+  if (dyld_library_path) {
+    cc_string_append_text(&dyld_path, dyld_library_path);
+    if (dyld_library_path[strlen(dyld_library_path)-1] != ':') {
+      cc_string_append_text(&dyld_path, ":");
+    }
+  } 
+  char * dyld_fallback_library_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
+  if (dyld_fallback_library_path) {
+    cc_string_append_text(&dyld_path, dyld_fallback_library_path);
+    if (dyld_fallback_library_path[strlen(dyld_fallback_library_path)-1] != ':') {
+      cc_string_append_text(&dyld_path, ":");
+    }
+  } else {
+    cc_string_append_text(&dyld_path, "/lib:/usr/lib:");
   }
+  cc_string_append_string(path, &dyld_path);
+  cc_string_clean(&dyld_path); 
 
-  /* If we cannot find the library on the system, we might have a
-     fallback shipped with Coin / the Inventor.framework.  Get the
-     file system path to the actually loaded Inventor.framework, and
-     look for the library in its Resources folder. */
+  /* (3) the Resources folder of the Inventor framework */
 
+  cc_string_construct(&res_path);
   for (i = 0; i < image_count; i++) {
-    p = _dyld_get_image_name(i);
+    const char * p = _dyld_get_image_name(i);
     if (strstr(p, "Inventor.framework")) {
       /* We get /path/to/Foo.framework/Versions/A/Foo
          but want /path/to/Foo.framework/Versions/A/Resources */
       char * path_to_version_dir = cc_dirname(p);
-      /* FIXME: it'd be simpler, cleaner and safer to use the
-         cc_string_sprintf() function. 20030804 mortene. */
-      size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
-      res_path = malloc(l);
-      snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
+      cc_string_sprintf(&res_path, "%s%s", 
+                        path_to_version_dir, "/Resources");
       break;
     }
   }
-  
-  /* FIXME: it'd be simpler, cleaner and safer to use the
-     cc_string_sprintf() function. 20030804 mortene. */
-  length = strlen(framework_path) + strlen(dyld_path) + strlen(default_path) + 
-    (res_path ? strlen(res_path) : 0) + 4;
-  path = malloc(length);
-  snprintf(path, length, "%s%s%s%s%s%s%s",
-           framework_path, ":",
-           dyld_path, dyld_path[0] ? ":" : "", default_path, 
-           res_path ? ":" : "" , res_path ? res_path : "");
-  
-  free(framework_path);
-  free(res_path);
+  cc_string_append_string(path, &res_path);
+  cc_string_clean(&res_path); 
   return path;
 }
 
-/* Get the full path for the ith entry in the search list. */
+/* Returns the absolute path to file if file can be found in the
+   library and framework search path, NULL otherwise. It is the
+   caller's responsibility to free the returned string. */
 
-static const char * 
-cc_get_full_path(int i, const char * file)
+static cc_string *
+cc_find_file(const char * file)
 {
-  /* FIXME: how many entries should we support? 
-     64 is a random value. kyrah 20030306 */
-  #define MAX_NR_PATH_ENTRIES 64
+  int end_reached = 0;
+  cc_string * path = cc_string_construct_new();
+  cc_string * list = cc_build_search_list(file);
+  const char * listptr = cc_string_get_text(list);
 
-  static char fullpath[PATH_MAX];
-  static const char * list = 0;
-  static const char * path[MAX_NR_PATH_ENTRIES] = { 0 };
-  static int end_reached = 0;
-  
-  /* Create list the first time around. */
-  if (!list && !end_reached) list = cc_build_search_list(file);
-  
-  while (!path[i] && !end_reached) {
-    path[i] = strsep((char **) &list, ":");
-    if (path[i][0] == 0) path[i] = 0;
-    end_reached = (list == 0);
+  while (!end_reached) {
+    char * currententry = strsep((char **) &listptr, ":");
+    end_reached = (listptr == NULL);
+    if (currententry) {
+      struct stat sbuf;
+      cc_string_sprintf(path, "%s/%s", currententry, file);
+      if (stat(cc_string_get_text(path), &sbuf) == 0) {
+        break;
+      } else {
+        cc_string_clear(path);
+      }
+    }
   }
-
-  if (path[i]) {
-    snprintf(fullpath, PATH_MAX, "%s/%s", path[i], file);
-    return fullpath;
-  }
-
-  return NULL;
-}
-
-/* Try to determine full path for file. */
-
-static const struct stat *
-cc_find_file(const char * file, const char ** fullpath)
-{
-  int i = 0;
-  static struct stat sbuf;
-
-  *fullpath = file;
-
-  while ((*fullpath = cc_get_full_path(i++, file))) {
-    if (stat(*fullpath, &sbuf) == 0) {
-      return &sbuf;
-    }   
-  }
-  
-  return 0;
+  cc_string_clean(list);
+  return path;
 }
 
 #endif /* HAVE_DYLD_RUNTIME_BINDING */
@@ -401,15 +364,16 @@ cc_dl_open(const char * filename)
 #ifdef HAVE_DYLD_RUNTIME_BINDING
   /* Mac OS X: Search for library shipped with Inventor framework. */
   if (h->nativehnd == NULL) {
-    const char * fullpath;
-    const struct stat * filestat = cc_find_file(filename, &fullpath);
-
-    if (filestat) {
+    cc_string * path = cc_find_file(filename);
+    if (cc_string_length(path) > 0) {
       if (cc_dl_debugging()) {
-        cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+        cc_debugerror_postinfo("cc_dlopen", "opening: %s", 
+                               cc_string_get_text(path));
       }
-      h->nativehnd = dlopen(fullpath, RTLD_LAZY);      
+      h->nativehnd = dlopen(cc_string_get_text(path), 
+                            RTLD_LAZY);      
     }
+    cc_string_clean(path);
   }
 #endif /* HAVE_DYLD_RUNTIME_BINDING */
 
@@ -461,16 +425,14 @@ cc_dl_open(const char * filename)
        modules/bundles. See NSModule(3), NSObjectFileImage(3) and
        http://fink.sourceforge.net/doc/porting/shared.php for details.
     */
- 
-    const char * fullpath;
-    const struct stat * filestat = cc_find_file(filename, &fullpath);
-
-    if (filestat) {
+    cc_string * path = cc_find_file(filename);
+    if (cc_string_length(path) > 0) {
       if (cc_dl_debugging()) {
-        cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+        cc_debugerror_postinfo("cc_dlopen", "opening: %s", 
+                               cc_string_get_text(path));
       }
 
-      h->nativehnd = (void *) NSAddImage(fullpath, 
+      h->nativehnd = (void *) NSAddImage(cc_string_get_text(path), 
                                          NSADDIMAGE_OPTION_RETURN_ON_ERROR);
 
       if (cc_dl_debugging() && !h->nativehnd) {
@@ -481,6 +443,7 @@ cc_dl_open(const char * filename)
         NSLinkEditError(&c, &e, &file, &errstr);
         cc_debugerror_post("cc_dlopen", "%s", errstr);
       }
+      cc_string_clean(path);
     } 
   }
 
