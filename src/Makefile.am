@@ -120,7 +120,7 @@ if MACOSX_USE_DYNAMIC_LOOKUP
 # Must export deployment target environment, since it is required by
 # the linker to allow the -undefined dynamic_lookup flag.
 export MACOSX_DEPLOYMENT_TARGET=@MACOSX_DEPLOYMENT_TARGET@
-LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-headerpad_max_install_names 
 else
 LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 endif
