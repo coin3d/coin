@@ -286,3 +286,85 @@ main(int argc, char ** argv)
     20060206 kintel.
 
 =====================================================================
+
+020 SoUpgrader: Static variable in function not reset on cleanup
+
+    static void 
+    soupgrader_init_classes(void)
+    {
+      static int first = 1;
+      if (first) {
+        first = 0;
+        [...]
+
+    20060207 kintel.
+
+=====================================================================
+
+021 SoWWWAnchor: Static variables not reset on cleanup
+
+    SoWWWAnchorCB * SoWWWAnchorP::fetchfunc = NULL;
+    void * SoWWWAnchorP::fetchdata = NULL;
+    SoWWWAnchorCB * SoWWWAnchorP::highlightfunc = NULL;
+    void * SoWWWAnchorP::highlightdata = NULL;
+
+    20060207 kintel.
+
+=====================================================================
+
+022 SoNodeKitListPart: Static variable in function not reset on cleanup
+
+    const SoTypeList &
+    SoNodeKitListPart::getChildTypes(void) const
+    {
+      if (this->allowedtypes.getLength()) return this->allowedtypes;
+    
+      // Dynamically allocated to avoid problems on systems which doesn't
+      // handle static constructors.
+      static SoTypeList * deflist = new SoTypeList; // FIXME: should deallocate on exit. 20000406 mortene.
+      [...]
+    
+    20060207 kintel.
+
+=====================================================================
+
+023 SoSceneManager: Static variables not reset on cleanup
+
+    SbBool SoSceneManagerP::touchtimer = TRUE;
+
+    20060207 kintel.
+
+=====================================================================
+
+024 SoVRMLScript: Static variables not reset on cleanup
+
+    static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
+    static void * sovrmlscript_eval_closure = NULL;
+
+    20060207 kintel.
+
+=====================================================================
+
+025 AudioTools.cpp: Static variable not reset on cleanup
+
+    static SbBool should_traverse = FALSE;
+
+    20060207 kintel.
+
+=====================================================================
+
+026 CoinOffscreenGLCanvas: Static variable in function not reset on cleanup
+
+    SbVec2s
+    CoinOffscreenGLCanvas::getMaxTileSize(void)
+    {
+      // cache the values in static variables so that a new context is not
+      // created every time render() is called in SoOffscreenRenderer
+      static SbBool cached = FALSE;
+      static unsigned int maxtile[2] = { 0, 0 };
+      if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+      [...]
+
+    20060207 kintel.
+
+=====================================================================
