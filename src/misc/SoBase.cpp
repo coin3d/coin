@@ -495,6 +495,9 @@ SoBase::cleanClass(void)
   CC_MUTEX_DESTRUCT(SoBaseP::name2obj_mutex);
   CC_MUTEX_DESTRUCT(SoBaseP::auditor_mutex);
   CC_MUTEX_DESTRUCT(SoBaseP::global_mutex);
+
+  SoBase::tracerefs = FALSE;
+  SoBase::writecounter = 0;
 }
 
 /*!

@@ -682,6 +682,7 @@ SoBaseKit::initClass(void)
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
   SoAudioRenderAction::addMethod(type,
                                  SoAudioRenderAction::callDoAction);
+  SoBaseKit::searchchildren = FALSE;
 }
 
 /*!

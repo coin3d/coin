@@ -215,6 +215,7 @@ SoVRMLGroup::initClass(void)
 
   SoType type = SoVRMLGroup::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
+  SoVRMLGroup::numRenderCaches = 2;
 }
 
 /*!

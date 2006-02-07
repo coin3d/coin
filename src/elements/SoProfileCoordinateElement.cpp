@@ -81,9 +81,7 @@ SoProfileCoordinateElement::initClass(void)
 void
 SoProfileCoordinateElement::clean(void)
 {
-#if COIN_DEBUG
   delete SoProfileCoordinateElement::initdefaultcoords;
-#endif // COIN_DEBUG
 }
 
 /*!

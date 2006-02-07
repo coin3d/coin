@@ -66,9 +66,7 @@ SoFontNameElement::initClass(void)
 void
 SoFontNameElement::clean(void)
 {
-#if COIN_DEBUG
   delete SoFontNameElement::defaultfontname;
-#endif // COIN_DEBUG
 }
 
 /*!

@@ -76,6 +76,7 @@ void
 SoCacheElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoCacheElement, inherited);
+  SoCacheElement::invalidated = FALSE;
 
 #ifdef COIN_THREADSAFE
   invalidated_storage = new SbTypedStorage <SbBool*> (sizeof(SbBool));

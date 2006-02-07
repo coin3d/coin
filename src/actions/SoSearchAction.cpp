@@ -108,6 +108,7 @@ void
 SoSearchAction::initClass(void)
 {
   SO_ACTION_INTERNAL_INIT_CLASS(SoSearchAction, SoAction);
+  SoSearchAction::duringSearchAll = FALSE;
 }
 
 

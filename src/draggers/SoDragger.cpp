@@ -388,6 +388,7 @@ void
 SoDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoDragger, SO_FROM_INVENTOR_1);
+  SoDragger::minscale = 0.001f;
 
   SoDragger::initClasses();
 

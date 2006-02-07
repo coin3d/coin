@@ -445,6 +445,7 @@ SoSeparator::initClass(void)
 
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
+  SoSeparator::numrendercaches = 2;
 }
 
 // Doc from superclass.
