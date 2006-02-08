@@ -122,12 +122,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-006 SoIntersectionDetectionActionP::staticepsilon not reset on init/cleanup
-
-    20060206 kintel.
-
-=====================================================================
-
 007 Memory leak in SoDragger::setCameraInfo(SoAction * action)
 
     if (THIS->draggercache && THIS->draggercache->path) {
@@ -136,12 +130,6 @@ main(int argc, char ** argv)
         vvdata = new sodragger_vv_data;
       }
       [...]
-
-    20060206 kintel.
-
-=====================================================================
-
-008 SoTransformerDraggerP::colinearThreshold not reset on init/cleanup
 
     20060206 kintel.
 
@@ -173,18 +161,6 @@ main(int argc, char ** argv)
 
     static FILE * coin_stderr = NULL;
     if (!coin_stderr) { coin_stderr = coin_get_stderr(); }
-
-    20060206 kintel.
-
-=====================================================================
-
-011 Possible crash in SoDebugError:
-
-    It looks like debug_break_cleanup() deletes all breakpoints for
-    every cleanup, but only initializes them once. Since
-    num_breakpoints is not reset, memory might be freed multiple times.
-    The initClass() code should probably be changed to init every time
-    and the cleanup code should reset num_breakpoints to -1 or 0.
 
     20060206 kintel.
 
