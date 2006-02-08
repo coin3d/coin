@@ -333,30 +333,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-025 AudioTools.cpp: Static variable not reset on cleanup
-
-    static SbBool should_traverse = FALSE;
-
-    20060207 kintel.
-
-=====================================================================
-
-026 CoinOffscreenGLCanvas: Static variable in function not reset on cleanup
-
-    SbVec2s
-    CoinOffscreenGLCanvas::getMaxTileSize(void)
-    {
-      // cache the values in static variables so that a new context is not
-      // created every time render() is called in SoOffscreenRenderer
-      static SbBool cached = FALSE;
-      static unsigned int maxtile[2] = { 0, 0 };
-      if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
-      [...]
-
-    20060207 kintel.
-
-=====================================================================
-
 027 SoSubNodeEngine.h: Memory leak from static variable
 
     static SoEngineOutputData * outputdata;
