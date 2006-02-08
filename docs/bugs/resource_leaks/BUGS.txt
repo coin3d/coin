@@ -371,26 +371,3 @@ main(int argc, char ** argv)
     20060207 kintel.
 
 =====================================================================
-
-035 Crash at exit if COIN_DEBUG_CLEANUP=1
-
-    Calling SoDB::finish() results in a crash if COIN_DEBUG_CLEANUP is
-    set:
-
-    ../../../src/Coin/src/tidbits.c:1235: failed assertion
-    `!isexiting && "tried to attach an atexit function while exiting"'
-
-#0  0x9004716c in kill ()
-#1  0x90128b98 in abort ()
-#2  0x946ec144 in __eprintf ()
-#3  0x3f003c94 in coin_atexit_func (name=0xd3490 "cc_error_mutex_cleanup", f=0xd0318 <cc_error_mutex_cleanup>, priority=0) at ../../../src/Coin/src/tidbits.c:1235
-#4  0x000d0644 in cc_error_handle (me=0xbfffe7a8) at ../../../../src/Coin/src/errors/error.c:127
-#5  0x000d0b78 in cc_debugerror_internal_post (source=0x3f006b44 "coin_atexit_cleanup", msg=0xbfffe888, sev=CC_DEBUGERROR_INFO, type=0xd34d0 "info") at ../../../../src/Coin/src/errors/debugerror.c:100
-#6  0x000d0d34 in cc_debugerror_postinfo (source=0x3f006b44 "coin_atexit_cleanup", format=0x3f006b58 "invoking %s()") at ../../../../src/Coin/src/errors/debugerror.c:136
-#7  0x3f003b28 in coin_atexit_cleanup () at ../../../src/Coin/src/tidbits.c:1173
-#8  0x02286668 in SoDB::finish () at ../../../../src/Coin/src/misc/SoDB.cpp:842
-#9  0x000039c0 in main ()
-
-    20060208 kyrah
-
-    UPDATE 20060208 mortene: should be fixed by using fprintf() instead.
