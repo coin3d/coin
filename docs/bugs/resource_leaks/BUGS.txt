@@ -278,14 +278,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-027 SoSubNodeEngine.h: Memory leak from static variable
-
-    static SoEngineOutputData * outputdata;
-
-    20060207 kintel.
-
-=====================================================================
-
 028 SoLockManager: Memory leak from static variable
 
     static class SoLockManager_pimpl * pimpl;
@@ -329,18 +321,6 @@ main(int argc, char ** argv)
 032 SoInteraction: Static variable not reset on cleanup
 
     SbBool SoInteraction::isinitialized = FALSE;
-
-    20060207 kintel.
-
-=====================================================================
-
-033 SoSubKit.h: Memory leak from static variable
-
-    This static variable leaks:
-      static SoNodekitCatalog * classcatalog;
-
-    ..and this is not reset on cleanup:
-      static const SoNodekitCatalog ** parentcatalogptr
 
     20060207 kintel.
 
