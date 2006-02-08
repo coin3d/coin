@@ -38,7 +38,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFBox3s.h>
-#include <Inventor/fields/SoSubField.h>
+#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -54,7 +54,7 @@ SO_SFIELD_SOURCE(SoSFBox3s, SbBox3s, SbBox3s);
 void
 SoSFBox3s::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFBox3s, SoSField);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFBox3s);
 }
 
 // No need to document readValue() and writeValue() here, as the
