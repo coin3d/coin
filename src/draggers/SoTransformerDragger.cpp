@@ -218,6 +218,7 @@ void
 SoTransformerDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoTransformerDragger, SO_FROM_INVENTOR_1);
+  SoTransformerDraggerP::colinearThreshold = 3;
 }
 
 void
