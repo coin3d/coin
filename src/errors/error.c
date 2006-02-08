@@ -48,7 +48,12 @@ extern "C" {
 
 #ifdef COIN_THREADSAFE
 static cc_mutex * cc_error_mutex = NULL;
-static void cc_error_mutex_cleanup(void) { if (cc_error_mutex) { cc_mutex_destruct(cc_error_mutex); cc_error_mutex = NULL; } }
+static void cc_error_mutex_cleanup(void) {
+  if (cc_error_mutex) {
+    cc_mutex_destruct(cc_error_mutex);
+    cc_error_mutex = NULL;
+  }
+}
 #endif /* COIN_THREADSAFE */
 
 /* FIXME: should be hidden from public API, and only visible to
