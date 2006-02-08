@@ -799,7 +799,7 @@ AC_PATH_PROG(sim_ac_perl_exe, perl, false, $PATH)
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL([], [SIM_AC_ERROR([no-doxygen])])
   if test x"$sim_ac_perl_exe" = xfalse; then
-    AC_MSG_WARN(Could not find the Perl executable)
+    AC_MSG_ERROR([Could not find the Perl executable, which is needed for Doxygen doc generation.])
   fi
 fi
 
