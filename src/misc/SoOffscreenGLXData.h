@@ -41,6 +41,7 @@ public:
 
 private:
   static Display * getDisplay(void);
+  static void cleanup(void);
   static Display * display;
 };
 

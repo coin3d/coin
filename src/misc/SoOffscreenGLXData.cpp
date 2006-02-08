@@ -28,18 +28,33 @@
 #ifdef HAVE_GLX
 
 #include "SoOffscreenGLXData.h"
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
 Display * SoOffscreenGLXData::display = NULL;
+static SbBool display_initialized = FALSE;
+
+void 
+SoOffscreenGLXData::cleanup(void) 
+{
+  display_initialized = FALSE;
+  // FIXME: Disabled since this might cause problems according to the
+  // comment below (see getDisplay). Not sure if *not* closing the
+  // display cannot also lead to problems though... 20060208 kyrah
+#if 0 
+  XCloseDisplay(display);
+  display = NULL;
+#endif
+}
 
 Display *
 SoOffscreenGLXData::getDisplay(void)
 {
-  static SbBool first = TRUE;
-  if (first) {
-    first = FALSE;
+  if (!display_initialized) {
+    display_initialized = TRUE;
+    coin_atexit((coin_atexit_f*)SoOffscreenGLXData::cleanup, 0);
 
     // Keep a single static display-ptr.
     // 
