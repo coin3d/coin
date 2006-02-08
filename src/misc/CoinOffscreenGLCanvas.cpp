@@ -25,6 +25,7 @@
 
 #include <limits.h>
 
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
@@ -363,6 +364,15 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst,
 
 // *************************************************************************
 
+static SbBool tilesize_cached = FALSE;
+static unsigned int maxtile[2] = { 0, 0 };
+
+static void tilesize_cleanup(void) 
+{
+  tilesize_cached = FALSE;
+  maxtile[0] = maxtile[1] = 0;
+}
+
 // Return largest size of offscreen canvas system can handle. Will
 // cache result, so only the first look-up is expensive.
 SbVec2s
@@ -370,11 +380,11 @@ CoinOffscreenGLCanvas::getMaxTileSize(void)
 {
   // cache the values in static variables so that a new context is not
   // created every time render() is called in SoOffscreenRenderer
-  static SbBool cached = FALSE;
-  static unsigned int maxtile[2] = { 0, 0 };
-  if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+  if (tilesize_cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
 
-  cached = TRUE; // Flip on first run.
+  tilesize_cached = TRUE; // Flip on first run.
+
+  coin_atexit((coin_atexit_f*) tilesize_cleanup, 0);
 
   unsigned int width, height;
   cc_glglue_context_max_dimensions(&width, &height);

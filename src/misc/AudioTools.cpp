@@ -33,6 +33,7 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/openal_wrapper.h>
 
 // *************************************************************************
@@ -97,6 +98,11 @@ coin_debug_audio(void)
 
 static SbBool should_traverse = FALSE;
 
+static void audio_cleanup(void) 
+{
+  should_traverse = FALSE;
+}
+
 // Called from the constructor of SoVRMLAudioClip and SoVRMLSound.
 // After this has been called once, SoSceneManager instances will
 // start applying an SoAudioRenderAction to its scene graph before
@@ -112,6 +118,7 @@ void
 coin_sound_enable_traverse(void)
 {
   should_traverse = TRUE;
+  coin_atexit((coin_atexit_f*) audio_cleanup, 0);
 }
 
 // Called from SoSceneManager::render() to decide whether or not to
