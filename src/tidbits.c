@@ -1193,7 +1193,9 @@ coin_atexit_cleanup(void)
   atexit_list_monitor = NULL;
 #endif /* COIN_THREADSAFE */
 
-  if (debug) { cc_debugerror_postinfo("coin_atexit_cleanup", "fini"); }
+  if (debug) {
+    fprintf(stdout, "coin_atexit_cleanup: fini\n");
+  }
 }
 
 /*
