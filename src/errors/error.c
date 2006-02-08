@@ -78,7 +78,15 @@ cc_error_default_handler_cb(const cc_error * err, void * data)
 
 static cc_error_cb * cc_error_callback = cc_error_default_handler_cb;
 static void * cc_error_callback_data = NULL;
+static SbBool cc_error_cleanup_function_set = FALSE;
 
+static void
+cc_error_cleanup(void)
+{
+  cc_error_callback = cc_error_default_handler_cb;
+  cc_error_callback_data = NULL;
+  cc_error_cleanup_function_set = FALSE;
+}
 
 void
 cc_error_init(cc_error * me)
@@ -143,6 +151,11 @@ cc_error_set_handler_callback(cc_error_cb * func, void * data)
 {
   cc_error_callback = func;
   cc_error_callback_data = data;
+
+  if (!cc_error_cleanup_function_set) {
+    coin_atexit((coin_atexit_f*) cc_error_cleanup, 0);
+    cc_error_cleanup_function_set = TRUE;
+  }
 }
 
 cc_error_cb *

@@ -25,12 +25,21 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 
 static cc_debugerror_cb * dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
 static void * dbgerr_callback_data = NULL;
+static SbBool dbgerr_cleanup_function_set = FALSE;
 
+static void
+debugerror_cleanup(void)
+{
+  dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
+  dbgerr_callback_data = NULL;
+  dbgerr_cleanup_function_set = FALSE;
+}
 
 void
 cc_debugerror_init(cc_debugerror * me)
@@ -56,6 +65,11 @@ cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
 {
   dbgerr_callback = function;
   dbgerr_callback_data = data;
+
+  if (!dbgerr_cleanup_function_set) {
+    coin_atexit((coin_atexit_f*) debugerror_cleanup, 0);
+    dbgerr_cleanup_function_set = TRUE;
+  }
 }
 
 cc_debugerror_cb *
