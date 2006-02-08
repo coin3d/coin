@@ -262,19 +262,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-019 SoOffscreenGLXData: Static variable in function not reset on cleanup
-
-    SoOffscreenGLXData::getDisplay(void)
-    {
-      static SbBool first = TRUE;
-      if (first) {
-        first = FALSE;
-        [...]
-
-    20060206 kintel.
-
-=====================================================================
-
 020 SoUpgrader: Static variable in function not reset on cleanup
 
     static void 
