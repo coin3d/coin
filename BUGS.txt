@@ -172,27 +172,6 @@ library:
 
 =====================================================================
 
-044 Release builds on Cygwin/MSVC++ doesn't heed all configure
-    options.
-
-    Specifically, "--disable-symbols" should remove the "/Zi" option
-    to cl.exe, and "--enable-optimization" should add "/O2" (or some
-    such).
-
-    20021118 mortene, problem reported by Michael Wimmer on
-    coin-discuss.
-
-    20021118 larsa - the --disable-symbols problem is fixed, and I'm
-    against adding "--enable-optimization".  The users should rather
-    specify the optimization options they want in CFLAGS/CXXFLAGS.
-
-    20021121 larsa: since Autoconf automatically adds -O2, we should
-    consider adding an option to remove that option, if it can be
-    made to work without touching user-set CFLAGS/CXXFLAGS and only
-    the autoconf-set optimization-options.  Tricky stuff...
-
-=====================================================================
-
 045 SoCenterballManip rotation off-center.
 
     When dragging the 'stripes' on a CenterballManip node, rotation
@@ -269,26 +248,6 @@ library:
 
 =====================================================================
 
-048 Building SGI InventorXt on top of Coin reveals compile-time
-    incompabilities.
-
-    A Coin user reported two problems on coin-discuss:
-
-        - InventorXt uses an Inventor-internal include file:
-          Inventor/SoDebug.h. This contains a set of static debugging
-          helper methods. They seem easy enough to implement, so
-          perhaps we should do that.
-
-        - Some explicit inclusion of SbTime.h is needed with Coin,
-          that is not necessary with SGI Inventor. This is an
-          incompatibility that we would like to get rid of, to make
-          porting _other_ code from SGI Inventor to Coin a literal
-          no-brainer.
-
-    20021218 mortene.
-
-=====================================================================
-
 051 ExaminerViewer's automatic initial "view all" doesn't work on
     a scene graph with SoImage.
 
@@ -346,19 +305,6 @@ library:
     UPDATE 20030225 mortene: is there any simple and clean way to
     detect and handle this with a) a warning message for the app
     programmer, b) using a decent "dummy" / default region?
-
-=====================================================================
-
-052 MSWin dependency walker gives surprising results.
-
-    We have a report that Coin and SoQt configure with
-    --with-msvcrt=multithread-dynamic-debug will still have a
-    dependency on *both* msvcrtd.dll and msvcrt.dll.
-
-    Should investigate closer whether this is to be expected or not,
-    and if yes, how this can happen.
-
-    20030122 mortene.
 
 =====================================================================
 
@@ -436,32 +382,6 @@ library:
 
 =====================================================================
 
-061 Handling of invalid bounding boxes
-
-    The following VRML97 file causes an assert:
-
-    #VRML V2.0 utf8
-
-    Transform {
-      scale 1 1 1e40
-      children Shape {
-        geometry Sphere {}
-      }
-    }
-
-    Coin-2/src/base/SbBox3f.cpp:263: void SbBox3f::setBounds (const SbVec3f
-    &, const SbVec3f &): Assertion `0' failed.
-
-    FIX: The correct thing to do is to track downwards to the "uppermost"
-    place in the call-stack where whatever causes this error condition is
-    still an _invalid_ condition. Then go one more step down and catch the
-    problem there (by spitting out a warning and otherwise handle the
-    condition gracefully (don't crash or assert)).
-
-    20030312 kintel.
-
-=====================================================================
-
 066 Viewer "view all" functionality not 100% correct.
 
     See the VRML1 file below containing 5 line segments as separate
@@ -472,7 +392,7 @@ library:
     To reproduce:
 
     o Open model in an examiner viewer.
-    o Resize the window so height ~= 2* width.
+    o Resize the window so height ~= 2* width. (at least.)
     o Rotate the model so you get minimal total height in the view.
     o Press viewall. If my problems doesn't show, rotate around the up
       axis and press viewall repeatedly until error occurs.
@@ -530,30 +450,6 @@ library:
     SoGuiViewer::viewAll() -- most likely the latter.
 
     20030507 mortene, reported by kintel.
-
-=====================================================================
-
-067 Possible mis-compilation with Intel Compiler.
-
-    The following snippet fails against a Coin built with the Intel
-    Compiler, at least with versions 5.0 and 7.0:
-
-    --------------8<----------- [snip] ------------------8<--------
-    #include <Inventor/SoDB.h>
-    #include <Inventor/events/SoMouseButtonEvent.h>
-
-    int
-    main(int argc, char ** argv)
-    {
-      SoDB::init();
-      SoMouseButtonEvent::getClassTypeId();
-      return 0;
-    }
-    --------------8<----------- [snip] ------------------8<--------
-
-    The call-stack backtrace is nonsensical.
-
-    20030514 mortene, reported by Gerhard Bendels and Sheena Ritchie.
 
 =====================================================================
 
