@@ -956,13 +956,30 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 
       continue;
     }
+
     node = dst;
 
+    int k;
     // browse path to find the correct (copied) node.
-    for (int k = 1; k < path->getLength(); k++) {
+    for (k = 1; k < path->getLength(); k++) {
       int idx = path->getIndex(k);
+      if (!node->getChildren()) break;
       node = (*(node->getChildren()))[idx];
+
+      // do some extra tests here to be more robust on invalid input
+      // files (for instance multiple IS refs to/from the same field)
+      SoNode * tstnode = path->getNode(k);
+      if (!node || tstnode->getTypeId() != node->getTypeId()) break;
     }
+
+    if (k < path->getLength()) {
+      SoDebugError::postWarning("SoProto::connectISRefs",
+                                "Unable to resolve '%s' from '%s' in '%s' PROTO",
+                                fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
+
+      continue;
+    }
+
     if (dstfield) {
       if (isprotoinstance) {
         node = SoProtoInstance::findProtoInstance(node);
