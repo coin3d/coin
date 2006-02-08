@@ -433,7 +433,7 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-035 Crash at exit if 
+035 Crash at exit if COIN_DEBUG_CLEANUP=1
 
     Calling SoDB::finish() results in a crash if COIN_DEBUG_CLEANUP is
     set:
