@@ -1170,7 +1170,11 @@ coin_atexit_cleanup(void)
   for (i = n-1; i >= 0; i--) {
     data = (tb_atexit_data*) cc_list_get(atexit_list, i);
     if (debug) {
-      cc_debugerror_postinfo("coin_atexit_cleanup", "invoking %s()", data->name);
+      /* Can't use cc_debugerror_postinfo() here, since this will
+          allocate static data that need to be cleaned up, resulting
+          in a call to coin_atexit() while we are already exiting...
+      */
+      fprintf(stdout, "coin_atexit_cleanup: invoking %s()\n", data->name);
     }
     data->func();
     free(data->name);
