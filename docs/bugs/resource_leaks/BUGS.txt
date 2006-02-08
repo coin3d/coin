@@ -135,24 +135,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-009 cc_debugerror: Static values not reset on init/cleanup
-
-    static cc_debugerror_cb * dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
-    static void * dbgerr_callback_data = NULL;
-
-    20060206 kintel.
-
-=====================================================================
-
-009 cc_error: Static values not reset on init/cleanup
-
-    static cc_error_cb * cc_error_callback = cc_error_default_handler_cb;
-    static void * cc_error_callback_data = NULL;
-
-    20060206 kintel.
-
-=====================================================================
-
 011 Possible resource leak in cc_error_default_handler_cb() 
 
     The FILE * returned from coin_get_stderr() shouldn't be cached
