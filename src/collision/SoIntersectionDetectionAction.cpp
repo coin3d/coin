@@ -293,6 +293,7 @@ void
 SoIntersectionDetectionAction::initClass(void)
 {
   SO_ACTION_INTERNAL_INIT_CLASS(SoIntersectionDetectionAction, SoAction);
+  SoIntersectionDetectionActionP::staticepsilon = 0.0f;
 }
 
 SoIntersectionDetectionAction::SoIntersectionDetectionAction(void)
