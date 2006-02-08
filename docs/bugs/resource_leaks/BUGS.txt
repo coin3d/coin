@@ -393,3 +393,4 @@ main(int argc, char ** argv)
 
     20060208 kyrah
 
+    UPDATE 20060208 mortene: should be fixed by using fprintf() instead.
