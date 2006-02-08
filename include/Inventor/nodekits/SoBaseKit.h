@@ -144,6 +144,7 @@ private:
                          int & partnum, SbBool & islist, int & listidx,
                          const SbBool makeifneeded, SoPath * path = NULL,
                          const SbBool recsearch = FALSE);
+  static void atexit_cleanupkit(void);
 
   SbBool makePart(const int partnum);
   int getRightSiblingIndex(const int partnum);

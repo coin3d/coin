@@ -37,89 +37,69 @@
 // FIXME: document all the macros, as they are part of the public
 // API. 20011024 mortene.
 
+#define PRIVATE_KIT_HEADER(_kitclass_) \
+public: \
+  static const SoNodekitCatalog * getClassNodekitCatalog(void); \
+  virtual const SoNodekitCatalog * getNodekitCatalog(void) const; \
+ \
+protected: \
+  static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void); \
+ \
+private: \
+  static SoNodekitCatalog * classcatalog; \
+  static const SoNodekitCatalog ** parentcatalogptr; \
+  static void atexit_cleanupkit(void)
 
 #define SO_KIT_HEADER(_kitclass_) \
   SO_NODE_HEADER(_kitclass_); \
-public: \
-  static const SoNodekitCatalog * getClassNodekitCatalog(void); \
-  virtual const SoNodekitCatalog * getNodekitCatalog(void) const; \
- \
-protected: \
-  static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void); \
- \
-private: \
-  static SoNodekitCatalog * classcatalog; \
-  static const SoNodekitCatalog ** parentcatalogptr
-
+  PRIVATE_KIT_HEADER(_kitclass_)
 
 #define SO_KIT_ABSTRACT_HEADER(_kitclass_) \
   SO_NODE_ABSTRACT_HEADER(_kitclass_); \
-public: \
-  static const SoNodekitCatalog * getClassNodekitCatalog(void); \
-  virtual const SoNodekitCatalog * getNodekitCatalog(void) const; \
- \
-protected: \
-  static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void); \
- \
-private: \
-  static SoNodekitCatalog * classcatalog; \
-  static const SoNodekitCatalog ** parentcatalogptr
-
+  PRIVATE_KIT_HEADER(_kitclass_)
 
 #define SO_KIT_CATALOG_ENTRY_HEADER(_entry_) \
 protected: SoSFNode _entry_
 
 
+#define PRIVATE_KIT_SOURCE(_class_) \
+SoNodekitCatalog * _class_::classcatalog = NULL; \
+const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
+ \
+const SoNodekitCatalog * \
+_class_::getClassNodekitCatalog(void) \
+{ \
+  return _class_::classcatalog; \
+} \
+ \
+const SoNodekitCatalog * \
+_class_::getNodekitCatalog(void) const \
+{ \
+  return _class_::classcatalog; \
+} \
+ \
+const SoNodekitCatalog ** \
+_class_::getClassNodekitCatalogPtr(void) \
+{ \
+  return (const class SoNodekitCatalog **)&_class_::classcatalog; \
+} \
+ \
+void \
+_class_::atexit_cleanupkit(void) \
+{ \
+  delete _class_::classcatalog; \
+  _class_::classcatalog = NULL; \
+  _class_::parentcatalogptr = NULL; \
+  _class_::classTypeId STATIC_SOTYPE_INIT; \
+}
 
 #define SO_KIT_SOURCE(_class_) \
-SoNodekitCatalog * _class_::classcatalog = NULL; \
-const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
- \
 SO_NODE_SOURCE(_class_); \
- \
-const SoNodekitCatalog * \
-_class_::getClassNodekitCatalog(void) \
-{ \
-  return _class_::classcatalog; \
-} \
- \
-const SoNodekitCatalog * \
-_class_::getNodekitCatalog(void) const \
-{ \
-  return _class_::classcatalog; \
-} \
- \
-const SoNodekitCatalog ** \
-_class_::getClassNodekitCatalogPtr(void) \
-{ \
-  return (const class SoNodekitCatalog **)&_class_::classcatalog; \
-}
-
+PRIVATE_KIT_SOURCE(_class_)
 
 #define SO_KIT_ABSTRACT_SOURCE(_class_) \
-SoNodekitCatalog * _class_::classcatalog = NULL; \
-const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
- \
 SO_NODE_ABSTRACT_SOURCE(_class_); \
- \
-const SoNodekitCatalog * \
-_class_::getClassNodekitCatalog(void) \
-{ \
-  return _class_::classcatalog; \
-} \
- \
-const SoNodekitCatalog * \
-_class_::getNodekitCatalog(void) const \
-{ \
-  return _class_::classcatalog; \
-} \
- \
-const SoNodekitCatalog ** \
-_class_::getClassNodekitCatalogPtr(void) \
-{ \
-  return (const class SoNodekitCatalog **)&_class_::classcatalog; \
-}
-
+PRIVATE_KIT_SOURCE(_class_)
 
 #define SO_KIT_IS_FIRST_INSTANCE() \
    SO_NODE_IS_FIRST_INSTANCE()
@@ -130,6 +110,8 @@ _class_::getClassNodekitCatalogPtr(void) \
     _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
   } while (0)
 
+#define SO_KIT_EXIT_CLASS(_class_) \
+  _class_::atexit_cleanupkit()
 
 #define SO_KIT_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \

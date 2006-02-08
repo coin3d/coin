@@ -89,6 +89,14 @@ SoEngineOutputData * SoConvertAll::outputdata = (SoEngineOutputData *)0x1;
 const SoFieldData ** SoConvertAll::getInputDataPtr(void) { return NULL; }
 const SoEngineOutputData ** SoConvertAll::getOutputDataPtr(void) { return NULL; }
 
+void
+SoConvertAll::atexit_cleanup(void)
+{
+  SoConvertAll::parentinputdata = NULL;
+  SoConvertAll::parentoutputdata = NULL;
+  SoConvertAll::classTypeId STATIC_SOTYPE_INIT;
+  SoConvertAll::classinstances = 0;
+}
 
 // Defines functions for converting between vec2*-fields with different primitive types
 #define SOCONVERTALL_SINGLE2SINGLE_VEC2(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
@@ -647,8 +655,7 @@ register_convertfunc(convert_func * f, SoType from, SoType to)
   assert(nonexist);
 }
 
-void
-SoConvertAll::atexit_cleanup(void)
+static void convertall_cleanup_dict(void)
 {
   delete convertfunc_dict;
   convertfunc_dict = NULL;
@@ -659,7 +666,7 @@ void
 SoConvertAll::initClass(void)
 {
   convertfunc_dict = new UInt32ToConverterFuncMap;
-  coin_atexit((coin_atexit_f*) SoConvertAll::atexit_cleanup, 0);
+  coin_atexit((coin_atexit_f*) convertall_cleanup_dict, 0);
 
   // SoConvertAll doesn't have a createInstance() method (because it
   // doesn't have a default constructor), so use the ABSTRACT macros.

@@ -26,7 +26,6 @@
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
-#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 #ifndef COIN_INTERNAL
@@ -35,6 +34,15 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #endif // !COIN_INTERNAL
+
+/**************************************************************************
+ *
+ * Common source macros
+ *
+ **************************************************************************/
+
+#define SO_FIELD_EXIT_CLASS(_class_) \
+  _class_::atexit_cleanup()
 
 /**************************************************************************
  *
@@ -51,8 +59,8 @@ public: \
 #define SO_SFIELD_REQUIRED_HEADER(_class_) \
 private: \
   static SoType classTypeId; \
+  static void atexit_cleanup(void) { _class_::classTypeId STATIC_SOTYPE_INIT; } \
 public: \
-  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; } \
   static void * createInstance(void); \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const; \
@@ -118,7 +126,6 @@ public: \
     assert(_class_::classTypeId == SoType::badType()); \
     _class_::classTypeId = \
       SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
-    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 
@@ -128,8 +135,6 @@ public: \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
   } while (0)
-
-
 
 #define SO_SFIELD_CONSTRUCTOR_SOURCE(_class_) \
 _class_::_class_(void) { assert(_class_::classTypeId != SoType::badType()); } \
@@ -226,6 +231,9 @@ protected: \
 public: \
   _valref_ operator[](const int idx) const \
     { this->evaluate(); return this->values[idx]; } \
+/*! \
+  Returns a pointer to the values array. \
+*/ \
   const _valtype_ * getValues(const int start) const \
     { this->evaluate(); return (const _valtype_ *)(this->values + start); } \
   int find(_valref_ value, SbBool addifnotfound = FALSE); \

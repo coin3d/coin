@@ -37,6 +37,7 @@
 #endif // !COIN_INTERNAL
 
 #include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/C/tidbits.h>
 
 // Be aware that any changes to the SO_ENGINE_INTERNAL_CONSTRUCTOR
 // macro should be matched by similar changes to the constructor in
@@ -56,7 +57,7 @@
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleandata); \
+    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 
@@ -126,9 +127,16 @@ void * _class_::createInstance(void) \
 } \
  \
 void \
-_class_::atexit_cleandata(void) \
+_class_::atexit_cleanup(void) \
 { \
+  delete _class_::inputdata; \
+  delete _class_::outputdata; \
+  _class_::inputdata = NULL; \
+  _class_::outputdata = NULL; \
+  _class_::parentinputdata = NULL; \
+  _class_::parentoutputdata = NULL; \
+  _class_::classTypeId STATIC_SOTYPE_INIT; \
+  _class_::classinstances = 0; \
 }
-
 
 #endif // !COIN_SOSUBENGINEP_H

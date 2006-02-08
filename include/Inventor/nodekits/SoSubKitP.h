@@ -37,9 +37,7 @@
 #error this is a private header file
 #endif // !COIN_INTERNAL
 
-
 #include <Inventor/nodes/SoSubNodeP.h>
-
 
 // Note for developers: match changes to this macro with the same
 // changes to SoBaseKit::initClass().
@@ -60,6 +58,7 @@
         _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
       else \
         _class_::classcatalog = new SoNodekitCatalog; \
+      cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupkit); \
     } \
     SoBase::staticDataUnlock(); \
   } while (0)

@@ -30,7 +30,6 @@
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoFieldData.h>
-#include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
@@ -59,12 +58,10 @@ private: \
   static const SoFieldData ** parentinputdata; \
   static SoEngineOutputData * outputdata; \
   static const SoEngineOutputData ** parentoutputdata; \
-  static void cleanupClass(void); \
+  static void atexit_cleanup(void)
 
 #define SO_ENGINE_HEADER(_classname_) \
     SO_ENGINE_ABSTRACT_HEADER(_classname_); \
-  private: \
-    static void atexit_cleandata(void); \
   public: \
     static void * createInstance(void)
 
@@ -73,13 +70,7 @@ private: \
 #define PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_) \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
-SoType _class_::classTypeId STATIC_SOTYPE_INIT; \
- \
-void \
-_class_::cleanupClass(void) \
-{ \
-  _class_::classTypeId STATIC_SOTYPE_INIT; \
-}
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 #define SO_ENGINE_ABSTRACT_SOURCE(_class_) \
 PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_); \
@@ -124,12 +115,16 @@ _class_::createInstance(void) \
 } \
  \
 void \
-_class_::atexit_cleandata(void) \
+_class_::atexit_cleanup(void) \
 { \
   delete _class_::inputdata; \
   delete _class_::outputdata; \
   _class_::inputdata = NULL; \
   _class_::outputdata = NULL; \
+  _class_::parentinputdata = NULL; \
+  _class_::parentoutputdata = NULL; \
+  _class_::classTypeId STATIC_SOTYPE_INIT; \
+  _class_::classinstances = 0; \
 }
 
 // *************************************************************************
@@ -177,7 +172,6 @@ _class_::atexit_cleandata(void) \
     /* Store parent's data pointers for later use in the constructor. */ \
     _class_::parentinputdata = _parentclass_::getInputDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
-    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 
@@ -185,9 +179,10 @@ _class_::atexit_cleandata(void) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleandata); \
   } while (0)
 
+#define SO_ENGINE_EXIT_CLASS(_class_) \
+  _class_::atexit_cleanup()
 
 #define SO_ENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \

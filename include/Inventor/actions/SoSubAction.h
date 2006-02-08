@@ -33,8 +33,6 @@
 #include <Inventor/actions/SoSubActionP.h>
 #endif // COIN_INTERNAL
 
-#include <Inventor/C/tidbits.h> // for cc_coin_atexit() / coin_atexit_f
-
 // *************************************************************************
 
 #define SO_ACTION_ADD_METHOD(_nodeclass_, _method_) \
@@ -124,8 +122,10 @@ _classname_::atexit_cleanup(void) \
     _classname_::classTypeId = SoType::createType(_parentclassname_::getClassTypeId(), SO__QUOTE(_classname_)); \
     _classname_::enabledElements = new SoEnabledElementsList(_parentclassname_::getClassEnabledElements()); \
     _classname_::methods = new SoActionMethodList(_parentclassname_::getClassActionMethods()); \
-     cc_coin_atexit((coin_atexit_f*) _classname_::atexit_cleanup); \
   } while (0)
+
+#define SO_ACTION_EXIT_CLASS(_class_) \
+  _class_::atexit_cleanup()
 
 // *************************************************************************
 

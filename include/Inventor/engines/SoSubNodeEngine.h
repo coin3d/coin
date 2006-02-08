@@ -26,7 +26,6 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/C/tidbits.h>
 
 #define SO_NODEENGINE_ABSTRACT_HEADER(_class_) \
   SO_NODE_ABSTRACT_HEADER(_class_); \
@@ -35,7 +34,7 @@ protected: \
 public: \
   virtual const SoEngineOutputData * getOutputData(void) const; \
 private: \
-  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; }; \
+  static void atexit_cleanupnodeengine(void); \
   static SoEngineOutputData * outputdata; \
   static const SoEngineOutputData ** parentoutputdata
 
@@ -59,6 +58,14 @@ const SoEngineOutputData * \
 _class_::getOutputData(void) const \
 { \
   return _class_::outputdata; \
+} \
+ \
+void \
+_class_::atexit_cleanupnodeengine(void) { \
+  delete _class_::outputdata; \
+  _class_::outputdata = NULL; \
+  _class_::parentoutputdata = NULL; \
+  _class_::classTypeId STATIC_SOTYPE_INIT; \
 }
 
 #define SO_NODEENGINE_SOURCE(_class_) \
@@ -110,7 +117,6 @@ _class_::createInstance(void) \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
-    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 #define SO_NODEENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
@@ -119,7 +125,8 @@ _class_::createInstance(void) \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
 
-
+#define SO_NODEENGINE_EXIT_CLASS(_class_) \
+  _class_::atexit_cleanupnodeengine();
 
 #define SO_NODEENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
