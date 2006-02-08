@@ -697,33 +697,10 @@ library:
 
     20030922 mortene.
 
-=====================================================================
-
-078 Perl "soft" dependency not properly handled.
-
-    The doxy4win.pl script is attempted run under MSWindows during
-    build, even when Perl is not installed on the system.
-
-    Should at least use a configure check for a working Perl
-    interpreter, and disable document generation if not present. (Or
-    perhaps try to solve this by removing the Perl dependency.)
-
-    This is a very minor problem.
-
-    20031009 mortene, reported by kintel.
-
-=====================================================================
-
-082 Configure/build problem: we need to demand X11 when using GLX.
-
-    As it is now, it's possible on certain platforms (at least
-    experienced on Sun Solaris) that GLX linking is found to be ok by
-    configure, even though X11 linking failed.
-
-    This will then cause problems at compile or linkage later on, so
-    we should detect this in the configure script and warn properly.
-
-    20031028 mortene.
+    UPDATE 20060208 mortene: this may be a bit hard to reproduce. To
+    make sure to trigger it, one can first move it way back as
+    described above, then do "view all", and then go ahead with the
+    above description again.
 
 =====================================================================
 
@@ -1334,6 +1311,12 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     Note: when this bug has been fixed, remove the warning note on
     So@Gui@Viewer::setAutoClipping() which mentions this problem.
 
+
+    UPDATE 20060208 mortene: pederb added support for automatically
+    applying an SoGetBoundingBoxAction, but it is at the moment only
+    possible to activate with an envvar -- as it is basically a policy
+    decision whether we want this or not.
+
 =====================================================================
 
 102 Lack of control over OffscreenRenderer context setup
@@ -1368,22 +1351,6 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     UPDATE 20050510 mortene: something like this has been implemented
     by TGS, with among others the SoGLGraphicConfigTemplate class.
     Consider using the same design and API.
-
-=====================================================================
-
-103 Need more 'ivinfo' information
-
-    We should be able to see which version of simage and freetype
-    and similar libraries has been detected by Coin.  The simage
-    information should also list supported file types / plugin APIs
-    in use.  The full path to the actual libraries would also be
-    nice to see.  Too often people wonder why textures don't load -
-    this would give that answer right away.
-
-    Note: Duplicate bug entry (025) in SoQt/BUGS.txt because this
-    must be implemented in cooperation between both libraries.
-
-    20040218 larsa
 
 =====================================================================
 
@@ -1459,17 +1426,6 @@ Separator {
 
 =====================================================================
 
-110 SoNodeKitListPart::getChildren()->truncate(0) causes mayhem.
-
-    Reported by Jacob Støren / Fedem. Not surprising this, and there
-    are probably other ways that unexpected use of the SoChildList
-    returned from the virtual SoNode::getChildren() may cause
-    problems. Should audit.
-
-    20040503 mortene.
-
-=====================================================================
-
 114 VRML-nodes are erroneously renamed upon import.
 
     VRML-nodes can legally be named in ways which are not ok for
@@ -1487,106 +1443,6 @@ Separator {
     properly, one will for instance have to read node names in UTF-8.
 
     20040521 mortene, bug reported by kintel.
-
-=====================================================================
-
-115 SoBaseKit::setPart() is inefficient.
-
-    When this function is called on a part which was NULL previously,
-    a default node on that part is first made, before the part is set
-    to the argument to setPart(). This is inefficient and should be
-    unnecessary.
-
-    Priority low on this problem, as it shouldn't cause any serious
-    harm.
-
-    20040607 mortene, bug reported on coin-discuss by Nikolai Ruhe.
-
-=====================================================================
-
-118 Weakness in internal handling of multiple implicit references to
-    the same texture.
-
-    When reading multiple SoTexture2 nodes (and ditto for SoTexture3,
-    presumably) referencing the same texture, as in this example:
-
---------8<------------- [snip] --------------8<------------- [snip]
-#Inventor V2.1 ascii
-
-Separator {
-  Texture2 { filename "dirt_Mossy.jpg" }
-  Cube { }
-}
-Separator {
-  Texture2 { filename "dirt_Mossy.jpg" }
-  Cube { }
-}
---------8<------------- [snip] --------------8<------------- [snip]
-
-    ...the texture occupies n times the memory it need to do. This is
-    a common way to (mis-)layout Inventor and VRML files, so we should
-    really fix this so identical textures are shared.
-
-    This should be possible to do by fixing SbImage so it implicitly
-    shares the textures "behind the scenes". We then need to implement
-    a copy-on-write scheme for when to "split" a texture to two
-    instances, as textures can be modified programmatically after
-    import.
-
-    I believe I have read in their release notes or other
-    documentation that TGS has implemented this for their Inventor
-    implementation.
-
-    This is a low-to-medium priority issue.
-
-    20040624 mortene.
-
-=====================================================================
-
-119 Documentation bug: SbBool is not part of the Doxygen-generated
-    doc.
-
-    Even though documented in src/misc/SoDB.cpp, documentation for
-    SbBool is not generated by Doxygen. This used to work.
-
-    Perhaps the problem is that SbBool is documented as a \class,
-    while it should be a \typedef?
-
-    Fool around with Doxygen a bit and find out why it fails, then
-    make the necessary changes (to the SbBool doc block in SoDB.cpp,
-    probably).
-
-    This is a low priority issue.
-
-    20040625 mortene.
-
-=====================================================================
-
-120 @exec_prefix@ expansion in Coin/coin.cfg.in makes installed
-    package not movable.
-
-    Note that simply replacing with
-
-      exec_prefix="${prefix}"
-
-    is not the correct fix either, as an "exec_prefix" different from
-    "prefix" can be set by a configure option.
-
-    The correct solution may be to replace @exec_prefix@ with a new
-    variable name (e.g. "@cfg_exec_prefix@"), then expand this to
-    either "$prefix" or an absolute path, depending on how configure
-    was invoked. If the latter (absolute path), warn the user at the
-    end of the configure run that the installation is not movable (and
-    explain why this is so)
-
-    That's the best I can think of.
-
-    This is a low priority issue.
-
-    20040705 mortene.
-
-    UPDATE 20051220 mortene: the same also seems to be the case for
-    the So*-libraries' so*.cfg files.
 
 =====================================================================
 
@@ -1611,7 +1467,7 @@ Separator {
     relative). SoOffscreenRenderer should then add such an element
     to the state stack before invoking the SoGLRenderAction.
 
-    This is a tricky issue, of fairly low priority.
+    This is a tricky issue, of medium priority.
 
     20040705 mortene.
 
@@ -1620,98 +1476,6 @@ Separator {
     UPDATE 20050520 mortene: As a side effect of this fix, SoCamera
     could then also do the view volume narrowing itself, removing the
     need for the current ugly hack in SoOffscreenRenderer to do this.
-
-=====================================================================
-
-123 coin-config --setup uses hardcoded LD_LIBRARY_PATH variable name
-    and is incompatible with e.g. tcsh
-
-    Not all platforms uses LD_LIBRARY_PATH for specifying the path
-    to dynamically loaded libraries.
-    It also uses bash-style assignment of variables.
-
-    This bug also exists for other projects using --setup.
-
-    20040707 kintel
-
-    UPDATE 20040718 mortene: consider this a low priority item.
-
-=====================================================================
-
-124 Manipulators and Spacemouse support
-
-    When a manipulator receives a SoSpaceballButtonEvent::PICK event,
-    it should check if it has been picked and activate itself,
-    starting to listen for and react to spaceball events
-    (SoMotion3Event and SoSpaceballButtonEvent).
-
-    20040722 larsa
-
-    UPDATE 20040909 mortene: the relevant draggers should react to
-    SoMotion3Event events after any type of pick that started the
-    dragger interaction, not just of the spaceball-variety, methinks.
-
-    For convenience, should perhaps SoDragger::handleEvent() react to
-    SoMotion3Event and invoke the motion callbacks in the same manner
-    as it does for SoLocation2Event? (The alternative option is
-    probably to have the relevant draggers set up a callback with
-    SoDragger::addOtherEventCallback() and each do their particular
-    processing.)
-
-=====================================================================
-
-126 Coin will crash latest NVIDIA drivers with certain valid scene
-    graphs.
-
-    We've discovered a really nasty NVIDIA driver bug with using
-    glColor() calls in particular ways inside display lists.
-
-    The bug has been confirmed for the most recent Windows (61.77) and
-    Linux drivers (61.11), aswell as all older drivers tested back to
-    at least 52.16 (Windows).
-
-    This is really, really, ugly, and need to be fixed ASAP. It should
-    have high priority. NVIDIA cards are widespread, and many users of
-    Coin (and users' users) can be hit by this.
-
-    The best solution would be to find a decent work-around, but I
-    have failed to come up with something we could do in that regard
-    (I tried changing the glColor4ub() calls which seems to have a
-    prominent part of the problem into other glColor*() variants, but
-    to no avail). Setting the envvar IV_SEPARATOR_MAX_CACHES=0 to turn
-    off GL display list generation seems to mostly work, although I
-    believe I have seen a case where the bug still came up.
-
-    20040728 mortene, bug reported by Eivind Rovik.
-
-    UPDATE 20040802 mortene: wrote a minimal example, using only GL
-    and GLUT, see
-
-      Coin/docs/driver-bugs/2004-08-02--nvidia-v61.77.cpp
-
-    Not yet sent to NVIDIA, awaiting confirmation from more systems
-    than just our own niord.trh.sim.no
-
-    UPDATE 20040831 mortene: provided NVIDIA with the above
-    stand-alone example for them to use for reproduction and fixing
-    the bug, at the <linux-bugs@nvidia.com> email address. (Couldn't
-    find a proper support address for general bugs or for Windows
-    bugs.)
-
-    pederb has also suggested a work-around:
-
-        > A Coin-workaround could be to invalidate render caches when
-        > the gfx-card is nNVidia, and the material binding !=
-        > OVERALL.  This can be done in MaterialBinding::GLRender()
-        > and/or IndexedFaceSet::GLRender()....
-
-
-    UPDATE 20040908 mortene: pederb found a usable work-around (not
-    the one mentioned above, BTW), so we should be ok now. To do on
-    this item: 1) check new driver releases from NVIDIA, and when it
-    has been fixed, make sure the work-around only applies to older
-    versions, and 2) check with pederb that his work-around is 100%
-    "in place" for all relevant shape types.
 
 =====================================================================
 
@@ -1844,23 +1608,6 @@ Separator {
 
 =====================================================================
 
-132 SoExtSelection: Unimplemented methods
-
-    The following methods has been stubbed but not implemented:
-
-    void select(SoNode * root, int numcoords, SbVec2f * lasso, 
-                const SbViewportRegion & vp, SbBool shiftpolicy)
-    void select(SoNode * root, int numcoords, SbVec3f * lasso,
-                const SbViewportRegion & vp, SbBool shiftkeypolicy);
-    const SbVec2s * getLassoCoordsDC(int & numCoords);
-    const SbVec3f * getLassoCoordsWC(int & numCoords);
-    const SoPathList & getSelectionPathList() const;
-
-    20040831 larsa.
-    Updated 20060206 kintel.
-
-=====================================================================
-
 133 SoExtSelection selection area rendering bug
 
     SoGui toolkits needs to set the window id element so the
@@ -1920,26 +1667,6 @@ Separator {
 
 =====================================================================
 
-139 SoText2 nodes never culled?
-
-    Coin-user Nikolai Brezin reports on coin-discuss that his
-    investigations seem to indicate that SoText2 nodes are never
-    view frustum culled.
-
-    According to pederb, this is caused by the bounding box caching
-    for SoText2 to be invalidated with changes to the SoCamera node
-    (as e.g. when updating the near and far planes from the viewer
-    auto-clipping). So when rendering comes to the SoSeparator above
-    the SoText2, no valid bbox is available, and culling will not be
-    done. See also bug item #099.
-
-    Medium priority issue: has unfortunate consequences for
-    performance, especially for scenes with a lot of SoText2 nodes.
-
-    20040903 mortene.
-
-=====================================================================
-
 140 Rust in the SoVRMLParent machinery for keeping both an SoMFNode
     and an SoChildList of its children.
 
@@ -1991,6 +1718,9 @@ incremented during the copy, but never decremented :(
     Consider this medium-to-high priority.
 
     20040908 mortene.
+
+    UPDATE 20060208 mortene: see also items #162 and #196, which are
+    closely related.
 
 =====================================================================
 
@@ -2099,82 +1829,6 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-146 Compatibility issue: SoShapeHints::windingType missing in Coin.
-
-    This was added for TGS OIV 4.0, so we should implement this for
-    compatibility reasons. We've also had an external request for
-    supporting polygons with holes, which this field is the public API
-    for doing.
-
-    pederb suggests using GLU for tessellating such polygons, as
-    adding that capability to SbTesselator is a non-trivial task.
-
-    Note that this breaks ABI-compatibility, so it is only relevant
-    for Coin 3.
-
-    20041010 mortene.
-
-    UPDATE 20041210 mortene: GLU tessellation can do polygons with
-    holes, and we should probably use that for the implementation of
-    this feature.
-
-    UPDATE 20041213 kintel: The MS Windows implementation of GLU
-    is known to be buggy (it crashes AFAIR) wrt. tesselating polygons
-    with holes.
-
-    UPDATE 20050809 mortene: adding the capability of tessellating
-    polygons with holes to SbTessellator would perhaps be a good task
-    for a student. Suggested by pederb.
-
-=====================================================================
-
-148 Compatibility issue: SoDrawStyle::linePatternScaleFactor missing
-    in Coin.
-
-    This was added for TGS OIV 4.0, so we should implement this for
-    compatibility reasons.
-
-    Note that this breaks ABI-compatibility, so it is only relevant
-    for Coin 3.
-
-    20041010 mortene.
-
-=====================================================================
-
-149 Compatibility issue: SoVRMLSound fields dopplerFactor and
-    dopplerVelocity missing in Coin.
-
-    This was added for TGS OIV 4.0, so we should implement this for
-    compatibility reasons.
-
-    Note that this breaks ABI-compatibility, so it is only relevant
-    for Coin 3.
-
-    Note also that these fields break compatibility with the VRML97
-    spec if they have non-default values upon export. This should be
-    duly noted in their API doc, when written.
-
-    20041010 mortene.
-
-=====================================================================
-
-150 Compatibility issue: SoVRMLMovieTexture fields alpha, model,
-    blendColor and scaleTexCoord missing in Coin.
-
-    This was added for TGS OIV 4.0, so we should implement this for
-    compatibility reasons.
-
-    Note that this breaks ABI-compatibility, so it is only relevant
-    for Coin 3.
-
-    Note also that these fields break compatibility with the VRML97
-    spec if they have non-default values upon export. This should be
-    duly noted in their API doc, when written.
-
-    20041010 mortene.
-
-=====================================================================
-
 151 Incompability with Visual C++ v7.
 
     Trying to compile the following causes error messages from the
@@ -2251,8 +1905,8 @@ Text2 { string "test" }
 
     20041104 mortene, reported by kintel.
 
-    UPDATE 20050711 mortene: see also item #196, which seems to be the
-    same issue.
+    UPDATE 20050711 mortene: see also items #140 and #196, which seems
+    to be the same issue.
 
 =====================================================================
 
@@ -2429,107 +2083,6 @@ and
 
     UPDATE 20050520 mortene: this bug may be fixed, at least I
     couldn't reproduce it now (with Valgrind 2.4.0.rc4).
-
-=====================================================================
-
-169 SoDataSensor extension
-
-    To comply with the latest TGS SoDataSensor, we'd need to implement
-    the following:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-Index: include/Inventor/sensors/SoDataSensor.h
-===================================================================
-RCS file: /export/cvsroot/Coin/include/Inventor/sensors/SoDataSensor.h,v
-retrieving revision 1.18
-diff -u -b -r1.18 SoDataSensor.h
---- include/Inventor/sensors/SoDataSensor.h	9 Mar 2004 14:38:42 -0000	1.18
-+++ include/Inventor/sensors/SoDataSensor.h	16 Nov 2004 17:12:39 -0000
-@@ -40,12 +40,27 @@
-   SoDataSensor(SoSensorCB * func, void * data);
-   virtual ~SoDataSensor(void);
-
-+  enum ChangeType {
-+    UNSPECIFIED,
-+    GROUP_ADD_CHILD,
-+    GROUP_INSERT_CHILD,
-+    GROUP_REPLACE_CHILD,
-+    GROUP_REMOVE_CHILD,
-+    GROUP_REMOVE_ALL_CHILDREN,
-+    FIELD_MULTIVALUE
-+  };
-+
-   void setDeleteCallback(SoSensorCB * function, void * data = NULL);
-   SoNode * getTriggerNode(void) const;
-   SoField * getTriggerField(void) const;
-   SoPath * getTriggerPath(void) const;
-   void setTriggerPathFlag(SbBool flag);
-   SbBool getTriggerPathFlag(void) const;
-+  ChangeType getTriggerType(void) const;
-+  SoNode * getTriggerChild(void) const;
-+  int getTriggerChildIndex(void) const;
-+  int getTriggerMFieldStartIndex(void) const;
-+  int getTriggerMFieldNumValues(void) const;
-
-   virtual void trigger(void);
-   virtual void notify(SoNotList * l);
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    TGS has also a virtual unschedule()-implementation at the SoDataSensor
-    level which we don't - don't know if that is needed to implement these
-    changes.
-
-    20041116 larsa.
-
-=====================================================================
-
-170 SoIndexedFaceSet defines
-
-    The following defines are not defined in Coin, but exists in TGS,
-    so we're not compatible on that.
-
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-Index: include/Inventor/nodes/SoIndexedFaceSet.h
-===================================================================
-RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoIndexedFaceSet.h,v
-retrieving revision 1.27
-diff -u -b -r1.27 SoIndexedFaceSet.h
---- include/Inventor/nodes/SoIndexedFaceSet.h	9 Mar 2004 14:38:41 -0000	1.27
-+++ include/Inventor/nodes/SoIndexedFaceSet.h	16 Nov 2004 17:17:08 -0000
-@@ -28,6 +28,8 @@
- #include <Inventor/nodes/SoIndexedShape.h>
-
- #define SO_END_FACE_INDEX (-1)
-+#define SO_END_CONTOUR_INDEX (-1)
-+#define SO_END_POLYGON_INDEX (-2)
-
- class SoIndexedFaceSetP;
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    20041116 larsa.
-
-=====================================================================
-
-172 SoFieldContainer and private fields
-
-    TGS has support for private fields, Coin doesn't.
-    Something like this:
-
-#define SO_NODE_ADD_PRIVATEFIELD(fieldname, defvalue) \
-{ \
-  classMutex->writelock(); \
-  SO__NODE_CHECK_CONSTRUCT(__FILE__); \
-  if ( firstInstance ) \
-    fieldData->addField(this, SO__QUOTE(fieldName), &this->fieldName); \
-  this->fieldName.setValue(defValue); \
-  this->fieldName.setContainer(this); \
-  this->fieldName.setFieldType(0); \
-  classMutix->writeunlock(); \
-}
-
-    20041116 larsa.
 
 =====================================================================
 
