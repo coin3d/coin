@@ -180,11 +180,3 @@ main(int argc, char ** argv)
     20060207 kintel.
 
 =====================================================================
-
-034 SoVRMLShape: Static variable not reset on cleanup
-
-    int SoVRMLShape::numrendercaches;
-
-    20060207 kintel.
-
-=====================================================================
