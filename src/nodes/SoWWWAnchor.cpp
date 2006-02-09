@@ -69,6 +69,7 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/C/tidbitsp.h>
 #include <coindefs.h>
 
 
@@ -123,6 +124,13 @@ class SoWWWAnchorP {
   static void * fetchdata;
   static SoWWWAnchorCB * highlightfunc;
   static void * highlightdata;
+
+  static void atexit_cleanup() {
+    SoWWWAnchorP::fetchfunc = NULL;
+    SoWWWAnchorP::fetchdata = NULL;
+    SoWWWAnchorP::highlightfunc = NULL;
+    SoWWWAnchorP::highlightdata = NULL;
+  }
 };
 
 // static members
@@ -170,6 +178,7 @@ void
 SoWWWAnchor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoWWWAnchor, SO_FROM_INVENTOR_2_1|SoNode::VRML1);
+  coin_atexit((coin_atexit_f*)SoWWWAnchorP::atexit_cleanup, 0);
 }
 
 

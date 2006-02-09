@@ -107,14 +107,3 @@ main(int argc, char ** argv)
     20060206 kintel.
 
 =====================================================================
-
-021 SoWWWAnchor: Static variables not reset on cleanup
-
-    SoWWWAnchorCB * SoWWWAnchorP::fetchfunc = NULL;
-    void * SoWWWAnchorP::fetchdata = NULL;
-    SoWWWAnchorCB * SoWWWAnchorP::highlightfunc = NULL;
-    void * SoWWWAnchorP::highlightdata = NULL;
-
-    20060207 kintel.
-
-=====================================================================
