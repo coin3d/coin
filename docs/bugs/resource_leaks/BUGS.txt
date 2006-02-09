@@ -216,22 +216,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-031 SoSubNode.h: Possible memory leak from static variable
-
-    The following comments at SoSubNode.h:147 suggest there is
-    a memory leak but the code looks OK.
-    Write a test app with an extension node to verify.
-
-      /* FIXME: this is a "static" memory leak. 20030131 mortene. */ \
-      /* Internal Coin nodes are handled properly though. pederb, 20041122 */ \
-      _class_::fieldData = \
-        new SoFieldData(_class_::parentFieldData ? \
-                        *_class_::parentFieldData : NULL); \
-
-    20060207 kintel.
-
-=====================================================================
-
 034 SoVRMLShape: Static variable not reset on cleanup
 
     int SoVRMLShape::numrendercaches;
