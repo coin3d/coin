@@ -157,12 +157,3 @@ main(int argc, char ** argv)
     20060207 kintel.
 
 =====================================================================
-
-024 SoVRMLScript: Static variables not reset on cleanup
-
-    static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
-    static void * sovrmlscript_eval_closure = NULL;
-
-    20060207 kintel.
-
-=====================================================================
