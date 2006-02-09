@@ -32,6 +32,7 @@
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -336,9 +337,7 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
 void 
 cc_rbptree_init(cc_rbptree * t)
 {
-  /* FIXME: use a global lock to make sure two threads doesn't
-   * enter this init code at the same time. pederb, 2002-06-06
-   */ 
+  CC_GLOBAL_LOCK;
   if (!rbptree_isinitialized) {
     rbptree_sentinel.left = NULL;
     rbptree_sentinel.right = NULL;
@@ -348,6 +347,8 @@ cc_rbptree_init(cc_rbptree * t)
     rbptree_isinitialized = TRUE;
     coin_atexit((coin_atexit_f*)rbptree_atexit_cleanup, 0);
   }
+  CC_GLOBAL_UNLOCK;
+
   t->root = &rbptree_sentinel;
   t->counter = 0;
 }
