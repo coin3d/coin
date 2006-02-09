@@ -49,11 +49,21 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+
+static SoTypeList * sonodekitlistpart_deflist = NULL;
+
+static void sonodekitlistpart_atexit_cleanup(void)
+{
+  delete sonodekitlistpart_deflist;
+  sonodekitlistpart_deflist = NULL;
+}
 
 /*!
   \var SoChildList * SoNodeKitListPart::children
@@ -170,9 +180,12 @@ SoNodeKitListPart::getChildTypes(void) const
 
   // Dynamically allocated to avoid problems on systems which doesn't
   // handle static constructors.
-  static SoTypeList * deflist = new SoTypeList; // FIXME: should deallocate on exit. 20000406 mortene.
-  if (deflist->getLength() == 0) deflist->append(SoNode::getClassTypeId());
-  return *deflist;
+  if (!sonodekitlistpart_deflist) {
+    sonodekitlistpart_deflist = new SoTypeList;
+    sonodekitlistpart_deflist->append(SoNode::getClassTypeId());
+    coin_atexit((coin_atexit_f*)sonodekitlistpart_atexit_cleanup, 0);
+  }
+  return *sonodekitlistpart_deflist;
 }
 
 /*!
