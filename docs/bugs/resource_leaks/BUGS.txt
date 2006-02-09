@@ -224,14 +224,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-029 SoNodeKit: Static variable not reset on cleanup
-
-    SbBool SoNodeKit::isinitialized = FALSE;
-
-    20060207 kintel.
-
-=====================================================================
-
 030 SoLocateHighlight: Possible memory leak from static variable
 
     SoFullPath * SoLocateHighlight::currenthighlight = NULL;
