@@ -243,6 +243,8 @@ SoVRMLScriptP::cleanup(void)
 
   // reset static var
   SoVRMLScriptP::spidermonkey_init_failed = FALSE;
+  sovrmlscript_eval_cb = NULL;
+  sovrmlscript_eval_closure = NULL;
 }
 
 // *************************************************************************
