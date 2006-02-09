@@ -189,14 +189,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-017 SoGLBigImage: static variable CHANGELIMIT not reset on cleanup
-
-    static int CHANGELIMIT = 4;
-
-    20060206 kintel.
-
-=====================================================================
-
 018 SoJavaScriptEngine resource corruption
 
     The following static variable defined within the constructor
