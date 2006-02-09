@@ -73,7 +73,6 @@ protected:
   virtual ~SoVRMLShape();
 
 private:
-  static int numrendercaches;
   SoVRMLShapeP * pimpl;
 
 }; // class SoVRMLShape

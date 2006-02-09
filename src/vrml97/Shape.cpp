@@ -101,6 +101,7 @@
 
 #include <stddef.h>
 
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
@@ -156,7 +157,11 @@ SO_NODE_SOURCE(SoVRMLShape);
 
 // *************************************************************************
 
-int SoVRMLShape::numrendercaches;
+static int sovrmlshape_numrendercaches = 0;
+
+static void sovrmlshape_cleanup(void) {                                           
+  sovrmlshape_numrendercaches = 0;
+}
 
 // *************************************************************************
 
@@ -164,6 +169,7 @@ void
 SoVRMLShape::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLShape, SO_VRML97_NODE_TYPE);
+  coin_atexit((coin_atexit_f*)sovrmlshape_cleanup, 0); 
 
   SoType type = SoVRMLShape::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
@@ -207,13 +213,13 @@ SoVRMLShape::~SoVRMLShape()
 void
 SoVRMLShape::setNumRenderCaches(int num)
 {
-  SoVRMLShape::numrendercaches = num;
+  sovrmlshape_numrendercaches = num;
 }
 
 int
 SoVRMLShape::getNumRenderCaches(void)
 {
-  return SoVRMLShape::numrendercaches;
+  return sovrmlshape_numrendercaches;
 }
 
 SbBool
