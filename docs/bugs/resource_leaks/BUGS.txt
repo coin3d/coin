@@ -107,3 +107,20 @@ main(int argc, char ** argv)
     20060206 kintel.
 
 =====================================================================
+
+036 assert on repeated SoDB::init(); SoDB::finish() 
+
+    Doing this
+
+      SoDB::init();
+      SoDB::finish();
+      SoDB::init();
+      SoDB::finish();
+
+   
+    results in
+
+
+     ../../../../src/Coin/src/nodes/SoSceneTextureCubeMap.cpp:213: static void SoSceneTextureCubeMap::initClass(): Assertion `SoSceneTextureCubeMap::classTypeId == SoType::badType() && "don't init() twice!"' failed.
+
+=====================================================================
