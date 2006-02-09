@@ -161,6 +161,12 @@ public:
 
 SoType SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
 
+static void soglbigimagep_cleanup(void)
+{
+  SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
+  CHANGELIMIT = 4;
+}
+
 static void
 soglbigimagetls_construct(void * closure)
 {
@@ -226,16 +232,7 @@ SoGLBigImage::initClass(void)
   assert(SoGLBigImageP::classTypeId.isBad());
   SoGLBigImageP::classTypeId =
     SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
-  cc_coin_atexit((coin_atexit_f*)SoGLBigImage::cleanupClass);
-}
-
-//
-// called by atexit()
-//
-void
-SoGLBigImage::cleanupClass(void)
-{
-  SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
+  cc_coin_atexit((coin_atexit_f*) soglbigimagep_cleanup);
 }
 
 // Doc in superclass.
