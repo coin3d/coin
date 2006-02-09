@@ -29,9 +29,6 @@
 class COIN_DLL_API SoInteraction {
 public:
   static void init(void);
-
-private:
-  static SbBool isinitialized;
 };
 
 #endif // !COIN_SOINTERACTION_H

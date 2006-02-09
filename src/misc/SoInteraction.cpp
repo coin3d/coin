@@ -55,10 +55,14 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/C/tidbitsp.h>
 
+static SbBool interaction_isinitialized = FALSE;
 
-SbBool SoInteraction::isinitialized = FALSE;
-
+static void interaction_cleanup(void)
+{
+  interaction_isinitialized = FALSE;
+}
 
 /*!
   Calls the initClass() method of these classes: SoAntiSquish,
@@ -96,7 +100,7 @@ SbBool SoInteraction::isinitialized = FALSE;
 void
 SoInteraction::init(void)
 {
-  if (SoInteraction::isinitialized) return;
+  if (interaction_isinitialized) return;
 
   if (!SoDB::isInitialized()) SoDB::init();
   SoNodeKit::init();
@@ -123,5 +127,6 @@ SoInteraction::init(void)
   SoTransformBoxManip::initClass();
   SoTransformerManip::initClass();
 
-  SoInteraction::isinitialized = TRUE;
+  interaction_isinitialized = TRUE;
+  coin_atexit((coin_atexit_f*)interaction_cleanup, 0);
 }
