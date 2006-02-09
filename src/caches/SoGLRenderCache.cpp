@@ -36,7 +36,7 @@
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/tidbits.h> // coin_getenv()
+#include <Inventor/C/tidbits.h> // coin_getenv()
 
 // *************************************************************************
 
