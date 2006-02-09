@@ -31,6 +31,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/nodekits/SoSubKitP.h>
+#include <Inventor/C/tidbits.h>
 
 #include <ForeignFiles/SoForeignFileKit.h>
 
@@ -88,6 +89,13 @@ SbHash<SoType, const char *> * SoForeignFileKitP::fileexts = NULL;
 
 SO_KIT_ABSTRACT_SOURCE(SoForeignFileKit);
 
+static void
+foreignfilekit_cleanup(void)
+{
+  delete SoForeignFileKitP::fileexts;
+  SoForeignFileKitP::fileexts = NULL;
+}
+
 void
 SoForeignFileKit::initClass(void)
 {
@@ -98,6 +106,7 @@ SoForeignFileKit::initClass(void)
   SO_KIT_INIT_ABSTRACT_CLASS(SoForeignFileKit, SoBaseKit, SoBaseKit);
   // set up support dictionary
   SoForeignFileKitP::fileexts = new SbHash<SoType, const char *>(11);
+  cc_coin_atexit((coin_atexit_f*)foreignfilekit_cleanup);
 
   SoForeignFileKit::initClasses();
 }
