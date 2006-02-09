@@ -24,7 +24,7 @@ PrivateHeaders = \
 	basic.h.in
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(c, C)
+##$ BEGIN TEMPLATE Make-Include-Common(c, C)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -72,4 +72,4 @@ install-libcincHEADERS: $(libcinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

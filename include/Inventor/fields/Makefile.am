@@ -67,7 +67,7 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(fields, fields)
+##$ BEGIN TEMPLATE Make-Include-Common(fields, fields)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -115,4 +115,4 @@ install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

@@ -15,7 +15,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(projectors, projectors)
+##$ BEGIN TEMPLATE Make-Include-Common(projectors, projectors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -63,4 +63,4 @@ install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

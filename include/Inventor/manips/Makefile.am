@@ -15,7 +15,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(manips, manips)
+##$ BEGIN TEMPLATE Make-Include-Common(manips, manips)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -63,4 +63,4 @@ install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

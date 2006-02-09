@@ -4,7 +4,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(MPEG, MPEG)
+##$ BEGIN TEMPLATE Make-Include-Common(MPEG, MPEG)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -52,4 +52,4 @@ install-libMPEGincHEADERS: $(libMPEGinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

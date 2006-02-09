@@ -20,7 +20,7 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(cglue, C/glue)
+##$ BEGIN TEMPLATE Make-Include-Common(cglue, C/glue)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -68,4 +68,4 @@ install-libcglueincHEADERS: $(libcglueinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

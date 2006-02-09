@@ -16,7 +16,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(sensors, sensors)
+##$ BEGIN TEMPLATE Make-Include-Common(sensors, sensors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -64,4 +64,4 @@ install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

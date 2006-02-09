@@ -5,7 +5,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(foreignfiles, annex/ForeignFiles)
+##$ BEGIN TEMPLATE Make-Include-Common(foreignfiles, annex/ForeignFiles)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -53,4 +53,4 @@ install-libforeignfilesincHEADERS: $(libforeignfilesinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

@@ -14,7 +14,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(hardcopy, annex/HardCopy)
+##$ BEGIN TEMPLATE Make-Include-Common(hardcopy, annex/HardCopy)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -62,4 +62,4 @@ install-libhardcopyincHEADERS: $(libhardcopyinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

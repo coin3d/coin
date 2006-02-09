@@ -21,7 +21,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(lists, lists)
+##$ BEGIN TEMPLATE Make-Include-Common(lists, lists)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -69,4 +69,4 @@ install-liblistsincHEADERS: $(liblistsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

@@ -1,4 +1,4 @@
-##$ TEMPLATE Make-Common(-xxx-, -incdir-)
+##$ TEMPLATE Make-Include-Common(-xxx-, -incdir-)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

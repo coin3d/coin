@@ -18,7 +18,7 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(nodekits, nodekits)
+##$ BEGIN TEMPLATE Make-Include-Common(nodekits, nodekits)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -66,4 +66,4 @@ install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

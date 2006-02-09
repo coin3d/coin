@@ -31,7 +31,7 @@ PrivateHeaders = \
 	SoPick.h
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(misc, misc)
+##$ BEGIN TEMPLATE Make-Include-Common(misc, misc)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -79,4 +79,4 @@ install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

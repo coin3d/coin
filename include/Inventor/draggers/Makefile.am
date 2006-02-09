@@ -25,7 +25,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(draggers, draggers)
+##$ BEGIN TEMPLATE Make-Include-Common(draggers, draggers)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -73,4 +73,4 @@ install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

@@ -78,7 +78,7 @@ PrivateHeaders = \
 	SoVRMLSubInterpolatorP.h
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(VRMLnodes, VRMLnodes)
+##$ BEGIN TEMPLATE Make-Include-Common(VRMLnodes, VRMLnodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -126,4 +126,4 @@ install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

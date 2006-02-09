@@ -142,7 +142,7 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(nodes, nodes)
+##$ BEGIN TEMPLATE Make-Include-Common(nodes, nodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -190,4 +190,4 @@ install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

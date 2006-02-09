@@ -14,7 +14,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(details, details)
+##$ BEGIN TEMPLATE Make-Include-Common(details, details)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -62,4 +62,4 @@ install-libdetailsincHEADERS: $(libdetailsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

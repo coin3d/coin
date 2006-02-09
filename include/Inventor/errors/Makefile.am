@@ -8,7 +8,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(errors, errors)
+##$ BEGIN TEMPLATE Make-Include-Common(errors, errors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -56,4 +56,4 @@ install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

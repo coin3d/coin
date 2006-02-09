@@ -29,7 +29,7 @@ PrivateHeaders = \
 	wpoolp.h
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(cthreads, C/threads)
+##$ BEGIN TEMPLATE Make-Include-Common(cthreads, C/threads)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -77,4 +77,4 @@ install-libcthreadsincHEADERS: $(libcthreadsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

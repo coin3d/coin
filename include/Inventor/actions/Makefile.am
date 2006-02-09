@@ -26,7 +26,7 @@ PrivateHeaders = \
 	SoSubActionP.h
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(actions, actions)
+##$ BEGIN TEMPLATE Make-Include-Common(actions, actions)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -74,4 +74,4 @@ install-libactionsincHEADERS: $(libactionsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

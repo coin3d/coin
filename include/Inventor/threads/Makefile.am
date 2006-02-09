@@ -12,7 +12,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsolateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(threads, threads)
+##$ BEGIN TEMPLATE Make-Include-Common(threads, threads)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -60,5 +60,5 @@ install-libthreadsincHEADERS: $(libthreadsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common
 

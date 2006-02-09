@@ -7,7 +7,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(bundles, bundles)
+##$ BEGIN TEMPLATE Make-Include-Common(bundles, bundles)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -55,4 +55,4 @@ install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

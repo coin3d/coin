@@ -21,7 +21,7 @@ gl.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
 inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl.h )
 
-##$ BEGIN TEMPLATE Make-Common(system, system)
+##$ BEGIN TEMPLATE Make-Include-Common(system, system)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -69,4 +69,4 @@ install-libsystemincHEADERS: $(libsysteminc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

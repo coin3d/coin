@@ -5,7 +5,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(cerrors, C/errors)
+##$ BEGIN TEMPLATE Make-Include-Common(cerrors, C/errors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -53,4 +53,4 @@ install-libcerrorsincHEADERS: $(libcerrorsinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common

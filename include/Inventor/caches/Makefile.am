@@ -14,7 +14,7 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(caches, caches)
+##$ BEGIN TEMPLATE Make-Include-Common(caches, caches)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -62,4 +62,4 @@ install-libcachesincHEADERS: $(libcachesinc_HEADERS)
 	done; \
 	:
 
-##$ END TEMPLATE Make-Common
+##$ END TEMPLATE Make-Include-Common
