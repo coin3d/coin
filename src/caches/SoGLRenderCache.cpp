@@ -122,7 +122,7 @@ SoGLRenderCache::call(SoState * state)
   if (COIN_NESTED_CACHING < 0) {
     const char * env = coin_getenv("COIN_NESTED_CACHING");
     if (env) COIN_NESTED_CACHING = atoi(env);
-    else COIN_NESTED_CACHING = 1;
+    else COIN_NESTED_CACHING = 0;
   }
   
   if (COIN_NESTED_CACHING) {
