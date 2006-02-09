@@ -101,4 +101,19 @@ install-libmpegincHEADERS: $(libmpeginc_HEADERS)
 	done; \
 	:
 
+if MACOSX
+# When using --enable-hacking, the user tends to manually replace some 
+# of the installed libraries by symlinks back to the build directory. 
+# But Mac OS X's install program refuses to overwrite symlinks => we 
+# have to explicitly remove existing symlinks before installation.
+install-exec-local:
+	@for file in $(DESTDIR)$(lib@nop@dir)/libmpeg@SUFFIX@LINKHACK*.dylib; do \
+	  if test -L "$$file"; then \
+	    rm -f "$$file"; \
+	  fi \
+	done; 
+else 
+install-exec-local:
+endif
+
 ##$ END TEMPLATE Make-Common
