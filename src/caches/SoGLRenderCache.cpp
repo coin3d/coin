@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/tidbits.h> // coin_getenv()
 
 // *************************************************************************
 
@@ -117,16 +118,34 @@ SoGLRenderCache::call(SoState * state)
 {
   assert(PRIVATE(this)->displaylist != NULL);
 
-  // FIXME: needed for nested caching, pederb 2002-01-24
-  //  SoCacheElement::addCacheDependency(state, this);
-
-  // FIXME: this is just a temporary workaround until nested caching is
-  // properly supported. pederb, 2002-01-24
-  SoCacheElement::invalidate(state);
-  PRIVATE(this)->displaylist->call(state);
-
-  if (state->isCacheOpen()) {
-    // FIXME: support nested caching properly, pederb, 2002-01-24
+  static int COIN_NESTED_CACHING = -1;
+  if (COIN_NESTED_CACHING < 0) {
+    const char * env = coin_getenv("COIN_NESTED_CACHING");
+    if (env) COIN_NESTED_CACHING = atoi(env);
+    else COIN_NESTED_CACHING = 1;
+  }
+  
+  if (COIN_NESTED_CACHING) {
+    if (state->isCacheOpen()) {
+      SoCacheElement::addCacheDependency(state, this);  
+      
+      PRIVATE(this)->displaylist->call(state);
+      SoGLLazyElement::mergeCacheInfo(state, 
+                                      &PRIVATE(this)->prestate,
+                                      &PRIVATE(this)->poststate);
+      
+      SoGLRenderCache* parentCache = (SoGLRenderCache*)
+        SoCacheElement::getCurrentCache(state);
+    
+      
+    }
+    else {
+      PRIVATE(this)->displaylist->call(state);
+    }
+  }
+  else { // no nested caching
+    SoCacheElement::invalidate(state); // destroy any parent caches
+    PRIVATE(this)->displaylist->call(state);
   }
 }
 
@@ -148,10 +167,7 @@ SoGLRenderCache::getCacheContext(void) const
 SbBool
 SoGLRenderCache::isValid(const SoState * state) const
 {
-  // FIXME: pederb, 20001005 we should do some testing on the lazy
-  // elements here.  If the state of an lazy element has changed, we
-  // must either return FALSE here, or update the lazy element(s) to
-  // the correct state before calling the list.
+  // pre and post cache state is handled in SoGLCacheList
   return inherited::isValid(state);
 }
 
@@ -192,5 +208,7 @@ SoGLRenderCache::getPostLazyState(void)
 {
   return &PRIVATE(this)->poststate;
 }
+
+
 
 #undef PRIVATE
