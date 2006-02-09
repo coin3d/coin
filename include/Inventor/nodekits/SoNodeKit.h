@@ -24,14 +24,11 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h> // for SbBool type
+#include <Inventor/SbBasic.h>
 
 class COIN_DLL_API SoNodeKit {
 public:
   static void init(void);
-
-private:
-  static SbBool isinitialized;
 };
 
 #endif // !COIN_SONODEKIT_H

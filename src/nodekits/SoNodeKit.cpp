@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/SbBasic.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
@@ -41,12 +42,15 @@
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
-
+#include <Inventor/C/tidbitsp.h>
 #include <ForeignFiles/SoForeignFileKit.h>
 
+static SbBool nodekit_isinitialized = FALSE;
 
-SbBool SoNodeKit::isinitialized = FALSE;
-
+static void nodekit_cleanup(void)
+{
+  nodekit_isinitialized = FALSE;
+}
 
 /*!
   Initialize the nodekit system.
@@ -62,7 +66,7 @@ SbBool SoNodeKit::isinitialized = FALSE;
 void
 SoNodeKit::init(void)
 {
-  if (SoNodeKit::isinitialized) return;
+  if (nodekit_isinitialized) return;
 
   if (!SoDB::isInitialized()) SoDB::init();
 
@@ -78,5 +82,5 @@ SoNodeKit::init(void)
   SoWrapperKit::initClass();
   SoForeignFileKit::initClass();
 
-  SoNodeKit::isinitialized = TRUE;
+  nodekit_isinitialized = TRUE;
 }
