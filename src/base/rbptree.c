@@ -31,6 +31,7 @@
 #include <Inventor/C/base/rbptree.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -49,6 +50,13 @@ struct cc_rbptree_node {
 };
 
 static cc_rbptree_node rbptree_sentinel;
+static SbBool rbptree_isinitialized = FALSE;
+
+static void
+rbptree_atexit_cleanup(void)
+{
+  rbptree_isinitialized = FALSE;
+}
 
 /* 
  * left-rotate the subgrap under node 'x'.
@@ -331,14 +339,14 @@ cc_rbptree_init(cc_rbptree * t)
   /* FIXME: use a global lock to make sure two threads doesn't
    * enter this init code at the same time. pederb, 2002-06-06
    */ 
-  static int first = 1;
-  if (first) {
-    first = 0;
+  if (!rbptree_isinitialized) {
     rbptree_sentinel.left = NULL;
     rbptree_sentinel.right = NULL;
     rbptree_sentinel.parent = NULL;
     rbptree_sentinel.pointer = NULL;
     rbptree_sentinel.color = RBPTREE_BLACK;
+    rbptree_isinitialized = TRUE;
+    coin_atexit((coin_atexit_f*)rbptree_atexit_cleanup, 0);
   }
   t->root = &rbptree_sentinel;
   t->counter = 0;
