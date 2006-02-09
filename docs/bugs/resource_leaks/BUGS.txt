@@ -122,19 +122,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-007 Memory leak in SoDragger::setCameraInfo(SoAction * action)
-
-    if (THIS->draggercache && THIS->draggercache->path) {
-      static sodragger_vv_data * vvdata;
-      if (vvdata == NULL) {
-        vvdata = new sodragger_vv_data;
-      }
-      [...]
-
-    20060206 kintel.
-
-=====================================================================
-
 011 Possible resource leak in cc_error_default_handler_cb() 
 
     The FILE * returned from coin_get_stderr() shouldn't be cached
