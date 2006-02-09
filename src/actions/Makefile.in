@@ -789,7 +789,7 @@ info-am:
 
 install-data-am: install-libactionsincHEADERS
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am: install-exec-local install-libLTLIBRARIES
 
 install-info: install-info-am
 
@@ -823,7 +823,7 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-depend distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am \
+	install-exec-am install-exec-local install-info install-info-am \
 	install-libLTLIBRARIES install-libactionsincHEADERS install-man \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
@@ -861,6 +861,31 @@ install-libactionsincHEADERS: $(libactionsinc_HEADERS)
 	  fi \
 	done; \
 	:
+
+# When using --enable-hacking, the user tends to manually replace some 
+# of the installed libraries by symlinks back to the build directory. 
+# But Mac OS X's install program refuses to overwrite symlinks => we 
+# have to explicitly remove existing symlinks before installation.
+@MACOSX_TRUE@install-exec-local:
+@MACOSX_TRUE@	@for file in $(DESTDIR)$(lib@nop@dir)/libactions@SUFFIX@LINKHACK*.dylib; do \
+@MACOSX_TRUE@	  if test -L "$$file"; then \
+@MACOSX_TRUE@	    rm -f "$$file"; \
+@MACOSX_TRUE@	  fi \
+@MACOSX_TRUE@	done; 
+@MACOSX_FALSE@install-exec-local:
+
+# FIXME: Make this work on systems other than Mac OS X if considered useful.
+@MACOSX_TRUE@install-symlinks:
+@MACOSX_TRUE@	@echo "Creating symlink to libactions@SUFFIX@LINKHACK*.dylib"; \
+@MACOSX_TRUE@        for dir in $(SUBDIRS) ; do \
+@MACOSX_TRUE@          (cd $$dir; $(MAKE) install-symlinks;) \
+@MACOSX_TRUE@        done ; \
+@MACOSX_TRUE@        here=`pwd`; \
+@MACOSX_TRUE@	(cd $(DESTDIR)$(lib@nop@dir); \
+@MACOSX_TRUE@	for file in libactions@SUFFIX@LINKHACK*.dylib; do \
+@MACOSX_TRUE@	  ln -sf "$$here/.libs/$$file" "$$file"; \
+@MACOSX_TRUE@	done; \
+@MACOSX_TRUE@        cd -; )
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

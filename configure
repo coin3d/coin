@@ -24807,8 +24807,9 @@ echo "$as_me: error: aborting" >&2;}
 fi
 
   if test x"$sim_ac_perl_exe" = xfalse; then
-    { echo "$as_me:$LINENO: WARNING: Could not find the Perl executable" >&5
-echo "$as_me: WARNING: Could not find the Perl executable" >&2;}
+    { { echo "$as_me:$LINENO: error: Could not find the Perl executable, which is needed for Doxygen doc generation." >&5
+echo "$as_me: error: Could not find the Perl executable, which is needed for Doxygen doc generation." >&2;}
+   { (exit 1); exit 1; }; }
   fi
 fi
 
@@ -37285,6 +37286,15 @@ _ACEOF
   # ***********************************************************
   # Mac OS X tweaks
   #
+
+  # Disallow static libraries in framework (doesn't make sense)
+  if $sim_ac_framework; then
+    if test x$enable_static = xyes; then
+      { { echo "$as_me:$LINENO: error: Creation of static libraries requested, but this is incompatible with the Mac OS X framework setup. Use --without-framework to do UNIX-style build." >&5
+echo "$as_me: error: Creation of static libraries requested, but this is incompatible with the Mac OS X framework setup. Use --without-framework to do UNIX-style build." >&2;}
+   { (exit 1); exit 1; }; }
+    fi
+  fi
 
   if $sim_ac_framework; then
 

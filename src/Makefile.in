@@ -359,7 +359,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	foreignfiles/foreignfiles.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
-@MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+@MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-headerpad_max_install_names 
 @MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_FALSE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 
@@ -1310,6 +1310,15 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 @BUILD_WITH_MSVC_TRUE@	  fi \
 @BUILD_WITH_MSVC_TRUE@	done
 @BUILD_WITH_MSVC_FALSE@install-exec-local:
+
+@MACOSX_TRUE@install-symlinks:
+@MACOSX_TRUE@	@for dir in \
+@MACOSX_TRUE@	    actions base bundles caches details draggers elements engines \
+@MACOSX_TRUE@	    errors events fields fonts glue io manips misc lists nodekits \
+@MACOSX_TRUE@	    nodes shapenodes projectors sensors upgraders 3ds collision \
+@MACOSX_TRUE@	    hardcopy threads mpeg shaders $(VRML97DIR) foreignfiles ; do \
+@MACOSX_TRUE@              (cd $$dir; $(MAKE) install-symlinks;) \
+@MACOSX_TRUE@        done ; 
 
 uninstall-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
