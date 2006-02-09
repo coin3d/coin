@@ -31,8 +31,8 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbPlane.h>
-#include <HardCopy/SoVectorizeAction.h>
-#include <HardCopy/SoVectorOutput.h>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbImage.h>

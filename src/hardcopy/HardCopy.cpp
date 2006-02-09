@@ -118,8 +118,16 @@
 #include <Inventor/annex/HardCopy/SoVectorizeCGMAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizeHPGLAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizeGDIAction.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
+
+static SbBool hardcopy_isinitialized = FALSE;
+
+static void hardcopy_cleanup(void)
+{
+  hardcopy_isinitialized = FALSE;
+}
 
 /*!
   Initialization of the hardcopy support happens automatically from
@@ -129,15 +137,16 @@
 void
 SoHardCopy::init(void)
 {
-  static SbBool first = TRUE;
-  if (!first) { return; }
-  first = FALSE;
+  if (hardcopy_isinitialized) { return; }
 
   SoVectorizeAction::initClass();
   SoVectorizePSAction::initClass();
   SoVectorizeCGMAction::initClass();
   SoVectorizeHPGLAction::initClass();
   SoVectorizeGDIAction::initClass();
+
+  hardcopy_isinitialized = TRUE;
+  coin_atexit((coin_atexit_f*)hardcopy_cleanup, 0);
 }
 
 /*!
