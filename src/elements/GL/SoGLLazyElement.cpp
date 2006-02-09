@@ -1289,5 +1289,24 @@ SoGLLazyElement::updateColorVBO(SoVBO * vbo)
   }
 }
 
+/*!  
+  Merge cache info from a child cache (when doing nested caching)
+  into the current cache.  
+*/
+void 
+SoGLLazyElement::mergeCacheInfo(SoState * state,
+                                SoGLLazyElement::GLState * childprestate,
+                                SoGLLazyElement::GLState * childpoststate)
+{
+  SoGLLazyElement * elt = SoGLLazyElement::getInstance(state);
+
+  // just add pre-dependencies from child cache, but mask away cases
+  // which are already set inside this cache.
+  elt->didntsetbitmask |= (childprestate->cachebitmask & ~elt->didsetbitmask);
+
+  // update current cache's didsetbitmask so that the post cache state is correct
+  elt->didsetbitmask |= childpoststate->cachebitmask;
+}
+
 #undef FLAG_FORCE_DIFFUSE
 #undef FLAG_DIFFUSE_DEPENDENCY

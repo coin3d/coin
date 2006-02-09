@@ -129,8 +129,12 @@ public:
   static SbBool preCacheCall(SoState * state, SoGLLazyElement::GLState * prestate);
   static void postCacheCall(SoState * state, SoGLLazyElement::GLState * poststate);
 
-  void updateColorVBO(SoVBO * vbo);
+  static void mergeCacheInfo(SoState * state,
+                             SoGLLazyElement::GLState * childprestate,
+                             SoGLLazyElement::GLState * childpoststate);
 
+  void updateColorVBO(SoVBO * vbo);
+  
 protected:
   virtual void lazyDidSet(uint32_t mask);
   virtual void lazyDidntSet(uint32_t mask);
