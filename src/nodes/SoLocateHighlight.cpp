@@ -57,6 +57,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -109,15 +110,23 @@
 
 // *************************************************************************
 
-SoFullPath * SoLocateHighlight::currenthighlight = NULL;
-
-// *************************************************************************
-
 class SoLocateHighlightP {
 public:
   SbBool highlighted;
   SoColorPacker colorpacker;
+  static SoFullPath * currenthighlight;
+
+  static void atexit_cleanup(void) {
+    if (SoLocateHighlightP::currenthighlight) {
+      SoLocateHighlightP::currenthighlight->unref();
+      SoLocateHighlightP::currenthighlight = NULL;
+    }
+  }
 };
+
+SoFullPath * SoLocateHighlightP::currenthighlight = NULL;
+
+// *************************************************************************
 
 #undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
@@ -165,6 +174,7 @@ void
 SoLocateHighlight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLocateHighlight, SO_FROM_INVENTOR_1);
+  coin_atexit((coin_atexit_f*)SoLocateHighlightP::atexit_cleanup, 0);
 }
 
 /*!
@@ -188,9 +198,9 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
       if (pp && pp->getPath()->containsPath(action->getCurPath())) {
         if (!PRIVATE(this)->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
-          SoLocateHighlight::currenthighlight = (SoFullPath*)
+          SoLocateHighlightP::currenthighlight = (SoFullPath*)
             action->getCurPath()->copy();
-          SoLocateHighlight::currenthighlight->ref();
+          SoLocateHighlightP::currenthighlight->ref();
           PRIVATE(this)->highlighted = TRUE;
           this->touch(); // force scene redraw
           this->redrawHighlighted(action, TRUE);
@@ -264,18 +274,18 @@ SoLocateHighlight::setOverride(SoGLRenderAction * action)
 void
 SoLocateHighlight::turnoffcurrent(SoAction * action)
 {
-  if (SoLocateHighlight::currenthighlight &&
-      SoLocateHighlight::currenthighlight->getLength()) {
-    SoNode * tail = SoLocateHighlight::currenthighlight->getTail();
+  if (SoLocateHighlightP::currenthighlight &&
+      SoLocateHighlightP::currenthighlight->getLength()) {
+    SoNode * tail = SoLocateHighlightP::currenthighlight->getTail();
     if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
       ((SoLocateHighlight*)tail)->pimpl->highlighted = FALSE;
       ((SoLocateHighlight*)tail)->touch(); // force scene redraw
       if (action) ((SoLocateHighlight*)tail)->redrawHighlighted(action, FALSE);
     }
   }
-  if (SoLocateHighlight::currenthighlight) {
-    SoLocateHighlight::currenthighlight->unref();
-    SoLocateHighlight::currenthighlight = NULL;
+  if (SoLocateHighlightP::currenthighlight) {
+    SoLocateHighlightP::currenthighlight->unref();
+    SoLocateHighlightP::currenthighlight = NULL;
   }
 }
 

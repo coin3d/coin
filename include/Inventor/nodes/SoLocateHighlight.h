@@ -66,7 +66,6 @@ private:
 
   static void turnoffcurrent(SoAction * action);
   void setOverride(SoGLRenderAction * action);
-  static SoFullPath * currenthighlight;
 
   SoLocateHighlightP * pimpl;
 };

@@ -208,14 +208,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-030 SoLocateHighlight: Possible memory leak from static variable
-
-    SoFullPath * SoLocateHighlight::currenthighlight = NULL;
-
-    20060207 kintel.
-
-=====================================================================
-
 034 SoVRMLShape: Static variable not reset on cleanup
 
     int SoVRMLShape::numrendercaches;
