@@ -65,6 +65,7 @@ public:
 
 JSRuntime * SoJavaScriptEngineP::runtime = NULL;
 size_t SoJavaScriptEngineP::CONTEXT_STACK_CHUNK_SIZE = 8192; /* stack chunk size */
+JSClass SoJavaScriptEngineP::globalclass;
 
 // *************************************************************************
 
