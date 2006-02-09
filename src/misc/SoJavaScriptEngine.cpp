@@ -47,6 +47,7 @@ public:
 
   static size_t CONTEXT_STACK_CHUNK_SIZE; /* stack chunk size */
   static JSRuntime * runtime;
+  static JSClass globalclass;
   JSContext * context;
   JSObject * global;
 
@@ -203,23 +204,11 @@ SoJavaScriptEngine::SoJavaScriptEngine()
 
   (void)spidermonkey()->JS_SetErrorReporter(cx, SpiderMonkey_ErrorHandler);
 
-  static JSClass jclass = {
-    "SoJavaScriptEngine_global", 0,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_PropertyStub,
-    spidermonkey()->JS_EnumerateStub,
-    spidermonkey()->JS_ResolveStub,
-    spidermonkey()->JS_ConvertStub, 
-    spidermonkey()->JS_FinalizeStub,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
-  };
-
   // FIXME: add global as an argument, so more than one context can share
   // the same global object? 20050719 erikgors.
   JSObject * global = PRIVATE(this)->global = 
-    spidermonkey()->JS_NewObject(cx, &jclass, NULL, NULL);
+    spidermonkey()->JS_NewObject(cx, &SoJavaScriptEngineP::globalclass, 
+                                 NULL, NULL);
   if (!global) {
     SoDebugError::postWarning("SoJavaScriptEngine::SoJavaScriptEngine",
                               "SpiderMonkey Javascript engine available, "
@@ -346,6 +335,18 @@ SoJavaScriptEngine::init(uint32_t maxBytes)
   }
 
   SoJavaScriptEngine::setRuntime(rt);
+
+  SoJavaScriptEngineP::globalclass.name = "SoJavaScriptEngine_global";
+  SoJavaScriptEngineP::globalclass.flags = 0;
+  SoJavaScriptEngineP::globalclass.addProperty = spidermonkey()->JS_PropertyStub;
+  SoJavaScriptEngineP::globalclass.delProperty = spidermonkey()->JS_PropertyStub;
+  SoJavaScriptEngineP::globalclass.getProperty = spidermonkey()->JS_PropertyStub;
+  SoJavaScriptEngineP::globalclass.setProperty = spidermonkey()->JS_PropertyStub;
+  SoJavaScriptEngineP::globalclass.enumerate = spidermonkey()->JS_EnumerateStub;
+  SoJavaScriptEngineP::globalclass.resolve = spidermonkey()->JS_ResolveStub;
+  SoJavaScriptEngineP::globalclass.convert = spidermonkey()->JS_ConvertStub;
+  SoJavaScriptEngineP::globalclass.finalize = spidermonkey()->JS_FinalizeStub;
+  
   return TRUE;
 }
 

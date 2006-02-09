@@ -108,29 +108,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-018 SoJavaScriptEngine resource corruption
-
-    The following static variable defined within the constructor
-    might not contain valid values on the second SoDB::init().
-
-    static JSClass jclass = {
-      "SoJavaScriptEngine_global", 0,
-      spidermonkey()->JS_PropertyStub,
-      spidermonkey()->JS_PropertyStub,
-      spidermonkey()->JS_PropertyStub,
-      spidermonkey()->JS_PropertyStub,
-      spidermonkey()->JS_EnumerateStub,
-      spidermonkey()->JS_ResolveStub,
-      spidermonkey()->JS_ConvertStub, 
-      spidermonkey()->JS_FinalizeStub,
-      NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
-    };
-
-
-    20060206 kintel.
-
-=====================================================================
-
 021 SoWWWAnchor: Static variables not reset on cleanup
 
     SoWWWAnchorCB * SoWWWAnchorP::fetchfunc = NULL;
