@@ -60,12 +60,14 @@
 // FIXME: replace this with a real set datatype abstraction. 20050524 mortene.
 typedef SbHash<void *, const char *> NameSet;
 static NameSet * soupgrader_namedict = NULL;
+static SbBool soupgrader_isinitialized = FALSE;
 
 static void
 soupgrader_cleanup(void)
 {
   delete soupgrader_namedict;
   soupgrader_namedict = NULL;
+  soupgrader_isinitialized = FALSE;
 }
 
 // add a name to the upgrader lookup dict.
@@ -115,15 +117,14 @@ soupgrader_exists(const SbName & name)
 static void 
 soupgrader_init_classes(void)
 {
-  static int first = 1;
-  if (first) {
-    first = 0;
+  if (!soupgrader_isinitialized) {
     soupgrader_namedict = new NameSet;
-    
-    coin_atexit((coin_atexit_f*) soupgrader_cleanup, 0); 
     
     SOUPGRADER_ADD_TYPE(SoPackedColorV20);
     SOUPGRADER_ADD_TYPE(SoShapeHintsV10);
+
+    soupgrader_isinitialized = TRUE;
+    coin_atexit((coin_atexit_f*) soupgrader_cleanup, 0); 
   }
 }
 
