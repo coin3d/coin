@@ -208,14 +208,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-028 SoLockManager: Memory leak from static variable
-
-    static class SoLockManager_pimpl * pimpl;
-
-    20060207 kintel.
-
-=====================================================================
-
 030 SoLocateHighlight: Possible memory leak from static variable
 
     SoFullPath * SoLocateHighlight::currenthighlight = NULL;

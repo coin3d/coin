@@ -40,6 +40,7 @@
 
 #include <Inventor/lock/SoLockMgr.h>
 #include <Inventor/SbString.h>
+#include <Inventor/C/tidbitsp.h>
 #include <string.h>
 
 class SoLockManager_pimpl {
@@ -50,7 +51,13 @@ public:
   char * unlockstr;
 };
 
-SoLockManager_pimpl * SoLockManager::pimpl = NULL;
+static SoLockManager_pimpl * solockmanager_pimpl = NULL;
+
+static void solockmanager_cleanup(void)
+{
+  delete solockmanager_pimpl;
+  solockmanager_pimpl = NULL;
+}
 
 /*!
   A void method provided just for sourcecode compatibility in client
@@ -62,11 +69,13 @@ SoLockManager_pimpl * SoLockManager::pimpl = NULL;
 void
 SoLockManager::SetUnlockString(char * unlockstr)
 {
-  if (!SoLockManager::pimpl) // FIXME: deallocate on exit. 20000518 mortene.
-    SoLockManager::pimpl = new SoLockManager_pimpl;
-  delete SoLockManager::pimpl->unlockstr;
-  SoLockManager::pimpl->unlockstr = new char[strlen(unlockstr) + 1];
-  (void)strcpy(SoLockManager::pimpl->unlockstr, unlockstr);
+  if (!solockmanager_pimpl) {
+    solockmanager_pimpl = new SoLockManager_pimpl;
+    coin_atexit((coin_atexit_f*)solockmanager_cleanup, 0);
+  }
+  delete solockmanager_pimpl->unlockstr;
+  solockmanager_pimpl->unlockstr = new char[strlen(unlockstr) + 1];
+  (void)strcpy(solockmanager_pimpl->unlockstr, unlockstr);
 }
 
 /*!
@@ -78,5 +87,5 @@ SoLockManager::SetUnlockString(char * unlockstr)
 char *
 SoLockManager::GetUnlockString(void)
 {
-  return SoLockManager::pimpl ? SoLockManager::pimpl->unlockstr : NULL;
+  return solockmanager_pimpl ? solockmanager_pimpl->unlockstr : NULL;
 }

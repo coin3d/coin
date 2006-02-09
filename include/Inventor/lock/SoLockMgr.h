@@ -30,9 +30,6 @@ class COIN_DLL_API SoLockManager {
 public:
   static void SetUnlockString(char * unlockstr);
   static char * GetUnlockString(void);
-
-private:
-  static class SoLockManager_pimpl * pimpl;
 };
 
 #endif // !COIN_LOCKMGR_H
