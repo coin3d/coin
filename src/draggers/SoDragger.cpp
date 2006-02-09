@@ -188,7 +188,7 @@
 
 // FIXME: document DraggerCB typedef? 20010909 mortene.
 
-
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
@@ -1503,12 +1503,20 @@ typedef struct {
   SbViewVolume vv;
 } sodragger_vv_data;
 
+static sodragger_vv_data * vvdata = NULL;
+
 static SoCallbackAction::Response
 sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
 {
   sodragger_vv_data * data = (sodragger_vv_data*) userdata;
   data->vv = SoViewVolumeElement::get(action->getState());
   return SoCallbackAction::CONTINUE;
+}
+
+static void vv_data_cleanup(void) 
+{
+  delete vvdata;
+  vvdata = NULL;
 }
 
 /*!
@@ -1526,9 +1534,9 @@ SoDragger::setCameraInfo(SoAction * action)
   // view volume can be found directly. pederb, 2002-10-30
 
   if (THIS->draggercache && THIS->draggercache->path) {
-    static sodragger_vv_data * vvdata;
     if (vvdata == NULL) {
       vvdata = new sodragger_vv_data;
+      coin_atexit((coin_atexit_f*) vv_data_cleanup, 0);
     }
     if (THIS->cbaction == NULL) {
       THIS->cbaction = new SoCallbackAction;
