@@ -199,14 +199,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-023 SoSceneManager: Static variables not reset on cleanup
-
-    SbBool SoSceneManagerP::touchtimer = TRUE;
-
-    20060207 kintel.
-
-=====================================================================
-
 024 SoVRMLScript: Static variables not reset on cleanup
 
     static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
