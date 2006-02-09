@@ -47,6 +47,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -100,6 +101,9 @@ public:
   uint32_t redrawpri;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
 
+  static SbBool cleanupfunctionset;
+  static void cleanup(void);
+
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
@@ -116,6 +120,7 @@ public:
 };
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
+SbBool SoSceneManagerP::cleanupfunctionset = FALSE;
 
 #define PRIVATE(p) (p->pimpl)
 
@@ -900,6 +905,10 @@ void
 SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 {
   SoSceneManagerP::touchtimer = flag;
+  if (!SoSceneManagerP::cleanupfunctionset) {
+    coin_atexit((coin_atexit_f*) SoSceneManagerP::cleanup, 0);
+    SoSceneManagerP::cleanupfunctionset = TRUE;
+  }
 }
 
 /*!
@@ -965,4 +974,10 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
   glClear(mask);
 }
 
+void
+SoSceneManagerP::cleanup(void)
+{
+  SoSceneManagerP::touchtimer = TRUE;
+  SoSceneManagerP::cleanupfunctionset = FALSE;
+}
 #undef PRIVATE
