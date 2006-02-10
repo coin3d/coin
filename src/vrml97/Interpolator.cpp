@@ -78,8 +78,7 @@ SO_NODEENGINE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 void
 SoVRMLInterpolator::initClass(void) // static
 {
-  SO_NODEENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLInterpolator, SoNodeEngine, 
-                                             "NodeEngine");
+  SO_NODEENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLInterpolator);
 }
 
 SoVRMLInterpolator::SoVRMLInterpolator(void) // protected
