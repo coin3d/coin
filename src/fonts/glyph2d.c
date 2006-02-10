@@ -52,7 +52,6 @@ struct cc_glyph2d {
   short bitmapoffsetx;
   short bitmapoffsety;
   unsigned char * bitmap;
-  int fontid; /* FIXME: is this one really in use? 20060109 mortene. */
   SbBool mono;
 };
 
@@ -194,7 +193,6 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
-  glyph->fontid = fontidx;
   cc_flw_ref_font(fontidx);
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
