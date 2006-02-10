@@ -109,3 +109,23 @@ main(int argc, char ** argv)
      ../../../../src/Coin/src/nodes/SoSceneTextureCubeMap.cpp:213: static void SoSceneTextureCubeMap::initClass(): Assertion `SoSceneTextureCubeMap::classTypeId == SoType::badType() && "don't init() twice!"' failed.
 
 =====================================================================
+
+037 Memory leak when copying SoShapeKit
+
+    Doing a copy() the following scenegraph leaks SoBase instances:
+
+    SoBase-derived instances not deallocated:
+        0x3713bf0 Separator (no name)
+        0x3713e60 Cube (no name)
+        0x3713980 Separator (no name)
+
+    #Inventor V2.1 ascii
+    Separator {
+      ShapeKit {
+      }
+    }
+
+    20060210 kintel.
+
+=====================================================================
+
