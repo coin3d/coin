@@ -24,4 +24,3 @@
     UPDATE 20050809 mortene: adding the capability of tessellating
     polygons with holes to SbTessellator would perhaps be a good task
     for a student. Suggested by pederb.
-ted by pederb.
