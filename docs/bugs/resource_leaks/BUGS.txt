@@ -127,5 +127,7 @@ main(int argc, char ** argv)
 
     20060210 kintel.
 
+    Update: It appears all nodekits leak more or less the same way.
+
 =====================================================================
 
