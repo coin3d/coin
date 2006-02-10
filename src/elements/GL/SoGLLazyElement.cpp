@@ -1300,12 +1300,15 @@ SoGLLazyElement::mergeCacheInfo(SoState * state,
 {
   SoGLLazyElement * elt = SoGLLazyElement::getInstance(state);
 
-  // just add pre-dependencies from child cache, but mask away cases
-  // which are already set inside this cache.
-  elt->didntsetbitmask |= (childprestate->cachebitmask & ~elt->didsetbitmask);
-
-  // update current cache's didsetbitmask so that the post cache state is correct
-  elt->didsetbitmask |= childpoststate->cachebitmask;
+  // just add pre-dependencies from child cache
+  elt->lazyDidntSet(childprestate->cachebitmask);
+  
+  // update current element's didsetbitmask
+  elt->lazyDidSet(childpoststate->cachebitmask);
+  
+  // also update cachebitmask so that the current cache knows about the changes
+  // done by the child cache
+  elt->cachebitmask |= childpoststate->cachebitmask;
 }
 
 #undef FLAG_FORCE_DIFFUSE
