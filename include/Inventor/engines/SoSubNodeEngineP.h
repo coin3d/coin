@@ -57,6 +57,7 @@
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
+    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 
@@ -65,6 +66,7 @@
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
+    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 
