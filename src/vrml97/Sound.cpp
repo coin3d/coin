@@ -411,6 +411,7 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->exitthread = FALSE;
   PRIVATE(this)->errorInThread = FALSE;
   PRIVATE(this)->audioBuffer = NULL;
+  PRIVATE(this)->bufferLength = 0;
 
   this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength,
                                SoVRMLSoundP::defaultNumBuffers,
