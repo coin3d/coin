@@ -80,21 +80,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-002 Memory leak(s) with sony_cam.wrl model.
-
-    To reproduce, use a recent version of Coin from CVS, set the
-    envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1, then load the
-    sony_cam.wrl (pederb has it stored on his $HOME) into e.g. an
-    examinerviewer, and then exit.
-
-    The model contains VRML protos, sensors and interpolators, and one
-    or more of these seems a likely offender, as they are heavily
-    featured in the debug dump of not-properly-unref'ed nodes/engines.
-
-    20041019 mortene.
-
-=====================================================================
-
 011 Possible resource leak in cc_error_default_handler_cb() 
 
     The FILE * returned from coin_get_stderr() shouldn't be cached
