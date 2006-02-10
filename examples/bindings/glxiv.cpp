@@ -31,7 +31,7 @@
 // If you have Coin properly installed, you should be able to build by
 // simply doing:
 //
-// 	$ coin-config --build glxiv glxiv.cpp
+//   $ coin-config --build glxiv glxiv.cpp
 //
 
 // *************************************************************************
@@ -83,6 +83,7 @@ typedef struct {
 
 SbTime * starttime = NULL;
 unsigned int rendercounter = 0;
+static SoSeparator * root = NULL;
 
 static void
 draw_scene(void * userdata, SoSceneManager * scenemanager)
@@ -111,7 +112,7 @@ draw_scene(void * userdata, SoSceneManager * scenemanager)
 
 static void
 make_glx_window(WindowData * win,
-		int x, int y, unsigned int width, unsigned int height)
+                int x, int y, unsigned int width, unsigned int height)
 {
   int attrib[] = {
     GLX_RGBA,
@@ -141,8 +142,8 @@ make_glx_window(WindowData * win,
   unsigned long mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
 
   win->window = XCreateWindow(win->display, rootwindow, 0, 0, width, height,
-			      0, visinfo->depth, InputOutput,
-			      visinfo->visual, mask, &attr);
+                              0, visinfo->depth, InputOutput,
+                              visinfo->visual, mask, &attr);
   
   {
     XSizeHints sizehints;
@@ -181,30 +182,30 @@ event_loop(WindowData * win)
         case Expose:
           draw_scene(win, win->scenemanager);
           break;
-
+          
         case ConfigureNotify:
-	  {
-	    const int w = event.xconfigure.width;
-	    const int h = event.xconfigure.height;
-
-	    win->scenemanager->setWindowSize(SbVec2s(w, h));
-	    win->scenemanager->setSize(SbVec2s(w, h));
-	    win->scenemanager->setViewportRegion(SbViewportRegion(w, h));
-	    win->scenemanager->scheduleRedraw();
-	  }
+          {
+            const int w = event.xconfigure.width;
+            const int h = event.xconfigure.height;
+            
+            win->scenemanager->setWindowSize(SbVec2s(w, h));
+            win->scenemanager->setSize(SbVec2s(w, h));
+            win->scenemanager->setViewportRegion(SbViewportRegion(w, h));
+            win->scenemanager->scheduleRedraw();
+          }
           break;
-
+          
         case KeyPress:
           {
             char buffer[1] = "";
             (void)XLookupString(&event.xkey, buffer, sizeof(buffer), NULL, NULL);
             if (buffer[0] == /* Esc: */ 27) { return; }
           }
-	  break;
+          break;
         }
       }
     }
-
+    
     // FIXME: should do this properly á la SoXt, to avoid using ~100%
     // CPU. 20031113 mortene.
     SoDB::getSensorManager()->processTimerQueue();
@@ -217,7 +218,7 @@ event_loop(WindowData * win)
 static void
 make_coin_scenegraph(WindowData * win)
 {
-  SoSeparator * root = new SoSeparator;
+  root = new SoSeparator;
   root->ref();
 
   SoPerspectiveCamera * camera = new SoPerspectiveCamera;
@@ -287,6 +288,9 @@ main(int argc, char *argv[])
   glXDestroyContext(win.display, win.context);
   XCloseDisplay(win.display);
 
+  win.scenemanager->setSceneGraph(NULL);
+  root->unref();
+  SoDB::finish();
   return 0;
 }
 
