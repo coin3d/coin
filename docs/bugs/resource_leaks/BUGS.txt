@@ -131,3 +131,17 @@ main(int argc, char ** argv)
 
 =====================================================================
 
+038 Memory leak when reading files with field connections from inlined nodes
+
+    Reading this file causes the TEST node to leak
+
+    #Inventor V2.1 ascii
+    Separator {
+      Translation {
+         translation 0 0 0 = DEF TEST Translation { }.translation
+      }
+    }
+
+    20060210 kintel.
+
+=====================================================================
