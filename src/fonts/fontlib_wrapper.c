@@ -355,8 +355,20 @@ flw_exit(void)
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, n);
 
 #if COIN_DEBUG
-    cc_debugerror_postinfo("flw_exit", "font instance resource leak:");
-    dump_cc_flw_font("flw_exit", fs);
+    /* don't use cc_debugerror_post_* here since this will be called when Coin is
+       exiting => we cannot allocate new resources */
+    fprintf(stderr, "flw_exit: font instance resource leak:\n");
+    fprintf(stderr, "nativefonthandle==%p, fontname=='%s', requestname=='%s', "
+            "glyphdict==%p, sizey==%u, angle==%f, "
+            "complexity==%f, defaultfont==%s, fontindex==%d, "
+            "refcount==%d",
+            fs->nativefonthandle,
+            cc_string_get_text(fs->fontname),
+            cc_string_get_text(fs->requestname),
+            fs->glyphdict, fs->sizey, fs->angle,
+            fs->complexity,
+            fs->defaultfont ? "TRUE" : "FALSE",
+            fs->fontindex, fs->refcount);
 #endif /* COIN_DEBUG */
 
     fontstruct_rmfont(fs->fontindex);
