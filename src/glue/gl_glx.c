@@ -117,6 +117,9 @@ SbBool glxglue_context_pbuffer_max(void * ctx, unsigned int * lims) { assert(FAL
 
 /* ********************************************************************** */
 
+static Display * glxglue_display = NULL;
+static SbBool glxglue_opendisplay_failed = FALSE;
+
 static int glxglue_screen = -1;
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
 static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;
@@ -198,24 +201,13 @@ static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
 static Display *
 glxglue_get_display(void)
 {
-  /* The Display resource is never deallocated explicitly (but of
-   * course implicitly by the system on application close down). This
-   * to work around some strange problems with the NVidia-driver 29.60
-   * on XFree86 v4 when using XCloseDisplay() -- like doublebuffered
-   * visuals coming up just blank.
-   *
-   *   XCloseDisplay(glxglue_display);
-   */
-
-  static SbBool failed = FALSE;
-  static Display * glxglue_display = NULL;
-  if ((glxglue_display == NULL) && !failed) {
+  if ((glxglue_display == NULL) && !glxglue_opendisplay_failed) {
     /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
     glxglue_display = XOpenDisplay(NULL);
     if (glxglue_display == NULL) {
       cc_debugerror_post("glxglue_init",
                          "Couldn't open NULL display.");
-      failed = TRUE;
+      glxglue_opendisplay_failed = TRUE;
     }
     else {
       /* FIXME: should use the real screen number. :-(  20020926 mortene. */
@@ -1027,6 +1019,25 @@ void glxglue_cleanup(void)
   glxglue_glXCreatePbuffer_GLX_1_3 = NULL;
   glxglue_glXCreateGLXPbufferSGIX = NULL;
   glxglue_glXDestroyPbuffer = NULL;
+
+  /* FIXME: We used to not close the display due to potential problems
+     on some NVidia drivers (see original comment, reproduced
+     below). I think it's wrong to not cleanup properly on all systems
+     just because of an issue with *one* driver -- so I've enabled it
+     now. When the problem re-appears, we should disable it *for that
+     specific driver*. 20060210 kyrah
+
+     Original problem description:
+
+       The Display resource is never deallocated explicitly (but of
+       course implicitly by the system on application close
+       down). This to work around some strange problems with the
+       NVidia-driver 29.60 on XFree86 v4 when using XCloseDisplay() --
+       like doublebuffered visuals coming up just blank.
+   */
+  if (glxglue_display) XCloseDisplay(glxglue_display);
+  glxglue_display = NULL;
+  glxglue_opendisplay_failed = FALSE;
 }
 
 #endif /* HAVE_GLX */
