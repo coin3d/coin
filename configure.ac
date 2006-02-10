@@ -1446,37 +1446,6 @@ SIM_AC_MATHLIB_READY_IFELSE([], [
     [SIM_AC_ERROR([no-math-library])])])
 AC_LANG_POP(C++)
 
-AC_CACHE_CHECK([whether single-precision math functions are available],
-  sim_cv_func_singleprec_avail,
-  [AC_TRY_LINK([#include <math.h>],
-               [(void)sqrtf(1.0f);
-                (void)powf(1.0f, 1.0f);
-                (void)cosf(1.0f);
-                (void)sinf(1.0f);
-                (void)tanf(1.0f);
-                (void)acosf(1.0f);
-                (void)asinf(1.0f);
-                (void)atanf(1.0f);
-                (void)atan2f(1.0f, 1.0f);],
-               [case ${MACOSX_DEPLOYMENT_TARGET} in
-                10.[[0123]])
-                  # single precision math functions are not available in
-                  # libSystem on Mac OS X < 10.4, so don't use them when
-                  # building the binary SDK.
-                  sim_cv_func_singleprec_avail=false
-                  ;;
-                *)
-                  sim_cv_func_singleprec_avail=true
-                  ;;
-                esac],
-               [sim_cv_func_singleprec_avail=false])])
-
-$sim_cv_func_singleprec_avail &&
-  AC_DEFINE([HAVE_SINGLEPRECISION_MATH],1,
-    [define if single-precision math functions are available])
-
-
-
 # *******************************************************************
 # * Check for ilogb() after mathlib test
 # *******************************************************************

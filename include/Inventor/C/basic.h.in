@@ -181,42 +181,29 @@ typedef int SbBool;
 
 /* *********************************************************************** */
 
-#ifndef HAVE_SINGLEPRECISION_MATH
-/* If singleprecision math functions are missing, define them to their
-   doubleprecision counterparts. This is done to be consistent with
-   SbBasic.h in Open Inventor (application programmers might rely on
-   the float-versions being set up from the Inventor SbBasic.h).
-   When Coin is used together with other libraries, those libraries may
-   also define some of these, so we try to avoid #define conflicts by
-   wrapping each define. */
-#ifndef cosf
-#define cosf(x) ((float)cos(x))
-#endif /* !cosf */
-#ifndef sinf
-#define sinf(x) ((float)sin(x))
-#endif /* !sinf */
-#ifndef tanf
-#define tanf(x) ((float)tan(x))
-#endif /* !tanf */
-#ifndef powf
-#define powf(x, y) ((float)pow(x, y))
-#endif /* !powf */
-#ifndef sqrtf
-#define sqrtf(x) ((float)sqrt(x))
-#endif /* !sqrtf */
-#ifndef acosf
-#define acosf(x) ((float)acos(x))
-#endif /* !acosf */
-#ifndef asinf
-#define asinf(x) ((float)asin(x))
-#endif /* !asinf */
-#ifndef atanf
-#define atanf(x) ((float)atan(x))
-#endif /* !atanf */
-#ifndef atan2f
-#define atan2f(x, y) ((float)atan2(x, y))
-#endif /* !atan2f */
-#endif /* HAVE_SINGLEPRECISION_MATH */
+/* The float-version of the math functions below did not come about
+   until C99, so we don't want to use them internally, for portability
+   reasons. */
+#ifdef COIN_INTERNAL
+#undef cosf
+#define cosf(x) NO_SINGLEPREC /* whatever that'll give us a compile error... */
+#undef sinf
+#define sinf(x) NO_SINGLEPREC
+#undef tanf
+#define tanf(x) NO_SINGLEPREC
+#undef powf
+#define powf(x) NO_SINGLEPREC
+#undef sqrtf
+#define sqrtf(x) NO_SINGLEPREC
+#undef acosf
+#define acosf(x) NO_SINGLEPREC
+#undef asinf
+#define asinf(x) NO_SINGLEPREC
+#undef atanf
+#define atanf(x) NO_SINGLEPREC
+#undef atan2f
+#define atan2f(x) NO_SINGLEPREC
+#endif /* COIN_INTERNAL */
 
 /* *********************************************************************** */
 
