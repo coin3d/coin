@@ -174,9 +174,11 @@ SoLOD::commonConstructor(void)
   SO_NODE_ADD_FIELD(center, (SbVec3f(0, 0, 0)));
   SO_NODE_ADD_FIELD(range, (0.0f));
 
-  // Make multivalue field empty.
+  // Make multivalue field empty, as that is the default.
   this->range.setNum(0);
-
+  // So it's not written in its default state on SoWriteAction
+  // traversal.
+  this->range.setDefault(TRUE);
 }
 
 /*!
