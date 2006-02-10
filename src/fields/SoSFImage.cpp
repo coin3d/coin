@@ -388,6 +388,11 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
     // whether or not the memory block is within the same C library
     // heap as for the Coin library itself? I seem to remember that
     // there is such a function in the Win32 API.  20050518 mortene.
+    //
+    // UPDATE 20050518 mortene: _CrtIsValidHeapPointer() is mentioned
+    // in the MSDN docs, and seems to be a step in the right
+    // direction. This may however be a macro, which uses some
+    // underlying Win32 API call -- check that.
 
   case NO_COPY_AND_DELETE:
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);

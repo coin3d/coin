@@ -544,6 +544,9 @@ SoBase::assertAlive(void) const
   avoid premature deletion), but is usually called from other instances
   within the Coin library when objects are made dependent on each other.
 
+  See the class documentation of SoNode for more extensive information
+  about reference counting.
+
   \sa unref(), unrefNoDelete()
  */
 void

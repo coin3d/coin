@@ -1984,6 +1984,12 @@ cc_glglue_instance(int contextid)
       assert(current_ctx && "Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
     }
 
+    /* FIXME: this is not free'd until app exit, which is bad because
+       it opens a small window of possibility for errors; the value of
+       id/key inputs could in principle be reused, so we'd get an old,
+       invalid instance instead of creating a new one. Should rather
+       hook into SoContextHandler and kill off an instance when a GL
+       context is taken out. 20051104 mortene. */
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
     /* clear to set all pointers and variables to NULL or 0 */
     memset(gi, 0, sizeof(cc_glglue));
@@ -4182,8 +4188,8 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
        this function is considered just a hint).
 
        I'm keeping the code comments and the commented out code below,
-       in case there have issues with NVidia drivers hidden by this
-       clamping, which will surface now...
+       in case there have been issues with NVidia drivers hidden by
+       this clamping, which will surface now...
 
        Eventually, this special case check should be removed, though.
     */
@@ -4259,7 +4265,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      unexpected problems with external applications, as we're
      currently between patch-level releases with Coin-2, and I have
      only limited time right now for testing that removing this would
-     not not cause badness.
+     not cause badness.
   */
   *width = cc_min(*width, 4096);
   *height = cc_min(*height, 4096);

@@ -129,6 +129,9 @@ cc_error_handle(cc_error * me)
 #ifdef COIN_THREADSAFE
   if (!cc_error_mutex) {
     /* extra locking to avoid that two threads create the mutex */
+    /* FIXME: this is not smart, as it means that if the first call to
+       e.g. SoDebugError::post*() will hang if it happens within a
+       region where the global lock is already taken. 20050708 mortene.*/
     cc_mutex_global_lock();
     if (cc_error_mutex == NULL) {
       cc_error_mutex = cc_mutex_construct();

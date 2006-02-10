@@ -1057,7 +1057,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   flwft_tessellator.triangle_strip_flipflop = FALSE;
   flwft_tessellator.vertex_counter = 0;
 
-  /* gluTessllator callbacks */
+  /* gluTessellator callbacks */
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_VERTEX, (gluTessCallback_cb_t) flwft_vertexCallback);
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_BEGIN, (gluTessCallback_cb_t) flwft_beginCallback);
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_END, (gluTessCallback_cb_t) flwft_endCallback);
@@ -1065,8 +1065,8 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_ERROR, (gluTessCallback_cb_t) flwft_errorCallback);
 
   GLUWrapper()->gluTessBeginPolygon(flwft_tessellator.tessellator_object, NULL);
-  /* According to the SGI doc for GLU, specifying the triangle normal will speed up
-     the tessellation process. */
+  /* According to the SGI doc for GLU, specifying the triangle normal
+     will speed up the tessellation process. */
   GLUWrapper()->gluTessNormal(flwft_tessellator.tessellator_object, 0.0f, 0.0f, -1.0f);
   error = cc_ftglue_FT_Outline_Decompose(&outline, &outline_funcs, NULL);
   if (flwft_tessellator.contour_open) {
@@ -1124,7 +1124,10 @@ flwft_addTessVertex(double * vertex)
 
 }
 
-
+/* "move to" in this context means that a previous contour should be
+   terminated, as the virtual "pencil" is moved to start a new
+   contour. (so "move to" means "lift pencil, jump to and start new
+   contour".) */
 static int
 flwft_moveToCallback(FT_Vector * to, void * user)
 {
@@ -1146,6 +1149,8 @@ flwft_moveToCallback(FT_Vector * to, void * user)
   return 0;
 }
 
+/* "line to" in this context means that the current contour is
+   continued with a line to the given point. */
 static int
 flwft_lineToCallback(FT_Vector * to, void * user)
 {

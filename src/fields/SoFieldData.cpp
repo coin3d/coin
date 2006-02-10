@@ -726,11 +726,10 @@ SoFieldData::copy(const SoFieldData * src)
   If you think the method signature is a bit strange, you're correct.
   This should really have been a static method (the owner \c this
   instance of the method isn't used at all, due to how the internal
-  representation of field template list are stored), but for unknown
+  representations of field template lists are stored), but for unknown
   reasons this is a dynamic method in Open Inventor. So also in Coin,
   to keep compatibility.
-
- */
+*/
 SbBool
 SoFieldData::isSame(const SoFieldContainer * c1,
                     const SoFieldContainer * c2) const

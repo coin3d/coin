@@ -41,6 +41,8 @@
   \endcode
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
@@ -49,12 +51,18 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 
+// *************************************************************************
+
 /*!
   \typedef void SoCallbackCB(void * userdata, SoAction * action)
   Signature that callback functions need to have.
 */
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoCallback);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -125,6 +133,11 @@ SoCallback::callback(SoCallbackAction * action)
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
+  // FIXME: we've had a user report which indicates that SGI Inventor
+  // may also cache OpenGL calls made from within a callback into
+  // renderlists. Investigate, and consider whether or not we should
+  // follow suit. 20051110 mortene.
+
   SoCallback::doAction(action);
 }
 

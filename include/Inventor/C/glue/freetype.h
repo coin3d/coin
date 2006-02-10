@@ -347,6 +347,10 @@ typedef struct FT_OutlineGlyphRec_* FT_OutlineGlyph;
 
 int cc_ftglue_available(void);
 
+/* FIXME: some of the typedef'ed function signatures below does not
+   match the correct function def, as given in
+   /usr/include/freetype2/freetype/freetype.h. 20050711 mortene. */
+
 FT_Error cc_ftglue_FT_Init_FreeType(FT_Library * library);
 void cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * patch);
 void cc_ftglue_FT_Done_FreeType(void * library);

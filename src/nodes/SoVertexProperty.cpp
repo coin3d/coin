@@ -249,7 +249,8 @@ SoVertexProperty::SoVertexProperty(void)
   this->normal.setNum(0);
   this->orderedRGBA.setNum(0);
 
-
+  // So they are not written in their default state on SoWriteAction
+  // traversal.
   this->vertex.setDefault(TRUE);
   this->texCoord.setDefault(TRUE);
   this->texCoord3.setDefault(TRUE);
