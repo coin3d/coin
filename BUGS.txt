@@ -2302,3 +2302,15 @@ Sphere { radius 0.4 }
     20051212 mortene.
 
 =====================================================================
+
+211 SoTextureCoordinateSphere et al does not work with some
+    primitives.
+
+    SoSphere, SoCube, SoCone and SoCylinder has not been modified to
+    work properly with SoTextureCoordinateSphere,
+    SoTextureCoordinateCylinder etc, but instead just ignoring this
+    texture function nodes.
+
+    20060213 mortene.
+
+=====================================================================
