@@ -165,13 +165,18 @@ SoSFNode::readValue(SoInput * in)
   // Since we cannot differ between the different cases where
   // SoBase::read() returns a NULL baseptr, we need to manually check
   // for the only valid NULL case here.
-  SbName name;
-  if (in->read(name, TRUE)) {
-    if (name == "NULL") {
-      this->setValue(NULL);
-      return TRUE;
+  // NB! This only works for ascii files, but it shouldn't matter
+  // as NULL is only allowed in VRML97 for which we don't support
+  // binary io.
+  if (!in->isBinary()) {
+    SbName name;
+    if (in->read(name, TRUE)) {
+      if (name == "NULL") {
+        this->setValue(NULL);
+        return TRUE;
+      }
+      in->putBack(name.getString());
     }
-    in->putBack(name.getString());
   }
 
   SoBase * baseptr;
