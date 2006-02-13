@@ -2314,3 +2314,30 @@ Sphere { radius 0.4 }
     20060213 mortene.
 
 =====================================================================
+
+212 Unknown extension node with unset ''alternateRep'' field causes
+    seg-fault.
+
+    The following iv-file will trigger a segmentation fault from Coin
+    upon import:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+ExtensionNode {
+   fields [ SFNode alternateRep ]
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    ''alternateRep'' fields are used for extension nodes to present a
+    scene graph to replace its real geometry, if the Coin- /
+    Inventor-reader does not know how to handle the extension
+    node. Leaving this empty in Coin causes a crash due to a
+    NULL-pointer access somewhere.
+
+    (If the ''alternateRep'' field is filled in, with e.g. "SoSphere {
+    }", there is no bug.)
+
+    20060213 mortene.
+
+=====================================================================
