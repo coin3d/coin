@@ -34,6 +34,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/tidbitsp.h>
 
 /*!
   Constructor
@@ -218,10 +219,12 @@ SoVertexArrayIndexer::close(void)
 void
 SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
 {
-  SbBool ismac = FALSE;
-#ifdef __APPLE__
-  ismac = TRUE;
-#endif
+  // FIXME: I'm not able to make glMultiDrawElement work under OS
+  // X. It just crashes inside GL when I try to use it. Investigate
+  // why this happens. For now we just avoid using
+  // glMultiDrawElements() under OS X.  pederb, 2005-02-14
+  SbBool ismac = (coin_runtime_os() == COIN_OS_X);
+
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
