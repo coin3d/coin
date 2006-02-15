@@ -261,9 +261,6 @@
 /* Define to use Win32 QueryPerformanceCounter() */
 #undef HAVE_QUERYPERFORMANCECOUNTER
 
-/* define if single-precision math functions are available */
-#undef HAVE_SINGLEPRECISION_MATH
-
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
 
