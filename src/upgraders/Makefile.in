@@ -134,6 +134,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
+LIBEXT = @LIBEXT@
 LIBFLAGS = @LIBFLAGS@
 LIBOBJS = @LIBOBJS@
 
@@ -759,18 +760,17 @@ install-libupgradersincHEADERS: $(libupgradersinc_HEADERS)
 @MACOSX_TRUE@	done; 
 @MACOSX_FALSE@install-exec-local:
 
-# FIXME: Make this work on systems other than Mac OS X if considered useful.
-@MACOSX_TRUE@install-symlinks:
-@MACOSX_TRUE@	@echo "Creating symlink to libupgraders@SUFFIX@LINKHACK*.dylib"; \
-@MACOSX_TRUE@        for dir in $(SUBDIRS) ; do \
-@MACOSX_TRUE@          (cd $$dir; $(MAKE) install-symlinks;) \
-@MACOSX_TRUE@        done ; \
-@MACOSX_TRUE@        here=`pwd`; \
-@MACOSX_TRUE@	(cd $(DESTDIR)$(lib@nop@dir); \
-@MACOSX_TRUE@	for file in libupgraders@SUFFIX@LINKHACK*.dylib; do \
-@MACOSX_TRUE@	  ln -sf "$$here/.libs/$$file" "$$file"; \
-@MACOSX_TRUE@	done; \
-@MACOSX_TRUE@        cd -; )
+install-symlinks:
+	@echo "Creating symlink to libupgraders@SUFFIX@LINKHACK*@LIBEXT@*"; \
+        for dir in $(SUBDIRS) ; do \
+          (cd $$dir; $(MAKE) install-symlinks;) \
+        done ; \
+        here=`pwd`; \
+	(cd $(DESTDIR)$(lib@nop@dir); \
+	for file in libupgraders@SUFFIX@LINKHACK*@LIBEXT@*; do \
+	  ln -sf "$$here/.libs/$$file" "$$file"; \
+	done; \
+        cd -; )
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

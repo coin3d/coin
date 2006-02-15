@@ -136,6 +136,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
+LIBEXT = @LIBEXT@
 LIBFLAGS = @LIBFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
@@ -1023,8 +1024,8 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/$$p $(DESTDIR)$(bindir)/$$p; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	else :; fi
 
-@MACOSX_TRUE@install-symlinks: install
-@MACOSX_TRUE@	@(cd src; $(MAKE) install-symlinks;) 
+install-symlinks: install
+	@(cd src; $(MAKE) install-symlinks;) 
 
 cvs-update:
 	@cd $(top_srcdir) && cvs -z3 -q update -dP
