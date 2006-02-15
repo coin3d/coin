@@ -311,10 +311,8 @@ install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
 endif
 endif
 
-if MACOSX
 install-symlinks: install
 	@(cd src; $(MAKE) install-symlinks;) 
-endif
 
 cvs-update:
 	@cd $(top_srcdir) && cvs -z3 -q update -dP

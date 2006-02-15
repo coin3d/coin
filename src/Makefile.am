@@ -262,7 +262,6 @@ else
 install-exec-local:
 endif
 
-if MACOSX
 install-symlinks:
 	@for dir in \
 	    actions base bundles caches details draggers elements engines \
@@ -271,7 +270,6 @@ install-symlinks:
 	    hardcopy threads mpeg shaders $(VRML97DIR) foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
-endif
 
 uninstall-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \

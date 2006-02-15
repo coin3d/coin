@@ -1699,6 +1699,8 @@ SIM_AC_DYNLIB_EXT
 AC_DEFINE_UNQUOTED([DYNAMIC_LIBRARY_EXTENSION], ["$sim_ac_shlibext"],
                    [define this to the dynamic library extension suffix on this system])
 
+AC_SUBST([LIBEXT], [$sim_ac_shlibext])
+
 sim_ac_opengl_dll_name=$sim_ac_ogl_lib
 if test "$sim_ac_ogl_lib" = "opengl32"; then :; else
   sim_ac_opengl_dll_name="lib${sim_ac_opengl_dll_name}"

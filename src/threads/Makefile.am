@@ -160,19 +160,16 @@ else
 install-exec-local:
 endif
 
-# FIXME: Make this work on systems other than Mac OS X if considered useful.
-if MACOSX
 install-symlinks:
-	@echo "Creating symlink to libthreads@SUFFIX@LINKHACK*.dylib"; \
+	@echo "Creating symlink to libthreads@SUFFIX@LINKHACK*@LIBEXT@*"; \
         for dir in $(SUBDIRS) ; do \
           (cd $$dir; $(MAKE) install-symlinks;) \
         done ; \
         here=`pwd`; \
 	(cd $(DESTDIR)$(lib@nop@dir); \
-	for file in libthreads@SUFFIX@LINKHACK*.dylib; do \
+	for file in libthreads@SUFFIX@LINKHACK*@LIBEXT@*; do \
 	  ln -sf "$$here/.libs/$$file" "$$file"; \
 	done; \
         cd -; )
-endif
 ##$ END TEMPLATE Make-Common
 
