@@ -2341,3 +2341,58 @@ ExtensionNode {
     20060213 mortene.
 
 =====================================================================
+
+213 SbTesselator fails on polygon which it is supposed to handle.
+
+    The following Inventor file demonstrates a problem with
+    SbTesselator (according to kintel, it is supposed to be able to
+    handle this case):
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Separator {
+
+   ShapeHints {
+      faceType UNKNOWN_FACE_TYPE
+      
+   }
+   
+   FaceSet {
+      vertexProperty 
+      VertexProperty {
+         vertex [5616.34650  -94900.63137  0,
+          19459.61213 -83978.42044  0, 
+          18951.60431 -69500.14309  0,
+          34699.90509 -70643.16262  0,
+          35080.91681 -85883.45559  0,
+          21491.65119 -91598.56887  0,
+          19459.61213 -83978.42044  0,
+          5616.34650  -94900.63137  0,
+          9172.41681  -108997.90091 0,
+          52607.25275 -107600.87747 0,
+          55909.31525 -90328.54153  0,
+          46257.12775 -61371.98684  0,
+          20475.63556 -53243.82669  0,
+          282.24494   -65690.06887  0,
+          5616.34650  -94900.63137  0]
+         orderedRGBA 0xac00ff
+         materialBinding OVERALL
+         
+      }
+      numVertices 15
+      
+   }
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    Example provided by Frank Hibbeln.
+
+    To see how this polygon is supposed to be tessellated, use the GLU
+    tessellator by setting the following envvar:
+
+        COIN_PREFER_GLU_TESSELLATOR=1
+
+    20060216 mortene.
+
+=====================================================================
