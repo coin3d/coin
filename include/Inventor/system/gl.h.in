@@ -1675,7 +1675,18 @@
 #ifndef GLU_TESS_COMBINE
 #define GLU_TESS_COMBINE 100105
 #endif
-
+#ifndef GLU_TESS_MISSING_BEGIN_POLYGON
+#define GLU_TESS_MISSING_BEGIN_POLYGON 100151
+#endif /* ! GLU_TESS_MISSING_BEGIN_POLYGON */
+#ifndef GLU_TESS_MISSING_BEGIN_CONTOUR
+#define GLU_TESS_MISSING_BEGIN_CONTOUR 100152
+#endif /* ! GLU_TESS_MISSING_BEGIN_CONTOUR */
+#ifndef GLU_TESS_MISSING_END_POLYGON
+#define GLU_TESS_MISSING_END_POLYGON 100153
+#endif /* ! GLU_TESS_MISSING_END_POLYGON */
+#ifndef GLU_TESS_MISSING_END_CONTOUR
+#define GLU_TESS_MISSING_END_CONTOUR 100154
+#endif /* ! GLU_TESS_MISSING_END_CONTOUR */
 
 /*** GLU enums, end ***************************************************/
 /**********************************************************************/

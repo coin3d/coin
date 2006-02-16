@@ -439,6 +439,7 @@ GLUWrapper(void)
 
   GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
   GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
+  GLUWRAPPER_REGISTER_FUNC(gluErrorString, gluErrorString_t);
   GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
   GLUWRAPPER_REGISTER_FUNC(gluDeleteNurbsRenderer, gluDeleteNurbsRenderer_t);
   GLUWRAPPER_REGISTER_FUNC(gluNurbsProperty, gluNurbsProperty_t);

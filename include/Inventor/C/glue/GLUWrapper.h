@@ -53,11 +53,12 @@ extern "C" {
 /* Callback func type. */
 typedef void (APIENTRY * gluNurbsCallback_cb_t)(void *, ...);
 
-
 /* Typedefinitions of function signatures for GLU calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
 typedef const GLubyte * (APIENTRY *gluGetString_t)(GLenum);
+typedef const GLubyte * (APIENTRY *gluErrorString_t)(GLenum);
 typedef GLint (APIENTRY *gluScaleImage_t)(GLenum, GLsizei, GLsizei, GLenum, const void *, GLsizei, GLsizei, GLenum, GLvoid *);
+
 /* The first argument for these methods is actually either GLUnurbs or
    GLUnurbsObj, depending on the GLU version (yes, they managed to
    change the API over version 1.x to 1.y, for some value of [0, 3]
@@ -78,7 +79,7 @@ typedef void (APIENTRY *gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
 typedef void (APIENTRY *gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
 typedef void (APIENTRY *gluNurbsCallbackData_t)(void *, GLvoid *);
 
-  /* gluTessellator routines */
+/* gluTessellator routines */
 typedef struct coin_GLUtessellator coin_GLUtessellator;
 typedef coin_GLUtessellator * (APIENTRY *gluNewTess_t)(void);
 typedef void (APIENTRY *gluTessCallback_cb_t)(void);
@@ -112,6 +113,7 @@ typedef struct {
   */
 
   gluGetString_t gluGetString;
+  gluErrorString_t gluErrorString;
   gluScaleImage_t gluScaleImage; /* always present */
   gluNewNurbsRenderer_t gluNewNurbsRenderer;
   gluDeleteNurbsRenderer_t gluDeleteNurbsRenderer;

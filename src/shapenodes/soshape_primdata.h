@@ -39,7 +39,6 @@ class SoPrimitiveVertex;
 class SoPointDetail;
 class SoFaceDetail;
 class SoLineDetail;
-class SbTesselator;
 
 class soshape_primdata {
 public:
@@ -79,7 +78,8 @@ private:
   SoLineDetail * lineDetail;
   int arraySize;
   int counter;
-  SbTesselator * tess;
+  class SbTesselator * tess;
+  class SbGLUTessellator * glutess;
   int faceCounter;
 
   SbBool matPerFace;

@@ -1,0 +1,200 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
+
+#include "SbGLUTessellator.h"
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/system/gl.h>
+
+// *************************************************************************
+
+SbBool
+SbGLUTessellator::available(void)
+{
+  return GLUWrapper()->available &&
+    GLUWrapper()->gluNewTess &&
+    GLUWrapper()->gluTessBeginPolygon &&
+    GLUWrapper()->gluTessBeginContour &&
+    GLUWrapper()->gluTessEndContour &&
+    GLUWrapper()->gluTessEndPolygon &&
+    GLUWrapper()->gluDeleteTess;
+}
+
+// *************************************************************************
+
+SbGLUTessellator::SbGLUTessellator(void (* callback)(void *, void *, void *, void *),
+                                   void * userdata)
+{
+  assert(callback && "tessellation without callback is meaningless");
+  this->callback = callback;
+  this->cbdata = userdata;
+
+  // allocated later on demand, so there is no resource allocation
+  // when just putting an SbGLUTessellator on the current stack frame:
+  this->tessobj = NULL;
+}
+
+SbGLUTessellator::~SbGLUTessellator()
+{
+  if (this->tessobj) { GLUWrapper()->gluDeleteTess(this->tessobj); }
+}
+
+// *************************************************************************
+
+void
+SbGLUTessellator::cb_begin(GLenum mode, void * x)
+{
+  SbGLUTessellator * t = (SbGLUTessellator *)x;
+
+  t->triangletessmode = mode;
+  t->vertexidx = 0;
+  t->stripflipflop = FALSE;
+}
+
+void
+SbGLUTessellator::cb_vertex(void * vertex_data, void * x)
+{
+  SbGLUTessellator * t = (SbGLUTessellator *)x;
+
+  switch (t->triangletessmode) {
+  case GL_TRIANGLE_FAN:
+    if (t->vertexidx == 0) { t->vertexdata[0] = vertex_data; }
+    else if (t->vertexidx == 1) { t->vertexdata[1] = vertex_data; }
+    else {
+      t->callback(t->vertexdata[0], t->vertexdata[1], vertex_data, t->cbdata);
+      t->vertexdata[1] = vertex_data;
+    }
+    break;
+
+  case GL_TRIANGLE_STRIP:
+    if (t->vertexidx == 0) { t->vertexdata[0] = vertex_data; }
+    else if (t->vertexidx == 1) { t->vertexdata[1] = vertex_data; }
+    else {
+      t->callback(t->vertexdata[t->stripflipflop ? 1 : 0],
+                  t->vertexdata[t->stripflipflop ? 0 : 1],
+                  vertex_data,
+                  t->cbdata);
+
+      t->vertexdata[0] = t->vertexdata[1];
+      t->vertexdata[1] = vertex_data;
+      t->stripflipflop = t->stripflipflop ? FALSE : TRUE;
+    }
+    break;
+
+  case GL_TRIANGLES:
+    if (t->vertexidx % 3 == 0) { t->vertexdata[0] = vertex_data; }
+    else if (t->vertexidx % 3 == 1) { t->vertexdata[1] = vertex_data; }
+    else if (t->vertexidx % 3 == 2) {
+      t->callback(t->vertexdata[0], t->vertexdata[1], vertex_data, t->cbdata);
+    }
+    break;
+
+  default:
+    assert(FALSE);
+    break;
+  }
+
+  t->vertexidx++;
+}
+
+void
+SbGLUTessellator::cb_error(GLenum err, void *)
+{
+  // These would be user errrors on our side, so catch them:
+  assert(err != GLU_TESS_MISSING_BEGIN_POLYGON);
+  assert(err != GLU_TESS_MISSING_END_POLYGON);
+  assert(err != GLU_TESS_MISSING_BEGIN_CONTOUR);
+  assert(err != GLU_TESS_MISSING_END_CONTOUR);
+
+  SoDebugError::post("SbGLUTessellator::cb_error",
+                     "GLU library tessellation error: '%s'",
+                     GLUWrapper()->gluErrorString(err));
+}
+
+// *************************************************************************
+
+void
+SbGLUTessellator::beginPolygon(const SbVec3f & normal)
+{
+  if (!this->tessobj) {
+    coin_GLUtessellator * t = this->tessobj = GLUWrapper()->gluNewTess();
+
+    const gluTessCallback_t f = GLUWrapper()->gluTessCallback;
+    (*f)(t, GLU_TESS_BEGIN_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_begin);
+    (*f)(t, GLU_TESS_VERTEX_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_vertex);
+    (*f)(t, GLU_TESS_ERROR_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_error);
+  }
+
+  GLUWrapper()->gluTessBeginPolygon(this->tessobj, this);
+  if (normal != SbVec3f(0, 0, 0)) {
+    GLUWrapper()->gluTessNormal(this->tessobj, normal[0], normal[1], normal[2]);
+  }
+
+  GLUWrapper()->gluTessBeginContour(this->tessobj);
+}
+
+void
+SbGLUTessellator::addVertex(const SbVec3f & v, void * data)
+{
+  struct v c = { { v[0], v[1], v[2] } };
+  this->coords.append(c); // needs to be stored until gluTessEndPolygon()
+
+  const int l = this->coords.getLength();
+  GLUWrapper()->gluTessVertex(this->tessobj, this->coords[l - 1].c, data);
+}
+
+void
+SbGLUTessellator::endPolygon(void)
+{
+  GLUWrapper()->gluTessEndContour(this->tessobj);
+  GLUWrapper()->gluTessEndPolygon(this->tessobj);
+
+  this->coords.truncate(0);
+}
+
+// *************************************************************************
+
+// Whether or not the SbGLUTessellator should be preferred over our
+// own Coin SbTesselator class, for tessellating faceset polygons.
+SbBool
+SbGLUTessellator::preferred(void)
+{
+  static int v = -1;
+  if (v == -1) {
+    const char * e = coin_getenv("COIN_PREFER_GLU_TESSELLATOR");
+    v = (e && (atoi(e) > 0)) ? 1 : 0;
+
+    if (v && !SbGLUTessellator::available()) {
+      SoDebugError::postWarning("SbGLUTessellator::preferred",
+                                "Preference setting "
+                                "COIN_PREFER_GLU_TESSELLATOR indicates that "
+                                "GLU tessellation is wanted, but GLU library "
+                                "detected to not have this capability.");
+      v = 0;
+    }
+  }
+  return v ? TRUE : FALSE;
+}
+
+// *************************************************************************

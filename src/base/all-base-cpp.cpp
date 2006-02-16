@@ -45,6 +45,7 @@
 #include "SbSphere.cpp"
 #include "SbString.cpp"
 #include "SbTesselator.cpp"
+#include "SbGLUTessellator.cpp"
 #include "SbTime.cpp"
 #include "SbVec2s.cpp"
 #include "SbVec2f.cpp"

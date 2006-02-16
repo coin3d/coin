@@ -22,16 +22,21 @@
 \**************************************************************************/
 
 #include "soshape_primdata.h"
-#include <Inventor/actions/SoAction.h>
+
+#include <string.h>
+
+#include <Inventor/SbTesselator.h>
 #include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/SbTesselator.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <string.h>
+#include "../base/SbGLUTessellator.h"
+
+// *************************************************************************
 
 soshape_primdata::soshape_primdata(void)
 {
@@ -42,11 +47,20 @@ soshape_primdata::soshape_primdata(void)
   this->arraySize = 4;
   this->vertsArray = new SoPrimitiveVertex[this->arraySize];
   this->pointDetails = new SoPointDetail[this->arraySize];
-  this->tess = new SbTesselator();
   this->faceDetail = NULL;
   this->lineDetail = NULL;
   this->matPerFace = FALSE;
   this->normPerFace = FALSE;
+
+  this->tess = NULL;
+  this->glutess = NULL;
+
+  if (SbGLUTessellator::preferred()) {
+    this->glutess = new SbGLUTessellator(soshape_primdata::tess_callback, this);
+  }
+  else {
+    this->tess = new SbTesselator(soshape_primdata::tess_callback, this);
+  }
 }
 
 soshape_primdata::~soshape_primdata()
@@ -54,7 +68,10 @@ soshape_primdata::~soshape_primdata()
   delete[] this->vertsArray;
   delete[] this->pointDetails;
   delete this->tess;
+  delete this->glutess;
 }
+
+// *************************************************************************
 
 void
 soshape_primdata::beginShape(SoShape * shapeptr, SoAction * actionptr,
@@ -103,12 +120,24 @@ soshape_primdata::endShape(void)
       }
     }
     else {
-      this->tess->setCallback(soshape_primdata::tess_callback, this);
-      this->tess->beginPolygon(TRUE);
-      for (int i = 0; i < counter; i++) {
-        this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
+      if (SbGLUTessellator::preferred()) {
+        this->glutess->beginPolygon();
+        for (int i = 0; i < counter; i++) {
+          this->glutess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
+        }
+        this->glutess->endPolygon();
       }
-      this->tess->endPolygon();
+      else {
+        // FIXME: the keepVertices==TRUE setting may not be necessary,
+        // according to pederb. (The flag causes us to get callbacks
+        // even on empty polygons -- probably not useful in Coin, as
+        // it was for Rational Reducer.)  20060216 mortene.
+        this->tess->beginPolygon(TRUE);
+        for (int i = 0; i < counter; i++) {
+          this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
+        }
+        this->tess->endPolygon();
+      }
     }
   }
 }

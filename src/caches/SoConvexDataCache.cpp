@@ -34,16 +34,21 @@
   API, but is a Coin extension.
 */
 
+// *************************************************************************
+
 #include <Inventor/caches/SoConvexDataCache.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/SbTesselator.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbitsp.h>
+
 #include <assert.h>
 
-#ifndef DOXYGEN_SKIP_THIS
+#include <Inventor/C/tidbitsp.h>
+#include "../base/SbGLUTessellator.h"
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbTesselator.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+
+// *************************************************************************
 
 class SoConvexDataCacheP {
 public:
@@ -53,7 +58,9 @@ public:
   SbList <int32_t> texIndices;
 };
 
-#endif // DOXYGEN_SKIP_THIS
+#define PRIVATE(obj) ((obj)->pimpl)
+
+// *************************************************************************
 
 /*!
   \enum SoConvexDataCache::Binding
@@ -62,7 +69,7 @@ public:
   Binding applies to normals, materials and texture coordinates.
 */
 
-#define PRIVATE(obj) ((obj)->pimpl)
+// *************************************************************************
 
 /*!
   Constructor with \a state being the current state.
@@ -260,7 +267,9 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   tessdata.firstvertex = TRUE;
 
   // create tessellator
-  SbTesselator tessellator(do_triangle, &tessdata);
+  SbGLUTessellator glutess(do_triangle, &tessdata);
+  SbTesselator tess(do_triangle, &tessdata);
+  const SbBool gt = SbGLUTessellator::preferred();
 
   // if PER_FACE binding, the binding must change to PER_FACE_INDEXED
   // if convexify data is used.
@@ -272,10 +281,12 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   if (texbind != NONE)
     tessdata.texIndex = &PRIVATE(this)->texIndices;
 
-  tessellator.beginPolygon(FALSE);
+  if (gt) { glutess.beginPolygon(); }
+  else { tess.beginPolygon(); }
   for (int i = 0; i < numv; i++) {
     if (vind[i] < 0) {
-      tessellator.endPolygon();
+      if (gt) { glutess.endPolygon(); }
+      else { tess.endPolygon(); }
       if (matbind == PER_VERTEX_INDEXED || 
           matbind == PER_FACE ||
           matbind == PER_FACE_INDEXED) matnr++;
@@ -284,7 +295,8 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
           normbind == PER_FACE_INDEXED) normnr++;
       if (texbind == PER_VERTEX_INDEXED) texnr++;
       if (i < numv - 1) { // if not last polygon
-        tessellator.beginPolygon(FALSE);
+        if (gt) { glutess.beginPolygon(); }
+        else { tess.beginPolygon(); }
       }
     }
     else {
@@ -307,13 +319,16 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
       SbVec3f v = coords->get3(vind[i]);
       if (!identity) matrix.multVecMatrix(v,v);
-      tessellator.addVertex(v,
-                            (void*)&tessdata.vertexInfo[i]);
+      if (gt) { glutess.addVertex(v, (void*)&tessdata.vertexInfo[i]); }
+      else { tess.addVertex(v, (void*)&tessdata.vertexInfo[i]); }
     }
   }
   
   // if last coordIndex != -1, terminate polygon
-  if (numv > 0 && vind[numv-1] != -1) tessellator.endPolygon();
+  if (numv > 0 && vind[numv-1] != -1) {
+    if (gt) { glutess.endPolygon(); }
+    else { tess.endPolygon(); }
+  }
 
   delete [] tessdata.vertexInfo;
 
@@ -354,7 +369,7 @@ vertex_tri(tVertexInfo *info, tTessData *tessdata)
 }
 
 //
-// handles callbacks from SbTesselator
+// handles callbacks from SbTesselator or SbGLUTessellator
 //
 static void
 do_triangle(void *v0, void *v1, void *v2, void *data)

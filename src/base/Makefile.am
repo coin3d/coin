@@ -1,13 +1,3 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
-
-if BUILD_WITH_THREADS
-# None yet.
-ThreadsDependentSources = 
-else
-ThreadsDependentSources =
-endif
-
 RegularSources = \
 	dict.c \
 	hash.c \
@@ -45,6 +35,7 @@ RegularSources = \
 	SbSphere.cpp \
 	SbString.cpp \
 	SbTesselator.cpp \
+	SbGLUTessellator.cpp \
 	SbTime.cpp \
 	SbVec2s.cpp \
 	SbVec2f.cpp \
@@ -57,58 +48,17 @@ RegularSources = \
 	SbViewVolume.cpp \
 	SbDPViewVolume.cpp \
 	SbViewportRegion.cpp \
-	SbXfBox3f.cpp \
-	$(ThreadsDependentSources)
+	SbXfBox3f.cpp
+
 LinkHackSources = \
 	all-base-c.c \
 	all-base-cpp.cpp
+
 PublicHeaders =
+
 PrivateHeaders = \
-	../../include/Inventor/C/base/memalloc.h \
-	../../include/Inventor/SbBSPTree.h \
-	../../include/Inventor/SbBox2f.h \
-	../../include/Inventor/SbBox2s.h \
-	../../include/Inventor/SbBox3s.h \
-	../../include/Inventor/SbBox3f.h \
-	../../include/Inventor/SbClip.h \
-	../../include/Inventor/SbColor.h \
-	../../include/Inventor/SbColor4f.h \
-	../../include/Inventor/SbCylinder.h \
-	../../include/Inventor/SbDict.h \
-	../../include/Inventor/SbDPLine.h \
-	../../include/Inventor/SbDPLinear.h \
-	../../include/Inventor/SbDPMatrix.h \
-	../../include/Inventor/SbDPPlane.h \
-	../../include/Inventor/SbDPRotation.h \
-	../../include/Inventor/SbHeap.h \
-	../../include/Inventor/SbImage.h \
-	../../include/Inventor/SbLine.h \
-	../../include/Inventor/SbLinear.h \
-	../../include/Inventor/SbMatrix.h \
-	../../include/Inventor/SbName.h \
-	../../include/Inventor/SbOctTree.h \
-	../../include/Inventor/SbPlane.h \
-	../../include/Inventor/SbRotation.h \
-	../../include/Inventor/SbSphere.h \
-	../../include/Inventor/SbString.h \
-	../../include/Inventor/SbTesselator.h \
-	../../include/Inventor/SbTime.h \
-	../../include/Inventor/SbVec2s.h \
-	../../include/Inventor/SbVec2f.h \
-	../../include/Inventor/SbVec2d.h \
-	../../include/Inventor/SbVec3s.h \
-	../../include/Inventor/SbVec3f.h \
-	../../include/Inventor/SbVec3d.h \
-	../../include/Inventor/SbVec4f.h \
-	../../include/Inventor/SbVec4d.h \
-	../../include/Inventor/SbViewVolume.h \
-	../../include/Inventor/SbDPViewVolume.h \
-	../../include/Inventor/SbViewportRegion.h \
-	../../include/Inventor/SbXfBox3f.h \
-	../../include/Inventor/C/base/hashp.h \
-	../../include/Inventor/C/base/heapp.h \
-	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h
+	SbGLUTessellator.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(base, base)
