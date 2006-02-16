@@ -24,3 +24,10 @@
     UPDATE 20050809 mortene: adding the capability of tessellating
     polygons with holes to SbTessellator would perhaps be a good task
     for a student. Suggested by pederb.
+
+    UPDATE 20060216 mortene: I've now added an abstraction layer on
+    top of the GLU tessellation functionality, which resembles our own
+    SbTesselator -- for convenience. See src/base/SbGLUTessellator.h.
+
+    Implementing support for the windingType field should be quite
+    straightforward now.
