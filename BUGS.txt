@@ -1711,11 +1711,11 @@ incremented during the copy, but never decremented :(
 
     Update 20051108 kyrah:
 
-        Part of this problem (offscreen rendering in Sc21) has 
-        been fixed by adding a callback interface for providing an 
-        external offscreen rendering implementation (see gl.c: 
-        cc_glglue_context_set_offscreen_cb_functions()). Note that 
-        the other issues mentioned above ("stacked" offscreen 
+        Part of this problem (offscreen rendering in Sc21) has
+        been fixed by adding a callback interface for providing an
+        external offscreen rendering implementation (see gl.c:
+        cc_glglue_context_set_offscreen_cb_functions()). Note that
+        the other issues mentioned above ("stacked" offscreen
         renderers, GLX-on-Windows) still remain to be resolved.
 
 =====================================================================
@@ -1805,8 +1805,8 @@ Text2 { string "test" }
     callstack backtrace at the point of the error is:
 
     Update 2005-02-01 pederb:
-    
-      I believe this bug has been fixed now. 
+
+      I believe this bug has been fixed now.
 
     UPDATE 20050520 mortene: nope, I just confirmed that the problem
     is still present. Tested with Valgrind 2.4.0.rc4, simply loading
@@ -1845,7 +1845,7 @@ Text2 { string "test" }
     #VRML V2.0 utf8
     PROTO MyProto [
      eventIn SFFloat i
-     exposedField MFFloat k [ 0 1 ] 
+     exposedField MFFloat k [ 0 1 ]
      exposedField MFRotation v []
     ] {
        OrientationInterpolator {
@@ -1854,9 +1854,9 @@ Text2 { string "test" }
           keyValue IS v
       }
     }
-    
+
     MyProto {
-      v [ 0 0 1 0, 0 0 -1 .17 ] 
+      v [ 0 0 1 0, 0 0 -1 .17 ]
     }
 
 =====================================================================
@@ -2018,7 +2018,7 @@ Cube {
 
     I don't know if SoViewportTileElement is a good idea though, since
     it will complicate the CROP rendering code in SoCamera quite a
-    bit. 
+    bit.
 
     Another idea: Is it possible to use the WindowSize-parameter in
     SbViewportRegion to specify the entire viewport? This must be done
@@ -2355,14 +2355,14 @@ Separator {
 
    ShapeHints {
       faceType UNKNOWN_FACE_TYPE
-      
+
    }
-   
+
    FaceSet {
-      vertexProperty 
+      vertexProperty
       VertexProperty {
          vertex [5616.34650  -94900.63137  0,
-          19459.61213 -83978.42044  0, 
+          19459.61213 -83978.42044  0,
           18951.60431 -69500.14309  0,
           34699.90509 -70643.16262  0,
           35080.91681 -85883.45559  0,
@@ -2378,10 +2378,10 @@ Separator {
           5616.34650  -94900.63137  0]
          orderedRGBA 0xac00ff
          materialBinding OVERALL
-         
+
       }
       numVertices 15
-      
+
    }
 }
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
@@ -2394,5 +2394,27 @@ Separator {
         COIN_PREFER_GLU_TESSELLATOR=1
 
     20060216 mortene.
+
+=====================================================================
+
+214 VMLScript JS support does not work at all with latest Spidermonkey?
+
+    We've had an external report about the VRMLScript node no working
+    at all with JS, not even the models/vrml97/script/simplest-possible.wrl
+    test case.
+
+    The errors output from the code is
+
+        Coin info in SoJavaScriptEngine::field2jsval(): no handler found for MFString
+        Coin info in SoJavaScriptEngine::field2jsval(): no handler found for SFBool
+        [and more of the same]
+
+    There may be bugs in the Script.cpp, JS_VRMLClasses.cpp or
+    SoJavaScriptEngine.cpp code which manifests itself with the latest
+    Spidermonkey release, and not with previous versions (I'm not able
+    to reproduce the errors on my system with the earlier version
+    1.5rc6a).
+
+    20060217 mortene.
 
 =====================================================================
