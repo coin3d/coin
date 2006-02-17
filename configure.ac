@@ -2230,6 +2230,13 @@ case "$host_os" in
       ac_coin_untested_platform=false
       ac_coin_not_sim_platform=false
     ;;
+    ia64)
+      case "$CXX" in
+      g++)
+        ac_coin_untested_platform=false
+        ;;
+      esac
+    ;;
     esac
     ;;
   cygwin*)
