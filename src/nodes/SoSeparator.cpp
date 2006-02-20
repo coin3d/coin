@@ -395,16 +395,20 @@ SoSeparator::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
 
-  const char * maxcachesstr = coin_getenv("IV_SEPARATOR_MAX_CACHES");
-  if (maxcachesstr) {
-    long int maxcaches = strtol(maxcachesstr, NULL, 10);
-    if ((maxcaches == LONG_MIN) || (maxcaches == LONG_MAX) || (maxcaches < 0)) {
-      SoDebugError::post("SoSeparator::commonConstructor",
-                         "Environment variable IV_SEPARATOR_MAX_CACHES "
-                         "has invalid setting \"%s\"", maxcachesstr);
-    }
-    else {
-      SoSeparator::setNumRenderCaches(maxcaches);
+  static long int maxcaches = -1;
+  if (maxcaches == -1) {
+    maxcaches = -2; // so we don't request the envvar later if it is not set
+    const char * maxcachesstr = coin_getenv("IV_SEPARATOR_MAX_CACHES");
+    if (maxcachesstr) {
+      maxcaches = strtol(maxcachesstr, NULL, 10);
+      if ((maxcaches == LONG_MIN) || (maxcaches == LONG_MAX) || (maxcaches < 0)) {
+        SoDebugError::post("SoSeparator::commonConstructor",
+                           "Environment variable IV_SEPARATOR_MAX_CACHES "
+                           "has invalid setting \"%s\"", maxcachesstr);
+      }
+      else {
+        SoSeparator::setNumRenderCaches(maxcaches);
+      }
     }
   }
 
