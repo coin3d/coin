@@ -196,6 +196,7 @@ SbBool
 cc_flww32_initialize(void)
 {
   OSVERSIONINFO osvi;
+  UINT previous;
 
   if (cc_font_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
@@ -221,6 +222,12 @@ cc_flww32_initialize(void)
     cc_win32_print_error("cc_flww32_initialize", "CreateDC()", GetLastError());
     return FALSE;
   }
+
+  /* Draw fonts on the baseline. (If we don't do this, we will for
+     instance get placement mismatches when rendering text in
+     different fonts on the same line.) */
+  previous = SetTextAlign(cc_flww32_globals.devctx, TA_BASELINE);
+  assert(previous != GDI_ERROR);
 
   cc_flww32_globals.font2kerninghash = cc_dict_construct(17, 0.75);
   cc_flww32_globals.fontsizehash = cc_dict_construct(17, 0.75f);
@@ -850,6 +857,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   void * tmp;
   unsigned int size;
   uintptr_t cast_aid;
+  UINT previous;
 
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
@@ -892,6 +900,11 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
                          "Cannot vectorize font.", GetLastError());
     return NULL;
   }
+
+  /* About this: see comment on SetTextAlign() call in
+     cc_flww32_initialize(). */
+  previous = SetTextAlign(memdc, TA_BASELINE);
+  assert(previous != GDI_ERROR);
 
   screendc = GetDC(NULL);
   if (screendc == NULL) {
@@ -1170,7 +1183,8 @@ flww32_buildVertexList(struct cc_font_vector_glyph * newglyph, int size)
     /* Must flip and translate glyph due to the W32 coord system
        which has a y-axis pointing downwards */
     newglyph->vertices[i*2 + 0] = coord[0] / size;
-    newglyph->vertices[i*2 + 1] = (-coord[1] / size) + 1;
+    newglyph->vertices[i*2 + 1] = (-coord[1]) / size;
+
     free(coord);
   }
 
