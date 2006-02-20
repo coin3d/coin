@@ -315,7 +315,10 @@ typedef JSBool (* JS_DefineProperty_t)(JSContext *, JSObject *, const char *, js
 typedef JSScript * (* JS_CompileFile_t)(JSContext *, JSObject *, const char *);
 typedef JSBool (* JS_ValueToObject_t)(JSContext *, jsval, JSObject **);
 typedef JSBool (* JS_ExecuteScript_t)(JSContext *, JSObject *, JSScript *, jsval *);
+typedef JSBool (* JS_IsExceptionPending_t)(JSContext *);
 typedef JSBool (* JS_GetPendingException_t)(JSContext *, jsval *);
+typedef void (* JS_SetPendingException_t)(JSContext *, jsval);
+typedef void (* JS_ClearPendingException_t)(JSContext *);
 typedef double * (* JS_NewDouble_t)(JSContext *, double);
 typedef JSBool (* JS_CallFunction_t)(JSContext *, JSObject *, JSFunction *, uintN, jsval *, jsval *);
 typedef JSFunction * (* JS_ValueToFunction_t)(JSContext *, jsval);
@@ -410,7 +413,10 @@ typedef struct {
   JS_CompileFile_t JS_CompileFile;
   JS_ValueToObject_t JS_ValueToObject;
   JS_ExecuteScript_t JS_ExecuteScript;
+  JS_IsExceptionPending_t JS_IsExceptionPending;
   JS_GetPendingException_t JS_GetPendingException;
+  JS_SetPendingException_t JS_SetPendingException;
+  JS_ClearPendingException_t JS_ClearPendingException;
   JS_NewDouble_t JS_NewDouble;
   JS_CallFunction_t JS_CallFunction;
   JS_ValueToFunction_t JS_ValueToFunction;

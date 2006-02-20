@@ -275,7 +275,10 @@ spidermonkey(void)
   REGISTER_FUNC(JS_CompileFile, JS_CompileFile_t);
   REGISTER_FUNC(JS_ValueToObject, JS_ValueToObject_t);
   REGISTER_FUNC(JS_ExecuteScript, JS_ExecuteScript_t);
+  REGISTER_FUNC(JS_IsExceptionPending, JS_IsExceptionPending_t);
   REGISTER_FUNC(JS_GetPendingException, JS_GetPendingException_t);
+  REGISTER_FUNC(JS_SetPendingException, JS_SetPendingException_t);
+  REGISTER_FUNC(JS_ClearPendingException, JS_ClearPendingException_t);
   REGISTER_FUNC(JS_NewDouble, JS_NewDouble_t);
   REGISTER_FUNC(JS_CallFunction, JS_CallFunction_t);
   REGISTER_FUNC(JS_ValueToFunction, JS_ValueToFunction_t);
