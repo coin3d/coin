@@ -198,6 +198,12 @@ cc_flww32_initialize(void)
   OSVERSIONINFO osvi;
   UINT previous;
 
+  cc_flww32_globals.devctx = CreateDC("DISPLAY", NULL, NULL, NULL);
+  if (cc_flww32_globals.devctx == NULL) {
+    cc_win32_print_error("cc_flww32_initialize", "CreateDC()", GetLastError());
+    return FALSE;
+  }
+
   if (cc_font_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
 
@@ -207,20 +213,11 @@ cc_flww32_initialize(void)
     logfont.lfFaceName[0] = '\0';
     logfont.lfPitchAndFamily = 0;
 
-    /* FIXME: for some peculiar reason, this has stopped working --
-       font_enum_proc() is never called. It used to work..?
-       Investigate what is going on. 20030610 mortene. */
     (void)EnumFontFamiliesEx(cc_flww32_globals.devctx,
                              (LPLOGFONT)&logfont,
                              (FONTENUMPROC)font_enum_proc,
                              0, /* user data for callback */
                              0); /* reserved, must be zero */
-  }
-
-  cc_flww32_globals.devctx = CreateDC("DISPLAY", NULL, NULL, NULL);
-  if (cc_flww32_globals.devctx == NULL) {
-    cc_win32_print_error("cc_flww32_initialize", "CreateDC()", GetLastError());
-    return FALSE;
   }
 
   /* Draw fonts on the baseline. (If we don't do this, we will for
