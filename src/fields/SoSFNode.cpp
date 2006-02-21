@@ -182,7 +182,7 @@ SoSFNode::readValue(SoInput * in)
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
 
-  if (!baseptr) {
+  if (!baseptr && !in->isBinary()) {
     if (in->eof()) SoReadError::post(in, "Premature end of file");
     else SoReadError::post(in, "Unable to read value for SoSFNode");
     return FALSE;
