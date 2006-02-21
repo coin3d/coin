@@ -50,8 +50,6 @@ COIN_DLL_API void coin_unsetenv(const char *);
 
 COIN_DLL_API int coin_strncasecmp(const char *, const char *, int);
 
-/* int coin_host_get_endianness(void); - internal, declared static */
-
 COIN_DLL_API uint16_t coin_hton_uint16(uint16_t value);
 COIN_DLL_API uint16_t coin_ntoh_uint16(uint16_t value);
 COIN_DLL_API uint32_t coin_hton_uint32(uint32_t value);
