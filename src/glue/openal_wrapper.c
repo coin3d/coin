@@ -189,17 +189,19 @@ openal_wrapper(void)
     if (oal->available) { /* debugging */
       const unsigned char * str;
       const char * debug = coin_getenv("COIN_DEBUG_AUDIO");
-      cc_debugerror_postinfo("openal_wrapper", "OpenAL using %s linking.", 
-                             oal->runtime ? "run-time" : "build-time");
-
-      str = oal->alGetString(AL_VENDOR);
-      cc_debugerror_postinfo("openal_wrapper", "AL_VENDOR=='%s'", str);
-      str = oal->alGetString(AL_VERSION);
-      cc_debugerror_postinfo("openal_wrapper", "AL_VERSION=='%s'", str);
-      str = oal->alGetString(AL_RENDERER);
-      cc_debugerror_postinfo("openal_wrapper", "AL_RENDERER=='%s'", str);
-      str = oal->alGetString(AL_EXTENSIONS);
-      cc_debugerror_postinfo("openal_wrapper", "AL_EXTENSIONS=='%s'", str);
+      if (debug && atoi(debug)) {
+        cc_debugerror_postinfo("openal_wrapper", "OpenAL using %s linking.", 
+                               oal->runtime ? "run-time" : "build-time");
+        
+        str = oal->alGetString(AL_VENDOR);
+        cc_debugerror_postinfo("openal_wrapper", "AL_VENDOR=='%s'", str);
+        str = oal->alGetString(AL_VERSION);
+        cc_debugerror_postinfo("openal_wrapper", "AL_VERSION=='%s'", str);
+        str = oal->alGetString(AL_RENDERER);
+        cc_debugerror_postinfo("openal_wrapper", "AL_RENDERER=='%s'", str);
+        str = oal->alGetString(AL_EXTENSIONS);
+        cc_debugerror_postinfo("openal_wrapper", "AL_EXTENSIONS=='%s'", str);
+      }
     }
 
     /* Do this late, so we can detect recursive calls to this function. */
