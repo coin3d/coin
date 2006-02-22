@@ -91,9 +91,10 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual SoChildList * getChildren(void) const;
 
-private:
+protected:
   virtual ~SoVRMLInline();
 
+private:
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual void copyContents(const SoFieldContainer * from, SbBool copyconn);
