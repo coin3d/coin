@@ -163,7 +163,13 @@ static SoNode * tovrml2_new_node(SoNode * newnode, const SoNode * oldnode)
   return newnode;
 }
 
-#define NEW_NODE(_type_, _oldnode_) (_type_*) tovrml2_new_node(new _type_, _oldnode_)
+// We use SoType::createInstance() instead of simply new'ing to make
+// an instance, as this makes SoType::overrideType() influence the
+// conversion process.
+
+#define NEW_NODE(_type_, _oldnode_) \
+        (_type_*) tovrml2_new_node((SoNode *)_type_::getClassTypeId().createInstance(), \
+                                   _oldnode_)
 
 // *************************************************************************
 
