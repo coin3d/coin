@@ -806,9 +806,11 @@ const char * coin_glerror_string(GLenum errorcode);
 
 /* ********************************************************************** */
 
-/* Exported internally to gl_glx.c and gl_wgl.c. */
+/* Exported internally to gl_glx.c / gl_wgl.c / gl_agl.c. */
 int coin_glglue_debug(void);
 int coin_glglue_extension_available(const char * extensions, const char * ext);
+
+int coin_glglue_stencil_bits_hack(void);
 
 /* ********************************************************************** */
 

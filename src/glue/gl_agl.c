@@ -243,6 +243,36 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
     AGL_NONE
   };
 
+  /* FIXME: the following is a hack to get around a problem which
+     really demands more effort to be solved properly.
+
+     The problem is that there is no way in the API of the
+     SoOffscreenRenderer class to specify what particular attributes
+     to request. This most often manifests itself as a problem for app
+     programmers in that they have made some kind of extension node
+     which uses the OpenGL stencil buffer. If no stencil buffer
+     happens to be part of the GL context format for the offscreen
+     renderer, these will not work properly. At the same time, we
+     don't want to default to requesting a stencil buffer, as that
+     takes a non-trivial amount of extra memory resources on the gfx
+     card.
+
+     So until we have implemented the proper solution for making it
+     possible to pass in a detailed specification of which attributes
+     to request from offscreen GL contexts, we provide this temporary
+     work-around: the app programmer can set an envvar with a value
+     specifying the number of stencil buffer bits he/she wants.
+
+     20060223 mortene.
+  */
+  const int v = coin_glglue_stencil_bits_hack();
+  if (v != -1) {
+    size_t i;
+    for (i = 0; i < (sizeof(attrib) / sizeof(attrib[0]) / 2); i += 2) {
+      if (attrib[i] == AGL_STENCIL_SIZE) { attrib[i+1] = v; }
+    }
+  }
+
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("aglglue_context_create_software",
                            "Creating software buffer.");
