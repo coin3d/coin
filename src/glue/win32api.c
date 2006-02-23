@@ -202,6 +202,44 @@ coin_LocalFree(HLOCAL hMem) /* handle to local memory object */
 
 /* ********************************************************************** */
 
+static HGDIOBJ WINAPI
+coin_SelectObject(HDC hdc, HGDIOBJ hgdiobj)
+{
+  HGDIOBJ previous;
+  DWORD d = GetObjectType(hgdiobj);
+  if (d == 0) {
+    cc_win32_print_error("coin_SelectObject", "GetObjectType()", GetLastError());
+    assert(FALSE && "unhandled error");
+  }
+
+  previous = SelectObject(hdc, hgdiobj);
+  if (((d == OBJ_REGION) && (previous == HGDI_ERROR)) ||
+      ((d == OBJ_REGION) && (previous == NULL))) {
+    cc_win32_print_error("coin_SelectObject", "SelectObject()", GetLastError());
+    
+    /* not sure about this one, suddenly start assert'ing on
+       SelectObject() failures may be too much of a shock for
+       exisiting code... but eventually, it should go in:     (mortene) */
+    /* assert(FALSE && "unhandled error"); */
+  }
+  return previous;
+}
+
+/* ********************************************************************** */
+
+static int WINAPI
+coin_GetObject(HGDIOBJ hgdiobj, int cbBuffer, LPVOID lpvObject)
+{
+  int ret = GetObject(hgdiobj, cbBuffer, lpvObject);
+  if (ret == 0) {
+    cc_win32_print_error("coin_GetObject", "GetObject()", GetLastError());
+    assert(FALSE && "unhandled error");
+  }
+  return ret;
+}
+
+/* ********************************************************************** */
+
 /* singleton access to the structure, so we can initialize it at first
    use */
 const struct cc_win32_api *
@@ -217,6 +255,8 @@ cc_win32(void)
     instance.GetTextFace = coin_GetTextFace;
     instance.LocalFree = coin_LocalFree;
     instance.GetVersionEx = coin_GetVersionEx;
+    instance.SelectObject = coin_SelectObject;
+    instance.GetObject = coin_GetObject;
   }
 
   return &instance;
