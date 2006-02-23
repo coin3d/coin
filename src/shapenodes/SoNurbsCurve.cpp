@@ -65,7 +65,7 @@
   # debug: show all the control points
   BaseColor { rgb 1 1 0 }
   DrawStyle { pointSize 3 }
-  PointSet { numPoints 9 }
+  PointSet { numPoints 7 }
   \endcode
 
   <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbscurve-circle.png"></center>
