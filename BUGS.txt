@@ -1270,6 +1270,12 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     by TGS, with among others the SoGLGraphicConfigTemplate class.
     Consider using the same design and API.
 
+    UPDATE 20060224 kyrah: mortene has implemented a hack to allow
+    requesting a stencil buffer via the environment variable
+    COIN_OFFSCREEN_STENCIL_BITS. Just noting this here so we don't
+    forget to get rid of this workaround when this issue is finally
+    resolved.
+
 =====================================================================
 
 108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
