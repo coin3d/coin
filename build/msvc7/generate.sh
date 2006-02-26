@@ -1,6 +1,8 @@
 #! /bin/sh
 #
-# This script generates the Visual Studio 6 build files for Windows.
+# This script generates the Visual Studio 6 build files for Windows, which
+# should then be upgraded to Visual Studio 7 build files through a manual
+# process.
 #
 # 20041214 larsa
 

@@ -859,6 +859,19 @@ SOURCE=..\..\src\base\SbTesselator.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\base\SbGLUTessellator.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\base\SbTime.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
@@ -4526,6 +4539,19 @@ SOURCE=..\..\src\fonts\freetype.c
 # Begin Source File
 
 SOURCE=..\..\src\fonts\fontspec.c
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fonts"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fonts"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fonts\glyph.c
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9570,6 +9596,19 @@ SOURCE=..\..\src\vrml97\VisibilitySensor.cpp
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\WorldInfo.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\vrml97"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\vrml97"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\vrml97\JS_VRMLClasses.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"

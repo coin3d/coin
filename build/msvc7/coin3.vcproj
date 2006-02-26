@@ -1089,50 +1089,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\common.c">
-				<FileConfiguration
-					Name="LIB (Debug)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						ObjectFile=".\StaticDebug\threads/"
-						ProgramDataBaseFileName="StaticDebug\threads/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL (Release)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile=".\Release\threads/"
-						ProgramDataBaseFileName="Release\threads/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="LIB (Release)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						ObjectFile=".\StaticRelease\threads/"
-						ProgramDataBaseFileName="StaticRelease\threads/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL (Debug)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						ObjectFile=".\Debug\threads/"
-						ProgramDataBaseFileName="Debug\threads/"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\fonts\common.c">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -1174,6 +1130,50 @@
 						BasicRuntimeChecks="3"
 						ObjectFile=".\Debug\fonts/"
 						ProgramDataBaseFileName="Debug\fonts/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\threads\common.c">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\threads/"
+						ProgramDataBaseFileName="StaticDebug\threads/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\threads/"
+						ProgramDataBaseFileName="Release\threads/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\threads/"
+						ProgramDataBaseFileName="StaticRelease\threads/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\threads/"
+						ProgramDataBaseFileName="Debug\threads/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -2717,6 +2717,50 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\fonts\glyph.c">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\fonts/"
+						ProgramDataBaseFileName="StaticDebug\fonts/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\fonts/"
+						ProgramDataBaseFileName="Release\fonts/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\fonts/"
+						ProgramDataBaseFileName="StaticRelease\fonts/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\fonts/"
+						ProgramDataBaseFileName="Debug\fonts/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\fonts\glyph2d.c">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -3378,6 +3422,50 @@
 			</File>
 			<File
 				RelativePath="..\..\src\vrml97\Interpolator.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\vrml97/"
+						ProgramDataBaseFileName="StaticDebug\vrml97/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\vrml97/"
+						ProgramDataBaseFileName="Release\vrml97/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\vrml97/"
+						ProgramDataBaseFileName="StaticRelease\vrml97/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\vrml97/"
+						ProgramDataBaseFileName="Debug\vrml97/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\vrml97\JS_VRMLClasses.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
 					<Tool
@@ -5358,6 +5446,50 @@
 			</File>
 			<File
 				RelativePath="..\..\src\base\SbDPViewVolume.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\base/"
+						ProgramDataBaseFileName="StaticDebug\base/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\base/"
+						ProgramDataBaseFileName="Release\base/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\base/"
+						ProgramDataBaseFileName="StaticRelease\base/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\base/"
+						ProgramDataBaseFileName="Debug\base/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\base\SbGLUTessellator.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
 					<Tool
