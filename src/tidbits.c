@@ -1283,8 +1283,11 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 }
 
 /*
-  Public version of the coin_atexit function which always sets the priority 
-  to -2.
+  Public version of the coin_atexit function which always sets the
+  priority such that external clean-up functions are run \e first.
+
+  (Which is of course important because they may have dependencies
+  into Coin functionality.)
 
   Note that the registered atexit functions will only be called when
   SoDB::finish() is invoked from the application code.
@@ -1292,7 +1295,7 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 void
 cc_coin_atexit(coin_atexit_f * f)
 {
-  coin_atexit(f, -2);
+  coin_atexit(f, CC_ATEXIT_EXTERNAL);
 }
 
 
