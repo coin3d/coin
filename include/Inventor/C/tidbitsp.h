@@ -61,6 +61,29 @@ void coin_atexit_func(const char * name, coin_atexit_f * fp, int32_t priority);
 void coin_atexit_cleanup(void);
 SbBool coin_is_exiting(void);
 
+/* this enum contains all values that are available for use for the
+   third argument to coin_atexit_func() -- no other values than these
+   should be used! */
+enum coin_atexit_priorities {
+  /* generic: */
+
+  CC_ATEXIT_NORMAL = 0,
+
+
+  /* specific cases: */
+
+  CC_ATEXIT_EXTERNAL = 2147483647, /* clean-ups of client code should
+                                      be done before any clean-up code
+                                      within Coin happens, so this is
+                                      (2^31 - 1) */
+
+  CC_ATEXIT_DYNLIBS = -2147483647 /* dynamically loaded libraries
+                                     should be the last to go, as
+                                     other code in Coin will be
+                                     dependent on functionality in
+                                     these in its own clean-up code */
+};
+
 /* ********************************************************************** */
 
 /*
