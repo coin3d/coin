@@ -90,9 +90,15 @@ void CoinStaticObjectInDLL::deactivateMutex(void) { assert(FALSE); }
 // Coin library is loaded for the same process image -- and we'll
 // throw up the error message box.
 
+#if 1 // enable / disable the check -- provides a quick workaround in
+      // case someone runs into trouble with it.
 static CoinStaticObjectInDLL dllobject;
+#endif // enable / disable
 
 // *************************************************************************
+
+// Must use the C library getenv() calls below, not Coin's
+// coin_getenv(), since this code is executed before SoDB::init().
 
 static SbBool
 debug(void)
@@ -105,10 +111,23 @@ debug(void)
   return dbg;
 }
 
+static SbBool
+runtime_disabled(void)
+{
+  static int val = -1;
+  if (val == -1) {
+    const char * env = getenv("COIN_INSTANCEMUTEX_DISABLE");
+    val = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return val;
+}
+
 // *************************************************************************
 
 CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
 {
+  if (runtime_disabled()) { return; }
+
   // Can't use SoDebugError, as nothing has been initialized yet.
   if (debug()) {
     printf("%p %f CoinStaticObjectInDLL constructor\n",
@@ -154,6 +173,8 @@ CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
 
 CoinStaticObjectInDLL::~CoinStaticObjectInDLL()
 {
+  if (runtime_disabled()) { return; }
+
   if (debug()) {
     printf("%p %f CoinStaticObjectInDLL destructor\n",
            this, SbTime::getTimeOfDay().getValue());
@@ -177,6 +198,8 @@ CoinStaticObjectInDLL::~CoinStaticObjectInDLL()
 void
 CoinStaticObjectInDLL::init(void)
 {
+  if (runtime_disabled()) { return; }
+
   if (debug()) {
     printf("%p %f CoinStaticObjectInDLL::init()\n",
            CoinStaticObjectInDLL::singleton,
@@ -194,7 +217,11 @@ CoinStaticObjectInDLL::init(void)
   // sometimes trigger the instantiation of two CoinStaticObjectInDLL
   // objects, which made the above check hit.)
 
-  CoinStaticObjectInDLL::deactivateMutex();
+  if (CoinStaticObjectInDLL::singleton) { // in case the static object
+                                          // has been disabled in the
+                                          // code
+    CoinStaticObjectInDLL::deactivateMutex();
+  }
 }
 
 // Returns TRUE if mutex was created ok, or FALSE if the mutex was
