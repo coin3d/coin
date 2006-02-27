@@ -156,7 +156,7 @@ fcglue_init(void)
   if (!fontconfig_instance && !fontconfig_failed_to_load) {
     /* First invocation, do initializations. */
     cc_fcglue_t * fi = (cc_fcglue_t *)malloc(sizeof(cc_fcglue_t));
-    (void)coin_atexit((coin_atexit_f *)fcglue_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)fcglue_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* The common case is that fontconfig is either available from the
        linking process or we're successfully going to link it in. */
@@ -335,7 +335,7 @@ ftglue_init(void)
   if (!freetype_instance && !freetype_failed_to_load) {
     /* First invocation, do initializations. */
     cc_ftglue_t * fi = (cc_ftglue_t *)malloc(sizeof(cc_ftglue_t));
-    (void)coin_atexit((coin_atexit_f *)ftglue_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)ftglue_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* The common case is that FreeType is either available from the
        linking process or we're successfully going to link it in. */

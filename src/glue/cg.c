@@ -191,7 +191,7 @@ cgglue_init(void)
   if (!cg_instance && !cg_failed_to_load) {
     /* First invocation, do initializations. */
     cc_cgglue_t * zi = (cc_cgglue_t *)malloc(sizeof(cc_cgglue_t));
-    (void)coin_atexit((coin_atexit_f *)cgglue_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)cgglue_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* The common case is that the library is either available from
        the linking process or we're successfully going to link it

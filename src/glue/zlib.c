@@ -154,7 +154,7 @@ zlibglue_init(void)
   if (!zlib_instance && !zlib_failed_to_load) {
     /* First invocation, do initializations. */
     cc_zlibglue_t * zi = (cc_zlibglue_t *)malloc(sizeof(cc_zlibglue_t));
-    (void)coin_atexit((coin_atexit_f *)zlibglue_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)zlibglue_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* The common case is that zlib is either available from the
        linking process or we're successfully going to link it in. */

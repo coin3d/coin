@@ -1988,7 +1988,7 @@ cc_glglue_instance(int contextid)
 
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_dict_construct(16, 0.75f);
-    coin_atexit((coin_atexit_f *)glglue_cleanup, 0);
+    coin_atexit((coin_atexit_f *)glglue_cleanup, CC_ATEXIT_NORMAL);
   }
 
   found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
@@ -4697,7 +4697,7 @@ coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
 {
   if (gl_instance_created_cblist == NULL) {
     gl_instance_created_cblist = cc_list_construct();
-    coin_atexit((coin_atexit_f *)cleanup_instance_created_list, 0);
+    coin_atexit((coin_atexit_f *)cleanup_instance_created_list, CC_ATEXIT_NORMAL);
   }
   cc_list_append(gl_instance_created_cblist, (void*)cb);
   cc_list_append(gl_instance_created_cblist, (void*)closure);

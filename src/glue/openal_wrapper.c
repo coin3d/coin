@@ -90,7 +90,7 @@ openal_wrapper(void)
     openal_wrapper_t * oal = (openal_wrapper_t *)malloc(sizeof(openal_wrapper_t));
     /* FIXME: Verify that atexit works when Coin is used in an ActiveX
        dll also. 2003-01-27 thammer. */
-    coin_atexit((coin_atexit_f *)openal_wrapper_cleanup, 0);
+    coin_atexit((coin_atexit_f *)openal_wrapper_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* Detect recursive calls. */
     {

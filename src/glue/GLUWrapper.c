@@ -343,7 +343,7 @@ GLUWrapper(void)
   /* First invocation, do initializations. */
   GLU_instance = gi = (GLUWrapper_t *)malloc(sizeof(GLUWrapper_t));
   /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
-  (void)coin_atexit((coin_atexit_f*) GLUWrapper_cleanup, 0);
+  (void)coin_atexit((coin_atexit_f*) GLUWrapper_cleanup, CC_ATEXIT_DYNLIBS);
 
   gi->versionMatchesAtLeast = GLUWrapper_versionMatchesAtLeast;
 

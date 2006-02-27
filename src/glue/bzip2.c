@@ -115,7 +115,7 @@ bzglue_init(void)
   if (!bzlib_instance && !bzlib_failed_to_load) {
     /* First invocation, do initializations. */
     cc_bzglue_t * bi = (cc_bzglue_t *)malloc(sizeof(cc_bzglue_t));
-    (void)coin_atexit((coin_atexit_f *)bzglue_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)bzglue_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* The common case is that libbz2 is either available from the
        linking process or we're successfully going to link it in. */

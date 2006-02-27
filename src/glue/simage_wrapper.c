@@ -253,7 +253,7 @@ simage_wrapper(void)
   if (!simage_instance && !simage_failed_to_load) {
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
-    (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup, 0);
+    (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup, CC_ATEXIT_DYNLIBS);
 
     /* Detect recursive calls. */
     assert(simage_is_initializing == 0);

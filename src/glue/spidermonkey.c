@@ -121,7 +121,7 @@ spidermonkey(void)
   /* First invocation, do initializations. */
   spidermonkey_instance = sm = (SpiderMonkey_t *)malloc(sizeof(SpiderMonkey_t));
   /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
-  (void)coin_atexit((coin_atexit_f*) spidermonkey_cleanup, 0);
+  (void)coin_atexit((coin_atexit_f*) spidermonkey_cleanup, CC_ATEXIT_DYNLIBS);
 
   /* Be optimistic. */
   sm->available = 1;
