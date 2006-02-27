@@ -51,9 +51,9 @@ public:
   static SbBool preferred(void);
 
 private:
-  static void cb_begin(GLenum primitivetype, void * x);
-  static void cb_vertex(void * vertex_data, void * x);
-  static void cb_error(GLenum err, void * x);
+  static void APIENTRY cb_begin(GLenum primitivetype, void * x);
+  static void APIENTRY cb_vertex(void * vertex_data, void * x);
+  static void APIENTRY cb_error(GLenum err, void * x);
 
   void (* callback)(void *, void *, void *, void *);
   void * cbdata;

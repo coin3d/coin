@@ -62,7 +62,7 @@ SbGLUTessellator::~SbGLUTessellator()
 
 // *************************************************************************
 
-void
+void APIENTRY
 SbGLUTessellator::cb_begin(GLenum mode, void * x)
 {
   SbGLUTessellator * t = (SbGLUTessellator *)x;
@@ -72,7 +72,7 @@ SbGLUTessellator::cb_begin(GLenum mode, void * x)
   t->stripflipflop = FALSE;
 }
 
-void
+void APIENTRY
 SbGLUTessellator::cb_vertex(void * vertex_data, void * x)
 {
   SbGLUTessellator * t = (SbGLUTessellator *)x;
@@ -118,7 +118,7 @@ SbGLUTessellator::cb_vertex(void * vertex_data, void * x)
   t->vertexidx++;
 }
 
-void
+void APIENTRY
 SbGLUTessellator::cb_error(GLenum err, void *)
 {
   // These would be user errrors on our side, so catch them:
