@@ -38,12 +38,14 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/C/tidbits.h>
 #include "../io/SoWriterefCounter.h"
+#include "../io/SoInputP.h"
 
 // *************************************************************************
 
@@ -128,6 +130,13 @@ SoUnknownNode::atexit_cleanup(void)
 SbBool
 SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 {
+  if (SoInputP::debug()) {
+    SoDebugError::postInfo("SoUnknownNode::readInstance",
+                           "Reading extension node ``%s'' as SoUnknownNode.",
+                           PRIVATE(this)->classname.getString());
+  }
+
+
   SbBool notbuiltin;
   // The "error on unknown field" is FALSE, in case we are a group
   // node with children specified in the file.

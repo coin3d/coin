@@ -1078,6 +1078,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
   }
 
   GLUWrapper()->gluTessEndPolygon(flwft_tessellator.tessellator_object);
+  /* FIXME: why not reuse the GLU tessellation object? 20060215 mortene. */
   GLUWrapper()->gluDeleteTess(flwft_tessellator.tessellator_object);
 
   cc_list_append(flwft_tessellator.faceindexlist, (void *) -1);
@@ -1392,6 +1393,9 @@ flwft_endCallback(void)
 static void
 flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
+  /* FIXME: I believe this callback may not actually be necessary.
+     20060227 mortene. */
+
   int * ret;
   float * point;
 

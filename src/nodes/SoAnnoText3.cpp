@@ -55,6 +55,20 @@
 #error This must either be implemented properly or taken out before the next official release.
 #endif // COIN_BETA_VERSION
 
+// FIXME: for the implementation, it may be possible to grab some of
+// the code from the SoAnnotation node? Seem related to the
+// functionality of this one.
+//
+// Also, an implementation of this node *must* first trigger a
+// refactoring process, where we clean up a lot of the code now
+// _duplicated_ between SoText3, SoAsciiText, SoVRMLText.
+//
+// I.e. separate out the common parts, design a decent internal
+// interface on it, and remove all the ugly copy'n'paste jobs within
+// the text-node implementations.
+//
+// 20060224 mortene.
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoAnnoText3);

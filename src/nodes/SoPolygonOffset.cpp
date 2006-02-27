@@ -67,8 +67,21 @@
 
   \endverbatim
 
+  One word of notice with regard to the above quote from the OpenGL
+  documentation: it doesn't really make sense to set "factor" and
+  "units" to values with different signs, i.e. "factor" to a negative
+  value and "units" to a positive value, or vice versa.
 
-  Below is a simple usage example:
+  The pixels would then be "pushed back" in z-order by one part of the
+  equation, but at the same time be "pushed forward" by the other part
+  of the equation. This would most likely give very inconsistent
+  results, but which may at first look ok.
+
+  We mention this potential for making a mistake, as it seems to be a
+  quite common error.
+
+
+  Below is a simple, correct usage example:
 
   \verbatim
   #Inventor V2.1 ascii

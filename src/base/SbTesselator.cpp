@@ -76,10 +76,17 @@
 
   This class is not part of the original Open Inventor API.
 
-  (Another option for tessellating polygons is the tessellator of the
+
+  Another option for tessellating polygons is the tessellator of the
   GLU library. It has some features not part of SbTesselator (like
-  handling hulls), but the GLU library is known to have bugs in various
-  implementations and doesn't do Delaunay triangulation.)
+  handling hulls), but the GLU library is known to have bugs in
+  various implementations and doesn't do Delaunay triangulation. If
+  you however still prefer to use the GLU tessellator instead of this
+  one, that can be forced by setting an environment variable:
+
+  \code
+  (void) coin_setenv("COIN_PREFER_GLU_TESSELLATOR", "1", 1);
+  \endcode
 */
 
 
