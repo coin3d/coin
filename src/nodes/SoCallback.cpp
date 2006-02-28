@@ -107,6 +107,38 @@ SoCallback::initClass(void)
   }
 
   \endcode
+
+  Please note that SoCallback nodes under a Separator might be
+  included in a cache. Cached nodes are not traversed, and you'll not
+  receive any callbacks. If you want to make sure that your callback
+  is called every time the scene graph is rendered, you must
+  invalidate the render cache in your callback:
+
+  \code
+  
+  void mycallback(void * userdata, SoAction * action)
+  {
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+      SoCacheElement::invalidate(action->getState());
+    }
+  }
+
+  \endcode
+
+  If you want to invalidate all caches (for instance also the bounding
+  box cache), you can do this in your callback:
+
+  \code
+  
+  void mycallback(void * userdata, SoAction * action)
+  {
+    SoState * state = action->getState();
+    if (state->isElementEnabled(SoCacheElement::getClassStackIndex())) {
+      SoCacheElement::invalidate(state);
+    }
+  }
+
+  \endcode
 */
 void
 SoCallback::setCallback(SoCallbackCB * function, void * userdata)
