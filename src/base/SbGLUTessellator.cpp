@@ -126,6 +126,22 @@ SbGLUTessellator::cb_error(GLenum err, void *)
   assert(err != GLU_TESS_MISSING_END_POLYGON);
   assert(err != GLU_TESS_MISSING_BEGIN_CONTOUR);
   assert(err != GLU_TESS_MISSING_END_CONTOUR);
+  
+  // We will get this error if there are polygons with intersecting
+  // edges (a "bow-tie" polygon, for instance), but this may be hard
+  // to avoid for the app programmer, so we have made it possible to
+  // silence this error messages by an envvar (according to the GLU
+  // docs, the tessellator will be ok, it just ignored those polygons
+  // and generate no output):
+  if (err == GLU_TESS_NEED_COMBINE_CALLBACK) {
+    static int v = -1;
+    if (v == -1) {
+      const char * env = coin_getenv("COIN_GLU_SILENCE_TESS_COMBINE_WARNING");
+      v = env && (atoi(env) > 0);
+    }
+    // requested to be silenced
+    if (v) { return; }
+  }
 
   SoDebugError::post("SbGLUTessellator::cb_error",
                      "GLU library tessellation error: '%s'",

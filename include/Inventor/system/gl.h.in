@@ -1687,6 +1687,9 @@
 #ifndef GLU_TESS_MISSING_END_CONTOUR
 #define GLU_TESS_MISSING_END_CONTOUR 100154
 #endif /* ! GLU_TESS_MISSING_END_CONTOUR */
+#ifndef GLU_TESS_NEED_COMBINE_CALLBACK
+#define GLU_TESS_NEED_COMBINE_CALLBACK 100156
+#endif /* ! GLU_TESS_NEED_COMBINE_CALLBACK */
 
 /*** GLU enums, end ***************************************************/
 /**********************************************************************/
