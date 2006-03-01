@@ -1948,9 +1948,7 @@ SoInput::getDirectories(void)
 void
 SoInput::init(void)
 {
-  // Debugging for memory leaks will be easier if we also clean up the
-  // static / one-off resource usage.
-  coin_atexit((coin_atexit_f *)SoInput::clean, 0);
+  coin_atexit((coin_atexit_f *)SoInput::clean, CC_ATEXIT_NORMAL);
 
   // This will catch multiple initClass() calls (unless there's a
   // removeDirectories() in between them, which is unlikely to happen

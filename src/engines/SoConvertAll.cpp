@@ -666,7 +666,7 @@ void
 SoConvertAll::initClass(void)
 {
   convertfunc_dict = new UInt32ToConverterFuncMap;
-  coin_atexit((coin_atexit_f*) convertall_cleanup_dict, 0);
+  coin_atexit((coin_atexit_f*) convertall_cleanup_dict, CC_ATEXIT_NORMAL);
 
   // SoConvertAll doesn't have a createInstance() method (because it
   // doesn't have a default constructor), so use the ABSTRACT macros.

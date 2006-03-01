@@ -128,5 +128,5 @@ SoInteraction::init(void)
   SoTransformerManip::initClass();
 
   interaction_isinitialized = TRUE;
-  coin_atexit((coin_atexit_f*)interaction_cleanup, 0);
+  coin_atexit((coin_atexit_f*)interaction_cleanup, CC_ATEXIT_NORMAL);
 }

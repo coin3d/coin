@@ -124,7 +124,7 @@ SoGlobalField::initClass(void)
                        SoGlobalField::createInstance);
 
   SoGlobalField::allcontainers = new SoBaseList;
-  coin_atexit((coin_atexit_f *)SoGlobalField::clean, 0);
+  coin_atexit((coin_atexit_f *)SoGlobalField::clean, CC_ATEXIT_NORMAL);
 }
 
 // Free up resources.

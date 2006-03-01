@@ -60,10 +60,10 @@ void
 cc_sync_init(void)
 {
   if (sync_hash_table == NULL) {
-    /* use -100 as atexit priority to make this callback trigger after
-       normal cleanup function which might still use a cc_sync
+    /* the priority is set so to make this callback trigger late,
+       after normal cleanup function which might still use a cc_sync
        instance */
-    coin_atexit((coin_atexit_f*) sync_cleanup, -100);
+    coin_atexit((coin_atexit_f*) sync_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM);
     sync_hash_table = cc_dict_construct(256, 0.75f);    
   }
 }

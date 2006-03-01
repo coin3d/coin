@@ -278,7 +278,7 @@ SoOutput_compression_list_init(void)
   if (cc_bzglue_available()) {
     SoOutput_compmethods->append(SbName("BZIP2"));
   }
-  coin_atexit((coin_atexit_f*) SoOutput_compression_list_cleanup, 0);
+  coin_atexit((coin_atexit_f*) SoOutput_compression_list_cleanup, CC_ATEXIT_NORMAL);
 }
 
 #define PRIVATE(obj) (obj->pimpl)

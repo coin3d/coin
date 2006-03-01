@@ -71,7 +71,7 @@ SoLockManager::SetUnlockString(char * unlockstr)
 {
   if (!solockmanager_pimpl) {
     solockmanager_pimpl = new SoLockManager_pimpl;
-    coin_atexit((coin_atexit_f*)solockmanager_cleanup, 0);
+    coin_atexit((coin_atexit_f*)solockmanager_cleanup, CC_ATEXIT_NORMAL);
   }
   delete solockmanager_pimpl->unlockstr;
   solockmanager_pimpl->unlockstr = new char[strlen(unlockstr) + 1];

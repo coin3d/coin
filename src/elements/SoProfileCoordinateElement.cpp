@@ -67,15 +67,11 @@ SO_ELEMENT_SOURCE(SoProfileCoordinateElement);
 void
 SoProfileCoordinateElement::initClass(void)
 {
-#if COIN_DEBUG
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
-  coin_atexit((coin_atexit_f *)SoProfileCoordinateElement::clean, 0);
-#endif // COIN_DEBUG
-
   SO_ELEMENT_INIT_CLASS(SoProfileCoordinateElement, inherited);
 
   SoProfileCoordinateElement::initdefaultcoords = new SbVec2f(0.0f, 0.0f);
+
+  coin_atexit((coin_atexit_f *)SoProfileCoordinateElement::clean, CC_ATEXIT_NORMAL);
 }
 
 void

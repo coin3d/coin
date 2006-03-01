@@ -796,7 +796,7 @@ SoGLImage::initClass(void)
   glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
                                         glimage_buffer_construct, glimage_buffer_destruct);
 
-  cc_coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass);
+  coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass, CC_ATEXIT_NORMAL);
 
   SoGLCubeMapImage::initClass();
 }
@@ -2049,7 +2049,7 @@ SoGLImage::registerImage(SoGLImage *image)
 {
   LOCK_GLIMAGE;
   if (glimage_reglist == NULL) {
-    coin_atexit((coin_atexit_f *)regimage_cleanup, 0);
+    coin_atexit((coin_atexit_f *)regimage_cleanup, CC_ATEXIT_NORMAL);
     glimage_reglist = new SbList<SoGLImage*>;
   }
   assert(glimage_reglist->find(image) < 0);
@@ -2075,7 +2075,7 @@ SoGLImage::unregisterImage(SoGLImage *image)
 /*!
   Sets a custom image resize function.
 
-  \since 2005-06-03
+  \since Coin 2.5
 */
 void
 SoGLImage::setResizeCallback(SoGLImageResizeCB * f, void * closure)

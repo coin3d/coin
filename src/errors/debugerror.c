@@ -67,7 +67,7 @@ cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
   dbgerr_callback_data = data;
 
   if (!dbgerr_cleanup_function_set) {
-    coin_atexit((coin_atexit_f*) debugerror_cleanup, 0);
+    coin_atexit((coin_atexit_f*) debugerror_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
     dbgerr_cleanup_function_set = TRUE;
   }
 }

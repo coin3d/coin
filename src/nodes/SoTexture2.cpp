@@ -468,7 +468,7 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoRayPickAction, SoMultiTextureImageElement);
 #ifdef COIN_THREADSAFE
   SoTexture2P::mutex = new SbMutex;
-  coin_atexit(SoTexture2P::cleanup, 0);
+  coin_atexit(SoTexture2P::cleanup, CC_ATEXIT_NORMAL);
 #endif // COIN_THREADSAFE
 }
 

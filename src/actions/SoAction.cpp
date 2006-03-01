@@ -203,7 +203,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <coindefs.h> // COIN_OBSOLETED
@@ -390,7 +390,7 @@ SoAction::initClass(void)
                                     SoOverrideElement::getClassStackIndex());
 
   SoAction::initClasses();
-  cc_coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup);
+  coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // private cleanup method
@@ -706,7 +706,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   Applies this action object to the same as \a beingApplied is being
   applied to.
   
-  \since 2002-02-10
+  \COIN_FUNCTION_EXTENSION
+  
+  \since Coin 2.1
 */
 void
 SoAction::apply(SoAction * beingApplied)

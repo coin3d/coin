@@ -129,7 +129,7 @@ SoLazyElement::initClass()
     *lazy_defaultindex = getDefaultColorIndex();
     *lazy_defaultpacked = getDefaultPacked();
 
-    coin_atexit((coin_atexit_f*) lazyelement_cleanup, 0);
+    coin_atexit((coin_atexit_f*) lazyelement_cleanup, CC_ATEXIT_NORMAL);
   }
 }
 

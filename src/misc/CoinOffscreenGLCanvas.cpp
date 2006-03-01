@@ -384,7 +384,7 @@ CoinOffscreenGLCanvas::getMaxTileSize(void)
 
   tilesize_cached = TRUE; // Flip on first run.
 
-  coin_atexit((coin_atexit_f*) tilesize_cleanup, 0);
+  coin_atexit((coin_atexit_f*) tilesize_cleanup, CC_ATEXIT_NORMAL);
 
   unsigned int width, height;
   cc_glglue_context_max_dimensions(&width, &height);

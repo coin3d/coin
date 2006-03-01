@@ -178,7 +178,8 @@ using_freetype(void)
     if (available) {
       coin_atexit((coin_atexit_f *)freetype_cleanup,
                   /* priority must be lower than for abstraction
-                     interface, so don't change this willy-nilly: */ 0);
+                     interface, so don't change this willy-nilly: */
+                  CC_ATEXIT_FONT_SUBSYSTEM - 1);
     }
   }
 
@@ -229,7 +230,8 @@ using_win32api(void)
     if (available) {
       coin_atexit((coin_atexit_f *)win32api_cleanup,
                   /* priority must be lower than for abstraction
-                     interface, so don't change this willy-nilly: */ 0);
+                     interface, so don't change this willy-nilly: */
+                  CC_ATEXIT_FONT_SUBSYSTEM - 1);
     }
   }
 
@@ -399,7 +401,9 @@ flw_initialize(void)
   coin_atexit((coin_atexit_f *)flw_exit,
               /* priority must be higher than for atexit cleanup of
                  underlying, native interfaces (so this is done
-                 first), so don't change this: */ 1);
+                 first), so keep this correctly in sync with other
+                 coin_atexit() invocations in the font sub-system: */
+              CC_ATEXIT_FONT_SUBSYSTEM);
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }

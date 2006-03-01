@@ -73,15 +73,11 @@ SO_ELEMENT_SOURCE(SoCoordinateElement);
 void
 SoCoordinateElement::initClass(void)
 {
-#if COIN_DEBUG
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
-  coin_atexit((coin_atexit_f *)SoCoordinateElement::clean, 0);
-#endif // COIN_DEBUG
-
   SO_ELEMENT_INIT_CLASS(SoCoordinateElement, inherited);
 
   SoCoordinateElement::initialdefaultcoords = new SbVec3f(0.0f, 0.0f, 0.0f);
+
+  coin_atexit((coin_atexit_f *)SoCoordinateElement::clean, CC_ATEXIT_NORMAL);
 }
 
 // Clean up internal resource usage.

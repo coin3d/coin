@@ -906,7 +906,7 @@ SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 {
   SoSceneManagerP::touchtimer = flag;
   if (!SoSceneManagerP::cleanupfunctionset) {
-    coin_atexit((coin_atexit_f*) SoSceneManagerP::cleanup, 0);
+    coin_atexit((coin_atexit_f*) SoSceneManagerP::cleanup, CC_ATEXIT_NORMAL);
     SoSceneManagerP::cleanupfunctionset = TRUE;
   }
 }

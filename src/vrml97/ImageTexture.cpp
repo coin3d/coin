@@ -318,7 +318,7 @@ SoVRMLImageTexture::initClass(void) // static
   SoVRMLImageTextureP::glimagemutex = new SbMutex;
 #endif // COIN_THREADSAFE
 
-  coin_atexit((coin_atexit_f *)SoVRMLImageTextureP::cleanup, 0);
+  coin_atexit((coin_atexit_f *)SoVRMLImageTextureP::cleanup, CC_ATEXIT_NORMAL);
 }
 
 // *************************************************************************

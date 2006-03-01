@@ -118,7 +118,7 @@ SoTextureCoordinateNormalMap::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateNormalMap, SO_FROM_INVENTOR_1);
 
   SoTextureCoordinateNormalMapP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoTextureCoordinateNormalMapP::cleanup_func, 0);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateNormalMapP::cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions

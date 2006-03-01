@@ -97,7 +97,7 @@ SoProtoInstance::initClass(void)
 
   protoinstance_dict = new SoNode2SoProtoInstanceMap;
   CC_MUTEX_CONSTRUCT(protoinstance_mutex);
-  coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, 0);
+  coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 void

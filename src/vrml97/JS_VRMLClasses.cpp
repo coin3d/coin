@@ -1198,7 +1198,7 @@ static void attachSensorToNode(SoNode * node, JSObject * obj)
   // Has the hash-table been initialized?
   if (!CoinVrmlJs_sensorinfohash) {
     CoinVrmlJs_sensorinfohash = new SbHash <void *, unsigned long>;
-    coin_atexit(deleteSensorInfoHash, 0);
+    coin_atexit(deleteSensorInfoHash, CC_ATEXIT_NORMAL);
   }
 
   // Is a sensor already attached to this SoNode?
@@ -1677,7 +1677,7 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
   if (garbagecollectedobjects == NULL) {
     garbagecollectedobjects = new SbList <JSObject *>;
     nodesensorstobedeleted = new SbList <SoNodeSensor *>;
-    coin_atexit((coin_atexit_f *)js_vrmlclasses_cleanup, 0);
+    coin_atexit((coin_atexit_f *)js_vrmlclasses_cleanup, CC_ATEXIT_NORMAL);
 
     // set up default function stubs for Spidermonkey classes we
     // make. must be done at run-time to avoid calling spidermonkey()

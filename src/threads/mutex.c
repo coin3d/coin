@@ -215,9 +215,13 @@ cc_mutex_init(void)
 
   if (cc_global_mutex == NULL) {
     cc_global_mutex = cc_mutex_construct();
-    /* use -1000 as atexit priority to make this callback trigger
-       after other cleanup functions. */
-    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, -1000);
+    /* atexit priority makes this callback trigger after other cleanup
+       functions. */
+    /* FIXME: not sure if this really needs the "- 1", but I added it
+       to keep the same order wrt the other thread-related clean-up
+       functions, since before I changed hard-coded numbers for
+       enumerated values for coin_atexit() invocations. 20060301 mortene. */
+    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 1);
   }
 }
 

@@ -42,7 +42,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/threads/storage.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
@@ -213,7 +213,7 @@ SoGLCubeMapImage::initClass(void)
 #ifdef COIN_THREADSAFE
   SoGLCubeMapImageP::mutex = new SbMutex;
 #endif // COIN_THREADSAFE
-  cc_coin_atexit((coin_atexit_f*)SoGLCubeMapImage::cleanupClass);
+  coin_atexit((coin_atexit_f*)SoGLCubeMapImage::cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 //

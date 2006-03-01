@@ -158,7 +158,7 @@ SoGLCacheContextElement::initClass(void)
   scheduledeletelist = new SbList <SoGLDisplayList*>;
   scheduledeletecblist = new SbList <so_scheduledeletecb_info*>;
   CC_MUTEX_CONSTRUCT(glcache_mutex);
-  coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, 0);
+  coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, CC_ATEXIT_NORMAL);
 
   // add a callback which is called every time a GL-context is
   // destructed.  it's important that this callback is added in

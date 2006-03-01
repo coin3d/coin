@@ -109,10 +109,7 @@ SoAudioDevice::instance()
     // For Coin, that means one /has/ to invoke SoDB::finish() for
     // application which uses sound, or the application will hang on
     // exit for some users.
-    //
-    // FIXME: about the priority setting below; make sure this is done
-    // before SoDebugError's at-exit. 20050627 mortene.
-    coin_atexit((coin_atexit_f *)SoAudioDeviceP::clean, 1);
+    coin_atexit((coin_atexit_f *)SoAudioDeviceP::clean, CC_ATEXIT_NORMAL);
   }
   return SoAudioDeviceP::singleton;
 }

@@ -135,7 +135,7 @@ cc_error_handle(cc_error * me)
     cc_mutex_global_lock();
     if (cc_error_mutex == NULL) {
       cc_error_mutex = cc_mutex_construct();
-      coin_atexit(cc_error_mutex_cleanup, 0);
+      coin_atexit(cc_error_mutex_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
     }
     cc_mutex_global_unlock();
   }
@@ -156,7 +156,7 @@ cc_error_set_handler_callback(cc_error_cb * func, void * data)
   cc_error_callback_data = data;
 
   if (!cc_error_cleanup_function_set) {
-    coin_atexit((coin_atexit_f*) cc_error_cleanup, 0);
+    coin_atexit((coin_atexit_f*) cc_error_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
     cc_error_cleanup_function_set = TRUE;
   }
 }

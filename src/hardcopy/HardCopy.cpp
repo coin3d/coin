@@ -146,7 +146,7 @@ SoHardCopy::init(void)
   SoVectorizeGDIAction::initClass();
 
   hardcopy_isinitialized = TRUE;
-  coin_atexit((coin_atexit_f*)hardcopy_cleanup, 0);
+  coin_atexit((coin_atexit_f*)hardcopy_cleanup, CC_ATEXIT_NORMAL);
 }
 
 /*!

@@ -118,7 +118,7 @@ void
 coin_sound_enable_traverse(void)
 {
   should_traverse = TRUE;
-  coin_atexit((coin_atexit_f*) audio_cleanup, 0);
+  coin_atexit((coin_atexit_f*) audio_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Called from SoSceneManager::render() to decide whether or not to

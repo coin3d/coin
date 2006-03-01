@@ -296,8 +296,8 @@ SoMField::initClass(void)
   PRIVATE_FIELD_INIT_CLASS(SoMField, "MField", inherited, NULL);
 
   CC_MUTEX_CONSTRUCT(somfield_mutex);
-  coin_atexit((coin_atexit_f*) somfield_mutex_cleanup, 0);
-  coin_atexit((coin_atexit_f*) cleanupClass, 0);
+  coin_atexit((coin_atexit_f*) somfield_mutex_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 /*!
@@ -398,7 +398,7 @@ SoMField::get1(const int index, SbString & valuestring)
   if (mfield_buffer_size < STARTSIZE) {
     mfield_buffer = malloc(STARTSIZE);
     mfield_buffer_size = STARTSIZE;
-    coin_atexit((coin_atexit_f *)mfield_buffer_cleanup, 0);
+    coin_atexit((coin_atexit_f *)mfield_buffer_cleanup, CC_ATEXIT_NORMAL);
   }
 
   out.setBuffer(mfield_buffer, mfield_buffer_size,

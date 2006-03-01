@@ -775,9 +775,7 @@ SoDB::init(void)
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes with the same
   // priority.
-  //
-  // FIXME: should use "cross-Coin" enum for priority. 20050627 mortene.
-  coin_atexit((coin_atexit_f *)SoDBP::clean, 0);
+  coin_atexit((coin_atexit_f *)SoDBP::clean, CC_ATEXIT_NORMAL);
 }
 
 // This will free all resources which has been allocated by the SoDB
@@ -864,7 +862,7 @@ SoDB::getVersion(void)
 {
   if (coin_versionstring == NULL) {
     coin_versionstring = new SbString("SIM Coin " COIN_VERSION);
-    coin_atexit((coin_atexit_f *)cleanup_func, 0);
+    coin_atexit((coin_atexit_f *)cleanup_func, CC_ATEXIT_NORMAL);
   }
   return coin_versionstring->getString();
 }

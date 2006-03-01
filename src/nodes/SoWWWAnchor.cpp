@@ -178,7 +178,7 @@ void
 SoWWWAnchor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoWWWAnchor, SO_FROM_INVENTOR_2_1|SoNode::VRML1);
-  coin_atexit((coin_atexit_f*)SoWWWAnchorP::atexit_cleanup, 0);
+  coin_atexit((coin_atexit_f*)SoWWWAnchorP::atexit_cleanup, CC_ATEXIT_NORMAL);
 }
 
 

@@ -54,7 +54,7 @@ SoOffscreenGLXData::getDisplay(void)
 {
   if (!display_initialized) {
     display_initialized = TRUE;
-    coin_atexit((coin_atexit_f*)SoOffscreenGLXData::cleanup, 0);
+    coin_atexit((coin_atexit_f*)SoOffscreenGLXData::cleanup, CC_ATEXIT_NORMAL);
 
     // Keep a single static display-ptr.
     // 

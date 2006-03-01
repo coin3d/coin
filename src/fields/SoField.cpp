@@ -365,7 +365,7 @@ SoFieldP::getReallocHash(void)
   // FIXME: protect with mutex?
   if (SoFieldP::ptrhash == NULL) {
     SoFieldP::ptrhash = new SbHash<char **, char *>;
-    coin_atexit((coin_atexit_f *)SoFieldP::hashExitCleanup, 0);
+    coin_atexit((coin_atexit_f *)SoFieldP::hashExitCleanup, CC_ATEXIT_NORMAL);
   }
   return SoFieldP::ptrhash;
 }
@@ -598,11 +598,11 @@ SoField::initClass(void)
   assert(SoField::classTypeId == SoType::badType());
 
   CC_MUTEX_CONSTRUCT(sofield_mutex);
-  coin_atexit((coin_atexit_f*) field_mutex_cleanup, 0);
+  coin_atexit((coin_atexit_f*) field_mutex_cleanup, CC_ATEXIT_NORMAL);
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
-  coin_atexit((coin_atexit_f*) cleanupClass, 0);
+  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 void

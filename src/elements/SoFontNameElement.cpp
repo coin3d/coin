@@ -52,15 +52,11 @@ SO_ELEMENT_SOURCE(SoFontNameElement);
 void
 SoFontNameElement::initClass(void)
 {
-#if COIN_DEBUG
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
-  coin_atexit((coin_atexit_f *)SoFontNameElement::clean, 0);
-#endif // COIN_DEBUG
-
   SO_ELEMENT_INIT_CLASS(SoFontNameElement, inherited);
 
   SoFontNameElement::defaultfontname = new SbName("defaultFont");
+
+  coin_atexit((coin_atexit_f *)SoFontNameElement::clean, CC_ATEXIT_NORMAL);
 }
 
 void

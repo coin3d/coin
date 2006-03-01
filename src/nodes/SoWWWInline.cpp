@@ -213,7 +213,7 @@ SoWWWInline::SoWWWInline()
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
     wwwinline_colorpacker = new SoColorPacker;
-    coin_atexit((coin_atexit_f *)SoWWWInline::cleanup, 0);
+    coin_atexit((coin_atexit_f *)SoWWWInline::cleanup, CC_ATEXIT_NORMAL);
   }
 }
 

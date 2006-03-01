@@ -245,7 +245,7 @@ SoProto::initClass(void)
                                     SoNode::nextActionMethodIndex++);
   protolist = new SbList<SoProto*>;
 
-  cc_coin_atexit((coin_atexit_f*) soproto_cleanup);
+  coin_atexit((coin_atexit_f*) soproto_cleanup, CC_ATEXIT_NORMAL);
   // this will set a default callback
   SoProto::setFetchExternProtoCallback(NULL, NULL);
 }

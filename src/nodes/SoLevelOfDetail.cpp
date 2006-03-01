@@ -311,7 +311,7 @@ SoLevelOfDetail::initClass(void)
 
   so_lod_storage = new SbStorage(sizeof(so_lod_static_data),
                                  so_lod_construct_data, so_lod_destruct_data);
-  coin_atexit((coin_atexit_f*) so_lod_cleanup, 0);
+  coin_atexit((coin_atexit_f*) so_lod_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Documented in superclass.

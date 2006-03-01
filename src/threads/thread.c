@@ -172,9 +172,13 @@ cc_thread_init(void)
   /* needed to quickly generate a thread-id for each thread */
   win32_threadid_idx = TlsAlloc();
   assert(win32_threadid_idx != TLS_OUT_OF_INDEXES); 
-  /* use -100000 as cleanup priority so that all other cleanup
-     functions are called before this one */
-  coin_atexit(win32_threadid_idx_cleanup, -100000);
+  /* clean-up priority for the thread sub-system in Coin is set so it
+     is done very late at exit */
+  /* FIXME: not sure if this really needs the "- 2", but I added it
+     to keep the same order wrt the other thread-related clean-up
+     functions, since before I changed hard-coded numbers for
+     enumerated values for coin_atexit() invocations. 20060301 mortene. */
+  coin_atexit(win32_threadid_idx_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 2);
 #endif /* USE_WIN32THREAD */ 
   cc_recmutex_init();
 }

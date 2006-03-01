@@ -124,7 +124,7 @@ SoLinearProfile::initClass(void)
   so_linearprofile_storage = new SbStorage(sizeof(so_linearprofile_data),
                                            so_linearprofile_construct_data,
                                            so_linearprofile_destruct_data);
-  coin_atexit((coin_atexit_f*) so_linearprofile_cleanup, 0);
+  coin_atexit((coin_atexit_f*) so_linearprofile_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Doc from superclass.

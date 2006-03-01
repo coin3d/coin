@@ -118,7 +118,10 @@ cc_glyph3d_initialize()
   
   glyph3d_fonthash = cc_dict_construct(15, 0.75);
 
-  coin_atexit((coin_atexit_f*) cc_glyph3d_cleanup, 0);
+  /* +1, so it happens before the underlying font abstraction layer
+     cleans itself up: */
+  coin_atexit((coin_atexit_f*) cc_glyph3d_cleanup, CC_ATEXIT_FONT_SUBSYSTEM + 1);
+
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);  
 }
 

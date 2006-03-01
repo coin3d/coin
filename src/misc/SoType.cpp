@@ -200,9 +200,7 @@ static Name2HandleMap * module_dict = NULL;
 void
 SoType::init(void)
 {
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
-  coin_atexit((coin_atexit_f *)SoType::clean, 0);
+  coin_atexit((coin_atexit_f *)SoType::clean, CC_ATEXIT_NORMAL);
 
   // If any of these assert fails, it is probably because
   // SoType::init() has been called for a second time. --mortene

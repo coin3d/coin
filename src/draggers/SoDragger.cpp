@@ -1536,7 +1536,7 @@ SoDragger::setCameraInfo(SoAction * action)
   if (THIS->draggercache && THIS->draggercache->path) {
     if (vvdata == NULL) {
       vvdata = new sodragger_vv_data;
-      coin_atexit((coin_atexit_f*) vv_data_cleanup, 0);
+      coin_atexit((coin_atexit_f*) vv_data_cleanup, CC_ATEXIT_NORMAL);
     }
     if (THIS->cbaction == NULL) {
       THIS->cbaction = new SoCallbackAction;

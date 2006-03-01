@@ -106,7 +106,7 @@ SoForeignFileKit::initClass(void)
   SO_KIT_INIT_ABSTRACT_CLASS(SoForeignFileKit, SoBaseKit, SoBaseKit);
   // set up support dictionary
   SoForeignFileKitP::fileexts = new SbHash<SoType, const char *>(11);
-  cc_coin_atexit((coin_atexit_f*)foreignfilekit_cleanup);
+  coin_atexit((coin_atexit_f*)foreignfilekit_cleanup, CC_ATEXIT_NORMAL);
 
   SoForeignFileKit::initClasses();
 }

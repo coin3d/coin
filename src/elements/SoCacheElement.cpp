@@ -81,7 +81,7 @@ SoCacheElement::initClass(void)
 #ifdef COIN_THREADSAFE
   invalidated_storage = new SbTypedStorage <SbBool*> (sizeof(SbBool));
   *(invalidated_storage->get()) = FALSE;
-  coin_atexit((coin_atexit_f*) cacheelement_cleanup, 0);
+  coin_atexit((coin_atexit_f*) cacheelement_cleanup, CC_ATEXIT_NORMAL);
 #endif // COIN_THREADSAFE
 }
 

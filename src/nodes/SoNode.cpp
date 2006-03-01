@@ -522,7 +522,7 @@ SoNode::initClass(void)
 
   // initialize the compatibility dict
   compatibility_dict = new Int16ToUInt32Map;
-  coin_atexit((coin_atexit_f*)SoNode::cleanupClass, 0);
+  coin_atexit((coin_atexit_f*)SoNode::cleanupClass, CC_ATEXIT_NORMAL);
 
   SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
                                 SO_FROM_INVENTOR_1);

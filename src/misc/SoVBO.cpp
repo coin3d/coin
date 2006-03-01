@@ -99,7 +99,7 @@ SoVBO::init(void)
   coin_glglue_add_instance_created_callback(context_created, NULL);
 
   vbo_isfast_hash = new SbHash <SbBool, uint32_t> (3);
-  coin_atexit(vbo_atexit_cleanup, 0);
+  coin_atexit(vbo_atexit_cleanup, CC_ATEXIT_NORMAL);
 
   // use COIN_VBO_MAX_LIMIT to set the largest VBO we create
   if (vbo_vertex_count_max_limit < 0) {

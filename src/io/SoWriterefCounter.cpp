@@ -219,7 +219,7 @@ SoWriterefCounter::initClass(void)
   CC_MUTEX_CONSTRUCT(SoWriterefCounterP::mutex);
   SoWriterefCounterP::outputdict = new SoOutput2SoWriterefCounterMap;
   SoWriterefCounterP::refwriteprefix = new SbString("+");
-  coin_atexit((coin_atexit_f*) SoWriterefCounterP::atexit_cleanup, 0);
+  coin_atexit((coin_atexit_f*) SoWriterefCounterP::atexit_cleanup, CC_ATEXIT_NORMAL);
 }
 
 void 

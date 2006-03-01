@@ -355,7 +355,7 @@ SoShape::initClass(void)
     soshape_use_gl_vertex_arrays = atoi(env);
   }
   SoShapeP::calibrateBBoxCache();
-  coin_atexit((coin_atexit_f*) soshape_cleanup, 0);
+  coin_atexit((coin_atexit_f*) soshape_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Doc in parent.

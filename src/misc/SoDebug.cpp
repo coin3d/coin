@@ -90,7 +90,7 @@ SoDebug::NamePtr(const char * name, void * ptr)
 {
   if ( SoDebug_internal::namedict == NULL ) {
     SoDebug_internal::namedict = new SbHash<char *, void *>;
-    cc_coin_atexit(SoDebug_internal::delete_namedict);
+    coin_atexit(SoDebug_internal::delete_namedict, CC_ATEXIT_NORMAL);
   }
   char * data = NULL;
   if ( SoDebug_internal::namedict->get(ptr, data) ) {

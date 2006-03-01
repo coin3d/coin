@@ -495,8 +495,7 @@ SoElement::initClass(void)
   SoElement::classStackIndex = -1;
   SoElement::initElements();
 
-  // cleanup at exit
-  coin_atexit((coin_atexit_f *)SoElement::cleanup, 0);
+  coin_atexit((coin_atexit_f *)SoElement::cleanup, CC_ATEXIT_NORMAL);
 }
 
 // atexit callback

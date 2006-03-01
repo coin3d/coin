@@ -169,7 +169,7 @@ void
 SoVRMLShape::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLShape, SO_VRML97_NODE_TYPE);
-  coin_atexit((coin_atexit_f*)sovrmlshape_cleanup, 0); 
+  coin_atexit((coin_atexit_f*)sovrmlshape_cleanup, CC_ATEXIT_NORMAL); 
 
   SoType type = SoVRMLShape::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);

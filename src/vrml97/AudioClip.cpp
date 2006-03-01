@@ -308,7 +308,7 @@ SoVRMLAudioClip::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLAudioClip, SO_VRML97_NODE_TYPE);
   SoVRMLAudioClipP::staticdata = new SoVRMLAudioClipP::StaticData;
-  coin_atexit((coin_atexit_f*) cleanup_audioclip, 0);
+  coin_atexit((coin_atexit_f*) cleanup_audioclip, CC_ATEXIT_NORMAL);
 
   const char * env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
   float intropause = env ? (float) atof(env) : 0.0f;

@@ -65,23 +65,32 @@ SbBool coin_is_exiting(void);
    third argument to coin_atexit_func() -- no other values than these
    should be used! */
 enum coin_atexit_priorities {
-  /* generic: */
 
+  /* clean-ups of client code should be done before any clean-up code
+     within Coin happens, so this is (2^31 - 1): */
+  CC_ATEXIT_EXTERNAL = 2147483647,
+
+  /* clean-up code with no particular dependencies should use this
+     code: */
   CC_ATEXIT_NORMAL = 0,
 
+  /* later, in case e.g. some nodes' clean-up depends on the font
+     subsystem still being up'n'running: */
+  CC_ATEXIT_FONT_SUBSYSTEM = CC_ATEXIT_NORMAL - 100,
 
-  /* specific cases: */
+  /* still later, so clean-up code can use e.g. SoDebugError to report
+     problems, output debugging info, etc: */
+  CC_ATEXIT_MSG_SUBSYSTEM = CC_ATEXIT_NORMAL - 200,
 
-  CC_ATEXIT_EXTERNAL = 2147483647, /* clean-ups of client code should
-                                      be done before any clean-up code
-                                      within Coin happens, so this is
-                                      (2^31 - 1) */
+  /* needs to happen late, since CC_ATEXIT_NORMAL clean-up routines
+     will for instance often want to dealloc mutexes: */
+  CC_ATEXIT_THREADING_SUBSYSTEM = CC_ATEXIT_NORMAL - 1000,
+  
+  /* dynamically loaded libraries should be the last to go, as other
+     code in Coin will be dependent on functionality in these in its
+     own clean-up code: */
+  CC_ATEXIT_DYNLIBS = -2147483647
 
-  CC_ATEXIT_DYNLIBS = -2147483647 /* dynamically loaded libraries
-                                     should be the last to go, as
-                                     other code in Coin will be
-                                     dependent on functionality in
-                                     these in its own clean-up code */
 };
 
 /* ********************************************************************** */

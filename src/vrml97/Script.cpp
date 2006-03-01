@@ -309,14 +309,7 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
-  // priority 1, so this happens before the SpiderMonkey lib is
-  // cleaned up:
-  //
-  // FIXME: this is not a particularly robust way of setting order of
-  // cleanup functions. Should have a Coin-internal enum-set with
-  // /named/ priority values. Then this value would be something like
-  // "CoinCleanUpPriority::SPIDERMONKEY + 1". 20060208 mortene.
-  coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, 1);
+  coin_atexit((coin_atexit_f *)SoVRMLScriptP::cleanup, CC_ATEXIT_NORMAL);
 
 #ifdef COIN_HAVE_JAVASCRIPT
   if (SoVRMLScriptP::allowSpiderMonkey() &&

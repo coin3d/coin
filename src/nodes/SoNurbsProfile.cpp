@@ -246,7 +246,7 @@ SoNurbsProfile::initClass(void)
   so_nurbsprofile_storage = new SbStorage(sizeof(so_nurbsprofile_data),
                                           so_nurbsprofile_construct_data,
                                           so_nurbsprofile_destruct_data);
-  coin_atexit((coin_atexit_f*) so_nurbsprofile_cleanup, 0);
+  coin_atexit((coin_atexit_f*) so_nurbsprofile_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Doc from superclass.

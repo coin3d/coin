@@ -99,7 +99,7 @@ SoTextureCoordinateReflectionMap::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateReflectionMap, SO_FROM_INVENTOR_1);
 
   SoTextureCoordinateReflectionMapP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoTextureCoordinateReflectionMapP::cleanup_func, 0);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateReflectionMapP::cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions

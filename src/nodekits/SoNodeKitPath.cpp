@@ -284,7 +284,7 @@ SoNodeKitPath::getSearchAction(void)
     SoNodeKitPath::searchAction = new SoSearchAction();
     searchAction->setInterest(SoSearchAction::FIRST);
     searchAction->setSearchingAll(FALSE);
-    coin_atexit((coin_atexit_f *)SoNodeKitPath::clean, 0);
+    coin_atexit((coin_atexit_f *)SoNodeKitPath::clean, CC_ATEXIT_NORMAL);
   }
   return SoNodeKitPath::searchAction;
 }

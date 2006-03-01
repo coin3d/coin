@@ -63,7 +63,7 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <coindefs.h> // COIN_STUB()
 
 // *************************************************************************
@@ -1060,7 +1060,7 @@ SoPath::initClass(void)
   assert((SoPath::classTypeId == SoType::badType()) &&
          "call SoPath::initClass only once!");
 
-  cc_coin_atexit((coin_atexit_f*)SoPath::cleanupClass);
+  coin_atexit((coin_atexit_f*)SoPath::cleanupClass, CC_ATEXIT_NORMAL);
       
   SoPath::classTypeId = SoType::createType(inherited::getClassTypeId(),
                                            SbName("Path"),

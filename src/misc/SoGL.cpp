@@ -1937,7 +1937,7 @@ sogl_get_tmpcoordlist(void)
 {
   if (sogl_coordstorage == NULL) {
     sogl_coordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
-    coin_atexit((coin_atexit_f *)nurbs_coord_cleanup, 0);
+    coin_atexit((coin_atexit_f *)nurbs_coord_cleanup, CC_ATEXIT_NORMAL);
   }
   SbList <float> ** ptr = (SbList <float> **) sogl_coordstorage->get();
   return *ptr;
@@ -1948,7 +1948,7 @@ sogl_get_tmptexcoordlist(void)
 {
   if (sogl_texcoordstorage == NULL) {
     sogl_texcoordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
-    coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup, 0);
+    coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup, CC_ATEXIT_NORMAL);
   }
   SbList <float> ** ptr = (SbList <float> **) sogl_texcoordstorage->get();
   return *ptr;
@@ -4417,7 +4417,7 @@ sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
     offscreenrenderer = new SoOffscreenRenderer(SbViewportRegion(32, 32));
     offscreencallback = new SoCallback;
     offscreencallback->ref();
-    coin_atexit((coin_atexit_f*) offscreenrenderer_cleanup, 0);
+    coin_atexit((coin_atexit_f*) offscreenrenderer_cleanup, CC_ATEXIT_NORMAL);
   }
   offscreencallback->setCallback(cb, closure);
   offscreenrenderer->render(offscreencallback);

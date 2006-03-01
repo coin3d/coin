@@ -345,7 +345,7 @@ cc_rbptree_init(cc_rbptree * t)
     rbptree_sentinel.pointer = NULL;
     rbptree_sentinel.color = RBPTREE_BLACK;
     rbptree_isinitialized = TRUE;
-    coin_atexit((coin_atexit_f*)rbptree_atexit_cleanup, 0);
+    coin_atexit((coin_atexit_f*)rbptree_atexit_cleanup, CC_ATEXIT_NORMAL);
   }
   CC_GLOBAL_UNLOCK;
 

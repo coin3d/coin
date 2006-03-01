@@ -106,7 +106,7 @@ SoVRMLParent::initClass(void)
   // used when the 'children' field contains NULL-nodes
   vrmlparent_nullnode = new SoInfo;
   vrmlparent_nullnode->ref();
-  coin_atexit((coin_atexit_f*) vrmlparent_cleanup, 0);
+  coin_atexit((coin_atexit_f*) vrmlparent_cleanup, CC_ATEXIT_NORMAL);
 }
 
 #define PRIVATE(thisp) ((thisp)->pimpl)

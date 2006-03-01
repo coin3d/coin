@@ -118,7 +118,7 @@ SoUnknownNode::initClass(void)
                        "UnknownNode",
                        &SoUnknownNode::createInstance,
                        SoNode::nextActionMethodIndex++);
-  cc_coin_atexit((coin_atexit_f*)SoUnknownNode::atexit_cleanup);
+  coin_atexit((coin_atexit_f*)SoUnknownNode::atexit_cleanup, CC_ATEXIT_NORMAL);
 }
 
 void

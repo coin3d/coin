@@ -102,7 +102,10 @@ cc_glyph2d_initialize()
   glyph2d_initialized = TRUE;
   
   glyph2d_fonthash = cc_dict_construct(15, 0.75);
-  coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, 0);
+
+  /* +1, so it happens before the underlying font abstraction layer
+     cleans itself up: */
+  coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, CC_ATEXIT_FONT_SUBSYSTEM + 1);
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
 }

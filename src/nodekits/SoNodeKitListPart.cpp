@@ -183,7 +183,7 @@ SoNodeKitListPart::getChildTypes(void) const
   if (!sonodekitlistpart_deflist) {
     sonodekitlistpart_deflist = new SoTypeList;
     sonodekitlistpart_deflist->append(SoNode::getClassTypeId());
-    coin_atexit((coin_atexit_f*)sonodekitlistpart_atexit_cleanup, 0);
+    coin_atexit((coin_atexit_f*)sonodekitlistpart_atexit_cleanup, CC_ATEXIT_NORMAL);
   }
   return *sonodekitlistpart_deflist;
 }

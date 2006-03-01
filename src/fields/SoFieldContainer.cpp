@@ -176,15 +176,15 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 
   sofieldcontainer_userdata_dict = new UserDataMap;
-  cc_coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup);
+  coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, CC_ATEXIT_NORMAL);
 
   sofieldcontainer_copydictstorage = 
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
                   sofieldcontainer_destruct_copydict);                 
 
-  cc_coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup);
-  cc_coin_atexit((coin_atexit_f*) cleanupClass);
+  coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 void

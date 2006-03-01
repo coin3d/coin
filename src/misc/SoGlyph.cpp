@@ -461,7 +461,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
 
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
-    coin_atexit((coin_atexit_f *)SoGlyph_cleanup, 0);
+    coin_atexit((coin_atexit_f *)SoGlyph_cleanup, CC_ATEXIT_NORMAL);
   }
 
   int i, n = activeGlyphs->getLength();
@@ -563,7 +563,7 @@ SoGlyph::getGlyph(SoState * state,
   
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
-    coin_atexit((coin_atexit_f *)SoGlyph_cleanup, 0);
+    coin_atexit((coin_atexit_f *)SoGlyph_cleanup, CC_ATEXIT_NORMAL);
   }
 
   int i, n = activeGlyphs->getLength();

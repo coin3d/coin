@@ -64,7 +64,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/threads/storage.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
@@ -232,7 +232,7 @@ SoGLBigImage::initClass(void)
   assert(SoGLBigImageP::classTypeId.isBad());
   SoGLBigImageP::classTypeId =
     SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
-  cc_coin_atexit((coin_atexit_f*) soglbigimagep_cleanup);
+  coin_atexit((coin_atexit_f*) soglbigimagep_cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Doc in superclass.

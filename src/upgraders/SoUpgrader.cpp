@@ -124,7 +124,7 @@ soupgrader_init_classes(void)
     SOUPGRADER_ADD_TYPE(SoShapeHintsV10);
 
     soupgrader_isinitialized = TRUE;
-    coin_atexit((coin_atexit_f*) soupgrader_cleanup, 0); 
+    coin_atexit((coin_atexit_f*) soupgrader_cleanup, CC_ATEXIT_NORMAL); 
   }
 }
 
