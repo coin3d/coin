@@ -2457,3 +2457,51 @@ Text2 {
     20060307 mortene.
 
 =====================================================================
+
+216 SoToVRML2Action doesn't handle linesets properly when
+    SoDrawStyle::style == LINES?
+
+    When used as input to SoToVRML2Action, the following scene graph
+    generates a buggy VRML2 scene graph, with no vertex coordinates:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Separator {
+   DrawStyle {
+      style LINES
+      pointSize 3
+      lineWidth 0
+      linePattern 0xffff
+   }
+   Separator {
+
+      Material {
+         ambientColor 0.203922 0.203922 0.203922
+         diffuseColor 0.2 0.2 0.2
+         specularColor 0.498039 0.498039 0.498039
+         emissiveColor 1 0 0
+         shininess 0.078125
+         transparency 0
+      }
+
+      LineSet {
+         vertexProperty 
+         VertexProperty {
+            vertex [ -37013.8 12213.8 -884.683 ,
+             -21225.2 34556.1 -884.683 ,
+             -9160.35 7447.44 -884.683 ,
+             4096.09 32321.9 -884.683 ,
+             10649.8 -4319.52 -884.683 ]
+            orderedRGBA 0x96bbe9ff
+            materialBinding OVERALL
+         }
+         numVertices 5
+      }				 
+   }
+} 
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20060307 mortene.
+
+=====================================================================
