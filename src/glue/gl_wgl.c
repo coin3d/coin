@@ -755,14 +755,22 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     unsigned int numFormats;
     const float fAttribList[] = { 0 };
 
-    const int nontex_attrs[] = {
+    int nontex_attrs[] = {
+      WGL_STENCIL_BITS_ARB, 1, /* FIXME: must be first, since we may
+                                  want to modify it later, and need to
+                                  know where it is. This is a
+                                  wart. 20060307 mortene. */
       WGL_DRAW_TO_PBUFFER_ARB, TRUE,
       WGL_COLOR_BITS_ARB, 32,
       WGL_ALPHA_BITS_ARB, 8,
       WGL_DEPTH_BITS_ARB, 24,
       0
     };
-    const int tex_attrs[] = {
+    int tex_attrs[] = {
+      WGL_STENCIL_BITS_ARB, 1, /* FIXME: must be first, since we may
+                                  want to modify it later, and need to
+                                  know where it is. This is a
+                                  wart. 20060307 mortene. */
       WGL_DRAW_TO_PBUFFER_ARB, TRUE,
       WGL_BIND_TO_TEXTURE_RGBA_ARB, TRUE,
       WGL_COLOR_BITS_ARB, 32,
@@ -780,8 +788,25 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     };
     const int * pbufferflags[] = { nontex_pbufferflags, tex_pbufferflags };
 
+    unsigned int try;
+
+    {
+      /* FIXME: the following is a hack to get around a problem which
+         really demands more effort to be solved properly. See further
+         up in this source file, in the function to create a software
+         context, for a more elaborate explanation. 20060307 mortene.
+      */
+      const int v = coin_glglue_stencil_bits_hack();
+      if (v != -1) {
+        assert(nontex_attrs[0] == WGL_STENCIL_BITS_ARB);
+        nontex_attrs[1] = v;
+        assert(tex_attrs[0] == WGL_STENCIL_BITS_ARB);
+        tex_attrs[1] = v;
+      }
+    }
+
     /* iterate from end of arrays, which contains "best" option */
-    unsigned int try = (sizeof(attrs) / sizeof(attrs[0]));
+    try = (sizeof(attrs) / sizeof(attrs[0]));
     /* if render-to-texture extension not supported, don't attempt to
        set up a pbuffer with those capabilities (could in theory cause
        nasty WGL errors): */

@@ -268,7 +268,7 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
   const int v = coin_glglue_stencil_bits_hack();
   if (v != -1) {
     size_t i;
-    for (i = 0; i < (sizeof(attrib) / sizeof(attrib[0]) / 2); i += 2) {
+    for (i = 0; i < (sizeof(attrib) / sizeof(attrib[0]) / 2); i++) {
       if (attrib[i] == AGL_STENCIL_SIZE) { attrib[i+1] = v; }
     }
   }
@@ -349,11 +349,23 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
     AGL_RED_SIZE, 8, 
     AGL_ALPHA_SIZE, 8, 
     AGL_DEPTH_SIZE, 24, 
+    AGL_STENCIL_SIZE, 1,
     AGL_CLOSEST_POLICY, 
     AGL_ACCELERATED, 
     AGL_NO_RECOVERY, 
     AGL_NONE 
   };
+
+  /* FIXME: this is a hack. See comment elsewhere in the file where
+     this function is used, for an elaborate explanation. 20060307
+     mortene. */
+  const int v = coin_glglue_stencil_bits_hack();
+  if (v != -1) {
+    size_t i;
+    for (i = 0; i < (sizeof(attribs) / sizeof(attribs[0]) / 2); i++) {
+      if (attribs[i] == AGL_STENCIL_SIZE) { attribs[i+1] = v; }
+    }
+  }
 
   /* Note that unlike in WGL, where the ability to bind a pBuffer
      as a texture has to be specified when creating the pixel

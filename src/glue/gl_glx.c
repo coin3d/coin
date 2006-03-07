@@ -743,7 +743,13 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   int fbc_cnt;
 
   /* set frame buffer attributes */
-  const int attrs[] = {
+  /* FIXME: should refactor the attribute selection / setting process
+     to one common with the software offscreen buffer creation. This
+     is lame. 20060307 mortene. */
+  int attrs[] = {
+    GLX_STENCIL_SIZE, 1, /* FIXME: must be first, due to the hack
+                            below where we may change the value of the
+                            stencil bit setting. 20060307 mortene. */
     GLX_RENDER_TYPE, GLX_RGBA_BIT,
     GLX_RED_SIZE,   8,
     GLX_GREEN_SIZE, 8,
@@ -753,6 +759,12 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
     GLX_DEPTH_SIZE, 24,
     None
   };
+
+  /* FIXME: hack. See comments in source code elsewhere in this file
+     where the same function is used. 20060307 mortene. */
+  const int v = coin_glglue_stencil_bits_hack();
+  assert(attrs[0] == GLX_STENCIL_SIZE);
+  if (v != -1) { attrs[1] = v; };
 
   dpy = glxglue_get_display();
   if (!dpy) { return FALSE; }
