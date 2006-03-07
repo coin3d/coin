@@ -2424,3 +2424,36 @@ Separator {
     20060217 mortene.
 
 =====================================================================
+
+215 SoText2 behaviour under the influence of an SoClipPlane is
+    peculiar.
+
+    The following scene graph demonstrates how SoText2 nodes doesn't
+    work well with SoClipPlane:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+ClipPlane {
+   plane 1 0 0 -1
+   on TRUE
+}
+
+Text2 {
+   string "hepp"
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    Spin the camera around, and see how the SoText2 string slips in
+    and out of view, sometimes partially, sometimes fully.
+
+    Should perhaps try to implement a more consistent behaviour, for
+    instance always showing or not showing the string depending on how
+    the its 3D origin point is placed vs the clip plane(s).
+
+    We need to make a policy decision on this, and document that, at
+    least.
+
+    20060307 mortene.
+
+=====================================================================
