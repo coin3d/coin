@@ -32,8 +32,9 @@ class COIN_DLL_API SoLocation2Event : public SoEvent {
   SO_EVENT_HEADER();
 
 public:
+  SoLocation2Event(void);
   virtual ~SoLocation2Event();
-
+  
   static void initClass(void);
 };
 

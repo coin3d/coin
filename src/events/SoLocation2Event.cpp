@@ -55,8 +55,16 @@ SoLocation2Event::initClass(void)
 }
 
 /*!
+  Constructor.
+*/
+SoLocation2Event::SoLocation2Event(void)
+{
+}
+
+/*!
   Destructor.
  */
 SoLocation2Event::~SoLocation2Event()
 {
 }
+
