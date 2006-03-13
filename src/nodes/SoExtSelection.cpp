@@ -348,7 +348,7 @@ public:
     SbList<SbVec2s> coords;
     SoTimerSensor * updatetimer;
 
-    SelectionState::SelectionState(SoExtSelection * t)
+    SelectionState(SoExtSelection * t)
     {
       this->updatetimer = new SoTimerSensor(&SoExtSelectionP::timercallback, t);
       this->updatetimer->setBaseTime(SbTime::zero());
@@ -356,7 +356,7 @@ public:
       this->reset();
     }
 
-    SelectionState::~SelectionState()
+    ~SelectionState()
     {
       delete this->updatetimer;
     }
