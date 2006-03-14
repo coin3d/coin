@@ -526,9 +526,25 @@ envlist_append(struct envvar_data * item)
 const char *
 coin_getenv(const char * envname)
 {
+  /* FIXME: with recent version(s) of Cygwin, it seems the Win32
+     GetEnvironmentVariable() is no longer working properly, if Coin
+     has been built with the Cygwin-port of GCC. We've had one bug
+     report to this effect, plus handegar had to fix wrapmsvc.cpp,
+     which exhibited the exact same problem.
+
+     Not 100% sure how to fix it, but perhaps always preferring to use
+     getenv() over GetEnvironmentVariable() would be sufficient? Or
+     would that just exhibit the opposite problem when building Coin
+     with MSVC?
+
+     20060314 mortene. */
+
   /* Important note: this code is identical to the getenv() code in
      So@Gui@/.../common/SoAny.cpp.in. If you do bugfixes or whatever,
      keep them in sync! */
+  /* FIXME: this code from tidbits should be moved under
+     Coin/src/share/, so the actual source code is shared instead of
+     having to copy it around. 20060314 mortene. */
 #ifdef HAVE_GETENVIRONMENTVARIABLE
   int neededsize;
   neededsize = GetEnvironmentVariable(envname, NULL, 0);
