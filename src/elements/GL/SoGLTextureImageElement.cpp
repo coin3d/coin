@@ -267,10 +267,20 @@ SoGLTextureImageElement::updateLazyElement(void) const
 {
   if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
     uint32_t glimageid = this->glimage ? this->glimage->getGLImageId() : 0;
-    SbBool alphatest = this->glimage && this->glimage->getImage() && 
-      this->glimage->getImage()->hasData() ? 
-      this->glimage->useAlphaTest() : FALSE;
-    
+    SbBool alphatest = FALSE;
+    uint32_t flags = this->glimage ? this->glimage->getFlags() : 0;
+    if (flags & SoGLImage::FORCE_ALPHA_TEST_TRUE) {
+      alphatest = TRUE;      
+    }
+    else if (flags & SoGLImage::FORCE_ALPHA_TEST_FALSE) {
+      alphatest = FALSE;
+    }
+    else {
+      alphatest = this->glimage && 
+        this->glimage->getImage() && 
+        this->glimage->getImage()->hasData() ? 
+        this->glimage->useAlphaTest() : FALSE;
+    }
     SoLazyElement::setGLImageId(state, glimageid, alphatest);
   }
 }
