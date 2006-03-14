@@ -370,7 +370,6 @@ void
 SoSceneTexture2::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
 
@@ -692,8 +691,6 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       assert(0 && "should not get here");
       break;
     }
-    this->glimage->setFlags(flags);
-
     if (this->canrendertotexture) {
       // bind texture to pbuffer
       this->glimage->setPBuffer(state, this->glcontext,
@@ -701,6 +698,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
                                 translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapT.getValue()),
                                 quality);
     }
+    this->glimage->setFlags(flags);
   }
   if (!this->canrendertotexture) {
     assert(this->glimage);
