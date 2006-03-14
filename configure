@@ -34314,7 +34314,7 @@ fi
 
 
 
-sim_ac_enable_darwin_x11=true
+sim_ac_enable_darwin_x11=false
 
 case $host_os in
   darwin* )
@@ -34338,7 +34338,7 @@ esac
 
 sim_ac_x11_avail=no
 
-if test x"$no_x" != xyes -a x"$sim_ac_enable_darwin_x11" = xtrue; then
+if test x"$no_x" != xyes -o $sim_ac_enable_darwin_x11 ; then
   #  *** DEBUG ***
   #  Keep this around, as it can be handy when testing on new systems.
   # echo "X_CFLAGS: $X_CFLAGS"
@@ -34635,7 +34635,7 @@ if test x"$with_opengl" != xno; then
   case $host_os in
   darwin*)
 
-    if test x"$GCC" = x"yes" -a x$sim_ac_enable_darwin_x11 = xtrue; then
+    if test x"$GCC" = x"yes" -a $sim_ac_enable_darwin_x11; then
       # On Mac OS X, OpenGL is installed as part of the optional X11 SDK.
       sim_ac_gl_darwin_x11=/usr/X11R6
       if test -d $sim_ac_gl_darwin_x11; then
@@ -34759,7 +34759,7 @@ if test x"$with_opengl" != x"no"; then
   case $host_os in
   darwin*)
 
-    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+    if $sim_ac_enable_darwin_x11; then
       sim_ac_gl_darwin_x11=/usr/X11R6
       if test -d $sim_ac_gl_darwin_x11; then
         sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
@@ -34771,56 +34771,7 @@ if test x"$with_opengl" != x"no"; then
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
   # Mac OS X framework (no X11, -framework OpenGL)
-  if test x$sim_ac_enable_darwin_x11 = xtrue; then
-
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <GL/gl.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_gl_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_cv_header_GL_gl_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_gl_h = yes; then
-
-      sim_ac_gl_header_avail=true
-      sim_ac_gl_header=GL/gl.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GL_H 1
-_ACEOF
-
-
-fi
-
-
-
+  if $sim_ac_enable_darwin_x11; then :
   else
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -34864,6 +34815,59 @@ if test $ac_cv_header_OpenGL_gl_h = yes; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENGL_GL_H 1
+_ACEOF
+
+
+fi
+
+
+
+  fi
+
+  if $sim_ac_gl_header_avail; then :
+  else
+
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <GL/gl.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_GL_gl_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_GL_gl_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_GL_gl_h = yes; then
+
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=GL/gl.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_GL_GL_H 1
 _ACEOF
 
 
@@ -35116,14 +35120,15 @@ cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #ifdef HAVE_WINDOWS_H
              #include <windows.h>
-             #endif
+             #endif /* HAVE_WINDOWS_H */
              #ifdef HAVE_GL_GL_H
              #include <GL/gl.h>
-             #endif
+             #else /* ! HAVE_GL_GL_H */
              #ifdef HAVE_OPENGL_GL_H
              /* Mac OS X */
              #include <OpenGL/gl.h>
-             #endif
+             #endif /* HAVE_OPENGL_GL_H */
+             #endif /* ! HAVE_GL_GL_H */
 
 int
 main ()
@@ -35218,7 +35223,7 @@ if test x"$with_opengl" != x"no"; then
   case $host_os in
   darwin*)
 
-    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+    if $sim_ac_enable_darwin_x11; then
       sim_ac_gl_darwin_x11=/usr/X11R6
       if test -d $sim_ac_gl_darwin_x11; then
         sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
@@ -35230,56 +35235,7 @@ if test x"$with_opengl" != x"no"; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
 
   # Mac OS X framework (no X11, -framework OpenGL)
-  if test x$sim_ac_enable_darwin_x11 = xtrue; then
-
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <GL/glext.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_glext_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_cv_header_GL_glext_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_glext_h = yes; then
-
-      sim_ac_glext_header_avail=true
-      sim_ac_glext_header=GL/glext.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GLEXT_H 1
-_ACEOF
-
-
-fi
-
-
-
+  if $sim_ac_enable_darwin_x11; then :
   else
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -35323,6 +35279,59 @@ if test $ac_cv_header_OpenGL_glext_h = yes; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENGL_GLEXT_H 1
+_ACEOF
+
+
+fi
+
+
+
+  fi
+
+  if $sim_ac_glext_header_avail; then :
+  else
+
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <GL/glext.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_GL_glext_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_GL_glext_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_GL_glext_h = yes; then
+
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=GL/glext.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_GL_GLEXT_H 1
 _ACEOF
 
 
@@ -35911,7 +35920,7 @@ if test x"$with_opengl" != x"no"; then
   case $host_os in
   darwin*)
 
-    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+    if $sim_ac_enable_darwin_x11; then
       sim_ac_gl_darwin_x11=/usr/X11R6
       if test -d $sim_ac_gl_darwin_x11; then
         sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
@@ -35923,56 +35932,7 @@ if test x"$with_opengl" != x"no"; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
   # Mac OS X framework (no X11, -framework OpenGL)
-  if test x$sim_ac_enable_darwin_x11 = xtrue; then
-
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <GL/glu.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_glu_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_cv_header_GL_glu_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_glu_h = yes; then
-
-      sim_ac_glu_header_avail=true
-      sim_ac_glu_header=GL/glu.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GLU_H 1
-_ACEOF
-
-
-fi
-
-
-
+  if $sim_ac_enable_darwin_x11; then :
   else
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -36016,6 +35976,59 @@ if test $ac_cv_header_OpenGL_glu_h = yes; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENGL_GLU_H 1
+_ACEOF
+
+
+fi
+
+
+
+  fi
+
+  if $sim_ac_glu_header_avail; then :
+  else
+
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <GL/glu.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_GL_glu_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_GL_glu_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_GL_glu_h = yes; then
+
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=GL/glu.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_GL_GLU_H 1
 _ACEOF
 
 
@@ -36194,7 +36207,7 @@ if test x"$with_opengl" != x"no"; then
   case $host_os in
   darwin*)
 
-    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+    if $sim_ac_enable_darwin_x11; then
       sim_ac_gl_darwin_x11=/usr/X11R6
       if test -d $sim_ac_gl_darwin_x11; then
         sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
@@ -36206,56 +36219,7 @@ if test x"$with_opengl" != x"no"; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
   # Mac OS X framework (no X11, -framework OpenGL)
-  if test x$sim_ac_enable_darwin_x11 = xtrue; then
-
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <GL/glu.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_glu_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_cv_header_GL_glu_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_glu_h = yes; then
-
-      sim_ac_glu_header_avail=true
-      sim_ac_glu_header=GL/glu.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GLU_H 1
-_ACEOF
-
-
-fi
-
-
-
+  if $sim_ac_enable_darwin_x11; then :
   else
 
 cat >conftest.$ac_ext <<_ACEOF
@@ -36299,6 +36263,59 @@ if test $ac_cv_header_OpenGL_glu_h = yes; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENGL_GLU_H 1
+_ACEOF
+
+
+fi
+
+
+
+  fi
+
+  if $sim_ac_glu_header_avail; then :
+  else
+
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <GL/glu.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_GL_glu_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_GL_glu_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_GL_glu_h = yes; then
+
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=GL/glu.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_GL_GLU_H 1
 _ACEOF
 
 
