@@ -679,6 +679,43 @@ SoType::isDerivedFrom(const SoType parent) const
 
   NB: do not write code which depends in any way on the order of the
   elements returned in \a list.
+
+  Here is a small, stand-alone example which shows how this method can
+  be used for introspection, listing all subclasses of the SoBase
+  superclass:
+
+  \code
+  #include <stdio.h>
+  #include <Inventor/SoDB.h>
+  #include <Inventor/lists/SoTypeList.h>
+  
+  static void
+  list_subtypes(SoType t, unsigned int indent = 0)
+  {
+    SoTypeList tl;
+    SoType::getAllDerivedFrom(t, tl);
+  
+    for (unsigned int i=0; i < indent; i++) { printf("  "); } 
+    printf("%s\n", t.getName().getString());
+  
+    indent++;
+    for (int j=0; j < tl.getLength(); j++) {
+      if (tl[j].getParent() == t) { // only interested in direct descendents
+        list_subtypes(tl[j], indent);
+      }
+    }
+  }
+  
+  int
+  main(void)
+  {
+    SoDB::init();
+  
+    list_subtypes(SoType::fromName("SoBase"));
+  
+    return 0;
+  }
+  \endcode
 */
 int
 SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
