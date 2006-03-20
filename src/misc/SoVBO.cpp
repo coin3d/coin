@@ -479,7 +479,8 @@ SoVBO::testGLPerformance(const uint32_t contextid)
     
     for (y = 0; y < size; y++) {
       for (x = 0; x < size; x++) {
-        ptr->setValue(float(x-half)/float(size)*0.1f, float(y-half)/float(size)*0.1f, 4.0f);
+        ptr[y*size+x].setValue(float(x-half)/float(size)*0.1f, 
+                               float(y-half)/float(size)*0.1f, 4.0f);
       }
     }
 #define IDX(ix, iy) ((iy)*size+ix)
