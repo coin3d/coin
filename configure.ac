@@ -229,10 +229,7 @@ AC_SUBST([BUILD_WITH_MSVC])
 # **************************************************************************
 # Universal Binary support (Mac OS X)
 
-SIM_AC_UNIVERSAL_BINARIES([
-  COIN_EXTRA_CFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CFLAGS"
-  COIN_EXTRA_CXXFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CXXFLAGS"
-])
+SIM_AC_UNIVERSAL_BINARIES
 
 # **************************************************************************
 
