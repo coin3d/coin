@@ -229,33 +229,10 @@ AC_SUBST([BUILD_WITH_MSVC])
 # **************************************************************************
 # Universal Binary support (Mac OS X)
 
-sim_ac_enable_universal=false
-
-case $host_os in
-  darwin* ) 
-    AC_ARG_ENABLE(
-      [universal],
-      AC_HELP_STRING([--enable-universal], [build Universal Binaries]), [
-        case $enableval in
-          yes | true) sim_ac_enable_universal=true ;;
-          *) ;;
-        esac])
-
-    if $sim_ac_enable_universal; then
-      SIM_AC_CONFIGURATION_SETTING([Build Universal Binaries], [Yes])
-      sim_ac_universal_flags="-arch i386 -arch ppc"
-      CFLAGS="$sim_ac_universal_flags $CFLAGS"
-      CXXFLAGS="$sim_ac_universal_flags $CXXFLAGS"
-      LDFLAGS="$sim_ac_universal_flags $LDFLAGS"
-      COIN_EXTRA_CFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CFLAGS"
-      COIN_EXTRA_CXXFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CXXFLAGS"
-      COIN_EXTRA_LDFLAGS="$sim_ac_universal_flags $COIN_EXTRA_LDFLAGS"
-      # disable dependency tracking since we can't use -MD when cross-compiling  
-      enable_dependency_tracking=no
-    else
-      SIM_AC_CONFIGURATION_SETTING([Build Universal Binaries], [No (default)])
-    fi
-esac
+SIM_AC_UNIVERSAL_BINARIES([
+  COIN_EXTRA_CFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CFLAGS"
+  COIN_EXTRA_CXXFLAGS="$sim_ac_universal_flags $COIN_EXTRA_CXXFLAGS"
+])
 
 # **************************************************************************
 
