@@ -1326,9 +1326,8 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
 SoCallbackAction::Response
 SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
-      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
-  }
+  // FIXME: test for drawstyle == POINTS and convert to a point set
+  // instead.  pederb, 20060327
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
 
   const SoIndexedLineSet * oldils = (const SoIndexedLineSet*) node;
@@ -1491,9 +1490,8 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
 SoCallbackAction::Response
 SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
-      return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
-  }
+  // FIXME: test for drawstyle == POINTS and convert to a point set
+  // instead.  pederb, 20060327
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
 
   const SoLineSet * oldls = (const SoLineSet*) node;
@@ -1620,9 +1618,6 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 SoCallbackAction::Response
 SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  if (action->getDrawStyle() != SoDrawStyle::FILLED) {
-    return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
-  }
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
 
   const SoPointSet * oldps = (const SoPointSet*) node;
