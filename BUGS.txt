@@ -2456,52 +2456,24 @@ Text2 {
 
     20060307 mortene.
 
-=====================================================================
+    This happens since we do culling against the view volume and the
+    clipping plane based on the bounding box of the node and each
+    character. I'm not sure if we should do culling against clipping
+    planes for 2D texts or not. Should investigate how SGI Inventor
+    handles this. 
 
-216 SoToVRML2Action doesn't handle linesets properly when
-    SoDrawStyle::style == LINES?
-
-    When used as input to SoToVRML2Action, the following scene graph
-    generates a buggy VRML2 scene graph, with no vertex coordinates:
-
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-#Inventor V2.1 ascii
-
-Separator {
-   DrawStyle {
-      style LINES
-      pointSize 3
-      lineWidth 0
-      linePattern 0xffff
-   }
-   Separator {
-
-      Material {
-         ambientColor 0.203922 0.203922 0.203922
-         diffuseColor 0.2 0.2 0.2
-         specularColor 0.498039 0.498039 0.498039
-         emissiveColor 1 0 0
-         shininess 0.078125
-         transparency 0
-      }
-
-      LineSet {
-         vertexProperty 
-         VertexProperty {
-            vertex [ -37013.8 12213.8 -884.683 ,
-             -21225.2 34556.1 -884.683 ,
-             -9160.35 7447.44 -884.683 ,
-             4096.09 32321.9 -884.683 ,
-             10649.8 -4319.52 -884.683 ]
-            orderedRGBA 0x96bbe9ff
-            materialBinding OVERALL
-         }
-         numVertices 5
-      }				 
-   }
-} 
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-
-    20060307 mortene.
+    20060327 pederb
 
 =====================================================================
+
+217 SoDrawStyle::POINTS not handled for linesets in SoToVRML2Action
+
+    If a scene contains a line set where the draw style is set to
+    POINTS, the lines will still be converted to lines and not points.
+
+    Needs a bit of code to fix so I'll probably delay this until the
+    next Coin bugfixing session.
+
+    20060327 pederb
+    
+
