@@ -34,6 +34,8 @@ public:
   // FIXME: should all these functions be const? 20050719 erikgors.
   // FIXME: what about the return value from executing a script?
   // 20050719 erikgors.
+  SoScriptEngine() { } 
+  virtual ~SoScriptEngine() { } 
   virtual SbBool executeScript(const SbName & name, 
                                const SbString & script) const = 0;
   virtual SbBool executeFile(const SbName & filename) const = 0;

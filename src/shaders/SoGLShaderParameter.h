@@ -64,6 +64,8 @@ public:
 public: 
   void operator delete(void * obj);
   void operator delete[](void * obj);
+
+  virtual ~SoGLShaderParameter() { } 
 };
 
 #endif /* ! COIN_SOGLSHADERPARAMETER_H */

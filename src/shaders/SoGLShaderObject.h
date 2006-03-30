@@ -42,6 +42,7 @@ class SoGLShaderObject
 {
 public:
   SoGLShaderObject(const uint32_t cachecontext);
+  virtual ~SoGLShaderObject() { } 
 
   const cc_glglue * GLContext(void) const;
   uint32_t getCacheContext(void) const;
