@@ -311,13 +311,8 @@ SoMFNode::read1Value(SoInput * in, int index)
 {
   SoSFNode sfnode;
   SbBool result = sfnode.readValue(in);
-  if (result && sfnode.getValue()) { // NULL is not allowed in MFNode
-    this->set1Value(index, sfnode.getValue());
-    return TRUE;
-  }
-  else {
-    return FALSE;
-  }
+  if (result) this->set1Value(index, sfnode.getValue());
+  return result;
 }
 
 // Export a single node.

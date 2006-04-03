@@ -169,10 +169,6 @@ SoSFEngine::readValue(SoInput * in)
     SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
-  if (!baseptr) {
-    SoReadError::post(in, "Unable to read value for SoSFEngine");
-    return FALSE;
-  }
 
   this->setValue((SoEngine *)baseptr);
   return TRUE;

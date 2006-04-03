@@ -978,13 +978,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   // allow engines at the top level of a file
   do {
     if (!SoDB::read(in, baseptr)) return FALSE;
-    if (!baseptr) {
-      if (in->eof()) return TRUE;
-      else {
-        SoReadError::post(in, "Unable to read toplevel SoBase instance");
-        return FALSE;
-      }
-    }
+    if (!baseptr) return TRUE; // eof
   } while (baseptr->isOfType(SoEngine::getClassTypeId()));
 
   if (!baseptr->isOfType(SoNode::getClassTypeId())) {
