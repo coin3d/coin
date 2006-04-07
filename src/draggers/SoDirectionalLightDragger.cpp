@@ -183,6 +183,9 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
 
   this->setUpConnections(TRUE, TRUE);
 
+  // create this part to avoid changes in the scene graph while traversing it
+  (void) SO_GET_ANY_PART(this, "translatorRotInv", SoRotation);
+
   this->translatorSep.setDefault(TRUE);
 }
 
