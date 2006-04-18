@@ -519,6 +519,27 @@ COIN_DLL_API void cc_glglue_glGetVertexAttribiv(const cc_glglue * glue, GLuint i
 COIN_DLL_API void cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue, GLuint index, GLenum pname, 
                                                       GLvoid **pointer);
 
+/* ARB_occlusion_query */
+COIN_DLL_API SbBool cc_glglue_has_occlusion_query(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glGenQueries(const cc_glglue * glue, 
+                                         GLsizei n, GLuint * ids);
+COIN_DLL_API void cc_glglue_glDeleteQueries(const cc_glglue * glue, 
+                                            GLsizei n, const GLuint *ids);
+COIN_DLL_API GLboolean cc_glglue_glIsQuery(const cc_glglue * glue, 
+                                         GLuint id);
+COIN_DLL_API void cc_glglue_glBeginQuery(const cc_glglue * glue, 
+                                         GLenum target, GLuint id);
+COIN_DLL_API void cc_glglue_glEndQuery(const cc_glglue * glue, 
+                                       GLenum target);
+COIN_DLL_API void cc_glglue_glGetQueryiv(const cc_glglue * glue, 
+                                         GLenum target, GLenum pname, 
+                                         GLint * params);
+COIN_DLL_API void cc_glglue_glGetQueryObjectiv(const cc_glglue * glue, 
+                                               GLuint id, GLenum pname, 
+                                               GLint * params);
+COIN_DLL_API void cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue, 
+                                                GLuint id, GLenum pname, 
+                                                GLuint * params);
 
 /* GL feature queries */
 COIN_DLL_API SbBool cc_glglue_can_do_bumpmapping(const cc_glglue * glue);

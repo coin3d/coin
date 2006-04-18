@@ -738,6 +738,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_fragment_program 1
 #define GL_ARB_vertex_program 1
 #define GL_ARB_shader_objects 1
+#define GL_ARB_occlusion_query 1
 
 #else /* static binding */
 
@@ -1611,7 +1612,49 @@ glglue_resolve_symbols(cc_glglue * w)
   } 
 #endif /* GL_ARB_shader_objects */
 
+  w->glGenQueries = NULL; /* so that cc_glglue_has_occlusion_query() works  */
+#if defined(GL_VERSION_1_5)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {   
+    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(glGenQueries);
+    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(glDeleteQueries);
+    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(glIsQuery);
+    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(glBeginQuery);
+    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(glEndQuery);
+    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(glGetQueryiv);
+    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(glGetQueryObjectiv);
+    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(glGetQueryObjectuiv);
+  }
+#endif /* GL_VERSION_1_5 */
 
+#if defined(GL_ARB_occlusion_query)
+  if ((w->glGenQueries == NULL) && cc_glglue_glext_supported(w, "GL_ARB_occlusion_query")) {
+    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(glGenQueriesARB);
+    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(glDeleteQueriesARB);
+    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(glIsQueryARB);
+    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(glBeginQueryARB);
+    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(glEndQueryARB);
+    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(glGetQueryivARB);
+    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(glGetQueryObjectivARB);
+    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(glGetQueryObjectuivARB);
+  }
+#endif /* GL_ARB_occlusion_query */
+
+  if (w->glGenQueries) {
+    if (!w->glDeleteQueries ||
+        !w->glIsQuery ||
+        !w->glBeginQuery ||
+        !w->glEndQuery ||
+        !w->glGetQueryiv ||
+        !w->glGetQueryObjectiv ||
+        !w->glGetQueryObjectuiv) {
+      w->glGenQueries = NULL; /* so that cc_glglue_has_occlusion_query() will return FALSE */
+      if (COIN_DEBUG || coin_glglue_debug()) {
+        cc_debugerror_postwarning("glglue_init",
+                                  "glGenQueries found, but one or more of the other "
+                                  "occlusion query functions were not found");
+      }
+    }
+  }
 
   w->glVertexArrayRangeNV = NULL;
 #if defined(GL_NV_vertex_array_range) && (defined(HAVE_GLX) || defined(HAVE_WGL))
@@ -3938,7 +3981,76 @@ cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue,
   glue->glGetVertexAttribPointervARB(index, pname, pointer);
 }
 
+/* GL_ARB_occlusion_query */
 
+SbBool
+cc_glglue_has_occlusion_query(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+
+  /* check only one function for speed. It's set to NULL when
+     initializing if one of the other functions wasn't found */
+  return glue->glGenQueries != NULL;
+}
+
+void
+cc_glglue_glGenQueries(const cc_glglue * glue, 
+                       GLsizei n, GLuint * ids)
+{
+  glue->glGenQueries(n, ids);
+}
+
+void
+cc_glglue_glDeleteQueries(const cc_glglue * glue, 
+                          GLsizei n, const GLuint *ids)
+{
+  glue->glDeleteQueries(n, ids);
+}
+
+GLboolean
+cc_glglue_glIsQuery(const cc_glglue * glue, 
+                    GLuint id)
+{
+  return glue->glIsQuery(id);
+}
+
+void
+cc_glglue_glBeginQuery(const cc_glglue * glue, 
+                       GLenum target, GLuint id)
+{
+  glue->glBeginQuery(target, id);
+}
+
+void
+cc_glglue_glEndQuery(const cc_glglue * glue, 
+                     GLenum target)
+{
+  glue->glEndQuery(target);
+}
+
+void
+cc_glglue_glGetQueryiv(const cc_glglue * glue, 
+                       GLenum target, GLenum pname, 
+                       GLint * params)
+{
+  glue->glGetQueryiv(target, pname, params);
+}
+
+void
+cc_glglue_glGetQueryObjectiv(const cc_glglue * glue, 
+                             GLuint id, GLenum pname, 
+                             GLint * params)
+{
+  glue->glGetQueryObjectiv(id, pname, params);
+}
+
+void
+cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue, 
+                              GLuint id, GLenum pname, 
+                              GLuint * params)
+{
+  glue->glGetQueryObjectuiv(id, pname, params);
+}
 
 /* GL_NV_texture_rectangle (identical to GL_EXT_texture_rectangle) */
 SbBool 

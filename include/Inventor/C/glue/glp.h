@@ -506,6 +506,17 @@ typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX3FVARBPROC)(COIN_GLhandle, GLsiz
 typedef void (APIENTRY * COIN_PFNGLUNIFORMMATRIX4FVARBPROC)(COIN_GLhandle, GLsizei, GLboolean, const GLfloat *);
 
 
+/* Typedefs for occlusion queries -- GL_ARB_occlusion_query */
+
+typedef void (APIENTRY * COIN_PFNGLGENQUERIESPROC)(GLsizei n, GLuint * ids);
+typedef void (APIENTRY * COIN_PFNGLDELETEQUERIESPROC)(GLsizei n, const GLuint *ids);
+typedef GLboolean (APIENTRY * COIN_PFNGLISQUERYPROC)(GLuint id);
+typedef void (APIENTRY * COIN_PFNGLBEGINQUERYPROC)(GLenum target, GLuint id);
+typedef void (APIENTRY * COIN_PFNGLENDQUERYPROC)(GLenum target);
+typedef void (APIENTRY * COIN_PFNGLGETQUERYIVPROC)(GLenum target, GLenum pname, GLint * params);
+typedef void (APIENTRY * COIN_PFNGLGETQUERYOBJECTIVPROC)(GLuint id, GLenum pname, GLint * params);
+typedef void (APIENTRY * COIN_PFNGLGETQUERYOBJECTUIVPROC)(GLuint id, GLenum pname, GLuint * params);
+
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
@@ -735,6 +746,15 @@ struct cc_glglue {
 
   COIN_PFNGLPUSHCLIENTATTRIBPROC glPushClientAttrib;
   COIN_PFNGLPOPCLIENTATTRIBPROC glPopClientAttrib;
+
+  COIN_PFNGLGENQUERIESPROC glGenQueries;
+  COIN_PFNGLDELETEQUERIESPROC glDeleteQueries;
+  COIN_PFNGLISQUERYPROC glIsQuery;
+  COIN_PFNGLBEGINQUERYPROC glBeginQuery;
+  COIN_PFNGLENDQUERYPROC glEndQuery;
+  COIN_PFNGLGETQUERYIVPROC glGetQueryiv;
+  COIN_PFNGLGETQUERYOBJECTIVPROC glGetQueryObjectiv;
+  COIN_PFNGLGETQUERYOBJECTUIVPROC glGetQueryObjectuiv;
 
   const char * versionstr;
   const char * vendorstr;
