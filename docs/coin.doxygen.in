@@ -667,6 +667,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSField.h \
                          @path_tag@@coin_src_dir@/include/Inventor/lists/SbIntList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/lists/SbList.h \

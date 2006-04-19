@@ -33,6 +33,7 @@ PublicHeaders = \
 	SoSFBitMask.h \
 	SoSFBool.h \
 	SoSFBox3s.h \
+	SoSFBox3f.h \
 	SoSFColor.h \
 	SoSFEngine.h \
 	SoSFEnum.h \

@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFBox3s.h>
+#include <Inventor/fields/SoSFBox3f.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>

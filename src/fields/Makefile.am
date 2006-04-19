@@ -31,6 +31,7 @@ RegularSources = \
 	SoSFBitMask.cpp \
 	SoSFBool.cpp \
 	SoSFBox3s.cpp \
+	SoSFBox3f.cpp \
 	SoSFColor.cpp \
 	SoSFEngine.cpp \
 	SoSFEnum.cpp \
