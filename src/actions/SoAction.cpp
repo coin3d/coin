@@ -425,6 +425,11 @@ SoAction::initClasses(void)
   SoWriteAction::initClass();
   SoAudioRenderAction::initClass();  
   SoIntersectionDetectionAction::initClass();
+  
+  SoSimplifyAction::initClass();
+  SoReorganizeAction::initClass();
+  SoToVRMLAction::initClass();
+  SoToVRML2Action::initClass();
 }
 
 /*!
