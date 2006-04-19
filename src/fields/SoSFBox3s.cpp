@@ -74,7 +74,7 @@ SoSFBox3s::readValue(SoInput * in)
       !in->read(max[0]) || 
       !in->read(max[1]) || 
       !in->read(max[2])) {
-    SoReadError::post(in, "Couldn't read vector");
+    SoReadError::post(in, "Couldn't read SoSFBox3s");
     return FALSE;
   }
   this->setValue(min[0], min[1], min[2], max[0], max[1], max[2]);
@@ -88,11 +88,17 @@ SoSFBox3s::writeValue(SoOutput * out) const
   short max[3];
   SbBox3s b = this->getValue();
   b.getBounds(min[0], min[1], min[2], max[0], max[1], max[2]);
+
   out->write(min[0]);
+  if (!out->isBinary()) out->write(' ');
   out->write(min[1]);
+  if (!out->isBinary()) out->write(' ');
   out->write(min[2]);
+  if (!out->isBinary()) out->write(' ');
   out->write(max[0]);
+  if (!out->isBinary()) out->write(' ');
   out->write(max[1]);
+  if (!out->isBinary()) out->write(' ');
   out->write(max[2]);
 }
 
