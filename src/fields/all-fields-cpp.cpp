@@ -75,7 +75,6 @@
 #include "SoSFVec3d.cpp"
 #include "SoSFVec4f.cpp"
 #include "SoSFBox3s.cpp"
-#include "SoSFBox3f.cpp"
 #include "SoSField.cpp"
 #include "SoGlobalField.cpp"
 #include "shared.cpp"

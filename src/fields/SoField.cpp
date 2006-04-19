@@ -2494,7 +2494,6 @@ SoField::initClasses(void)
 {
   SoSField::initClass();
   SoSFBox3s::initClass();
-  SoSFBox3f::initClass();
   SoSFBool::initClass();
   SoSFColor::initClass();
   SoSFEngine::initClass();
