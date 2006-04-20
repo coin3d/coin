@@ -294,6 +294,7 @@ RegularSources = \
 	SoSFBitMask.cpp \
 	SoSFBool.cpp \
 	SoSFBox3s.cpp \
+	SoSFBox3f.cpp \
 	SoSFColor.cpp \
 	SoSFEngine.cpp \
 	SoSFEnum.cpp \
@@ -402,7 +403,7 @@ am__fields_lst_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
 	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
 	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2f.cpp \
 	SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4f.cpp SoMField.cpp \
-	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFColor.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp \
 	SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp \
 	SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp \
 	SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp \
@@ -420,7 +421,7 @@ am__objects_2 = SoField.$(OBJEXT) SoFieldContainer.$(OBJEXT) \
 	SoMFString.$(OBJEXT) SoMFTime.$(OBJEXT) SoMFUInt32.$(OBJEXT) \
 	SoMFUShort.$(OBJEXT) SoMFVec2f.$(OBJEXT) SoMFVec3f.$(OBJEXT) \
 	SoMFVec3d.$(OBJEXT) SoMFVec4f.$(OBJEXT) SoMField.$(OBJEXT) \
-	SoSFBitMask.$(OBJEXT) SoSFBool.$(OBJEXT) SoSFBox3s.$(OBJEXT) \
+	SoSFBitMask.$(OBJEXT) SoSFBool.$(OBJEXT) SoSFBox3s.$(OBJEXT) SoSFBox3f.$(OBJEXT) \
 	SoSFColor.$(OBJEXT) SoSFEngine.$(OBJEXT) SoSFEnum.$(OBJEXT) \
 	SoSFFloat.$(OBJEXT) SoSFImage.$(OBJEXT) SoSFImage3.$(OBJEXT) \
 	SoSFInt32.$(OBJEXT) SoSFMatrix.$(OBJEXT) SoSFName.$(OBJEXT) \
@@ -442,7 +443,7 @@ am__EXTRA_fields_lst_SOURCES_DIST = shared.h all-fields-cpp.cpp \
 	SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp SoMFTime.cpp \
 	SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2f.cpp SoMFVec3f.cpp \
 	SoMFVec3d.cpp SoMFVec4f.cpp SoMField.cpp SoSFBitMask.cpp \
-	SoSFBool.cpp SoSFBox3s.cpp SoSFColor.cpp SoSFEngine.cpp \
+	SoSFBool.cpp SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp SoSFEngine.cpp \
 	SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp \
 	SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp \
 	SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp \
@@ -462,7 +463,7 @@ am__libfields_la_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
 	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
 	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2f.cpp \
 	SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4f.cpp SoMField.cpp \
-	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFColor.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp \
 	SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp \
 	SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp \
 	SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp \
@@ -478,7 +479,7 @@ am__objects_7 = SoField.lo SoFieldContainer.lo SoFieldData.lo \
 	SoMFShort.lo SoMFString.lo SoMFTime.lo SoMFUInt32.lo \
 	SoMFUShort.lo SoMFVec2f.lo SoMFVec3f.lo SoMFVec3d.lo \
 	SoMFVec4f.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo \
-	SoSFBox3s.lo SoSFColor.lo SoSFEngine.lo SoSFEnum.lo \
+	SoSFBox3s.lo SoSFBox3f.lo SoSFColor.lo SoSFEngine.lo SoSFEnum.lo \
 	SoSFFloat.lo SoSFImage.lo SoSFImage3.lo SoSFInt32.lo \
 	SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
 	SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
@@ -496,7 +497,7 @@ am__EXTRA_libfields_la_SOURCES_DIST = shared.h all-fields-cpp.cpp \
 	SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp SoMFTime.cpp \
 	SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2f.cpp SoMFVec3f.cpp \
 	SoMFVec3d.cpp SoMFVec4f.cpp SoMField.cpp SoSFBitMask.cpp \
-	SoSFBool.cpp SoSFBox3s.cpp SoSFColor.cpp SoSFEngine.cpp \
+	SoSFBool.cpp SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp SoSFEngine.cpp \
 	SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp \
 	SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp \
 	SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp \
@@ -515,7 +516,7 @@ am__libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = SoField.cpp \
 	SoMFShort.cpp SoMFString.cpp SoMFTime.cpp SoMFUInt32.cpp \
 	SoMFUShort.cpp SoMFVec2f.cpp SoMFVec3f.cpp SoMFVec3d.cpp \
 	SoMFVec4f.cpp SoMField.cpp SoSFBitMask.cpp SoSFBool.cpp \
-	SoSFBox3s.cpp SoSFColor.cpp SoSFEngine.cpp SoSFEnum.cpp \
+	SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp SoSFEngine.cpp SoSFEnum.cpp \
 	SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp \
 	SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp SoSFPath.cpp \
 	SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp SoSFString.cpp \
@@ -532,7 +533,7 @@ am__EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = shared.h \
 	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
 	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2f.cpp \
 	SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4f.cpp SoMField.cpp \
-	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFColor.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox3s.cpp SoSFBox3f.cpp SoSFColor.cpp \
 	SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp \
 	SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp \
 	SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp \
@@ -580,7 +581,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoMField.Po ./$(DEPDIR)/SoSFBitMask.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFBitMask.Po ./$(DEPDIR)/SoSFBool.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFBool.Po ./$(DEPDIR)/SoSFBox3s.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoSFBox3s.Po ./$(DEPDIR)/SoSFColor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSFBox3s.Po ./$(DEPDIR)/SoSFBox3f.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSFBox3f.Po ./$(DEPDIR)/SoSFColor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFColor.Po ./$(DEPDIR)/SoSFEngine.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFEngine.Po ./$(DEPDIR)/SoSFEnum.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFEnum.Po ./$(DEPDIR)/SoSFFloat.Plo \
@@ -760,6 +762,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBox3s.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBox3s.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBox3f.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBox3f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFEngine.Plo@am__quote@
