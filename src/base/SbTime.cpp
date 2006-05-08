@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2006 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,10 +14,10 @@
  *  support services, please contact Systems in Motion about acquiring
  *  a Coin Professional Edition License.
  *
- *  See <URL:http://www.coin3d.org/> for more information.
+ *  See http://www.coin3d.org/ for more information.
  *
  *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
- *  <URL:http://www.sim.no/>.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
@@ -60,6 +60,14 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/tidbits.h>
+
+#ifndef SIM_TIMEVAL_TV_SEC_T
+#define SIM_TIMEVAL_TV_SEC_T time_t
+#endif // !SIM_TIMEVAL_TV_SEC_T
+
+#ifndef SIM_TIMEVAL_TV_USEC_T
+#define SIM_TIMEVAL_TV_USEC_T time_t
+#endif // !SIM_TIMEVAL_TV_USEC_T
 
 // *************************************************************************
 
@@ -170,6 +178,7 @@ SbTime::maxTime(void)
   return SbTime(((double)INT_MAX) + 0.999999);
 }
 
+
 // This is needed because of the hackery in SbTime.h to avoid problems
 // with the Microsoft Visual C++ header files, see comment in
 // SbTime.h for additional information.
@@ -191,6 +200,7 @@ SbTime::max(void)
 {
   return SbTime::maxTime();
 }
+
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
@@ -280,9 +290,9 @@ SbTime::getValue(struct timeval * tv) const
   //
   // I guess we need a configure check to find the correct type to
   // cast to here, but investigate. 20050525 mortene.
-  tv->tv_sec = (time_t)(this->dtime);
+  tv->tv_sec = (SIM_TIMEVAL_TV_SEC_T) this->dtime;
   double us = fmod(this->dtime, 1.0) * 1000000.0;
-  tv->tv_usec = (time_t)(us + (us < 0.0 ? -0.5 : 0.5));
+  tv->tv_usec = (SIM_TIMEVAL_TV_USEC_T) (us + (us < 0.0 ? -0.5 : 0.5));
 }
 
 /*!
@@ -361,7 +371,7 @@ SbTime::getMsecValue(void) const
   %i - remaining milliseconds after subtracting the total number of seconds.<BR>
   %U - number of microseconds.<BR>
   %u - remaining microseconds after subtracting the total number of mseconds.<BR>
-  
+
   The result shows UTC time, not corrected for local time zone
   nor daylight savings time.
   

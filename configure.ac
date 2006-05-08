@@ -727,6 +727,31 @@ AC_TRY_LINK(
   AC_MSG_RESULT([available])],
  [AC_MSG_RESULT([not available])])
 
+SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER([
+#include <sys/types.h>
+#ifdef HAVE_TIME_H
+#include <time.h> // struct timeval (Linux)
+#endif // HAVE_TIME_H
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h> // struct timeval (IRIX)
+#endif // HAVE_SYS_TIME_H
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+], [timeval], [tv_sec], [SIM_TIMEVAL_TV_SEC_T], [])
+
+SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER([
+#include <sys/types.h>
+#ifdef HAVE_TIME_H
+#include <time.h> // struct timeval (Linux)
+#endif // HAVE_TIME_H
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h> // struct timeval (IRIX)
+#endif // HAVE_SYS_TIME_H
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+], [timeval], [tv_usec], [SIM_TIMEVAL_TV_USEC_T], [])
 
 # *******************************************************************
 
