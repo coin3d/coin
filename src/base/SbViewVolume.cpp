@@ -582,8 +582,8 @@ SbViewVolume::getProjectionType(void) const
 }
 
 /*!
-  Returns coordinates of center point in the projection plane.
- */
+  Returns the projection point, i.e. the camera position.
+*/
 const SbVec3f&
 SbViewVolume::getProjectionPoint(void) const
 {
