@@ -317,6 +317,7 @@
 
 #include <float.h>
 #include <math.h>
+#include <string.h>
 
 #include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -328,6 +329,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -343,6 +345,10 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
+
+#include "../src/misc/SoVBO.h"
+#include "../src/misc/SoVertexArrayIndexer.h"
+#include <Inventor/misc/SbHash.h>
 
 // *************************************************************************
 
@@ -364,20 +370,52 @@ my_normalize(SbVec3f & vec)
 // something later. pederb, 2005-01-25
 static const SbBool ALWAYS_CREATE_TRIANGLES = FALSE;
 
+class SoVRMLExtrusionVertex {
+public:
+  SbVec3f coord;
+  SbVec3f normal;
+  SbVec2f texcoord;
+  
+  // needed for SbHash
+  operator unsigned long(void) const {
+    unsigned long key = 0;
+    // create an xor key based on coordinates, normal and texcoords
+    const unsigned char * ptr = (const unsigned char *) this;    
+    const ptrdiff_t size = sizeof(SoVRMLExtrusionVertex);
+    
+    for (int i = 0; i < size; i++) {
+      int shift = (i%4) * 8;
+      key ^= (ptr[i]<<shift);
+    }
+    return key;
+  }
+  // needed, since if we don't add this the unsigned long operator
+  // will be used when comparing two vertices.
+  int operator==(const SoVRMLExtrusionVertex & v) {
+    return memcmp(this, &v, sizeof(v)) == 0;
+  }
+};
+
 class SoVRMLExtrusionP {
 public:
+
   SoVRMLExtrusionP(SoVRMLExtrusion * master)
     :master(master),
      coord(32),
      tcoord(32),
      idx(32),
      gen(TRUE),
-     dirty(TRUE)
+     dirty(TRUE),
+     vbodirty(TRUE),
+     vboindexer(NULL)
 #ifdef COIN_THREADSAFE
      , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
   {
     this->tess.setCallback(tess_callback, this);
+  }
+  ~SoVRMLExtrusionP() {
+    delete this->vboindexer;
   }
 
   SoVRMLExtrusion * master;
@@ -390,6 +428,20 @@ public:
   void generateCoords(void);
   void generateNormals(void);
   SbBool dirty;
+  SbBool vbodirty;
+
+  SbHash <int32_t, SoVRMLExtrusionVertex> vbohash;
+  SoVertexArrayIndexer * vboindexer;
+  SoVBO coordvbo;
+  SoVBO normalvbo;
+  SoVBO texcoordvbo;
+
+  SbList <SbVec3f> vbocoord;
+  SbList <SbVec3f> vbonormal;
+  SbList <SbVec2f> vbotexcoord;
+  
+  void updateVBO(SoAction * action);
+  void generateVBO(SoAction * action);
 
 #ifdef COIN_THREADSAFE
   SbRWMutex rwmutex;
@@ -476,55 +528,110 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   state->push();
 
   PRIVATE(this)->readLock();
+
   this->updateCache();
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
-  const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
-
-  SoCoordinateElement::set3(state, this, PRIVATE(this)->coord.getLength(), PRIVATE(this)->coord.getArrayPtr());
-  const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
-
-  if (doTextures) {
-    if (SoTextureCoordinateElement::getType(state) !=
-        SoTextureCoordinateElement::FUNCTION) {
-      SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
-                                       PRIVATE(this)->tcoord.getArrayPtr());
-    }
-    int lastenabled = -1;
-    const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-    if (lastenabled >= 1) {
-      for (int i = 1; i <= lastenabled; i++) {
-        if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
-                           SoTextureCoordinateElement::FUNCTION)) {
-          SoMultiTextureCoordinateElement::set2(state, this, i,
-                                                PRIVATE(this)->tcoord.getLength(),
-                                                PRIVATE(this)->tcoord.getArrayPtr());
-        }
-      }
-    }
-  }
-
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
+  const uint32_t contextid = SoGLCacheContextElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(contextid);
+  SbBool vbo = SoVBO::shouldCreateVBO(contextid, PRIVATE(this)->coord.getLength());
+ 
+  if (vbo) PRIVATE(this)->updateVBO(action);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
   this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
-  sogl_render_faceset((SoGLCoordinateElement *) coords,
-                      PRIVATE(this)->idx.getArrayPtr(),
-                      PRIVATE(this)->idx.getLength(),
-                      normals,
-                      NULL,
-                      &mb,
-                      NULL,
-                      &tb,
-                      PRIVATE(this)->idx.getArrayPtr(),
-                      3, /* SoIndexedFaceSet::PER_VERTEX */
-                      0,
-                      doTextures?1:0);
+  SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
+  if (vbo) {
+    int i;
+    int lastenabled = -1;
+    const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+
+    if (doTextures) {
+      PRIVATE(this)->texcoordvbo.bindBuffer(contextid);
+      cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0, NULL);
+      cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+      
+      for (i = 1; i <= lastenabled; i++) {
+        if (enabled[i]) {
+          cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+          cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0, NULL);
+          cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+        }
+      }
+      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
+    }
+    
+    PRIVATE(this)->normalvbo.bindBuffer(contextid);
+    cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
+    cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
+
+    PRIVATE(this)->coordvbo.bindBuffer(contextid);
+    cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
+    cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
+
+    PRIVATE(this)->vboindexer->render(glue, TRUE, contextid);
+
+    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
+    cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
+    cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
+
+    if (doTextures) {
+      for (i = 1; i <= lastenabled; i++) {
+        if (enabled[i]) {
+          cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+          cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+        }
+      }
+      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
+      cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    }
+  }
+  else {
+    const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
+    
+    SoCoordinateElement::set3(state, this, PRIVATE(this)->coord.getLength(), PRIVATE(this)->coord.getArrayPtr());
+    const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
+    
+    if (doTextures) {
+      if (SoTextureCoordinateElement::getType(state) !=
+          SoTextureCoordinateElement::FUNCTION) {
+        SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                         PRIVATE(this)->tcoord.getArrayPtr());
+      }
+      int lastenabled = -1;
+      const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+      if (lastenabled >= 1) {
+        for (int i = 1; i <= lastenabled; i++) {
+          if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
+                             SoTextureCoordinateElement::FUNCTION)) {
+            SoMultiTextureCoordinateElement::set2(state, this, i,
+                                                  PRIVATE(this)->tcoord.getLength(),
+                                                  PRIVATE(this)->tcoord.getArrayPtr());
+          }
+        }
+      }
+    }
+    
+    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    doTextures = tb.needCoordinates();
+    
+    
+    sogl_render_faceset((SoGLCoordinateElement *) coords,
+                        PRIVATE(this)->idx.getArrayPtr(),
+                        PRIVATE(this)->idx.getLength(),
+                        normals,
+                        NULL,
+                        &mb,
+                        NULL,
+                        &tb,
+                        PRIVATE(this)->idx.getArrayPtr(),
+                        3, /* SoIndexedFaceSet::PER_VERTEX */
+                        0,
+                        doTextures?1:0);
+  }
   PRIVATE(this)->readUnlock();
 
   state->pop();
@@ -673,11 +780,105 @@ SoVRMLExtrusion::updateCache(void)
   }
 }
 
+void 
+SoVRMLExtrusionP::updateVBO(SoAction * action)
+{
+  if (this->vbodirty) {
+    this->readUnlock();
+    this->writeLock();
+    this->generateVBO(action);
+    this->vbodirty = FALSE;
+    this->writeUnlock();
+    this->readLock();
+  }
+}
+
+void 
+SoVRMLExtrusionP::generateVBO(SoAction * action)
+{
+  SoState * state = action->getState();
+  state->push();
+  
+  if (SoTextureCoordinateElement::getType(state) !=
+      SoTextureCoordinateElement::FUNCTION) {
+    SoTextureCoordinateElement::set2(state, this->master, this->tcoord.getLength(),
+                                     this->tcoord.getArrayPtr());
+  }
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
+  SbBool istexfunc = tb.isFunction();
+
+  const SbVec3f * normals = this->gen.getNormals();
+  const SbVec2f * tcoords = this->tcoord.getArrayPtr();
+  const SbVec3f * coords = this->coord.getArrayPtr();
+  const int32_t * iptr = this->idx.getArrayPtr();
+  const int32_t * endptr = iptr + this->idx.getLength();
+
+  this->vbohash.clear();
+  this->vbocoord.truncate(0);
+  this->vbonormal.truncate(0);
+  this->vbotexcoord.truncate(0);
+
+  if (this->vboindexer) delete this->vboindexer;
+  this->vboindexer = new SoVertexArrayIndexer();
+
+  SoVRMLExtrusionVertex v;
+  int32_t vidx[4];
+  int curridx = 0;
+
+  int idx;
+  while (iptr < endptr) {
+    // we generate either triangles or quads, so this test is safe
+    SbBool isquad = iptr[3] >= 0;
+    
+    for (int i = 0; i < (isquad ? 4 : 3); i++) {
+      int idx = *iptr++;
+      v.normal = *normals;
+      if (istexfunc) {
+        SbVec4f tmp = tb.get(coords[idx], *normals);
+        v.texcoord = SbVec2f(tmp[0]/tmp[3], tmp[1]/tmp[3]);
+      }
+      else {
+        v.texcoord = tcoords[idx];
+      }
+      v.coord = coords[idx];
+      normals++;
+
+      if (!this->vbohash.get(v, vidx[i])) {
+        vidx[i] = curridx++;
+        this->vbohash.put(v, vidx[i]);
+        this->vbocoord.append(v.coord);
+        this->vbonormal.append(v.normal);
+        this->vbotexcoord.append(v.texcoord);
+      }
+    }
+    iptr++;
+    if (isquad) {
+      this->vboindexer->addQuad(vidx[0], vidx[1], vidx[2], vidx[3]);
+    }
+    else {
+      this->vboindexer->addTriangle(vidx[0], vidx[1], vidx[2]);
+    }
+  }
+  state->pop();
+  this->vbohash.clear();
+  this->vboindexer->close();
+
+  this->coordvbo.setBufferData(this->vbocoord.getArrayPtr(),
+                               this->vbocoord.getLength()*sizeof(SbVec3f), 1);
+
+  this->normalvbo.setBufferData(this->vbonormal.getArrayPtr(),
+                                this->vbonormal.getLength()*sizeof(SbVec3f), 1);
+  this->texcoordvbo.setBufferData(this->vbotexcoord.getArrayPtr(),
+                                  this->vbotexcoord.getLength()*sizeof(SbVec2f), 1);
+}
+
+
 // Doc in parent
 void
 SoVRMLExtrusion::notify(SoNotList * list)
 {
   PRIVATE(this)->dirty = TRUE;
+  PRIVATE(this)->vbodirty = TRUE;
   inherited::notify(list);
 }
 
