@@ -43,7 +43,6 @@
   operations. Significant gains in rendering speed could be seen as a
   result.
 
-
   Be aware that the way backface culling and two-sided lighting is
   decided by the rendering system is not at all intuitive.  Here are
   the common rules of how primitive shapes will render themselves with
@@ -62,15 +61,16 @@
   
   <li>vertexOrdering == UNKNOWN_ORDERING, any shapeType: primitives
       are \e not backface culled, and they are rendered with one-sided
-      lighting.
-  
+      lighting. The OpenGL vertex ordering will be set to counter clockwise 
+      ordering. 
   </ul>
 
-  (We find this strategy quite odd. It seems more sensible behavior
-  that when vertex ordering is unknown, two-sided lighting should be
-  enabled, since it will be difficult to know if a normal points in or
-  out of a polygon.  But for compatibility reasons we are of course
-  sticking to the same behavior as the original SGI Inventor library.)
+  The UNKNOWN_ORDERING enum has a special and non-intuitive meaning.
+  The ordering is really set to counter clockwise -- in OpenGL and
+  when generating normals. However, if you want to render your
+  geometry with one-sided lighting and backface culling disabled, you
+  have to use this enum value, and your polygons need to be in counter
+  clockwise ordering.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
