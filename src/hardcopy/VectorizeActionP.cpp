@@ -322,7 +322,9 @@ SoVectorizeActionP::triangle_cb(void * userdata,
   // one line loop.
   if (thisp->drawstyle == SoDrawStyleElement::LINES) {
     const SoDetail * detail = v1->getDetail();
-    if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+    // it's not required to have a detail instance per vertex, so
+    // check if we actually have one before testing the type
+    if (detail && (detail->getTypeId() == SoFaceDetail::getClassTypeId())) {
       
       const SoCoordinateElement * elem = SoCoordinateElement::getInstance(state);
       const SoFaceDetail * face = (const SoFaceDetail*) detail;
