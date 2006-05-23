@@ -441,7 +441,7 @@ public:
   SbList <SbVec2f> vbotexcoord;
   
   void updateVBO(SoAction * action);
-  void generateVBO(SoAction * action);
+  void generateVBO(SoAction * action, SoTextureCoordinateBundle & tb);
 
 #ifdef COIN_THREADSAFE
   SbRWMutex rwmutex;
@@ -785,8 +785,9 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
 {
   if (this->vbodirty) {
     this->readUnlock();
+    SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
     this->writeLock();
-    this->generateVBO(action);
+    this->generateVBO(action, tb);
     this->vbodirty = FALSE;
     this->writeUnlock();
     this->readLock();
@@ -794,7 +795,7 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
 }
 
 void 
-SoVRMLExtrusionP::generateVBO(SoAction * action)
+SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 {
   SoState * state = action->getState();
   state->push();
@@ -804,7 +805,6 @@ SoVRMLExtrusionP::generateVBO(SoAction * action)
     SoTextureCoordinateElement::set2(state, this->master, this->tcoord.getLength(),
                                      this->tcoord.getArrayPtr());
   }
-  SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
   SbBool istexfunc = tb.isFunction();
 
   const SbVec3f * normals = this->gen.getNormals();
