@@ -786,6 +786,13 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
   if (this->vbodirty) {
     this->readUnlock();
     SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
+    SbBool istexfunc = tb.isFunction();
+    if (istexfunc) {
+      // trigger a texture coordinate function callback to update (for
+      // instance) bounding box caches in texture function nodes. It's
+      // important that this is done before we writeLock() the node.
+      (void) tb.get(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 1.0f));
+    }
     this->writeLock();
     this->generateVBO(action, tb);
     this->vbodirty = FALSE;
