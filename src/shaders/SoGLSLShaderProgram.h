@@ -31,6 +31,7 @@
 // *************************************************************************
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/glp.h>
 
 class SoGLSLShaderObject;
@@ -56,12 +57,16 @@ public:
 
 protected:
   SbList <SoGLSLShaderObject *> shaderObjects;
-  COIN_GLhandle programHandle;
+  SbHash <COIN_GLhandle, uint32_t> programHandles;
+
   SbBool isExecutable;
 
   int indexOfShaderObject(SoGLSLShaderObject * shaderObject);
   void ensureLinking(const cc_glglue * g);
   void ensureProgramHandle(const cc_glglue * g);
+
+private:
+  COIN_GLhandle getProgramHandle(const cc_glglue * g, const SbBool create = FALSE);
 };
 
 #endif /* ! COIN_SOGLSLSHADERPROGRAM_H */

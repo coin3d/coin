@@ -24,6 +24,7 @@
 #include "SoGLSLShaderProgram.h"
 
 #include "SoGLSLShaderObject.h"
+#include <Inventor/C/glue/glp.h>
 
 // *************************************************************************
 
@@ -33,8 +34,8 @@
 // *************************************************************************
 
 SoGLSLShaderProgram::SoGLSLShaderProgram(void)
+  : programHandles(5)
 {
-  this->programHandle = 0;
   this->isExecutable = FALSE;
 }
 
@@ -63,7 +64,7 @@ SoGLSLShaderProgram::enable(const cc_glglue * g)
   this->ensureLinking(g);
 
   if (this->isExecutable) {
-    g->glUseProgramObjectARB(this->programHandle);
+    g->glUseProgramObjectARB(this->getProgramHandle(g, TRUE));
   }
 }
 
@@ -103,7 +104,8 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
   if (!shouldlink) return;
 
   this->isExecutable = FALSE;
-  this->ensureProgramHandle(g);
+
+  COIN_GLhandle programHandle = this->getProgramHandle(g, TRUE);
 
   int cnt = this->shaderObjects.getLength();
 
@@ -111,16 +113,16 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
     GLint didLink;
 
     for (int i=0; i<cnt; i++) 
-      this->shaderObjects[i]->attach(this->programHandle);
+      this->shaderObjects[i]->attach(programHandle);
 
-    g->glLinkProgramARB(this->programHandle);
+    g->glLinkProgramARB(programHandle);
 
     if (SoGLSLShaderObject::didOpenGLErrorOccur(0)) {
-      SoGLSLShaderObject::printInfoLog(g, this->programHandle, 0);
+      SoGLSLShaderObject::printInfoLog(g, programHandle, 0);
     }
-    g->glGetObjectParameterivARB(this->programHandle,
+    g->glGetObjectParameterivARB(programHandle,
                                  GL_OBJECT_LINK_STATUS_ARB,&didLink);
-
+    
     this->isExecutable = didLink;
   }
 }
@@ -140,7 +142,18 @@ SoGLSLShaderProgram::indexOfShaderObject(SoGLSLShaderObject *shaderObject)
 void
 SoGLSLShaderProgram::ensureProgramHandle(const cc_glglue * g)
 {
-  if (this->programHandle == 0) {
-    this->programHandle = g->glCreateProgramObjectARB();
+  (void) this->getProgramHandle(g, TRUE);
+}
+
+COIN_GLhandle 
+SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
+{
+  COIN_GLhandle handle = 0;
+  if (!this->programHandles.get(g->contextid, handle) && create) {
+    // FIXME: set up context destruction callbacks and clean up
+    // programs in the destructor. pederb, 2006-05-24
+    handle = g->glCreateProgramObjectARB();
+    this->programHandles.put(g->contextid, handle);
   }
+  return handle;
 }
