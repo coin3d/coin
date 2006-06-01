@@ -763,6 +763,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     }
   }
   
+  SbBool convexcacheused = FALSE;
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
     cindices = PRIVATE(this)->convexCache->getCoordIndices();
     numindices = PRIVATE(this)->convexCache->getNumCoordIndices();
@@ -776,6 +777,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     else if (nbind == PER_FACE) nbind = PER_FACE_INDEXED;
 
     if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
+    convexcacheused = TRUE;
   }
 
   int texidx = 0;
@@ -878,6 +880,9 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
 
   if (normalCacheUsed) {
     this->readUnlockNormalCache();
+  }
+  if (convexcacheused) {
+    PRIVATE(this)->readUnlockConvexCache();
   }
   state->pop();
 }
