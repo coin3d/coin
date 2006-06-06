@@ -39,6 +39,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include "../../misc/SoVBO.h"
 #include <assert.h>
 
@@ -241,8 +242,11 @@ SbBool
 SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
+  // don't use SoGLCacheContextElement to find the current cache
+  // context since we don't want this call to create a cache dependecy
+  // on SoGLCacheContextElement. 
   return 
     cc_glglue_has_vertex_buffer_object(glue) &&
-    SoVBO::shouldCreateVBO((uint32_t) SoGLCacheContextElement::get(state), numdata);
+    SoVBO::shouldCreateVBO(glue->contextid, numdata);
 }
 
