@@ -37,6 +37,7 @@
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/fields/SoSFRotation.h>
 
 #include <Inventor/fields/SoMFInt32.h>
@@ -47,6 +48,7 @@
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoMFVec3f.h>
+#include <Inventor/fields/SoMFVec3d.h>
 #include <Inventor/fields/SoMFRotation.h>
 
 #include <Inventor/SoDB.h>
@@ -70,6 +72,7 @@ struct CoinVrmlJs {
   static ClassDescriptor SFRotation;
   static ClassDescriptor SFVec2f;
   static ClassDescriptor SFVec3f;
+  static ClassDescriptor SFVec3d;
 
   static ClassDescriptor MFColor;
   static ClassDescriptor MFFloat;
@@ -80,6 +83,7 @@ struct CoinVrmlJs {
   static ClassDescriptor MFTime;
   static ClassDescriptor MFVec2f;
   static ClassDescriptor MFVec3f;
+  static ClassDescriptor MFVec3d;
 };
 
 // Struct and SbHash for keeping track of SoNodeSensors for recycling
@@ -98,6 +102,7 @@ float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 // Macros for instance checking
 #define JSVAL_IS_SFVEC2F(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFVec2f.cls, NULL))
 #define JSVAL_IS_SFVEC3F(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFVec3f.cls, NULL))
+#define JSVAL_IS_SFVEC3D(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFVec3d.cls, NULL))
 #define JSVAL_IS_SFCOLOR(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFColor.cls, NULL))
 #define JSVAL_IS_SFROTATION(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFRotation.cls, NULL))
 
@@ -106,6 +111,7 @@ float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 #define SFRotationHandler CoinVrmlJsSFHandler<SbVec4f, 4, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFRotationDefaultValues>
 #define SFVec2fHandler CoinVrmlJsSFHandler<SbVec2f, 2, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
 #define SFVec3fHandler CoinVrmlJsSFHandler<SbVec3f, 3, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
+#define SFVec3dHandler CoinVrmlJsSFHandler<SbVec3d, 3, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
 
 #define MFColorHandler CoinVrmlJsMFHandler<SoMFColor, SoSFColor, &CoinVrmlJs::MFColor>
 #define MFFloatHandler CoinVrmlJsMFHandler<SoMFFloat, SoSFFloat, &CoinVrmlJs::MFFloat>
@@ -116,6 +122,7 @@ float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 #define MFTimeHandler CoinVrmlJsMFHandler<SoMFTime, SoSFTime, &CoinVrmlJs::MFTime>
 #define MFVec2fHandler CoinVrmlJsMFHandler<SoMFVec2f, SoSFVec2f, &CoinVrmlJs::MFVec2f>
 #define MFVec3fHandler CoinVrmlJsMFHandler<SoMFVec3f, SoSFVec3f, &CoinVrmlJs::MFVec3f>
+#define MFVec3dHandler CoinVrmlJsMFHandler<SoMFVec3d, SoSFVec3d, &CoinVrmlJs::MFVec3d>
 
 static JSFunctionSpec MFFunctions[] = {
 //  {"toString", MF_toString, 0, 0, 0},
@@ -131,6 +138,7 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container);
 static JSObject * SFRotationFactory(JSContext * cx, const SbRotation & self);
 static JSObject * SFVec2fFactory(JSContext * cx, const SbVec2f & self);
 static JSObject * SFVec3fFactory(JSContext * cx, const SbVec3f & self);
+static JSObject * SFVec3dFactory(JSContext * cx, const SbVec3d & self);
 
 static SbList <JSObject *> * garbagecollectedobjects = NULL;
 static SbList <SoNodeSensor *> * nodesensorstobedeleted = NULL;
@@ -337,6 +345,13 @@ struct CoinVrmlJsMFHandler {
             spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFVec3f.cls, NULL, NULL);
           assert(newObj != NULL);
           SFVec3fHandler::constructor(cx, newObj, 0, NULL, &val);
+          val = OBJECT_TO_JSVAL(newObj);
+        }
+        else if (type == SoMFVec3d::getClassTypeId()) {
+          JSObject * newObj =
+            spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFVec3d.cls, NULL, NULL);
+          assert(newObj != NULL);
+          SFVec3dHandler::constructor(cx, newObj, 0, NULL, &val);
           val = OBJECT_TO_JSVAL(newObj);
         }
         else {
@@ -636,6 +651,21 @@ static JSBool SFVec3f_add(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
+static JSBool SFVec3d_add(JSContext * cx, JSObject * obj, uintN argc,
+                          jsval * argv, jsval * rval)
+{
+  SbVec3d & vec1 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  if (argc >= 1 && JSVAL_IS_SFVEC3D(cx, argv[0])) {
+    SbVec3d & vec2 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+    SbVec3d result = vec1 + vec2;
+    *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, result));
+    return JS_TRUE;
+  }
+
+  return JS_FALSE;
+}
+
 static JSBool SFVec2f_divide(JSContext * cx, JSObject * obj, uintN argc,
                              jsval * argv, jsval * rval)
 {
@@ -663,6 +693,22 @@ static JSBool SFVec3f_divide(JSContext * cx, JSObject * obj, uintN argc,
 
     SbVec3f newVec = vec / (float)number;
     *rval = OBJECT_TO_JSVAL(SFVec3fFactory(cx, newVec));
+    return JS_TRUE;
+  }
+  return JS_FALSE;
+}
+
+static JSBool SFVec3d_divide(JSContext * cx, JSObject * obj, uintN argc,
+                             jsval * argv, jsval * rval)
+{
+  SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
+    double number;
+    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
+
+    SbVec3d newVec = vec / number;
+    *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, newVec));
     return JS_TRUE;
   }
   return JS_FALSE;
@@ -699,6 +745,22 @@ static JSBool SFVec3f_dot(JSContext *cx, JSObject *obj, uintN argc,
   return JS_FALSE;
 }
 
+static JSBool SFVec3d_dot(JSContext *cx, JSObject *obj, uintN argc,
+                          jsval *argv, jsval *rval)
+{
+  SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  if (argc >= 1 && JSVAL_IS_SFVEC3D(cx, argv[0])) {
+
+    SbVec3d & vec2 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+
+    double dot = vec.dot(vec2);
+    JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
+    return JS_TRUE;
+  }
+  return JS_FALSE;
+}
+
 static JSBool SFVec2_length(JSContext * cx, JSObject * obj, uintN argc,
                             jsval * argv, jsval * rval)
 {
@@ -707,10 +769,18 @@ static JSBool SFVec2_length(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec3_length(JSContext * cx, JSObject * obj, uintN argc,
+static JSBool SFVec3f_length(JSContext * cx, JSObject * obj, uintN argc,
                             jsval * argv, jsval * rval)
 {
   SbVec3f * vec = (SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
+  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
+  return JS_TRUE;
+}
+
+static JSBool SFVec3d_length(JSContext * cx, JSObject * obj, uintN argc,
+                            jsval * argv, jsval * rval)
+{
+  SbVec3d * vec = (SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
   JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
   return JS_TRUE;
 }
@@ -750,6 +820,22 @@ static JSBool SFVec3f_multiply(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
+static JSBool SFVec3d_multiply(JSContext * cx, JSObject * obj, uintN argc,
+                               jsval * argv, jsval * rval)
+{
+  SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
+    double number;
+    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
+
+    SbVec3d newVec = vec * number;
+    *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, newVec));
+    return JS_TRUE;
+  }
+  return JS_FALSE;
+}
+
 static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN argc,
                                 jsval * argv, jsval * rval)
 {
@@ -768,12 +854,30 @@ static JSBool SFVec3f_normalize(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
+static JSBool SFVec3d_normalize(JSContext * cx, JSObject * obj, uintN argc,
+                                jsval * argv, jsval * rval)
+{
+  SbVec3d vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+  vec.normalize();
+  *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, vec));
+  return JS_TRUE;
+}
+
 static JSBool SFVec3f_negate(JSContext * cx, JSObject * obj, uintN argc,
                                      jsval * argv, jsval * rval)
 {
   SbVec3f vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.negate();
   *rval = OBJECT_TO_JSVAL(SFVec3fFactory(cx, vec));
+  return JS_TRUE;
+}
+
+static JSBool SFVec3d_negate(JSContext * cx, JSObject * obj, uintN argc,
+                                     jsval * argv, jsval * rval)
+{
+  SbVec3d vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+  vec.negate();
+  *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, vec));
   return JS_TRUE;
 }
 
@@ -800,6 +904,21 @@ static JSBool SFVec3f_substract(JSContext * cx, JSObject * obj, uintN argc,
     SbVec3f & vec2 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
     SbVec3f result = vec1 - vec2;
     *rval = OBJECT_TO_JSVAL(SFVec3fFactory(cx, result));
+    return JS_TRUE;
+  }
+
+  return JS_FALSE;
+}
+
+static JSBool SFVec3d_substract(JSContext * cx, JSObject * obj, uintN argc,
+                                jsval * argv, jsval * rval)
+{
+  SbVec3d & vec1 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  if (argc >= 1 && JSVAL_IS_SFVEC3D(cx, argv[0])) {
+    SbVec3d & vec2 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+    SbVec3d result = vec1 - vec2;
+    *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, result));
     return JS_TRUE;
   }
 
@@ -965,11 +1084,23 @@ static JSFunctionSpec SFVec3fFunctions[] = {
   {"add", SFVec3f_add, 1, 0, 0},
   {"divide", SFVec3f_divide, 1, 0, 0},
   {"dot", SFVec3f_dot, 1, 0, 0},
-  {"length", SFVec3_length, 0, 0, 0},
+  {"length", SFVec3f_length, 0, 0, 0},
   {"multiply", SFVec3f_multiply, 1, 0, 0},
   {"normalize", SFVec3f_normalize, 0, 0, 0},
   {"negate", SFVec3f_negate, 0, 0, 0},
   {"substract", SFVec3f_substract, 1, 0, 0},
+  {NULL, NULL, 0, 0, 0}
+};
+
+static JSFunctionSpec SFVec3dFunctions[] = {
+  {"add", SFVec3d_add, 1, 0, 0},
+  {"divide", SFVec3d_divide, 1, 0, 0},
+  {"dot", SFVec3d_dot, 1, 0, 0},
+  {"length", SFVec3d_length, 0, 0, 0},
+  {"multiply", SFVec3d_multiply, 1, 0, 0},
+  {"normalize", SFVec3d_normalize, 0, 0, 0},
+  {"negate", SFVec3d_negate, 0, 0, 0},
+  {"substract", SFVec3d_substract, 1, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
 
@@ -1042,6 +1173,18 @@ static JSObject * SFVec3fFactory(JSContext * cx, const SbVec3f & self)
   return obj;
 }
 
+static JSObject * SFVec3dFactory(JSContext * cx, const SbVec3d & self)
+{
+  JSObject * obj =
+    spidermonkey()->JS_NewObject(cx, &CoinVrmlJs::SFVec3d.cls, NULL, NULL);
+  spidermonkey()->JS_DefineFunctions(cx, obj, SFVec3dFunctions);
+
+  SbVec3d * data = new SbVec3d(self);
+  spidermonkey()->JS_SetPrivate(cx, obj, data);
+
+  return obj;
+}
+
 static JSObject * SFVec2f_init(JSContext * cx, JSObject * obj)
 {
   return spidermonkey()->JS_InitClass(cx, obj, NULL, &CoinVrmlJs::SFVec2f.cls,
@@ -1052,8 +1195,15 @@ static JSObject * SFVec2f_init(JSContext * cx, JSObject * obj)
 static JSObject * SFVec3f_init(JSContext * cx, JSObject * obj)
 {
   return spidermonkey()->JS_InitClass(cx, obj, NULL, &CoinVrmlJs::SFVec3f.cls,
-                                      SFVec2fHandler::constructor, 0,
+                                      SFVec3fHandler::constructor, 0,
                                       NULL, SFVec3fFunctions, NULL, NULL);
+}
+
+static JSObject * SFVec3d_init(JSContext * cx, JSObject * obj)
+{
+  return spidermonkey()->JS_InitClass(cx, obj, NULL, &CoinVrmlJs::SFVec3d.cls,
+                                      SFVec3dHandler::constructor, 0,
+                                      NULL, SFVec3dFunctions, NULL, NULL);
 }
 
 static JSObject * SFColor_init(JSContext * cx, JSObject * obj)
@@ -1418,6 +1568,17 @@ static SbBool SFVec3f_jsval2field(JSContext * cx, const jsval v, SoField * f)
   return FALSE;
 }
 
+static SbBool SFVec3d_jsval2field(JSContext * cx, const jsval v, SoField * f)
+{
+  if (JSVAL_IS_SFVEC3D(cx, v)) {
+    SbVec3d * vec = (SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(v));
+    assert(vec != NULL);
+    ((SoSFVec3d *)f)->setValue(*vec);
+    return TRUE;
+  }
+  return FALSE;
+}
+
 // *************************************************************************
 // field2jsval
 
@@ -1487,6 +1648,13 @@ static void SFVec3f_field2jsval(JSContext * cx, const SoField * f, jsval *v)
   *v = OBJECT_TO_JSVAL(obj);
 }
 
+static void SFVec3d_field2jsval(JSContext * cx, const SoField * f, jsval *v)
+{
+  const SbVec3d & val = ((SoSFVec3d *)f)->getValue();
+  JSObject * obj = SFVec3dFactory(cx, val);
+  *v = OBJECT_TO_JSVAL(obj);
+}
+
 // *************************************************************************
 // classes
 
@@ -1544,6 +1712,17 @@ CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFVec3f = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
   },
   SFVec3fFunctions
+};
+
+CoinVrmlJs::ClassDescriptor CoinVrmlJs::SFVec3d = {
+  {
+    "SFVec3d", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    SFVec3dHandler::get, SFVec3dHandler::set,
+    NULL, NULL, NULL,
+    SFVec3dHandler::destructor,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
+  },
+  SFVec3dFunctions
 };
 
 CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFColor = {
@@ -1645,13 +1824,25 @@ CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec3f = {
   MFFunctions,
 };
 
+CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec3d = {
+  {
+    "MFVec3d", JSCLASS_HAS_PRIVATE, NULL, NULL,
+    MFVec3dHandler::get, MFVec3dHandler::set,
+    NULL, NULL, NULL,
+    MFVec3dHandler::destructor,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0
+  },
+  MFFunctions,
+};
+
 
 CoinVrmlJs::ClassDescriptor * CLASSDESCRIPTORS[] = {
   &CoinVrmlJs::SFColor, &CoinVrmlJs::SFNode, &CoinVrmlJs::SFRotation,
-  &CoinVrmlJs::SFVec2f, &CoinVrmlJs::SFVec3f, &CoinVrmlJs::MFColor,
+  &CoinVrmlJs::SFVec2f, &CoinVrmlJs::SFVec3f, &CoinVrmlJs::SFVec3d, 
+  &CoinVrmlJs::MFColor, 
   &CoinVrmlJs::MFFloat, &CoinVrmlJs::MFInt32, &CoinVrmlJs::MFNode,
   &CoinVrmlJs::MFRotation, &CoinVrmlJs::MFString, &CoinVrmlJs::MFTime,
-  &CoinVrmlJs::MFVec2f, &CoinVrmlJs::MFVec3f
+  &CoinVrmlJs::MFVec2f, &CoinVrmlJs::MFVec3f, &CoinVrmlJs::MFVec3d
 };
 
 // *************************************************************************
@@ -1787,4 +1978,14 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     MFVec3fHandler::init,
     MFVec3fHandler::field2jsval,
     MFVec3fHandler::jsval2field);
+
+  // Vec3d
+  engine->addHandler(
+    SoSFVec3d::getClassTypeId(), SFVec3d_init,
+    SFVec3d_field2jsval, SFVec3d_jsval2field);
+  engine->addHandler(
+    SoMFVec3d::getClassTypeId(),
+    MFVec3dHandler::init,
+    MFVec3dHandler::field2jsval,
+    MFVec3dHandler::jsval2field);
 }
