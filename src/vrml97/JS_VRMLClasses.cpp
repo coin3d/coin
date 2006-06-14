@@ -97,6 +97,7 @@ SbHash <void *, unsigned long> * CoinVrmlJs_sensorinfohash = NULL;
 char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
 char * CoinVrmlJs_SFRotationAliases[] = {"x", "y", "z", "angle"};
 float CoinVrmlJs_SFdefaultValues[] = {0.0, 0.0, 0.0, 0.0};
+double CoinVrmlJs_SFdefaultValuesDouble[] = {0.0, 0.0, 0.0, 0.0};
 float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 
 // Macros for instance checking
@@ -107,11 +108,11 @@ float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
 #define JSVAL_IS_SFROTATION(cx, jsval) (JSVAL_IS_OBJECT(jsval) && spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(jsval), &CoinVrmlJs::SFRotation.cls, NULL))
 
 // Handlers
-#define SFColorHandler CoinVrmlJsSFHandler<SbColor, 3, CoinVrmlJs_SFColorAliases, CoinVrmlJs_SFdefaultValues>
-#define SFRotationHandler CoinVrmlJsSFHandler<SbVec4f, 4, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFRotationDefaultValues>
-#define SFVec2fHandler CoinVrmlJsSFHandler<SbVec2f, 2, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
-#define SFVec3fHandler CoinVrmlJsSFHandler<SbVec3f, 3, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
-#define SFVec3dHandler CoinVrmlJsSFHandler<SbVec3d, 3, CoinVrmlJs_SFRotationAliases, CoinVrmlJs_SFdefaultValues>
+#define SFColorHandler CoinVrmlJsSFHandler<SbColor, 3, CoinVrmlJs_SFColorAliases, float, CoinVrmlJs_SFdefaultValues>
+#define SFRotationHandler CoinVrmlJsSFHandler<SbVec4f, 4, CoinVrmlJs_SFRotationAliases, float, CoinVrmlJs_SFRotationDefaultValues>
+#define SFVec2fHandler CoinVrmlJsSFHandler<SbVec2f, 2, CoinVrmlJs_SFRotationAliases, float, CoinVrmlJs_SFdefaultValues>
+#define SFVec3fHandler CoinVrmlJsSFHandler<SbVec3f, 3, CoinVrmlJs_SFRotationAliases, float, CoinVrmlJs_SFdefaultValues>
+#define SFVec3dHandler CoinVrmlJsSFHandler<SbVec3d, 3, CoinVrmlJs_SFRotationAliases, double, CoinVrmlJs_SFdefaultValuesDouble>
 
 #define MFColorHandler CoinVrmlJsMFHandler<SoMFColor, SoSFColor, &CoinVrmlJs::MFColor>
 #define MFFloatHandler CoinVrmlJsMFHandler<SoMFFloat, SoSFFloat, &CoinVrmlJs::MFFloat>
@@ -174,7 +175,7 @@ static JSBool getIndex(JSContext * cx, jsval id, char * aliases[], int max)
 
 // FIXME: number of aliases must not be lower than max. This may lead to
 // unsafe programming. 20050721 erikgors.
-template <class Base, int max, char * aliases[], float defaultValues[]>
+template <class Base, int max, char * aliases[], class basetype, basetype defaultValues[]>
 struct CoinVrmlJsSFHandler {
   static JSBool get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
   {
@@ -185,7 +186,7 @@ struct CoinVrmlJsSFHandler {
 
     Base * data = (Base *)spidermonkey()->JS_GetPrivate(cx, obj);
     assert(data != NULL);
-    float var = (*data)[index];
+    basetype var = (*data)[index];
     SbBool ok = spidermonkey()->JS_NewDoubleValue(cx, (double)var, rval);
     assert(ok && "JS_NewDoubleValue failed");
     return JS_TRUE;
@@ -198,7 +199,7 @@ struct CoinVrmlJsSFHandler {
       return JS_FALSE;
     }
 
-    SbColor * data = (SbColor *)spidermonkey()->JS_GetPrivate(cx, obj);
+    Base * data = (Base *)spidermonkey()->JS_GetPrivate(cx, obj);
     assert(data != NULL);
 
     // FIXME: number may be NaN, PositiveInfinity and NegativeInfinity.
@@ -206,14 +207,14 @@ struct CoinVrmlJsSFHandler {
     // ie: "blipp" will become NaN. 20050720 erikgors.
     double number;
     spidermonkey()->JS_ValueToNumber(cx, *val, &number);
-    (*data)[index] = (float)number;
+    (*data)[index] = (basetype)number;
     return JS_TRUE;
   }
 
   static JSBool constructor(JSContext * cx, JSObject * obj,
                             uintN argc, jsval * argv, jsval * rval)
   {
-    float vals[max];
+    basetype vals[max];
 
     // convert all arguments to numbers or use defaultValues if missing
     uint32_t i;
@@ -222,7 +223,7 @@ struct CoinVrmlJsSFHandler {
       if (i<argc) {
         double val;
         if (spidermonkey()->JS_ValueToNumber(cx, argv[i], &val)) {
-          vals[i] = (float)val;
+          vals[i] = (basetype)val;
         }
         else {
           spidermonkey()->JS_ReportError(cx, "WARNING: failed converting argument %d "
