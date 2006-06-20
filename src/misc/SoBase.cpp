@@ -557,11 +557,10 @@ SoBase::ref(void) const
   // Cast away constness.
   SoBase * base = (SoBase *)this;
 
+  CC_MUTEX_LOCK(SoBaseP::mutex);
 #if COIN_DEBUG
   int32_t currentrefcount = base->objdata.referencecount;
 #endif // COIN_DEBUG
-
-  CC_MUTEX_LOCK(SoBaseP::mutex);
   base->objdata.referencecount++;
   CC_MUTEX_UNLOCK(SoBaseP::mutex);
 
@@ -612,6 +611,8 @@ SoBase::unref(void) const
   SoBase * base = (SoBase *)this;
   CC_MUTEX_LOCK(SoBaseP::mutex);
   base->objdata.referencecount--;
+  int refcount = base->objdata.referencecount;
+ 
   CC_MUTEX_UNLOCK(SoBaseP::mutex);
 
 #if COIN_DEBUG
@@ -621,7 +622,7 @@ SoBase::unref(void) const
                            this, this->getTypeId().getName().getString(),
                            this->objdata.referencecount);
   }
-  if (this->objdata.referencecount < 0) {
+  if (refcount < 0) {
     // Do the debug output in two calls, since the getTypeId() might
     // cause a crash, and then there'd be no output at all with a
     // single SoDebugError::postWarning() call.
@@ -630,7 +631,7 @@ SoBase::unref(void) const
                               this->getTypeId().getName().getString(), this);
   }
 #endif // COIN_DEBUG
-  if (this->objdata.referencecount == 0) base->destroy();
+  if (refcount == 0) base->destroy();
 }
 
 /*!
