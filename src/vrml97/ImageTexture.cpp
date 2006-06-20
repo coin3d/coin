@@ -632,9 +632,7 @@ SoVRMLImageTexture::loadUrl(void)
       
     }
     else {
-      SbString filename = SbImage::searchForFile(this->url[0],
-                                                 sl.getArrayPtr(), sl.getLength());
-      retval = this->readImage(filename);
+      retval = this->readImage(this->url[0]);
     }
   }
   else {
