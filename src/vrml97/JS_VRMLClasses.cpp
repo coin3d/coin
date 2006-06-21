@@ -181,7 +181,7 @@ struct CoinVrmlJsSFHandler {
   {
     int index = getIndex(cx, id, aliases, max);
     if (index == -1) {
-      return JS_FALSE;
+      return JS_TRUE;
     }
 
     Base * data = (Base *)spidermonkey()->JS_GetPrivate(cx, obj);
@@ -1278,6 +1278,14 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
      dynamically add and remove properties for any object at any time.
 
      2005-11-23 thammer.
+
+     Update: We should look more closely into the return values 
+     JS_TRUE / JS_FALSE for all getters and setters, and possibly for
+     other functions as well. It might be more robust to report the
+     error (using JS_ReportError) and return JS_TRUE to allow the
+     script to continue running than to abort the script.
+
+     2006-06-21 thammer.
   */
   return JS_TRUE;
 }
