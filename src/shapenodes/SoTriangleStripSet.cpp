@@ -703,9 +703,9 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   int32_t idx = startIndex.getValue();
   int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * start = ptr;
   const int32_t * end = ptr + numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+  const int32_t * start = ptr;
 
   while (ptr < end) {
     int num = *ptr++ - 3;
