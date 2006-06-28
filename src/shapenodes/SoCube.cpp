@@ -178,7 +178,9 @@ SoCube::generatePrimitives(SoAction * action)
 
   SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
-     binding == SoMaterialBindingElement::PER_PART_INDEXED);
+     binding == SoMaterialBindingElement::PER_PART_INDEXED ||
+     binding == SoMaterialBindingElement::PER_FACE ||
+     binding == SoMaterialBindingElement::PER_FACE_INDEXED);
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGEN_MATERIAL_PER_PART;
