@@ -424,6 +424,12 @@
 /* define for runtime linking with simage */
 #define SIMAGE_RUNTIME_LINKING 1
 
+/* The type timeval::tv_sec is declared as. */
+#define SIM_TIMEVAL_TV_SEC_T long
+
+/* The type timeval::tv_usec is declared as. */
+#define SIM_TIMEVAL_TV_USEC_T long
+
 /* define for runtime linking with SpiderMonkey */
 #define SPIDERMONKEY_RUNTIME_LINKING 1
 

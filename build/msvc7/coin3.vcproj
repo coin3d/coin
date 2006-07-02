@@ -24497,6 +24497,50 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\fields\SoSFBox3f.cpp">
+				<FileConfiguration
+					Name="LIB (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\fields/"
+						ProgramDataBaseFileName="StaticDebug\fields/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\fields/"
+						ProgramDataBaseFileName="Release\fields/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\fields/"
+						ProgramDataBaseFileName="StaticRelease\fields/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\fields/"
+						ProgramDataBaseFileName="Debug\fields/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\fields\SoSFBox3s.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
@@ -34171,6 +34215,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\fields\SoSFBool.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\fields\SoSFBox3f.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\fields\SoSFBox3s.h">

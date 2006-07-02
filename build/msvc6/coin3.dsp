@@ -4135,6 +4135,19 @@ SOURCE=..\..\src\fields\SoSFBox3s.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFBox3f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFColor.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
@@ -11220,6 +11233,10 @@ SOURCE=..\..\include\Inventor\fields\SoSFBool.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\fields\SoSFBox3s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFBox3f.h
 # End Source File
 # Begin Source File
 

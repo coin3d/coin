@@ -1450,6 +1450,28 @@
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
 #endif /* GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT */
 
+/* GL_ARB_occlusion_query */
+#ifndef GL_SAMPLES_PASSED
+#define GL_SAMPLES_PASSED 0x8914
+#endif /* GL_SAMPLES_PASSED */
+
+#ifndef GL_QUERY_COUNTER_BITS
+#define GL_QUERY_COUNTER_BITS 0x8864
+#endif /* GL_QUERY_COUNTER_BITS */
+
+#ifndef GL_CURRENT_QUERY
+#define GL_CURRENT_QUERY 0x8865
+#endif /* GL_CURRENT_QUERY */
+
+#ifndef GL_QUERY_RESULT
+#define GL_QUERY_RESULT 0x8866
+#endif /* GL_QUERY_RESULT */
+
+#ifndef GL_QUERY_RESULT_AVAILABLE
+#define GL_QUERY_RESULT_AVAILABLE 0x8867
+#endif /* GL_QUERY_RESULT_AVAILABLE */
+
+
 /* glClientPush/PopAttrib() defines */
 #ifndef GL_CLIENT_PIXEL_STORE_BIT
 #define GL_CLIENT_PIXEL_STORE_BIT 0x00000001
@@ -1662,19 +1684,32 @@
 /* Tesselator */
 #ifndef GLU_TESS_BEGIN
 #define GLU_TESS_BEGIN 100100
-#endif
+#endif /* ! GLU_TESS_BEGIN */
 #ifndef GLU_TESS_VERTEX
 #define GLU_TESS_VERTEX 100101
-#endif
-#ifndef GLU_TESS_END 
+#endif /* ! GLU_TESS_VERTEX */
+#ifndef GLU_TESS_END
 #define GLU_TESS_END 100102
-#endif
+#endif /* ! GLU_TESS_END */
 #ifndef GLU_TESS_ERROR
 #define GLU_TESS_ERROR 100103
-#endif
+#endif /* ! GLU_TESS_ERROR */
 #ifndef GLU_TESS_COMBINE
 #define GLU_TESS_COMBINE 100105
-#endif
+#endif /* ! GLU_TESS_COMBINE */
+#ifndef GLU_TESS_BEGIN_DATA
+#define GLU_TESS_BEGIN_DATA 100106
+#endif /* ! GLU_TESS_BEGIN_DATA */
+#ifndef GLU_TESS_VERTEX_DATA
+#define GLU_TESS_VERTEX_DATA 100107
+#endif /* ! GLU_TESS_VERTEX_DATA */
+#ifndef GLU_TESS_END_DATA
+#define GLU_TESS_END_DATA 100108
+#endif /* ! GLU_TESS_END_DATA */
+#ifndef GLU_TESS_ERROR_DATA
+#define GLU_TESS_ERROR_DATA 100109
+#endif /* ! GLU_TESS_ERROR_DATA */
+
 #ifndef GLU_TESS_MISSING_BEGIN_POLYGON
 #define GLU_TESS_MISSING_BEGIN_POLYGON 100151
 #endif /* ! GLU_TESS_MISSING_BEGIN_POLYGON */
@@ -1687,6 +1722,9 @@
 #ifndef GLU_TESS_MISSING_END_CONTOUR
 #define GLU_TESS_MISSING_END_CONTOUR 100154
 #endif /* ! GLU_TESS_MISSING_END_CONTOUR */
+#ifndef GLU_TESS_NEED_COMBINE_CALLBACK
+#define GLU_TESS_NEED_COMBINE_CALLBACK 100156
+#endif /* ! GLU_TESS_NEED_COMBINE_CALLBACK */
 
 /*** GLU enums, end ***************************************************/
 /**********************************************************************/
