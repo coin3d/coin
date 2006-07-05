@@ -339,6 +339,9 @@ public:
   void selectAndReset(SoHandleEventAction * action);
   void performSelection(SoHandleEventAction * action);
 
+  void validateViewportBBox(SbBox2s & bbox, 
+                            const SbVec2s & vpsize);
+
   // This keeps track of the state of a rectangle or lasso selection
   // operation.
   struct SelectionState {
@@ -1483,6 +1486,7 @@ SoExtSelectionP::cameraCB(void * data,
   for (int i = 0; i < PRIVATE(thisp)->runningselection.coords.getLength(); i++) {
     rectbbox.extendBy(PRIVATE(thisp)->runningselection.coords[i]);
   }
+  PRIVATE(thisp)->validateViewportBBox(rectbbox, vp.getViewportSizePixels());
 
   SbVec2s org = vp.getViewportOriginPixels();
   SbVec2s siz = vp.getViewportSizePixels();
@@ -2506,8 +2510,10 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
                (this->maximumcolorcounter + 7) / 8);
 
   SbBox2s rectbbox;
-  for (int k = 0; k < this->runningselection.coords.getLength(); k++)
+  for (int k = 0; k < this->runningselection.coords.getLength(); k++) {
     rectbbox.extendBy(this->runningselection.coords[k]);
+  }
+  this->validateViewportBBox(rectbbox, SbVec2s(offscreenSizeX, offscreenSizeY));
 
   // We must also deform lassocoords if offscreen size is changed
   const int minx = (int) (rectbbox.getMin()[0] * ((float) offscreenSizeX/requestedsize[0]));
@@ -2752,4 +2758,26 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   // Send signal to client that we are finished searching for tris
   PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
   PUBLIC(this)->touch();
+}
+
+//
+// avoid an empty viewport bbox (support for a single click and 
+// a 1-pixel-size rectangles/lassos).
+//
+void 
+SoExtSelectionP::validateViewportBBox(SbBox2s & bbox, 
+                                     const SbVec2s & vpsize)
+{
+  const SbVec2s bmin = bbox.getMin();
+  const SbVec2s bmax = bbox.getMax();
+
+  if (bmin[0] == bmax[0]) {
+    int add = (bmin[0] < (vpsize[0] - 1)) ? 1 : -1;
+    bbox.extendBy(SbVec2s(bmin[0] + add, bmin[1]));
+  }
+
+  if (bmin[1] == bmax[1]) {
+    int add = (bmin[1] < (vpsize[1] - 1)) ? 1 : -1;
+    bbox.extendBy(SbVec2s(bmin[0], bmin[1] + add));
+  }
 }
