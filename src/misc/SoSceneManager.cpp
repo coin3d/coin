@@ -304,6 +304,9 @@ SoSceneManager::render(SoGLRenderAction * action,
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
 
+  // this is the default depth function in SGI Inventor
+  glDepthFunc(GL_LEQUAL);
+
   if (mask) {
     if (PRIVATE(this)->flags & SoSceneManagerP::FLAG_RGBMODE) {
       glClearColor(PRIVATE(this)->backgroundcolor[0],
