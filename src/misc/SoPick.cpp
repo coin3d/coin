@@ -376,18 +376,13 @@ sopick_pick_cube(const float width,
             switch (i) {
             default: // just to avoid warnings
             case 0:
-              if (j < 0) t = 1.0f - t;
-              else s = 1.0f - s;
+			  if (j > 0.0f) s = 1.0f - s;
               break;
             case 1:
-              if (j < 0.0f) s = 1.0f - s;
-              else t = 1.0f - t;
+			  if (j > 0.0f) t = 1.0f - t;
               break;
             case 2:
-              if (j < 0.0f) {
-                s = 1.0f - s;
-                t = 1.0f - t;
-              }
+              if (j < 0.0f) s = 1.0f - s;
               break;
             }
             pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));
