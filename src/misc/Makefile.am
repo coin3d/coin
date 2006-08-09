@@ -12,6 +12,7 @@ RegularSources = \
 	SoNotRec.cpp \
 	SoState.cpp \
 	SoDB.cpp \
+        SoDBP.cpp \
 	SoFullPath.cpp \
 	SoTempPath.cpp \
 	SoLightPath.cpp \
@@ -43,6 +44,7 @@ LinkHackSources = \
 	all-misc-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
+        SoDBP.h \
 	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
