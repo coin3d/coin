@@ -5,7 +5,7 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/sensors/SoTimerSensor.h>
 
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
