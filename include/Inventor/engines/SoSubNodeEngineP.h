@@ -44,6 +44,12 @@
 // the SO_INTERPOLATE_SOURCE macro (which have to use
 // SO_ENGINE_CONSTRUCTOR because it is "public").
 
+// Update 2006-08-11, pederb:
+// The INIT_CLASS macros will now set the node type to VRML97. All
+// node-engines in Coin are VRML97 nodes. If we add node engines that
+// are not VRML97 nodes we need to add some new macros.
+
+
 #define SO_NODEENGINE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODEENGINE_CONSTRUCTOR(_class_); \
@@ -56,6 +62,7 @@
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_VRML97_NODE_TYPE); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
@@ -65,6 +72,7 @@
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+    SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_VRML97_NODE_TYPE); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
     cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
