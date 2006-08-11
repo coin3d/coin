@@ -689,7 +689,8 @@ SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure,
 {
   SbBool ret = TRUE;
   if (!SoVRMLImageTextureP::is_exiting && !PRIVATE(thisp)->isdestructing) {
-    ret = PRIVATE(thisp)->image.readFile(url);
+    const SbStringList & sl = SoInput::getDirectories();
+    ret = PRIVATE(thisp)->image.readFile(url, sl.getArrayPtr(), sl.getLength());
   }
   return ret;
 }
