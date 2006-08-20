@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="coin3"
-	ProjectGUID="{84A1A40E-7427-482B-99B9-D00541FB5523}"
+	ProjectGUID="{E24C55FE-DDD7-48EB-9298-E77120C7984C}"
 	>
 	<Platforms>
 		<Platform
@@ -12125,6 +12125,54 @@
 			</File>
 			<File
 				RelativePath="..\..\src\misc\SoDB.cpp"
+				>
+				<FileConfiguration
+					Name="LIB (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\misc/"
+						ProgramDataBaseFileName="StaticDebug\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\misc/"
+						ProgramDataBaseFileName="StaticRelease\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\misc\SoDBP.cpp"
 				>
 				<FileConfiguration
 					Name="LIB (Debug)|Win32"

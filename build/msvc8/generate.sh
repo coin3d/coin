@@ -7,7 +7,7 @@
 # 20041214 larsa
 
 rm -rf src
-rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln installcoinheaders.bat
+rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln install-headers.bat
 
 build_pwd=`pwd`
 build="`cygpath -w $build_pwd | sed -e 's/\\\\/\\\\\\\\/g'`"
