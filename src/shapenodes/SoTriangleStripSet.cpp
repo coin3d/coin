@@ -619,7 +619,8 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   Binding mbind = this->findMaterialBinding(action->getState());
   Binding nbind = this->findNormalBinding(action->getState());
 
-  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
+  if ((nbind == PER_FACE && mbind != PER_VERTEX) ||
+      (mbind == PER_FACE && nbind != PER_VERTEX)) {
     if (!didpush) {
       didpush = TRUE;
       state->push();

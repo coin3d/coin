@@ -228,8 +228,12 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
-  if ((nbind == PER_TRIANGLE) || (nbind == PER_TRIANGLE_INDEXED) ||
-      (mbind == PER_TRIANGLE) || (mbind == PER_TRIANGLE_INDEXED)) {
+  if (((nbind == PER_TRIANGLE || nbind == PER_TRIANGLE_INDEXED) &&
+       (mbind != PER_VERTEX && mbind != PER_VERTEX_INDEXED)) ||
+      
+      ((mbind == PER_TRIANGLE || mbind == PER_TRIANGLE_INDEXED) &&
+       (nbind != PER_VERTEX && nbind != PER_VERTEX_INDEXED))) {
+    
     if (!didpush) {
       state->push();
       didpush = TRUE;
