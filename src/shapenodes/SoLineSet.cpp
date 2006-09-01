@@ -573,23 +573,32 @@ SoLineSet::initClass(void)
 void
 SoLineSet::GLRender(SoGLRenderAction * action)
 {
-  if (!this->shouldGLRender(action)) return;
-
-  int32_t idx = this->startIndex.getValue();
-  int32_t dummyarray[1];
-  const int32_t * ptr = this->numVertices.getValues(0);
-  const int32_t * end = ptr + this->numVertices.getNum();
-  if ((end - ptr == 1) && ptr[0] == 0) return; // nothing to render
-
   SoState * state = action->getState();
-  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-   
   SbBool didpush = FALSE;
+
   if (this->vertexProperty.getValue()) {
     state->push();
     didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
+
+  if (!this->shouldGLRender(action)) {
+    if (didpush) {
+      state->pop();
+    }
+    return;
+  }
+
+  int32_t idx = this->startIndex.getValue();
+  int32_t dummyarray[1];
+  const int32_t * ptr = this->numVertices.getValues(0);
+  const int32_t * end = ptr + this->numVertices.getNum();
+  if ((end - ptr == 1) && ptr[0] == 0) {
+    if (didpush) state->pop();
+    return; // nothing to render
+  }
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+   
 
   SoMaterialBundle mb(action);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
