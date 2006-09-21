@@ -172,6 +172,28 @@ static JSBool getIndex(JSContext * cx, jsval id, char * aliases[], int max)
 
 // *************************************************************************
 // handlers
+bool jsval2int(JSContext *cx, const jsval v, int32_t &value) 
+{
+  if (JSVAL_IS_NULL(v)) return false;
+  int32_t tempval;
+  if (!spidermonkey()->JS_ValueToECMAInt32(cx, v, &tempval)) {
+    return false;
+  }
+  value = tempval;
+  return true;
+}
+
+bool jsval2double(JSContext *cx, const jsval v, double &value) 
+{
+  if (JSVAL_IS_NULL(v)) return false;
+  double tempval;
+  if (!spidermonkey()->JS_ValueToNumber(cx, v, &tempval)) {
+    return false;
+  }
+  value = tempval;
+  return true;
+}
+
 
 // FIXME: number of aliases must not be lower than max. This may lead to
 // unsafe programming. 20050721 erikgors.
@@ -672,10 +694,8 @@ static JSBool SFVec2f_divide(JSContext * cx, JSObject * obj, uintN argc,
 {
   SbVec2f & vec = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
-  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
-
+  double number;
+  if (argc >= 1 && jsval2double(cx, argv[0], number)) {
     SbVec2f newVec = vec / (float)number;
     *rval = OBJECT_TO_JSVAL(SFVec2fFactory(cx, newVec));
     return JS_TRUE;
@@ -688,10 +708,8 @@ static JSBool SFVec3f_divide(JSContext * cx, JSObject * obj, uintN argc,
 {
   SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
-  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
-
+  double number;
+  if (argc >= 1 && jsval2double(cx, argv[0], number)) {
     SbVec3f newVec = vec / (float)number;
     *rval = OBJECT_TO_JSVAL(SFVec3fFactory(cx, newVec));
     return JS_TRUE;
@@ -704,10 +722,8 @@ static JSBool SFVec3d_divide(JSContext * cx, JSObject * obj, uintN argc,
 {
   SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
 
-  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
-
+  double number;
+  if (argc >= 1 && jsval2double(cx, argv[0], number)) {
     SbVec3d newVec = vec / number;
     *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, newVec));
     return JS_TRUE;
@@ -810,10 +826,8 @@ static JSBool SFVec3f_multiply(JSContext * cx, JSObject * obj, uintN argc,
 {
   SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
-  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
-
+  double number;
+  if (argc >= 1 && jsval2double(cx, argv[0], number)) {
     SbVec3f newVec = vec * (float)number;
     *rval = OBJECT_TO_JSVAL(SFVec3fFactory(cx, newVec));
     return JS_TRUE;
@@ -826,10 +840,8 @@ static JSBool SFVec3d_multiply(JSContext * cx, JSObject * obj, uintN argc,
 {
   SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
 
-  if (argc >= 1 && JSVAL_IS_NUMBER(argv[0])) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[0], &number);
-
+  double number;
+  if (argc >= 1 && jsval2double(cx, argv[0], number)) {
     SbVec3d newVec = vec * number;
     *rval = OBJECT_TO_JSVAL(SFVec3dFactory(cx, newVec));
     return JS_TRUE;
@@ -1048,13 +1060,11 @@ static JSBool SFRotation_slerp(JSContext * cx, JSObject * obj, uintN argc,
   SbVec3f axis(vec[0], vec[1], vec[2]);
   SbRotation rot(axis, vec[3]);
 
-  if (argc >= 2 && JSVAL_IS_SFROTATION(cx, argv[0]) && JSVAL_IS_NUMBER(argv[1])) {
+  double number;
+  if (argc >= 2 && JSVAL_IS_SFROTATION(cx, argv[0]) && jsval2double(cx, argv[1], number)) {
     SbVec4f & vec2 = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
     SbVec3f axis2(vec2[0], vec2[1], vec2[2]);
     SbRotation dest(axis2, vec2[3]);
-
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, argv[1], &number);
 
     SbRotation result = SbRotation::slerp(rot, dest, (float)number);
 
@@ -1318,7 +1328,8 @@ static JSBool SFNode_set(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
       if (SoJavaScriptEngine::debug()) {
         SoDebugError::postInfo("SFNode_set", "setting field %s", str.getString());
       }
-    }
+    } else if (SoJavaScriptEngine::debug())
+      SoDebugError::postWarning("SFNode_set", "no such field %s", str.getString());
   }
 
   // See note in SFNode_get() about return value. 2005-11-23 thammer.
@@ -1492,9 +1503,8 @@ static SbBool SFColor_jsval2field(JSContext * cx, const jsval v, SoField * f)
 
 static SbBool SFFloat_jsval2field(JSContext * cx, const jsval v, SoField * f)
 {
-  if (JSVAL_IS_NUMBER(v)) {
-    double number;
-    spidermonkey()->JS_ValueToNumber(cx, v, &number);
+  double number;
+  if (jsval2double(cx, v, number)) {
     ((SoSFFloat *)f)->setValue((float)number);
     return TRUE;
   }
@@ -1503,8 +1513,8 @@ static SbBool SFFloat_jsval2field(JSContext * cx, const jsval v, SoField * f)
 
 static SbBool SFInt32_jsval2field(JSContext * cx, const jsval v, SoField * f)
 {
-  if (JSVAL_IS_INT(v)) {
-    const int32_t val = JSVAL_TO_INT(v);
+  int32_t val;
+  if (jsval2int(cx, v, val)) {
     ((SoSFInt32 *)f)->setValue(val);
     return TRUE;
   }
@@ -1546,8 +1556,8 @@ static SbBool SFString_jsval2field(JSContext * cx, const jsval v, SoField * f)
 
 static SbBool SFTime_jsval2field(JSContext * cx, const jsval v, SoField * f)
 {
-  if (JSVAL_IS_NUMBER(v)) {
-    double number;
+  double number;
+  if (jsval2double(cx, v, number)) {
     spidermonkey()->JS_ValueToNumber(cx, v, &number);
     ((SoSFTime*)f)->setValue(SbTime(number));
     return TRUE;
