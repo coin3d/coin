@@ -361,6 +361,8 @@ typedef struct {
   JS_CallFunctionValue_t JS_CallFunctionValue;
   JS_ConstructObjectWithArguments_t JS_ConstructObjectWithArguments;
   JS_ConvertStub_t JS_ConvertStub;
+typedef const char * (* JS_GetFunctionName_t)(JSFunction *);
+typedef JSObject * (* JS_GetConstructor_t)(JSContext *, JSObject *);
   JS_DestroyContext_t JS_DestroyContext;
   JS_DestroyRuntime_t JS_DestroyRuntime;
   JS_EnumerateStub_t JS_EnumerateStub;
@@ -459,3 +461,5 @@ COIN_DLL_API const SpiderMonkey_t * spidermonkey(void);
 
 #endif /* !COIN_GLUE_SPIDERMONKEY_H */
 
+  JS_GetFunctionName_t JS_GetFunctionName;
+  JS_GetConstructor_t JS_GetConstructor;
