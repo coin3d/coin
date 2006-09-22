@@ -350,6 +350,8 @@ typedef uint32_t (* JS_SetOptions_t)(JSContext *, uint32_t);
 typedef uint32_t (* JS_ToggleOptions_t)(JSContext *, uint32_t);
 typedef struct JSIdArray * (* JS_Enumerate_t)(JSContext *, JSObject *);
 typedef JSBool (* JS_IdToValue_t)(JSContext *, jsid, jsval *);
+typedef const char * (* JS_GetFunctionName_t)(JSFunction *);
+typedef JSObject * (* JS_GetConstructor_t)(JSContext *, JSObject *);
 
 
 /* Access interface. **************************************************** */
@@ -361,8 +363,6 @@ typedef struct {
   JS_CallFunctionValue_t JS_CallFunctionValue;
   JS_ConstructObjectWithArguments_t JS_ConstructObjectWithArguments;
   JS_ConvertStub_t JS_ConvertStub;
-typedef const char * (* JS_GetFunctionName_t)(JSFunction *);
-typedef JSObject * (* JS_GetConstructor_t)(JSContext *, JSObject *);
   JS_DestroyContext_t JS_DestroyContext;
   JS_DestroyRuntime_t JS_DestroyRuntime;
   JS_EnumerateStub_t JS_EnumerateStub;
@@ -450,6 +450,8 @@ typedef JSObject * (* JS_GetConstructor_t)(JSContext *, JSObject *);
   JS_ToggleOptions_t JS_ToggleOptions;
   JS_Enumerate_t JS_Enumerate;
   JS_IdToValue_t JS_IdToValue;
+  JS_GetFunctionName_t JS_GetFunctionName;
+  JS_GetConstructor_t JS_GetConstructor;
 
 } SpiderMonkey_t;
 
@@ -461,5 +463,3 @@ COIN_DLL_API const SpiderMonkey_t * spidermonkey(void);
 
 #endif /* !COIN_GLUE_SPIDERMONKEY_H */
 
-  JS_GetFunctionName_t JS_GetFunctionName;
-  JS_GetConstructor_t JS_GetConstructor;
