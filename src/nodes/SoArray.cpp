@@ -304,7 +304,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
         // translate bbox matrix
         SoBBoxModelMatrixElement::translateBy(action->getState(),
                                               this, instance_pos);
-        SoSwitchElement::set(action->getState(),++N);
+        SoSwitchElement::set(action->getState(),N++);
 
         inherited::getBoundingBox(action);
 
@@ -380,7 +380,7 @@ SoArray::doAction(SoAction *action)
         action->getState()->push();
 
         SoSwitchElement::set(action->getState(),
-                             ++N);
+                             N++);
 
         SoModelMatrixElement::translateBy(action->getState(), this,
                                           instance_pos);
