@@ -1,9 +1,0 @@
-.libs
-.deps
-Makefile
-libCoin.la
-*.dll
-*.exp
-*.lib
-*.pdb
-*.lo
