@@ -266,7 +266,7 @@ SoGetPrimitiveCountAction::addNumLines(const int num)
 void
 SoGetPrimitiveCountAction::addNumPoints(const int num)
 {
-  this->numpoints = num;
+  this->numpoints += num;
 }
 
 /*!
