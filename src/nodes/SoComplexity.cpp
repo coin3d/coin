@@ -106,7 +106,7 @@
   \var SoSFFloat SoComplexity::value
 
   Complexity value, valid settings range from 0.0 (worst appearance,
-  best perfomance) to 1.0 (optimal appearance, lowest rendering
+  best performance) to 1.0 (optimal appearance, lowest rendering
   speed). Default value for the field is 0.5.
 
   Note that without any SoComplexity nodes in the scene graph,
