@@ -121,7 +121,7 @@ _class_::atexit_cleanup(void) \
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_SOURCE(_class_) \
-SO_NODE_ABSTRACT_SOURCE(_class_); \
+SO_NODE_ABSTRACT_SOURCE(_class_) \
  \
 /*! \
   Creates a new instance of the class type corresponding to the SoType object. \

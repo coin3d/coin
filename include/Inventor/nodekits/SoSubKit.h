@@ -94,7 +94,7 @@ _class_::atexit_cleanupkit(void) \
 }
 
 #define SO_KIT_SOURCE(_class_) \
-SO_NODE_SOURCE(_class_); \
+SO_NODE_SOURCE(_class_) \
 PRIVATE_KIT_SOURCE(_class_)
 
 #define SO_KIT_ABSTRACT_SOURCE(_class_) \
