@@ -126,6 +126,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
@@ -412,6 +413,7 @@ public:
   static SoCallbackAction::Response soscale_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sotransform_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sotranslation_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response sounits_cb(void *, SoCallbackAction *, const SoNode *);
 
   // Group nodes
   static SoCallbackAction::Response push_sep_cb(void *, SoCallbackAction *, const SoNode *);
@@ -508,6 +510,7 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_PRE_CB(SoScale, soscale_cb);
   ADD_PRE_CB(SoTransform, sotransform_cb);
   ADD_PRE_CB(SoTranslation, sotranslation_cb);
+  ADD_PRE_CB(SoUnits, sounits_cb);
 
   // Group nodes
   ADD_PRE_CB(SoSeparator, push_sep_cb);
@@ -1774,6 +1777,27 @@ SoToVRML2ActionP::sotranslation_cb(void * closure, SoCallbackAction * action, co
   const SoTranslation * oldt = (const SoTranslation*) node;
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   newt->translation = oldt->translation.getValue();
+  THISP(closure)->get_current_tail()->addChild(newt);
+  THISP(closure)->vrml2path->append(newt);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::sounits_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
+  
+  // apply an SoGetMatrixAction to the node to find the scale factor
+  SbViewportRegion dummy(100,100);
+  SoGetMatrixAction gma(dummy);
+  gma.apply((SoNode*)node);
+  
+  const SbMatrix & m = gma.getMatrix();
+
+  // we know that the SoUnits node applies an uniform scale, so just
+  // read the value in the first matrix column/row to find the scale
+  // factor.
+  newt->scale = SbVec3f(m[0][0], m[0][0], m[0][0]);
   THISP(closure)->get_current_tail()->addChild(newt);
   THISP(closure)->vrml2path->append(newt);
   return SoCallbackAction::CONTINUE;
