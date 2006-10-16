@@ -808,6 +808,16 @@ SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
+  SbBool haveregion = FALSE;
+  SbViewportRegion region;
+  if (PRIVATE(this)->glaction) { // remember existing viewport region
+    region = PRIVATE(this)->glaction->getViewportRegion();
+    haveregion = TRUE;
+  } else if (PRIVATE(this)->handleeventaction) {
+    region = PRIVATE(this)->handleeventaction->getViewportRegion();
+    haveregion = TRUE;
+  }
+
   if (PRIVATE(this)->deleteglaction) {
     delete PRIVATE(this)->glaction;
     PRIVATE(this)->glaction = NULL;
@@ -821,6 +831,8 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
   if (action && action != PRIVATE(this)->glaction) action->invalidateState();
   PRIVATE(this)->glaction = action;
   PRIVATE(this)->deleteglaction = FALSE;
+  if (PRIVATE(this)->glaction && haveregion)
+    PRIVATE(this)->glaction->setViewportRegion(region);
 }
 
 /*!
@@ -871,6 +883,8 @@ SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
   if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
   PRIVATE(this)->handleeventaction = hea;
   PRIVATE(this)->deletehandleeventaction = FALSE;
+  if (PRIVATE(this)->handleeventaction && PRIVATE(this)->glaction)
+    PRIVATE(this)->handleeventaction->setViewportRegion(PRIVATE(this)->glaction->getViewportRegion());
 }
 
 /*!
