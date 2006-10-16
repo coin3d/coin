@@ -29,6 +29,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
@@ -52,8 +53,6 @@ public:
   SoShaderObjectP(SoShaderObject *ownerptr);
   ~SoShaderObjectP();
 
-  // FIXME: add a cache context destruction callback, pederb 2005-11-30
-
   void GLRender(SoGLRenderAction *action);
 
   SoGLShaderObject * getGLShaderObject(const uint32_t cachecontext) {
@@ -64,7 +63,8 @@ public:
   void setGLShaderObject(SoGLShaderObject * obj, const uint32_t cachecontext) {
     SoGLShaderObject * oldshader;
     if (this->glshaderobjects.get(cachecontext, oldshader)) {
-      deleteGLShader(oldshader);
+      SoGLCacheContextElement::scheduleDeleteCallback(oldshader->getCacheContext(), 
+                                                      really_delete_object, oldshader);
     }
     (void) this->glshaderobjects.put(cachecontext, obj);
   }
@@ -74,12 +74,30 @@ public:
     for (int i = 0; i < keylist.getLength(); i++) {
       SoGLShaderObject * glshader = NULL;
       (void) this->glshaderobjects.get(keylist[i], glshader);
-      deleteGLShader(glshader);
+      SoGLCacheContextElement::scheduleDeleteCallback(glshader->getCacheContext(), 
+                                                      really_delete_object, glshader);
     }
     this->glshaderobjects.clear();
   }
-  static void deleteGLShader(SoGLShaderObject * obj) {
-    // FIXME: schedule delete, pederb 2005-11-30
+  //
+  // Callback from SoGLCacheContextElement
+  //
+  static void really_delete_object(void * closure, uint32_t contextid) {
+    SoGLShaderObject * obj = (SoGLShaderObject*) closure;
+    delete obj;
+  }
+  //
+  // callback from SoContextHandler
+  //
+  static void context_destruction_cb(uint32_t cachecontext, void * userdata) {
+    SoShaderObjectP * thisp = (SoShaderObjectP*) userdata;
+    
+    SoGLShaderObject * oldshader;
+    if (thisp->glshaderobjects.get(cachecontext, oldshader)) {
+      // just delete immediately. The context is current
+      delete oldshader;
+      thisp->glshaderobjects.remove(cachecontext);
+    }
   }
 
   void invalidateParameters(void) {
@@ -242,10 +260,14 @@ SoShaderObjectP::SoShaderObjectP(SoShaderObject * ownerptr)
   this->cachedSourceType = SoShaderObject::FILENAME;
   this->didSetSearchDirectories = FALSE;
   this->shouldload = TRUE;
+
+  SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
 SoShaderObjectP::~SoShaderObjectP()
 {
+  SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
+
   this->deleteGLShaderObjects();
 
   SbStringList empty;
