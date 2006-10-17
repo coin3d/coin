@@ -53,28 +53,6 @@ SoGLShaderObject::getCacheContext(void) const
 }
 
 void
-SoGLShaderObject::operator delete(void * obj)
-{
-  switch (((SoGLShaderObject *)obj)->shaderType()) {
-  case SoShader::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
-  case SoShader::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj; break;
-  case SoShader::CG_SHADER: ::delete (SoGLCgShaderObject *)obj; break;
-  default: assert(FALSE && "shaderType unknown!");
-  }
-}
-
-void
-SoGLShaderObject::operator delete[](void * obj)
-{
-  switch (((SoGLShaderObject *)obj)->shaderType()) {
-  case SoShader::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
-  case SoShader::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj; break;
-  case SoShader::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj; break;
-  default: assert(FALSE && "shaderType unknown!");
-  }
-}
-
-void
 SoGLShaderObject::setIsVertexShader(SbBool flag)
 {
   if (this->isVertexShaderFlag != flag) {

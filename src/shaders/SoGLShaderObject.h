@@ -54,9 +54,6 @@ public:
   virtual SoGLShaderParameter* getNewParameter(void) const = 0;
 
 public:
-  void operator delete(void * obj);
-  void operator delete[](void * obj);
-
   void setIsVertexShader(SbBool flag);
   SbBool isVertexShader(void) const;
 

@@ -25,6 +25,8 @@
 
 #include "SoGLSLShaderObject.h"
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 // *************************************************************************
 
@@ -37,10 +39,22 @@ SoGLSLShaderProgram::SoGLSLShaderProgram(void)
   : programHandles(5)
 {
   this->isExecutable = FALSE;
+  SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
 SoGLSLShaderProgram::~SoGLSLShaderProgram()
 {
+  SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
+
+  SbList <uint32_t> keylist;
+  this->programHandles.makeKeyList(keylist);
+  for (int i = 0; i < keylist.getLength(); i++) {
+    COIN_GLhandle glhandle = 0;
+    (void) this->programHandles.get(keylist[i], glhandle);
+    uintptr_t tmp = (uintptr_t) glhandle;
+    SoGLCacheContextElement::scheduleDeleteCallback(keylist[i], 
+                                                    really_delete_object, (void*) tmp);
+  }
 }
 
 void
@@ -150,10 +164,35 @@ SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
 {
   COIN_GLhandle handle = 0;
   if (!this->programHandles.get(g->contextid, handle) && create) {
-    // FIXME: set up context destruction callbacks and clean up
-    // programs in the destructor. pederb, 2006-05-24
     handle = g->glCreateProgramObjectARB();
     this->programHandles.put(g->contextid, handle);
   }
   return handle;
 }
+
+
+void 
+SoGLSLShaderProgram::context_destruction_cb(uint32_t cachecontext, void * userdata)
+{
+  SoGLSLShaderProgram * thisp = (SoGLSLShaderProgram*) userdata;
+  
+  COIN_GLhandle glhandle = 0;
+  if (thisp->programHandles.get(cachecontext, glhandle)) {
+    // just delete immediately. The context is current
+    const cc_glglue * glue = cc_glglue_instance(cachecontext);
+    glue->glDeleteObjectARB(glhandle);
+    thisp->programHandles.remove(cachecontext);
+  }
+}
+
+void 
+SoGLSLShaderProgram::really_delete_object(void * closure, uint32_t contextid)
+{
+  uintptr_t tmp = (uintptr_t) closure;
+
+  COIN_GLhandle glhandle = (COIN_GLhandle) tmp;
+
+  const cc_glglue * glue = cc_glglue_instance(contextid);
+  glue->glDeleteObjectARB(glhandle);  
+}
+

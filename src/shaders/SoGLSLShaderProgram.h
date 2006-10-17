@@ -67,6 +67,10 @@ protected:
 
 private:
   COIN_GLhandle getProgramHandle(const cc_glglue * g, const SbBool create = FALSE);
+
+  static void context_destruction_cb(uint32_t cachecontext, void * userdata);
+  static void really_delete_object(void * closure, uint32_t contextid);
+
 };
 
 #endif /* ! COIN_SOGLSLSHADERPROGRAM_H */
