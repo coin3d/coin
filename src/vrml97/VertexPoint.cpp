@@ -113,14 +113,14 @@ SoVRMLVertexPoint::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVRMLVertexPoint::callback(SoCallbackAction * action)
 {
-  SoVRMLVertexPoint::doAction((SoAction*) action);
+  inherited::callback(action);
 }
 
 // Doc in parent
 void
 SoVRMLVertexPoint::pick(SoPickAction * action)
 {
-  SoVRMLVertexPoint::doAction((SoAction*) action);
+  inherited::pick(action);
 }
 
 // Doc in parent
