@@ -10,7 +10,8 @@ PublicHeaders = \
 
 PrivateHeaders = \
 	SoPrimitiveVertexCache.h \
-	SoGlyphCache.h
+	SoGlyphCache.h \
+	SoVBOCache.h
 
 ObsoleteHeaders =
 

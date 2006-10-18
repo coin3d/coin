@@ -10,7 +10,8 @@ RegularSources = \
 	SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp \
 	SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp
+	SoGlyphCache.cpp \
+	SoVBOCache.cpp
 LinkHackSources = \
 	all-caches-cpp.cpp
 PublicHeaders =
