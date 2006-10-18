@@ -108,7 +108,7 @@ SoVBO::init(void)
       vbo_vertex_count_max_limit = atoi(env);
     }
     else {
-      vbo_vertex_count_max_limit = 10000000;
+      vbo_vertex_count_max_limit = 256000;
     }
   }
 
