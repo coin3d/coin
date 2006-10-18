@@ -181,8 +181,10 @@ CoinOffscreenGLCanvas::tryActivateGLContext(void)
   }
 
   if (cc_glglue_context_make_current(this->context) == FALSE) { 
-    SoDebugError::post("CoinOffscreenGLCanvas::tryActivateGLContext",
-                       "Couldn't make context current.");
+    if (CoinOffscreenGLCanvas::debug()) {
+      SoDebugError::post("CoinOffscreenGLCanvas::tryActivateGLContext",
+                         "Couldn't make context current.");
+    }
     return 0; 
   }
   return this->renderid;
@@ -260,9 +262,11 @@ CoinOffscreenGLCanvas::destructContext(void)
     this->deactivateGLContext();
   }
   else {
-    SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
-                       "Couldn't activate context -- resource clean-up "
-                       "not complete.");
+    if (CoinOffscreenGLCanvas::debug()) {
+      SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
+                         "Couldn't activate context -- resource clean-up "
+                         "not complete.");
+    }
   }
 
   cc_glglue_context_destruct(this->context);
