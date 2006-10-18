@@ -39,6 +39,10 @@ SoGLSLShaderObject::SoGLSLShaderObject(const uint32_t cachecontext)
 
 SoGLSLShaderObject::~SoGLSLShaderObject()
 {
+  // make sure we don't detach, since the program might have been
+  // destructed already. FIXME: investigate if not calling detach will
+  // lead to memory leaks. pederb, 2006-10-17
+  this->isattached = FALSE;
   this->unload();
 }
 
@@ -120,7 +124,7 @@ SoGLSLShaderObject::attach(COIN_GLhandle programHandle)
 void
 SoGLSLShaderObject::detach(void)
 {
-  if (this->programHandle && this->shaderHandle) {
+  if (this->isattached && this->programHandle && this->shaderHandle) {
     this->glctx->glDetachObjectARB(this->programHandle, this->shaderHandle);
     this->isattached = FALSE;
   }
