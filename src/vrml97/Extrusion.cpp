@@ -569,7 +569,6 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-    fprintf(stderr,"render as vbo: %p\n", this);
     PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(glue, TRUE, contextid);
     
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
@@ -801,8 +800,6 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
 void 
 SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 {
-  fprintf(stderr,"generate vbo: %p\n", this);
-
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   
   SoState * state = action->getState();
