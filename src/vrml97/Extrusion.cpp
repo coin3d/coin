@@ -331,6 +331,7 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -348,6 +349,7 @@
 
 #include "../src/misc/SoVBO.h"
 #include "../src/misc/SoVertexArrayIndexer.h"
+#include <Inventor/caches/SoVBOCache.h>
 #include <Inventor/misc/SbHash.h>
 
 // *************************************************************************
@@ -406,8 +408,7 @@ public:
      idx(32),
      gen(TRUE),
      dirty(TRUE),
-     vbodirty(TRUE),
-     vboindexer(NULL)
+     vbocache(NULL)
 #ifdef COIN_THREADSAFE
      , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
@@ -415,7 +416,7 @@ public:
     this->tess.setCallback(tess_callback, this);
   }
   ~SoVRMLExtrusionP() {
-    delete this->vboindexer;
+    if (this->vbocache) this->vbocache->unref();
   }
 
   SoVRMLExtrusion * master;
@@ -428,13 +429,9 @@ public:
   void generateCoords(void);
   void generateNormals(void);
   SbBool dirty;
-  SbBool vbodirty;
+  SoVBOCache * vbocache;
 
   SbHash <int32_t, SoVRMLExtrusionVertex> vbohash;
-  SoVertexArrayIndexer * vboindexer;
-  SoVBO coordvbo;
-  SoVBO normalvbo;
-  SoVBO texcoordvbo;
 
   SbList <SbVec3f> vbocoord;
   SbList <SbVec3f> vbonormal;
@@ -523,10 +520,10 @@ void
 SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-
+  
   SoState * state = action->getState();
   state->push();
-
+  
   PRIVATE(this)->readLock();
 
   this->updateCache();
@@ -534,7 +531,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(contextid);
   SbBool vbo = SoVBO::shouldCreateVBO(contextid, PRIVATE(this)->coord.getLength());
- 
+
   if (vbo) PRIVATE(this)->updateVBO(action);
 
   SoMaterialBundle mb(action);
@@ -550,7 +547,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
     if (doTextures) {
-      PRIVATE(this)->texcoordvbo.bindBuffer(contextid);
+      PRIVATE(this)->vbocache->getTexCoordVBO(0)->bindBuffer(contextid);
       cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0, NULL);
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       
@@ -564,16 +561,17 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
       cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
     }
     
-    PRIVATE(this)->normalvbo.bindBuffer(contextid);
+    PRIVATE(this)->vbocache->getNormalVBO()->bindBuffer(contextid);
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
 
-    PRIVATE(this)->coordvbo.bindBuffer(contextid);
+    PRIVATE(this)->vbocache->getCoordVBO()->bindBuffer(contextid);
     cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-    PRIVATE(this)->vboindexer->render(glue, TRUE, contextid);
-
+    fprintf(stderr,"render as vbo: %p\n", this);
+    PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(glue, TRUE, contextid);
+    
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
     cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
@@ -783,7 +781,7 @@ SoVRMLExtrusion::updateCache(void)
 void 
 SoVRMLExtrusionP::updateVBO(SoAction * action)
 {
-  if (this->vbodirty) {
+  if (this->vbocache == NULL || !this->vbocache->isValid(action->getState())) {
     this->readUnlock();
     SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
     SbBool istexfunc = tb.isFunction();
@@ -795,7 +793,6 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
     }
     this->writeLock();
     this->generateVBO(action, tb);
-    this->vbodirty = FALSE;
     this->writeUnlock();
     this->readLock();
   }
@@ -804,16 +801,30 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
 void 
 SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 {
+  fprintf(stderr,"generate vbo: %p\n", this);
+
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  
   SoState * state = action->getState();
   state->push();
+  
+  if (this->vbocache) {
+    this->vbocache->unref();
+  }
+  this->vbocache = new SoVBOCache(state);
+  this->vbocache->ref();
+
+  // set active cache to record cache dependencies
+  SoCacheElement::set(state, this->vbocache);
   
   if (SoTextureCoordinateElement::getType(state) !=
       SoTextureCoordinateElement::FUNCTION) {
     SoTextureCoordinateElement::set2(state, this->master, this->tcoord.getLength(),
                                      this->tcoord.getArrayPtr());
   }
-  SbBool istexfunc = tb.isFunction();
 
+  SbBool istexfunc = tb.isFunction();
+  
   const SbVec3f * normals = this->gen.getNormals();
   const SbVec2f * tcoords = this->tcoord.getArrayPtr();
   const SbVec3f * coords = this->coord.getArrayPtr();
@@ -825,12 +836,11 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
   this->vbonormal.truncate(0);
   this->vbotexcoord.truncate(0);
 
-  if (this->vboindexer) delete this->vboindexer;
-  this->vboindexer = new SoVertexArrayIndexer();
-
   SoVRMLExtrusionVertex v;
   int32_t vidx[4];
   int curridx = 0;
+
+  SoVertexArrayIndexer * vboindexer = this->vbocache->getVertexArrayIndexer(TRUE);
 
   int idx;
   while (iptr < endptr) {
@@ -860,23 +870,25 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
     }
     iptr++;
     if (isquad) {
-      this->vboindexer->addQuad(vidx[0], vidx[1], vidx[2], vidx[3]);
+      vboindexer->addQuad(vidx[0], vidx[1], vidx[2], vidx[3]);
     }
     else {
-      this->vboindexer->addTriangle(vidx[0], vidx[1], vidx[2]);
+      vboindexer->addTriangle(vidx[0], vidx[1], vidx[2]);
     }
   }
   state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
+
   this->vbohash.clear();
-  this->vboindexer->close();
+  vboindexer->close();
 
-  this->coordvbo.setBufferData(this->vbocoord.getArrayPtr(),
-                               this->vbocoord.getLength()*sizeof(SbVec3f), 1);
-
-  this->normalvbo.setBufferData(this->vbonormal.getArrayPtr(),
-                                this->vbonormal.getLength()*sizeof(SbVec3f), 1);
-  this->texcoordvbo.setBufferData(this->vbotexcoord.getArrayPtr(),
-                                  this->vbotexcoord.getLength()*sizeof(SbVec2f), 1);
+  this->vbocache->getCoordVBO()->setBufferData(this->vbocoord.getArrayPtr(),
+                                               this->vbocoord.getLength()*sizeof(SbVec3f), 1);
+  
+  this->vbocache->getNormalVBO()->setBufferData(this->vbonormal.getArrayPtr(),
+                                                this->vbonormal.getLength()*sizeof(SbVec3f), 1);
+  this->vbocache->getTexCoordVBO(0)->setBufferData(this->vbotexcoord.getArrayPtr(),
+                                                   this->vbotexcoord.getLength()*sizeof(SbVec2f), 1);
 }
 
 
@@ -884,8 +896,8 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 void
 SoVRMLExtrusion::notify(SoNotList * list)
 {
+  if (PRIVATE(this)->vbocache) PRIVATE(this)->vbocache->invalidate();  
   PRIVATE(this)->dirty = TRUE;
-  PRIVATE(this)->vbodirty = TRUE;
   inherited::notify(list);
 }
 
