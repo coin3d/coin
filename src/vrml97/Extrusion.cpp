@@ -523,11 +523,19 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   
   SoState * state = action->getState();
   state->push();
-  
+
   PRIVATE(this)->readLock();
 
   this->updateCache();
 
+  if ((SoTextureCoordinateElement::getType(state) !=
+      SoTextureCoordinateElement::FUNCTION) &&
+      (SoTextureCoordinateElement::getType(state) !=
+       SoTextureCoordinateElement::TEXGEN)) {
+    SoGLTextureCoordinateElement::setTexGen(state, this, NULL);
+    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                     PRIVATE(this)->tcoord.getArrayPtr());
+  }
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(contextid);
   SbBool vbo = SoVBO::shouldCreateVBO(contextid, PRIVATE(this)->coord.getLength());
@@ -803,8 +811,9 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   
   SoState * state = action->getState();
+
   state->push();
-  
+
   if (this->vbocache) {
     this->vbocache->unref();
   }
@@ -813,13 +822,10 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 
   // set active cache to record cache dependencies
   SoCacheElement::set(state, this->vbocache);
-  
-  if (SoTextureCoordinateElement::getType(state) !=
-      SoTextureCoordinateElement::FUNCTION) {
-    SoTextureCoordinateElement::set2(state, this->master, this->tcoord.getLength(),
-                                     this->tcoord.getArrayPtr());
-  }
 
+  // create a dependency on the texture coordinate element
+  (void) SoTextureCoordinateElement::getType(state);
+  
   SbBool istexfunc = tb.isFunction();
   
   const SbVec3f * normals = this->gen.getNormals();
