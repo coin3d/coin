@@ -524,6 +524,8 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   state->push();
 
+  this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
+
   PRIVATE(this)->readLock();
 
   this->updateCache();
@@ -544,8 +546,6 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
-
-  this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 

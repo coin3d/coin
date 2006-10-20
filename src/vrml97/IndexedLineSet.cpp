@@ -246,15 +246,18 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 2) return;
   
   SoState * state = action->getState();
-  
+  state->push();
+
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
-
+  
   SoVRMLVertexLine::GLRender(action);
 
-  if (!this->shouldGLRender(action)) 
+  if (!this->shouldGLRender(action)) {
+    state->pop();
     return;
+  }
 
   // If the coordIndex field is invalid by not including the
   // terminating -1, fix the field by adding it.
@@ -400,6 +403,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   }
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, this->coordIndex.getNum() / 2);
+  state->pop();
 }
 
 void

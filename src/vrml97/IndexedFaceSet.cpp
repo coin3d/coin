@@ -431,13 +431,18 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 3 || this->coord.getValue() == NULL) return;
   SoState * state = action->getState();
 
+  state->push();
   // update state with coordinates, normals and texture information
   SoVRMLVertexShape::GLRender(action);
 
-  if (!this->shouldGLRender(action)) return;
+  if (!this->shouldGLRender(action)) { 
+    state->pop();
+    return;
+  }
+
+  this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
   Binding mbind = this->findMaterialBinding(state);
-
   Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;
@@ -514,8 +519,6 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   mb.sendFirst(); // make sure we have the correct material
-
-  this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
   SoGLLazyElement * lelem = NULL;
   const uint32_t contextid = action->getCacheContext();
@@ -624,6 +627,8 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, this->coordIndex.getNum() / 4);
+
+  state->pop();
 }
 
 // Doc in parent

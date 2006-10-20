@@ -379,14 +379,16 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
 
   if (!this->shouldGLRender(action)) return;
 
+  SoState * state = action->getState();
+  state->push();
+
   // update state with color information
   SoNode * node = this->color.getValue();
   if (node) node->GLRender(action);
 
-  SoState * state = action->getState();
-  SoMaterialBundle mb(action);
-
   this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
+
+  SoMaterialBundle mb(action);
 
   SbBool dotex = SoGLTextureEnabledElement::get(state);
   SbBool donorm = !mb.isColorOnly();
@@ -608,6 +610,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
   }
 
   if (normalcache) PRIVATE(this)->readUnlockNormalCache();
+  state->pop();
 }
 
 // Doc in parent
