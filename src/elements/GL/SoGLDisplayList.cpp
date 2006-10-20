@@ -42,11 +42,13 @@
 #include <assert.h>
 
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGL.h>
 
 class SoGLDisplayListP {
  public:
@@ -241,7 +243,8 @@ SoGLDisplayList::close(SoState * state)
 {
   if (PRIVATE(this)->type == DISPLAY_LIST) {
     glEndList();
-    if (glGetError() == GL_OUT_OF_MEMORY) {
+    GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+    if (err == GL_OUT_OF_MEMORY) {
       SoDebugError::post("SoGLDisplayList::close",
                          "Not enough memory resources available on system "
                          "to store full display list. Expect flaws in "

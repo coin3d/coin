@@ -40,6 +40,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
@@ -170,8 +171,9 @@ SoGLLightIdElement::getMaxGLSources(void)
 
   GLint val;
   glGetIntegerv(GL_MAX_LIGHTS, &val);
-
-  assert(glGetError() == GL_NO_ERROR &&
+  
+  GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR; 
+  assert(err == GL_NO_ERROR &&
          "GL error when calling glGetInteger() -- no current GL context?");
 
   return (int32_t)val;

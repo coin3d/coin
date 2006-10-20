@@ -39,12 +39,15 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <Inventor/C/tidbits.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoGLModelMatrixElement);
+
+static int COIN_HANDLE_STACK_OVERFLOW = 0;
 
 /*!
   This static method initializes static data for the
@@ -55,6 +58,10 @@ void
 SoGLModelMatrixElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLModelMatrixElement, inherited);
+
+  const char * env = coin_getenv("COIN_HANDLE_STACK_OVERFLOW");
+  if (env && atoi(env) > 0) COIN_HANDLE_STACK_OVERFLOW = 1;
+  else COIN_HANDLE_STACK_OVERFLOW = 0;
 }
 
 /*!
@@ -93,11 +100,16 @@ SoGLModelMatrixElement::push(SoState * stateptr)
   this->stackoverflow = prev->stackoverflow;
   this->state = prev->state;
   
-  if (!this->stackoverflow) {
-    glPushMatrix();
-    if (glGetError() == GL_STACK_OVERFLOW) {
-      this->stackoverflow = TRUE;
+  if (COIN_HANDLE_STACK_OVERFLOW > 0) {
+    if (!this->stackoverflow) {
+      glPushMatrix();
+      if (glGetError() == GL_STACK_OVERFLOW) {
+        this->stackoverflow = TRUE;
+      }
     }
+  }
+  else {
+    glPushMatrix();
   }
   inherited::push(stateptr);
 }

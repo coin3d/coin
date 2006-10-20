@@ -36,6 +36,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
@@ -107,7 +108,8 @@ SoGLClipPlaneElement::getMaxGLPlanes(void)
   GLint val;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &val);
 
-  assert(glGetError() == GL_NO_ERROR &&
+  GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+  assert(err == GL_NO_ERROR &&
          "GL error when calling glGetInteger() -- no current GL context?");
 
   return (int)val;

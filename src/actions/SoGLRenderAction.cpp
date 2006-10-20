@@ -946,8 +946,11 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   if (COIN_GLBBOX) {
     THIS->bboxaction->apply(node);
   }
-  int err_before_init = glGetError();
+  int err_before_init = GL_NO_ERROR;
 
+  if (sogl_glerror_debugging()) {
+    err_before_init = glGetError();
+  }
   if (THIS->needglinit) {
     THIS->needglinit = FALSE;
 
@@ -966,7 +969,11 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     }
   }
 
-  int err_after_init = glGetError();
+  int err_after_init = GL_NO_ERROR;
+
+  if (sogl_glerror_debugging()) {
+    err_after_init = glGetError();
+  }
 
   if (COIN_DEBUG && ((err_before_init != GL_NO_ERROR) || (err_after_init != GL_NO_ERROR))) {
     int err = (err_before_init != GL_NO_ERROR) ? err_before_init : err_after_init;
@@ -1476,12 +1483,12 @@ SoGLRenderActionP::render(SoNode * node)
 
   this->precblist.invokeCallbacks((void*) this->action);
 
-  // Check if the current OpenGL context has an accumulation buffer
-  // (rendering multiple passes doesn't make much sense otherwise).
-  GLint accumbits;
-  glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
-
   if (this->action->getNumPasses() > 1) {
+    // Check if the current OpenGL context has an accumulation buffer
+    // (rendering multiple passes doesn't make much sense otherwise).
+    GLint accumbits;
+    glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
+    
     if (accumbits == 0) {
       SoDebugError::postWarning("SoGLRenderActionP::render", 
                                 "Multipass rendering requested,\nbut current "
@@ -1745,7 +1752,7 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
   
 
   // Clear all errors before traversal, just in case.
-  GLenum glerror = glGetError();
+  GLenum glerror =  sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
   while (glerror) {
     SoDebugError::postWarning("renderOneBlendLayer", 
                               "glError() = %d\n", glerror);
@@ -1850,7 +1857,7 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
     // FIXME: Maybe a wrapper for catching fragment program errors
     // should be a part of GLUE... (20031204 handegar)
     GLint errorPos;    
-    GLenum err = glGetError();
+    GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
     if (err) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("initSortedLayersBlendRendering",
