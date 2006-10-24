@@ -326,7 +326,7 @@ cc_find_file(const char * file)
       }
     }
   }
-  cc_string_clean(list);
+  cc_string_destruct(list);
   return path;
 }
 
@@ -373,7 +373,7 @@ cc_dl_open(const char * filename)
       h->nativehnd = dlopen(cc_string_get_text(path), 
                             RTLD_LAZY);      
     }
-    cc_string_clean(path);
+    cc_string_destruct(path);
   }
 #endif /* HAVE_DYLD_RUNTIME_BINDING */
 
@@ -443,7 +443,7 @@ cc_dl_open(const char * filename)
         NSLinkEditError(&c, &e, &file, &errstr);
         cc_debugerror_post("cc_dlopen", "%s", errstr);
       }
-      cc_string_clean(path);
+      cc_string_destruct(path);
     } 
   }
 
