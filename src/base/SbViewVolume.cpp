@@ -324,14 +324,24 @@ SbViewVolume::getPlanePoint(const float distFromEye,
 }
 
 /*!
-  This method is obsoleted in Coin. Let us know if you need it, and
-  we'll consider implementing it.
- */
+  Returns a rotation that aligns an object so that its positive x-axis
+  is to the right and its positive y-axis is up in the view volume.
+  
+  If rightangleonly is TRUE, it will create a rotation that aligns the
+  x and y-axis with the closest orthogonal axes to right and up.
+*/
+
 SbRotation
 SbViewVolume::getAlignRotation(SbBool rightangleonly) const
 {
-  COIN_OBSOLETED();
-  return SbRotation::identity();
+  SbDPRotation rot = this->dpvv.getAlignRotation(rightangleonly);
+
+  const double * src = rot.getValue();
+  float q[4];
+  for (int i = 0; i < 4; i++){
+    q[i] = (float) src[i];
+  }
+  return SbRotation(q);
 }
 
 /*!
