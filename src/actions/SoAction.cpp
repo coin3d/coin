@@ -367,6 +367,7 @@ SoAction::~SoAction(void)
   for (int i = 0; i < n; i++) delete THIS->pathcodearray[i];
   delete this->state;
   
+  this->currentpath.unrefNoDelete(); // to match the ref() in the constructor
   delete THIS;
 }
 
