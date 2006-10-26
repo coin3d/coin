@@ -1209,16 +1209,8 @@ SoVRMLExtrusionP::generateCoords(void)
     }
 
     if (PUBLIC(this)->convex.getValue()) {
-      if (ALWAYS_CREATE_TRIANGLES) {
-        for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
-          ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
-        }
-      }
-      else {
-        for (int i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
-          ADD_POINT(numspine, i);
-        }
-        this->idx.append(-1);
+      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+        ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
       }
     }
     else {
@@ -1254,18 +1246,10 @@ SoVRMLExtrusionP::generateCoords(void)
     }
 
     if (PUBLIC(this)->convex.getValue()) {
-      if (ALWAYS_CREATE_TRIANGLES) {
-        for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
-          ADD_TRIANGLE(numspine+1, numcross-1,
-                       numspine+1, numcross-1-i,
-                       numspine+1, numcross-2-i);
-        }
-      }
-      else {
-        for (int i = 0; i < (connected ? numcross-1 : numcross); i++) {
-          ADD_POINT(numspine+1, i);
-        }
-        this->idx.append(-1);
+      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+        ADD_TRIANGLE(numspine+1, numcross-1,
+                     numspine+1, numcross-1-i,
+                     numspine+1, numcross-2-i);
       }
     }
     else {
