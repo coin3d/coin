@@ -1611,9 +1611,22 @@ Separator {
     20040831 larsa.
 
     UPDATE 20040831 mortene: This is a high priority item, as it
-    causes Coin to be unusable when using multiple views and
-    SoExtSelection together.
+      causes Coin to be unusable when using multiple views and
+      SoExtSelection together.
 
+    UPDATE 20061026 mortene: we have recurring support requests for
+      this bug to be fixed.
+
+      The above suggestion for how to fix it may be be unnecesary
+      roundabout and complicated, BTW. I'm guessing it should be
+      possible to just store the GL context id (taken from
+      SoGLRenderAction::getCacheContext()) when a selection is first
+      activated, and then only render it to that context.
+
+      With regard to picking up events from only the same context, I'm
+      unsure as to whether we're currently able to detect which
+      context an SoHandleEventAction comes from, though.
+    
 =====================================================================
 
 135 Elements used by <node>::doAction() functions not automatically
