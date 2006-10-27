@@ -230,6 +230,15 @@ aglglue_contextdata_cleanup(struct aglglue_contextdata * ctx)
 static SbBool
 aglglue_context_create_software(struct aglglue_contextdata * ctx)
 {
+  /* FIXME: we're currently not giving any hint as to whether we want
+     a single- / double- / quad-buffer visual. Using anything than a
+     single-buffer visual for offscreen rendering is probably
+     wasteful, so we're likely to often use up more resources than we
+     really need to do.
+
+     20061025 mortene.
+  */
+
   GLint attrib[] = {
     AGL_OFFSCREEN,
     AGL_RGBA,

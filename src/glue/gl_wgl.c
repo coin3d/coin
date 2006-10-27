@@ -450,6 +450,15 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
   int pixelformat;
 
+  /* FIXME: we're currently not giving any hint as to whether we want
+     a single- / double- / quad-buffer visual. Using anything than a
+     single-buffer visual for offscreen rendering is probably
+     wasteful, so we're likely to often use up more resources than we
+     really need to do.
+
+     20061025 mortene.
+  */
+
   PIXELFORMATDESCRIPTOR pfd = {
     sizeof(PIXELFORMATDESCRIPTOR),   /* size of this pfd */
     1,                     /* version number */

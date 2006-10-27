@@ -548,7 +548,19 @@ glxglue_build_GL_attrs(int * attrs, int trynum)
     attrs[pos++] = GLX_BLUE_SIZE;
     attrs[pos++] = 4;
   }
+
+
+  /* FIXME: we're currently not giving any hint as to whether we want
+     a single- / double- / quad-buffer visual. Using anything than a
+     single-buffer visual for offscreen rendering is probably
+     wasteful, so we're likely to often use up more resources than we
+     really need to do.
+
+     20061025 mortene.
+  */
+
   attrs[pos++] = None;
+
   return pos;
 }
 
