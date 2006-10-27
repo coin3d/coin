@@ -383,26 +383,21 @@ typedef struct {
 static void 
 vbo_performance_test(const cc_glglue * glue,
                      const vbo_performance_test_data * data,
-                     const SbBool dovbo)
+                     const SbBool do_vbo)
 {
-  const GLvoid * dataptr = NULL;
-  if (dovbo) {
-    data->vbo->bindBuffer(data->contextid);
-  }
-  else {
-    dataptr = (const GLvoid*) data->vertexarray;
-  }
+  if (do_vbo) { data->vbo->bindBuffer(data->contextid); }
+
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            dataptr);
+                            do_vbo ? NULL : data->vertexarray);
+
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
   for (int i = 0; i < PERF_NUM_LOOP; i++) {
-    data->indexer->render(glue, dovbo, data->contextid);
+    data->indexer->render(glue, do_vbo, data->contextid);
   }
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
-  if (dovbo) {
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-  }
+
+  if (do_vbo) { cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); }
 }
 
 // callback to test VBO rendering speed
@@ -473,14 +468,13 @@ SoVBO::testGLPerformance(const uint32_t contextid)
     const int half = size / 2;
     SbVec3f * vertexarray = new SbVec3f[size*size];
     SoVertexArrayIndexer * idx = new SoVertexArrayIndexer;
-    SbVec3f * ptr = vertexarray;
 
     int x, y;
     
     for (y = 0; y < size; y++) {
       for (x = 0; x < size; x++) {
-        ptr[y*size+x].setValue(float(x-half)/float(size)*0.1f, 
-                               float(y-half)/float(size)*0.1f, 4.0f);
+        vertexarray[y*size+x].setValue(float(x-half)/float(size)*0.1f, 
+                                       float(y-half)/float(size)*0.1f, 4.0f);
       }
     }
 #define IDX(ix, iy) ((iy)*size+ix)
@@ -510,9 +504,10 @@ SoVBO::testGLPerformance(const uint32_t contextid)
       vbo_performance_test_va,
       vbo_performance_test_vbo
     };
+
     double averagerendertime[3];
     cc_perf_gl_timer(glue,
-                     3,
+                     sizeof(rendercbs) / sizeof(rendercbs[0]),
                      rendercbs,
                      averagerendertime,
                      NULL, NULL, 10, SbTime(0.2),
@@ -538,8 +533,3 @@ SoVBO::testGLPerformance(const uint32_t contextid)
   }
   vbo_isfast_hash->put(contextid, isfast);
 }
-
-
-
-
-
