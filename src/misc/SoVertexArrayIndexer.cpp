@@ -223,6 +223,12 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
   // X. It just crashes inside GL when I try to use it. Investigate
   // why this happens. For now we just avoid using
   // glMultiDrawElements() under OS X.  pederb, 2005-02-14
+  //
+  // FIXME: this work-around should really go into src/glue/gl.c, at
+  // the spot where we try to detect a (workable)
+  // glMultiDrawElements() -- given that the function really *is*
+  // dysfunctional on the Mac OpenGL drivers, and we're not just using
+  // it wrong below.  20061025 mortene.
   SbBool ismac = (coin_runtime_os() == COIN_OS_X);
 
   switch (this->target) {
@@ -245,11 +251,12 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
       cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {
+      const int32_t * idxptr = this->indexarray.getArrayPtr();
       cc_glglue_glDrawElements(glue,
                                this->target,
                                this->indexarray.getLength(),
                                GL_UNSIGNED_INT,
-                               (const GLvoid*) this->indexarray.getArrayPtr());
+                               idxptr);
     }
     break;
   default:
