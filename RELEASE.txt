@@ -193,6 +193,9 @@ anything.
 * Tag Source Repository
 
   $ cvs tag coin-N_N_N
+  $ svn copy https://svn.coin3d.org/repos/Coin-2/trunk \
+             https://svn.coin3d.org/repos/Coin-2/tags/coin-2.5.0 \
+      -m "Tagging the 2.5.0 release of the 'Coin-2' project."
 
 * Version Number Update
 
