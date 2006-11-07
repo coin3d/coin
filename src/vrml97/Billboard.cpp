@@ -100,6 +100,41 @@
   description of the bboxCenter and bboxSize fields is contained in
   4.6.4, Bounding boxes
   (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.4>),
+
+  \ENDWEB3D
+
+  The following example VRML scene is a simple illustration of how
+  SoVRMLBillboard::axisOfRotation constrains rotation around the given
+  vector:
+
+  \verbatim
+  #VRML V2.0 utf8
+  
+  Transform {
+     translation -2 0 0
+     children [
+        Billboard {
+  	 children [ Box { } ]
+        }
+     ]
+  }
+  
+  Transform {
+     translation 2 0 0
+     children [
+        Billboard {
+  	 axisOfRotation 0 1 0
+  	 children [ Box { } ]
+        }
+     ]
+  }
+  
+  Transform {
+     translation 0 -2 0
+     children [ Box { size 10 0.1 10 } ]
+  }
+  \endverbatim
+
 */
 
 // *************************************************************************
