@@ -161,11 +161,4 @@ SoAction::getCurPathCode(void) const
   return this->currentpathcode;
 }
 
-inline void
-SoAction::popCurPath(const PathCode prevpathcode)
-{
-  this->currentpath.pop();
-  this->currentpathcode = prevpathcode;
-}
-
 #endif // !COIN_SOACTION_H

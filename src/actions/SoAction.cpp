@@ -202,6 +202,7 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoCompactPathList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
@@ -303,13 +304,6 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
   Returns the current traversal path code.
 */
 
-/*!
-  \fn void SoAction::popCurPath(const PathCode prevpathcode)
-  Pops the current path, and sets the path code to \a prevpathcode.
-
-  This method is very internal. Do not use unless you know
-  what you're doing.
-*/
 
 // *************************************************************************
 
@@ -322,12 +316,14 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
 class SoActionP {
 public:
   SoAction::AppliedCode appliedcode;
+  int returnindex;
   union AppliedData {
     SoNode * node;
     SoPath * path;
     struct {
       const SoPathList * pathlist;
       const SoPathList * origpathlist;
+      SoCompactPathList * compactlist;
     } pathlistdata;
   } applieddata;
   SbBool terminated;
@@ -652,15 +648,21 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 
   THIS->applieddata.pathlistdata.origpathlist = &pathlist;
   THIS->applieddata.pathlistdata.pathlist = &pathlist;
+  THIS->applieddata.pathlistdata.compactlist = NULL;
   THIS->appliedcode = PATH_LIST;
   this->currentpathcode = pathlist[0]->getFullLength() > 1 ?
     SoAction::IN_PATH : SoAction::BELOW_PATH;
 
   if (obeysrules) {
     // GoGoGo
+    if (this->shouldCompactPathList()) {
+      THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(pathlist);
+    }
     this->currentpath.setHead(pathlist[0]->getHead());
     this->beginTraversal(pathlist[0]->getHead());
     this->endTraversal(pathlist[0]->getHead());
+    delete THIS->applieddata.pathlistdata.compactlist;
+    THIS->applieddata.pathlistdata.compactlist = NULL;
   }
   else {
     // make copy of path list and make sure it obeys rules
@@ -675,8 +677,16 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
     if (sortedlist[0]->getHead() == sortedlist[num-1]->getHead()) {
       this->currentpath.setHead(sortedlist[0]->getHead());
       THIS->applieddata.pathlistdata.pathlist = &sortedlist;
+      if (this->shouldCompactPathList()) {
+        THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(sortedlist);
+      }
+      else {
+        THIS->applieddata.pathlistdata.compactlist = NULL;
+      }
       this->beginTraversal(sortedlist[0]->getHead());
       this->endTraversal(sortedlist[0]->getHead());
+      delete THIS->applieddata.pathlistdata.compactlist;
+      THIS->applieddata.pathlistdata.compactlist = NULL;
     }
     else {
       // make one pass per head node. sortedlist is sorted on
@@ -697,7 +707,16 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
         this->currentpathcode = templist[0]->getFullLength() > 1 ?
           SoAction::IN_PATH : SoAction::BELOW_PATH;
         this->currentpath.setHead(templist[0]->getHead());
+
+        if (this->shouldCompactPathList()) {
+          THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(templist);
+        }
+        else {
+          THIS->applieddata.pathlistdata.compactlist = NULL;
+        }
         this->beginTraversal(templist[0]->getHead());
+        delete THIS->applieddata.pathlistdata.compactlist;
+        THIS->applieddata.pathlistdata.compactlist = NULL;
         templist.truncate(0);
       }
     }
@@ -910,42 +929,74 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       }
     }
     else {
-      // test for below path by testing for one path that contains
-      // current path, and is longer than current.  at the same time,
-      // test for off path by testing if there is no paths that
-      // contains current path.  this is a lame and slow way to do it,
-      // but I don't think path list traversal is used that often,
-      // and not for a huge amount of paths. If I'm wrong, we'll just
-      // have to optimize this, for instance by implementing
-      // the SGI's SoCompactPathList class.
-      //                                       pederb, 2001-03-28
-      const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
-      int i, n = pl->getLength();
-      int len = -1;
-
-      for (i = 0; i < n; i++) {
-        const SoPath * path = (*pl)[i];
-        len = path->getFullLength();
-        // small optimization, no use testing if path is shorter
-        if (len >= curlen) {
-          if (path->containsPath(&this->currentpath)) break;
+      if (THIS->applieddata.pathlistdata.compactlist) {
+        SbBool inpath = THIS->applieddata.pathlistdata.compactlist->push(childindex);
+        if (!inpath) {
+          this->currentpathcode = OFF_PATH;
+        }
+        else {
+          int	numchildren;
+          const int * dummy;
+          THIS->applieddata.pathlistdata.compactlist->getChildren(numchildren, dummy);
+          this->currentpathcode = numchildren == 0 ? BELOW_PATH : IN_PATH;
         }
       }
-      // if no path is found, we're off path
-      if (i == n) {
-        this->currentpathcode = OFF_PATH;
+      else {
+        // test for below path by testing for one path that contains
+        // current path, and is longer than current.  At the same time,
+        // test for off path by testing if there is no paths that
+        // contains current path.  This is a lame and slow way to do it,
+        // but SoCompactPathList will always be used. This is just backup
+        // code in case some action actually disables compact path list.
+        const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
+        int i, n = pl->getLength();
+        int len = -1;
+        
+        for (i = 0; i < n; i++) {
+          const SoPath * path = (*pl)[i];
+          len = path->getFullLength();
+          // small optimization, no use testing if path is shorter
+          if (len >= curlen) {
+            if (path->containsPath(&this->currentpath)) break;
+          }
+        }
+        // if no path is found, we're off path
+        if (i == n) {
+          this->currentpathcode = OFF_PATH;
 #ifdef DEBUG_PATH_TRAVERSAL
-        fprintf(stderr,"off path at: %d (%s), depth: %d\n",
-                childindex, node->getName().getString(), curlen);
+          fprintf(stderr,"off path at: %d (%s), depth: %d\n",
+                  childindex, node->getName().getString(), curlen);
 #endif // DEBUG_PATH_TRAVERSAL
-      }
-      else if (len == curlen) {
-        this->currentpathcode = BELOW_PATH;
+        }
+        else if (len == curlen) {
+          this->currentpathcode = BELOW_PATH;
 #ifdef DEBUG_PATH_TRAVERSAL
-        fprintf(stderr,"below path at: %d (%s), depth: %d\n",
-                childindex, node->getName().getString(), curlen);
+          fprintf(stderr,"below path at: %d (%s), depth: %d\n",
+                  childindex, node->getName().getString(), curlen);
 #endif // DEBUG_PATH_TRAVERSAL
+        }
       }
+    }
+  }
+}
+
+/*!
+  \fn void SoAction::popCurPath(const PathCode prevpathcode)
+  Pops the current path, and sets the path code to \a prevpathcode.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
+*/
+void
+SoAction::popCurPath(const PathCode prevpathcode)
+{
+  this->currentpath.pop();
+  this->currentpathcode = prevpathcode;
+
+  // If we're traversing a path list, let it know where we are
+  if ((THIS->appliedcode == PATH_LIST) && (prevpathcode == IN_PATH)) {
+    if (THIS->applieddata.pathlistdata.compactlist) {
+      THIS->applieddata.pathlistdata.compactlist->pop();
     }
   }
 }
@@ -1016,25 +1067,30 @@ SoAction::usePathCode(int & numindices, const int * & indices)
   myarray->truncate(0);
 
   if (this->getWhatAppliedTo() == PATH_LIST) {
-    // this might be very slow if the list contains a lot of
-    // paths. See comment in pushCurPath(int, SoNode*) about this.
-    const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
-    int n = pl->getLength();
-    int previdx = -1;
-    myarray->truncate(0);
-    for (int i = 0; i < n; i++) {
-      const SoPath * path = (*pl)[i];
-      if (path->getFullLength() > curlen &&
-          path->containsPath(&this->currentpath)) {
-        int idx = path->getIndex(curlen);
-        if (idx != previdx) {
-          myarray->append(idx);
-          previdx = idx;
+    if (THIS->applieddata.pathlistdata.compactlist) {
+      THIS->applieddata.pathlistdata.compactlist->getChildren(numindices, indices);
+    }
+    else {
+      // this might be very slow if the list contains a lot of
+      // paths. See comment in pushCurPath(int, SoNode*) about this.
+      const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
+      int n = pl->getLength();
+      int previdx = -1;
+      myarray->truncate(0);
+      for (int i = 0; i < n; i++) {
+        const SoPath * path = (*pl)[i];
+        if (path->getFullLength() > curlen &&
+            path->containsPath(&this->currentpath)) {
+          int idx = path->getIndex(curlen);
+          if (idx != previdx) {
+            myarray->append(idx);
+            previdx = idx;
+          }
         }
       }
+      numindices = myarray->getLength();
+      indices = myarray->getArrayPtr();
     }
-    numindices = myarray->getLength();
-    indices = myarray->getArrayPtr();
   }
   else {
     numindices = 1;
