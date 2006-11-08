@@ -26,7 +26,9 @@
 
 #include <Inventor/SbBasic.h>
 
-class SoCompactPathList {
+class SoPathList;
+
+class COIN_DLL_API SoCompactPathList {
 public:
   SoCompactPathList(const SoPathList & list);
   ~SoCompactPathList();
