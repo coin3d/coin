@@ -22,7 +22,8 @@
 \**************************************************************************/
 
 #include <Inventor/misc/SoCompactPathList.h>
-#include <Inventor/SoPath.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/lists/SoPathList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
