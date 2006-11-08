@@ -28,7 +28,9 @@ PrivateHeaders = \
 	SbHash.h \
 	SoGL.h \
 	SoGenerate.h \
-	SoPick.h
+	SoPick.h \
+	SoCompactPathList.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(misc, misc)

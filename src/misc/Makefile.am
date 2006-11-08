@@ -1,6 +1,7 @@
 RegularSources = \
 	SoBase.cpp \
 	SoChildList.cpp \
+	SoCompactPathList.cpp \
 	SoContextHandler.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \

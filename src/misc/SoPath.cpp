@@ -66,8 +66,6 @@
 #include <Inventor/C/tidbitsp.h>
 #include <coindefs.h> // COIN_STUB()
 
-#include "SoCompactPathList.cpp" // temporary until we update the build environment
-
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
