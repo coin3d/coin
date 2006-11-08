@@ -1611,9 +1611,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     }
 
     // Render all transparent paths that should not be sorted
-    for (i = 0; i < this->transpobjpaths.getLength(); i++) {
-      this->action->apply(this->transpobjpaths[i]);
-    }
+    this->action->apply(this->transpobjpaths, TRUE);
 
     // enable depth buffer writes again
     glDepthMask(GL_TRUE);
