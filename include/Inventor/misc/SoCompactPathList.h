@@ -25,10 +25,21 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/lists/SbList.h>
 
 class SoPathList;
 
-class COIN_DLL_API SoCompactPathList {
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif // !COIN_INTERNAL
+
+// SoCompactPathList is an internal class in Coin and should not be
+// used by external applications. It's used only to optimize
+// SoPathList traversing. Let us know if you still need to use this
+// class for some reason and we might add it as a part of the public
+// Coin API.
+
+class SoCompactPathList {
 public:
   SoCompactPathList(const SoPathList & list);
   ~SoCompactPathList();
