@@ -616,13 +616,15 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
 {
   int numindices;
   const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+  
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+  
+  if (pathcode == SoAction::IN_PATH) {
     SoState * state = action->getState();
     SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
     state->push();
     int childidx = 0;
     for (int i = 0; i < numindices; i++) {
-      SoAction::PathCode pathcode = action->getCurPathCode();
       for (; childidx < indices[i] && !action->hasTerminated(); childidx++) {
         SoNode * offpath = childarray[childidx];
         if (offpath->affectsState()) {

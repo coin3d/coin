@@ -710,13 +710,15 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
 {
   int numindices;
   const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+  
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+
+  if (pathcode == SoAction::IN_PATH) {
     SoState * state = action->getState();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
     state->push();
     int childidx = 0;
     for (int i = 0; i < numindices; i++) {
-      SoAction::PathCode pathcode = action->getCurPathCode();
       for (; childidx < indices[i] && !action->hasTerminated(); childidx++) {
         SoNode * offpath = childarray[childidx];
         if (offpath->affectsState()) {
@@ -743,9 +745,7 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
     }
     state->pop();
   }
-  else {
-    // we got to the end of the path
-    assert(action->getCurPathCode() == SoAction::BELOW_PATH);
+  else if (pathcode == SoAction::BELOW_PATH) {
     this->GLRenderBelowPath(action);
   }
 }
