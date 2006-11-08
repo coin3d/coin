@@ -50,6 +50,8 @@ public:
   SbBool push(int childindex);
   void pop(void);
 
+  int getDepth(void) const;
+
 private:
   int * lookuptable;
   SbList <int> stack;

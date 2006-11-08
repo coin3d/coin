@@ -233,3 +233,12 @@ SoCompactPathList::getChildIndex(const int child)
   assert(idx < this->lookupsize);
   return this->lookuptable[idx]; 
 }
+
+/*!
+  Returns the depth of the current node.
+*/
+int 
+SoCompactPathList::getDepth(void) const
+{
+  return 1 + this->stack.getLength();
+}

@@ -931,6 +931,8 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
     else {
       if (THIS->applieddata.pathlistdata.compactlist) {
         SbBool inpath = THIS->applieddata.pathlistdata.compactlist->push(childindex);
+        assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
+
         if (!inpath) {
           this->currentpathcode = OFF_PATH;
         }
@@ -997,6 +999,7 @@ SoAction::popCurPath(const PathCode prevpathcode)
   if ((THIS->appliedcode == PATH_LIST) && (prevpathcode == IN_PATH)) {
     if (THIS->applieddata.pathlistdata.compactlist) {
       THIS->applieddata.pathlistdata.compactlist->pop();
+      assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
     }
   }
 }
@@ -1068,6 +1071,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 
   if (this->getWhatAppliedTo() == PATH_LIST) {
     if (THIS->applieddata.pathlistdata.compactlist) {
+      assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
       THIS->applieddata.pathlistdata.compactlist->getChildren(numindices, indices);
     }
     else {
