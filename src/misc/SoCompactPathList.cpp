@@ -43,7 +43,7 @@
 
 */
 
-#define FULL_PATH(list, i)	((SoFullPath *) list[i])
+#define FULL_PATH(list, i) ((SoFullPath *) list[i])
 
 /*!
   Constructor.
@@ -53,7 +53,7 @@ SoCompactPathList::SoCompactPathList(const SoPathList & list)
 {
   assert(list.getLength());
   SoNode * head = FULL_PATH(list, 0)->getHead();
-  int	i, numnodes = 0;
+  int numnodes = 0;
 
   for (int i = 0; i < list.getLength(); i++) {
     assert(FULL_PATH(list, i)->getHead() == head);
