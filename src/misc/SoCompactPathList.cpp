@@ -182,7 +182,7 @@ SoCompactPathList::createLookupTable(int curidx, int depth,
   i = 0;
   
   while (i < numpaths) {
-    int startpath = i;
+    int startpath = i + firstpath;
     int childidx = FULL_PATH(list, firstpath + i)->getIndex(depth);
     int pathcounter = 1;
     i++;
