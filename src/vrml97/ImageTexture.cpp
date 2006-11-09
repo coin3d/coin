@@ -656,7 +656,6 @@ imagetexture_glimage_delete(void * closure, SoSensor * s)
 void
 SoVRMLImageTexture::glimage_callback(void * closure)
 {
-#ifdef COIN_THREADSAFE
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   PRIVATE(thisp)->lock_glimage();
   if (PRIVATE(thisp)->glimage) {
@@ -680,7 +679,6 @@ SoVRMLImageTexture::glimage_callback(void * closure)
     }
   }
   PRIVATE(thisp)->unlock_glimage();
-#endif // COIN_THREADSAFE
 }
 
 SbBool
