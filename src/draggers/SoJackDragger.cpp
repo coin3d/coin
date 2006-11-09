@@ -202,7 +202,6 @@ SoJackDragger::SoJackDragger(void)
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
-  squish->recalcAlways = FALSE;
 
   this->addValueChangedCallback(SoJackDragger::valueChangedCB);
   this->rotFieldSensor = new SoFieldSensor(SoJackDragger::fieldSensorCB, this);
