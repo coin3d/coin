@@ -181,8 +181,6 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/glp.h>
 
-#include "../misc/PointerMap.h"
-
 
 // *************************************************************************
 
