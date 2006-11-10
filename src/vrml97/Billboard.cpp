@@ -160,6 +160,7 @@
 #include <Inventor/VRMLnodes/SoVRMLBillboard.h>
 
 #include <math.h>
+#include <float.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -180,14 +181,8 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/glp.h>
 
-// *************************************************************************
+#include "../misc/PointerMap.h"
 
-class SoVRMLBillboardP {
-public:
-  SbRotation previousrotation;
-};
-
-#define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
 
@@ -207,8 +202,6 @@ SoVRMLBillboard::initClass(void)
 */
 SoVRMLBillboard::SoVRMLBillboard(void)
 {
-  PRIVATE(this) = new SoVRMLBillboardP;
-
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLBillboard);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
@@ -229,7 +222,6 @@ SoVRMLBillboard::SoVRMLBillboard(int numchildren)
 */
 SoVRMLBillboard::~SoVRMLBillboard()
 {
-  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -418,28 +410,27 @@ SoVRMLBillboard::notify(SoNotList * list)
 void
 SoVRMLBillboard::performRotation(SoState * state) const
 {
-  SbRotation rot;
-  const SbMatrix & mm = SoModelMatrixElement::get(state);
-
-  SbVec3f toviewer;
+  SbMatrix imm = SoModelMatrixElement::get(state).inverse();
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-
-  toviewer = - vv.getProjectionDirection();
-  (void) toviewer.normalize();
-
-  SbVec3f rotaxis = this->axisOfRotation.getValue();
+  SbVec3f toviewer, up;
+  imm.multVecMatrix(vv.getViewUp(), up);
+  imm.multVecMatrix(-vv.getProjectionDirection(), toviewer);
+  
+  SbVec3f rotaxis = this->axisOfRotation.getValue();  
+  SbVec3f yaxis(0.0f, 1.0f, 0.0f);
+  SbVec3f zaxis(0.0f, 0.0f, 1.0f);
+  
+  SbRotation rot = SbRotation::identity();
+  
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
     // 1. Compute the billboard-to-viewer vector.
     // 2. Rotate the Z-axis of the billboard to be collinear with the
     //    billboard-to-viewer vector and pointing towards the viewer's position.
     // 3. Rotate the Y-axis of the billboard to be parallel and oriented in the
     //    same direction as the Y-axis of the viewer.
-    rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), toviewer);
-    SbVec3f viewup = vv.getViewUp();
-    SbVec3f yaxis(0.0f, 1.0f, 0.0f);
+    rot.setValue(zaxis, toviewer);
     rot.multVec(yaxis, yaxis);
-    SbRotation rot2(yaxis, viewup);
-    rot = rot * rot2;
+    rot *= SbRotation(yaxis, up);
   }
   else {
     // 1. Compute the vector from the Billboard node's origin to the viewer's
@@ -449,21 +440,11 @@ SoVRMLBillboard::performRotation(SoState * state) const
     // 3. Rotate the local Z-axis of the billboard into the plane from 2.,
     //    pivoting around the axisOfRotation.
     SbVec3f planenormal(rotaxis.cross(toviewer));
-    float length = planenormal.length();
-    if (length == 0) {
-      // Resulting rotation of billboard is undefined here; we are going
-      // to apply previous rotation so that eventually no sudden changes
-      // in orientation arise when this situation occurs while smoothly
-      // moving camera.
-      rot = PRIVATE(this)->previousrotation;
-    }
-    else {
+    if (planenormal.normalize() > FLT_EPSILON) {
       // Calculate projection vector of local Z-axis to plane defined by
       // the axisOfRotation and the billboard-to-viewer vector and then
       // apply rotation around axisOfRotation that will rotate Z-axis to
       // this projection.
-      planenormal /= length;
-      SbVec3f zaxis(0.0f, 0.0f, 1.0f);
       SbVec3f vecinplane = zaxis - planenormal * planenormal[2];
       (void) vecinplane.normalize();
       if (vecinplane.dot(toviewer) < 0.0f) vecinplane = - vecinplane;
@@ -471,14 +452,8 @@ SoVRMLBillboard::performRotation(SoState * state) const
       rot.setValue(rotaxis, planenormal[2] < 0.0f ? angle : - angle);
     }
   }
-  SbVec3f translation, scale;
-  SbRotation rotation, scaleorientation;
-  mm.getTransform(translation, rotation, scale, scaleorientation);
-  SbMatrix mm2;
-  mm2.setTransform(translation, rot, scale);
-  SoModelMatrixElement::set(state, (SoNode*) this, mm2);
-
-  PRIVATE(this)->previousrotation = rot;
+  
+  SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);
 }
 
 #endif // HAVE_VRML97
