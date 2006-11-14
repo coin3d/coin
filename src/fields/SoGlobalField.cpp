@@ -265,7 +265,7 @@ SoGlobalField::readInstance(SoInput * in, unsigned short flags)
 
   SbString typestr;
   READ_VAL(typestr);
-  SbName type = SbName(typestr);
+  SbName type(typestr);
 
   SoType fieldtype = SoType::fromName(type);
   if (fieldtype == SoType::badType()) {
