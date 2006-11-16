@@ -1192,8 +1192,26 @@ glglue_resolve_symbols(cc_glglue * w)
     /*     else if (strstr(w->rendererstr, "GeForce4 420 Go")) { */
     /*       w->glBindBuffer = NULL; */
     /*     } */
+    /* FIXME: I guess the above has been made obsolete by the VBO
+       performance testing we now do..? pederb should confirm.
+       20061027 mortene. */
   }
 #endif
+
+  /* VBO support has been found to often trigger bugs in OpenGL
+     drivers, so we make it possible to selectively disable that
+     feature through an envvar.
+
+     (Specifically, I've seen the following driver crash when using
+     VBOs in an offscreen context: GL_RENDERER="GeForce 7950
+     GX2/PCI/SSE2", GL_VERSION="2.0.2 NVIDIA 87.62", on an AMD64 with
+     Linux. On-screen contexts with VBOs was ok on the exact same
+     machine. -mortene.)
+  */
+  if (w->glBindBuffer) {
+    const char * env = coin_getenv("COIN_GL_DISABLE_VBO");
+    if (env && (atoi(env) > 0)) { w->glBindBuffer = NULL; }
+  }
 
 #endif /* GL_ARB_vertex_buffer_object */
 
