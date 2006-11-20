@@ -410,10 +410,20 @@ SoVRMLBillboard::performRotation(SoState * state) const
 {
   SbMatrix imm = SoModelMatrixElement::get(state).inverse();
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  SbVec3f toviewer, up;
+  SbVec3f up;
   imm.multVecMatrix(vv.getViewUp(), up);
-  imm.multVecMatrix(-vv.getProjectionDirection(), toviewer);
-  
+
+  SbVec3f projpt;
+  SbVec3f origo(0.0f, 0.0f, 0.0f);
+  imm.multVecMatrix(origo, origo);
+  imm.multVecMatrix(vv.getProjectionPoint(), projpt);
+  SbVec3f toviewer = projpt - origo;
+  if (toviewer.normalize() < FLT_EPSILON) {
+    // we're not going to be able to calculate anything if the
+    // projection point is in origo
+    return;
+  }
+
   SbVec3f rotaxis = this->axisOfRotation.getValue();  
   SbVec3f yaxis(0.0f, 1.0f, 0.0f);
   SbVec3f zaxis(0.0f, 0.0f, 1.0f);
