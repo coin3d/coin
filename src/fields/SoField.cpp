@@ -138,6 +138,8 @@
 #endif // !COIN_THREADSAFE
 
 static const int SOFIELD_GET_STACKBUFFER_SIZE = 1024;
+// need one static mutex for field_buffer in SoField::get(SbString &)
+static void * sofield_mutex = NULL;
 
 // flags for this->statusbits
 
@@ -381,6 +383,8 @@ SoFieldP::hashExitCleanup(void)
 void *
 SoFieldP::hashRealloc(void * bufptr, size_t size)
 {
+  CC_MUTEX_UNLOCK(sofield_mutex);
+
   char ** bufptrptr = NULL;
   int ok = SoFieldP::ptrhash->get((char *)bufptr, bufptrptr);
   assert(ok);
@@ -403,6 +407,8 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
     *bufptrptr = newbuf;
     SoFieldP::ptrhash->put(newbuf, bufptrptr);
   }
+
+  CC_MUTEX_UNLOCK(sofield_mutex);
 
   return newbuf;
 }
@@ -576,9 +582,6 @@ SoField::~SoField()
 
   this->clearStatusBits(FLAG_ALIVE_PATTERN);
 }
-
-// need one static mutex for field_buffer in SoField::get(SbString &)
-static void * sofield_mutex = NULL;
 
 // atexit
 static void
@@ -1285,17 +1288,15 @@ SoField::get(SbString & valuestring)
   // NOTE: this code has an almost verbatim copy in SoMField::get1(),
   // so remember to update both places if any fixes are done.
 
-  if (sofield_mutex) {
-    CC_MUTEX_LOCK(sofield_mutex); // need to lock since a static array is used
-  }
-
   // Initial buffer setup.
   SoOutput out;
   char initbuffer[SOFIELD_GET_STACKBUFFER_SIZE];
   char * bufferptr = NULL; // indicates that initial buffer is on the stack
 
+  CC_MUTEX_LOCK(sofield_mutex);
   int ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
   assert(ok);
+  CC_MUTEX_UNLOCK(sofield_mutex);
 
   out.setBuffer(initbuffer, sizeof(initbuffer), SoFieldP::hashRealloc);
 
@@ -1318,12 +1319,11 @@ SoField::get(SbString & valuestring)
 
   // dealloc tmp memory buffer
   if (bufferptr) { free(bufferptr); }
+
+  CC_MUTEX_LOCK(sofield_mutex);
   ok = SoFieldP::getReallocHash()->remove(bufferptr ? bufferptr : initbuffer);
   assert(ok);
-
-  if (sofield_mutex) {
-    CC_MUTEX_UNLOCK(sofield_mutex);
-  }
+  CC_MUTEX_UNLOCK(sofield_mutex);
 }
 
 /*!
