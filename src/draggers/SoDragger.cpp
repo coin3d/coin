@@ -1572,6 +1572,11 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   // some draggers, and it's the only time the otherEvent callbacks
   // are called when the dragger is not active.
   //
+  // If you disable autoredraws via
+  // SoGuiRenderArea::setAutoRedraw(FALSE) you must remember to add an
+  // otherEventCallback if you want to schedule a redraw when ctrl is
+  // tapped.
+
   if (!this->isActive.getValue() &&
       (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) ||
        SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL))) {
