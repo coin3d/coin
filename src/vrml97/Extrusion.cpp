@@ -394,7 +394,10 @@ public:
   // needed, since if we don't add this the unsigned long operator
   // will be used when comparing two vertices.
   int operator==(const SoVRMLExtrusionVertex & v) {
-    return memcmp(this, &v, sizeof(v)) == 0;
+    return 
+      (this->coord == v.coord) &&
+      (this->normal == v.normal) &&
+      (this->texcoord == v.texcoord);
   }
 };
 

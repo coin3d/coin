@@ -815,7 +815,16 @@ SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 int 
 SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v)
 {
-  return memcmp(this, &v, sizeof(v)) == 0;
+  return 
+    (this->vertex == v.vertex) &&
+    (this->normal == v.normal) &&
+    (this->texcoord0 == v.texcoord0) &&
+    (this->bumpcoord == v.bumpcoord) &&
+    (this->texcoordidx == v.texcoordidx) &&
+    (this->rgba[0] == v.rgba[0]) &&
+    (this->rgba[1] == v.rgba[1]) &&
+    (this->rgba[2] == v.rgba[2]) &&
+    (this->rgba[3] == v.rgba[3]);
 }
 
 void 
