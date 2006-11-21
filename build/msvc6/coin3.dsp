@@ -1210,6 +1210,19 @@ SOURCE=..\..\src\caches\SoGlyphCache.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\caches\SoVBOCache.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\caches"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\details\SoDetail.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
@@ -5163,6 +5176,19 @@ SOURCE=..\..\src\misc\SoBase.cpp
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoChildList.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\misc"
+!ENDIF 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoCompactPathList.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"

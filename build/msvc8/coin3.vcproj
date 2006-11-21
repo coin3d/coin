@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="coin3"
-	ProjectGUID="{E24C55FE-DDD7-48EB-9298-E77120C7984C}"
+	ProjectGUID="{731BA92E-FAD8-44E0-B331-5E5F81D4F9BD}"
 	>
 	<Platforms>
 		<Platform
@@ -10824,6 +10824,54 @@
 						PreprocessorDefinitions=""
 						ObjectFile=".\Debug\nodes/"
 						ProgramDataBaseFileName="Debug\nodes/"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\misc\SoCompactPathList.cpp"
+				>
+				<FileConfiguration
+					Name="LIB (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\misc/"
+						ProgramDataBaseFileName="StaticDebug\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\misc/"
+						ProgramDataBaseFileName="StaticRelease\misc/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"
 					/>
 				</FileConfiguration>
 			</File>
@@ -33240,6 +33288,54 @@
 						PreprocessorDefinitions=""
 						ObjectFile=".\Debug\misc/"
 						ProgramDataBaseFileName="Debug\misc/"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\caches\SoVBOCache.cpp"
+				>
+				<FileConfiguration
+					Name="LIB (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\caches/"
+						ProgramDataBaseFileName="StaticDebug\caches/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Release\caches/"
+						ProgramDataBaseFileName="Release\caches/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\caches/"
+						ProgramDataBaseFileName="StaticRelease\caches/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Debug\caches/"
+						ProgramDataBaseFileName="Debug\caches/"
 					/>
 				</FileConfiguration>
 			</File>
