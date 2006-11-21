@@ -90,6 +90,7 @@ SoMFEnum::SoMFEnum(void)
 /* Destructor. */
 SoMFEnum::~SoMFEnum()
 {
+  this->enableNotify(FALSE); /* Avoid notifying destructed containers. */
   this->deleteAllValues();
   delete[] this->enumValues;
   delete[] this->enumNames;
