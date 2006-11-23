@@ -418,6 +418,7 @@ public:
   // Group nodes
   static SoCallbackAction::Response push_sep_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response pop_sep_cb(void *, SoCallbackAction *, const SoNode *);
+
   static SoCallbackAction::Response push_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response pop_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response push_lod_cb(void *, SoCallbackAction *, const SoNode *);
@@ -513,12 +514,16 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_PRE_CB(SoUnits, sounits_cb);
 
   // Group nodes
+  ADD_PRE_CB(SoVRMLGroup, push_sep_cb); // support for VRML97 Transform and Group
+  ADD_POST_CB(SoVRMLGroup, pop_sep_cb);
+
   ADD_PRE_CB(SoSeparator, push_sep_cb);
   ADD_POST_CB(SoSeparator, pop_sep_cb);
   ADD_PRE_CB(SoSwitch, push_switch_cb);
   ADD_POST_CB(SoSwitch, pop_switch_cb);
   ADD_PRE_CB(SoLOD, push_lod_cb);
   ADD_PRE_CB(SoLevelOfDetail, push_levelofdetail_cb);
+
   ADD_UNSUPPORTED(SoWWWAnchor); // Convert to SoVRMLAnchor
 
   // Other nodes
@@ -907,11 +912,31 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
   }
 
   // Push a new SoVRMLGroup on the tail of the path
-  SoVRMLGroup * newgroup = NEW_NODE(SoVRMLGroup, node);
+  SoVRMLGroup * newgroup = NULL;
+
+  if (node->isOfType(SoVRMLTransform::getClassTypeId())) {
+    SoVRMLTransform * oldtrans = (SoVRMLTransform*) node;
+    SoVRMLTransform * newtrans = NEW_NODE(SoVRMLTransform, node);    
+
+    newgroup = newtrans;
+
+    newtrans->translation = oldtrans->translation;
+    newtrans->rotation = oldtrans->rotation;
+    newtrans->scale = oldtrans->scale;
+    newtrans->scaleOrientation = oldtrans->scaleOrientation;
+    newtrans->center = oldtrans->center;
+
+  }
+  else {
+    newgroup = NEW_NODE(SoVRMLGroup, node);
+  }
+
+  // Push a new SoVRMLGroup on the tail of the path
   prevgroup->addChild(newgroup);
   thisp->vrml2path->append(newgroup);
   return SoCallbackAction::CONTINUE;
 }
+
 
 SoCallbackAction::Response
 SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
@@ -926,7 +951,7 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const So
   do {
     grp = THISP(closure)->get_current_tail();
     THISP(closure)->vrml2path->pop();
-  } while (grp->getTypeId() != SoVRMLGroup::getClassTypeId());
+  } while (!grp->isOfType(SoVRMLGroup::getClassTypeId()));
 
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
