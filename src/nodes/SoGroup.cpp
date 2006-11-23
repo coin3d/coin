@@ -515,7 +515,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
   int numindices;
   const int * indices;
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
-
+  
   SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
   SoState * state = action->getState();
 
@@ -523,6 +523,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
     int lastchild = indices[numindices - 1];
     for (int i = 0; i <= lastchild && !action->hasTerminated(); i++) {
       SoNode * child = childarray[i];
+      
       action->pushCurPath(i, child);
       if (action->getCurPathCode() != SoAction::OFF_PATH ||
           child->affectsState()) {
@@ -541,6 +542,11 @@ SoGroup::GLRender(SoGLRenderAction * action)
     int n = this->getChildren()->getLength();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
       action->popPushCurPath(i, childarray[i]);
+
+      if (pathcode == SoAction::OFF_PATH && !childarray[i]->affectsState()) {
+        continue;   
+      }
+
       if (action->abortNow()) {
         // only cache if we do a full traversal
         SoCacheElement::invalidate(state);
