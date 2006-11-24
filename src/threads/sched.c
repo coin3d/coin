@@ -90,10 +90,8 @@ typedef struct {
 static int
 sched_item_compare(void * o1, void * o2)
 {
-  sched_item * i1, * i2;
-  
-  i1 = (sched_item *) o1;
-  i2 = (sched_item *) o2;
+  sched_item * i1 = (sched_item *) o1;
+  sched_item * i2 = (sched_item *) o2;
   
   float diff = i1->priority - i2->priority;
   if (diff > 0) return 1;
