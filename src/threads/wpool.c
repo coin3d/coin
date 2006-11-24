@@ -51,6 +51,10 @@ wpool_unlock(cc_wpool * pool)
   cc_mutex_unlock(pool->mutex);
 }
 
+/*!
+  Called by the worker once the job is finished, just before it goes into a 
+  condvar_wait().
+*/
 static void
 wpool_idle_cb(cc_worker * worker, void * data)
 {
@@ -72,6 +76,9 @@ wpool_idle_cb(cc_worker * worker, void * data)
   wpool_unlock(pool);
 }
 
+/*!
+  Will wait until we have \e num idle workers.
+*/
 static void
 wpool_wait(cc_wpool * pool, int num)
 {
@@ -133,6 +140,7 @@ cc_wpool_construct(int numworkers)
 
 /*!
   Destruct worker pool.
+  Will wait for all jobs in progress to finish
 */
 void
 cc_wpool_destruct(cc_wpool * pool)

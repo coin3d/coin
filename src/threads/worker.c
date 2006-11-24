@@ -146,6 +146,9 @@ cc_worker_construct(void)
   return worker;
 }
 
+/*!
+  Will wait for the current task to be finished before destructing the worker.
+*/
 void 
 cc_worker_destruct(cc_worker * worker)
 {
@@ -160,6 +163,10 @@ cc_worker_destruct(cc_worker * worker)
   free(worker);
 }
 
+/*!
+  Start the worker by either waking is from a condvar_wait() or
+  creating a new thread if the thread is not running.
+*/
 SbBool 
 cc_worker_start(cc_worker * worker, cc_worker_f * workfunc, void * closure)
 {
@@ -201,7 +208,8 @@ cc_worker_wait(cc_worker * worker)
 }
 
 void 
-cc_worker_set_idle_callback(cc_worker * worker, cc_worker_idle_f * cb, void * closure)
+cc_worker_set_idle_callback(cc_worker * worker, cc_worker_idle_f * cb, 
+                            void * closure)
 {
   cc_mutex_lock(worker->mutex);
   worker->idlecb = cb;
