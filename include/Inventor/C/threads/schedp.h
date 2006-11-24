@@ -30,6 +30,7 @@
 
 #include <Inventor/C/threads/common.h>
 #include <Inventor/C/base/heap.h>
+#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/memalloc.h>
 
 #ifdef HAVE_CONFIG_H
@@ -43,12 +44,15 @@ extern "C" {
 /* ********************************************************************** */
 
 struct cc_sched {
-  cc_wpool * pool;
-  cc_mutex * mutex;
-  cc_condvar * cond;
-  
-  cc_heap * itemheap;
+  cc_wpool * pool;               /*! Pool of worker threads */
+  cc_mutex * mutex;              /*! Protects this struct */
+  cc_heap * itemheap;            /*! Scheduled jobs sorted by priority */
   cc_memalloc * itemalloc;
+  cc_dict * schedid_dict;        /*! Map from schedid to item* */
+  unsigned long schedid_counter; /*! schedid generator */
+  int numallowed;               /*! Max # of scheduled jobs per batch,
+                                 -1 for unlimited */
+  SbBool iswaitingall;
 };
 
 /* ********************************************************************** */
