@@ -2641,3 +2641,28 @@ Separator {
     20061129 kintel
 
 =====================================================================
+
+221 Global field values are not evaluated when reading from file
+
+When creating and connecting from a global field from an .iv file, the
+value of the field is not evaluated until the field is touched. If
+nobody touches the file from code, the initial value will never be
+set.
+
+The offending code is probably related to the "do not notify" flag
+being set when making the field connection (SoField.cpp:2283).
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+SoText2 {
+  string "XXX" = GlobalField {
+    type SFString
+    vfctime "Test"
+  }.vfctime
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20061129 kintel
+
+=====================================================================
