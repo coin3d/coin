@@ -1593,11 +1593,11 @@ void SoVRMLSoundP::fillBuffers()
         else {
           char statestr[20];
           switch (state) {
-          case AL_INITIAL : sprintf(statestr, "initial"); break;
-          case AL_PLAYING : sprintf(statestr, "playing"); break;
-          case AL_PAUSED : sprintf(statestr, "paused"); break;
-          case AL_STOPPED : sprintf(statestr, "stopped"); break;
-          default : sprintf(statestr, "unknown"); break;
+          case AL_INITIAL : strcpy(statestr, "initial"); break;
+          case AL_PLAYING : strcpy(statestr, "playing"); break;
+          case AL_PAUSED : strcpy(statestr, "paused"); break;
+          case AL_STOPPED : strcpy(statestr, "stopped"); break;
+          default : strcpy(statestr, "unknown"); break;
           };
           // 20021007 thammer fixme: deal with this properly!
 #if COIN_DEBUG && DEBUG_AUDIO // debug
