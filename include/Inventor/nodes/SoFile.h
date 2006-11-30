@@ -51,6 +51,7 @@ public:
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
+  virtual void search(SoSearchAction * action);
 
   SoGroup * copyChildren(void) const;
   virtual SoChildList * getChildren(void) const;
@@ -58,6 +59,9 @@ public:
                             SbBool copyconnections);
 
   const SbString & getFullName(void) const;
+
+  static void setSearchOK(SbBool dosearch);
+  static SbBool getSearchOK();
 
 protected:
   virtual ~SoFile();

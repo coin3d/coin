@@ -77,9 +77,11 @@
 class SoFileP {
 public:
   static const char UNDEFINED_FILE[];
+  static SbBool searchok;
 };
 
 const char SoFileP::UNDEFINED_FILE[] = "<Undefined file>";
+SbBool SoFileP::searchok = FALSE;
 
 // *************************************************************************
 
@@ -409,6 +411,12 @@ SoFile::audioRender(SoAudioRenderAction * action)
   SoFile::doAction((SoAction *)action);
 }
 
+void
+SoFile::search(SoSearchAction * action)
+{
+  if (SoFileP::searchok) SoFile::doAction((SoAction *)action);
+}
+
 // Doc from superclass.
 void
 SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
@@ -426,4 +434,22 @@ SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
       SoFieldContainer::findCopy((*(filenode->children))[i], copyconnections);
     this->children->append(cp);
   }
+}
+
+/*!
+  Enables/disables searching children using SoSearchAction.
+*/
+void
+SoFile::setSearchOK(SbBool dosearch)
+{
+  SoFileP::searchok = dosearch;
+}
+
+/*!
+  Returns whether searching children using SoSearchAction is enabled.
+*/
+SbBool
+SoFile::getSearchOK()
+{
+  return SoFileP::searchok;
 }
