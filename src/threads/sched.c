@@ -219,7 +219,9 @@ cc_sched_schedule(cc_sched * sched,
   }
   cc_heap_add(sched->itemheap, (void *)item);
   cc_dict_put(sched->schedid_dict, item->schedid, (void *)item);
-  sched_try_trigger(sched);
+  if (cc_dict_get_num_elements(sched->schedid_dict) == 1) {
+    sched_try_trigger(sched);
+  }
 
   cc_mutex_unlock(sched->mutex);
 
