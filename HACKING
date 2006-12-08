@@ -1212,12 +1212,19 @@ Footnotes
     boundary overwrites and other "interesting" effects that may come
     out of it if the client code is not re-compiled.
 
+    Documentation on ABI- and API-compatiblity
+    ------------------------------------------
 
-    For a quite comprehensive list of what breaks ABI compatibility
-    under C++, see the technical FAQ for Troll Tech' Qt library. Last
-    seen here:
+    Matthias Ettrich and Lubos Lunak have published a document called
+    Binary Compatibility Issues Wth C++. It deals with the details a
+    developer should know about when working on APIs and
+    RPC-Interfaces.
 
-      <URL:http://www.trolltech.com/developer/faqs/technical.html>
+    Certain compiler flags may change the ABI of the resulting code
+    and should be used with care. Such flags are marked with text
+    indicating compatibility problems in the compiler manuals.
+
+    <URL:http://developer.kde.org/documentation/other/binarycompatibility.html>
 
     (It's the "You frequently say that you cannot add this or that
     feature because it would break binary compatibility. What does
