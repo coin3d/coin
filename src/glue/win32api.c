@@ -61,7 +61,10 @@ cc_win32_print_error(const char * callerfuncname, const char * apifuncname,
                               0,
                               NULL);
   if (!result) {
-    cc_debugerror_post("cc_win32_print_error", "FormatMessage() failed!");
+    cc_debugerror_post("cc_win32_print_error",
+                       "FormatMessage() failed! "
+                       "(callerfuncname=='%s', apifuncname=='%s', lasterror==0x%x)",
+                       callerfuncname, apifuncname, lasterror);
     return;
   }
 
