@@ -130,28 +130,14 @@ SbColor::setHSVValue(float hue, float saturation,
                      float value)
 {
 #if COIN_DEBUG
-  if (!(hue>=0.0f && hue<=1.0f)) {
+  if (!(hue>=0.0f && hue<=1.0f) ||
+      !(saturation>=0.0f && saturation<=1.0f) ||
+      !(value>=0.0f && value<=1.0f)) {
     SoDebugError::postWarning("SbColor::setHSVValue",
-                              "'hue' (%f) not within [0.0,1.0]; clamping.",
-                              hue);
-    if (hue<0.0f) hue=0.0f;
-    else if (hue>1.0f) hue=1.0f;
-  }
-
-  if (!(saturation>=0.0f && saturation<=1.0f)) {
-    SoDebugError::postWarning("SbColor::setHSVValue",
-                              "'saturation' (%f) not within [0.0,1.0]; "
-                              "clamping.", saturation);
-    if (saturation<0.0f) saturation=0.0f;
-    else if (saturation>1.0f) saturation=1.0f;
-  }
-
-  if (!(value>=0.0f && value<=1.0f)) {
-    SoDebugError::postWarning("SbColor::setHSVValue",
-                              "'value' (%f) not within [0.0,1.0]; clamping.",
-                              value);
-    if (value<0.0f) value=0.0f;
-    else if (value>1.0f) value=1.0f;
+                              "One or more values out of range, clamping.");
+    hue = SbClamp(hue, 0.f, 1.f);
+    saturation = SbClamp(saturation, 0.f, 1.f);
+    value = SbClamp(value, 0.f, 1.f);
   }
 #endif // COIN_DEBUG
 
