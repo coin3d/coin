@@ -429,7 +429,7 @@ uninstall-am: uninstall-info-am uninstall-local
 @BUILD_HTMLPAGES_TRUE@	  echo  " cp $(top_srcdir)/docs/doxygen/Coin_logo.png ."; \
 @BUILD_HTMLPAGES_TRUE@	  cp $(top_srcdir)/docs/doxygen/Coin_logo.png .; \
 @BUILD_HTMLPAGES_TRUE@	fi
-@BUILD_HTMLPAGES_TRUE@	@ls -1 | egrep '(\.html|\.png|\.gif|\.css|\.tag)$$' >filelist.txt
+@BUILD_HTMLPAGES_TRUE@	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
 
 @BUILD_HTMLPAGES_TRUE@all-local: filelist.txt
 
