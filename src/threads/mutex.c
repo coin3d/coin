@@ -127,8 +127,7 @@ cc_mutex_destruct(cc_mutex * mutex)
 
 /*
 */
-
-int
+void
 cc_mutex_lock(cc_mutex * mutex)
 {
   int ok;
@@ -142,8 +141,8 @@ cc_mutex_lock(cc_mutex * mutex)
 #else /* USE_W32THREAD */  
   ok = internal_mutex_lock(mutex);
 #endif /* USE_W32THREAD */
+
   assert(ok == CC_OK);
-  return ok;
 }
 
 /*
@@ -169,7 +168,7 @@ cc_mutex_try_lock(cc_mutex * mutex)
 /*
 */
 
-int
+void
 cc_mutex_unlock(cc_mutex * mutex)
 {
   int ok;
@@ -182,8 +181,8 @@ cc_mutex_unlock(cc_mutex * mutex)
 #else /* USE_W32THREAD */  
   ok = internal_mutex_unlock(mutex);
 #endif /* USE_W32THREAD */
+
   assert(ok == CC_OK);
-  return ok;
 }
 
 static cc_mutex * cc_global_mutex = NULL;

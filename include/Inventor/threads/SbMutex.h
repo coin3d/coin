@@ -30,16 +30,24 @@
 class SbMutex {
 public:
   SbMutex(void) { this->mutex = cc_mutex_construct(); }
-  ~SbMutex(void) { cc_mutex_destruct(this->mutex); }
+  ~SbMutex() { cc_mutex_destruct(this->mutex); }
 
   int lock(void) {
-    return cc_mutex_lock(this->mutex) == CC_OK ? 0 : 1;
+    cc_mutex_lock(this->mutex);
+    /* Useless return, here just for compatibility with TGS'
+       SbThreadMutex API: */
+    return 0;
   }
+
   SbBool tryLock(void) {
     return cc_mutex_try_lock(this->mutex) == CC_OK;
   }
+
   int unlock(void) {
-    return cc_mutex_unlock(this->mutex) == CC_OK ? 0 : 1;
+    cc_mutex_unlock(this->mutex);
+    /* Useless return, here just for compatibility with TGS'
+       SbThreadMutex API: */
+    return 0;
   }
 
 private:
