@@ -31,16 +31,17 @@
    20050516 mortene.
 */
 
-#include <Inventor/C/threads/mutex.h>
-#include <Inventor/C/threads/mutexp.h>
-
-#include <Inventor/C/errors/debugerror.h>
-
-#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stddef.h>
 #include <errno.h>
+#include <float.h>
+
+#include <Inventor/C/base/time.h>
+#include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/tidbitsp.h>
 
 #ifdef USE_PTHREAD
 #include "mutex_pthread.ic"
@@ -54,6 +55,11 @@ static cc_mutex_TryEnterCriticalSection_func cc_mutex_TryEnterCriticalSection = 
 #include "mutex_win32mutex.ic" 
 #include "mutex_win32cs.ic" 
 #endif /* USE_W32THREAD */
+
+/**************************************************************************/
+
+static double maxmutexlocktime = DBL_MAX;
+static double reportmutexlocktiming = DBL_MAX;
 
 /**************************************************************************/
 
@@ -131,18 +137,38 @@ void
 cc_mutex_lock(cc_mutex * mutex)
 {
   int ok;
+  SbBool timeit;
+  cc_time start, end;
+
   assert(mutex != NULL);
 
+  timeit = (maxmutexlocktime != DBL_MAX) || (reportmutexlocktiming != DBL_MAX);
+  if (timeit) { start = cc_time_gettimeofday(); }
+
 #ifdef USE_W32THREAD
-  if (cc_mutex_TryEnterCriticalSection)
-    ok = win32_cs_lock(mutex);
-  else 
-    ok = win32_mutex_lock(mutex);
+  ok = cc_mutex_TryEnterCriticalSection ? win32_cs_lock(mutex) : win32_mutex_lock(mutex);
 #else /* USE_W32THREAD */  
   ok = internal_mutex_lock(mutex);
 #endif /* USE_W32THREAD */
 
   assert(ok == CC_OK);
+
+  /* This is here as an optional debugging aid, when having problems
+     related to locks that are held too long. (Typically resulting in
+     unresponsive user interaction / lags.)  */
+  if (timeit) {
+    const cc_time spent = cc_time_gettimeofday() - start;
+
+    if (spent >= reportmutexlocktiming) {
+      /* Can't use cc_debugerror_postinfo() here, because we get a
+         recursive call to this function, and a non-terminating lock /
+         hang. */
+      (void)fprintf(stdout, "DEBUG cc_mutex_lock(): mutex %p spent %f secs in lock\n",
+                    mutex, spent);
+    }
+
+    assert(spent <= maxmutexlocktime);
+  }
 }
 
 /*
@@ -222,6 +248,12 @@ cc_mutex_init(void)
        enumerated values for coin_atexit() invocations. 20060301 mortene. */
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 1);
   }
+
+  const char * e = coin_getenv("COIN_DEBUG_MUTEXLOCK_MAXTIME");
+  if (e) { maxmutexlocktime = atof(e); }
+
+  e = coin_getenv("COIN_DEBUG_MUTEXLOCK_TIMING");
+  if (e) { reportmutexlocktiming = atof(e); }
 }
 
 void 
