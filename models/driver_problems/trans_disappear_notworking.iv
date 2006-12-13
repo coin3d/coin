@@ -6,52 +6,17 @@
 # incorrect value when rendering lines and doing alpha-test 
 # rendering.
 
+DrawStyle { style LINES }
+Cube { }
+DrawStyle { style FILLED }
 
-  PerspectiveCamera {
-    position 1891.9193 -138.00015 1578.9788
-    orientation 0.93890899 -0.21085542 -0.27201185  0.90617049
-    nearDistance 599.18921
-    farDistance 11108.271
-    focalDistance 5857.79
-
-  }
-
-     MatrixTransform {
-       matrix 0 12.5 0 0
-          12.5 0 0 0    
-          0 0 -1000 0
-          -18125 -16875 0 1
-      }
-        Coordinate3 {
-     point [ 1350 1450 0,
-              2000 1450 0,
-              2000 2000 0,
-              1350 2000 0,
-              1350 1450 4.4000001,
-              2000 1450 4.4000001,
-              2000 2000 4.4000001,
-              1350 2000 4.4000001 ]
-        }
-       LightModel { model BASE_COLOR }
-        IndexedLineSet {
-          coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, 6, 7, 4, -1, 0, 4, -1, 1,5, -1, 2,6,-1,3,7,-1 ]
-
-        }
-       LightModel { model PHONG }
-
-      Texture2 {
-        image 2 2 4
-        0xff0000ff 0xff000000 0xff000000 0xff0000ff 
-
-      }
-      Coordinate3 {
-        point [ 1676 1450 0,
-            1676 1450 4.4000001,
-            1676 2000 4.4000001,
-            1676 2000 0 ]
-
-      }
-      IndexedFaceSet {
-        coordIndex [ 0, 1, 2, 3, -1 ]
-
-      }
+Texture2 {
+   image 2 2 4
+   0xff0000ff 0xff000000 0xff000000 0xff0000ff 
+}
+Coordinate3 {
+   point [ -2 -2 0, 2 -2 0, 2 2 0, -2 2 0 ]
+}
+IndexedFaceSet {
+   coordIndex [ 0, 1, 2, 3, -1 ]
+}
