@@ -32,7 +32,7 @@
 
   \COIN_CLASS_EXTENSION
 
-  \sa SbVec2s, SbVec2f, SbVec3f, SbVec4f.
+  \sa SbVec2s, SbVec2f, SbVec2d, SbVec3f, SbVec3d, SbVec4f, SbVec4d.
   \since Coin 2.0
   \since TGS Inventor ?.?
 */

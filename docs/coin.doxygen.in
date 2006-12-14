@@ -468,7 +468,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBSPTree.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbClip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbColor.h \
@@ -487,10 +489,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbTesselator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbTime.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewVolume.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewportRegion.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3f.h \
@@ -960,7 +965,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/collision/SoIntersectionDetectionAction.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBSPTree.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox2f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbBox2d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox2s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbBox3s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox3f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbClip.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbColor.cpp \
@@ -978,10 +985,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/base/SbTesselator.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbTime.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewVolume.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewportRegion.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbXfBox3f.cpp \

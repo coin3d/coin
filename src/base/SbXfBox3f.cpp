@@ -31,7 +31,7 @@
   floating point coordinates, and for a floating point 4x4 transformation
   matrix.
 
-  \sa SbBox3f, SbBox2f, SbBox2s, SbMatrix
+  \sa SbBox2s, SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbMatrix.
 */
 
 #include <Inventor/SbXfBox3f.h>

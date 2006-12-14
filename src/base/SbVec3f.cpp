@@ -30,7 +30,7 @@
   Coin. It provides storage for a 3 dimensional vector
   aswell as simple floating point arithmetic operations.
 
-  \sa SbVec2f, SbVec2s, SbVec3s, SbVec4f.
+  \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3d, SbVec4f, SbVec4d.
 */
 
 

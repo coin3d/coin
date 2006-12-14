@@ -30,7 +30,7 @@
   precision floating point vector aswell as simple floating point
   arithmetic operations.
 
-  \sa SbVec3f
+  \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec4f, SbVec4d.
   \since Coin 2.0
   \since TGS Inventor 2.6
 */

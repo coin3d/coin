@@ -32,7 +32,8 @@
   point coordinates, which is among other things useful for
   representing screen or canvas dimensions in normalized coordinates.
 
-  \sa SbBox2s, SbBox3f  */
+  \sa SbBox2s, SbBox2d, SbBox3s, SbBox3f, SbXfBox3f.
+*/
 
 
 #include <Inventor/SbBox2f.h>
