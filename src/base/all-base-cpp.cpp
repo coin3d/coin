@@ -24,6 +24,7 @@
 #include "SbBSPTree.cpp"
 #include "SbBox2f.cpp"
 #include "SbBox2s.cpp"
+#include "SbBox3d.cpp"
 #include "SbBox3f.cpp"
 #include "SbBox3s.cpp"
 #include "SbClip.cpp"

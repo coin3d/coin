@@ -13,6 +13,7 @@ PublicHeaders = \
 	SbBox2s.h \
 	SbBox3f.h \
 	SbBox3s.h \
+	SbBox3d.h \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
