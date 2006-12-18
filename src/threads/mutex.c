@@ -138,7 +138,7 @@ cc_mutex_lock(cc_mutex * mutex)
 {
   int ok;
   SbBool timeit;
-  cc_time start, end;
+  cc_time start;
 
   assert(mutex != NULL);
 
@@ -223,6 +223,8 @@ cc_mutex_cleanup(void)
 void
 cc_mutex_init(void)
 {
+  const char * e = coin_getenv("COIN_DEBUG_MUTEXLOCK_MAXTIME");
+
 #ifdef USE_W32THREAD /* TryEnterCriticalSection test. */
 
   HINSTANCE h = GetModuleHandle("kernel32.dll");
@@ -249,7 +251,6 @@ cc_mutex_init(void)
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 1);
   }
 
-  const char * e = coin_getenv("COIN_DEBUG_MUTEXLOCK_MAXTIME");
   if (e) { maxmutexlocktime = atof(e); }
 
   e = coin_getenv("COIN_DEBUG_MUTEXLOCK_TIMING");
