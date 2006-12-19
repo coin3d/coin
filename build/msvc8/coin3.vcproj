@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="coin3"
-	ProjectGUID="{731BA92E-FAD8-44E0-B331-5E5F81D4F9BD}"
+	ProjectGUID="{9ECF1FE9-CF8D-43F5-AB4E-529BBD4FD521}"
 	>
 	<Platforms>
 		<Platform
@@ -5213,6 +5213,54 @@
 			</File>
 			<File
 				RelativePath="..\..\src\base\SbBox2s.cpp"
+				>
+				<FileConfiguration
+					Name="LIB (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticDebug\base/"
+						ProgramDataBaseFileName="StaticDebug\base/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Release\base/"
+						ProgramDataBaseFileName="Release\base/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="LIB (Release)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\StaticRelease\base/"
+						ProgramDataBaseFileName="StaticRelease\base/"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL (Debug)|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						ObjectFile=".\Debug\base/"
+						ProgramDataBaseFileName="Debug\base/"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\base\SbBox3d.cpp"
 				>
 				<FileConfiguration
 					Name="LIB (Debug)|Win32"
@@ -35825,11 +35873,11 @@
 				>
 			</File>
 			<File
-				RelativePath="include\Inventor\system\gl.h"
+				RelativePath="..\..\include\Inventor\C\glue\gl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\gl.h"
+				RelativePath="include\Inventor\system\gl.h"
 				>
 			</File>
 			<File
@@ -35881,10 +35929,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\Sb.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\threads\SbBarrier.h"
 				>
 			</File>
@@ -35897,19 +35941,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbBox.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbBox2d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbBox2d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbBox2f.h"
 				>
 			</File>
 			<File
@@ -35921,11 +35953,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbBox2s.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbBox3f.h"
+				RelativePath="..\..\include\Inventor\SbBox3d.h"
 				>
 			</File>
 			<File
@@ -35937,14 +35965,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbBox3s.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbBSPTree.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbBSPTree.h"
 				>
 			</File>
@@ -35953,19 +35973,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbClip.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbColor.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbColor.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbColor4f.h"
 				>
 			</File>
 			<File
@@ -35974,10 +35982,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\threads\SbCondVar.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbCylinder.h"
 				>
 			</File>
 			<File
@@ -36005,23 +36009,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbDict.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbDPLine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPLine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPLinear.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPLinear.h"
 				>
 			</File>
 			<File
@@ -36033,27 +36021,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbDPMatrix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPPlane.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbDPPlane.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\SbDPRotation.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPRotation.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbDPViewVolume.h"
 				>
 			</File>
 			<File
@@ -36069,14 +36041,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbHeap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbImage.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbImage.h"
 				>
 			</File>
@@ -36086,14 +36050,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\SbLine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbLine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbLinear.h"
 				>
 			</File>
 			<File
@@ -36113,10 +36069,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbMatrix.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\threads\SbMutex.h"
 				>
 			</File>
@@ -36125,19 +36077,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbName.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbOctTree.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbOctTree.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbPlane.h"
 				>
 			</File>
 			<File
@@ -36146,10 +36086,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\projectors\SbPlaneProjector.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbPList.h"
 				>
 			</File>
 			<File
@@ -36173,15 +36109,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbRotation.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\threads\SbRWMutex.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbSphere.h"
 				>
 			</File>
 			<File
@@ -36213,15 +36141,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbString.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\lists\SbStringList.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbTesselator.h"
 				>
 			</File>
 			<File
@@ -36241,10 +36161,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbTime.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\threads\SbTypedStorage.h"
 				>
 			</File>
@@ -36253,14 +36169,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbVec2d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbVec2f.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbVec2f.h"
 				>
 			</File>
@@ -36269,19 +36177,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbVec2s.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbVec3d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbVec3d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbVec3f.h"
 				>
 			</File>
 			<File
@@ -36297,19 +36193,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbVec3s.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbVec4d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbVec4d.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbVec4f.h"
 				>
 			</File>
 			<File
@@ -36321,19 +36205,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SbViewportRegion.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\SbViewVolume.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbViewVolume.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SbXfBox3f.h"
 				>
 			</File>
 			<File
@@ -36342,10 +36214,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\C\threads\sched.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\So.h"
 				>
 			</File>
 			<File
@@ -36697,10 +36565,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SoDB.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\SoDebug.h"
 				>
 			</File>
@@ -36930,10 +36794,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoFragmentShader.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoFullPath.h"
 				>
 			</File>
 			<File
@@ -37189,15 +37049,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SoInput.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\elements\SoInt32Element.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoInteraction.h"
 				>
 			</File>
 			<File
@@ -37338,10 +37190,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoListenerPositionElement.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoLists.h"
 				>
 			</File>
 			<File
@@ -37573,10 +37421,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SoNodeKitPath.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\lists\SoNodeList.h"
 				>
 			</File>
@@ -37645,10 +37489,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SoOffscreenRenderer.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\engines\SoOneShot.h"
 				>
 			</File>
@@ -37669,10 +37509,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\SoOutput.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\engines\SoOutputData.h"
 				>
 			</File>
@@ -37682,10 +37518,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoPackedColor.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoPath.h"
 				>
 			</File>
 			<File
@@ -37718,10 +37550,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\actions\SoPickAction.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoPickedPoint.h"
 				>
 			</File>
 			<File
@@ -37774,10 +37602,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoPolygonOffsetElement.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoPrimitiveVertex.h"
 				>
 			</File>
 			<File
@@ -37890,10 +37714,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodekits\SoSceneKit.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoSceneManager.h"
 				>
 			</File>
 			<File
@@ -38466,10 +38286,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\engines\SoTriggerAny.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\SoType.h"
 				>
 			</File>
 			<File

@@ -599,6 +599,19 @@ SOURCE=..\..\src\base\SbBox3f.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\base\SbBox3d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF 
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\base\SbClip.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
@@ -12387,6 +12400,10 @@ SOURCE=..\..\include\Inventor\SbBox3s.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\SbBox3d.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\SbClip.h
 # End Source File
 # Begin Source File
@@ -12604,242 +12621,6 @@ SOURCE=..\..\include\SoWinLeaveScope.h
 # Begin Source File
 
 SOURCE=..\..\include\SoDebug.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbPList.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\So.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoDB.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoFullPath.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoNodeKitPath.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoInput.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoInteraction.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoOffscreenRenderer.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoOutput.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoPath.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoPickedPoint.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoPrimitiveVertex.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoSceneManager.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoType.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\Sb.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBSPTree.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbLinear.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPLinear.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SoLists.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox2s.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox3s.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox2f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox2d.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbBox3f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbClip.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbColor.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbColor4f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbCylinder.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDict.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPLine.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPLinear.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPMatrix.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPPlane.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPRotation.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbHeap.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbImage.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbLine.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbMatrix.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbName.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbOctTree.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbPlane.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbRotation.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbSphere.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbString.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbTesselator.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbTime.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec2s.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec2f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec2d.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec3s.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec3f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec3d.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec4f.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbVec4d.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbViewVolume.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbDPViewVolume.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbViewportRegion.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\..\include\Inventor\SbXfBox3f.h
 # End Source File
 # End Group
 # Begin Group "Private Headers"
