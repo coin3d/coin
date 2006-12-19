@@ -19,7 +19,7 @@ filelist.txt: index.html
 	  echo  " cp $(top_srcdir)/docs/doxygen/Coin_logo.png ."; \
 	  cp $(top_srcdir)/docs/doxygen/Coin_logo.png .; \
 	fi
-	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
+	@ls -1 | egrep '(\.html|\.png|\.gif|\.css|\.tag)$$' >filelist.txt
 
 all-local: filelist.txt
 
