@@ -848,7 +848,6 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 
   SoVertexArrayIndexer * vboindexer = this->vbocache->getVertexArrayIndexer(TRUE);
 
-  int idx;
   while (iptr < endptr) {
     // we generate either triangles or quads, so this test is safe
     SbBool isquad = iptr[3] >= 0;
