@@ -31,7 +31,7 @@
   of the defining corners of a box in 3D space, with the sides aligned
   with the 3 principal axes.
 
-  \sa SbBox2s, SbBox2f, SbBox2d, SbBox3s, SbXfBox3f.
+  \sa SbBox2s, SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbXfBox3f.
 */
 
 

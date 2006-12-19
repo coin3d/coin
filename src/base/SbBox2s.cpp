@@ -32,7 +32,7 @@
   coordinates, which is among other things useful for representing
   screen or canvas areas in absolute window coordinates.
 
-  \sa SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbXfBox3f.
+  \sa SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
 */
 
 #include <assert.h>

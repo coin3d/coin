@@ -32,7 +32,7 @@
   coordinates, which is among other things useful for representing
   screen or canvas areas in absolute window coordinates.
 
-  \sa SbBox2s, SbBox2f, SbBox2d, SbBox3f, SbXfBox3f.
+  \sa SbBox2s, SbBox2f, SbBox2d, SbBox3f, SbBox3d, SbXfBox3f.
   \since Coin 2.0
   \since TGS Inventor ?.?
 */

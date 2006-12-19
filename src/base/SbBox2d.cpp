@@ -34,7 +34,7 @@
 
   This class is a Coin extension.
 
-  \sa SbBox2s, SbBox2f, SbBox3s, SbBox3f, SbXfBox3f.
+  \sa SbBox2s, SbBox2f, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
 
   \since Coin 2.0
   \since TGS Inventor 2.6
