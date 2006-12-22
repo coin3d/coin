@@ -1337,29 +1337,43 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   int numcomponents;
   unsigned char *bytes = this->image->getValue(size, numcomponents);
 
-  uint32_t newx = coin_geq_power_of_two(xsize - 2*this->border);
-  uint32_t newy = coin_geq_power_of_two(ysize - 2*this->border);
-  uint32_t newz = zsize ? coin_geq_power_of_two(zsize - 2*this->border) : 0;
+  uint32_t newx = xsize;
+  uint32_t newy = ysize;
+  uint32_t newz = zsize;
 
-  // if >= 256 and low quality, don't scale up unless size is
-  // close to an above power of two. This saves a lot of texture memory
+  uint32_t maxrectsize = 0;
 
-  if (this->flags & SoGLImage::SCALE_DOWN) {
-    // no use scaling down for very small images
-    if (newx > xsize && newx > 16) newx >>= 1;
-    if (newy > ysize && newy > 16) newy >>= 1;
-    if (newz > zsize && newz > 16) newz >>= 1;
-  }
-  else if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
-    if (this->quality < COIN_TEX2_SCALEUP_LIMIT) {
-      if ((newx >= 256) && ((newx - (xsize-2*this->border)) > (newx>>3)))
-        newx >>= 1;
-      if ((newy >= 256) && ((newy - (ysize-2*this->border)) > (newy>>3)))
-        newy >>= 1;
-      if ((newz >= 256) && ((newz - (zsize-2*this->border)) > (newz>>3)))
-        newz >>= 1;
+  if (!(this->flags & SoGLImage::RECTANGLE)) {
+    newx = coin_geq_power_of_two(xsize - 2*this->border);
+    newy = coin_geq_power_of_two(ysize - 2*this->border);
+    newz = zsize ? coin_geq_power_of_two(zsize - 2*this->border) : 0;
+    
+    // if >= 256 and low quality, don't scale up unless size is
+    // close to an above power of two. This saves a lot of texture memory
+    
+    if (this->flags & SoGLImage::SCALE_DOWN) {
+      // no use scaling down for very small images
+      if (newx > xsize && newx > 16) newx >>= 1;
+      if (newy > ysize && newy > 16) newy >>= 1;
+      if (newz > zsize && newz > 16) newz >>= 1;
+    }
+    else if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
+      if (this->quality < COIN_TEX2_SCALEUP_LIMIT) {
+        if ((newx >= 256) && ((newx - (xsize-2*this->border)) > (newx>>3)))
+          newx >>= 1;
+        if ((newy >= 256) && ((newy - (ysize-2*this->border)) > (newy>>3)))
+          newy >>= 1;
+        if ((newz >= 256) && ((newz - (zsize-2*this->border)) > (newz>>3)))
+          newz >>= 1;
+      }
     }
   }
+  else {
+    GLint maxr;
+    glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_EXT, &maxr);
+    maxrectsize = (uint32_t) maxr;
+  }
+
 
   // downscale to legal GL size (implementation dependent)
   const cc_glglue * glw = sogl_glue_instance(state);
@@ -1371,10 +1385,17 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     SbBool compressed = 
       (this->flags & SoGLImage::COMPRESSED) ? TRUE : FALSE &&
       cc_glue_has_texture_compression(glw);
-    sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz, 
-                                               numcomponents, 
-                                               this->shouldCreateMipmap(),
-                                               compressed);
+    
+    if (this->flags & SoGLImage::RECTANGLE) {
+      // FIXME: add support for rectangular textures in glglue proxy test
+      sizeok = (newx <= maxrectsize) && (newy <= maxrectsize); 
+    }
+    else {
+      sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz, 
+                                                 numcomponents, 
+                                                 this->shouldCreateMipmap(),
+                                                 compressed);
+    }
     if (!sizeok) {
       unsigned int max = SbMax(newx, SbMax(newy, newz));
       if (max==newz) newz >>= 1;
@@ -1731,7 +1752,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
-
+    
     else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP && 
              cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
@@ -1741,7 +1762,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) && 
         cc_glglue_can_do_anisotropic_filtering(glw)) {
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+      glTexParameterf(target, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
                       cc_glglue_get_max_anisotropy(glw));
     }
     if (!mipmapimage) {
