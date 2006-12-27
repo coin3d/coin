@@ -504,7 +504,6 @@ copy /Y ..\..\include\Inventor\nodes\SoEnvironment.h %COINDIR%\include\Inventor\
 copy /Y ..\..\include\Inventor\nodes\SoEventCallback.h %COINDIR%\include\Inventor\nodes\SoEventCallback.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoExtSelection.h %COINDIR%\include\Inventor\nodes\SoExtSelection.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFaceSet.h %COINDIR%\include\Inventor\nodes\SoFaceSet.h >nul:
-copy /Y ..\..\include\Inventor\nodes\SoFaceSet.h %COINDIR%\include\Inventor\nodes\SoFaceSet.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFile.h %COINDIR%\include\Inventor\nodes\SoFile.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFont.h %COINDIR%\include\Inventor\nodes\SoFont.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFontStyle.h %COINDIR%\include\Inventor\nodes\SoFontStyle.h >nul:
@@ -523,11 +522,9 @@ copy /Y ..\..\include\Inventor\nodes\SoLevelOfDetail.h %COINDIR%\include\Invento
 copy /Y ..\..\include\Inventor\nodes\SoLight.h %COINDIR%\include\Inventor\nodes\SoLight.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoLightModel.h %COINDIR%\include\Inventor\nodes\SoLightModel.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoLineSet.h %COINDIR%\include\Inventor\nodes\SoLineSet.h >nul:
-copy /Y ..\..\include\Inventor\nodes\SoLineSet.h %COINDIR%\include\Inventor\nodes\SoLineSet.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoLinearProfile.h %COINDIR%\include\Inventor\nodes\SoLinearProfile.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoListener.h %COINDIR%\include\Inventor\nodes\SoListener.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoLocateHighlight.h %COINDIR%\include\Inventor\nodes\SoLocateHighlight.h >nul:
-copy /Y ..\..\include\Inventor\nodes\SoMarkerSet.h %COINDIR%\include\Inventor\nodes\SoMarkerSet.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoMarkerSet.h %COINDIR%\include\Inventor\nodes\SoMarkerSet.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoMaterial.h %COINDIR%\include\Inventor\nodes\SoMaterial.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoMaterialBinding.h %COINDIR%\include\Inventor\nodes\SoMaterialBinding.h >nul:
@@ -654,9 +651,9 @@ copy /Y ..\..\include\Inventor\SbBox.h %COINDIR%\include\Inventor\SbBox.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2d.h %COINDIR%\include\Inventor\SbBox2d.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2f.h %COINDIR%\include\Inventor\SbBox2f.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2s.h %COINDIR%\include\Inventor\SbBox2s.h >nul:
+copy /Y ..\..\include\Inventor\SbBox3d.h %COINDIR%\include\Inventor\SbBox3d.h >nul:
 copy /Y ..\..\include\Inventor\SbBox3f.h %COINDIR%\include\Inventor\SbBox3f.h >nul:
 copy /Y ..\..\include\Inventor\SbBox3s.h %COINDIR%\include\Inventor\SbBox3s.h >nul:
-copy /Y ..\..\include\Inventor\SbBox3d.h %COINDIR%\include\Inventor\SbBox3d.h >nul:
 copy /Y ..\..\include\Inventor\SbClip.h %COINDIR%\include\Inventor\SbClip.h >nul:
 copy /Y ..\..\include\Inventor\SbColor.h %COINDIR%\include\Inventor\SbColor.h >nul:
 copy /Y ..\..\include\Inventor\SbColor4f.h %COINDIR%\include\Inventor\SbColor4f.h >nul:
@@ -707,8 +704,8 @@ copy /Y ..\..\include\Inventor\SoPickedPoint.h %COINDIR%\include\Inventor\SoPick
 copy /Y ..\..\include\Inventor\SoPrimitiveVertex.h %COINDIR%\include\Inventor\SoPrimitiveVertex.h >nul:
 copy /Y ..\..\include\Inventor\SoSceneManager.h %COINDIR%\include\Inventor\SoSceneManager.h >nul:
 copy /Y ..\..\include\Inventor\SoType.h %COINDIR%\include\Inventor\SoType.h >nul:
-copy /Y ..\..\include\Inventor\oivwin32.h %COINDIR%\include\Inventor\oivwin32.h >nul:
 copy /Y ..\..\include\Inventor\non_winsys.h %COINDIR%\include\Inventor\non_winsys.h >nul:
+copy /Y ..\..\include\Inventor\oivwin32.h %COINDIR%\include\Inventor\oivwin32.h >nul:
 copy /Y ..\..\include\SoWinEnterScope.h %COINDIR%\include\SoWinEnterScope.h >nul:
 copy /Y ..\..\include\SoWinLeaveScope.h %COINDIR%\include\SoWinLeaveScope.h >nul:
 copy /Y ..\..\include\SoDebug.h %COINDIR%\include\SoDebug.h >nul:

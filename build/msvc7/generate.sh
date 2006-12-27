@@ -18,10 +18,12 @@ source="`cygpath -w $source_pwd | sed -e 's/\\\\/\\\\\\\\/g'`"
 source_pwd="`(cd ../..; pwd) | sed -e 's/\\//\\\\\\\\/g'`"
 
 ../../configure --with-msvcrt=mtd --with-suffix=d \
+  --enable-3ds-import \
   --enable-debug --enable-symbols || exit 1
 cp include/config.h include/config-debug.h
 
 ../../configure --with-msvcrt=mt \
+  --enable-3ds-import \
   --disable-debug --disable-symbols --enable-optimization || exit 1
 cp include/config.h include/config-release.h
 

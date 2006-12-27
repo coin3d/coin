@@ -59,7 +59,7 @@
  * thoroughty tested and robustified by the main Coin developers yet.
  */
 
-/* #undef HAVE_3DS_IMPORT_CAPABILITIES */
+#define HAVE_3DS_IMPORT_CAPABILITIES 
 
 /***************************************************************************
  * COIN_HAVE_JAVASCRIPT
