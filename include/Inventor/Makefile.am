@@ -11,9 +11,9 @@ PublicHeaders = \
 	SbBox2d.h \
 	SbBox2f.h \
 	SbBox2s.h \
+	SbBox3d.h \
 	SbBox3f.h \
 	SbBox3s.h \
-	SbBox3d.h \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
@@ -64,8 +64,8 @@ PublicHeaders = \
 	SoPrimitiveVertex.h \
 	SoSceneManager.h \
 	SoType.h \
-	oivwin32.h \
-	non_winsys.h
+	non_winsys.h \
+	oivwin32.h
 
 PrivateHeaders =
 ObsoleteHeaders =
