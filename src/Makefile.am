@@ -132,74 +132,6 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
-# header installation
-if MAC_FRAMEWORK
-libCoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers
-else
-libCoinincdir = $(includedir)/Inventor
-endif
-libCoininc_HEADERS = \
-	../include/Inventor/SbPList.h \
-	../include/Inventor/So.h \
-	../include/Inventor/SoDB.h \
-	../include/Inventor/SoFullPath.h \
-	../include/Inventor/SoNodeKitPath.h \
-	../include/Inventor/SoInput.h \
-	../include/Inventor/SoInteraction.h \
-	../include/Inventor/SoOffscreenRenderer.h \
-	../include/Inventor/SoOutput.h \
-	../include/Inventor/SoPath.h \
-	../include/Inventor/SoPickedPoint.h \
-	../include/Inventor/SoPrimitiveVertex.h \
-	../include/Inventor/SoSceneManager.h \
-	../include/Inventor/SoType.h \
-	../include/Inventor/Sb.h \
-	../include/Inventor/SbBox.h \
-	../include/Inventor/SbBSPTree.h \
-	../include/Inventor/SbLinear.h \
-	../include/Inventor/SbDPLinear.h \
-	../include/Inventor/SoLists.h \
-	../include/Inventor/SbBox2s.h \
-	../include/Inventor/SbBox3s.h \
-	../include/Inventor/SbBox2f.h \
-	../include/Inventor/SbBox2d.h \
-	../include/Inventor/SbBox3f.h \
-	../include/Inventor/SbBox3d.h \
-	../include/Inventor/SbClip.h \
-	../include/Inventor/SbColor.h \
-	../include/Inventor/SbColor4f.h \
-	../include/Inventor/SbCylinder.h \
-	../include/Inventor/SbDict.h \
-	../include/Inventor/SbDPLine.h \
-	../include/Inventor/SbDPLinear.h \
-	../include/Inventor/SbDPMatrix.h \
-	../include/Inventor/SbDPPlane.h \
-	../include/Inventor/SbDPRotation.h \
-	../include/Inventor/SbHeap.h \
-	../include/Inventor/SbImage.h \
-	../include/Inventor/SbLine.h \
-	../include/Inventor/SbMatrix.h \
-	../include/Inventor/SbName.h \
-	../include/Inventor/SbOctTree.h \
-	../include/Inventor/SbPlane.h \
-	../include/Inventor/SbRotation.h \
-	../include/Inventor/SbSphere.h \
-	../include/Inventor/SbString.h \
-	../include/Inventor/SbTesselator.h \
-	../include/Inventor/SbTime.h \
-	../include/Inventor/SbVec2s.h \
-	../include/Inventor/SbVec2f.h \
-	../include/Inventor/SbVec2d.h \
-	../include/Inventor/SbVec3s.h \
-	../include/Inventor/SbVec3f.h \
-	../include/Inventor/SbVec3d.h \
-	../include/Inventor/SbVec4f.h \
-	../include/Inventor/SbVec4d.h \
-	../include/Inventor/SbViewVolume.h \
-	../include/Inventor/SbDPViewVolume.h \
-	../include/Inventor/SbViewportRegion.h \
-	../include/Inventor/SbXfBox3f.h
-
 # **************************************************************************
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
@@ -217,19 +149,6 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
 
 # **************************************************************************
-
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
-	  fi \
-	done
 
 if MAC_FRAMEWORK
 install-data-local:

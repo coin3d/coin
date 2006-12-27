@@ -369,71 +369,6 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 
-# header installation
-@MAC_FRAMEWORK_TRUE@libCoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers
-@MAC_FRAMEWORK_FALSE@libCoinincdir = $(includedir)/Inventor
-libCoininc_HEADERS = \
-	../include/Inventor/SbPList.h \
-	../include/Inventor/So.h \
-	../include/Inventor/SoDB.h \
-	../include/Inventor/SoFullPath.h \
-	../include/Inventor/SoNodeKitPath.h \
-	../include/Inventor/SoInput.h \
-	../include/Inventor/SoInteraction.h \
-	../include/Inventor/SoOffscreenRenderer.h \
-	../include/Inventor/SoOutput.h \
-	../include/Inventor/SoPath.h \
-	../include/Inventor/SoPickedPoint.h \
-	../include/Inventor/SoPrimitiveVertex.h \
-	../include/Inventor/SoSceneManager.h \
-	../include/Inventor/SoType.h \
-	../include/Inventor/Sb.h \
-	../include/Inventor/SbBox.h \
-	../include/Inventor/SbBSPTree.h \
-	../include/Inventor/SbLinear.h \
-	../include/Inventor/SbDPLinear.h \
-	../include/Inventor/SoLists.h \
-	../include/Inventor/SbBox2s.h \
-	../include/Inventor/SbBox3s.h \
-	../include/Inventor/SbBox2f.h \
-	../include/Inventor/SbBox2d.h \
-	../include/Inventor/SbBox3f.h \
-	../include/Inventor/SbBox3d.h \
-	../include/Inventor/SbClip.h \
-	../include/Inventor/SbColor.h \
-	../include/Inventor/SbColor4f.h \
-	../include/Inventor/SbCylinder.h \
-	../include/Inventor/SbDict.h \
-	../include/Inventor/SbDPLine.h \
-	../include/Inventor/SbDPLinear.h \
-	../include/Inventor/SbDPMatrix.h \
-	../include/Inventor/SbDPPlane.h \
-	../include/Inventor/SbDPRotation.h \
-	../include/Inventor/SbHeap.h \
-	../include/Inventor/SbImage.h \
-	../include/Inventor/SbLine.h \
-	../include/Inventor/SbMatrix.h \
-	../include/Inventor/SbName.h \
-	../include/Inventor/SbOctTree.h \
-	../include/Inventor/SbPlane.h \
-	../include/Inventor/SbRotation.h \
-	../include/Inventor/SbSphere.h \
-	../include/Inventor/SbString.h \
-	../include/Inventor/SbTesselator.h \
-	../include/Inventor/SbTime.h \
-	../include/Inventor/SbVec2s.h \
-	../include/Inventor/SbVec2f.h \
-	../include/Inventor/SbVec2d.h \
-	../include/Inventor/SbVec3s.h \
-	../include/Inventor/SbVec3f.h \
-	../include/Inventor/SbVec3d.h \
-	../include/Inventor/SbVec4f.h \
-	../include/Inventor/SbVec4d.h \
-	../include/Inventor/SbViewVolume.h \
-	../include/Inventor/SbDPViewVolume.h \
-	../include/Inventor/SbViewportRegion.h \
-	../include/Inventor/SbXfBox3f.h
-
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -748,7 +683,7 @@ DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 	$(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 	$(libCoin@SUFFIX@_la_SOURCES) \
 	$(EXTRA_libCoin@SUFFIX@_la_SOURCES)
-HEADERS = $(libCoininc_HEADERS)
+HEADERS =
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
@@ -756,7 +691,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	all-recursive install-data-recursive install-exec-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
-DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = Makefile.am Makefile.in
 DIST_SUBDIRS = extensions actions base bundles caches details draggers \
 	elements engines errors events fields fonts glue io manips misc \
 	lists nodekits nodes shapenodes projectors sensors upgraders \
