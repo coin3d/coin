@@ -164,8 +164,11 @@ EXTRA_DIST = \
 	build/msvc6/include/config-debug.h \
 	build/msvc6/include/config-release.h \
 	build/msvc6/include/setup.h \
-	build/msvc6/installcoin.bat \
-	build/msvc6/installcoinheaders.bat \
+	build/msvc6/install-dll-release.bat \
+	build/msvc6/install-dll-debug.bat \
+	build/msvc6/install-lib-release.bat \
+	build/msvc6/install-lib-debug.bat \
+	build/msvc6/install-headers.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc7/data/draggerDefaults/dragPointDragger.h \
@@ -187,8 +190,6 @@ EXTRA_DIST = \
 	build/msvc7/data/draggerDefaults/transformerDragger.h \
 	build/msvc7/data/draggerDefaults/translate1Dragger.h \
 	build/msvc7/data/draggerDefaults/translate2Dragger.h \
-	build/msvc7/coin3.dsp \
-	build/msvc7/coin3.dsw \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
 	build/msvc7/config-wrapper.h \
@@ -200,8 +201,48 @@ EXTRA_DIST = \
 	build/msvc7/include/config-debug.h \
 	build/msvc7/include/config-release.h \
 	build/msvc7/include/setup.h \
-	build/msvc7/installcoin.bat \
-	build/msvc7/installcoinheaders.bat
+	build/msvc7/install-dll-release.bat \
+	build/msvc7/install-dll-debug.bat \
+	build/msvc7/install-lib-release.bat \
+	build/msvc7/install-lib-debug.bat \
+	build/msvc7/install-headers.bat \
+	build/msvc8/data/draggerDefaults/centerballDragger.h \
+	build/msvc8/data/draggerDefaults/directionalLightDragger.h \
+	build/msvc8/data/draggerDefaults/dragPointDragger.h \
+	build/msvc8/data/draggerDefaults/handleBoxDragger.h \
+	build/msvc8/data/draggerDefaults/jackDragger.h \
+	build/msvc8/data/draggerDefaults/pointLightDragger.h \
+	build/msvc8/data/draggerDefaults/rotateCylindricalDragger.h \
+	build/msvc8/data/draggerDefaults/rotateDiscDragger.h \
+	build/msvc8/data/draggerDefaults/rotateSphericalDragger.h \
+	build/msvc8/data/draggerDefaults/scale1Dragger.h \
+	build/msvc8/data/draggerDefaults/scale2Dragger.h \
+	build/msvc8/data/draggerDefaults/scale2UniformDragger.h \
+	build/msvc8/data/draggerDefaults/scaleUniformDragger.h \
+	build/msvc8/data/draggerDefaults/spotLightDragger.h \
+	build/msvc8/data/draggerDefaults/tabBoxDragger.h \
+	build/msvc8/data/draggerDefaults/tabPlaneDragger.h \
+	build/msvc8/data/draggerDefaults/trackballDragger.h \
+	build/msvc8/data/draggerDefaults/transformBoxDragger.h \
+	build/msvc8/data/draggerDefaults/transformerDragger.h \
+	build/msvc8/data/draggerDefaults/translate1Dragger.h \
+	build/msvc8/data/draggerDefaults/translate2Dragger.h \
+	build/msvc8/coin3.sln \
+	build/msvc8/coin3.vcproj \
+	build/msvc8/config-wrapper.h \
+	build/msvc8/generate.sh \
+	build/msvc8/include/Inventor/C/basic.h \
+	build/msvc8/include/Inventor/system/gl.h \
+	build/msvc8/include/Inventor/system/inttypes.h \
+	build/msvc8/include/config.h \
+	build/msvc8/include/config-debug.h \
+	build/msvc8/include/config-release.h \
+	build/msvc8/include/setup.h \
+	build/msvc8/install-dll-release.bat \
+	build/msvc8/install-dll-debug.bat \
+	build/msvc8/install-lib-release.bat \
+	build/msvc8/install-lib-debug.bat \
+	build/msvc8/install-headers.bat
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
