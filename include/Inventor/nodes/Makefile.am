@@ -27,7 +27,6 @@ PublicHeaders = \
 	SoEventCallback.h \
 	SoExtSelection.h \
 	SoFaceSet.h \
-	SoFaceSet.h \
 	SoFile.h \
 	SoFont.h \
 	SoFontStyle.h \
@@ -46,11 +45,9 @@ PublicHeaders = \
 	SoLight.h \
 	SoLightModel.h \
 	SoLineSet.h \
-	SoLineSet.h \
 	SoLinearProfile.h \
 	SoListener.h \
 	SoLocateHighlight.h \
-	SoMarkerSet.h \
 	SoMarkerSet.h \
 	SoMaterial.h \
 	SoMaterialBinding.h \
