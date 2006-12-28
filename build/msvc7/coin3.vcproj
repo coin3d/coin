@@ -21,7 +21,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_INTERNAL"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -73,7 +73,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -139,7 +139,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_INTERNAL"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -190,7 +190,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -5392,8 +5392,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5402,8 +5402,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5412,8 +5412,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5423,8 +5423,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5436,8 +5436,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5446,8 +5446,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5456,8 +5456,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5467,8 +5467,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5480,8 +5480,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5490,8 +5490,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5500,8 +5500,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5511,8 +5511,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5524,8 +5524,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5534,8 +5534,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5544,8 +5544,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5555,8 +5555,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5568,8 +5568,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5578,8 +5578,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5588,8 +5588,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5599,8 +5599,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5612,8 +5612,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5622,8 +5622,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5632,8 +5632,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5643,8 +5643,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5656,8 +5656,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5666,8 +5666,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5676,8 +5676,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5687,8 +5687,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5700,8 +5700,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5710,8 +5710,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5720,8 +5720,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5731,8 +5731,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5744,8 +5744,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5754,8 +5754,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5764,8 +5764,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5775,8 +5775,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5788,8 +5788,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5798,8 +5798,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5808,8 +5808,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5819,8 +5819,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5832,8 +5832,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5842,8 +5842,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5852,8 +5852,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5863,8 +5863,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5876,8 +5876,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5886,8 +5886,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5896,8 +5896,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5907,8 +5907,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5920,8 +5920,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5930,8 +5930,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5940,8 +5940,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5951,8 +5951,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -5964,8 +5964,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -5974,8 +5974,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -5984,8 +5984,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -5995,8 +5995,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6008,8 +6008,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6018,8 +6018,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6028,8 +6028,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6039,8 +6039,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6052,8 +6052,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6062,8 +6062,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6072,8 +6072,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6083,8 +6083,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6096,8 +6096,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6106,8 +6106,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6116,8 +6116,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6127,8 +6127,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6140,8 +6140,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6150,8 +6150,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6160,8 +6160,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6171,8 +6171,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6184,8 +6184,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6194,8 +6194,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6204,8 +6204,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6215,8 +6215,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6228,8 +6228,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6238,8 +6238,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6248,8 +6248,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6259,8 +6259,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6272,8 +6272,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6282,8 +6282,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6292,8 +6292,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6303,8 +6303,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6316,8 +6316,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6326,8 +6326,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6336,8 +6336,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6347,8 +6347,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6360,8 +6360,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6370,8 +6370,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6380,8 +6380,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6391,8 +6391,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6404,8 +6404,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6414,8 +6414,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6424,8 +6424,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6435,8 +6435,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6448,8 +6448,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6458,8 +6458,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6468,8 +6468,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6479,8 +6479,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6492,8 +6492,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6502,8 +6502,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6512,8 +6512,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6523,8 +6523,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6536,8 +6536,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6546,8 +6546,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6556,8 +6556,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6567,8 +6567,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6580,8 +6580,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6590,8 +6590,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6600,8 +6600,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6611,8 +6611,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6624,8 +6624,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6634,8 +6634,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6644,8 +6644,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6655,8 +6655,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6668,8 +6668,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6678,8 +6678,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6688,8 +6688,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6699,8 +6699,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -6712,8 +6712,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\elements/GL/"
-							ProgramDataBaseFileName="StaticDebug\elements/GL/"/>
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -6722,8 +6722,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\elements/GL/"
-							ProgramDataBaseFileName="Release\elements/GL/"/>
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -6732,8 +6732,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\elements/GL/"
-							ProgramDataBaseFileName="StaticRelease\elements/GL/"/>
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -6743,8 +6743,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\elements/GL/"
-							ProgramDataBaseFileName="Debug\elements/GL/"/>
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
 					</FileConfiguration>
 				</File>
 			</Filter>
@@ -32908,8 +32908,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\share/gl/"
-							ProgramDataBaseFileName="StaticDebug\share/gl/"/>
+							ObjectFile=".\StaticDebug\share\gl/"
+							ProgramDataBaseFileName="StaticDebug\share\gl/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -32918,8 +32918,8 @@
 							Optimization="1"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\share/gl/"
-							ProgramDataBaseFileName="Release\share/gl/"/>
+							ObjectFile=".\Release\share\gl/"
+							ProgramDataBaseFileName="Release\share\gl/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -32928,8 +32928,8 @@
 							Optimization="2"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\share/gl/"
-							ProgramDataBaseFileName="StaticRelease\share/gl/"/>
+							ObjectFile=".\StaticRelease\share\gl/"
+							ProgramDataBaseFileName="StaticRelease\share\gl/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -32939,8 +32939,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\share/gl/"
-							ProgramDataBaseFileName="Debug\share/gl/"/>
+							ObjectFile=".\Debug\share\gl/"
+							ProgramDataBaseFileName="Debug\share\gl/"/>
 					</FileConfiguration>
 				</File>
 			</Filter>
@@ -35210,10 +35210,10 @@
 			Name="Private Headers"
 			Filter="h;ic;icc">
 			<Filter
-				Name="draggerDefaults headers"
+				Name="draggerDefaults local includes"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\centerballDragger.h">
+					RelativePath="data\draggerDefaults\centerballDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35240,7 +35240,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\directionalLightDragger.h">
+					RelativePath="data\draggerDefaults\directionalLightDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35267,7 +35267,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\dragPointDragger.h">
+					RelativePath="data\draggerDefaults\dragPointDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35294,7 +35294,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\handleBoxDragger.h">
+					RelativePath="data\draggerDefaults\handleBoxDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35321,7 +35321,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\jackDragger.h">
+					RelativePath="data\draggerDefaults\jackDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35348,7 +35348,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\pointLightDragger.h">
+					RelativePath="data\draggerDefaults\pointLightDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35375,7 +35375,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\rotateCylindricalDragger.h">
+					RelativePath="data\draggerDefaults\rotateCylindricalDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35402,7 +35402,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\rotateDiscDragger.h">
+					RelativePath="data\draggerDefaults\rotateDiscDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35429,7 +35429,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\rotateSphericalDragger.h">
+					RelativePath="data\draggerDefaults\rotateSphericalDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35456,7 +35456,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\scale1Dragger.h">
+					RelativePath="data\draggerDefaults\scale1Dragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35483,7 +35483,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\scale2Dragger.h">
+					RelativePath="data\draggerDefaults\scale2Dragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35510,7 +35510,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\scale2UniformDragger.h">
+					RelativePath="data\draggerDefaults\scale2UniformDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35537,7 +35537,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\scaleUniformDragger.h">
+					RelativePath="data\draggerDefaults\scaleUniformDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35564,7 +35564,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\spotLightDragger.h">
+					RelativePath="data\draggerDefaults\spotLightDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35591,7 +35591,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\tabBoxDragger.h">
+					RelativePath="data\draggerDefaults\tabBoxDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35618,7 +35618,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\tabPlaneDragger.h">
+					RelativePath="data\draggerDefaults\tabPlaneDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35645,7 +35645,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\trackballDragger.h">
+					RelativePath="data\draggerDefaults\trackballDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35672,7 +35672,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\transformBoxDragger.h">
+					RelativePath="data\draggerDefaults\transformBoxDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35699,7 +35699,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\transformerDragger.h">
+					RelativePath="data\draggerDefaults\transformerDragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35726,7 +35726,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\translate1Dragger.h">
+					RelativePath="data\draggerDefaults\translate1Dragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35753,7 +35753,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\data\draggerDefaults\translate2Dragger.h">
+					RelativePath="data\draggerDefaults\translate2Dragger.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35784,7 +35784,7 @@
 				Name="[setup] headers"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\msvc6\include\config-debug.h">
+					RelativePath="include\config-debug.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35811,7 +35811,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\include\config-release.h">
+					RelativePath="include\config-release.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35838,7 +35838,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\include\discard.h">
+					RelativePath="include\config.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -35865,7 +35865,3347 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\msvc6\include\setup.h">
+					RelativePath="include\setup.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="base headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\C\base\dictp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\base\hashp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\base\heapp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="glue headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\bzip2.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\cg.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\dlp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\freetype.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\gl_agl.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\gl_glx.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\gl_wgl.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\glp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\GLUWrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\openal_wrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\simage_wrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\win32api.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\glue\zlib.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="threads headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\barrierp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\condvarp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\fifop.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\mutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\recmutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\rwmutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\schedp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\storagep.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\syncp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\threadp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\threadsutilp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\workerp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\threads\wpoolp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="C headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\C\tidbitsp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="VRMLnodes headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\VRMLnodes\SoVRMLSubInterpolatorP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="actions headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\actions\SoSubActionP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="caches headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\caches\SoGlyphCache.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="elements headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\elements\SoTextureScalePolicyElement.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\elements\SoTextureScaleQualityElement.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="engines headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\engines\SoConvertAll.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\engines\SoSubEngineP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\engines\SoSubNodeEngineP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="fields headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\fields\SoGlobalField.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\fields\SoSubFieldP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="misc headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\misc\SbHash.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\misc\SoCompactPathList.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\misc\SoGenerate.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\misc\SoGL.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\misc\SoPick.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="nodekits headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\nodekits\SoSubKitP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="nodes headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoShader.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoSubNodeP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoUnknownNode.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="root headers"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\include\coindefs.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\unconfig.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="base local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\base\SbGLUTessellator.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="engines local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\engines\evaluator.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\engines\so_eval.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="fonts local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\fonts\builtin2dfonts.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\common.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\defaultfonts.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\font13.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\font17.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\font25.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\font33.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\fontlib_wrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\fontspec.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\freetype.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\glyph.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\glyph2d.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\glyph3d.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fonts\win32.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="io local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\io\SoInput_FileInfo.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\io\SoInput_Reader.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\io\SoInputP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\io\SoOutput_Writer.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\io\SoWriterefCounter.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="misc local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\misc\AudioTools.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\CoinOffscreenGLCanvas.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\CoinStaticObjectInDLL.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\cppmangle.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoDBP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLFaceSetTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLindexedLineSetTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLLineSetTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLnonindexedFaceSetTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLnonindexedTristripSetTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLqmeshpreciselightingTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLqmeshTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLTristripTemplate.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoOffscreenAGLData.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoOffscreenGLXData.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoOffscreenWGLData.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoVBO.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoVertexArrayIndexer.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\systemsanity.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="nodes local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\nodes\SoSoundElementHelper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\shaders\SoGLARBShaderObject.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLARBShaderParameter.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLARBShaderProgram.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLCgShaderObject.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLCgShaderParameter.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLCgShaderProgram.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLShaderObject.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLShaderParameter.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLShaderProgram.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLSLShaderObject.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLSLShaderParameter.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGLSLShaderProgram.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="shapenodes local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\shapenodes\soshape_bigtexture.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shapenodes\soshape_primdata.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shapenodes\soshape_trianglesort.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="threads local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\threads\condvar_pthread.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\condvar_win32.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\mutex_pthread.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\mutex_win32cs.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\mutex_win32mutex.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\thread_pthread.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\thread_win32.ic">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="upgraders local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\upgraders\SoPackedColorV20.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\upgraders\SoShapeHintsV10.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\upgraders\SoUpgrader.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="vrml97 local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\vrml97\JS_VRMLClasses.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">

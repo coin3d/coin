@@ -4,7 +4,7 @@
 #
 # 20041214 larsa
 
-proper=true;
+proper=false;
 
 rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln install-headers.bat;
 if $proper; then
