@@ -102,7 +102,7 @@ SoPointDetail::getNormalIndex(void) const
   Returns point's index into set of texture coordinates.
  */
 int
-SoPointDetail::getTextureCoordIndex(void)
+SoPointDetail::getTextureCoordIndex(void) const
 {
   return this->texcoordindex;
 }

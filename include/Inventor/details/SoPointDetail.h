@@ -40,7 +40,7 @@ public:
   int getCoordinateIndex(void) const;
   int getMaterialIndex(void) const;
   int getNormalIndex(void) const;
-  int getTextureCoordIndex(void);
+  int getTextureCoordIndex(void) const;
 
   void setCoordinateIndex(const int idx);
   void setMaterialIndex(const int idx);
