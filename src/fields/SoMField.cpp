@@ -747,6 +747,9 @@ SoMField::insertSpace(int start, int numarg)
   }
 
   // Send notification.
+  // FIXME: It looks like a lot of unnecessary work is being done here
+  // if notifications are disabled. Look into shortcutting either here
+  // or somewhere not too far from here. kintel 20070103.
   this->valueChanged();
 }
 
