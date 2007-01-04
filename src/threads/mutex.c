@@ -138,7 +138,7 @@ cc_mutex_lock(cc_mutex * mutex)
 {
   int ok;
   SbBool timeit;
-  cc_time start;
+  cc_time start = 0.0;
 
   assert(mutex != NULL);
 
