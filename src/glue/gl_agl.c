@@ -132,9 +132,6 @@ static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
 struct aglglue_contextdata;
 static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
 
-static cc_libhandle glhnd = NULL;
-static SbBool tried_fetching_handle = FALSE;
-
 /* 
  * Since AGL does not have an aglGetProcAddress() as such, this is
  * simply a wrapper around cc_dl_*. Present here for consistency with
@@ -143,11 +140,7 @@ static SbBool tried_fetching_handle = FALSE;
 void *
 aglglue_getprocaddress(const char * fname)
 {
-  if (!tried_fetching_handle) {
-    glhnd = cc_dl_handle_with_gl_symbols();
-    tried_fetching_handle = TRUE;
-  }
-
+  cc_libhandle glhnd = cc_dl_handle_with_gl_symbols();
   return glhnd ? cc_dl_sym(glhnd, fname) : NULL;
 }
 
@@ -663,13 +656,5 @@ aglglue_cleanup(void)
   aglglue_aglTexImagePBuffer = NULL;
 
   aglglue_context_create = NULL;
-
-  if (glhnd) { 
-    cc_dl_close(glhnd); 
-    glhnd = NULL; 
-  }
-  tried_fetching_handle = FALSE;
 }
 #endif /* HAVE_AGL */
-
-

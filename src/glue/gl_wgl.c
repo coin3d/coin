@@ -168,8 +168,6 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 
 /* ********************************************************************** */
 
-static cc_libhandle glhnd = NULL;
-static SbBool tried_fetching_handle = FALSE;
 static SbBool attemptedextresolved = FALSE;
 
 /* ********************************************************************** */
@@ -184,15 +182,12 @@ coin_wgl_getprocaddress(const char * fname)
      (1.1+) functions. */
 
   if (ptr == NULL) {
-    if (!tried_fetching_handle) {
-      glhnd = cc_dl_handle_with_gl_symbols();
-      tried_fetching_handle = TRUE;
+    cc_libhandle glhnd = cc_dl_handle_with_gl_symbols();
 
-      if (!glhnd && coin_glglue_debug()) {
-        cc_debugerror_postwarning("coin_wgl_getprocaddress",
-                                  "couldn't get hold of any workable module "
-                                  "handle for picking up OpenGL symbols");
-      }
+    if (!glhnd && coin_glglue_debug()) {
+      cc_debugerror_postwarning("coin_wgl_getprocaddress",
+                                "couldn't get hold of any workable module "
+                                "handle for picking up OpenGL symbols");
     }
 
     if (glhnd) {
@@ -1192,11 +1187,6 @@ void wglglue_cleanup(void)
 
   wglglue_wglGetExtensionsString = NULL;
 
-  if (glhnd) { 
-    cc_dl_close(glhnd); 
-    glhnd = NULL; 
-  }
-  tried_fetching_handle = FALSE;
   attemptedextresolved = FALSE;
 
   /* FIXME: We should probably do an UnregisterClass() here (see

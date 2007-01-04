@@ -232,9 +232,7 @@ extern "C" {
 }
 #endif
 
-static cc_libhandle gl_handle = NULL;
 static cc_list * gl_instance_created_cblist = NULL;
-static SbBool glglue_tried_open_self = FALSE;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
@@ -485,6 +483,7 @@ void *
 cc_glglue_getprocaddress(const char * symname)
 {
   void * ptr = NULL;
+  cc_libhandle gl_handle;
 
   ptr = coin_wgl_getprocaddress(symname);
   if (ptr) goto returnpoint;
@@ -495,6 +494,7 @@ cc_glglue_getprocaddress(const char * symname)
   ptr = aglglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
+  gl_handle = cc_dl_handle_with_gl_symbols();
   if (gl_handle) {
     ptr = cc_dl_sym(gl_handle, symname);
     if (ptr) goto returnpoint;
@@ -526,11 +526,6 @@ glglue_cleanup(void)
   cc_dict_apply(gldict, free_glglue_instance, NULL);
   cc_dict_destruct(gldict);
   gldict = NULL;
-  if (gl_handle) {
-    cc_dl_close(gl_handle);
-    gl_handle = NULL;
-  }
-  glglue_tried_open_self = FALSE;
   offscreen_cb = NULL;
 
 #ifdef HAVE_GLX
@@ -2093,11 +2088,6 @@ cc_glglue_instance(int contextid)
     ptr = gi;
     cc_dict_put(gldict, (uintptr_t)contextid, ptr);
 
-    if (!gl_handle && !glglue_tried_open_self) {
-      gl_handle = cc_dl_handle_with_gl_symbols();
-      glglue_tried_open_self = TRUE;
-    }
-
     /* NB: if you are getting a crash here, it's because an attempt at
      * setting up a cc_glglue instance was made when there is no
      * current OpenGL context. */
@@ -2114,11 +2104,11 @@ cc_glglue_instance(int contextid)
 
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
     gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;
-    
     if (gi->nvidia_color_per_face_bug) {
       const char * env = coin_getenv("COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND");
       if (env) gi->nvidia_color_per_face_bug = 0;
     }
+
     gi->rendererstr = (const char *)glGetString(GL_RENDERER);
     gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
 

@@ -71,7 +71,7 @@
       what calling convention an exported function in a DLL was built with?
       
       (I guess it can be done by loading the DLL file into memory "raw", and
-      parsing it's structures of the DLL / PE file, but that is _really_ the
+      parsing its structures of the DLL / PE file, but that is _really_ the
       last resort.)
       
       Regards,
@@ -142,9 +142,13 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/glue/dlp.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/system/gl.h> /* for glGetString */
 
 /* ********************************************************************** */
+
+static cc_libhandle glsymbols_handle = NULL;
+static SbBool attempted_glsymbols = FALSE;
 
 static const char * NULL_STR = "(null)";
 
@@ -167,6 +171,7 @@ cc_dl_debugging(void)
   return (d > 0) ? 1 : 0;
 }
 
+/* ********************************************************************** */
 
 #if defined (HAVE_DYLD_RUNTIME_BINDING)
 
@@ -859,6 +864,17 @@ cc_dl_opengl_handle(void)
   return NULL;
 }
 
+static void
+glsymbols_handle_cleanup(void)
+{
+  if (glsymbols_handle) {
+    cc_dl_close(glsymbols_handle);
+    glsymbols_handle = NULL;
+  }
+
+  attempted_glsymbols = FALSE;
+}
+
 /* Using the process handle to get at OpenGL symbols is not always
    workable, there are cases where the process handle will not "lead
    us" to Coin symbols or OpenGL symbols. (Like e.g. when running
@@ -879,6 +895,9 @@ cc_dl_opengl_handle(void)
    Testing is done in that succession because chances are better at
    getting a valid handle for the process, than for Coin, which again
    is more likely to be available than one for OpenGL.
+
+   The returned handle will be closed on application exit, so client
+   code should not clean it up.
 */
 cc_libhandle
 cc_dl_handle_with_gl_symbols(void)
@@ -890,6 +909,11 @@ cc_dl_handle_with_gl_symbols(void)
   handlefetch * f[] = {
     cc_dl_process_handle, cc_dl_coin_handle, cc_dl_opengl_handle
   };
+
+  if (attempted_glsymbols) { return glsymbols_handle; }
+
+  attempted_glsymbols = TRUE;
+  coin_atexit((coin_atexit_f *)glsymbols_handle_cleanup, CC_ATEXIT_NORMAL);
 
   for (i = 0; i < (sizeof(f) / sizeof(f[0])); i++) {
     hnd = (*f[i])();
@@ -903,7 +927,10 @@ cc_dl_handle_with_gl_symbols(void)
                                cc_string_get_text(&hnd->libname),
                                glchk);
       }
-      if (glchk) { return hnd; }
+      if (glchk) {
+        glsymbols_handle = hnd;
+        return hnd;
+      }
       cc_dl_close(hnd); /* OpenGL symbol not found, close again */
     }
   }
