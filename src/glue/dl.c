@@ -868,7 +868,34 @@ static void
 glsymbols_handle_cleanup(void)
 {
   if (glsymbols_handle) {
-    cc_dl_close(glsymbols_handle);
+    /* FIXME: the cc_dl_close() below doesn't work on my Linux system,
+       at least. Causes a segfault on exit.
+
+       Closing a handle on our own process is a no-no..? Or is there
+       perhaps something else hiding behind this error? Should
+       investigate.
+
+       The call-stack back-trace when it segfaults:
+
+       Program received signal SIGSEGV, Segmentation fault.
+       [Switching to Thread 46912629269472 (LWP 11931)]
+       0x00002aaaaaabb610 in calloc () from /lib64/ld-linux-x86-64.so.2
+       (gdb) bt
+       #0  0x00002aaaaaabb610 in calloc () from /lib64/ld-linux-x86-64.so.2
+       #1  0x00002aaaaaab5f38 in _dl_rtld_di_serinfo () from /lib64/ld-linux-x86-64.so.2
+       #2  0x00002aaaaf898e4c in _dl_close () from /lib/libc.so.6
+       #3  0x00002aaaaaab6140 in _dl_rtld_di_serinfo () from /lib64/ld-linux-x86-64.so.2
+       #4  0x00002aaaae006542 in dlerror () from /lib/libdl.so.2
+       #5  0x00002aaaae0060cf in dlclose () from /lib/libdl.so.2
+       #6  0x00002aaaac17e361 in cc_dl_close (handle=0x79b630) at /home/mortene/code/Coin/src/glue/dl.c:699
+       #7  0x00002aaaac17e4f3 in glsymbols_handle_cleanup () at /home/mortene/code/Coin/src/glue/dl.c:874
+       #8  0x00002aaaaaff6dd3 in coin_atexit_cleanup () at /home/mortene/code/Coin/src/tidbits.c:1195
+       #9  0x00002aaaac566d29 in SoDB::finish () at /home/mortene/code/Coin/src/misc/SoDB.cpp:675
+       
+       20070105 mortene.
+    */
+    /* cc_dl_close(glsymbols_handle); */
+
     glsymbols_handle = NULL;
   }
 
