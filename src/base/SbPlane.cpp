@@ -228,20 +228,7 @@ SbPlane::transform(const SbMatrix& matrix)
 SbBool
 SbPlane::isInHalfSpace(const SbVec3f& point) const
 {
-  // This one is dead easy, we just take the dot product of the normal
-  // vector and the vector going from the plane base point to the
-  // point we're checking against, and see if the angle between the
-  // vectors are within 90° (which is the same as checking the sign
-  // of the dot product).
-  //                                                    19980816 mortene.
-#if 0 // not very efficient code, disabled 19991012 pederb
-  SbVec3f pointToPlaneBase = point - (this->normal * this->distance);
-  float dotWithNormal = this->normal.dot(pointToPlaneBase);
-  if(dotWithNormal >= 0.0f) return TRUE;
-  return FALSE;
-#else // this code uses distance to plane instead
   return this->getDistance(point) >= 0.0f;
-#endif // new code
 }
 
 /*!
