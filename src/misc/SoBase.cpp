@@ -177,6 +177,7 @@ public:
 
   static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
 
+  static void check_for_leaks(void);
   static SbBool trackbaseobjects;
   static void * allbaseobj_mutex;
   static SoBaseSet * allbaseobj; // maps from SoBase * to NULL
@@ -220,6 +221,36 @@ SoBaseP::cleanup_auditordict(void)
     delete SoBaseP::auditordict;
     SoBaseP::auditordict = NULL;
   }
+}
+
+void
+SoBaseP::check_for_leaks(void)
+{
+#if COIN_DEBUG
+  if (SoBaseP::trackbaseobjects) {
+    SbList<const SoBase *> keys;
+    SoBaseP::allbaseobj->makeKeyList(keys);
+    const unsigned int len = keys.getLength();
+    if (len > 0) {
+      // Use printf()s, in case SoDebugError has been made defunct by
+      // previous coin_atexit() work.
+      (void)printf("\nSoBase-derived instances not deallocated:\n");
+
+      for (unsigned int i=0; i < len; i++) {
+        const SoBase * base = keys[i];
+        base->assertAlive();
+        const SbName name = base->getName();
+        const SoType t = base->getTypeId();
+        SbString s;
+        s.sprintf("\"%s\"", name.getString());
+        (void)printf("\t%p type==(0x%04x, '%s') name=='%s'\n",
+                     base, t.getKey(), t.getName().getString(),
+                     name == "" ? "no name" : s.getString());
+      }
+      (void)printf("\n");
+    }
+  }
+#endif // COIN_DEBUG
 }
 
 // *************************************************************************
@@ -421,6 +452,18 @@ SoBase::initClass(void)
 {
   coin_atexit((coin_atexit_f *)SoBase::cleanClass, CC_ATEXIT_NORMAL);
 
+  // check_for_leaks() goes through the allocation list, and checks if
+  // all allocated SoBase-derived instances was deallocated before the
+  // atexit-routines were run.
+  //
+  // Set up to run before other atexit-code, with NORMAL+1 priority,
+  // since we depend on misc parts of Coin still up and running (and
+  // no other code should depend on the allocation list, so this
+  // should be safe).
+  //
+  // -mortene.
+  coin_atexit((coin_atexit_f *)SoBaseP::check_for_leaks, CC_ATEXIT_NORMAL + 1);
+
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
 
@@ -450,31 +493,6 @@ SoBase::initClass(void)
 void
 SoBase::cleanClass(void)
 {
-#if COIN_DEBUG
-  if (SoBaseP::trackbaseobjects) {
-    SbList<const SoBase *> keys;
-    SoBaseP::allbaseobj->makeKeyList(keys);
-    const unsigned int len = keys.getLength();
-    if (len > 0) {
-      // Use printf()s, in case SoDebugError has been made defunct by
-      // previous coin_atexit() work.
-      (void)printf("\nSoBase-derived instances not deallocated:\n");
-
-      for (unsigned int i=0; i < len; i++) {
-        const SoBase * base = keys[i];
-        const SbName name = base->getName();
-        SbString s;
-        s.sprintf("\"%s\"", name.getString());
-        (void)printf("\t%p %s (%s)\n",
-                     base,
-                     base->getTypeId().getName().getString(),
-                     name == "" ? "no name" : s.getString());
-      }
-      (void)printf("\n");
-    }
-  }
-#endif // COIN_DEBUG
-
   assert(SoBaseP::name2obj);
   assert(SoBaseP::obj2name);
 
