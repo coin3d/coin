@@ -1523,6 +1523,10 @@ static SbBool SFInt32_jsval2field(JSContext * cx, const jsval v, SoField * f)
 
 static SbBool SFNode_jsval2field(JSContext * cx, const jsval v, SoField * f)
 {
+  if (JSVAL_IS_NULL(v)) {
+    ((SoSFNode *)f)->setValue(NULL);
+    return TRUE;
+  }
   if (JSVAL_IS_OBJECT(v) &&
       spidermonkey()->JS_InstanceOf(cx, JSVAL_TO_OBJECT(v), &CoinVrmlJs::SFNode.cls, NULL)) {
     SoNode * node = (SoNode *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(v));
