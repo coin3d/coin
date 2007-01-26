@@ -37,7 +37,7 @@
 #endif // !COIN_INTERNAL
 
 #include <Inventor/engines/SoSubNodeEngine.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 // Be aware that any changes to the SO_ENGINE_INTERNAL_CONSTRUCTOR
 // macro should be matched by similar changes to the constructor in
@@ -63,8 +63,8 @@
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_VRML97_NODE_TYPE); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine, CC_ATEXIT_NORMAL); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
   } while (0)
 
 
@@ -73,8 +73,8 @@
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), SO_VRML97_NODE_TYPE); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine); \
-    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanupnodeengine, CC_ATEXIT_NORMAL); \
+    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
   } while (0)
 
 

@@ -33,7 +33,7 @@
 // development system.
 
 #include <Inventor/actions/SoSubAction.h>
-#include <Inventor/C/tidbits.h> // for cc_coin_atexit() / coin_atexit_f
+#include <Inventor/C/tidbitsp.h> // for coin_atexit()
 
 // Internally, we use this macro instead of SO_ACTION_ADD_METHOD(). It
 // should be used from the constructor, and can not be used from
@@ -48,7 +48,7 @@
 #define SO_ACTION_INTERNAL_INIT_CLASS(_classname_, _parentclassname_) \
    do { \
      SO_ACTION_INIT_CLASS(_classname_, _parentclassname_); \
-     cc_coin_atexit((coin_atexit_f*) _classname_::atexit_cleanup); \
+     coin_atexit((coin_atexit_f*) _classname_::atexit_cleanup, CC_ATEXIT_NORMAL); \
    } while (0)
 
 #endif // !COIN_SOSUBACTIONP_H
