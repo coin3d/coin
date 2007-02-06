@@ -58,6 +58,7 @@
 #include <assert.h>
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbDPPlane.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 
 #if COIN_DEBUG
@@ -90,6 +91,104 @@ SbVec3d::SbVec3d(const double x, const double y, const double z)
   this->vec[0] = x;
   this->vec[1] = y;
   this->vec[2] = z;
+}
+
+/*!
+  Constructs an SbVec3d instance by combining the three given planes.
+  None of the planes should be parallel to any of the other two, otherwise
+  a divide by zero error will occur.
+*/
+SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p2)
+{
+  SbVec3d n0 = p0.getNormal();
+  SbVec3d n1 = p1.getNormal();
+  SbVec3d n2 = p2.getNormal();
+
+#if COIN_DEBUG
+  if (!((fabs(n0.dot(n1)) != 1.0) &&
+       (fabs(n0.dot(n2)) != 1.0) &&
+       (fabs(n1.dot(n2)) != 1.0)))
+    SoDebugError::postWarning("SbVec3d::SbVec3d",
+                              "Two or more of the given planes are parallel"
+                              " => Can't create intersection point.");
+#endif // COIN_DEBUG
+
+  // The equation for a point in a plane can be:
+  //
+  //                N·(P - P0) = 0    , N is the plane's normal vectors,
+  //                                    P is the point and P0 is the "root
+  //                                    point" of the plane (i.e. the point
+  //                                    in the plane closest to the coordinate
+  //                                    system origin)
+  //
+  // Simplifying and substituting, we get this:
+  //
+  //                N·P = d           , d is the distance from the origin to
+  //                                    the closest point on the plane
+  //
+  // Using this for all three given planes:
+  //                N0·P = d0
+  //                N1·P = d1
+  //                N2·P = d2
+  //
+  // Taking the dot products we get a set of linear equations:
+  //
+  //   n0x*px + n0y*py + n0z*pz = d0
+  //   n1x*px + n1y*py + n1z*pz = d1
+  //   n2x*px + n2y*py + n2z*pz = d2   , where [px, py, pz] are the unknowns.
+  //
+  // This can be solved by applying the Gauss elimination method. See
+  // for instance "Advanced Engineering Mathemathics", Kreyszig, 6th edition,
+  // chapter 19.
+  //                                                        19980817 mortene.
+
+
+  // a is the input matrix, x is the solution vector, m is a matrix
+  // used for temporary storage.
+  double a[3][4], x[3], m[3][4];
+
+  a[0][0] = n0[0];
+  a[0][1] = n0[1];
+  a[0][2] = n0[2];
+  a[0][3] = p0.getDistanceFromOrigin();
+  a[1][0] = n1[0];
+  a[1][1] = n1[1];
+  a[1][2] = n1[2];
+  a[1][3] = p1.getDistanceFromOrigin();
+  a[2][0] = n2[0];
+  a[2][1] = n2[1];
+  a[2][2] = n2[2];
+  a[2][3] = p2.getDistanceFromOrigin();
+
+
+  int i, j;
+  const int n = 3; // Input matrix dimensions are n × (n+1).
+
+  for (int k=0; k < n-1; k++) {
+    j=k;
+
+    while (a[j][k] == 0.0f) j++;
+    if (j != k) for (i=0; i < n+1; i++) SbSwap(a[j][i], a[k][i]);
+
+    for (j = k+1; j < n; j++) {
+      m[j][k] = a[j][k]/a[k][k];
+
+      for (int p=k+1; p < n+1; p++) a[j][p] -= m[j][k]*a[k][p];
+    }
+  }
+
+  // Back substitution.
+  x[n-1] = a[n-1][n]/a[n-1][n-1];
+  for (i=n-2; i >= 0; i--) {
+    double sum = 0.0;
+    for (j=i+1; j < n; j++) sum += a[i][j]*x[j];
+
+    x[i] = (a[i][n] - sum)/a[i][i];
+  }
+
+  this->vec[0] = x[0];
+  this->vec[1] = x[1];
+  this->vec[2] = x[2];
 }
 
 /*!
