@@ -1804,14 +1804,16 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
   }
   if (texpervertex) {
-    const SoTextureCoordinateElement * telem = NULL;
-    const SoMultiTextureCoordinateElement * mtelem = NULL;
-    const SbBool * enabledunits = NULL;
     int lastenabled;
+    const SbBool * enabledunits = 
+      SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
-    telem = SoTextureCoordinateElement::getInstance(state);
-    enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    const SoMultiTextureCoordinateElement * mtelem = 
+      SoMultiTextureCoordinateElement::getInstance(state);
     
+    const SoTextureCoordinateElement * telem = 
+      SoTextureCoordinateElement::getInstance(state);
+
     for (int i = 1; i <= lastenabled; i++) {
       if (enabledunits[i] && mtelem->getNum(i)) {
         cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
