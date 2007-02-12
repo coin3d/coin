@@ -50,7 +50,7 @@ public:
 
   void print(FILE * file) const;
 
-  SbBool intersect(const SbDPPlane & pl, SbDPLine & line);
+  SbBool intersect(const SbDPPlane & pl, SbDPLine & line) const;
 
 private:
   SbVec3d normal;

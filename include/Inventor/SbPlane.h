@@ -50,7 +50,7 @@ public:
 
   void print(FILE * file) const;
 
-  SbBool intersect(const SbPlane & pl, SbLine & line);
+  SbBool intersect(const SbPlane & pl, SbLine & line) const;
 
 private:
   SbVec3f normal;

@@ -281,7 +281,7 @@ SbDPPlane::getDistanceFromOrigin(void) const
   \since Coin 2.0
 */
 SbBool
-SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line)
+SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line) const
 {
   // Based on code from Graphics Gems III, Plane-to-Plane Intersection
   // by Priamos Georgiades

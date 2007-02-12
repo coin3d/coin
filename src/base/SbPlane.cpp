@@ -282,7 +282,7 @@ SbPlane::getDistanceFromOrigin(void) const
   \since Coin 2.0
 */
 SbBool
-SbPlane::intersect(const SbPlane & pl, SbLine & line)
+SbPlane::intersect(const SbPlane & pl, SbLine & line) const
 {
   // Based on code from Graphics Gems III, Plane-to-Plane Intersection
   // by Priamos Georgiades
