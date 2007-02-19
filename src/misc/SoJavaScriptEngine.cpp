@@ -651,8 +651,8 @@ SbBool
 SoJavaScriptEngine::hasScriptField(const SbName & name) const
 {
   jsval val;
-  assert(spidermonkey()->JS_GetProperty(PRIVATE(this)->context, PRIVATE(this)->global,
-                                        name.getString(), &val));
+  spidermonkey()->JS_GetProperty(PRIVATE(this)->context, PRIVATE(this)->global,
+                                        name.getString(), &val);
 
   return JSVAL_IS_VOID(val) ? FALSE : TRUE;
 }
