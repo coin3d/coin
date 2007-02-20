@@ -565,12 +565,16 @@ SoVRMLSwitch::notify(SoNotList * list)
 
   SbBool ignoreit = FALSE;
 
-  if (rec && rec->getBase()) {
+  if (rec && (f == &this->choice)) { // we got a notification from one of the children, check which
     int which = this->whichChoice.getValue();
     if (which == -1) ignoreit = TRUE; // also ignore if no children are traversed
     else if (which >= 0) {
-      int fromchild = this->findChild((SoNode*) rec->getBase());
-      if (fromchild >= 0 && fromchild != which) ignoreit = TRUE;
+      // get previous notrec to find the node the notification passed through
+      rec = (SoNotRec*) rec->getPrevious();
+      if (rec) {
+        int fromchild = this->findChild((SoNode*) rec->getBase());
+        if (fromchild >= 0 && fromchild != which) ignoreit = TRUE;
+      }
     }
   }
   
