@@ -78,6 +78,7 @@ EXTRA_DIST = \
 	docs/ChangeLog.2002 \
 	docs/ChangeLog.2003 \
 	docs/announcement-2_0_0.txt \
+	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
 	cfg/ltconfig \

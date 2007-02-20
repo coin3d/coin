@@ -275,12 +275,13 @@ RegularSources = \
 	dynarray.cpp \
 	namemap.c \
 	SbBSPTree.cpp \
-	SbBox2s.cpp \
-	SbBox3s.cpp \
 	SbBox2f.cpp \
 	SbBox2d.cpp \
+	SbBox2s.cpp \
+	SbBox2i32.cpp \
 	SbBox3f.cpp \
 	SbBox3d.cpp \
+	SbBox3s.cpp \
 	SbClip.cpp \
 	SbColor.cpp \
 	SbColor4f.cpp \
@@ -303,12 +304,13 @@ RegularSources = \
 	SbTesselator.cpp \
 	SbGLUTessellator.cpp \
 	SbTime.cpp \
-	SbVec2s.cpp \
 	SbVec2f.cpp \
 	SbVec2d.cpp \
-	SbVec3s.cpp \
+	SbVec2s.cpp \
+	SbVec2i32.cpp \
 	SbVec3f.cpp \
 	SbVec3d.cpp \
+	SbVec3s.cpp \
 	SbVec4f.cpp \
 	SbVec4d.cpp \
 	SbViewVolume.cpp \
@@ -393,51 +395,53 @@ base_lst_AR = $(AR) cru
 base_lst_LIBADD =
 am__base_lst_SOURCES_DIST = dict.c hash.c heap.c list.c memalloc.c \
 	rbptree.c time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
-	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
-	SbBox3d.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp \
-	SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp \
-	SbDPRotation.cpp SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp \
-	SbName.cpp SbOctTree.cpp SbPlane.cpp SbRotation.cpp \
-	SbSphere.cpp SbString.cpp SbTesselator.cpp SbGLUTessellator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp all-base-c.c all-base-cpp.cpp
+	SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp SbBox2i32.cpp SbBox3f.cpp \
+	SbBox3d.cpp SbBox3s.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
+	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
+	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
+	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
+	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
+	SbGLUTessellator.cpp SbTime.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp SbVec3d.cpp SbVec3s.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	all-base-cpp.cpp
 am__objects_1 = all-base-c.$(OBJEXT) all-base-cpp.$(OBJEXT)
 am__objects_2 = dict.$(OBJEXT) hash.$(OBJEXT) heap.$(OBJEXT) \
 	list.$(OBJEXT) memalloc.$(OBJEXT) rbptree.$(OBJEXT) \
 	time.$(OBJEXT) string.$(OBJEXT) dynarray.$(OBJEXT) \
-	namemap.$(OBJEXT) SbBSPTree.$(OBJEXT) SbBox2s.$(OBJEXT) \
-	SbBox3s.$(OBJEXT) SbBox2f.$(OBJEXT) SbBox2d.$(OBJEXT) \
-	SbBox3f.$(OBJEXT) SbBox3d.$(OBJEXT) SbClip.$(OBJEXT) \
-	SbColor.$(OBJEXT) SbColor4f.$(OBJEXT) SbCylinder.$(OBJEXT) \
-	SbDict.$(OBJEXT) SbDPLine.$(OBJEXT) SbDPMatrix.$(OBJEXT) \
-	SbDPPlane.$(OBJEXT) SbDPRotation.$(OBJEXT) SbHeap.$(OBJEXT) \
-	SbImage.$(OBJEXT) SbLine.$(OBJEXT) SbMatrix.$(OBJEXT) \
-	SbName.$(OBJEXT) SbOctTree.$(OBJEXT) SbPlane.$(OBJEXT) \
-	SbRotation.$(OBJEXT) SbSphere.$(OBJEXT) SbString.$(OBJEXT) \
-	SbTesselator.$(OBJEXT) SbGLUTessellator.$(OBJEXT) \
-	SbTime.$(OBJEXT) SbVec2s.$(OBJEXT) SbVec2f.$(OBJEXT) \
-	SbVec2d.$(OBJEXT) SbVec3s.$(OBJEXT) SbVec3f.$(OBJEXT) \
-	SbVec3d.$(OBJEXT) SbVec4f.$(OBJEXT) SbVec4d.$(OBJEXT) \
-	SbViewVolume.$(OBJEXT) SbDPViewVolume.$(OBJEXT) \
-	SbViewportRegion.$(OBJEXT) SbXfBox3f.$(OBJEXT)
+	namemap.$(OBJEXT) SbBSPTree.$(OBJEXT) SbBox2f.$(OBJEXT) \
+	SbBox2d.$(OBJEXT) SbBox2s.$(OBJEXT) SbBox2i32.$(OBJEXT) \
+	SbBox3f.$(OBJEXT) SbBox3d.$(OBJEXT) SbBox3s.$(OBJEXT) \
+	SbClip.$(OBJEXT) SbColor.$(OBJEXT) SbColor4f.$(OBJEXT) \
+	SbCylinder.$(OBJEXT) SbDict.$(OBJEXT) SbDPLine.$(OBJEXT) \
+	SbDPMatrix.$(OBJEXT) SbDPPlane.$(OBJEXT) SbDPRotation.$(OBJEXT) \
+	SbHeap.$(OBJEXT) SbImage.$(OBJEXT) SbLine.$(OBJEXT) \
+	SbMatrix.$(OBJEXT) SbName.$(OBJEXT) SbOctTree.$(OBJEXT) \
+	SbPlane.$(OBJEXT) SbRotation.$(OBJEXT) SbSphere.$(OBJEXT) \
+	SbString.$(OBJEXT) SbTesselator.$(OBJEXT) \
+	SbGLUTessellator.$(OBJEXT) SbTime.$(OBJEXT) SbVec2f.$(OBJEXT) \
+	SbVec2d.$(OBJEXT) SbVec2s.$(OBJEXT) SbVec2i32.$(OBJEXT) \
+	SbVec3f.$(OBJEXT) SbVec3d.$(OBJEXT) SbVec3s.$(OBJEXT) \
+	SbVec4f.$(OBJEXT) SbVec4d.$(OBJEXT) SbViewVolume.$(OBJEXT) \
+	SbDPViewVolume.$(OBJEXT) SbViewportRegion.$(OBJEXT) \
+	SbXfBox3f.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_base_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_base_lst_SOURCES_DIST = SbGLUTessellator.h all-base-c.c \
 	all-base-cpp.cpp dict.c hash.c heap.c list.c memalloc.c \
 	rbptree.c time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
-	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
-	SbBox3d.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp \
-	SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp \
-	SbDPRotation.cpp SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp \
-	SbName.cpp SbOctTree.cpp SbPlane.cpp SbRotation.cpp \
-	SbSphere.cpp SbString.cpp SbTesselator.cpp SbGLUTessellator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp SbBox2i32.cpp SbBox3f.cpp \
+	SbBox3d.cpp SbBox3s.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
+	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
+	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
+	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
+	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
+	SbGLUTessellator.cpp SbTime.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp SbVec3d.cpp SbVec3s.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp
 base_lst_OBJECTS = $(am_base_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -445,27 +449,28 @@ libbase_la_LDFLAGS =
 libbase_la_LIBADD =
 am__libbase_la_SOURCES_DIST = dict.c hash.c heap.c list.c memalloc.c \
 	rbptree.c time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
-	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
-	SbBox3d.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp \
-	SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp \
-	SbDPRotation.cpp SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp \
-	SbName.cpp SbOctTree.cpp SbPlane.cpp SbRotation.cpp \
-	SbSphere.cpp SbString.cpp SbTesselator.cpp SbGLUTessellator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp all-base-c.c all-base-cpp.cpp
+	SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp SbBox2i32.cpp SbBox3f.cpp \
+	SbBox3d.cpp SbBox3s.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
+	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
+	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
+	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
+	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
+	SbGLUTessellator.cpp SbTime.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp SbVec3d.cpp SbVec3s.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	all-base-cpp.cpp
 am__objects_6 = all-base-c.lo all-base-cpp.lo
 am__objects_7 = dict.lo hash.lo heap.lo list.lo memalloc.lo rbptree.lo \
 	time.lo string.lo dynarray.lo namemap.lo SbBSPTree.lo \
-	SbBox2s.lo SbBox3s.lo SbBox2f.lo SbBox2d.lo SbBox3f.lo \
-	SbBox3d.lo SbClip.lo SbColor.lo SbColor4f.lo SbCylinder.lo \
-	SbDict.lo SbDPLine.lo SbDPMatrix.lo SbDPPlane.lo \
+	SbBox2f.lo SbBox2d.lo SbBox2s.lo SbBox2i32.lo SbBox3f.lo \
+	SbBox3d.lo SbBox3s.lo SbClip.lo SbColor.lo SbColor4f.lo \
+	SbCylinder.lo SbDict.lo SbDPLine.lo SbDPMatrix.lo SbDPPlane.lo \
 	SbDPRotation.lo SbHeap.lo SbImage.lo SbLine.lo SbMatrix.lo \
 	SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo SbSphere.lo \
 	SbString.lo SbTesselator.lo SbGLUTessellator.lo SbTime.lo \
-	SbVec2s.lo SbVec2f.lo SbVec2d.lo SbVec3s.lo SbVec3f.lo \
-	SbVec3d.lo SbVec4f.lo SbVec4d.lo SbViewVolume.lo \
+	SbVec2f.lo SbVec2d.lo SbVec2s.lo SbVec2i32.lo SbVec3f.lo \
+	SbVec3d.lo SbVec3s.lo SbVec4f.lo SbVec4d.lo SbViewVolume.lo \
 	SbDPViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
@@ -473,46 +478,46 @@ am_libbase_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libbase_la_SOURCES_DIST = SbGLUTessellator.h all-base-c.c \
 	all-base-cpp.cpp dict.c hash.c heap.c list.c memalloc.c \
 	rbptree.c time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
-	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
-	SbBox3d.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp \
-	SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp \
-	SbDPRotation.cpp SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp \
-	SbName.cpp SbOctTree.cpp SbPlane.cpp SbRotation.cpp \
-	SbSphere.cpp SbString.cpp SbTesselator.cpp SbGLUTessellator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp SbBox2i32.cpp SbBox3f.cpp \
+	SbBox3d.cpp SbBox3s.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
+	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
+	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
+	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
+	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
+	SbGLUTessellator.cpp SbTime.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp SbVec3d.cpp SbVec3s.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp
 libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
 libbase@SUFFIX@LINKHACK_la_LDFLAGS =
 libbase@SUFFIX@LINKHACK_la_LIBADD =
 am__libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = dict.c hash.c heap.c \
 	list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
-	SbBox2d.cpp SbBox3f.cpp SbBox3d.cpp SbClip.cpp SbColor.cpp \
-	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
-	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
-	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
-	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
-	SbTesselator.cpp SbGLUTessellator.cpp SbTime.cpp SbVec2s.cpp \
-	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
-	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
-	all-base-cpp.cpp
+	namemap.c SbBSPTree.cpp SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp \
+	SbBox2i32.cpp SbBox3f.cpp SbBox3d.cpp SbBox3s.cpp SbClip.cpp \
+	SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
+	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
+	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
+	SbString.cpp SbTesselator.cpp SbGLUTessellator.cpp SbTime.cpp \
+	SbVec2f.cpp SbVec2d.cpp SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp \
+	SbVec3d.cpp SbVec3s.cpp SbVec4f.cpp SbVec4d.cpp \
+	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
+	SbXfBox3f.cpp all-base-c.c all-base-cpp.cpp
 am_libbase@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = SbGLUTessellator.h \
 	all-base-c.c all-base-cpp.cpp dict.c hash.c heap.c list.c \
 	memalloc.c rbptree.c time.c string.c dynarray.cpp namemap.c \
-	SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp \
-	SbBox3f.cpp SbBox3d.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
-	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
-	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
-	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
-	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
-	SbGLUTessellator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp \
-	SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp \
-	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp
+	SbBSPTree.cpp SbBox2f.cpp SbBox2d.cpp SbBox2s.cpp SbBox2i32.cpp \
+	SbBox3f.cpp SbBox3d.cpp SbBox3s.cpp SbClip.cpp SbColor.cpp \
+	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
+	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
+	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
+	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
+	SbTesselator.cpp SbGLUTessellator.cpp SbTime.cpp SbVec2f.cpp \
+	SbVec2d.cpp SbVec2s.cpp SbVec2i32.cpp SbVec3f.cpp SbVec3d.cpp \
+	SbVec3s.cpp SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp \
+	SbDPViewVolume.cpp SbViewportRegion.cpp SbXfBox3f.cpp
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -520,7 +525,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbBSPTree.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbBSPTree.Po ./$(DEPDIR)/SbBox2d.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbBox2d.Po ./$(DEPDIR)/SbBox2f.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbBox2f.Po ./$(DEPDIR)/SbBox2s.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbBox2f.Po ./$(DEPDIR)/SbBox2i32.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbBox2i32.Po ./$(DEPDIR)/SbBox2s.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbBox2s.Po ./$(DEPDIR)/SbBox3d.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbBox3d.Po ./$(DEPDIR)/SbBox3f.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbBox3f.Po ./$(DEPDIR)/SbBox3s.Plo \
@@ -554,7 +560,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SbTesselator.Po ./$(DEPDIR)/SbTime.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbTime.Po ./$(DEPDIR)/SbVec2d.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbVec2d.Po ./$(DEPDIR)/SbVec2f.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbVec2f.Po ./$(DEPDIR)/SbVec2s.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbVec2f.Po ./$(DEPDIR)/SbVec2i32.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbVec2i32.Po ./$(DEPDIR)/SbVec2s.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbVec2s.Po ./$(DEPDIR)/SbVec3d.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbVec3d.Po ./$(DEPDIR)/SbVec3f.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbVec3f.Po ./$(DEPDIR)/SbVec3s.Plo \
@@ -671,6 +678,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2f.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2i32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2i32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2s.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox2s.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbBox3d.Plo@am__quote@
@@ -729,6 +738,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2f.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2i32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2i32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2s.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec2s.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec3d.Plo@am__quote@
