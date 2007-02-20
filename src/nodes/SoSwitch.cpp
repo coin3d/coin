@@ -473,7 +473,9 @@ SoSwitch::notify(SoNotList * nl)
 
   SbBool ignoreit = FALSE;
 
-  if (rec && rec->getBase()) {
+  // if getBase() == this, the notification is from a field under this
+  // node, and should _not_ be ignored
+  if (rec && (rec->getBase() != (SoBase*) this)) {
     int which = this->whichChild.getValue();
     if (which == -1) ignoreit = TRUE; // also ignore if no children are traversed
     else if (which >= 0) {
