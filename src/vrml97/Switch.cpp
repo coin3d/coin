@@ -542,10 +542,44 @@ SoVRMLSwitch::notify(SoNotList * list)
   if (f == &this->choice) {
     PRIVATE(this)->childlistvalid = FALSE;
   }
-  inherited::notify(list);
 
-  PRIVATE(this)->notifyCalled();
+  SoNotRec * rec = list->getLastRec();
+  
+  // If whichChild is set to a specific child and we get a
+  // notification from some other child, ignore it to avoid redraws
+  // and invalidated caches because of inactive parts of the scene
+  // graph. This fixes cases like these:
+  
+  // DEF Switch {
+  //   whichChild 1
+  //   Separator {
+  //     Rotor {
+  //       on TRUE
+  //       speed 1
+  //     }
+  //   }
+  //   Separator {
+  //     Cube { }
+  //   }
+  // }
+
+  SbBool ignoreit = FALSE;
+
+  if (rec && rec->getBase()) {
+    int which = this->whichChoice.getValue();
+    if (which == -1) ignoreit = TRUE; // also ignore if no children are traversed
+    else if (which >= 0) {
+      int fromchild = this->findChild((SoNode*) rec->getBase());
+      if (fromchild >= 0 && fromchild != which) ignoreit = TRUE;
+    }
+  }
+  
+  if (!ignoreit) {
+    inherited::notify(list);
+    PRIVATE(this)->notifyCalled();
+  }
 }
+
 
 // Doc in parent
 SbBool
