@@ -11,6 +11,7 @@ PublicHeaders = \
 	SbBox2d.h \
 	SbBox2f.h \
 	SbBox2s.h \
+	SbBox2i32.h \
 	SbBox3d.h \
 	SbBox3f.h \
 	SbBox3s.h \
@@ -42,6 +43,7 @@ PublicHeaders = \
 	SbVec2d.h \
 	SbVec2f.h \
 	SbVec2s.h \
+	SbVec2i32.h \
 	SbVec3d.h \
 	SbVec3f.h \
 	SbVec3s.h \

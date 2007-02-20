@@ -10,12 +10,13 @@ RegularSources = \
 	dynarray.cpp \
 	namemap.c \
 	SbBSPTree.cpp \
-	SbBox2s.cpp \
-	SbBox3s.cpp \
 	SbBox2f.cpp \
 	SbBox2d.cpp \
+	SbBox2s.cpp \
+	SbBox2i32.cpp \
 	SbBox3f.cpp \
 	SbBox3d.cpp \
+	SbBox3s.cpp \
 	SbClip.cpp \
 	SbColor.cpp \
 	SbColor4f.cpp \
@@ -38,12 +39,13 @@ RegularSources = \
 	SbTesselator.cpp \
 	SbGLUTessellator.cpp \
 	SbTime.cpp \
-	SbVec2s.cpp \
 	SbVec2f.cpp \
 	SbVec2d.cpp \
-	SbVec3s.cpp \
+	SbVec2s.cpp \
+	SbVec2i32.cpp \
 	SbVec3f.cpp \
 	SbVec3d.cpp \
+	SbVec3s.cpp \
 	SbVec4f.cpp \
 	SbVec4d.cpp \
 	SbViewVolume.cpp \
