@@ -106,10 +106,6 @@
       SoFile * filenode = (SoFile *)node;  // safe downward cast, knows the type
       /// [then something] ///
     }
-    else if (node->getTypeId().isOfType(SoGroup::getClassTypeId())) {
-      SoGroup * group = (SoGroup *)node;  // safe downward cast, knows the type
-      /// [then something else] ///
-    }
   }
   \endcode
 
@@ -702,6 +698,21 @@ SoBase::touch(void)
 /*!
   Returns \c TRUE if the type of this object is either of the same
   type or inherited from \a type.
+
+  This is used for run-time type checking and "downward" casting.
+
+  Usage example:
+
+  \code
+  void foo(SoNode * node)
+  {
+    if (node->isOfType(SoGroup::getClassTypeId())) {
+      SoGroup * group = (SoGroup *)node;  // safe downward cast, knows the type
+      /// [then something ] ///
+    }
+  }
+  \endcode
+
  */
 SbBool
 SoBase::isOfType(SoType type) const
