@@ -314,13 +314,18 @@ public:
  */
 /*!
   \var SoCallbackAction::Response SoCallbackAction::ABORT
-  Abort traversal.
+  Abort traversal immediately.  No other callbacks are called after
+  this has been returned.
  */
 /*!
   \var SoCallbackAction::Response SoCallbackAction::PRUNE
   Don't do traversal of neither the current node (if returning from a
   pre-traversal callback) nor its children.
- */
+
+  If returned from a pre-callback, the post-callbacks will still be
+  called.  If returned from a post-callback, the behaviour will be the
+  same as for returning CONTINUE.
+*/
 
 // ***********************************************************************
 
