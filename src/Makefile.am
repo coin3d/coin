@@ -34,7 +34,7 @@ SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy threads mpeg shaders $(VRML97DIR) foreignfiles .
+	3ds collision hardcopy shadows threads mpeg shaders $(VRML97DIR) foreignfiles .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
