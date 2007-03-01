@@ -9291,8 +9291,8 @@ ifelse($1, [], :, $1)
 AC_DEFUN([SIM_AC_COMPILER_NOBOOL], [
 sim_ac_nobool_CXXFLAGS=
 sim_ac_have_nobool=false
+AC_MSG_CHECKING([whether $CXX accepts /noBool])
 if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
-  AC_MSG_CHECKING([whether $CXX accepts /noBool])
   SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
     [/noBool],
     [int temp],

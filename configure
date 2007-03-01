@@ -27558,9 +27558,9 @@ fi
 
 sim_ac_nobool_CXXFLAGS=
 sim_ac_have_nobool=false
-if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
-  echo "$as_me:$LINENO: checking whether $CXX accepts /noBool" >&5
+echo "$as_me:$LINENO: checking whether $CXX accepts /noBool" >&5
 echo $ECHO_N "checking whether $CXX accepts /noBool... $ECHO_C" >&6
+if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
 
 
 
@@ -36188,7 +36188,7 @@ echo "$as_me: error: --enable-hacking requires Mac OS X version >= 10.3" >&2;}
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors shaders upgraders hardcopy foreignfiles collision \
+    sensors shaders upgraders hardcopy shadows foreignfiles collision \
     mpeg 3ds:format3ds; \
   do
     case $dir in
@@ -36941,7 +36941,7 @@ rm $sim_ac_tmpfile
 
 # **************************************************************************
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/foreignfiles/Makefile cfg/gendsp.sh"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile include/Inventor/annex/FXViz/Makefile include/Inventor/annex/FXViz/elements/Makefile include/Inventor/annex/FXViz/nodes/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/shadows/Makefile src/foreignfiles/Makefile cfg/gendsp.sh"
 
 
 cat >confcache <<\_ACEOF
@@ -37703,6 +37703,9 @@ do
   "include/Inventor/annex/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/Makefile" ;;
   "include/Inventor/annex/HardCopy/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/HardCopy/Makefile" ;;
   "include/Inventor/annex/ForeignFiles/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/ForeignFiles/Makefile" ;;
+  "include/Inventor/annex/FXViz/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/FXViz/Makefile" ;;
+  "include/Inventor/annex/FXViz/elements/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/FXViz/elements/Makefile" ;;
+  "include/Inventor/annex/FXViz/nodes/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/annex/FXViz/nodes/Makefile" ;;
   "data/Makefile" ) CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
   "data/draggerDefaults/Makefile" ) CONFIG_FILES="$CONFIG_FILES data/draggerDefaults/Makefile" ;;
   "man/Makefile" ) CONFIG_FILES="$CONFIG_FILES man/Makefile" ;;
@@ -37742,6 +37745,7 @@ do
   "src/hardcopy/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/hardcopy/Makefile" ;;
   "src/mpeg/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/mpeg/Makefile" ;;
   "src/shaders/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/shaders/Makefile" ;;
+  "src/shadows/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/shadows/Makefile" ;;
   "src/foreignfiles/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/foreignfiles/Makefile" ;;
   "cfg/gendsp.sh" ) CONFIG_FILES="$CONFIG_FILES cfg/gendsp.sh" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;

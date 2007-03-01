@@ -1801,7 +1801,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors shaders upgraders hardcopy foreignfiles collision \
+    sensors shaders upgraders hardcopy shadows foreignfiles collision \
     mpeg 3ds:format3ds; \
   do
     case $dir in
@@ -2154,6 +2154,9 @@ AC_CONFIG_FILES([
         include/Inventor/annex/Makefile
         include/Inventor/annex/HardCopy/Makefile
         include/Inventor/annex/ForeignFiles/Makefile
+        include/Inventor/annex/FXViz/Makefile
+        include/Inventor/annex/FXViz/elements/Makefile
+        include/Inventor/annex/FXViz/nodes/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         man/Makefile
@@ -2193,6 +2196,7 @@ AC_CONFIG_FILES([
         src/hardcopy/Makefile
         src/mpeg/Makefile
         src/shaders/Makefile
+	src/shadows/Makefile
         src/foreignfiles/Makefile
         cfg/gendsp.sh
 ])

@@ -409,6 +409,7 @@ EXTRA_DIST = \
 	build/msvc6/coin3.dsp \
 	build/msvc6/coin3.dsw \
 	build/msvc6/config-wrapper.h \
+	build/msvc6/create-directories.bat \
 	build/msvc6/generate.sh \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl.h \
@@ -446,6 +447,7 @@ EXTRA_DIST = \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
 	build/msvc7/config-wrapper.h \
+	build/msvc7/create-directories.bat \
 	build/msvc7/generate.sh \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl.h \
@@ -483,6 +485,7 @@ EXTRA_DIST = \
 	build/msvc8/coin3.sln \
 	build/msvc8/coin3.vcproj \
 	build/msvc8/config-wrapper.h \
+	build/msvc8/create-directories.bat \
 	build/msvc8/generate.sh \
 	build/msvc8/include/Inventor/C/basic.h \
 	build/msvc8/include/Inventor/system/gl.h \

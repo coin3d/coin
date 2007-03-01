@@ -1,2 +1,2 @@
 
-SUBDIRS = HardCopy ForeignFiles
+SUBDIRS = HardCopy ForeignFiles FXViz

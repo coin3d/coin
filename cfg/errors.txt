@@ -22,6 +22,14 @@ Did you perhaps forget to set up the environment variable QTDIR to the
 base of the Qt installation directory? Or if it was already set up,
 double check to see that it is pointing at the correct directory.
 
+!no-uic3
+Found no manner in which the Qt4 ''uic3'' utility could be run. Make
+sure Qt4 is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
 !no-qt
 Could not find any way to build against the Qt library. If you
 are sure Qt is properly installed on your system, see the file
