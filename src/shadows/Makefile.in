@@ -266,7 +266,8 @@ target_vendor = @target_vendor@
 ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	SoShadowGroup.cpp \
-	SoShadowStyle.cpp
+	SoShadowStyle.cpp \
+	SoShadowStyleElement.cpp
 
 
 LinkHackSources = \
@@ -338,36 +339,39 @@ LIBRARIES = $(noinst_LIBRARIES)
 shadows_lst_AR = $(AR) cru
 shadows_lst_LIBADD =
 am__shadows_lst_SOURCES_DIST = SoShadowGroup.cpp SoShadowStyle.cpp \
-	all-shadows-cpp.cpp
+	SoShadowStyleElement.cpp all-shadows-cpp.cpp
 am__objects_1 = all-shadows-cpp.$(OBJEXT)
-am__objects_2 = SoShadowGroup.$(OBJEXT) SoShadowStyle.$(OBJEXT)
+am__objects_2 = SoShadowGroup.$(OBJEXT) SoShadowStyle.$(OBJEXT) \
+	SoShadowStyleElement.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_shadows_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_shadows_lst_SOURCES_DIST = all-shadows-cpp.cpp \
-	SoShadowGroup.cpp SoShadowStyle.cpp
+	SoShadowGroup.cpp SoShadowStyle.cpp SoShadowStyleElement.cpp
 shadows_lst_OBJECTS = $(am_shadows_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libshadows_la_LDFLAGS =
 libshadows_la_LIBADD =
 am__libshadows_la_SOURCES_DIST = SoShadowGroup.cpp SoShadowStyle.cpp \
-	all-shadows-cpp.cpp
+	SoShadowStyleElement.cpp all-shadows-cpp.cpp
 am__objects_6 = all-shadows-cpp.lo
-am__objects_7 = SoShadowGroup.lo SoShadowStyle.lo
+am__objects_7 = SoShadowGroup.lo SoShadowStyle.lo \
+	SoShadowStyleElement.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libshadows_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshadows_la_SOURCES_DIST = all-shadows-cpp.cpp \
-	SoShadowGroup.cpp SoShadowStyle.cpp
+	SoShadowGroup.cpp SoShadowStyle.cpp SoShadowStyleElement.cpp
 libshadows_la_OBJECTS = $(am_libshadows_la_OBJECTS)
 libshadows@SUFFIX@LINKHACK_la_LDFLAGS =
 libshadows@SUFFIX@LINKHACK_la_LIBADD =
 am__libshadows@SUFFIX@LINKHACK_la_SOURCES_DIST = SoShadowGroup.cpp \
-	SoShadowStyle.cpp all-shadows-cpp.cpp
+	SoShadowStyle.cpp SoShadowStyleElement.cpp all-shadows-cpp.cpp
 am_libshadows@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshadows@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	all-shadows-cpp.cpp SoShadowGroup.cpp SoShadowStyle.cpp
+	all-shadows-cpp.cpp SoShadowGroup.cpp SoShadowStyle.cpp \
+	SoShadowStyleElement.cpp
 libshadows@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libshadows@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -376,6 +380,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowGroup.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyle.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyle.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyleElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyleElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
@@ -461,6 +467,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowGroup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyleElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyleElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Po@am__quote@
 
