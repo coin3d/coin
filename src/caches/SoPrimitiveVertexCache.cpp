@@ -125,7 +125,7 @@ public:
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
 
   void renderImmediate(const cc_glglue * glue,
-                       const int32_t * indices,
+                       const GLint * indices,
                        const int numindices,
                        const SbBool color, const SbBool normal,
                        const SbBool texture, const SbBool * enabled,
@@ -669,7 +669,7 @@ SoPrimitiveVertexCache::getNumIndices(void) const
   return PRIVATE(this)->triangleindexer ? PRIVATE(this)->triangleindexer->getNumIndices() : 0;
 }
 
-const int32_t *
+const GLint *
 SoPrimitiveVertexCache::getIndices(void) const
 {
   assert(PRIVATE(this)->triangleindexer);
@@ -709,14 +709,14 @@ SoPrimitiveVertexCache::getNumPointIndices(void) const
 }
 
 
-const int32_t *
+const GLint *
 SoPrimitiveVertexCache::getLineIndices(void) const
 {
   assert(PRIVATE(this)->lineindexer);
   return PRIVATE(this)->lineindexer->getIndices();
 }
 
-const int32_t *
+const GLint *
 SoPrimitiveVertexCache::getPointIndices(void) const
 {
   assert(PRIVATE(this)->pointindexer);
@@ -757,7 +757,7 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
     PRIVATE(this)->prevsortplane = sortplane;
     float * darray = PRIVATE(this)->deptharray;
     const SbVec3f * vptr = PRIVATE(this)->vertexlist.getArrayPtr();
-    int32_t * iptr = PRIVATE(this)->triangleindexer->getWriteableIndices();
+    GLint * iptr = PRIVATE(this)->triangleindexer->getWriteableIndices();
     int i,j;
     for (i = 0; i < numtri; i++) {
       float acc = 0.0;
@@ -986,7 +986,7 @@ SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
 
 void 
 SoPrimitiveVertexCacheP::renderImmediate(const cc_glglue * glue,
-                                         const int32_t * indices,
+                                         const GLint * indices,
                                          const int numindices,
                                          const SbBool color, const SbBool normal,
                                          const SbBool texture, const SbBool * enabled,

@@ -793,15 +793,15 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   ifs->textureCoordIndex.setNum(0);
   
   int numtri = this->pvcache->getNumIndices() / 3;
-  const int32_t * indices = this->pvcache->getIndices();
+  const GLint * indices = this->pvcache->getIndices();
   ifs->coordIndex.setNum(numtri * 4);
   int32_t * ptr = ifs->coordIndex.startEditing();
 
   
   for (int i = 0; i < numtri; i++) {
-    *ptr++ = indices[i*3];
-    *ptr++ = indices[i*3+1];
-    *ptr++ = indices[i*3+2];
+    *ptr++ = (int32_t) indices[i*3];
+    *ptr++ = (int32_t) indices[i*3+1];
+    *ptr++ = (int32_t) indices[i*3+2];
     *ptr++ = -1;
   }
   ifs->coordIndex.finishEditing();
@@ -885,14 +885,14 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   ifs->texCoordIndex.setNum(0);
   
   int numtri = this->pvcache->getNumIndices() / 3;
-  const int32_t * indices = this->pvcache->getIndices();
+  const GLint * indices = this->pvcache->getIndices();
   ifs->coordIndex.setNum(numtri * 4);
   int32_t * ptr = ifs->coordIndex.startEditing();
 
   for (int i = 0; i < numtri; i++) {
-    *ptr++ = indices[i*3];
-    *ptr++ = indices[i*3+1];
-    *ptr++ = indices[i*3+2];
+    *ptr++ = (int32_t) indices[i*3];
+    *ptr++ = (int32_t) indices[i*3+1];
+    *ptr++ = (int32_t) indices[i*3+2];
     *ptr++ = -1;
   }
   ifs->coordIndex.finishEditing();
@@ -928,13 +928,13 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   ils->textureCoordIndex.setNum(0);
   
   int numlines = this->pvcache->getNumLineIndices() / 2;
-  const int32_t * indices = this->pvcache->getLineIndices();
+  const GLint * indices = this->pvcache->getLineIndices();
   ils->coordIndex.setNum(numlines * 3);
   int32_t * ptr = ils->coordIndex.startEditing();
   
   for (int i = 0; i < numlines; i++) {
-    *ptr++ = indices[i*2];
-    *ptr++ = indices[i*2+1];
+    *ptr++ = (int32_t) indices[i*2];
+    *ptr++ = (int32_t) indices[i*2+1];
     *ptr++ = -1;
   }
   ils->coordIndex.finishEditing();
@@ -961,13 +961,13 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
 
   int numv = this->pvcache->getNumVertices();
   int numlines = this->pvcache->getNumLineIndices() / 2;
-  const int32_t * indices = this->pvcache->getLineIndices();
+  const GLint * indices = this->pvcache->getLineIndices();
   ils->coordIndex.setNum(numlines * 3);
   int32_t * ptr = ils->coordIndex.startEditing();
   
   for (int i = 0; i < numlines; i++) {
-    *ptr++ = indices[i*2];
-    *ptr++ = indices[i*2+1];
+    *ptr++ = (int32_t) indices[i*2];
+    *ptr++ = (int32_t) indices[i*2+1];
     *ptr++ = -1;
   }
   ils->coordIndex.finishEditing();

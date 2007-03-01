@@ -64,8 +64,8 @@ SoVertexArrayIndexer::addLine(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_LINES;
   if (this->target == GL_LINES) {
-    this->indexarray.append(v0);
-    this->indexarray.append(v1);
+    this->indexarray.append((GLint)v0);
+    this->indexarray.append((GLint)v1);
   }
   else {
     this->getNext()->addLine(v0, v1);
@@ -80,7 +80,7 @@ SoVertexArrayIndexer::addPoint(const int32_t v0)
 {
   if (this->target == 0) this->target = GL_POINTS;
   if (this->target == GL_POINTS) {
-    this->indexarray.append(v0);
+    this->indexarray.append((GLint)v0);
   }
   else {
     this->getNext()->addPoint(v0);
@@ -97,9 +97,9 @@ SoVertexArrayIndexer::addTriangle(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_TRIANGLES;
   if (this->target == GL_TRIANGLES) {
-    this->indexarray.append(v0);
-    this->indexarray.append(v1);
-    this->indexarray.append(v2);
+    this->indexarray.append((GLint)v0);
+    this->indexarray.append((GLint)v1);
+    this->indexarray.append((GLint)v2);
   }
   else {
     this->getNext()->addTriangle(v0,v1,v2);
@@ -117,10 +117,10 @@ SoVertexArrayIndexer::addQuad(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_QUADS;
   if (this->target == GL_QUADS) {
-    this->indexarray.append(v0);
-    this->indexarray.append(v1);
-    this->indexarray.append(v2);
-    this->indexarray.append(v3);
+    this->indexarray.append((GLint)v0);
+    this->indexarray.append((GLint)v1);
+    this->indexarray.append((GLint)v2);
+    this->indexarray.append((GLint)v3);
   }
   else {
     this->getNext()->addQuad(v0,v1,v2,v3);
@@ -159,7 +159,7 @@ SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
   assert(this->target != 0);
   if (this->target == targetin) {
     this->targetcounter++;
-    this->indexarray.append(v);
+    this->indexarray.append((GLint)v);
   }
   else {
     this->getNext()->targetVertex(targetin, v);
@@ -177,7 +177,7 @@ SoVertexArrayIndexer::endTarget(GLenum targetin)
 {
   assert(this->target != 0);
   if (this->target == targetin) {
-    this->countarray.append(this->targetcounter);
+    this->countarray.append((GLsizei) this->targetcounter);
   }
   else {
     this->getNext()->endTarget(targetin);
@@ -197,7 +197,7 @@ SoVertexArrayIndexer::close(void)
   this->ciarray.truncate(0);
 
   if (this->target != GL_TRIANGLES && this->target != GL_QUADS && this->target != GL_LINES && this->target != GL_POINTS) {
-    const int32_t * ptr = this->indexarray.getArrayPtr();
+    const GLint * ptr = this->indexarray.getArrayPtr();
     for (int i = 0; i < this->countarray.getLength(); i++) {
       this->ciarray.append(ptr);
       ptr += (int) this->countarray[i];
@@ -251,7 +251,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
       cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {
-      const int32_t * idxptr = this->indexarray.getArrayPtr();
+      const GLint * idxptr = this->indexarray.getArrayPtr();
       cc_glglue_glDrawElements(glue,
                                this->target,
                                this->indexarray.getLength(),
@@ -270,7 +270,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     }
     else {
       for (int i = 0; i < this->countarray.getLength(); i++) {
-        const int32_t * ptr = this->ciarray[i];
+        const GLsizei * ptr = this->ciarray[i];
         GLsizei cnt = this->countarray[i];
         cc_glglue_glDrawElements(glue,
                                  this->target,
@@ -443,7 +443,7 @@ SoVertexArrayIndexer::getNumIndices(void) const
 /*!
   Returns a pointer to the index array.
 */
-const int32_t * 
+const GLint * 
 SoVertexArrayIndexer::getIndices(void) const
 {
   return this->indexarray.getArrayPtr();
@@ -454,12 +454,12 @@ SoVertexArrayIndexer::getIndices(void) const
   these indices to change the rendering order. Calling this function
   will invalidate any VBO caches used by the indexer.
 */
-int32_t * 
+GLint * 
 SoVertexArrayIndexer::getWriteableIndices(void)
 {
   delete this->vbo;
   this->vbo = NULL;
-  return (int32_t*) this->indexarray.getArrayPtr();
+  return (GLint*) this->indexarray.getArrayPtr();
 }
 
 

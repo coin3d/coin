@@ -62,8 +62,8 @@ public:
 
   int getNumVertices(void);
   int getNumIndices(void) const;
-  const int32_t * getIndices(void) const;
-  int32_t * getWriteableIndices(void);
+  const GLint * getIndices(void) const;
+  GLint * getWriteableIndices(void);
 
 private:
 
@@ -76,8 +76,8 @@ private:
 
   int targetcounter;
   SbList <GLsizei> countarray;
-  SbList <const int32_t *> ciarray;
-  SbList <int32_t> indexarray;
+  SbList <const GLint *> ciarray;
+  SbList <GLint> indexarray;
   SoVBO * vbo;
 };
 

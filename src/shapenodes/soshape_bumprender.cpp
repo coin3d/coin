@@ -758,7 +758,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 
 
   const int numv = cache->getNumVertices();
-  const int32_t * idxptr = cache->getIndices();
+  const GLint * idxptr = cache->getIndices();
   const SbVec3f * vertices = cache->getVertexArray();
   const SbVec3f * normals = cache->getNormalArray();
   const SbVec2f * bumpcoords = cache->getBumpCoordArray();

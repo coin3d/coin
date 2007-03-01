@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/caches/SoCache.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec2f.h>
@@ -69,7 +70,7 @@ public:
   const uint8_t * getColorArray(void) const;
 
   int getNumIndices(void) const;
-  const int32_t * getIndices(void) const;
+  const GLint * getIndices(void) const;
   int32_t getIndex(const int idx) const;
 
   SbBool colorPerVertex(void) const;
@@ -78,8 +79,8 @@ public:
   int getNumLineIndices(void) const;
   int getNumPointIndices(void) const;
 
-  const int32_t * getLineIndices(void) const;
-  const int32_t * getPointIndices(void) const;
+  const GLint * getLineIndices(void) const;
+  const GLint * getPointIndices(void) const;
 
   void fit(void);
   void depthSortTriangles(SoState * state);
