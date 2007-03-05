@@ -541,10 +541,31 @@ COIN_DLL_API void cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue,
                                                 GLuint id, GLenum pname, 
                                                 GLuint * params);
 
+COIN_DLL_API void cc_glglue_glIsRenderbufferEXT(const cc_glglue * glue, GLuint renderbuffer);
+COIN_DLL_API void cc_glglue_glBindRenderbufferEXT(const cc_glglue * glue, GLenum target, GLuint renderbuffer);
+COIN_DLL_API void cc_glglue_glDeleteRenderbuffersEXT(const cc_glglue * glue, GLsizei n, const GLuint *renderbuffers);
+COIN_DLL_API void cc_glglue_glGenRenderbuffersEXT(const cc_glglue * glue, GLsizei n, GLuint *renderbuffers);
+COIN_DLL_API void cc_glglue_glRenderbufferStorageEXT(const cc_glglue * glue, GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+COIN_DLL_API void cc_glglue_glGetRenderbufferParameterivEXT(const cc_glglue * glue, GLenum target, GLenum pname, GLint *params);
+COIN_DLL_API GLboolean cc_glglue_glIsFramebufferEXT(const cc_glglue * glue, GLuint framebuffer);
+COIN_DLL_API void cc_glglue_glBindFramebufferEXT(const cc_glglue * glue, GLenum target, GLuint framebuffer);
+COIN_DLL_API void cc_glglue_glDeleteFramebuffersEXT(const cc_glglue * glue, GLsizei n, const GLuint *framebuffers);
+COIN_DLL_API void cc_glglue_glGenFramebuffersEXT(const cc_glglue * glue, GLsizei n, GLuint *framebuffers);
+COIN_DLL_API GLenum cc_glglue_glCheckFramebufferStatusEXT(const cc_glglue * glue, GLenum target);
+COIN_DLL_API void cc_glglue_glFramebufferTexture1DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+COIN_DLL_API void cc_glglue_glFramebufferTexture2DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+COIN_DLL_API void cc_glglue_glFramebufferTexture3DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
+COIN_DLL_API void cc_glglue_glFramebufferRenderbufferEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+COIN_DLL_API void cc_glglue_glGetFramebufferAttachmentParameterivEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum pname, GLint *params);
+COIN_DLL_API void cc_glglue_glGenerateMipmapEXT(const cc_glglue * glue, GLenum target);
+COIN_DLL_API SbBool cc_glglue_has_framebuffer_objects(const cc_glglue * glue);
+
+
 /* GL feature queries */
 COIN_DLL_API SbBool cc_glglue_can_do_bumpmapping(const cc_glglue * glue);
 COIN_DLL_API SbBool cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue);
 COIN_DLL_API SbBool cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue);
+COIN_DLL_API SbBool cc_glglue_has_framebuffer_objects(const cc_glglue * glue);
 
 /* GL limits */
 COIN_DLL_API int cc_glglue_get_max_lights(const cc_glglue * glue);

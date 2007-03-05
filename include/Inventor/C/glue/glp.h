@@ -521,6 +521,28 @@ typedef void (APIENTRY * COIN_PFNGLGETQUERYOBJECTUIVPROC)(GLuint id, GLenum pnam
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
 
+/* Typedefs for Framebuffer objects */
+
+typedef void (APIENTRY * COIN_PFNGLISRENDERBUFFEREXTPROC)(GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLBINDRENDERBUFFEREXTPROC)(GLenum target, GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLDELETERENDERBUFFERSEXTPROC)(GLsizei n, const GLuint *renderbuffers);
+typedef void (APIENTRY * COIN_PFNGLGENRENDERBUFFERSEXTPROC)(GLsizei n, GLuint *renderbuffers);
+typedef void (APIENTRY * COIN_PFNGLRENDERBUFFERSTORAGEEXTPROC)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+typedef void (APIENTRY * COIN_PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC)(GLenum target, GLenum pname, GLint *params);
+typedef GLboolean (APIENTRY * COIN_PFNGLISFRAMEBUFFEREXTPROC)(GLuint framebuffer);
+typedef void (APIENTRY * COIN_PFNGLBINDFRAMEBUFFEREXTPROC)(GLenum target, GLuint framebuffer);
+typedef void (APIENTRY * COIN_PFNGLDELETEFRAMEBUFFERSEXTPROC)(GLsizei n, const GLuint *framebuffers);
+typedef void (APIENTRY * COIN_PFNGLGENFRAMEBUFFERSEXTPROC)(GLsizei n, GLuint *framebuffers);
+typedef GLenum (APIENTRY * COIN_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)(GLenum target);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE1DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE3DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC)(GLenum target, GLenum attachment, GLenum pname, GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGENERATEMIPMAPEXTPROC)(GLenum target);
+
+
+
 /* ********************************************************************** */
 
 /* Type specification for GLX info storage structure, embedded within
@@ -755,6 +777,25 @@ struct cc_glglue {
   COIN_PFNGLGETQUERYIVPROC glGetQueryiv;
   COIN_PFNGLGETQUERYOBJECTIVPROC glGetQueryObjectiv;
   COIN_PFNGLGETQUERYOBJECTUIVPROC glGetQueryObjectuiv;
+  
+  /* FBO */
+  COIN_PFNGLISRENDERBUFFEREXTPROC glIsRenderbufferEXT;
+  COIN_PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT;
+  COIN_PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT;
+  COIN_PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT;
+  COIN_PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT;
+  COIN_PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC glGetRenderbufferParameterivEXT;
+  COIN_PFNGLISFRAMEBUFFEREXTPROC glIsFramebufferEXT;
+  COIN_PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT;
+  COIN_PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT;
+  COIN_PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;
+  COIN_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT;
+  COIN_PFNGLFRAMEBUFFERTEXTURE1DEXTPROC glFramebufferTexture1DEXT;
+  COIN_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT;
+  COIN_PFNGLFRAMEBUFFERTEXTURE3DEXTPROC glFramebufferTexture3DEXT;
+  COIN_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT;
+  COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC glGetFramebufferAttachmentParameterivEXT;
+  COIN_PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
 
   const char * versionstr;
   const char * vendorstr;
@@ -784,6 +825,7 @@ struct cc_glglue {
   SbBool has_arb_vertex_program;
   SbBool has_arb_shader_objects;
   SbBool has_texture_env_combine;
+  SbBool has_fbo;
 
   SbBool vbo_in_displaylist_ok;
   int max_lights;
