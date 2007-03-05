@@ -854,6 +854,34 @@ SoGLImage::isOfType(SoType type) const
 }
 
 /*!
+  Can be used for setting custom OpenGL textures inside an SoGLImage instance.
+*/
+void 
+SoGLImage::setGLDisplayList(SoGLDisplayList * dl,
+                            SoState * state,
+                            const Wrap wraps,
+                            const Wrap wrapt,
+                            const float quality)
+{
+  if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
+  
+  PRIVATE(this)->unrefDLists(state);
+  dl->ref();
+  PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
+  PRIVATE(this)->image = NULL; // we have no data. Texture is organized outside this image
+  PRIVATE(this)->wraps = wraps;
+  PRIVATE(this)->wrapt = wrapt;
+  PRIVATE(this)->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
+  PRIVATE(this)->needtransparencytest = FALSE;
+  PRIVATE(this)->hastransparency = FALSE;
+  PRIVATE(this)->usealphatest = FALSE;
+  PRIVATE(this)->quality = quality;
+
+  // don't register this image. There's no way we can reload it if we
+  // delete it because of old age.
+}
+
+/*!
   Sets the pbuffer for this texture. Experimental code, use with care.
 */
 void

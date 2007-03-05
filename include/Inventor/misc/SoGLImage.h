@@ -69,6 +69,12 @@ public:
                                    ResizeReason reason,
                                    void * closure,
                                    class SoGLImage * image);
+  
+  void setGLDisplayList(SoGLDisplayList * dl,
+                        SoState * state,
+                        const Wrap wraps = REPEAT,
+                        const Wrap wrapt = REPEAT,
+                        const float quality = 0.5f);
 
   void setPBuffer(SoState * state,
                   void * context,
