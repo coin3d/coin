@@ -260,13 +260,13 @@ SoInput_FileInfo::putBack(const char c)
   this->lastputback = (int)c;
   this->lastchar = -1;
 
-  if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
-    this->readbufidx--;
+  if (this->readbufidx > 0) {
+    --this->readbufidx;
     // Make sure we write back the same character which was read..
     assert(c == this->readbuf[this->readbufidx]);
   }
   else {
-    this->backbuffer.push(c);
+    this->backbuffer.append(c);
   }
 
   this->eof = FALSE;
@@ -277,33 +277,30 @@ SoInput_FileInfo::putBack(const char * const str)
 {
   assert(!this->isbinary);
 
-  const size_t n = strlen(str);
+  const int n = int(strlen(str));
   if (!n) return;
 
   // Decrease line count if we put back any end-of-line
   // characters. This should take care of Unix-, MSDOS/MSWin- and
   // MacOS-style generated files. What a mess.
-  for (size_t i=0; i < n; i++) {
+  for (int i = 0; i < n; ++i) {
     if ((str[i] == '\r') || ((str[i] == '\n') &&
                              (this->lastputback != (int)'\r')))
-      this->linenr--;
+      --this->linenr;
     this->lastputback = (int)str[i];
   }
 
   this->lastchar = -1;
 
-  if (n <= this->readbufidx && this->backbuffer.getLength() == 0) {
-    this->readbufidx -= n;
+  for (int c = n - 1; c >= 0; --c) {
+    if (this->readbufidx > 0) {
+      --this->readbufidx;
 #if COIN_DEBUG
-    for (size_t i = 0; i < n; i++) {
-      assert(this->readbuf[this->readbufidx+i] == str[i]);
+      assert(this->readbuf[this->readbufidx] == str[c]);
+#endif
     }
-#endif // COIN_DEBUG
-
-  }
-  else {
-    for (size_t i = n; i > 0; i--) {
-      this->backbuffer.push(str[i - 1]);
+    else {
+      this->backbuffer.append(str[c]);
     }
   }
 
