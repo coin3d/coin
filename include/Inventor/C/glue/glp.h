@@ -523,23 +523,23 @@ typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
 /* Typedefs for Framebuffer objects */
 
-typedef void (APIENTRY * COIN_PFNGLISRENDERBUFFEREXTPROC)(GLuint renderbuffer);
-typedef void (APIENTRY * COIN_PFNGLBINDRENDERBUFFEREXTPROC)(GLenum target, GLuint renderbuffer);
-typedef void (APIENTRY * COIN_PFNGLDELETERENDERBUFFERSEXTPROC)(GLsizei n, const GLuint *renderbuffers);
-typedef void (APIENTRY * COIN_PFNGLGENRENDERBUFFERSEXTPROC)(GLsizei n, GLuint *renderbuffers);
-typedef void (APIENTRY * COIN_PFNGLRENDERBUFFERSTORAGEEXTPROC)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
-typedef void (APIENTRY * COIN_PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC)(GLenum target, GLenum pname, GLint *params);
-typedef GLboolean (APIENTRY * COIN_PFNGLISFRAMEBUFFEREXTPROC)(GLuint framebuffer);
-typedef void (APIENTRY * COIN_PFNGLBINDFRAMEBUFFEREXTPROC)(GLenum target, GLuint framebuffer);
-typedef void (APIENTRY * COIN_PFNGLDELETEFRAMEBUFFERSEXTPROC)(GLsizei n, const GLuint *framebuffers);
-typedef void (APIENTRY * COIN_PFNGLGENFRAMEBUFFERSEXTPROC)(GLsizei n, GLuint *framebuffers);
-typedef GLenum (APIENTRY * COIN_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)(GLenum target);
-typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE1DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE3DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
-typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
-typedef void (APIENTRY * COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC)(GLenum target, GLenum attachment, GLenum pname, GLint *params);
-typedef void (APIENTRY * COIN_PFNGLGENERATEMIPMAPEXTPROC)(GLenum target);
+typedef void (APIENTRY * COIN_PFNGLISRENDERBUFFERPROC)(GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLBINDRENDERBUFFERPROC)(GLenum target, GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLDELETERENDERBUFFERSPROC)(GLsizei n, const GLuint *renderbuffers);
+typedef void (APIENTRY * COIN_PFNGLGENRENDERBUFFERSPROC)(GLsizei n, GLuint *renderbuffers);
+typedef void (APIENTRY * COIN_PFNGLRENDERBUFFERSTORAGEPROC)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+typedef void (APIENTRY * COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)(GLenum target, GLenum pname, GLint *params);
+typedef GLboolean (APIENTRY * COIN_PFNGLISFRAMEBUFFERPROC)(GLuint framebuffer);
+typedef void (APIENTRY * COIN_PFNGLBINDFRAMEBUFFERPROC)(GLenum target, GLuint framebuffer);
+typedef void (APIENTRY * COIN_PFNGLDELETEFRAMEBUFFERSPROC)(GLsizei n, const GLuint *framebuffers);
+typedef void (APIENTRY * COIN_PFNGLGENFRAMEBUFFERSPROC)(GLsizei n, GLuint *framebuffers);
+typedef GLenum (APIENTRY * COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)(GLenum target);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
+typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+typedef void (APIENTRY * COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)(GLenum target, GLenum attachment, GLenum pname, GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGENERATEMIPMAPPROC)(GLenum target);
 
 
 
@@ -779,23 +779,23 @@ struct cc_glglue {
   COIN_PFNGLGETQUERYOBJECTUIVPROC glGetQueryObjectuiv;
   
   /* FBO */
-  COIN_PFNGLISRENDERBUFFEREXTPROC glIsRenderbufferEXT;
-  COIN_PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT;
-  COIN_PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT;
-  COIN_PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT;
-  COIN_PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT;
-  COIN_PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC glGetRenderbufferParameterivEXT;
-  COIN_PFNGLISFRAMEBUFFEREXTPROC glIsFramebufferEXT;
-  COIN_PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT;
-  COIN_PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT;
-  COIN_PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;
-  COIN_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT;
-  COIN_PFNGLFRAMEBUFFERTEXTURE1DEXTPROC glFramebufferTexture1DEXT;
-  COIN_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT;
-  COIN_PFNGLFRAMEBUFFERTEXTURE3DEXTPROC glFramebufferTexture3DEXT;
-  COIN_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT;
-  COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC glGetFramebufferAttachmentParameterivEXT;
-  COIN_PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
+  COIN_PFNGLISRENDERBUFFERPROC glIsRenderbuffer;
+  COIN_PFNGLBINDRENDERBUFFERPROC glBindRenderbuffer;
+  COIN_PFNGLDELETERENDERBUFFERSPROC glDeleteRenderbuffers;
+  COIN_PFNGLGENRENDERBUFFERSPROC glGenRenderbuffers;
+  COIN_PFNGLRENDERBUFFERSTORAGEPROC glRenderbufferStorage;
+  COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC glGetRenderbufferParameteriv;
+  COIN_PFNGLISFRAMEBUFFERPROC glIsFramebuffer;
+  COIN_PFNGLBINDFRAMEBUFFERPROC glBindFramebuffer;
+  COIN_PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers;
+  COIN_PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers;
+  COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
+  COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC glFramebufferTexture1D;
+  COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D;
+  COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC glFramebufferTexture3D;
+  COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer;
+  COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC glGetFramebufferAttachmentParameteriv;
+  COIN_PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
   const char * versionstr;
   const char * vendorstr;

@@ -604,53 +604,67 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   assert(scene);
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-    
+  
   if (this->fbo_size != size) {
-    this->fbo_size = size;
-
-    this->deleteFrameBufferObjects(glue, state);
-    this->createFramebufferObjects(glue, state);
-    
     if (this->glimage) {
       this->glimage->unref(NULL);
       this->glimage = NULL;
     }
     if (this->glimage == NULL) {
       this->glimage = new SoGLImage;
-      this->glimage->setGLDisplayList(this->fbo_texture, state);
+      uint32_t flags = this->glimage->getFlags();
+      switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
+      case SoSceneTexture2::NONE:
+        flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
+        break;
+      case SoSceneTexture2::ALPHA_TEST:
+        flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
+        break;
+      case SoSceneTexture2::ALPHA_BLEND:
+        flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
+        break;
+      default:
+        assert(0 && "should not get here");
+        break;
+      }
+      this->glimage->setFlags(flags);
     }
+    
+    this->fbo_size = size;
+    this->deleteFrameBufferObjects(glue, state);
+    this->createFramebufferObjects(glue, state);
+    
+    this->glimage->setGLDisplayList(this->fbo_texture, state);
   }
 
-  // set up framebuffers for rendering
-	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
-  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer); 
+  else {
+    // set up framebuffers for rendering
+    cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  }
+  glEnable(GL_DEPTH_TEST);  
 
   if (!this->glaction) {
     this->contextid = (int) SoGLCacheContextElement::getUniqueCacheContext();
     this->glaction = new SoGLRenderAction(SbViewportRegion(this->fbo_size));
     this->glaction->setCacheContext(this->contextid);    
+    this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, 
+                                         (void*) PUBLIC(this));
     
-  } else {
+  } 
+  else {
     this->glaction->setViewportRegion(SbViewportRegion(this->fbo_size));
   }
 
-  SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
-  glClearColor(col[0], col[1], col[2], col[3]);
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-  
   this->glaction->apply(scene);
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
+  
+  // switch back to the actual context
+	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
 
-	// switch back to the actual context
-	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, 0);
-  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, 0);
-
-  //this->buffervalid = TRUE;
-  //this->glimagevalid = TRUE;
+  this->buffervalid = TRUE;
+  this->glimagevalid = TRUE;
 }
 
 void
@@ -820,98 +834,99 @@ SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
 void 
 SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state)
 {
-	cc_glglue_glGenFramebuffersEXT(glue, 1, &this->fbo_frameBuffer);
-  cc_glglue_glGenRenderbuffersEXT(glue, 1, &this->fbo_depthBuffer);
-	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+	cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
+  cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
+	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   
   this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
 
   this->fbo_texture->ref();  
   this->fbo_texture->open(state);
-
+  
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 
                this->fbo_size[0], this->fbo_size[1], 0, 
                GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+  // for mipmaps
+  // cc_glglue_glGenerateMipmap(this->fbo_texture->getFirstIndex());
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-  
-  // attach texture to framebuffer color object
-  cc_glglue_glFramebufferTexture2DEXT(glue,
-                                      GL_FRAMEBUFFER_EXT, 
-                                      GL_COLOR_ATTACHMENT0_EXT, 
-                                      GL_TEXTURE_2D, (GLuint) this->fbo_texture->getFirstIndex(), 0);
-  
+
   this->fbo_texture->close(state);
   glBindTexture (GL_TEXTURE_2D, 0);
+  
+  // attach texture to framebuffer color object
+  cc_glglue_glFramebufferTexture2D(glue,
+                                   GL_FRAMEBUFFER_EXT, 
+                                   GL_COLOR_ATTACHMENT0_EXT, 
+                                   GL_TEXTURE_2D, (GLuint) this->fbo_texture->getFirstIndex(), 0);
+  
 
   // create the render buffer
-  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
-	cc_glglue_glRenderbufferStorageEXT(glue, GL_RENDERBUFFER_EXT, 
-                                     GL_DEPTH_COMPONENT24,
-                                     this->fbo_size[0], this->fbo_size[1]);
+  cc_glglue_glBindRenderbuffer(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
+	cc_glglue_glRenderbufferStorage(glue, GL_RENDERBUFFER_EXT, 
+                                  GL_DEPTH_COMPONENT24,
+                                  this->fbo_size[0], this->fbo_size[1]);
   
 
   // attach renderbuffer to framebuffer
-  cc_glglue_glFramebufferRenderbufferEXT(glue,
-                                         GL_FRAMEBUFFER_EXT, 
-                                         GL_DEPTH_ATTACHMENT_EXT, 
-                                         GL_RENDERBUFFER_EXT, 
-                                         this->fbo_depthBuffer); 
+  cc_glglue_glFramebufferRenderbuffer(glue,
+                                      GL_FRAMEBUFFER_EXT, 
+                                      GL_DEPTH_ATTACHMENT_EXT, 
+                                      GL_RENDERBUFFER_EXT, 
+                                      this->fbo_depthBuffer); 
 
   // check if the buffers have been successfully set up
-	GLenum status = cc_glglue_glCheckFramebufferStatusEXT(glue, GL_FRAMEBUFFER_EXT);
+	GLenum status = cc_glglue_glCheckFramebufferStatus(glue, GL_FRAMEBUFFER_EXT);
   SbString error("");
 	switch (status){
   case GL_FRAMEBUFFER_COMPLETE_EXT:
     break;
   case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_UNSUPPORTED_EXT!\n";
+    error = "GL_FRAMEBUFFER_UNSUPPORTED_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT: 
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT: 
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT\n";
     break;
   case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT\n";
+    error = "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT\n";
     break;
   default: break;
 	}
   if (error != "") {
     SoDebugError::post("SoSceneTexture2P::createFramebufferObjects", 
-                       "Unable to set up framebuffer objects");
+                       "GL Framebuffer error: %s", error.getString());
     // FIXME: should fall back to pbuffers if possible
   }
-
-  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, 0);
-	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, 0);	
 }
 
 void 
 SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * state)
 {
 	if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
-		cc_glglue_glDeleteFramebuffersEXT(glue, 1, &this->fbo_frameBuffer);
+		cc_glglue_glDeleteFramebuffers(glue, 1, &this->fbo_frameBuffer);
     this->fbo_frameBuffer = GL_INVALID_VALUE;
   }
 	if (this->fbo_depthBuffer != GL_INVALID_VALUE) {
-		cc_glglue_glDeleteRenderbuffersEXT(glue, 1, &this->fbo_depthBuffer);
+		cc_glglue_glDeleteRenderbuffers(glue, 1, &this->fbo_depthBuffer);
     this->fbo_depthBuffer = GL_INVALID_VALUE;
   }
   if (this->fbo_texture) {

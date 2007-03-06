@@ -1721,31 +1721,31 @@ glglue_resolve_symbols(cc_glglue * w)
 
 
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
-		w->glIsRenderbufferEXT = (COIN_PFNGLISRENDERBUFFEREXTPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
-		w->glBindRenderbufferEXT = (COIN_PFNGLBINDRENDERBUFFEREXTPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
-		w->glDeleteRenderbuffersEXT = (COIN_PFNGLDELETERENDERBUFFERSEXTPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
-		w->glGenRenderbuffersEXT = (COIN_PFNGLGENRENDERBUFFERSEXTPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
-		w->glRenderbufferStorageEXT = (COIN_PFNGLRENDERBUFFERSTORAGEEXTPROC)cc_glglue_getprocaddress("glRenderbufferStorageEXT");
-		w->glGetRenderbufferParameterivEXT = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC)cc_glglue_getprocaddress("glGetRenderbufferParameterivEXT");
-		w->glIsFramebufferEXT = (COIN_PFNGLISFRAMEBUFFEREXTPROC)cc_glglue_getprocaddress("glIsFramebufferEXT");
-		w->glBindFramebufferEXT = (COIN_PFNGLBINDFRAMEBUFFEREXTPROC)cc_glglue_getprocaddress("glBindFramebufferEXT");
-		w->glDeleteFramebuffersEXT = (COIN_PFNGLDELETEFRAMEBUFFERSEXTPROC)cc_glglue_getprocaddress("glDeleteFramebuffersEXT");
-		w->glGenFramebuffersEXT = (COIN_PFNGLGENFRAMEBUFFERSEXTPROC)cc_glglue_getprocaddress("glGenFramebuffersEXT");
-		w->glCheckFramebufferStatusEXT = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)cc_glglue_getprocaddress("glCheckFramebufferStatusEXT");
-		w->glFramebufferTexture1DEXT = (COIN_PFNGLFRAMEBUFFERTEXTURE1DEXTPROC)cc_glglue_getprocaddress("glFramebufferTexture1DEXT");
-		w->glFramebufferTexture2DEXT = (COIN_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)cc_glglue_getprocaddress("glFramebufferTexture2DEXT");
-		w->glFramebufferTexture3DEXT = (COIN_PFNGLFRAMEBUFFERTEXTURE3DEXTPROC)cc_glglue_getprocaddress("glFramebufferTexture3DEXT");
-		w->glFramebufferRenderbufferEXT = (COIN_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)cc_glglue_getprocaddress("glFramebufferRenderbufferEXT");
-		w->glGetFramebufferAttachmentParameterivEXT = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC)
+		w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
+		w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
+		w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
+		w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
+		w->glRenderbufferStorage = (COIN_PFNGLRENDERBUFFERSTORAGEPROC)cc_glglue_getprocaddress("glRenderbufferStorageEXT");
+		w->glGetRenderbufferParameteriv = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress("glGetRenderbufferParameterivEXT");
+		w->glIsFramebuffer = (COIN_PFNGLISFRAMEBUFFERPROC)cc_glglue_getprocaddress("glIsFramebufferEXT");
+		w->glBindFramebuffer = (COIN_PFNGLBINDFRAMEBUFFERPROC)cc_glglue_getprocaddress("glBindFramebufferEXT");
+		w->glDeleteFramebuffers = (COIN_PFNGLDELETEFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glDeleteFramebuffersEXT");
+		w->glGenFramebuffers = (COIN_PFNGLGENFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glGenFramebuffersEXT");
+		w->glCheckFramebufferStatus = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)cc_glglue_getprocaddress("glCheckFramebufferStatusEXT");
+		w->glFramebufferTexture1D = (COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)cc_glglue_getprocaddress("glFramebufferTexture1DEXT");
+		w->glFramebufferTexture2D = (COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)cc_glglue_getprocaddress("glFramebufferTexture2DEXT");
+		w->glFramebufferTexture3D = (COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)cc_glglue_getprocaddress("glFramebufferTexture3DEXT");
+		w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress("glFramebufferRenderbufferEXT");
+		w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
       cc_glglue_getprocaddress("glGetFramebufferAttachmentParameterivEXT");
-		w->glGenerateMipmapEXT = (COIN_PFNGLGENERATEMIPMAPEXTPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
+		w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
 
-		if (!w->glIsRenderbufferEXT || !w->glBindRenderbufferEXT || !w->glDeleteRenderbuffersEXT || 
-        !w->glGenRenderbuffersEXT || !w->glRenderbufferStorageEXT || !w->glGetRenderbufferParameterivEXT || 
-        !w->glIsFramebufferEXT || !w->glBindFramebufferEXT || !w->glDeleteFramebuffersEXT || 
-        !w->glGenFramebuffersEXT || !w->glCheckFramebufferStatusEXT || !w->glFramebufferTexture1DEXT || 
-        !w->glFramebufferTexture2DEXT || !w->glFramebufferTexture3DEXT || !w->glFramebufferRenderbufferEXT ||  
-        !w->glGetFramebufferAttachmentParameterivEXT || !w->glGenerateMipmapEXT) {
+		if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers || 
+        !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv || 
+        !w->glIsFramebuffer || !w->glBindFramebuffer || !w->glDeleteFramebuffers || 
+        !w->glGenFramebuffers || !w->glCheckFramebufferStatus || !w->glFramebufferTexture1D || 
+        !w->glFramebufferTexture2D || !w->glFramebufferTexture3D || !w->glFramebufferRenderbuffer ||  
+        !w->glGetFramebufferAttachmentParameteriv || !w->glGenerateMipmap) {
       w->has_fbo = FALSE;
     }
 		else {
@@ -4860,122 +4860,122 @@ coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
 /* ********************************************************************** */
 
 void 
-cc_glglue_glIsRenderbufferEXT(const cc_glglue * glue, GLuint renderbuffer)
+cc_glglue_glIsRenderbuffer(const cc_glglue * glue, GLuint renderbuffer)
 {
   assert(glue->has_fbo);
-  glue->glIsRenderbufferEXT(renderbuffer);
+  glue->glIsRenderbuffer(renderbuffer);
 }
 
 void 
-cc_glglue_glBindRenderbufferEXT(const cc_glglue * glue, GLenum target, GLuint renderbuffer)
+cc_glglue_glBindRenderbuffer(const cc_glglue * glue, GLenum target, GLuint renderbuffer)
 { 
   assert(glue->has_fbo);
-  glue->glBindRenderbufferEXT(target, renderbuffer);
+  glue->glBindRenderbuffer(target, renderbuffer);
 }
 
 void 
-cc_glglue_glDeleteRenderbuffersEXT(const cc_glglue * glue, GLsizei n, const GLuint *renderbuffers)
+cc_glglue_glDeleteRenderbuffers(const cc_glglue * glue, GLsizei n, const GLuint *renderbuffers)
 { 
   assert(glue->has_fbo);
-  glue->glDeleteRenderbuffersEXT(n, renderbuffers);
+  glue->glDeleteRenderbuffers(n, renderbuffers);
 }
 
 void 
-cc_glglue_glGenRenderbuffersEXT(const cc_glglue * glue, GLsizei n, GLuint *renderbuffers)
+cc_glglue_glGenRenderbuffers(const cc_glglue * glue, GLsizei n, GLuint *renderbuffers)
 { 
   assert(glue->has_fbo);
-  glue->glGenRenderbuffersEXT(n, renderbuffers);
+  glue->glGenRenderbuffers(n, renderbuffers);
 }
 
 void 
-cc_glglue_glRenderbufferStorageEXT(const cc_glglue * glue, GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+cc_glglue_glRenderbufferStorage(const cc_glglue * glue, GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 {
   assert(glue->has_fbo);
-  glue->glRenderbufferStorageEXT(target, internalformat, width, height);
+  glue->glRenderbufferStorage(target, internalformat, width, height);
 }
 
 void 
-cc_glglue_glGetRenderbufferParameterivEXT(const cc_glglue * glue, GLenum target, GLenum pname, GLint * params)
+cc_glglue_glGetRenderbufferParameteriv(const cc_glglue * glue, GLenum target, GLenum pname, GLint * params)
 { 
   assert(glue->has_fbo);
-  glue->glGetRenderbufferParameterivEXT(target, pname, params);
+  glue->glGetRenderbufferParameteriv(target, pname, params);
 }
 
 GLboolean 
-cc_glglue_glIsFramebufferEXT(const cc_glglue * glue, GLuint framebuffer)
+cc_glglue_glIsFramebuffer(const cc_glglue * glue, GLuint framebuffer)
 {
   assert(glue->has_fbo);
-  return glue->glIsFramebufferEXT(framebuffer);
+  return glue->glIsFramebuffer(framebuffer);
 }
 
 void 
-cc_glglue_glBindFramebufferEXT(const cc_glglue * glue, GLenum target, GLuint framebuffer)
+cc_glglue_glBindFramebuffer(const cc_glglue * glue, GLenum target, GLuint framebuffer)
 {
   assert(glue->has_fbo);
-  glue->glBindFramebufferEXT(target, framebuffer);
+  glue->glBindFramebuffer(target, framebuffer);
 }
 
 void 
-cc_glglue_glDeleteFramebuffersEXT(const cc_glglue * glue, GLsizei n, const GLuint * framebuffers)
+cc_glglue_glDeleteFramebuffers(const cc_glglue * glue, GLsizei n, const GLuint * framebuffers)
 {
   assert(glue->has_fbo);
-  glue->glDeleteFramebuffersEXT(n, framebuffers);
+  glue->glDeleteFramebuffers(n, framebuffers);
 }
 
 void 
-cc_glglue_glGenFramebuffersEXT(const cc_glglue * glue, GLsizei n, GLuint * framebuffers)
+cc_glglue_glGenFramebuffers(const cc_glglue * glue, GLsizei n, GLuint * framebuffers)
 {
   assert(glue->has_fbo);
-  glue->glGenFramebuffersEXT(n, framebuffers);
+  glue->glGenFramebuffers(n, framebuffers);
 }
 
 GLenum 
-cc_glglue_glCheckFramebufferStatusEXT(const cc_glglue * glue, GLenum target)
+cc_glglue_glCheckFramebufferStatus(const cc_glglue * glue, GLenum target)
 {
   assert(glue->has_fbo);
-  return glue->glCheckFramebufferStatusEXT(target);
+  return glue->glCheckFramebufferStatus(target);
 }
 
 void 
-cc_glglue_glFramebufferTexture1DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+cc_glglue_glFramebufferTexture1D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
   assert(glue->has_fbo);
-  glue->glFramebufferTexture1DEXT(target, attachment, textarget, texture, level);
+  glue->glFramebufferTexture1D(target, attachment, textarget, texture, level);
 }
 
 void 
-cc_glglue_glFramebufferTexture2DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+cc_glglue_glFramebufferTexture2D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
   assert(glue->has_fbo);
-  glue->glFramebufferTexture2DEXT(target, attachment, textarget, texture, level);
+  glue->glFramebufferTexture2D(target, attachment, textarget, texture, level);
 }
 
 void 
-cc_glglue_glFramebufferTexture3DEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
+cc_glglue_glFramebufferTexture3D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
 { 
   assert(glue->has_fbo);
-  glue->glFramebufferTexture3DEXT(target, attachment, textarget, texture, level,zoffset);
+  glue->glFramebufferTexture3D(target, attachment, textarget, texture, level,zoffset);
 }
 
 void 
-cc_glglue_glFramebufferRenderbufferEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+cc_glglue_glFramebufferRenderbuffer(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
   assert(glue->has_fbo);
-  glue->glFramebufferRenderbufferEXT(target, attachment, renderbuffertarget, renderbuffer);
+  glue->glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
 void 
-cc_glglue_glGetFramebufferAttachmentParameterivEXT(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum pname, GLint * params)
+cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum pname, GLint * params)
 {
   assert(glue->has_fbo);
-  glue->glGetFramebufferAttachmentParameterivEXT(target, attachment, pname, params);
+  glue->glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
 }
 
 void 
-cc_glglue_glGenerateMipmapEXT(const cc_glglue * glue, GLenum target)
+cc_glglue_glGenerateMipmap(const cc_glglue * glue, GLenum target)
 {
   assert(glue->has_fbo);
-  glue->glGenerateMipmapEXT(target);
+  glue->glGenerateMipmap(target);
 }
 
 SbBool 
