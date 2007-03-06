@@ -238,6 +238,8 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoLightElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
@@ -571,7 +573,8 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
 
 SoSceneTexture2P::~SoSceneTexture2P()
 {
-  // FIXME: delete FBO data
+  // FIXME: free FBO buffers
+  if (this->fbo_texture) this->fbo_texture->unref(NULL);
   if (this->glimage) this->glimage->unref(NULL);
   if (this->glcontext != NULL) {
     cc_glglue_context_destruct(this->glcontext);
@@ -598,6 +601,7 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
 void 
 SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 {
+  int i;
   SbVec2s size = PUBLIC(this)->size.getValue();
   SoNode * scene = PUBLIC(this)->scene.getValue();
   assert(scene);
@@ -636,32 +640,44 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     this->glimage->setGLDisplayList(this->fbo_texture, state);
   }
   
-  // set up framebuffers for rendering
+  state->push();
+
+  // disable all active textures
+  SoMultiTextureEnabledElement::disableAll(state);
+
+  int numlights = SoLightElement::getLights(state).getLength();
+  for (i = 0; i < numlights; i++) {
+    glDisable((GLenum) (GL_LIGHT0 + i));
+  }
+  SoModelMatrixElement::set(state, PUBLIC(this), SbMatrix::identity());
+
+  // set up framebuffer for rendering
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   this->checkFramebufferStatus(glue);
+  
+  glPushAttrib(GL_VIEWPORT_BIT|GL_COLOR_BUFFER_BIT);
+  glViewport(0, 0, this->fbo_size[0], this->fbo_size[1]);
+  SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
+  glClearColor(col[0], col[1], col[2], col[3]);
+  glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
-  glEnable(GL_DEPTH_TEST);  
-
-  if (!this->glaction) {
-    this->contextid = (int) SoGLCacheContextElement::getUniqueCacheContext();
-    this->glaction = new SoGLRenderAction(SbViewportRegion(this->fbo_size));
-    this->glaction->setCacheContext(this->contextid);    
-    this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, 
-                                         (void*) PUBLIC(this));
-    
-  } 
-  else {
-    this->glaction->setViewportRegion(SbViewportRegion(this->fbo_size));
-  }
-
-  this->glaction->apply(scene);
+  SoGLRenderAction * glaction = (SoGLRenderAction*) state->getAction();
+  glaction->switchToNodeTraversal(scene);
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
 
   // switch back to the actual context
-	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
+  glPopAttrib();
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
   this->checkFramebufferStatus(glue);
+
+  state->pop();
+
+  // reenable the lights we disabled
+  for (i = 0; i < numlights; i++) {
+    glEnable((GLenum) (GL_LIGHT0 + i));
+  }
 
   this->buffervalid = TRUE;
   this->glimagevalid = TRUE;
@@ -859,7 +875,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 
   this->fbo_texture->close(state);
   cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
-  
+
   // attach texture to framebuffer color object
   cc_glglue_glFramebufferTexture2D(glue,
                                    GL_FRAMEBUFFER_EXT, 
@@ -868,18 +884,20 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                                    (GLuint) this->fbo_texture->getFirstIndex(), 
                                    0);
 
+
+  
   // create the render buffer
   cc_glglue_glBindRenderbuffer(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
 	cc_glglue_glRenderbufferStorage(glue, GL_RENDERBUFFER_EXT, 
                                   GL_DEPTH_COMPONENT24,
                                   this->fbo_size[0], this->fbo_size[1]);
-  
   // attach renderbuffer to framebuffer
   cc_glglue_glFramebufferRenderbuffer(glue,
                                       GL_FRAMEBUFFER_EXT, 
                                       GL_DEPTH_ATTACHMENT_EXT, 
                                       GL_RENDERBUFFER_EXT, 
                                       this->fbo_depthBuffer);
+  
   this->checkFramebufferStatus(glue);
 	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);
 }
