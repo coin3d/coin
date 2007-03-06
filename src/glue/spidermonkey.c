@@ -289,6 +289,7 @@ spidermonkey(void)
   REGISTER_FUNC(JS_DefineFunction, JS_DefineFunction_t);
   REGISTER_FUNC(JS_GetGlobalObject, JS_GetGlobalObject_t);
   REGISTER_FUNC(JS_SetGCCallback, JS_SetGCCallback_t);
+  REGISTER_FUNC(JS_MaybeGC, JS_MaybeGC_t);
   REGISTER_FUNC(JS_GC, JS_GC_t);
   REGISTER_FUNC(JS_IsRunning, JS_IsRunning_t);
   REGISTER_FUNC(JS_DeleteProperty, JS_DeleteProperty_t);
