@@ -61,6 +61,11 @@ public:
     ALPHA_BLEND,
     ALPHA_TEST
   };
+  
+  enum Type {
+    DEPTH_COMPONENT = 0x1902, /* GL_DEPTH_COMPONENT */
+    RGBA = 0x1908 /* GL_RGBA */
+  };
 
   SoSFEnum wrapS;
   SoSFEnum wrapT;
@@ -71,6 +76,8 @@ public:
   SoSFVec2s size;
   SoSFNode scene;
   SoSFEnum transparencyFunction;
+
+  SoSFEnum type;
 
   virtual void notify(SoNotList * list);
   virtual void write(SoWriteAction * action);

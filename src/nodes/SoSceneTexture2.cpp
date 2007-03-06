@@ -237,6 +237,7 @@
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
@@ -268,12 +269,24 @@ public:
   int contextid;
 
   SoGLImage * glimage;
-  SbBool pbuffervalid;
+  SbBool buffervalid;
+
   SbBool glimagevalid;
   SbBool glrectangle;
+
+  void updateBuffer(SoState * state, const float quality);
+  void updateFrameBuffer(SoState * state, const float quality);
   void updatePBuffer(SoState * state, const float quality);
   SoGLRenderAction * glaction;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
+  
+  void createFramebufferObjects(const cc_glglue * glue, SoState * state);
+  void deleteFrameBufferObjects(const cc_glglue * glue, SoState * state);
+  
+  GLuint fbo_frameBuffer;
+  GLuint fbo_depthBuffer;
+  SoGLDisplayList * fbo_texture;
+  SbVec2s fbo_size;
 
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
@@ -328,18 +341,18 @@ translateWrap(const SoSceneTexture2::Wrap wrap)
 SoSceneTexture2::SoSceneTexture2(void)
 {
   this->pimpl = new SoSceneTexture2P(this);
-
+  
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSceneTexture2);
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
   SO_NODE_ADD_FIELD(backgroundColor, (0.0f, 0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(transparencyFunction, (NONE));
-
+  
   SO_NODE_ADD_FIELD(wrapS, (REPEAT));
   SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
-
+  SO_NODE_ADD_FIELD(type, (RGBA));
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
@@ -348,15 +361,20 @@ SoSceneTexture2::SoSceneTexture2(void)
 
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
-
+  
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, NONE);
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_BLEND);
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_TEST);
-
+  
   SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
   SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
   SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
+
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, DEPTH_COMPONENT);
+
+  SO_NODE_SET_SF_ENUM_TYPE(type, Type);
 }
 
 SoSceneTexture2::~SoSceneTexture2(void)
@@ -372,16 +390,16 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
-
+  
   float quality = SoTextureQualityElement::get(state);
-
+  
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   SoNode * root = this->scene.getValue();
 
   LOCK_GLIMAGE(this);
-
-  if (root && (!PRIVATE(this)->pbuffervalid || !PRIVATE(this)->glimagevalid)) {
-    PRIVATE(this)->updatePBuffer(state, quality);
+  
+  if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid)) {
+    PRIVATE(this)->updateBuffer(state, quality);
 
     // don't cache when we change the glimage
     SoCacheElement::setInvalid(TRUE);
@@ -502,7 +520,7 @@ SoSceneTexture2::notify(SoNotList * list)
   if (f == &this->scene ||
       f == &this->size) {
     // rerender scene
-    PRIVATE(this)->pbuffervalid = FALSE;
+    PRIVATE(this)->buffervalid = FALSE;
   }
   else if (f == &this->wrapS ||
            f == &this->wrapT ||
@@ -533,7 +551,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
 {
   this->api = apiptr;
   this->glcontext = NULL;
-  this->pbuffervalid = FALSE;
+  this->buffervalid = FALSE;
   this->glimagevalid = FALSE;
   this->glimage = NULL;
   this->glaction = NULL;
@@ -543,16 +561,96 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->offscreenbuffersize = 0;
   this->canrendertotexture = FALSE;
   this->contextid = -1;
+
+  this->fbo_frameBuffer = GL_INVALID_VALUE;
+  this->fbo_depthBuffer = GL_INVALID_VALUE;
+  this->fbo_texture = NULL;
+  this->fbo_size.setValue(-1,-1);
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
 {
+  if (this->fbo_texture) this->fbo_texture->unref(NULL);
+  // FIXME: delete the FB objects
+
   if (this->glimage) this->glimage->unref(NULL);
   if (this->glcontext != NULL) {
     cc_glglue_context_destruct(this->glcontext);
   }
   delete[] this->offscreenbuffer;
   delete this->glaction;
+}
+
+void 
+SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
+{
+  // make sure we've finished rendering to this context
+  glFlush();
+
+  // FIXME: detect if framebuffers are available and use that
+  if (1) {
+    this->updatePBuffer(state, quality);
+  }
+  else {
+    this->updateFrameBuffer(state, quality);
+  }
+}
+
+void 
+SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
+{
+  SbVec2s size = PUBLIC(this)->size.getValue();
+  SoNode * scene = PUBLIC(this)->scene.getValue();
+  assert(scene);
+
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    
+  if (this->fbo_size != size) {
+    this->fbo_size = size;
+
+    this->deleteFrameBufferObjects(glue, state);
+    this->createFramebufferObjects(glue, state);
+    
+    if (this->glimage) {
+      this->glimage->unref(NULL);
+      this->glimage = NULL;
+    }
+    if (this->glimage == NULL) {
+      this->glimage = new SoGLImage;
+      this->glimage->setGLDisplayList(this->fbo_texture, state);
+    }
+  }
+
+  // set up framebuffers for rendering
+	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer); 
+
+  if (!this->glaction) {
+    this->contextid = (int) SoGLCacheContextElement::getUniqueCacheContext();
+    this->glaction = new SoGLRenderAction(SbViewportRegion(this->fbo_size));
+    this->glaction->setCacheContext(this->contextid);    
+    
+  } else {
+    this->glaction->setViewportRegion(SbViewportRegion(this->fbo_size));
+  }
+
+  SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
+  glClearColor(col[0], col[1], col[2], col[3]);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+  
+  this->glaction->apply(scene);
+
+  // make sure rendering has completed before switching back to the previous context
+  glFlush();
+
+	// switch back to the actual context
+	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, 0);
+  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, 0);
+
+  //this->buffervalid = TRUE;
+  //this->glimagevalid = TRUE;
 }
 
 void
@@ -581,7 +679,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     this->glimagevalid = FALSE;
   }
   if (size == SbVec2s(0,0)) return;
-
+  
   // FIXME: temporary until non power of two textures are supported,
   // pederb 2003-12-05
   size[0] = (short) coin_geq_power_of_two(size[0]);
@@ -593,11 +691,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // disabled until an pbuffer extension is available to create a
     // render-to-texture pbuffer that has a non power of two size.
     // pederb, 2003-12-05
-#if 0
-    if (!glue->has_ext_texture_rectangle) {
-#else
     if (1) {
-#endif
       this->glcontextsize[0] = (short) coin_geq_power_of_two(size[0]);
       this->glcontextsize[1] = (short) coin_geq_power_of_two(size[1]);
 
@@ -618,7 +712,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       // two textures/pbuffers.
       this->glrectangle = TRUE;
     }
-
+    
     // FIXME: make it possible to specify what kind of context you want
     // (RGB or RGBA, I guess). pederb, 2003-11-27
     this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
@@ -633,17 +727,17 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     } else {
       this->glaction->setViewportRegion(SbViewportRegion(this->glcontextsize));
     }
-
+    
     this->glaction->setCacheContext(this->contextid);    
     this->glimagevalid = FALSE;
   }
-
-  if (!this->pbuffervalid) {
+  
+  if (!this->buffervalid) {
     assert(this->glaction != NULL);
     assert(this->glcontext != NULL);
     this->glaction->setTransparencyType((SoGLRenderAction::TransparencyType)
                                         SoShapeStyleElement::getTransparencyType(state));
-
+    
     cc_glglue_context_make_current(this->glcontext);
     glEnable(GL_DEPTH_TEST);
     this->glaction->apply(scene);
@@ -711,9 +805,9 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
                            quality);
   }
   this->glimagevalid = TRUE;
-  this->pbuffervalid = TRUE;
+  this->buffervalid = TRUE;
 }
-
+  
 void
 SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
 {
@@ -722,6 +816,110 @@ SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
   glClearColor(col[0], col[1], col[2], col[3]);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
+
+void 
+SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state)
+{
+	cc_glglue_glGenFramebuffersEXT(glue, 1, &this->fbo_frameBuffer);
+  cc_glglue_glGenRenderbuffersEXT(glue, 1, &this->fbo_depthBuffer);
+	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  
+  this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+
+  this->fbo_texture->ref();  
+  this->fbo_texture->open(state);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 
+               this->fbo_size[0], this->fbo_size[1], 0, 
+               GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+  
+  // attach texture to framebuffer color object
+  cc_glglue_glFramebufferTexture2DEXT(glue,
+                                      GL_FRAMEBUFFER_EXT, 
+                                      GL_COLOR_ATTACHMENT0_EXT, 
+                                      GL_TEXTURE_2D, (GLuint) this->fbo_texture->getFirstIndex(), 0);
+  
+  this->fbo_texture->close(state);
+  glBindTexture (GL_TEXTURE_2D, 0);
+
+  // create the render buffer
+  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
+	cc_glglue_glRenderbufferStorageEXT(glue, GL_RENDERBUFFER_EXT, 
+                                     GL_DEPTH_COMPONENT24,
+                                     this->fbo_size[0], this->fbo_size[1]);
+  
+
+  // attach renderbuffer to framebuffer
+  cc_glglue_glFramebufferRenderbufferEXT(glue,
+                                         GL_FRAMEBUFFER_EXT, 
+                                         GL_DEPTH_ATTACHMENT_EXT, 
+                                         GL_RENDERBUFFER_EXT, 
+                                         this->fbo_depthBuffer); 
+
+  // check if the buffers have been successfully set up
+	GLenum status = cc_glglue_glCheckFramebufferStatusEXT(glue, GL_FRAMEBUFFER_EXT);
+  SbString error("");
+	switch (status){
+  case GL_FRAMEBUFFER_COMPLETE_EXT:
+    break;
+  case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_UNSUPPORTED_EXT!\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT: 
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT: 
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT\n";
+    break;
+  case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+    error = "ERROR: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT\n";
+    break;
+  default: break;
+	}
+  if (error != "") {
+    SoDebugError::post("SoSceneTexture2P::createFramebufferObjects", 
+                       "Unable to set up framebuffer objects");
+    // FIXME: should fall back to pbuffers if possible
+  }
+
+  cc_glglue_glBindRenderbufferEXT(glue, GL_RENDERBUFFER_EXT, 0);
+	cc_glglue_glBindFramebufferEXT(glue, GL_FRAMEBUFFER_EXT, 0);	
+}
+
+void 
+SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * state)
+{
+	if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
+		cc_glglue_glDeleteFramebuffersEXT(glue, 1, &this->fbo_frameBuffer);
+    this->fbo_frameBuffer = GL_INVALID_VALUE;
+  }
+	if (this->fbo_depthBuffer != GL_INVALID_VALUE) {
+		cc_glglue_glDeleteRenderbuffersEXT(glue, 1, &this->fbo_depthBuffer);
+    this->fbo_depthBuffer = GL_INVALID_VALUE;
+  }
+  if (this->fbo_texture) {
+    this->fbo_texture->unref(state);
+    this->fbo_texture = NULL;
+  }
+}
+
 
 #undef PUBLIC
 
