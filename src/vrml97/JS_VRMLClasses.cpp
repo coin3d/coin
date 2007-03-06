@@ -1633,8 +1633,12 @@ static void SFInt32_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 static void SFNode_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 {
   SoNode * node = ((SoSFNode *)f)->getValue();
-  JSObject * obj = SFNodeFactory(cx, node);
-  *v = OBJECT_TO_JSVAL(obj);
+  if (node == NULL)
+    *v = JSVAL_NULL;
+  else {
+    JSObject * obj = SFNodeFactory(cx, node);
+    *v = OBJECT_TO_JSVAL(obj);
+  }
 }
 
 static void SFRotation_field2jsval(JSContext * cx, const SoField * f, jsval *v)
