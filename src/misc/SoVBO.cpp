@@ -457,7 +457,11 @@ SoVBO::testGLPerformance(const uint32_t contextid)
   // did we alreay test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
-
+  
+#if 1 // disabled for now. Our test seems to be buggy
+  vbo_isfast_hash->put(contextid, TRUE);
+  return;
+#else // disabled
   const cc_glglue * glue = cc_glglue_instance(contextid);
   if (cc_glglue_has_vertex_buffer_object(glue)) {
     // create a regular grid with 128x128 points to test the
@@ -532,4 +536,5 @@ SoVBO::testGLPerformance(const uint32_t contextid)
 
   }
   vbo_isfast_hash->put(contextid, isfast);
+#endif // !disabled
 }
