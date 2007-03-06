@@ -330,6 +330,7 @@ typedef JSFunction * (* JS_DefineFunction_t)(JSContext *, JSObject *, const char
 typedef JSObject * (* JS_GetGlobalObject_t)(JSContext *);
 typedef JSGCCallback (* JS_SetGCCallback_t)(JSContext *, JSGCCallback);
 typedef void (* JS_GC_t)(JSContext *);
+typedef void (* JS_MaybeGC_t)(JSContext *);
 typedef JSBool (* JS_IsRunning_t)(JSContext *);
 typedef JSBool (* JS_DeleteProperty_t)(JSContext *, JSObject *, const char *);
 typedef JSScript * (* JS_CompileScript_t)(JSContext *, JSObject *,
@@ -433,6 +434,7 @@ typedef struct {
   JS_GetGlobalObject_t JS_GetGlobalObject;
   JS_SetGCCallback_t JS_SetGCCallback;
   JS_GC_t JS_GC;
+  JS_MaybeGC_t JS_MaybeGC;
   JS_IsRunning_t JS_IsRunning;
   JS_DeleteProperty_t JS_DeleteProperty;
   JS_CompileScript_t JS_CompileScript;
