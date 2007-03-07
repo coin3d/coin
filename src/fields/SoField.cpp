@@ -1798,11 +1798,9 @@ SoField::read(SoInput * in, const SbName & name)
 
     if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else {
-      in->putBack(c);
-
       // First check if there's a field-to-field connection here as
       // the default value following the field can be omitted.
-      if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
+      if (c == CONNECTIONCHAR) { 
         // There's potential for an obscure bug to happen here: if the
         // field is an SoSFString where the string is unquoted and
         // starts with a CONNECTIONCHAR (i.e. '='), it will lead to a
@@ -1827,12 +1825,10 @@ SoField::read(SoInput * in, const SbName & name)
         // FIXME: it would be nice if we could improve the error
         // message, to let the app programmer actually stand a chance
         // of debugging this when it happens. 20030811 mortene.
-        if (c == CONNECTIONCHAR) { 
-          if (!this->readConnection(in)) { readok = FALSE; goto sofield_read_return; }
-          goto sofield_read_return;
-        }
-        else in->putBack(c);
+        if (!this->readConnection(in)) { readok = FALSE; goto sofield_read_return; }
+        goto sofield_read_return;
       }
+      else in->putBack(c);
       
       // Read field value(s).
       if (!this->readValue(in)) {
