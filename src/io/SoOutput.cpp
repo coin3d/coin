@@ -1525,10 +1525,8 @@ SoOutput::resolveRoutes(void)
 void
 SoOutput::convertShort(short s, char * to)
 {
-  // Convert LSB -> MSB order, if necessary.
-  // FIXME: ugly hack, can we do better? 19990627 mortene.
   assert(sizeof(s) == sizeof(uint16_t));
-  *((uint16_t *)to) = coin_hton_uint16((uint16_t) s);
+  *((uint16_t *)to) = coin_hton_uint16((uint16_t)s);
 }
 
 /*!
@@ -1540,8 +1538,6 @@ SoOutput::convertShort(short s, char * to)
 void
 SoOutput::convertInt32(int32_t l, char * to)
 {
-  // FIXME: ugly hack, probably breaks on 64-bit architectures --
-  // lame. 19990627 mortene.
   assert(sizeof(l) == sizeof(uint32_t));
   *((uint32_t *)to) = coin_hton_uint32(l);
 }
@@ -1556,13 +1552,8 @@ SoOutput::convertInt32(int32_t l, char * to)
 void
 SoOutput::convertFloat(float f, char * to)
 {
-  // Jesus H. Christ -- this unbelievably ugly hack actually kinda
-  // works. Probably because the bitpatterns of the parts of float
-  // numbers are standardized according to IEEE <something>, so we
-  // just need to flip the bytes to make them be in MSB
-  // format. 19990627 mortene.
-  assert(sizeof(f) == sizeof(uint32_t));
-  *((uint32_t *)to) = coin_hton_uint32(*((uint32_t *)&f));
+  const float bigendianfloat = coin_hton_float(f);
+  memcpy(to, &bigendianfloat, sizeof(float));
 }
 
 /*!
@@ -1575,13 +1566,8 @@ SoOutput::convertFloat(float f, char * to)
 void
 SoOutput::convertDouble(double d, char * to)
 {
-  // This code is so ugly it makes Sylvia Brustad a beauty queen, but
-  // hey -- it works for me (at least at the current phase of the
-  // moon).  See SoOutput::convertFloat() for further comments.
-  assert(sizeof(int32_t) * 2 == sizeof(double));
-  int32_t * dbitvals = (int32_t *)&d;
-  this->convertInt32(dbitvals[1], to);
-  this->convertInt32(dbitvals[0], to + sizeof(double)/2);
+  const double bigendiandouble = coin_hton_double(d);
+  memcpy(to, &bigendiandouble, sizeof(double));
 }
 
 /*!
