@@ -51,7 +51,6 @@
   Enumerates the available style settings.
 */
 
-
 /*!
   \var SoSFEnum SoShadowStyle::style
 
@@ -60,6 +59,25 @@
   field is SoShadowStyle::CASTS_SHADOW_AND_SHADOWED.
 */
 
+/*!
+  \var SoShadowStyle::Style SoShadowStyle::NO_SHADOWING
+  Neither casts or recieves shadows.
+*/
+
+/*!
+  \var SoShadowStyle::Style SoShadowStyle::CASTS_SHADOW
+  Casts shadow, but will no recieve any shadows.
+*/
+
+/*!
+  \var SoShadowStyle::Style SoShadowStyle::SHADOWED
+  Receives shadows, but will not cast any shadow.
+*/
+
+/*!
+  \var SoShadowStyle::Style SoShadowStyle::CAST_SHADOW_AND_SHADOWED
+  Will cast and recieve shadows.
+*/
 
 // *************************************************************************
 
