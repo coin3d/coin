@@ -210,7 +210,7 @@ SoInputP::getTopOfStackPopOnEOF(void)
   return fi;
 }
 
-// Helperfunction to handle different filetypes (Inventor, VRML 1.0
+// Helperfunctions to handle different filetypes (Inventor, VRML 1.0
 // and VRML 2.0).
 //
 // VRML 1.0 identifiers are defined as:
@@ -250,112 +250,96 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //  IdRestChars ::= Any number of ISO-10646 characters except:
 //  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
 //  0x7b, 0x7d, 0x7f ;
+
 SbBool
 SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
 {
-  static int isNameStartCharInitialized = FALSE;
+  if (validIdent) return SbName::isIdentStartChar(c);
+  return (c > 0x20); // Not control characters
+}
 
+SbBool
+SoInputP::isNameStartCharVRML1(unsigned char c, SbBool validIdent)
+{
   static unsigned char invalid_vrml1_table[256];
-  static unsigned char invalid_vrml2_table[256];
   static unsigned char valid_ident_invalid_vrml1_table[256];
-  static unsigned char valid_ident_invalid_vrml2_table[256];
 
-  if (!isNameStartCharInitialized) {
+  static int isNameStartCharVRML1Initialized = FALSE;
+  if (!isNameStartCharVRML1Initialized) {
     const unsigned char invalid_vrml1[] = {
       0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',  ''',  '+',  ',',  '.',  '\',  '{',  '}'
-
-    const unsigned char invalid_vrml2[] = {
-      0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-    //'"',  '#',  ''',  '+',  ',',  '-',  '.',  '[',  '\',  ']',  '{',  '}',  ''
 
     // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
     const unsigned char valid_ident_invalid_vrml1[] = {
       0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
 
+    for (int c = 0; c < 256; ++c) {
+      invalid_vrml1_table[256] = 0;
+      valid_ident_invalid_vrml1_table[256] = 0;
+    }
+
+    const unsigned char * ptr = invalid_vrml1;
+    while (*ptr) { invalid_vrml1_table[*ptr] = 1; ++ptr; }
+    ptr = valid_ident_invalid_vrml1;
+    while (*ptr) { valid_ident_invalid_vrml1_table[*ptr] = 1; ++ptr; }
+
+    isNameStartCharVRML1Initialized = TRUE;
+  }
+
+  if (c <= 0x20) return FALSE; // Control characters
+  if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
+
+  if (validIdent) return (valid_ident_invalid_vrml1_table[c] == 0);
+  return (invalid_vrml1_table[c] == 0);
+}
+
+SbBool
+SoInputP::isNameStartCharVRML2(unsigned char c, SbBool validIdent)
+{
+  static unsigned char invalid_vrml2_table[256];
+  static unsigned char valid_ident_invalid_vrml2_table[256];
+
+  static int isNameStartCharVRML2Initialized = FALSE;
+  if (!isNameStartCharVRML2Initialized) {
+    const unsigned char invalid_vrml2[] = {
+      0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+    //'"',  '#',  ''',  '+',  ',',  '-',  '.',  '[',  '\',  ']',  '{',  '}',  ''
+
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[256] = 0;
       invalid_vrml2_table[256] = 0;
-      valid_ident_invalid_vrml1_table[256] = 0;
       valid_ident_invalid_vrml2_table[256] = 0;
     }
 
-    const unsigned char * ptr;
-    ptr = invalid_vrml1;
-    while (*ptr) {
-      invalid_vrml1_table[*ptr] = 1;
-      ptr++;
-    }
-
-    ptr = invalid_vrml2;
-    while (*ptr) {
-      invalid_vrml2_table[*ptr] = 1;
-      ptr++;
-    }
-
-    ptr = valid_ident_invalid_vrml1;
-    while (*ptr) {
-      valid_ident_invalid_vrml1_table[*ptr] = 1;
-      ptr++;
-    }
-
+    const unsigned char * ptr = invalid_vrml2;
+    while (*ptr) { invalid_vrml2_table[*ptr] = 1; ++ptr; }
     ptr = valid_ident_invalid_vrml2;
-    while (*ptr) {
-      valid_ident_invalid_vrml2_table[*ptr] = 1;
-      ptr++;
-    }
+    while (*ptr) { valid_ident_invalid_vrml2_table[*ptr] = 1; ++ptr; }
 
-    isNameStartCharInitialized = TRUE;
+    isNameStartCharVRML2Initialized = TRUE;
   }
 
-  // VRML1, VRML2 and Inventor files are kept separate for ease of
-  // modification if more differences are found
-  if (owner->isFileVRML1()) {
-    if (c <= 0x20) return FALSE; // Control characters
-    if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
+  if (c <= 0x20) return FALSE; // Control characters
+  if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
 
-    if (validIdent) {
-      return (valid_ident_invalid_vrml1_table[c] == 0);
-    }
-    else {
-      return (invalid_vrml1_table[c] == 0);
-    }
+  if (validIdent) return (valid_ident_invalid_vrml2_table[c] == 0);
+
+  // For Coin to be able to load VRML97 (invalid) files that have
+  // been generated with illegal names, '+' is considered a valid
+  // startcharacter.
+  static int non_strict = -1;
+  if (non_strict == -1) {
+    const char * env = coin_getenv("COIN_NOT_STRICT_VRML97");
+    non_strict = env && (atoi(env) > 0);
   }
-  else if (owner->isFileVRML2()) {
-    if (c <= 0x20) return FALSE; // Control characters
-    if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
 
-    if (validIdent) {
-      return (valid_ident_invalid_vrml2_table[c] == 0);
-    }
-    else {
-      // For Coin to be able to load VRML97 (invalid) files that have
-      // been generated with illegal names, '+' is considered a valid
-      // startcharacter.
-      static int non_strict = -1;
-      if (non_strict == -1) {
-        const char * env = coin_getenv("COIN_NOT_STRICT_VRML97");
-        non_strict = env && (atoi(env) > 0);
-      }
+  if (c == '+' && non_strict) // '+' is considered valid
+    return TRUE;
 
-      if (c == 0x2b && non_strict) { // '+' is considered valid
-        return TRUE;
-      }
-
-      return (invalid_vrml2_table[c] == 0);
-    }
-  }
-  else { // Inventor files
-    if (validIdent) {
-      return SbName::isIdentStartChar(c);
-    }
-    else {
-      return (c > 0x20); // Not control characters
-    }
-  }
+  return (invalid_vrml2_table[c] == 0);
 }
 
 // Helperfunction to handle different filetypes (Inventor, VRML 1.0
@@ -365,95 +349,78 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
 SbBool
 SoInputP::isNameChar(unsigned char c, SbBool validIdent)
 {
-  static int isNameCharInitialized = FALSE;
+  if (validIdent) return SbName::isIdentChar(c);
+  return (c > 0x20); // Not control characters
+}
 
+SbBool
+SoInputP::isNameCharVRML1(unsigned char c, SbBool validIdent)
+{
   static unsigned char invalid_vrml1_table[256];
-  static unsigned char invalid_vrml2_table[256];
   static unsigned char valid_ident_invalid_vrml1_table[256];
-  static unsigned char valid_ident_invalid_vrml2_table[256];
 
-  if (!isNameCharInitialized) {
+  static int isNameCharVRML1Initialized = FALSE;
+  if (!isNameCharVRML1Initialized) {
     const unsigned char invalid_vrml1[] = {
       0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',  ''',  '+',  ',',  '.',  '\',  '{',  '}'
-
-    // Compared to isIdentStartChar, '+' and '-' have now become valid characters.
-    const unsigned char invalid_vrml2[] = {
-      0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-    //'"',  '#',  ''',  ',',  '.',  '[',  '\',  ']',  '{',  '}',  ''
 
     // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
     const unsigned char valid_ident_invalid_vrml1[] = {
       0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
 
+    for (int c = 0; c < 256; ++c) {
+      invalid_vrml1_table[256] = 0;
+      valid_ident_invalid_vrml1_table[256] = 0;
+    }
+
+    const unsigned char * ptr = invalid_vrml1;
+    while (*ptr) { invalid_vrml1_table[*ptr] = 1; ++ptr; }
+    ptr = valid_ident_invalid_vrml1;
+    while (*ptr) { valid_ident_invalid_vrml1_table[*ptr] = 1; ++ptr; }
+
+    isNameCharVRML1Initialized = TRUE;
+  }
+
+  if (c <= 0x20) return FALSE; // Control characters
+
+  if (validIdent) return (valid_ident_invalid_vrml1_table[c] == 0);
+  return (invalid_vrml1_table[c] == 0);
+}
+
+SbBool
+SoInputP::isNameCharVRML2(unsigned char c, SbBool validIdent)
+{
+  static unsigned char invalid_vrml2_table[256];
+  static unsigned char valid_ident_invalid_vrml2_table[256];
+
+  static int isNameCharVRML2Initialized = FALSE;
+  if (!isNameCharVRML2Initialized) {
+    // Compared to isIdentStartChar, '+' and '-' have now become valid characters.
+    const unsigned char invalid_vrml2[] = {
+      0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+    //'"',  '#',  ''',  ',',  '.',  '[',  '\',  ']',  '{',  '}',  ''
+
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[256] = 0;
       invalid_vrml2_table[256] = 0;
-      valid_ident_invalid_vrml1_table[256] = 0;
       valid_ident_invalid_vrml2_table[256] = 0;
     }
 
-    const unsigned char * ptr;
-    ptr = invalid_vrml1;
-    while (*ptr) {
-      invalid_vrml1_table[*ptr] = 1;
-      ptr++;
-    }
-
-    ptr = invalid_vrml2;
-    while (*ptr) {
-      invalid_vrml2_table[*ptr] = 1;
-      ptr++;
-    }
-
-    ptr = valid_ident_invalid_vrml1;
-    while (*ptr) {
-      valid_ident_invalid_vrml1_table[*ptr] = 1;
-      ptr++;
-    }
-
+    const unsigned char * ptr = invalid_vrml2;
+    while (*ptr) { invalid_vrml2_table[*ptr] = 1; ++ptr; }
     ptr = valid_ident_invalid_vrml2;
-    while (*ptr) {
-      valid_ident_invalid_vrml2_table[*ptr] = 1;
-      ptr++;
-    }
+    while (*ptr) { valid_ident_invalid_vrml2_table[*ptr] = 1; ++ptr; }
 
-    isNameCharInitialized = TRUE;
+    isNameCharVRML2Initialized = TRUE;
   }
 
-  // VRML1, VRML2 and Inventor files are kept separate for ease of
-  // modification if more differences are found
-  if (owner->isFileVRML1()) {
-    if (c <= 0x20) return FALSE; // Control characters
+  if (c <= 0x20) return FALSE; // Control characters
 
-    if (validIdent) {
-      return (valid_ident_invalid_vrml1_table[c] == 0);
-    }
-    else {
-      return (invalid_vrml1_table[c] == 0);
-    }
-  }
-  else if (owner->isFileVRML2()) {
-    if (c <= 0x20) return FALSE; // Control characters
-
-    if (validIdent) {
-      return (valid_ident_invalid_vrml2_table[c] == 0);
-    }
-    else {
-      return (invalid_vrml2_table[c] == 0);
-    }
-  }
-  else { // Inventor files
-    if (validIdent) {
-      return SbName::isIdentChar(c);
-    }
-    else {
-      return (c > 0x20); // Not control characters
-    }
-  }
+  if (validIdent) return (valid_ident_invalid_vrml2_table[c] == 0);
+  return (invalid_vrml2_table[c] == 0);
 }
 
 // *************************************************************************
@@ -1382,8 +1349,10 @@ SbBool
 SoInput::read(SbName & n, SbBool validIdent)
 {
   SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();  
-
   if (!this->checkHeader()) return FALSE;
+
+  const enum CodePath { INVENTOR, VRML1, VRML2 } codepath =
+    fi->isFileVRML2() ? VRML2 : (fi->isFileVRML1() ? VRML1 : INVENTOR);
 
   // Binary format.
   if (fi->isBinary()) { // Checkheader has already been called
@@ -1391,11 +1360,31 @@ SoInput::read(SbName & n, SbBool validIdent)
     if (!this->read(s)) return FALSE;
 
     n = s;
+    const int strlength = s.getLength();
 
-    if (validIdent && s.getLength() > 0) {
-      if (!PRIVATE(this)->isNameStartChar(s[0], validIdent)) return FALSE;
-      for (int i = 1; i < s.getLength(); i++)
-        if (!PRIVATE(this)->isNameChar(s[i], validIdent)) return FALSE;
+    switch (codepath) {
+    case INVENTOR:
+      if (validIdent && strlength > 0) {
+        if (!SoInputP::isNameStartChar(s[0], validIdent)) return FALSE;
+        for (int i = 1; i < strlength; i++)
+          if (!SoInputP::isNameChar(s[i], validIdent)) return FALSE;
+      }
+      break;
+    case VRML1:
+      if (validIdent && strlength > 0) {
+        if (!SoInputP::isNameStartCharVRML1(s[0], validIdent)) return FALSE;
+        for (int i = 1; i < strlength; i++)
+          if (!SoInputP::isNameCharVRML1(s[i], validIdent)) return FALSE;
+      }
+    case VRML2:
+      if (validIdent && strlength > 0) {
+        if (!SoInputP::isNameStartCharVRML2(s[0], validIdent)) return FALSE;
+        for (int i = 1; i < strlength; i++)
+          if (!SoInputP::isNameCharVRML2(s[i], validIdent)) return FALSE;
+      }
+    default:
+      assert(!"invalid code path");
+      break;
     }
 
     return TRUE;
@@ -1410,17 +1399,49 @@ SoInput::read(SbName & n, SbBool validIdent)
     char c;
     SbBool gotchar;
     
-    if ((gotchar = fi->get(c)) && PRIVATE(this)->isNameStartChar(c, validIdent)) {
-      *b++ = c;
-      
-      while ((gotchar = fi->get(c)) && PRIVATE(this)->isNameChar(c, validIdent)) {
+    switch (codepath) {
+    case INVENTOR:
+      if ((gotchar = fi->get(c)) && SoInputP::isNameStartChar(c, validIdent)) {
         *b++ = c;
-        if (b - buf == 255) {
-          *b = '\0';
-          s += buf;
-          b = buf;
+        while ((gotchar = fi->get(c)) && SoInputP::isNameChar(c, validIdent)) {
+          *b++ = c;
+          if (b - buf == 255) {
+            *b = '\0';
+            s += buf;
+            b = buf;
+          }
         }
       }
+      break;
+    case VRML1:
+      if ((gotchar = fi->get(c)) && SoInputP::isNameStartCharVRML1(c, validIdent)) {
+        *b++ = c;
+        while ((gotchar = fi->get(c)) && SoInputP::isNameCharVRML1(c, validIdent)) {
+          *b++ = c;
+          if (b - buf == 255) {
+            *b = '\0';
+            s += buf;
+            b = buf;
+          }
+        }
+      }
+      break;
+    case VRML2:
+      if ((gotchar = fi->get(c)) && SoInputP::isNameStartCharVRML2(c, validIdent)) {
+        *b++ = c;
+        while ((gotchar = fi->get(c)) && SoInputP::isNameCharVRML2(c, validIdent)) {
+          *b++ = c;
+          if (b - buf == 255) {
+            *b = '\0';
+            s += buf;
+            b = buf;
+          }
+        }
+      }
+      break;
+    default:
+      assert(!"invalid code path");
+      break;
     }
     // This behavior is pretty silly, but this is how it is supposed
     // to work, apparently -- _not_ returning FALSE upon end-of-file.
