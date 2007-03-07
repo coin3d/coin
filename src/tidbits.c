@@ -597,7 +597,7 @@ coin_getenv(const char * envname)
       envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
       if (envptr == NULL) {
         /* Augh. Could we handle this any better? */
-	/* We can alternatively ignore the bookkeeping and leak the buffer
+        /* We can alternatively ignore the bookkeeping and leak the buffer
            - 20030205 larsa */
         free(valbuf);
         return NULL;
@@ -605,11 +605,11 @@ coin_getenv(const char * envname)
       envptr->name = strdup(envname);
       if (envptr->name == NULL) {
         /* Augh. Could we handle this any better? */
-	/* We can alternatively ignore the bookkeeping and leak the buffer
+        /* We can alternatively ignore the bookkeeping and leak the buffer
            - 20030205 larsa */
-	free(envptr);
-	free(valbuf);
-	return NULL;
+        free(envptr);
+        free(valbuf);
+        return NULL;
       }
       envptr->val = valbuf;
       envlist_append(envptr);
@@ -700,15 +700,15 @@ coin_setenv(const char * name, const char * value, int overwrite)
 
     if (putenv(envptr->string) == -1) { /* denied! */
       if (oldbuf) {
-	/* we had old value - setting new didn't work, so we do a rollback and assume we
-	   still need to do bookkeeping of the old value */
-	free(envptr->string);
-	envptr->string = oldbuf;
-	return FALSE;
+        /* we had old value - setting new didn't work, so we do a rollback and assume we
+           still need to do bookkeeping of the old value */
+        free(envptr->string);
+        envptr->string = oldbuf;
+        return FALSE;
       }
       else {
-	free(envptr->string);
-	free(envptr);
+        free(envptr->string);
+        free(envptr);
       }
       return FALSE;
     }
