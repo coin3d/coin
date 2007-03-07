@@ -56,6 +56,8 @@ COIN_DLL_API uint32_t coin_hton_uint32(uint32_t value);
 COIN_DLL_API uint32_t coin_ntoh_uint32(uint32_t value);
 COIN_DLL_API float coin_hton_float(float value);
 COIN_DLL_API float coin_ntoh_float(float value);
+COIN_DLL_API double coin_hton_double(double value);
+COIN_DLL_API double coin_ntoh_double(double value);
 
 COIN_DLL_API SbBool coin_isascii(const int c);
 COIN_DLL_API SbBool coin_isspace(const char c);
