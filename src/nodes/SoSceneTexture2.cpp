@@ -266,14 +266,18 @@
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
+#include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -328,6 +332,7 @@ public:
   GLuint fbo_frameBuffer;
   GLuint fbo_depthBuffer;
   SoGLDisplayList * fbo_texture;
+  SoGLDisplayList * fbo_depthmap;
   SbVec2s fbo_size;
 
   SoGLRenderAction::TransparencyType getTransparencyType(SoState * state);
@@ -563,14 +568,16 @@ SoSceneTexture2::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f == &this->scene ||
-      f == &this->size) {
+      f == &this->size ||
+      f == &this->type) {
     // rerender scene
     PRIVATE(this)->buffervalid = FALSE;
   }
   else if (f == &this->wrapS ||
            f == &this->wrapT ||
            f == &this->model ||
-           f == &this->transparencyFunction) {
+           f == &this->transparencyFunction ||
+           f == &this->sceneTransparencyType) {
     // no need to render scene again, but update the texture object
     PRIVATE(this)->glimagevalid = FALSE;
   }
@@ -610,6 +617,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->fbo_frameBuffer = GL_INVALID_VALUE;
   this->fbo_depthBuffer = GL_INVALID_VALUE;
   this->fbo_texture = NULL;
+  this->fbo_depthmap = NULL;
   this->fbo_size.setValue(-1,-1);
 }
 
@@ -617,6 +625,7 @@ SoSceneTexture2P::~SoSceneTexture2P()
 {
   // FIXME: free FBO buffers
   if (this->fbo_texture) this->fbo_texture->unref(NULL);
+  if (this->fbo_depthmap) this->fbo_depthmap->unref(NULL);
   if (this->glimage) this->glimage->unref(NULL);
   if (this->glcontext != NULL) {
     cc_glglue_context_destruct(this->glcontext);
@@ -695,26 +704,37 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     this->deleteFrameBufferObjects(glue, state);
     this->createFramebufferObjects(glue, state);
     
-    this->glimage->setGLDisplayList(this->fbo_texture, state);
+    if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH_COMPONENT) {
+      this->glimage->setGLDisplayList(this->fbo_depthmap, state);
+    }
+    else {
+      this->glimage->setGLDisplayList(this->fbo_texture, state);
+    }
   }
   
   state->push();
 
+  SoShapeStyleElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
+
   // disable all active textures
   SoMultiTextureEnabledElement::disableAll(state);
-
+  SoGLTextureEnabledElement::set(state, PUBLIC(this), FALSE);
+  
+  // just disable all active light source
   int numlights = SoLightElement::getLights(state).getLength();
   for (i = 0; i < numlights; i++) {
     glDisable((GLenum) (GL_LIGHT0 + i));
   }
+  float oldclearcolor[4];
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, oldclearcolor);
+  
   SoModelMatrixElement::set(state, PUBLIC(this), SbMatrix::identity());
 
   // set up framebuffer for rendering
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   this->checkFramebufferStatus(glue);
-  
-  glPushAttrib(GL_VIEWPORT_BIT|GL_COLOR_BUFFER_BIT);
-  glViewport(0, 0, this->fbo_size[0], this->fbo_size[1]);
+
+  SoViewportRegionElement::set(state, SbViewportRegion(this->fbo_size));  
   SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
   glClearColor(col[0], col[1], col[2], col[3]);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
@@ -724,18 +744,30 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
+  
+  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH_COMPONENT) {
+    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_depthmap->getFirstIndex());
+    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, 
+                        this->fbo_size[0], this->fbo_size[1]);
+    cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
+  }
 
-  // switch back to the actual context
-  glPopAttrib();
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
   this->checkFramebufferStatus(glue);
 
-  state->pop();
+  // restore old clear color
+  glClearColor(oldclearcolor[0], oldclearcolor[1], oldclearcolor[2], oldclearcolor[3]);
 
-  // reenable the lights we disabled
+  // enable lights again
   for (i = 0; i < numlights; i++) {
     glEnable((GLenum) (GL_LIGHT0 + i));
-  }
+  }  
+  state->pop();
+
+  SoGLLazyElement::getInstance(state)->reset(state,
+                                             SoLazyElement::LIGHT_MODEL_MASK|
+                                             SoLazyElement::TWOSIDE_MASK|
+                                             SoLazyElement::SHADE_MODEL_MASK);
 
   this->buffervalid = TRUE;
   this->glimagevalid = TRUE;
@@ -816,6 +848,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glaction->setViewportRegion(SbViewportRegion(this->glcontextsize));
     }
     
+    this->glaction->setTransparencyType(this->getTransparencyType(state));
     this->glaction->setCacheContext(this->contextid);    
     this->glimagevalid = FALSE;
   }
@@ -908,6 +941,11 @@ SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
 void 
 SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state)
 {
+  assert(this->fbo_texture == NULL);
+  assert(this->fbo_depthmap == NULL);
+  assert(this->fbo_frameBuffer == GL_INVALID_VALUE);
+  assert(this->fbo_depthBuffer == GL_INVALID_VALUE);
+
 	cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
   this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
@@ -920,18 +958,45 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                4, 
                this->fbo_size[0], this->fbo_size[1], 
                0, /* border */ 
-               GL_RGBA, 
+               GL_RGBA,
                GL_UNSIGNED_BYTE, NULL);
 
   // for mipmaps
-  //  cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
+  // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-
+  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                    cc_glglue_get_max_anisotropy(glue));
+  }
+  
   this->fbo_texture->close(state);
+  cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
+
+  this->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+  this->fbo_depthmap->ref();  
+  this->fbo_depthmap->open(state);
+  
+  glTexImage2D(GL_TEXTURE_2D, 0, 
+               GL_DEPTH_COMPONENT, 
+               this->fbo_size[0], this->fbo_size[1], 
+               0, /* border */ 
+               GL_DEPTH_COMPONENT,
+               GL_UNSIGNED_BYTE, NULL);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                    cc_glglue_get_max_anisotropy(glue));
+  }
+  
+  this->fbo_depthmap->close(state);
   cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
 
   // attach texture to framebuffer color object
@@ -963,16 +1028,15 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 void 
 SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * state)
 {
-	if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
-    cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
-  }
-  // unref the texture while the framebuffer is active 
   if (this->fbo_texture) {
     this->fbo_texture->unref(state);
     this->fbo_texture = NULL;
   }
+  if (this->fbo_depthmap) {
+    this->fbo_depthmap->unref(state);
+    this->fbo_depthmap = NULL;
+  }
 	if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
-    cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);
 		cc_glglue_glDeleteFramebuffers(glue, 1, &this->fbo_frameBuffer);
     this->fbo_frameBuffer = GL_INVALID_VALUE;
   }
