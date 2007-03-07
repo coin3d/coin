@@ -806,6 +806,11 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 
 /**************************************************************************/
 
+#define COIN_BSWAP_8(x)  ((x) & 0xff)
+#define COIN_BSWAP_16(x) ((COIN_BSWAP_8(x)  << 8)  | COIN_BSWAP_8((x)  >> 8))
+#define COIN_BSWAP_32(x) ((COIN_BSWAP_16(x) << 16) | COIN_BSWAP_16((x) >> 16))
+#define COIN_BSWAP_64(x) ((COIN_BSWAP_32(x) << 32) | COIN_BSWAP_32((x) >> 32))
+
 static int coin_endianness = COIN_HOST_IS_UNKNOWNENDIAN;
 
 int
@@ -816,43 +821,32 @@ coin_host_get_endianness(void)
     uint8_t  bytes[4];
   } temp;
 
-  if (coin_endianness != COIN_HOST_IS_UNKNOWNENDIAN)
+  if (coin_endianness != COIN_HOST_IS_UNKNOWNENDIAN) {
     return coin_endianness;
+  }
 
   temp.bytes[0] = 0x00;
   temp.bytes[1] = 0x01;
   temp.bytes[2] = 0x02;
   temp.bytes[3] = 0x03;
   switch (temp.value) {
-  case 0x03020100: return COIN_HOST_IS_LITTLEENDIAN;
-  case 0x00010203: return COIN_HOST_IS_BIGENDIAN;
-  /* might be more variations here for some obscure CPU architectures */
+    case 0x03020100: return coin_endianness = COIN_HOST_IS_LITTLEENDIAN;
+    case 0x00010203: return coin_endianness = COIN_HOST_IS_BIGENDIAN;
+    /* might be more variations here for some obscure CPU architectures */
   }
   assert(0 && "system has unknown endianness");
   return COIN_HOST_IS_UNKNOWNENDIAN; /* maybe just as well exit()? */
 }
 
-static void
-coin_swap_16bit_word(uint8_t * block)
-{
-  uint8_t tmp;
-
-  tmp = block[1];
-  block[1] = block[0];
-  block[0] = tmp;
-}
-
 uint16_t
 coin_hton_uint16(uint16_t value)
 {
-  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
-    coin_endianness = coin_host_get_endianness();
-  switch (coin_endianness) {
+  switch (coin_host_get_endianness()) {
   case COIN_HOST_IS_BIGENDIAN:
     /* value = value */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    coin_swap_16bit_word((uint8_t *)&value);
+    value = COIN_BSWAP_16(value);
     break;
   default:
     assert(0 && "system has unknown endianness");
@@ -866,31 +860,15 @@ coin_ntoh_uint16(uint16_t value)
   return coin_hton_uint16(value);
 }
 
-static void
-coin_swap_32bit_word(uint8_t * block)
-{
-  uint8_t tmp;
-
-  tmp = block[3];
-  block[3] = block[0];
-  block[0] = tmp;
-
-  tmp = block[2];
-  block[2] = block[1];
-  block[1] = tmp;
-}
-
 uint32_t
 coin_hton_uint32(uint32_t value)
 {
-  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
-    coin_endianness = coin_host_get_endianness();
-  switch (coin_endianness) {
+  switch (coin_host_get_endianness()) {
   case COIN_HOST_IS_BIGENDIAN:
     /* big-endian is the same order as network order */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    coin_swap_32bit_word((uint8_t *)&value);
+    value = COIN_BSWAP_32(value);
     break;
   default:
     assert(0 && "system has unknown endianness");
@@ -907,19 +885,27 @@ coin_ntoh_uint32(uint32_t value)
 float
 coin_hton_float(float value)
 {
-  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
-    coin_endianness = coin_host_get_endianness();
-  switch (coin_endianness) {
+  union f32 {
+      float f32;
+      uint32_t u32;
+  } val;
+
+  val.f32 = value;
+
+  assert(4 == sizeof(float));
+
+
+  switch (coin_host_get_endianness()) {
   case COIN_HOST_IS_BIGENDIAN:
     /* big-endian is the same order as network order */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    coin_swap_32bit_word((uint8_t *)&value);
+    val.u32 = COIN_BSWAP_32(val.u32);
     break;
   default:
     assert(0 && "system has unknown endianness");
   }
-  return value;
+  return val.f32;
 }
 
 float
@@ -927,6 +913,38 @@ coin_ntoh_float(float value)
 {
   return coin_hton_float(value);
 }
+
+double
+coin_hton_double(double value)
+{
+  union d64 {
+      double d64;
+      uint64_t u64;
+  } val;
+
+  val.d64 = value;
+
+  assert(8 == sizeof(double));
+
+  switch (coin_host_get_endianness()) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* big-endian is the same order as network order */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    val.u64 = COIN_BSWAP_64(val.u64);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return val.d64;
+}
+
+double
+coin_ntoh_double(double value)
+{
+  return coin_hton_double(value);
+}
+
 
 /**************************************************************************/
 
