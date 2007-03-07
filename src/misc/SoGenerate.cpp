@@ -79,25 +79,25 @@ static int sogenerate_cube_vindices[] =
   2, 3, 7, 6
 };
 
-static float sogenerate_cube_texcoords[] =
+static const SbVec2f sogenerate_cube_texcoords[] =
 {
-  1.0f, 1.0f,
-  0.0f, 1.0f,
-  0.0f, 0.0f,
-  1.0f, 0.0f
+  SbVec2f(1.0f, 1.0f),
+  SbVec2f(0.0f, 1.0f),
+  SbVec2f(0.0f, 0.0f),
+  SbVec2f(1.0f, 0.0f)
 };
 
 //
 // a cube needs 6 normals
 //
-static float sogenerate_cube_normals[] =
+static const SbVec3f sogenerate_cube_normals[] =
 {
-  0.0f, 0.0f, 1.0f,
-  0.0f, 0.0f, -1.0f,
-  -1.0f, 0.0f, 0.0f,
-  1.0f, 0.0f, 0.0f,
-  0.0f, 1.0f, 0.0f,
-  0.0f, -1.0f, 0.0f
+  SbVec3f(0.0f, 0.0f, 1.0f),
+  SbVec3f(0.0f, 0.0f, -1.0f),
+  SbVec3f(-1.0f, 0.0f, 0.0f),
+  SbVec3f(1.0f, 0.0f, 0.0f),
+  SbVec3f(0.0f, 1.0f, 0.0f),
+  SbVec3f(0.0f, -1.0f, 0.0f)
 };
 
 static void
@@ -319,8 +319,8 @@ public:
 
     shape->beginShape(action, SoShape::QUADS);
     int *iptr = sogenerate_cube_vindices;
-    SbVec3f *nptr = (SbVec3f*) sogenerate_cube_normals;
-    SbVec2f *tptr = (SbVec2f*) sogenerate_cube_texcoords;
+    const SbVec3f *nptr = sogenerate_cube_normals;
+    const SbVec2f *tptr = sogenerate_cube_texcoords;
 
     for (int i = 0; i < 6; i++) { // 6 quads
       vertex.setNormal(nptr[i]);
