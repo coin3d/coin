@@ -75,6 +75,7 @@ public:
   SoSFVec4f backgroundColor;
   SoSFVec2s size;
   SoSFNode scene;
+  SoSFNode sceneTransparencyType;
   SoSFEnum transparencyFunction;
 
   SoSFEnum type;

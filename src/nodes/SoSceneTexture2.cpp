@@ -56,6 +56,8 @@
     SceneTexture2 {
         size 256 256
         scene NULL
+        sceneTransparencyType NULL
+        type RGBA
         backgroundColor 0 0 0 0
         transparencyFunction NONE
         wrapS REPEAT
@@ -195,6 +197,19 @@
 */
 
 /*!
+  \var SoSFNode SoSceneTexture2::sceneTransparencyType
+
+  Used for overriding the transparency type for the sub scene graph.
+  Should contain an instance of the SoTransparecyType node, or NULL to
+  inherit the transparency type from the current viewer.
+
+  Please note that if you want to render the texture using frame
+  buffer objects, you need to use of of the NONE, SCREEN_DOOR, ADD or
+  BLEND transparency types.
+
+*/
+
+/*!
   \var SoSFVec4f SoSceneTexture2::backgroundColor
 
   The color the color buffer is cleared to before rendering the scene.
@@ -206,6 +221,24 @@
 
   The transparency function used. Default value is NONE.
 */
+
+/*!
+  \var SoSFNode SoSceneTexture2::type
+  
+  The type of texture to generate. RGBA for normal texture, DEPTH_COMPONENT
+  for a depth buffer texture. Default is RGBA.
+*/
+
+/*!
+  \var SoSceneTexture2::Type SoSceneTexture2::RGBA
+  Specifies an RGBA texture.
+*/
+
+/*!
+  \var SoSceneTexture2::Type SoSceneTexture2::DEPTH_COMPONENT
+  Specifies a depth buffer texture.
+*/
+
 
 #include <Inventor/nodes/SoSceneTexture2.h>
 
@@ -221,6 +254,7 @@
 
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -240,6 +274,7 @@
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
@@ -264,6 +299,10 @@ class SoSceneTexture2P {
 public:
   SoSceneTexture2P(SoSceneTexture2 * api);
   ~SoSceneTexture2P();
+
+  // FIXME: move the updateBuffer and SoGLImage handling into a new
+  // class called CoinOffscreenTexture (or something similar).
+  // pederb, 2007-03-07
 
   SoSceneTexture2 * api;
   void * glcontext;
@@ -290,6 +329,8 @@ public:
   GLuint fbo_depthBuffer;
   SoGLDisplayList * fbo_texture;
   SbVec2s fbo_size;
+
+  SoGLRenderAction::TransparencyType getTransparencyType(SoState * state);
 
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
@@ -348,6 +389,7 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSceneTexture2);
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
+  SO_NODE_ADD_FIELD(sceneTransparencyType, (NULL));
   SO_NODE_ADD_FIELD(backgroundColor, (0.0f, 0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(transparencyFunction, (NONE));
   
@@ -588,9 +630,25 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
 {
   // make sure we've finished rendering to this context
   glFlush();
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
-  // FIXME: detect if framebuffers are available and use that
-  if (1) {
+  SbBool candofbo = cc_glglue_has_framebuffer_objects(glue);
+  if (candofbo) {
+    // can't render to a FBO if we have a delayed transparency type
+    // involving path traversal in a second pass.
+    switch (this->getTransparencyType(state)) {
+    case SoGLRenderAction::NONE:
+    case SoGLRenderAction::BLEND:
+    case SoGLRenderAction::ADD:
+    case SoGLRenderAction::SCREEN_DOOR:
+      break;
+    default:
+      candofbo = FALSE;
+      break;
+    }
+  }
+  
+  if (!candofbo) {
     this->updatePBuffer(state, quality);
   }
   else {
@@ -966,6 +1024,18 @@ SoSceneTexture2P::checkFramebufferStatus(const cc_glglue * glue)
     return FALSE;
   }
   return TRUE;
+}
+
+SoGLRenderAction::TransparencyType 
+SoSceneTexture2P::getTransparencyType(SoState * state)
+{
+  SoNode * node = PUBLIC(this)->sceneTransparencyType.getValue();
+  if (node && node->isOfType(SoTransparencyType::getClassTypeId())) {
+    return (SoGLRenderAction::TransparencyType)
+      ((SoTransparencyType*)node)->value.getValue();
+  }
+  return (SoGLRenderAction::TransparencyType) 
+    SoShapeStyleElement::getTransparencyType(state);
 }
 
 
