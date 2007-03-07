@@ -209,9 +209,9 @@ void SoTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SbColor & blendColor)
 {
   SoTextureImageElement::set(state, node, size, numComponents, bytes,
-                             (SoTextureImageElement::Wrap &)wrapS,
-                             (SoTextureImageElement::Wrap &)wrapT,
-                             (SoTextureImageElement::Model &)model,
+                             SoTextureImageElement::Wrap(wrapS),
+                             SoTextureImageElement::Wrap(wrapT),
+                             SoTextureImageElement::Model(model),
                              blendColor);
 }
 
@@ -230,10 +230,10 @@ void SoTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SbColor & blendColor)
 {
   SoTextureImageElement::set(state, node, size, numComponents, bytes,
-                             (SoTextureImageElement::Wrap &)wrapS,
-                             (SoTextureImageElement::Wrap &)wrapT,
-                             (SoTextureImageElement::Wrap &)wrapR,
-                             (SoTextureImageElement::Model &)model,
+                             SoTextureImageElement::Wrap(wrapS),
+                             SoTextureImageElement::Wrap(wrapT),
+                             SoTextureImageElement::Wrap(wrapR),
+                             SoTextureImageElement::Model(model),
                              blendColor);
 }
 
