@@ -2388,26 +2388,9 @@ SoInput::freeBytesInBuf(void) const
 SbBool
 SoInput::readInteger(int32_t & l)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  // FIXME: fixed size buffer for input of unknown
-  // length. Ouch. 19990530 mortene.
-  char str[32];
-  char * s = str;
-
-  if (this->readChar(s, '-') || this->readChar(s, '+'))
-    s++;
-
-  if (! this->readUnsignedIntegerString(s))
-    return FALSE;
-
-  // FIXME: check man page of strtol and exploit the functionality
-  // provided better -- it looks like we are duplicating some of the
-  // effort. 19990530 mortene.
-  l = strtol(str, NULL, 0);
-
-  return TRUE;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readInteger(l);
 }
 
 /*!
@@ -2417,21 +2400,9 @@ SoInput::readInteger(int32_t & l)
 SbBool
 SoInput::readUnsignedInteger(uint32_t & l)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  // FIXME: fixed size buffer for input of unknown
-  // length. Ouch. 19990530 mortene.
-  char str[32];
-  if (! this->readUnsignedIntegerString(str))
-    return FALSE;
-
-  // FIXME: check man page of strtoul and exploit the functionality
-  // provided better -- it looks like we are duplicating some of the
-  // effort. 19990530 mortene.
-  l = strtoul(str, NULL, 0);
-
-  return TRUE;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readUnsignedInteger(l);
 }
 
 /*!
@@ -2442,66 +2413,9 @@ SoInput::readUnsignedInteger(uint32_t & l)
 SbBool
 SoInput::readReal(double & d)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  // FIXME: fixed size buffer for input of unknown
-  // length. Ouch. 19990530 mortene.
-  const int BUFSIZE = 2048;
-  char str[BUFSIZE];
-  int n;
-  char * s = str;
-  SbBool gotNum = FALSE;
-
-  n = this->readChar(s, '-');
-  if (n == 0)
-    n = this->readChar(s, '+');
-  s += n;
-
-  if ((n = this->readDigits(s)) > 0) {
-    gotNum = TRUE;
-    s += n;
-  }
-
-  if (this->readChar(s, '.') > 0) {
-    s++;
-
-    if ((n = this->readDigits(s)) > 0) {
-      gotNum = TRUE;
-      s += n;
-    }
-  }
-
-  if (! gotNum)
-    return FALSE;
-
-  n = this->readChar(s, 'e');
-  if (n == 0)
-    n = this->readChar(s, 'E');
-
-  if (n > 0) {
-    s += n;
-
-    n = this->readChar(s, '-');
-    if (n == 0)
-      n = this->readChar(s, '+');
-    s += n;
-
-    if ((n = this->readDigits(s)) > 0)
-      s += n;
-
-    else
-      return FALSE; }
-
-  *s = '\0';
-
-  // FIXME: using the wrapped atof() call like this might have serious
-  // consequences for performance upon import of large
-  // iv/wrl-files. This should be checked. 20030407 mortene.
-
-  d = coin_atof(str);
-
-  return TRUE;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readReal(d);
 }
 
 /*!
@@ -2514,29 +2428,9 @@ SoInput::readReal(double & d)
 SbBool
 SoInput::readUnsignedIntegerString(char * str)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  int minSize = 1;
-  char * s = str;
-
-  if (this->readChar(s, '0')) {
-    if (this->readChar(s + 1, 'x')) {
-      s += 2 + this->readHexDigits(s + 2);
-      minSize = 3;
-    }
-    else
-      s += 1 + this->readDigits(s + 1);
-  }
-  else
-    s += this->readDigits(s);
-
-  if (s - str < minSize)
-    return FALSE;
-
-  *s = '\0';
-
-  return TRUE;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readUnsignedIntegerString(str);
 }
 
 /*!
@@ -2546,25 +2440,9 @@ SoInput::readUnsignedIntegerString(char * str)
 int
 SoInput::readDigits(char * str)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
-
-  char c, * s = str;
-
-  while (fi->get(c)) {
-    if (isdigit(c))
-      *s++ = c;
-    else {
-      fi->putBack(c);
-      break;
-    }
-  }
-
-  const ptrdiff_t offset = s - str;
-  return (int)offset;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readDigits(str);
 }
 
 /*!
@@ -2574,24 +2452,9 @@ SoInput::readDigits(char * str)
 int
 SoInput::readHexDigits(char * str)
 {
-  // FIXME: write code for reading from binary stream? 19990628 mortene.
-  assert(!this->isBinary());
-
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
-
-  char c, * s = str;
-  while (fi->get(c)) {
-
-    if (isxdigit(c)) *s++ = c;
-    else {
-      fi->putBack(c);
-      break;
-    }
-  }
-
-  const ptrdiff_t offset = s - str;
-  return (int)offset;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readHexDigits(str);
 }
 
 /*!
@@ -2603,22 +2466,9 @@ SoInput::readHexDigits(char * str)
 int
 SoInput::readChar(char * s, char charToRead)
 {
-  SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
-
-  int ret = 0;
-  char c;
-  if (fi->get(c)) {
-    if (c == charToRead) {
-      *s = c;
-      ret = 1;
-    }
-    else {
-      fi->putBack(c);
-    }
-  }
-
-  return ret;
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
+  if (!fi) return FALSE;
+  return fi->readChar(s, charToRead);
 }
 
 /*!
