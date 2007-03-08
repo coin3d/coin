@@ -29,6 +29,7 @@
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFTime.h>
@@ -1400,6 +1401,8 @@ static JSObject * SFNodeFactory(JSContext * cx, SoNode * container)
   spidermonkey()->JS_SetPrivate(cx, obj, container);
   spidermonkey()->JS_DefineFunctions(cx, obj, SFNodeFunctions);
 
+  // FIXME: If the node has enums, define them here. 2007-03-08 thammer.
+
   attachSensorToNode(container, obj);
 
   if (SoJavaScriptEngine::getEngine(cx)->getAutoNodeUnrefState())
@@ -1521,6 +1524,16 @@ static SbBool SFInt32_jsval2field(JSContext * cx, const jsval v, SoField * f)
   return FALSE;
 }
 
+static SbBool SFEnum_jsval2field(JSContext * cx, const jsval v, SoField * f)
+{
+  int32_t val;
+  if (jsval2int(cx, v, val)) {
+    ((SoSFInt32 *)f)->setValue(val);
+    return TRUE;
+  }
+  return FALSE;
+}
+
 static SbBool SFNode_jsval2field(JSContext * cx, const jsval v, SoField * f)
 {
   if (JSVAL_IS_NULL(v)) {
@@ -1625,6 +1638,12 @@ static void SFFloat_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 }
 
 static void SFInt32_field2jsval(JSContext * cx, const SoField * f, jsval * v)
+{
+  const int32_t val = ((SoSFInt32 *)f)->getValue();
+  *v = INT_TO_JSVAL(val);
+}
+
+static void SFEnum_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 {
   const int32_t val = ((SoSFInt32 *)f)->getValue();
   *v = INT_TO_JSVAL(val);
@@ -1945,6 +1964,11 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     MFInt32Handler::init,
     MFInt32Handler::field2jsval,
     MFInt32Handler::jsval2field);
+
+  // Enum 
+  engine->addHandler(
+    SoSFEnum::getClassTypeId(), NULL,
+    SFEnum_field2jsval, SFEnum_jsval2field);
 
   // Node
   engine->addHandler(
