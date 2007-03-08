@@ -196,16 +196,16 @@ SbBool
 SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
 {
   // Suck out any bytes from the backbuffer first.
-  while ((this->backbuffer.getLength() > 0) && (length > 0)) {
+  while ((this->readbufidx == 0) && (this->backbuffer.getLength() > 0) && (length > 0)) {
     *ptr++ = this->backbuffer.pop();
-    length--;
+    --length;
   }
 
   do {
     // Grab bytes from the buffer.
     while ((this->readbufidx < this->readbuflen) && (length > 0)) {
       *ptr++ = this->readbuf[this->readbufidx++];
-      length--;
+      --length;
     }
 
     // Fetch more bytes if necessary. doBufferRead() sets the eof-flag
@@ -220,7 +220,7 @@ SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
 SbBool
 SoInput_FileInfo::get(char & c)
 {
-  if (this->backbuffer.getLength() > 0) {
+  if ((this->readbufidx == 0) && (this->backbuffer.getLength() > 0)) {
     c = this->backbuffer.pop();
   }
   else {
@@ -458,6 +458,7 @@ SoInput_FileInfo::getReader(void)
 SbBool 
 SoInput_FileInfo::readUnsignedIntegerString(char * str)
 {
+  assert(!this->isBinary());
   int minSize = 1;
   char * s = str;
   
@@ -482,6 +483,7 @@ SoInput_FileInfo::readUnsignedIntegerString(char * str)
 SbBool 
 SoInput_FileInfo::readUnsignedInteger(uint32_t & l) 
 {
+  assert(!this->isBinary());
   // FIXME: fixed size buffer for input of unknown
   // length. Ouch. 19990530 mortene.
   char str[512];
@@ -499,6 +501,7 @@ SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 SbBool 
 SoInput_FileInfo::readInteger(int32_t & l) 
 {
+  assert(!this->isBinary());
   // FIXME: fixed size buffer for input of unknown
   // length. Ouch. 19990530 mortene.
   char str[512];
@@ -555,6 +558,7 @@ SoInput_FileInfo::readInteger(int32_t & l)
 SbBool 
 SoInput_FileInfo::readReal(double & d) 
 {
+  assert(!this->isBinary());
   const int BUFSIZE = 2048;
   SbBool minus = FALSE;
   SbBool gotNum = FALSE;
@@ -648,9 +652,9 @@ SoInput_FileInfo::readChar(char * s, char charToRead)
       *s = c;
       ret = 1;
     }
-      else {
-        this->putBack(c);
-      }
+    else {
+      this->putBack(c);
+    }
   }
   return ret;
 }
@@ -658,6 +662,7 @@ SoInput_FileInfo::readChar(char * s, char charToRead)
 int 
 SoInput_FileInfo::readDigits(char * str)
 {
+  assert(!this->isBinary());
   char c, * s = str;
   
   while (this->get(c)) {
@@ -675,6 +680,7 @@ SoInput_FileInfo::readDigits(char * str)
 int 
 SoInput_FileInfo::readHexDigits(char * str) 
 {
+  assert(!this->isBinary());
   char c, * s = str;
   while (this->get(c)) {
     
