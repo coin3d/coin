@@ -172,44 +172,44 @@ SoGLSLShaderParameter::set4i(const SoGLShaderObject * shader,
 
 SbBool
 SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
-			       const char * name, GLenum type,
-			       int * num)
+                               const char * name, GLenum type,
+                               int * num)
 {
   assert(shader);
   assert(shader->shaderType() == SoShader::GLSL_SHADER);
   
-  if (this->location>-1 && this->cacheName==name && this->cacheType==type) {
+  if (this->location > -1 && this->cacheName==name && this->cacheType==type) {
     if (num) { // assume: ARRAY
       if (this->cacheSize < *num) {
-	// FIXME: better error handling - 20050128 martin
-	SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
-				  "parameter %s[%d] < input[%d]!",
-				  this->cacheName.getString(),
-				  this->cacheSize, *num);
-	*num = this->cacheSize;
+        // FIXME: better error handling - 20050128 martin
+        SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
+                                  "parameter %s[%d] < input[%d]!",
+                                  this->cacheName.getString(),
+                                  this->cacheSize, *num);
+        *num = this->cacheSize;
       }
       return (*num > 0);
     }
     return TRUE;
   }
-
+  
   COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
   const cc_glglue * g = shader->GLContext();
-
+  
   this->cacheSize = 0;  
-  this->location  = g->glGetUniformLocationARB(pHandle,
-					       (const COIN_GLchar *)name);
-
+  this->location = g->glGetUniformLocationARB(pHandle,
+                                               (const COIN_GLchar *)name);
+  
   if (this->location == -1)  return FALSE;
-
-  GLsizei     length;
+  
+  GLsizei length;
   COIN_GLchar myName[128]; // FIXME: check this 20050128 martin
-    
+  
   g->glGetActiveUniformARB(pHandle, this->location, 128, &length,
                            &this->cacheSize, &this->cacheType, myName);
-
+  
   this->cacheName = name;
-
+  
   if (this->location == -1) return FALSE;
 
   if (type == GL_INT) {
