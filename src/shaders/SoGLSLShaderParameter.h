@@ -32,7 +32,7 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/C/glue/glp.h>
-
+#include <stddef.h> // NULL
 #include "SoGLShaderParameter.h"
 
 // *************************************************************************
@@ -65,13 +65,14 @@ public:
   virtual ~SoGLSLShaderParameter();
 
 private:
-  GLint    location;
+  GLint location;
   SbString cacheName;
-  GLsizei  cacheSize;
-  GLenum   cacheType;
-
+  GLsizei cacheSize;
+  GLenum cacheType;
+  SbBool isActive;
+  
   SbBool isValid(const SoGLShaderObject * shader, const char * name, 
-		 GLenum type, int * num=NULL);
+                 GLenum type, int * num = NULL);
 };
 
 #endif /* ! COIN_SOGLSLSHADERPARAMETER_H */
