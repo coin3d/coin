@@ -78,7 +78,12 @@ public:
   // Returns TRUE if an attempt at reading the file header went
   // without hitting EOF. Check this->ivversion != 0.0f to see if the
   // header parse actually succeeded.
-  SbBool readHeader(SoInput * input);
+  SbBool readHeader(SoInput * input) {
+    if (this->headerisread) return TRUE;
+    if (this->eof) return FALSE;
+    return this->readHeaderInternal(input);
+  }
+
   SbBool isMemBuffer(void) {
     // if reader == NULL, it means that we're reading from stdin
     if (this->reader == NULL) return FALSE;
@@ -193,6 +198,7 @@ private:
 
   SoInput_Reader * getReader(void);
   SoInput_Reader * reader;
+  SbBool readHeaderInternal(SoInput * input);
 
   unsigned int linenr;
 

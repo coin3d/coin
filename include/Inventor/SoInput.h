@@ -182,7 +182,9 @@ private:
   static SbStringList * dirsearchlist;
 
   SbList<SoInput_FileInfo *> filestack;
-  SoInput_FileInfo * getTopOfStack(void) const;
+  SoInput_FileInfo * getTopOfStack(void) const {
+    return this->filestack[0];
+  }
 
   SoInputP * pimpl;
 };

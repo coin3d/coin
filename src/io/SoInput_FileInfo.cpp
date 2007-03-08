@@ -342,11 +342,8 @@ SoInput_FileInfo::skipWhiteSpace(void)
 
 // The SoInput parameter is used in the precallback
 SbBool
-SoInput_FileInfo::readHeader(SoInput * soinput)
+SoInput_FileInfo::readHeaderInternal(SoInput * soinput)
 {
-  if (this->headerisread) return TRUE;
-  if (this->eof) return FALSE;
-
   this->headerisread = TRUE;
 
   this->header = "";

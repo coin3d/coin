@@ -2696,6 +2696,7 @@ SoInput::setDirectories(SbStringList * dirs)
 
   Return the currently active stream.
 */
+#if 0
 SoInput_FileInfo *
 SoInput::getTopOfStack(void) const
 {
@@ -2705,6 +2706,7 @@ SoInput::getTopOfStack(void) const
   }
   return this->filestack[0];
 }
+#endif
 
 /*!
   Scan through the include directories in order and try to find a file
