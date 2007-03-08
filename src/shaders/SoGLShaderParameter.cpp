@@ -31,28 +31,10 @@
 
 // *************************************************************************
 
-void SoGLShaderParameter::operator delete(void *obj) 
+SoGLShaderParameter::SoGLShaderParameter()
 {
-  switch (((SoGLShaderParameter*)obj)->shaderType()) {
-  case SoShader::ARB_SHADER: 
-    ::delete (SoGLARBShaderParameter *)obj; break;
-  case SoShader::CG_SHADER:
-    ::delete (SoGLCgShaderParameter *)obj; break;
-  case SoShader::GLSL_SHADER: 
-    ::delete (SoGLSLShaderParameter *)obj; break;
-  default: assert(FALSE && "shaderType unknown!");
-  }
 }
 
-void SoGLShaderParameter::operator delete[](void *obj) 
+SoGLShaderParameter::~SoGLShaderParameter()
 {
-  switch (((SoGLShaderParameter*)obj)->shaderType()) {
-  case SoShader::ARB_SHADER:
-    ::delete [] (SoGLARBShaderParameter *)obj; break;
-  case SoShader::CG_SHADER:
-    ::delete [] (SoGLCgShaderParameter *)obj; break;
-  case SoShader::GLSL_SHADER:
-    ::delete [] (SoGLSLShaderParameter *)obj; break;
-  default: assert(FALSE && "shaderType unknown!");
-  }
 }
