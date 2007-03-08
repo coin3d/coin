@@ -894,7 +894,6 @@ coin_hton_float(float value)
 
   assert(4 == sizeof(float));
 
-
   switch (coin_host_get_endianness()) {
   case COIN_HOST_IS_BIGENDIAN:
     /* big-endian is the same order as network order */
