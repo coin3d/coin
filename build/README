@@ -1,10 +1,18 @@
-msvc6
+misc/
+
+	Common files for the Visual Studio build files.
+
+msvc6/
 
 	Directory for building Coin with Visual Studio 6.
 
-msvc7
+msvc7/
 
 	Directory for building Coin with Visual Studio 7.1.
+
+msvc8/
+
+	Directory for building Coin with Visual Studio 8.
 
 coin.spec.in
 

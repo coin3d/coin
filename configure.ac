@@ -2199,6 +2199,7 @@ AC_CONFIG_FILES([
 	src/shadows/Makefile
         src/foreignfiles/Makefile
         cfg/gendsp.sh
+        cfg/gendsp.pl
 ])
 
 AC_OUTPUT

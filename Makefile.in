@@ -333,6 +333,9 @@ EXTRA_DIST = \
 	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
+	cfg/errors.txt \
+	cfg/gendsp.pl.in \
+	cfg/gendsp.sh.in \
 	cfg/ltconfig \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
@@ -385,6 +388,10 @@ EXTRA_DIST = \
 	packaging/windows/middle.nsi.in \
 	packaging/windows/post.nsi.in \
 	examples/bindings/glutiv.cpp \
+	build/misc/generate.sh \
+	build/misc/config-wrapper.h \
+	build/misc/install-sdk.bat \
+	build/misc/create-directories.bat \
 	build/msvc6/data/draggerDefaults/centerballDragger.h \
 	build/msvc6/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc6/data/draggerDefaults/dragPointDragger.h \
@@ -408,9 +415,6 @@ EXTRA_DIST = \
 	build/msvc6/data/draggerDefaults/translate2Dragger.h \
 	build/msvc6/coin3.dsp \
 	build/msvc6/coin3.dsw \
-	build/msvc6/config-wrapper.h \
-	build/msvc6/create-directories.bat \
-	build/msvc6/generate.sh \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl-headers.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
@@ -418,10 +422,6 @@ EXTRA_DIST = \
 	build/msvc6/include/config-debug.h \
 	build/msvc6/include/config-release.h \
 	build/msvc6/include/setup.h \
-	build/msvc6/install-dll-release.bat \
-	build/msvc6/install-dll-debug.bat \
-	build/msvc6/install-lib-release.bat \
-	build/msvc6/install-lib-debug.bat \
 	build/msvc6/install-headers.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
@@ -446,9 +446,6 @@ EXTRA_DIST = \
 	build/msvc7/data/draggerDefaults/translate2Dragger.h \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
-	build/msvc7/config-wrapper.h \
-	build/msvc7/create-directories.bat \
-	build/msvc7/generate.sh \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl-headers.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
@@ -456,10 +453,6 @@ EXTRA_DIST = \
 	build/msvc7/include/config-debug.h \
 	build/msvc7/include/config-release.h \
 	build/msvc7/include/setup.h \
-	build/msvc7/install-dll-release.bat \
-	build/msvc7/install-dll-debug.bat \
-	build/msvc7/install-lib-release.bat \
-	build/msvc7/install-lib-debug.bat \
 	build/msvc7/install-headers.bat \
 	build/msvc8/data/draggerDefaults/centerballDragger.h \
 	build/msvc8/data/draggerDefaults/directionalLightDragger.h \
@@ -484,9 +477,6 @@ EXTRA_DIST = \
 	build/msvc8/data/draggerDefaults/translate2Dragger.h \
 	build/msvc8/coin3.sln \
 	build/msvc8/coin3.vcproj \
-	build/msvc8/config-wrapper.h \
-	build/msvc8/create-directories.bat \
-	build/msvc8/generate.sh \
 	build/msvc8/include/Inventor/C/basic.h \
 	build/msvc8/include/Inventor/system/gl-headers.h \
 	build/msvc8/include/Inventor/system/inttypes.h \
@@ -494,10 +484,6 @@ EXTRA_DIST = \
 	build/msvc8/include/config-debug.h \
 	build/msvc8/include/config-release.h \
 	build/msvc8/include/setup.h \
-	build/msvc8/install-dll-release.bat \
-	build/msvc8/install-dll-debug.bat \
-	build/msvc8/install-lib-release.bat \
-	build/msvc8/install-lib-debug.bat \
 	build/msvc8/install-headers.bat
 
 subdir = .
@@ -506,7 +492,7 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/discard.h \
 	$(top_builddir)/include/config.h \
 	$(top_builddir)/include/setup.h
-CONFIG_CLEAN_FILES = cfg/gendsp.sh
+CONFIG_CLEAN_FILES = cfg/gendsp.sh cfg/gendsp.pl
 DIST_SOURCES =
 DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA)
 
@@ -543,6 +529,8 @@ $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.ac $(ACLOCAL_M4)
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 cfg/gendsp.sh: $(top_builddir)/config.status $(top_srcdir)/cfg/gendsp.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+cfg/gendsp.pl: $(top_builddir)/config.status $(top_srcdir)/cfg/gendsp.pl.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
@@ -749,7 +737,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/build/misc $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

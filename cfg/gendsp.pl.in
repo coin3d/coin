@@ -277,7 +277,7 @@ if ( $sim_ac_relative_src_dir_p ) {
 }
 
 # **************************************************************************
-# The following block (the --registar-public-header part) generates
+# The following block (the --register-public-header part) generates
 # 1) the public headers part of the .dsp file
 # 2) the install-headers.bat file
 # It is invoked from a "make ... install-data"-command far down in this script
@@ -333,6 +333,7 @@ if ( $ARGV[0] eq "--register-public-header" ) {
   open(DSP, ">>${studiofile}");
   $group = Dirname($headerfile);
   $group =~ s%.*include[\\/]?%%g;
+  $group =~ s%.*lib[\\/]?%%g;
   $group =~ s%^Inventor[\\/]annex[\\/]%%g;
 
   SaveVars();
@@ -539,7 +540,7 @@ LINK32=link.exe
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-dll-release.bat
+PostBuild_Cmds=../misc/install-sdk.bat dll release
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)"
@@ -568,7 +569,7 @@ LINK32=link.exe
 # ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@d.dll"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-dll-debug.bat
+PostBuild_Cmds=../misc/install-sdk.bat dll debug
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION\@ - Win32 LIB (Release)"
@@ -595,7 +596,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@s.lib"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-lib-release.bat
+PostBuild_Cmds=../misc/install-sdk.bat lib release
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION\@ - Win32 LIB (Debug)"
@@ -622,7 +623,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@sd.lib"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-lib-debug.bat
+PostBuild_Cmds=../misc/install-sdk.bat lib debug
 # End Special Build Tool
 
 !ENDIF
@@ -669,6 +670,7 @@ if ( $sourcefile ne "" ) {
   $targetdir = $sourcefiledir;
   $targetdir =~ s%^${sourcefiledirdirdir}[/\\]?%%g;
   $targetdir =~ s%.*src[/\\]?%%g;
+  $targetdir =~ s%.*lib[/\\]?%%g;
   $group = $targetdir;
   $targetdir = Unix2Dos($targetdir);
   SaveVars();
@@ -833,6 +835,8 @@ if ( $outputfile =~ /\.so\./ ) {
   # fix dependency first
   open(OUT, ">${outputfile}");
   print OUT $date;
+  print OUT "\ngroup: '${group}'\n";
+  print OUT "prevgroup: '${prev_group}'\n";
   close(OUT);
 
   # "close" the dsp file
@@ -884,7 +888,7 @@ if ( $outputfile =~ /\.so\./ ) {
   print DSP "# Begin Group \"Private Headers\"\n";
   print DSP "\n";
   print DSP "# PROP Default_Filter \"h;ic;icc\"\n";
-  open(FIND, "(find ${src_dir}/src ${src_dir}/include ${src_dir}/data ${build_dir} -name \"*.h\" | xargs grep -l \"_INTERNAL\\\$\" | xargs grep -i -l \"#error.*private\"; find ${src_dir}/src ${build_dir} -name \"*.ic\" -o -name \"*.icc\" ) | sort | uniq |");
+  open(FIND, "(find ${src_dir}/src ${src_dir}/lib ${src_dir}/include ${src_dir}/data ${build_dir} -name \"*.h\" | xargs grep -l \"_INTERNAL\\\$\" | xargs grep -i -l \"#error.*private\"; find ${src_dir}/src ${build_dir} -name \"*.ic\" -o -name \"*.icc\" ) | sort | uniq |");
   @files = <FIND>;
   close(FIND);
   
@@ -920,7 +924,7 @@ if ( $outputfile =~ /\.so\./ ) {
       if ($prev_group ne "") {
         print DSP "# End Group\n";
       }
-      if ($filepath =~ m/include/o) {
+      if ($filepath =~ m/include/o || $filepath =~ m/lib/o) {
         print DSP "# Begin Group \"${group} headers\"\n";
       } else {
         print DSP "# Begin Group \"${group} local includes\"\n";

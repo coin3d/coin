@@ -81,6 +81,9 @@ EXTRA_DIST = \
 	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
+	cfg/errors.txt \
+	cfg/gendsp.pl.in \
+	cfg/gendsp.sh.in \
 	cfg/ltconfig \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
@@ -133,6 +136,10 @@ EXTRA_DIST = \
 	packaging/windows/middle.nsi.in \
 	packaging/windows/post.nsi.in \
 	examples/bindings/glutiv.cpp \
+	build/misc/generate.sh \
+	build/misc/config-wrapper.h \
+	build/misc/install-sdk.bat \
+	build/misc/create-directories.bat \
 	build/msvc6/data/draggerDefaults/centerballDragger.h \
 	build/msvc6/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc6/data/draggerDefaults/dragPointDragger.h \
@@ -156,9 +163,6 @@ EXTRA_DIST = \
 	build/msvc6/data/draggerDefaults/translate2Dragger.h \
 	build/msvc6/coin3.dsp \
 	build/msvc6/coin3.dsw \
-	build/msvc6/config-wrapper.h \
-	build/msvc6/create-directories.bat \
-	build/msvc6/generate.sh \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl-headers.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
@@ -166,10 +170,6 @@ EXTRA_DIST = \
 	build/msvc6/include/config-debug.h \
 	build/msvc6/include/config-release.h \
 	build/msvc6/include/setup.h \
-	build/msvc6/install-dll-release.bat \
-	build/msvc6/install-dll-debug.bat \
-	build/msvc6/install-lib-release.bat \
-	build/msvc6/install-lib-debug.bat \
 	build/msvc6/install-headers.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
@@ -194,9 +194,6 @@ EXTRA_DIST = \
 	build/msvc7/data/draggerDefaults/translate2Dragger.h \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
-	build/msvc7/config-wrapper.h \
-	build/msvc7/create-directories.bat \
-	build/msvc7/generate.sh \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl-headers.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
@@ -204,10 +201,6 @@ EXTRA_DIST = \
 	build/msvc7/include/config-debug.h \
 	build/msvc7/include/config-release.h \
 	build/msvc7/include/setup.h \
-	build/msvc7/install-dll-release.bat \
-	build/msvc7/install-dll-debug.bat \
-	build/msvc7/install-lib-release.bat \
-	build/msvc7/install-lib-debug.bat \
 	build/msvc7/install-headers.bat \
 	build/msvc8/data/draggerDefaults/centerballDragger.h \
 	build/msvc8/data/draggerDefaults/directionalLightDragger.h \
@@ -232,9 +225,6 @@ EXTRA_DIST = \
 	build/msvc8/data/draggerDefaults/translate2Dragger.h \
 	build/msvc8/coin3.sln \
 	build/msvc8/coin3.vcproj \
-	build/msvc8/config-wrapper.h \
-	build/msvc8/create-directories.bat \
-	build/msvc8/generate.sh \
 	build/msvc8/include/Inventor/C/basic.h \
 	build/msvc8/include/Inventor/system/gl-headers.h \
 	build/msvc8/include/Inventor/system/inttypes.h \
@@ -242,10 +232,6 @@ EXTRA_DIST = \
 	build/msvc8/include/config-debug.h \
 	build/msvc8/include/config-release.h \
 	build/msvc8/include/setup.h \
-	build/msvc8/install-dll-release.bat \
-	build/msvc8/install-dll-debug.bat \
-	build/msvc8/install-lib-release.bat \
-	build/msvc8/install-lib-debug.bat \
 	build/msvc8/install-headers.bat
 
 # FIXME: These files should really be added instead of the ones
