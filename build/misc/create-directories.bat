@@ -80,6 +80,20 @@ if exist ForeignFiles\*.* goto foreignfilesexists
 echo mkdir %COINDIR%\include\Inventor\annex\ForeignFiles
 mkdir ForeignFiles
 :foreignfilesexists
+if exist FXViz\*.* goto fxvizexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz
+mkdir FXViz
+:fxvizexists
+chdir FXViz
+if exist nodes\*.* goto fxviznodesexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz\nodes
+mkdir nodes
+:fxviznodesexists
+if exist elements\*.* goto fxvizelementsexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz\elements
+mkdir elements
+:fxvizelementsexists
+chdir ..
 chdir ..
 if exist bundles\*.* goto bundlesexists
 echo mkdir %COINDIR%\include\Inventor\bundles
