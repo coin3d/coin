@@ -435,6 +435,23 @@ SoShapeStyleElement::setTransparentTexture(SoState * state, const SbBool value)
 }
 
 /*!
+  Sets whether we are rendering to a shadow (depth) map or not.
+
+  \since Coin 2.5
+*/
+void 
+SoShapeStyleElement::setShadowMapRendering(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= SHADOWMAP;
+  }
+  else {
+    elem->flags &= ~SHADOWMAP;
+  }
+}
+
+/*!
   Returns the state flags. Used internally to optimize rendering.
 
   \ since Coin 2.4

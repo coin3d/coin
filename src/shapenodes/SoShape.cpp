@@ -83,6 +83,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -545,10 +546,23 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       }
     }
   }
+
+  if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
+    SoShadowStyleElement::Style style = SoShadowStyleElement::get(state);
+    switch (style) {
+    case SoShadowStyleElement::NO_SHADOWING:
+    case SoShadowStyleElement::SHADOWED:
+      return FALSE;
+    case SoShadowStyleElement::CASTS_SHADOW: 
+    case SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED:
+    default:
+      return TRUE;
+    }
+  }
   
   SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
                                            SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
-                        
+  
   if (action->handleTransparency(transparent))
     return FALSE;
   
