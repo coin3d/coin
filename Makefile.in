@@ -276,7 +276,7 @@ SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
 BUILT_SOURCES = \
 	include/Inventor/C/basic.h \
-	include/Inventor/system/gl.h \
+	include/Inventor/system/gl-headers.h \
 	include/Inventor/system/inttypes.h \
 	coin-@CONFIG@.cfg \
 	Info.plist \
@@ -412,7 +412,7 @@ EXTRA_DIST = \
 	build/msvc6/create-directories.bat \
 	build/msvc6/generate.sh \
 	build/msvc6/include/Inventor/C/basic.h \
-	build/msvc6/include/Inventor/system/gl.h \
+	build/msvc6/include/Inventor/system/gl-headers.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
 	build/msvc6/include/config.h \
 	build/msvc6/include/config-debug.h \
@@ -450,7 +450,7 @@ EXTRA_DIST = \
 	build/msvc7/create-directories.bat \
 	build/msvc7/generate.sh \
 	build/msvc7/include/Inventor/C/basic.h \
-	build/msvc7/include/Inventor/system/gl.h \
+	build/msvc7/include/Inventor/system/gl-headers.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
 	build/msvc7/include/config.h \
 	build/msvc7/include/config-debug.h \
@@ -488,7 +488,7 @@ EXTRA_DIST = \
 	build/msvc8/create-directories.bat \
 	build/msvc8/generate.sh \
 	build/msvc8/include/Inventor/C/basic.h \
-	build/msvc8/include/Inventor/system/gl.h \
+	build/msvc8/include/Inventor/system/gl-headers.h \
 	build/msvc8/include/Inventor/system/inttypes.h \
 	build/msvc8/include/config.h \
 	build/msvc8/include/config-debug.h \
@@ -990,13 +990,13 @@ built-sources: $(BUILT_SOURCES)
 include/Inventor/C/basic.h: $(srcdir)/include/Inventor/C/basic.h.in config.status
 	@./config.status --header=$@
 
-include/Inventor/system/gl.h: $(srcdir)/include/Inventor/system/gl.h.in config.status
-	@./config.status --file=include/Inventor/system/gl.h.new:include/Inventor/system/gl.h.in; \
-	if cmp -s include/Inventor/system/gl.h include/Inventor/system/gl.h.new; then \
-	  echo "include/Inventor/system/gl.h is unchanged"; \
-	  rm -f include/Inventor/system/gl.h.new; \
+include/Inventor/system/gl-headers.h: $(srcdir)/include/Inventor/system/gl-headers.h.in config.status
+	@./config.status --file=include/Inventor/system/gl-headers.h.new:include/Inventor/system/gl-headers.h.in; \
+	if cmp -s include/Inventor/system/gl-headers.h include/Inventor/system/gl-headers.h.new; then \
+	  echo "include/Inventor/system/gl-headers.h is unchanged"; \
+	  rm -f include/Inventor/system/gl-headers.h.new; \
 	else \
-	  mv include/Inventor/system/gl.h.new include/Inventor/system/gl.h; \
+	  mv include/Inventor/system/gl-headers.h.new include/Inventor/system/gl-headers.h; \
 	fi
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
