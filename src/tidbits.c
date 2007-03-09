@@ -966,8 +966,8 @@ coin_isspace(const char c)
 {
   /* This is what isspace() does under the POSIX and C locales,
      according to the GNU libc man page. */
-  return (c==' ') || (c=='\n') || (c=='\r') ||
-         (c=='\f') || (c=='\t') || (c=='\v');
+  return (c==' ') || (c=='\n') || (c=='\t') ||
+         (c=='\r') || (c=='\f') || (c=='\v');
 }
 
 /**************************************************************************/
