@@ -413,7 +413,10 @@ _class_::allocValues(int newnum) \
   /* or not they should be matched with modifications in that method */ \
   /* aswell. */ \
  \
-  int oldmaxnum; /* must be here as a gcc 4.0.0 bug workaround */ \
+  /* these must be declared here as a gcc 4.0.0 bug workaround */ \
+  int i; \
+  int oldmaxnum; \
+  _valtype_ * newblock; \
   assert(newnum >= 0); \
  \
   if (newnum == 0) { \
@@ -437,10 +440,10 @@ _class_::allocValues(int newnum) \
       while ((this->maxNum / 2) >= newnum) this->maxNum /= 2; \
  \
       if (oldmaxnum != this->maxNum) { \
-        _valtype_ * newblock = new _valtype_[this->maxNum]; \
+        newblock = new _valtype_[this->maxNum]; \
         this->userDataIsUsed = FALSE; \
  \
-        for (int i=0; i < SbMin(this->num, newnum); i++) \
+        for (i=0; i < SbMin(this->num, newnum); i++) \
           newblock[i] = this->values[i]; \
  \
         delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
