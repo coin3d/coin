@@ -352,6 +352,7 @@
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include "SoVBO.h"
 
 #include <coindefs.h> // COIN_STUB()
@@ -536,6 +537,9 @@ SoDB::init(void)
   SoGLBigImage::initClass();
 
   SoHardCopy::init();
+
+  // FIXME: probably temporary. Add FXViz::init() or something? pederb, 2007-03-09
+  SoShadowGroup::init();
   SoShader::init();
   SoVBO::init();
 
