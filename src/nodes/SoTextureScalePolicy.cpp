@@ -218,6 +218,8 @@ convert_policy(const SoTextureScalePolicy::Policy policy)
     return SoTextureScalePolicyElement::FRACTURE;
     break;
   }
+  // needed for gcc 4.0.1 (Mac OS X)
+  return SoTextureScalePolicyElement::USE_TEXTURE_QUALITY;
 }
 
 // Doc from superclass.
