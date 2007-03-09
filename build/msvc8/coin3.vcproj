@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="coin3"
-	ProjectGUID="{F533FF00-691E-4493-9BE1-0CF80338E60C}"
+	ProjectGUID="{527D7B92-C2E0-4F31-A482-1401BA2E2AB4}"
 	>
 	<Platforms>
 		<Platform
@@ -85,7 +85,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-lib-debug.bat"
+				CommandLine="../misc/install-sdk.bat lib debug"
 			/>
 		</Configuration>
 		<Configuration
@@ -181,7 +181,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-dll-release.bat"
+				CommandLine="../misc/install-sdk.bat dll release"
 			/>
 		</Configuration>
 		<Configuration
@@ -256,7 +256,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-lib-release.bat"
+				CommandLine="../misc/install-sdk.bat lib release"
 			/>
 		</Configuration>
 		<Configuration
@@ -352,7 +352,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-dll-debug.bat"
+				CommandLine="../misc/install-sdk.bat dll debug"
 			/>
 		</Configuration>
 	</Configurations>
@@ -38986,7 +38986,11 @@
 				Name="Inventor\system headers"
 				>
 				<File
-					RelativePath="include\Inventor\system\gl.h"
+					RelativePath="include\Inventor\system\gl-headers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\system\gl.h"
 					>
 				</File>
 				<File

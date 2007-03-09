@@ -636,7 +636,8 @@ copy /Y ..\..\include\Inventor\sensors\SoSensor.h %COINDIR%\include\Inventor\sen
 copy /Y ..\..\include\Inventor\sensors\SoSensorManager.h %COINDIR%\include\Inventor\sensors\SoSensorManager.h >nul:
 copy /Y ..\..\include\Inventor\sensors\SoTimerQueueSensor.h %COINDIR%\include\Inventor\sensors\SoTimerQueueSensor.h >nul:
 copy /Y ..\..\include\Inventor\sensors\SoTimerSensor.h %COINDIR%\include\Inventor\sensors\SoTimerSensor.h >nul:
-copy /Y include\Inventor\system\gl.h %COINDIR%\include\Inventor\system\gl.h >nul:
+copy /Y ..\..\include\Inventor\system\gl.h %COINDIR%\include\Inventor\system\gl.h >nul:
+copy /Y include\Inventor\system\gl-headers.h %COINDIR%\include\Inventor\system\gl-headers.h >nul:
 copy /Y include\Inventor\system\inttypes.h %COINDIR%\include\Inventor\system\inttypes.h >nul:
 copy /Y ..\..\include\Inventor\threads\SbThread.h %COINDIR%\include\Inventor\threads\SbThread.h >nul:
 copy /Y ..\..\include\Inventor\threads\SbMutex.h %COINDIR%\include\Inventor\threads\SbMutex.h >nul:

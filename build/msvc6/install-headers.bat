@@ -130,6 +130,9 @@ copy /Y ..\..\include\Inventor\annex\HardCopy\SoVectorizeHPGLAction.h %COINDIR%\
 copy /Y ..\..\include\Inventor\annex\HardCopy\SoVectorizeGDIAction.h %COINDIR%\include\Inventor\annex\HardCopy\SoVectorizeGDIAction.h >nul:
 copy /Y ..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h %COINDIR%\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h >nul:
 copy /Y ..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h %COINDIR%\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h >nul:
+copy /Y ..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h >nul:
+copy /Y ..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h >nul:
+copy /Y ..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h >nul:
 copy /Y ..\..\include\Inventor\bundles\SoBundle.h %COINDIR%\include\Inventor\bundles\SoBundle.h >nul:
 copy /Y ..\..\include\Inventor\bundles\SoMaterialBundle.h %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h >nul:
 copy /Y ..\..\include\Inventor\bundles\SoNormalBundle.h %COINDIR%\include\Inventor\bundles\SoNormalBundle.h >nul:
@@ -633,7 +636,8 @@ copy /Y ..\..\include\Inventor\sensors\SoSensor.h %COINDIR%\include\Inventor\sen
 copy /Y ..\..\include\Inventor\sensors\SoSensorManager.h %COINDIR%\include\Inventor\sensors\SoSensorManager.h >nul:
 copy /Y ..\..\include\Inventor\sensors\SoTimerQueueSensor.h %COINDIR%\include\Inventor\sensors\SoTimerQueueSensor.h >nul:
 copy /Y ..\..\include\Inventor\sensors\SoTimerSensor.h %COINDIR%\include\Inventor\sensors\SoTimerSensor.h >nul:
-copy /Y include\Inventor\system\gl.h %COINDIR%\include\Inventor\system\gl.h >nul:
+copy /Y ..\..\include\Inventor\system\gl.h %COINDIR%\include\Inventor\system\gl.h >nul:
+copy /Y include\Inventor\system\gl-headers.h %COINDIR%\include\Inventor\system\gl-headers.h >nul:
 copy /Y include\Inventor\system\inttypes.h %COINDIR%\include\Inventor\system\inttypes.h >nul:
 copy /Y ..\..\include\Inventor\threads\SbThread.h %COINDIR%\include\Inventor\threads\SbThread.h >nul:
 copy /Y ..\..\include\Inventor\threads\SbMutex.h %COINDIR%\include\Inventor\threads\SbMutex.h >nul:
@@ -651,6 +655,7 @@ copy /Y ..\..\include\Inventor\SbBox.h %COINDIR%\include\Inventor\SbBox.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2d.h %COINDIR%\include\Inventor\SbBox2d.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2f.h %COINDIR%\include\Inventor\SbBox2f.h >nul:
 copy /Y ..\..\include\Inventor\SbBox2s.h %COINDIR%\include\Inventor\SbBox2s.h >nul:
+copy /Y ..\..\include\Inventor\SbBox2i32.h %COINDIR%\include\Inventor\SbBox2i32.h >nul:
 copy /Y ..\..\include\Inventor\SbBox3d.h %COINDIR%\include\Inventor\SbBox3d.h >nul:
 copy /Y ..\..\include\Inventor\SbBox3f.h %COINDIR%\include\Inventor\SbBox3f.h >nul:
 copy /Y ..\..\include\Inventor\SbBox3s.h %COINDIR%\include\Inventor\SbBox3s.h >nul:
@@ -682,6 +687,7 @@ copy /Y ..\..\include\Inventor\SbTime.h %COINDIR%\include\Inventor\SbTime.h >nul
 copy /Y ..\..\include\Inventor\SbVec2d.h %COINDIR%\include\Inventor\SbVec2d.h >nul:
 copy /Y ..\..\include\Inventor\SbVec2f.h %COINDIR%\include\Inventor\SbVec2f.h >nul:
 copy /Y ..\..\include\Inventor\SbVec2s.h %COINDIR%\include\Inventor\SbVec2s.h >nul:
+copy /Y ..\..\include\Inventor\SbVec2i32.h %COINDIR%\include\Inventor\SbVec2i32.h >nul:
 copy /Y ..\..\include\Inventor\SbVec3d.h %COINDIR%\include\Inventor\SbVec3d.h >nul:
 copy /Y ..\..\include\Inventor\SbVec3f.h %COINDIR%\include\Inventor\SbVec3f.h >nul:
 copy /Y ..\..\include\Inventor\SbVec3s.h %COINDIR%\include\Inventor\SbVec3s.h >nul:

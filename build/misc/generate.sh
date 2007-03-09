@@ -4,7 +4,7 @@
 #
 # 20041214 larsa
 
-proper=false;
+proper=true;
 
 rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln install-headers.bat;
 if $proper; then
@@ -30,7 +30,7 @@ if $proper; then
     --disable-debug --disable-symbols --enable-optimization || exit 1;
   cp include/config.h include/config-release.h;
 
-  cp config-wrapper.h include/config.h;
+  cp ../misc/config-wrapper.h include/config.h;
 else
   ./config.status --file=cfg/gendsp.pl;
 fi

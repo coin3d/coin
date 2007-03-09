@@ -44,7 +44,7 @@
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-lib-debug.bat"/>
+				CommandLine="../misc/install-sdk.bat lib debug"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -108,7 +108,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-dll-release.bat"/>
+				CommandLine="../misc/install-sdk.bat dll release"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -162,7 +162,7 @@
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-lib-release.bat"/>
+				CommandLine="../misc/install-sdk.bat lib release"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -225,7 +225,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="install-dll-debug.bat"/>
+				CommandLine="../misc/install-sdk.bat dll debug"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -1580,6 +1580,50 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\base\SbBox2i32.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\base/"
+							ProgramDataBaseFileName="StaticDebug\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="1"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\base/"
+							ProgramDataBaseFileName="Release\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\base/"
+							ProgramDataBaseFileName="StaticRelease\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\base/"
+							ProgramDataBaseFileName="Debug\base/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\base\SbBox2s.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -2857,6 +2901,50 @@
 				</File>
 				<File
 					RelativePath="..\..\src\base\SbVec2f.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\base/"
+							ProgramDataBaseFileName="StaticDebug\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="1"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\base/"
+							ProgramDataBaseFileName="Release\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\base/"
+							ProgramDataBaseFileName="StaticRelease\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\base/"
+							ProgramDataBaseFileName="Debug\base/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\base\SbVec2i32.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -28213,6 +28301,142 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="shadows sources"
+				Filter="c;cpp;ic;icc;h">
+				<File
+					RelativePath="..\..\src\shadows\SoShadowGroup.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="1"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shadows\SoShadowStyle.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="1"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shadows\SoShadowStyleElement.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="1"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
 				Name="threads sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
@@ -33394,6 +33618,23 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="FXViz\nodes headers"
+				Filter="">
+				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="FXViz\elements headers"
+				Filter="">
+				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h">
+				</File>
+			</Filter>
+			<Filter
 				Name="Inventor\bundles headers"
 				Filter="">
 				<File
@@ -34978,7 +35219,10 @@
 				Name="Inventor\system headers"
 				Filter="">
 				<File
-					RelativePath="include\Inventor\system\gl.h">
+					RelativePath="include\Inventor\system\gl-headers.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\system\gl.h">
 				</File>
 				<File
 					RelativePath="include\Inventor\system\inttypes.h">
@@ -35038,6 +35282,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbBox2f.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SbBox2i32.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbBox2s.h">
@@ -35134,6 +35381,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbVec2f.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SbVec2i32.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbVec2s.h">
@@ -38183,33 +38433,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\SoGLnonindexedTristripSetTemplate.icc">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\misc\SoGLP.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
