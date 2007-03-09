@@ -35,10 +35,7 @@
    up. */
 #define GL_GLEXT_PROTOTYPES 1
 
-@SIM_INCLUDE_WINDOWS_H@
-@SIM_INCLUDE_GL_H@
-@SIM_INCLUDE_GLU_H@
-@SIM_INCLUDE_GLEXT_H@
+#include <Inventor/system/gl-headers.h>
 
 /**********************************************************************/
 

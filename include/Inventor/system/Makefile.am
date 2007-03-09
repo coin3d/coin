@@ -1,25 +1,26 @@
 
 PublicHeaders = \
 	gl.h \
+	gl-headers.h \
 	inttypes.h
 PrivateHeaders = \
-	gl.h.in \
+	gl-headers.h.in \
 	inttypes.h.in
 ObsoleteHeaders =
 
 BUILT_SOURCES = \
-	gl.h \
+	gl-headers.h \
 	inttypes.h
 DISTCLEANFILES = \
-	gl.h \
+	gl-headers.h \
 	inttypes.h \
 	stamp-h3
 
-gl.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+gl-headers.h: $(srcdir)/gl-headers.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl-headers.h )
 
-inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl.h )
+inttypes.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
 
 ##$ BEGIN TEMPLATE Make-Include-Common(system, system)
 # **************************************************************************
