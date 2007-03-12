@@ -251,6 +251,17 @@ SoGLDisplayList::close(SoState * state)
                          "rendering.");
     }
   }
+  else {
+    const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
+    assert(cc_glglue_has_texture_objects(glw));
+    GLenum target = PRIVATE(this)->texturetarget;
+    if (target == 0) {
+      // target is not set. Assume normal 2D texture. 
+      target = GL_TEXTURE_2D;
+    }
+    // unbind current texture object
+    cc_glglue_glBindTexture(glw, target, (GLuint) 0);
+  }
 }
 
 /*!
