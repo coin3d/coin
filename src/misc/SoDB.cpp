@@ -538,10 +538,11 @@ SoDB::init(void)
 
   SoHardCopy::init();
 
-  // FIXME: probably temporary. Add FXViz::init() or something? pederb, 2007-03-09
-  SoShadowGroup::init();
   SoShader::init();
   SoVBO::init();
+
+  // FIXME: probably temporary. Add FXViz::init() or something? pederb, 2007-03-09
+  SoShadowGroup::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();
