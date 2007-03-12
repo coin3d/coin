@@ -30,8 +30,32 @@
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/C/glue/cg.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // *************************************************************************
+
+static const char * SO_SHADER_DIR = NULL;
+static SbHash <char *, const char *> * shader_dict = NULL;
+
+static void
+soshader_cleanup_callback(const char * const & key,
+                          char * const & obj,
+                          void * closure)
+{
+  delete[] obj;
+}
+
+static void 
+soshader_cleanup(void)
+{
+  shader_dict->apply(soshader_cleanup_callback, NULL);
+  delete shader_dict;
+}
 
 void
 SoShader::init(void)
@@ -111,4 +135,69 @@ SoShader::init(void)
   if (SoShaderParameterArray4i::getClassTypeId() == SoType::badType())
     SoShaderParameterArray4i::initClass();
 #endif
+
+  SO_SHADER_DIR = coin_getenv("SO_SHADER_DIR");
+  shader_dict = new SbHash <char *, const char *>;
+
+  coin_atexit((coin_atexit_f*) soshader_cleanup, CC_ATEXIT_NORMAL);
+}
+
+const char * 
+SoShader::getNamedScript(const SbName & name, const Type type)
+{
+  // FIXME: temporary until we can make compiled-in versions of the shaders
+  if (SO_SHADER_DIR == NULL) {
+    SoDebugError::postWarning("SoShader::getNamedScript",
+                              "SO_SHADER_DIR not set");
+    return NULL;
+  }
+  
+  SbString filename(SO_SHADER_DIR);
+  filename += "/";
+  filename += name.getString();
+
+  switch (type) {
+  case ARB_SHADER:
+    filename += ".arb";
+    break;
+  case CG_SHADER:
+    filename += ".cg";
+    break;
+  case GLSL_SHADER:
+    filename += ".glsl";
+    break;
+  default:
+    assert(0 && "unknown shader type");
+    break;
+  }
+
+  SbName shadername(filename.getString());
+  char * shader = NULL;
+  
+  if (!shader_dict->get(shadername.getString(), shader)) {
+    FILE * fp = fopen(filename.getString(), "rb");
+    if (fp) {
+      (void) fseek(fp, 0, SEEK_END);
+      size_t size = (size_t) ftell(fp);
+      (void) fseek(fp, 0, SEEK_SET);
+
+      shader = new char[size+1];
+      shader[size] = 0;
+      shader_dict->put(shadername, shader);
+      
+      if (!fread(shader, size, 1, fp) == 1) {
+        SoDebugError::postWarning("SoShader::getNamedScript",
+                                  "Unable to read shader: %s",
+                                  filename.getString());
+      }
+      fclose(fp);
+    }
+    else {
+      shader_dict->put(shadername, NULL);
+      SoDebugError::postWarning("SoShader::getNamedScript",
+                                "Unable to find shader: %s",
+                                filename.getString());
+    }
+  }
+  return shader;
 }

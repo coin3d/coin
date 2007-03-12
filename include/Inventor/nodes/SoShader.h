@@ -30,6 +30,8 @@
 
 // *************************************************************************
 
+class SbName;
+
 class SoShader
 {
 public:
@@ -40,6 +42,8 @@ public:
     CG_SHADER,
     GLSL_SHADER
   };
+
+  static const char * getNamedScript(const SbName & name, const Type type);
 };
 
 // *************************************************************************
