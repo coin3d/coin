@@ -113,6 +113,7 @@ PublicHeaders = \
 	SoTextureCoordinateReflectionMap.h \
 	SoTextureCoordinateObject.h \
 	SoTextureCubeMap.h \
+	SoTextureMatrixTransform.h \
 	SoTextureScalePolicy.h \
 	SoTextureUnit.h \
 	SoTransform.h \

@@ -355,6 +355,7 @@ RegularSources = \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp \
 	SoTextureCubeMap.cpp \
+	SoTextureMatrixTransform.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTextureUnit.cpp \
 	SoTransform.cpp \
@@ -472,11 +473,11 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp all-nodes-cpp.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
 am__objects_1 = all-nodes-cpp.$(OBJEXT)
 am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoAnnoText3Property.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
@@ -525,6 +526,7 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoTextureCoordinateNormalMap.$(OBJEXT) \
 	SoTextureCoordinateReflectionMap.$(OBJEXT) \
 	SoTextureCoordinateObject.$(OBJEXT) SoTextureCubeMap.$(OBJEXT) \
+	SoTextureMatrixTransform.$(OBJEXT) \
 	SoTextureScalePolicy.$(OBJEXT) SoTextureUnit.$(OBJEXT) \
 	SoTransform.$(OBJEXT) SoTransparencyType.$(OBJEXT) \
 	SoTransformSeparator.$(OBJEXT) SoTransformation.$(OBJEXT) \
@@ -568,11 +570,11 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp
 nodes_lst_OBJECTS = $(am_nodes_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -611,11 +613,11 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp all-nodes-cpp.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
 am__objects_6 = all-nodes-cpp.lo
 am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoAntiSquish.lo SoArray.lo SoBaseColor.lo SoBlinker.lo \
@@ -647,10 +649,10 @@ am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoTextureCoordinateNormalMap.lo \
 	SoTextureCoordinateReflectionMap.lo \
 	SoTextureCoordinateObject.lo SoTextureCubeMap.lo \
-	SoTextureScalePolicy.lo SoTextureUnit.lo SoTransform.lo \
-	SoTransparencyType.lo SoTransformSeparator.lo \
-	SoTransformation.lo SoTranslation.lo SoUnits.lo \
-	SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
+	SoTextureMatrixTransform.lo SoTextureScalePolicy.lo \
+	SoTextureUnit.lo SoTransform.lo SoTransparencyType.lo \
+	SoTransformSeparator.lo SoTransformation.lo SoTranslation.lo \
+	SoUnits.lo SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
 	SoWWWInline.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
@@ -689,11 +691,11 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp
 libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS =
 libnodes@SUFFIX@LINKHACK_la_LIBADD =
@@ -730,11 +732,11 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp all-nodes-cpp.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
 am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
@@ -770,11 +772,11 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTextureCoordinateNormalMap.cpp \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp SoTextureCubeMap.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoTextureMatrixTransform.cpp SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
+	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
+	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoWWWAnchor.cpp SoWWWInline.cpp
 libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -938,6 +940,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateSphere.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCubeMap.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCubeMap.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureMatrixTransform.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureMatrixTransform.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScalePolicy.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScalePolicy.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureUnit.Plo \
@@ -1229,6 +1233,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateSphere.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCubeMap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCubeMap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureMatrixTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureMatrixTransform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScalePolicy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScalePolicy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureUnit.Plo@am__quote@

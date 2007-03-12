@@ -92,6 +92,7 @@ RegularSources = \
 	SoTextureCoordinateReflectionMap.cpp \
 	SoTextureCoordinateObject.cpp \
 	SoTextureCubeMap.cpp \
+	SoTextureMatrixTransform.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTextureUnit.cpp \
 	SoTransform.cpp \

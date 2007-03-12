@@ -110,6 +110,7 @@
 #include "SoTextureCoordinateReflectionMap.cpp"
 #include "SoTextureCoordinateObject.cpp"
 #include "SoTextureCubeMap.cpp"
+#include "SoTextureMatrixTransform.cpp"
 #include "SoTextureScalePolicy.cpp"
 #include "SoTextureUnit.cpp"
 #include "SoTransform.cpp"
