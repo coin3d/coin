@@ -854,8 +854,34 @@ SoGLImage::isOfType(SoType type) const
 }
 
 /*!
-  Can be used for setting custom OpenGL textures inside an SoGLImage instance.
+  Can be used for creating a custom OpenGL texture inside an SoGLImage instance.
+
+  Example use (creates a depth texture):
+
+  SoGLDisplayList * depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+  depthmap->ref();  
+  depthmap->open(state);
+  
+  glTexImage2D(GL_TEXTURE_2D, 0, 
+               GL_DEPTH_COMPONENT, // GL_DEPTH_COMPONENT24
+               size[0], size[1], 
+               0,
+               GL_DEPTH_COMPONENT,
+               GL_UNSIGNED_BYTE, NULL);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+   
+  depthmap->close(state);
+
+  SoGLImage * image = new SoGLImage;
+  image->setGLDisplayList(depthmap, state);
+
+  \since Coin 2.5
 */
+
 void 
 SoGLImage::setGLDisplayList(SoGLDisplayList * dl,
                             SoState * state,
