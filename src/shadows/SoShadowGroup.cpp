@@ -48,7 +48,17 @@
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/nodes/SoFragmentShader.h>
+#include <Inventor/nodes/SoShaderProgram.h>
+#include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/nodes/SoShader.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
 #include <Inventor/SoPath.h>
@@ -60,6 +70,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/C/glue/gl.h>
 #include <math.h>
 
 // *************************************************************************
@@ -77,7 +88,7 @@ public:
     this->depthmap->ref();
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
     this->depthmap->size = SbVec2s(512, 512);
-    this->depthmap->type = SoSceneTexture2::DEPTH_COMPONENT;
+    this->depthmap->type = SoSceneTexture2::DEPTH;
 
     SoTransparencyType * tt = new SoTransparencyType;
     tt->value = SoTransparencyType::NONE;
@@ -86,14 +97,19 @@ public:
 
     this->camera = new SoPerspectiveCamera;
     this->camera->ref();
+    this->camera->viewportMapping = SoCamera::LEAVE_ALONE;
 
     SoSeparator * sep = new SoSeparator;
     sep->addChild(this->camera);
     
     for (int i = 0; i < scene->getNumChildren(); i++) {
-      sep->addChild(scene->getChild(i));
+      //if (!scene->getChild(i)->isOfType(SoSpotLight::getClassTypeId())) {
+        sep->addChild(scene->getChild(i));
+        //}
     }
     this->depthmap->scene = sep;
+
+    this->matrix = SbMatrix::identity();
   }
   ~SoShadowSpotLightCache() {
     if (this->light) this->light->unref();
@@ -102,6 +118,7 @@ public:
     if (this->camera) this->camera->unref();
   }
 
+  SbMatrix matrix;
   SoPath * path;
   SoSpotLight * light;
   SoSceneTexture2 * depthmap;
@@ -113,12 +130,29 @@ public:
 class SoShadowGroupP {
 public:
   SoShadowGroupP(SoShadowGroup * master) : 
+    master(master), 
     matrixaction(SbViewportRegion(SbVec2s(100,100))),
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
-    master(master), 
-    spotlightsvalid(FALSE) 
-  { }
+    spotlightsvalid(FALSE),
+    shaderprogram(NULL),
+    vertexshader(NULL),
+    fragmentshader(NULL)
+  { 
+    this->shaderprogram = new SoShaderProgram;
+    this->shaderprogram->ref();
+    this->vertexshader = new SoVertexShader;
+    this->vertexshader->ref();
+    this->fragmentshader = new SoFragmentShader;
+    this->fragmentshader->ref();
+
+    // FIXME: just testing
+    this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
+    this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
+  }
   ~SoShadowGroupP() {
+    if (this->vertexshader) this->vertexshader->unref();
+    if (this->fragmentshader) this->fragmentshader->unref();
+    if (this->shaderprogram) this->shaderprogram->unref();
     this->deleteSpotLights();
   }
 
@@ -129,18 +163,25 @@ public:
     this->spotlights.truncate(0);
   }
   
+  void setVertexShader(SoState * state);
+  void setFragmentShader(SoState * state);
   void updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & transform);
   void renderDepthMap(SoShadowSpotLightCache * cache,
                       SoGLRenderAction * action);
   void updateSpotLights(SoGLRenderAction * action);
   
+  SoShadowGroup * master;
   SoSearchAction search;
   SoGetMatrixAction matrixaction;
   SoGetBoundingBoxAction bboxaction;
 
-  SoShadowGroup * master;
   SbBool spotlightsvalid;
   SbList <SoShadowSpotLightCache*> spotlights;
+
+  SoShaderProgram * shaderprogram;
+  SoVertexShader * vertexshader;
+  SoFragmentShader * fragmentshader;
+
 };
 
 // *************************************************************************
@@ -200,6 +241,11 @@ SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
   SoShapeStyleElement::setShadowMapRendering(state, TRUE);
   PRIVATE(this)->updateSpotLights(action);
   SoShapeStyleElement::setShadowMapRendering(state, FALSE);
+
+  PRIVATE(this)->setVertexShader(state);
+  PRIVATE(this)->setFragmentShader(state);
+  PRIVATE(this)->shaderprogram->GLRender(action);
+  
   inherited::GLRenderBelowPath(action);
   state->pop();
 }
@@ -268,7 +314,28 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
   for (i = 0; i < this->spotlights.getLength(); i++) {
     SoShadowSpotLightCache * cache = this->spotlights[i];
     SoTextureUnitElement::set(state, PUBLIC(this), i);
+
+    // SbMatrix mm = SoModelMatrixElement::get(state) * SoViewingMatrixElement::get(state);
+    SbMatrix mat = cache->matrix;
+
+    if (i == 0) {
+      SoTextureMatrixElement::mult(state, PUBLIC(this), mat);
+    }
+    else {
+      SoMultiTextureMatrixElement::mult(state, PUBLIC(this), i, cache->matrix);
+    }
+    
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+
+    cc_glglue_glPolygonOffsetEnable(glue, TRUE, cc_glglue_FILLED);
+    cc_glglue_glPolygonOffset(glue, 1.0f, 1.0f);
+
+    glColorMask(0,0,0,0);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    
     this->renderDepthMap(cache, action);
+    glColorMask(1,1,1,1);
+    cc_glglue_glPolygonOffsetEnable(glue, FALSE, cc_glglue_FILLED);
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }
@@ -282,8 +349,14 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   SbVec3f pos = light->location.getValue();
   transform.multVecMatrix(pos, pos);
   cam->position.setValue(pos);
-	cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), light->direction.getValue()));
+
+
+  SbVec3f dir = light->direction.getValue();
+  (void) dir.normalize();
+
+	cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
 	cam->heightAngle.setValue(light->cutOffAngle.getValue());
+	// cam->heightAngle.setValue(60 * M_PI / 180.0);
 
   // FIXME: cache bbox in the pimpl class
   this->bboxaction.apply(cache->depthmap->scene.getValue());
@@ -303,7 +376,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   cache->farval = -box.getMin()[2];
 
   // light won't hit the scene
-  if (cache->farval <= 0.0f) return;
+  // if (cache->farval <= 0.0f) return;
   
   const int depthbits = 24;
   float r = (float) pow(2.0, (double) depthbits);
@@ -312,15 +385,36 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   if (cache->nearval < nearlimit) {
     cache->nearval = nearlimit;
   }    
+
   const float SLACK = 0.001f;
-  
+
   cache->nearval = cam->nearDistance = cache->nearval * (1.0f - SLACK);
   cache->farval = cam->farDistance = cache->farval * (1.0f + SLACK);
-#if 0  
-  fprintf(stderr,"nearfar %g %g\n",
-          cache->nearval,
-          cache->farval);
+
+  SbViewVolume vv = cam->getViewVolume(1.0f);
+  SbMatrix affine, proj;
+  
+  vv.getMatrices(affine, proj);
+
+  SbMatrix bias(0.5f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.5f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.5f, 1.0f);
+  
+  cache->matrix = affine * proj * bias;
+
+#if 0
+  fprintf(stderr,"matrix:\n"
+          "%.2f %.2f %.2f %.2f\n"
+          "%.2f %.2f %.2f %.2f\n"
+          "%.2f %.2f %.2f %.2f\n"
+          "%.2f %.2f %.2f %.2f\n",
+          cache->matrix[0][0], cache->matrix[0][1], cache->matrix[0][2], cache->matrix[0][3],
+          cache->matrix[1][0], cache->matrix[1][1], cache->matrix[1][2], cache->matrix[1][3],
+          cache->matrix[2][0], cache->matrix[2][1], cache->matrix[2][2], cache->matrix[2][3],
+          cache->matrix[3][0], cache->matrix[3][1], cache->matrix[3][2], cache->matrix[3][3]);
 #endif
+
 }
 
 void 
@@ -328,6 +422,88 @@ SoShadowGroupP::renderDepthMap(SoShadowSpotLightCache * cache,
                               SoGLRenderAction * action)
 {
   cache->depthmap->GLRender(action);
+}
+
+void 
+SoShadowGroupP::setVertexShader(SoState * state)
+{
+  if (this->vertexshader->sourceProgram.getValue().getLength()) return;
+  
+  SbString dirlight(SoShader::getNamedScript("lights/directionalLight", 
+                                             SoShader::GLSL_SHADER));
+
+  SbString program = 
+    "varying vec4 shadowCoord0;\n";
+
+  program += dirlight;
+  
+  program +=
+    "void main(void) {\n"
+    "vec3 normal = gl_NormalMatrix * gl_Normal;\n"
+    "vec4 ambient = vec4(0.0);\n"
+    "vec4 diffuse = vec4(0.0);\n"
+    "vec4 specular = vec4(0.0);\n"
+    "DirectionalLight(0, normal, ambient, diffuse, specular);\n"
+    
+    "vec4 color = gl_FrontLightModelProduct.sceneColor + "
+    "  ambient * gl_FrontMaterial.ambient + "
+    "  diffuse * gl_FrontMaterial.diffuse + "
+    "  specular * gl_FrontMaterial.specular;\n"
+    
+    "mat4 mat = gl_TextureMatrix[0];\n"
+    "vec4 pos = gl_Vertex;\n"
+    "vec4 texCoord0 = mat * pos;\n"
+    "shadowCoord0 = texCoord0 / texCoord0.w;\n"
+    "gl_Position = ftransform();\n"
+    "gl_FrontColor = color;\n"
+    "}\n";
+
+  // fprintf(stderr,"program: %s\n", program.getString());
+
+  this->vertexshader->sourceProgram = program;
+  this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+}
+
+void 
+SoShadowGroupP::setFragmentShader(SoState * state)
+{
+  if (this->fragmentshader->sourceProgram.getValue().getLength()) return;
+
+  SbString program;
+  
+  program += 
+    "uniform sampler2DShadow shadowMap0;\n"
+    "varying vec4 shadowCoord0;\n"
+    
+    "float lookup(float x, float y) {\n"
+    "  vec4 coord = shadowCoord0 + vec4(x,y,0,0);\n"
+    //"  if (coord.x < 0.0 || coord.x > 1.0) return 1.0;\n"
+    //"  if (coord.y < 0.0 || coord.y > 1.0) return 1.0;\n"
+    "  float depth = shadow2DProj(shadowMap0, coord).x;\n"
+    "  return depth != 1.0 ? 0.75 : 1.0;\n"
+    "}\n"
+
+    "float depth(float x, float y) {\n"
+    "  return shadow2DProj(shadowMap0, shadowCoord0 + vec4(x,y,0,0)).x;\n"
+    "}\n"
+
+    "void main(void) {\n"
+    "float shadeFactor = lookup(0.0, 0.0);\n"
+    "gl_FragColor = vec4(shadeFactor * gl_Color.rgb, gl_Color.a);\n"
+    "}\n";
+  
+  this->fragmentshader->sourceProgram = program;
+  this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+
+
+  SoShaderParameter1i * shadowmap0 = 
+    new SoShaderParameter1i();
+
+  shadowmap0->name = "shadowMap0";
+  shadowmap0->value = 0;
+
+  this->fragmentshader->parameter = shadowmap0;
+ 
 }
 
 #undef PUBLIC
