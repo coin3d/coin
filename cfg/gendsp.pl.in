@@ -332,6 +332,8 @@ if ( $ARGV[0] eq "--register-public-header" ) {
 
   open(DSP, ">>${studiofile}");
   $group = Dirname($headerfile);
+  $group =~ s%.*lib[\\/]?%%g;
+  $group =~ s%.*src[\\/]?%%g;
   $group =~ s%.*include[\\/]?%%g;
   $group =~ s%^Inventor[\\/]annex[\\/]%%g;
 
@@ -410,6 +412,8 @@ for $arg (@ARGV) {
       $Library = substr($LIBRARY, 0, 1) . substr($library, 1);
       if ( $Library =~ m/^So/o ) {
         $Library = substr($Library, 0, 2) . substr($LIBRARY, 3, 1) . substr($library, 4, -1);
+      } elsif ( $Library =~ m/^Coin../o ) {
+        $Library = substr($Library, 0, 4) . substr($LIBRARY, 5, 1) . substr($library, 6, -1);
       }
     } elsif ( $arg =~ m/^-Ddspfile=/ || $arg =~ m/^-Wl,-Ddspfile=/ ) {
       # the build system is hacked to pass us the path to the .dsp file
@@ -426,6 +430,8 @@ for $arg (@ARGV) {
       $Library = substr($LIBRARY, 0, 1) . substr($library, 1);
       if ( $Library =~ m/^So/o ) {
         $Library = substr($Library, 0, 2) . substr($LIBRARY, 3, 1) . substr($library, 4);
+      } elsif ( $Library =~ m/^Coin../o ) {
+        $Library = substr($Library, 0, 4) . substr($LIBRARY, 5, 1) . substr($library, 6, -1);
       }
     } elsif ( $arg =~ m/^-/ ) {
       # nada - no other options for us
@@ -539,7 +545,7 @@ LINK32=link.exe
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-dll-release.bat
+PostBuild_Cmds=..\\misc\\install-sdk.bat dll release
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)"
@@ -568,7 +574,7 @@ LINK32=link.exe
 # ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@d.dll"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-dll-debug.bat
+PostBuild_Cmds=..\\misc\\install-sdk.bat dll debug
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION\@ - Win32 LIB (Release)"
@@ -595,7 +601,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@s.lib"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-lib-release.bat
+PostBuild_Cmds=..\\misc\\install-sdk.bat lib release
 # End Special Build Tool
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION\@ - Win32 LIB (Debug)"
@@ -622,7 +628,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@sd.lib"
 # Begin Special Build Tool
 SOURCE="\$(InputPath)"
-PostBuild_Cmds=install-lib-debug.bat
+PostBuild_Cmds=..\\misc\\install-sdk.bat lib debug
 # End Special Build Tool
 
 !ENDIF
@@ -669,6 +675,7 @@ if ( $sourcefile ne "" ) {
   $targetdir = $sourcefiledir;
   $targetdir =~ s%^${sourcefiledirdirdir}[/\\]?%%g;
   $targetdir =~ s%.*src[/\\]?%%g;
+  $targetdir =~ s%.*lib[/\\]?%%g;
   $group = $targetdir;
   $targetdir = Unix2Dos($targetdir);
   SaveVars();
@@ -741,17 +748,19 @@ _EODSP
     # header file name.  It is also assumed that the moc file is not built
     # on its own but included in the source file, and named moc_*.icc.
     $mocfile = $matches[0];
-    $mocfile =~ s,.*<(.*icc)>.*,$1,;
+    $mocfile =~ m%.*<(.*icc)>.*%;
+    $mocfile = $1;
     $mocfile =~ s,.*/,,;
     open(MOC, $mocfile);
     @mocmatches = grep(/from reading C/, <MOC>);
     close(MOC);
     $headerfile = $mocmatches[0];
-    $headerfile =~ s,.*'(.*)'$,$1,;
-    $mocfile = "$cwd/$mocfile";
+    $headerfile =~ m%.*\'(.*)\'%;
+    $headerfile = $1;
+    $mocfile = "${cwd}/${mocfile}";
     $mocfile =~ s%${build_dir}/%%;
     $mocfile = Unix2Dos($mocfile);
-    $headerfilepath = "$cwd/$headerfile";
+    $headerfilepath = "${cwd}/${headerfile}";
     $headerfilepath =~ s%${build_dir}/%%;
 
     if ( -f $headerfile ) {
@@ -884,7 +893,7 @@ if ( $outputfile =~ /\.so\./ ) {
   print DSP "# Begin Group \"Private Headers\"\n";
   print DSP "\n";
   print DSP "# PROP Default_Filter \"h;ic;icc\"\n";
-  open(FIND, "(find ${src_dir}/src ${src_dir}/include ${src_dir}/data ${build_dir} -name \"*.h\" | xargs grep -l \"_INTERNAL\\\$\" | xargs grep -i -l \"#error.*private\"; find ${src_dir}/src ${build_dir} -name \"*.ic\" -o -name \"*.icc\" ) | sort | uniq |");
+  open(FIND, "(find ${src_dir}/src ${src_dir}/include ${src_dir}/data ${src_dir}/lib ${build_dir} -name \"*.h\" | xargs grep -l \"_INTERNAL\\\$\" | xargs grep -i -l \"#error.*private\"; find ${src_dir}/src ${src_dir}/lib ${build_dir} -name \"*.ic\" -o -name \"*.icc\" ) | sort | uniq |");
   @files = <FIND>;
   close(FIND);
   
