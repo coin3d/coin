@@ -57,7 +57,7 @@
         size 256 256
         scene NULL
         sceneTransparencyType NULL
-        type RGBA
+        type RGBA_UNSIGNED_BYTE
         backgroundColor 0 0 0 0
         transparencyFunction NONE
         wrapS REPEAT
@@ -225,15 +225,15 @@
 /*!
   \var SoSFNode SoSceneTexture2::type
   
-  The type of texture to generate. RGBA for normal texture, DEPTH for
-  a depth buffer texture, VSM for a Variance Shadow Map
-  texture. Default is RGBA.
+  The type of texture to generate. RGBA_UNSIGNED_BYTE for normal texture, DEPTH for
+  a depth buffer texture, RGBA_FLOAT for a floating point RGBA texture.
+  texture. Default is RGBA_UNSIGNED_BYTE.
 
 */
 
 /*!
-  \var SoSceneTexture2::Type SoSceneTexture2::RGBA
-  Specifies an RGBA texture.
+  \var SoSceneTexture2::Type SoSceneTexture2::RGBA_UNSIGNED_BYTE
+  Specifies an RGBA texture with 8 bits per component.
 */
 
 /*!
@@ -242,8 +242,8 @@
 */
 
 /*!
-  \var SoSceneTexture2::Type SoSceneTexture2::VSM
-  Specifies a variance shadow map texture.
+  \var SoSceneTexture2::Type SoSceneTexture2::RGBA_FLOAT
+  Specifies a RGBA texture with floating point components.
 */
 
 #include <Inventor/nodes/SoSceneTexture2.h>
@@ -408,7 +408,7 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(type, (RGBA));
+  SO_NODE_ADD_FIELD(type, (RGBA_UNSIGNED_BYTE));
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
@@ -427,9 +427,9 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
   SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 
-  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA_UNSIGNED_BYTE);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA_FLOAT);
   SO_NODE_DEFINE_ENUM_VALUE(Type, DEPTH);
-  SO_NODE_DEFINE_ENUM_VALUE(Type, VSM);
 
   SO_NODE_SET_SF_ENUM_TYPE(type, Type);
 }
@@ -631,6 +631,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
 SoSceneTexture2P::~SoSceneTexture2P()
 {
   // FIXME: free FBO buffers
+
   if (this->fbo_texture) this->fbo_texture->unref(NULL);
   if (this->fbo_depthmap) this->fbo_depthmap->unref(NULL);
   if (this->glimage) this->glimage->unref(NULL);
@@ -964,32 +965,30 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
 	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   
-  if (type == SoSceneTexture2::RGBA || type == SoSceneTexture2::VSM || 1) {
-    this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
-    this->fbo_texture->ref();  
-    this->fbo_texture->open(state);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 
-                 4, 
-                 this->fbo_size[0], this->fbo_size[1], 
-                 0, /* border */ 
-                 GL_RGBA,
-                 GL_UNSIGNED_BYTE, NULL);
-    
-    // for mipmaps
-    // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-    if (cc_glglue_can_do_anisotropic_filtering(glue)) {
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
-                      cc_glglue_get_max_anisotropy(glue));
-    }
-    
-    this->fbo_texture->close(state);
+  this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+  this->fbo_texture->ref();  
+  this->fbo_texture->open(state);
+  
+  glTexImage2D(GL_TEXTURE_2D, 0, 
+               4, 
+               this->fbo_size[0], this->fbo_size[1], 
+               0, /* border */ 
+               GL_RGBA,
+               type == SoSceneTexture2::RGBA_FLOAT ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
+  
+  // for mipmaps
+  // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                    cc_glglue_get_max_anisotropy(glue));
   }
+  
+  this->fbo_texture->close(state);
 
   if (type == SoSceneTexture2::DEPTH) {
     this->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
@@ -1120,7 +1119,6 @@ SoSceneTexture2P::getTransparencyType(SoState * state)
   return (SoGLRenderAction::TransparencyType) 
     SoShapeStyleElement::getTransparencyType(state);
 }
-
 
 #undef PUBLIC
 

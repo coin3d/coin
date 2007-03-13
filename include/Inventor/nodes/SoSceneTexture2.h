@@ -63,9 +63,9 @@ public:
   };
   
   enum Type {
-    RGBA,
-    DEPTH,
-    VSM
+    RGBA_UNSIGNED_BYTE,
+    RGBA_FLOAT,
+    DEPTH
   };
 
   SoSFEnum wrapS;
