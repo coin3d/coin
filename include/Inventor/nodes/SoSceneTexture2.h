@@ -63,8 +63,9 @@ public:
   };
   
   enum Type {
-    DEPTH_COMPONENT = 0x1902, /* GL_DEPTH_COMPONENT */
-    RGBA = 0x1908 /* GL_RGBA */
+    RGBA,
+    DEPTH,
+    VSM
   };
 
   SoSFEnum wrapS;

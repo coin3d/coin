@@ -225,8 +225,10 @@
 /*!
   \var SoSFNode SoSceneTexture2::type
   
-  The type of texture to generate. RGBA for normal texture, DEPTH_COMPONENT
-  for a depth buffer texture. Default is RGBA.
+  The type of texture to generate. RGBA for normal texture, DEPTH for
+  a depth buffer texture, VSM for a Variance Shadow Map
+  texture. Default is RGBA.
+
 */
 
 /*!
@@ -235,10 +237,14 @@
 */
 
 /*!
-  \var SoSceneTexture2::Type SoSceneTexture2::DEPTH_COMPONENT
+  \var SoSceneTexture2::Type SoSceneTexture2::DEPTH
   Specifies a depth buffer texture.
 */
 
+/*!
+  \var SoSceneTexture2::Type SoSceneTexture2::VSM
+  Specifies a variance shadow map texture.
+*/
 
 #include <Inventor/nodes/SoSceneTexture2.h>
 
@@ -422,7 +428,8 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 
   SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA);
-  SO_NODE_DEFINE_ENUM_VALUE(Type, DEPTH_COMPONENT);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, DEPTH);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, VSM);
 
   SO_NODE_SET_SF_ENUM_TYPE(type, Type);
 }
@@ -450,7 +457,7 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   
   if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid)) {
     PRIVATE(this)->updateBuffer(state, quality);
-
+    
     // don't cache when we change the glimage
     SoCacheElement::setInvalid(TRUE);
     if (state->isCacheOpen()) {
@@ -704,15 +711,20 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     this->deleteFrameBufferObjects(glue, state);
     this->createFramebufferObjects(glue, state);
     
-    if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH_COMPONENT) {
-      this->glimage->setGLDisplayList(this->fbo_depthmap, state);
-    }
-    else {
-      this->glimage->setGLDisplayList(this->fbo_texture, state);
-    }
   }
   
   state->push();
+
+  // FIXME: for some reason we need to do this every frame. Investigate why.
+  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
+    assert(this->fbo_depthmap != NULL);
+    this->glimage->setGLDisplayList(this->fbo_depthmap, state,
+                                    SoGLImage::CLAMP, SoGLImage::CLAMP);
+  }
+  else {
+    assert(this->fbo_texture != NULL);
+    this->glimage->setGLDisplayList(this->fbo_texture, state);
+  }
 
   SoShapeStyleElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
 
@@ -745,7 +757,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   // make sure rendering has completed before switching back to the previous context
   glFlush();
   
-  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH_COMPONENT) {
+  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_depthmap->getFirstIndex());
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, 
                         this->fbo_size[0], this->fbo_size[1]);
@@ -946,68 +958,75 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   assert(this->fbo_frameBuffer == GL_INVALID_VALUE);
   assert(this->fbo_depthBuffer == GL_INVALID_VALUE);
 
+  SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
+
 	cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
-  this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
 	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   
-  this->fbo_texture->ref();  
-  this->fbo_texture->open(state);
-  
-  glTexImage2D(GL_TEXTURE_2D, 0, 
-               4, 
-               this->fbo_size[0], this->fbo_size[1], 
-               0, /* border */ 
-               GL_RGBA,
-               GL_UNSIGNED_BYTE, NULL);
-
-  // for mipmaps
-  // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
-  
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
-                    cc_glglue_get_max_anisotropy(glue));
+  if (type == SoSceneTexture2::RGBA || type == SoSceneTexture2::VSM || 1) {
+    this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+    this->fbo_texture->ref();  
+    this->fbo_texture->open(state);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, 
+                 4, 
+                 this->fbo_size[0], this->fbo_size[1], 
+                 0, /* border */ 
+                 GL_RGBA,
+                 GL_UNSIGNED_BYTE, NULL);
+    
+    // for mipmaps
+    // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+    if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                      cc_glglue_get_max_anisotropy(glue));
+    }
+    
+    this->fbo_texture->close(state);
   }
-  
-  this->fbo_texture->close(state);
-  cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
 
-  this->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
-  this->fbo_depthmap->ref();  
-  this->fbo_depthmap->open(state);
+  if (type == SoSceneTexture2::DEPTH) {
+    this->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+    this->fbo_depthmap->ref();  
+    this->fbo_depthmap->open(state);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, 
+                 GL_DEPTH_COMPONENT, /* GL_DEPTH_COMPONENT24? */ 
+                 this->fbo_size[0], this->fbo_size[1], 
+                 0, /* border */ 
+                 GL_DEPTH_COMPONENT,
+                 GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE_ARB, GL_COMPARE_R_TO_TEXTURE_ARB);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC_ARB, GL_LEQUAL);	
+    
+    if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                      cc_glglue_get_max_anisotropy(glue));
+    }
   
-  glTexImage2D(GL_TEXTURE_2D, 0, 
-               GL_DEPTH_COMPONENT, 
-               this->fbo_size[0], this->fbo_size[1], 
-               0, /* border */ 
-               GL_DEPTH_COMPONENT,
-               GL_UNSIGNED_BYTE, NULL);
-  
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
-                    cc_glglue_get_max_anisotropy(glue));
+    this->fbo_depthmap->close(state);
   }
-  
-  this->fbo_depthmap->close(state);
-  cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
 
-  // attach texture to framebuffer color object
-  cc_glglue_glFramebufferTexture2D(glue,
-                                   GL_FRAMEBUFFER_EXT, 
-                                   GL_COLOR_ATTACHMENT0_EXT, 
-                                   GL_TEXTURE_2D, 
-                                   (GLuint) this->fbo_texture->getFirstIndex(), 
-                                   0);
-
-
+  if (this->fbo_texture != NULL) {
+    // attach texture to framebuffer color object
+    cc_glglue_glFramebufferTexture2D(glue,
+                                     GL_FRAMEBUFFER_EXT, 
+                                     GL_COLOR_ATTACHMENT0_EXT, 
+                                     GL_TEXTURE_2D, 
+                                     (GLuint) this->fbo_texture->getFirstIndex(), 
+                                     0);
+  }
   
   // create the render buffer
   cc_glglue_glBindRenderbuffer(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
