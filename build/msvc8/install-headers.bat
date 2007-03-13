@@ -593,6 +593,7 @@ copy /Y ..\..\include\Inventor\nodes\SoTextureCoordinateNormalMap.h %COINDIR%\in
 copy /Y ..\..\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateReflectionMap.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTextureCoordinateObject.h %COINDIR%\include\Inventor\nodes\SoTextureCoordinateObject.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTextureCubeMap.h %COINDIR%\include\Inventor\nodes\SoTextureCubeMap.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoTextureMatrixTransform.h %COINDIR%\include\Inventor\nodes\SoTextureMatrixTransform.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTextureScalePolicy.h %COINDIR%\include\Inventor\nodes\SoTextureScalePolicy.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTextureUnit.h %COINDIR%\include\Inventor\nodes\SoTextureUnit.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTransform.h %COINDIR%\include\Inventor\nodes\SoTransform.h >nul:

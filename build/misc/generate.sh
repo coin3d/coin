@@ -23,12 +23,12 @@ if $proper; then
   ../../configure --with-msvcrt=mtd --with-suffix=d \
     --enable-3ds-import \
     --enable-debug --enable-symbols || exit 1;
-  cp include/config.h include/config-debug.h;
+  mv include/config.h include/config-debug.h;
 
   ../../configure --enable-msvcdsp --with-msvcrt=mt \
     --enable-3ds-import \
     --disable-debug --disable-symbols --enable-optimization || exit 1;
-  cp include/config.h include/config-release.h;
+  mv include/config.h include/config-release.h;
 
   cp ../misc/config-wrapper.h include/config.h;
 else
@@ -66,4 +66,6 @@ grep -i "\\(c:\\|@\\)" coin3.dsp /dev/null
 grep -i "cygdrive" coin3.dsp /dev/null
 sort install-headers.bat | uniq -c | grep -v " 1 "
 grep "SOURCE=" coin3.dsp | sort | uniq -c | grep -v " 1 "
+
+echo "Now upgrade the project files with devenv, if necessary."
 

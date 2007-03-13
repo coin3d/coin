@@ -59,7 +59,7 @@ LINK32=link.exe
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=../misc/install-sdk.bat dll release
+PostBuild_Cmds=..\misc\install-sdk.bat dll release
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -88,7 +88,7 @@ LINK32=link.exe
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=../misc/install-sdk.bat dll debug
+PostBuild_Cmds=..\misc\install-sdk.bat dll debug
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
@@ -115,7 +115,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"coin3s.lib"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=../misc/install-sdk.bat lib release
+PostBuild_Cmds=..\misc\install-sdk.bat lib release
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
@@ -142,7 +142,7 @@ LIB32=link.exe -lib
 # ADD LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=../misc/install-sdk.bat lib debug
+PostBuild_Cmds=..\misc\install-sdk.bat lib debug
 # End Special Build Tool
 
 !ENDIF
@@ -7370,6 +7370,19 @@ SOURCE=..\..\src\nodes\SoTextureCubeMap.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoTextureMatrixTransform.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoTextureScalePolicy.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -12412,6 +12425,10 @@ SOURCE=..\..\include\Inventor\nodes\SoTextureCoordinateObject.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoTextureCubeMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoTextureMatrixTransform.h
 # End Source File
 # Begin Source File
 

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="coin3"
-	ProjectGUID="{527D7B92-C2E0-4F31-A482-1401BA2E2AB4}"
+	ProjectGUID="{ADA839C3-D7C3-419D-9D43-AEC8C01305C3}"
 	>
 	<Platforms>
 		<Platform
@@ -85,7 +85,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="../misc/install-sdk.bat lib debug"
+				CommandLine="..\misc\install-sdk.bat lib debug"
 			/>
 		</Configuration>
 		<Configuration
@@ -181,7 +181,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="../misc/install-sdk.bat dll release"
+				CommandLine="..\misc\install-sdk.bat dll release"
 			/>
 		</Configuration>
 		<Configuration
@@ -256,7 +256,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="../misc/install-sdk.bat lib release"
+				CommandLine="..\misc\install-sdk.bat lib release"
 			/>
 		</Configuration>
 		<Configuration
@@ -352,7 +352,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="../misc/install-sdk.bat dll debug"
+				CommandLine="..\misc\install-sdk.bat dll debug"
 			/>
 		</Configuration>
 	</Configurations>
@@ -26959,6 +26959,54 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\nodes\SoTextureMatrixTransform.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\nodes\SoTextureScalePolicy.cpp"
 					>
 					<FileConfiguration
@@ -38815,6 +38863,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\nodes\SoTextureCubeMap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoTextureMatrixTransform.h"
 					>
 				</File>
 				<File

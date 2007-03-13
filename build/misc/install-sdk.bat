@@ -77,7 +77,7 @@ goto binariesdone
 
 :installdllrelease
 xcopy %libname%.dll %COINDIR%\bin\ /R /Y
-xcopy Debug\%libname%.lib %COINDIR%\lib\ /R /Y
+xcopy Release\%libname%.lib %COINDIR%\lib\ /R /Y
 goto binariesdone
 
 :installlib
