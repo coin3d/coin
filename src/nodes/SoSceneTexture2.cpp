@@ -293,6 +293,7 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/system/gl.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
