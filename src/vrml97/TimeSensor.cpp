@@ -105,7 +105,8 @@
   fraction_changed events output a floating point value in the closed
   interval [0, 1]. At startTime the value of fraction_changed is
   0. After startTime, the value of fraction_changed in any cycle will
-  progress through the range (0.0, 1.0]. At startTime + N �  cycleInterval, for N = 1, 2, ..., that is, at the end of every
+  progress through the range (0.0, 1.0]. At startTime + N
+  cycleInterval, for N = 1, 2, ..., that is, at the end of every
   cycle, the value of fraction_changed is 1.
 
   Let \e now represent the time at the current simulation tick. Then
@@ -138,8 +139,9 @@
   generates time events, but a TimeSensor node shall generate events
   at least at every simulation tick. TimeSensor nodes are guaranteed
   to generate final time and fraction_changed events. If loop is FALSE
-  at the end of the Nth cycleInterval and was TRUE at startTime + M �  cycleInterval for all 0 < M < N, the final time event will be
-  generated with a value of (startTime + N �cycleInterval) or
+  at the end of the Nth cycleInterval and was TRUE at startTime + M
+  cycleInterval for all 0 < M < N, the final time event will be
+  generated with a value of (startTime + N cycleInterval) or
   stopTime (if stopTime > startTime), whichever value is less. If loop
   is TRUE at the completion of every cycle, the final event is
   generated as evaluated at stopTime (if stopTime > startTime) or
