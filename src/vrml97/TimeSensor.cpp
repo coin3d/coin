@@ -130,7 +130,7 @@
   events output absolute times for each tick of the TimeSensor node
   simulation.  The time events shall start at the first simulation
   tick greater than or equal to startTime. time events end at
-  stopTime, or at startTime + N �cycleInterval for some positive
+  stopTime, or at startTime + N cycleInterval for some positive
   integer value of N, or loop forever depending on the values of the
   other fields. An active TimeSensor node shall stop at the first
   simulation tick when now >= stopTime > startTime.
