@@ -145,11 +145,19 @@ public:
     this->fragmentshader = new SoFragmentShader;
     this->fragmentshader->ref();
 
+    this->cameratransform = new SoShaderParameterMatrix;
+    this->cameratransform->name = "cameraTransform";
+    this->cameratransform->ref();
+
+    this->vertexshader->parameter.set1Value(0, this->cameratransform);
+
     // FIXME: just testing
     this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
+
   }
   ~SoShadowGroupP() {
+    if (this->cameratransform) this->cameratransform->unref();
     if (this->vertexshader) this->vertexshader->unref();
     if (this->fragmentshader) this->fragmentshader->unref();
     if (this->shaderprogram) this->shaderprogram->unref();
@@ -181,6 +189,7 @@ public:
   SoShaderProgram * shaderprogram;
   SoVertexShader * vertexshader;
   SoFragmentShader * fragmentshader;
+  SoShaderParameterMatrix * cameratransform;
 
 };
 
@@ -242,6 +251,10 @@ SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
   PRIVATE(this)->updateSpotLights(action);
   SoShapeStyleElement::setShadowMapRendering(state, FALSE);
 
+  SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
+  if (camtransform != PRIVATE(this)->cameratransform->value.getValue()) {
+    PRIVATE(this)->cameratransform->value = camtransform;
+  }
   PRIVATE(this)->setVertexShader(state);
   PRIVATE(this)->setFragmentShader(state);
   PRIVATE(this)->shaderprogram->GLRender(action);
@@ -396,12 +409,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   
   vv.getMatrices(affine, proj);
 
-  SbMatrix bias(0.5f, 0.0f, 0.0f, 0.0f,
-                0.0f, 0.5f, 0.0f, 0.0f,
-                0.0f, 0.0f, 0.5f, 0.0f,
-                0.5f, 0.5f, 0.5f, 1.0f);
-  
-  cache->matrix = affine * proj * bias;
+  cache->matrix = affine * proj;
 
 #if 0
   fprintf(stderr,"matrix:\n"
@@ -433,8 +441,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
                                              SoShader::GLSL_SHADER));
 
   SbString program = 
-    "varying vec4 shadowCoord0;\n";
-
+    "varying vec4 shadowCoord0;\n"
+    "uniform mat4 cameraTransform;\n";
+  
   program += dirlight;
   
   program +=
@@ -449,11 +458,11 @@ SoShadowGroupP::setVertexShader(SoState * state)
     "  ambient * gl_FrontMaterial.ambient + "
     "  diffuse * gl_FrontMaterial.diffuse + "
     "  specular * gl_FrontMaterial.specular;\n"
-    
-    "mat4 mat = gl_TextureMatrix[0];\n"
-    "vec4 pos = gl_Vertex;\n"
-    "vec4 texCoord0 = mat * pos;\n"
-    "shadowCoord0 = texCoord0 / texCoord0.w;\n"
+
+    "vec4 pos = gl_ModelViewMatrix * gl_Vertex;" // in camera space
+    "pos = cameraTransform * pos;\n" // in world space
+
+    "shadowCoord0 = gl_TextureMatrix[0] * pos;\n" // in light space
     "gl_Position = ftransform();\n"
     "gl_FrontColor = color;\n"
     "}\n";
@@ -475,20 +484,13 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     "uniform sampler2DShadow shadowMap0;\n"
     "varying vec4 shadowCoord0;\n"
     
-    "float lookup(float x, float y) {\n"
-    "  vec4 coord = shadowCoord0 + vec4(x,y,0,0);\n"
-    //"  if (coord.x < 0.0 || coord.x > 1.0) return 1.0;\n"
-    //"  if (coord.y < 0.0 || coord.y > 1.0) return 1.0;\n"
-    "  float depth = shadow2DProj(shadowMap0, coord).x;\n"
-    "  return depth != 1.0 ? 0.75 : 1.0;\n"
-    "}\n"
-
-    "float depth(float x, float y) {\n"
-    "  return shadow2DProj(shadowMap0, shadowCoord0 + vec4(x,y,0,0)).x;\n"
+    "float lookup() {\n"
+    "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
+    "  return shadow2D(shadowMap0, coord).r == 1.0 ? 1.0 : 0.75;\n"
     "}\n"
 
     "void main(void) {\n"
-    "float shadeFactor = lookup(0.0, 0.0);\n"
+    "float shadeFactor = shadowCoord0.z > 0.0 ? lookup() : 0.75;\n"
     "gl_FragColor = vec4(shadeFactor * gl_Color.rgb, gl_Color.a);\n"
     "}\n";
   
