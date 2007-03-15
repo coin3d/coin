@@ -276,8 +276,8 @@ SoInputP::isNameStartCharVRML1(unsigned char c, SbBool validIdent)
     //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[256] = 0;
-      valid_ident_invalid_vrml1_table[256] = 0;
+      invalid_vrml1_table[c] = 0;
+      valid_ident_invalid_vrml1_table[c] = 0;
     }
 
     const unsigned char * ptr = invalid_vrml1;
@@ -310,8 +310,8 @@ SoInputP::isNameStartCharVRML2(unsigned char c, SbBool validIdent)
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml2_table[256] = 0;
-      valid_ident_invalid_vrml2_table[256] = 0;
+      invalid_vrml2_table[c] = 0;
+      valid_ident_invalid_vrml2_table[c] = 0;
     }
 
     const unsigned char * ptr = invalid_vrml2;
@@ -371,8 +371,8 @@ SoInputP::isNameCharVRML1(unsigned char c, SbBool validIdent)
     //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[256] = 0;
-      valid_ident_invalid_vrml1_table[256] = 0;
+      invalid_vrml1_table[c] = 0;
+      valid_ident_invalid_vrml1_table[c] = 0;
     }
 
     const unsigned char * ptr = invalid_vrml1;
@@ -405,8 +405,8 @@ SoInputP::isNameCharVRML2(unsigned char c, SbBool validIdent)
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
     for (int c = 0; c < 256; ++c) {
-      invalid_vrml2_table[256] = 0;
-      valid_ident_invalid_vrml2_table[256] = 0;
+      invalid_vrml2_table[c] = 0;
+      valid_ident_invalid_vrml2_table[c] = 0;
     }
 
     const unsigned char * ptr = invalid_vrml2;
