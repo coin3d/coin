@@ -14,9 +14,9 @@ void SpotLight(in int i,
   float spotAtt;
   float d;          
   vec3 VP;
-  vec3 halvfvec;
-
-  VP = vec3(gl_LightSource[i].position - ecPosition3);
+  vec3 halfvec;
+  
+  VP = vec3(gl_LightSource[i].position) - ecPosition3;
   d = length(VP);
   VP = normalize(VP);
 
@@ -26,7 +26,7 @@ void SpotLight(in int i,
   
   spotDot = dot(-VP, normalize(gl_LightSource[i].spotDirection));
   
-  if (spotDot < gl_LightSource[i].spotCosCutOff)
+  if (spotDot < gl_LightSource[i].spotCosCutoff)
     spotAtt = 0.0;
   else
     spotAtt = pow(spotDot, gl_LightSource[i].spotExponent);
@@ -42,7 +42,7 @@ void SpotLight(in int i,
   else 
     pf = pow(nDotHV, gl_FrontMaterial.shininess);
   
-  ambient += gl_LightSource[i].ambient + att;
+  ambient += gl_LightSource[i].ambient * att;
   diffuse += gl_LightSource[i].diffuse * nDotVP * att;
   specular += gl_LightSource[i].specular * pf * att;
 }

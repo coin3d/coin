@@ -1,6 +1,6 @@
 
 void PointLight(in int i,
-                in vec3 eye
+                in vec3 eye,
                 in vec3 ecPosition3,
                 in vec3 normal,
                 inout vec4 ambient,
