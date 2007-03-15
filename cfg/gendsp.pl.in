@@ -845,9 +845,9 @@ if ( $outputfile =~ /\.so\./ ) {
   close(OUT);
 
   # "close" the dsp file
-  if ( $group ne "" ) {
+  #if ( $group ne "" ) {
     print DSP "# End Group\n";
-  }
+  #}
   print DSP "# End Group\n";
 
   # We need to know about the root build dir and source dir to trigger the

@@ -31,6 +31,7 @@ RegularSources = \
 	SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp \
 	SoVBO.cpp \
+	SoShaderGenerator.cpp \
 	SoVertexArrayIndexer.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \

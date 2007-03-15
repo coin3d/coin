@@ -60,3 +60,5 @@
 #include "SoJavaScriptEngine.cpp"
 #include "SoVertexArrayIndexer.cpp"
 #include "SoVBO.cpp"
+#include "SoShaderGenerator.cpp"
+

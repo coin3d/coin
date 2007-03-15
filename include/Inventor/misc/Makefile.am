@@ -29,6 +29,7 @@ PrivateHeaders = \
 	SoGL.h \
 	SoGenerate.h \
 	SoPick.h \
+	SoShaderGenerator.h \
 	SoCompactPathList.h
 
 ObsoleteHeaders =
