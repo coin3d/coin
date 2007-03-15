@@ -54,6 +54,10 @@
 #define GL_CLAMP_TO_EDGE                  0x812F
 #endif /* !GL_CLAMP_TO_EDGE */
 
+#ifndef GL_CLAMP_TO_BORDER
+#define GL_CLAMP_TO_BORDER 0x812D
+#endif /* GL_CLAMP_TO_BORDER */
+
 /* Define for the REPLACE texture model (OpenGL 1.1). */
 #ifndef GL_REPLACE
 #define GL_REPLACE                        0x1E01
