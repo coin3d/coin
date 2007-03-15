@@ -23,6 +23,7 @@
 
 #include "JS_VRMLClasses.h"
 
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/spidermonkey.h>
@@ -54,6 +55,7 @@
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h> 
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
@@ -611,6 +613,47 @@ static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN argc,
   return JSVAL_TRUE;
 }
 
+static void *
+buffer_realloc(void * bufptr, size_t size)
+{
+  char *buffer = (char *)realloc(bufptr, size);
+  return buffer;
+}
+
+static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN argc,
+                              jsval * argv, jsval * rval)
+{
+  // Check if the JS object has already been garbage collected. This
+  // must be done to prevent a Java script from crashing the
+  // application.
+  if (garbagecollectedobjects->find(obj) != -1) {
+    if (SoJavaScriptEngine::debug())
+      SoDebugError::postInfo("SFNode_toString", "WARNING! Trying to access "
+                             "an already deleted node.");
+    return JSVAL_FALSE;
+  }
+
+  SoNode *node = (SoNode *)spidermonkey()->JS_GetPrivate(cx, obj);
+
+  SoOutput out;
+  out.setHeaderString("#VRML V2.0 utf8");
+  size_t buffer_size = 1024;
+  void *buffer = (void *)malloc(buffer_size);
+  out.setBuffer(buffer, buffer_size, buffer_realloc);
+  
+  SoWriteAction wa(&out);
+  wa.apply(node);
+  
+  out.getBuffer(buffer, buffer_size);
+
+  *rval = STRING_TO_JSVAL(spidermonkey()->JS_NewStringCopyZ(cx, 
+    (char *)buffer));
+
+  free(buffer);
+
+  return JSVAL_TRUE;
+}
+
 static void SFNode_deleteCB(void * data, SoSensor * sensor)
 {
   SoNode * node = ((SoNodeSensor *) sensor)->getAttachedNode();
@@ -1078,6 +1121,7 @@ static JSBool SFRotation_slerp(JSContext * cx, JSObject * obj, uintN argc,
 static JSFunctionSpec SFNodeFunctions[] = {
   {"ref", SFNode_ref, 0, 0, 0},
   {"unref", SFNode_unref, 0, 0, 0},
+  {"toString", SFNode_toString, 0, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
 
