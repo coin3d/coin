@@ -1,1 +1,159 @@
-// coming soon
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
+
+/*!
+  \class SoTextureMatrixTransform SoTextureMatrixTransform.h Inventor/nodes/SoTextureMatrixTransform.h
+  \brief The SoTextureMatrixTransform class is used to define a texture matrix transformation.
+  \ingroup nodes
+
+  Textures applied to shapes in the scene can be transformed by
+  "prefixing" in the state with instances of this node type.
+
+  \COIN_CLASS_EXTENSION
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    TextureMatrixTransform {
+        matrix 
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          0 0 0 1
+    }
+  \endcode
+
+  \sa SoTexture3Transform
+  \since Coin 2.5
+*/
+
+// *************************************************************************
+
+#include <Inventor/nodes/SoTextureMatrixTransform.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/elements/SoGLTextureMatrixElement.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/glue/gl.h>
+
+// *************************************************************************
+
+/*!
+  \var SoSFVec3f SoTextureMatrixTransform::matrix
+
+  Texture coordinate matrix. Default is the identity matrix.
+*/
+
+// *************************************************************************
+
+SO_NODE_SOURCE(SoTextureMatrixTransform);
+
+/*!
+  Constructor.
+*/
+SoTextureMatrixTransform::SoTextureMatrixTransform(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureMatrixTransform);
+  
+  SO_NODE_ADD_FIELD(matrix, (SbMatrix::identity()));
+}
+
+/*!
+  Destructor.
+*/
+SoTextureMatrixTransform::~SoTextureMatrixTransform()
+{
+}
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureMatrixTransform, SO_FROM_INVENTOR_1);
+
+  SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
+  SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
+  SO_ENABLE(SoPickAction, SoTextureMatrixElement);
+}
+
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::GLRender(SoGLRenderAction * action)
+{
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state); 
+  if (unit == 0) {
+    SoTextureMatrixTransform::doAction(action);
+  }
+  else {
+    const cc_glglue * glue = 
+      cc_glglue_instance(SoGLCacheContextElement::get(state));
+    int maxunits = cc_glglue_max_texture_units(glue);
+
+    if (unit < maxunits) {
+      SbMatrix mat = this->matrix.getValue();
+      SoMultiTextureMatrixElement::mult(state, this, unit, mat);
+    }
+    else {
+      // we already warned in SoTextureUnit. I think it's best to just
+      // ignore the texture here so that all textures for non-supported
+      // units will be ignored. pederb, 2003-11-11
+    }
+  }
+}
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::doAction(SoAction *action)
+{
+  SbMatrix mat = this->matrix.getValue();
+  SoTextureMatrixElement::mult(action->getState(), this, mat);
+}
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::callback(SoCallbackAction *action)
+{
+  SoTextureMatrixTransform::doAction(action);
+}
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::getMatrix(SoGetMatrixAction * action)
+{
+  SbMatrix mat = this->matrix.getValue();
+  action->getTextureMatrix().multLeft(mat);
+  action->getTextureInverse().multRight(mat.inverse());
+}
+
+// Documented in superclass.
+void
+SoTextureMatrixTransform::pick(SoPickAction * action)
+{
+  SoTextureMatrixTransform::doAction(action);
+}

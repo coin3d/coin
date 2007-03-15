@@ -129,6 +129,7 @@
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
+#include <Inventor/nodes/SoTextureMatrixTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoTransparencyType.h>
