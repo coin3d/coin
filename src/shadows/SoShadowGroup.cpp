@@ -45,6 +45,8 @@
 #include <FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSpotLight.h>
+#include <Inventor/nodes/SoPointLight.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -54,6 +56,7 @@
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/nodes/SoShader.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -70,6 +73,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoShaderGenerator.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
 #include <math.h>
@@ -449,26 +453,70 @@ SoShadowGroupP::setVertexShader(SoState * state)
 {
   if (this->vertexshader->sourceProgram.getValue().getLength()) return;
 
+  int i;
   SoShaderGenerator & gen = this->vertexgenerator;
 
   gen.reset(FALSE);
+  const SoNodeList & lights = SoLightElement::getLights(state);
+  
   gen.addDeclaration("varying vec4 shadowCoord0;", FALSE);
   gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
+  gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
+  gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   
-  gen.addNamedFunction(SbName("lights/directionalLight"), FALSE);
+  SbBool dirlight = FALSE;
+  SbBool pointlight = FALSE;
+  SbBool spotlight = FALSE;
+  SbString str;
+
   gen.addMainStatement("vec3 normal = gl_NormalMatrix * gl_Normal;\n"
+                       "vec3 eye = vec3(0.0);\n" // FIXME: support local viewer
                        "vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
-                       "vec4 specular = vec4(0.0);\n"
-                       "DirectionalLight(0, normal, ambient, diffuse, specular);\n"
-                       
-                       "vec4 color = gl_FrontLightModelProduct.sceneColor + "
+                       "vec4 specular = vec4(0.0);");
+  
+  gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
+                       "ecPosition3 = ecPosition.xyz / ecPosition.w;");
+  gen.addMainStatement("fragmentNormal = normal;");
+  
+  for (i = 0; i < lights.getLength(); i++) {
+    SoLight * l = (SoLight*) lights[i];
+    if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
+      str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
+      gen.addMainStatement(str);
+      dirlight = TRUE;
+    }
+    else if (l->isOfType(SoSpotLight::getClassTypeId())) {
+      str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+      gen.addMainStatement(str);
+      spotlight = TRUE;
+      
+    }
+    else if (l->isOfType(SoPointLight::getClassTypeId())) {
+      str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+      gen.addMainStatement(str);
+      pointlight = TRUE;      
+    }
+    else {
+      SoDebugError::postWarning("SoShadowGroupP::setVertexShader",
+                                "Unknown light type: %s\n",
+                                l->getTypeId().getName().getString());
+    }
+  }
+    
+  if (dirlight) gen.addNamedFunction(SbName("lights/directionalLight"), FALSE);
+  if (pointlight) gen.addNamedFunction(SbName("lights/pointLight"), FALSE);
+  if (spotlight) gen.addNamedFunction(SbName("lights/spotLight"), FALSE);
+
+  gen.addMainStatement(
+
+                       //"vec4 color = gl_FrontLightModelProduct.sceneColor + "
+                       "vec4 color = "
                        "  ambient * gl_FrontMaterial.ambient + "
-                       "  diffuse * gl_FrontMaterial.diffuse + "
+                       "  diffuse * gl_Color + "
                        "  specular * gl_FrontMaterial.specular;\n"
                        
-                       "vec4 pos = gl_ModelViewMatrix * gl_Vertex;" // in camera space
-                       "pos = cameraTransform * pos;\n" // in world space
+                       "vec4 pos = cameraTransform * ecPosition;\n" // in world space
                        
                        "shadowCoord0 = gl_TextureMatrix[0] * pos;\n" // in light space
                        "gl_Position = ftransform();\n"
@@ -488,15 +536,33 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   gen.addDeclaration("uniform sampler2DShadow shadowMap0;", FALSE);
   gen.addDeclaration("varying vec4 shadowCoord0;", FALSE);
+  gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
+  gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
+
+  // gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
 
   gen.addFunction("float lookup() {\n"
                   "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
-                  "  return shadowCoord0.z > 0.0 ? (shadow2D(shadowMap0, coord).s == 1.0 ? 1.0 : 0.75) : 0.75;\n"
+                  "  return shadowCoord0.z > 0.0 ? (shadow2D(shadowMap0, coord).s == 1.0 ? 1.0 : 0.0) : 0.0;\n"
                   "}", FALSE);
   
+  gen.addMainStatement("vec3 eye = vec3(0.0);");
+  gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
+                       "vec4 diffuse = vec4(0.0);\n"
+                       "vec4 specular = vec4(0.0);");
+
+#if 0
+  gen.addMainStatement("float shadeFactor = lookup();\n"
+                       "SpotLight(1, eye, ecPosition3, fragmentNormal, ambient, diffuse, specular);\n"
+                       "gl_FragColor = vec4(shadeFactor * diffuse.rgb, gl_Color.a);");
+
+#else
   gen.addMainStatement("float shadeFactor = lookup();\n"
                        "gl_FragColor = vec4(shadeFactor * gl_Color.rgb, gl_Color.a);");
-  
+
+#endif  
+
+
   this->fragmentshader->sourceProgram = gen.getShaderProgram();
   this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 
