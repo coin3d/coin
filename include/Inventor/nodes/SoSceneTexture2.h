@@ -63,9 +63,29 @@ public:
   };
   
   enum Type {
-    RGBA_UNSIGNED_BYTE,
-    RGBA_FLOAT,
-    DEPTH
+    DEPTH,
+    RGBA8, // normal unsigned byte rgba
+    RGBA32F,
+    RGB32F,
+    RGBA16F,
+    RGB16F,
+
+    // FIXME: consider how many of these we should have here
+    R3_G3_B2,
+    RGB, 
+    RGB4, 
+    RGB5, 
+    RGB8, 
+    RGB10,
+    RGB12, 
+    RGB16, 
+    RGBA, 
+    RGBA2,
+    RGBA4, 
+    RGB5_A1,	
+    RGB10_A2,
+    RGBA12, 
+    RGBA16
   };
 
   SoSFEnum wrapS;

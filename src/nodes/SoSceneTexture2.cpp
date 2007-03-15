@@ -232,7 +232,7 @@
 */
 
 /*!
-  \var SoSceneTexture2::Type SoSceneTexture2::RGBA_UNSIGNED_BYTE
+  \var SoSceneTexture2::Type SoSceneTexture2::RGBA8
   Specifies an RGBA texture with 8 bits per component.
 */
 
@@ -409,7 +409,7 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(type, (RGBA_UNSIGNED_BYTE));
+  SO_NODE_ADD_FIELD(type, (RGBA8));
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
@@ -428,10 +428,29 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
   SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 
-  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA_UNSIGNED_BYTE);
-  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA_FLOAT);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA8);
   SO_NODE_DEFINE_ENUM_VALUE(Type, DEPTH);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA32F);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB32F);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA16F);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB16F);
 
+  SO_NODE_DEFINE_ENUM_VALUE(Type, R3_G3_B2);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB4);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB5);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB8);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB10);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB12);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB16);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA2);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA4);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB5_A1);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGB10_A2);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA12);
+  SO_NODE_DEFINE_ENUM_VALUE(Type, RGBA16);
+  
   SO_NODE_SET_SF_ENUM_TYPE(type, Type);
 }
 
@@ -712,21 +731,20 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     this->fbo_size = size;
     this->deleteFrameBufferObjects(glue, state);
     this->createFramebufferObjects(glue, state);
-    
+
+    // FIXME: for some reason we need to do this every frame. Investigate why.
+    if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
+      assert(this->fbo_depthmap != NULL);
+      this->glimage->setGLDisplayList(this->fbo_depthmap, state,
+                                      SoGLImage::CLAMP, SoGLImage::CLAMP);
+    }
+    else {
+      assert(this->fbo_texture != NULL);
+      this->glimage->setGLDisplayList(this->fbo_texture, state);
+    }
   }
   
   state->push();
-
-  // FIXME: for some reason we need to do this every frame. Investigate why.
-  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
-    assert(this->fbo_depthmap != NULL);
-    this->glimage->setGLDisplayList(this->fbo_depthmap, state,
-                                    SoGLImage::CLAMP, SoGLImage::CLAMP);
-  }
-  else {
-    assert(this->fbo_texture != NULL);
-    this->glimage->setGLDisplayList(this->fbo_texture, state);
-  }
 
   SoShapeStyleElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
 
@@ -754,12 +772,17 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
   SoGLRenderAction * glaction = (SoGLRenderAction*) state->getAction();
+
+  SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
+  //if (type == SoSceneTexture2::DEPTH) glColorMask(0,0,0,0);
   glaction->switchToNodeTraversal(scene);
+  // if (type == SoSceneTexture2::DEPTH) glColorMask(1,1,1,1);
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
   
   if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
+    // need to copy the depth buffer into the depth texture object
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_depthmap->getFirstIndex());
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, 
                         this->fbo_size[0], this->fbo_size[1]);
@@ -952,6 +975,79 @@ SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
 
+static void soscenetexture2_translate_type(SoSceneTexture2::Type type, GLenum & internalformat, GLenum & format)
+{
+  format = GL_RGBA;
+  internalformat = GL_RGBA8;
+
+  switch (type) {
+  case SoSceneTexture2::DEPTH:
+  case SoSceneTexture2::RGBA8:
+    internalformat = GL_RGBA8;
+    break;
+  case SoSceneTexture2::RGBA32F:
+    internalformat = GL_RGBA32F_ARB;
+    break;
+  case SoSceneTexture2::RGB32F:
+    internalformat = GL_RGB32F_ARB;
+    break;
+  case SoSceneTexture2::RGBA16F:
+    internalformat = GL_RGBA16F_ARB;
+    break;
+  case SoSceneTexture2::RGB16F:
+    internalformat = GL_RGB16F_ARB;
+    break;
+  case SoSceneTexture2::R3_G3_B2:
+    internalformat = GL_R3_G3_B2;
+    break;
+  case SoSceneTexture2::RGB:
+    internalformat = GL_RGB;
+    break;
+  case SoSceneTexture2::RGB4:
+    internalformat = GL_RGB4;
+    break;
+  case SoSceneTexture2::RGB5:
+    internalformat = GL_RGB5;
+    break;
+  case SoSceneTexture2::RGB8:
+    internalformat = GL_RGB8;
+    break;
+  case SoSceneTexture2::RGB10:
+    internalformat = GL_RGB10;
+    break;
+  case SoSceneTexture2::RGB12:
+    internalformat = GL_RGB12;
+    break;
+  case SoSceneTexture2::RGB16:
+    internalformat = GL_RGB16;
+    break;
+  case SoSceneTexture2::RGBA:
+    internalformat = GL_RGBA;
+    break;
+  case SoSceneTexture2::RGBA2:
+    internalformat = GL_RGBA2;
+    break;
+  case SoSceneTexture2::RGBA4:
+    internalformat = GL_RGBA4;
+    break;
+  case SoSceneTexture2::RGB5_A1:
+    internalformat = GL_RGB5_A1;
+    break;
+  case SoSceneTexture2::RGB10_A2:
+    internalformat = GL_RGB10_A2;
+    break;
+  case SoSceneTexture2::RGBA12:
+    internalformat = GL_RGBA12;
+    break;
+  case SoSceneTexture2::RGBA16:
+    internalformat = GL_RGBA16;
+    break;
+  default:
+    assert(0 && "unknown type");
+    break;
+  }
+}
+
 void 
 SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state)
 {
@@ -970,12 +1066,27 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   this->fbo_texture->ref();  
   this->fbo_texture->open(state);
   
+  GLenum gltype = GL_FLOAT;
+  GLenum internalformat = GL_RGBA8;
+  GLenum format = GL_RGBA;
+
+  soscenetexture2_translate_type(type, internalformat, format);
+
+  switch (PUBLIC(this)->type.getValue()) {
+  case SoSceneTexture2::RGBA8:
+  case SoSceneTexture2::DEPTH:
+    gltype = GL_UNSIGNED_BYTE;
+    break;
+  default:
+    break;
+  }
+  
   glTexImage2D(GL_TEXTURE_2D, 0, 
-               4, 
+               internalformat, 
                this->fbo_size[0], this->fbo_size[1], 
                0, /* border */ 
-               GL_RGBA,
-               type == SoSceneTexture2::RGBA_FLOAT ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
+               format,
+               gltype, NULL);
   
   // for mipmaps
   // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
@@ -1002,7 +1113,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                  0, /* border */ 
                  GL_DEPTH_COMPONENT,
                  GL_UNSIGNED_BYTE, NULL);
-
+    
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1117,6 +1228,7 @@ SoSceneTexture2P::getTransparencyType(SoState * state)
   return (SoGLRenderAction::TransparencyType) 
     SoShapeStyleElement::getTransparencyType(state);
 }
+
 
 #undef PUBLIC
 
