@@ -68,6 +68,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/misc/SoShaderGenerator.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
@@ -103,9 +104,7 @@ public:
     sep->addChild(this->camera);
     
     for (int i = 0; i < scene->getNumChildren(); i++) {
-      //if (!scene->getChild(i)->isOfType(SoSpotLight::getClassTypeId())) {
-        sep->addChild(scene->getChild(i));
-        //}
+      sep->addChild(scene->getChild(i));
     }
     this->depthmap->scene = sep;
 
@@ -155,14 +154,19 @@ public:
     this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
 
+    this->vsm_program = NULL;
+    this->createVSMProgram();
   }
   ~SoShadowGroupP() {
+    if (this->vsm_program) this->vsm_program->unref();
     if (this->cameratransform) this->cameratransform->unref();
     if (this->vertexshader) this->vertexshader->unref();
     if (this->fragmentshader) this->fragmentshader->unref();
     if (this->shaderprogram) this->shaderprogram->unref();
     this->deleteSpotLights();
   }
+
+  void createVSMProgram(void);
 
   void deleteSpotLights(void) {
     for (int i = 0; i < this->spotlights.getLength(); i++) {
@@ -191,6 +195,12 @@ public:
   SoFragmentShader * fragmentshader;
   SoShaderParameterMatrix * cameratransform;
 
+  SoShaderGenerator vertexgenerator;
+  SoShaderGenerator fragmentgenerator;
+
+  SoShaderProgram * vsm_program;
+  SoShaderGenerator vsm_vertex_generator;
+  SoShaderGenerator vsm_fragment_generator;
 };
 
 // *************************************************************************
@@ -401,6 +411,8 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
   const float SLACK = 0.001f;
 
+  cache->nearval = 1.0f;
+
   cache->nearval = cam->nearDistance = cache->nearval * (1.0f - SLACK);
   cache->farval = cam->farDistance = cache->farval * (1.0f + SLACK);
 
@@ -436,40 +448,33 @@ void
 SoShadowGroupP::setVertexShader(SoState * state)
 {
   if (this->vertexshader->sourceProgram.getValue().getLength()) return;
+
+  SoShaderGenerator & gen = this->vertexgenerator;
+
+  gen.reset(FALSE);
+  gen.addDeclaration("varying vec4 shadowCoord0;", FALSE);
+  gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
   
-  SbString dirlight(SoShader::getNamedScript("lights/directionalLight", 
-                                             SoShader::GLSL_SHADER));
-
-  SbString program = 
-    "varying vec4 shadowCoord0;\n"
-    "uniform mat4 cameraTransform;\n";
+  gen.addNamedFunction(SbName("lights/directionalLight"), FALSE);
+  gen.addMainStatement("vec3 normal = gl_NormalMatrix * gl_Normal;\n"
+                       "vec4 ambient = vec4(0.0);\n"
+                       "vec4 diffuse = vec4(0.0);\n"
+                       "vec4 specular = vec4(0.0);\n"
+                       "DirectionalLight(0, normal, ambient, diffuse, specular);\n"
+                       
+                       "vec4 color = gl_FrontLightModelProduct.sceneColor + "
+                       "  ambient * gl_FrontMaterial.ambient + "
+                       "  diffuse * gl_FrontMaterial.diffuse + "
+                       "  specular * gl_FrontMaterial.specular;\n"
+                       
+                       "vec4 pos = gl_ModelViewMatrix * gl_Vertex;" // in camera space
+                       "pos = cameraTransform * pos;\n" // in world space
+                       
+                       "shadowCoord0 = gl_TextureMatrix[0] * pos;\n" // in light space
+                       "gl_Position = ftransform();\n"
+                       "gl_FrontColor = color;");
   
-  program += dirlight;
-  
-  program +=
-    "void main(void) {\n"
-    "vec3 normal = gl_NormalMatrix * gl_Normal;\n"
-    "vec4 ambient = vec4(0.0);\n"
-    "vec4 diffuse = vec4(0.0);\n"
-    "vec4 specular = vec4(0.0);\n"
-    "DirectionalLight(0, normal, ambient, diffuse, specular);\n"
-    
-    "vec4 color = gl_FrontLightModelProduct.sceneColor + "
-    "  ambient * gl_FrontMaterial.ambient + "
-    "  diffuse * gl_FrontMaterial.diffuse + "
-    "  specular * gl_FrontMaterial.specular;\n"
-
-    "vec4 pos = gl_ModelViewMatrix * gl_Vertex;" // in camera space
-    "pos = cameraTransform * pos;\n" // in world space
-
-    "shadowCoord0 = gl_TextureMatrix[0] * pos;\n" // in light space
-    "gl_Position = ftransform();\n"
-    "gl_FrontColor = color;\n"
-    "}\n";
-
-  // fprintf(stderr,"program: %s\n", program.getString());
-
-  this->vertexshader->sourceProgram = program;
+  this->vertexshader->sourceProgram = gen.getShaderProgram();
   this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 }
 
@@ -478,25 +483,22 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 {
   if (this->fragmentshader->sourceProgram.getValue().getLength()) return;
 
-  SbString program;
-  
-  program += 
-    "uniform sampler2DShadow shadowMap0;\n"
-    "varying vec4 shadowCoord0;\n"
-    
-    "float lookup() {\n"
-    "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
-    "  return shadow2D(shadowMap0, coord).r == 1.0 ? 1.0 : 0.75;\n"
-    "}\n"
+  SoShaderGenerator & gen = this->fragmentgenerator;
+  gen.reset(FALSE);
 
-    "void main(void) {\n"
-    "float shadeFactor = shadowCoord0.z > 0.0 ? lookup() : 0.75;\n"
-    "gl_FragColor = vec4(shadeFactor * gl_Color.rgb, gl_Color.a);\n"
-    "}\n";
+  gen.addDeclaration("uniform sampler2DShadow shadowMap0;", FALSE);
+  gen.addDeclaration("varying vec4 shadowCoord0;", FALSE);
+
+  gen.addFunction("float lookup() {\n"
+                  "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
+                  "  return shadowCoord0.z > 0.0 ? (shadow2D(shadowMap0, coord).s == 1.0 ? 1.0 : 0.75) : 0.75;\n"
+                  "}", FALSE);
   
-  this->fragmentshader->sourceProgram = program;
+  gen.addMainStatement("float shadeFactor = lookup();\n"
+                       "gl_FragColor = vec4(shadeFactor * gl_Color.rgb, gl_Color.a);");
+  
+  this->fragmentshader->sourceProgram = gen.getShaderProgram();
   this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-
 
   SoShaderParameter1i * shadowmap0 = 
     new SoShaderParameter1i();
@@ -504,8 +506,40 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   shadowmap0->name = "shadowMap0";
   shadowmap0->value = 0;
 
-  this->fragmentshader->parameter = shadowmap0;
- 
+  this->fragmentshader->parameter = shadowmap0; 
+}
+
+void
+SoShadowGroupP::createVSMProgram(void)
+{
+  SoShaderProgram * program = new SoShaderProgram;
+  program->ref();
+
+  SoVertexShader * vshader = new SoVertexShader;
+  SoFragmentShader * fshader = new SoFragmentShader;
+
+  program->shaderObject.set1Value(0, vshader);
+  program->shaderObject.set1Value(1, fshader);
+
+  SoShaderGenerator & vgen = this->vsm_vertex_generator;
+  SoShaderGenerator & fgen = this->vsm_fragment_generator;
+  
+  vgen.reset(FALSE);
+  vgen.addDeclaration("varying vec3 light_vec;", FALSE);
+  vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
+                        "gl_Position = ftransform();");
+  
+  vshader->sourceProgram = vgen.getShaderProgram();
+  vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+  
+  fgen.reset(FALSE);
+  fgen.addDeclaration("varying vec3 light_vec;", FALSE);
+  fgen.addMainStatement("float l = length(light_vec);\n"
+                        "gl_FragColor = vec4(l, l*l, 0.0, 0.0);");
+
+  fshader->sourceProgram = fgen.getShaderProgram();
+  fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+
 }
 
 #undef PUBLIC
