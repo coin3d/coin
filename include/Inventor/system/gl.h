@@ -287,6 +287,51 @@
 #define GL_DEPTH_TEXTURE_MODE 0x884B
 #endif /* GL_DEPTH_TEXTURE_MODE */
 
+/* Texture pixel formats (OpenGL 1.1) */
+
+#ifndef GL_R3_G3_B2
+#define GL_R3_G3_B2 0x2A10
+#endif /* GL_R3_G3_B2 */
+#ifndef GL_RGB4
+#define GL_RGB4 0x804F
+#endif /* GL_RGB4 */
+#ifndef GL_RGB5
+#define GL_RGB5 0x8050
+#endif /* GL_RGB5 */
+#ifndef GL_RGB8
+#define GL_RGB8 0x8051
+#endif /* GL_RGB8 */
+#ifndef GL_RGB10
+#define GL_RGB10 0x8052
+#endif /* GL_RGB10 */
+#ifndef GL_RGB12
+#define GL_RGB12 0x8053
+#endif /* GL_RGB12 */
+#ifndef GL_RGB16
+#define GL_RGB16 0x8054
+#endif /* GL_RGB16 */
+#ifndef GL_RGBA2
+#define GL_RGBA2 0x8055
+#endif /* GL_RGBA2 */
+#ifndef GL_RGBA4
+#define GL_RGBA4 0x8056
+#endif /* GL_RGBA4 */
+#ifndef GL_RGB5_A1
+#define GL_RGB5_A1 0x8057
+#endif /* GL_RGB5_A1 */
+#ifndef GL_RGBA8
+#define GL_RGBA8 0x8058
+#endif /* GL_RGBA8 */
+#ifndef GL_RGB10_A2
+#define GL_RGB10_A2 0x8059
+#endif /* GL_RGB10_A2 */
+#ifndef GL_RGBA12
+#define GL_RGBA12 0x805A
+#endif /* GL_RGBA12 */
+#ifndef GL_RGBA16
+#define GL_RGBA16 0x805B
+#endif /* GL_RGBA16 */
+
 /* Floating point texture formats (ARB_texture_float) */
 
 #ifndef GL_RGBA32F_ARB
