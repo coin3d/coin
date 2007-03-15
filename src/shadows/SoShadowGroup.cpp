@@ -353,15 +353,13 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     }
     
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-
+    
     cc_glglue_glPolygonOffsetEnable(glue, TRUE, cc_glglue_FILLED);
-    cc_glglue_glPolygonOffset(glue, 1.0f, 1.0f);
+    cc_glglue_glPolygonOffset(glue, 3.0f, 1.0f);
 
-    glColorMask(0,0,0,0);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     
     this->renderDepthMap(cache, action);
-    glColorMask(1,1,1,1);
     cc_glglue_glPolygonOffsetEnable(glue, FALSE, cc_glglue_FILLED);
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
@@ -382,8 +380,8 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   (void) dir.normalize();
 
 	cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-	cam->heightAngle.setValue(light->cutOffAngle.getValue());
-	// cam->heightAngle.setValue(60 * M_PI / 180.0);
+	cam->heightAngle.setValue(light->cutOffAngle.getValue() * 2.0f);
+	//cam->heightAngle.setValue(60 * M_PI / 180.0);
 
   // FIXME: cache bbox in the pimpl class
   this->bboxaction.apply(cache->depthmap->scene.getValue());
@@ -504,9 +502,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
     }
   }
     
-  if (dirlight) gen.addNamedFunction(SbName("lights/directionalLight"), FALSE);
-  if (pointlight) gen.addNamedFunction(SbName("lights/pointLight"), FALSE);
-  if (spotlight) gen.addNamedFunction(SbName("lights/spotLight"), FALSE);
+  if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
+  if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
+  if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
 
   gen.addMainStatement(
 
@@ -539,7 +537,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
 
-  // gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
+  gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
 
   gen.addFunction("float lookup() {\n"
                   "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
@@ -551,7 +549,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
 
-#if 0
+#if 1
   gen.addMainStatement("float shadeFactor = lookup();\n"
                        "SpotLight(1, eye, ecPosition3, fragmentNormal, ambient, diffuse, specular);\n"
                        "gl_FragColor = vec4(shadeFactor * diffuse.rgb, gl_Color.a);");
