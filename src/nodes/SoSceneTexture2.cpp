@@ -1114,7 +1114,8 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                  GL_DEPTH_COMPONENT,
                  GL_UNSIGNED_BYTE, NULL);
     
-    if (cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp")) {
+    if (cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
+        cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp")) {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
