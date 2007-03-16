@@ -1091,8 +1091,18 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   // for mipmaps
   // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  // FIXME: add support for CLAMP_TO_BORDER in SoSceneTexture2 and SoTextureImageElement
+
+  if (cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
+      cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp")) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  }
+  else {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  }
+  
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
   if (cc_glglue_can_do_anisotropic_filtering(glue)) {
