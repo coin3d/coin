@@ -53,13 +53,14 @@
 
 // *************************************************************************
 
-#include <string.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
@@ -100,7 +101,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/C/tidbits.h>
-#include <stdlib.h>
+#include <Inventor/system/gl.h>
 
 // *************************************************************************
 
