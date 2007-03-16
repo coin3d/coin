@@ -51,6 +51,10 @@ public:
   SoSFFloat visibilityRadius;
   SoSFEnum visibilityFlag;
 
+  // FIXME: temporary fields used while debugging
+  SoSFBool vsm;
+  SoSFBool perPixel;
+
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
 
