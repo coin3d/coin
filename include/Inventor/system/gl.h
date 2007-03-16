@@ -391,6 +391,18 @@
 #define GL_COMPARE_R_TO_TEXTURE_ARB 0x884E
 #endif /* GL_COMPARE_R_TO_TEXTURE_ARB */
 
+/* We also use the non-ARB versions of these defines */
+/* FIXME: consider if we should change the code that uses these */
+#ifndef GL_TEXTURE_COMPARE_MODE
+#define GL_TEXTURE_COMPARE_MODE 0x884C
+#endif /* GL_TEXTURE_COMPARE_MODE */
+#ifndef GL_TEXTURE_COMPARE_FUNC 
+#define GL_TEXTURE_COMPARE_FUNC 0x884D
+#endif /* GL_TEXTURE_COMPARE_FUNC */
+#ifndef GL_COMPARE_R_TO_TEXTURE 
+#define GL_COMPARE_R_TO_TEXTURE 0x884E
+#endif /* GL_COMPARE_R_TO_TEXTURE */
+
 /* glBlendEquation defines */
 #ifndef GL_MIN
 #define GL_MIN 0x8007
