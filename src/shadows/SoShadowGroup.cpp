@@ -413,7 +413,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
   const float SLACK = 0.001f;
 
-  cache->nearval = 1.0f;
+  cache->nearval = 3.0f;
 
   cache->nearval = cam->nearDistance = cache->nearval * (1.0f - SLACK);
   cache->farval = cam->farDistance = cache->farval * (1.0f + SLACK);
@@ -461,6 +461,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
+  gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
   
   SbBool dirlight = FALSE;
   SbBool pointlight = FALSE;
@@ -517,8 +518,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
                        "vec4 pos = cameraTransform * ecPosition;\n" // in world space
                        
                        "shadowCoord0 = gl_TextureMatrix[0] * pos;\n" // in light space
+                       "perVertexColor = color.rgb;"
                        "gl_Position = ftransform();\n"
-                       "gl_FrontColor = color;");
+                       "gl_FrontColor = gl_Color;");
   
   this->vertexshader->sourceProgram = gen.getShaderProgram();
   this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
@@ -536,6 +538,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("varying vec4 shadowCoord0;", FALSE);
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
+  gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
 
   gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
 
@@ -551,8 +554,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
 #if 1
   gen.addMainStatement("float shadeFactor = lookup();\n"
-                       "SpotLight(1, eye, ecPosition3, fragmentNormal, ambient, diffuse, specular);\n"
-                       "gl_FragColor = vec4(shadeFactor * diffuse.rgb, gl_Color.a);");
+                       "SpotLight(1, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
+                       "gl_FragColor = vec4(shadeFactor * diffuse.rgb * gl_Color.rgb + "
+                       "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb + "
+                       "perVertexColor, gl_Color.a);");
 
 #else
   gen.addMainStatement("float shadeFactor = lookup();\n"
