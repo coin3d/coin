@@ -2208,6 +2208,10 @@ if test -f cfg/gendsp.sh; then
   chmod +x cfg/gendsp.sh
 fi
 
+if test -f cfg/gendsp.pl; then
+  chmod +x cfg/gendsp.pl
+fi
+
 # in case someone has the old generated SbBasic.h lying about...
 if test -f include/Inventor/SbBasic.h; then
   if cmp -s $srcdir/include/Inventor/SbBasic.h include/Inventor/SbBasic.h; then
