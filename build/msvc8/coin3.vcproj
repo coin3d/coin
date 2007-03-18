@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{ADA839C3-D7C3-419D-9D43-AEC8C01305C3}"
+	ProjectGUID="{BD102572-B44C-47CA-B1D9-10F8C2895289}"
 	>
 	<Platforms>
 		<Platform
@@ -20849,6 +20849,54 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\SoSceneManager.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\misc/"
+							ProgramDataBaseFileName="StaticDebug\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\misc/"
+							ProgramDataBaseFileName="Release\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\misc/"
+							ProgramDataBaseFileName="StaticRelease\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\misc/"
+							ProgramDataBaseFileName="Debug\misc/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoShaderGenerator.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -41905,6 +41953,42 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\misc\SoPick.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\misc\SoShaderGenerator.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

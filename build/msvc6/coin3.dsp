@@ -5671,6 +5671,19 @@ SOURCE=..\..\src\misc\SoVBO.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\SoShaderGenerator.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\misc"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\misc\SoVertexArrayIndexer.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
@@ -13406,6 +13419,12 @@ SOURCE=..\..\include\Inventor\misc\SoGenerate.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\misc\SoPick.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\misc\SoShaderGenerator.h
 
 # PROP Exclude_From_Build 1
 # End Source File
