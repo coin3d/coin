@@ -1491,10 +1491,14 @@ SoGLRenderActionP::render(SoNode * node)
     glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
     
     if (accumbits == 0) {
-      SoDebugError::postWarning("SoGLRenderActionP::render", 
-                                "Multipass rendering requested,\nbut current "
-                                "GL context has no accumulation buffer - "
-                                "falling back to single pass\nrendering.");
+      static SbBool first = TRUE;
+      if (first) {
+        SoDebugError::postWarning("SoGLRenderActionP::render", 
+                                  "Multipass rendering requested,\nbut current "
+                                  "GL context has no accumulation buffer - "
+                                  "falling back to single pass\nrendering.");
+        first = FALSE;
+      }
       this->renderSingle(node);
     } else {
       this->renderMulti(node);
