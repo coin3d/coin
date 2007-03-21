@@ -380,19 +380,10 @@
 #endif /* GL_RGBA16_EXT */
 
 
-/* ARB_shadow */
-#ifndef GL_TEXTURE_COMPARE_MODE_ARB 
-#define GL_TEXTURE_COMPARE_MODE_ARB 0x884C
-#endif /* GL_TEXTURE_COMPARE_MODE_ARB */
-#ifndef GL_TEXTURE_COMPARE_FUNC_ARB 
-#define GL_TEXTURE_COMPARE_FUNC_ARB 0x884D
-#endif /* GL_TEXTURE_COMPARE_FUNC_ARB */
-#ifndef GL_COMPARE_R_TO_TEXTURE_ARB 
-#define GL_COMPARE_R_TO_TEXTURE_ARB 0x884E
-#endif /* GL_COMPARE_R_TO_TEXTURE_ARB */
+/* Shadow-related */
 
-/* We also use the non-ARB versions of these defines */
-/* FIXME: consider if we should change the code that uses these */
+/* FIXME: consider if we should change the code that uses these. 200703?? pederb. */
+/* (Why? --mortene.) */
 #ifndef GL_TEXTURE_COMPARE_MODE
 #define GL_TEXTURE_COMPARE_MODE 0x884C
 #endif /* GL_TEXTURE_COMPARE_MODE */
