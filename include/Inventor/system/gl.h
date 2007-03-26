@@ -382,8 +382,25 @@
 
 /* Shadow-related */
 
-/* FIXME: consider if we should change the code that uses these. 200703?? pederb. */
+/* FIXME: consider if we should change the code that uses these. 20070316 pederb. */
 /* (Why? --mortene.) */
+
+/* 
+
+  We need to decide if we're going to use the _ARB versions of the
+  defines or if we're going to just skip using the _ARB postfix. Most (all?)
+  example code are using the _ARB postfix, so it might be a bit confusing if 
+  the OpenGL code in Coin doesn't use it.
+
+  I feel we should supply the _ARB versions of the defines, since
+  that's what everybody is using, and glext.h (supplied by Mesa and
+  nVidia) also use _ARB. The problem is when an ARB is taken in as
+  part of the OpenGL standard. We then might have to supply both
+  versions of the defines.
+
+  pederb, 20070326
+*/
+
 #ifndef GL_TEXTURE_COMPARE_MODE
 #define GL_TEXTURE_COMPARE_MODE 0x884C
 #endif /* GL_TEXTURE_COMPARE_MODE */
