@@ -31,6 +31,7 @@ PublicHeaders = \
 	SoFont.h \
 	SoFontStyle.h \
 	SoGroup.h \
+	SoGeometryShader.h \
 	SoImage.h \
 	SoIndexedFaceSet.h \
 	SoIndexedLineSet.h \

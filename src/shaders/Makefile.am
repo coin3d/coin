@@ -1,5 +1,6 @@
 Regular = \
 	SoFragmentShader.cpp \
+	SoGeometryShader.cpp \
 	SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp \
 	SoGLARBShaderProgram.cpp \
