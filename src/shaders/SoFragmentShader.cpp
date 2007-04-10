@@ -56,12 +56,6 @@ SoFragmentShader::~SoFragmentShader()
 
 // *************************************************************************
 
-SbBool
-SoFragmentShader::isVertexShader(void) const
-{
-  return FALSE;
-}
-
 /*!
   Returns a boolean indicating whether the requested source type is
   supported by the OpenGL driver or not. 

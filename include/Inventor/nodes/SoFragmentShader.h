@@ -38,8 +38,6 @@ public:
   virtual ~SoFragmentShader();
   
   static SbBool isSupported(SourceType sourceType);
-
-  virtual SbBool isVertexShader(void) const;
 };
 
 #endif /* ! COIN_SOFRAGMENTSHADER_H */

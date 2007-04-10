@@ -54,12 +54,6 @@ SoVertexShader::~SoVertexShader()
 {
 }
 
-SbBool
-SoVertexShader::isVertexShader(void) const
-{
-  return TRUE;
-}
-
 /*!
   Returns a boolean indicating whether the requested source type is
   supported by the OpenGL driver or not. 

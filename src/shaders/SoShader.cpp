@@ -27,6 +27,7 @@
 #include <Inventor/nodes/SoShaderObject.h>
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/nodes/SoGeometryShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/C/glue/cg.h>
@@ -79,6 +80,8 @@ SoShader::init(void)
     SoFragmentShader::initClass();
   if (SoVertexShader::getClassTypeId() == SoType::badType())
     SoVertexShader::initClass();
+  if (SoGeometryShader::getClassTypeId() == SoType::badType())
+    SoGeometryShader::initClass();
 
   // --- initialization of parameter nodes -----------------------------
   if (SoShaderParameter::getClassTypeId() == SoType::badType())

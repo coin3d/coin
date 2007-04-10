@@ -36,8 +36,6 @@ public:
   virtual ~SoVertexShader();
 
   static SbBool isSupported(SourceType sourceType);
-
-  virtual SbBool isVertexShader(void) const;
 };
 
 #endif /* ! COIN_SOVERTEXSHADER_H */

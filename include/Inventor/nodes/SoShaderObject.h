@@ -62,7 +62,6 @@ public:
   virtual void search(SoSearchAction * action);
 
   void updateParameters(const uint32_t cachecontext);
-  virtual SbBool isVertexShader(void) const = 0;
 
   SourceType getSourceType(void) const;
   SbString getSourceProgram(void) const;

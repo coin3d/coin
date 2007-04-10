@@ -34,6 +34,7 @@
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/nodes/SoGeometryShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoInput.h>
@@ -329,7 +330,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     default:
       assert(FALSE && "This shouldn't happen!");
     }
-    shaderobject->setIsVertexShader(this->owner->isVertexShader());
+    shaderobject->setIsVertexShader(this->owner->isOfType(SoVertexShader::getClassTypeId()));
 #if defined(SOURCE_HINT)
     shaderobject->sourceHint = getSourceHint();
 #endif
@@ -372,12 +373,12 @@ SoShaderObjectP::checkType(void)
       return;
     }
     if (subStr == ".fp") {
-      this->cachedSourceType = this->owner->isVertexShader()
+      this->cachedSourceType = this->owner->isOfType(SoVertexShader::getClassTypeId())
         ? SoShaderObject::FILENAME : SoShaderObject::ARB_PROGRAM;
       return;
     }
     if (subStr==".vp") {
-      this->cachedSourceType = this->owner->isVertexShader()
+      this->cachedSourceType = this->owner->isOfType(SoVertexShader::getClassTypeId())
         ? SoShaderObject::ARB_PROGRAM : SoShaderObject::FILENAME;
       return;
     }
@@ -450,7 +451,7 @@ SoShaderObjectP::readSource(void)
 SbBool
 SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glglue * glue)
 {
-  if (this->owner->isVertexShader()) {
+  if (this->owner->isOfType(SoVertexShader::getClassTypeId())) {
     // don't call this function. It's not context safe. pederb, 20051103
     // return SoVertexShader::isSupported(sourceType);    
 
@@ -467,7 +468,7 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
     else if (sourceType == SoShaderObject::CG_PROGRAM) return TRUE;
     return FALSE;
   }
-  else {
+  else if (this->owner->isOfType(SoFragmentShader::getClassTypeId())) {
     // don't call this function. It's not context safe. pederb, 20051103
     // return SoFragmentShader::isSupported(sourceType);
 
@@ -483,6 +484,13 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
     // handegar)
     else if (sourceType == SoShaderObject::CG_PROGRAM) return TRUE;
     return FALSE;
+  }
+  else {
+    assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
+    if (sourceType == SoShaderObject::GLSL_PROGRAM) {    
+      return cc_glglue_glext_supported(glue, "GL_EXT_geometry_shader4") && cc_glglue_has_arb_shader_objects(glue);
+    }
+    return FALSE;    
   }
 }
 
