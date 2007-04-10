@@ -66,9 +66,9 @@ SoGLSLShaderObject::load(const char* srcStr)
   this->unload();
   GLint flag;
   GLenum sType;
-
-  sType = (isVertexShader()) ? GL_VERTEX_SHADER_ARB : GL_FRAGMENT_SHADER_ARB;
-
+  
+  sType = (getShaderType() == VERTEX) ? GL_VERTEX_SHADER_ARB : GL_FRAGMENT_SHADER_ARB;
+  
   this->shaderHandle = this->glctx->glCreateShaderObjectARB(sType);
 
   if (this->shaderHandle == 0) return;
@@ -76,7 +76,7 @@ SoGLSLShaderObject::load(const char* srcStr)
   this->glctx->glShaderSourceARB(this->shaderHandle, 1, (const COIN_GLchar **)&srcStr, NULL);
   this->glctx->glCompileShaderARB(this->shaderHandle);
 
-  if (SoGLSLShaderObject::didOpenGLErrorOccur((isVertexShader()) ? 1 : 2)) {
+  if (SoGLSLShaderObject::didOpenGLErrorOccur(this->getShaderType())) {
     this->shaderHandle = 0;
     return;
   }
@@ -85,8 +85,8 @@ SoGLSLShaderObject::load(const char* srcStr)
                                          GL_OBJECT_COMPILE_STATUS_ARB,
                                          &flag);
   SoGLSLShaderObject::printInfoLog(this->GLContext(), this->shaderHandle,
-                                   this->isVertexShader() ? 1 : 2);
-
+                                   this->getShaderType());
+  
   if (!flag) this->shaderHandle = 0;
 }
 
@@ -149,9 +149,9 @@ SoGLSLShaderObject::printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int 
     g->glGetInfoLogARB(handle, length, &charsWritten, infoLog);
     SbString s("GLSL");
     switch (objType) {
-    case 0: s += "program "; break;
-    case 1: s += "vertexShader "; break;
-    case 2: s += "fragmentShader "; break;
+    case 0: s += "vertexShader "; break;
+    case 1: s += "fragmentShader "; break;
+    case 2: s += "geometryShader "; break;
     default: ;// do nothing 
     }
     SoDebugError::postInfo("SoGLSLShaderObject::printInfoLog",
@@ -175,9 +175,9 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
   while (glErr != GL_NO_ERROR) {
     SbString s("GLSL");
     switch (objType) {
-    case 0: s += "program "; break;
-    case 1: s += "vertexShader "; break;
-    case 2: s += "fragmentShader "; break;
+    case 0: s += "vertexShader "; break;
+    case 1: s += "fragmentShader "; break;
+    case 2: s += "geometryShader "; break;
     default: ;// do nothing 
     }
     SoDebugError::post("SoGLSLShaderObject::didOpenGLErrorOccur",

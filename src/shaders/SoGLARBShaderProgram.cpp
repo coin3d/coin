@@ -24,6 +24,7 @@
 #include "SoGLARBShaderProgram.h"
 
 #include <string.h>
+#include <assert.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include "SoGLARBShaderObject.h"
@@ -44,10 +45,11 @@ SoGLARBShaderProgram::SoGLARBShaderProgram(void)
 void
 SoGLARBShaderProgram::addShaderObject(SoGLARBShaderObject * shaderObject)
 {
-  if (shaderObject->isVertexShader()) {
+  if (shaderObject->getShaderType() == SoGLShaderObject::VERTEX) {
     this->vertexShader = shaderObject;
   }
   else {
+    assert(shaderObject->getShaderType() == SoGLShaderObject::FRAGMENT);
     this->fragmentShader = shaderObject;
   }
 }

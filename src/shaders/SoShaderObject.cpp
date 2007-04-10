@@ -330,7 +330,18 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     default:
       assert(FALSE && "This shouldn't happen!");
     }
-    shaderobject->setIsVertexShader(this->owner->isOfType(SoVertexShader::getClassTypeId()));
+
+    if (this->owner->isOfType(SoVertexShader::getClassTypeId())) {
+      shaderobject->setShaderType(SoGLShaderObject::VERTEX);
+    }
+    else if (this->owner->isOfType(SoFragmentShader::getClassTypeId())) {
+      shaderobject->setShaderType(SoGLShaderObject::FRAGMENT);
+    }
+    else {
+      assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
+      shaderobject->setShaderType(SoGLShaderObject::GEOMETRY);
+    }
+
 #if defined(SOURCE_HINT)
     shaderobject->sourceHint = getSourceHint();
 #endif

@@ -54,12 +54,19 @@ public:
   virtual SoGLShaderParameter* getNewParameter(void) const = 0;
 
 public:
-  void setIsVertexShader(SbBool flag);
-  SbBool isVertexShader(void) const;
+
+  enum ShaderType {
+    VERTEX,
+    FRAGMENT,
+    GEOMETRY
+  };
+
+  void setShaderType(const ShaderType type);
+  ShaderType getShaderType(void) const;
 
   void setIsActive(SbBool flag);
   SbBool isActive(void) const;
-
+  
   void setParametersDirty(SbBool flag);
   SbBool getParametersDirty(void) const;
 
@@ -72,9 +79,9 @@ protected:
   uint32_t cachecontext;
 
 private:
-  SbBool isVertexShaderFlag : 1;
-  SbBool isActiveFlag : 1;
-  SbBool paramsdirty : 1;
+  ShaderType shadertype;
+  SbBool isActiveFlag ;
+  SbBool paramsdirty;
 };
 
 #endif /* ! COIN_SOGLSHADEROBJECT_H */

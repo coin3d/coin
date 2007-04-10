@@ -132,18 +132,20 @@ SoGLCgShaderObject::disable(void)
 CGprofile
 SoGLCgShaderObject::getProfile(void) const
 {
-  CGprofile result = isVertexShader() ? CG_PROFILE_ARBVP1 : CG_PROFILE_ARBFP1;
+  CGprofile result = this->getShaderType() == VERTEX ? CG_PROFILE_ARBVP1 : CG_PROFILE_ARBFP1;
 
   if (!glue_cgGLIsProfileSupported(result)) {
     SoDebugError::postWarning("SoGLCgShaderObject::getProfile",
                               "profile '%s' is not supported",
                               glue_cgGetProfileString(result));
 
-    if (isVertexShader())
+    if (this->getShaderType() == VERTEX) {
       result = glue_cgGLGetLatestProfile(CG_GL_VERTEX);
-    else
+    }
+    else {
+      assert(this->getShaderType() == FRAGMENT);
       result = glue_cgGLGetLatestProfile(CG_GL_FRAGMENT);
-
+    }
     SoDebugError::postWarning("SoGLCgShaderObject::getProfile",
                               "'%s' will be used instead",
                               glue_cgGetProfileString(result));

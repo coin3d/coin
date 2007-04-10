@@ -43,10 +43,11 @@ SoGLCgShaderProgram::~SoGLCgShaderProgram()
 void
 SoGLCgShaderProgram::addShaderObject(SoGLCgShaderObject * shaderObject)
 {
-  if (shaderObject->isVertexShader()) {
+  if (shaderObject->getShaderType() == SoGLShaderObject::VERTEX) {
     this->vertexShader = shaderObject;
   }
   else {
+    assert(shaderObject->getShaderType() == SoGLShaderObject::FRAGMENT);
     this->fragmentShader = shaderObject;
   }
 }

@@ -34,7 +34,7 @@
 SoGLShaderObject::SoGLShaderObject(const uint32_t cachecontext)
 {
   this->isActiveFlag = TRUE;
-  this->isVertexShaderFlag = TRUE;
+  this->shadertype = VERTEX;
   this->paramsdirty = TRUE;
   this->glctx = cc_glglue_instance(cachecontext);
   this->cachecontext = cachecontext;
@@ -53,18 +53,18 @@ SoGLShaderObject::getCacheContext(void) const
 }
 
 void
-SoGLShaderObject::setIsVertexShader(SbBool flag)
+SoGLShaderObject::setShaderType(const ShaderType type)
 {
-  if (this->isVertexShaderFlag != flag) {
+  if (this->shadertype != type) {
     this->unload();
-    this->isVertexShaderFlag = flag;
+    this->shadertype = type;
   }
 }
 
-SbBool
-SoGLShaderObject::isVertexShader(void) const
+SoGLShaderObject::ShaderType
+SoGLShaderObject::getShaderType(void) const
 {
-  return this->isVertexShaderFlag;
+  return this->shadertype;
 }
 
 void SoGLShaderObject::setIsActive(SbBool flag)

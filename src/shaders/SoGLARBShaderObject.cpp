@@ -50,8 +50,8 @@ void
 SoGLARBShaderObject::load(const char * srcStr)
 {
   const size_t len = strlen(srcStr);
-
-  this->target = isVertexShader() 
+  
+  this->target = this->getShaderType() == VERTEX 
     ? GL_VERTEX_PROGRAM_ARB : GL_FRAGMENT_PROGRAM_ARB;
 
   this->unload();
