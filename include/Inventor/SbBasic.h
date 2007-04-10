@@ -1,3 +1,6 @@
+#ifndef COIN_SBBASIC_H
+#define COIN_SBBASIC_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBBASIC_H
-#define COIN_SBBASIC_H
-
-/* *********************************************************************** */
-
 #include <Inventor/C/basic.h>
 
-/* *********************************************************************** */
+/* ********************************************************************** */
 /* Trap people trying to use Inventor headers while compiling C source code.
  * (we get support mail about this from time to time)
  */
@@ -36,14 +34,14 @@
 #error You are not compiling C++ - maybe your source file is named <file>.c
 #endif
 
-/* *********************************************************************** */
+/* ********************************************************************** */
 /* Include these for Open Inventor compatibility reasons (they are not
  * actually used in Coin.)
  */
 #define SoEXTENDER
 #define SoINTERNAL
 
-/* *********************************************************************** */
+/* ********************************************************************** */
 
 /* Some useful inline template functions:
  *   SbAbs(Val)              - returns absolute value
@@ -84,7 +82,7 @@ inline Type SbSqr(const Type val) {
   return val * val;
 }
 
-/* *********************************************************************** */
+/* ********************************************************************** */
 
 /* COMPILER BUG WORKAROUND:
 
@@ -132,6 +130,6 @@ inline Type SbSqr(const Type val) {
 #define STATIC_SOTYPE_INIT = SoType::badType()
 #endif
 
-/* *********************************************************************** */
+/* ********************************************************************** */
 
 #endif /* !COIN_SBBASIC_H */
