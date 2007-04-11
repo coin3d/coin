@@ -1491,6 +1491,11 @@
 #define GL_OBJECT_ACTIVE_UNIFORMS_ARB 0x8B86
 #endif /* GL_OBJECT_ACTIVE_UNIFORMS_ARB */
 
+/* GL_EXT_geometry_shader4 (geometry shaders) */
+#ifndef GL_GEOMETRY_SHADER_EXT
+#define GL_GEOMETRY_SHADER_EXT 0x8DD9
+#endif /* GL_GEOMETRY_SHADER_EXT */
+
 /* GL_ARB_shader_objects */
 #ifndef GL_INT_VEC2_ARB
 #define GL_INT_VEC2_ARB 0x8B53
