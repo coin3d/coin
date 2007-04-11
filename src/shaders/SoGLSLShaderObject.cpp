@@ -25,7 +25,9 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/system/gl.h>
 #include "SoGLSLShaderParameter.h"
+#include <assert.h>
 
 // *************************************************************************
 
@@ -67,8 +69,20 @@ SoGLSLShaderObject::load(const char* srcStr)
   GLint flag;
   GLenum sType;
   
-  sType = (getShaderType() == VERTEX) ? GL_VERTEX_SHADER_ARB : GL_FRAGMENT_SHADER_ARB;
-  
+  switch (this->getShaderType()) {
+  default:
+    assert(0 &&" unknown shader type");
+  case VERTEX:
+    sType = GL_VERTEX_SHADER_ARB;
+    break;
+  case FRAGMENT:
+    sType = GL_FRAGMENT_SHADER_ARB;
+    break;
+  case GEOMETRY:
+    sType = GL_GEOMETRY_SHADER_EXT;
+    break;
+  }
+
   this->shaderHandle = this->glctx->glCreateShaderObjectARB(sType);
 
   if (this->shaderHandle == 0) return;
