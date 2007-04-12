@@ -102,6 +102,7 @@ public:
     
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
+      this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     else {
       this->depthmap->type = SoSceneTexture2::DEPTH;
@@ -162,7 +163,8 @@ public:
     spotlightsvalid(FALSE),
     shaderprogram(NULL),
     vertexshader(NULL),
-    fragmentshader(NULL)
+    fragmentshader(NULL),
+    fragment_farval(NULL)
   { 
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -175,6 +177,10 @@ public:
     this->cameratransform->name = "cameraTransform";
     this->cameratransform->ref();
 
+    this->fragment_farval = new SoShaderParameter1f;
+    this->fragment_farval->ref();
+    this->fragment_farval->name = "farval";
+    
     this->vertexshader->parameter.set1Value(0, this->cameratransform);
 
     // FIXME: just testing
@@ -182,6 +188,7 @@ public:
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
   }
   ~SoShadowGroupP() {
+    if (this->fragment_farval) this->fragment_farval->unref();
     if (this->cameratransform) this->cameratransform->unref();
     if (this->vertexshader) this->vertexshader->unref();
     if (this->fragmentshader) this->fragmentshader->unref();
@@ -217,6 +224,7 @@ public:
   SoVertexShader * vertexshader;
   SoFragmentShader * fragmentshader;
   SoShaderParameterMatrix * cameratransform;
+  SoShaderParameter1f * fragment_farval;
 
   SoShaderGenerator vertexgenerator;
   SoShaderGenerator fragmentgenerator;
@@ -431,6 +439,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   }    
 
   cache->nearval = 1.0f;
+  //cache->farval = 1000.0f;
 
   const float SLACK = 0.001f;
 
@@ -449,6 +458,13 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
       cache->vsm_farval->value = cache->farval;
     }
   }
+
+  if (this->fragment_farval) {
+    if (this->fragment_farval->value.getValue() != cache->farval) {
+      this->fragment_farval->value = cache->farval;
+    }
+  }
+
   SbViewVolume vv = cam->getViewVolume(1.0f);
   SbMatrix affine, proj;
   
@@ -472,7 +488,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
 void 
 SoShadowGroupP::renderDepthMap(SoShadowSpotLightCache * cache,
-                              SoGLRenderAction * action)
+                               SoGLRenderAction * action)
 {
   cache->depthmap->GLRender(action);
 }
@@ -567,6 +583,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   if (PUBLIC(this)->vsm.getValue()) {
     gen.addDeclaration("uniform sampler2D shadowMap0;", FALSE);
+    gen.addDeclaration("uniform float farval;", FALSE);
   }
   else {
     gen.addDeclaration("uniform sampler2DShadow shadowMap0;", FALSE);
@@ -580,18 +597,24 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
   }
   if (PUBLIC(this)->vsm.getValue()) {
-    // not working yet
-    gen.addFunction("float lookup() {\n"
-                    "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
-                    "  float dist = coord.z > 0.0 ? texture2D(shadowMap0, coord.xy).x : 0.0;\n"
-                    "  return (dist == 0.0) ? 0.0 : (dist < coord.z) ? 1.0 : 0.0;\n"
-                    "}", FALSE);
+    gen.addFunction("float lookup(in float dist) {\n"
+                    "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + vec3(1.0));\n"
+                    "  vec4 map = texture2D(shadowMap0, coord.xy);\n"
+                    "  float mapdist = map.x;\n"
+                    "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
+                    "  float E_x2 = map.y;\n"
+                    "  float Ex_2 = mapdist * mapdist;\n"
+                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + 0.000005, 1.0);\n" // FIXME: tune epsilon based on buffer type
+                    "  float m_d = mapdist - dist;\n"
+                    "  float p_max = variance / (variance + m_d * m_d);\n"
+                    "  return max(lit_factor, p_max);\n"
+                    "}\n", FALSE);
   }
   else {
-    gen.addFunction("float lookup() {\n"
+    gen.addFunction("float lookup(in float dummy) {\n"
                     "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + 1.0);\n"
                     "  return coord.z > 0.0 ? (shadow2D(shadowMap0, coord).s == 1.0 ? 1.0 : 0.0) : 0.0;\n"
-                    "}", FALSE);
+                    "}\n", FALSE);
   }
   
   gen.addMainStatement("vec3 eye = vec3(0.0);");
@@ -600,16 +623,21 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "vec4 specular = vec4(0.0);");
 
   if (PUBLIC(this)->perPixel.getValue()) {
-    gen.addMainStatement("float shadeFactor = lookup();\n"
+    gen.addMainStatement("float shadeFactor = lookup(0.0);\n"
                          "SpotLight(1, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
                          "gl_FragColor = vec4(shadeFactor * diffuse.rgb * gl_Color.rgb + "
                          "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb + "
                          "perVertexColor, gl_Color.a);");
   }
   else {
-    gen.addMainStatement("float shadeFactor = lookup();\n"
-                         "gl_FragColor = vec4(shadeFactor * gl_Color.rgb + perVertexColor, gl_Color.a);");
-  
+    SbString str;
+    str.sprintf(
+                "vec3 VP = vec3(gl_LightSource[1].position) - ecPosition3;\n"
+                "float d =  length(VP);\n"
+                "float shadeFactor = lookup(d / farval);\n"
+                "gl_FragColor = vec4(shadeFactor * gl_Color.rgb /*+ perVertexColor*/, gl_Color.a);");
+    
+    gen.addMainStatement(str);  
   }
 
   this->fragmentshader->sourceProgram = gen.getShaderProgram();
@@ -622,6 +650,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   shadowmap0->value = 0;
 
   this->fragmentshader->parameter = shadowmap0; 
+
+  if (PUBLIC(this)->vsm.getValue()) {
+    this->fragmentshader->parameter.set1Value(1, this->fragment_farval); 
+  }
+
 }
 
 void
@@ -651,6 +684,7 @@ SoShadowSpotLightCache::createVSMProgram(void)
   fgen.addDeclaration("varying vec3 light_vec;", FALSE);
   fgen.addDeclaration("uniform float farval;", FALSE);
   fgen.addMainStatement("float l = length(light_vec) / farval;\n"
+                        // FIXME: normalize length based on farval or light attenuation
                         "gl_FragColor = vec4(l, l*l, 0.0, 0.0);");
 
   fshader->sourceProgram = fgen.getShaderProgram();
