@@ -53,6 +53,7 @@ public:
 
   // FIXME: temporary fields used while debugging
   SoSFBool vsm;
+  SoSFFloat vsmEpsilon;
   SoSFBool perPixel;
 
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
