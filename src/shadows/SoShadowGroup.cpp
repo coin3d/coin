@@ -40,6 +40,9 @@
   \endcode
 */
 
+// use to increase the VSM precision by using all four components
+#define DISTRIBUTE_FACTOR 32.0
+
 // *************************************************************************
 
 #include <FXViz/nodes/SoShadowGroup.h>
@@ -101,7 +104,7 @@ public:
     this->depthmap->size = SbVec2s(512, 512);
     
     if (this->vsm_program) {
-      this->depthmap->type = SoSceneTexture2::RGBA32F;
+      this->depthmap->type = SoSceneTexture2::RGBA16F;
       this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     else {
@@ -439,7 +442,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   }    
 
   cache->nearval = 1.0f;
-  //cache->farval = 1000.0f;
+  // cache->farval = 1000.0f;
 
   const float SLACK = 0.001f;
 
@@ -584,6 +587,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (PUBLIC(this)->vsm.getValue()) {
     gen.addDeclaration("uniform sampler2D shadowMap0;", FALSE);
     gen.addDeclaration("uniform float farval;", FALSE);
+#ifdef DISTRIBUTE_FACTOR
+    SbString str;
+    str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
+    gen.addDeclaration(str, FALSE);
+#endif
   }
   else {
     gen.addDeclaration("uniform sampler2DShadow shadowMap0;", FALSE);
@@ -600,11 +608,14 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     gen.addFunction("float lookup(in float dist) {\n"
                     "  vec3 coord = 0.5 * (shadowCoord0.xyz / shadowCoord0.w + vec3(1.0));\n"
                     "  vec4 map = texture2D(shadowMap0, coord.xy);\n"
+#ifdef DISTRIBUTE_FACTOR
+                    "  map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
+#endif
                     "  float mapdist = map.x;\n"
                     "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
                     "  float E_x2 = map.y;\n"
                     "  float Ex_2 = mapdist * mapdist;\n"
-                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + 0.000005, 1.0);\n" // FIXME: tune epsilon based on buffer type
+                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + 0.00001, 1.0);\n" // FIXME: tune epsilon based on buffer type
                     "  float m_d = mapdist - dist;\n"
                     "  float p_max = variance / (variance + m_d * m_d);\n"
                     "  return max(lit_factor, p_max);\n"
@@ -633,9 +644,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     SbString str;
     str.sprintf(
                 "vec3 VP = vec3(gl_LightSource[1].position) - ecPosition3;\n"
-                "float d =  length(VP);\n"
-                "float shadeFactor = lookup(d / farval);\n"
-                "gl_FragColor = vec4(shadeFactor * gl_Color.rgb /*+ perVertexColor*/, gl_Color.a);");
+                "float d = length(VP);\n"
+                "float shadeFactor = shadowCoord0.z > -1.0 ? lookup(d / farval) : 0.0;\n"
+                "gl_FragColor = vec4(perVertexColor + shadeFactor * perVertexColor, gl_Color.a);");
     
     gen.addMainStatement(str);  
   }
@@ -673,6 +684,7 @@ SoShadowSpotLightCache::createVSMProgram(void)
   SoShaderGenerator & fgen = this->vsm_fragment_generator;
   
   vgen.reset(FALSE);
+
   vgen.addDeclaration("varying vec3 light_vec;", FALSE);
   vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
                         "gl_Position = ftransform();");
@@ -681,12 +693,25 @@ SoShadowSpotLightCache::createVSMProgram(void)
   vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
   
   fgen.reset(FALSE);
+#ifdef DISTRIBUTE_FACTOR
+  SbString str;
+  str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
+  fgen.addDeclaration(str, FALSE);
+#endif
   fgen.addDeclaration("varying vec3 light_vec;", FALSE);
   fgen.addDeclaration("uniform float farval;", FALSE);
   fgen.addMainStatement("float l = length(light_vec) / farval;\n"
                         // FIXME: normalize length based on farval or light attenuation
-                        "gl_FragColor = vec4(l, l*l, 0.0, 0.0);");
-
+#ifdef DISTRIBUTE_FACTOR
+                        "vec2 m = vec2(l, l*l);\n"
+                        "vec2 f = fract(m * DISTRIBUTE_FACTOR);\n"
+                        
+                        "gl_FragColor.rg = m - (f / DISTRIBUTE_FACTOR);\n"
+                        "gl_FragColor.ba = f;\n"
+#else
+                        "gl_FragColor = vec4(l, l*l, 0.0, 0.0);"
+#endif
+                        );
   fshader->sourceProgram = fgen.getShaderProgram();
   fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 
