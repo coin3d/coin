@@ -77,6 +77,7 @@ SbName::SbName(void)
 */
 SbName::SbName(const char * namestring)
 {
+  assert(namestring);
   this->permaaddress = cc_namemap_get_address(namestring);
 }
 
