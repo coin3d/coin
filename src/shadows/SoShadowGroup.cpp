@@ -257,6 +257,7 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(shadowCachingEnabled, (TRUE));
   SO_NODE_ADD_FIELD(visibilityRadius, (-1.0f));
   SO_NODE_ADD_FIELD(vsm, (FALSE));
+  SO_NODE_ADD_FIELD(vsmEpsilon, (0.001f));
   SO_NODE_ADD_FIELD(perPixel, (TRUE));
 }
 
@@ -585,6 +586,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.reset(FALSE);
 
   if (PUBLIC(this)->vsm.getValue()) {
+    SbString eps;
+    eps.sprintf("const float EPSILON = %f;\n",
+                PUBLIC(this)->vsmEpsilon.getValue());
+    gen.addDeclaration(eps, FALSE);
+
     gen.addDeclaration("uniform sampler2D shadowMap0;", FALSE);
     gen.addDeclaration("uniform float farval;", FALSE);
 #ifdef DISTRIBUTE_FACTOR
@@ -615,7 +621,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                     "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
                     "  float E_x2 = map.y;\n"
                     "  float Ex_2 = mapdist * mapdist;\n"
-                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + 0.00001, 1.0);\n" // FIXME: tune epsilon based on buffer type
+                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + EPSILON, 1.0);\n"
                     "  float m_d = mapdist - dist;\n"
                     "  float p_max = variance / (variance + m_d * m_d);\n"
                     "  return max(lit_factor, p_max);\n"
