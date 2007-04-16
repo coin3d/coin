@@ -45,7 +45,25 @@ SoGLSLShaderProgram::SoGLSLShaderProgram(void)
 SoGLSLShaderProgram::~SoGLSLShaderProgram()
 {
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
+  this->deletePrograms();
+}
 
+
+void
+SoGLSLShaderProgram::deleteProgram(const cc_glglue * g)
+{
+  COIN_GLhandle glhandle = 0;
+  if (this->programHandles.get(g->contextid, glhandle)) {
+    uintptr_t tmp = (uintptr_t) glhandle;
+    SoGLCacheContextElement::scheduleDeleteCallback(g->contextid, 
+                                                    really_delete_object, (void*) tmp);
+    this->programHandles.remove(g->contextid);
+  }
+}
+
+void
+SoGLSLShaderProgram::deletePrograms(void)
+{
   SbList <uint32_t> keylist;
   this->programHandles.makeKeyList(keylist);
   for (int i = 0; i < keylist.getLength(); i++) {
@@ -54,8 +72,10 @@ SoGLSLShaderProgram::~SoGLSLShaderProgram()
     uintptr_t tmp = (uintptr_t) glhandle;
     SoGLCacheContextElement::scheduleDeleteCallback(keylist[i], 
                                                     really_delete_object, (void*) tmp);
+    this->programHandles.remove(keylist[i]);
   }
 }
+
 
 void
 SoGLSLShaderProgram::addShaderObject(SoGLSLShaderObject *shaderObject)
@@ -66,6 +86,7 @@ SoGLSLShaderProgram::addShaderObject(SoGLSLShaderObject *shaderObject)
     }
   }
 }
+
 void
 SoGLSLShaderProgram::removeShaderObjects(void)
 {
@@ -116,6 +137,9 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
   }
 
   if (!shouldlink) return;
+
+  // delete old programs
+  this->deleteProgram(g);
 
   this->isExecutable = FALSE;
 

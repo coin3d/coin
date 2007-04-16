@@ -158,9 +158,9 @@ SoShaderParameter1f::updateParameter(SoGLShaderObject *shader)
 {
   this->ensureParameter(shader);
   this->getGLShaderParameter(shader->getCacheContext())->set1f(shader,
-                         this->value.getValue(),
-                         this->name.getValue().getString(),
-                         this->identifier.getValue());
+                                                               this->value.getValue(),
+                                                               this->name.getValue().getString(),
+                                                               this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -363,10 +363,10 @@ void SoShaderParameterArray1f::updateParameter(SoGLShaderObject *shader)
 {
   this->ensureParameter(shader);
   this->getGLShaderParameter(shader->getCacheContext())->set1fv(shader,
-			  this->value.getNum(),
-			  this->value.getValues(0),
-			  this->name.getValue().getString(),
-			  this->identifier.getValue());
+                                                                this->value.getNum(),
+                                                                this->value.getValues(0),
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -451,8 +451,8 @@ void SoShaderParameterArray3f::updateParameter(SoGLShaderObject *shader)
   }
   
   this->getGLShaderParameter(shader->getCacheContext())->set3fv(shader, num, buffer,
-			  this->name.getValue().getString(),
-			  this->identifier.getValue());
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
   if (buffer) delete[] buffer;
 }
 
@@ -531,8 +531,8 @@ void SoShaderParameterMatrix::updateParameter(SoGLShaderObject *shader)
   this->ensureParameter(shader);
 
   this->getGLShaderParameter(shader->getCacheContext())->setMatrix(shader,  this->value.getValue()[0],
-			     this->name.getValue().getString(),
-			     this->identifier.getValue());
+                                                                   this->name.getValue().getString(),
+                                                                   this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -544,7 +544,7 @@ SO_NODE_SOURCE(SoShaderParameterMatrixArray);
 void SoShaderParameterMatrixArray::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterMatrixArray,
-			      SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterMatrixArray::SoShaderParameterMatrixArray(void)

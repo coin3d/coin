@@ -62,6 +62,7 @@ private:
   COIN_GLhandle programHandle;
   COIN_GLhandle shaderHandle;
   SbBool isattached;
+  int32_t programid;
 };
 
 #endif /* ! COIN_SOGLSLSHADEROBJECT_H */

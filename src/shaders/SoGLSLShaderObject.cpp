@@ -29,6 +29,8 @@
 #include "SoGLSLShaderParameter.h"
 #include <assert.h>
 
+static int32_t soglshaderobject_idcounter = 1;
+
 // *************************************************************************
 
 SoGLSLShaderObject::SoGLSLShaderObject(const uint32_t cachecontext)
@@ -37,6 +39,7 @@ SoGLSLShaderObject::SoGLSLShaderObject(const uint32_t cachecontext)
   this->programHandle = 0;
   this->shaderHandle = 0;
   this->isattached = FALSE;
+  this->programid = 0;
 }
 
 SoGLSLShaderObject::~SoGLSLShaderObject()
@@ -66,6 +69,8 @@ void
 SoGLSLShaderObject::load(const char* srcStr)
 {
   this->unload();
+  this->setParametersDirty(TRUE);
+
   GLint flag;
   GLenum sType;
   
@@ -84,9 +89,11 @@ SoGLSLShaderObject::load(const char* srcStr)
   }
 
   this->shaderHandle = this->glctx->glCreateShaderObjectARB(sType);
+  this->programid = 0;
 
   if (this->shaderHandle == 0) return;
-
+  this->programid = soglshaderobject_idcounter++;
+  
   this->glctx->glShaderSourceARB(this->shaderHandle, 1, (const COIN_GLchar **)&srcStr, NULL);
   this->glctx->glCompileShaderARB(this->shaderHandle);
 
@@ -111,6 +118,7 @@ SoGLSLShaderObject::unload(void)
   if (this->shaderHandle) { this->glctx->glDeleteObjectARB(this->shaderHandle); }
   this->shaderHandle = 0;
   this->programHandle = 0;
+  this->programid = 0;
 }
 
 SoGLShaderParameter *
@@ -141,6 +149,7 @@ SoGLSLShaderObject::detach(void)
   if (this->isattached && this->programHandle && this->shaderHandle) {
     this->glctx->glDetachObjectARB(this->programHandle, this->shaderHandle);
     this->isattached = FALSE;
+    this->programHandle = 0;
   }
 }
 

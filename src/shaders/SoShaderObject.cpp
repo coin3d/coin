@@ -291,10 +291,10 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
   const cc_glglue * glue = cc_glglue_instance(cachecontext);
 
   SoGLShaderObject * shaderobject = this->getGLShaderObject(cachecontext);
-
+  
   if (this->owner->sourceProgram.isDefault() ||
       this->owner->sourceProgram.getValue().getLength() == 0) { return; }
-
+  
   if (shaderobject == NULL) {
     if (this->shouldload) {
       this->checkType(); // set this->cachedSourceType

@@ -66,6 +66,9 @@ protected:
   void ensureProgramHandle(const cc_glglue * g);
 
 private:
+  void deletePrograms(void);
+  void deleteProgram(const cc_glglue * g);
+
   COIN_GLhandle getProgramHandle(const cc_glglue * g, const SbBool create = FALSE);
 
   static void context_destruction_cb(uint32_t cachecontext, void * userdata);

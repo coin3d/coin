@@ -35,6 +35,7 @@ SoGLSLShaderParameter::SoGLSLShaderParameter(void)
   this->cacheName = "";
   this->cacheSize =  0;
   this->isActive = TRUE;
+  this->programid = 0;
 }
 
 SoGLSLShaderParameter::~SoGLSLShaderParameter()
@@ -136,6 +137,7 @@ SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *shader,
     shader->GLContext()->glUniformMatrix4fvARB(this->location,cnt,FALSE,value);
 }
 
+
 void
 SoGLSLShaderParameter::set1i(const SoGLShaderObject * shader,
                              const int32_t value, const char * name, const int)
@@ -180,11 +182,15 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
   assert(shader);
   assert(shader->shaderType() == SoShader::GLSL_SHADER);
   
+  COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
+  int32_t pId = ((SoGLSLShaderObject*)shader)->programid;
+  
   // return TRUE if uniform isn't active. We warned the user about
   // this when we found it to be inactive.
-  if ((this->location > -1) && !this->isActive) return TRUE;
+  if ((pId == this->programid) && (this->location > -1) && !this->isActive) return TRUE;
   
-  if ((this->location > -1) && (this->cacheName == name) && (this->cacheType == type)) {
+  if ((pId == this->programid) && (this->location > -1) && 
+      (this->cacheName == name) && (this->cacheType == type)) {
     if (num) { // assume: ARRAY
       if (this->cacheSize < *num) {
         // FIXME: better error handling - 20050128 martin
@@ -199,12 +205,12 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
     return TRUE;
   }
   
-  COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
   const cc_glglue * g = shader->GLContext();
   
   this->cacheSize = 0;  
   this->location = g->glGetUniformLocationARB(pHandle,
                                               (const COIN_GLchar *)name);
+  this->programid = pId;
   
   if (this->location == -1)  {
 #if COIN_DEBUG

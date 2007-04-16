@@ -70,6 +70,7 @@ private:
   GLsizei cacheSize;
   GLenum cacheType;
   SbBool isActive;
+  int32_t programid;
   
   SbBool isValid(const SoGLShaderObject * shader, const char * name, 
                  GLenum type, int * num = NULL);
