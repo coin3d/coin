@@ -71,7 +71,7 @@ goto installdllrelease
 
 :installdlldebug
 xcopy %libname%d.dll %COINDIR%\bin\ /R /Y
-xcopy %libname%d.pdb %COINDIR%\bin\ /R /Y
+xcopy Debug\%libname%d.pdb %COINDIR%\bin\ /R /Y
 xcopy Debug\%libname%d.lib %COINDIR%\lib\ /R /Y
 goto binariesdone
 
