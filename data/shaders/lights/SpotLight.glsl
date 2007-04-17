@@ -1,4 +1,4 @@
-void SpotLight(in int i,
+float SpotLight(in int i,
                in vec3 eye,
                in vec3 ecPosition3,
                in vec3 normal,
@@ -45,4 +45,6 @@ void SpotLight(in int i,
   ambient += gl_LightSource[i].ambient * att;
   diffuse += gl_LightSource[i].diffuse * nDotVP * att;
   specular += gl_LightSource[i].specular * pf * att;
+
+  return d;
 }
