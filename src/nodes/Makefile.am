@@ -73,6 +73,7 @@ RegularSources = \
 	SoSpotLight.cpp \
 	SoSurroundScale.cpp \
 	SoSwitch.cpp \
+	SoTexture.cpp \
 	SoTexture2.cpp \
 	SoTexture3.cpp \
 	SoTexture2Transform.cpp \

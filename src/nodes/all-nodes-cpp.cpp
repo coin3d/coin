@@ -91,6 +91,7 @@
 #include "SoSpotLight.cpp"
 #include "SoSurroundScale.cpp"
 #include "SoSwitch.cpp"
+#include "SoTexture.cpp"
 #include "SoTexture2.cpp"
 #include "SoTexture2Transform.cpp"
 #include "SoTexture3.cpp"

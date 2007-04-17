@@ -95,6 +95,7 @@ PublicHeaders = \
 	SoSwitch.h \
 	SoText2.h \
 	SoText3.h \
+	SoTexture.h \
 	SoTexture2.h \
 	SoTexture2Transform.h \
 	SoTexture3.h \

@@ -172,6 +172,10 @@
 
 #include <Inventor/nodes/SoNode.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <assert.h>
 #include <stdlib.h>
 
@@ -188,24 +192,10 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/nodes/SoBumpMap.h>
-#include <Inventor/nodes/SoBumpMapCoordinate.h>
-#include <Inventor/nodes/SoBumpMapTransform.h>
-#include <Inventor/nodes/SoCacheHint.h>
 #include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodes/SoSceneTexture2.h>
-#include <Inventor/nodes/SoSceneTextureCubeMap.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoTextureCombine.h>
-#include <Inventor/nodes/SoTextureScalePolicy.h>
-#include <Inventor/nodes/SoTextureUnit.h>
-#include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 // *************************************************************************
 
@@ -628,6 +618,7 @@ SoNode::initClasses(void)
   SoProfileCoordinate2::initClass();
   SoProfileCoordinate3::initClass();
   SoShapeHints::initClass();
+  SoTexture::initClass();
   SoTexture2::initClass();
   SoTexture3::initClass();
   SoTexture2Transform::initClass();

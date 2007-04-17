@@ -118,6 +118,7 @@
 #include <Inventor/nodes/SoProfileCoordinate2.h>
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoTexture.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTexture3.h>
 #include <Inventor/nodes/SoTexture2Transform.h>
@@ -146,5 +147,15 @@
 #include <Inventor/nodes/SoTextureCoordinateNormalMap.h>
 #include <Inventor/nodes/SoTextureCoordinateReflectionMap.h>
 #include <Inventor/nodes/SoTextureCoordinateObject.h>
+#include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/nodes/SoTextureScalePolicy.h>
+#include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoTextureCombine.h>
+#include <Inventor/nodes/SoBumpMap.h>
+#include <Inventor/nodes/SoBumpMapCoordinate.h>
+#include <Inventor/nodes/SoBumpMapTransform.h>
+#include <Inventor/nodes/SoSceneTexture2.h>
+#include <Inventor/nodes/SoSceneTextureCubeMap.h>
+#include <Inventor/nodes/SoCacheHint.h>
 
 #endif // !COIN_SONODES_H
