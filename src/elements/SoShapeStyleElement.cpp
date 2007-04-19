@@ -48,7 +48,7 @@
    SoShapeStyleElement::BUMPMAP|   \
    SoShapeStyleElement::VERTEXARRAY)
 
-#define TRANSPTYPE_MASK 0x000ff
+#define TRANSPTYPE_MASK 0x0001f
 
 SO_ELEMENT_SOURCE(SoShapeStyleElement);
 
@@ -448,6 +448,23 @@ SoShapeStyleElement::setShadowMapRendering(SoState * state, const SbBool value)
   }
   else {
     elem->flags &= ~SHADOWMAP;
+  }
+}
+
+/*!
+  Sets whether we are rendering with shadows or not.
+
+  \since Coin 2.5
+*/
+void 
+SoShapeStyleElement::setShadowsRendering(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= SHADOWS;
+  }
+  else {
+    elem->flags &= ~SHADOWS;
   }
 }
 
