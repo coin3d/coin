@@ -64,7 +64,7 @@ SoShadowStyleElement::~SoShadowStyleElement(void)
 void
 SoShadowStyleElement::set(SoState * const state,
                           SoNode * const node,
-                          const Style style)
+                          const int style)
 {
   SoInt32Element::set(classStackIndex, state, node, style);
 }
@@ -81,22 +81,22 @@ SoShadowStyleElement::init(SoState * state)
 //! FIXME: write doc.
 
 void
-SoShadowStyleElement::set(SoState * const state, const Style style)
+SoShadowStyleElement::set(SoState * const state, const int style)
 {
   SoShadowStyleElement::set(state, NULL, style);
 }
 
 //! FIXME: write doc.
 
-SoShadowStyleElement::Style
+int
 SoShadowStyleElement::get(SoState * const state)
 {
-  return (Style) SoInt32Element::get(classStackIndex, state);
+  return SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
-SoShadowStyleElement::Style
+int
 SoShadowStyleElement::getDefault(void)
 {
   return CASTS_SHADOW_AND_SHADOWED;

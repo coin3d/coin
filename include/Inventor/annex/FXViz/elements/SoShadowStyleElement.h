@@ -36,20 +36,20 @@ protected:
   virtual ~SoShadowStyleElement();
 
 public:
-  enum Style {
-    NO_SHADOWING, 
-    CASTS_SHADOW, 
-    SHADOWED, 
-    CASTS_SHADOW_AND_SHADOWED 
+  enum StyleFlags {
+    NO_SHADOWING = 0x0, 
+    CASTS_SHADOW = 0x1, 
+    SHADOWED     = 0x2,
+    CASTS_SHADOW_AND_SHADOWED = CASTS_SHADOW|SHADOWED 
   };
   
   virtual void init(SoState * state);
   
   static  void set(SoState * const state, SoNode * const node,
-                   const Style style);
-  static void set(SoState * const state, const Style style);
-  static Style get(SoState * const state);
-  static Style getDefault(void);
+                   const int styleflags);
+  static void set(SoState * const state, const int styleflags);
+  static int get(SoState * const state);
+  static int getDefault(void);
 
 };
 
