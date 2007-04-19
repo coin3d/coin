@@ -147,7 +147,6 @@
 #include <Inventor/nodes/SoTextureCoordinateNormalMap.h>
 #include <Inventor/nodes/SoTextureCoordinateReflectionMap.h>
 #include <Inventor/nodes/SoTextureCoordinateObject.h>
-#include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoTextureCombine.h>

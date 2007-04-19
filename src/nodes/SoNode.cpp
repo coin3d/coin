@@ -194,6 +194,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
