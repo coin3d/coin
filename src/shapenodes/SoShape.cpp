@@ -548,16 +548,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
-    SoShadowStyleElement::Style style = SoShadowStyleElement::get(state);
-    switch (style) {
-    case SoShadowStyleElement::NO_SHADOWING:
-    case SoShadowStyleElement::SHADOWED:
-      return FALSE;
-    case SoShadowStyleElement::CASTS_SHADOW: 
-    case SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED:
-    default:
-      return TRUE;
-    }
+    int style = SoShadowStyleElement::get(state);
+    if (style & SoShadowStyleElement::CASTS_SHADOW) return TRUE;
+    return FALSE;
   }
   
   SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
