@@ -121,7 +121,7 @@ SoShadowStyle::GLRender(SoGLRenderAction * action)
 {
   SoShadowStyleElement::set(action->getState(),
                             this,
-                            (SoShadowStyleElement::Style) this->style.getValue());
+                            (int) this->style.getValue());
 
 }
 
