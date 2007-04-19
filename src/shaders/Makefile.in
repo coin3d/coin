@@ -343,8 +343,8 @@ DISTCLEANFILES = \
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
 
 # header installation
-@MAC_FRAMEWORK_TRUE@libshadersincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/shaders
-@MAC_FRAMEWORK_FALSE@libshadersincdir = $(includedir)/Inventor/shaders
+@MAC_FRAMEWORK_TRUE@libshadersincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/nodes
+@MAC_FRAMEWORK_FALSE@libshadersincdir = $(includedir)/Inventor/nodes
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 libshadersinc_HEADERS = $(PublicHeaders)

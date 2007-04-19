@@ -84,11 +84,11 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncl
 
 # header installation
 if MAC_FRAMEWORK
-libshadersincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/shaders
+libshadersincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/nodes
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libshadersincdir = $(includedir)/Inventor/shaders
+libshadersincdir = $(includedir)/Inventor/nodes
 endif
 libshadersinc_HEADERS = $(PublicHeaders)
 
