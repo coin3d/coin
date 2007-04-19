@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,10 +14,10 @@
  *  support services, please contact Systems in Motion about acquiring
  *  a Coin Professional Edition License.
  *
- *  See <URL:http://www.coin3d.org/> for more information.
+ *  See http://www.coin3d.org/ for more information.
  *
  *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
- *  <URL:http://www.sim.no/>.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
@@ -204,7 +204,7 @@
   The header file:
 
   \code
-  // Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2007 by Systems in Motion. All rights reserved.
 
   #ifndef COIN_SHAPESCALE_H
   #define COIN_SHAPESCALE_H
@@ -244,7 +244,7 @@
   The source code for the example:
 
   \code
-  // Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2007 by Systems in Motion. All rights reserved.
 
   //  The ShapeScale class is used for scaling a shape based on
   //  projected size.
@@ -343,7 +343,7 @@
   And a complete example showing how one can use this node kit:
 
   \code
-  // Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2007 by Systems in Motion. All rights reserved.
 
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
