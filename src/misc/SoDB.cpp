@@ -357,7 +357,7 @@
 
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/nodes/SoShader.h>
+#include "../shaders/SoShader.h"
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>

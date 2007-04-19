@@ -30,8 +30,8 @@
 
 #include <Inventor/misc/SoShaderGenerator.h>
 #include <Inventor/SbName.h>
-#include <Inventor/nodes/SoShader.h>
 #include <Inventor/errors/SoDebugError.h>
+#include "../shaders/SoShader.h"
 
 /*!
   Constructor.

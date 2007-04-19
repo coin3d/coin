@@ -137,8 +137,7 @@ PublicHeaders = \
 
 PrivateHeaders = \
 	SoSubNodeP.h \
-	SoUnknownNode.h \
-	SoShader.h
+	SoUnknownNode.h
 
 ObsoleteHeaders =
 

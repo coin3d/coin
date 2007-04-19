@@ -57,7 +57,6 @@
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderParameter.h>
-#include <Inventor/nodes/SoShader.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
@@ -80,6 +79,7 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
 #include <math.h>
+#include "../shaders/SoShader.h"
 
 // *************************************************************************
 

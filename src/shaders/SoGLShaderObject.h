@@ -32,7 +32,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbString.h>
-#include <Inventor/nodes/SoShader.h>
+#include "SoShader.h"
 
 class SoGLShaderParameter;
 

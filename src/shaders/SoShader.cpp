@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoShader.h>
+#include "SoShader.h"
 
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderObject.h>

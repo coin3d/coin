@@ -25,6 +25,7 @@ LinkHackSources = all-shaders-cpp.cpp
 PublicHeaders = 
 
 PrivateHeaders = \
+	SoShader.h \
 	SoGLARBShaderParameter.h \
 	SoGLARBShaderObject.h \
 	SoGLARBShaderProgram.h \
