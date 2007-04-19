@@ -1,4 +1,4 @@
-Regular = \
+RegularSources = \
 	SoFragmentShader.cpp \
 	SoGeometryShader.cpp \
 	SoGLARBShaderParameter.cpp \
@@ -20,7 +20,11 @@ Regular = \
 	SoShader.cpp \
 	SoVertexShader.cpp
 
-Private = \
+LinkHackSources = all-shaders-cpp.cpp
+
+PublicHeaders = 
+
+PrivateHeaders = \
 	SoGLARBShaderParameter.h \
 	SoGLARBShaderObject.h \
 	SoGLARBShaderProgram.h \
@@ -34,15 +38,9 @@ Private = \
 	SoGLShaderObject.h \
 	SoGLShaderProgram.h
 
-RegularSources = $(Regular)
-LinkHackSources = $(Regular)
-PrivateHeaders = $(Private)
-
-PublicHeaders = 
 ObsoleteHeaders =
 
-
-##$ BEGIN TEMPLATE Make-Common(shaders, shaders)
+##$ BEGIN TEMPLATE Make-Common(shaders, nodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
