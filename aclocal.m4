@@ -379,7 +379,7 @@ if $sim_ac_make_dsp; then
     -D$1_DEBUG* | -DNDEBUG )
       # Defines that vary between release/debug configurations can't be
       # set up dynamically in <lib>_DSP_DEFS - they must be static in the
-      # gendsp.sh script.  We therefore catch them here so we can ignore
+      # gendsp.pl script.  We therefore catch them here so we can ignore
       # checking for them below.
       ;;
     -D*=* | -D* )
