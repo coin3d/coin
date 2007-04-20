@@ -29,7 +29,7 @@
   SoOutput offers the ability to write basic types to a file or a
   memory buffer in either ASCII or binary format.
 
-  \sa SoInput
+  \sa SoInput, SoWriteAction
 */
 
 /*!

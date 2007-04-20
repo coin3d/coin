@@ -414,7 +414,7 @@ SoPath::getNode(const int index) const
 
 /*!
   This method returns the node at \a index in the path, counting from
-  the tail.
+  the tail.  The \a index argument should be zero or positive.
 */
 SoNode *
 SoPath::getNodeFromTail(const int index) const
@@ -449,7 +449,8 @@ SoPath::getIndex(const int index) const
 
 /*!
   This method returns the child index of the node at \a index in the
-  path, counting from the tail.
+  path, counting from the tail.  The \a index argument should be zero
+  or positive.
 */
 int
 SoPath::getIndexFromTail(const int index) const
