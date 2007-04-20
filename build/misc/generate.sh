@@ -61,11 +61,17 @@ fi
 
 echo "Done."
 echo "Make sure the coin3.dsp file does not contain any absolute paths."
+echo "Here are some indicator tests."
+echo ""
 
+set -x
 grep -i "\\(c:\\|@\\)" coin3.dsp /dev/null
 grep -i "cygdrive" coin3.dsp /dev/null
+grep "svn" coin3.dsp /dev/null
 sort install-headers.bat | uniq -c | grep -v " 1 "
 grep "SOURCE=" coin3.dsp | sort | uniq -c | grep -v " 1 "
+set +x
 
-echo "Now upgrade the project files with devenv, if necessary."
+echo ""
+echo "If everything seems OK, upgrade the project files with devenv if necessary."
 

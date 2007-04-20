@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{BD102572-B44C-47CA-B1D9-10F8C2895289}"
+	ProjectGUID="{1745810C-F08D-468D-BA92-1BC35D6AF931}"
 	>
 	<Platforms>
 		<Platform
@@ -39,13 +39,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="0"
 				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_INTERNAL"
-				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\StaticDebug/coin3.pch"
 				AssemblerListingLocation=".\StaticDebug/"
 				ObjectFile=".\StaticDebug/"
@@ -120,11 +117,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				InlineFunctionExpansion="1"
+				AdditionalOptions="/Gs "
+				Optimization="4"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
-				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/coin3.pch"
@@ -210,11 +209,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				AdditionalOptions="/Gs "
+				Optimization="4"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_INTERNAL"
-				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\StaticRelease/coin3.pch"
@@ -26095,6 +26096,54 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\nodes\SoTexture.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\nodes\SoTexture2.cpp"
 					>
 					<FileConfiguration
@@ -32007,6 +32056,54 @@
 				>
 				<File
 					RelativePath="..\..\src\shaders\SoFragmentShader.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shaders/"
+							ProgramDataBaseFileName="StaticDebug\shaders/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shaders/"
+							ProgramDataBaseFileName="Release\shaders/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shaders/"
+							ProgramDataBaseFileName="StaticRelease\shaders/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shaders/"
+							ProgramDataBaseFileName="Debug\shaders/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoGeometryShader.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -38570,6 +38667,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoGeometryShader.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoGroup.h"
 					>
 				</File>
@@ -38835,6 +38936,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\nodes\SoText3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoTexture.h"
 					>
 				</File>
 				<File
@@ -42070,42 +42175,6 @@
 				Filter="h;ic;icc"
 				>
 				<File
-					RelativePath="..\..\include\Inventor\nodes\SoShader.h"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\include\Inventor\nodes\SoSubNodeP.h"
 					>
 					<FileConfiguration
@@ -44199,6 +44268,42 @@
 				</File>
 				<File
 					RelativePath="..\..\src\shaders\SoGLSLShaderProgram.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shaders\SoShader.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

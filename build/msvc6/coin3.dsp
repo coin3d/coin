@@ -31,7 +31,67 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+!IF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "StaticRelease"
+# PROP BASE Intermediate_Dir "StaticRelease"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "StaticRelease"
+# PROP Intermediate_Dir "StaticRelease"
+# PROP Target_Dir ""
+MTL=midl.exe
+CPP=cl.exe
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /Gs /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /Gs /c
+RSC=rc.exe
+# ADD BASE RSC /l 0x414 /d "NDEBUG"
+# ADD RSC /l 0x414 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo /machine:I386 /out:"coin3s.lib"
+# ADD LIB32 /nologo /machine:I386 /out:"coin3s.lib"
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=..\misc\install-sdk.bat lib release
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "StaticDebug"
+# PROP BASE Intermediate_Dir "StaticDebug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "StaticDebug"
+# PROP Intermediate_Dir "StaticDebug"
+# PROP Target_Dir ""
+MTL=midl.exe
+CPP=cl.exe
+# ADD BASE CPP /nologo /MD /W3 /GX /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /c
+RSC=rc.exe
+# ADD BASE RSC /l 0x414 /d "_DEBUG"
+# ADD RSC /l 0x414 /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LIB32=link.exe -lib
+# ADD BASE LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
+# ADD LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=..\misc\install-sdk.bat lib debug
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -44,10 +104,13 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "COIN_DEBUG=0" /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "COIN_DEBUG=0" /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
+CPP=cl.exe
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /Gs /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /Gs /c
+MTL=midl.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+RCS=rc.exe
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -74,10 +137,13 @@ PostBuild_Cmds=..\misc\install-sdk.bat dll release
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "COIN_DEBUG=1" /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "COIN_DEBUG=1" /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /GZ /c
+CPP=cl.exe
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /GZ /c
+MTL=midl.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+RCS=rc.exe
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -89,60 +155,6 @@ LINK32=link.exe
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=..\misc\install-sdk.bat dll debug
-# End Special Build Tool
-
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-
-# PROP BASE Use_MFC 0
-# PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "StaticRelease"
-# PROP BASE Intermediate_Dir "StaticRelease"
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 0
-# PROP Use_Debug_Libraries 0
-# PROP Output_Dir "StaticRelease"
-# PROP Intermediate_Dir "StaticRelease"
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=0"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=0"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
-# ADD BASE RSC /l 0x414 /d "NDEBUG"
-# ADD RSC /l 0x414 /d "NDEBUG"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo
-LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo /machine:I386 /out:"coin3s.lib"
-# ADD LIB32 /nologo /machine:I386 /out:"coin3s.lib"
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat lib release
-# End Special Build Tool
-
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-
-# PROP BASE Use_MFC 0
-# PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "StaticDebug"
-# PROP BASE Intermediate_Dir "StaticDebug"
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 0
-# PROP Use_Debug_Libraries 1
-# PROP Output_Dir "StaticDebug"
-# PROP Intermediate_Dir "StaticDebug"
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=1"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D "COIN_DEBUG=1"  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /YX /FD /c
-# ADD BASE RSC /l 0x414 /d "_DEBUG"
-# ADD RSC /l 0x414 /d "_DEBUG"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo
-LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
-# ADD LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat lib debug
 # End Special Build Tool
 
 !ENDIF
@@ -7136,6 +7148,19 @@ SOURCE=..\..\src\nodes\SoSwitch.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoTexture.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoTexture2.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -8756,6 +8781,19 @@ SOURCE=..\..\src\mpeg\SoMPEGFrameRenderer.cpp
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoFragmentShader.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shaders"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shaders"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shaders\SoGeometryShader.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -12113,6 +12151,10 @@ SOURCE=..\..\include\Inventor\nodes\SoGroup.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\nodes\SoGeometryShader.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\nodes\SoImage.h
 # End Source File
 # Begin Source File
@@ -12362,6 +12404,10 @@ SOURCE=..\..\include\Inventor\nodes\SoText2.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoText3.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoTexture.h
 # End Source File
 # Begin Source File
 
@@ -13444,12 +13490,6 @@ SOURCE=..\..\include\Inventor\nodekits\SoSubKitP.h
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\nodes\SoShader.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\include\Inventor\nodes\SoSubNodeP.h
 
 # PROP Exclude_From_Build 1
@@ -13825,6 +13865,12 @@ SOURCE=..\..\src\shaders\SoGLShaderParameter.h
 # Begin Source File
 
 SOURCE=..\..\src\shaders\SoGLShaderProgram.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shaders\SoShader.h
 
 # PROP Exclude_From_Build 1
 # End Source File
