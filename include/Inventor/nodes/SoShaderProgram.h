@@ -31,24 +31,33 @@
 class SoState;
 class SoGLRenderAction;
 
+
+typedef void SoShaderProgramEnableCB(void * closure, 
+                                     SoState * state,
+                                     const SbBool enable);
+
 // *************************************************************************
 
 class COIN_DLL_API SoShaderProgram : public SoNode {
   typedef SoNode inherited;
   SO_NODE_HEADER(SoShaderProgram);
-  
+
 public:
   SoMFNode shaderObject;
+
   SoShaderProgram(void);
-  
+
+  void setEnableCallback(SoShaderProgramEnableCB * cb,
+                         void * closure);
+
 SoEXTENDER public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void search(SoSearchAction * action);
- 
+
 SoINTERNAL public:
   static void initClass();
 
-protected:  
+protected:
   virtual ~SoShaderProgram();
 
 private:

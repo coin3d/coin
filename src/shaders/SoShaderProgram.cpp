@@ -47,6 +47,9 @@ public:
 
   void GLRender(SoGLRenderAction * action);
 
+  SoShaderProgramEnableCB * enablecb;
+  void * enablecbclosure;
+
 private:
   SoShaderProgram * owner;
   SoGLShaderProgram glShaderProgram;
@@ -81,7 +84,10 @@ SoShaderProgram::SoShaderProgram(void)
   this->shaderObject.setNum(0);
   this->shaderObject.setDefault(TRUE);
 
+
   PRIVATE(this) = new SoShaderProgramP(this);
+  PRIVATE(this)->enablecb = NULL;
+  PRIVATE(this)->enablecbclosure = NULL;
 }
 
 SoShaderProgram::~SoShaderProgram()
@@ -123,6 +129,14 @@ SoShaderProgram::search(SoSearchAction * action)
 #endif // disabled
 }
 
+void 
+SoShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
+                                   void * closure)
+{
+  PRIVATE(this)->enablecb = cb;
+  PRIVATE(this)->enablecbclosure = closure;
+}
+
 // *************************************************************************
 
 SoShaderProgramP::SoShaderProgramP(SoShaderProgram * ownerptr)
@@ -146,9 +160,11 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   SoCacheElement::invalidate(state);
 
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
-  const cc_glglue * glctx = cc_glglue_instance(cachecontext);
 
   this->glShaderProgram.removeShaderObjects();
+  this->glShaderProgram.setEnableCallback(this->enablecb,
+                                          this->enablecbclosure);
+  
   SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
 
   int i, cnt = PUBLIC(this)->shaderObject.getNum();
@@ -161,7 +177,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
     }
   }
   // update parameters after all shader objects have been added and enabled
-  this->glShaderProgram.enable(glctx);
+  this->glShaderProgram.enable(state);
 
   for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
@@ -169,8 +185,6 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
       ((SoShaderObject *)node)->updateParameters(cachecontext);
     }
   }
-
-  SoGLTextureEnabledElement::set(state, TRUE);
 }
 
 void

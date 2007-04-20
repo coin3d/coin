@@ -29,6 +29,9 @@
 #include "SoGLARBShaderProgram.h"
 #include "SoGLCgShaderProgram.h"
 #include "SoGLSLShaderProgram.h"
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
 // *************************************************************************
 
@@ -37,6 +40,9 @@ SoGLShaderProgram::SoGLShaderProgram(void)
   this->arbShaderProgram = new SoGLARBShaderProgram;
   this->cgShaderProgram = new SoGLCgShaderProgram;
   this->glslShaderProgram = new SoGLSLShaderProgram;
+
+  this->enablecb = NULL;
+  this->enablecbclosure = NULL;
 }
 
 SoGLShaderProgram::~SoGLShaderProgram()
@@ -73,20 +79,43 @@ SoGLShaderProgram::removeShaderObjects(void)
 }
 
 void
-SoGLShaderProgram::enable(const cc_glglue * g)
+SoGLShaderProgram::enable(SoState * state)
 {
+  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glctx = cc_glglue_instance(cachecontext);
+
   this->arbShaderProgram->enable();
   this->cgShaderProgram->enable();
-  this->glslShaderProgram->enable(g);
+  this->glslShaderProgram->enable(glctx);
+
+  if (this->enablecb) {
+    this->enablecb(this->enablecbclosure, state, TRUE);
+  }
 }
 
 void
-SoGLShaderProgram::disable(const cc_glglue * g)
+SoGLShaderProgram::disable(SoState * state)
 {
+  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glctx = cc_glglue_instance(cachecontext);
+
   this->arbShaderProgram->disable();
   this->cgShaderProgram->disable();
-  this->glslShaderProgram->disable(g);
+  this->glslShaderProgram->disable(glctx);
+
+  if (this->enablecb) {
+    this->enablecb(this->enablecbclosure, state, FALSE);
+  }
 }
+
+void 
+SoGLShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
+                                     void * closure)
+{
+  this->enablecb = cb;
+  this->enablecbclosure = closure;
+}
+
 
 #if defined(SOURCE_HINT)
 SbString

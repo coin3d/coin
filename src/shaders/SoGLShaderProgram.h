@@ -32,8 +32,10 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/nodes/SoShaderProgram.h>
 
 class SoGLShaderObject;
+class SoState;
 
 // *************************************************************************
 
@@ -44,17 +46,25 @@ public:
   ~SoGLShaderProgram();
   void addShaderObject(SoGLShaderObject * shaderObject);
   void removeShaderObjects(void);
-  void enable(const cc_glglue * g);
-  void disable(const cc_glglue * g);
+  void enable(SoState * state);
+  void disable(SoState * state);
+
+  void setEnableCallback(SoShaderProgramEnableCB * cb,
+                         void * closure);
+
 
 #if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
   SbString getSourceHint(void);
 #endif
-  
+
 private:
+
   class SoGLARBShaderProgram * arbShaderProgram;
   class SoGLCgShaderProgram  * cgShaderProgram;
   class SoGLSLShaderProgram  * glslShaderProgram;
+
+  SoShaderProgramEnableCB * enablecb;
+  void * enablecbclosure;
 };
 
 #endif /* ! COIN_SOGLSHADERPROGRAM_H */

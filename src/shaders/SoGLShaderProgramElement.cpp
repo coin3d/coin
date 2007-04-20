@@ -56,13 +56,10 @@ void
 SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
                               SoGLShaderProgram* program)
 {
-  SoGLShaderProgramElement* element = 
+  SoGLShaderProgramElement* element =
     (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex,node);
   if (program != element->shaderProgram) {
-    const cc_glglue * glctx =
-      cc_glglue_instance(SoGLCacheContextElement::get(state));
-
-    if (element->shaderProgram) element->shaderProgram->disable(glctx);
+    if (element->shaderProgram) element->shaderProgram->disable(state);
     element->shaderProgram = program;
     // don't enable new program here. The node will call enable()
     // after setting up all the objects
@@ -72,7 +69,7 @@ SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
 SoGLShaderProgram *
 SoGLShaderProgramElement::get(SoState *state)
 {
-  const SoElement *element = getConstElement(state, classStackIndex); 
+  const SoElement *element = getConstElement(state, classStackIndex);
   assert(element);
   return ((const SoGLShaderProgramElement *)element)->shaderProgram;
 }
@@ -93,9 +90,7 @@ SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
 {
   SoGLShaderProgramElement * elem = (SoGLShaderProgramElement *)prevTopElement;
   if (this->shaderProgram != elem->shaderProgram) {
-    const cc_glglue * glctx =
-      cc_glglue_instance(SoGLCacheContextElement::get(state));
-    if (elem->shaderProgram) elem->shaderProgram->disable(glctx);
-    if (this->shaderProgram) this->shaderProgram->enable(glctx);
+    if (elem->shaderProgram) elem->shaderProgram->disable(state);
+    if (this->shaderProgram) this->shaderProgram->enable(state);
   }
 }
