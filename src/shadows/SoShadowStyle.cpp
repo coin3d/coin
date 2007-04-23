@@ -40,8 +40,11 @@
 
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include "../shaders/SoGLShaderProgram.h"
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <stdio.h>
 
 // *************************************************************************
 
@@ -90,9 +93,9 @@ SO_NODE_SOURCE(SoShadowStyle);
 SoShadowStyle::SoShadowStyle(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShadowStyle);
-  
+
   SO_NODE_ADD_FIELD(style, (SoShadowStyle::CASTS_SHADOW_AND_SHADOWED));
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(Style, NO_SHADOWING);
   SO_NODE_DEFINE_ENUM_VALUE(Style, CASTS_SHADOW);
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHADOWED);
@@ -119,10 +122,21 @@ SoShadowStyle::initClass(void)
 void
 SoShadowStyle::GLRender(SoGLRenderAction * action)
 {
-  SoShadowStyleElement::set(action->getState(),
+  SoState * state = action->getState();
+
+  SoShadowStyleElement::set(state,
                             this,
                             (int) this->style.getValue());
-
+  
+  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWS) {
+    SoGLShaderProgram * program = SoGLShaderProgramElement::get(state);
+    
+    if (this->style.getValue() & SHADOWED) {
+      program->enable(state);
+    }
+    else {
+      program->disable(state);
+    }
+  }
+  
 }
-
-
