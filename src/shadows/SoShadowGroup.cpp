@@ -219,7 +219,8 @@ public:
   static void shader_enable_cb(void * closure, 
                                SoState * state,
                                const SbBool enable);
-  
+
+  void GLRender(SoGLRenderAction * action, const SbBool inpath);
   void setVertexShader(SoState * state);
   void setFragmentShader(SoState * state);
   void updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & transform);
@@ -299,48 +300,13 @@ SoShadowGroup::init(void)
 void 
 SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-
-  state->push();
-  
-  if (!PRIVATE(this)->vertexshadercache || !PRIVATE(this)->vertexshadercache->isValid(state)) {
-    // a bit hackish, but saves creating yet another cache
-    PRIVATE(this)->spotlightsvalid = FALSE;
-  }
-
-  SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
-  if (camtransform != PRIVATE(this)->cameratransform->value.getValue()) {
-    PRIVATE(this)->cameratransform->value = camtransform;
-  }
-  
-  SoShadowStyleElement::set(state, this, SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
-  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
-  PRIVATE(this)->updateSpotLights(action);
-  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
-
-
-  if (!PRIVATE(this)->vertexshadercache || !PRIVATE(this)->vertexshadercache->isValid(state)) {
-    PRIVATE(this)->setVertexShader(state);
-  }
-
-  if (!PRIVATE(this)->fragmentshadercache || !PRIVATE(this)->fragmentshadercache->isValid(state)) {
-    PRIVATE(this)->setFragmentShader(state);
-    //PRIVATE(this)->spotlightsvalid = FALSE;
-  }
-  PRIVATE(this)->shaderprogram->GLRender(action);
-
-  
-  SoShapeStyleElement::setShadowsRendering(state, TRUE);
-  inherited::GLRenderBelowPath(action);
-  SoShapeStyleElement::setShadowsRendering(state, FALSE);
-  state->pop();
+  PRIVATE(this)->GLRender(action, FALSE);
 }
 
 void 
 SoShadowGroup::GLRenderInPath(SoGLRenderAction * action)
 {
-  assert(0 && "not supported yet");
-  inherited::GLRenderInPath(action);
+  PRIVATE(this)->GLRender(action, TRUE);
 }
 
 void 
@@ -910,6 +876,45 @@ SoShadowGroupP::shader_enable_cb(void * closure,
                                         enable);
     }
   }
+}
+
+void 
+SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
+{
+  SoState * state = action->getState();
+
+  state->push();
+  
+  if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
+    // a bit hackish, but saves creating yet another cache
+    this->spotlightsvalid = FALSE;
+  }
+
+  SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
+  if (camtransform != this->cameratransform->value.getValue()) {
+    this->cameratransform->value = camtransform;
+  }
+  
+  SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
+  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
+  this->updateSpotLights(action);
+  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
+
+
+  if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
+    this->setVertexShader(state);
+  }
+  
+  if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
+    this->setFragmentShader(state);
+  }
+  this->shaderprogram->GLRender(action);
+  
+  SoShapeStyleElement::setShadowsRendering(state, TRUE);
+  if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
+  else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
+  SoShapeStyleElement::setShadowsRendering(state, FALSE);
+  state->pop();
 }
 
 
