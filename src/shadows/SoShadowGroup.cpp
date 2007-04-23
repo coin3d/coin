@@ -70,6 +70,8 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -107,7 +109,7 @@ public:
     this->depthmap->size = SbVec2s(1024, 1024);
     
     if (this->vsm_program) {
-      this->depthmap->type = SoSceneTexture2::RGBA16F;
+      this->depthmap->type = SoSceneTexture2::RGBA32F;
       this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     else {
@@ -176,6 +178,7 @@ public:
   { 
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
+    this->shaderprogram->setEnableCallback(shader_enable_cb, this);
     this->vertexshader = new SoVertexShader;
     this->vertexshader->ref();
     this->fragmentshader = new SoFragmentShader;
@@ -189,6 +192,7 @@ public:
 
     this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
+
   }
   ~SoShadowGroupP() {
     if (this->cameratransform) this->cameratransform->unref();
@@ -206,6 +210,10 @@ public:
     }
     this->spotlights.truncate(0);
   }
+
+  static void shader_enable_cb(void * closure, 
+                               SoState * state,
+                               const SbBool enable);
   
   void setVertexShader(SoState * state);
   void setFragmentShader(SoState * state);
@@ -255,9 +263,7 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(quality, (0.5f));
   SO_NODE_ADD_FIELD(shadowCachingEnabled, (TRUE));
   SO_NODE_ADD_FIELD(visibilityRadius, (-1.0f));
-  SO_NODE_ADD_FIELD(vsm, (FALSE));
-  SO_NODE_ADD_FIELD(vsmEpsilon, (0.001f));
-  SO_NODE_ADD_FIELD(perPixel, (TRUE));
+  SO_NODE_ADD_FIELD(epsilon, (0.001f));
 }
 
 /*!
@@ -306,7 +312,9 @@ SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
 
   PRIVATE(this)->shaderprogram->GLRender(action);
   
+  SoShapeStyleElement::setShadowsRendering(state, TRUE);
   inherited::GLRenderBelowPath(action);
+  SoShapeStyleElement::setShadowsRendering(state, FALSE);
   state->pop();
 }
 
@@ -354,8 +362,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this),
-                                                                    PUBLIC(this)->vsm.getValue());
+        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this), TRUE);
         this->spotlights.append(cache);
       }
     }
@@ -389,16 +396,19 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     
-    if (!PUBLIC(this)->vsm.getValue()) {
-      cc_glglue_glPolygonOffsetEnable(glue, TRUE, cc_glglue_FILLED);
-      cc_glglue_glPolygonOffset(glue, 3.0f, 1.0f);
-    }
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     
     this->renderDepthMap(cache, action);
-    if (!PUBLIC(this)->vsm.getValue()) {
-      cc_glglue_glPolygonOffsetEnable(glue, FALSE, cc_glglue_FILLED);
+
+    if (i == 0) {
+      SoGLTextureEnabledElement::set(state, PUBLIC(this), FALSE);
     }
+    else {
+      SoGLMultiTextureEnabledElement::set(state, PUBLIC(this), i,
+                                          SoGLMultiTextureEnabledElement::DISABLED);
+    }
+
+
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }
@@ -511,7 +521,6 @@ SoShadowGroupP::setVertexShader(SoState * state)
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
   }
-  
 
   gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
@@ -524,7 +533,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   SbString str;
 
   gen.addMainStatement("vec3 normal = normalize(gl_NormalMatrix * gl_Normal);\n"
-                       "vec3 eye = vec3(0.0);\n" // FIXME: support local viewer
+                       "vec3 eye = vec3(0.0, 0.0, 1.0);\n" // FIXME: support local viewer
                        "vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
@@ -532,46 +541,54 @@ SoShadowGroupP::setVertexShader(SoState * state)
   gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
                        "ecPosition3 = ecPosition.xyz / ecPosition.w;");
   gen.addMainStatement("fragmentNormal = normal;");
+
+
+  // FIXME: decide based on quality
+  SbBool perpixel = TRUE;
   
-  for (i = 0; i < lights.getLength(); i++) {
-    SoLight * l = (SoLight*) lights[i];
-    if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
-      str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
-      gen.addMainStatement(str);
-      dirlight = TRUE;
+  if (!perpixel) {
+    for (i = 0; i < lights.getLength(); i++) {
+      SoLight * l = (SoLight*) lights[i];
+      if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
+        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
+        gen.addMainStatement(str);
+        dirlight = TRUE;
+      }
+      else if (l->isOfType(SoSpotLight::getClassTypeId())) {
+        str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+        gen.addMainStatement(str);
+        spotlight = TRUE;
+        
+      }
+      else if (l->isOfType(SoPointLight::getClassTypeId())) {
+        str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+        gen.addMainStatement(str);
+        pointlight = TRUE;      
+      }
+      else {
+        SoDebugError::postWarning("SoShadowGroupP::setVertexShader",
+                                  "Unknown light type: %s\n",
+                                  l->getTypeId().getName().getString());
+      }
     }
-    else if (l->isOfType(SoSpotLight::getClassTypeId())) {
-      str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
-      gen.addMainStatement(str);
-      spotlight = TRUE;
-      
-    }
-    else if (l->isOfType(SoPointLight::getClassTypeId())) {
-      str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
-      gen.addMainStatement(str);
-      pointlight = TRUE;      
-    }
-    else {
-      SoDebugError::postWarning("SoShadowGroupP::setVertexShader",
-                                "Unknown light type: %s\n",
-                                l->getTypeId().getName().getString());
-    }
-  }
     
-  if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
-  if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
-  if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
-
-  gen.addMainStatement(
-
-                       //"vec4 color = gl_FrontLightModelProduct.sceneColor + "
-                       "vec4 color = "
-                       "  ambient * gl_FrontMaterial.ambient + "
-                       "  diffuse * gl_Color + "
-                       "  specular * gl_FrontMaterial.specular;\n"
-                       
-                       "vec4 pos = cameraTransform * ecPosition;\n" // in world space
-                       );
+    if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
+    if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
+    if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
+    
+    gen.addMainStatement(
+                         "vec4 color = gl_FrontLightModelProduct.sceneColor + "
+                         "  ambient * gl_FrontMaterial.ambient + "
+                         "  diffuse * gl_Color + "
+                         "  specular * gl_FrontMaterial.specular;\n"
+                         );
+  }
+  else {
+    gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor;\n");
+  }
+  
+  gen.addMainStatement("vec4 pos = cameraTransform * ecPosition;\n"); // in world space
+  
   for (i = 0; i < numspots; i++) {
     SbString str;
     str.sprintf("shadowCoord%d = gl_TextureMatrix[%d] * pos;\n", i,i); // in light space
@@ -594,74 +611,73 @@ SoShadowGroupP::setVertexShader(SoState * state)
 void 
 SoShadowGroupP::setFragmentShader(SoState * state)
 {
+  int i;
+
   SoShaderGenerator & gen = this->fragmentgenerator;
   gen.reset(FALSE);
 
   int numspots = this->spotlights.getLength();
 
-  if (PUBLIC(this)->vsm.getValue()) {
-    SbString eps;
-    eps.sprintf("const float EPSILON = %f;\n",
-                PUBLIC(this)->vsmEpsilon.getValue());
-    gen.addDeclaration(eps, FALSE);
-    
-    for (int i = 0; i < numspots; i++) {
-      SbString str;
-      str.sprintf("uniform sampler2D shadowMap%d;", i);
-      gen.addDeclaration(str, FALSE);
-      
-      str.sprintf("uniform float farval%d;", i);
-      gen.addDeclaration(str, FALSE);
-      
-      str.sprintf("varying vec4 shadowCoord%d;", i);
-      gen.addDeclaration(str, FALSE);
-    }
-    
-#ifdef DISTRIBUTE_FACTOR
+  SbString eps;
+  eps.sprintf("const float EPSILON = %f;\n",
+              PUBLIC(this)->epsilon.getValue());
+  gen.addDeclaration(eps, FALSE);
+  
+  for (int i = 0; i < numspots; i++) {
     SbString str;
-    str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
+    str.sprintf("uniform sampler2D shadowMap%d;", i);
     gen.addDeclaration(str, FALSE);
+    
+    str.sprintf("uniform float farval%d;", i);
+    gen.addDeclaration(str, FALSE);
+    
+    str.sprintf("varying vec4 shadowCoord%d;", i);
+    gen.addDeclaration(str, FALSE);
+  }
+  
+#ifdef DISTRIBUTE_FACTOR
+  SbString str;
+  str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
+  gen.addDeclaration(str, FALSE);
 #endif
-  }
-  else {
-    assert(0 && "not supported");
-  }
+
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
+
+  // FIXME: decide based on quality
+ 
+  SbBool perpixelspot = TRUE;
+  SbBool perpixelother = TRUE;
+
+  if (perpixelspot) {
+    gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
+  }
+
+  // FIXME: move this function to Coin/data/shaders/
+  gen.addFunction("float vsm_lookup(in vec4 map, in float dist) {\n"
+                  "  float mapdist = map.x;\n"
+                  "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
+                  "  float E_x2 = map.y;\n"
+                  "  float Ex_2 = mapdist * mapdist;\n"
+                  "  float variance = min(max(E_x2 - Ex_2, 0.0) + EPSILON, 1.0);\n"
+                  "  float m_d = mapdist - dist;\n"
+                  "  float p_max = variance / (variance + m_d * m_d);\n"
+                  "  return max(lit_factor, p_max);\n"
+                  "}\n", FALSE);
   
-  if (PUBLIC(this)->perPixel.getValue()) {
-    gen.addNamedFunction(SbName("lights/SpotLight"), SoShader::GLSL_SHADER);
-  }
-  if (PUBLIC(this)->vsm.getValue()) {
-    // FIXME: move this function to Coin/data/shaders/
-    gen.addFunction("float vsm_lookup(in vec4 map, in float dist) {\n"
-                    "  float mapdist = map.x;\n"
-                    "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
-                    "  float E_x2 = map.y;\n"
-                    "  float Ex_2 = mapdist * mapdist;\n"
-                    "  float variance = min(max(E_x2 - Ex_2, 0.0) + EPSILON, 1.0);\n"
-                    "  float m_d = mapdist - dist;\n"
-                    "  float p_max = variance / (variance + m_d * m_d);\n"
-                    "  return max(lit_factor, p_max);\n"
-                    "}\n", FALSE);
-  }
-  else {
-    assert(0 && "not supported");
-  }
-  
-  gen.addMainStatement("vec3 eye = vec3(0.0);");
+  gen.addMainStatement("vec3 eye = vec3(0.0, 0.0, 1.0);");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
 
-  if (PUBLIC(this)->perPixel.getValue()) {
+  if (perpixelspot) {
     gen.addMainStatement("vec3 color = perVertexColor;\n"
                          "float dist;\n"
                          "float shadeFactor;\n"
                          "vec3 coord;\n"
                          "vec4 map;\n");
-    for (int i = 0; i < numspots; i++) {
+    for (i = 0; i < numspots; i++) {
       SbString str;
       
       str.sprintf("diffuse = vec4(0.0); specular = vec4(0);"
@@ -678,9 +694,48 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       gen.addMainStatement(str);
 
     }
-    gen.addMainStatement("gl_FragColor = vec4(color, gl_Color.a);\n");
+
+    if (perpixelother) {
+      gen.addMainStatement("diffuse = vec4(0.0); ambient = vec4(0.0); specular = vec4(0.0);");
+      
+      SbBool dirlight = FALSE;
+      SbBool pointlight = FALSE;
+      
+      const SoNodeList & lights = SoLightElement::getLights(state);
+      
+      for (i = 0; i < lights.getLength(); i++) {
+        SoLight * l = (SoLight*) lights[i];
+        if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
+          str.sprintf("DirectionalLight(%d, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          gen.addMainStatement(str);
+          dirlight = TRUE;
+        }
+        else if (l->isOfType(SoSpotLight::getClassTypeId())) {
+          str.sprintf("SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          gen.addMainStatement(str);
+        }
+        else if (l->isOfType(SoPointLight::getClassTypeId())) {
+          str.sprintf("PointLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          gen.addMainStatement(str);
+          pointlight = TRUE;      
+        }
+        else {
+          SoDebugError::postWarning("SoShadowGroupP::setFragmentShader",
+                                    "Unknown light type: %s\n",
+                                    l->getTypeId().getName().getString());
+        }
+      }
+      
+      if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
+      if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
+
+      gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.specular.rgb + "
+                           "diffuse.rgb * gl_Color.rgb + specular.rgb * gl_FrontMaterial.specular.rgb;\n");
+    }    
   }
+  
   else {
+    assert(0 && "not supported");
     SbString str;
     str.sprintf(
                 "vec3 VP = vec3(gl_LightSource[1].position) - ecPosition3;\n"
@@ -690,6 +745,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     
     gen.addMainStatement(str);  
   }
+  gen.addMainStatement("gl_FragColor = vec4(color, gl_Color.a);\n");
+
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
@@ -780,5 +837,27 @@ SoShadowSpotLightCache::createVSMProgram(void)
   this->vsm_farval->name = "farval";
   fshader->parameter = this->vsm_farval;
 }
+
+void
+SoShadowGroupP::shader_enable_cb(void * closure,
+                                 SoState * state,
+                                 const SbBool enable)
+{
+  SoShadowGroupP * thisp = (SoShadowGroupP*) closure;
+
+  for (int i = 0; i < thisp->spotlights.getLength(); i++) {
+    
+    int unit = i; // FIXME: read out from spotlight cache
+    if (unit == 0) {
+      SoGLTextureEnabledElement::set(state, enable);
+    }
+    else {
+      SoMultiTextureEnabledElement::set(state, NULL, unit, 
+                                        enable);
+    }
+  }
+}
+
+
 
 #undef PUBLIC
