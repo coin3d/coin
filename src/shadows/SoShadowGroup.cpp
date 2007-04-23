@@ -532,14 +532,15 @@ SoShadowGroupP::setVertexShader(SoState * state)
   SbBool spotlight = FALSE;
   SbString str;
 
+  gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
+                       "ecPosition3 = ecPosition.xyz / ecPosition.w;");
+
   gen.addMainStatement("vec3 normal = normalize(gl_NormalMatrix * gl_Normal);\n"
-                       "vec3 eye = vec3(0.0, 0.0, 1.0);\n" // FIXME: support local viewer
+                       "vec3 eye = -normalize(ecPosition3);\n"
                        "vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
   
-  gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
-                       "ecPosition3 = ecPosition.xyz / ecPosition.w;");
   gen.addMainStatement("fragmentNormal = normal;");
 
 
@@ -666,7 +667,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "  return max(lit_factor, p_max);\n"
                   "}\n", FALSE);
   
-  gen.addMainStatement("vec3 eye = vec3(0.0, 0.0, 1.0);");
+  gen.addMainStatement("vec3 eye = -normalize(ecPosition3);\n");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
