@@ -30,3 +30,5 @@
 #include "SoTextureCoordinateCache.cpp"
 #include "SoPrimitiveVertexCache.cpp"
 #include "SoGlyphCache.cpp"
+#include "SoShaderProgramCache.cpp"
+#include "SoVBOCache.cpp"

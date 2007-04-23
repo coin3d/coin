@@ -11,6 +11,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	SoPrimitiveVertexCache.h \
 	SoGlyphCache.h \
+	SoShaderProgramCache.h \
 	SoVBOCache.h
 
 ObsoleteHeaders =

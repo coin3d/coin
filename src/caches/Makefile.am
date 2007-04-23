@@ -11,6 +11,7 @@ RegularSources = \
 	SoTextureCoordinateCache.cpp \
 	SoPrimitiveVertexCache.cpp \
 	SoGlyphCache.cpp \
+	SoShaderProgramCache.cpp \
 	SoVBOCache.cpp
 LinkHackSources = \
 	all-caches-cpp.cpp
