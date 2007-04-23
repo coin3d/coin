@@ -72,10 +72,12 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoShaderGenerator.h>
+#include <Inventor/caches/SoShaderProgramCache.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbMatrix.h>
@@ -171,10 +173,11 @@ public:
     matrixaction(SbViewportRegion(SbVec2s(100,100))),
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
     spotlightsvalid(FALSE),
-    shadersvalid(FALSE),
     shaderprogram(NULL),
     vertexshader(NULL),
-    fragmentshader(NULL)
+    fragmentshader(NULL),
+    vertexshadercache(NULL),
+    fragmentshadercache(NULL)
   { 
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -195,6 +198,8 @@ public:
 
   }
   ~SoShadowGroupP() {
+    if (this->vertexshadercache) this->vertexshadercache->unref();
+    if (this->fragmentshadercache) this->vertexshadercache->unref();
     if (this->cameratransform) this->cameratransform->unref();
     if (this->vertexshader) this->vertexshader->unref();
     if (this->fragmentshader) this->fragmentshader->unref();
@@ -228,7 +233,6 @@ public:
   SoGetBoundingBoxAction bboxaction;
 
   SbBool spotlightsvalid;
-  SbBool shadersvalid;
   SbList <SoShadowSpotLightCache*> spotlights;
 
   SoShaderProgram * shaderprogram;
@@ -239,6 +243,9 @@ public:
   SoShaderGenerator fragmentgenerator;
   SoShaderParameterMatrix * cameratransform;
 
+  SoShaderProgramCache * vertexshadercache;
+  SoShaderProgramCache * fragmentshadercache;
+  
 };
 
 // *************************************************************************
@@ -293,24 +300,35 @@ void
 SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+
   state->push();
-  SoShadowStyleElement::set(state, this, SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
-  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
-  PRIVATE(this)->updateSpotLights(action);
-  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
+  
+  if (!PRIVATE(this)->vertexshadercache || !PRIVATE(this)->vertexshadercache->isValid(state)) {
+    // a bit hackish, but saves creating yet another cache
+    PRIVATE(this)->spotlightsvalid = FALSE;
+  }
 
   SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
   if (camtransform != PRIVATE(this)->cameratransform->value.getValue()) {
     PRIVATE(this)->cameratransform->value = camtransform;
   }
+  
+  SoShadowStyleElement::set(state, this, SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
+  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
+  PRIVATE(this)->updateSpotLights(action);
+  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
 
-  if (!PRIVATE(this)->shadersvalid) {
+
+  if (!PRIVATE(this)->vertexshadercache || !PRIVATE(this)->vertexshadercache->isValid(state)) {
     PRIVATE(this)->setVertexShader(state);
-    PRIVATE(this)->setFragmentShader(state);
-    PRIVATE(this)->shadersvalid = TRUE;
   }
 
+  if (!PRIVATE(this)->fragmentshadercache || !PRIVATE(this)->fragmentshadercache->isValid(state)) {
+    PRIVATE(this)->setFragmentShader(state);
+    //PRIVATE(this)->spotlightsvalid = FALSE;
+  }
   PRIVATE(this)->shaderprogram->GLRender(action);
+
   
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   inherited::GLRenderBelowPath(action);
@@ -337,7 +355,13 @@ SoShadowGroup::notify(SoNotList * nl)
     // was not notified through a field, subgraph was changed
     PRIVATE(this)->spotlightsvalid = FALSE;
   }
-  PRIVATE(this)->shadersvalid = FALSE;
+  if (PRIVATE(this)->vertexshadercache) {
+    PRIVATE(this)->vertexshadercache->invalidate();
+  }
+
+  if (PRIVATE(this)->fragmentshadercache) {
+    PRIVATE(this)->fragmentshadercache->invalidate();
+  }
   inherited::notify(nl);
 }
 
@@ -459,7 +483,6 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
     cache->nearval = nearlimit;
   }
 
-
   const float SLACK = 0.001f;
 
   cache->nearval = cache->nearval * (1.0f - SLACK);
@@ -472,7 +495,6 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
     cam->farDistance = cache->farval;
   }
 
-  // fprintf(stderr,"cache farval: %f\n", cache->farval);
   cache->fragment_farval->value = cache->farval;
   cache->vsm_farval->value = cache->farval;
   
@@ -510,8 +532,19 @@ SoShadowGroupP::setVertexShader(SoState * state)
 {
   int i;
   SoShaderGenerator & gen = this->vertexgenerator;
-
   gen.reset(FALSE);
+
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  state->push();
+
+  if (this->vertexshadercache) {
+    this->vertexshadercache->unref();
+  }
+  this->vertexshadercache = new SoShaderProgramCache(state);
+  this->vertexshadercache->ref();
+  
+  // set active cache to record cache dependencies
+  SoCacheElement::set(state, this->vertexshadercache);
   const SoNodeList & lights = SoLightElement::getLights(state);
   
   int numspots = this->spotlights.getLength();
@@ -603,10 +636,14 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
-  if (this->vertexshader->sourceProgram.getValue() != gen.getShaderProgram()) {
+  if (this->vertexshadercache->get() != gen.getShaderProgram()) {
     this->vertexshader->sourceProgram = gen.getShaderProgram();
     this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+    this->vertexshadercache->set(gen.getShaderProgram());
   }
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
+  
 }
 
 void 
@@ -616,6 +653,18 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   SoShaderGenerator & gen = this->fragmentgenerator;
   gen.reset(FALSE);
+
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  state->push();
+  
+  if (this->fragmentshadercache) {
+    this->fragmentshadercache->unref();
+  }
+  this->fragmentshadercache = new SoShaderProgramCache(state);
+  this->fragmentshadercache->ref();
+
+  // set active cache to record cache dependencies
+  SoCacheElement::set(state, this->fragmentshadercache);
 
   int numspots = this->spotlights.getLength();
 
@@ -655,6 +704,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
 
+  const SoNodeList & lights = SoLightElement::getLights(state);
+      
   // FIXME: move this function to Coin/data/shaders/
   gen.addFunction("float vsm_lookup(in vec4 map, in float dist) {\n"
                   "  float mapdist = map.x;\n"
@@ -691,7 +742,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "shadeFactor = shadowCoord%d.z > -1.0 ? vsm_lookup(map, dist/farval%d) : 0.0;\n"
                   "color += shadeFactor * diffuse.rgb * gl_Color.rgb + "
                   "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
-                  i+1, i , i, i, i, i);
+                  lights.getLength(), i , i, i, i, i);
       gen.addMainStatement(str);
 
     }
@@ -701,8 +752,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       
       SbBool dirlight = FALSE;
       SbBool pointlight = FALSE;
-      
-      const SoNodeList & lights = SoLightElement::getLights(state);
       
       for (i = 0; i < lights.getLength(); i++) {
         SoLight * l = (SoLight*) lights[i];
@@ -753,9 +802,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   // new GLSL program is very slow on current drivers.
   this->fragmentshader->parameter.setNum(numspots*2);
   
-  if (this->fragmentshader->sourceProgram.getValue() != gen.getShaderProgram()) {
+  if (this->fragmentshadercache->get() != gen.getShaderProgram()) {
     this->fragmentshader->sourceProgram = gen.getShaderProgram();
     this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+    this->fragmentshadercache->set(gen.getShaderProgram());
     
     for (int i = 0; i < numspots; i++) {
       SoShaderParameter1i * shadowmap = 
@@ -777,6 +827,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     }
     this->fragmentshader->parameter.set1Value(i*2+1, farval); 
   }
+
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
 }
 
 void
