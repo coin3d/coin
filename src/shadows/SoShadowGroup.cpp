@@ -89,10 +89,15 @@
 
 class SoShadowSpotLightCache {
 public:
-  SoShadowSpotLightCache(const SoPath * path, SoGroup * scene, const SbBool vsm) {
+  SoShadowSpotLightCache(const SoPath * path, SoGroup * scene, 
+                         const SbBool vsm, 
+                         const int gausskernelsize)
+  {
+    const int TEXSIZE = 1024;
 
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
+    this->gaussmap = NULL;
 
     this->fragment_farval = new SoShaderParameter1f;
     this->fragment_farval->ref();
@@ -108,7 +113,7 @@ public:
     this->depthmap = new SoSceneTexture2;
     this->depthmap->ref();
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
-    this->depthmap->size = SbVec2s(512, 512);
+    this->depthmap->size = SbVec2s(TEXSIZE, TEXSIZE);
     
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
@@ -135,8 +140,20 @@ public:
       sep->addChild(scene->getChild(i));
     }
     this->depthmap->scene = sep;
-
     this->matrix = SbMatrix::identity();
+
+    if (gausskernelsize > 0) {
+      this->gaussmap = new SoSceneTexture2;
+      this->gaussmap->ref();
+      this->gaussmap->transparencyFunction = SoSceneTexture2::NONE;
+      this->gaussmap->size = SbVec2s(TEXSIZE, TEXSIZE);
+    
+      this->gaussmap->type = SoSceneTexture2::RGBA32F;
+      this->gaussmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+      SoShaderProgram * shader = this->createGaussFilter(TEXSIZE, gausskernelsize);
+      this->gaussmap->scene = this->createGaussSG(shader, this->depthmap);
+    }
   }
   ~SoShadowSpotLightCache() {
     if (this->vsm_program) this->vsm_program->unref();
@@ -144,16 +161,21 @@ public:
     if (this->fragment_farval) this->fragment_farval->unref();
     if (this->light) this->light->unref();
     if (this->path) this->path->unref();
+    if (this->gaussmap) this->gaussmap->unref();
     if (this->depthmap) this->depthmap->unref();
     if (this->camera) this->camera->unref();
   }
 
   void createVSMProgram(void);
+  SoShaderProgram * createGaussFilter(const int texsize, const int size);
+  SoSeparator * createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex);
+  
 
   SbMatrix matrix;
   SoPath * path;
   SoSpotLight * light;
   SoSceneTexture2 * depthmap;
+  SoSceneTexture2 * gaussmap;
   SoPerspectiveCamera * camera;
   float farval;
   float nearval;
@@ -195,7 +217,6 @@ public:
 
     this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
-
   }
   ~SoShadowGroupP() {
     if (this->vertexshadercache) this->vertexshadercache->unref();
@@ -227,7 +248,7 @@ public:
   void renderDepthMap(SoShadowSpotLightCache * cache,
                       SoGLRenderAction * action);
   void updateSpotLights(SoGLRenderAction * action);
-  
+
   SoShadowGroup * master;
   SoSearchAction search;
   SoGetMatrixAction matrixaction;
@@ -352,7 +373,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this), TRUE);
+        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this), TRUE, 0);
         this->spotlights.append(cache);
       }
     }
@@ -386,7 +407,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    // glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     
     this->renderDepthMap(cache, action);
 
@@ -441,7 +462,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   // light won't hit the scene
   // if (cache->farval <= 0.0f) return;
   
-  const int depthbits = 16;
+  const int depthbits = 12;
   float r = (float) pow(2.0, (double) depthbits);
   float nearlimit = cache->farval / r;
   
@@ -486,11 +507,13 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
 }
 
+
 void 
 SoShadowGroupP::renderDepthMap(SoShadowSpotLightCache * cache,
                                SoGLRenderAction * action)
 {
   cache->depthmap->GLRender(action);
+  if (cache->gaussmap) cache->gaussmap->GLRender(action);
 }
 
 void 
@@ -916,6 +939,146 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
   SoShapeStyleElement::setShadowsRendering(state, FALSE);
   state->pop();
+}
+
+SoShaderProgram * 
+SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size)
+{
+  SoVertexShader * vshader = new SoVertexShader;
+  SoFragmentShader * fshader = new SoFragmentShader;
+  SoShaderProgram * program = new SoShaderProgram;
+
+  SoShaderParameterArray2f * offset = new SoShaderParameterArray2f;
+  offset->name = "offset";
+  SoShaderParameterArray1f * kernel = new SoShaderParameterArray1f;
+  kernel->name = "kernelvalue";
+  SoShaderParameter1i * baseimage = new SoShaderParameter1i;
+  baseimage->name = "baseimage";
+  baseimage->value = 3; // FIXME
+
+  int kernelsize = size*size;
+  
+  offset->value.setNum(kernelsize);
+  kernel->value.setNum(kernelsize);
+
+  SoShaderGenerator fgen;
+  SbString str;
+  
+  str.sprintf("const int KernelSize = %d;", kernelsize);
+  fgen.addDeclaration(str, FALSE);
+  fgen.addDeclaration("uniform vec2 offset[KernelSize];", FALSE);
+  fgen.addDeclaration("uniform float kernelvalue[KernelSize];", FALSE);
+  fgen.addDeclaration("uniform sampler2D baseimage;", FALSE);
+  
+  fgen.addMainStatement(
+#if 1
+                        "int i;\n"
+                        "vec4 sum = vec4(0.0);\n"
+                        "for (i = 0; i < KernelSize; i++) {\n"
+                        "  vec4 tmp = texture2D(baseimage, gl_TexCoord[3].st + offset[i]);\n"
+                        "  sum += tmp * kernelvalue[i];\n"
+                        //"  sum += tmp;\n"
+                        "}\n"
+                        // "gl_FragColor = sum / 25.0;\n"
+                        "gl_FragColor = sum;\n"
+#else
+                        "gl_FragColor = texture2D(baseimage, gl_TexCoord[3].st);\n"
+#endif
+                        );
+  
+  const double sigma = 0.84089642;
+  // const double sigma = 0.6;
+  const int center = size / 2;
+  const float dt = 1.0 / float(texsize);
+  
+  SbVec2f * offsetptr = offset->value.startEditing();
+  float * kernelptr = kernel->value.startEditing();
+  
+  int c = 0;
+  for (int y = 0; y < size; y++) {
+    int dy = SbAbs(y - center);
+    for (int x = 0; x < size; x++) {
+      int dx = SbAbs(x - center);
+      
+      kernelptr[c] = (1.0 /  (2.0 * M_PI * sigma * sigma)) * exp(- double(dx*dx + dy*dy) / (2.0 * sigma * sigma)); 
+      offsetptr[c] = SbVec2f(float(x-center) * dt, float(y-center)*dt);
+      c++;
+
+    }
+  }
+  offset->value.finishEditing();
+  kernel->value.finishEditing();
+
+  program->shaderObject = vshader;
+  program->shaderObject.set1Value(1, fshader);
+
+  fshader->sourceProgram = fgen.getShaderProgram();
+  fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+  
+  fshader->parameter.set1Value(0, offset);
+  fshader->parameter.set1Value(1, kernel);
+  fshader->parameter.set1Value(2, baseimage);
+
+  SoShaderGenerator vgen;
+  vgen.addMainStatement("gl_TexCoord[3] = gl_Vertex;\n");
+  vgen.addMainStatement("gl_Position = ftransform();");
+
+  vshader->sourceProgram = vgen.getShaderProgram();
+  vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+
+  return program;
+}
+
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+
+SoSeparator * 
+SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex)
+{
+  SoSeparator * sep = new SoSeparator;
+  SoOrthographicCamera * camera = new SoOrthographicCamera;
+  SoShapeHints * sh = new SoShapeHints;
+
+  const float verts[][3] = {
+    {0.0f, 0.0f, 0.0f},
+    {1.0f, 0.0f, 0.0f},
+    {1.0f, 1.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f}
+    
+  };
+
+  sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  sh->faceType = SoShapeHints::CONVEX;
+  sh->shapeType = SoShapeHints::SOLID;
+  
+  sep->addChild(sh);
+
+  camera->position = SbVec3f(0.5f, 0.5f, 2.0f);
+  camera->height = 1.0f;
+  camera->aspectRatio = 1.0f;
+  camera->viewportMapping = SoCamera::LEAVE_ALONE;
+
+  sep->addChild(camera);
+  SoTextureUnit * unit = new SoTextureUnit;
+  unit->unit = 3; // FIXME: temporary
+  sep->addChild(unit);
+
+  sep->addChild(tex);
+  sep->addChild(program);
+
+  SoCoordinate3 * coord = new SoCoordinate3;
+  sep->addChild(coord);
+
+  coord->point.setValues(0,4,verts);
+
+  SoFaceSet * fs = new SoFaceSet;
+  fs->numVertices = 4;
+  sep->addChild(fs);
+
+  return sep;
 }
 
 
