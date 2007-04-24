@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{1745810C-F08D-468D-BA92-1BC35D6AF931}"
+	ProjectGUID="{FC3EBADA-466E-4B89-B817-FB08F48246BC}"
 	>
 	<Platforms>
 		<Platform
@@ -4417,6 +4417,54 @@
 				</File>
 				<File
 					RelativePath="..\..\src\caches\SoPrimitiveVertexCache.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\caches/"
+							ProgramDataBaseFileName="StaticDebug\caches/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\caches/"
+							ProgramDataBaseFileName="Release\caches/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\caches/"
+							ProgramDataBaseFileName="StaticRelease\caches/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\caches/"
+							ProgramDataBaseFileName="Debug\caches/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\caches\SoShaderProgramCache.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

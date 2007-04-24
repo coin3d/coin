@@ -1276,6 +1276,19 @@ SOURCE=..\..\src\caches\SoGlyphCache.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\caches\SoShaderProgramCache.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\caches"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\caches"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\caches\SoVBOCache.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"

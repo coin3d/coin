@@ -511,6 +511,7 @@ copy /Y ..\..\include\Inventor\nodes\SoFile.h %COINDIR%\include\Inventor\nodes\S
 copy /Y ..\..\include\Inventor\nodes\SoFont.h %COINDIR%\include\Inventor\nodes\SoFont.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFontStyle.h %COINDIR%\include\Inventor\nodes\SoFontStyle.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGroup.h %COINDIR%\include\Inventor\nodes\SoGroup.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoGeometryShader.h %COINDIR%\include\Inventor\nodes\SoGeometryShader.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoImage.h %COINDIR%\include\Inventor\nodes\SoImage.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoIndexedFaceSet.h %COINDIR%\include\Inventor\nodes\SoIndexedFaceSet.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoIndexedLineSet.h %COINDIR%\include\Inventor\nodes\SoIndexedLineSet.h >nul:
@@ -574,6 +575,7 @@ copy /Y ..\..\include\Inventor\nodes\SoSurroundScale.h %COINDIR%\include\Invento
 copy /Y ..\..\include\Inventor\nodes\SoSwitch.h %COINDIR%\include\Inventor\nodes\SoSwitch.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoText2.h %COINDIR%\include\Inventor\nodes\SoText2.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoText3.h %COINDIR%\include\Inventor\nodes\SoText3.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoTexture.h %COINDIR%\include\Inventor\nodes\SoTexture.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTexture2.h %COINDIR%\include\Inventor\nodes\SoTexture2.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTexture2Transform.h %COINDIR%\include\Inventor\nodes\SoTexture2Transform.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoTexture3.h %COINDIR%\include\Inventor\nodes\SoTexture3.h >nul:
