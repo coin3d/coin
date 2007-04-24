@@ -108,7 +108,7 @@ public:
     this->depthmap = new SoSceneTexture2;
     this->depthmap->ref();
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
-    this->depthmap->size = SbVec2s(1024, 1024);
+    this->depthmap->size = SbVec2s(512, 512);
     
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
@@ -602,11 +602,12 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
-  if (this->vertexshadercache->get() != gen.getShaderProgram()) {
+  if (this->vertexshader->sourceProgram.getValue() != gen.getShaderProgram()) {
     this->vertexshader->sourceProgram = gen.getShaderProgram();
     this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
     this->vertexshadercache->set(gen.getShaderProgram());
   }
+  this->vertexshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
   
@@ -622,7 +623,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push();
-  
+
   if (this->fragmentshadercache) {
     this->fragmentshadercache->unref();
   }
@@ -768,10 +769,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   // new GLSL program is very slow on current drivers.
   this->fragmentshader->parameter.setNum(numspots*2);
   
-  if (this->fragmentshadercache->get() != gen.getShaderProgram()) {
+  if (this->fragmentshader->sourceProgram.getValue() != gen.getShaderProgram()) {
     this->fragmentshader->sourceProgram = gen.getShaderProgram();
     this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-    this->fragmentshadercache->set(gen.getShaderProgram());
     
     for (int i = 0; i < numspots; i++) {
       SoShaderParameter1i * shadowmap = 
@@ -794,6 +794,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     this->fragmentshader->parameter.set1Value(i*2+1, farval); 
   }
 
+  this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
 }
