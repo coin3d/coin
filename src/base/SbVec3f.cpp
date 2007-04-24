@@ -91,6 +91,16 @@ SbVec3f::SbVec3f(const float x, const float y, const float z)
 }
 
 /*!
+  Constructs an SbVec3f instance from an SbVec3d instance.
+*/
+SbVec3f::SbVec3f(const SbVec3d & v)
+{
+  this->vec[0] = static_cast<float>(v[0]);
+  this->vec[1] = static_cast<float>(v[1]);
+  this->vec[2] = static_cast<float>(v[2]);
+}
+
+/*!
   Constructs an SbVec3f instance by combining the three given planes.
   None of the planes should be parallel to any of the other two, otherwise
   a divide by zero error will occur.

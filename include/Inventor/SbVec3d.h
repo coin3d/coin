@@ -35,6 +35,8 @@ public:
   SbVec3d(void) { }
   SbVec3d(const double v[3]);
   SbVec3d(const double x, const double y, const double z);
+  explicit SbVec3d(const SbVec3f & v);
+
   SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p2);
   SbVec3d cross(const SbVec3d & v) const;
   double dot(const SbVec3d & v) const;
