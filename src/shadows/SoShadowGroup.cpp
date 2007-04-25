@@ -57,6 +57,7 @@
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
@@ -64,8 +65,19 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -135,6 +147,9 @@ public:
     SoSeparator * sep = new SoSeparator;
     sep->addChild(this->camera);
 
+    SoCallback * cb = new SoCallback;
+    cb->setCallback(shadowmap_glcallback, this);
+
     if (this->vsm_program) sep->addChild(this->vsm_program);
 
     for (int i = 0; i < scene->getNumChildren(); i++) {
@@ -167,6 +182,7 @@ public:
     if (this->camera) this->camera->unref();
   }
 
+  static void shadowmap_glcallback(void * closure, SoAction * action);
   void createVSMProgram(void);
   SoShaderProgram * createGaussFilter(const int texsize, const int size, const float stdev);
   SoSeparator * createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex);
@@ -187,6 +203,8 @@ public:
   SoShaderGenerator vsm_vertex_generator;
   SoShaderGenerator vsm_fragment_generator;
 
+  SoColorPacker colorpacker;
+  SbColor color;
 };
 
 class SoShadowGroupP {
@@ -1011,12 +1029,6 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
   return program;
 }
 
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoTextureUnit.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-
 SoSeparator * 
 SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex)
 {
@@ -1063,6 +1075,26 @@ SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2
   return sep;
 }
 
+void 
+SoShadowSpotLightCache::shadowmap_glcallback(void * closure, SoAction * action)
+{
+  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    SoState * state = action->getState();
 
+    SoShadowSpotLightCache * thisp = (SoShadowSpotLightCache*) closure;
+    
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoLazyElement::setDiffuse(state, NULL, 1, &thisp->color, &thisp->colorpacker);
+    SoTextureQualityElement::set(state, 0.0f);
+    SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
+    SoNormalElement::set(state, NULL, 0, NULL, FALSE);
+
+    SoOverrideElement::setNormalVectorOverride(state, NULL, TRUE);
+    SoOverrideElement::setMaterialBindingOverride(state, NULL, TRUE);
+    SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
+    SoTextureOverrideElement::setQualityOverride(state, TRUE);
+  }
+}
 
 #undef PUBLIC
