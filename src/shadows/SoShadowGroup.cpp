@@ -91,10 +91,11 @@ class SoShadowSpotLightCache {
 public:
   SoShadowSpotLightCache(const SoPath * path, SoGroup * scene, 
                          const SbBool vsm, 
-                         const int gausskernelsize)
+                         const int gausskernelsize,
+                         const float gaussstandarddeviation)
   {
     const int TEXSIZE = 1024;
-
+    
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
     this->gaussmap = NULL;
@@ -151,7 +152,7 @@ public:
       this->gaussmap->type = SoSceneTexture2::RGBA32F;
       this->gaussmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-      SoShaderProgram * shader = this->createGaussFilter(TEXSIZE, gausskernelsize);
+      SoShaderProgram * shader = this->createGaussFilter(TEXSIZE, gausskernelsize, gaussstandarddeviation);
       this->gaussmap->scene = this->createGaussSG(shader, this->depthmap);
     }
   }
@@ -167,7 +168,7 @@ public:
   }
 
   void createVSMProgram(void);
-  SoShaderProgram * createGaussFilter(const int texsize, const int size);
+  SoShaderProgram * createGaussFilter(const int texsize, const int size, const float stdev);
   SoSeparator * createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex);
   
 
@@ -292,7 +293,10 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(quality, (0.5f));
   SO_NODE_ADD_FIELD(shadowCachingEnabled, (TRUE));
   SO_NODE_ADD_FIELD(visibilityRadius, (-1.0f));
-  SO_NODE_ADD_FIELD(epsilon, (0.001f));
+  SO_NODE_ADD_FIELD(epsilon, (0.00001f));
+  SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.8f));
+  SO_NODE_ADD_FIELD(gaussMatrixSize, (0));
+
 }
 
 /*!
@@ -368,12 +372,14 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     this->search.setSearchingAll(FALSE);
     this->search.apply(PUBLIC(this));
     SoPathList & pl = this->search.getPaths();
-
+    
     if (pl.getLength() != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this), TRUE, 0);
+        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this), TRUE,
+                                                                    PUBLIC(this)->gaussMatrixSize.getValue(),
+                                                                    PUBLIC(this)->gaussStandardDeviation.getValue());
         this->spotlights.append(cache);
       }
     }
@@ -438,14 +444,13 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   SbVec3f dir = light->direction.getValue();
   (void) dir.normalize();
 
-	cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-	cam->heightAngle.setValue(light->cutOffAngle.getValue() * 2.0f);
-	//cam->heightAngle.setValue(60 * M_PI / 180.0);
-
+  cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
+  cam->heightAngle.setValue(light->cutOffAngle.getValue() * 2.0f);
+  
   // FIXME: cache bbox in the pimpl class
   this->bboxaction.apply(cache->depthmap->scene.getValue());
   SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
-
+  
   SbMatrix mat;
   mat.setTranslate(- cam->position.getValue());
   xbox.transform(mat);
@@ -695,19 +700,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   }
 
   const SoNodeList & lights = SoLightElement::getLights(state);
-      
-  // FIXME: move this function to Coin/data/shaders/
-  gen.addFunction("float vsm_lookup(in vec4 map, in float dist) {\n"
-                  "  float mapdist = map.x;\n"
-                  "  float lit_factor = dist <= mapdist ? 1.0 : 0.0;\n"
-                  "  float E_x2 = map.y;\n"
-                  "  float Ex_2 = mapdist * mapdist;\n"
-                  "  float variance = min(max(E_x2 - Ex_2, 0.0) + EPSILON, 1.0);\n"
-                  "  float m_d = mapdist - dist;\n"
-                  "  float p_max = variance / (variance + m_d * m_d);\n"
-                  "  return max(lit_factor, p_max);\n"
-                  "}\n", FALSE);
-  
+
+  gen.addNamedFunction("vsm/VsmLookup", FALSE);
   gen.addMainStatement("vec3 eye = -normalize(ecPosition3);\n");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
@@ -729,7 +723,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = shadowCoord%d.z > -1.0 ? vsm_lookup(map, dist/farval%d) : 0.0;\n"
+                  "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON) : 0.0;\n"
                   "color += shadeFactor * diffuse.rgb * gl_Color.rgb + "
                   "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
                   lights.getLength(), i , i, i, i, i);
@@ -847,10 +841,6 @@ SoShadowSpotLightCache::createVSMProgram(void)
   vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
   
   fgen.reset(FALSE);
-#if 0
-  "gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);";
-#else
-
 #ifdef DISTRIBUTE_FACTOR
   SbString str;
   str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
@@ -869,7 +859,6 @@ SoShadowSpotLightCache::createVSMProgram(void)
                         "gl_FragColor = vec4(l, l*l, 0.0, 0.0);"
 #endif
                         );
-#endif
   fshader->sourceProgram = fgen.getShaderProgram();
   fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 
@@ -942,7 +931,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 }
 
 SoShaderProgram * 
-SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size)
+SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, const float gaussstandarddeviation)
 {
   SoVertexShader * vshader = new SoVertexShader;
   SoFragmentShader * fshader = new SoFragmentShader;
@@ -971,23 +960,16 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size)
   fgen.addDeclaration("uniform sampler2D baseimage;", FALSE);
   
   fgen.addMainStatement(
-#if 1
                         "int i;\n"
                         "vec4 sum = vec4(0.0);\n"
                         "for (i = 0; i < KernelSize; i++) {\n"
                         "  vec4 tmp = texture2D(baseimage, gl_TexCoord[3].st + offset[i]);\n"
                         "  sum += tmp * kernelvalue[i];\n"
-                        //"  sum += tmp;\n"
                         "}\n"
-                        // "gl_FragColor = sum / 25.0;\n"
                         "gl_FragColor = sum;\n"
-#else
-                        "gl_FragColor = texture2D(baseimage, gl_TexCoord[3].st);\n"
-#endif
                         );
   
-  const double sigma = 0.84089642;
-  // const double sigma = 0.6;
+  const double sigma = (double) gaussstandarddeviation;
   const int center = size / 2;
   const float dt = 1.0 / float(texsize);
   

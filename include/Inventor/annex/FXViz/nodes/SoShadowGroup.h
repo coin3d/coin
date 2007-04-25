@@ -29,6 +29,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFInt32.h>
 
 class SoShadowGroupP;
 
@@ -50,9 +51,11 @@ public:
   SoSFBool shadowCachingEnabled;
   SoSFFloat visibilityRadius;
   SoSFEnum visibilityFlag;
+  SoSFFloat gaussStandardDeviation;
+  SoSFInt32 gaussMatrixSize;
 
   SoSFFloat epsilon;
-
+  
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
 
