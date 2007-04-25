@@ -44,6 +44,7 @@ public:
   };
 
   static const char * getNamedScript(const SbName & name, const Type type);
+  static void setupBuiltinShaders(void);
 };
 
 // *************************************************************************

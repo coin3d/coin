@@ -40,8 +40,16 @@
 
 // *************************************************************************
 
+#include <data/shaders/lights/SpotLight.h>
+#include <data/shaders/lights/PointLight.h>
+#include <data/shaders/lights/DirectionalLight.h>
+#include <data/shaders/vsm/VsmLookup.h>
+
+// *************************************************************************
+
 static const char * SO_SHADER_DIR = NULL;
 static SbHash <char *, const char *> * shader_dict = NULL;
+static SbHash <char *, const char *> * shader_builtin_dict = NULL;
 
 static void
 soshader_cleanup_callback(const char * const & key,
@@ -56,6 +64,10 @@ soshader_cleanup(void)
 {
   shader_dict->apply(soshader_cleanup_callback, NULL);
   delete shader_dict;
+
+  // no need to apply on objects since strings are compiled into the
+  // library and should not be deleted
+  delete shader_builtin_dict;
 }
 
 void
@@ -141,66 +153,85 @@ SoShader::init(void)
 
   SO_SHADER_DIR = coin_getenv("SO_SHADER_DIR");
   shader_dict = new SbHash <char *, const char *>;
+  shader_builtin_dict = new SbHash <char *, const char *>;
+  setupBuiltinShaders();
 
   coin_atexit((coin_atexit_f*) soshader_cleanup, CC_ATEXIT_NORMAL);
 }
 
+
+
+
 const char * 
 SoShader::getNamedScript(const SbName & name, const Type type)
 {
-  // FIXME: temporary until we can make compiled-in versions of the shaders
-  if (SO_SHADER_DIR == NULL) {
-    SoDebugError::postWarning("SoShader::getNamedScript",
-                              "SO_SHADER_DIR not set");
-    return NULL;
-  }
-  
-  SbString filename(SO_SHADER_DIR);
-  filename += "/";
-  filename += name.getString();
-
-  switch (type) {
-  case ARB_SHADER:
-    filename += ".arb";
-    break;
-  case CG_SHADER:
-    filename += ".cg";
-    break;
-  case GLSL_SHADER:
-    filename += ".glsl";
-    break;
-  default:
-    assert(0 && "unknown shader type");
-    break;
-  }
-
-  SbName shadername(filename.getString());
   char * shader = NULL;
   
-  if (!shader_dict->get(shadername.getString(), shader)) {
-    FILE * fp = fopen(filename.getString(), "rb");
-    if (fp) {
-      (void) fseek(fp, 0, SEEK_END);
-      size_t size = (size_t) ftell(fp);
-      (void) fseek(fp, 0, SEEK_SET);
-
-      shader = new char[size+1];
-      shader[size] = 0;
-      shader_dict->put(shadername, shader);
-      
-      if (!fread(shader, size, 1, fp) == 1) {
+  if (SO_SHADER_DIR) {
+    SbString filename(SO_SHADER_DIR);
+    filename += "/";
+    filename += name.getString();
+    
+    switch (type) {
+    case ARB_SHADER:
+      filename += ".arb";
+      break;
+    case CG_SHADER:
+      filename += ".cg";
+      break;
+    case GLSL_SHADER:
+      filename += ".glsl";
+      break;
+    default:
+      assert(0 && "unknown shader type");
+      break;
+    }
+    
+    SbName shadername(filename.getString());
+    
+    if (!shader_dict->get(shadername.getString(), shader)) {
+      FILE * fp = fopen(filename.getString(), "rb");
+      if (fp) {
+        (void) fseek(fp, 0, SEEK_END);
+        size_t size = (size_t) ftell(fp);
+        (void) fseek(fp, 0, SEEK_SET);
+        
+        shader = new char[size+1];
+        shader[size] = 0;
+        shader_dict->put(shadername, shader);
+        
+        if (!fread(shader, size, 1, fp) == 1) {
+          SoDebugError::postWarning("SoShader::getNamedScript",
+                                    "Unable to read shader: %s",
+                                    filename.getString());
+        }
+        fclose(fp);
+      }
+      else {
+        shader_dict->put(shadername, NULL);
         SoDebugError::postWarning("SoShader::getNamedScript",
-                                  "Unable to read shader: %s",
+                                  "Unable to find shader: %s",
                                   filename.getString());
       }
-      fclose(fp);
-    }
-    else {
-      shader_dict->put(shadername, NULL);
-      SoDebugError::postWarning("SoShader::getNamedScript",
-                                "Unable to find shader: %s",
-                                filename.getString());
     }
   }
+  if (!shader) {
+    // try builtin shaders
+    if (!shader_builtin_dict->get(name.getString(), shader)) {
+      SoDebugError::postWarning("SoShader::getNamedScript",
+                                "Unable to find builtin shader: %s",
+                                name.getString());
+    }
+  }
+
   return shader;
+}
+
+void 
+SoShader::setupBuiltinShaders(void)
+{
+  shader_builtin_dict->put(SbName("lights/PointLight").getString(), (char*) POINTLIGHT_shadersource);
+  shader_builtin_dict->put(SbName("lights/SpotLight").getString(), (char*) SPOTLIGHT_shadersource);
+  shader_builtin_dict->put(SbName("lights/DirectionalLight").getString(), (char*) DIRECTIONALLIGHT_shadersource);
+  shader_builtin_dict->put(SbName("vsm/VsmLookup").getString(), (char*) VSMLOOKUP_shadersource);
 }
