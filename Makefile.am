@@ -72,6 +72,7 @@ EXTRA_DIST = \
 	coin.cfg.in \
 	Info.plist.in \
 	version.plist.in \
+	data/shaders/glsl2h.sh.in \
 	docs/ChangeLog.1999 \
 	docs/ChangeLog.2000 \
 	docs/ChangeLog.2001 \

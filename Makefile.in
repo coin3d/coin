@@ -324,6 +324,7 @@ EXTRA_DIST = \
 	coin.cfg.in \
 	Info.plist.in \
 	version.plist.in \
+	data/shaders/glsl2h.sh.in \
 	docs/ChangeLog.1999 \
 	docs/ChangeLog.2000 \
 	docs/ChangeLog.2001 \
@@ -737,7 +738,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build/misc $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/build/misc $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/data/shaders $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
