@@ -2159,6 +2159,9 @@ AC_CONFIG_FILES([
         include/Inventor/annex/FXViz/nodes/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
+	data/shaders/Makefile
+	data/shaders/lights/Makefile
+	data/shaders/vsm/Makefile
         man/Makefile
         man/man1/Makefile
         man/man3/Makefile
