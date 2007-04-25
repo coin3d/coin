@@ -41,6 +41,8 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
+ExtraIncludeDirs = -I$(top_builddir)
+
 ##$ BEGIN TEMPLATE Make-Common(shaders, nodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before

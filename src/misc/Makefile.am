@@ -67,8 +67,6 @@ PrivateHeaders = \
 	systemsanity.icc
 ObsoleteHeaders =
 
-ExtraIncludeDirs = -I$(top_builddir)
-
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************
 # This template depends on the following variables having been set up before

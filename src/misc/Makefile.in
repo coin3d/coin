@@ -335,8 +335,6 @@ PrivateHeaders = \
 
 ObsoleteHeaders = 
 
-ExtraIncludeDirs = -I$(top_builddir)
-
 
 # **************************************************************************
 # This template depends on the following variables having been set up before
