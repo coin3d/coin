@@ -35,7 +35,7 @@ class SoShadowGroupP;
 
 class COIN_DLL_API SoShadowGroup : public SoSeparator {
   typedef SoSeparator inherited;
-  
+
   SO_NODE_HEADER(SoShadowGroup);
 
 public:
@@ -49,13 +49,14 @@ public:
   SoSFFloat precision;
   SoSFFloat quality;
   SoSFBool shadowCachingEnabled;
+  SoSFFloat visibilityNearRadius;
   SoSFFloat visibilityRadius;
   SoSFEnum visibilityFlag;
   SoSFFloat gaussStandardDeviation;
   SoSFInt32 gaussMatrixSize;
 
   SoSFFloat epsilon;
-  
+
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
 
