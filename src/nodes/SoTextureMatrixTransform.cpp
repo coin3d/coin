@@ -34,7 +34,7 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     TextureMatrixTransform {
-        matrix 
+        matrix
           1 0 0 0
           0 1 0 0
           0 0 1 0
@@ -58,6 +58,7 @@
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/C/glue/gl.h>
 
 // *************************************************************************
@@ -78,7 +79,7 @@ SO_NODE_SOURCE(SoTextureMatrixTransform);
 SoTextureMatrixTransform::SoTextureMatrixTransform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureMatrixTransform);
-  
+
   SO_NODE_ADD_FIELD(matrix, (SbMatrix::identity()));
 }
 
@@ -106,12 +107,16 @@ void
 SoTextureMatrixTransform::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  int unit = SoTextureUnitElement::get(state); 
+
+  // don't modify the texture matrix while rendering the shadow map
+  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) return;
+
+  int unit = SoTextureUnitElement::get(state);
   if (unit == 0) {
     SoTextureMatrixTransform::doAction(action);
   }
   else {
-    const cc_glglue * glue = 
+    const cc_glglue * glue =
       cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
 
