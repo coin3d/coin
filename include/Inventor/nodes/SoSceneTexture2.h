@@ -53,7 +53,8 @@ public:
 
   enum Wrap {
     REPEAT = SoTextureImageElement::REPEAT,
-    CLAMP = SoTextureImageElement::CLAMP
+    CLAMP = SoTextureImageElement::CLAMP,
+    CLAMP_TO_BORDER = SoTextureImageElement::CLAMP_TO_BORDER
   };
 
   enum TransparencyFunction {
@@ -61,7 +62,7 @@ public:
     ALPHA_BLEND,
     ALPHA_TEST
   };
-  
+
   enum Type {
     DEPTH,
     RGBA8, // normal unsigned byte rgba
@@ -72,19 +73,19 @@ public:
 
     // FIXME: consider how many of these we should have here
     R3_G3_B2,
-    RGB, 
-    RGB4, 
-    RGB5, 
-    RGB8, 
+    RGB,
+    RGB4,
+    RGB5,
+    RGB8,
     RGB10,
-    RGB12, 
-    RGB16, 
-    RGBA, 
+    RGB12,
+    RGB16,
+    RGBA,
     RGBA2,
-    RGBA4, 
+    RGBA4,
     RGB5_A1,	
     RGB10_A2,
-    RGBA12, 
+    RGBA12,
     RGBA16
   };
 

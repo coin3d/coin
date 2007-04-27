@@ -390,6 +390,7 @@ SoSceneTexture2::initClass(void)
 static SoGLImage::Wrap
 translateWrap(const SoSceneTexture2::Wrap wrap)
 {
+  if (wrap == SoSceneTexture2::CLAMP_TO_BORDER) return SoGLImage::CLAMP_TO_BORDER;
   if (wrap == SoSceneTexture2::REPEAT) return SoGLImage::REPEAT;
   return SoGLImage::CLAMP;
 }
@@ -418,6 +419,7 @@ SoSceneTexture2::SoSceneTexture2(void)
 
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP_TO_BORDER);
   
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, NONE);
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_BLEND);
@@ -1093,15 +1095,19 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   
   // FIXME: add support for CLAMP_TO_BORDER in SoSceneTexture2 and SoTextureImageElement
 
-  if (cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
-      cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp")) {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-  }
-  else {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  }
+
+  GLenum wraps = (GLenum) PUBLIC(this)->wrapS.getValue();
+  GLenum wrapt = (GLenum) PUBLIC(this)->wrapT.getValue();
+
+  SbBool clamptoborder_ok = 
+    cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
+    cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp");
+  
+  if (wraps == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wraps = GL_CLAMP;
+  if (wrapt == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wrapt = GL_CLAMP;
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wraps);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapt);
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
