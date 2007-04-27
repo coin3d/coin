@@ -56,7 +56,8 @@ public:
     // compatibility (these are also used by SoTexture2 and
     // SoTexture3).
     CLAMP = 0x2900,
-    REPEAT = 0x2901
+    REPEAT = 0x2901,
+    CLAMP_TO_BORDER = 0x812D
   };
 
   virtual void init(SoState * state);
