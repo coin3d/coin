@@ -114,6 +114,15 @@ SoGLMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
   this->updategl(unit);
 }
 
+void 
+SoGLMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  inherited::setElt(unit, matrix);
+  this->updategl(unit);
+}
+
+
 // updates GL state
 void
 SoGLMultiTextureMatrixElement::updategl(const int unit) const
@@ -123,7 +132,7 @@ SoGLMultiTextureMatrixElement::updategl(const int unit) const
   glMatrixMode(GL_TEXTURE);
   glLoadMatrixf(this->getUnitData(unit).textureMatrix[0]);
   glMatrixMode(GL_MODELVIEW);
-  
+
   cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
 }
 

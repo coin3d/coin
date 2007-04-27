@@ -30,7 +30,7 @@ typedef struct cc_glglue cc_glue; // same as in glue/gl.h
 
 class COIN_DLL_API SoGLMultiTextureMatrixElement : public SoMultiTextureMatrixElement {
   typedef SoMultiTextureMatrixElement inherited;
-  
+
   SO_ELEMENT_HEADER(SoGLMultiTextureMatrixElement);
 public:
   static void initClass(void);
@@ -44,6 +44,7 @@ public:
                    const SoElement * prevTopElement);
 
   virtual void multElt(const int unit, const SbMatrix & matrix);
+  virtual void setElt(const int unit, const SbMatrix & matrix);
 
 private:
   void updategl(const int unit) const;

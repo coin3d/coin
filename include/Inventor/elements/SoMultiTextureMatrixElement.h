@@ -41,6 +41,9 @@ protected:
 public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
+  static void set(SoState * const state, SoNode * const node,
+                  const int unit,
+                  const SbMatrix & matrix);
   static void mult(SoState * const state, SoNode * const node,
                    const int unit,
                    const SbMatrix & matrix);
@@ -56,6 +59,7 @@ protected:
   const UnitData & getUnitData(const int unit) const;
   
   virtual void multElt(const int unit, const SbMatrix & matrix);
+  virtual void setElt(const int unit, const SbMatrix & matrix);
   virtual const SbMatrix & getElt(const int unit) const;
 
 private:

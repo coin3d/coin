@@ -71,6 +71,16 @@ SoMultiTextureMatrixElement::~SoMultiTextureMatrixElement(void)
 }
 
 
+void 
+SoMultiTextureMatrixElement::set(SoState * const state, SoNode * const node, const int unit, const SbMatrix & matrix)
+{
+  SoMultiTextureMatrixElement *elem = (SoMultiTextureMatrixElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->setElt(unit, matrix);
+  if (node) elem->addNodeId(node);
+}
+
+
 /*!
   Multiplies \a matrix into the current texture matrix.
 */
@@ -97,14 +107,14 @@ SoMultiTextureMatrixElement::get(SoState * const state, const int unit)
   return elem->getElt(unit);
 }
 
-SoMultiTextureMatrixElement::UnitData & 
+SoMultiTextureMatrixElement::UnitData &
 SoMultiTextureMatrixElement::getUnitData(const int unit)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(this)->unitdata[unit];
 }
 
-const SoMultiTextureMatrixElement::UnitData & 
+const SoMultiTextureMatrixElement::UnitData &
 SoMultiTextureMatrixElement::getUnitData(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -121,6 +131,17 @@ SoMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   PRIVATE(this)->unitdata[unit].textureMatrix.multLeft(matrix);
+}
+
+/*!
+  virtual method which is called from set(). Sets \a matrix
+  intp element matrix.
+*/
+void
+SoMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->unitdata[unit].textureMatrix = matrix;
 }
 
 /*!
