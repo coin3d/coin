@@ -57,6 +57,7 @@
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/C/glue/gl.h>
 
@@ -129,12 +130,18 @@ void
 SoTexture2Transform::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  int unit = SoTextureUnitElement::get(state); 
+
+  // don't modify the texture matrix while rendering the shadow map
+  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) return;
+
+  int unit = SoTextureUnitElement::get(state);
+
   if (unit == 0) {
     SoTexture2Transform::doAction(action);
+
   }
   else {
-    const cc_glglue * glue = 
+    const cc_glglue * glue =
       cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
 
@@ -159,7 +166,7 @@ SoTexture2Transform::doAction(SoAction *action)
   this->makeMatrix(mat);
 
   SoState * state = action->getState();
-  int unit = SoTextureUnitElement::get(state); 
+  int unit = SoTextureUnitElement::get(state);
   if (unit == 0) {
     SoTextureMatrixElement::mult(action->getState(), this,
                                  mat);
