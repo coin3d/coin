@@ -26,7 +26,7 @@
 
 // WARNING: This is work in progress. Do not expect this class to have
 // a stable interface over a long period of time. It is installed
-// because we need it in an internal project. 
+// because we need it in an internal project.
 
 // FIXME: make sure we do a design review for this class for Coin v3.0
 // pederb, 2001-11-28
@@ -54,7 +54,8 @@ public:
   enum Wrap {
     REPEAT = 0,
     CLAMP,
-    CLAMP_TO_EDGE
+    CLAMP_TO_EDGE,
+    CLAMP_TO_BORDER
   };
 
   enum ResizeReason {
@@ -64,12 +65,12 @@ public:
   };
 
   typedef SbBool SoGLImageResizeCB(SoState * state,
-                                   const SbVec3s &newsize, 
-                                   unsigned char * destbuffer, 
+                                   const SbVec3s &newsize,
+                                   unsigned char * destbuffer,
                                    ResizeReason reason,
                                    void * closure,
                                    class SoGLImage * image);
-  
+
   void setGLDisplayList(SoGLDisplayList * dl,
                         SoState * state,
                         const Wrap wraps = REPEAT,
@@ -81,7 +82,7 @@ public:
                   const Wrap wraps = REPEAT,
                   const Wrap wrapt = REPEAT,
                   const float quality = 0.5f);
-  
+
   void setData(const unsigned char * bytes,
                const SbVec2s & size,
                const int numcomponents,
@@ -158,7 +159,7 @@ public:
 
   float getQuality(void) const;
   uint32_t getGLImageId(void) const;
-  
+
 protected:
 
   void incAge(void) const;
@@ -171,7 +172,7 @@ private:
   class SoGLImageP * pimpl;
   friend class SoGLImageP;
   static void cleanupClass(void);
-  
+
 public:
   // internal methods for texture resource management
   static void beginFrame(SoState * state);

@@ -98,11 +98,11 @@
   default GL_CLAMP_TO_EDGE is used, since this is usually what people
   want.  See
   http://www.opengl.org/discussion_boards/ubb/Forum3/HTML/007306.html
-  for a discussion regarding GL_CLAMP and GL_CLAMP_TO_EDGE.  
+  for a discussion regarding GL_CLAMP and GL_CLAMP_TO_EDGE.
 
   \li COIN_TEX2_ANISOTROPIC_LIMIT: Anisotropic filtering is enabled
   for textures when the texture quality is higher than this value.
-  Default value is 0.85 
+  Default value is 0.85
 
   \COIN_CLASS_EXTENSION
 
@@ -125,7 +125,7 @@
 
   Sent as a parameter to SoGLImageResizeCB as a hint to why an image
   is being resized. IMAGE means that a whole image is being initially
-  resized (e.g. a texture image). SUBIMAGE and MIPMAP are not in use and 
+  resized (e.g. a texture image). SUBIMAGE and MIPMAP are not in use and
   reserved for future use.
 */
 
@@ -146,8 +146,8 @@
 // FIXME: Support other reason values than IMAGE (kintel 20050531)
 /*!
   \typedef bool SoGLImage::SoGLImageResizeCB(SoState * state,
-                                             const SbVec3s &newsize, 
-                                             unsigned char * destbuffer, 
+                                             const SbVec3s &newsize,
+                                             unsigned char * destbuffer,
                                              SoGLImage::ResizeReason reason,
                                              void * closure,
                                              class SoGLImage * image)
@@ -160,10 +160,10 @@
   \e state is the current state at the time of resizing.
   \e newsize is the requested new image size. Note that the z size of a
   2D image is 0.
-  \e destbuffer is a pre-allocated buffer big enough to hold the pixels 
-  for the resized image. The # of bytes per pixel is the same as for the 
+  \e destbuffer is a pre-allocated buffer big enough to hold the pixels
+  for the resized image. The # of bytes per pixel is the same as for the
   original image.
-  \e reason is a hint about why the image is resized. At the moment, 
+  \e reason is a hint about why the image is resized. At the moment,
   only IMAGE is supported.
   \e image is the original image.
 
@@ -226,7 +226,7 @@ static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static float COIN_TEX2_ANISOTROPIC_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_TEX2_USE_SGIS_GENERATE_MIPMAP = -1;
-static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1; 
+static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1;
 
 // *************************************************************************
 
@@ -264,7 +264,7 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
 {
   soglimage_buffer * buf = NULL;
   assert(glimage_bufferstorage != NULL);
-  
+
   buf = (soglimage_buffer*)
     glimage_bufferstorage->get();
   if (mipmap) {
@@ -473,7 +473,7 @@ fast_mipmap(SoState * state, int width, int height, int nc,
 
 // fast mipmap creation. no repeated memory allocations. 3D version.
 static void
-fast_mipmap(SoState * state, int width, int height, int depth, 
+fast_mipmap(SoState * state, int width, int height, int depth,
             int nc, const unsigned char *data, const SbBool useglsubimage,
             SbBool compress)
 {
@@ -495,8 +495,8 @@ fast_mipmap(SoState * state, int width, int height, int depth,
   }
   else {
     if (cc_glglue_has_3d_textures(glw)) {
-      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat, 
-                             width, height, depth, 0, format, 
+      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat,
+                             width, height, depth, 0, format,
                              GL_UNSIGNED_BYTE, data);
     }
   }
@@ -517,7 +517,7 @@ fast_mipmap(SoState * state, int width, int height, int depth,
     else {
       if (cc_glglue_has_3d_textures(glw)) {
         cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, internalFormat,
-                               width, height, depth, 0, format, 
+                               width, height, depth, 0, format,
                                GL_UNSIGNED_BYTE, (void *) src);
       }
     }
@@ -576,7 +576,7 @@ fast_image_resize3d(const unsigned char * src,
   dest_bpr = newwidth * nc;
   src_bpl = src_bpr * height;
   dest_bpl = dest_bpr * newheight;
-  
+
   zstop = newlayers * dest_bpl;
   ystop = dest_bpl;
   xstop = dest_bpr;
@@ -859,21 +859,21 @@ SoGLImage::isOfType(SoType type) const
   Example use (creates a depth texture):
 
   SoGLDisplayList * depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
-  depthmap->ref();  
+  depthmap->ref();
   depthmap->open(state);
-  
-  glTexImage2D(GL_TEXTURE_2D, 0, 
+
+  glTexImage2D(GL_TEXTURE_2D, 0,
                GL_DEPTH_COMPONENT, // GL_DEPTH_COMPONENT24
-               size[0], size[1], 
+               size[0], size[1],
                0,
                GL_DEPTH_COMPONENT,
                GL_UNSIGNED_BYTE, NULL);
-  
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-   
+
   depthmap->close(state);
 
   SoGLImage * image = new SoGLImage;
@@ -882,7 +882,7 @@ SoGLImage::isOfType(SoType type) const
   \since Coin 2.5
 */
 
-void 
+void
 SoGLImage::setGLDisplayList(SoGLDisplayList * dl,
                             SoState * state,
                             const Wrap wraps,
@@ -890,7 +890,7 @@ SoGLImage::setGLDisplayList(SoGLDisplayList * dl,
                             const float quality)
 {
   if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
-  
+
   PRIVATE(this)->unrefDLists(state);
   dl->ref();
   PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
@@ -916,7 +916,7 @@ SoGLImage::setPBuffer(SoState * state,
                       const Wrap wraps,
                       const Wrap wrapt,
                       const float quality)
-  
+
 {
   if (PRIVATE(this)->pbuffer && state) {
     // bind texture before releasing pbuffer
@@ -932,15 +932,15 @@ SoGLImage::setPBuffer(SoState * state,
     PRIVATE(this)->pbuffer = pbuffer;
     PRIVATE(this)->wraps = wraps;
     PRIVATE(this)->wrapt = wrapt;
-    
+
     PRIVATE(this)->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
     PRIVATE(this)->needtransparencytest = TRUE;
     PRIVATE(this)->hastransparency = FALSE;
     PRIVATE(this)->usealphatest = FALSE;
     PRIVATE(this)->quality = quality;
-    
-    
-    if (PRIVATE(this)->pbuffer && !PRIVATE(this)->isregistered && 
+
+
+    if (PRIVATE(this)->pbuffer && !PRIVATE(this)->isregistered &&
         !(this->getFlags() & INVINCIBLE)) {
       PRIVATE(this)->isregistered = TRUE;
       SoGLImage::registerImage(this);
@@ -1055,7 +1055,7 @@ SoGLImage::setData(const SbImage *image,
 
     if (!usesubimage) copyok=FALSE;
     if (PRIVATE(this)->flags & RECTANGLE) copyok = FALSE;
-    
+
     if (copyok) {
       dl->ref();
       PRIVATE(this)->unrefDLists(createinstate);
@@ -1063,16 +1063,16 @@ SoGLImage::setData(const SbImage *image,
       PRIVATE(this)->image = NULL; // data is temporary, and only for current context
       dl->call(createinstate);
 
-      SbBool compress = 
+      SbBool compress =
         (PRIVATE(this)->flags & COMPRESSED) &&
         cc_glue_has_texture_compression(glw);
 
       if (dl->isMipMapTextureObject()) {
         if (is3D)
-          fast_mipmap(createinstate, size[0], size[1], size[2], nc, bytes, 
+          fast_mipmap(createinstate, size[0], size[1], size[2], nc, bytes,
                       TRUE, compress);
         else
-          fast_mipmap(createinstate, size[0], size[1], nc, bytes, 
+          fast_mipmap(createinstate, size[0], size[1], nc, bytes,
                       TRUE, compress);
       }
       else {
@@ -1327,17 +1327,17 @@ SoGLImage::getWrapR(void) const
 
   \since 2005-02-19
 */
-float 
+float
 SoGLImage::getQuality(void) const
 {
   return PRIVATE(this)->quality;
 }
 
-/*!  
+/*!
   Returns an unique if for this GL image. This id can be used to
-  test for changes in an SoGLImage's internal data.  
+  test for changes in an SoGLImage's internal data.
 */
-uint32_t 
+uint32_t
 SoGLImage::getGLImageId(void) const
 {
   return PRIVATE(this)->glimageid;
@@ -1401,10 +1401,10 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     newx = coin_geq_power_of_two(xsize - 2*this->border);
     newy = coin_geq_power_of_two(ysize - 2*this->border);
     newz = zsize ? coin_geq_power_of_two(zsize - 2*this->border) : 0;
-    
+
     // if >= 256 and low quality, don't scale up unless size is
     // close to an above power of two. This saves a lot of texture memory
-    
+
     if (this->flags & SoGLImage::SCALE_DOWN) {
       // no use scaling down for very small images
       if (newx > xsize && newx > 16) newx >>= 1;
@@ -1436,17 +1436,17 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   uint32_t orgsize[3] = { newx, newy, newz };
 #endif // COIN_DEBUG
   while (!sizeok) {
-    SbBool compressed = 
+    SbBool compressed =
       (this->flags & SoGLImage::COMPRESSED) ? TRUE : FALSE &&
       cc_glue_has_texture_compression(glw);
-    
+
     if (this->flags & SoGLImage::RECTANGLE) {
       // FIXME: add support for rectangular textures in glglue proxy test
-      sizeok = (newx <= maxrectsize) && (newy <= maxrectsize); 
+      sizeok = (newx <= maxrectsize) && (newy <= maxrectsize);
     }
     else {
-      sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz, 
-                                                 numcomponents, 
+      sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz,
+                                                 numcomponents,
                                                  this->shouldCreateMipmap(),
                                                  compressed);
     }
@@ -1502,7 +1502,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     SbBool customresizedone = FALSE;
     if (SoGLImageP::resizecb) {
       customresizedone = SoGLImageP::resizecb(state,
-                                              SbVec3s(newx, newy, newz), 
+                                              SbVec3s(newx, newy, newz),
                                               glimage_tmpimagebuffer,
                                               SoGLImage::IMAGE,
                                               SoGLImageP::resizeclosure,
@@ -1524,7 +1524,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
         else if (simage_wrapper()->available &&
                  simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
                  simage_wrapper()->simage_resize) {
-          
+
           unsigned char *result =
             simage_wrapper()->simage_resize((unsigned char*) bytes,
                                             xsize, ysize, numcomponents,
@@ -1541,7 +1541,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
           glPixelStorei(GL_PACK_SKIP_ROWS, 0);
           glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
           glPixelStorei(GL_PACK_ALIGNMENT, 1);
-          
+
           // FIXME: ignoring the error code. Silly. 20000929 mortene.
           (void)GLUWrapper()->gluScaleImage(coin_glglue_get_texture_format(numcomponents),
                                             xsize, ysize,
@@ -1630,7 +1630,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   if (this->pbuffer) {
     this->reallyBindPBuffer(state);
-  } 
+  }
   else {
     this->reallyCreateTexture(state, imageptr, numcomponents,
                               xsize, ysize, zsize,
@@ -1691,6 +1691,7 @@ static GLenum
 translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
 {
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
+  if (wrap == SoGLImage::CLAMP_TO_BORDER) return (GLenum) GL_CLAMP_TO_BORDER;
   if (COIN_ENABLE_CONFORMANT_GL_CLAMP) {
     if (wrap == SoGLImage::CLAMP_TO_EDGE) {
       const cc_glglue * glw = sogl_glue_instance(state);
@@ -1718,7 +1719,7 @@ SoGLImageP::reallyBindPBuffer(SoState * state)
 
   SbBool mipmap = FALSE;
 
-#if 0 
+#if 0
   // disabled, we probably need to allocate space for the mipmaps in
   // the pbuffer pederb, 2003-11-27
   if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "GL_SGIS_generate_mipmap")) {
@@ -1745,13 +1746,13 @@ SoGLImageP::reallyCreateTexture(SoState *state,
   this->glsize = SbVec3s((short) w, (short) h, (short) d);
   this->glcomp = numComponents;
 
-  SbBool compress = 
+  SbBool compress =
     (this->flags & SoGLImage::COMPRESSED) &&
     cc_glue_has_texture_compression(glw);
-  GLint internalFormat = 
+  GLint internalFormat =
     coin_glglue_get_internal_texture_format(numComponents, compress);
   GLenum dataFormat = coin_glglue_get_texture_format(numComponents);
-  
+
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   //FIXME: Check cc_glglue capability as well? (kintel 20011129)
@@ -1763,7 +1764,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R,
                     translate_wrap(state, this->wrapr));
 
-    
+
     this->applyFilter(mipmap);
 
     if (!mipmap) {
@@ -1789,7 +1790,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
   }
   else { // 2D textures
     SbBool mipmapimage = mipmap;
-    SbBool mipmapfilter = mipmap; 
+    SbBool mipmapfilter = mipmap;
 
     GLenum target = this->flags & SoGLImage::RECTANGLE ?
       GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D;
@@ -1798,25 +1799,25 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                     translate_wrap(state, this->wraps));
     glTexParameteri(target, GL_TEXTURE_WRAP_T,
                     translate_wrap(state, this->wrapt));
-    
+
     if (mipmap && (this->flags & SoGLImage::RECTANGLE)) {
       mipmapimage = FALSE;
       if (cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
-        glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
+        glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       }
       else mipmapfilter = FALSE;
     }
-    
-    else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP && 
+
+    else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP &&
              cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
-      glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
+      glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       mipmapimage = FALSE;
     }
 
     this->applyFilter(mipmapfilter);
-    if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) && 
+    if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
         cc_glglue_can_do_anisotropic_filtering(glw)) {
-      glTexParameterf(target, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+      glTexParameterf(target, GL_TEXTURE_MAX_ANISOTROPY_EXT,
                       cc_glglue_get_max_anisotropy(glw));
     }
     if (!mipmapimage) {
@@ -1986,7 +1987,7 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
       }
       else if (this->flags & SoGLImage::LINEAR_MIN_FILTER)
         minfilter = GL_NEAREST_MIPMAP_LINEAR;
-      
+
       glTexParameteri(target, GL_TEXTURE_MIN_FILTER,
                       minfilter);
     }
@@ -1994,7 +1995,7 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 }
 
 // returns an unique uint32_t id for gl images
-uint32_t 
+uint32_t
 SoGLImageP::getNextGLImageId(void)
 {
   return current_glimageid++;
@@ -2164,17 +2165,17 @@ SoGLImage::setResizeCallback(SoGLImageResizeCB * f, void * closure)
 //
 // Callback from SoContextHandler
 //
-void 
+void
 SoGLImageP::contextCleanup(uint32_t context, void * closure)
 {
   SoGLImageP * thisp = (SoGLImageP *) closure;
 #ifdef COIN_THREADSAFE
   SoGLImageP::mutex->lock();
 #endif // COIN_THREADSAFE
-  
+
   int n = thisp->dlists.getLength();
   int i = 0;
-  
+
   while (i < n) {
     if (thisp->dlists[i].dlist->getContext() == (int) context) {
       thisp->dlists[i].dlist->unref(NULL);
@@ -2193,4 +2194,3 @@ SoGLImageP::contextCleanup(uint32_t context, void * closure)
 #undef PRIVATE
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
-
