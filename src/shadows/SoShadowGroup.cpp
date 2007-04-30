@@ -88,7 +88,6 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoShaderGenerator.h>
 #include <Inventor/caches/SoShaderProgramCache.h>
@@ -214,14 +213,14 @@ class SoShadowGroupP {
 public:
   SoShadowGroupP(SoShadowGroup * master) : 
     master(master), 
-    matrixaction(SbViewportRegion(SbVec2s(100,100))),
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
     spotlightsvalid(FALSE),
     shaderprogram(NULL),
     vertexshader(NULL),
     fragmentshader(NULL),
     vertexshadercache(NULL),
-    fragmentshadercache(NULL)
+    fragmentshadercache(NULL),
+    texunit0(NULL)
   { 
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -241,6 +240,7 @@ public:
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
   }
   ~SoShadowGroupP() {
+    if (this->texunit0) this->texunit0->unref();
     if (this->vertexshadercache) this->vertexshadercache->unref();
     if (this->fragmentshadercache) this->vertexshadercache->unref();
     if (this->cameratransform) this->cameratransform->unref();
@@ -273,7 +273,6 @@ public:
 
   SoShadowGroup * master;
   SoSearchAction search;
-  SoGetMatrixAction matrixaction;
   SoGetBoundingBoxAction bboxaction;
 
   SbBool spotlightsvalid;
@@ -289,6 +288,8 @@ public:
 
   SoShaderProgramCache * vertexshadercache;
   SoShaderProgramCache * fragmentshadercache;
+  
+  SoShaderParameter1i * texunit0;
   
 };
 
@@ -414,7 +415,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       SoShadowSpotLightCache * cache = this->spotlights[i];
       int unit = (maxunits - 1) - i;
       if (unit != cache->texunit) {
-        // if (this->vertexshadercache) this->vertexshadercache->invalidate();
+        if (this->vertexshadercache) this->vertexshadercache->invalidate();
         cache->texunit = unit;
       }
       if (*(cache->path) != *path) {
@@ -437,10 +438,10 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     assert(cache->texunit >= 0);
 
     if (cache->texunit == 0) {
-      SoTextureMatrixElement::mult(state, PUBLIC(this), mat);
+      SoTextureMatrixElement::set(state, PUBLIC(this), mat);
     }
     else {
-      SoMultiTextureMatrixElement::mult(state, PUBLIC(this), cache->texunit, cache->matrix);
+      SoMultiTextureMatrixElement::set(state, PUBLIC(this), cache->texunit, cache->matrix);
     }
         
     // glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -662,6 +663,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
     gen.addMainStatement(
                          "perVertexColor = color.rgb;"
+                         "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
                          "gl_Position = ftransform();\n"
                          "gl_FrontColor = gl_Color;");
   }
@@ -744,8 +746,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addMainStatement("vec3 eye = -normalize(ecPosition3);\n");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
-                       "vec4 specular = vec4(0.0);");
-
+                       "vec4 specular = vec4(0.0);\n"
+                       "vec4 mydiffuse = gl_Color;\n"
+                       "if (coin_texunit0_model != 0) mydiffuse *= texture2D(textureMap0, gl_TexCoord[0].xy);\n");
+  
   if (perpixelspot) {
     gen.addMainStatement("vec3 color = perVertexColor;\n"
                          "float dist;\n"
@@ -763,7 +767,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
                   "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON) : 0.0;\n"
-                  "color += shadeFactor * diffuse.rgb * gl_Color.rgb + "
+                  "color += shadeFactor * diffuse.rgb * mydiffuse.rgb + "
                   "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
                   lights.getLength(), i , i, i, i, i);
       gen.addMainStatement(str);
@@ -804,7 +808,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
 
       gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb + "
-                           "diffuse.rgb * gl_Color.rgb + specular.rgb * gl_FrontMaterial.specular.rgb;\n");
+                           "diffuse.rgb * mydiffuse.rgb + specular.rgb * gl_FrontMaterial.specular.rgb;\n");
     }    
   }
   
@@ -815,12 +819,13 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                 "vec3 VP = vec3(gl_LightSource[1].position) - ecPosition3;\n"
                 "float d = length(VP);\n"
                 "float shadeFactor = shadowCoord0.z > -1.0 ? lookup(shadowMap0, shadowCoord0, d / farval0) : 0.0;\n"
-                "gl_FragColor = vec4(perVertexColor + shadeFactor * perVertexColor, gl_Color.a);");
+                "gl_FragColor = vec4(perVertexColor + shadeFactor * perVertexColor, mydiffuse.a);");
     
     gen.addMainStatement(str);  
   }
-  gen.addMainStatement("gl_FragColor = vec4(color, gl_Color.a);\n");
-
+  gen.addMainStatement("gl_FragColor = vec4(color, mydiffuse.a);\n");
+  gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
+  gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
@@ -850,6 +855,24 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       farval->name = str;
     }
     this->fragmentshader->parameter.set1Value(i*2+1, farval); 
+  }
+
+  if (1) { // test
+    SoShaderParameter1i * texmap = 
+      new SoShaderParameter1i();
+    SbString str;
+    str.sprintf("textureMap0");
+    texmap->name = str;
+    texmap->value = 0;
+
+    if (!this->texunit0) {
+      this->texunit0 = new SoShaderParameter1i;
+      this->texunit0->ref();
+      this->texunit0->name = "coin_texunit0_model";
+    }
+    
+    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
+    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
   }
 
   this->fragmentshadercache->set(gen.getShaderProgram());
@@ -936,40 +959,48 @@ void
 SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
+  
+  SbBool supported = TRUE;
+  
+  if (!supported) {
+    if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
+    else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
+  }
+  else {
+    state->push();
+    
+    if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
+      // a bit hackish, but saves creating yet another cache
+      this->spotlightsvalid = FALSE;
+    }
+    
+    SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
+    if (camtransform != this->cameratransform->value.getValue()) {
+      this->cameratransform->value = camtransform;
+    }
+    
+    SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
+    SoShapeStyleElement::setShadowMapRendering(state, TRUE);
+    this->updateSpotLights(action);
+    SoShapeStyleElement::setShadowMapRendering(state, FALSE);
+    
 
-  state->push();
-  
-  if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
-    // a bit hackish, but saves creating yet another cache
-    this->spotlightsvalid = FALSE;
+    if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
+      this->setVertexShader(state);
+    }
+    
+    if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
+      this->setFragmentShader(state);
+    }
+    this->shaderprogram->GLRender(action);
+    
+    SoShapeStyleElement::setShadowsRendering(state, TRUE);
+    if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
+    else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
+    SoShapeStyleElement::setShadowsRendering(state, FALSE);
+    
+    state->pop();
   }
-  
-  SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
-  if (camtransform != this->cameratransform->value.getValue()) {
-    this->cameratransform->value = camtransform;
-  }
-  
-  SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
-  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
-  this->updateSpotLights(action);
-  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
-  
-
-  if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
-    this->setVertexShader(state);
-  }
-  
-  if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
-    this->setFragmentShader(state);
-  }
-  this->shaderprogram->GLRender(action);
-  
-  SoShapeStyleElement::setShadowsRendering(state, TRUE);
-  if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
-  else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
-  SoShapeStyleElement::setShadowsRendering(state, FALSE);
-
-  state->pop();
 }
 
 SoShaderProgram * 
