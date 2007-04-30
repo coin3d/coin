@@ -220,3 +220,13 @@ SoGLSLShaderProgram::really_delete_object(void * closure, uint32_t contextid)
   glue->glDeleteObjectARB(glhandle);  
 }
 
+void 
+SoGLSLShaderProgram::updateCoinParameter(SoState * state, const SbName & name)
+{
+  const int n = this->shaderObjects.getLength();
+  for (int i = 0; i < n; i++) {
+    this->shaderObjects[i]->updateCoinParameter(state, name, NULL);
+  }
+}
+
+

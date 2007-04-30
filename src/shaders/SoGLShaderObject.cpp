@@ -46,7 +46,7 @@ SoGLShaderObject::GLContext(void) const
   return this->glctx;
 }
 
-uint32_t 
+uint32_t
 SoGLShaderObject::getCacheContext(void) const
 {
   return this->cachecontext;
@@ -78,16 +78,19 @@ SoGLShaderObject::isActive(void) const
   return (!this->isLoaded()) ? FALSE : this->isActiveFlag;
 }
 
-void 
+void
 SoGLShaderObject::setParametersDirty(SbBool flag)
 {
   this->paramsdirty = flag;
 }
 
-SbBool 
+SbBool
 SoGLShaderObject::getParametersDirty(void) const
 {
   return this->paramsdirty;
 }
 
-
+void 
+SoGLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param)
+{
+}

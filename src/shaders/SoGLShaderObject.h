@@ -35,6 +35,8 @@
 #include "SoShader.h"
 
 class SoGLShaderParameter;
+class SoShaderParameter;
+class SoState;
 
 // *************************************************************************
 
@@ -52,6 +54,8 @@ public:
   virtual void unload(void) = 0;
   virtual SoShader::Type shaderType(void) const = 0;
   virtual SoGLShaderParameter* getNewParameter(void) const = 0;
+  virtual void updateCoinParameter(SoState * state, const SbName & name,
+                                   SoShaderParameter * param = NULL);
 
 public:
 

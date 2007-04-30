@@ -159,8 +159,6 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   // FIXME: (Martin 2004-09-21) find an alternative to invalidating the cache
   SoCacheElement::invalidate(state);
 
-  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
-
   this->glShaderProgram.removeShaderObjects();
   this->glShaderProgram.setEnableCallback(this->enablecb,
                                           this->enablecbclosure);
@@ -182,7 +180,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
-      ((SoShaderObject *)node)->updateParameters(cachecontext);
+      ((SoShaderObject *)node)->updateParameters(state);
     }
   }
 }

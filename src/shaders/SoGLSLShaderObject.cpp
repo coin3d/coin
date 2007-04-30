@@ -73,7 +73,7 @@ SoGLSLShaderObject::load(const char* srcStr)
 
   GLint flag;
   GLenum sType;
-  
+
   switch (this->getShaderType()) {
   default:
     assert(0 &&" unknown shader type");
@@ -93,7 +93,7 @@ SoGLSLShaderObject::load(const char* srcStr)
 
   if (this->shaderHandle == 0) return;
   this->programid = soglshaderobject_idcounter++;
-  
+
   this->glctx->glShaderSourceARB(this->shaderHandle, 1, (const COIN_GLchar **)&srcStr, NULL);
   this->glctx->glCompileShaderARB(this->shaderHandle);
 
@@ -107,7 +107,7 @@ SoGLSLShaderObject::load(const char* srcStr)
                                          &flag);
   SoGLSLShaderObject::printInfoLog(this->GLContext(), this->shaderHandle,
                                    this->getShaderType());
-  
+
   if (!flag) this->shaderHandle = 0;
 }
 
@@ -153,7 +153,7 @@ SoGLSLShaderObject::detach(void)
   }
 }
 
-SbBool 
+SbBool
 SoGLSLShaderObject::isAttached(void) const
 {
   return this->isattached;
@@ -175,7 +175,7 @@ SoGLSLShaderObject::printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int 
     case 0: s += "vertexShader "; break;
     case 1: s += "fragmentShader "; break;
     case 2: s += "geometryShader "; break;
-    default: ;// do nothing 
+    default: ;// do nothing
     }
     SoDebugError::postInfo("SoGLSLShaderObject::printInfoLog",
                            "%s log: '%s'",
@@ -201,7 +201,7 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
     case 0: s += "vertexShader "; break;
     case 1: s += "fragmentShader "; break;
     case 2: s += "geometryShader "; break;
-    default: ;// do nothing 
+    default: ;// do nothing
     }
     SoDebugError::post("SoGLSLShaderObject::didOpenGLErrorOccur",
                        "%s error: '%s'",
@@ -211,4 +211,47 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
     glErr = glGetError(); // FIXME: what is this for? 20050124 mortene.
   }
   return retCode;
+}
+
+#include <stdio.h>
+#include <Inventor/SbName.h>
+#include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/actions/SoAction.h>
+#include <stdio.h>
+
+void 
+SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param)
+{
+  COIN_GLhandle pHandle = this->programHandle;
+  if (pHandle) {
+    const cc_glglue * glue = this->GLContext();
+    
+    // FIXME: set up a dict for the supported Coin variables 
+    int value = 0;
+    SoShaderParameter1i * p = (SoShaderParameter1i*) param;
+    
+    if (name == SbName("coin_texunit0_model")) {
+      SoTextureImageElement::Model model;
+      SbColor dummy;
+      value =  SoGLTextureImageElement::get(state, model, dummy) != NULL;
+    }
+    
+    if (p) {
+      if (p->value.getValue() != value) p->value = value;
+    }
+    else {
+      GLint location = glue->glGetUniformLocationARB(pHandle,
+                                                     (const COIN_GLchar *)name.getString());
+      
+#if 0
+      fprintf(stderr,"action: %s, name: %s, loc: %d, handle: %p\n", 
+              state->getAction()->getTypeId().getName().getString(),
+              name.getString(), location, pHandle);
+#endif
+      if (location >= 0) {
+        glue->glUniform1iARB(location, value);
+      }
+    }
+  }
 }

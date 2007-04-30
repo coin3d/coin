@@ -34,6 +34,9 @@
 
 #include "SoGLShaderObject.h"
 
+class SbName;
+class SoState;
+
 // *************************************************************************
 
 class SoGLSLShaderObject : public SoGLShaderObject
@@ -57,6 +60,8 @@ public:
   // objType 0: program 1: vertexShader 2: fragmentShader
   static SbBool didOpenGLErrorOccur(int objType);
   static void printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int objType);
+
+  virtual void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param);
 
 private:
   COIN_GLhandle programHandle;

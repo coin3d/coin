@@ -120,6 +120,7 @@ public:
 
   void updateParameters(const uint32_t cachecontext, int start, int num);
   void updateAllParameters(const uint32_t cachecontext);
+  void updateCoinParameters(const uint32_t cachecontext, SoState * state);
   void updateStateMatrixParameters(const uint32_t cachecontext);
   SbBool containStateMatrixParameters(void) const;
   void setSearchDirectories(const SbStringList & list);
@@ -241,10 +242,12 @@ SbString SoShaderObject::getSourceProgram(void) const
 }
 
 void 
-SoShaderObject::updateParameters(const uint32_t cachecontext)
+SoShaderObject::updateParameters(SoState * state)
 {
+  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
   SELF->updateAllParameters(cachecontext);
   SELF->updateStateMatrixParameters(cachecontext);
+  SELF->updateCoinParameters(cachecontext, state);
 }
 
 /* ***************************************************************************
@@ -353,9 +356,6 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     shaderobject->setIsActive(isactive);
   }
 }
-
-  void updateParameters(const uint32_t cachecontext);
-
 
 // sets this->cachedSourceType to [ARB|CG|GLSL]_PROGRAM
 // this->cachedSourceType will be set to FILENAME, if sourceType is unknown
@@ -525,6 +525,27 @@ SoShaderObjectP::updateParameters(const uint32_t cachecontext, int start, int nu
     param->updateParameter(shaderobject);
   }
 }
+
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+
+void 
+SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * state)
+{
+  int i, cnt = this->owner->parameter.getNum();
+  
+  SoGLShaderObject * shaderobject = this->getGLShaderObject(cachecontext);
+  
+  for (i = 0; i < cnt; i++) {
+    SoUniformShaderParameter * param =
+      (SoUniformShaderParameter*)this->owner->parameter[i];
+    SbName name = param->name.getValue();
+    
+    if (strncmp(name.getString(), "coin_", 5) == 0) {
+      shaderobject->updateCoinParameter(state, name);
+    }
+  }
+}
+
 
 void
 SoShaderObjectP::updateAllParameters(const uint32_t cachecontext)

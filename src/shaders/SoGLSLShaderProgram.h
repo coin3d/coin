@@ -35,6 +35,8 @@
 #include <Inventor/C/glue/glp.h>
 
 class SoGLSLShaderObject;
+class SoState;
+class SbName;
 
 // *************************************************************************
 
@@ -46,6 +48,8 @@ public:
   void enable(const cc_glglue * g);
   void disable(const cc_glglue * g);
   void postShouldLink(void);
+
+  void updateCoinParameter(SoState * state, const SbName & name);
 
 #if defined(SOURCE_HINT)
   SbString getSourceHint(void) const;

@@ -36,6 +36,7 @@
 
 class SoGLShaderObject;
 class SoState;
+class SbName;
 
 // *************************************************************************
 
@@ -48,6 +49,7 @@ public:
   void removeShaderObjects(void);
   void enable(SoState * state);
   void disable(SoState * state);
+  SbBool isEnabled(void) const;
 
   void setEnableCallback(SoShaderProgramEnableCB * cb,
                          void * closure);
@@ -56,13 +58,16 @@ public:
 #if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
   SbString getSourceHint(void);
 #endif
-
+  
+  void updateCoinParameter(SoState * state, const SbName & name);
+    
 private:
 
   class SoGLARBShaderProgram * arbShaderProgram;
   class SoGLCgShaderProgram  * cgShaderProgram;
   class SoGLSLShaderProgram  * glslShaderProgram;
 
+  SbBool isenabled;
   SoShaderProgramEnableCB * enablecb;
   void * enablecbclosure;
 };
