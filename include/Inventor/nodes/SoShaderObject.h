@@ -34,6 +34,7 @@
 
 class SoGLShaderObject;
 class SoGLShaderProgram;
+class SoState;
 
 // *************************************************************************
 
@@ -61,7 +62,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void search(SoSearchAction * action);
 
-  void updateParameters(const uint32_t cachecontext);
+  void updateParameters(SoState * state);
 
   SourceType getSourceType(void) const;
   SbString getSourceProgram(void) const;
