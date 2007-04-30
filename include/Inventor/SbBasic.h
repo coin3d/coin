@@ -82,6 +82,17 @@ inline Type SbSqr(const Type val) {
   return val * val;
 }
 
+/* *********************************************************************** */
+
+// SoDebugError::post() is not attempted resolved before template is used,
+// hence the missing Inventor/errors/SoDebugError.h #include
+template <typename T>
+inline void SbDividerChk(const char * funcname, T divider) {
+#ifndef NDEBUG
+  if (!(divider != static_cast<T>(0))) SoDebugError::post(funcname, "divide by zero error.");
+#endif // !NDEBUG
+}
+
 /* ********************************************************************** */
 
 /* COMPILER BUG WORKAROUND:
