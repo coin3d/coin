@@ -21,6 +21,17 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SbVec4f.h>
+
+#include <assert.h>
+
+#include <Inventor/SbVec4d.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \class SbVec4f SbLinear.h Inventor/SbLinear.h
   \brief The SbVec4f class is a 4 dimensional vector with floating point coordinates.
@@ -34,56 +45,37 @@
   \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec3d, SbVec4d.
 */
 
-
-#include <assert.h>
-#include <Inventor/SbVec4f.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-
 /*!
+  \fn SbVec4f::SbVec4f(void)
+
   The default constructor does nothing. The vector coordinates will be
   uninitialized until a call the setValue().
 */
-SbVec4f::SbVec4f(void)
-{
-}
 
 /*!
+  \fn SbVec4f::SbVec4f(const float v[4])
   Constructs an SbVec4f instance with initial values from \a v.
- */
-SbVec4f::SbVec4f(const float v[4])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  this->vec[2] = v[2];
-  this->vec[3] = v[3];
-}
+*/
 
 /*!
+  \fn SbVec4f::SbVec4f(float x, float y, float z, float w)
+
   Constructs an SbVec4f instance with the initial homogeneous vector
   set to \a <x,y,z,w>.
- */
-SbVec4f::SbVec4f(const float x, const float y, const float z, const float w)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-  this->vec[2] = z;
-  this->vec[3] = w;
-}
+*/
 
 /*!
+  \fn SbVec4f::SbVec4f(const SbVec4d & v)
+
+  Constructs an SbVec4f instance from an SbVec4d instance.
+*/
+
+/*!
+  \fn float SbVec4f::dot(const SbVec4f & v) const
+
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
- */
-float
-SbVec4f::dot(const SbVec4f& v) const
-{
-  return vec[0]*v.vec[0] + vec[1]*v.vec[1] + vec[2]*v.vec[2] + vec[3]*v.vec[3];
-}
+*/
 
 /*!
   Compares the vector with \a v and returns \c TRUE if the distance
@@ -95,7 +87,7 @@ SbVec4f::dot(const SbVec4f& v) const
   first.
 */
 SbBool
-SbVec4f::equals(const SbVec4f& v, const float tolerance) const
+SbVec4f::equals(const SbVec4f& v, float tolerance) const
 {
 #if COIN_DEBUG
   if(!(tolerance >= 0.0f))
@@ -126,36 +118,23 @@ SbVec4f::getReal(SbVec3f & v) const
                               "division by zero");
 #endif // COIN_DEBUG
 
-  v[0] = this->vec[0]/this->vec[3];
-  v[1] = this->vec[1]/this->vec[3];
-  v[2] = this->vec[2]/this->vec[3];
+  v.setValue(vec[0]/vec[3], vec[1]/vec[3], vec[2]/vec[3]);
 }
 
 /*!
+  \fn const float * SbVec4f::getValue(void) const
   Returns a pointer to an array of four floats containing the
   x, y, z and w coordinates of the vector.
 
   \sa setValue().
- */
-const float *
-SbVec4f::getValue(void) const
-{
-  return this->vec;
-}
+*/
 
 /*!
+  \fn void SbVec4f::getValue(float & x, float & y, float & z, float & w) const
   Returns the x, y, z and w coordinates of the vector.
 
   \sa setValue().
- */
-void
-SbVec4f::getValue(float& x, float& y, float& z, float& w) const
-{
-  x = this->vec[0];
-  y = this->vec[1];
-  z = this->vec[2];
-  w = this->vec[3];
-}
+*/
 
 /*!
   Return the length of the vector in 4D space.
@@ -163,26 +142,24 @@ SbVec4f::getValue(float& x, float& y, float& z, float& w) const
 float
 SbVec4f::length(void) const
 {
-  return (float)sqrt(vec[0]*vec[0] + vec[1]*vec[1] +
-                     vec[2]*vec[2] + vec[3]*vec[3]);
+  return (float)sqrt(this->sqrLength());
 }
 
 /*!
+  \fn float SbVec4f::sqrLength(void) const
+  Return the square of the length of the vector in 4D space.
+*/
+
+/*!
+  \fn void SbVec4f::negate(void)
   Negate the vector.
- */
-void
-SbVec4f::negate(void)
-{
-  this->vec[0] = -this->vec[0];
-  this->vec[1] = -this->vec[1];
-  this->vec[2] = -this->vec[2];
-  this->vec[3] = -this->vec[3];
-}
+*/
 
 /*!
   Normalize the vector to unit length. Return value is the original
   length of the vector before normalization.
- */
+*/
+
 float
 SbVec4f::normalize(void)
 {
@@ -203,242 +180,139 @@ SbVec4f::normalize(void)
 }
 
 /*!
+  \fn SbVec4f & SbVec4f::setValue(const float v[4])
   Set new coordinates for the vector from \a v. Returns reference to
   self.
 
   \sa getValue().
- */
-SbVec4f&
-SbVec4f::setValue(const float v[4])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  this->vec[2] = v[2];
-  this->vec[3] = v[3];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec4f & SbVec4f::setValue(float x, float y, float z, float w)
+
   Set new coordinates for the vector. Returns reference to self.
 
   \sa getValue().
- */
-SbVec4f&
-SbVec4f::setValue(const float x, const float y, const float z, const float w)
+*/
+
+/*!
+  Sets the value from an SbVec3d instance.
+*/
+
+SbVec4f &
+SbVec4f::setValue(const SbVec4d & v)
 {
-  this->vec[0] = x;
-  this->vec[1] = y;
-  this->vec[2] = z;
-  this->vec[3] = w;
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  vec[3] = static_cast<float>(v[3]);
   return *this;
 }
 
 /*!
+  \fn float & SbVec4f::operator [] (int i)
+
   Index operator. Returns modifiable x, y, z or w component of vector.
 
   \sa getValue() and setValue().
- */
-float&
-SbVec4f::operator [](const int i)
-{
-#if COIN_DEBUG
-  if(!(i>=0 && i<=3))
-    SoDebugError::postWarning("SbVec4f::operator[]",
-                              "Index out of bounds [0..3].");
-#endif // COIN_DEBUG
-
-  return this->vec[i];
-}
+*/
 
 /*!
+  \fn const float & SbVec4f::operator [] (int i) const
+
   Index operator. Returns x, y, z or w component of vector.
 
   \sa getValue() and setValue().
- */
-const float&
-SbVec4f::operator [](const int i) const
-{
-#if COIN_DEBUG
-  if(!(i>=0 && i<=3))
-    SoDebugError::postWarning("SbVec4f::operator[]",
-                              "Index out of bounds [0..3].");
-#endif // COIN_DEBUG
-
-  return this->vec[i];
-}
+*/
 
 /*!
+  \fn SbVec4f & SbVec4f::operator *= (float d)
+
   Multiply components of vector with value \a d. Returns reference to self.
- */
-SbVec4f&
-SbVec4f::operator *=(const float d)
-{
-  this->vec[0] *= d;
-  this->vec[1] *= d;
-  this->vec[2] *= d;
-  this->vec[3] *= d;
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec4f & SbVec4f::operator /= (float d)
   Divides components of vector with value \a d. Returns reference to self.
- */
-SbVec4f&
-SbVec4f::operator /=(const float d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec4f::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  // Assumes 1 div and 4 muls is quicker than 4 divs.
-  float inv = 1.0f/d;
-  this->vec[0] *= inv;
-  this->vec[1] *= inv;
-  this->vec[2] *= inv;
-  this->vec[3] *= inv;
-  return *this;
-}
+*/
 
 /*!
-  Adds this vector and vector \a u. Returns reference to self.
- */
-SbVec4f&
-SbVec4f::operator +=(const SbVec4f& u)
-{
-  this->vec[0] += u.vec[0];
-  this->vec[1] += u.vec[1];
-  this->vec[2] += u.vec[2];
-  this->vec[3] += u.vec[3];
-  return *this;
-}
+  \fn SbVec4f & SbVec4f::operator += (const SbVec4f & v)
+
+  Adds this vector and vector \a v. Returns reference to self.
+*/
 
 /*!
-  Subtracts vector \a u from this vector. Returns reference to self.
- */
-SbVec4f&
-SbVec4f::operator -=(const SbVec4f& u)
-{
-  this->vec[0] -= u.vec[0];
-  this->vec[1] -= u.vec[1];
-  this->vec[2] -= u.vec[2];
-  this->vec[3] -= u.vec[3];
-  return *this;
-}
+  \fn SbVec4f & SbVec4f::operator -= (const SbVec4f & v)
+
+  Subtracts vector \a v from this vector. Returns reference to self.
+*/
 
 /*!
+  \fn SbVec4f SbVec4f::operator - (void) const
+
   Non-destructive negation operator. Returns a new SbVec4f instance which
   has all components negated.
 
   \sa negate().
- */
-SbVec4f
-SbVec4f::operator-(void) const
-{
-  return SbVec4f(-this->vec[0], -this->vec[1], -this->vec[2], -this->vec[3]);
-}
+*/
 
 /*!
+  \fn SbVec4f operator * (const SbVec4f & v, float d)
   \relates SbVec4f
 
   Returns an SbVec4f instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec4f
-operator *(const SbVec4f& v, const float d)
-{
-  return SbVec4f(v.vec[0] * d, v.vec[1] * d, v.vec[2] * d, v.vec[3] * d);
-}
+*/
 
 /*!
+  \fn SbVec4f operator * (float d, const SbVec4f & v)
   \relates SbVec4f
 
   Returns an SbVec4f instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec4f
-operator *(const float d, const SbVec4f& v)
-{
-  return v*d;
-}
+*/
 
 /*!
+  \fn SbVec4f operator / (const SbVec4f & v, float d)
   \relates SbVec4f
 
   Returns an SbVec4f instance which is the components of vector \a v
   divided on the scalar factor \a d.
- */
-SbVec4f
-operator /(const SbVec4f& v, const float d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec4f::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec4f(v.vec[0] / d, v.vec[1] / d, v.vec[2] / d, v.vec[3] / d);
-}
+*/
 
 /*!
+  \fn SbVec4f operator + (const SbVec4f & v1, const SbVec4f & v2)
   \relates SbVec4f
 
   Returns an SbVec4f instance which is the sum of vectors \a v1 and \a v2.
- */
-SbVec4f
-operator +(const SbVec4f& v1, const SbVec4f& v2)
-{
-  return SbVec4f(v1.vec[0] + v2.vec[0],
-                 v1.vec[1] + v2.vec[1],
-                 v1.vec[2] + v2.vec[2],
-                 v1.vec[3] + v2.vec[3]);
-}
+*/
 
 /*!
+  \fn SbVec4f operator - (const SbVec4f & v1, const SbVec4f & v2)
   \relates SbVec4f
 
   Returns an SbVec4f instance which is vector \a v2 subtracted from
   vector \a v1.
- */
-SbVec4f
-operator -(const SbVec4f& v1, const SbVec4f& v2)
-{
-  return SbVec4f(v1.vec[0] - v2.vec[0],
-                 v1.vec[1] - v2.vec[1],
-                 v1.vec[2] - v2.vec[2],
-                 v1.vec[3] - v2.vec[3]);
-}
+*/
 
 /*!
+  \fn int operator == (const SbVec4f & v1, const SbVec4f & v2)
   \relates SbVec4f
 
   Returns \a 1 if \a v1 and \a v2 are equal, \a 0 otherwise.
 
   \sa equals().
- */
-int
-operator ==(const SbVec4f& v1, const SbVec4f& v2)
-{
-  if(v1.vec[0] == v2.vec[0] &&
-     v1.vec[1] == v2.vec[1] &&
-     v1.vec[2] == v2.vec[2] &&
-     v1.vec[3] == v2.vec[3]) return TRUE;
-  return FALSE;
-}
+*/
 
 /*!
+  \fn int operator != (const SbVec4f & v1, const SbVec4f & v2)
   \relates SbVec4f
 
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
 
   \sa equals().
- */
-int
-operator !=(const SbVec4f& v1, const SbVec4f& v2)
-{
-  return !(v1 == v2);
-}
+*/
 
 /*!
   Dump the state of this object to the \a file stream. Only works in

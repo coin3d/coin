@@ -34,367 +34,288 @@
   \sa SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec3d, SbVec4f, SbVec4d.
 */
 
+#include <Inventor/SbVec2s.h>
 
 #include <assert.h>
-#include <Inventor/SbVec2s.h>
+
+#include <Inventor/SbVec2us.h>
+#include <Inventor/SbVec2b.h>
+#include <Inventor/SbVec2i32.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 /*!
+  \fn SbVec2s::SbVec2s(void)
+
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue().
- */
-SbVec2s::SbVec2s(void)
-{
-}
+*/
 
 /*!
+  \fn SbVec2s::SbVec2s(const short v[2])
+
   Constructs an SbVec2s instance with initial values from \a v.
- */
-SbVec2s::SbVec2s(const short v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-}
+*/
 
 /*!
+  \fn SbVec2s::SbVec2s(short x, short y)
+
   Constructs an SbVec2s instance with the initial vector endpoints from
   \a x and \a y.
- */
-SbVec2s::SbVec2s(const short x, const short y)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-}
+*/
 
 /*!
+  \fn SbVec2s::SbVec2s(const SbVec2us & v)
+
+  Constructs an SbVec2s instance from the value in an SbVec2us instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2s::SbVec2s(const SbVec2b & v)
+
+  Constructs an SbVec2s instance from the value in an SbVec2us instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2s::SbVec2s(const SbVec2i32 & v)
+
+  Constructs an SbVec2s instance from the value in an SbVec2us instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn int32_t SbVec2s::dot(const SbVec2s & v) const
+
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
- */
-int32_t
-SbVec2s::dot(const SbVec2s& v) const
-{
-  return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1];
-}
+*/
 
 /*!
+  \fn const short * SbVec2s::getValue(void) const
+
   Returns a pointer to an array of two floats containing the x and y
   coordinates of the vector.
 
   \sa setValue().
- */
-const short *
-SbVec2s::getValue(void) const
-{
-  return this->vec;
-}
+*/
 
 /*!
+  \fn void SbVec2s::getValue(short & x, short & y) const
+
   Returns the x and y coordinates of the vector.
 
   \sa setValue().
- */
-void
-SbVec2s::getValue(short& x, short& y) const
-{
-  x = this->vec[0];
-  y = this->vec[1];
-}
+*/
 
 /*!
+  \fn void SbVec2s::negate(void)
+
   Negate the vector (i.e. point it in the opposite direction).
- */
-void
-SbVec2s::negate(void)
-{
-  this->vec[0] = -this->vec[0];
-  this->vec[1] = -this->vec[1];
-}
+*/
 
 /*!
+  \fn SbVec2s & SbVec2s::setValue(const short v[2])
+
   Set new x and y coordinates for the vector from \a v. Returns reference to
   self.
 
   \sa getValue().
- */
-SbVec2s&
-SbVec2s::setValue(const short v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2s & SbVec2s::setValue(short x, short y)
+
   Set new x and y coordinates for the vector. Returns reference to self.
 
   \sa getValue().
- */
-SbVec2s&
-SbVec2s::setValue(short x, short y)
+*/
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2s &
+SbVec2s::setValue(const SbVec2us & v)
 {
-  this->vec[0] = x;
-  this->vec[1] = y;
+  vec[0] = static_cast<short>(v[0]);
+  vec[1] = static_cast<short>(v[1]);
   return *this;
 }
 
 /*!
+  \since 2007-04-28
+*/
+
+SbVec2s &
+SbVec2s::setValue(const SbVec2b & v)
+{
+  vec[0] = static_cast<short>(v[0]);
+  vec[1] = static_cast<short>(v[1]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2s &
+SbVec2s::setValue(const SbVec2i32 & v)
+{
+  vec[0] = static_cast<short>(v[0]);
+  vec[1] = static_cast<short>(v[1]);
+  return *this;
+}
+
+/*!
+  \fn short & SbVec2s::operator [] (int i)
+
   Index operator. Returns modifiable x or y coordinate.
 
   \sa getValue() and setValue().
- */
-short&
-SbVec2s::operator [](const int i)
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1)) {
-    SoDebugError::postWarning("SbVec2s::operator[]",
-                              "Index out of bounds [0,1].");
-    return this->vec[0];
-  }
-#endif // COIN_DEBUG
-
-  return this->vec[i];
-}
+*/
 
 /*!
+  \fn const short & SbVec2s::operator [](int i) const
+
   Index operator. Returns x or y coordinate.
 
   \sa getValue().
- */
-const short&
-SbVec2s::operator [](const int i) const
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1)) {
-    SoDebugError::postWarning("SbVec2s::operator[]",
-                              "Index out of bounds [0,1].");
-    return this->vec[0];
-  }
-#endif // COIN_DEBUG
-  return this->vec[i];
-}
+*/
+
+/*!
+  \fn SbVec2s & SbVec2s::operator *= (int d)
+
+  Multiply components of vector with value \a d. Returns reference to self.
+*/
 
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator *=(int d)
+*/
+
+SbVec2s &
+SbVec2s::operator *= (double d)
 {
-  this->vec[0] *= d;
-  this->vec[1] *= d;
+  vec[0] = static_cast<short>(vec[0] * d);
+  vec[1] = static_cast<short>(vec[1] * d);
   return *this;
 }
 
 /*!
-  Multiply components of vector with value \a d. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator *=(double d)
-{
-  this->vec[0] = (short int)(this->vec[0] * d);
-  this->vec[1] = (short int)(this->vec[1] * d);
-  return *this;
-}
+  \fn SbVec2s & SbVec2s::operator /= (int d)
 
-/*!
   Divides components of vector with value \a d. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator /=(int d)
-{
-#if COIN_DEBUG
-  if(!(d != 0))
-    SoDebugError::postWarning("SbVec2s::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
+*/
 
-  this->vec[0] /= d;
-  this->vec[1] /= d;
-  return *this;
-}
 
 /*!
+  \fn SbVec2s & SbVec2s::operator /= (double d)
+
   Divides components of vector with value \a d. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator /=(double d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0))
-    SoDebugError::postWarning("SbVec2s::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  this->vec[0] = (short int)(this->vec[0] / d);
-  this->vec[1] = (short int)(this->vec[1] / d);
-  return *this;
-}
+*/
 
 /*!
-  Adds this vector and vector \a u. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator +=(const SbVec2s& u)
-{
-  this->vec[0] += u[0];
-  this->vec[1] += u[1];
-  return *this;
-}
+  \fn SbVec2s & SbVec2s::operator += (const SbVec2s & v)
+
+  Adds this vector and vector \a v. Returns reference to self.
+*/
 
 /*!
-  Subtracts vector \a u from this vector. Returns reference to self.
- */
-SbVec2s&
-SbVec2s::operator -=(const SbVec2s& u)
-{
-  this->vec[0] -= u[0];
-  this->vec[1] -= u[1];
-  return *this;
-}
+  \fn SbVec2s & SbVec2s::operator -= (const SbVec2s & v)
+
+  Subtracts vector \a v from this vector. Returns reference to self.
+*/
 
 /*!
+  \fn SbVec2s SbVec2s::operator - (void) const
+
   Non-destructive negation operator. Returns a new SbVec2s instance which
   points in the opposite direction of this vector.
 
   \sa negate().
- */
-SbVec2s
-SbVec2s::operator-(void) const
-{
-  return SbVec2s(-this->vec[0], -this->vec[1]);
-}
+*/
 
 /*!
+  \fn SbVec2s operator * (const SbVec2s & v, int d)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec2s
-operator *(const SbVec2s& v, int d)
-{
-  return SbVec2s(v[0]*d, v[1]*d);
-}
+*/
 
 /*!
+  \fn SbVec2s operator * (const SbVec2s & v, double d)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec2s
-operator *(const SbVec2s& v, double d)
-{
-  return SbVec2s((short)(v[0]*d), (short)(v[1]*d));
-}
+*/
 
 /*!
+  \fn SbVec2s operator * (int d, const SbVec2s & v)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec2s
-operator *(int d, const SbVec2s& v)
-{
-  return SbVec2s(v[0]*d, v[1]*d);
-}
+*/
 
 /*!
+  \fn SbVec2s operator * (double d, const SbVec2s & v)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   multiplied with \a d.
- */
-SbVec2s
-operator *(double d, const SbVec2s& v)
-{
-  return SbVec2s((short)(v[0]*d), (short)(v[1]*d));
-}
+*/
 
 /*!
+  \fn SbVec2s operator / (const SbVec2s & v, int d)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   divided on \a d.
- */
-SbVec2s
-operator /(const SbVec2s& v, int d)
-{
-#if COIN_DEBUG
-  if(!(d != 0))
-    SoDebugError::postWarning("SbVec2s::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec2s(v[0]/d, v[1]/d);
-}
+*/
 
 /*!
+  \fn SbVec2s operator / (const SbVec2s & v, double d)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the components of vector \a v
   divided on \a d.
- */
-SbVec2s
-operator /(const SbVec2s& v, double d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0))
-    SoDebugError::postWarning("SbVec2s::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec2s((short)(v[0]/d), (short)(v[1]/d));
-}
+*/
 
 /*!
+  \fn SbVec2s operator + (const SbVec2s & v1, const SbVec2s & v2)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is the sum of vectors \a v1 and \a v2.
- */
-SbVec2s
-operator +(const SbVec2s& v1, const SbVec2s& v2)
-{
-  return SbVec2s(v1[0]+v2[0], v1[1]+v2[1]);
-}
+*/
 
 /*!
+  \fn SbVec2s operator - (const SbVec2s & v1, const SbVec2s & v2)
   \relates SbVec2s
 
   Returns an SbVec2s instance which is vector \a v2 subtracted from
   vector \a v1.
- */
-SbVec2s
-operator -(const SbVec2s& v1, const SbVec2s& v2)
-{
-  return SbVec2s(v1[0]-v2[0], v1[1]-v2[1]);
-}
+*/
 
 /*!
+  \fn int operator == (const SbVec2s & v1, const SbVec2s & v2)
   \relates SbVec2s
 
   Returns \a 1 if \a v1 and \a v2 are equal, \a 0 otherwise.
- */
-int
-operator ==(const SbVec2s& v1, const SbVec2s& v2)
-{
-  if((v1[0] == v2[0]) && (v1[1] == v2[1])) return TRUE;
-  return FALSE;
-}
+*/
 
 /*!
+  \fn int operator != (const SbVec2s & v1, const SbVec2s & v2)
   \relates SbVec2s
 
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
- */
-int
-operator !=(const SbVec2s& v1, const SbVec2s& v2)
-{
-  return !(v1 == v2);
-}
+*/
 
 /*!
   Dump the state of this object to the \a file stream. Only works in

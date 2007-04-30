@@ -8,13 +8,13 @@ PublicHeaders = \
 	SbBSPTree.h \
 	SbBasic.h \
 	SbBox.h \
-	SbBox2d.h \
-	SbBox2f.h \
 	SbBox2s.h \
 	SbBox2i32.h \
-	SbBox3d.h \
-	SbBox3f.h \
+	SbBox2f.h \
+	SbBox2d.h \
 	SbBox3s.h \
+	SbBox3f.h \
+	SbBox3d.h \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
@@ -40,15 +40,30 @@ PublicHeaders = \
 	SbString.h \
 	SbTesselator.h \
 	SbTime.h \
-	SbVec2d.h \
-	SbVec2f.h \
+	SbVec2b.h \
+	SbVec2ub.h \
 	SbVec2s.h \
+	SbVec2us.h \
 	SbVec2i32.h \
-	SbVec3d.h \
-	SbVec3f.h \
+	SbVec2ui32.h \
+	SbVec2f.h \
+	SbVec2d.h \
+	SbVec3b.h \
+	SbVec3ub.h \
 	SbVec3s.h \
-	SbVec4d.h \
+	SbVec3us.h \
+	SbVec3i32.h \
+	SbVec3ui32.h \
+	SbVec3f.h \
+	SbVec3d.h \
+	SbVec4b.h \
+	SbVec4ub.h \
+	SbVec4s.h \
+	SbVec4us.h \
+	SbVec4i32.h \
+	SbVec4ui32.h \
 	SbVec4f.h \
+	SbVec4d.h \
 	SbViewVolume.h \
 	SbViewportRegion.h \
 	SbXfBox3f.h \

@@ -33,8 +33,11 @@
   \sa SbVec2s, SbVec2d, SbVec3s, SbVec3f, SbVec3d, SbVec4f, SbVec4d.
 */
 
-#include <assert.h>
 #include <Inventor/SbVec2f.h>
+
+#include <assert.h>
+
+#include <Inventor/SbVec2d.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -43,51 +46,46 @@
 // *************************************************************************
 
 /*!
+  \fn SbVec2f::SbVec2f(void)
+
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue().
- */
-
-SbVec2f::SbVec2f(void)
-{
-}
+*/
 
 /*!
+  \fn SbVec2f::SbVec2f(const float v[2])
+
   Constructs an SbVec2f instance with initial values from \a v.
- */
-
-SbVec2f::SbVec2f(const float v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-}
+*/
 
 /*!
+  \fn SbVec2f::SbVec2f(float x, float y)
+
   Constructs an SbVec2f instance with the initial vector endpoints from
   \a x and \a y.
- */
-
-SbVec2f::SbVec2f(const float x, const float y)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-}
+*/
 
 /*!
+  \fn SbVec2f::SbVec2f(const SbVec2d & v)
+
+  Constructs an instance from an SbVec2d instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn float SbVec2f::dot(const SbVec2f & v) const
+
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
- */
-
-float
-SbVec2f::dot(const SbVec2f& v) const
-{
-  return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1];
-}
+*/
 
 /*!
   Compares the vector with \a v and returns \c TRUE if the distance
   between the vectors is smaller or equal to the square root of
   \a tolerance.
 */
+
 SbBool
 SbVec2f::equals(const SbVec2f& v, const float tolerance) const
 {
@@ -105,56 +103,50 @@ SbVec2f::equals(const SbVec2f& v, const float tolerance) const
 }
 
 /*!
+  \fn const float * SbVec2f::getValue(void) const
+
   Returns a pointer to an array of two floats containing the x and y
   coordinates of the vector.
 
   \sa setValue().
- */
-
-const float *
-SbVec2f::getValue(void) const
-{
-  return this->vec;
-}
+*/
 
 /*!
+  \fn void SbVec2f::getValue(float & x, float & y) const
+
   Returns the x and y coordinates of the vector.
 
   \sa setValue().
- */
-
-void
-SbVec2f::getValue(float& x, float& y) const
-{
-  x = this->vec[0];
-  y = this->vec[1];
-}
+*/
 
 /*!
   Return length of vector.
- */
+*/
 
 float
 SbVec2f::length(void) const
 {
-  return (float)sqrt(this->vec[0]*this->vec[0] + this->vec[1]*this->vec[1]);
+  return (float)sqrt(this->sqrLength());
 }
 
 /*!
-  Negate the vector (i.e. point it in the opposite direction).
- */
+  \fn float SbVec2f::sqrLength(void) const
 
-void
-SbVec2f::negate(void)
-{
-  this->vec[0] = -this->vec[0];
-  this->vec[1] = -this->vec[1];
-}
+  Returns the square of the length of the vector.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn void SbVec2f::negate(void)
+
+  Negate the vector (i.e. point it in the opposite direction).
+*/
 
 /*!
   Normalize the vector to unit length. Return value is the original
   length of the vector before normalization.
- */
+*/
 
 float
 SbVec2f::normalize(void)
@@ -175,235 +167,149 @@ SbVec2f::normalize(void)
 }
 
 /*!
+  \fn SbVec2f & SbVec2f::setValue(const float v[2])
+
   Set new x and y coordinates for the vector from \a v. Returns reference to
   self.
 
   \sa getValue().
- */
-
-SbVec2f&
-SbVec2f::setValue(const float v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2f & SbVec2f::setValue(float x, float y)
+
   Set new x and y coordinates for the vector. Returns reference to self.
 
   \sa getValue().
- */
+*/
 
-SbVec2f&
-SbVec2f::setValue(const float x, const float y)
+/*!
+  Sets the value from an SbVec2d instance.
+
+  \since 2007-04-28
+*/
+
+SbVec2f &
+SbVec2f::setValue(const SbVec2d & v)
 {
-  this->vec[0] = x;
-  this->vec[1] = y;
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
   return *this;
 }
 
 /*!
+  \fn float & SbVec2f::operator [] (int i)
+
   Index operator. Returns modifiable x or y coordinate.
 
   \sa getValue() and setValue().
- */
+*/
 
-float&
-SbVec2f::operator [](const int i)
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1))
-    SoDebugError::postWarning("SbVec2f::operator[]",
-                              "Index out of bounds [0,1].");
-#endif // COIN_DEBUG
-  return this->vec[i];
-}
 
 /*!
+  \fn const float & SbVec2f::operator [] (int i) const
+
   Index operator. Returns x or y coordinate.
 
   \sa getValue().
- */
-
-const float&
-SbVec2f::operator [](const int i) const
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1))
-    SoDebugError::postWarning("SbVec2f::operator[]",
-                              "Index out of bounds [0,1].");
-#endif // COIN_DEBUG
-  return this->vec[i];
-}
+*/
 
 /*!
+  \fn SbVec2f & SbVec2f::operator *= (float d)
+
   Multiply components of vector with value \a d. Returns reference to self.
- */
+*/
 
-SbVec2f&
-SbVec2f::operator *=(const float d)
-{
-  this->vec[0] *= d;
-  this->vec[1] *= d;
-  return *this;
-}
 
 /*!
+  \fn SbVec2f & SbVec2f::operator /= (float d)
+
   Divides components of vector with value \a d. Returns reference to self.
- */
-
-SbVec2f&
-SbVec2f::operator /=(const float d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec2f::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  this->vec[0] /= d;
-  this->vec[1] /= d;
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2f & SbVec2f::operator += (const SbVec2f & v)
+
   Adds this vector and vector \a u. Returns reference to self.
- */
-
-SbVec2f&
-SbVec2f::operator +=(const SbVec2f& u)
-{
-  this->vec[0] += u[0];
-  this->vec[1] += u[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2f & SbVec2f::operator -= (const SbVec2f & v)
+
   Subtracts vector \a u from this vector. Returns reference to self.
- */
-SbVec2f&
-SbVec2f::operator -=(const SbVec2f& u)
-{
-  this->vec[0] -= u[0];
-  this->vec[1] -= u[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2f SbVec2f::operator - (void) const
+
   Non-destructive negation operator. Returns a new SbVec2f instance which
   points in the opposite direction of this vector.
 
   \sa negate().
- */
-
-SbVec2f
-SbVec2f::operator-(void) const
-{
-  return SbVec2f(-this->vec[0], -this->vec[1]);
-}
+*/
 
 /*!
+  \fn SbVec2f operator * (const SbVec2f& v, float d)
   \relates SbVec2f
 
   Returns an SbVec2f instance which is the components of vector \a v
   multiplied with \a d.
- */
-
-SbVec2f
-operator *(const SbVec2f& v, const float d)
-{
-  return SbVec2f(v[0]*d, v[1]*d);
-}
+*/
 
 /*!
+  \fn SbVec2f operator * (float d, const SbVec2f & v)
   \relates SbVec2f
 
   Returns an SbVec2f instance which is the components of vector \a v
   multiplied with \a d.
- */
-
-SbVec2f
-operator *(const float d, const SbVec2f& v)
-{
-  return SbVec2f(v[0]*d, v[1]*d);
-}
+*/
 
 /*!
+  \fn SbVec2f operator / (const SbVec2f& v, float d)
   \relates SbVec2f
 
   Returns an SbVec2f instance which is the components of vector \a v
   divided on the scalar factor \a d.
- */
-
-SbVec2f
-operator /(const SbVec2f& v, const float d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec2f::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec2f(v[0]/d, v[1]/d);
-}
+*/
 
 /*!
+  \fn SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2)
   \relates SbVec2f
 
   Returns an SbVec2f instance which is the sum of vectors \a v1 and \a v2.
- */
-
-SbVec2f
-operator +(const SbVec2f& v1, const SbVec2f& v2)
-{
-  return SbVec2f(v1[0]+v2[0], v1[1]+v2[1]);
-}
+*/
 
 /*!
+  \fn SbVec2f operator -(const SbVec2f & v1, const SbVec2f & v2)
   \relates SbVec2f
 
   Returns an SbVec2f instance which is vector \a v2 subtracted from
   vector \a v1.
- */
-
-SbVec2f
-operator -(const SbVec2f& v1, const SbVec2f& v2)
-{
-  return SbVec2f(v1[0]-v2[0], v1[1]-v2[1]);
-}
+*/
 
 /*!
+  \fn int operator == (const SbVec2f & v1, const SbVec2f & v2)
   \relates SbVec2f
 
   Returns \a 1 if \a v1 and \a v2 are equal, \a 0 otherwise.
 
   \sa equals().
  */
-int
-operator ==(const SbVec2f& v1, const SbVec2f& v2)
-{
-  if((v1[0] == v2[0]) && (v1[1] == v2[1])) return TRUE;
-  return FALSE;
-}
 
 /*!
+  \fn int operator != (const SbVec2f & v1, const SbVec2f & v2)
   \relates SbVec2f
 
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
 
   \sa equals().
- */
-int
-operator !=(const SbVec2f& v1, const SbVec2f& v2)
-{
-  return !(v1 == v2);
-}
+*/
 
 /*!
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized compile.
- */
+*/
+
 void
 SbVec2f::print(FILE * fp) const
 {

@@ -33,78 +33,50 @@
   \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3d, SbVec4f, SbVec4d.
 */
 
-
-//
-// documentation of inlined methods
-//
-
-/*!
-  \fn float & SbVec3f::operator[](const int i)
-
-  Index operator. Returns modifiable x, y or z coordinate of vector.
-
-  \sa getValue() and setValue().
-*/
-
-/*!
-  \fn float SbVec3f::operator[](const int i) const
-  Index operator. Returns x, y or z coordinate of vector.
-
-  \sa getValue() and setValue().
-*/
+#include <Inventor/SbVec3f.h>
 
 #include <assert.h>
 #include <float.h> // FLT_MAX
-#include <Inventor/SbPlane.h>
+
 #include <Inventor/SbVec3d.h>
+
+#include <Inventor/SbPlane.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 /*!
-  \fn SbVec3f::SbVec3f(void);
+  \fn SbVec3f::SbVec3f(void)
 
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue() call.
 */
 
 /*!
+  \fn SbVec3f::SbVec3f(const float v[3])
+
   Constructs an SbVec3f instance with initial values from \a v.
 */
-SbVec3f::SbVec3f(const float v[3])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  this->vec[2] = v[2];
-}
 
 /*!
+  \fn SbVec3f::SbVec3f(float x, float y, float z)
+
   Constructs an SbVec3f instance with the initial vector endpoint set to
   \a <x,y,z>.
 */
-SbVec3f::SbVec3f(const float x, const float y, const float z)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-  this->vec[2] = z;
-}
 
 /*!
+  \fn SbVec3f::SbVec3f(const SbVec3d & v)
   Constructs an SbVec3f instance from an SbVec3d instance.
 */
-SbVec3f::SbVec3f(const SbVec3d & v)
-{
-  this->vec[0] = static_cast<float>(v[0]);
-  this->vec[1] = static_cast<float>(v[1]);
-  this->vec[2] = static_cast<float>(v[2]);
-}
 
 /*!
   Constructs an SbVec3f instance by combining the three given planes.
   None of the planes should be parallel to any of the other two, otherwise
   a divide by zero error will occur.
 */
+
 SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
 {
   SbVec3f n0 = p0.getNormal();
@@ -210,14 +182,11 @@ SbVec3f::cross(const SbVec3f & v) const
 }
 
 /*!
+  \fn float SbVec3f::dot(const SbVec3f & v) const
+
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
 */
-float
-SbVec3f::dot(const SbVec3f & v) const
-{
-  return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1] + this->vec[2]*v.vec[2];
-}
 
 /*!  
   Compares the vector with \a v and returns \c TRUE if the distance
@@ -260,63 +229,41 @@ SbVec3f::getClosestAxis(void) const
 }
 
 /*!
+  \fn const float * SbVec3f::getValue(void) const
+
   Returns a pointer to an array of three floats containing the x, y
   and z coordinates of the vector.
 
   \sa setValue().
 */
-const float *
-SbVec3f::getValue(void) const
-{
-  return this->vec;
-}
 
 /*!
+  \fn void SbVec3f::getValue(float & x, float & y, float & z) const
+
   Returns the x, y and z coordinates of the vector.
 
   \sa setValue().
 */
-void
-SbVec3f::getValue(float & x, float & y, float & z) const
-{
-  x = this->vec[0];
-  y = this->vec[1];
-  z = this->vec[2];
-}
 
 /*!
   Return length of vector.
 */
+
 float
 SbVec3f::length(void) const
 {
-  return (float)sqrt(this->vec[0]*this->vec[0] +
-                     this->vec[1]*this->vec[1] +
-                     this->vec[2]*this->vec[2]);
+  return (float)sqrt(this->sqrLength());
 }
 
 /*!
+  \fn float SbVec3f::sqrLength(void) const
   Returns the squared length of the vector.
 */
-float
-SbVec3f::sqrLength(void) const
-{
-  return
-    this->vec[0]*this->vec[0] +
-    this->vec[1]*this->vec[1] +
-    this->vec[2]*this->vec[2];
-}
 
 /*!
+  \fn void SbVec3f::negate(void)
   Negate the vector (i.e. point it in the opposite direction).
 */
-void
-SbVec3f::negate(void)
-{
-  this->vec[0] = -this->vec[0];
-  this->vec[1] = -this->vec[1];
-  this->vec[2] = -this->vec[2];
-}
 
 /*!
   Normalize the vector to unit length. Return value is the original
@@ -367,6 +314,7 @@ SbVec3f::negate(void)
   errors which were just not detected and/or reported with those
   Inventor implementations.
 */
+
 float
 SbVec3f::normalize(void)
 {
@@ -387,33 +335,22 @@ SbVec3f::normalize(void)
 }
 
 /*!
+  \fn SbVec3f & SbVec3f::setValue(const float v[3])
+
   Set new coordinates for the vector from \a v. Returns reference to
   self.
 
   \sa getValue().
 */
-SbVec3f &
-SbVec3f::setValue(const float v[3])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  this->vec[2] = v[2];
-  return *this;
-}
 
 /*!
+  \fn SbVec3f & SbVec3f::setValue(float x, float y, float z)
+
   Set new coordinates for the vector. Returns reference to self.
 
   \sa getValue().
 */
-SbVec3f &
-SbVec3f::setValue(const float x, const float y, const float z)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-  this->vec[2] = z;
-  return *this;
-}
+
 
 /*!
   Set this vector to be the average of \a v0, \a v1 and \a v2.
@@ -443,7 +380,7 @@ SbVec3f &
 SbVec3f::setValue(const SbVec3d & v)
 {
 #if COIN_DEBUG
-  if (v[0] < - FLT_MAX ||
+  if (v[0] < -FLT_MAX ||
       v[0] > FLT_MAX ||
       v[1] < -FLT_MAX ||
       v[1] > FLT_MAX ||
@@ -455,179 +392,120 @@ SbVec3f::setValue(const SbVec3d & v)
   }
 #endif // COIN_DEBUG
 
-  this->vec[0] = (float) v[0];
-  this->vec[1] = (float) v[1];
-  this->vec[2] = (float) v[2];
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
   return *this;
 }
 
 /*!
+  \fn float & SbVec3f::operator[] (int i)
+
+  Index operator. Returns modifiable x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
+*/
+
+/*!
+  \fn float SbVec3f::operator[] (int i) const
+  Index operator. Returns x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
+*/
+
+/*!
+  \fn SbVec3f & SbVec3f::operator *= (float d)
+
   Multiply components of vector with scalar value \a d. Returns
   reference to self.
 */
-SbVec3f &
-SbVec3f::operator *=(const float d)
-{
-  this->vec[0] *= d;
-  this->vec[1] *= d;
-  this->vec[2] *= d;
-  return *this;
-}
+
 
 /*!
+  \fn SbVec3f & SbVec3f::operator /= (float d)
+
   Divides components of vector with scalar value \a d. Returns
   reference to self.
 */
-SbVec3f &
-SbVec3f::operator /=(const float d)
-{
-#if COIN_DEBUG
-  if (!(d != 0.0f))
-    SoDebugError::postWarning("SbVec3f::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  // Assumes 1 div and 3 muls is quicker than 3 divs.
-  float inv = 1.0f/d;
-  this->vec[0] *= inv;
-  this->vec[1] *= inv;
-  this->vec[2] *= inv;
-  return *this;
-}
 
 /*!
+  \fn SbVec3f & SbVec3f::operator += (const SbVec3f & u)
+
   Adds this vector and vector \a u. Returns reference to self.
 */
-SbVec3f &
-SbVec3f::operator +=(const SbVec3f & u)
-{
-  this->vec[0] += u.vec[0];
-  this->vec[1] += u.vec[1];
-  this->vec[2] += u.vec[2];
-  return *this;
-}
+
 
 /*!
+  \fn SbVec3f & SbVec3f::operator -= (const SbVec3f & u)
+
   Subtracts vector \a u from this vector. Returns reference to self.
 */
-SbVec3f &
-SbVec3f::operator -=(const SbVec3f & u)
-{
-  this->vec[0] -= u.vec[0];
-  this->vec[1] -= u.vec[1];
-  this->vec[2] -= u.vec[2];
-  return *this;
-}
 
 /*!
+  \fn SbVec3f SbVec3f::operator - (void) const
+
   Non-destructive negation operator. Returns a new SbVec3f instance
   which points in the opposite direction of this vector.
 
   \sa negate().
 */
-SbVec3f
-SbVec3f::operator-(void) const
-{
-  return SbVec3f(-this->vec[0], -this->vec[1], -this->vec[2]);
-}
 
 /*!
+  \fn SbVec3f operator * (const SbVec3f & v, float d)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is the components of vector \a v
   multiplied with \a d.
 */
-SbVec3f
-operator *(const SbVec3f & v, const float d)
-{
-  return SbVec3f(v.vec[0] * d, v.vec[1] * d, v.vec[2] * d);
-}
 
 /*!
+  \fn SbVec3f operator * (float d, const SbVec3f & v)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is the components of vector \a v
   multiplied with \a d.
 */
-SbVec3f
-operator *(const float d, const SbVec3f & v)
-{
-  return v * d;
-}
 
 /*!
+  \fn SbVec3f operator / (const SbVec3f & v, float d)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is the components of vector \a v
   divided on the scalar factor \a d.
 */
-SbVec3f
-operator /(const SbVec3f & v, const float d)
-{
-#if COIN_DEBUG
-  if (!(d != 0.0f))
-    SoDebugError::postWarning("SbVec3f::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec3f(v.vec[0] / d, v.vec[1] / d, v.vec[2] / d);
-}
 
 /*!
+  \fn SbVec3f operator + (const SbVec3f & v1, const SbVec3f & v2)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is the sum of vectors \a v1 and \a v2.
 */
-SbVec3f
-operator +(const SbVec3f & v1, const SbVec3f & v2)
-{
-  return SbVec3f(v1.vec[0] + v2.vec[0],
-                 v1.vec[1] + v2.vec[1],
-                 v1.vec[2] + v2.vec[2]);
-}
 
 /*!
+  \fn SbVec3f operator - (const SbVec3f & v1, const SbVec3f & v2)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is vector \a v2 subtracted from
   vector \a v1.
 */
-SbVec3f
-operator -(const SbVec3f & v1, const SbVec3f & v2)
-{
-  return SbVec3f(v1.vec[0] - v2.vec[0],
-                 v1.vec[1] - v2.vec[1],
-                 v1.vec[2] - v2.vec[2]);
-}
 
 /*!
+  \fn int operator == (const SbVec3f & v1, const SbVec3f & v2)
   \relates SbVec3f
 
   Returns \a 1 if \a v1 and \a v2 are \e exactly equal, \a 0 otherwise.
 
   \sa equals().
 */
-int
-operator ==(const SbVec3f & v1, const SbVec3f & v2)
-{
-  if (v1.vec[0] == v2.vec[0] &&
-      v1.vec[1] == v2.vec[1] &&
-      v1.vec[2] == v2.vec[2]) return TRUE;
-  return FALSE;
-}
 
 /*!
+  \fn int operator != (const SbVec3f & v1, const SbVec3f & v2)
   \relates SbVec3f
 
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
 
   \sa equals().
 */
-int
-operator !=(const SbVec3f & v1, const SbVec3f & v2)
-{
-  return !(v1 == v2);
-}
 
 /*!
   Dump the state of this object to the \a file stream. Only works in

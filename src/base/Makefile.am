@@ -10,13 +10,13 @@ RegularSources = \
 	dynarray.cpp \
 	namemap.c \
 	SbBSPTree.cpp \
-	SbBox2f.cpp \
-	SbBox2d.cpp \
 	SbBox2s.cpp \
 	SbBox2i32.cpp \
+	SbBox2f.cpp \
+	SbBox2d.cpp \
+	SbBox3s.cpp \
 	SbBox3f.cpp \
 	SbBox3d.cpp \
-	SbBox3s.cpp \
 	SbClip.cpp \
 	SbColor.cpp \
 	SbColor4f.cpp \
@@ -39,13 +39,28 @@ RegularSources = \
 	SbTesselator.cpp \
 	SbGLUTessellator.cpp \
 	SbTime.cpp \
+	SbVec2b.cpp \
+	SbVec2ub.cpp \
+	SbVec2s.cpp \
+	SbVec2us.cpp \
+	SbVec2i32.cpp \
+	SbVec2ui32.cpp \
 	SbVec2f.cpp \
 	SbVec2d.cpp \
-	SbVec2s.cpp \
-	SbVec2i32.cpp \
+	SbVec3b.cpp \
+	SbVec3ub.cpp \
+	SbVec3s.cpp \
+	SbVec3us.cpp \
+	SbVec3i32.cpp \
+	SbVec3ui32.cpp \
 	SbVec3f.cpp \
 	SbVec3d.cpp \
-	SbVec3s.cpp \
+	SbVec4b.cpp \
+	SbVec4ub.cpp \
+	SbVec4s.cpp \
+	SbVec4us.cpp \
+	SbVec4i32.cpp \
+	SbVec4ui32.cpp \
 	SbVec4f.cpp \
 	SbVec4d.cpp \
 	SbViewVolume.cpp \

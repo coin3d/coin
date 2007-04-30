@@ -25,55 +25,96 @@
 \**************************************************************************/
 
 #include <stdio.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
+#ifndef NDEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // !NDEBUG
+
+class SbVec2ui32;
+class SbVec2b;
+class SbVec2s;
 
 class COIN_DLL_API SbVec2i32 {
 public:
-  SbVec2i32(void);
-  SbVec2i32(const int32_t v[2]);
-  SbVec2i32(const int32_t x, const int32_t y);
-  int32_t dot(const SbVec2i32& v) const;
-  const int32_t * getValue(void) const;
-  void getValue(int32_t & x, int32_t & y) const;
-  void negate(void);
-  SbVec2i32& setValue(const int32_t v[2]);
-  SbVec2i32& setValue(int32_t x, int32_t y);
-  int32_t & operator [](const int i);
-  const int32_t & operator [](const int i) const;
-  SbVec2i32& operator *=(int d);
-  SbVec2i32& operator *=(double d);
-  SbVec2i32& operator /=(int d);
-  SbVec2i32& operator /=(double d);
-  SbVec2i32& operator +=(const SbVec2i32& u);
-  SbVec2i32& operator -=(const SbVec2i32& u);
-  SbVec2i32 operator-(void) const;
-  friend COIN_DLL_API SbVec2i32 operator *(const SbVec2i32& v, int d);
-  friend COIN_DLL_API SbVec2i32 operator *(const SbVec2i32& v, double d);
-  friend COIN_DLL_API SbVec2i32 operator *(int d, const SbVec2i32& v);
-  friend COIN_DLL_API SbVec2i32 operator *(double d, const SbVec2i32& v);
-  friend COIN_DLL_API SbVec2i32 operator /(const SbVec2i32& v, int d);
-  friend COIN_DLL_API SbVec2i32 operator /(const SbVec2i32& v, double d);
-  friend COIN_DLL_API SbVec2i32 operator +(const SbVec2i32& v1, const SbVec2i32& v2);
-  friend COIN_DLL_API SbVec2i32 operator -(const SbVec2i32& v1, const SbVec2i32& v2);
-  friend COIN_DLL_API int operator ==(const SbVec2i32& v1, const SbVec2i32& v2);
-  friend COIN_DLL_API int operator !=(const SbVec2i32& v1, const SbVec2i32& v2);
+  SbVec2i32(void) { }
+  SbVec2i32(const int32_t v[2]) { vec[0] = v[0]; vec[1] = v[1]; }
+  SbVec2i32(int32_t x, int32_t y) { vec[0] = x; vec[1] = y; }
+  explicit SbVec2i32(const SbVec2ui32 & v) { setValue(v); }
+  explicit SbVec2i32(const SbVec2b & v) { setValue(v); }
+  explicit SbVec2i32(const SbVec2s & v) { setValue(v); }
+
+  SbVec2i32 & setValue(const int32_t v[2]) { vec[0] = v[0]; vec[1] = v[1]; return *this; }
+  SbVec2i32 & setValue(int32_t x, int32_t y) { vec[0] = x; vec[1] = y; return *this; }
+  SbVec2i32 & setValue(const SbVec2ui32 & v);
+  SbVec2i32 & setValue(const SbVec2b & v);
+  SbVec2i32 & setValue(const SbVec2s & v);
+
+  const int32_t * getValue(void) const { return vec; }
+  void getValue(int32_t & x, int32_t & y) const { x = vec[0]; y = vec[1]; }
+
+  int32_t & operator [] (const int i) { return vec[i]; }
+  const int32_t & operator [] (const int i) const { return vec[i]; }
+
+  int32_t dot(const SbVec2i32 & v) const { return vec[0] * v[0] + vec[1] * v[1]; }
+  void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; }
+
+  SbVec2i32 & operator *= (int d) { vec[0] *= d; vec[1] *= d; return *this; }
+  SbVec2i32 & operator *= (double d);
+  SbVec2i32 & operator /= (int d) { SbDividerChk("SbVec2i32::operator/=(int)", d); vec[0] /= d; vec[1] /= d; return *this; }
+  SbVec2i32 & operator /= (double d) { SbDividerChk("SbVec2i32::operator/=(double)", d); return operator *= (1.0 / d); }
+  SbVec2i32 & operator += (const SbVec2i32 & v) { vec[0] += v[0]; vec[1] += v[1]; return *this; }
+  SbVec2i32 & operator -= (const SbVec2i32 & v) { vec[0] -= v[0]; vec[1] -= v[1]; return *this; }
+  SbVec2i32 operator - (void) const { return SbVec2i32(-vec[0], -vec[1]); }
 
   void print(FILE * fp) const;
 
 protected:
   int32_t vec[2];
-};
 
-COIN_DLL_API SbVec2i32 operator *(const SbVec2i32& v, int d);
-COIN_DLL_API SbVec2i32 operator *(const SbVec2i32& v, double d);
-COIN_DLL_API SbVec2i32 operator *(int d, const SbVec2i32& v);
-COIN_DLL_API SbVec2i32 operator *(double d, const SbVec2i32& v);
-COIN_DLL_API SbVec2i32 operator /(const SbVec2i32& v, int d);
-COIN_DLL_API SbVec2i32 operator /(const SbVec2i32& v, double d);
-COIN_DLL_API SbVec2i32 operator +(const SbVec2i32& v1, const SbVec2i32& v2);
-COIN_DLL_API SbVec2i32 operator -(const SbVec2i32& v1, const SbVec2i32& v2);
-COIN_DLL_API int operator ==(const SbVec2i32& v1, const SbVec2i32& v2);
-COIN_DLL_API int operator !=(const SbVec2i32& v1, const SbVec2i32& v2);
+}; // SbVec2i32
+
+COIN_DLL_API inline SbVec2i32 operator * (const SbVec2i32 & v, int d) {
+  SbVec2i32 val(v); val *= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator * (const SbVec2i32 & v, double d) {
+  SbVec2i32 val(v); val *= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator * (int d, const SbVec2i32 & v) {
+  SbVec2i32 val(v); val *= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator * (double d, const SbVec2i32 & v) {
+  SbVec2i32 val(v); val *= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator / (const SbVec2i32 & v, int d) {
+  SbDividerChk("operator/(SbVec2i32,int)", d);
+  SbVec2i32 val(v); val /= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator / (const SbVec2i32 & v, double d) {
+  SbDividerChk("operator/(SbVec2i32,double)", d);
+  SbVec2i32 val(v); val /= d; return val;
+}
+
+COIN_DLL_API inline SbVec2i32 operator + (const SbVec2i32 & v1, const SbVec2i32 & v2) {
+  SbVec2i32 v(v1); v += v2; return v;
+}
+
+COIN_DLL_API inline SbVec2i32 operator - (const SbVec2i32 & v1, const SbVec2i32 & v2) {
+  SbVec2i32 v(v1); v -= v2; return v;
+}
+
+COIN_DLL_API inline int operator == (const SbVec2i32 & v1, const SbVec2i32 & v2) {
+  return ((v1[0] == v2[0]) && (v1[1] == v2[1]));
+}
+
+COIN_DLL_API inline int operator != (const SbVec2i32& v1, const SbVec2i32& v2) {
+  return !(v1 == v2);
+}
 
 #endif // !COIN_SBVEC2I32_H

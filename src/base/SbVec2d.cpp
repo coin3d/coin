@@ -34,8 +34,11 @@
   \sa SbVec2s, SbVec2f, SbVec3s, SbVec3f, SbVec3d, SbVec4f, SbVec4d.
 */
 
-#include <assert.h>
 #include <Inventor/SbVec2d.h>
+
+#include <assert.h>
+
+#include <Inventor/SbVec2f.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -44,53 +47,39 @@
 // *************************************************************************
 
 /*!
+  \fn SbVec2d::SbVec2d(void)
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue().
- */
-
-SbVec2d::SbVec2d(void)
-{
-}
+*/
 
 /*!
+  \fn SbVec2d::SbVec2d(const double v[2])
+
   Constructs an SbVec2d instance with initial values from \a v.
- */
-
-SbVec2d::SbVec2d(const double v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-}
+*/
 
 /*!
+  \fn SbVec2d::SbVec2d(double x, double y)
+
   Constructs an SbVec2d instance with the initial vector endpoints from
   \a x and \a y.
- */
-
-SbVec2d::SbVec2d(const double x, const double y)
-{
-  this->vec[0] = x;
-  this->vec[1] = y;
-}
+*/
 
 /*!
+  \fn double SbVec2d::dot(const SbVec2d& v) const
+
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
- */
-
-double
-SbVec2d::dot(const SbVec2d& v) const
-{
-  return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1];
-}
+*/
 
 /*!
   Compares the vector with \a v and returns \c TRUE if the distance
   between the vectors is smaller or equal to the square root of
   \a tolerance.
 */
+
 SbBool
-SbVec2d::equals(const SbVec2d& v, const double tolerance) const
+SbVec2d::equals(const SbVec2d& v, double tolerance) const
 {
 #if COIN_DEBUG
   if(!(tolerance >= 0.0f))
@@ -106,56 +95,42 @@ SbVec2d::equals(const SbVec2d& v, const double tolerance) const
 }
 
 /*!
+  \fn const double * SbVec2d::getValue(void) const
+
   Returns a pointer to an array of two double containing the x and y
   coordinates of the vector.
 
   \sa setValue().
- */
-
-const double *
-SbVec2d::getValue(void) const
-{
-  return this->vec;
-}
+*/
 
 /*!
+  \fn void SbVec2d::getValue(double& x, double& y) const
+
   Returns the x and y coordinates of the vector.
 
   \sa setValue().
- */
-
-void
-SbVec2d::getValue(double& x, double& y) const
-{
-  x = this->vec[0];
-  y = this->vec[1];
-}
+*/
 
 /*!
   Return length of vector.
- */
+*/
 
 double
 SbVec2d::length(void) const
 {
-  return (double)sqrt(this->vec[0]*this->vec[0] + this->vec[1]*this->vec[1]);
+  return (double)sqrt(this->sqrLength());
 }
 
 /*!
-  Negate the vector (i.e. point it in the opposite direction).
- */
+  \fn void SbVec2d::negate(void)
 
-void
-SbVec2d::negate(void)
-{
-  this->vec[0] = -this->vec[0];
-  this->vec[1] = -this->vec[1];
-}
+  Negate the vector (i.e. point it in the opposite direction).
+*/
 
 /*!
   Normalize the vector to unit length. Return value is the original
   length of the vector before normalization.
- */
+*/
 
 double
 SbVec2d::normalize(void)
@@ -175,240 +150,148 @@ SbVec2d::normalize(void)
 }
 
 /*!
+  \fn SbVec2d & SbVec2d::setValue(const double v[2])
+
   Set new x and y coordinates for the vector from \a v. Returns reference to
   self.
 
   \sa getValue().
- */
-
-SbVec2d&
-SbVec2d::setValue(const double v[2])
-{
-  this->vec[0] = v[0];
-  this->vec[1] = v[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2d & SbVec2d::setValue(double x, double y)
+
   Set new x and y coordinates for the vector. Returns reference to self.
 
   \sa getValue().
- */
+*/
 
-SbVec2d&
-SbVec2d::setValue(const double x, const double y)
+/*!
+  Sets the value from an SbVec2f instance.
+  Returns reference to itself.
+
+  \since 2007-04-28
+*/
+
+SbVec2d &
+SbVec2d::setValue(const SbVec2f & v)
 {
-  this->vec[0] = x;
-  this->vec[1] = y;
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
   return *this;
 }
 
 /*!
+  \fn double & SbVec2d::operator [] (int i)
+
   Index operator. Returns modifiable x or y coordinate.
 
   \sa getValue() and setValue().
  */
 
-double&
-SbVec2d::operator [](const int i)
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1))
-    SoDebugError::postWarning("SbVec2d::operator[]",
-                              "Index out of bounds [0,1].");
-#endif // COIN_DEBUG
-  return this->vec[i];
-}
-
 /*!
+  \fn const double & SbVec2d::operator [] (int i) const
+
   Index operator. Returns x or y coordinate.
 
   \sa getValue().
- */
-
-const double&
-SbVec2d::operator [](const int i) const
-{
-#if COIN_DEBUG
-  if(!(i==0 || i==1))
-    SoDebugError::postWarning("SbVec2d::operator[]",
-                              "Index out of bounds [0,1].");
-#endif // COIN_DEBUG
-  return this->vec[i];
-}
+*/
 
 /*!
+  \fn SbVec2d & SbVec2d::operator *= (double d)
+
   Multiply components of vector with value \a d. Returns reference to self.
- */
-
-SbVec2d&
-SbVec2d::operator *=(const double d)
-{
-  this->vec[0] *= d;
-  this->vec[1] *= d;
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2d & SbVec2d::operator /= (double d)
+
   Divides components of vector with value \a d. Returns reference to self.
- */
-
-SbVec2d&
-SbVec2d::operator /=(const double d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec2d::operator/=",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  this->vec[0] /= d;
-  this->vec[1] /= d;
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2d & SbVec2d::operator += (const SbVec2d & v)
+
   Adds this vector and vector \a u. Returns reference to self.
- */
-
-SbVec2d&
-SbVec2d::operator +=(const SbVec2d& u)
-{
-  this->vec[0] += u[0];
-  this->vec[1] += u[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2d & SbVec2d::operator -= (const SbVec2d & v)
+
   Subtracts vector \a u from this vector. Returns reference to self.
- */
-SbVec2d&
-SbVec2d::operator -=(const SbVec2d& u)
-{
-  this->vec[0] -= u[0];
-  this->vec[1] -= u[1];
-  return *this;
-}
+*/
 
 /*!
+  \fn SbVec2d SbVec2d::operator - (void) const
+
   Non-destructive negation operator. Returns a new SbVec2d instance which
   points in the opposite direction of this vector.
 
   \sa negate().
- */
-
-SbVec2d
-SbVec2d::operator -(void) const
-{
-  return SbVec2d(-this->vec[0], -this->vec[1]);
-}
+*/
 
 /*!
+  \fn SbVec2d operator * (const SbVec2d & v, double d)
   \relates SbVec2d
 
   Returns an SbVec2d instance which is the components of vector \a v
   multiplied with \a d.
  */
 
-SbVec2d
-operator *(const SbVec2d& v, const double d)
-{
-  return SbVec2d(v[0]*d, v[1]*d);
-}
-
 /*!
+  \fn SbVec2d operator * (double d, const SbVec2d & v)
   \relates SbVec2d
 
   Returns an SbVec2d instance which is the components of vector \a v
   multiplied with \a d.
  */
 
-SbVec2d
-operator *(const double d, const SbVec2d& v)
-{
-  return SbVec2d(v[0]*d, v[1]*d);
-}
-
 /*!
+  \fn SbVec2d operator / (const SbVec2d & v, double d)
   \relates SbVec2d
 
   Returns an SbVec2d instance which is the components of vector \a v
   divided on the scalar factor \a d.
- */
-
-SbVec2d
-operator /(const SbVec2d& v, const double d)
-{
-#if COIN_DEBUG
-  if(!(d != 0.0f))
-    SoDebugError::postWarning("SbVec2d::operator/",
-                              "Division by zero.");
-#endif // COIN_DEBUG
-
-  return SbVec2d(v[0]/d, v[1]/d);
-}
+*/
 
 /*!
+  \fn SbVec2d operator + (const SbVec2d & v1, const SbVec2d & v2)
   \relates SbVec2d
 
   Returns an SbVec2d instance which is the sum of vectors \a v1 and \a v2.
- */
-
-SbVec2d
-operator +(const SbVec2d& v1, const SbVec2d& v2)
-{
-  return SbVec2d(v1[0]+v2[0], v1[1]+v2[1]);
-}
+*/
 
 /*!
+  \fn SbVec2d operator - (const SbVec2d & v1, const SbVec2d & v2)
   \relates SbVec2d
 
   Returns an SbVec2d instance which is vector \a v2 subtracted from
   vector \a v1.
- */
-
-//$ EXPORT INLINE
-SbVec2d
-operator -(const SbVec2d& v1, const SbVec2d& v2)
-{
-  return SbVec2d(v1[0]-v2[0], v1[1]-v2[1]);
-}
+*/
 
 /*!
+  \fn int operator == (const SbVec2d & v1, const SbVec2d & v2)
   \relates SbVec2d
 
   Returns \a 1 if \a v1 and \a v2 are equal, \a 0 otherwise.
 
   \sa equals().
- */
-
-//$ EXPORT INLINE
-int
-operator ==(const SbVec2d& v1, const SbVec2d& v2)
-{
-  if((v1[0] == v2[0]) && (v1[1] == v2[1])) return TRUE;
-  return FALSE;
-}
+*/
 
 /*!
+  \fn int operator != (const SbVec2d & v1, const SbVec2d & v2)
   \relates SbVec2d
 
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
 
   \sa equals().
- */
-
-//$ EXPORT INLINE
-int
-operator !=(const SbVec2d& v1, const SbVec2d& v2)
-{
-  return !(v1 == v2);
-}
+*/
 
 /*!
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized compile.
- */
+*/
+
 void
 SbVec2d::print(FILE * fp) const
 {

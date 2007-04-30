@@ -26,6 +26,9 @@
 
 #include <stdio.h>
 #include <Inventor/SbBasic.h>
+#ifndef NDEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // !NDEBUG
 
 class SbVec3f;
 class SbDPPlane;
@@ -33,70 +36,74 @@ class SbDPPlane;
 class COIN_DLL_API SbVec3d {
 public:
   SbVec3d(void) { }
-  SbVec3d(const double v[3]);
-  SbVec3d(const double x, const double y, const double z);
-  explicit SbVec3d(const SbVec3f & v);
-
+  SbVec3d(const double v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; }
+  SbVec3d(double x, double y, double z) { vec[0] = x; vec[1] = y; vec[2] = z; }
+  explicit SbVec3d(const SbVec3f & v) { setValue(v); }
   SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p2);
-  SbVec3d cross(const SbVec3d & v) const;
-  double dot(const SbVec3d & v) const;
-  SbBool equals(const SbVec3d & v, const double tolerance) const;
-  SbVec3d getClosestAxis(void) const;
-  const double * getValue(void) const;
-  void getValue(double & x, double & y, double & z) const;
-  double length(void) const;
-  double sqrLength() const;
-  void negate(void);
-  double normalize(void);
-  SbVec3d & setValue(const double v[3]);
-  SbVec3d & setValue(const double x, const double y, const double z);
+
+  SbVec3d & setValue(const double v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; return *this; }
+  SbVec3d & setValue(double x, double y, double z) { vec[0] = x; vec[1] = y; vec[2] = z; return *this; }
   SbVec3d & setValue(const SbVec3d & barycentric,
                      const SbVec3d & v0,
                      const SbVec3d & v1,
                      const SbVec3d & v2);
   SbVec3d & setValue(const SbVec3f & v);
-  double & operator [](const int i);
-  const double & operator [](const int i) const;
-  SbVec3d & operator *=(const double d);
-  SbVec3d & operator /=(const double d);
-  SbVec3d & operator +=(const SbVec3d & u);
-  SbVec3d & operator -=(const SbVec3d & u);
-  SbVec3d operator -(void) const;
-  friend COIN_DLL_API SbVec3d operator *(const SbVec3d & v, const double d);
-  friend COIN_DLL_API SbVec3d operator *(const double d, const SbVec3d & v);
-  friend COIN_DLL_API SbVec3d operator /(const SbVec3d & v, const double d);
-  friend COIN_DLL_API SbVec3d operator +(const SbVec3d & v1, const SbVec3d & v2);
-  friend COIN_DLL_API SbVec3d operator -(const SbVec3d & v1, const SbVec3d & v2);
-  friend COIN_DLL_API int operator ==(const SbVec3d & v1, const SbVec3d & v2);
-  friend COIN_DLL_API int operator !=(const SbVec3d & v1, const SbVec3d & v2);
+
+  const double * getValue(void) const { return vec; }
+  void getValue(double & x, double & y, double & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }
+
+  double & operator [] (const int i) { return vec[i]; }
+  const double & operator [] (const int i) const { return vec[i]; }
+
+  SbVec3d cross(const SbVec3d & v) const;
+  double dot(const SbVec3d & v) const { return vec[0] * v[0] + vec[1] * v[1] + vec[2] * v[2]; }
+  SbBool equals(const SbVec3d & v, double tolerance) const;
+  SbVec3d getClosestAxis(void) const;
+  double length(void) const;
+  double sqrLength() const { return vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]; }
+  void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; vec[2] = -vec[2]; }
+  double normalize(void);
+
+  SbVec3d & operator *= (double d) { vec[0] *= d; vec[1] *= d; vec[2] *= d; return *this; }
+  SbVec3d & operator /= (double d) { SbDividerChk("SbVec3d::operator/=(double)", d); return operator *= (1.0 / d); }
+  SbVec3d & operator += (const SbVec3d & v) { vec[0] += v[0]; vec[1] += v[1]; vec[2] += v[2]; return *this; }
+  SbVec3d & operator -= (const SbVec3d & v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
+  SbVec3d operator - (void) const { return SbVec3d(-vec[0], -vec[1], -vec[2]); }
 
   void print(FILE * fp) const;
 
 private:
   double vec[3];
-};
 
-COIN_DLL_API SbVec3d operator *(const SbVec3d & v, const double d);
-COIN_DLL_API SbVec3d operator *(const double d, const SbVec3d & v);
-COIN_DLL_API SbVec3d operator /(const SbVec3d & v, const double d);
-COIN_DLL_API SbVec3d operator +(const SbVec3d & v1, const SbVec3d & v2);
-COIN_DLL_API SbVec3d operator -(const SbVec3d & v1, const SbVec3d & v2);
-COIN_DLL_API int operator ==(const SbVec3d & v1, const SbVec3d & v2);
-COIN_DLL_API int operator !=(const SbVec3d & v1, const SbVec3d & v2);
+}; // SbVec3d
 
-
-/* inlined methods ********************************************************/
-
-inline double &
-SbVec3d::operator [](const int i)
-{
-  return this->vec[i];
+COIN_DLL_API inline SbVec3d operator * (const SbVec3d & v, double d) {
+  SbVec3d val(v); val *= d; return val;
 }
 
-inline const double &
-SbVec3d::operator [](const int i) const
-{
-  return this->vec[i];
+COIN_DLL_API inline SbVec3d operator * (double d, const SbVec3d & v) {
+  SbVec3d val(v); val *= d; return val;
+}
+
+COIN_DLL_API inline SbVec3d operator / (const SbVec3d & v, double d) {
+  SbDividerChk("operator/(SbVec3d,double)", d);
+  SbVec3d val(v); val /= d; return val;
+}
+
+COIN_DLL_API inline SbVec3d operator + (const SbVec3d & v1, const SbVec3d & v2) {
+  SbVec3d v(v1); v += v2; return v;
+}
+
+COIN_DLL_API inline SbVec3d operator - (const SbVec3d & v1, const SbVec3d & v2) {
+  SbVec3d v(v1); v -= v2; return v;
+}
+
+COIN_DLL_API inline int operator == (const SbVec3d & v1, const SbVec3d & v2) {
+  return ((v1[0] == v2[0]) && (v1[1] == v2[1]) && (v1[2] == v2[2]));
+}
+
+COIN_DLL_API inline int operator != (const SbVec3d & v1, const SbVec3d & v2) {
+  return !(v1 == v2);
 }
 
 #endif // !COIN_SBVEC3D_H
