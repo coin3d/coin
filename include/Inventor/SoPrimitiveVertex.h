@@ -59,7 +59,7 @@ public:
 
   void setMaterialIndex(int index) { materialIndex = index; }
   void setPackedColor(uint32_t rgba) { packedColor = rgba; }
-  void setDetail(SoDetail * d) { detail = detail; }
+  void setDetail(SoDetail * d) { detail = d; }
 
 private:
   SbVec3f point;
