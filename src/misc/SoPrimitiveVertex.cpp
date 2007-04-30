@@ -44,7 +44,8 @@ SoPrimitiveVertex::SoPrimitiveVertex(void)
     normal(0.0f, 0.0f, 1.0f),
     textureCoords(0.0f, 0.0f, 0.0f, 1.0f),
     materialIndex(0),
-    detail(NULL)
+    detail(NULL),
+    packedColor(0)
 {
 }
 
@@ -55,14 +56,16 @@ SoPrimitiveVertex::SoPrimitiveVertex(void)
   made. Ie, only the reference to the detail instance is copied (if
   any), not the detail itself.
 */
+
 SoPrimitiveVertex &
-SoPrimitiveVertex::operator=(const SoPrimitiveVertex & pv)
+SoPrimitiveVertex::operator = (const SoPrimitiveVertex & pv)
 {
   this->point = pv.point;
   this->normal = pv.normal;
   this->textureCoords = pv.textureCoords;
   this->materialIndex = pv.materialIndex;
   this->detail = pv.detail;
+  this->packedColor = pv.packedColor;
   return *this;
 }
 
@@ -71,6 +74,7 @@ SoPrimitiveVertex::operator=(const SoPrimitiveVertex & pv)
 
   \sa SoPrimitiveVertex::operator=()
 */
+
 SoPrimitiveVertex::SoPrimitiveVertex(const SoPrimitiveVertex & pv)
 {
   *this = pv;
@@ -80,126 +84,144 @@ SoPrimitiveVertex::SoPrimitiveVertex(const SoPrimitiveVertex & pv)
   Destructor. The detail instance is owned by client code and will not
   be destructed here.
 */
+
 SoPrimitiveVertex::~SoPrimitiveVertex()
 {
 }
 
 /*!
+  \fn const SbVec3f & SoPrimitiveVertex::getPoint(void) const
+
   Returns vertex coordinates, positioned in object space.
 */
-const SbVec3f &
-SoPrimitiveVertex::getPoint(void) const
-{
-  return this->point;
-}
 
 /*!
+  \fn const SbVec3f & SoPrimitiveVertex::getNormal(void) const
+
   Returns normal vector, oriented in object space.
 */
-const SbVec3f &
-SoPrimitiveVertex::getNormal(void) const
-{
-  return this->normal;
-}
 
 /*!
+  \fn const SbVec4f & SoPrimitiveVertex::getTextureCoords(void) const
+
   Returns texture coordinates for vertex, specified in object space.
 */
-const SbVec4f &
-SoPrimitiveVertex::getTextureCoords(void) const
-{
-  return this->textureCoords;
-}
 
 /*!
+  \fn int SoPrimitiveVertex::getMaterialIndex(void) const
+
   Returns index of the vertex into the currently active material, if
   any.
 */
-int
-SoPrimitiveVertex::getMaterialIndex(void) const
-{
-  return this->materialIndex;
-}
 
 /*!
+  \fn uint32_t SoPrimitiveVertex::getPackedColor(void) const
+
+  Returns the rgba packed color for the given vertex.
+
+  \since 2007-04-24
+*/
+
+/*!
+  \fn const SoDetail * SoPrimitiveVertex::getDetail(void) const
+
   Returns pointer to detail instance with more information about the
   vertex. A detail instance may not be available, and if so \c NULL is
   returned.
 */
-const SoDetail *
-SoPrimitiveVertex::getDetail(void) const
-{
-  return this->detail;
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setPoint(const SbVec3f & pt)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 */
-void
-SoPrimitiveVertex::setPoint(const SbVec3f & pointref)
-{
-  this->point = pointref;
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setPoint(float x, float y, float z)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 */
-void
-SoPrimitiveVertex::setNormal(const SbVec3f & normalref)
-{
-  this->normal = normalref;
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setNormal(const SbVec3f & n)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 */
-void
-SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
-{
-  this->textureCoords = texcoords;
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setNormal(float nx, float ny, float nz)
+
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
+
+/*!
+  \fn void SoPrimitiveVertex::setTextureCoords(const SbVec2f & texcoords)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 
   Covenience function. Will fill in 0 and 1 in the last two texture
   coords in the internal SbVec4f texture coordinate instance.
 */
-void
-SoPrimitiveVertex::setTextureCoords(const SbVec2f & texcoords)
-{
-  this->textureCoords = SbVec4f(texcoords[0], texcoords[1], 0.0f, 1.0f);
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setTextureCoords(float tx, float ty)
+
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+
+  Covenience function. Will fill in 0 and 1 in the last two texture
+  coords in the internal SbVec4f texture coordinate instance.
+*/
+
+/*!
+  \fn void SoPrimitiveVertex::setTextureCoords(const SbVec3f & texcoords)
+
   Covenience function. Will fill in 1 in the last coord.
 
   \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
-void
-SoPrimitiveVertex::setTextureCoords(const SbVec3f & texcoords)
-{
-  this->textureCoords = SbVec4f(texcoords[0], texcoords[1], texcoords[2],
-                                1.0f);
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setTextureCoords(float tx, float ty, float tz)
+
+  Covenience function. Will fill in 1 in the last coord.
+
+  \COIN_FUNCTION_EXTENSION
+
+  \since 2007-04-24
+*/
+
+/*!
+  \fn void SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 */
-void
-SoPrimitiveVertex::setMaterialIndex(const int index)
-{
-  this->materialIndex = index;
-}
 
 /*!
+  \fn void SoPrimitiveVertex::setMaterialIndex(int index)
+
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
+
+/*!
+  \fn void SoPrimitiveVertex::setPackedColor(uint32_t rgba)
+
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
+
+/*!
+  \fn void SoPrimitiveVertex::setDetail(SoDetail * detail)
+
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 
@@ -207,8 +229,3 @@ SoPrimitiveVertex::setMaterialIndex(const int index)
   the detail instance after the SoPrimitiveVertex instance has gone
   out of scope.
 */
-void
-SoPrimitiveVertex::setDetail(SoDetail * const detailptr)
-{
-  this->detail = detailptr;
-}

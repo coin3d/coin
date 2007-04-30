@@ -27,7 +27,7 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
-
+#include <Inventor/system/inttypes.h>
 
 class SoDetail;
 
@@ -35,23 +35,31 @@ class COIN_DLL_API SoPrimitiveVertex {
 public:
   SoPrimitiveVertex(void);
   SoPrimitiveVertex(const SoPrimitiveVertex & pv);
-  ~SoPrimitiveVertex();
-  const SbVec3f & getPoint(void) const;
-  const SbVec3f & getNormal(void) const;
-  const SbVec4f & getTextureCoords(void) const;
-  int getMaterialIndex(void) const;
-  const SoDetail * getDetail(void) const;
-  SoPrimitiveVertex & operator =(const SoPrimitiveVertex & pv);
+  ~SoPrimitiveVertex(void);
 
-  void setPoint(const SbVec3f & point);
-  void setNormal(const SbVec3f & normal);
-  void setTextureCoords(const SbVec2f & texcoords);
-  void setTextureCoords(const SbVec3f & texcoords);
-  void setTextureCoords(const SbVec4f & texcoords);
+  SoPrimitiveVertex & operator = (const SoPrimitiveVertex & pv);
 
-  void setMaterialIndex(const int index);
-  void setDetail(SoDetail * const detail);
+  const SbVec3f & getPoint(void) const { return point; }
+  const SbVec3f & getNormal(void) const { return normal; }
+  const SbVec4f & getTextureCoords(void) const { return textureCoords; }
+  int getMaterialIndex(void) const { return materialIndex; }
+  uint32_t getPackedColor(void) const { return packedColor; }
+  const SoDetail * getDetail(void) const { return detail; }
 
+  void setPoint(const SbVec3f & pt) { point = pt; }
+  void setPoint(float x, float y, float z) { point.setValue(x, y, z); }
+  void setNormal(const SbVec3f & n) { normal = n; }
+  void setNormal(float nx, float ny, float nz) { normal.setValue(nx, ny, nz); }
+  void setTextureCoords(const SbVec2f & tex) { textureCoords.setValue(tex[0], tex[1], 0.0f, 1.0f); }
+  void setTextureCoords(float tx, float ty) { textureCoords.setValue(tx, ty, 0.0f, 1.0f); }
+  void setTextureCoords(const SbVec3f & tex) { textureCoords.setValue(tex[0], tex[1], tex[2], 1.0f); }
+  void setTextureCoords(float tx, float ty, float tz) { textureCoords.setValue(tx, ty, tz, 1.0f); }
+  void setTextureCoords(const SbVec4f & tex) { textureCoords = tex; }
+  void setTextureCoords(float tx, float ty, float tz, float tw) { textureCoords.setValue(tx, ty, tz, tw); }
+
+  void setMaterialIndex(int index) { materialIndex = index; }
+  void setPackedColor(uint32_t rgba) { packedColor = rgba; }
+  void setDetail(SoDetail * d) { detail = detail; }
 
 private:
   SbVec3f point;
@@ -59,6 +67,8 @@ private:
   SbVec4f textureCoords;
   int materialIndex;
   SoDetail * detail;
-};
+  uint32_t packedColor;
+
+}; // SoPrimitiveVertex
 
 #endif // !COIN_SOPRIMITIVEVERTEX_H
