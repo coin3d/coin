@@ -18,6 +18,20 @@ if exist draggerDefaults\*.* goto draggerdefaultsexists
 echo mkdir %COINDIR%\data\draggerDefaults
 mkdir draggerDefaults
 :draggerdefaultsexists
+if exist shaders\*.* goto shadersexists
+echo mkdir %COINDIR%\data\shaders
+mkdir shaders
+:shadersexists
+chdir shaders
+if exist lights\*.* goto lightsexists
+echo mkdir %COINDIR%\data\shaders\lights
+mkdir lights
+:lightsexists
+if exist vsm\*.* goto vsmexists
+echo mkdir %COINDIR%\data\shaders\vsm
+mkdir vsm
+:vsmexists
+chdir ..
 chdir ..
 if exist lib\*.* goto libexists
 echo mkdir %COINDIR%\lib

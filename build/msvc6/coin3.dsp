@@ -555,32 +555,6 @@ SOURCE=..\..\src\base\SbBSPTree.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\SbBox2f.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\base"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\base\SbBox2d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\base"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\base\SbBox2s.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
@@ -607,6 +581,45 @@ SOURCE=..\..\src\base\SbBox2i32.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\base\SbBox2f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbBox2d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbBox3s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\base\SbBox3f.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
@@ -621,19 +634,6 @@ SOURCE=..\..\src\base\SbBox3f.cpp
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox3d.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\base"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\base"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\base\SbBox3s.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -932,6 +932,84 @@ SOURCE=..\..\src\base\SbTime.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\base\SbVec2b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec2ub.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec2s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec2us.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec2i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec2ui32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\base\SbVec2f.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
@@ -958,7 +1036,7 @@ SOURCE=..\..\src\base\SbVec2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\SbVec2s.cpp
+SOURCE=..\..\src\base\SbVec3b.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -971,7 +1049,59 @@ SOURCE=..\..\src\base\SbVec2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\SbVec2i32.cpp
+SOURCE=..\..\src\base\SbVec3ub.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec3s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec3us.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec3i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec3ui32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -1010,7 +1140,72 @@ SOURCE=..\..\src\base\SbVec3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\SbVec3s.cpp
+SOURCE=..\..\src\base\SbVec4b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec4ub.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec4s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec4us.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec4i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbVec4ui32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -12755,14 +12950,6 @@ SOURCE=..\..\include\Inventor\SbBox.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbBox2d.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\SbBox2f.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\include\Inventor\SbBox2s.h
 # End Source File
 # Begin Source File
@@ -12771,7 +12958,15 @@ SOURCE=..\..\include\Inventor\SbBox2i32.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbBox3d.h
+SOURCE=..\..\include\Inventor\SbBox2f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbBox2d.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbBox3s.h
 # End Source File
 # Begin Source File
 
@@ -12779,7 +12974,7 @@ SOURCE=..\..\include\Inventor\SbBox3f.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbBox3s.h
+SOURCE=..\..\include\Inventor\SbBox3d.h
 # End Source File
 # Begin Source File
 
@@ -12883,11 +13078,11 @@ SOURCE=..\..\include\Inventor\SbTime.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbVec2d.h
+SOURCE=..\..\include\Inventor\SbVec2b.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbVec2f.h
+SOURCE=..\..\include\Inventor\SbVec2ub.h
 # End Source File
 # Begin Source File
 
@@ -12895,15 +13090,31 @@ SOURCE=..\..\include\Inventor\SbVec2s.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\SbVec2us.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\SbVec2i32.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbVec3d.h
+SOURCE=..\..\include\Inventor\SbVec2ui32.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbVec3f.h
+SOURCE=..\..\include\Inventor\SbVec2f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec2d.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3ub.h
 # End Source File
 # Begin Source File
 
@@ -12911,11 +13122,55 @@ SOURCE=..\..\include\Inventor\SbVec3s.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbVec4d.h
+SOURCE=..\..\include\Inventor\SbVec3us.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3ui32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4ub.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4us.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4ui32.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\SbVec4f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec4d.h
 # End Source File
 # Begin Source File
 
@@ -13136,6 +13391,38 @@ SOURCE=.\data\draggerDefaults\translate1Dragger.h
 # Begin Source File
 
 SOURCE=.\data\draggerDefaults\translate2Dragger.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "lights local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=.\data\shaders\lights\DirectionalLight.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\data\shaders\lights\PointLight.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\data\shaders\lights\SpotLight.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "vsm local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=.\data\shaders\vsm\VsmLookup.h
 
 # PROP Exclude_From_Build 1
 # End Source File
