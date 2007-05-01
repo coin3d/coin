@@ -44,11 +44,11 @@ COIN_DLL_API int coin_host_get_endianness(void);
 COIN_DLL_API int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
 COIN_DLL_API int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
 
-COIN_DLL_API const char * coin_getenv(const char *);
-COIN_DLL_API SbBool coin_setenv(const char *, const char *, int);
-COIN_DLL_API void coin_unsetenv(const char *);
+COIN_DLL_API const char * coin_getenv(const char * name);
+COIN_DLL_API SbBool coin_setenv(const char * name, const char * value, int overwrite);
+COIN_DLL_API void coin_unsetenv(const char * name);
 
-COIN_DLL_API int coin_strncasecmp(const char *, const char *, int);
+COIN_DLL_API int coin_strncasecmp(const char * str1, const char * str2, int len);
 
 COIN_DLL_API uint16_t coin_hton_uint16(uint16_t value);
 COIN_DLL_API uint16_t coin_ntoh_uint16(uint16_t value);
