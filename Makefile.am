@@ -162,6 +162,10 @@ EXTRA_DIST = \
 	build/msvc6/data/draggerDefaults/transformerDragger.h \
 	build/msvc6/data/draggerDefaults/translate1Dragger.h \
 	build/msvc6/data/draggerDefaults/translate2Dragger.h \
+	build/msvc6/data/shaders/lights/DirectionalLight.h \
+	build/msvc6/data/shaders/lights/PointLight.h \
+	build/msvc6/data/shaders/lights/SpotLight.h \
+	build/msvc6/data/shaders/vsm/VsmLookup.h \
 	build/msvc6/coin3.dsp \
 	build/msvc6/coin3.dsw \
 	build/msvc6/include/Inventor/C/basic.h \
@@ -193,6 +197,10 @@ EXTRA_DIST = \
 	build/msvc7/data/draggerDefaults/transformerDragger.h \
 	build/msvc7/data/draggerDefaults/translate1Dragger.h \
 	build/msvc7/data/draggerDefaults/translate2Dragger.h \
+	build/msvc7/data/shaders/lights/DirectionalLight.h \
+	build/msvc7/data/shaders/lights/PointLight.h \
+	build/msvc7/data/shaders/lights/SpotLight.h \
+	build/msvc7/data/shaders/vsm/VsmLookup.h \
 	build/msvc7/coin3.sln \
 	build/msvc7/coin3.vcproj \
 	build/msvc7/include/Inventor/C/basic.h \
@@ -224,6 +232,10 @@ EXTRA_DIST = \
 	build/msvc8/data/draggerDefaults/transformerDragger.h \
 	build/msvc8/data/draggerDefaults/translate1Dragger.h \
 	build/msvc8/data/draggerDefaults/translate2Dragger.h \
+	build/msvc8/data/shaders/lights/DirectionalLight.h \
+	build/msvc8/data/shaders/lights/PointLight.h \
+	build/msvc8/data/shaders/lights/SpotLight.h \
+	build/msvc8/data/shaders/vsm/VsmLookup.h \
 	build/msvc8/coin3.sln \
 	build/msvc8/coin3.vcproj \
 	build/msvc8/include/Inventor/C/basic.h \
