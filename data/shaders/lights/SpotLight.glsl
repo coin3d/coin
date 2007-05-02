@@ -26,10 +26,13 @@ float SpotLight(in int i,
   
   spotDot = dot(-VP, normalize(gl_LightSource[i].spotDirection));
   
+  // need to read this variable outside the if statment to work around ATi driver issues
+  float spotexp = gl_LightSource[i].spotExponent;
+
   if (spotDot < gl_LightSource[i].spotCosCutoff)
     spotAtt = 0.0;
   else
-    spotAtt = pow(spotDot, gl_LightSource[i].spotExponent);
+    spotAtt = pow(spotDot, spotexp);
   
   att *= spotAtt;
 
@@ -37,10 +40,13 @@ float SpotLight(in int i,
   nDotVP = max(0.0, dot(normal, VP));
   nDotHV = max(0.0, dot(normal, halfvec));
 
+  // need to read this variable outside the if statment to work around ATi driver issues
+  float shininess =  gl_FrontMaterial.shininess;
+ 
   if (nDotVP == 0.0)
     pf = 0.0;
   else 
-    pf = pow(nDotHV, gl_FrontMaterial.shininess);
+    pf = pow(nDotHV, shininess);
   
   ambient += gl_LightSource[i].ambient * att;
   diffuse += gl_LightSource[i].diffuse * nDotVP * att;
