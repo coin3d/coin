@@ -128,7 +128,9 @@ public:
     this->depthmap->ref();
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
     this->depthmap->size = SbVec2s(TEXSIZE, TEXSIZE);
-    
+    this->depthmap->wrapS = SoSceneTexture2::CLAMP_TO_BORDER;
+    this->depthmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER;
+
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
       this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
