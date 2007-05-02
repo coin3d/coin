@@ -1465,7 +1465,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
-      SbVec3f curcol, nextcol;
+      SbVec3f curcol, nextcol(0.0f, 0.0f, 0.0f);
       if (action->getMaterialBinding() == SoMaterialBinding::PER_PART_INDEXED) {
         curcol = color->color[oldils->materialIndex[colidx]];
         if (i != n-1)
@@ -1600,7 +1600,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
-      SbVec3f curcol, nextcol;
+      SbVec3f curcol, nextcol(0.0f, 0.0f, 0.0f);
 
       curcol = color->color[colidx];
       if (i != n-1)
