@@ -273,7 +273,7 @@ public:
 
   void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
     perpixelspot = TRUE;
-    perpixelother = TRUE;
+    perpixelother = FALSE;
   }
 
   SoShadowGroup * master;
@@ -777,14 +777,19 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);\n"
                        "vec4 mydiffuse = gl_Color;\n"
-                       "if (coin_texunit0_model != 0) mydiffuse *= texture2D(textureMap0, gl_TexCoord[0].xy);\n");
+                       "vec4 texcolor = (coin_texunit0_model != 0) ? texture2D(textureMap0, gl_TexCoord[0].xy) : vec4(1.0);\n"
+                       "mydiffuse *= texcolor;\n");
   
   gen.addMainStatement("vec3 color = perVertexColor;\n"
                        "float dist;\n"
                        "float shadeFactor;\n"
                        "vec3 coord;\n"
                        "vec4 map;\n");
-
+  
+  if (!perpixelother) {
+    gen.addMainStatement("if (coin_texunit0_model != 0) color *= texture2D(textureMap0, gl_TexCoord[0].xy).rgb;\n");
+  }
+    
   if (perpixelspot) {
     for (i = 0; i < numspots; i++) {
       SbString str;
@@ -851,7 +856,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
                   "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON) : 0.0;\n"
-                  "color += shadeFactor * spotVertexColor%d;\n",
+                  "color += shadeFactor * spotVertexColor%d * texcolor.rgb;\n",
                   lights.getLength()+i, i , i, i, i, i, i);
       gen.addMainStatement(str);
     }
