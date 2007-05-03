@@ -91,7 +91,7 @@ template <typename Type>
 inline void SbDividerChk(const char * funcname, Type divider) {
 #ifndef NDEBUG
   if (!(divider != static_cast<Type>(0)))
-    cc_debugerror_post(funcname, "divide by zero error.");
+    cc_debugerror_post(funcname, "divide by zero error.", divider);
 #endif // !NDEBUG
 }
 
