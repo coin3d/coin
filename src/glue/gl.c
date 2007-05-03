@@ -4549,21 +4549,21 @@ compute_log(int value)
 
 /*  proxy mipmap creation */
 static SbBool
-proxy_mipmap_2d(int width, int height, int numcomponents, 
-                SbBool mipmap, SbBool compress)
+proxy_mipmap_2d(int width, int height,
+                GLenum internalFormat,
+                GLenum format,  
+                GLenum type,
+                SbBool mipmap)
 {
   GLint w;
   int level;
   int levels = compute_log(cc_max(width, height));
-  GLint internalFormat = coin_glglue_get_internal_texture_format(numcomponents, 
-                                                                 compress);
-  GLenum format = coin_glglue_get_texture_format(numcomponents);
 
   glTexImage2D(GL_PROXY_TEXTURE_2D, 0, internalFormat, width, height, 0,
-               format, GL_UNSIGNED_BYTE, NULL);
+               format, type, NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                            GL_TEXTURE_WIDTH, &w);
-
+  
   if (w == 0) return FALSE;
   if (!mipmap) return TRUE;
 
@@ -4571,7 +4571,7 @@ proxy_mipmap_2d(int width, int height, int numcomponents,
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     glTexImage2D(GL_PROXY_TEXTURE_2D, level, internalFormat, width,
-                 height, 0, format, GL_UNSIGNED_BYTE,
+                 height, 0, format, type,
                  NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                              GL_TEXTURE_WIDTH, &w);
@@ -4583,17 +4583,17 @@ proxy_mipmap_2d(int width, int height, int numcomponents,
 /* proxy mipmap creation. 3D version. */
 static SbBool
 proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
-                int numcomponents, SbBool mipmap, SbBool compress)
+                GLenum internalFormat, 
+                GLenum format, 
+                GLenum type,
+                SbBool mipmap)
 {
   GLint w;
   int level;
   int levels = compute_log(cc_max(cc_max(width, height), depth));
-  GLint internalFormat = coin_glglue_get_internal_texture_format(numcomponents, 
-                                                                 compress);
-  GLenum format = coin_glglue_get_texture_format(numcomponents);
 
   cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, internalFormat, 
-                         width, height, depth, 0, format, GL_UNSIGNED_BYTE, 
+                         width, height, depth, 0, format, type, 
                          NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                            GL_TEXTURE_WIDTH, &w);
@@ -4605,7 +4605,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
     if (height > 1) height >>= 1;
     if (depth > 1) depth >>= 1;
     cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat, 
-                           width, height, depth, 0, format, GL_UNSIGNED_BYTE,
+                           width, height, depth, 0, format, type,
                            NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                              GL_TEXTURE_WIDTH, &w);
@@ -4619,8 +4619,28 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
                                 int xsize, int ysize, int zsize, 
                                 int bytespertexel, SbBool mipmap)
 {
+  GLenum internalformat;
+  GLenum format;
+  GLenum type = GL_UNSIGNED_BYTE;
+
+  switch (bytespertexel) {
+  default:
+  case 1:
+    format = internalformat = GL_LUMINANCE;
+    break;
+  case 2:
+    format = internalformat = GL_LUMINANCE_ALPHA;
+    break;
+  case 3:
+    format = internalformat = GL_RGB8;
+    break;
+  case 4:
+    format = internalformat = GL_RGBA8;
+    break;
+  }
+  
   return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
-                                           bytespertexel, mipmap, FALSE);
+                                           internalformat, format, type, mipmap);
 }
 
 /*!
@@ -4631,8 +4651,10 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
 SbBool
 coin_glglue_is_texture_size_legal(const cc_glglue * glw,
                                   int xsize, int ysize, int zsize, 
-                                  int bytespertexel, SbBool mipmap,
-                                  SbBool compress)
+                                  GLenum internalformat,
+                                  GLenum format,
+                                  GLenum type,
+                                  SbBool mipmap)
  { 
   if (zsize == 0) { /* 2D textures */
     if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
@@ -4641,7 +4663,7 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
       return TRUE;
     }
     if (cc_glglue_has_2d_proxy_textures(glw)) {
-      return proxy_mipmap_2d(xsize, ysize, bytespertexel, mipmap, compress);
+      return proxy_mipmap_2d(xsize, ysize, internalformat, format, type, mipmap);
     }
     else {
       if (xsize > glw->max_texture_size) return FALSE;
@@ -4657,8 +4679,7 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
         if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
         return TRUE;
       }
-      return proxy_mipmap_3d(glw, xsize, ysize, zsize, bytespertexel, mipmap, 
-                             compress);
+      return proxy_mipmap_3d(glw, xsize, ysize, zsize, internalformat, format, type, mipmap);
     }
     else {
 #if COIN_DEBUG
@@ -4700,7 +4721,7 @@ GLint coin_glglue_get_internal_texture_format(int numcomponents,
     }
   }
   else {
-    format = numcomponents;
+    format = coin_glglue_get_texture_format(numcomponents);
   }
   return format;
 }

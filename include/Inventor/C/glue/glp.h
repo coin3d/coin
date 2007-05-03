@@ -888,12 +888,14 @@ SbBool cc_glglue_has_arb_shader_objects(const cc_glglue * glue);
    Original function is deprecated for internal use.
 */
 SbBool coin_glglue_is_texture_size_legal(const cc_glglue * glw, 
-                                       int xsize, int ysize, int zsize, 
-                                       int bytespertexel, 
-                                       SbBool mipmap,
-                                       SbBool compressed);
+                                         int xsize, int ysize, int zsize, 
+                                         GLenum internalformat,
+                                         GLenum format,
+                                         GLenum type,
+                                         SbBool mipmap);
+
 GLint coin_glglue_get_internal_texture_format(int numcomponents,
-                                            SbBool compress);
+                                              SbBool compress);
 
 GLenum coin_glglue_get_texture_format(int numcomponents);
 SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);

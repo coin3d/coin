@@ -52,6 +52,9 @@
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGLImage.h>
 
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include "../../shaders/SoGLShaderProgram.h"
+
 // *************************************************************************
 
 // Can be used as a workaround for buggy PROXY texture handling (bug
@@ -177,6 +180,9 @@ SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
   SoShapeStyleElement::setTransparentTexture(stateptr, elem->hasTransparency());
   
   elem->updateLazyElement();
+  
+  SoGLShaderProgram * prog = SoGLShaderProgramElement::get(stateptr);
+  if (prog) prog->updateCoinParameter(stateptr, SbName("coin_texunit0_model"));
 }
 
 SoGLImage *
@@ -258,8 +264,13 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
   const cc_glglue * glw = sogl_glue_instance(this->state);
   SbBool compress = 
     this->glimage ? this->glimage->getFlags() & SoGLImage::COMPRESSED : FALSE;
+
+  
+  GLenum internalformat = coin_glglue_get_internal_texture_format(bytespertexel, compress);
+  GLenum format = coin_glglue_get_texture_format(bytespertexel);
+
   return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
-                                           bytespertexel, TRUE, compress);
+                                           internalformat, format, GL_UNSIGNED_BYTE, TRUE);
 }
 
 void 

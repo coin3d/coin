@@ -1445,10 +1445,14 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       sizeok = (newx <= maxrectsize) && (newy <= maxrectsize);
     }
     else {
+      GLenum internalformat = coin_glglue_get_internal_texture_format(numcomponents, compressed);
+      GLenum format = coin_glglue_get_texture_format(numcomponents);
+
       sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz,
-                                                 numcomponents,
-                                                 this->shouldCreateMipmap(),
-                                                 compressed);
+                                                 internalformat,
+                                                 format,
+                                                 GL_UNSIGNED_BYTE,
+                                                 this->shouldCreateMipmap());
     }
     if (!sizeok) {
       unsigned int max = SbMax(newx, SbMax(newy, newz));
