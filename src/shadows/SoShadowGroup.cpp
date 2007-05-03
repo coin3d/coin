@@ -95,19 +95,46 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
+#include <Inventor/C/tidbits.h>
 #include <math.h>
 #include "../shaders/SoShader.h"
+
 
 // *************************************************************************
 
 class SoShadowSpotLightCache {
 public:
-  SoShadowSpotLightCache(const SoPath * path, SoGroup * scene, 
+  SoShadowSpotLightCache(SoState * state,
+                         const SoPath * path, SoShadowGroup * scene, 
                          const int gausskernelsize,
                          const float gaussstandarddeviation)
   {
-    const int TEXSIZE = 1024;
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     
+
+    GLint maxsize = 2048;
+    GLint maxtexsize = 2048;
+
+    // Testing for maximum proxy texture size doesn't seem to work, so
+    // we just have to hardcode the maximum size to 2048 for now.  We
+    // still use the proxy texture test in case the maximum size is
+    // something smaller than 2048 though.  pederb, 2007-05-03
+
+    // glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE_EXT, &maxsize);
+    // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
+    // if (maxtexsize < maxsize) maxsize = maxtexsize;
+
+    GLenum internalformat = GL_RGBA32F_ARB;
+    GLenum format = GL_RGBA;
+    GLenum type = GL_FLOAT;
+
+    while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE)) {
+      maxsize >>= 1;
+    }
+    
+    const int TEXSIZE = coin_geq_power_of_two((int) (scene->precision.getValue() * SbMin(maxsize, maxtexsize)));
+
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
     this->gaussmap = NULL;
@@ -274,8 +301,16 @@ public:
   void updateSpotLights(SoGLRenderAction * action);
 
   void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
-    perpixelspot = TRUE;
+    float quality = this->master->quality.getValue();
+    perpixelspot = FALSE;
     perpixelother = FALSE;
+
+    if (quality > 0.3) {
+      perpixelspot = TRUE;
+    }
+    if (quality > 0.7) {
+      perpixelother = TRUE;
+    }
   }
 
   SoShadowGroup * master;
@@ -326,7 +361,6 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(epsilon, (0.00001f));
   SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.8f));
   SO_NODE_ADD_FIELD(gaussMatrixSize, (0));
-
 }
 
 /*!
@@ -410,7 +444,8 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(pl[i], PUBLIC(this),
+        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state,
+                                                                    pl[i], PUBLIC(this),
                                                                     PUBLIC(this)->gaussMatrixSize.getValue(),
                                                                     PUBLIC(this)->gaussStandardDeviation.getValue());
         this->spotlights.append(cache);
