@@ -84,22 +84,16 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
-// SoDebugError::post() is not attempted resolved before template is used,
+// cc_debugerror_post() is not attempted resolved before template is used,
 // hence the missing Inventor/errors/SoDebugError.h #include
 
-// Nice in theory, but this template causes all kinds of compiler
-// errors with gcc so I just had to disable it. pederb, 2007-05-02
-
-#if 0
-template <typename T>
-inline void SbDividerChk(const char * funcname, T divider) {
+template <typename Type>
+inline void SbDividerChk(const char * funcname, Type divider) {
 #ifndef NDEBUG
-  if (!(divider != static_cast<T>(0))) SoDebugError::post(funcname, "divide by zero error.");
+  if (!(divider != static_cast<Type>(0)))
+    cc_debugerror_post(funcname, "divide by zero error.");
 #endif // !NDEBUG
 }
-#else
-#define SbDividerChk(dummy1, dummy2)
-#endif 
 
 /* ********************************************************************** */
 

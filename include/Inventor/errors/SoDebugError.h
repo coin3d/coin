@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/errors/SoError.h>
+#include <Inventor/C/errors/debugerror.h>
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define ERROR -- in wingdi.h).
