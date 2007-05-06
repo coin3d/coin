@@ -9,10 +9,10 @@ hints and tips for you.
 ===================
 
 First of all, you should make sure you are building from the latest
-sources from the CVS branch you want to work with. This is done by
-using the Concurrent Versioning System for staying in sync with the
-sourcecode repository we at Systems in Motion are using. Follow the
-instructions on the webpages at <URL:http://www.coin3d.org/>.
+sources from the Subversion repository you want to work with. This is
+done by using the Subversion for staying in sync with the sourcecode
+repository we at Systems in Motion are using. Follow the instructions
+on the webpages at <URL:http://www.coin3d.org/>.
 
 Be aware that Coin has three source repositories.  "Coin" is the head
 development repository which is unstable and may contain unportable
@@ -23,8 +23,10 @@ will always contain stable code that does not break upwards binary
 compatibility. You can hack on either, but for your application
 development efforts' sake you might want to follow Coin-2.
 
-If you are not familiar with CVS, check out the CVS homepages at
-<URL:http://cvshome.org>.
+If you are not familiar with Subversion, check out the Subversion
+homepages at <URL:http://subversion.tigris.org/> and specifically the
+Subversion documention in the available online book at
+<URL:http://svnbook.org/>.
 
 
 2 Surviving a Large C++ Project
@@ -50,21 +52,23 @@ demonstration purposes):
   $ cd $HOME
   $ mkdir code
   $ cd code
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage
-  [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin
-  [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P SoXt
-  [cvs doing its thing]
+  $ svn co https://svn.coin3d.org/repos/simage/trunk simage
+  [Subversion doing its thing]
+  $ svn co https://svn.coin3d.org/repos/Coin/trunk Coin
+  [Subversion doing its thing]
+  $ svn co https://svn.coin3d.org/repos/SoXt/trunk SoXt
+  [Subversion doing its thing]
 
-        Note: you might want to work with a particular branch from the
-        CVS, if so use the "-r" option to the "cvs checkout"s above.
+        Note: you might want to work with a particular branch from
+        Subversion, if so use the "branches" instead of "trunk"
+        subdirectory above. (We are adhering to the standard
+        repository layout convention of the Subversion book)
 
         Note2: if you have already checked out the sources at an
         earlier point in time, you just ``cd'' to the sourcecode
         directories and do
 
-                $ cvs -z3 -q update -dP
+                $ svn update
 
         instead of the full checkout.
 
@@ -254,16 +258,22 @@ and explains the principles applied fairly well.
 4 Misc Configurations
 =====================
 
-* cvs
+* Subversion
 
-  The following lines can be useful to have in your ~/.cvsrc file:
+  In order to disallow the storage of your subversion password with
+  the standard Subversion command line client have a look at the
+  "[auth]" section in your ~/.subversion/config file:
 
-    cvs -q -z3
-    diff -u
+  [auth]
+  ### Set store-passwords to 'no' to avoid storing passwords in the
+  ### auth/ area of your config directory.  It defaults to 'yes'.
+  ### Note that this option only prevents saving of *new* passwords;
+  ### it doesn't invalidate existing passwords.  (To do that, remove
+  ### the cache files by hand as described in the Subversion book.)
+  # store-passwords = no
 
-  Line 1 enables compression and a more quiet operation mode (e.g. no
-  listing about subdirs when there are no changes), and line 2 makes
-  sure all "cvs diff" commands uses the unified syntax.
+  This might come in handy if you have to check in outside of your
+  trusted workstation.
 
 * emacs
 
@@ -351,7 +361,7 @@ and explains the principles applied fairly well.
 
   * If new source files were introduced:
 
-        * Add them to the CVS repository.
+        * Add them to the Subversion repository.
 
         * Add the header and any generated doc files for the class to
           build/coin.spec.in (for RPM generation).
@@ -396,9 +406,9 @@ build.
 
 To be able to bootstrap the Coin repository (or any other SIM code
 repository), you need to check out the "simacros" modules from Coin's
-CVS master repository. Then, in a UNIX shell, ''cd'' to the base 
-directory of the Coin module (where the source code for Coin is located)
-and run ''<simacrosdir>/bin/bootstrap''.
+Subversion master repository. Then, in a UNIX shell, ''cd'' to the
+base directory of the Coin module (where the source code for Coin is
+located) and run ''<simacrosdir>/bin/bootstrap''.
 
 Note that bootstrapping before committing changes to
 Autotools-generated files should _always_ happen on the internal
@@ -592,16 +602,16 @@ MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
 
 ==============================================================================
 
-CVS maintenance
-===============
+Subversion maintenance
+======================
 
 New "Coin-MAJOR" repositories will be branched off the head "Coin"
-repository. "Branching" in this context actually means setting up a
-completely *new* repository, that starts out as a copy of the
-development repository.
+repository. "Branching" in this context means to copy the "trunk/"
+subdirectory to the "branches/" directory through the standard
+subversion "copy" command.
 
 When this happens, the Coin repository should be tagged with the
-symbolic name "coin-MAJOR_0_0".
+symbolic name "coin-MAJOR.0.0".
 
 All releases will be made from the Coin-MAJOR repositories.  When a new
 release is made from one of those, the sources will be tagged with the
@@ -626,8 +636,10 @@ release version number is set up.  Run bootstrap and check that
 "make distcheck" works.  Commit the changes with a message about setting
 the version number to MAJOR.MINOR.MICRO.
 
-Add a CVS tag on the new version number.
-  $ cvs tag coin-MAJOR_MINOR_MICRO
+Add a Subversion tag on the new version number.
+  $ svn copy https://svn.coin3d.org/repos/Coin/trunk \
+             https://svn.coin3d.org/repos/Coin/tags/coin-MAJOR.MINOR.MICRO \
+      -m "Tagging the MAJOR.MINOR.MICRO release of the 'Coin' project."
 
 Edit configure.ac again and increase micro (unless a new minor will be the
 next release) and set COIN_BETA to [a].  Rerun bootstrap, and commit the
@@ -635,9 +647,10 @@ new setup with a message about setting the version number again.
 
 These two version-increment commits should happen without getting any
 unrelated commits inbetween them so there won't be multiple states of
-the CVS repository with a release version number.
+the Subversion repository with a release version number.
 
-Then go back to the tag (update -dP -r coin-MAJOR_MINOR_MICRO) and
+Then go back to the tag (svn update
+https://svn.coin3d.org/repos/Coin/tags/coin-MAJOR.MINOR.MICRO) and
 prepare the release.
 
 Source release tarballs are created with "make dist".  Binary releases are
@@ -648,10 +661,13 @@ Correcting Erroneous Log Messages
 =================================
 
 Sometimes commits ends up with incorrect log messages due to the
-committer being a bit too trigger-happy.  It can be fixed with this
-command:
+committer being a bit too trigger-happy. The following Subversion FAQ
+item describes how to achieve that:
+  http://subversion.tigris.org/faq.html#change-log-msg
 
-  $ cvs admin -m<rev>:<new log message> <file>
+  Short version:
+
+  $ svn propset -r <rev> --revprop svn:log "new log message" URL
 
 Do this instead of reversing and reapplying, or other round-about and
 confusing techniques...
@@ -950,8 +966,8 @@ versus the code "layout" (to make it more easily readable):
 
  2) Under *no* circumstances should developers leave any code which
     has been commented out with the language constructs "// ..." or
-    "/* ... */" in anything you check into CVS, at least not without
-    commenting _why_ the code is still present.
+    "/* ... */" in anything you check into the repository, at least
+    not without commenting _why_ the code is still present.
 
     It's often very time-consuming and just a bloody pain in the ass
     and a waste of resources trying to figure out why commented-out
