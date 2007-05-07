@@ -56,6 +56,7 @@ public:
   SoSFInt32 gaussMatrixSize;
 
   SoSFFloat epsilon;
+  SoSFFloat threshold;
 
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
