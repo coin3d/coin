@@ -1,4 +1,4 @@
-float VsmLookup(in vec4 map, in float dist, in float epsilon, float bleedtreshold)
+float VsmLookup(in vec4 map, in float dist, in float epsilon, float bleedthreshold)
 {
   float mapdist = map.x;
 
@@ -11,7 +11,7 @@ float VsmLookup(in vec4 map, in float dist, in float epsilon, float bleedtreshol
   float m_d = mapdist - dist;
   float p_max = variance / (variance + m_d * m_d);
 
-  p_max *= smoothstep(bleedtreshold, 1.0, p_max);
+  p_max *= smoothstep(bleedthreshold, 1.0, p_max);
 
   return max(lit_factor, p_max);
 }
