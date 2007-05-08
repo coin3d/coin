@@ -36,14 +36,28 @@
       shadowCachingEnabled TRUE
       visibilityRadius -1.0
       visibilityFlag FIXME
+
+      epsilon 0.00001
+      threshold, 0.25
+      gaussStandardDeviation 0.8
+      gaussMatrixSize 0
     }
   \endcode
 
+*/
 
+
+/*!
+  \var 
+
+  Chebychev's inequality
 */
 
 // use to increase the VSM precision by using all four components
-#define DISTRIBUTE_FACTOR 32.0
+#define DISTRIBUTE_FACTOR 64.0
+
+// use to increase precision by one bit at the cost of some extra processing
+#define USE_NEGATIVE 1
 
 // *************************************************************************
 
@@ -722,9 +736,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
   }
+
+  SbString str;
   
 #ifdef DISTRIBUTE_FACTOR
-  SbString str;
   str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
   gen.addDeclaration(str, FALSE);
 #endif
@@ -763,13 +778,16 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "dist = SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
                   "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
                   "map = texture2D(shadowMap%d, coord.xy);\n"
+#ifdef USE_NEGATIVE
+                  "map = (map + vec4(1.0)) * 0.5;\n"
+#endif // USE_NEGATIVE
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
                   "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON, THRESHOLD) : 0.0;\n"
                   "color += shadeFactor * diffuse.rgb * gl_Color.rgb + "
                   "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
-                  lights.getLength(), i , i, i, i, i);
+                  lights.getLength()+i, i , i, i, i, i);
       gen.addMainStatement(str);
 
     }
@@ -898,11 +916,20 @@ SoShadowSpotLightCache::createVSMProgram(void)
                         "vec2 m = vec2(l, l*l);\n"
                         "vec2 f = fract(m * DISTRIBUTE_FACTOR);\n"
                         
+#ifdef USE_NEGATIVE
+                        "gl_FragColor.rg = (m - (f / DISTRIBUTE_FACTOR)) * 2.0 - vec2(1.0, 1.0);\n"
+                        "gl_FragColor.ba = f * 2.0 - vec2(1.0, 1.0);\n"
+#else // USE_NEGATIVE
                         "gl_FragColor.rg = m - (f / DISTRIBUTE_FACTOR);\n"
                         "gl_FragColor.ba = f;\n"
-#else
+#endif // ! USE_NEGATIVE
+#else // DISTRIBUTE_FACTOR
+#ifdef USE_NEGATIVE
+                        "gl_FragColor = vec4(l*2.0 - 1.0, l*l*2.0 - 1.0, 0.0, 0.0);"
+#else // USE_NEGATIVE
                         "gl_FragColor = vec4(l, l*l, 0.0, 0.0);"
-#endif
+#endif // !USE_NEGATIVE
+#endif // !DISTRIBUTE_FACTOR
                         );
   fshader->sourceProgram = fgen.getShaderProgram();
   fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
