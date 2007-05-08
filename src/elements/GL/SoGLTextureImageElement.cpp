@@ -133,6 +133,9 @@ SoGLTextureImageElement::pop(SoState * stateptr,
     prevTopElement;
   
   if (prev->glimage && prev->glimage->getImage()) prev->glimage->getImage()->readUnlock();
+
+  SoGLShaderProgram * prog = SoGLShaderProgramElement::get(stateptr);
+  if (prog) prog->updateCoinParameter(stateptr, SbName("coin_texunit0_model"));
 }
 
 static SoTextureImageElement::Wrap
