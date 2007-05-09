@@ -198,6 +198,9 @@ cc_sched_get_num_threads(cc_sched * sched)
 
   Returns a schedid that can be used to unschedule the job. schedid is
   guaranteed to be != 0.
+
+  Note that jobs are automatically unscheduled when triggered, just before
+  calling the work function.
 */
 unsigned long
 cc_sched_schedule(cc_sched * sched,
@@ -230,7 +233,10 @@ cc_sched_schedule(cc_sched * sched,
 
 /*!
   Attempt to unschedule a job. \a schedobj must be a pointer returned
-  from cc_sched_schedule()
+  from cc_sched_schedule().
+
+  Note that jobs are automatically unscheduled when triggered, just before
+  calling the work function.
 */
 SbBool
 cc_sched_unschedule(cc_sched * sched, unsigned long schedid)
@@ -288,7 +294,7 @@ cc_sched_wait_all(cc_sched * sched)
   This is typically done to limit the number of I/O or CPU intensive jobs to
   a few per frame to avoid starving the main thread.
 
-  If \e num is -1, the number of jobs per batch is not limited.
+  If \e num is -1 (the default), the number of jobs per batch is not limited.
 */
 void 
 cc_sched_set_num_allowed(cc_sched * sched, int num)
