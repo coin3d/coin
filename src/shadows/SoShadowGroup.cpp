@@ -841,7 +841,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 		       "vec4 map;\n");
 
   if (!perpixelother) {
-    gen.addMainStatement("color *= texcolor;\n");
+    gen.addMainStatement("color *= texcolor.rgb;\n");
   }
 
   if (perpixelspot) {
