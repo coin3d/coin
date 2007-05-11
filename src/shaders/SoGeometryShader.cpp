@@ -42,7 +42,7 @@ void
 SoGeometryShader::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoGeometryShader,
-                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5);
 }
 
 SoGeometryShader::SoGeometryShader(void)
