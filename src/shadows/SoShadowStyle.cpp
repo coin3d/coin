@@ -24,6 +24,7 @@
 /*!
   \class SoShadowStyle SoShadowStyle.h Inventor/annex/FXViz/nodes/SoShadowStyle.h
   \brief The SoShadowStyle class is a node for setting the shadow style on nodes.
+
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -114,7 +115,7 @@ SoShadowStyle::~SoShadowStyle()
 void
 SoShadowStyle::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoShadowStyle, SO_FROM_COIN_2_4); // FIXME: add define for 2.5
+  SO_NODE_INTERNAL_INIT_CLASS(SoShadowStyle, SO_FROM_COIN_2_5);
   SO_ENABLE(SoGLRenderAction, SoShadowStyleElement);
 }
 
@@ -127,10 +128,10 @@ SoShadowStyle::GLRender(SoGLRenderAction * action)
   SoShadowStyleElement::set(state,
                             this,
                             (int) this->style.getValue());
-  
+
   if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWS) {
     SoGLShaderProgram * program = SoGLShaderProgramElement::get(state);
-    
+
     if (this->style.getValue() & SHADOWED) {
       program->enable(state);
     }
@@ -138,5 +139,5 @@ SoShadowStyle::GLRender(SoGLRenderAction * action)
       program->disable(state);
     }
   }
-  
+
 }

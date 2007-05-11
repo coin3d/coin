@@ -26,6 +26,25 @@
   \brief The SoShadowGroup node is a group node used for shadow rendering.
   \ingroup fxviz
 
+  Children of this node can recieve shadows, and cast shadows on other children.
+  Use the SoShadowStyle node to control shadow casters and shadow receivers.
+
+  Please note that all shadow casters will be rendered twice. Once to
+  create the shadow map, and once for normal rendering. If you're
+  having performance issues, you should consider reducing the number of 
+  shadow casters.
+
+  The algorithm used to render the shadows is Variance Shadow Maps 
+  (http://www.punkuser.net/vsm/). As an extra bonus, all geometry rendered with shadows can also
+  be rendered with per fragment phong lighting.
+
+  This node will search its subgraph and calculate shadows for all
+  SoSpotLight nodes. The node will use one texture unit for each spot
+  light, so for this node to work 100%, you need to have
+  num-spotlights free texture units while rendering the subgraph.
+
+  FIXME: write some documentation on how to use this node in an application.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     SoShadowGroup {
@@ -38,8 +57,8 @@
       visibilityFlag FIXME
 
       epsilon 0.00001
-      threshold, 0.25
-      gaussStandardDeviation 0.8
+      threshold 0.1
+      gaussStandardDeviation 0.6
       gaussMatrixSize 0
     }
   \endcode
@@ -48,10 +67,106 @@
 
 
 /*!
-  \var 
+  \var SoSFBool SoShadowGroup::isActive
 
-  Chebychev's inequality
+  Use this field to turn shadow rendering for the subgraph
+  on/off. Default value is TRUE.
 */
+
+/*!
+  \var SoSFFloat SoShadowGroup::intensity
+
+  Not used yet. Provided for TGS Inventor compatibility.
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::precision
+
+  Use to calculate the size of the shadow map. A precision of 1.0
+  means the maximum shadow buffer size will be used (typically
+  2048x2048 on current graphics cards). Default value is 0.5.
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::quality
+
+  Can be used to tune the shader program complexity. A higher value
+  will mean that more calculations are done per-fragment instead of
+  per-vertex. Default value is 0.5.
+
+*/
+
+/*!
+  \var SoSFBool SoShadowGroup::shadowCachingEnabled
+
+  Not used yet. Provided for TGS Inventor compatibility.
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::visibilityNearRadius
+
+  Can be used to manually set the near clipping plane of the shadow
+  maps.  If a negative value is provided, the group will calculate a
+  near plane based on the bounding box of the children. Default value
+  is -1.0.
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::visibilityRadius
+
+  Can be used to manually set the far clipping plane of the shadow
+  maps.  If a negative value is provided, the group will calculate a
+  near plane based on the bounding box of the children. Default value
+  is -1.0.
+*/
+
+/*!
+  \var SoSFEnum SoShadowGroup::visibilityFlag
+
+  FIXME: todo
+*/
+
+
+/*! 
+  \var SoSFInt32 SoShadowGroup::gaussMatrixSize
+
+  Used to add a post processing step on the shadow map. Enabling post
+  processing will add more smoothing on the shadow borders. The
+  algorithm used is Gauss Smoothing, and the gaussStandardDeviation
+  field is used to set the standard deviation.
+
+  Default value is 0, which disables this post processing step.
+*/
+
+
+/*!
+  \var SoSFFloat SoShadowGroup::gaussStandardDeviation
+
+  The Gauss Smoothing standard deviation variable. Default value is 0.6.
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::epsilon
+
+  Epsilon is used to offset the shadow map depth from the model depth.
+  Should be set to as low a number as possible without causing
+  flickering in the shadows or on non-shadowed objects. Default value
+  is 0.00001. 
+*/
+
+/*!
+  \var SoSFFloat SoShadowGroup::threshold
+  
+  Can be used to avoid light bleeding in merged shadows cast from different objects.
+  
+  A threshold to completely eliminate all light bleeding can be
+  computed from the ratio of overlapping occluder distances from the
+  light's perspective. See
+  http://forum.beyond3d.com/showthread.php?t=38165 for a discussion
+  about this problem.
+
+*/
+
 
 // use to increase the VSM precision by using all four components
 #define DISTRIBUTE_FACTOR 64.0
@@ -167,8 +282,8 @@ public:
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
     this->depthmap->size = SbVec2s(TEXSIZE, TEXSIZE);
     this->depthmap->wrapS = SoSceneTexture2::CLAMP_TO_BORDER;
-    this->depthmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER;
-    
+    this->depthmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER; 
+   
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
       this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -204,6 +319,8 @@ public:
       this->gaussmap->ref();
       this->gaussmap->transparencyFunction = SoSceneTexture2::NONE;
       this->gaussmap->size = SbVec2s(TEXSIZE, TEXSIZE);
+      this->gaussmap->wrapS = SoSceneTexture2::CLAMP_TO_BORDER;
+      this->gaussmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER;
     
       this->gaussmap->type = SoSceneTexture2::RGBA32F;
       this->gaussmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -368,8 +485,8 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(visibilityNearRadius, (-1.0f));
   SO_NODE_ADD_FIELD(visibilityRadius, (-1.0f));
   SO_NODE_ADD_FIELD(epsilon, (0.00001f));
-  SO_NODE_ADD_FIELD(threshold, (0.25f));
-  SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.8f));
+  SO_NODE_ADD_FIELD(threshold, (0.1f));
+  SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.6f));
   SO_NODE_ADD_FIELD(gaussMatrixSize, (0));
 
 }
@@ -386,7 +503,7 @@ SoShadowGroup::~SoShadowGroup()
 void
 SoShadowGroup::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoShadowGroup, SO_FROM_COIN_2_4); // FIXME: add define for 2.5
+'  SO_NODE_INTERNAL_INIT_CLASS(SoShadowGroup, SO_FROM_COIN_2_5);
 }
 
 void 
@@ -1073,7 +1190,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
     cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
     cc_glglue_glext_supported(glue, "GL_ARB_texture_float");
   
-  if (!supported) {
+  if (!supported || !PUBLIC(this)->isActive.getValue()) {
     if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
     else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
     return;
@@ -1127,7 +1244,7 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
   kernel->name = "kernelvalue";
   SoShaderParameter1i * baseimage = new SoShaderParameter1i;
   baseimage->name = "baseimage";
-  baseimage->value = 3; // FIXME
+  baseimage->value = 0;
 
   int kernelsize = size*size;
   
@@ -1147,7 +1264,7 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
                         "int i;\n"
                         "vec4 sum = vec4(0.0);\n"
                         "for (i = 0; i < KernelSize; i++) {\n"
-                        "  vec4 tmp = texture2D(baseimage, gl_TexCoord[3].st + offset[i]);\n"
+                        "  vec4 tmp = texture2D(baseimage, gl_TexCoord[0].st + offset[i]);\n"
                         "  sum += tmp * kernelvalue[i];\n"
                         "}\n"
                         "gl_FragColor = sum;\n"
@@ -1186,7 +1303,7 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
   fshader->parameter.set1Value(2, baseimage);
 
   SoShaderGenerator vgen;
-  vgen.addMainStatement("gl_TexCoord[3] = gl_Vertex;\n");
+  vgen.addMainStatement("gl_TexCoord[0] = gl_Vertex;\n");
   vgen.addMainStatement("gl_Position = ftransform();");
 
   vshader->sourceProgram = vgen.getShaderProgram();
@@ -1223,7 +1340,7 @@ SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2
 
   sep->addChild(camera);
   SoTextureUnit * unit = new SoTextureUnit;
-  unit->unit = 3; // FIXME: temporary
+  unit->unit = 0; // FIXME: temporary
   sep->addChild(unit);
 
   sep->addChild(tex);
