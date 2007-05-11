@@ -503,7 +503,6 @@ translateWrap(const SoTexture2::Wrap wrap)
 void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: consider sharing textures among contexts, pederb
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
   
