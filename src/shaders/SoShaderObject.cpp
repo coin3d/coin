@@ -64,7 +64,7 @@ public:
   void setGLShaderObject(SoGLShaderObject * obj, const uint32_t cachecontext) {
     SoGLShaderObject * oldshader;
     if (this->glshaderobjects.get(cachecontext, oldshader)) {
-      SoGLCacheContextElement::scheduleDeleteCallback(oldshader->getCacheContext(), 
+      SoGLCacheContextElement::scheduleDeleteCallback(oldshader->getCacheContext(),
                                                       really_delete_object, oldshader);
     }
     (void) this->glshaderobjects.put(cachecontext, obj);
@@ -75,7 +75,7 @@ public:
     for (int i = 0; i < keylist.getLength(); i++) {
       SoGLShaderObject * glshader = NULL;
       (void) this->glshaderobjects.get(keylist[i], glshader);
-      SoGLCacheContextElement::scheduleDeleteCallback(glshader->getCacheContext(), 
+      SoGLCacheContextElement::scheduleDeleteCallback(glshader->getCacheContext(),
                                                       really_delete_object, glshader);
     }
     this->glshaderobjects.clear();
@@ -92,7 +92,7 @@ public:
   //
   static void context_destruction_cb(uint32_t cachecontext, void * userdata) {
     SoShaderObjectP * thisp = (SoShaderObjectP*) userdata;
-    
+
     SoGLShaderObject * oldshader;
     if (thisp->glshaderobjects.get(cachecontext, oldshader)) {
       // just delete immediately. The context is current
@@ -152,7 +152,7 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 void SoShaderObject::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,
-                                       SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
+                                       SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderObject::SoShaderObject(void)
@@ -170,7 +170,7 @@ SoShaderObject::SoShaderObject(void)
   SO_NODE_SET_SF_ENUM_TYPE(sourceType, SourceType);
 
   SO_NODE_ADD_FIELD(sourceProgram, (""));
-  SO_NODE_ADD_FIELD(parameter, (NULL)); 
+  SO_NODE_ADD_FIELD(parameter, (NULL));
   this->parameter.setNum(0);
   this->parameter.setDefault(TRUE);
 
@@ -216,7 +216,7 @@ SoShaderObject::search(SoSearchAction * action)
 #endif // disabled
 }
 
-SbBool 
+SbBool
 SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 {
   SELF->sensor->detach();
@@ -241,7 +241,7 @@ SbString SoShaderObject::getSourceProgram(void) const
   return SELF->cachedSourceProgram;
 }
 
-void 
+void
 SoShaderObject::updateParameters(SoState * state)
 {
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
@@ -284,7 +284,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
   SbBool isactive = this->owner->isActive.getValue();
   if (!isactive) return;
-  
+
   SoState * state = action->getState();
 
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
@@ -294,10 +294,10 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
   const cc_glglue * glue = cc_glglue_instance(cachecontext);
 
   SoGLShaderObject * shaderobject = this->getGLShaderObject(cachecontext);
-  
+
   if (this->owner->sourceProgram.isDefault() ||
       this->owner->sourceProgram.getValue().getLength() == 0) { return; }
-  
+
   if (shaderobject == NULL) {
     if (this->shouldload) {
       this->checkType(); // set this->cachedSourceType
@@ -431,7 +431,7 @@ SoShaderObjectP::readSource(void)
       // delete allocated subdirs before continuing
       delete subdirs[0];
       delete subdirs[1];
-      
+
       FILE * f = fopen(fileName.getString(), "rb");
       SbBool readok = FALSE;
       if (f) {
@@ -464,7 +464,7 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
 {
   if (this->owner->isOfType(SoVertexShader::getClassTypeId())) {
     // don't call this function. It's not context safe. pederb, 20051103
-    // return SoVertexShader::isSupported(sourceType);    
+    // return SoVertexShader::isSupported(sourceType);
 
     if (sourceType == SoShaderObject::ARB_PROGRAM) {
       return cc_glglue_has_arb_vertex_program(glue);
@@ -486,11 +486,11 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
     if (sourceType == SoShaderObject::ARB_PROGRAM) {
       return cc_glglue_has_arb_fragment_program(glue);
     }
-    else if (sourceType == SoShaderObject::GLSL_PROGRAM) {    
+    else if (sourceType == SoShaderObject::GLSL_PROGRAM) {
       // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
       // handegar)
       return cc_glglue_has_arb_shader_objects(glue);
-    } 
+    }
     // FIXME: Add support for detecting missing Cg support (20050427
     // handegar)
     else if (sourceType == SoShaderObject::CG_PROGRAM) return TRUE;
@@ -498,10 +498,10 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
   }
   else {
     assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
-    if (sourceType == SoShaderObject::GLSL_PROGRAM) {    
+    if (sourceType == SoShaderObject::GLSL_PROGRAM) {
       return cc_glglue_glext_supported(glue, "GL_EXT_geometry_shader4") && cc_glglue_has_arb_shader_objects(glue);
     }
-    return FALSE;    
+    return FALSE;
   }
 }
 
@@ -517,7 +517,7 @@ SoShaderObjectP::updateParameters(const uint32_t cachecontext, int start, int nu
 
   int cnt = this->owner->parameter.getNum();
   int end = start+num;
-  
+
   end = (end > cnt) ? cnt : end;
   for (int i=start; i<end; i++) {
     SoUniformShaderParameter * param =
@@ -528,18 +528,18 @@ SoShaderObjectP::updateParameters(const uint32_t cachecontext, int start, int nu
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
-void 
+void
 SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * state)
 {
   int i, cnt = this->owner->parameter.getNum();
-  
+
   SoGLShaderObject * shaderobject = this->getGLShaderObject(cachecontext);
-  
+
   for (i = 0; i < cnt; i++) {
     SoUniformShaderParameter * param =
       (SoUniformShaderParameter*)this->owner->parameter[i];
     SbName name = param->name.getValue();
-    
+
     if (strncmp(name.getString(), "coin_", 5) == 0) {
       shaderobject->updateCoinParameter(state, name);
     }
@@ -571,10 +571,10 @@ SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext)
 {
 #define STATE_PARAM SoShaderStateMatrixParameter
   if (!this->owner->isActive.getValue()) return;
-  
+
   SoGLShaderObject * shaderobject = this->getGLShaderObject(cachecontext);
   if (shaderobject == NULL) return;
-  
+
   int i, cnt = this->owner->parameter.getNum();
   for (i= 0; i <cnt; i++) {
     STATE_PARAM * param = (STATE_PARAM*)this->owner->parameter[i];
@@ -617,7 +617,7 @@ SoShaderObjectP::sensorCB(void *data, SoSensor *sensor)
   SoShaderObjectP * thisp = (SoShaderObjectP*) data;
   SoField * field = ((SoNodeSensor *)sensor)->getTriggerField();
 
-  if (field == &thisp->owner->sourceProgram || 
+  if (field == &thisp->owner->sourceProgram ||
       field == &thisp->owner->sourceType) {
     thisp->deleteGLShaderObjects();
     thisp->shouldload = TRUE;
@@ -630,14 +630,14 @@ SoShaderObjectP::sensorCB(void *data, SoSensor *sensor)
   }
 }
 
-void 
+void
 SoShaderObjectP::setSearchDirectories(const SbStringList & list)
 {
   int i;
   for (i = 0; i< this->searchdirectories.getLength(); i++) {
     delete this->searchdirectories[i];
   }
-  
+
   for (i = 0; i < list.getLength(); i++) {
     this->searchdirectories.append(new SbString(*(list[i])));
   }

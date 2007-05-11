@@ -71,7 +71,7 @@ void
 SoShaderProgram::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderProgram,
-                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 
   SO_ENABLE(SoGLRenderAction, SoGLShaderProgramElement);
 }
@@ -129,7 +129,7 @@ SoShaderProgram::search(SoSearchAction * action)
 #endif // disabled
 }
 
-void 
+void
 SoShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
                                    void * closure)
 {
@@ -162,7 +162,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   this->glShaderProgram.removeShaderObjects();
   this->glShaderProgram.setEnableCallback(this->enablecb,
                                           this->enablecbclosure);
-  
+
   SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
 
   int i, cnt = PUBLIC(this)->shaderObject.getNum();
