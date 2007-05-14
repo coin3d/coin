@@ -20071,8 +20071,8 @@ sim_ac_var_functionname=
 #
 # * GCC uses __PRETTY_FUNCTION__
 #
-# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
-#   20040902 mortene.
+# * Visual C++ uses __FUNCDNAME__, __FUNCSIG__, and __FUNCTION__.
+#
 
 for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
 if test -z "$sim_ac_var_functionname"; then
@@ -20159,8 +20159,8 @@ sim_ac_var_functionname=
 #
 # * GCC uses __PRETTY_FUNCTION__
 #
-# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
-#   20040902 mortene.
+# * Visual C++ uses __FUNCDNAME__, __FUNCSIG__, and __FUNCTION__.
+#
 
 for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
 if test -z "$sim_ac_var_functionname"; then
@@ -36188,7 +36188,7 @@ echo "$as_me: error: --enable-hacking requires Mac OS X version >= 10.3" >&2;}
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors shaders upgraders hardcopy shadows foreignfiles collision \
+    sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
     mpeg 3ds:format3ds; \
   do
     case $dir in
@@ -36941,7 +36941,7 @@ rm $sim_ac_tmpfile
 
 # **************************************************************************
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile include/Inventor/annex/FXViz/Makefile include/Inventor/annex/FXViz/elements/Makefile include/Inventor/annex/FXViz/nodes/Makefile data/Makefile data/draggerDefaults/Makefile data/shaders/Makefile data/shaders/lights/Makefile data/shaders/vsm/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/shadows/Makefile src/foreignfiles/Makefile cfg/gendsp.sh cfg/gendsp.pl"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile include/Inventor/annex/FXViz/Makefile include/Inventor/annex/FXViz/elements/Makefile include/Inventor/annex/FXViz/nodes/Makefile data/Makefile data/draggerDefaults/Makefile data/shaders/Makefile data/shaders/lights/Makefile data/shaders/vsm/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/shadows/Makefile src/geo/Makefile src/foreignfiles/Makefile cfg/gendsp.sh cfg/gendsp.pl"
 
 
 cat >confcache <<\_ACEOF
@@ -37749,6 +37749,7 @@ do
   "src/mpeg/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/mpeg/Makefile" ;;
   "src/shaders/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/shaders/Makefile" ;;
   "src/shadows/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/shadows/Makefile" ;;
+  "src/geo/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/geo/Makefile" ;;
   "src/foreignfiles/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/foreignfiles/Makefile" ;;
   "cfg/gendsp.sh" ) CONFIG_FILES="$CONFIG_FILES cfg/gendsp.sh" ;;
   "cfg/gendsp.pl" ) CONFIG_FILES="$CONFIG_FILES cfg/gendsp.pl" ;;

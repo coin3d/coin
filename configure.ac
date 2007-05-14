@@ -1801,7 +1801,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors shaders upgraders hardcopy shadows foreignfiles collision \
+    sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
     mpeg 3ds:format3ds; \
   do
     case $dir in
@@ -2200,6 +2200,7 @@ AC_CONFIG_FILES([
         src/mpeg/Makefile
         src/shaders/Makefile
 	src/shadows/Makefile
+	src/geo/Makefile
         src/foreignfiles/Makefile
         cfg/gendsp.sh
         cfg/gendsp.pl

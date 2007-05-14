@@ -8657,8 +8657,8 @@ sim_ac_var_functionname=
 #
 # * GCC uses __PRETTY_FUNCTION__
 #
-# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
-#   20040902 mortene.
+# * Visual C++ uses __FUNCDNAME__, __FUNCSIG__, and __FUNCTION__.
+#
 
 for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
 if test -z "$sim_ac_var_functionname"; then
