@@ -3,7 +3,9 @@
 
 RegularSources = \
 	SoGeoOrigin.cpp \
-	SoGeoLocation.cpp
+	SoGeoLocation.cpp \
+	SoGeoElement.cpp \
+	SoGeoSeparator.cpp
 LinkHackSources = \
 	all-geo-cpp.cpp
 

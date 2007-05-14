@@ -291,6 +291,7 @@ PublicHeaders = \
 	SoFocalDistanceElement.h \
 	SoFontNameElement.h \
 	SoFontSizeElement.h \
+	SoGeoElement.h \
 	SoGLCacheContextElement.h \
 	SoGLClipPlaneElement.h \
 	SoGLColorIndexElement.h \
