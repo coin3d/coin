@@ -255,29 +255,7 @@ SoSwitch::doAction(SoAction * action)
 
   if (idx == SO_SWITCH_ALL) {
     if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
-      // calculate center of bbox if bboxaction. This makes the
-      // switch node behave exactly like a group node
-      SoGetBoundingBoxAction * bbaction = (SoGetBoundingBoxAction*) action;
-      // Initialize accumulation variables.
-      SbVec3f acccenter(0.0f, 0.0f, 0.0f);
-      int numcenters = 0;
-      // only traverse nodes in path(s) for IN_PATH traversal
-      int n = pathcode == SoAction::IN_PATH ? numindices : this->getNumChildren();
-
-      for (int i = 0; i < n; i++) {
-        this->children->traverse(bbaction,
-                                 pathcode == SoAction::IN_PATH ? indices[i] : i);
-
-        // If center point is set, accumulate.
-        if (bbaction->isCenterSet()) {
-          acccenter += bbaction->getCenter();
-          numcenters++;
-          bbaction->resetCenter();
-        }
-      }
-      if (numcenters != 0) {
-        bbaction->setCenter(acccenter / float(numcenters), FALSE);
-      }
+      SoGroup::getBoundingBox((SoGetBoundingBoxAction*) action);
     }
     else { // not a getBoundingBoxAction
       if (pathcode == SoAction::IN_PATH) {
@@ -287,7 +265,8 @@ SoSwitch::doAction(SoAction * action)
         this->children->traverse(action);
       }
     }
-  } else {
+  } 
+  else {
     if (idx >= 0) { // should only traverse one child
       if (pathcode == SoAction::IN_PATH) {
         // traverse only if one path matches idx
