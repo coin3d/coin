@@ -28,7 +28,7 @@
 #define SO_VSMLOOKUP_GLSL_H
 
 static const char VSMLOOKUP_shadersource[] =
-  "float VsmLookup(in vec4 map, in float dist, in float epsilon)\n"
+  "float VsmLookup(in vec4 map, in float dist, in float epsilon, float bleedthreshold)\n"
   "{\n"
   "  float mapdist = map.x;\n"
   "\n"
@@ -37,8 +37,12 @@ static const char VSMLOOKUP_shadersource[] =
   "  float E_x2 = map.y;\n"
   "  float Ex_2 = mapdist * mapdist;\n"
   "  float variance = min(max(E_x2 - Ex_2, 0.0) + epsilon, 1.0);\n"
+  "\n"
   "  float m_d = mapdist - dist;\n"
   "  float p_max = variance / (variance + m_d * m_d);\n"
+  "\n"
+  "  p_max *= smoothstep(bleedthreshold, 1.0, p_max);\n"
+  "\n"
   "  return max(lit_factor, p_max);\n"
   "}\n";
 

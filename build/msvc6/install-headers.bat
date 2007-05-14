@@ -208,6 +208,7 @@ copy /Y ..\..\include\Inventor\elements\SoFloatElement.h %COINDIR%\include\Inven
 copy /Y ..\..\include\Inventor\elements\SoFocalDistanceElement.h %COINDIR%\include\Inventor\elements\SoFocalDistanceElement.h >nul:
 copy /Y ..\..\include\Inventor\elements\SoFontNameElement.h %COINDIR%\include\Inventor\elements\SoFontNameElement.h >nul:
 copy /Y ..\..\include\Inventor\elements\SoFontSizeElement.h %COINDIR%\include\Inventor\elements\SoFontSizeElement.h >nul:
+copy /Y ..\..\include\Inventor\elements\SoGeoElement.h %COINDIR%\include\Inventor\elements\SoGeoElement.h >nul:
 copy /Y ..\..\include\Inventor\elements\SoGLCacheContextElement.h %COINDIR%\include\Inventor\elements\SoGLCacheContextElement.h >nul:
 copy /Y ..\..\include\Inventor\elements\SoGLClipPlaneElement.h %COINDIR%\include\Inventor\elements\SoGLClipPlaneElement.h >nul:
 copy /Y ..\..\include\Inventor\elements\SoGLColorIndexElement.h %COINDIR%\include\Inventor\elements\SoGLColorIndexElement.h >nul:
@@ -510,6 +511,9 @@ copy /Y ..\..\include\Inventor\nodes\SoFaceSet.h %COINDIR%\include\Inventor\node
 copy /Y ..\..\include\Inventor\nodes\SoFile.h %COINDIR%\include\Inventor\nodes\SoFile.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFont.h %COINDIR%\include\Inventor\nodes\SoFont.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoFontStyle.h %COINDIR%\include\Inventor\nodes\SoFontStyle.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoGeoOrigin.h %COINDIR%\include\Inventor\nodes\SoGeoOrigin.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoGeoLocation.h %COINDIR%\include\Inventor\nodes\SoGeoLocation.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoGeoSeparator.h %COINDIR%\include\Inventor\nodes\SoGeoSeparator.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGroup.h %COINDIR%\include\Inventor\nodes\SoGroup.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGeometryShader.h %COINDIR%\include\Inventor\nodes\SoGeometryShader.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoImage.h %COINDIR%\include\Inventor\nodes\SoImage.h >nul:

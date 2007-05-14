@@ -8770,6 +8770,61 @@ SOURCE=..\..\src\shadows\SoShadowStyleElement.cpp
 !ENDIF
 # End Source File
 # End Group
+# Begin Group "geo sources"
+# PROP Default_Filter "c;cpp;ic;icc;h"
+# Begin Source File
+
+SOURCE=..\..\src\geo\SoGeoOrigin.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\geo"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\geo\SoGeoLocation.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\geo"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\geo\SoGeoElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\geo"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\geo\SoGeoSeparator.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\geo"
+!ENDIF
+# End Source File
+# End Group
 # Begin Group "threads sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
@@ -11117,6 +11172,10 @@ SOURCE=..\..\include\Inventor\elements\SoFontSizeElement.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\elements\SoGeoElement.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\elements\SoGLCacheContextElement.h
 # End Source File
 # Begin Source File
@@ -12352,6 +12411,18 @@ SOURCE=..\..\include\Inventor\nodes\SoFont.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoFontStyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoGeoOrigin.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoGeoLocation.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoGeoSeparator.h
 # End Source File
 # Begin Source File
 

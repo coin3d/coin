@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{42837A07-68C0-4ACC-AB95-936A7A820F0C}"
+	ProjectGUID="{16344FA4-52AC-41CC-94E1-14BB99D09C64}"
 	>
 	<Platforms>
 		<Platform
@@ -32041,6 +32041,203 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="geo sources"
+				Filter="c;cpp;ic;icc;h"
+				>
+				<File
+					RelativePath="..\..\src\geo\SoGeoElement.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\geo/"
+							ProgramDataBaseFileName="StaticDebug\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\geo/"
+							ProgramDataBaseFileName="Release\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\geo/"
+							ProgramDataBaseFileName="StaticRelease\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\geo/"
+							ProgramDataBaseFileName="Debug\geo/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\geo\SoGeoLocation.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\geo/"
+							ProgramDataBaseFileName="StaticDebug\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\geo/"
+							ProgramDataBaseFileName="Release\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\geo/"
+							ProgramDataBaseFileName="StaticRelease\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\geo/"
+							ProgramDataBaseFileName="Debug\geo/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\geo\SoGeoOrigin.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\geo/"
+							ProgramDataBaseFileName="StaticDebug\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\geo/"
+							ProgramDataBaseFileName="Release\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\geo/"
+							ProgramDataBaseFileName="StaticRelease\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\geo/"
+							ProgramDataBaseFileName="Debug\geo/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\geo\SoGeoSeparator.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\geo/"
+							ProgramDataBaseFileName="StaticDebug\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\geo/"
+							ProgramDataBaseFileName="Release\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\geo/"
+							ProgramDataBaseFileName="StaticRelease\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\geo/"
+							ProgramDataBaseFileName="Debug\geo/"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
 				Name="threads sources"
 				Filter="c;cpp;ic;icc;h"
 				>
@@ -38179,6 +38376,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\elements\SoGeoElement.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\elements\SoGLCacheContextElement.h"
 					>
 				</File>
@@ -39435,7 +39636,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoGeoLocation.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoGeometryShader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoGeoOrigin.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoGeoSeparator.h"
 					>
 				</File>
 				<File

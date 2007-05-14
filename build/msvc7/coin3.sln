@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{CDC469C2-E048-479E-969D-EDBD425ED410}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{932AE460-B54B-490E-8DD0-5CA0E4828403}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -13,14 +13,14 @@ Global
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.DLL (Debug).ActiveCfg = DLL (Debug)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.DLL (Debug).Build.0 = DLL (Debug)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.DLL (Release).ActiveCfg = DLL (Release)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.DLL (Release).Build.0 = DLL (Release)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.LIB (Debug).ActiveCfg = LIB (Debug)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.LIB (Debug).Build.0 = LIB (Debug)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.LIB (Release).ActiveCfg = LIB (Release)|Win32
-		{CDC469C2-E048-479E-969D-EDBD425ED410}.LIB (Release).Build.0 = LIB (Release)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.DLL (Debug).ActiveCfg = DLL (Debug)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.DLL (Debug).Build.0 = DLL (Debug)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.DLL (Release).ActiveCfg = DLL (Release)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.DLL (Release).Build.0 = DLL (Release)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.LIB (Debug).ActiveCfg = LIB (Debug)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.LIB (Debug).Build.0 = LIB (Debug)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.LIB (Release).ActiveCfg = LIB (Release)|Win32
+		{932AE460-B54B-490E-8DD0-5CA0E4828403}.LIB (Release).Build.0 = LIB (Release)|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
