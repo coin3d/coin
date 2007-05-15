@@ -6,12 +6,22 @@ RegularSources = \
 	SoGeoLocation.cpp \
 	SoGeoElement.cpp \
 	SoGeoSeparator.cpp \
-	SoGeoCoordinate.cpp
+	SoGeoCoordinate.cpp \
+	SbGeoAngle.cpp \
+	SbGeoEllipsoid.cpp \
+	SbGeoProjection.cpp \
+	SbPolarStereographic.cpp \
+	SbUTMProjection.cpp
 LinkHackSources = \
 	all-geo-cpp.cpp
 
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = \
+	SbGeoAngle.h \
+	SbGeoEllipsoid.h \
+	SbGeoProjection.h \
+	SbUTMProjection.h \
+	SbPolarStereographic.h
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(geo, nodes)
