@@ -285,6 +285,7 @@
 #include <Inventor/elements/SoGLLightIdElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
@@ -341,8 +342,13 @@ public:
   SoGLDisplayList * fbo_texture;
   SoGLDisplayList * fbo_depthmap;
   SbVec2s fbo_size;
+  SbBool fbo_mipmap;
 
   SoGLRenderAction::TransparencyType getTransparencyType(SoState * state);
+  SbBool shouldCreateMipmap(SoState * state) {
+    float q = SoTextureQualityElement::get(state);
+    return q > 0.5f;
+  }
 
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
@@ -648,6 +654,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->fbo_texture = NULL;
   this->fbo_depthmap = NULL;
   this->fbo_size.setValue(-1,-1);
+  this->fbo_mipmap = FALSE;
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
@@ -704,8 +711,12 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   assert(scene);
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-  
-  if (this->fbo_size != size) {
+  SbBool mipmap = this->shouldCreateMipmap(state);
+
+  if ((this->fbo_size != size) || (mipmap != this->fbo_mipmap)) {
+    this->fbo_mipmap = mipmap;
+    this->fbo_size = size;
+
     if (this->glimage) {
       this->glimage->unref(NULL);
       this->glimage = NULL;
@@ -730,7 +741,6 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
       this->glimage->setFlags(flags);
     }
     
-    this->fbo_size = size;
     this->deleteFrameBufferObjects(glue, state);
     this->createFramebufferObjects(glue, state);
 
@@ -790,6 +800,15 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
                         this->fbo_size[0], this->fbo_size[1]);
     cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
   }
+  else {
+    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_texture->getFirstIndex());
+    if (this->fbo_mipmap) {
+      glGenerateMipmapEXT(GL_TEXTURE_2D);
+    }
+    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, 0);
+  }
+  
+
 
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
   this->checkFramebufferStatus(glue);
@@ -1060,9 +1079,9 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 
   SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
 
-	cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
+  cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
-	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   
   this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
   this->fbo_texture->ref();  
@@ -1091,8 +1110,6 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                gltype, NULL);
   
   // for mipmaps
-  // cc_glglue_glGenerateMipmap(glue, this->fbo_texture->getFirstIndex());
-  
   // FIXME: add support for CLAMP_TO_BORDER in SoSceneTexture2 and SoTextureImageElement
 
 
@@ -1109,8 +1126,12 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wraps);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapt);
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->fbo_mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+  if (this->fbo_mipmap) {
+    cc_glglue_glGenerateMipmap(glue, GL_TEXTURE_2D);
+  }
+
   if (cc_glglue_can_do_anisotropic_filtering(glue)) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
                     cc_glglue_get_max_anisotropy(glue));
