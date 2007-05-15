@@ -268,7 +268,8 @@ RegularSources = \
 	SoGeoOrigin.cpp \
 	SoGeoLocation.cpp \
 	SoGeoElement.cpp \
-	SoGeoSeparator.cpp
+	SoGeoSeparator.cpp \
+	SoGeoCoordinate.cpp
 
 LinkHackSources = \
 	all-geo-cpp.cpp
@@ -340,45 +341,52 @@ LIBRARIES = $(noinst_LIBRARIES)
 geo_lst_AR = $(AR) cru
 geo_lst_LIBADD =
 am__geo_lst_SOURCES_DIST = SoGeoOrigin.cpp SoGeoLocation.cpp \
-	SoGeoElement.cpp SoGeoSeparator.cpp all-geo-cpp.cpp
+	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
+	all-geo-cpp.cpp
 am__objects_1 = all-geo-cpp.$(OBJEXT)
 am__objects_2 = SoGeoOrigin.$(OBJEXT) SoGeoLocation.$(OBJEXT) \
-	SoGeoElement.$(OBJEXT) SoGeoSeparator.$(OBJEXT)
+	SoGeoElement.$(OBJEXT) SoGeoSeparator.$(OBJEXT) \
+	SoGeoCoordinate.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_geo_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_geo_lst_SOURCES_DIST = all-geo-cpp.cpp SoGeoOrigin.cpp \
-	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp
+	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp \
+	SoGeoCoordinate.cpp
 geo_lst_OBJECTS = $(am_geo_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libgeo_la_LDFLAGS =
 libgeo_la_LIBADD =
 am__libgeo_la_SOURCES_DIST = SoGeoOrigin.cpp SoGeoLocation.cpp \
-	SoGeoElement.cpp SoGeoSeparator.cpp all-geo-cpp.cpp
+	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
+	all-geo-cpp.cpp
 am__objects_6 = all-geo-cpp.lo
 am__objects_7 = SoGeoOrigin.lo SoGeoLocation.lo SoGeoElement.lo \
-	SoGeoSeparator.lo
+	SoGeoSeparator.lo SoGeoCoordinate.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libgeo_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libgeo_la_SOURCES_DIST = all-geo-cpp.cpp SoGeoOrigin.cpp \
-	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp
+	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp \
+	SoGeoCoordinate.cpp
 libgeo_la_OBJECTS = $(am_libgeo_la_OBJECTS)
 libgeo@SUFFIX@LINKHACK_la_LDFLAGS =
 libgeo@SUFFIX@LINKHACK_la_LIBADD =
 am__libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeoOrigin.cpp \
 	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp \
-	all-geo-cpp.cpp
+	SoGeoCoordinate.cpp all-geo-cpp.cpp
 am_libgeo@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = all-geo-cpp.cpp \
 	SoGeoOrigin.cpp SoGeoLocation.cpp SoGeoElement.cpp \
-	SoGeoSeparator.cpp
+	SoGeoSeparator.cpp SoGeoCoordinate.cpp
 libgeo@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libgeo@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoGeoElement.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoGeoCoordinate.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGeoCoordinate.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGeoElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoLocation.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoLocation.Po \
@@ -466,6 +474,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoLocation.Plo@am__quote@

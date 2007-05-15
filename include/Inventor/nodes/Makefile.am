@@ -33,6 +33,7 @@ PublicHeaders = \
 	SoGeoOrigin.h \
 	SoGeoLocation.h \
 	SoGeoSeparator.h \
+	SoGeoCoordinate.h \
 	SoGroup.h \
 	SoGeometryShader.h \
 	SoImage.h \
