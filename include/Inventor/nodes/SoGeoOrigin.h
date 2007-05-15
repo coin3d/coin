@@ -42,7 +42,6 @@ public:
 
   SoSFString geoCoords;
   SoMFString geoSystem;
-  SoSFBool rotateYUp; 
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
@@ -61,4 +60,3 @@ private:
 
 
 #endif // COIN_SOGEOORIGIN_H
-

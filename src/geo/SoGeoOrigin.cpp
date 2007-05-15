@@ -69,7 +69,6 @@ SoGeoOrigin::SoGeoOrigin(void)
 
   SO_NODE_ADD_FIELD(geoCoords, (""));
   SO_NODE_ADD_FIELD(geoSystem, (""));
-  SO_NODE_ADD_FIELD(rotateYUp, (FALSE));
 
   this->geoSystem.setNum(2);
   this->geoSystem.set1Value(0, "GD");
