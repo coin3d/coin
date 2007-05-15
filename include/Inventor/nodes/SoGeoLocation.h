@@ -1,5 +1,5 @@
-#ifndef COIN_SOGEOORIGIN_H
-#define COIN_SOGEOORIGIN_H
+#ifndef COIN_SOGEOLOCATION_H
+#define COIN_SOGEOLOCATION_H
 
 /**************************************************************************\
  *
@@ -27,7 +27,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoMFString.h>
 
@@ -35,7 +34,7 @@ class SoGeoLocationP;
 class SoState;
 
 class COIN_DLL_API SoGeoLocation : public SoTransformation {
-  typedef SoNode inherited;
+  typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoGeoLocation);
 
@@ -65,4 +64,4 @@ private:
 };
 
 
-#endif // COIN_SOGEOORIGIN_H
+#endif // COIN_SOGEOLOCATION_H
