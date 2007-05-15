@@ -121,6 +121,7 @@
 
 /*!
   \class SoReorganizeAction Inventor/include/SoReorganizeAction.h
+  \ingroup actions
   \brief The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.
 
   Note. This is work-in-progress. pederb, 2005-04-05.
@@ -129,7 +130,7 @@
   SoReorganizeAction on a scene graph, converting all shapes into
   shapes that can be rendered using vertex array or VBO rendering.
 
-  \verbatim
+  \code
 
   #include <Inventor/SoDB.h>
   #include <Inventor/nodes/SoSeparator.h>
@@ -232,7 +233,7 @@
     return 0;
   } // main()
 
-  \endvarbatim
+  \endcode
 
   \since Coin 2.5
 

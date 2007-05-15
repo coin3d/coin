@@ -529,6 +529,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRMLAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRML2Action.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoWriteAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoReorganizeAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/collision/SoIntersectionDetectionAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
@@ -963,6 +964,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/actions/SoToVRMLAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoToVRML2Action.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoWriteAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoReorganizeAction.cpp \
                          @path_tag@@coin_src_dir@/src/collision/SoIntersectionDetectionAction.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBSPTree.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox2f.cpp \
