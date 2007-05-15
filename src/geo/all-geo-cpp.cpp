@@ -1,0 +1,5 @@
+#include "SoGeoCoordinate.cpp"
+#include "SoGeoElement.cpp"
+#include "SoGeoLocation.cpp"
+#include "SoGeoOrigin.cpp"
+#include "SoGeoSeparator.cpp"
