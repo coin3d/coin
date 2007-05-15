@@ -514,6 +514,7 @@ copy /Y ..\..\include\Inventor\nodes\SoFontStyle.h %COINDIR%\include\Inventor\no
 copy /Y ..\..\include\Inventor\nodes\SoGeoOrigin.h %COINDIR%\include\Inventor\nodes\SoGeoOrigin.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGeoLocation.h %COINDIR%\include\Inventor\nodes\SoGeoLocation.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGeoSeparator.h %COINDIR%\include\Inventor\nodes\SoGeoSeparator.h >nul:
+copy /Y ..\..\include\Inventor\nodes\SoGeoCoordinate.h %COINDIR%\include\Inventor\nodes\SoGeoCoordinate.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGroup.h %COINDIR%\include\Inventor\nodes\SoGroup.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoGeometryShader.h %COINDIR%\include\Inventor\nodes\SoGeometryShader.h >nul:
 copy /Y ..\..\include\Inventor\nodes\SoImage.h %COINDIR%\include\Inventor\nodes\SoImage.h >nul:
