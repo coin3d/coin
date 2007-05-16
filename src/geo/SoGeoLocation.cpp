@@ -43,6 +43,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include "SoGeo.h"
 
@@ -116,7 +117,14 @@ SoGeoLocation::GLRender(SoGLRenderAction * action)
 void
 SoGeoLocation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoGeoLocation::doAction((SoAction *)action);
+  SoState * state = action->getState();
+  SbMatrix m = this->getTransform(state);
+  SoModelMatrixElement::mult(state, 
+                             this, 
+                             SoModelMatrixElement::get(state).inverse());
+  SoModelMatrixElement::mult(state, 
+                             this, 
+                             m);
 }
 
 // Doc from superclass.
