@@ -38,10 +38,13 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGeoLocation.h>
+#include <Inventor/nodes/SoGeoOrigin.h>
+#include <Inventor/elements/SoGeoElement.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include "SoGeo.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -152,6 +155,16 @@ SoGeoLocation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SbMatrix
 SoGeoLocation::getTransform(SoState * state) const
 {
-  // FIXME: calculate based on GeoOrigin
+  SoGeoOrigin * origin = SoGeoElement::get(state);
+
+  if (origin) {
+    return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
+                                     origin->geoSystem.getNum(),
+                                     origin->geoCoords.getValue(),
+                                     
+                                     this->geoSystem.getValues(0),
+                                     this->geoSystem.getNum(),
+                                     this->geoCoords.getValue());
+  }
   return SbMatrix::identity();
 }

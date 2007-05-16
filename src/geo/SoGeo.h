@@ -24,9 +24,22 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SbMatrix.h>
+
+class SbString;
+
 class SoGeo {
 public:
   static void init(void);
+  
+  static SbMatrix calculateTransform(const SbString * originsystem,
+                                     const int numoriginsys,
+                                     const SbString & geocoords,
+                                     
+                                     const SbString * targetsystem,
+                                     const int numtargetsys,
+                                     const SbString & targetcoords);
+  
 };
 
 

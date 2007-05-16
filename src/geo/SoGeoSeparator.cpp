@@ -29,7 +29,7 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoSeparator {
-      geoSystem ["GD", "WE"] 
+      geoSystem ["GD", "WE"]
       geoCoords ""
     }
   \endcode
@@ -38,6 +38,8 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGeoSeparator.h>
+#include <Inventor/nodes/SoGeoOrigin.h>
+#include <Inventor/elements/SoGeoElement.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -46,6 +48,8 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+#include "SoGeo.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -134,7 +138,15 @@ SoGeoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  this->applyTransformation((SoAction *)action);
+  SbMatrix m = this->getTransform(state);
+
+  SoModelMatrixElement::mult(state, 
+                             this, 
+                             SoModelMatrixElement::get(state).inverse());
+  SoModelMatrixElement::mult(state, 
+                             this, 
+                             m);
+
   SoSeparator::getBoundingBox(action);
   state->pop();
 }
@@ -192,6 +204,16 @@ SoGeoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SbMatrix
 SoGeoSeparator::getTransform(SoState * state) const
 {
-  // FIXME: calculate based on GeoOrigin
+  SoGeoOrigin * origin = SoGeoElement::get(state);
+
+  if (origin) {
+    return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
+                                     origin->geoSystem.getNum(),
+                                     origin->geoCoords.getValue(),
+                                     
+                                     this->geoSystem.getValues(0),
+                                     this->geoSystem.getNum(),
+                                     this->geoCoords.getValue());
+  }
   return SbMatrix::identity();
 }

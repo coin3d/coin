@@ -41,7 +41,7 @@ public:
 
 #define PRIVATE(obj) obj->pimpl
 
-SO_ELEMENT_SOURCE(SoGeoElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGeoElement);
 
 /*!
   This static method initializes static data for the
@@ -54,12 +54,23 @@ SoGeoElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoGeoElement, inherited);
 }
 
+
+SoGeoElement::SoGeoElement(void)
+{
+  PRIVATE(this) = new SoGeoElementP;
+  PRIVATE(this)->origin = NULL;
+
+  this->setTypeId(SoGeoElement::classTypeId);
+  this->setStackIndex(SoGeoElement::classStackIndex);
+}
+
 /*!
   The destructor.
 */
 
-SoGeoElement::~SoGeoElement(void)
+SoGeoElement::~SoGeoElement()
 {
+  delete PRIVATE(this);
 }
 
 //! FIXME: write doc.

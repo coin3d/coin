@@ -41,7 +41,13 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoGeoElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -90,12 +96,22 @@ void
 SoGeoOrigin::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoGeoOrigin, SO_FROM_INVENTOR_1|SoNode::VRML1);
+
+  SO_ENABLE(SoGetBoundingBoxAction, SoGeoElement);
+  SO_ENABLE(SoGLRenderAction, SoGeoElement);
+  SO_ENABLE(SoGetMatrixAction, SoGeoElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoGeoElement);
+  SO_ENABLE(SoPickAction, SoGeoElement);
+  SO_ENABLE(SoCallbackAction, SoGeoElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoGeoElement);
+  SO_ENABLE(SoAudioRenderAction, SoGeoElement);
 }
 
 // Doc from superclass.
 void
 SoGeoOrigin::doAction(SoAction * action)
 {
+  SoGeoElement::set(action->getState(), this);
 }
 
 // Doc from superclass.
@@ -137,5 +153,5 @@ SoGeoOrigin::pick(SoPickAction * action)
 void
 SoGeoOrigin::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoGeoOrigin::doAction((SoAction *)action);
+  //  SoGeoOrigin::doAction((SoAction *)action);
 }
