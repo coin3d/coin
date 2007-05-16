@@ -1,5 +1,5 @@
-#ifndef COIN_SOGEOORIGIN_H
-#define COIN_SOGEOORIGIN_H
+#ifndef COIN_SOGEOSEPARATOR_H
+#define COIN_SOGEOSEPARATOR_H
 
 /**************************************************************************\
  *
@@ -56,7 +56,7 @@ public:
 
 protected:
   virtual ~SoGeoSeparator();
-  
+
 private:
   void applyTransformation(SoAction * action);
   SbMatrix getTransform(SoState * state) const;
@@ -65,4 +65,4 @@ private:
 };
 
 
-#endif // COIN_SOGEOORIGIN_H
+#endif // COIN_SOGEOSEPARATOR_H
