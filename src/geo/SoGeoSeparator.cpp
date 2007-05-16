@@ -23,12 +23,14 @@
 
 /*!
   \class SoGeoSeparator SoGeoSeparator.h Inventor/nodes/SoGeoSeparator.h
-  \brief The SoGeoSeparator class is used to...
+  \brief The SoGeoSeparator class is used to georeference a scene graph.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoSeparator {
+      geoSystem ["GD", "WE"] 
+      geoCoords ""
     }
   \endcode
 */
@@ -131,7 +133,7 @@ void
 SoGeoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
-  state->push();  
+  state->push();
   this->applyTransformation((SoAction *)action);
   SoSeparator::getBoundingBox(action);
   state->pop();
@@ -151,8 +153,8 @@ void
 SoGeoSeparator::callback(SoCallbackAction * action)
 {
   SoState * state = action->getState();
-  state->push();  
-  
+  state->push();
+
   this->applyTransformation((SoAction *)action);
   SoSeparator::callback(action);
 
@@ -164,8 +166,8 @@ void
 SoGeoSeparator::pick(SoPickAction * action)
 {
   SoState * state = action->getState();
-  state->push();  
-  
+  state->push();
+
   this->applyTransformation((SoAction *)action);
   SoSeparator::pick(action);
 
@@ -177,17 +179,17 @@ void
 SoGeoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoState * state = action->getState();
-  state->push();  
-  
+  state->push();
+
   this->applyTransformation((SoAction *)action);
   SoSeparator::getPrimitiveCount(action);
-  
+
   state->pop();
 }
 
 // *************************************************************************
 
-SbMatrix 
+SbMatrix
 SoGeoSeparator::getTransform(SoState * state) const
 {
   // FIXME: calculate based on GeoOrigin

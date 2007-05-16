@@ -23,12 +23,14 @@
 
 /*!
   \class SoGeoCoordinate SoGeoCoordinate.h Inventor/nodes/SoGeoCoordinate.h
-  \brief The SoGeoCoordinate class is used to specify...
+  \brief The SoGeoCoordinate class is used to specify a list of geographical coordinates.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoCoordinate {
+      geoSystem ["GD", "WE"] 
+      point ""
     }
   \endcode
 */
@@ -110,16 +112,6 @@ void
 SoGeoCoordinate::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoGeoCoordinate::doAction((SoAction *)action);
-}
-
-// Doc from superclass.
-void
-SoGeoCoordinate::getMatrix(SoGetMatrixAction * action)
-{
-  SbMatrix m = this->getTransform(action->getState());
-
-  action->getMatrix().multLeft(m);
-  action->getInverse().multRight(m.inverse());
 }
 
 // Doc from superclass.

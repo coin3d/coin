@@ -29,6 +29,8 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoOrigin {
+      geoSystem ["GD", "WE"] 
+      geoCoords ""
     }
   \endcode
 */

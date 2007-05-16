@@ -23,12 +23,14 @@
 
 /*!
   \class SoGeoLocation SoGeoLocation.h Inventor/nodes/SoGeoLocation.h
-  \brief The SoGeoLocation class is used to specify...
+  \brief The SoGeoLocation class is used to georeference the following nodes.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoLocation {
+      geoSystem ["GD", "WE"] 
+      geoCoords ""
     }
   \endcode
 */
@@ -119,7 +121,7 @@ void
 SoGeoLocation::getMatrix(SoGetMatrixAction * action)
 {
   SbMatrix m = this->getTransform(action->getState());
-  
+
   action->getMatrix().multLeft(m);
   action->getInverse().multRight(m.inverse());
 }
@@ -147,7 +149,7 @@ SoGeoLocation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // *************************************************************************
 
-SbMatrix 
+SbMatrix
 SoGeoLocation::getTransform(SoState * state) const
 {
   // FIXME: calculate based on GeoOrigin
