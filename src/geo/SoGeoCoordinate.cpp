@@ -38,10 +38,15 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGeoCoordinate.h>
+#include <Inventor/nodes/SoGeoOrigin.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoGeoElement.h>
+#include <Inventor/lists/SbList.h>
+
+#include "SoGeo.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -60,6 +65,15 @@
 
 // *************************************************************************
 
+class SoGeoCoordinateP {
+public:
+  SbList <SbVec3f> coords;
+};
+
+#define PRIVATE(obj) obj->pimpl
+
+// *************************************************************************
+
 SO_NODE_SOURCE(SoGeoCoordinate);
 
 /*!
@@ -67,6 +81,8 @@ SO_NODE_SOURCE(SoGeoCoordinate);
 */
 SoGeoCoordinate::SoGeoCoordinate(void)
 {
+  PRIVATE(this) = new SoGeoCoordinateP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoCoordinate);
 
   SO_NODE_ADD_FIELD(point, (""));
@@ -83,6 +99,7 @@ SoGeoCoordinate::SoGeoCoordinate(void)
 */
 SoGeoCoordinate::~SoGeoCoordinate()
 {
+  delete PRIVATE(this);
 }
 
 // Doc from superclass.
@@ -97,7 +114,22 @@ void
 SoGeoCoordinate::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-  SbMatrix m = this->getTransform(state);
+
+  PRIVATE(this)->coords.truncate(0);
+  const int n = this->point.getNum();
+
+  // FIXME: optimize (cache)
+  // FIXME: consider what to do with the current transformation on the state
+  
+  for (int i = 0; i < n; i++) {
+    SbMatrix m = this->getTransform(state, i);
+    SbVec3f p(0.0f, 0.0f, 0.0f);
+    m.multVecMatrix(p,p);
+    PRIVATE(this)->coords.append(p);
+  }
+
+  SoCoordinateElement::set3(state, this, n,
+                            PRIVATE(this)->coords.getArrayPtr());                         
 }
 
 // Doc from superclass.
@@ -138,8 +170,18 @@ SoGeoCoordinate::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 // *************************************************************************
 
 SbMatrix
-SoGeoCoordinate::getTransform(SoState * state) const
+SoGeoCoordinate::getTransform(SoState * state, const int idx) const
 {
-  // FIXME: calculate based on GeoOrigin
+  SoGeoOrigin * origin = SoGeoElement::get(state);
+  if (origin) {
+    return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
+                                     origin->geoSystem.getNum(),
+                                     origin->geoCoords.getValue(),
+                                     
+                                     this->geoSystem.getValues(0),
+                                     this->geoSystem.getNum(),
+                                     this->point[idx]);
+  }
   return SbMatrix::identity();
 }
+

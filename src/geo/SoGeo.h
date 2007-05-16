@@ -42,5 +42,4 @@ public:
   
 };
 
-
 #endif // COIN_SOGEO_H
