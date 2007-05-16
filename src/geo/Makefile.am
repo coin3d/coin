@@ -2,6 +2,7 @@
 ## 19990904 mortene.
 
 RegularSources = \
+	SoGeo.cpp \
 	SoGeoOrigin.cpp \
 	SoGeoLocation.cpp \
 	SoGeoElement.cpp \
@@ -17,6 +18,7 @@ LinkHackSources = \
 
 PublicHeaders =
 PrivateHeaders = \
+	SoGeo.h \
 	SbGeoAngle.h \
 	SbGeoEllipsoid.h \
 	SbGeoProjection.h \

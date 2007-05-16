@@ -265,6 +265,7 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 
 RegularSources = \
+	SoGeo.cpp \
 	SoGeoOrigin.cpp \
 	SoGeoLocation.cpp \
 	SoGeoElement.cpp \
@@ -282,6 +283,7 @@ LinkHackSources = \
 
 PublicHeaders = 
 PrivateHeaders = \
+	SoGeo.h \
 	SbGeoAngle.h \
 	SbGeoEllipsoid.h \
 	SbGeoProjection.h \
@@ -351,22 +353,23 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 geo_lst_AR = $(AR) cru
 geo_lst_LIBADD =
-am__geo_lst_SOURCES_DIST = SoGeoOrigin.cpp SoGeoLocation.cpp \
+am__geo_lst_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp all-geo-cpp.cpp
 am__objects_1 = all-geo-cpp.$(OBJEXT)
-am__objects_2 = SoGeoOrigin.$(OBJEXT) SoGeoLocation.$(OBJEXT) \
-	SoGeoElement.$(OBJEXT) SoGeoSeparator.$(OBJEXT) \
-	SoGeoCoordinate.$(OBJEXT) SbGeoAngle.$(OBJEXT) \
-	SbGeoEllipsoid.$(OBJEXT) SbGeoProjection.$(OBJEXT) \
-	SbPolarStereographic.$(OBJEXT) SbUTMProjection.$(OBJEXT)
+am__objects_2 = SoGeo.$(OBJEXT) SoGeoOrigin.$(OBJEXT) \
+	SoGeoLocation.$(OBJEXT) SoGeoElement.$(OBJEXT) \
+	SoGeoSeparator.$(OBJEXT) SoGeoCoordinate.$(OBJEXT) \
+	SbGeoAngle.$(OBJEXT) SbGeoEllipsoid.$(OBJEXT) \
+	SbGeoProjection.$(OBJEXT) SbPolarStereographic.$(OBJEXT) \
+	SbUTMProjection.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_geo_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_geo_lst_SOURCES_DIST = SbGeoAngle.h SbGeoEllipsoid.h \
+am__EXTRA_geo_lst_SOURCES_DIST = SoGeo.h SbGeoAngle.h SbGeoEllipsoid.h \
 	SbGeoProjection.h SbUTMProjection.h SbPolarStereographic.h \
-	all-geo-cpp.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
+	all-geo-cpp.cpp SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp
@@ -375,39 +378,39 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libgeo_la_LDFLAGS =
 libgeo_la_LIBADD =
-am__libgeo_la_SOURCES_DIST = SoGeoOrigin.cpp SoGeoLocation.cpp \
+am__libgeo_la_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp all-geo-cpp.cpp
 am__objects_6 = all-geo-cpp.lo
-am__objects_7 = SoGeoOrigin.lo SoGeoLocation.lo SoGeoElement.lo \
+am__objects_7 = SoGeo.lo SoGeoOrigin.lo SoGeoLocation.lo SoGeoElement.lo \
 	SoGeoSeparator.lo SoGeoCoordinate.lo SbGeoAngle.lo \
 	SbGeoEllipsoid.lo SbGeoProjection.lo SbPolarStereographic.lo \
 	SbUTMProjection.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libgeo_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libgeo_la_SOURCES_DIST = SbGeoAngle.h SbGeoEllipsoid.h \
+am__EXTRA_libgeo_la_SOURCES_DIST = SoGeo.h SbGeoAngle.h SbGeoEllipsoid.h \
 	SbGeoProjection.h SbUTMProjection.h SbPolarStereographic.h \
-	all-geo-cpp.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
+	all-geo-cpp.cpp SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp
 libgeo_la_OBJECTS = $(am_libgeo_la_OBJECTS)
 libgeo@SUFFIX@LINKHACK_la_LDFLAGS =
 libgeo@SUFFIX@LINKHACK_la_LIBADD =
-am__libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeoOrigin.cpp \
+am__libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp \
 	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp \
 	SoGeoCoordinate.cpp SbGeoAngle.cpp SbGeoEllipsoid.cpp \
 	SbGeoProjection.cpp SbPolarStereographic.cpp \
 	SbUTMProjection.cpp all-geo-cpp.cpp
 am_libgeo@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SbGeoAngle.h \
+am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.h SbGeoAngle.h \
 	SbGeoEllipsoid.h SbGeoProjection.h SbUTMProjection.h \
-	SbPolarStereographic.h all-geo-cpp.cpp SoGeoOrigin.cpp \
-	SoGeoLocation.cpp SoGeoElement.cpp SoGeoSeparator.cpp \
-	SoGeoCoordinate.cpp SbGeoAngle.cpp SbGeoEllipsoid.cpp \
-	SbGeoProjection.cpp SbPolarStereographic.cpp \
+	SbPolarStereographic.h all-geo-cpp.cpp SoGeo.cpp \
+	SoGeoOrigin.cpp SoGeoLocation.cpp SoGeoElement.cpp \
+	SoGeoSeparator.cpp SoGeoCoordinate.cpp SbGeoAngle.cpp \
+	SbGeoEllipsoid.cpp SbGeoProjection.cpp SbPolarStereographic.cpp \
 	SbUTMProjection.cpp
 libgeo@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libgeo@SUFFIX@LINKHACK_la_OBJECTS)
@@ -423,6 +426,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SbPolarStereographic.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbUTMProjection.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbUTMProjection.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGeo.Plo ./$(DEPDIR)/SoGeo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoCoordinate.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoCoordinate.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoElement.Plo \
@@ -530,6 +534,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPolarStereographic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbUTMProjection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbUTMProjection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoElement.Plo@am__quote@
