@@ -377,7 +377,8 @@ public:
     fragmentshader(NULL),
     vertexshadercache(NULL),
     fragmentshadercache(NULL),
-    texunit0(NULL)
+    texunit0(NULL),
+    lightmodel(NULL)
   { 
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -397,6 +398,7 @@ public:
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
   }
   ~SoShadowGroupP() {
+    if (this->lightmodel) this->lightmodel->unref();
     if (this->texunit0) this->texunit0->unref();
     if (this->vertexshadercache) this->vertexshadercache->unref();
     if (this->fragmentshadercache) this->vertexshadercache->unref();
@@ -458,6 +460,7 @@ public:
   SoShaderProgramCache * vertexshadercache;
   SoShaderProgramCache * fragmentshadercache;
   SoShaderParameter1i * texunit0;
+  SoShaderParameter1i * lightmodel;
 
 };
 
@@ -1039,9 +1042,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       gen.addMainStatement(str);
     }
   }
-  gen.addMainStatement("gl_FragColor = vec4(color, gl_Color.a);\n");
+  gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, gl_Color.a) : vec4(texcolor.rgb, gl_Color.a);\n");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
+  gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
@@ -1085,10 +1089,18 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       this->texunit0 = new SoShaderParameter1i;
       this->texunit0->ref();
       this->texunit0->name = "coin_texunit0_model";
+      this->texunit0->value = 0;
+    }
+    if (!this->lightmodel) {
+      this->lightmodel = new SoShaderParameter1i;
+      this->lightmodel->ref();
+      this->lightmodel->name = "coin_light_model";
+      this->lightmodel->value = 1;
     }
     
     this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
     this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
+    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
   }
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();

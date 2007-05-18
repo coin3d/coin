@@ -217,6 +217,7 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/actions/SoAction.h>
 #include <stdio.h>
 
@@ -236,7 +237,9 @@ SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, So
       SbColor dummy;
       value =  SoGLTextureImageElement::get(state, model, dummy) != NULL;
     }
-    
+    else if (name == SbName("coin_light_model")) {
+      value = (int) SoLightModelElement::get(state);
+    }
     if (p) {
       if (p->value.getValue() != value) p->value = value;
     }

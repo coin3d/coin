@@ -52,6 +52,7 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLImage.h>
@@ -60,6 +61,8 @@
 #include <Inventor/C/tidbits.h>
 #include "../../misc/SoVBO.h"
 #include <coindefs.h> // COIN_OBSOLETED
+
+#include "../../shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 
@@ -582,6 +585,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
 
   assert(this->packedpointer);
 
+  SoGLShaderProgram * prog = SoGLShaderProgramElement::get((SoState*) stateptr);
   int stipplenum;
 
   for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
@@ -589,6 +593,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
       switch (i) {
       case LIGHT_MODEL_CASE:
         if (this->coinstate.lightmodel != this->glstate.lightmodel) {
+          if (prog) prog->updateCoinParameter((SoState*)stateptr, SbName("coin_light_model"));
           this->sendLightModel(this->coinstate.lightmodel);
         }
         break;
