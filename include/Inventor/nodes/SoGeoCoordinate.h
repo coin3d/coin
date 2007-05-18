@@ -55,7 +55,7 @@ protected:
 
 private:
 
-  SbMatrix getTransform(SoState * state) const;
+  SbMatrix getTransform(SoState * state, const int idx) const;
 
   SoGeoCoordinateP * pimpl;
 };
