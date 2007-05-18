@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{0E80DCC8-EEED-4B6C-B951-4FB73D0E4D99}"
+	ProjectGUID="{EEE3FBBB-3A03-434B-A752-15D3E7C3C5AF}"
 	>
 	<Platforms>
 		<Platform
@@ -32238,6 +32238,54 @@
 				</File>
 				<File
 					RelativePath="..\..\src\geo\SbUTMProjection.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\geo/"
+							ProgramDataBaseFileName="StaticDebug\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\geo/"
+							ProgramDataBaseFileName="Release\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\geo/"
+							ProgramDataBaseFileName="StaticRelease\geo/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\geo/"
+							ProgramDataBaseFileName="Debug\geo/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\geo\SoGeo.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

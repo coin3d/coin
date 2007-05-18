@@ -8774,6 +8774,19 @@ SOURCE=..\..\src\shadows\SoShadowStyleElement.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
+SOURCE=..\..\src\geo\SoGeo.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\geo"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\geo"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\geo\SoGeoOrigin.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
