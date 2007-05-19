@@ -803,7 +803,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   else {
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_texture->getFirstIndex());
     if (this->fbo_mipmap) {
-      glGenerateMipmapEXT(GL_TEXTURE_2D);
+      cc_glglue_glGenerateMipmap(glue, GL_TEXTURE_2D);
     }
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, 0);
   }
