@@ -167,6 +167,41 @@ PostBuild_Cmds=..\misc\install-sdk.bat dll debug
 # Name "coin3 - Win32 LIB (Debug)"
 # Begin Group "Documents"
 # PROP Default_Filter ";txt"
+# Begin Source File
+
+SOURCE=..\..\README
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\README.WIN32
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\NEWS
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\RELNOTES
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\LICENSE.GPL
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\COPYING
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\THANKS
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\ChangeLog
+# End Source File
+# End Group
+# Begin Group "Template Files"
+# PROP Default_Filter "in"
 # End Group
 # Begin Group "Source Files"
 # PROP Default_Filter "c;cpp;ic;icc;h"
@@ -608,6 +643,19 @@ SOURCE=..\..\src\base\SbBox2d.cpp
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBox3s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbBox3i32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4147,6 +4195,19 @@ SOURCE=..\..\src\fields\SoMFColor.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoMFDouble.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoMFEngine.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
@@ -4342,7 +4403,98 @@ SOURCE=..\..\src\fields\SoMFUShort.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoMFVec2b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec2s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec2i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoMFVec2f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec2d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec3b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec3s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec3i32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4381,7 +4533,98 @@ SOURCE=..\..\src\fields\SoMFVec3d.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoMFVec4b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4ub.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4us.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4ui32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoMFVec4f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoMFVec4d.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4433,7 +4676,72 @@ SOURCE=..\..\src\fields\SoSFBool.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFBox2s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFBox2i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFBox2f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFBox2d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFBox3s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFBox3i32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4459,7 +4767,33 @@ SOURCE=..\..\src\fields\SoSFBox3f.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFBox3d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFColor.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFDouble.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4706,7 +5040,33 @@ SOURCE=..\..\src\fields\SoSFUShort.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFVec2b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFVec2s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec2i32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4732,7 +5092,20 @@ SOURCE=..\..\src\fields\SoSFVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fields\SoSFVec3d.cpp
+SOURCE=..\..\src\fields\SoSFVec2d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec3b.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4758,6 +5131,19 @@ SOURCE=..\..\src\fields\SoSFVec3s.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFVec3i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFVec3f.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
@@ -4771,7 +5157,111 @@ SOURCE=..\..\src\fields\SoSFVec3f.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoSFVec3d.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4b.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4ub.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4s.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4us.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4i32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4ui32.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoSFVec4f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFVec4d.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10398,6 +10888,10 @@ SOURCE=..\..\include\Inventor\C\base\string.h
 
 SOURCE=..\..\include\Inventor\C\base\list.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\C\base\math-undefs.h
+# End Source File
 # End Group
 # Begin Group "Inventor\C\errors headers"
 # Set Default_Filter "h"
@@ -11871,6 +12365,10 @@ SOURCE=..\..\include\Inventor\fields\SoMFColor.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoMFDouble.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoMFEngine.h
 # End Source File
 # Begin Source File
@@ -11939,7 +12437,35 @@ SOURCE=..\..\include\Inventor\fields\SoMFUShort.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoMFVec2b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec2s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec2i32.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoMFVec2f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec2d.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec3b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec3s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec3i32.h
 # End Source File
 # Begin Source File
 
@@ -11951,7 +12477,35 @@ SOURCE=..\..\include\Inventor\fields\SoMFVec3d.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoMFVec4b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4ub.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4us.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4ui32.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoMFVec4f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoMFVec4d.h
 # End Source File
 # Begin Source File
 
@@ -11967,7 +12521,27 @@ SOURCE=..\..\include\Inventor\fields\SoSFBool.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoSFBox2s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFBox2i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFBox2f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFBox2d.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoSFBox3s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFBox3i32.h
 # End Source File
 # Begin Source File
 
@@ -11975,7 +12549,15 @@ SOURCE=..\..\include\Inventor\fields\SoSFBox3f.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoSFBox3d.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoSFColor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFDouble.h
 # End Source File
 # Begin Source File
 
@@ -12059,7 +12641,15 @@ SOURCE=..\..\include\Inventor\fields\SoSFUShort.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoSFVec2b.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoSFVec2s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec2i32.h
 # End Source File
 # Begin Source File
 
@@ -12067,7 +12657,19 @@ SOURCE=..\..\include\Inventor\fields\SoSFVec2f.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoSFVec2d.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec3b.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoSFVec3s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec3i32.h
 # End Source File
 # Begin Source File
 
@@ -12079,7 +12681,35 @@ SOURCE=..\..\include\Inventor\fields\SoSFVec3d.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoSFVec4b.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4ub.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4us.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4ui32.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoSFVec4f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFVec4d.h
 # End Source File
 # Begin Source File
 
@@ -13136,6 +13766,10 @@ SOURCE=..\..\include\Inventor\SbBox3s.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\SbBox3i32.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\SbBox3f.h
 # End Source File
 # Begin Source File
@@ -13153,6 +13787,10 @@ SOURCE=..\..\include\Inventor\SbColor.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\SbColor4f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbColorRGBA.h
 # End Source File
 # Begin Source File
 
@@ -13241,6 +13879,14 @@ SOURCE=..\..\include\Inventor\SbTesselator.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\SbTime.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbTypeInfo.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbVec.h
 # End Source File
 # Begin Source File
 
