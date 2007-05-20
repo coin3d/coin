@@ -96,6 +96,8 @@ public:
   virtual SbBool read(unsigned short & s);
   virtual SbBool read(float & f);
   virtual SbBool read(double & d);
+  virtual SbBool readByte(int8_t & b);
+  virtual SbBool readByte(uint8_t & b);
   virtual SbBool readBinaryArray(unsigned char * c, int length);
   virtual SbBool readBinaryArray(int32_t * l, int length);
   virtual SbBool readBinaryArray(float * f, int length);

@@ -46,7 +46,7 @@
 
 // *************************************************************************
 
-SO_SFIELD_SOURCE(SoSFBox3s, SbBox3s, SbBox3s);
+SO_SFIELD_SOURCE(SoSFBox3s, SbBox3s, const SbBox3s &);
 
 // *************************************************************************
 
@@ -135,7 +135,7 @@ SoSFBox3s::setValue(const SbVec3s & minvec, const SbVec3s & maxvec)
   Set value of vector.
 */
 void
-SoSFBox3s::getValue(SbBox3s &box)
+SoSFBox3s::getValue(SbBox3s & box) const
 {
   box = value;
 }

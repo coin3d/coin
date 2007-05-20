@@ -29,7 +29,7 @@
 #include <Inventor/SbColor.h>
 
 class COIN_DLL_API SoMFColor : public SoMField {
-    typedef SoMField inherited;
+  typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFColor, SbColor, const SbColor &);
 

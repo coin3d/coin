@@ -39,11 +39,12 @@ class COIN_DLL_API SoMFVec2f : public SoMField {
 public:
   static void initClass(void);
 
-  void setValues(const int start, const int num, const float xy[][2]);
-  void set1Value(const int idx, const float x, const float y);
-  void set1Value(const int idx, const float xy[2]);
-  void setValue(const float x, const float y);
+  void setValues(int start, int num, const float xy[][2]);
+  void set1Value(int idx, float x, float y);
+  void set1Value(int idx, const float xy[2]);
+  void setValue(float x, float y);
   void setValue(const float xy[2]);
-};
+
+}; // SoMFVec2f
 
 #endif // !COIN_SOMFVEC2F_H

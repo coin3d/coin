@@ -29,7 +29,7 @@
   This field is used where nodes, engines or other field containers
   needs to store a single vector with three elements.
 
-  \sa SoMFVec3f
+  \sa SbVec3d, SoMFVec3d
 */
 
 // *************************************************************************

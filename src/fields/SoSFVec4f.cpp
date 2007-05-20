@@ -29,7 +29,7 @@
   This field is used where nodes, engines or other field containers
   needs to store a single vector with four elements.
 
-  \sa SoMFVec4f
+  \sa SbVec4f, SoMFVec4f
 */
 
 // *************************************************************************
@@ -87,7 +87,7 @@ SoSFVec4f::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFVec4f::setValue(const float x, const float y, const float z, const float w)
+SoSFVec4f::setValue(float x, float y, float z, float w)
 {
   this->setValue(SbVec4f(x, y, z, w));
 }

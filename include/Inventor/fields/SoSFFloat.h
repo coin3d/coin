@@ -34,6 +34,7 @@ class COIN_DLL_API SoSFFloat : public SoSField {
 
 public:
   static void initClass(void);
-};
+
+}; // SoSFFloat
 
 #endif // !COIN_SOSFFLOAT_H

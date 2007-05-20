@@ -45,7 +45,7 @@
 
 // *************************************************************************
 
-SO_SFIELD_SOURCE(SoSFBox3f, SbBox3f, SbBox3f);
+SO_SFIELD_SOURCE(SoSFBox3f, SbBox3f, const SbBox3f &);
 
 // *************************************************************************
 
@@ -108,12 +108,8 @@ SoSFBox3f::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFBox3f::setValue(float xmin, 
-                    float ymin, 
-                    float zmin, 
-                    float xmax, 
-                    float ymax, 
-                    float zmax)
+SoSFBox3f::setValue(float xmin, float ymin, float zmin, 
+                    float xmax, float ymax, float zmax)
 {
   this->setValue(SbBox3f(xmin, ymin, zmin, xmax, ymax, zmax));
 }
@@ -133,7 +129,7 @@ SoSFBox3f::setValue(const SbVec3f & minvec, const SbVec3f & maxvec)
   Set value of vector.
 */
 void
-SoSFBox3f::getValue(SbBox3f &box)
+SoSFBox3f::getValue(SbBox3f & box) const
 {
   box = value;
 }

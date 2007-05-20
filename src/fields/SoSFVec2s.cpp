@@ -46,7 +46,7 @@
 
 // *************************************************************************
 
-SO_SFIELD_SOURCE(SoSFVec2s, SbVec2s, const SbVec2s &);
+SO_SFIELD_SOURCE(SoSFVec2s, SbVec2s, SbVec2s);
 
 // *************************************************************************
 
@@ -90,7 +90,7 @@ SoSFVec2s::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFVec2s::setValue(const short x, const short y)
+SoSFVec2s::setValue(short x, short y)
 {
   this->setValue(SbVec2s(x, y));
 }

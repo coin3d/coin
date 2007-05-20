@@ -86,7 +86,7 @@ SoSFVec2f::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFVec2f::setValue(const float x, const float y)
+SoSFVec2f::setValue(float x, float y)
 {
   this->setValue(SbVec2f(x, y));
 }

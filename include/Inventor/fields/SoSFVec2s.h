@@ -31,13 +31,14 @@
 class COIN_DLL_API SoSFVec2s : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFVec2s, SbVec2s, const SbVec2s &);
+  SO_SFIELD_HEADER(SoSFVec2s, SbVec2s, SbVec2s);
 
 public:
   static void initClass(void);
 
-  void setValue(const short x, const short y);
+  void setValue(short x, short y);
   void setValue(const short xy[2]);
-};
+
+}; // SoSFVec2s
 
 #endif // !COIN_SOSFVEC2S_H

@@ -33,18 +33,18 @@ class COIN_DLL_API SoMFVec4f : public SoMField {
 
   SO_MFIELD_HEADER(SoMFVec4f, SbVec4f, const SbVec4f &);
 
-  SO_MFIELD_SETVALUESPOINTER_HEADER(float);
   SO_MFIELD_SETVALUESPOINTER_HEADER(SbVec4f);
+  SO_MFIELD_SETVALUESPOINTER_HEADER(float);
 
 public:
   static void initClass(void);
 
-  void setValues(const int start, const int num, const float xyzw[][4]);
-  void set1Value(const int idx,
-                 const float x, const float y, const float z, const float w);
-  void set1Value(const int idx, const float xyzw[4]);
-  void setValue(const float x, const float y, const float z, const float w);
+  void setValues(int start, int num, const float xyzw[][4]);
+  void set1Value(int idx, float x, float y, float z, float w);
+  void set1Value(int idx, const float xyzw[4]);
+  void setValue(float x, float y, float z, float w);
   void setValue(const float xyzw[4]);
-};
+
+}; // SoMFVec4f
 
 #endif // !COIN_SOMFVEC4F_H

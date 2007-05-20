@@ -33,13 +33,14 @@
   setValuesPointer() method. See SoMField documentation for
   information on how to use this function.
 
-  \sa SoSFVec2f
+  \sa SbVec2f, SoSFVec2f
 */
 
 // *************************************************************************
 
-#include <assert.h>
 #include <Inventor/fields/SoMFVec2f.h>
+
+#include <assert.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -93,7 +94,7 @@ SoMFVec2f::write1Value(SoOutput * out, int idx) const
   \a start.
 */
 void
-SoMFVec2f::setValues(const int start, const int numarg, const float xy[][2])
+SoMFVec2f::setValues(int start, int numarg, const float xy[][2])
 {
   if (start+numarg > this->maxNum) this->allocValues(start+numarg);
   else if (start+numarg > this->num) this->num = start+numarg;
@@ -106,7 +107,7 @@ SoMFVec2f::setValues(const int start, const int numarg, const float xy[][2])
   Set the vector at \a idx.
 */
 void
-SoMFVec2f::set1Value(const int idx, const float x, const float y)
+SoMFVec2f::set1Value(int idx, float x, float y)
 {
   this->set1Value(idx, SbVec2f(x, y));
 }
@@ -115,7 +116,7 @@ SoMFVec2f::set1Value(const int idx, const float x, const float y)
   Set the vector at \a idx.
 */
 void
-SoMFVec2f::set1Value(const int idx, const float xy[2])
+SoMFVec2f::set1Value(int idx, const float xy[2])
 {
   this->set1Value(idx, SbVec2f(xy));
 }
@@ -125,7 +126,7 @@ SoMFVec2f::set1Value(const int idx, const float xy[2])
   element values.
 */
 void
-SoMFVec2f::setValue(const float x, const float y)
+SoMFVec2f::setValue(float x, float y)
 {
   this->setValue(SbVec2f(x, y));
 }
@@ -138,7 +139,7 @@ void
 SoMFVec2f::setValue(const float xy[2])
 {
   if (xy == NULL) this->setNum(0);
-  else this->setValue(SbVec2f(xy[0], xy[1]));
+  else this->setValue(SbVec2f(xy));
 }
 
 // *************************************************************************

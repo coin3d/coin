@@ -29,10 +29,24 @@ class SbPlane;
 class SbRotation;
 class SbString;
 class SbTime;
+class SbVec2b;
+class SbVec2s;
+class SbVec2i32;
 class SbVec2f;
-class SbVec3d;
+class SbVec2d;
+class SbVec3b;
+class SbVec3s;
+class SbVec3i32;
 class SbVec3f;
+class SbVec3d;
+class SbVec4b;
+class SbVec4ub;
+class SbVec4s;
+class SbVec4us;
+class SbVec4i32;
+class SbVec4ui32;
 class SbVec4f;
+class SbVec4d;
 class SoField;
 class SoInput;
 class SoOutput;
@@ -45,6 +59,7 @@ SbBool sosfbool_read_value(SoInput * in, SbBool & val);
 void sosfbool_write_value(SoOutput * out, SbBool val);
 
 void sosffloat_write_value(SoOutput * out, float val);
+void sosfdouble_write_value(SoOutput * out, double val);
 
 void sosfstring_write_value(const SoField * f, SoOutput * out,
                             const SbString & val);
@@ -63,17 +78,29 @@ SbBool sosftime_read_value(SoInput * in, SbTime & t);
 void sosftime_write_value(SoOutput * out, const SbTime & p);
 
 void sosfuint32_write_value(SoOutput * out, uint32_t val);
-
 void sosfushort_write_value(SoOutput * out, unsigned short val);
 
+void sosfvec2b_write_value(SoOutput * out, SbVec2b v);
+void sosfvec2s_write_value(SoOutput * out, SbVec2s v);
+void sosfvec2i32_write_value(SoOutput * out, const SbVec2i32 & v);
 void sosfvec2f_write_value(SoOutput * out, const SbVec2f & v);
+void sosfvec2d_write_value(SoOutput * out, const SbVec2d & v);
 
 SbBool sosfvec3d_read_value(SoInput * in, SbVec3d & v);
+void sosfvec3b_write_value(SoOutput * out, SbVec3b v);
+void sosfvec3s_write_value(SoOutput * out, const SbVec3s & v);
+void sosfvec3i32_write_value(SoOutput * out, const SbVec3i32 & v);
+void sosfvec3f_write_value(SoOutput * out, const SbVec3f & v);
 void sosfvec3d_write_value(SoOutput * out, const SbVec3d & v);
 
-void sosfvec3f_write_value(SoOutput * out, const SbVec3f & v);
-
+void sosfvec4b_write_value(SoOutput * out, SbVec4b v);
+void sosfvec4ub_write_value(SoOutput * out, SbVec4ub v);
+void sosfvec4s_write_value(SoOutput * out, const SbVec4s & v);
+void sosfvec4us_write_value(SoOutput * out, const SbVec4us & v);
+void sosfvec4i32_write_value(SoOutput * out, const SbVec4i32 & v);
+void sosfvec4ui32_write_value(SoOutput * out, const SbVec4ui32 & v);
 void sosfvec4f_write_value(SoOutput * out, const SbVec4f & v);
+void sosfvec4d_write_value(SoOutput * out, const SbVec4d & v);
 
 // *************************************************************************
 

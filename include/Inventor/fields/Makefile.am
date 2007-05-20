@@ -8,6 +8,7 @@ PublicHeaders = \
 	SoMFBitMask.h \
 	SoMFBool.h \
 	SoMFColor.h \
+	SoMFDouble.h \
 	SoMFEngine.h \
 	SoMFEnum.h \
 	SoMFFloat.h \
@@ -25,16 +26,37 @@ PublicHeaders = \
 	SoMFUInt32.h \
 	SoMFULong.h \
 	SoMFUShort.h \
+	SoMFVec2b.h \
+	SoMFVec2s.h \
+	SoMFVec2i32.h \
 	SoMFVec2f.h \
+	SoMFVec2d.h \
+	SoMFVec3b.h \
+	SoMFVec3s.h \
+	SoMFVec3i32.h \
 	SoMFVec3f.h \
 	SoMFVec3d.h \
+	SoMFVec4b.h \
+	SoMFVec4ub.h \
+	SoMFVec4s.h \
+	SoMFVec4us.h \
+	SoMFVec4i32.h \
+	SoMFVec4ui32.h \
 	SoMFVec4f.h \
+	SoMFVec4d.h \
 	SoMField.h \
 	SoSFBitMask.h \
 	SoSFBool.h \
+	SoSFBox2s.h \
+	SoSFBox2i32.h \
+	SoSFBox2f.h \
+	SoSFBox2d.h \
 	SoSFBox3s.h \
+	SoSFBox3i32.h \
 	SoSFBox3f.h \
+	SoSFBox3d.h \
 	SoSFColor.h \
+	SoSFDouble.h \
 	SoSFEngine.h \
 	SoSFEnum.h \
 	SoSFFloat.h \
@@ -55,12 +77,24 @@ PublicHeaders = \
 	SoSFUInt32.h \
 	SoSFULong.h \
 	SoSFUShort.h \
+	SoSFVec2b.h \
 	SoSFVec2s.h \
+	SoSFVec2i32.h \
 	SoSFVec2f.h \
+	SoSFVec2d.h \
+	SoSFVec3b.h \
 	SoSFVec3s.h \
+	SoSFVec3i32.h \
 	SoSFVec3f.h \
 	SoSFVec3d.h \
+	SoSFVec4b.h \
+	SoSFVec4ub.h \
+	SoSFVec4s.h \
+	SoSFVec4us.h \
+	SoSFVec4i32.h \
+	SoSFVec4ui32.h \
 	SoSFVec4f.h \
+	SoSFVec4d.h \
 	SoSField.h
 PrivateHeaders = \
 	SoSubFieldP.h \

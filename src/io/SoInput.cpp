@@ -1462,6 +1462,10 @@ SoInput::read(SbName & n, SbBool validIdent)
   return TRUE;
 }
 
+// FIXME: should we maybe do bounds-testing on the read-in data
+// to warn if the data doesn't fit in the storage type?
+// std::numeric_limits<type>::max() ought to be all the information
+// needed.  20070520 larsa
 #define READ_NUM(reader, readType, num, type) \
   SoInput_FileInfo * fi = this->getTopOfStack(); \
   assert(fi); \
@@ -1563,6 +1567,50 @@ SoInput::read(unsigned short & s)
   }
   else {
     READ_UNSIGNED_INTEGER(s, unsigned short);
+  }
+  return TRUE;
+}
+
+/*!
+  Read signed byte integer from current file or buffer position and place
+  it in \a b. Returns \c FALSE if we hit end of file prematurely.
+ */
+SbBool
+SoInput::readByte(int8_t & b)
+{
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    b = (int8_t) tmp;
+    return TRUE;
+  }
+  else {
+    READ_INTEGER(b, int8_t);
+  }
+  return TRUE;
+}
+
+/*!
+  Read unsigned byte integer from current file or buffer position and place
+  it in \a b. Returns \c FALSE if we hit end of file prematurely.
+ */
+SbBool
+SoInput::readByte(uint8_t & b)
+{
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+
+  if (fi->isBinary()) { // Assume checkheader has been called
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    b = (uint8_t) tmp;
+    return TRUE;
+  }
+  else {
+    READ_UNSIGNED_INTEGER(b, uint8_t);
   }
   return TRUE;
 }

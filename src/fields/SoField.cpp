@@ -2489,22 +2489,41 @@ void
 SoField::initClasses(void)
 {
   SoSField::initClass();
+  SoSFBox2s::initClass();
+  SoSFBox2i32::initClass();
+  SoSFBox2f::initClass();
+  SoSFBox2d::initClass();
   SoSFBox3s::initClass();
+  SoSFBox3i32::initClass();
   SoSFBox3f::initClass();
+  SoSFBox3d::initClass();
   SoSFBool::initClass();
   SoSFColor::initClass();
+  SoSFDouble::initClass();
   SoSFEngine::initClass();
   SoSFFloat::initClass();
   SoSFShort::initClass();
   SoSFUShort::initClass();
   SoSFInt32::initClass();
   SoSFUInt32::initClass();
-  SoSFVec2f::initClass();
+  SoSFVec2b::initClass();
   SoSFVec2s::initClass();
-  SoSFVec3d::initClass();
-  SoSFVec3f::initClass();
+  SoSFVec2i32::initClass();
+  SoSFVec2f::initClass();
+  SoSFVec2d::initClass();
+  SoSFVec3b::initClass();
   SoSFVec3s::initClass();
+  SoSFVec3i32::initClass();
+  SoSFVec3f::initClass();
+  SoSFVec3d::initClass();
+  SoSFVec4b::initClass();
+  SoSFVec4ub::initClass();
+  SoSFVec4s::initClass();
+  SoSFVec4us::initClass();
+  SoSFVec4i32::initClass();
+  SoSFVec4ui32::initClass();
   SoSFVec4f::initClass();
+  SoSFVec4d::initClass();
   SoSFMatrix::initClass();
   SoSFEnum::initClass();
   SoSFBitMask::initClass();
@@ -2518,9 +2537,11 @@ SoField::initClasses(void)
   SoSFString::initClass();
   SoSFTime::initClass();
   SoSFTrigger::initClass();
+
   SoMField::initClass();
   SoMFBool::initClass();
   SoMFColor::initClass();
+  SoMFDouble::initClass();
   SoMFEngine::initClass();
   SoMFEnum::initClass();
   SoMFBitMask::initClass();
@@ -2537,10 +2558,24 @@ SoField::initClasses(void)
   SoMFTime::initClass();
   SoMFUInt32::initClass();
   SoMFUShort::initClass();
+  SoMFVec2b::initClass();
+  SoMFVec2s::initClass();
+  SoMFVec2i32::initClass();
   SoMFVec2f::initClass();
-  SoMFVec3d::initClass();
+  SoMFVec2d::initClass();
+  SoMFVec3b::initClass();
+  SoMFVec3s::initClass();
+  SoMFVec3i32::initClass();
   SoMFVec3f::initClass();
+  SoMFVec3d::initClass();
+  SoMFVec4b::initClass();
+  SoMFVec4ub::initClass();
+  SoMFVec4s::initClass();
+  SoMFVec4us::initClass();
+  SoMFVec4i32::initClass();
+  SoMFVec4ui32::initClass();
   SoMFVec4f::initClass();
+  SoMFVec4d::initClass();
 
   // Create these obsoleted types for backwards compatibility. They
   // are typedef'ed to the types which obsoleted them, but this is
@@ -2551,7 +2586,9 @@ SoField::initClasses(void)
   // will fail, but this can be solved with a hack in
   // SoType::operator==(). Do we _want_ to implement this hack,
   // though? It'd be ugly as hell.  19991109 mortene.
-
+  // Does it need to be so ugly?  == could compare createInstance
+  // pointers if both have is set?  But would it be correct, and would
+  // any code depend on or benefit from such behaviour?  20070518 larsa
   SoType::createType(SoSField::getClassTypeId(), "SFLong",
                      &SoSFInt32::createInstance);
   SoType::createType(SoSField::getClassTypeId(), "SFULong",

@@ -29,7 +29,7 @@
   This field is used where nodes, engines or other field containers
   needs to store a single vector with three elements.
 
-  \sa SoMFVec3s
+  \sa SbVec3s, SoMFVec3s
 */
 
 // *************************************************************************
@@ -89,7 +89,7 @@ SoSFVec3s::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFVec3s::setValue(const short x, const short y, const short z)
+SoSFVec3s::setValue(short x, short y, short z)
 {
   this->setValue(SbVec3s(x, y, z));
 }

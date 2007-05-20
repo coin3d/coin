@@ -24,7 +24,6 @@
  *
 \**************************************************************************/
 
-
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbBox3s.h>
@@ -32,19 +31,16 @@
 class COIN_DLL_API SoSFBox3s : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFBox3s, SbBox3s, SbBox3s);
+  SO_SFIELD_HEADER(SoSFBox3s, SbBox3s, const SbBox3s &);
 
 public:
   static void initClass(void);
 
-  void setValue(short xmin,
-                short ymin,
-                short zmin,
-                short xmax,
-                short ymax,
-                short zmax);
+  void setValue(short xmin, short ymin, short zmin,
+                short xmax, short ymax, short zmax);
   void setValue(const SbVec3s & minvec, const SbVec3s & maxvec);
-  void getValue(SbBox3s & box);
-};
+  void getValue(SbBox3s & box) const;
+
+}; // SoSFBox3s
 
 #endif // !COIN_SOSFBOX3S_H

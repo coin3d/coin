@@ -29,7 +29,7 @@
   This field is used where nodes, engines or other field containers
   needs to store an array of vectors with three elements.
 
-  \sa SoSFVec3d, SoMFVec3f
+  \sa SbVec3d, SoSFVec3d, SoMFVec3f
 */
 
 // *************************************************************************
@@ -89,7 +89,7 @@ SoMFVec3d::write1Value(SoOutput * out, int idx) const
   field to accommodate all given double-vector element values.
 */
 void
-SoMFVec3d::setValues(const int start, const int numarg, const double xyz[][3])
+SoMFVec3d::setValues(int start, int numarg, const double xyz[][3])
 {
   if (start+numarg > this->maxNum) this->allocValues(start+numarg);
   else if (start+numarg > this->num) this->num = start+numarg;
@@ -102,8 +102,7 @@ SoMFVec3d::setValues(const int start, const int numarg, const double xyz[][3])
   Set the vector at \a idx.
 */
 void
-SoMFVec3d::set1Value(const int idx,
-                     const double x, const double y, const double z)
+SoMFVec3d::set1Value(int idx, double x, double y, double z)
 {
   this->set1Value(idx, SbVec3d(x, y, z));
 }
@@ -112,7 +111,7 @@ SoMFVec3d::set1Value(const int idx,
   Set the vector at \a idx.
 */
 void
-SoMFVec3d::set1Value(const int idx, const double xyz[3])
+SoMFVec3d::set1Value(int idx, const double xyz[3])
 {
   this->set1Value(idx, SbVec3d(xyz));
 }
@@ -122,7 +121,7 @@ SoMFVec3d::set1Value(const int idx, const double xyz[3])
   element values.
 */
 void
-SoMFVec3d::setValue(const double x, const double y, const double z)
+SoMFVec3d::setValue(double x, double y, double z)
 {
   this->setValue(SbVec3d(x, y, z));
 }

@@ -35,16 +35,42 @@
 
 // *************************************************************************
 
+#include "shared.h"
+
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
+
+#include <Inventor/SbVec2b.h>
+#include <Inventor/SbVec2ub.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec2us.h>
+#include <Inventor/SbVec2i32.h>
+#include <Inventor/SbVec2ui32.h>
 #include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec2d.h>
+
+#include <Inventor/SbVec3b.h>
+#include <Inventor/SbVec3ub.h>
+#include <Inventor/SbVec3s.h>
+#include <Inventor/SbVec3us.h>
+#include <Inventor/SbVec3i32.h>
+#include <Inventor/SbVec3ui32.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec3d.h>
+
+#include <Inventor/SbVec4b.h>
+#include <Inventor/SbVec4ub.h>
+#include <Inventor/SbVec4s.h>
+#include <Inventor/SbVec4us.h>
+#include <Inventor/SbVec4i32.h>
+#include <Inventor/SbVec4ui32.h>
 #include <Inventor/SbVec4f.h>
+#include <Inventor/SbVec4d.h>
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -113,6 +139,14 @@ sosfbool_write_value(SoOutput * out, SbBool val)
 // and SoMFFloat.
 void
 sosffloat_write_value(SoOutput * out, float val)
+{
+  out->write(val);
+}
+
+// Write double precision floating point value to output stream. Used from
+// SoSFDouble and SoMFDouble.
+void
+sosfdouble_write_value(SoOutput * out, double val)
 {
   out->write(val);
 }
@@ -325,6 +359,35 @@ sosfushort_write_value(SoOutput * out, unsigned short val)
 
 // *************************************************************************
 
+// Write to output stream. Used from SoSFVec2b and SoMFVec2b.
+void
+sosfvec2b_write_value(SoOutput * out, SbVec2b v)
+{
+  // FIXME: check how write(char & c) writes it's data (ascii) and see if
+  // that can be used.  20070520 larsa
+  out->write((short) v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[1]);
+}
+
+// Write to output stream. Used from SoSFVec2s and SoMFVec2s.
+void
+sosfvec2s_write_value(SoOutput * out, SbVec2s v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+}
+
+// Write to output stream. Used from SoSFVec2i32 and SoMFVec2i32.
+void
+sosfvec2i32_write_value(SoOutput * out, const SbVec2i32 & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+}
+
 // Write to output stream. Used from SoSFVec2f and SoMFVec2f.
 void
 sosfvec2f_write_value(SoOutput * out, const SbVec2f & v)
@@ -334,8 +397,16 @@ sosfvec2f_write_value(SoOutput * out, const SbVec2f & v)
   out->write(v[1]);
 }
 
-// *************************************************************************
+// Write to output stream. Used from SoSFVec2d and SoMFVec2d.
+void
+sosfvec2d_write_value(SoOutput * out, const SbVec2d & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+}
 
+// *************************************************************************
 
 // Read from input stream, return TRUE if successful. Used from
 // SoSFVec3d and SoMFVec3f.
@@ -347,6 +418,50 @@ sosfvec3d_read_value(SoInput * in, SbVec3d & v)
     return FALSE;
   }
   return TRUE;
+}
+
+// Write to output stream. Used from SoSFVec3b and SoMFVec3b.
+void
+sosfvec3b_write_value(SoOutput * out, SbVec3b v)
+{
+  out->write((short) v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[2]);
+}
+
+// Write to output stream. Used from SoSFVec3s and SoMFVec3s.
+void
+sosfvec3s_write_value(SoOutput * out, const SbVec3s & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+}
+
+// Write to output stream. Used from SoSFVec3i32 and SoMFVec3i32.
+void
+sosfvec3i32_write_value(SoOutput * out, const SbVec3i32 & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+}
+
+// Write to output stream. Used from SoSFVec3f and SoMFVec3f.
+void
+sosfvec3f_write_value(SoOutput * out, const SbVec3f & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
 }
 
 // Write to output stream. Used from SoSFVec3d and SoMFVec3d.
@@ -362,24 +477,100 @@ sosfvec3d_write_value(SoOutput * out, const SbVec3d & v)
 
 // *************************************************************************
 
-// Write to output stream. Used from SoSFVec3f, SoMFVec3f, and
-// SoSFColor.
+// Write to output stream. Used from SoSFVec4b and SoMFVec4b.
 void
-sosfvec3f_write_value(SoOutput * out, const SbVec3f & v)
+sosfvec4b_write_value(SoOutput * out, SbVec4b v)
+{
+  out->write((short) v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((short) v[3]);
+}
+
+// Write to output stream. Used from SoSFVec4b and SoMFVec4b.
+void
+sosfvec4ub_write_value(SoOutput * out, SbVec4ub v)
+{
+  out->write((unsigned short) v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((unsigned short) v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((unsigned short) v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write((unsigned short) v[3]);
+}
+
+// Write to output stream. Used from SoSFVec4s and SoMFVec4s.
+void
+sosfvec4s_write_value(SoOutput * out, const SbVec4s & v)
 {
   out->write(v[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(v[1]);
   if (!out->isBinary()) out->write(' ');
   out->write(v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[3]);
 }
 
-// *************************************************************************
+// Write to output stream. Used from SoSFVec4s and SoMFVec4s.
+void
+sosfvec4us_write_value(SoOutput * out, const SbVec4us & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[3]);
+}
 
+// Write to output stream. Used from SoSFVec4i32 and SoMFVec4i32.
+void
+sosfvec4i32_write_value(SoOutput * out, const SbVec4i32 & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[3]);
+}
+
+// Write to output stream. Used from SoSFVec4i32 and SoMFVec4i32.
+void
+sosfvec4ui32_write_value(SoOutput * out, const SbVec4ui32 & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[3]);
+}
 
 // Write to output stream. Used from SoSFVec4f and SoMFVec4f.
 void
 sosfvec4f_write_value(SoOutput * out, const SbVec4f & v)
+{
+  out->write(v[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[2]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(v[3]);
+}
+
+// Write to output stream. Used from SoSFVec4d and SoMFVec4d.
+void
+sosfvec4d_write_value(SoOutput * out, const SbVec4d & v)
 {
   out->write(v[0]);
   if (!out->isBinary()) out->write(' ');

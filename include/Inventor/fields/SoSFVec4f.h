@@ -36,8 +36,9 @@ class COIN_DLL_API SoSFVec4f : public SoSField {
 public:
   static void initClass(void);
 
-  void setValue(const float x, const float y, const float z, const float w);
+  void setValue(float x, float y, float z, float w);
   void setValue(const float xyzw[4]);
-};
+
+}; // SoSFVec4f
 
 #endif // !COIN_SOSFVEC4F_H
