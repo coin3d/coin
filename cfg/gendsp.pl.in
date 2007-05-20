@@ -46,7 +46,59 @@ if ( $me =~ m%^[^/\\]% ) {
   $me =~ s%/./%/%g;
 }
 
+# Environment variables to back-substitute from value to variable reference
+# in the project files to make the project moveable
 @reversevars = ("QTDIR", "COINDIR");
+
+# List of files that should be entered into the "Documents" project file
+# group if they exist.
+@docfiles = ("README", "README.WIN32", "NEWS", "RELNOTES", "LICENSE.GPL",
+             "COPYING", "THANKS", "ChangeLog");
+
+############################################################################
+
+$prefix = "@prefix@";
+$build_dir = "@abs_top_builddir@";
+while ( $build_dir =~ m%[\\/][^\\/]*[^\\/.][\\/]\.\.% ) {
+  $build_dir =~ s%[\\/][^\\/]*[^\\/\.][\\/]\.\.%%g;
+}
+$build_dir =~ s%[\\/]\.$%%g;
+$src_dir = "@abs_top_srcdir@";
+while ( $src_dir =~ m%[\\/][^\\/]*[^\\/.][\\/]\.\.% ) {
+  $src_dir =~ s%[\\/][^\\/]*[^\\/\.][\\/]\.\.%%g;
+}
+$src_dir =~ s%[\\/]\.$%%;
+$ac_unique_file = "@ac_unique_file@";
+$sim_ac_relative_src_dir = "@sim_ac_relative_src_dir@";
+$sim_ac_relative_src_dir_p = @sim_ac_relative_src_dir_p@; # true or false
+if ($sim_ac_relative_src_dir_p) {
+  $sim_ac_relative_src_dir_win = Unix2Dos($sim_ac_relative_src_dir);
+}
+$src_dir_win = Cygpath2Win($src_dir);
+$build_dir_win = Cygpath2Win($build_dir);
+
+$src_dir_win =~ s/\\/\\\\/g;
+$build_dir_win =~ s/\\/\\\\/g;
+# print "SOURCE DIR:     ${src_dir}\n";
+# print "SOURCE DIR WIN: ${src_dir_win}\n";
+# print "BUILD DIR WIN:  ${build_dir_win}\n";
+
+$me_u = Dos2Unix($me);
+$medir_u = $me;
+$medir_u =~ s,[^/]*$,,g;
+$srcdir_u = $medir_u;
+$srcdir_u =~ s,[^/]*/$,,g;
+$thisdir_u = Dos2Unix($cwd);
+
+if ( $sim_ac_relative_src_dir_p ) {
+  local $filename = "${srcdir_u}/${sim_ac_relative_src_dir}/${ac_unique_file}";
+  $filename = Dos2Unix($filename);
+  if ( ! -f $filename ) {
+    die "error: directories have been moved relative to each other since the last configure run. expected to find '$filename'.";
+  }
+} else {
+  die "error: dsp generation is not supported when absolute paths are necessary to locate files.";
+}
 
 ############################################################################
 
@@ -54,7 +106,7 @@ $group = "";
 $prev_group = "";
 
 sub LoadVars {
-  local $filename = "/tmp/gendsp-vars.txt";
+  local $filename = "@abs_top_builddir@/gendsp-vars.txt";
   open(IN, "${filename}");
   while (<IN>) {
     $line = $_;
@@ -67,7 +119,7 @@ sub LoadVars {
 }
 
 sub SaveVars {
-  local $filename = "/tmp/gendsp-vars.txt";
+  local $filename = "@abs_top_builddir@/gendsp-vars.txt";
   open(OUT, ">${filename}");
   print OUT "group = ${group}\n";
   close(OUT);
@@ -236,46 +288,6 @@ sub CRLFFile {
 
 LoadVars();
 
-$prefix = "@prefix@";
-$build_dir = "@abs_top_builddir@";
-while ( $build_dir =~ m%[\\/][^\\/]*[^\\/.][\\/]\.\.% ) {
-  $build_dir =~ s%[\\/][^\\/]*[^\\/\.][\\/]\.\.%%g;
-}
-$build_dir =~ s%[\\/]\.$%%g;
-$src_dir = "@abs_top_srcdir@";
-while ( $src_dir =~ m%[\\/][^\\/]*[^\\/.][\\/]\.\.% ) {
-  $src_dir =~ s%[\\/][^\\/]*[^\\/\.][\\/]\.\.%%g;
-}
-$src_dir =~ s%[\\/]\.$%%;
-$ac_unique_file = "@ac_unique_file@";
-$sim_ac_relative_src_dir = "@sim_ac_relative_src_dir@";
-$sim_ac_relative_src_dir_p = @sim_ac_relative_src_dir_p@; # true or false
-$src_dir_win = Cygpath2Win($src_dir);
-$build_dir_win = Cygpath2Win($build_dir);
-
-
-$src_dir_win =~ s/\\/\\\\/g;
-$build_dir_win =~ s/\\/\\\\/g;
-# print "SOURCE DIR:     ${src_dir}\n";
-# print "SOURCE DIR WIN: ${src_dir_win}\n";
-# print "BUILD DIR WIN:  ${build_dir_win}\n";
-
-$me_u = Dos2Unix($me);
-$medir_u = $me;
-$medir_u =~ s,[^/]*$,,g;
-$srcdir_u = $medir_u;
-$srcdir_u =~ s,[^/]*/$,,g;
-$thisdir_u = Dos2Unix($cwd);
-
-if ( $sim_ac_relative_src_dir_p ) {
-  local $filename = "${srcdir_u}/${sim_ac_relative_src_dir}/${ac_unique_file}";
-  $filename = Dos2Unix($filename);
-  if ( ! -f $filename ) {
-    die "error: directories have been moved relative to each other since the last configure run. expected to find '$filename'.";
-  }
-} else {
-  die "error: dsp generation is not supported when absolute paths are necessary to locate files.";
-}
 
 # **************************************************************************
 # The following block (the --registar-public-header part) generates
@@ -322,7 +334,6 @@ if ( $ARGV[0] eq "--register-public-header" ) {
   $headerfile =~ s%^${build_dir}[\\/]?%.\\%;
   $headerfile =~ s%^${build_dir_win}[\\/]?%.\\%;
   if ($sim_ac_relative_src_dir_p) {
-    $sim_ac_relative_src_dir_win = Unix2Dos($sim_ac_relative_src_dir);
     $headerfile =~ s%^${src_dir}[\\/]?%${sim_ac_relative_src_dir_win}\\%;
     $headerfile =~ s%^${src_dir_win}[\\/]?%${sim_ac_relative_src_dir_win}\\%;
   }
@@ -369,6 +380,14 @@ if ( $ARGV[0] eq "--register-public-header" ) {
   open(BAT, ">>${installheadersfile}");
   print BAT "copy /Y ${headerfile} ${finalheader} >nul:\n";
   close(BAT);
+
+  $uninstallheadersfile = $installheadersfile;
+  $uninstallheadersfile =~ s/install-hea/uninstall-hea/;
+
+  open(BAT2, ">>${uninstallheadersfile}");
+  print BAT2 "del ${finalheader}\n";
+  close(BAT2);
+
   exit 0;
 }
 
@@ -656,6 +675,25 @@ PostBuild_Cmds=..\\misc\\install-sdk.bat dll debug
 # PROP Default_Filter ";txt"
 _EODSP
 
+      for $docfile (@docfiles) {
+        if ( -f "${src_dir}/${docfile}" ) {
+          print DSP <<"_EODSP";
+# Begin Source File
+
+SOURCE=${sim_ac_relative_src_dir_win}\\${docfile}
+# End Source File
+_EODSP
+        }
+      }
+      print DSP <<"_EODSP";
+# End Group
+# Begin Group "Template Files"
+# PROP Default_Filter "in"
+_EODSP
+
+      # FIXME: figure out which is the template files, and set up
+      # csubst.exe-based build-rules for them...
+
       print DSP <<"_EODSP";
 # End Group
 # Begin Group "Source Files"
@@ -720,7 +758,6 @@ _EODSP
 
 SOURCE=${sourcefile}
 _EODSP
-  # print "SOURCE=${sourcefile}\n";
   if ($group ne "") {
     print DSP <<"_EODSP";
 !IF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION\@ - Win32 DLL (Release)"
@@ -792,6 +829,8 @@ _EODSP
       $headerfile =~ s%^${src_dir_win}[\\/]?%${sim_ac_relative_src_dir_win}\\%;
     }
 
+    # FIXME: this seems awfully redundant - check if the moc-rules can be
+    # folded to one config-independent rule.
     print DSP <<"_EODSP";
 # Begin Source File
 
@@ -1039,7 +1078,10 @@ _EODSW
   SubstFile($workspacefile);
   $installheadersfile = $studiofile;
   $installheadersfile =~ s,([^\\/0-9]*)[0-9][^\\/]*\.dsp,install-headers.bat,;
+  $uninstallheadersfile = $installheadersfile;
+  $uninstallheadersfile =~ s/install-hea/uninstall-hea/;
   SubstBatFile($installheadersfile);
+  SubstBatFile($uninstallheadersfile);
 
   # Transform paths to be relative paths for non-installer-builds too.
   # This should probably be configurable in some way though.

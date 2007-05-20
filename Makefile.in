@@ -336,7 +336,6 @@ EXTRA_DIST = \
 	docs/oiki-launch.txt \
 	cfg/errors.txt \
 	cfg/gendsp.pl.in \
-	cfg/gendsp.sh.in \
 	cfg/ltconfig \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
@@ -505,7 +504,7 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/discard.h \
 	$(top_builddir)/include/config.h \
 	$(top_builddir)/include/setup.h
-CONFIG_CLEAN_FILES = cfg/gendsp.sh cfg/gendsp.pl
+CONFIG_CLEAN_FILES = cfg/gendsp.pl
 DIST_SOURCES =
 DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA)
 
@@ -541,8 +540,6 @@ $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.ac $(ACLOCAL_M4)
 
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
-cfg/gendsp.sh: $(top_builddir)/config.status $(top_srcdir)/cfg/gendsp.sh.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 cfg/gendsp.pl: $(top_builddir)/config.status $(top_srcdir)/cfg/gendsp.pl.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
