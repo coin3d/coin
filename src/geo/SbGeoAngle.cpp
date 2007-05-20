@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SbGeoAngle.h"
+#include <Inventor/SbBasic.h>
 #include <math.h>
 #include <assert.h>
 
