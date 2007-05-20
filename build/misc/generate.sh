@@ -6,7 +6,9 @@
 
 proper=true;
 
-rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln install-headers.bat;
+rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln;
+rm -f install-headers.bat uninstall-headers.bat;
+
 if $proper; then
   rm -rf src;
 fi
