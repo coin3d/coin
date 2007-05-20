@@ -1591,6 +1591,7 @@ void SoVRMLSoundP::fillBuffers()
           }
         }
         else {
+#if COIN_DEBUG && DEBUG_AUDIO // debug
           char statestr[20];
           switch (state) {
           case AL_INITIAL : strcpy(statestr, "initial"); break;
@@ -1600,7 +1601,6 @@ void SoVRMLSoundP::fillBuffers()
           default : strcpy(statestr, "unknown"); break;
           };
           // 20021007 thammer fixme: deal with this properly!
-#if COIN_DEBUG && DEBUG_AUDIO // debug
           SoDebugError::postWarning("SoVRMLSound::fillBuffers",
                                     "state == %s. Don't know what "
                                     "to do about it...", statestr);
