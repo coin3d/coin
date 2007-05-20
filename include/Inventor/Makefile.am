@@ -19,6 +19,7 @@ PublicHeaders = \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
+	SbColorRGBA.h \
 	SbCylinder.h \
 	SbDPLine.h \
 	SbDPLinear.h \
