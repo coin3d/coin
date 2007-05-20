@@ -6,7 +6,8 @@ PublicHeaders = \
 	rbptree.h \
 	time.h \
 	string.h \
-	list.h
+	list.h \
+	math-undefs.h
 PrivateHeaders = \
 	dict.h \
 	dictp.h \

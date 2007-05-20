@@ -185,24 +185,7 @@ typedef int SbBool;
    until C99, so we don't want to use them internally, for portability
    reasons. */
 #ifdef COIN_INTERNAL
-#undef cosf
-#define cosf(x) NO_SINGLEPREC /* whatever that'll give us a compile error... */
-#undef sinf
-#define sinf(x) NO_SINGLEPREC
-#undef tanf
-#define tanf(x) NO_SINGLEPREC
-#undef powf
-#define powf(x) NO_SINGLEPREC
-#undef sqrtf
-#define sqrtf(x) NO_SINGLEPREC
-#undef acosf
-#define acosf(x) NO_SINGLEPREC
-#undef asinf
-#define asinf(x) NO_SINGLEPREC
-#undef atanf
-#define atanf(x) NO_SINGLEPREC
-#undef atan2f
-#define atan2f(x) NO_SINGLEPREC
+#include <Inventor/C/base/math-undefs.h>
 #endif /* COIN_INTERNAL */
 
 /* *********************************************************************** */
