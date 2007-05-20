@@ -35,136 +35,200 @@
   \sa SbBox2s, SbBox2d, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
 */
 
-
 #include <Inventor/SbBox2f.h>
+
+#include <limits>
+
+#include <Inventor/SbBox2d.h>
+#include <Inventor/SbBox2s.h>
+#include <Inventor/SbBox2i32.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <float.h>  // FLT_MAX
 
 /*!
+  \fn SbBox2f::SbBox2f(void)
+
   The default constructor makes an empty box.
- */
-SbBox2f::SbBox2f(void)
-{
-  this->makeEmpty();
-}
+*/
 
 /*!
+  \fn SbBox2f::SbBox2f(float xmin, float ymin, float xmax, float ymax)
+
   Constructs a box with the given corners.
 
   \a xmin should be less than \a xmax and \a ymin should be less than
   \a ymax if you want to make a valid box.
- */
-SbBox2f::SbBox2f(float xmin, float ymin, float xmax, float ymax)
-{
-  this->setBounds(xmin, ymin, xmax, ymax);
-}
+*/
 
 /*!
+  \fn SbBox2f::SbBox2f(const SbVec2f & min, const SbVec2f & max)
+
   Constructs a box with the given lower left and upper right corners.
 
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
- */
-SbBox2f::SbBox2f(const SbVec2f & min, const SbVec2f & max)
+*/
+
+/*!
+  \fn SbBox2f & SbBox2f::setBounds(float xmin, float ymin, float xmax, float ymax)
+  Reset the boundaries of the box.
+
+  \a xmin should be less than \a xmax and \a ymin should be less than
+  \a ymax if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  \fn SbBox2f & SbBox2f::setBounds(const SbVec2f & min, const SbVec2f & max)
+
+  Reset the boundaries of the box with the given corners.
+
+  The coordinates of \a min should be less than the coordinates of
+  \a max if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  Reset the boundaries of the box to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+SbBox2f &
+SbBox2f::setBounds(const SbBox2d & box)
 {
-  this->setBounds(min, max);
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
-  Destructor.
- */
-SbBox2f::~SbBox2f(void)
+  Reset the boundaries of the box to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+SbBox2f &
+SbBox2f::setBounds(const SbBox2s & box)
 {
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
+}
+
+/*!
+  Reset the boundaries of the box to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+SbBox2f &
+SbBox2f::setBounds(const SbBox2i32 & box)
+{
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
   Marks this as an empty box.
 
   \sa isEmpty().
- */
+*/
 void
 SbBox2f::makeEmpty(void)
 {
-  this->minpt.setValue(FLT_MAX, FLT_MAX);
-  this->maxpt.setValue(-FLT_MAX, -FLT_MAX);
+  minpt.setValue(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+  maxpt.setValue(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 }
 
 /*!
+  \fn SbBool SbBox2f::isEmpty(void) const
+
   Check if this has been marked as an empty box.
 
   \sa makeEmpty().
- */
-SbBool
-SbBox2f::isEmpty(void) const
-{
-  if (this->minpt[0] > this->maxpt[0]) return TRUE;
-  else return FALSE;
-}
+*/
 
 /*!
+  \fn SbBool SbBox2f::hasArea(void) const
+
   Check if the box has "positive" area, i.e. the lower left corner is
   actually lower and more to the left than the other corner point.
- */
-SbBool
-SbBox2f::hasArea(void) const
-{
-  return (this->minpt[0] < this->maxpt[0] && this->minpt[1] < this->maxpt[1]);
-}
+*/
 
 /*!
+  \fn const SbVec2f & SbBox2f::getMin(void) const
+
   Returns the lower left corner of the box.
 
   \sa getOrigin(), getMax().
 */
-const SbVec2f&
-SbBox2f::getMin(void) const
-{
-  return this->minpt;
-}
 
 /*!
+  \fn SbVec2f & SbBox2f::getMin(void)
+
+  Returns a modifiable reference ot the lower left corner of the box.
+
+  \sa getOrigin(), getMax().
+*/
+
+/*!
+  \fn const SbVec2f & SbBox2f::getMax(void) const
+
   Returns the upper right corner of the box.
 
   \sa getMin().
 */
-const SbVec2f&
-SbBox2f::getMax(void) const
-{
-  return this->maxpt;
-}
 
 /*!
+  \fn SbVec2f SbBox2f::getCenter(void) const
+
   Returns the center point of the box.
- */
-SbVec2f
-SbBox2f::getCenter(void) const
-{
-  return SbVec2f((this->maxpt[0] + this->minpt[0])/2.0f,
-                 (this->maxpt[1] + this->minpt[1])/2.0f);
-}
+*/
 
 /*!
   Extend the boundaries of the box by the given point, i.e. make the
   box fit around the \a point if it isn't already situated within it.
- */
+*/
 void
 SbBox2f::extendBy(const SbVec2f & point)
 {
   // The explicit cast to float is done to humour the HPUX aCC
   // compiler, which will otherwise say ``Template deduction failed to
   // find a match for the call to 'SbMin'''. mortene.
-  this->minpt.setValue(SbMin((float)point[0], (float)this->minpt[0]),
-                       SbMin((float)point[1], (float)this->minpt[1]));
-  this->maxpt.setValue(SbMax((float)point[0], (float)this->maxpt[0]),
-                       SbMax((float)point[1], (float)this->maxpt[1]));
+  this->minpt.setValue(SbMin((float)point[0], (float)minpt[0]),
+                       SbMin((float)point[1], (float)minpt[1]));
+  this->maxpt.setValue(SbMax((float)point[0], (float)maxpt[0]),
+                       SbMax((float)point[1], (float)maxpt[1]));
 }
 
 /*!
   Extend the boundaries of the box by the given \a box parameter. This
   is equal to calling the above method twice with the corner points.
- */
+*/
 void
 SbBox2f::extendBy(const SbBox2f & box)
 {
@@ -213,8 +277,8 @@ SbBox2f::getClosestPoint(const SbVec2f & p) const
   SbVec2f center = this->getCenter();
   float devx = closest[0] - center[0];
   float devy = closest[1] - center[1];
-  float halfwidth = this->width() / 2.0f;
-  float halfheight = this->height() / 2.0f;
+  float halfwidth = (maxpt[0] - minpt[0]) / 2.0f;
+  float halfheight = (maxpt[1] - minpt[1]) / 2.0f;
 
   // Move point to be on the nearest line of the box.
   if (fabs(devx) > fabs(devy))
@@ -230,154 +294,52 @@ SbBox2f::getClosestPoint(const SbVec2f & p) const
 }
 
 /*!
-  Reset the boundaries of the box.
+  \fn void SbBox2f::getBounds(float & xmin, float & ymin, float & xmax, float & ymax) const
 
-  \a xmin should be less than \a xmax and \a ymin should be less than
-  \a ymax if you want to make a valid box.
-
-  \sa getBounds().
-*/
-void
-SbBox2f::setBounds(float xmin, float ymin, float xmax, float ymax)
-{
-#if COIN_DEBUG
-  if (!(xmin<=xmax && ymin<=ymax))
-    SoDebugError::postWarning("SbBox2f::setBounds",
-                              "The bounds will give the box negative area.");
-#endif // COIN_DEBUG
-
-  this->minpt.setValue(xmin, ymin);
-  this->maxpt.setValue(xmax, ymax);
-}
-
-/*!
-  Reset the boundaries of the box with the given corners.
-
-  The coordinates of \a min should be less than the coordinates of
-  \a max if you want to make a valid box.
-
-  \sa getBounds().
- */
-void
-SbBox2f::setBounds(const SbVec2f & min, const SbVec2f & max)
-{
-#if COIN_DEBUG
-  if (!(min[0]<=max[0] && min[1]<=max[1]))
-    SoDebugError::postWarning("SbBox2f::setBounds",
-                              "The bounds will give the box negative area.");
-#endif // COIN_DEBUG
-
-  this->minpt = min;
-  this->maxpt = max;
-}
-
-/*!
   Returns the box boundaries.
 
   \sa setBounds(), getMin(), getMax().
 */
-void
-SbBox2f::getBounds(float & xmin, float & ymin, float & xmax, float & ymax) const
-{
-  this->minpt.getValue(xmin, ymin);
-  this->maxpt.getValue(xmax, ymax);
-}
 
 /*!
+  \fn void SbBox2f::getBounds(SbVec2f & min, SbVec2f & max) const
+
   Returns the box corner points.
 
   \sa setBounds(), getMin(), getMax().
 */
-void
-SbBox2f::getBounds(SbVec2f & min, SbVec2f & max) const
-{
-  min = this->minpt;
-  max = this->maxpt;
-}
 
 /*!
+  \fn void SbBox2f::getOrigin(float & originX, float & originY) const
+
   Returns the coordinates of the box origin (i.e. the lower left corner).
 
   \sa getMin().
 */
-void
-SbBox2f::getOrigin(float & x0, float & y0) const
-{
-  x0 = this->minpt[0];
-  y0 = this->minpt[1];
-}
 
 /*!
+  \fn void SbBox2f::getSize(float & sizeX, float & sizeY) const
+
   Returns width and height of box.
- */
-void
-SbBox2f::getSize(float & w, float & h) const
-{
-#if COIN_DEBUG
-  if (!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
-    SoDebugError::postWarning("SbBox2f::getSize",
-                              "The box has negative area.");
-#endif // COIN_DEBUG
-
-  w = this->width();
-  h = this->height();
-}
+*/
 
 /*!
+  \fn float SbBox2f::getAspectRatio(void) const
+
   Returns aspect ratio of box, which is defined as box width divided on
   box height.
- */
-float
-SbBox2f::getAspectRatio(void) const
-{
-#if COIN_DEBUG
-  if (!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
-    SoDebugError::postWarning("SbBox2f::getAspectRatio",
-                              "The box has negative area.");
-  if (this->height()==0.0f)
-    SoDebugError::postWarning("SbBox2f::getAspectRatio",
-                              "The box has zero width=>infinite aspectRatio.");
-#endif // COIN_DEBUG
-
-  return (this->width()/this->height());
-}
-
-/*!
-  \COININTERNAL
- */
-float
-SbBox2f::width(void) const
-{
-  return this->maxpt[0] - this->minpt[0];
-}
-
-/*!
-  \COININTERNAL
 */
-float
-SbBox2f::height(void) const
-{
-  return this->maxpt[1] - this->minpt[1];
-}
 
 /*!
+  \fn int operator == (const SbBox2f & b1, const SbBox2f & b2)
   \relates SbBox2f
 
   Check \a b1 and \a b2 for equality.
 */
-int
-operator ==(const SbBox2f & b1, const SbBox2f & b2)
-{
-  return b1.getMin() == b2.getMin() && b1.getMax() == b2.getMax();
-}
 
 /*!
+  \fn int operator != (const SbBox2f & b1, const SbBox2f & b2)
   \relates SbBox2f
 
   Check \a b1 and \a b2 for inequality.
 */
-int
-operator !=(const SbBox2f & b1, const SbBox2f & b2)
-{
-  return !(b1 == b2);
-}

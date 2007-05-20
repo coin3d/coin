@@ -21,14 +21,18 @@
  *
 \**************************************************************************/
 
-#include "SbBSPTree.cpp"
 #include "SbBox2s.cpp"
 #include "SbBox2i32.cpp"
 #include "SbBox2f.cpp"
 #include "SbBox2d.cpp"
 #include "SbBox3s.cpp"
+#include "SbBox3i32.cpp"
 #include "SbBox3f.cpp"
 #include "SbBox3d.cpp"
+#include "SbXfBox3f.cpp"
+//#include "SbXfBox3d.cpp"
+
+#include "SbBSPTree.cpp"
 #include "SbClip.cpp"
 #include "SbColor.cpp"
 #include "SbColor4f.cpp"
@@ -50,6 +54,7 @@
 #include "SbTesselator.cpp"
 #include "SbGLUTessellator.cpp"
 #include "SbTime.cpp"
+
 #include "SbVec2b.cpp"
 #include "SbVec2ub.cpp"
 #include "SbVec2s.cpp"
@@ -74,10 +79,10 @@
 #include "SbVec4ui32.cpp"
 #include "SbVec4f.cpp"
 #include "SbVec4d.cpp"
+
 #include "SbViewVolume.cpp"
 #include "SbDPViewVolume.cpp"
 #include "SbViewportRegion.cpp"
-#include "SbXfBox3f.cpp"
 
 #include "dynarray.cpp"
 

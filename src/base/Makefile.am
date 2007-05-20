@@ -15,6 +15,7 @@ RegularSources = \
 	SbBox2f.cpp \
 	SbBox2d.cpp \
 	SbBox3s.cpp \
+	SbBox3i32.cpp \
 	SbBox3f.cpp \
 	SbBox3d.cpp \
 	SbClip.cpp \

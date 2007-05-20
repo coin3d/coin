@@ -35,90 +35,162 @@
   \sa SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
 */
 
-#include <assert.h>
-#include <limits.h>
 #include <Inventor/SbBox2i32.h>
+
+#include <limits>
+#include <assert.h>
+
+#include <Inventor/SbBox2s.h>
+#include <Inventor/SbBox2f.h>
+#include <Inventor/SbBox2d.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 /*!
+  \fn SbBox2i32::SbBox2i32(void)
+
   The default constructor makes an empty box.
- */
-SbBox2i32::SbBox2i32(void)
-{
-  this->makeEmpty();
-}
+*/
 
 /*!
+  \fn SbBox2i32::SbBox2i32(int32_t xmin, int32_t ymin, int32_t xmax, int32_t ymax)
+
   Constructs a box with the given corner coordinates.
 
   \a xmin should be less than \a xmax and \a ymin should be less than
   \a ymax if you want to make a valid box.
- */
-SbBox2i32::SbBox2i32(int32_t xmin, int32_t ymin, int32_t xmax, int32_t ymax)
-{
-  this->setBounds(xmin, ymin, xmax, ymax);
-}
+*/
 
 /*!
+  \fn SbBox2i32::SbBox2i32(const SbVec2i32 & minpt, const SbVec2i32 & maxpt)
+
   Constructs a box with the given corners.
 
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
- */
-SbBox2i32::SbBox2i32(const SbVec2i32 & boxmin, const SbVec2i32 & boxmax)
+*/
+
+/*!
+  \fn SbBox2i32 &  SbBox2i32::setBounds(int32_t xmin, int32_t ymin, int32_t xmax, int32_t ymax)
+
+  Reset the boundaries of the box.
+
+  \a xmin should be less than \a xmax and \a ymin should be less than
+  \a ymax if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  \fn SbBox2i32 & SbBox2i32::setBounds(const SbVec2i32 & boxmin, const SbVec2i32 & boxmax)
+
+  Reset the boundaries of the box with the given corners.
+
+  The coordinates of \a min should be less than the coordinates of
+  \a max if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+
+SbBox2i32 &
+SbBox2i32::setBounds(const SbBox2s & box)
 {
-  this->setBounds(boxmin, boxmax);
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
-  Default destructor does nothing.
- */
-SbBox2i32::~SbBox2i32(void)
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+
+SbBox2i32 &
+SbBox2i32::setBounds(const SbBox2f & box)
 {
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
+}
+
+/*!
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa getBounds()
+*/
+
+SbBox2i32 &
+SbBox2i32::setBounds(const SbBox2d & box)
+{
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
   Marks this as an empty box.
 
   \sa isEmpty().
- */
+*/
 void
 SbBox2i32::makeEmpty(void)
 {
-  this->minpt.setValue(SHRT_MAX, SHRT_MAX);
-  this->maxpt.setValue(SHRT_MIN, SHRT_MIN);
+  minpt.setValue(std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max());
+  maxpt.setValue(-std::numeric_limits<int32_t>::max(), -std::numeric_limits<int32_t>::max());
 }
 
 /*!
+  \fn const SbVec2i32 & SbBox2i32::getMin(void) const
+
   Returns the minimum point. This should usually be the lower left corner
   point of the box.
 
   \sa getOrigin(), getMax().
 */
-const SbVec2i32&
-SbBox2i32::getMin(void) const
-{
-  return this->minpt;
-}
 
 /*!
+  \fn const SbVec2i32 & SbBox2i32::getMax(void) const
+
   Returns the maximum point. This should usually be the upper right corner
   point of the box.
 
   \sa getMin().
 */
-const SbVec2i32&
-SbBox2i32::getMax(void) const
-{
-  return this->maxpt;
-}
 
 /*!
   Extend the boundaries of the box by the given point, i.e. make the
   point fit inside the box if it isn't already within it.
- */
+*/
 void
 SbBox2i32::extendBy(const SbVec2i32 & point)
 {
@@ -147,7 +219,7 @@ SbBox2i32::extendBy(const SbBox2i32 & box)
 
 /*!
   Check if the given point lies within the boundaries of this box.
- */
+*/
 SbBool
 SbBox2i32::intersect(const SbVec2i32 & point) const
 {
@@ -159,7 +231,7 @@ SbBox2i32::intersect(const SbVec2i32 & point) const
 /*!
   Check if \a box lies wholly or partly within the boundaries
   of this box.
- */
+*/
 SbBool
 SbBox2i32::intersect(const SbBox2i32 & box) const
 {
@@ -171,161 +243,57 @@ SbBox2i32::intersect(const SbBox2i32 & box) const
 }
 
 /*!
-  Reset the boundaries of the box.
+  \fn void SbBox2i32::getBounds(int32_t & xmin, int32_t & ymin, int32_t & xmax, int32_t & ymax) const
 
-  \a xmin should be less than \a xmax and \a ymin should be less than
-  \a ymax if you want to make a valid box.
-
-  \sa getBounds().
-*/
-void
-SbBox2i32::setBounds(int32_t xmin, int32_t ymin, int32_t xmax, int32_t ymax)
-{
-#if COIN_DEBUG
-  if(!(xmin<=xmax && ymin<=ymax))
-    SoDebugError::postWarning("SbBox2i32::setBounds",
-                              "The bounds will give the box negative area.");
-#endif // COIN_DEBUG
-  this->minpt.setValue(xmin, ymin);
-  this->maxpt.setValue(xmax, ymax);
-}
-
-/*!
-  Reset the boundaries of the box with the given corners.
-
-  The coordinates of \a min should be less than the coordinates of
-  \a max if you want to make a valid box.
-
-  \sa getBounds().
- */
-void
-SbBox2i32::setBounds(const SbVec2i32 & boxmin, const SbVec2i32 & boxmax)
-{
-#if COIN_DEBUG
-  if(!(boxmin[0]<=boxmax[0] && boxmin[1]<=boxmax[1]))
-    SoDebugError::postWarning("SbBox2i32::setBounds",
-                              "The bounds will give the box negative area.");
-#endif // COIN_DEBUG
-  this->minpt = boxmin;
-  this->maxpt = boxmax;
-}
-
-/*!
   Returns the box boundary coordinates.
 
   \sa setBounds(), getMin(), getMax().
 */
-void
-SbBox2i32::getBounds(int32_t & xmin, int32_t & ymin, int32_t & xmax, int32_t & ymax) const
-{
-  xmin = this->minpt[0];
-  ymin = this->minpt[1];
-  xmax = this->maxpt[0];
-  ymax = this->maxpt[1];
-}
 
 /*!
+  \fn void SbBox2i32::getBounds(SbVec2i32 & boxmin, SbVec2i32 & boxmax) const
+
   Returns the box corner points.
 
   \sa setBounds(), getMin(), getMax().
 */
-void
-SbBox2i32::getBounds(SbVec2i32 & boxmin, SbVec2i32 & boxmax) const
-{
-  boxmin = this->minpt;
-  boxmax = this->maxpt;
-}
 
 /*!
+  \fn void SbBox2i32::getOrigin(int32_t & originX, int32_t & originY) const
+
   Returns the coordinates of the box origin (i.e. the lower left corner).
 
   \sa getMin().
 */
-void
-SbBox2i32::getOrigin(int32_t & originX, int32_t & originY) const
-{
-  originX = this->minpt[0];
-  originY = this->minpt[1];
-}
 
 /*!
+  \fn void SbBox2i32::getSize(int32_t & sizeX, int32_t & sizeY) const
+
   Returns width and height of box.
- */
-void
-SbBox2i32::getSize(int32_t & sizeX, int32_t & sizeY) const
-{
-#if COIN_DEBUG
-  if(!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
-    SoDebugError::postWarning("SbBox2i32::getSize",
-                              "The box has negative area.");
-#endif // COIN_DEBUG
-  sizeX = this->width();
-  sizeY = this->height();
-}
+*/
 
 /*!
+  \fn float SbBox2i32::getAspectRatio(void) const
+
   Returns aspect ratio of box, which is defined as box width divided on
   box height.
- */
-float
-SbBox2i32::getAspectRatio(void) const
-{
-#if COIN_DEBUG
-  if(!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
-    SoDebugError::postWarning("SbBox2i32::getAspectRatio",
-                              "The box has negative area.");
-  if (this->height()==0.0f)
-    SoDebugError::postWarning("SbBox2i32::getAspectRatio",
-                              "The box has zero width=>infinite aspectRatio.");
-#endif // COIN_DEBUG
-  return ((float)this->width()/(float)this->height());
-}
+*/
 
 /*!
+  \fn SbBool SbBox2i32::hasArea(void) const
+*/
+
+/*!
+  \fn int operator == (const SbBox2i32 & b1, const SbBox2i32 & b2)
   \relates SbBox2i32
 
   Check \a b1 and \a b2 for equality.
 */
-int
-operator ==(const SbBox2i32 & b1, const SbBox2i32 & b2)
-{
-  return b1.getMin()==b2.getMin() && b1.getMax()==b2.getMax();
-}
 
 /*!
+  \fn int operator != (const SbBox2i32 & b1, const SbBox2i32 & b2)
   \relates SbBox2i32
 
   Check \a b1 and \a b2 for inequality.
 */
-int
-operator !=(const SbBox2i32 & b1, const SbBox2i32 & b2)
-{
-  return !(b1==b2);
-}
 
-/*!
-  \COININTERNAL
-*/
-int32_t
-SbBox2i32::width(void) const
-{
-  return this->maxpt[0] - this->minpt[0];
-}
-
-/*!
-  \COININTERNAL
-*/
-int32_t
-SbBox2i32::height(void) const
-{
-  return this->maxpt[1] - this->minpt[1];
-}
-
-/*!
-  \COININTERNAL
-*/
-SbBool
-SbBox2i32::hasArea(void) const
-{
-  return (this->minpt[0] < this->maxpt[0] && this->minpt[1] < this->maxpt[1]);
-}

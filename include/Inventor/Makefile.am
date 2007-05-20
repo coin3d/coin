@@ -13,6 +13,7 @@ PublicHeaders = \
 	SbBox2f.h \
 	SbBox2d.h \
 	SbBox3s.h \
+	SbBox3i32.h \
 	SbBox3f.h \
 	SbBox3d.h \
 	SbClip.h \
@@ -40,6 +41,7 @@ PublicHeaders = \
 	SbString.h \
 	SbTesselator.h \
 	SbTime.h \
+	SbVec.h \
 	SbVec2b.h \
 	SbVec2ub.h \
 	SbVec2s.h \

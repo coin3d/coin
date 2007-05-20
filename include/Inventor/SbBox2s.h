@@ -24,42 +24,72 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec2f.h>
+
+class SbBox2i32;
+class SbBox2f;
+class SbBox2d;
 
 class COIN_DLL_API SbBox2s {
 public:
-  SbBox2s(void);
-  SbBox2s(short xmin, short ymin, short xmax, short ymax);
-  SbBox2s(const SbVec2s & boxmin, const SbVec2s & boxmax);
-  ~SbBox2s(void);
+  SbBox2s(void) { makeEmpty(); }
+  SbBox2s(short xmin, short ymin, short xmax, short ymax)
+    : minpt(xmin, ymin), maxpt(xmax, ymax) { }
+  SbBox2s(const SbVec2s & minpoint, const SbVec2s & maxpoint)
+    : minpt(minpoint), maxpt(maxpoint) { }
+  explicit SbBox2s(const SbBox2i32 & box) { setBounds(box); }
+  explicit SbBox2s(const SbBox2f & box) { setBounds(box); }
+  explicit SbBox2s(const SbBox2d & box) { setBounds(box); }
 
-  const SbVec2s & getMin(void) const;
-  const SbVec2s & getMax(void) const;
+  SbBox2s & setBounds(short xmin, short ymin, short xmax, short ymax)
+    { minpt.setValue(xmin, ymin); maxpt.setValue(xmax, ymax); return *this; }
+  SbBox2s & setBounds(const SbVec2s & minpoint, const SbVec2s & maxpoint)
+    { minpt = minpoint; maxpt = maxpoint; return *this; }
+  SbBox2s & setBounds(const SbBox2i32 & box);
+  SbBox2s & setBounds(const SbBox2f & box);
+  SbBox2s & setBounds(const SbBox2d & box);
+
+  void getBounds(short & xmin, short & ymin, short & xmax, short & ymax) const
+    { minpt.getValue(xmin, ymin); maxpt.getValue(xmax, ymax); }
+  void getBounds(SbVec2s & minpoint, SbVec2s & maxpoint) const
+    { minpoint = minpt; maxpoint = maxpt; }
+
+  const SbVec2s & getMin(void) const { return minpt; }
+  SbVec2s & getMin(void) { return minpt; }
+  const SbVec2s & getMax(void) const { return maxpt; }
+  SbVec2s & getMax(void) { return maxpt; }
+
   void extendBy(const SbVec2s & point);
   void extendBy(const SbBox2s & box);
+  void makeEmpty(void);
+  SbBool isEmpty(void) const { return (maxpt[0] < minpt[0]); }
+  SbBool hasArea(void) const { return ((maxpt[0] > minpt[0]) && (maxpt[1] > minpt[1])); }
+
   SbBool intersect(const SbVec2s & point) const;
   SbBool intersect(const SbBox2s & box) const;
-  void setBounds(short xmin, short ymin, short xmax, short ymax);
-  void setBounds(const SbVec2s & boxmin, const SbVec2s & boxmax);
-  void getBounds(short & xmin, short & ymin, short & xmax, short & ymax) const;
-  void getBounds(SbVec2s & boxmin, SbVec2s & boxmax) const;
-  void getOrigin(short & originX, short & originY) const;
-  void getSize(short & sizeX, short & sizeY) const;
-  float getAspectRatio(void) const;
-  void makeEmpty(void);
-  friend COIN_DLL_API int operator ==(const SbBox2s & b1, const SbBox2s & b2);
-  friend COIN_DLL_API int operator !=(const SbBox2s & b1, const SbBox2s & b2);
+
+  SbVec2f getCenter(void) const { return SbVec2f((minpt[0] + maxpt[0]) * 0.5f, (minpt[1] + maxpt[1]) * 0.5f); }
+  void getOrigin(short & originX, short & originY) const
+    { minpt.getValue(originX, originY); }
+  void getSize(short & sizeX, short & sizeY) const
+    { if (isEmpty()) { sizeX = sizeY = 0; }
+      else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; } }
+  float getAspectRatio(void) const
+    { SbDividerChk("SbBox2s::getAspectRatio()", maxpt[1] - minpt[1]);
+      return (float(maxpt[0] - minpt[0]) / float(maxpt[1] - minpt[1])); }
 
 private:
   SbVec2s minpt, maxpt;
 
-  short width(void) const;
-  short height(void) const;
-  SbBool hasArea(void) const;
-};
+}; // SbBox2s
 
-COIN_DLL_API int operator ==(const SbBox2s & b1, const SbBox2s & b2);
-COIN_DLL_API int operator !=(const SbBox2s & b1, const SbBox2s & b2);
+COIN_DLL_API inline int operator == (const SbBox2s & b1, const SbBox2s & b2) {
+  return ((b1.getMin() == b2.getMin()) && (b1.getMax() == b2.getMax()));
+}
+
+COIN_DLL_API inline int operator != (const SbBox2s & b1, const SbBox2s & b2) {
+  return !(b1 == b2);
+}
 
 #endif // !COIN_SBBOX2S_H

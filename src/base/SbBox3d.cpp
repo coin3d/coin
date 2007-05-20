@@ -34,116 +34,168 @@
   \sa SbBox2s, SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbXfBox3f.
 */
 
-
-#include <float.h> // DBL_MAX
-
 #include <Inventor/SbBox3d.h>
+
+#include <limits>
+
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbBox3s.h>
+#include <Inventor/SbBox3i32.h>
 #include <Inventor/SbDPMatrix.h>
+#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-
+#endif // COIN_DEBUG
 
 /*!
+  \fn SbBox3d::SbBox3d(void)
+
   The default constructor makes an empty box.
- */
-SbBox3d::SbBox3d(void)
-{
-  this->makeEmpty();
-}
+*/
 
 /*!
+  \fn SbBox3d::SbBox3d(double minx, double miny, double minz, double maxx, double maxy, double maxz)
   Constructs a box with the given corners.
 
   \a minx should be less than \a maxx, \a miny should be less than
   \a maxy and \a minz should be less than \a maxz if you want to make
   a valid box.
 */
-SbBox3d::SbBox3d(const double minx, const double miny, const double minz,
-                 const double maxx, const double maxy, const double maxz)
-{
-  this->setBounds(minx, miny, minz, maxx, maxy, maxz);
-}
 
 /*!
+  \fn SbBox3d::SbBox3d(const SbVec3d & minval, const SbVec3d & maxval)
+
   Constructs a box with the given corners.
   
   The coordinates of \a min should be less than the coordinates of \a
   max if you want to make a valid box.
 */
-SbBox3d::SbBox3d(const SbVec3d & minval, const SbVec3d & maxval)
+
+/*!
+  \fn SbBox3d & SbBox3d::setBounds(double xmin, double ymin, double zmin, double xmax, double ymax, double zmax)
+
+  Reset the boundaries of the box.
+
+  \a minx should be less than \a maxx, \a miny should be less than
+  \a maxy and \a minz should be less than \a maxz if you want to make
+  a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  \fn SbBox3d & SbBox3d::setBounds(const SbVec3d & minval, const SbVec3d & maxval)
+
+  Reset the boundaries of the box with the given corners.
+
+  The coordinates of \a min should be less than the coordinates of
+  \a max if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa setBounds()
+*/
+
+SbBox3d &
+SbBox3d::setBounds(const SbBox3f & box)
 {
-  this->min = minval;
-  this->max = maxval;
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
-  Default destructor does nothing.
- */
-SbBox3d::~SbBox3d(void)
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa setBounds()
+*/
+
+SbBox3d &
+SbBox3d::setBounds(const SbBox3s & box)
 {
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
 }
 
 /*!
+  Reset the boundaries to the boundaries of the given \a box.
+
+  Returns reference to self.
+
+  \sa setBounds()
+*/
+
+SbBox3d &
+SbBox3d::setBounds(const SbBox3i32 & box)
+{
+  if (box.isEmpty()) {
+    makeEmpty();
+  } else {
+    minpt.setValue(box.getMin());
+    maxpt.setValue(box.getMax());
+  }
+  return *this;
+}
+
+/*!
+  \fn const SbVec3d & SbBox3d::getMin(void) const
+
   Returns the minimum point. This should usually be the lower left
   corner point of the box.
 
   \sa getOrigin(), getMax().
 */
-const SbVec3d &
-SbBox3d::getMin(void) const
-{
-  return this->min;
-}
 
 /*!
+  \fn const SbVec3d & SbBox3d::getMax(void) const
+
   Returns the maximum point. This should usually be the upper right
   corner point of the box.
 
   \sa getMin().
 */
-const SbVec3d &
-SbBox3d::getMax(void) const
-{
-  return this->max;
-}
 
 /*!
+  \fn SbVec3d & SbBox3d::getMin(void)
+
   Returns a modifiable reference the minimum point.
 */
-SbVec3d &
-SbBox3d::getMin(void)
-{
-  return this->min;
-}
 
 /*!
+  \fn SbVec3d & SbBox3d::getMax(void)
+
   Returns a modifiable reference the maximum point.
 */
-SbVec3d &
-SbBox3d::getMax(void)
-{
-  return this->max;
-}
 
 /*!
+  \fn SbVec3d SbBox3d::getCenter(void) const
   Returns the center point of the box.
- */
-SbVec3d
-SbBox3d::getCenter(void) const
-{
-#if COIN_DEBUG
-  if (this->isEmpty())
-    SoDebugError::postWarning("SbBox3d::getCenter",
-                              "The box is empty.");
-#endif // COIN_DEBUG
-  return SbVec3d((this->max[0] + this->min[0]) * 0.5,
-                 (this->max[1] + this->min[1]) * 0.5,
-                 (this->max[2] + this->min[2]) * 0.5);
-}
+*/
 
 /*!
   Extend the boundaries of the box by the given point, i.e. make the
   point fit inside the box if it isn't already so.
- */
+*/
 void
 SbBox3d::extendBy(const SbVec3d & point)
 {
@@ -154,12 +206,12 @@ SbBox3d::extendBy(const SbVec3d & point)
     // The explicit casts are done to humour the HPUX aCC compiler,
     // which will otherwise say ``Template deduction failed to find a
     // match for the call to 'SbMin'''. mortene.
-    this->min.setValue(SbMin((double)point[0], (double)this->min[0]),
-                       SbMin((double)point[1], (double)this->min[1]),
-                       SbMin((double)point[2], (double)this->min[2]));
-    this->max.setValue(SbMax((double)point[0], (double)this->max[0]),
-                       SbMax((double)point[1], (double)this->max[1]),
-                       SbMax((double)point[2], (double)this->max[2]));
+    this->minpt.setValue(SbMin((double)point[0], (double)this->minpt[0]),
+                         SbMin((double)point[1], (double)this->minpt[1]),
+                         SbMin((double)point[2], (double)this->minpt[2]));
+    this->maxpt.setValue(SbMax((double)point[0], (double)this->maxpt[0]),
+                         SbMax((double)point[1], (double)this->maxpt[1]),
+                         SbMax((double)point[2], (double)this->maxpt[2]));
   }
 }
 
@@ -182,8 +234,8 @@ SbBox3d::extendBy(const SbBox3d & box)
     *this = box;
   }
   else {
-    this->extendBy(box.min);
-    this->extendBy(box.max);
+    this->extendBy(box.minpt);
+    this->extendBy(box.maxpt);
   }
 }
 
@@ -193,12 +245,12 @@ SbBox3d::extendBy(const SbBox3d & box)
 SbBool
 SbBox3d::intersect(const SbVec3d & point) const
 {
-  return !(point[0] < this->min[0] ||
-           point[0] > this->max[0] ||
-           point[1] < this->min[1] ||
-           point[1] > this->max[1] ||
-           point[2] < this->min[2] ||
-           point[2] > this->max[2]);
+  return !(point[0] < this->minpt[0] ||
+           point[0] > this->maxpt[0] ||
+           point[1] < this->minpt[1] ||
+           point[1] > this->maxpt[1] ||
+           point[2] < this->minpt[2] ||
+           point[2] > this->maxpt[2]);
 }
 
 /*!
@@ -208,168 +260,77 @@ SbBox3d::intersect(const SbVec3d & point) const
 SbBool
 SbBox3d::intersect(const SbBox3d & box) const
 {
-  if ((box.max[0] < this->min[0]) ||
-     (box.max[1] < this->min[1]) ||
-     (box.max[2] < this->min[2]) ||
-     (box.min[0] > this->max[0]) ||
-     (box.min[1] > this->max[1]) ||
-     (box.min[2] > this->max[2])) return FALSE;
+  if ((box.maxpt[0] < this->minpt[0]) ||
+     (box.maxpt[1] < this->minpt[1]) ||
+     (box.maxpt[2] < this->minpt[2]) ||
+     (box.minpt[0] > this->maxpt[0]) ||
+     (box.minpt[1] > this->maxpt[1]) ||
+     (box.minpt[2] > this->maxpt[2])) return FALSE;
   return TRUE;
 }
 
 /*!
-  Reset the boundaries of the box.
+  \fn void SbBox3d::getBounds(double & minx, double & miny, double & minz, double & maxx, double & maxy, double & maxz) const
 
-  \a minx should be less than \a maxx, \a miny should be less than
-  \a maxy and \a minz should be less than \a maxz if you want to make
-  a valid box.
-
-  \sa getBounds().
-*/
-void
-SbBox3d::setBounds(const double minx, const double miny, const double minz,
-                   const double maxx, const double maxy, const double maxz)
-{
-#if COIN_DEBUG
-  if (minx>maxx || miny>maxy || minz>maxz) {
-    SoDebugError::postWarning("SbBox3d::setBounds",
-                              "invalid box specification: "
-                              "min==<%f, %f, %f> max==<%f, %f, %f>",
-                              minx, miny, minz, maxx, maxy, maxz);
-  }
-#endif // COIN_DEBUG
-  
-  this->min.setValue(minx, miny, minz);
-  this->max.setValue(maxx, maxy, maxz);
-}
-
-/*!
-  Reset the boundaries of the box with the given corners.
-
-  The coordinates of \a min should be less than the coordinates of
-  \a max if you want to make a valid box.
-
-  \sa getBounds().
- */
-void
-SbBox3d::setBounds(const SbVec3d & minval, const SbVec3d & maxval)
-{
-#if COIN_DEBUG
-  if (minval[0]>maxval[0] || minval[1]>maxval[1] || minval[2]>maxval[2]) {
-    SoDebugError::postWarning("SbBox3d::setBounds",
-                              "invalid box specification: "
-                              "min==<%f, %f, %f> max==<%f, %f, %f>",
-                              minval[0], minval[1], minval[2],
-                              maxval[0], maxval[1], maxval[2]);
-  }
-#endif // COIN_DEBUG
-
-  this->min = minval;
-  this->max = maxval;
-}
-
-/*!
   Returns the box boundaries.
 
   \sa setBounds().
 */
-void
-SbBox3d::getBounds(double & minx, double & miny, double & minz,
-                   double & maxx, double & maxy, double & maxz) const
-{
-  this->min.getValue(minx, miny, minz);
-  this->max.getValue(maxx, maxy, maxz);
-}
 
 /*!
+  \fn void SbBox3d::getBounds(SbVec3d & minobj, SbVec3d & maxobj) const
+
   Returns the box corner points.
 
   \sa setBounds().
 */
-void
-SbBox3d::getBounds(SbVec3d & minobj, SbVec3d & maxobj) const
-{
-  minobj = this->min;
-  maxobj = this->max;
-}
 
 /*!
+  \fn void SbBox3d::getOrigin(double & originX, double & originY, double & originZ) const
+
   Returns the coordinates of the box origin (i.e. the lower left corner).
 
   \sa getMin().
 */
-void
-SbBox3d::getOrigin(double & x0, double & y0, double & z0) const
-{
-  this->min.getValue(x0, y0, z0);
-}
 
 /*!
-  Returns width, height and depth of box.
- */
-void
-SbBox3d::getSize(double & dx, double & dy, double & dz) const
-{
-#if COIN_DEBUG
-  if (this->isEmpty()) {
-    SoDebugError::postWarning("SbBox3d::getSize", "The box is empty.");
-  }
-#endif // COIN_DEBUG
+  \fn void SbBox3d::getSize(double & sizeX, double & sizeY, double & sizeZ) const
 
-  dx = this->max[0] - this->min[0];
-  dy = this->max[1] - this->min[1];
-  dz = this->max[2] - this->min[2];
-}
+  Returns width, height and depth of box.
+*/
 
 /*!
   Marks this as an empty box.
 
   \sa isEmpty().
- */
+*/
 void
 SbBox3d::makeEmpty(void)
 {
-  this->min.setValue(DBL_MAX, DBL_MAX, DBL_MAX);
-  this->max.setValue(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+  this->minpt.setValue(std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+  this->maxpt.setValue(-std::numeric_limits<double>::max(), -std::numeric_limits<double>::max(), -std::numeric_limits<double>::max());
 }
 
 /*!
+  \fn SbBool SbBox3d::isEmpty(void) const
   Check if this has been marked as an empty box.
 
   \sa makeEmpty().
- */
-SbBool
-SbBox3d::isEmpty(void) const
-{
-  return this->max[0] < this->min[0];
-}
+*/
 
 /*!
+  \fn SbBool SbBox3d::hasVolume(void) const
+
   Check if the box has been correctly specified and by that virtue
   has volume.
- */
-SbBool
-SbBox3d::hasVolume(void) const
-{
-  return (this->max[0] > this->min[0] &&
-          this->max[1] > this->min[1] &&
-          this->max[2] > this->min[2]);
-}
+*/
 
 /*!
+  \fn double SbBox3d::getVolume(void) const
+
   Check if the box has "positive" volume, i.e. the lower left corner is
   actually lower and more left than the maximum point.
- */
-double
-SbBox3d::getVolume(void) const
-{
-  if (!this->hasVolume()) { return 0.0; }
-
-  return
-    (this->max[0] - this->min[0]) *
-    (this->max[1] - this->min[1]) *
-    (this->max[2] - this->min[2]);
-}
+*/
 
 /*!
   Find the span of the box in the given direction (i.e. how much room in
@@ -381,8 +342,8 @@ SbBox3d::getVolume(void) const
 void
 SbBox3d::getSpan(const SbVec3d & dir, double & dmin, double & dmax) const
 {
-  double dist, mindist=DBL_MAX, maxdist=-DBL_MAX;
-  SbVec3d points[2]={this->min, this->max};
+  double dist, mindist = std::numeric_limits<double>::max(), maxdist = -std::numeric_limits<double>::max();
+  SbVec3d points[2]={this->minpt, this->maxpt};
   SbVec3d corner;
   SbVec3d normdir(dir);
   if (normdir.normalize() == 0.0) {
@@ -438,7 +399,7 @@ SbBox3d::transform(const SbDPMatrix & matrix)
 #endif // COIN_DEBUG
 
   SbVec3d dst;
-  SbVec3d points[2]={this->min, this->max};
+  SbVec3d points[2]={this->minpt, this->maxpt};
   SbVec3d corner;
   SbBox3d newbox;
 
@@ -449,7 +410,7 @@ SbBox3d::transform(const SbDPMatrix & matrix)
     matrix.multVecMatrix(corner, dst);
     newbox.extendBy(dst);
   }
-  this->setBounds(newbox.min, newbox.max);
+  this->setBounds(newbox.minpt, newbox.maxpt);
 }
 
 /*!
@@ -469,26 +430,18 @@ SbBox3d::print(FILE * fp) const
 }
 
 /*!
+  \fn int operator == (const SbBox3d & b1, const SbBox3d & b2)
   \relates SbBox3d
 
   Check \a b1 and \a b2 for equality.
 */
-int
-operator ==(const SbBox3d & b1, const SbBox3d & b2)
-{
-  return b1.getMin() == b2.getMin() && b1.getMax() == b2.getMax();
-}
 
 /*!
+  \fn int operator != (const SbBox3d & b1, const SbBox3d & b2)
   \relates SbBox3d
 
   Check \a b1 and \a b2 for inequality.
 */
-int
-operator !=(const SbBox3d & b1, const SbBox3d & b2)
-{
-  return !(b1 == b2);
-}
 
 /*!
   Check if the box is outside the view volume defined by the \a mvp
@@ -511,9 +464,9 @@ SbBox3d::outside(const SbDPMatrix & mvp, int & cullbits) const
   SbVec3d tmp;
   SbVec3d clip[8];
   for (i = 0; i < 8; i++) {
-    tmp[0] = i & 4 ? this->min[0] : this->max[0];
-    tmp[1] = i & 2 ? this->min[1] : this->max[1];
-    tmp[2] = i & 1 ? this->min[2] : this->max[2];
+    tmp[0] = i & 4 ? this->minpt[0] : this->maxpt[0];
+    tmp[1] = i & 2 ? this->minpt[1] : this->maxpt[1];
+    tmp[2] = i & 1 ? this->minpt[2] : this->maxpt[2];
     mvp.multVecMatrix(tmp, clip[i]);
   }
   for (int j = 0; j < 3; j++) {
@@ -547,9 +500,9 @@ SbBox3d::getClosestPoint(const SbVec3d & point) const
   double devx = closest[0] - center[0];
   double devy = closest[1] - center[1];
   double devz = closest[2] - center[2];
-  double halfwidth = (this->max[0] - this->min[0]) / 2.0;
-  double halfheight = (this->max[1] - this->min[1]) / 2.0;
-  double halfdepth = (this->max[2] - this->min[2]) / 2.0;
+  double halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0;
+  double halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0;
+  double halfdepth = (this->maxpt[2] - this->minpt[2]) / 2.0;
 
   // Move point to be on the nearest plane of the box.
   if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
@@ -560,9 +513,9 @@ SbBox3d::getClosestPoint(const SbVec3d & point) const
     closest[2] = center[2] + halfdepth * ((devz < 0.0) ? -1.0 : 1.0);
 
   // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], this->min[0]), this->max[0]);
-  closest[1] = SbMin(SbMax(closest[1], this->min[1]), this->max[1]);
-  closest[2] = SbMin(SbMax(closest[2], this->min[2]), this->max[2]);
+  closest[0] = SbMin(SbMax(closest[0], this->minpt[0]), this->maxpt[0]);
+  closest[1] = SbMin(SbMax(closest[1], this->minpt[1]), this->maxpt[1]);
+  closest[2] = SbMin(SbMax(closest[2], this->minpt[2]), this->maxpt[2]);
 
   return closest;
 }
