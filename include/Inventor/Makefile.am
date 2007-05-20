@@ -42,6 +42,7 @@ PublicHeaders = \
 	SbString.h \
 	SbTesselator.h \
 	SbTime.h \
+	SbTypeInfo.h \
 	SbVec.h \
 	SbVec2b.h \
 	SbVec2ub.h \
