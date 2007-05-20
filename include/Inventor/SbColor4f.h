@@ -85,4 +85,6 @@ COIN_DLL_API SbColor4f operator -(const SbColor4f &v1, const SbColor4f &v2);
 COIN_DLL_API int operator ==(const SbColor4f &v1, const SbColor4f &v2);
 COIN_DLL_API int operator !=(const SbColor4f &v1, const SbColor4f &v2);
 
+typedef class SbColor4f SbColorRGBA; // TGS compatibility
+
 #endif // !COIN_SBCOLOR4F_H
