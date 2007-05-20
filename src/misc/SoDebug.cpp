@@ -29,7 +29,11 @@
 
 #include <SoDebug.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SbHash.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 
 // *************************************************************************
 
@@ -40,6 +44,8 @@
 
 // *************************************************************************
 
+namespace {
+
 struct SoDebug_internal {
   static SbHash<char *, void *> * namedict;
   static void delete_namedict(void);
@@ -47,6 +53,8 @@ struct SoDebug_internal {
 };
 
 SbHash<char *, void *> * SoDebug_internal::namedict = NULL;
+
+} // anonymous namespace
 
 /*!
   This is a portable getenv-wrapper.
@@ -112,7 +120,7 @@ SoDebug::NamePtr(const char * name, void * ptr)
 const char *
 SoDebug::PtrName(void * ptr)
 {
-  static const char fallback[] = "<unnamed>";
+  static const char fallback[] = "<noName>";
   if ( SoDebug_internal::namedict == NULL ) return fallback;
   char * data = NULL;
   if ( SoDebug_internal::namedict->get(ptr, data) ) {
@@ -124,23 +132,40 @@ SoDebug::PtrName(void * ptr)
 }
 
 /*!
-  Not implemented.
+  Writes the node to stdout.
 */
 
 void
 SoDebug::write(SoNode * node)
 {
-  // FIXME: stub
+  node->ref();
+  SoOutput out;
+  if (node->getNodeType() == SoNode::VRML2) {
+    out.setHeaderString("#VRML V2.0 utf8");
+  }
+  SoWriteAction wa(&out);
+  wa.apply(node);
+  node->unrefNoDelete();
 }
 
 /*!
-  Not implemented.
+  Writes the node to the given filename, or /tmp/debug.iv if filename is NULL.
 */
 
 void
 SoDebug::writeToFile(SoNode * node, const char * filename)
 {
-  // FIXME: stub
+  node->ref();
+  const char * fname = filename ? filename : "/tmp/debug.iv";
+  SoOutput out;
+  out.openFile(fname);
+  if (node->getNodeType() == SoNode::VRML2) {
+    out.setHeaderString("#VRML V2.0 utf8");
+  }
+  SoWriteAction wa(&out);
+  wa.apply(node);
+  out.closeFile();
+  node->unrefNoDelete();
 }
 
 /*!
@@ -150,7 +175,13 @@ SoDebug::writeToFile(SoNode * node, const char * filename)
 void
 SoDebug::writeField(SoField * field)
 {
-  // FIXME: stub
+  SoFieldContainer * container = field->getContainer();
+  if (!container) return;
+  SbName name;
+  container->getFieldName(field, name);
+
+  SoOutput out;
+  field->write(&out, name);
 }
 
 /*!
@@ -160,7 +191,12 @@ SoDebug::writeField(SoField * field)
 void
 SoDebug::printName(SoBase * base)
 {
-  // FIXME: stub
+  SbName name = base->getName();
+  if (name.getString() != NULL && name != SbName("")) {
+    puts(name.getString());
+  } else {
+    puts(" not named ");
+  }
 }
 
 // *************************************************************************
