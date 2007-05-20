@@ -31,6 +31,9 @@
 #endif // !NDEBUG
 
 class SbVec3f;
+class SbVec3b;
+class SbVec3s;
+class SbVec3i32;
 class SbDPPlane;
 
 class COIN_DLL_API SbVec3d {
@@ -39,6 +42,9 @@ public:
   SbVec3d(const double v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; }
   SbVec3d(double x, double y, double z) { vec[0] = x; vec[1] = y; vec[2] = z; }
   explicit SbVec3d(const SbVec3f & v) { setValue(v); }
+  explicit SbVec3d(const SbVec3b & v) { setValue(v); }
+  explicit SbVec3d(const SbVec3s & v) { setValue(v); }
+  explicit SbVec3d(const SbVec3i32 & v) { setValue(v); }
   SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p2);
 
   SbVec3d & setValue(const double v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; return *this; }
@@ -48,6 +54,9 @@ public:
                      const SbVec3d & v1,
                      const SbVec3d & v2);
   SbVec3d & setValue(const SbVec3f & v);
+  SbVec3d & setValue(const SbVec3b & v);
+  SbVec3d & setValue(const SbVec3s & v);
+  SbVec3d & setValue(const SbVec3i32 & v);
 
   const double * getValue(void) const { return vec; }
   void getValue(double & x, double & y, double & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }
@@ -60,7 +69,7 @@ public:
   SbBool equals(const SbVec3d & v, double tolerance) const;
   SbVec3d getClosestAxis(void) const;
   double length(void) const;
-  double sqrLength() const { return vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]; }
+  double sqrLength(void) const { return vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]; }
   void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; vec[2] = -vec[2]; }
   double normalize(void);
 

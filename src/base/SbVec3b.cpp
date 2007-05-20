@@ -23,9 +23,13 @@
 
 #include <Inventor/SbVec3b.h>
 
+#include <limits>
+
 #include <Inventor/SbVec3ub.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbVec3i32.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec3d.h>
 
 /*!
   \class SbVec3b Inventor/SbVec3b.h
@@ -45,6 +49,13 @@ SbVec3b::setValue(const SbVec3ub & v)
 SbVec3b &
 SbVec3b::setValue(const SbVec3s & v)
 {
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec3b::setValue", "SbVec3s argument out of range for SbVec3b");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<int8_t>(v[0]);
   vec[1] = static_cast<int8_t>(v[1]);
   vec[2] = static_cast<int8_t>(v[2]);
@@ -54,6 +65,45 @@ SbVec3b::setValue(const SbVec3s & v)
 SbVec3b &
 SbVec3b::setValue(const SbVec3i32 & v)
 {
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec3b::setValue", "SbVec3i32 argument out of range for SbVec3b");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<int8_t>(v[0]);
+  vec[1] = static_cast<int8_t>(v[1]);
+  vec[2] = static_cast<int8_t>(v[2]);
+  return *this;
+}
+
+SbVec3b &
+SbVec3b::setValue(const SbVec3f & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec3b::setValue", "SbVec3f argument out of range for SbVec3b");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<int8_t>(v[0]);
+  vec[1] = static_cast<int8_t>(v[1]);
+  vec[2] = static_cast<int8_t>(v[2]);
+  return *this;
+}
+
+SbVec3b &
+SbVec3b::setValue(const SbVec3d & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec3b::setValue", "SbVec3d argument out of range for SbVec3b");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<int8_t>(v[0]);
   vec[1] = static_cast<int8_t>(v[1]);
   vec[2] = static_cast<int8_t>(v[2]);

@@ -23,9 +23,13 @@
 
 #include <Inventor/SbVec4d.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec4f.h>
+#include <Inventor/SbVec4b.h>
+#include <Inventor/SbVec4s.h>
+#include <Inventor/SbVec4i32.h>
 #include <Inventor/SbVec3d.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
@@ -68,6 +72,30 @@
   \fn SbVec4d::SbVec4d(const SbVec4f & v)
 
   Constructs an SbVec4d instance from an SbVec4f instance.
+*/
+
+/*!
+  \fn SbVec4d::SbVec4d(const SbVec4b & v)
+
+  Constructs an SbVec4d instance from an SbVec4b instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec4d::SbVec4d(const SbVec4s & v)
+
+  Constructs an SbVec4d instance from an SbVec4s instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec4d::SbVec4d(const SbVec4i32 & v)
+
+  Constructs an SbVec4d instance from an SbVec4i32 instance.
+
+  \since 2007-05-13
 */
 
 /*!
@@ -205,6 +233,48 @@ SbVec4d::normalize(void)
 
 SbVec4d &
 SbVec4d::setValue(const SbVec4f & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  vec[3] = static_cast<double>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec4d &
+SbVec4d::setValue(const SbVec4b & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  vec[3] = static_cast<double>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec4d &
+SbVec4d::setValue(const SbVec4s & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  vec[3] = static_cast<double>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec4d &
+SbVec4d::setValue(const SbVec4i32 & v)
 {
   vec[0] = static_cast<double>(v[0]);
   vec[1] = static_cast<double>(v[1]);

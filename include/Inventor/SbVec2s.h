@@ -35,6 +35,8 @@
 class SbVec2us;
 class SbVec2b;
 class SbVec2i32;
+class SbVec2f;
+class SbVec2d;
 
 class COIN_DLL_API SbVec2s {
 public:
@@ -44,12 +46,16 @@ public:
   explicit SbVec2s(const SbVec2us & v) { setValue(v); }
   explicit SbVec2s(const SbVec2b & v) { setValue(v); }
   explicit SbVec2s(const SbVec2i32 & v) { setValue(v); }
+  explicit SbVec2s(const SbVec2f & v) { setValue(v); }
+  explicit SbVec2s(const SbVec2d & v) { setValue(v); }
 
   SbVec2s & setValue(const short v[2]) { vec[0] = v[0]; vec[1] = v[1]; return *this; }
   SbVec2s & setValue(short x, short y) { vec[0] = x; vec[1] = y; return *this; }
   SbVec2s & setValue(const SbVec2us & v);
   SbVec2s & setValue(const SbVec2b & v);
   SbVec2s & setValue(const SbVec2i32 & v);
+  SbVec2s & setValue(const SbVec2f & v);
+  SbVec2s & setValue(const SbVec2d & v);
 
   const short * getValue(void) const { return vec; }
   void getValue(short & x, short & y) const { x = vec[0]; y = vec[1]; }

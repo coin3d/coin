@@ -35,9 +35,13 @@
 
 #include <Inventor/SbVec2f.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec2d.h>
+#include <Inventor/SbVec2b.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec2i32.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -67,6 +71,30 @@
 
 /*!
   \fn SbVec2f::SbVec2f(const SbVec2d & v)
+
+  Constructs an instance from an SbVec2d instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2f::SbVec2f(const SbVec2b & v)
+
+  Constructs an instance from an SbVec2d instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2f::SbVec2f(const SbVec2s & v)
+
+  Constructs an instance from an SbVec2d instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2f::SbVec2f(const SbVec2i32 & v)
 
   Constructs an instance from an SbVec2d instance.
 
@@ -191,6 +219,48 @@ SbVec2f::normalize(void)
 
 SbVec2f &
 SbVec2f::setValue(const SbVec2d & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  return *this;
+}
+
+/*!
+  Sets the value from an SbVec2b instance.
+
+  \since 2007-04-28
+*/
+
+SbVec2f &
+SbVec2f::setValue(const SbVec2b & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  return *this;
+}
+
+/*!
+  Sets the value from an SbVec2s instance.
+
+  \since 2007-04-28
+*/
+
+SbVec2f &
+SbVec2f::setValue(const SbVec2s & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  return *this;
+}
+
+/*!
+  Sets the value from an SbVec2i32 instance.
+
+  \since 2007-04-28
+*/
+
+SbVec2f &
+SbVec2f::setValue(const SbVec2i32 & v)
 {
   vec[0] = static_cast<float>(v[0]);
   vec[1] = static_cast<float>(v[1]);

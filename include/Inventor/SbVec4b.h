@@ -33,6 +33,8 @@
 class SbVec4ub;
 class SbVec4s;
 class SbVec4i32;
+class SbVec4f;
+class SbVec4d;
 
 class COIN_DLL_API SbVec4b {
 public:
@@ -42,12 +44,16 @@ public:
   explicit SbVec4b(const SbVec4ub & v) { setValue(v); }
   explicit SbVec4b(const SbVec4s & v) { setValue(v); }
   explicit SbVec4b(const SbVec4i32 & v) { setValue(v); }
+  explicit SbVec4b(const SbVec4f & v) { setValue(v); }
+  explicit SbVec4b(const SbVec4d & v) { setValue(v); }
 
   SbVec4b & setValue(const int8_t v[4]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; vec[3] = v[3]; return *this; }
   SbVec4b & setValue(int8_t x, int8_t y, int8_t z, int8_t w) { vec[0] = x; vec[1] = y; vec[2] = z; vec[3] = w; return *this; }
   SbVec4b & setValue(const SbVec4ub & v);
   SbVec4b & setValue(const SbVec4s & v);
   SbVec4b & setValue(const SbVec4i32 & v);
+  SbVec4b & setValue(const SbVec4f & v);
+  SbVec4b & setValue(const SbVec4d & v);
 
   const int8_t * getValue(void) const { return vec; }
   void getValue(int8_t & x, int8_t & y, int8_t & z, int8_t & w) const { x = vec[0]; y = vec[1]; z = vec[2]; w = vec[3]; }

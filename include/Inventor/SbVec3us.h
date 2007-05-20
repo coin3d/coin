@@ -50,7 +50,7 @@ public:
   SbVec3us & setValue(const SbVec3ui32 & v);
 
   const unsigned short * getValue(void) const { return vec; }
-  void getValue(unsigned short & x, unsigned short & y, unsigned short & z) { x = vec[0]; y = vec[1]; z = vec[2]; }
+  void getValue(unsigned short & x, unsigned short & y, unsigned short & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }
 
   unsigned short & operator [] (int i) { return vec[i]; }
   const unsigned short & operator [] (int i) const { return vec[i]; }

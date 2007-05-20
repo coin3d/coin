@@ -33,6 +33,8 @@
 class SbVec3ui32;
 class SbVec3b;
 class SbVec3s;
+class SbVec3f;
+class SbVec3d;
 
 class COIN_DLL_API SbVec3i32 {
 public:
@@ -40,17 +42,21 @@ public:
   SbVec3i32(const int32_t v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; }
   SbVec3i32(int32_t x, int32_t y, int32_t z) { vec[0] = x; vec[1] = y; vec[2] = z; }
   explicit SbVec3i32(const SbVec3ui32 & v) { setValue(v); }
-  explicit SbVec3i32(const SbVec3s & v) { setValue(v); }
   explicit SbVec3i32(const SbVec3b & v) { setValue(v); }
+  explicit SbVec3i32(const SbVec3s & v) { setValue(v); }
+  explicit SbVec3i32(const SbVec3f & v) { setValue(v); }
+  explicit SbVec3i32(const SbVec3d & v) { setValue(v); }
 
   SbVec3i32 & setValue(const int32_t v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; return *this; }
   SbVec3i32 & setValue(int32_t x, int32_t y, int32_t z) { vec[0] = x; vec[1] = y; vec[2] = z; return *this; }
   SbVec3i32 & setValue(const SbVec3ui32 & v);
   SbVec3i32 & setValue(const SbVec3b & v);
   SbVec3i32 & setValue(const SbVec3s & v);
+  SbVec3i32 & setValue(const SbVec3f & v);
+  SbVec3i32 & setValue(const SbVec3d & v);
 
   const int32_t * getValue(void) const { return vec; }
-  void getValue(int32_t & x, int32_t & y, int32_t & z) { x = vec[0]; y = vec[1]; z = vec[2]; }
+  void getValue(int32_t & x, int32_t & y, int32_t & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }
 
   int32_t & operator [] (int i) { return vec[i]; }
   const int32_t & operator [] (int i) const { return vec[i]; }

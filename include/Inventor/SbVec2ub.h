@@ -50,7 +50,7 @@ public:
   SbVec2ub & setValue(const SbVec2ui32 & v);
 
   const uint8_t * getValue(void) const { return vec; }
-  void getValue(uint8_t & x, uint8_t & y) { x = vec[0]; y = vec[1]; }
+  void getValue(uint8_t & x, uint8_t & y) const { x = vec[0]; y = vec[1]; }
 
   uint8_t & operator [] (int i) { return vec[i]; }
   const uint8_t & operator [] (int i) const { return vec[i]; }

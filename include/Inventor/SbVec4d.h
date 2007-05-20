@@ -32,6 +32,9 @@
 #endif // !NDEBUG
 
 class SbVec4f;
+class SbVec4b;
+class SbVec4s;
+class SbVec4i32;
 class SbVec3d;
 
 class COIN_DLL_API SbVec4d {
@@ -40,10 +43,16 @@ public:
   SbVec4d(const double v[4]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; vec[3] = v[3]; }
   SbVec4d(double x, double y, double z, double w) { vec[0] = x; vec[1] = y; vec[2] = z; vec[3] = w; }
   explicit SbVec4d(const SbVec4f & v) { setValue(v); }
+  explicit SbVec4d(const SbVec4b & v) { setValue(v); }
+  explicit SbVec4d(const SbVec4s & v) { setValue(v); }
+  explicit SbVec4d(const SbVec4i32 & v) { setValue(v); }
 
   SbVec4d & setValue(const double v[4]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; vec[3] = v[3]; return *this; }
   SbVec4d & setValue(double x, double y, double z, double w) { vec[0] = x; vec[1] = y; vec[2] = z; vec[3] = w; return *this; }
   SbVec4d & setValue(const SbVec4f & v);
+  SbVec4d & setValue(const SbVec4b & v);
+  SbVec4d & setValue(const SbVec4s & v);
+  SbVec4d & setValue(const SbVec4i32 & v);
 
   const double * getValue(void) const { return vec; }
   void getValue(double & x, double & y, double & z, double & w) const { x = vec[0]; y = vec[1]; z = vec[2]; w = vec[3]; }

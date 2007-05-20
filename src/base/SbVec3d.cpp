@@ -23,9 +23,13 @@
 
 #include <Inventor/SbVec3d.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec3b.h>
+#include <Inventor/SbVec3s.h>
+#include <Inventor/SbVec3i32.h>
 #include <Inventor/SbDPPlane.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
@@ -70,6 +74,30 @@
   \fn SbVec3d::SbVec3d(const SbVec3f & v)
 
   Constructs an SbVec3d instance from an SbVec3f instance.
+*/
+
+/*!
+  \fn SbVec3d::SbVec3d(const SbVec3b & v)
+
+  Constructs an SbVec3d instance from an SbVec3b instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec3d::SbVec3d(const SbVec3s & v)
+
+  Constructs an SbVec3d instance from an SbVec3s instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec3d::SbVec3d(const SbVec3i32 & v)
+
+  Constructs an SbVec3d instance from an SbVec3i32 instance.
+
+  \since 2007-05-13
 */
 
 /*!
@@ -331,6 +359,51 @@ SbVec3d::setValue(const SbVec3d & barycentric,
 */
 SbVec3d &
 SbVec3d::setValue(const SbVec3f & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  return *this;
+}
+
+/*!
+  Sets this vector to the vector \a v.
+
+  \since 2007-05-13
+*/
+
+SbVec3d &
+SbVec3d::setValue(const SbVec3b & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  return *this;
+}
+
+/*!
+  Sets this vector to the vector \a v.
+
+  \since 2007-05-13
+*/
+
+SbVec3d &
+SbVec3d::setValue(const SbVec3s & v)
+{
+  vec[0] = static_cast<double>(v[0]);
+  vec[1] = static_cast<double>(v[1]);
+  vec[2] = static_cast<double>(v[2]);
+  return *this;
+}
+
+/*!
+  Sets this vector to the vector \a v.
+
+  \since 2007-05-13
+*/
+
+SbVec3d &
+SbVec3d::setValue(const SbVec3i32 & v)
 {
   vec[0] = static_cast<double>(v[0]);
   vec[1] = static_cast<double>(v[1]);

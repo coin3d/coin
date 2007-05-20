@@ -36,11 +36,14 @@
 
 #include <Inventor/SbVec2i32.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec2ui32.h>
 #include <Inventor/SbVec2b.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2d.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -79,6 +82,18 @@
 
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2s & v)
+  
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2i32::SbVec2i32(const SbVec2f & v)
+  
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2i32::SbVec2i32(const SbVec2d & v)
   
   \since 2007-04-28
 */
@@ -161,6 +176,42 @@ SbVec2i32::setValue(const SbVec2b & v)
 SbVec2i32 &
 SbVec2i32::setValue(const SbVec2s & v)
 {
+  vec[0] = static_cast<int32_t>(v[0]);
+  vec[1] = static_cast<int32_t>(v[1]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2i32 &
+SbVec2i32::setValue(const SbVec2f & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int32_t>::max() || v[0] < -std::numeric_limits<int32_t>::max() ||
+      v[1] > std::numeric_limits<int32_t>::max() || v[1] < -std::numeric_limits<int32_t>::max()) {
+    SoDebugError::post("SbVec2b::setValue", "SbVec2f argument out of range for SbVec2i32");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<int32_t>(v[0]);
+  vec[1] = static_cast<int32_t>(v[1]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2i32 &
+SbVec2i32::setValue(const SbVec2d & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int32_t>::max() || v[0] < -std::numeric_limits<int32_t>::max() ||
+      v[1] > std::numeric_limits<int32_t>::max() || v[1] < -std::numeric_limits<int32_t>::max()) {
+    SoDebugError::post("SbVec2b::setValue", "SbVec2d argument out of range for SbVec2i32");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<int32_t>(v[0]);
   vec[1] = static_cast<int32_t>(v[1]);
   return *this;

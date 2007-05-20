@@ -50,7 +50,7 @@ public:
   SbVec4ub & setValue(const SbVec4ui32 & v);
 
   const uint8_t * getValue(void) const { return vec; }
-  void getValue(uint8_t & x, uint8_t & y, uint8_t & z, uint8_t & w) { x = vec[0]; y = vec[1]; z = vec[2]; w = vec[3]; }
+  void getValue(uint8_t & x, uint8_t & y, uint8_t & z, uint8_t & w) const { x = vec[0]; y = vec[1]; z = vec[2]; w = vec[3]; }
 
   uint8_t & operator [] (int i) { return vec[i]; }
   const uint8_t & operator [] (int i) const { return vec[i]; }

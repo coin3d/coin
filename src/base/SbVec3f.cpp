@@ -35,10 +35,13 @@
 
 #include <Inventor/SbVec3f.h>
 
+#include <limits>
 #include <assert.h>
-#include <float.h> // FLT_MAX
 
 #include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec3b.h>
+#include <Inventor/SbVec3s.h>
+#include <Inventor/SbVec3i32.h>
 
 #include <Inventor/SbPlane.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
@@ -69,6 +72,27 @@
 /*!
   \fn SbVec3f::SbVec3f(const SbVec3d & v)
   Constructs an SbVec3f instance from an SbVec3d instance.
+*/
+
+/*!
+  \fn SbVec3f::SbVec3f(const SbVec3b & v)
+  Constructs an SbVec3f instance from an SbVec3b instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec3f::SbVec3f(const SbVec3s & v)
+  Constructs an SbVec3f instance from an SbVec3s instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec3f::SbVec3f(const SbVec3i32 & v)
+  Constructs an SbVec3f instance from an SbVec3i32 instance.
+
+  \since 2007-05-13
 */
 
 /*!
@@ -380,18 +404,57 @@ SbVec3f &
 SbVec3f::setValue(const SbVec3d & v)
 {
 #if COIN_DEBUG
-  if (v[0] < -FLT_MAX ||
-      v[0] > FLT_MAX ||
-      v[1] < -FLT_MAX ||
-      v[1] > FLT_MAX ||
-      v[2] < -FLT_MAX ||
-      v[2] > FLT_MAX) {
+  if (v[0] > std::numeric_limits<float>::max() || v[0] < -std::numeric_limits<float>::max() ||
+      v[1] > std::numeric_limits<float>::max() || v[1] < -std::numeric_limits<float>::max() ||
+      v[2] > std::numeric_limits<float>::max() || v[2] < -std::numeric_limits<float>::max()) {
     SoDebugError::postWarning("SbVec3f::setValue",
                               "The double precision vector will not fit into a "
                               "single precision vector.");
   }
 #endif // COIN_DEBUG
 
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+  \sa getValue()
+*/
+
+SbVec3f & 
+SbVec3f::setValue(const SbVec3b & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+  \sa getValue()
+*/
+
+SbVec3f & 
+SbVec3f::setValue(const SbVec3s & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+  \sa getValue()
+*/
+
+SbVec3f & 
+SbVec3f::setValue(const SbVec3i32 & v)
+{
   vec[0] = static_cast<float>(v[0]);
   vec[1] = static_cast<float>(v[1]);
   vec[2] = static_cast<float>(v[2]);

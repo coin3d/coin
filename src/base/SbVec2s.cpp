@@ -36,11 +36,14 @@
 
 #include <Inventor/SbVec2s.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec2us.h>
 #include <Inventor/SbVec2b.h>
 #include <Inventor/SbVec2i32.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2d.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -76,7 +79,7 @@
 /*!
   \fn SbVec2s::SbVec2s(const SbVec2b & v)
 
-  Constructs an SbVec2s instance from the value in an SbVec2us instance.
+  Constructs an SbVec2s instance from the value in an SbVec2b instance.
 
   \since 2007-04-28
 */
@@ -84,7 +87,23 @@
 /*!
   \fn SbVec2s::SbVec2s(const SbVec2i32 & v)
 
-  Constructs an SbVec2s instance from the value in an SbVec2us instance.
+  Constructs an SbVec2s instance from the value in an SbVec2i32 instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2s::SbVec2s(const SbVec2f & v)
+
+  Constructs an SbVec2s instance from the value in an SbVec2f instance.
+
+  \since 2007-04-28
+*/
+
+/*!
+  \fn SbVec2s::SbVec2s(const SbVec2d & v)
+
+  Constructs an SbVec2s instance from the value in an SbVec2d instance.
 
   \since 2007-04-28
 */
@@ -167,6 +186,48 @@ SbVec2s::setValue(const SbVec2b & v)
 SbVec2s &
 SbVec2s::setValue(const SbVec2i32 & v)
 {
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<short>::max() || v[0] < -std::numeric_limits<short>::max() ||
+      v[1] > std::numeric_limits<short>::max() || v[1] < -std::numeric_limits<short>::max()) {
+    SoDebugError::post("SbVec2s::setValue", "SbVec2i32 argument out of range for SbVec2s");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<short>(v[0]);
+  vec[1] = static_cast<short>(v[1]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2s &
+SbVec2s::setValue(const SbVec2f & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<short>::max() || v[0] < -std::numeric_limits<short>::max() ||
+      v[1] > std::numeric_limits<short>::max() || v[1] < -std::numeric_limits<short>::max()) {
+    SoDebugError::post("SbVec2s::setValue", "SbVec2f argument out of range for SbVec2s");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<short>(v[0]);
+  vec[1] = static_cast<short>(v[1]);
+  return *this;
+}
+
+/*!
+  \since 2007-04-28
+*/
+
+SbVec2s &
+SbVec2s::setValue(const SbVec2d & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<short>::max() || v[0] < -std::numeric_limits<short>::max() ||
+      v[1] > std::numeric_limits<short>::max() || v[1] < -std::numeric_limits<short>::max()) {
+    SoDebugError::post("SbVec2s::setValue", "SbVec2d argument out of range for SbVec2s");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<short>(v[0]);
   vec[1] = static_cast<short>(v[1]);
   return *this;

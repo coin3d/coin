@@ -23,9 +23,16 @@
 
 #include <Inventor/SbVec4b.h>
 
+#include <limits>
+
 #include <Inventor/SbVec4ub.h>
 #include <Inventor/SbVec4s.h>
 #include <Inventor/SbVec4i32.h>
+#include <Inventor/SbVec4f.h>
+#include <Inventor/SbVec4d.h>
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   \class SbVec4b Inventor/SbVec4b.h
@@ -46,6 +53,13 @@ SbVec4b::setValue(const SbVec4ub & v)
 SbVec4b &
 SbVec4b::setValue(const SbVec4s & v)
 {
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec4b::setValue", "SbVec4s argument out of range for SbVec4b storage");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<int8_t>(v[0]);
   vec[1] = static_cast<int8_t>(v[1]);
   vec[2] = static_cast<int8_t>(v[2]);
@@ -56,6 +70,47 @@ SbVec4b::setValue(const SbVec4s & v)
 SbVec4b &
 SbVec4b::setValue(const SbVec4i32 & v)
 {
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec4b::setValue", "SbVec4i32 argument out of range for SbVec4b storage");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<int8_t>(v[0]);
+  vec[1] = static_cast<int8_t>(v[1]);
+  vec[2] = static_cast<int8_t>(v[2]);
+  vec[3] = static_cast<int8_t>(v[3]);
+  return *this;
+}
+
+SbVec4b &
+SbVec4b::setValue(const SbVec4f & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec4b::setValue", "SbVec4f argument out of range for SbVec4b storage");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<int8_t>(v[0]);
+  vec[1] = static_cast<int8_t>(v[1]);
+  vec[2] = static_cast<int8_t>(v[2]);
+  vec[3] = static_cast<int8_t>(v[3]);
+  return *this;
+}
+
+SbVec4b &
+SbVec4b::setValue(const SbVec4d & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<int8_t>::max() || v[0] < -std::numeric_limits<int8_t>::max() ||
+      v[1] > std::numeric_limits<int8_t>::max() || v[1] < -std::numeric_limits<int8_t>::max() ||
+      v[2] > std::numeric_limits<int8_t>::max() || v[2] < -std::numeric_limits<int8_t>::max()) {
+    SoDebugError::post("SbVec4b::setValue", "SbVec4d argument out of range for SbVec4b storage");
+  }
+#endif // COIN_DEBUG
   vec[0] = static_cast<int8_t>(v[0]);
   vec[1] = static_cast<int8_t>(v[1]);
   vec[2] = static_cast<int8_t>(v[2]);

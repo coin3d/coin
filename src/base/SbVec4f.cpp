@@ -23,9 +23,13 @@
 
 #include <Inventor/SbVec4f.h>
 
+#include <limits>
 #include <assert.h>
 
 #include <Inventor/SbVec4d.h>
+#include <Inventor/SbVec4b.h>
+#include <Inventor/SbVec4s.h>
+#include <Inventor/SbVec4i32.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
@@ -68,6 +72,30 @@
   \fn SbVec4f::SbVec4f(const SbVec4d & v)
 
   Constructs an SbVec4f instance from an SbVec4d instance.
+*/
+
+/*!
+  \fn SbVec4f::SbVec4f(const SbVec4b & v)
+
+  Constructs an SbVec4f instance from an SbVec4b instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec4f::SbVec4f(const SbVec4s & v)
+
+  Constructs an SbVec4f instance from an SbVec4s instance.
+
+  \since 2007-05-13
+*/
+
+/*!
+  \fn SbVec4f::SbVec4f(const SbVec4i32 & v)
+
+  Constructs an SbVec4f instance from an SbVec4i32 instance.
+
+  \since 2007-05-13
 */
 
 /*!
@@ -196,11 +224,60 @@ SbVec4f::normalize(void)
 */
 
 /*!
-  Sets the value from an SbVec3d instance.
+  Sets the value from an SbVec4d instance.
 */
 
 SbVec4f &
 SbVec4f::setValue(const SbVec4d & v)
+{
+#if COIN_DEBUG
+  if (v[0] > std::numeric_limits<float>::max() || v[0] < -std::numeric_limits<float>::max() || 
+      v[1] > std::numeric_limits<float>::max() || v[1] < -std::numeric_limits<float>::max() || 
+      v[2] > std::numeric_limits<float>::max() || v[2] < -std::numeric_limits<float>::max()) {
+    SoDebugError::post("SbVec4f::setValue", "SbVec4d argument out of range for SbVec4f storage");
+  }
+#endif // COIN_DEBUG
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  vec[3] = static_cast<float>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+*/
+
+SbVec4f &
+SbVec4f::setValue(const SbVec4b & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  vec[3] = static_cast<float>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+*/
+
+SbVec4f &
+SbVec4f::setValue(const SbVec4s & v)
+{
+  vec[0] = static_cast<float>(v[0]);
+  vec[1] = static_cast<float>(v[1]);
+  vec[2] = static_cast<float>(v[2]);
+  vec[3] = static_cast<float>(v[3]);
+  return *this;
+}
+
+/*!
+  \since 2007-05-13
+*/
+
+SbVec4f &
+SbVec4f::setValue(const SbVec4i32 & v)
 {
   vec[0] = static_cast<float>(v[0]);
   vec[1] = static_cast<float>(v[1]);

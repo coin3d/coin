@@ -33,6 +33,9 @@
 
 class SbPlane;
 class SbVec3d;
+class SbVec3b;
+class SbVec3s;
+class SbVec3i32;
 
 class COIN_DLL_API SbVec3f {
 public:
@@ -40,6 +43,9 @@ public:
   SbVec3f(const float v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; }
   SbVec3f(float x, float y, float z) { vec[0] = x; vec[1] = y; vec[2] = z; }
   explicit SbVec3f(const SbVec3d & v) { setValue(v); }
+  explicit SbVec3f(const SbVec3b & v) { setValue(v); }
+  explicit SbVec3f(const SbVec3s & v) { setValue(v); }
+  explicit SbVec3f(const SbVec3i32 & v) { setValue(v); }
   SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2);
 
   SbVec3f & setValue(const float v[3]) { vec[0] = v[0]; vec[1] = v[1]; vec[2] = v[2]; return *this; }
@@ -49,6 +55,9 @@ public:
                      const SbVec3f & v1,
                      const SbVec3f & v2);
   SbVec3f & setValue(const SbVec3d & v);
+  SbVec3f & setValue(const SbVec3b & v);
+  SbVec3f & setValue(const SbVec3s & v);
+  SbVec3f & setValue(const SbVec3i32 & v);
 
   const float * getValue(void) const { return vec; }
   void getValue(float & x, float & y, float & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }

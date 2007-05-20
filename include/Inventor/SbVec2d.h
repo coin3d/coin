@@ -32,6 +32,9 @@
 #endif // !NDEBUG
 
 class SbVec2f;
+class SbVec2b;
+class SbVec2s;
+class SbVec2i32;
 
 class COIN_DLL_API SbVec2d {
 public:
@@ -39,10 +42,16 @@ public:
   SbVec2d(const double v[2]) { vec[0] = v[0]; vec[1] = v[1]; }
   SbVec2d(double x, double y) { vec[0] = x; vec[1] = y; }
   explicit SbVec2d(const SbVec2f & v) { setValue(v); }
+  explicit SbVec2d(const SbVec2b & v) { setValue(v); }
+  explicit SbVec2d(const SbVec2s & v) { setValue(v); }
+  explicit SbVec2d(const SbVec2i32 & v) { setValue(v); }
 
   SbVec2d & setValue(const double v[2]) { vec[0] = v[0]; vec[1] = v[1]; return *this; }
   SbVec2d & setValue(double x, double y) { vec[0] = x; vec[1] = y; return *this; }
   SbVec2d & setValue(const SbVec2f & v);
+  SbVec2d & setValue(const SbVec2b & v);
+  SbVec2d & setValue(const SbVec2s & v);
+  SbVec2d & setValue(const SbVec2i32 & v);
 
   const double * getValue(void) const { return vec; }
   void getValue(double & x, double & y) const { x = vec[0]; y = vec[1]; }
