@@ -1397,7 +1397,7 @@ SoInput::read(SbName & n, SbBool validIdent)
     char buf[256];
     char * b = buf;
     char c;
-    SbBool gotchar;
+    SbBool gotchar = FALSE;
     
     switch (codepath) {
     case INVENTOR:
