@@ -2202,15 +2202,10 @@ AC_CONFIG_FILES([
 	src/shadows/Makefile
 	src/geo/Makefile
         src/foreignfiles/Makefile
-        cfg/gendsp.sh
         cfg/gendsp.pl
 ])
 
 AC_OUTPUT
-
-if test -f cfg/gendsp.sh; then
-  chmod +x cfg/gendsp.sh
-fi
 
 if test -f cfg/gendsp.pl; then
   chmod +x cfg/gendsp.pl

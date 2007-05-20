@@ -84,7 +84,6 @@ EXTRA_DIST = \
 	docs/oiki-launch.txt \
 	cfg/errors.txt \
 	cfg/gendsp.pl.in \
-	cfg/gendsp.sh.in \
 	cfg/ltconfig \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
