@@ -44,6 +44,12 @@ public:
 
   SoShadowGroup(void);
 
+  enum VisibilityFlag {
+    ABSOLUTE_RADIUS,
+    LONGEST_BBOX_EDGE_FACTOR,
+    PROJECTED_BBOX_DEPTH
+  };
+
   SoSFBool isActive;
   SoSFFloat intensity;
   SoSFFloat precision;

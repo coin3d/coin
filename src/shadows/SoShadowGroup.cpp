@@ -54,7 +54,7 @@
       quality 0.5
       shadowCachingEnabled TRUE
       visibilityRadius -1.0
-      visibilityFlag FIXME
+      visibilityFlag LONGEST_BBOX_EDGE_FACTOR
 
       epsilon 0.00001
       threshold 0.1
@@ -109,6 +109,8 @@
   maps.  If a negative value is provided, the group will calculate a
   near plane based on the bounding box of the children. Default value
   is -1.0.
+
+  /sa visibilityFlag
 */
 
 /*!
@@ -118,14 +120,36 @@
   maps.  If a negative value is provided, the group will calculate a
   near plane based on the bounding box of the children. Default value
   is -1.0.
+
+  /sa visibilityFlag
 */
 
 /*!
   \var SoSFEnum SoShadowGroup::visibilityFlag
 
-  FIXME: todo
+  Determines how visibilityRadius and visibilitNearRadius is used to
+  calculate near and far clipping planes for the shadow volume.
 */
 
+/*!
+  SoShadowGroup::VisibilityFlag SoShadowGroup::ABSOLUTE_RADIUS
+
+  The absolute values of visibilityNearRadius and visibilityRadius will be used.
+*/
+
+/*!
+  SoShadowGroup::VisibilityFlag SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR
+
+  The longest bbox edge will be used to determine near and far clipping planes.
+  
+*/
+
+/*! 
+  SoShadowGroup::VisibilityFlag SoShadowGroup::PROJECTED_BBOX_DEPTH
+
+  The bbox depth (projected to face the camera) will be used to calculate the clipping planes.
+
+*/
 
 /*! 
   \var SoSFInt32 SoShadowGroup::gaussMatrixSize
@@ -492,6 +516,12 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.6f));
   SO_NODE_ADD_FIELD(gaussMatrixSize, (0));
 
+  SO_NODE_ADD_FIELD(visibilityFlag, (LONGEST_BBOX_EDGE_FACTOR));
+  
+  SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, LONGEST_BBOX_EDGE_FACTOR);
+  SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, ABSOLUTE_RADIUS);
+  SO_NODE_SET_SF_ENUM_TYPE(visibilityFlag, VisibilityFlag);
+
 }
 
 /*!
@@ -650,45 +680,64 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
   cam->heightAngle.setValue(light->cutOffAngle.getValue() * 2.0f);
-  
-  // FIXME: cache bbox in the pimpl class
-  this->bboxaction.apply(cache->depthmap->scene.getValue());
-  SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
-  
-  SbMatrix mat;
-  mat.setTranslate(- cam->position.getValue());
-  xbox.transform(mat);
-  mat = cam->orientation.getValue().inverse();
-  xbox.transform(mat);
-  SbBox3f box = xbox.project();
 
-  // Bounding box was calculated in camera space, so we need to "flip"
-  // the box (because camera is pointing in the (0,0,-1) direction
-  // from origo.
-  cache->nearval = -box.getMax()[2];
-  cache->farval = -box.getMin()[2];
+  SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
 
-  // light won't hit the scene
-  // if (cache->farval <= 0.0f) return;
-  
-  const int depthbits = 16;
-  float r = (float) pow(2.0, (double) depthbits);
-  float nearlimit = cache->farval / r;
-  
-  if (cache->nearval < nearlimit) {
-    cache->nearval = nearlimit;
-  }
-
-  const float SLACK = 0.001f;
-
-  cache->nearval = cache->nearval * (1.0f - SLACK);
-  cache->farval = cache->farval * (1.0f + SLACK);
-
-  float visnear = PUBLIC(this)->visibilityNearRadius.getValue();
+  float visnear = PUBLIC(this)->visibilityNearRadius.getValue();  
   float visfar = PUBLIC(this)->visibilityRadius.getValue();
+  
+  if ((visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
+      (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH) ||
+      ((visnear < 0.0f) || (visfar < 0.0f))) {
+    
+    // FIXME: cache bbox in the pimpl class
+    this->bboxaction.apply(cache->depthmap->scene.getValue());
+    SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
+    
+    SbMatrix mat;
+    mat.setTranslate(- cam->position.getValue());
+    xbox.transform(mat);
+    mat = cam->orientation.getValue().inverse();
+    xbox.transform(mat);
+    SbBox3f box = xbox.project();
+    
+    // Bounding box was calculated in camera space, so we need to "flip"
+    // the box (because camera is pointing in the (0,0,-1) direction
+    // from origo.
+    cache->nearval = -box.getMax()[2];
+    cache->farval = -box.getMin()[2];
+    
+    // light won't hit the scene
+    // if (cache->farval <= 0.0f) return;
+    
+    const int depthbits = 16;
+    float r = (float) pow(2.0, (double) depthbits);
+    float nearlimit = cache->farval / r;
+    
+    if (cache->nearval < nearlimit) {
+      cache->nearval = nearlimit;
+    }
+    
+    const float SLACK = 0.001f;
 
-  if ((visnear > 0.0f) && (visnear > cache->nearval)) cache->nearval = visnear;
-  if ((visfar > 0.0f) && (visfar < cache->farval)) cache->farval = visfar;
+    cache->nearval = cache->nearval * (1.0f - SLACK);
+    cache->farval = cache->farval * (1.0f + SLACK);
+
+    if (visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) {
+      float sx,sy,sz;
+      xbox.getSize(sx, sy, sz);      
+      float smax =  SbMax(SbMax(sx, sy), sz);
+      if (visnear > 0.0f) visnear = smax * visnear;
+      if (visfar > 0.0f) visfar = smax  * visfar;
+    }
+    else if (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH) {
+      if (visnear > 0.0f) visnear = cache->farval * visnear; // should be calculated from farval, not nearval
+      if (visfar > 0.0f) visfar = cache->farval * visfar;
+    }
+  }
+  
+  if (visnear > 0.0f) cache->nearval = visnear;
+  if (visfar > 0.0f) cache->farval = visfar;
   
   if (cache->nearval != cam->nearDistance.getValue()) {
     cam->nearDistance = cache->nearval;
