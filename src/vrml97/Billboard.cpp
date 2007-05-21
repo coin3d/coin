@@ -408,57 +408,71 @@ SoVRMLBillboard::notify(SoNotList * list)
 void
 SoVRMLBillboard::performRotation(SoState * state) const
 {
+  SbVec3f rotaxis = this->axisOfRotation.getValue();
+
   SbMatrix imm = SoModelMatrixElement::get(state).inverse();
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-
-  SbVec3f up, toviewer;
+  SbVec3f up, look, right;
+  
   imm.multDirMatrix(vv.getViewUp(), up);
-  imm.multVecMatrix(vv.getProjectionPoint(), toviewer);
-
-  if (toviewer.normalize() < FLT_EPSILON) {
-    // we're not going to be able to calculate anything if the
-    // projection point is in origo
+  
+  // The billboard-to-camera vector is the billboard position minus
+  // the camera position (i.e. the projection point), but since we're
+  // working in local coordinates, the position of the billboard is
+  // assumed to be origo. This might not be 100% correct, but it
+  // allows us to use the projection point as the billboard-to-camera
+  // vector directly.
+  imm.multVecMatrix(vv.getProjectionPoint(), look);
+  
+  if (look.length() < FLT_EPSILON) {
+    // projection point is in origo => orientation of the billboard is
+    // undefined.
     return;
   }
-
-  SbVec3f rotaxis = this->axisOfRotation.getValue();  
-  SbVec3f yaxis(0.0f, 1.0f, 0.0f);
-  SbVec3f zaxis(0.0f, 0.0f, 1.0f);
-  
-  SbRotation rot = SbRotation::identity();
   
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
-    // 1. Compute the billboard-to-viewer vector.
-    // 2. Rotate the Z-axis of the billboard to be collinear with the
-    //    billboard-to-viewer vector and pointing towards the viewer's position.
-    // 3. Rotate the Y-axis of the billboard to be parallel and oriented in the
-    //    same direction as the Y-axis of the viewer.
-    rot.setValue(zaxis, toviewer);
-    rot.multVec(yaxis, yaxis);
-    rot *= SbRotation(yaxis, up);
+    // always orient the billboard towards the viewer
+    right = up.cross(look);
+    up = look.cross(right);
+  } else { 
+    // The VRML97 spec calls for rotating the local z-axis of the
+    // billboard to face the viewer, pivoting around the axis of
+    // rotation. If the axis of rotation is the z axis, this angle
+    // will be zero, and no rotation can happen. We don't actually
+    // bother to compute this angle at all, but set up = rotaxis and
+    // use cross products from there to construct the rotation matrix.
+    // This is more numerically stable, more general, and the code is
+    // much nicer, but it also means that we must check specifically
+    // for this case.
+    if (rotaxis == SbVec3f(0.0f, 0.0f, 1.0f)) { return; }
+    
+    up = rotaxis;
+    right = up.cross(look);
+    look = right.cross(up);
   }
-  else {
-    // 1. Compute the vector from the Billboard node's origin to the viewer's
-    //    position. This vector is called the billboard-to-viewer vector.
-    // 2. Compute the plane defined by the axisOfRotation and the
-    //    billboard-to-viewer vector.
-    // 3. Rotate the local Z-axis of the billboard into the plane from 2.,
-    //    pivoting around the axisOfRotation.
-    SbVec3f planenormal(rotaxis.cross(toviewer));
-    if (planenormal.normalize() > FLT_EPSILON) {
-      // Calculate projection vector of local Z-axis to plane defined by
-      // the axisOfRotation and the billboard-to-viewer vector and then
-      // apply rotation around axisOfRotation that will rotate Z-axis to
-      // this projection.
-      SbVec3f vecinplane = zaxis - planenormal * planenormal[2];
-      (void) vecinplane.normalize();
-      if (vecinplane.dot(toviewer) < 0.0f) vecinplane = - vecinplane;
-      float angle = (float) acos(SbClamp(zaxis.dot(vecinplane), -1.0f, 1.0f));
-      rot.setValue(rotaxis, planenormal[2] < 0.0f ? angle : - angle);
-    }
-  }
+
+  // construct the rotation matrix with the vectors defining the
+  // desired orientation
+  SbMatrix matrix = SbMatrix::identity();
+
+  right.normalize();
+  up.normalize();
+  look.normalize();
   
-  SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);
+  matrix[0][0] = right[0];
+  matrix[0][1] = right[1];
+  matrix[0][2] = right[2];
+  
+  matrix[1][0] = up[0];
+  matrix[1][1] = up[1];
+  matrix[1][2] = up[2];
+  
+  matrix[2][0] = look[0];
+  matrix[2][1] = look[1];
+  matrix[2][2] = look[2];
+  
+  // append the desired rotation to the state
+  SoModelMatrixElement::rotateBy(state, (SoNode*) this, SbRotation(matrix));
 }
 
 #endif // HAVE_VRML97
