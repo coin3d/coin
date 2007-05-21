@@ -27,7 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/fields/SoMFString.h>
 
 class SoGeoLocationP;
@@ -42,7 +42,7 @@ public:
   static void initClass(void);
   SoGeoLocation(void);
 
-  SoSFString geoCoords;
+  SoSFVec3d geoCoords;
   SoMFString geoSystem;
 
   virtual void doAction(SoAction * action);
@@ -59,7 +59,7 @@ protected:
 private:
 
   SbMatrix getTransform(SoState * state) const;
-  
+
   SoGeoLocationP * pimpl;
 };
 

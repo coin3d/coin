@@ -27,19 +27,20 @@
 #include <Inventor/SbMatrix.h>
 
 class SbString;
+class SbVec3d;
 
 class SoGeo {
 public:
   static void init(void);
-  
+
   static SbMatrix calculateTransform(const SbString * originsystem,
                                      const int numoriginsys,
-                                     const SbString & geocoords,
-                                     
+                                     const SbVec3d & origincoords,
+
                                      const SbString * targetsystem,
                                      const int numtargetsys,
-                                     const SbString & targetcoords);
-  
+                                     const SbVec3d & targetcoords);
+
 };
 
 #endif // COIN_SOGEO_H

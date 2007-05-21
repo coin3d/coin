@@ -29,6 +29,7 @@
 #include <Inventor/elements/SoGeoElement.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec3d.h>
 
 #include "SbGeoProjection.h"
 #include "SbUTMProjection.h"
@@ -61,23 +62,14 @@ static int find_utm_zone(const SbString & s)
 SbMatrix
 SoGeo::calculateTransform(const SbString * originsystem,
                           const int numoriginsys,
-                          const SbString & geocoords,
+                          const SbVec3d & geocoords,
                           const SbString * targetsystem,
                           const int numtargetsys,
-                          const SbString & targetcoords)
+                          const SbVec3d & targetcoords)
 {
-
-  double originpos[3];
-  double targetpos[3];
-
-  int num = sscanf(geocoords.getString(), "%lf%lf%lf",
-                   &originpos[0], &originpos[1], &originpos[2]);
-  assert(num == 3);
-
-  num = sscanf(targetcoords.getString(), "%lf%lf%lf",
-               &targetpos[0], &targetpos[1], &targetpos[2]);
-
-
+  double originpos[3] = {geocoords[0], geocoords[1], geocoords[2]};
+  double targetpos[3] = {targetcoords[0], targetcoords[1], targetcoords[2]};
+  
   assert(numoriginsys == 2);
   assert(numtargetsys == 2);
 

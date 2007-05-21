@@ -27,8 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/fields/SoMFString.h>
 
 class SoState;
@@ -43,7 +42,7 @@ public:
   static void initClass(void);
   SoGeoSeparator(void);
 
-  SoSFString geoCoords;
+  SoSFVec3d geoCoords;
   SoMFString geoSystem;
 
   virtual void callback(SoCallbackAction * action);

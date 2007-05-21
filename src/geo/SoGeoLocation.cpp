@@ -33,6 +33,13 @@
       geoCoords ""
     }
   \endcode
+
+  This node specifies an absolute geographic coordinate system for the
+  following nodes. When rendering (or applying other actions), Coin
+  will add a transformation which transforms the geometry into the
+  SoGeoOrigin coordinate system.
+
+  \sa SoGeoOrigin
 */
 
 // *************************************************************************
@@ -55,10 +62,14 @@
 
 /*!
   \var SoSFString SoGeoLocation::geoCoords
+
+  Used for specifying the geographic coordinates.
 */
 
 /*!
   \var SoMFString SoGeoLocation::geoSystem
+
+  Used to specify a spatial reference frame.
 */
 
 
@@ -73,7 +84,7 @@ SoGeoLocation::SoGeoLocation(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoLocation);
 
-  SO_NODE_ADD_FIELD(geoCoords, (""));
+  SO_NODE_ADD_FIELD(geoCoords, (0.0, 0.0, 0.0));
   SO_NODE_ADD_FIELD(geoSystem, (""));
 
   this->geoSystem.setNum(2);

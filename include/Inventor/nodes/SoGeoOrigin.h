@@ -26,7 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/fields/SoMFString.h>
 
 class SoGeoOriginP;
@@ -40,7 +40,7 @@ public:
   static void initClass(void);
   SoGeoOrigin(void);
 
-  SoSFString geoCoords;
+  SoSFVec3d geoCoords;
   SoMFString geoSystem;
 
   virtual void doAction(SoAction * action);

@@ -27,6 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/fields/SoMFString.h>
+#include <Inventor/fields/SoMFVec3d.h>
 
 class SoGeoCoordinateP;
 class SoState;
@@ -40,7 +41,7 @@ public:
   static void initClass(void);
   SoGeoCoordinate(void);
 
-  SoMFString point;
+  SoMFVec3d point;
   SoMFString geoSystem;
 
   virtual void doAction(SoAction * action);

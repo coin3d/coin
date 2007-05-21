@@ -85,9 +85,9 @@ SoGeoCoordinate::SoGeoCoordinate(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoCoordinate);
 
-  SO_NODE_ADD_FIELD(point, (""));
+  SO_NODE_ADD_FIELD(point, (0.0, 0.0, 0.0));
   SO_NODE_ADD_FIELD(geoSystem, (""));
-
+  
   this->geoSystem.setNum(2);
   this->geoSystem.set1Value(0, "GD");
   this->geoSystem.set1Value(1, "WE");

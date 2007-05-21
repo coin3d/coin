@@ -33,6 +33,18 @@
       geoCoords ""
     }
   \endcode
+
+  A scene graph should only contain one GeoOrigin node, and all
+  geometry in the scene graph will be rendered relative to this
+  position. This means that the precision will be best if the
+  GeoOrigin position is as close to actual camera position as
+  possible.
+  
+  Coin needs a local Cartesian coordinate system when rendering,
+  meaning that if the origin is specified as a Geodetic spatial
+  reference frame (latitude/longitude), the most appropriate UTM zone
+  will be chosen, and used as a projection when rendering.
+
 */
 
 // *************************************************************************
@@ -57,10 +69,14 @@
 
 /*!
   \var SoSFString SoGeoOrigin::geoCoords
+
+  Used for specifying the geographic coordinates.
 */
 
 /*!
   \var SoMFString SoGeoOrigin::geoSystem
+
+  Used to specify a spatial reference frame.
 */
 
 
@@ -74,10 +90,10 @@ SO_NODE_SOURCE(SoGeoOrigin);
 SoGeoOrigin::SoGeoOrigin(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoOrigin);
-
-  SO_NODE_ADD_FIELD(geoCoords, (""));
+  
+  SO_NODE_ADD_FIELD(geoCoords, (0.0, 0.0, 0.0));
   SO_NODE_ADD_FIELD(geoSystem, (""));
-
+  
   this->geoSystem.setNum(2);
   this->geoSystem.set1Value(0, "GD");
   this->geoSystem.set1Value(1, "WE");
