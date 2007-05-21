@@ -47,7 +47,7 @@ public:
   enum VisibilityFlag {
     ABSOLUTE_RADIUS,
     LONGEST_BBOX_EDGE_FACTOR,
-    PROJECTED_BBOX_DEPTH
+    PROJECTED_BBOX_DEPTH_FACTOR
   };
 
   SoSFBool isActive;

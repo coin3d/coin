@@ -145,7 +145,7 @@
 */
 
 /*! 
-  SoShadowGroup::VisibilityFlag SoShadowGroup::PROJECTED_BBOX_DEPTH
+  SoShadowGroup::VisibilityFlag SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR
 
   The bbox depth (projected to face the camera) will be used to calculate the clipping planes.
 
@@ -520,6 +520,7 @@ SoShadowGroup::SoShadowGroup(void)
   
   SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, LONGEST_BBOX_EDGE_FACTOR);
   SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, ABSOLUTE_RADIUS);
+  SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, PROJECTED_BBOX_DEPTH_FACTOR);
   SO_NODE_SET_SF_ENUM_TYPE(visibilityFlag, VisibilityFlag);
 
 }
@@ -687,7 +688,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   float visfar = PUBLIC(this)->visibilityRadius.getValue();
   
   if ((visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
-      (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH) ||
+      (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) ||
       ((visnear < 0.0f) || (visfar < 0.0f))) {
     
     // FIXME: cache bbox in the pimpl class
@@ -730,7 +731,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
       if (visnear > 0.0f) visnear = smax * visnear;
       if (visfar > 0.0f) visfar = smax  * visfar;
     }
-    else if (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH) {
+    else if (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) {
       if (visnear > 0.0f) visnear = cache->farval * visnear; // should be calculated from farval, not nearval
       if (visfar > 0.0f) visfar = cache->farval * visfar;
     }
