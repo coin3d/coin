@@ -28,12 +28,14 @@ void PointLight(in int i,
   nDotVP = max(0.0, dot(normal, VP));
   nDotHV = max(0.0, dot(normal, halfvec));
   
+  float shininess = gl_FrontMaterial.shininess;
+
   if (nDotVP == 0.0)
     pf = 0.0;
   else 
-    pf = pow(nDotHV, gl_FrontMaterial.shininess);
+    pf = pow(nDotHV, shininess);
   
-  ambient += gl_LightSource[i].ambient + att;
+  ambient += gl_LightSource[i].ambient * att;
   diffuse += gl_LightSource[i].diffuse * nDotVP * att;
   specular += gl_LightSource[i].specular * pf * att;
 }
