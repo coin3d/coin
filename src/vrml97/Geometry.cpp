@@ -37,6 +37,7 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -105,17 +106,19 @@ SoVRMLGeometry::shouldGLRender(SoGLRenderAction * action)
 {
   return inherited::shouldGLRender(action);
 }
-
+ 
 /*!
   Convenience method that updates the shape hints element.
 */
 void
 SoVRMLGeometry::setupShapeHints(SoState * state, const SbBool ccw, const SbBool solid)
 {
-  SoShapeHintsElement::set(state, this, 
-                           ccw ? SoShapeHintsElement::COUNTERCLOCKWISE : SoShapeHintsElement::CLOCKWISE,
-                           solid ? SoShapeHintsElement::SOLID : SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,
-                           SoShapeHintsElement::FACE_TYPE_AS_IS);
+  if (!SoOverrideElement::getFlags(state) & SoOverrideElement::SHAPE_HINTS) {
+    SoShapeHintsElement::set(state, this, 
+                             ccw ? SoShapeHintsElement::COUNTERCLOCKWISE : SoShapeHintsElement::CLOCKWISE,
+                             solid ? SoShapeHintsElement::SOLID : SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,
+                             SoShapeHintsElement::FACE_TYPE_AS_IS);
+  }
 }
 
 // Doc in parent
