@@ -271,6 +271,7 @@ RegularSources = \
 	SoMFBitMask.cpp \
 	SoMFBool.cpp \
 	SoMFColor.cpp \
+	SoMFColorRGBA.cpp \
 	SoMFDouble.cpp \
 	SoMFEngine.cpp \
 	SoMFEnum.cpp \
@@ -317,6 +318,7 @@ RegularSources = \
 	SoSFBox3f.cpp \
 	SoSFBox3d.cpp \
 	SoSFColor.cpp \
+	SoSFColorRGBA.cpp \
 	SoSFDouble.cpp \
 	SoSFEngine.cpp \
 	SoSFEnum.cpp \
@@ -432,47 +434,49 @@ fields_lst_AR = $(AR) cru
 fields_lst_LIBADD =
 am__fields_lst_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
 	SoFieldData.cpp SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp \
-	SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp \
-	SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp \
-	SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp \
-	SoMFString.cpp SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp \
-	SoMFVec2b.cpp SoMFVec2s.cpp SoMFVec2i32.cpp SoMFVec2f.cpp \
-	SoMFVec2d.cpp SoMFVec3b.cpp SoMFVec3s.cpp SoMFVec3i32.cpp \
-	SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4b.cpp SoMFVec4ub.cpp \
-	SoMFVec4s.cpp SoMFVec4us.cpp SoMFVec4i32.cpp SoMFVec4ui32.cpp \
-	SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp \
-	SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp \
-	SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp \
-	SoSFBox3d.cpp SoSFColor.cpp SoSFDouble.cpp SoSFEngine.cpp \
-	SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp \
-	SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp \
-	SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp \
-	SoSFString.cpp SoSFTime.cpp SoSFTrigger.cpp SoSFUInt32.cpp \
-	SoSFUShort.cpp SoSFVec2b.cpp SoSFVec2s.cpp SoSFVec2i32.cpp \
-	SoSFVec2f.cpp SoSFVec2d.cpp SoSFVec3b.cpp SoSFVec3s.cpp \
-	SoSFVec3i32.cpp SoSFVec3f.cpp SoSFVec3d.cpp SoSFVec4b.cpp \
-	SoSFVec4ub.cpp SoSFVec4s.cpp SoSFVec4us.cpp SoSFVec4i32.cpp \
-	SoSFVec4ui32.cpp SoSFVec4f.cpp SoSFVec4d.cpp SoSField.cpp \
-	SoGlobalField.cpp shared.cpp all-fields-cpp.cpp
+	SoMFColorRGBA.cpp SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp \
+	SoMFFloat.cpp SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp \
+	SoMFNode.cpp SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp \
+	SoMFShort.cpp SoMFString.cpp SoMFTime.cpp SoMFUInt32.cpp \
+	SoMFUShort.cpp SoMFVec2b.cpp SoMFVec2s.cpp SoMFVec2i32.cpp \
+	SoMFVec2f.cpp SoMFVec2d.cpp SoMFVec3b.cpp SoMFVec3s.cpp \
+	SoMFVec3i32.cpp SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4b.cpp \
+	SoMFVec4ub.cpp SoMFVec4s.cpp SoMFVec4us.cpp SoMFVec4i32.cpp \
+	SoMFVec4ui32.cpp SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp \
+	SoSFBox2f.cpp SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp \
+	SoSFBox3f.cpp SoSFBox3d.cpp SoSFColor.cpp SoSFColorRGBA.cpp \
+	SoSFDouble.cpp SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp \
+	SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp \
+	SoSFName.cpp SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp \
+	SoSFRotation.cpp SoSFShort.cpp SoSFString.cpp SoSFTime.cpp \
+	SoSFTrigger.cpp SoSFUInt32.cpp SoSFUShort.cpp SoSFVec2b.cpp \
+	SoSFVec2s.cpp SoSFVec2i32.cpp SoSFVec2f.cpp SoSFVec2d.cpp \
+	SoSFVec3b.cpp SoSFVec3s.cpp SoSFVec3i32.cpp SoSFVec3f.cpp \
+	SoSFVec3d.cpp SoSFVec4b.cpp SoSFVec4ub.cpp SoSFVec4s.cpp \
+	SoSFVec4us.cpp SoSFVec4i32.cpp SoSFVec4ui32.cpp SoSFVec4f.cpp \
+	SoSFVec4d.cpp SoSField.cpp SoGlobalField.cpp shared.cpp \
+	all-fields-cpp.cpp
 am__objects_1 = all-fields-cpp.$(OBJEXT)
 am__objects_2 = SoField.$(OBJEXT) SoFieldContainer.$(OBJEXT) \
 	SoFieldData.$(OBJEXT) SoMFBitMask.$(OBJEXT) SoMFBool.$(OBJEXT) \
-	SoMFColor.$(OBJEXT) SoMFDouble.$(OBJEXT) SoMFEngine.$(OBJEXT) \
-	SoMFEnum.$(OBJEXT) SoMFFloat.$(OBJEXT) SoMFInt32.$(OBJEXT) \
-	SoMFMatrix.$(OBJEXT) SoMFName.$(OBJEXT) SoMFNode.$(OBJEXT) \
-	SoMFPath.$(OBJEXT) SoMFPlane.$(OBJEXT) SoMFRotation.$(OBJEXT) \
-	SoMFShort.$(OBJEXT) SoMFString.$(OBJEXT) SoMFTime.$(OBJEXT) \
-	SoMFUInt32.$(OBJEXT) SoMFUShort.$(OBJEXT) SoMFVec2b.$(OBJEXT) \
-	SoMFVec2s.$(OBJEXT) SoMFVec2i32.$(OBJEXT) SoMFVec2f.$(OBJEXT) \
-	SoMFVec2d.$(OBJEXT) SoMFVec3b.$(OBJEXT) SoMFVec3s.$(OBJEXT) \
-	SoMFVec3i32.$(OBJEXT) SoMFVec3f.$(OBJEXT) SoMFVec3d.$(OBJEXT) \
-	SoMFVec4b.$(OBJEXT) SoMFVec4ub.$(OBJEXT) SoMFVec4s.$(OBJEXT) \
-	SoMFVec4us.$(OBJEXT) SoMFVec4i32.$(OBJEXT) \
-	SoMFVec4ui32.$(OBJEXT) SoMFVec4f.$(OBJEXT) SoMFVec4d.$(OBJEXT) \
-	SoMField.$(OBJEXT) SoSFBitMask.$(OBJEXT) SoSFBool.$(OBJEXT) \
-	SoSFBox2s.$(OBJEXT) SoSFBox2i32.$(OBJEXT) SoSFBox2f.$(OBJEXT) \
-	SoSFBox2d.$(OBJEXT) SoSFBox3s.$(OBJEXT) SoSFBox3i32.$(OBJEXT) \
-	SoSFBox3f.$(OBJEXT) SoSFBox3d.$(OBJEXT) SoSFColor.$(OBJEXT) \
+	SoMFColor.$(OBJEXT) SoMFColorRGBA.$(OBJEXT) \
+	SoMFDouble.$(OBJEXT) SoMFEngine.$(OBJEXT) SoMFEnum.$(OBJEXT) \
+	SoMFFloat.$(OBJEXT) SoMFInt32.$(OBJEXT) SoMFMatrix.$(OBJEXT) \
+	SoMFName.$(OBJEXT) SoMFNode.$(OBJEXT) SoMFPath.$(OBJEXT) \
+	SoMFPlane.$(OBJEXT) SoMFRotation.$(OBJEXT) SoMFShort.$(OBJEXT) \
+	SoMFString.$(OBJEXT) SoMFTime.$(OBJEXT) SoMFUInt32.$(OBJEXT) \
+	SoMFUShort.$(OBJEXT) SoMFVec2b.$(OBJEXT) SoMFVec2s.$(OBJEXT) \
+	SoMFVec2i32.$(OBJEXT) SoMFVec2f.$(OBJEXT) SoMFVec2d.$(OBJEXT) \
+	SoMFVec3b.$(OBJEXT) SoMFVec3s.$(OBJEXT) SoMFVec3i32.$(OBJEXT) \
+	SoMFVec3f.$(OBJEXT) SoMFVec3d.$(OBJEXT) SoMFVec4b.$(OBJEXT) \
+	SoMFVec4ub.$(OBJEXT) SoMFVec4s.$(OBJEXT) SoMFVec4us.$(OBJEXT) \
+	SoMFVec4i32.$(OBJEXT) SoMFVec4ui32.$(OBJEXT) \
+	SoMFVec4f.$(OBJEXT) SoMFVec4d.$(OBJEXT) SoMField.$(OBJEXT) \
+	SoSFBitMask.$(OBJEXT) SoSFBool.$(OBJEXT) SoSFBox2s.$(OBJEXT) \
+	SoSFBox2i32.$(OBJEXT) SoSFBox2f.$(OBJEXT) SoSFBox2d.$(OBJEXT) \
+	SoSFBox3s.$(OBJEXT) SoSFBox3i32.$(OBJEXT) SoSFBox3f.$(OBJEXT) \
+	SoSFBox3d.$(OBJEXT) SoSFColor.$(OBJEXT) SoSFColorRGBA.$(OBJEXT) \
 	SoSFDouble.$(OBJEXT) SoSFEngine.$(OBJEXT) SoSFEnum.$(OBJEXT) \
 	SoSFFloat.$(OBJEXT) SoSFImage.$(OBJEXT) SoSFImage3.$(OBJEXT) \
 	SoSFInt32.$(OBJEXT) SoSFMatrix.$(OBJEXT) SoSFName.$(OBJEXT) \
@@ -492,36 +496,7 @@ am__objects_2 = SoField.$(OBJEXT) SoFieldContainer.$(OBJEXT) \
 am_fields_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_fields_lst_SOURCES_DIST = shared.h all-fields-cpp.cpp \
 	SoField.cpp SoFieldContainer.cpp SoFieldData.cpp \
-	SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp SoMFDouble.cpp \
-	SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp SoMFInt32.cpp \
-	SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp SoMFPath.cpp \
-	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
-	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2b.cpp \
-	SoMFVec2s.cpp SoMFVec2i32.cpp SoMFVec2f.cpp SoMFVec2d.cpp \
-	SoMFVec3b.cpp SoMFVec3s.cpp SoMFVec3i32.cpp SoMFVec3f.cpp \
-	SoMFVec3d.cpp SoMFVec4b.cpp SoMFVec4ub.cpp SoMFVec4s.cpp \
-	SoMFVec4us.cpp SoMFVec4i32.cpp SoMFVec4ui32.cpp SoMFVec4f.cpp \
-	SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp SoSFBool.cpp \
-	SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp SoSFBox2d.cpp \
-	SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp SoSFBox3d.cpp \
-	SoSFColor.cpp SoSFDouble.cpp SoSFEngine.cpp SoSFEnum.cpp \
-	SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp \
-	SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp SoSFPath.cpp \
-	SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp SoSFString.cpp \
-	SoSFTime.cpp SoSFTrigger.cpp SoSFUInt32.cpp SoSFUShort.cpp \
-	SoSFVec2b.cpp SoSFVec2s.cpp SoSFVec2i32.cpp SoSFVec2f.cpp \
-	SoSFVec2d.cpp SoSFVec3b.cpp SoSFVec3s.cpp SoSFVec3i32.cpp \
-	SoSFVec3f.cpp SoSFVec3d.cpp SoSFVec4b.cpp SoSFVec4ub.cpp \
-	SoSFVec4s.cpp SoSFVec4us.cpp SoSFVec4i32.cpp SoSFVec4ui32.cpp \
-	SoSFVec4f.cpp SoSFVec4d.cpp SoSField.cpp SoGlobalField.cpp \
-	shared.cpp
-fields_lst_OBJECTS = $(am_fields_lst_OBJECTS)
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
-
-libfields_la_LDFLAGS =
-libfields_la_LIBADD =
-am__libfields_la_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
-	SoFieldData.cpp SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp \
+	SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp SoMFColorRGBA.cpp \
 	SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp \
 	SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp \
 	SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp \
@@ -533,86 +508,36 @@ am__libfields_la_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
 	SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp \
 	SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp \
 	SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp \
-	SoSFBox3d.cpp SoSFColor.cpp SoSFDouble.cpp SoSFEngine.cpp \
-	SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp \
-	SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp \
-	SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp \
-	SoSFString.cpp SoSFTime.cpp SoSFTrigger.cpp SoSFUInt32.cpp \
-	SoSFUShort.cpp SoSFVec2b.cpp SoSFVec2s.cpp SoSFVec2i32.cpp \
-	SoSFVec2f.cpp SoSFVec2d.cpp SoSFVec3b.cpp SoSFVec3s.cpp \
-	SoSFVec3i32.cpp SoSFVec3f.cpp SoSFVec3d.cpp SoSFVec4b.cpp \
-	SoSFVec4ub.cpp SoSFVec4s.cpp SoSFVec4us.cpp SoSFVec4i32.cpp \
-	SoSFVec4ui32.cpp SoSFVec4f.cpp SoSFVec4d.cpp SoSField.cpp \
-	SoGlobalField.cpp shared.cpp all-fields-cpp.cpp
-am__objects_6 = all-fields-cpp.lo
-am__objects_7 = SoField.lo SoFieldContainer.lo SoFieldData.lo \
-	SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFDouble.lo \
-	SoMFEngine.lo SoMFEnum.lo SoMFFloat.lo SoMFInt32.lo \
-	SoMFMatrix.lo SoMFName.lo SoMFNode.lo SoMFPath.lo SoMFPlane.lo \
-	SoMFRotation.lo SoMFShort.lo SoMFString.lo SoMFTime.lo \
-	SoMFUInt32.lo SoMFUShort.lo SoMFVec2b.lo SoMFVec2s.lo \
-	SoMFVec2i32.lo SoMFVec2f.lo SoMFVec2d.lo SoMFVec3b.lo \
-	SoMFVec3s.lo SoMFVec3i32.lo SoMFVec3f.lo SoMFVec3d.lo \
-	SoMFVec4b.lo SoMFVec4ub.lo SoMFVec4s.lo SoMFVec4us.lo \
-	SoMFVec4i32.lo SoMFVec4ui32.lo SoMFVec4f.lo SoMFVec4d.lo \
-	SoMField.lo SoSFBitMask.lo SoSFBool.lo SoSFBox2s.lo \
-	SoSFBox2i32.lo SoSFBox2f.lo SoSFBox2d.lo SoSFBox3s.lo \
-	SoSFBox3i32.lo SoSFBox3f.lo SoSFBox3d.lo SoSFColor.lo \
-	SoSFDouble.lo SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo \
-	SoSFImage.lo SoSFImage3.lo SoSFInt32.lo SoSFMatrix.lo \
-	SoSFName.lo SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
-	SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
-	SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo SoSFVec2b.lo \
-	SoSFVec2s.lo SoSFVec2i32.lo SoSFVec2f.lo SoSFVec2d.lo \
-	SoSFVec3b.lo SoSFVec3s.lo SoSFVec3i32.lo SoSFVec3f.lo \
-	SoSFVec3d.lo SoSFVec4b.lo SoSFVec4ub.lo SoSFVec4s.lo \
-	SoSFVec4us.lo SoSFVec4i32.lo SoSFVec4ui32.lo SoSFVec4f.lo \
-	SoSFVec4d.lo SoSField.lo SoGlobalField.lo shared.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_libfields_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libfields_la_SOURCES_DIST = shared.h all-fields-cpp.cpp \
-	SoField.cpp SoFieldContainer.cpp SoFieldData.cpp \
-	SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp SoMFDouble.cpp \
-	SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp SoMFInt32.cpp \
-	SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp SoMFPath.cpp \
-	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
-	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2b.cpp \
-	SoMFVec2s.cpp SoMFVec2i32.cpp SoMFVec2f.cpp SoMFVec2d.cpp \
-	SoMFVec3b.cpp SoMFVec3s.cpp SoMFVec3i32.cpp SoMFVec3f.cpp \
-	SoMFVec3d.cpp SoMFVec4b.cpp SoMFVec4ub.cpp SoMFVec4s.cpp \
-	SoMFVec4us.cpp SoMFVec4i32.cpp SoMFVec4ui32.cpp SoMFVec4f.cpp \
-	SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp SoSFBool.cpp \
-	SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp SoSFBox2d.cpp \
-	SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp SoSFBox3d.cpp \
-	SoSFColor.cpp SoSFDouble.cpp SoSFEngine.cpp SoSFEnum.cpp \
-	SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp \
-	SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp SoSFPath.cpp \
-	SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp SoSFString.cpp \
-	SoSFTime.cpp SoSFTrigger.cpp SoSFUInt32.cpp SoSFUShort.cpp \
-	SoSFVec2b.cpp SoSFVec2s.cpp SoSFVec2i32.cpp SoSFVec2f.cpp \
-	SoSFVec2d.cpp SoSFVec3b.cpp SoSFVec3s.cpp SoSFVec3i32.cpp \
-	SoSFVec3f.cpp SoSFVec3d.cpp SoSFVec4b.cpp SoSFVec4ub.cpp \
-	SoSFVec4s.cpp SoSFVec4us.cpp SoSFVec4i32.cpp SoSFVec4ui32.cpp \
-	SoSFVec4f.cpp SoSFVec4d.cpp SoSField.cpp SoGlobalField.cpp \
-	shared.cpp
-libfields_la_OBJECTS = $(am_libfields_la_OBJECTS)
-libfields@SUFFIX@LINKHACK_la_LDFLAGS =
-libfields@SUFFIX@LINKHACK_la_LIBADD =
-am__libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = SoField.cpp \
-	SoFieldContainer.cpp SoFieldData.cpp SoMFBitMask.cpp \
-	SoMFBool.cpp SoMFColor.cpp SoMFDouble.cpp SoMFEngine.cpp \
-	SoMFEnum.cpp SoMFFloat.cpp SoMFInt32.cpp SoMFMatrix.cpp \
-	SoMFName.cpp SoMFNode.cpp SoMFPath.cpp SoMFPlane.cpp \
-	SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp SoMFTime.cpp \
-	SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2b.cpp SoMFVec2s.cpp \
-	SoMFVec2i32.cpp SoMFVec2f.cpp SoMFVec2d.cpp SoMFVec3b.cpp \
-	SoMFVec3s.cpp SoMFVec3i32.cpp SoMFVec3f.cpp SoMFVec3d.cpp \
-	SoMFVec4b.cpp SoMFVec4ub.cpp SoMFVec4s.cpp SoMFVec4us.cpp \
-	SoMFVec4i32.cpp SoMFVec4ui32.cpp SoMFVec4f.cpp SoMFVec4d.cpp \
-	SoMField.cpp SoSFBitMask.cpp SoSFBool.cpp SoSFBox2s.cpp \
-	SoSFBox2i32.cpp SoSFBox2f.cpp SoSFBox2d.cpp SoSFBox3s.cpp \
-	SoSFBox3i32.cpp SoSFBox3f.cpp SoSFBox3d.cpp SoSFColor.cpp \
+	SoSFBox3d.cpp SoSFColor.cpp SoSFColorRGBA.cpp SoSFDouble.cpp \
+	SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp \
+	SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp \
+	SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp \
+	SoSFShort.cpp SoSFString.cpp SoSFTime.cpp SoSFTrigger.cpp \
+	SoSFUInt32.cpp SoSFUShort.cpp SoSFVec2b.cpp SoSFVec2s.cpp \
+	SoSFVec2i32.cpp SoSFVec2f.cpp SoSFVec2d.cpp SoSFVec3b.cpp \
+	SoSFVec3s.cpp SoSFVec3i32.cpp SoSFVec3f.cpp SoSFVec3d.cpp \
+	SoSFVec4b.cpp SoSFVec4ub.cpp SoSFVec4s.cpp SoSFVec4us.cpp \
+	SoSFVec4i32.cpp SoSFVec4ui32.cpp SoSFVec4f.cpp SoSFVec4d.cpp \
+	SoSField.cpp SoGlobalField.cpp shared.cpp
+fields_lst_OBJECTS = $(am_fields_lst_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
+libfields_la_LDFLAGS =
+libfields_la_LIBADD =
+am__libfields_la_SOURCES_DIST = SoField.cpp SoFieldContainer.cpp \
+	SoFieldData.cpp SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp \
+	SoMFColorRGBA.cpp SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp \
+	SoMFFloat.cpp SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp \
+	SoMFNode.cpp SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp \
+	SoMFShort.cpp SoMFString.cpp SoMFTime.cpp SoMFUInt32.cpp \
+	SoMFUShort.cpp SoMFVec2b.cpp SoMFVec2s.cpp SoMFVec2i32.cpp \
+	SoMFVec2f.cpp SoMFVec2d.cpp SoMFVec3b.cpp SoMFVec3s.cpp \
+	SoMFVec3i32.cpp SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4b.cpp \
+	SoMFVec4ub.cpp SoMFVec4s.cpp SoMFVec4us.cpp SoMFVec4i32.cpp \
+	SoMFVec4ui32.cpp SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp \
+	SoSFBox2f.cpp SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp \
+	SoSFBox3f.cpp SoSFBox3d.cpp SoSFColor.cpp SoSFColorRGBA.cpp \
 	SoSFDouble.cpp SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp \
 	SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp \
 	SoSFName.cpp SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp \
@@ -624,10 +549,37 @@ am__libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = SoField.cpp \
 	SoSFVec4us.cpp SoSFVec4i32.cpp SoSFVec4ui32.cpp SoSFVec4f.cpp \
 	SoSFVec4d.cpp SoSField.cpp SoGlobalField.cpp shared.cpp \
 	all-fields-cpp.cpp
-am_libfields@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = shared.h \
-	all-fields-cpp.cpp SoField.cpp SoFieldContainer.cpp \
-	SoFieldData.cpp SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp \
+am__objects_6 = all-fields-cpp.lo
+am__objects_7 = SoField.lo SoFieldContainer.lo SoFieldData.lo \
+	SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFColorRGBA.lo \
+	SoMFDouble.lo SoMFEngine.lo SoMFEnum.lo SoMFFloat.lo \
+	SoMFInt32.lo SoMFMatrix.lo SoMFName.lo SoMFNode.lo SoMFPath.lo \
+	SoMFPlane.lo SoMFRotation.lo SoMFShort.lo SoMFString.lo \
+	SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo SoMFVec2b.lo \
+	SoMFVec2s.lo SoMFVec2i32.lo SoMFVec2f.lo SoMFVec2d.lo \
+	SoMFVec3b.lo SoMFVec3s.lo SoMFVec3i32.lo SoMFVec3f.lo \
+	SoMFVec3d.lo SoMFVec4b.lo SoMFVec4ub.lo SoMFVec4s.lo \
+	SoMFVec4us.lo SoMFVec4i32.lo SoMFVec4ui32.lo SoMFVec4f.lo \
+	SoMFVec4d.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo \
+	SoSFBox2s.lo SoSFBox2i32.lo SoSFBox2f.lo SoSFBox2d.lo \
+	SoSFBox3s.lo SoSFBox3i32.lo SoSFBox3f.lo SoSFBox3d.lo \
+	SoSFColor.lo SoSFColorRGBA.lo SoSFDouble.lo SoSFEngine.lo \
+	SoSFEnum.lo SoSFFloat.lo SoSFImage.lo SoSFImage3.lo \
+	SoSFInt32.lo SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo \
+	SoSFPlane.lo SoSFRotation.lo SoSFShort.lo SoSFString.lo \
+	SoSFTime.lo SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo \
+	SoSFVec2b.lo SoSFVec2s.lo SoSFVec2i32.lo SoSFVec2f.lo \
+	SoSFVec2d.lo SoSFVec3b.lo SoSFVec3s.lo SoSFVec3i32.lo \
+	SoSFVec3f.lo SoSFVec3d.lo SoSFVec4b.lo SoSFVec4ub.lo \
+	SoSFVec4s.lo SoSFVec4us.lo SoSFVec4i32.lo SoSFVec4ui32.lo \
+	SoSFVec4f.lo SoSFVec4d.lo SoSField.lo SoGlobalField.lo \
+	shared.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
+am_libfields_la_OBJECTS = $(am__objects_8)
+am__EXTRA_libfields_la_SOURCES_DIST = shared.h all-fields-cpp.cpp \
+	SoField.cpp SoFieldContainer.cpp SoFieldData.cpp \
+	SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp SoMFColorRGBA.cpp \
 	SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp \
 	SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp \
 	SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp \
@@ -639,7 +591,35 @@ am__EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = shared.h \
 	SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp \
 	SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp \
 	SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp \
-	SoSFBox3d.cpp SoSFColor.cpp SoSFDouble.cpp SoSFEngine.cpp \
+	SoSFBox3d.cpp SoSFColor.cpp SoSFColorRGBA.cpp SoSFDouble.cpp \
+	SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp \
+	SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp \
+	SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp \
+	SoSFShort.cpp SoSFString.cpp SoSFTime.cpp SoSFTrigger.cpp \
+	SoSFUInt32.cpp SoSFUShort.cpp SoSFVec2b.cpp SoSFVec2s.cpp \
+	SoSFVec2i32.cpp SoSFVec2f.cpp SoSFVec2d.cpp SoSFVec3b.cpp \
+	SoSFVec3s.cpp SoSFVec3i32.cpp SoSFVec3f.cpp SoSFVec3d.cpp \
+	SoSFVec4b.cpp SoSFVec4ub.cpp SoSFVec4s.cpp SoSFVec4us.cpp \
+	SoSFVec4i32.cpp SoSFVec4ui32.cpp SoSFVec4f.cpp SoSFVec4d.cpp \
+	SoSField.cpp SoGlobalField.cpp shared.cpp
+libfields_la_OBJECTS = $(am_libfields_la_OBJECTS)
+libfields@SUFFIX@LINKHACK_la_LDFLAGS =
+libfields@SUFFIX@LINKHACK_la_LIBADD =
+am__libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = SoField.cpp \
+	SoFieldContainer.cpp SoFieldData.cpp SoMFBitMask.cpp \
+	SoMFBool.cpp SoMFColor.cpp SoMFColorRGBA.cpp SoMFDouble.cpp \
+	SoMFEngine.cpp SoMFEnum.cpp SoMFFloat.cpp SoMFInt32.cpp \
+	SoMFMatrix.cpp SoMFName.cpp SoMFNode.cpp SoMFPath.cpp \
+	SoMFPlane.cpp SoMFRotation.cpp SoMFShort.cpp SoMFString.cpp \
+	SoMFTime.cpp SoMFUInt32.cpp SoMFUShort.cpp SoMFVec2b.cpp \
+	SoMFVec2s.cpp SoMFVec2i32.cpp SoMFVec2f.cpp SoMFVec2d.cpp \
+	SoMFVec3b.cpp SoMFVec3s.cpp SoMFVec3i32.cpp SoMFVec3f.cpp \
+	SoMFVec3d.cpp SoMFVec4b.cpp SoMFVec4ub.cpp SoMFVec4s.cpp \
+	SoMFVec4us.cpp SoMFVec4i32.cpp SoMFVec4ui32.cpp SoMFVec4f.cpp \
+	SoMFVec4d.cpp SoMField.cpp SoSFBitMask.cpp SoSFBool.cpp \
+	SoSFBox2s.cpp SoSFBox2i32.cpp SoSFBox2f.cpp SoSFBox2d.cpp \
+	SoSFBox3s.cpp SoSFBox3i32.cpp SoSFBox3f.cpp SoSFBox3d.cpp \
+	SoSFColor.cpp SoSFColorRGBA.cpp SoSFDouble.cpp SoSFEngine.cpp \
 	SoSFEnum.cpp SoSFFloat.cpp SoSFImage.cpp SoSFImage3.cpp \
 	SoSFInt32.cpp SoSFMatrix.cpp SoSFName.cpp SoSFNode.cpp \
 	SoSFPath.cpp SoSFPlane.cpp SoSFRotation.cpp SoSFShort.cpp \
@@ -649,7 +629,33 @@ am__EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = shared.h \
 	SoSFVec3i32.cpp SoSFVec3f.cpp SoSFVec3d.cpp SoSFVec4b.cpp \
 	SoSFVec4ub.cpp SoSFVec4s.cpp SoSFVec4us.cpp SoSFVec4i32.cpp \
 	SoSFVec4ui32.cpp SoSFVec4f.cpp SoSFVec4d.cpp SoSField.cpp \
-	SoGlobalField.cpp shared.cpp
+	SoGlobalField.cpp shared.cpp all-fields-cpp.cpp
+am_libfields@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES_DIST = shared.h \
+	all-fields-cpp.cpp SoField.cpp SoFieldContainer.cpp \
+	SoFieldData.cpp SoMFBitMask.cpp SoMFBool.cpp SoMFColor.cpp \
+	SoMFColorRGBA.cpp SoMFDouble.cpp SoMFEngine.cpp SoMFEnum.cpp \
+	SoMFFloat.cpp SoMFInt32.cpp SoMFMatrix.cpp SoMFName.cpp \
+	SoMFNode.cpp SoMFPath.cpp SoMFPlane.cpp SoMFRotation.cpp \
+	SoMFShort.cpp SoMFString.cpp SoMFTime.cpp SoMFUInt32.cpp \
+	SoMFUShort.cpp SoMFVec2b.cpp SoMFVec2s.cpp SoMFVec2i32.cpp \
+	SoMFVec2f.cpp SoMFVec2d.cpp SoMFVec3b.cpp SoMFVec3s.cpp \
+	SoMFVec3i32.cpp SoMFVec3f.cpp SoMFVec3d.cpp SoMFVec4b.cpp \
+	SoMFVec4ub.cpp SoMFVec4s.cpp SoMFVec4us.cpp SoMFVec4i32.cpp \
+	SoMFVec4ui32.cpp SoMFVec4f.cpp SoMFVec4d.cpp SoMField.cpp \
+	SoSFBitMask.cpp SoSFBool.cpp SoSFBox2s.cpp SoSFBox2i32.cpp \
+	SoSFBox2f.cpp SoSFBox2d.cpp SoSFBox3s.cpp SoSFBox3i32.cpp \
+	SoSFBox3f.cpp SoSFBox3d.cpp SoSFColor.cpp SoSFColorRGBA.cpp \
+	SoSFDouble.cpp SoSFEngine.cpp SoSFEnum.cpp SoSFFloat.cpp \
+	SoSFImage.cpp SoSFImage3.cpp SoSFInt32.cpp SoSFMatrix.cpp \
+	SoSFName.cpp SoSFNode.cpp SoSFPath.cpp SoSFPlane.cpp \
+	SoSFRotation.cpp SoSFShort.cpp SoSFString.cpp SoSFTime.cpp \
+	SoSFTrigger.cpp SoSFUInt32.cpp SoSFUShort.cpp SoSFVec2b.cpp \
+	SoSFVec2s.cpp SoSFVec2i32.cpp SoSFVec2f.cpp SoSFVec2d.cpp \
+	SoSFVec3b.cpp SoSFVec3s.cpp SoSFVec3i32.cpp SoSFVec3f.cpp \
+	SoSFVec3d.cpp SoSFVec4b.cpp SoSFVec4ub.cpp SoSFVec4s.cpp \
+	SoSFVec4us.cpp SoSFVec4i32.cpp SoSFVec4ui32.cpp SoSFVec4f.cpp \
+	SoSFVec4d.cpp SoSField.cpp SoGlobalField.cpp shared.cpp
 libfields@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libfields@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -664,7 +670,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFBitMask.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFBitMask.Po ./$(DEPDIR)/SoMFBool.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFBool.Po ./$(DEPDIR)/SoMFColor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoMFColor.Po ./$(DEPDIR)/SoMFDouble.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMFColor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMFColorRGBA.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMFColorRGBA.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMFDouble.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFDouble.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFEngine.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMFEngine.Po ./$(DEPDIR)/SoMFEnum.Plo \
@@ -723,6 +732,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFBox3i32.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFBox3s.Plo ./$(DEPDIR)/SoSFBox3s.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFColor.Plo ./$(DEPDIR)/SoSFColor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSFColorRGBA.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSFColorRGBA.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFDouble.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFDouble.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSFEngine.Plo \
@@ -876,6 +887,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFBool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFColor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFColor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFColorRGBA.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFColorRGBA.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFDouble.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFDouble.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMFEngine.Plo@am__quote@
@@ -968,6 +981,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFBox3s.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColorRGBA.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFColorRGBA.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFDouble.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFDouble.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSFEngine.Plo@am__quote@
