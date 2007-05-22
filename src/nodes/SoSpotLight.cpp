@@ -151,14 +151,14 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
 
   SoLightElement::add(state, this, SoModelMatrixElement::get(state) *
                       SoViewingMatrixElement::get(state));
-  
+
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbVec3f attenuation = SoEnvironmentElement::getLightAttenuation(state);
 
-  glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[0]);
+  glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, attenuation[1]);
-  glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
+  glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[2]);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   // disable ambient contribution from this light source
