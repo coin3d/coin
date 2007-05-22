@@ -25,11 +25,12 @@
 \**************************************************************************/
 
 #include <Inventor/system/inttypes.h>
+#include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor.h>
 
 class SbVec4f;
 
-class COIN_DLL_API SbColor4f {
+class COIN_DLL_API SbColor4f : public SbVec4f {
 public:
   SbColor4f(void);
   SbColor4f(const SbColor &rgb, const float alpha);
@@ -42,7 +43,6 @@ public:
   void setValue(const float col[4]);
   const float *getValue() const;
   void getValue(float &r, float &g, float &b, float &a);
-
 
   SbColor4f& setRGB(const SbColor &col);
   void getRGB(SbColor &color);
@@ -70,7 +70,6 @@ public:
   friend COIN_DLL_API int operator !=(const SbColor4f &v1, const SbColor4f &v2);
 
 private:
-  float vec[4];
   float red() const { return this->vec[0]; }
   float green() const { return this->vec[1]; }
   float blue() const { return this->vec[2]; }
