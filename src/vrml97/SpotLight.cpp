@@ -31,7 +31,7 @@
   \class SoVRMLSpotLight SoVRMLSpotLight.h Inventor/VRMLnodes/SoVRMLSpotLight.h
   \brief The SoVRMLSpotLight class defines a spot light source.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -67,71 +67,71 @@
   The \e location field specifies a translation offset of the centre
   point of the light source from the light's local coordinate system
   origin.  This point is the apex of the solid angle which bounds
-  light emission from the given light source. 
+  light emission from the given light source.
 
   The \e direction field
   specifies the direction vector of the light's central axis defined
-  in the local coordinate system.  
+  in the local coordinate system.
 
   The \e on field specifies whether the
   light source emits light. If on is TRUE, the light source is
   emitting light and may illuminate geometry in the scene. If on is
   FALSE, the light source does not emit light and does not illuminate
-  any geometry.  
+  any geometry.
 
   The \e radius field specifies the radial extent of the
   solid angle and the maximum distance from location that may be
   illuminated by the light source. The light source does not emit
   light outside this radius.  The radius shall be greater than or
-  equal to zero.  
+  equal to zero.
 
   Both \e radius and \e location are affected by ancestors'
   transformations (scales affect radius and transformations affect
-  location).  
+  location).
 
   The \e cutOffAngle field specifies the outer bound of the
   solid angle.  The light source does not emit light outside of this
-  solid angle. 
+  solid angle.
 
   The \e beamWidth field specifies an inner solid angle in
   which the light source emits light at uniform full intensity. The
   light source's emission intensity drops off from the inner solid
   angle (beamWidth) to the outer solid angle (cutOffAngle) as
-  described in the following equations: 
-  
+  described in the following equations:
+
   \verbatim
-  angle = the angle between the Spotlight's direction vector 
-          and the vector from the Spotlight location to the point 
-          to be illuminated 
+  angle = the angle between the Spotlight's direction vector
+          and the vector from the Spotlight location to the point
+          to be illuminated
 
   if (angle >= cutOffAngle):
-    multiplier = 0 
-  else if (angle <= beamWidth): 
-    multiplier = 1 
+    multiplier = 0
+  else if (angle <= beamWidth):
+    multiplier = 1
   else:
     multiplier = (angle - cutOffAngle) / (beamWidth - cutOffAngle)
 
-  intensity(angle) = SpotLight.intensity × multiplier 
+  intensity(angle) = SpotLight.intensity × multiplier
   \endverbatim
-  
+
   If the beamWidth
   is greater than the cutOffAngle, beamWidth is defined to be equal to
   the cutOffAngle and the light source emits full intensity within the
   entire solid angle defined by cutOffAngle.  Both beamWidth and
   cutOffAngle shall be greater than 0.0 and less than or equal to
-  pi/2. 
+  pi/2.
 
   Figure 6.16 depicts the beamWidth, cutOffAngle, direction, location,
   and radius fields of the SpotLight node.
 
   <center>
   <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/spotlight.gif">
-  Figure 6.16 -- SpotLight node 
+  Figure 6.16 -- SpotLight node
   </center>
-  
+
   SpotLight illumination falls off with distance as specified by three
   attenuation coefficients. The attenuation factor is
-  
+
   \verbatim
   1/max(attenuation[0] + attenuation[1]×r + attenuation[2]×r^2 , 1),
   \endverbatim
@@ -245,9 +245,9 @@ SoVRMLSpotLight::GLRender(SoGLRenderAction * action)
 
   SbVec3f att = this->attenuation.getValue();
 
-  glLightf(light, GL_QUADRATIC_ATTENUATION, att[0]);
+  glLightf(light, GL_CONSTANT_ATTENUATION, att[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, att[1]);
-  glLightf(light, GL_CONSTANT_ATTENUATION, att[2]);
+  glLightf(light, GL_QUADRATIC_ATTENUATION, att[2]);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   lightcolor.setRGB(this->color.getValue());

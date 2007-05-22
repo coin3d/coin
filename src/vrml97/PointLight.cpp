@@ -153,9 +153,9 @@ SoVRMLPointLight::GLRender(SoGLRenderAction * action)
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbVec3f att = this->attenuation.getValue();
-  glLightf(light, GL_QUADRATIC_ATTENUATION, att[0]);
+  glLightf(light, GL_CONSTANT_ATTENUATION, att[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, att[1]);
-  glLightf(light, GL_CONSTANT_ATTENUATION, att[2]);
+  glLightf(light, GL_QUADRATIC_ATTENUATION, att[2]);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   lightcolor.setRGB(this->color.getValue());
