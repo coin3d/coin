@@ -547,15 +547,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     }
   }
 
+  SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
+                                           SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
+
   if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
     int style = SoShadowStyleElement::get(state);
+    if (transparent) return FALSE;
     if (style & SoShadowStyleElement::CASTS_SHADOW) return TRUE;
     return FALSE;
   }
-  
-  SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
-                                           SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
-  
+    
   if (action->handleTransparency(transparent))
     return FALSE;
   
