@@ -105,8 +105,11 @@
 /*!
   \var SoSFVec3f SoEnvironment::attenuation
 
-  Squared, linear, and constant light attenuation coefficients (in that order).
+  Squared, linear, and constant light attenuation coefficients (in
+  that order). Please note that this is the reverse order of how
+  attenuation is usually specified.
 */
+
 /*!
   \var SoSFEnum SoEnvironment::fogType
 
