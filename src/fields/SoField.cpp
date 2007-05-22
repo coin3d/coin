@@ -2499,6 +2499,7 @@ SoField::initClasses(void)
   SoSFBox3d::initClass();
   SoSFBool::initClass();
   SoSFColor::initClass();
+  SoSFColorRGBA::initClass();
   SoSFDouble::initClass();
   SoSFEngine::initClass();
   SoSFFloat::initClass();
@@ -2541,6 +2542,7 @@ SoField::initClasses(void)
   SoMField::initClass();
   SoMFBool::initClass();
   SoMFColor::initClass();
+  SoMFColorRGBA::initClass();
   SoMFDouble::initClass();
   SoMFEngine::initClass();
   SoMFEnum::initClass();

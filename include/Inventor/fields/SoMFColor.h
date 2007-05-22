@@ -39,22 +39,23 @@ class COIN_DLL_API SoMFColor : public SoMField {
 public:
   static void initClass(void);
 
-  void setValues(const int start, const int num, const float rgb[][3]);
-  void setHSVValues(const int start, const int num, const float hsv[][3]);
+  void setValues(int start, int num, const float rgb[][3]);
+  void setHSVValues(int start, int num, const float hsv[][3]);
 
   void setValue(const SbVec3f & vec);
-  void setValue(const float r, const float g, const float b);
+  void setValue(float r, float g, float b);
   void setValue(const float rgb[3]);
 
-  void setHSVValue(const float h, const float s, const float v);
+  void setHSVValue(float h, float s, float v);
   void setHSVValue(const float hsv[3]);
 
-  void set1Value(const int idx, const SbVec3f & vec);
-  void set1Value(const int idx, const float r, const float g, const float b);
-  void set1Value(const int idx, const float rgb[3]);
+  void set1Value(int idx, const SbVec3f & vec);
+  void set1Value(int idx, float r, float g, float b);
+  void set1Value(int idx, const float rgb[3]);
 
-  void set1HSVValue(const int idx, const float h, const float s, const float v);
-  void set1HSVValue(const int idx, const float hsv[3]);
-};
+  void set1HSVValue(int idx, float h, float s, float v);
+  void set1HSVValue(int idx, const float hsv[3]);
+
+}; // SoMFColor
 
 #endif // !COIN_SOMFCOLOR_H

@@ -1,5 +1,5 @@
-#ifndef COIN_SOSFCOLOR_H
-#define COIN_SOSFCOLOR_H
+#ifndef COIN_SOSFCOLORRGBA_H
+#define COIN_SOSFCOLORRGBA_H
 
 /**************************************************************************\
  *
@@ -26,21 +26,22 @@
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
-#include <Inventor/SbColor.h>
+#include <Inventor/SbColor4f.h>
 
-class COIN_DLL_API SoSFColor : public SoSField {
+class COIN_DLL_API SoSFColorRGBA : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFColor, SbColor, const SbColor &);
+  SO_SFIELD_HEADER(SoSFColorRGBA, SbColor4f, const SbColor4f &);
 
 public:
   static void initClass(void);
 
-  void setValue(const SbVec3f & vec);
-  void setValue(float red, float green, float blue);
-  void setValue(const float rgb[3]);
-  void setHSVValue(float h, float s, float v);
-  void setHSVValue(const float hsv[3]);
-};
+  void setValue(const SbVec4f & vec);
+  void setValue(float red, float green, float blue, float alpha);
+  void setValue(const float rgba[4]);
+  void setHSVValue(float h, float s, float v, float a);
+  void setHSVValue(const float hsva[4]);
 
-#endif // !COIN_SOSFCOLOR_H
+}; // SoSFColorRGBA
+
+#endif // !COIN_SOSFCOLORRGBA_H

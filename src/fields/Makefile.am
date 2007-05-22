@@ -8,6 +8,7 @@ RegularSources = \
 	SoMFBitMask.cpp \
 	SoMFBool.cpp \
 	SoMFColor.cpp \
+	SoMFColorRGBA.cpp \
 	SoMFDouble.cpp \
 	SoMFEngine.cpp \
 	SoMFEnum.cpp \
@@ -54,6 +55,7 @@ RegularSources = \
 	SoSFBox3f.cpp \
 	SoSFBox3d.cpp \
 	SoSFColor.cpp \
+	SoSFColorRGBA.cpp \
 	SoSFDouble.cpp \
 	SoSFEngine.cpp \
 	SoSFEnum.cpp \

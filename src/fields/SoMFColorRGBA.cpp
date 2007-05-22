@@ -22,8 +22,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoMFColor SoMFColor.h Inventor/fields/SoMFColor.h
-  \brief The SoMFColor class is a container for SbColor values.
+  \class SoMFColorRGBA SoMFColorRGBA.h Inventor/fields/SoMFColorRGBA.h
+  \brief The SoMFColorRGBA class is a container for SbColor4f values.
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
@@ -34,14 +34,15 @@
   setValuesPointer() method. See SoMField documentation for
   information on how to use this function.
 
-  \sa SbColor, SoSFColor
+  \sa SbColor4f, SoSFColorRGBA
 
 */
 
 // *************************************************************************
 
+#include <Inventor/fields/SoMFColorRGBA.h>
+
 #include <assert.h>
-#include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -50,16 +51,16 @@
 
 // *************************************************************************
 
-SO_MFIELD_SOURCE(SoMFColor, SbColor, const SbColor &);
+SO_MFIELD_SOURCE(SoMFColorRGBA, SbColor4f, const SbColor4f &);
 
-SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColor, SbColor, float);
-SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColor, SbColor, SbColor);
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColorRGBA, SbColor4f, float);
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColorRGBA, SbColor4f, SbColor4f);
 
 // Override from parent.
 void
-SoMFColor::initClass(void)
+SoMFColorRGBA::initClass(void)
 {
-  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFColor);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFColorRGBA);
 }
 
 
@@ -69,7 +70,7 @@ SoMFColor::initClass(void)
 #ifndef DOXYGEN_SKIP_THIS
 
 SbBool
-SoMFColor::read1Value(SoInput * in, int idx)
+SoMFColorRGBA::read1Value(SoInput * in, int idx)
 {
   assert(idx < this->maxNum);
   return 
@@ -79,9 +80,9 @@ SoMFColor::read1Value(SoInput * in, int idx)
 }
 
 void
-SoMFColor::write1Value(SoOutput * out, int idx) const
+SoMFColorRGBA::write1Value(SoOutput * out, int idx) const
 {
-  sosfvec3f_write_value(out, (*this)[idx]);
+  sosfvec4f_write_value(out, (*this)[idx]);
 }
 
 #endif // DOXYGEN_SKIP_THIS
@@ -91,12 +92,12 @@ SoMFColor::write1Value(SoOutput * out, int idx) const
   Set \a num RGB color values, starting at index \a start.
 */
 void
-SoMFColor::setValues(int start, int numarg, const float rgb[][3])
+SoMFColorRGBA::setValues(int start, int numarg, const float rgba[][4])
 {
   if(start+numarg > this->maxNum) this->makeRoom(start+numarg);
   else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < numarg; i++) this->values[i+start].setValue(rgb[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setValue(rgba[i]);
   this->valueChanged();
 }
 
@@ -104,12 +105,12 @@ SoMFColor::setValues(int start, int numarg, const float rgb[][3])
   Set \a num HSV color values, starting at index \a start.
 */
 void
-SoMFColor::setHSVValues(int start, int numarg, const float hsv[][3])
+SoMFColorRGBA::setHSVValues(int start, int numarg, const float hsva[][4])
 {
   if(start+numarg > this->maxNum) this->makeRoom(start+numarg);
   else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < numarg; i++) this->values[i+start].setHSVValue(hsv[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setHSVValue(hsva[i]);
   this->valueChanged();
 }
 
@@ -119,9 +120,9 @@ SoMFColor::setHSVValues(int start, int numarg, const float hsv[][3])
   respectively.
 */
 void
-SoMFColor::setValue(const SbVec3f & vec)
+SoMFColorRGBA::setValue(const SbVec4f & vec)
 {
-  this->setValue(vec[0], vec[1], vec[2]);
+  this->setValue(vec[0], vec[1], vec[2], vec[3]);
 }
 
 /*!
@@ -129,9 +130,9 @@ SoMFColor::setValue(const SbVec3f & vec)
   red, green and blue components, respectively.
 */
 void
-SoMFColor::setValue(float r, float g, float b)
+SoMFColorRGBA::setValue(float r, float g, float b, float a)
 {
-  this->setValue(SbColor(r, g, b));
+  this->setValue(SbColor4f(r, g, b, a));
 }
 
 /*!
@@ -139,9 +140,9 @@ SoMFColor::setValue(float r, float g, float b)
   vector with the red, green and blue components, respectively.
 */
 void
-SoMFColor::setValue(const float rgb[3])
+SoMFColorRGBA::setValue(const float rgba[4])
 {
-  this->setValue(SbColor(rgb));
+  this->setValue(SbColor4f(rgba));
 }
 
 /*!
@@ -149,10 +150,10 @@ SoMFColor::setValue(const float rgb[3])
   hue, saturation and value components, respectively.
 */
 void
-SoMFColor::setHSVValue(float h, float s, float v)
+SoMFColorRGBA::setHSVValue(float h, float s, float v, float a)
 {
-  SbColor col;
-  col.setHSVValue(h, s, v);
+  SbColor4f col;
+  col.setHSVValue(h, s, v, a);
   this->setValue(col);
 }
 
@@ -161,9 +162,9 @@ SoMFColor::setHSVValue(float h, float s, float v)
   vector with the hue, saturation and value components, respectively.
 */
 void
-SoMFColor::setHSVValue(const float hsv[3])
+SoMFColorRGBA::setHSVValue(const float hsva[4])
 {
-  this->setHSVValue(hsv[0], hsv[1], hsv[2]);
+  this->setHSVValue(hsva[0], hsva[1], hsva[2], hsva[3]);
 }
 
 /*!
@@ -171,9 +172,9 @@ SoMFColor::setHSVValue(const float hsv[3])
   vector with the red, green and blue components, respectively.
 */
 void
-SoMFColor::set1Value(int idx, const SbVec3f & vec)
+SoMFColorRGBA::set1Value(int idx, const SbVec4f & vec)
 {
-  this->set1Value(idx, SbColor(vec));
+  this->set1Value(idx, SbColor4f(vec));
 }
 
 /*!
@@ -181,9 +182,9 @@ SoMFColor::set1Value(int idx, const SbVec3f & vec)
   blue components, respectively.
 */
 void
-SoMFColor::set1Value(int idx, float r, float g, float b)
+SoMFColorRGBA::set1Value(int idx, float r, float g, float b, float a)
 {
-  this->set1Value(idx, SbColor(r, g, b));
+  this->set1Value(idx, SbColor4f(r, g, b, a));
 }
 
 /*!
@@ -191,9 +192,9 @@ SoMFColor::set1Value(int idx, float r, float g, float b)
   vector with the red, green and blue components, respectively.
 */
 void
-SoMFColor::set1Value(int idx, const float rgb[3])
+SoMFColorRGBA::set1Value(int idx, const float rgba[4])
 {
-  this->set1Value(idx, SbColor(rgb));
+  this->set1Value(idx, SbColor4f(rgba));
 }
 
 /*!
@@ -201,10 +202,10 @@ SoMFColor::set1Value(int idx, const float rgb[3])
   value components, respectively.
 */
 void
-SoMFColor::set1HSVValue(int idx, float h, float s, float v)
+SoMFColorRGBA::set1HSVValue(int idx, float h, float s, float v, float a)
 {
-  SbColor col;
-  col.setHSVValue(h, s, v);
+  SbColor4f col;
+  col.setHSVValue(h, s, v, a);
   this->set1Value(idx, col);
 }
 
@@ -213,9 +214,9 @@ SoMFColor::set1HSVValue(int idx, float h, float s, float v)
   hue, saturation and value components, respectively.
 */
 void
-SoMFColor::set1HSVValue(int idx, const float hsv[3])
+SoMFColorRGBA::set1HSVValue(int idx, const float hsva[3])
 {
-  this->set1HSVValue(idx, hsv[0], hsv[1], hsv[2]);
+  this->set1HSVValue(idx, hsva[0], hsva[1], hsva[2], hsva[3]);
 }
 
 // *************************************************************************

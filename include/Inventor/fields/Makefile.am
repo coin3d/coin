@@ -8,6 +8,7 @@ PublicHeaders = \
 	SoMFBitMask.h \
 	SoMFBool.h \
 	SoMFColor.h \
+	SoMFColorRGBA.h \
 	SoMFDouble.h \
 	SoMFEngine.h \
 	SoMFEnum.h \
@@ -56,6 +57,7 @@ PublicHeaders = \
 	SoSFBox3f.h \
 	SoSFBox3d.h \
 	SoSFColor.h \
+	SoSFColorRGBA.h \
 	SoSFDouble.h \
 	SoSFEngine.h \
 	SoSFEnum.h \

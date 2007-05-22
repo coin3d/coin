@@ -1,5 +1,5 @@
-#ifndef COIN_SOSFCOLOR_H
-#define COIN_SOSFCOLOR_H
+#ifndef COIN_SOMFCOLORRGBA_H
+#define COIN_SOMFCOLOR_H
 
 /**************************************************************************\
  *
@@ -24,23 +24,38 @@
  *
 \**************************************************************************/
 
-#include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
-#include <Inventor/SbColor.h>
+#include <Inventor/SbColor4f.h>
 
-class COIN_DLL_API SoSFColor : public SoSField {
-  typedef SoSField inherited;
+class COIN_DLL_API SoMFColorRGBA : public SoMField {
+  typedef SoMField inherited;
 
-  SO_SFIELD_HEADER(SoSFColor, SbColor, const SbColor &);
+  SO_MFIELD_HEADER(SoMFColorRGBA, SbColor4f, const SbColor4f &);
+
+  SO_MFIELD_SETVALUESPOINTER_HEADER(float);
+  SO_MFIELD_SETVALUESPOINTER_HEADER(SbColor4f);
 
 public:
   static void initClass(void);
 
-  void setValue(const SbVec3f & vec);
-  void setValue(float red, float green, float blue);
-  void setValue(const float rgb[3]);
-  void setHSVValue(float h, float s, float v);
-  void setHSVValue(const float hsv[3]);
-};
+  void setValues(int start, int num, const float rgba[][4]);
+  void setHSVValues(int start, int num, const float hsv[][4]);
 
-#endif // !COIN_SOSFCOLOR_H
+  void setValue(const SbVec4f & vec);
+  void setValue(float r, float g, float b, float a);
+  void setValue(const float rgba[4]);
+
+  void setHSVValue(float h, float s, float v, float a);
+  void setHSVValue(const float hsva[4]);
+
+  void set1Value(int idx, const SbVec4f & vec);
+  void set1Value(int idx, float r, float g, float b, float a);
+  void set1Value(int idx, const float rgba[4]);
+
+  void set1HSVValue(int idx, float h, float s, float v, float a);
+  void set1HSVValue(int idx, const float hsva[4]);
+
+}; // SoMFColorRGBA
+
+#endif // !COIN_SOMFCOLORRGBA_H

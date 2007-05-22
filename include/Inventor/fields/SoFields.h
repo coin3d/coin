@@ -36,6 +36,7 @@
 #include <Inventor/fields/SoSFBox3f.h>
 #include <Inventor/fields/SoSFBox3d.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFColorRGBA.h>
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -78,6 +79,7 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoMFBool.h>
 #include <Inventor/fields/SoMFColor.h>
+#include <Inventor/fields/SoMFColorRGBA.h>
 #include <Inventor/fields/SoMFDouble.h>
 #include <Inventor/fields/SoMFEngine.h>
 #include <Inventor/fields/SoMFEnum.h>
