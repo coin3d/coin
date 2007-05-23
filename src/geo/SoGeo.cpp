@@ -66,44 +66,49 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
                                          const int numsys,
                                          const SbVec3d & coords)
 {
-  double latitude, longitude, elev;
-
-  if (system[0] == "UTM") {
-    SbUTMProjection proj(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
-    SbGeoAngle lat, lng;
-    
-    proj.unproject(coords[0], coords[1], &lat, &lng);
-    
-    latitude = lat.rad();
-    longitude = lng.rad();
-    elev = coords[2];
-  }
-  else if (system[0] == "GD") {
-    latitude = coords[0] * M_PI / 180.0;
-    longitude = coords[1] * M_PI / 180.0;
-    elev = coords[2];
+  SbVec3d p;
+  if (system[0] == "GC") {
+    p = coords;
   }
   else {
-    assert(0 && "not supported");
-    latitude = longitude = elev = 0.0;
+    double latitude, longitude, elev;
+    
+    if (system[0] == "UTM") {
+      SbUTMProjection proj(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
+      SbGeoAngle lat, lng;
+      
+      proj.unproject(coords[0], coords[1], &lat, &lng);
+      
+      latitude = lat.rad();
+      longitude = lng.rad();
+      elev = coords[2];
+    }
+    else if (system[0] == "GD") {
+      latitude = coords[0] * M_PI / 180.0;
+      longitude = coords[1] * M_PI / 180.0;
+      elev = coords[2];
+    }
+    else {
+      assert(0 && "not supported");
+      latitude = longitude = elev = 0.0;
+    }
+    
+    // formula based on http://en.wikipedia.org/wiki/Geodetic_system
+    
+    double a = 6378137.0; // earth semimajor axis in meters
+    double f = 1.0/298.257223563; // reciprocal flattening
+    double e2 = 2*f - f*f; // eccentricity squared
+    
+    double sinlat = sin(latitude);
+    double coslat = cos(latitude);
+    double chi = sqrt(1.0 - e2 * (sinlat*sinlat));
+    
+    
+    p[0] = (a / chi + elev) * coslat * cos(longitude);
+    p[1] = (a / chi + elev) * coslat * sin(longitude);
+    p[2] = (a * (1.0-e2)/ chi + elev) * sinlat; 
   }
-
-  // formula based on http://en.wikipedia.org/wiki/Geodetic_system
-
-  double a = 6378137.0; // earth semimajor axis in meters
-  double f = 1.0/298.257223563; // reciprocal flattening
-  double e2 = 2*f - f*f; // eccentricity squared
   
-  double sinlat = sin(latitude);
-  double coslat = cos(latitude);
-  double chi = sqrt(1.0 - e2 * (sinlat*sinlat));
-                    
-  SbVec3d p;
-
-  p[0] = (a / chi + elev) * coslat * cos(longitude);
-  p[1] = (a / chi + elev) * coslat * sin(longitude);
-  p[2] = (a * (1.0-e2)/ chi + elev) * sinlat; 
-
   SbVec3d Z = p;
   (void) Z.normalize();
  
