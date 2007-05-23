@@ -79,8 +79,8 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
     elev = coords[2];
   }
   else if (system[0] == "GD") {
-    latitude = coords[0];
-    longitude = coords[1];
+    latitude = coords[0] * M_PI / 180.0;
+    longitude = coords[1] * M_PI / 180.0;
     elev = coords[2];
   }
   else {
@@ -101,7 +101,7 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
   SbVec3d p;
 
   p[0] = (a / chi + elev) * coslat * cos(longitude);
-  p[1] = (a / chi + elev) * coslat * sinlat;
+  p[1] = (a / chi + elev) * coslat * sin(longitude);
   p[2] = (a * (1.0-e2)/ chi + elev) * sinlat; 
 
   SbVec3d Z = p;
@@ -123,7 +123,7 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
     m[3][i] = p[i];
   }
 
-#if 0 // for debugging  
+#if 0 // for debugging
   SbGeoAngle lat(latitude);
   SbGeoAngle lng(longitude);
 
