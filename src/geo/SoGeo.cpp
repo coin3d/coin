@@ -30,6 +30,8 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec3d.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbDPMatrix.h>
 
 #include "SbGeoProjection.h"
 #include "SbUTMProjection.h"
@@ -39,6 +41,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 void
 SoGeo::init(void)
@@ -59,57 +62,133 @@ static int find_utm_zone(const SbString & s)
   return (int) atoi(s.getString()+1);
 }
 
+static SbDPMatrix find_coordinate_system(const SbString * system,
+                                         const int numsys,
+                                         const SbVec3d & coords)
+{
+  double latitude, longitude, elev;
+
+  if (system[0] == "UTM") {
+    SbUTMProjection proj(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
+    SbGeoAngle lat, lng;
+    
+    proj.unproject(coords[0], coords[1], &lat, &lng);
+    
+    latitude = lat.rad();
+    longitude = lng.rad();
+    elev = coords[2];
+  }
+  else if (system[0] == "GD") {
+    latitude = coords[0];
+    longitude = coords[1];
+    elev = coords[2];
+  }
+  else {
+    assert(0 && "not supported");
+    latitude = longitude = elev = 0.0;
+  }
+
+  // formula based on http://en.wikipedia.org/wiki/Geodetic_system
+
+  double a = 6378137.0; // earth semimajor axis in meters
+  double f = 1.0/298.257223563; // reciprocal flattening
+  double e2 = 2*f - f*f; // eccentricity squared
+  
+  double sinlat = sin(latitude);
+  double coslat = cos(latitude);
+  double chi = sqrt(1.0 - e2 * (sinlat*sinlat));
+                    
+  SbVec3d p;
+
+  p[0] = (a / chi + elev) * coslat * cos(longitude);
+  p[1] = (a / chi + elev) * coslat * sinlat;
+  p[2] = (a * (1.0-e2)/ chi + elev) * sinlat; 
+
+  SbVec3d Z = p;
+  (void) Z.normalize();
+ 
+  // FIXME: handle the case when origin is at the north or south pole
+  SbVec3d Y(0.0, 0.0, 1.0);
+  SbVec3d X = Y.cross(Z);
+  (void) X.normalize();
+  Y = Z.cross(X);
+  (void) Y.normalize();
+
+  SbDPMatrix m = SbDPMatrix::identity();
+
+  for (int i = 0; i < 3; i++) {
+    m[0][i] = X[i];
+    m[1][i] = Y[i];
+    m[2][i] = Z[i];
+    m[3][i] = p[i];
+  }
+
+#if 0 // for debugging  
+  SbGeoAngle lat(latitude);
+  SbGeoAngle lng(longitude);
+
+  fprintf(stderr,"coordinate system matrix: (%f %f) (%d %d %.2f, %d %d %.2f\n", 
+          latitude*180/M_PI, longitude*180.0/M_PI,
+          lat.deg(), lat.minutes(), lat.seconds(),
+          lng.deg(), lng.minutes(), lng.seconds());
+  m.print(stderr);
+  fprintf(stderr,"\n");
+#endif // debugging
+
+  return m;
+}
+
+//
+// Currently not used. Kept here since it might be useful to find and
+// UTM zone from lat/long
+//
+static SbUTMProjection find_utm_projection(const SbString * system,
+                                           const int numsystem,
+                                           const SbVec3d & coords,
+                                           SbVec3d & projcoords)
+{
+  if (system[0] != "UTM") { // find an UTM zone to project into
+    assert(system[0] == "GD");
+    // project to an UTM zone
+    
+    double degree = coords[1];
+    int zone = int ((degree + 180.0) / 6.0);
+    
+    SbGeoAngle lat(coords[0], 0.0, 0.0, 'N');
+    SbGeoAngle lng(coords[1], 0.0, 0.0, 'N');
+
+    SbUTMProjection proj(zone, SbGeoEllipsoid("WGS84"));
+
+    double east, north;
+    proj.project(lat, lng, &east, &north);
+
+    projcoords[0] = east;
+    projcoords[1] = north;
+    projcoords[2] = coords[2];
+
+    return proj;
+  }
+  
+  // just return the original UTM Zone and coords
+  projcoords = coords;
+  return SbUTMProjection(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
+}
+
 SbMatrix
 SoGeo::calculateTransform(const SbString * originsystem,
                           const int numoriginsys,
                           const SbVec3d & geocoords,
-                          const SbString * targetsystem,
-                          const int numtargetsys,
-                          const SbVec3d & targetcoords)
+                          const SbString * localsystem,
+                          const int numlocalsys,
+                          const SbVec3d & localcoords)
 {
-  double originpos[3] = {geocoords[0], geocoords[1], geocoords[2]};
-  double targetpos[3] = {targetcoords[0], targetcoords[1], targetcoords[2]};
-  
-  assert(numoriginsys == 2);
-  assert(numtargetsys == 2);
+  SbDPMatrix om = find_coordinate_system(originsystem, numoriginsys, geocoords);
+  SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
+  SbDPMatrix r = om * lm.inverse();
 
-  // only support projecting to UTM for now
-  assert(originsystem[0] == "UTM" && "unsupported projection");
-
-  if (targetsystem[0] == "UTM") {
-    if (targetsystem[1] != originsystem[1]) { // different UTM zones
-      SbUTMProjection targetproj(find_utm_zone(targetsystem[1]), SbGeoEllipsoid("WGS84"));
-      SbUTMProjection proj(find_utm_zone(originsystem[1]), SbGeoEllipsoid("WGS84"));
-      
-      SbGeoAngle lat, lng;
-
-      // unconvert target to geo coordinates
-      targetproj.unproject(targetpos[0], targetpos[1], &lat, &lng);
-
-      // project coordinates into the original utm system
-      proj.project(lat,lng, &targetpos[0], &targetpos[1]);
-    }
-  }
-  else if (targetsystem[1] == "GD") {
-    int zone = find_utm_zone(originsystem[1]);
-    SbUTMProjection proj(zone, SbGeoEllipsoid("WGS84"));
-
-    SbGeoAngle lat(targetpos[0], 0.0, 0.0, 'N');
-    SbGeoAngle lng(targetpos[1], 0.0, 0.0, 'N');
-    
-    // just write back into targetpos
-    proj.project(lat, lng, &targetpos[0], &targetpos[1]);
-  }
-  else {
-    assert(0 && "unsupported projection");
-  }
-
-
-
-  SbMatrix mat = SbMatrix::identity();
-  mat.setTranslate(SbVec3f((float)(targetpos[0]-originpos[0]),
-                           (float)(targetpos[1]-originpos[1]),
-                           (float)(targetpos[2]-originpos[2])));
-
-  return mat;
+  // transform to a single precision matrix.
+  return SbMatrix(r[0][0], r[0][1], r[0][2], r[0][3],
+                  r[1][0], r[1][1], r[1][2], r[1][3],
+                  r[2][0], r[2][1], r[2][2], r[2][3],
+                  r[3][0], r[3][1], r[3][2], r[3][3]);  
 }

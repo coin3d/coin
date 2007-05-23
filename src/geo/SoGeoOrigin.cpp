@@ -29,7 +29,7 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoOrigin {
-      geoSystem ["GD", "WE"] 
+      geoSystem ["GD", "WE"]
       geoCoords ""
     }
   \endcode
@@ -39,12 +39,14 @@
   position. This means that the precision will be best if the
   GeoOrigin position is as close to actual camera position as
   possible.
-  
-  Coin needs a local Cartesian coordinate system when rendering,
-  meaning that if the origin is specified as a Geodetic spatial
-  reference frame (latitude/longitude), the most appropriate UTM zone
-  will be chosen, and used as a projection when rendering.
 
+  Coin needs a local Cartesian coordinate system when rendering. When
+  a SoGeoOrigin node is used, Coin will create a virtual coordinate
+  system at the SoGeoOrigin position, and all geometry (and the
+  camera) in the scene graph will be projected into that coordinate
+  system.
+
+  
 */
 
 // *************************************************************************
@@ -90,10 +92,10 @@ SO_NODE_SOURCE(SoGeoOrigin);
 SoGeoOrigin::SoGeoOrigin(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoOrigin);
-  
+
   SO_NODE_ADD_FIELD(geoCoords, (0.0, 0.0, 0.0));
   SO_NODE_ADD_FIELD(geoSystem, (""));
-  
+
   this->geoSystem.setNum(2);
   this->geoSystem.set1Value(0, "GD");
   this->geoSystem.set1Value(1, "WE");

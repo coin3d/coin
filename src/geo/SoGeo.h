@@ -37,9 +37,9 @@ public:
                                      const int numoriginsys,
                                      const SbVec3d & origincoords,
 
-                                     const SbString * targetsystem,
-                                     const int numtargetsys,
-                                     const SbVec3d & targetcoords);
+                                     const SbString * localsystem,
+                                     const int numlocalsys,
+                                     const SbVec3d & localcoords);
 
 };
 
