@@ -46,7 +46,7 @@
   camera) in the scene graph will be projected into that coordinate
   system.
 
-  
+  \since Coin 2.5  
 */
 
 // *************************************************************************
@@ -72,13 +72,29 @@
 /*!
   \var SoSFString SoGeoOrigin::geoCoords
 
-  Used for specifying the geographic coordinates.
+  Used for specifying the geographic coordinates. For the GD system this should
+  be <latitude> <longitude> <elevation>. For UTM it is <easting> <northing> <elevation>,
+  and for GC it is simply <x> <y> <z>.
+
 */
 
 /*!
   \var SoMFString SoGeoOrigin::geoSystem
 
-  Used to specify a spatial reference frame.
+  Used to specify a spatial reference frame. Coin currently supports three different
+  systems. Support for more systems might be added in the future.
+
+  \li "GD" - The Geodetic system (latitude/longitude).  
+
+  \li "UTM" - Universal Transverse Mercator coordinate system. The
+  second string should be the zone, encoded as "Z<n>".
+  
+  \li "GC" - Earth-fixed Geocentric with respect to the WGS84 ellipsoid.
+
+  The "GD" and "UTM" systems can, for future support, have an ellipsoid
+  specification. The default is "WE" which is the WGS84 ellipsoid, the only
+  ellipsoid currently supported in Coin.
+
 */
 
 

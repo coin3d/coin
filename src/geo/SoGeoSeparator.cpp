@@ -40,6 +40,7 @@
   SoGeoOrigin coordinate system.
 
   \sa SoGeoOrigin
+  \since Coin 2.5
 */
 
 // *************************************************************************
@@ -68,12 +69,16 @@
   \var SoSFString SoGeoSeparator::geoCoords
 
   Used for specifying the geographic coordinates.
+
+  \sa SoGeoOrigin::geoCoords
 */
 
 /*!
   \var SoMFString SoGeoSeparator::geoSystem
 
   Used to specify a spatial reference frame.
+
+  \sa SoGeoOrigin::geoSystem
 */
 
 
@@ -151,11 +156,11 @@ SoGeoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   state->push();
   SbMatrix m = this->getTransform(state);
 
-  SoModelMatrixElement::mult(state, 
-                             this, 
+  SoModelMatrixElement::mult(state,
+                             this,
                              SoModelMatrixElement::get(state).inverse());
-  SoModelMatrixElement::mult(state, 
-                             this, 
+  SoModelMatrixElement::mult(state,
+                             this,
                              m);
 
   SoSeparator::getBoundingBox(action);
@@ -221,7 +226,7 @@ SoGeoSeparator::getTransform(SoState * state) const
     return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
                                      origin->geoSystem.getNum(),
                                      origin->geoCoords.getValue(),
-                                     
+
                                      this->geoSystem.getValues(0),
                                      this->geoSystem.getNum(),
                                      this->geoCoords.getValue());

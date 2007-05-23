@@ -29,7 +29,7 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoLocation {
-      geoSystem ["GD", "WE"] 
+      geoSystem ["GD", "WE"]
       geoCoords ""
     }
   \endcode
@@ -40,6 +40,7 @@
   SoGeoOrigin coordinate system.
 
   \sa SoGeoOrigin
+  \since Coin 2.5
 */
 
 // *************************************************************************
@@ -64,12 +65,16 @@
   \var SoSFString SoGeoLocation::geoCoords
 
   Used for specifying the geographic coordinates.
+
+  \sa SoGeoOrigin::geoCoords
 */
 
 /*!
   \var SoMFString SoGeoLocation::geoSystem
 
   Used to specify a spatial reference frame.
+
+  \sa SoGeoOrigin::geoSystem
 */
 
 
@@ -130,11 +135,11 @@ SoGeoLocation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
   SbMatrix m = this->getTransform(state);
-  SoModelMatrixElement::mult(state, 
-                             this, 
+  SoModelMatrixElement::mult(state,
+                             this,
                              SoModelMatrixElement::get(state).inverse());
-  SoModelMatrixElement::mult(state, 
-                             this, 
+  SoModelMatrixElement::mult(state,
+                             this,
                              m);
 }
 
@@ -180,7 +185,7 @@ SoGeoLocation::getTransform(SoState * state) const
     return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
                                      origin->geoSystem.getNum(),
                                      origin->geoCoords.getValue(),
-                                     
+
                                      this->geoSystem.getValues(0),
                                      this->geoSystem.getNum(),
                                      this->geoCoords.getValue());

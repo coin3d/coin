@@ -27,6 +27,8 @@
   \ingroup elements
 
   FIXME: write doc.
+
+  \since Coin 2.5
 */
 
 #include <Inventor/elements/SoGeoElement.h>
@@ -81,7 +83,7 @@ SoGeoElement::set(SoState * const state,
 {
   SoGeoElement * element = (SoGeoElement *)
     SoReplacedElement::getElement(state, classStackIndex, origin);
-  
+
   if (element) {
     element->setElt(origin);
   }
@@ -94,7 +96,7 @@ SoGeoElement::get(SoState * const state)
 {
   SoGeoElement * element = (SoGeoElement *)
     SoElement::getConstElement(state, classStackIndex);
- 
+
   return PRIVATE(element)->origin;
 }
 
@@ -115,4 +117,3 @@ SoGeoElement::setElt(SoGeoOrigin * origin)
 }
 
 #undef PRIVATE
-

@@ -29,10 +29,12 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     GeoCoordinate {
-      geoSystem ["GD", "WE"] 
+      geoSystem ["GD", "WE"]
       point ""
     }
   \endcode
+
+  \since Coin 2.5
 */
 
 // *************************************************************************
@@ -55,11 +57,15 @@
 // *************************************************************************
 
 /*!
-  \var SoSFString SoGeoCoordinate::geoCoords
+  \var SoSFString SoGeoCoordinate::point
+
+  \sa SoGeoOrigin::geoSystem
 */
 
 /*!
   \var SoMFString SoGeoCoordinate::geoSystem
+
+  \sa SoGeoOrigin::geoSystem
 */
 
 
@@ -87,7 +93,7 @@ SoGeoCoordinate::SoGeoCoordinate(void)
 
   SO_NODE_ADD_FIELD(point, (0.0, 0.0, 0.0));
   SO_NODE_ADD_FIELD(geoSystem, (""));
-  
+
   this->geoSystem.setNum(2);
   this->geoSystem.set1Value(0, "GD");
   this->geoSystem.set1Value(1, "WE");
@@ -120,7 +126,7 @@ SoGeoCoordinate::doAction(SoAction * action)
 
   // FIXME: optimize (cache)
   // FIXME: consider what to do with the current transformation on the state
-  
+
   for (int i = 0; i < n; i++) {
     SbMatrix m = this->getTransform(state, i);
     SbVec3f p(0.0f, 0.0f, 0.0f);
@@ -129,7 +135,7 @@ SoGeoCoordinate::doAction(SoAction * action)
   }
 
   SoCoordinateElement::set3(state, this, n,
-                            PRIVATE(this)->coords.getArrayPtr());                         
+                            PRIVATE(this)->coords.getArrayPtr());
 }
 
 // Doc from superclass.
@@ -177,11 +183,10 @@ SoGeoCoordinate::getTransform(SoState * state, const int idx) const
     return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
                                      origin->geoSystem.getNum(),
                                      origin->geoCoords.getValue(),
-                                     
+
                                      this->geoSystem.getValues(0),
                                      this->geoSystem.getNum(),
                                      this->point[idx]);
   }
   return SbMatrix::identity();
 }
-
