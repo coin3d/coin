@@ -67,7 +67,7 @@
 
 class SoBoxHighlightRenderActionP {
 public:
-  SoBoxHighlightRenderActionP(SoBoxHighlightRenderAction * master) 
+  SoBoxHighlightRenderActionP(SoBoxHighlightRenderAction * master)
     : master(master) { }
 
   SoBoxHighlightRenderAction * master;
@@ -93,7 +93,7 @@ public:
 
 // used to initialize the internal storage class with variables
 void
-SoBoxHighlightRenderActionP::initBoxGraph() 
+SoBoxHighlightRenderActionP::initBoxGraph()
 {
   this->bboxseparator = new SoSeparator;
   this->bboxseparator->ref();
@@ -119,14 +119,14 @@ SoBoxHighlightRenderActionP::initBoxGraph()
 
   this->bboxseparator->addChild(lightmodel);
   this->bboxseparator->addChild(complexity);
-    
+
   this->bboxseparator->addChild(this->bboxtransform);
   this->bboxseparator->addChild(this->bboxcube);
 }
 
 
-// used to render shape and non-shape nodes (usually SoGroup or SoSeparator). 
-void 
+// used to render shape and non-shape nodes (usually SoGroup or SoSeparator).
+void
 SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
 {
   if (this->camerasearch == NULL) {
@@ -138,22 +138,20 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
   this->camerasearch->setInterest(SoSearchAction::LAST);
   this->camerasearch->setType(SoCamera::getClassTypeId());
   this->camerasearch->apply((SoPath*) path);
-  
-  if (!this->camerasearch->getPath()) {
-    // if there is no camera there is no point rendering the bbox
-    return;
+
+  if (this->camerasearch->getPath()) {
+    this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
   }
-  this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
   this->camerasearch->reset();
-  
+
   if (this->bboxaction == NULL) {
     this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
   }
   this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
   this->bboxaction->apply((SoPath*) path);
-  
+
   SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
-  
+
   if (!box.isEmpty()) {
     // set cube size
     float x, y, z;
@@ -161,20 +159,20 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
     this->bboxcube->width  = x;
     this->bboxcube->height  = y;
     this->bboxcube->depth = z;
-    
+
     SbMatrix transform = box.getTransform();
-    
+
     // get center (in the local bbox coordinate system)
     SbVec3f center = box.SbBox3f::getCenter();
-    
+
     // if center != (0,0,0), move the cube
     if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
       SbMatrix t;
       t.setTranslate(center);
       transform.multLeft(t);
     }
-    this->bboxtransform->matrix = transform; 
-    
+    this->bboxtransform->matrix = transform;
+
     PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
   }
   // remove camera
@@ -285,7 +283,7 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
 
 // Documented in superclass. This method will just call the
 // SoGLRenderAction::apply() method (so no highlighting will be done).
-// 
+//
 // It has been overridden to avoid confusing the compiler, which
 // typically want to see either all or none of the apply() methods
 // overridden.
@@ -391,7 +389,7 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
   assert(thispos >= 0);
   PRIVATE(this)->postprocpath->truncate(0); // reset
-  
+
   for (i = 0; i < thispos; i++)
     PRIVATE(this)->postprocpath->append(pathtothis->getNode(i));
 
@@ -399,7 +397,7 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   // rendering selected objects
   int oldnumpasses = this->getNumPasses();
   this->setNumPasses(1);
-  
+
   SoState * thestate = this->getState();
   thestate->push();
 
