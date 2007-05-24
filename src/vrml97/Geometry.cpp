@@ -113,7 +113,7 @@ SoVRMLGeometry::shouldGLRender(SoGLRenderAction * action)
 void
 SoVRMLGeometry::setupShapeHints(SoState * state, const SbBool ccw, const SbBool solid)
 {
-  if (!SoOverrideElement::getFlags(state) & SoOverrideElement::SHAPE_HINTS) {
+  if (!(SoOverrideElement::getFlags(state) & SoOverrideElement::SHAPE_HINTS)) {
     SoShapeHintsElement::set(state, this, 
                              ccw ? SoShapeHintsElement::COUNTERCLOCKWISE : SoShapeHintsElement::CLOCKWISE,
                              solid ? SoShapeHintsElement::SOLID : SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,
