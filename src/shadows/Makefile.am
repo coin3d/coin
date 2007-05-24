@@ -2,7 +2,9 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	SoShadowGroup.cpp \
 	SoShadowStyle.cpp \
-	SoShadowStyleElement.cpp
+	SoShadowStyleElement.cpp \
+	SoShadowCulling.cpp \
+	SoGLShadowCullingElement.cpp
 
 LinkHackSources = \
 	all-shadows-cpp.cpp

@@ -1,6 +1,7 @@
 
 PublicHeaders = \
-		SoShadowStyleElement.h
+		SoShadowStyleElement.h \
+		SoGLShadowCullingElement.h
 PrivateHeaders =
 ObsoleteHeaders =
 
