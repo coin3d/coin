@@ -227,7 +227,9 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
+#include <Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
+#include <Inventor/annex/FXViz/nodes/SoShadowCulling.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -330,11 +332,17 @@ public:
     SoCallback * cb = new SoCallback;
     cb->setCallback(shadowmap_glcallback, this);
 
+    sep->addChild(cb);
     if (this->vsm_program) sep->addChild(this->vsm_program);
 
     for (int i = 0; i < scene->getNumChildren(); i++) {
       sep->addChild(scene->getChild(i));
     }
+
+    cb = new SoCallback;
+    cb->setCallback(shadowmap_post_glcallback, this);
+    sep->addChild(cb);
+
     this->depthmap->scene = sep;
     this->matrix = SbMatrix::identity();
 
@@ -365,6 +373,7 @@ public:
   }
 
   static void shadowmap_glcallback(void * closure, SoAction * action);
+  static void shadowmap_post_glcallback(void * closure, SoAction * action);
   void createVSMProgram(void);
   SoShaderProgram * createGaussFilter(const int texsize, const int size, const float stdev);
   SoSeparator * createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex);
@@ -545,7 +554,9 @@ SoShadowGroup::init(void)
 {
   SoShadowGroup::initClass();
   SoShadowStyleElement::initClass();
+  SoGLShadowCullingElement::initClass();
   SoShadowStyle::initClass();
+  SoShadowCulling::initClass();
 }
 
 void 
@@ -1425,20 +1436,26 @@ SoShadowSpotLightCache::shadowmap_glcallback(void * closure, SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
-
     SoShadowSpotLightCache * thisp = (SoShadowSpotLightCache*) closure;
     
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoLazyElement::setDiffuse(state, NULL, 1, &thisp->color, &thisp->colorpacker);
     SoTextureQualityElement::set(state, 0.0f);
     SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
     SoNormalElement::set(state, NULL, 0, NULL, FALSE);
+    
 
     SoOverrideElement::setNormalVectorOverride(state, NULL, TRUE);
     SoOverrideElement::setMaterialBindingOverride(state, NULL, TRUE);
     SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
-    SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
     SoTextureOverrideElement::setQualityOverride(state, TRUE);
+  }
+}
+
+void 
+SoShadowSpotLightCache::shadowmap_post_glcallback(void * closure, SoAction * action)
+{
+  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    // nothing to do yet
   }
 }
 
