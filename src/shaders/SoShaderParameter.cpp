@@ -21,6 +21,27 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoShaderParamter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+
+  The SoShaderParameter class is the base class for all shader parameter classes.
+
+  In addition to the \a name and \a identifier field, all subclasses have a 
+  \a value field which is used for specifying the parameter value.
+*/
+
+/*!
+  SoSFString SoShaderParameter::name
+
+  The shader parameter name. Used for Cg and GLSL programs.
+*/
+
+/*!
+  SoSFInt32 SoShaderParameter::identifier
+
+  The shader parameter identifier. Used for ARB shader programs.
+*/
+
 #include <Inventor/nodes/SoShaderParameter.h>
 
 #include <assert.h>
@@ -39,6 +60,7 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoShaderParameter);
 
+// doc from parent
 void
 SoShaderParameter::initClass(void)
 {
@@ -46,6 +68,9 @@ SoShaderParameter::initClass(void)
                                        SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
+/*!
+  Constructor.
+*/
 SoShaderParameter::SoShaderParameter(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter);
@@ -54,6 +79,9 @@ SoShaderParameter::SoShaderParameter(void)
   SO_NODE_ADD_FIELD(identifier, (0));
 }
 
+/*!
+  Destructor.
+*/
 SoShaderParameter::~SoShaderParameter()
 {
 }

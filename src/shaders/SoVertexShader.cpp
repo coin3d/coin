@@ -23,7 +23,7 @@
 
 /*!
   \class SoVertexProgram SoVertexProgram.h Inventor/nodes/SoVertexProgram.h
-  \brief The SoVertexProgram class is used for loading vertex shader programs.
+  \brief The SoVertexProgram class is used for setting up vertex shader programs.
   \ingroup nodes
 */
 
@@ -38,6 +38,7 @@ SO_NODE_SOURCE(SoVertexShader);
 
 // *************************************************************************
 
+// doc from parent
 void
 SoVertexShader::initClass(void)
 {
@@ -45,11 +46,17 @@ SoVertexShader::initClass(void)
                               SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
+/*!
+  Constructor.
+ */
 SoVertexShader::SoVertexShader(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShader);
 }
 
+/*!
+  Destructor.
+*/
 SoVertexShader::~SoVertexShader()
 {
 }

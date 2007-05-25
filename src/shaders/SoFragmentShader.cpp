@@ -23,7 +23,7 @@
 
 /*!
   \class SoFragmentProgram SoFragmentProgram.h Inventor/nodes/SoFragmentProgram.h
-  \brief The SoFragmentProgram class is used for loading fragment shader programs.
+  \brief The SoFragmentProgram class is used for setting up fragment shader programs.
   \ingroup nodes
 */
 
@@ -38,6 +38,7 @@ SO_NODE_SOURCE(SoFragmentShader);
 
 // *************************************************************************
 
+// doc from parent
 void
 SoFragmentShader::initClass(void)
 {
@@ -45,11 +46,17 @@ SoFragmentShader::initClass(void)
                               SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
+/*!
+  Constructor.
+*/
 SoFragmentShader::SoFragmentShader(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFragmentShader);
 }
 
+/*!
+  Destructor.
+*/
 SoFragmentShader::~SoFragmentShader()
 {
 }

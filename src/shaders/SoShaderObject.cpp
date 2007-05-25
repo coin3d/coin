@@ -21,6 +21,74 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoShaderObject SoShaderObject.h Inventor/nodes/SoShaderObject.h
+
+  The SoShaderObject class is the superclass for all shader classes in Coin.
+
+  \sa SoShaderProgram
+*/
+
+/*!
+  \var SoSFBool SoShaderObject::isActive
+
+  Enabled/disables the shader. Default value is TRUE.
+*/
+
+/*!
+  \var SoSFString SoShaderObject::sourceProgram
+
+  The shader program, or a file name if the shader should be loaded from a file.
+  If the shader is loaded from a file, the shader type is identified by the 
+  file extension. .glsl for GLSL shaders, .cg for Cg shaders, and .vp and .fp
+  for ARB shaders.
+*/
+
+
+/*!
+  \var SoSFEnum SoShaderObject::sourceType
+
+  The type of shader.
+*/
+
+
+/*!
+  \enum SoShaderObject::SourceType
+
+  Used for enumerating the shader types in sourceProgram.
+*/
+
+/*!
+  \var SoShaderObject::SourceType SoShaderObject::ARB_PROGRAM
+
+  Specifies an ARB shader.
+*/
+
+/*!
+  \var SoShaderObject::SourceType SoShaderObject::CG_PROGRAM
+
+  Specifies a Cg shader program.
+*/
+
+/*!
+  \var SoShaderObject::SourceType SoShaderObject::GLSL_PROGRAM
+
+  Specifies a GLSL program.
+*/
+
+/*!
+  \var SoShaderObject::SourceType SoShaderObject::FILENAME
+
+  Shader should be loaded from the file in sourceProgram.
+*/
+
+
+/*!
+  \var SoMFNode SoShaderObject::parameter
+  
+  The shader program parameters.
+*/
+
 #include <Inventor/nodes/SoShaderObject.h>
 
 #include <assert.h>
@@ -149,12 +217,16 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 
 // *************************************************************************
 
+// doc from parent
 void SoShaderObject::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,
                                        SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
+/*!
+  Constructor.
+*/
 SoShaderObject::SoShaderObject(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderObject);
@@ -177,17 +249,22 @@ SoShaderObject::SoShaderObject(void)
   SELF = new SoShaderObjectP(this);
 }
 
+/*!
+  Destructor
+*/
 SoShaderObject::~SoShaderObject()
 {
   delete SELF;
 }
 
+// doc from parent
 void
 SoShaderObject::GLRender(SoGLRenderAction * action)
 {
   SELF->GLRender(action);
 }
 
+// doc from parent
 void
 SoShaderObject::search(SoSearchAction * action)
 {
@@ -216,6 +293,7 @@ SoShaderObject::search(SoSearchAction * action)
 #endif // disabled
 }
 
+// doc from parent
 SbBool
 SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 {
@@ -231,16 +309,26 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
   return ret;
 }
 
-SoShaderObject::SourceType SoShaderObject::getSourceType(void) const
+/*!
+  Returns the shader type detected in sourceProgram.
+*/
+SoShaderObject::SourceType 
+SoShaderObject::getSourceType(void) const
 {
   return SELF->cachedSourceType;
 }
 
+/*!
+  Returns the actual shader program.
+*/
 SbString SoShaderObject::getSourceProgram(void) const
 {
   return SELF->cachedSourceProgram;
 }
 
+/*!
+  Used internally to update shader paramters.
+*/
 void
 SoShaderObject::updateParameters(SoState * state)
 {
