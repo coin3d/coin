@@ -21,6 +21,56 @@
  *
 \**************************************************************************/
 
+
+/*!
+  \page coin_shaders Shaders in Coin
+
+  Coin 2.5 added support for shaders. The main nodes used are SoShaderProgram,
+  SoVertexShader, SoFragmentShader, and SoGeometryShader. A typical scene graph
+  with shaders will look something like this:
+
+  \begin verbarib
+  
+  Separator {
+    ShaderProgram {
+      shaderObject [
+        VertexShader {
+          sourceProgram "myvertexshader.glsl"
+          parameter [
+            ShaderParameter1f { name "myvertexparam" value 1.0 }
+          ]
+        }
+        FragmentShader {
+          sourceProgram "myfragmentshader.glsl"
+          parameter [
+            ShaderParameter1f { name "myfragmentparam" value 2.0 }
+          ]
+        }
+      ]
+    }
+    Cube { }
+  }
+
+  \end verbatim
+
+  This will render the Cube with the vertex and fragment shaders
+  specified in myvertexshader.glsl and myfragmentshader.glsl. Coin
+  also supports ARB shaders and Cg shaders (if the Cg library is
+  installed). However, we recommend using GLSL since we will focus
+  mostly on support this shader language.
+
+  Coin defines some named parameters which can be added by the
+  application programmer, and which will be automatically updated by
+  Coin while traversing the scene graph.
+
+  \li coin_texunit0_model - Set to 0 when texturing is disabled, and
+  to SoTextureImageElement::Model if there's a current texture on the state.
+
+  \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
+
+  FIXME: more doc
+*/
+
 #include "SoShader.h"
 
 #include <Inventor/nodes/SoShaderProgram.h>
@@ -59,7 +109,7 @@ soshader_cleanup_callback(const char * const & key,
   delete[] obj;
 }
 
-static void 
+static void
 soshader_cleanup(void)
 {
   shader_dict->apply(soshader_cleanup_callback, NULL);
@@ -85,7 +135,7 @@ SoShader::init(void)
 
   // --- initialization of shader nodes --------------------------------
   if (SoShaderProgram::getClassTypeId() == SoType::badType())
-    SoShaderProgram::initClass();  
+    SoShaderProgram::initClass();
   if (SoShaderObject::getClassTypeId() == SoType::badType())
     SoShaderObject::initClass();
   if (SoFragmentShader::getClassTypeId() == SoType::badType())
@@ -133,8 +183,8 @@ SoShader::init(void)
   if (SoShaderParameter1i::getClassTypeId() == SoType::badType())
     SoShaderParameter1i::initClass();
 
-  // FIXME: Do we need int32 support (like in TGS)? 20040924 martin 
-#if 0 
+  // FIXME: Do we need int32 support (like in TGS)? 20040924 martin
+#if 0
   if (SoShaderParameter2i::getClassTypeId() == SoType::badType())
     SoShaderParameter2i::initClass();
   if (SoShaderParameter3i::getClassTypeId() == SoType::badType())
@@ -162,16 +212,16 @@ SoShader::init(void)
 
 
 
-const char * 
+const char *
 SoShader::getNamedScript(const SbName & name, const Type type)
 {
   char * shader = NULL;
-  
+
   if (SO_SHADER_DIR) {
     SbString filename(SO_SHADER_DIR);
     filename += "/";
     filename += name.getString();
-    
+
     switch (type) {
     case ARB_SHADER:
       filename += ".arb";
@@ -186,20 +236,20 @@ SoShader::getNamedScript(const SbName & name, const Type type)
       assert(0 && "unknown shader type");
       break;
     }
-    
+
     SbName shadername(filename.getString());
-    
+
     if (!shader_dict->get(shadername.getString(), shader)) {
       FILE * fp = fopen(filename.getString(), "rb");
       if (fp) {
         (void) fseek(fp, 0, SEEK_END);
         size_t size = (size_t) ftell(fp);
         (void) fseek(fp, 0, SEEK_SET);
-        
+
         shader = new char[size+1];
         shader[size] = 0;
         shader_dict->put(shadername, shader);
-        
+
         if (!fread(shader, size, 1, fp) == 1) {
           SoDebugError::postWarning("SoShader::getNamedScript",
                                     "Unable to read shader: %s",
@@ -227,7 +277,7 @@ SoShader::getNamedScript(const SbName & name, const Type type)
   return shader;
 }
 
-void 
+void
 SoShader::setupBuiltinShaders(void)
 {
   shader_builtin_dict->put(SbName("lights/PointLight").getString(), (char*) POINTLIGHT_shadersource);
