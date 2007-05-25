@@ -54,13 +54,12 @@ public:
   SoSFFloat intensity;
   SoSFFloat precision;
   SoSFFloat quality;
+  SoSFFloat smoothBorder;
   SoSFBool shadowCachingEnabled;
   SoSFFloat visibilityNearRadius;
   SoSFFloat visibilityRadius;
   SoSFEnum visibilityFlag;
-  SoSFFloat gaussStandardDeviation;
-  SoSFInt32 gaussMatrixSize;
-
+  
   SoSFFloat epsilon;
   SoSFFloat threshold;
 

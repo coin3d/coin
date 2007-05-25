@@ -31,10 +31,10 @@
 
   Please note that all shadow casters will be rendered twice. Once to
   create the shadow map, and once for normal rendering. If you're
-  having performance issues, you should consider reducing the number of 
+  having performance issues, you should consider reducing the number of
   shadow casters.
 
-  The algorithm used to render the shadows is Variance Shadow Maps 
+  The algorithm used to render the shadows is Variance Shadow Maps
   (http://www.punkuser.net/vsm/). As an extra bonus, all geometry rendered with shadows can also
   be rendered with per fragment phong lighting.
 
@@ -43,7 +43,14 @@
   light, so for this node to work 100%, you need to have
   num-spotlights free texture units while rendering the subgraph.
 
-  FIXME: write some documentation on how to use this node in an application.
+  Currently, we don't support scenes with multiple textures while
+  doing shadow rendering. This is due to the fact that we emulate the
+  OpenGL shading model in shaders programs, and we're still working on
+  creating a solution that updates the shader program during the scene
+  graph traversal. Right now a shader program is created when
+  entering the SoShadowGroup node, and this is used for the entire
+  subgraph.
+
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -58,8 +65,8 @@
 
       epsilon 0.00001
       threshold 0.1
-      gaussStandardDeviation 0.6
-      gaussMatrixSize 0
+      smoothBorder 0.0
+
     }
   \endcode
 
@@ -141,32 +148,29 @@
   SoShadowGroup::VisibilityFlag SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR
 
   The longest bbox edge will be used to determine near and far clipping planes.
-  
+
 */
 
-/*! 
+/*!
   SoShadowGroup::VisibilityFlag SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR
 
   The bbox depth (projected to face the camera) will be used to calculate the clipping planes.
 
 */
 
-/*! 
-  \var SoSFInt32 SoShadowGroup::gaussMatrixSize
-
-  Used to add a post processing step on the shadow map. Enabling post
-  processing will add more smoothing on the shadow borders. The
-  algorithm used is Gauss Smoothing, and the gaussStandardDeviation
-  field is used to set the standard deviation.
-
-  Default value is 0, which disables this post processing step.
-*/
-
-
 /*!
-  \var SoSFFloat SoShadowGroup::gaussStandardDeviation
+  \var SoSFInt32 SoShadowGroup::smoothBorder
 
-  The Gauss Smoothing standard deviation variable. Default value is 0.6.
+  Used to add shadow border smoothing. This is currently done as a
+  post processing step on the shadow map. The algorithm used is Gauss
+  Smoothing, but in the future we'll probably change this, and use a
+  summed area sampling merhod instead. The value should be a
+  number between 0 (no smoothing), and 1 (max smoothing).
+
+  If you want to enable smoothing, choosing a low value (~0.1) works
+  best in the current implementation.
+
+  Default value is 0.0.
 */
 
 /*!
@@ -175,14 +179,14 @@
   Epsilon is used to offset the shadow map depth from the model depth.
   Should be set to as low a number as possible without causing
   flickering in the shadows or on non-shadowed objects. Default value
-  is 0.00001. 
+  is 0.00001.
 */
 
 /*!
   \var SoSFFloat SoShadowGroup::threshold
-  
+
   Can be used to avoid light bleeding in merged shadows cast from different objects.
-  
+
   A threshold to completely eliminate all light bleeding can be
   computed from the ratio of overlapping occluder distances from the
   light's perspective. See
@@ -260,33 +264,33 @@
 class SoShadowSpotLightCache {
 public:
   SoShadowSpotLightCache(SoState * state,
-                         const SoPath * path, SoShadowGroup * scene, 
+                         const SoPath * path, SoShadowGroup * scene,
                          const int gausskernelsize,
                          const float gaussstandarddeviation)
   {
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-    
+
     GLint maxsize = 2048;
     GLint maxtexsize = 2048;
-    
+
     // Testing for maximum proxy texture size doesn't seem to work, so
     // we just have to hardcode the maximum size to 2048 for now.  We
     // still use the proxy texture test in case the maximum size is
     // something smaller than 2048 though.  pederb, 2007-05-03
-    
+
     // glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE_EXT, &maxsize);
     // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
     // if (maxtexsize < maxsize) maxsize = maxtexsize;
-    
+
     GLenum internalformat = GL_RGBA32F_ARB;
     GLenum format = GL_RGBA;
     GLenum type = GL_FLOAT;
-    
+
     while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE)) {
       maxsize >>= 1;
-    }    
+    }
     const int TEXSIZE = coin_geq_power_of_two((int) (scene->precision.getValue() * SbMin(maxsize, maxtexsize)));
-    
+
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
     this->gaussmap = NULL;
@@ -294,13 +298,13 @@ public:
 
     this->fragment_farval = new SoShaderParameter1f;
     this->fragment_farval->ref();
-    
+
     this->createVSMProgram();
 
     this->path = path->copy();
     this->path->ref();
     assert(((SoFullPath*)path)->getTail()->isOfType(SoSpotLight::getClassTypeId()));
-    
+
     this->light = (SoSpotLight*) ((SoFullPath*)path)->getTail();
     this->light->ref();
     this->depthmap = new SoSceneTexture2;
@@ -308,8 +312,8 @@ public:
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
     this->depthmap->size = SbVec2s(TEXSIZE, TEXSIZE);
     this->depthmap->wrapS = SoSceneTexture2::CLAMP_TO_BORDER;
-    this->depthmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER; 
-   
+    this->depthmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER;
+
     if (this->vsm_program) {
       this->depthmap->type = SoSceneTexture2::RGBA32F;
       this->depthmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -319,7 +323,7 @@ public:
     }
     SoTransparencyType * tt = new SoTransparencyType;
     tt->value = SoTransparencyType::NONE;
-    
+
     this->depthmap->sceneTransparencyType = tt;
 
     this->camera = new SoPerspectiveCamera;
@@ -353,7 +357,7 @@ public:
       this->gaussmap->size = SbVec2s(TEXSIZE, TEXSIZE);
       this->gaussmap->wrapS = SoSceneTexture2::CLAMP_TO_BORDER;
       this->gaussmap->wrapT = SoSceneTexture2::CLAMP_TO_BORDER;
-    
+
       this->gaussmap->type = SoSceneTexture2::RGBA32F;
       this->gaussmap->backgroundColor = SbVec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -377,7 +381,7 @@ public:
   void createVSMProgram(void);
   SoShaderProgram * createGaussFilter(const int texsize, const int size, const float stdev);
   SoSeparator * createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex);
-  
+
 
   SbMatrix matrix;
   SoPath * path;
@@ -388,7 +392,7 @@ public:
   float farval;
   float nearval;
   int texunit;
-  
+
   SoShaderProgram * vsm_program;
   SoShaderParameter1f * vsm_farval;
   SoShaderParameter1f * fragment_farval;
@@ -401,8 +405,8 @@ public:
 
 class SoShadowGroupP {
 public:
-  SoShadowGroupP(SoShadowGroup * master) : 
-    master(master), 
+  SoShadowGroupP(SoShadowGroup * master) :
+    master(master),
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
     spotlightsvalid(FALSE),
     shaderprogram(NULL),
@@ -412,7 +416,7 @@ public:
     fragmentshadercache(NULL),
     texunit0(NULL),
     lightmodel(NULL)
-  { 
+  {
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
     this->shaderprogram->setEnableCallback(shader_enable_cb, this);
@@ -441,14 +445,14 @@ public:
     if (this->shaderprogram) this->shaderprogram->unref();
     this->deleteSpotLights();
   }
-  
+
   SoShaderProgram * createVSMProgram(void);
-  
+
   void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
     float quality = this->master->quality.getValue();
     perpixelspot = FALSE;
     perpixelother = FALSE;
-    
+
     if (quality > 0.3) {
       perpixelspot = TRUE;
     }
@@ -463,7 +467,7 @@ public:
     this->spotlights.truncate(0);
   }
 
-  static void shader_enable_cb(void * closure, 
+  static void shader_enable_cb(void * closure,
                                SoState * state,
                                const SbBool enable);
 
@@ -522,11 +526,10 @@ SoShadowGroup::SoShadowGroup(void)
   SO_NODE_ADD_FIELD(visibilityRadius, (-1.0f));
   SO_NODE_ADD_FIELD(epsilon, (0.00001f));
   SO_NODE_ADD_FIELD(threshold, (0.1f));
-  SO_NODE_ADD_FIELD(gaussStandardDeviation, (0.6f));
-  SO_NODE_ADD_FIELD(gaussMatrixSize, (0));
+  SO_NODE_ADD_FIELD(smoothBorder, (0.0f));
 
   SO_NODE_ADD_FIELD(visibilityFlag, (LONGEST_BBOX_EDGE_FACTOR));
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, LONGEST_BBOX_EDGE_FACTOR);
   SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, ABSOLUTE_RADIUS);
   SO_NODE_DEFINE_ENUM_VALUE(VisibilityFlag, PROJECTED_BBOX_DEPTH_FACTOR);
@@ -549,7 +552,7 @@ SoShadowGroup::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoShadowGroup, SO_FROM_COIN_2_5);
 }
 
-void 
+void
 SoShadowGroup::init(void)
 {
   SoShadowGroup::initClass();
@@ -559,23 +562,23 @@ SoShadowGroup::init(void)
   SoShadowCulling::initClass();
 }
 
-void 
+void
 SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
 {
   PRIVATE(this)->GLRender(action, FALSE);
 }
 
-void 
+void
 SoShadowGroup::GLRenderInPath(SoGLRenderAction * action)
 {
   PRIVATE(this)->GLRender(action, TRUE);
 }
 
-void 
+void
 SoShadowGroup::notify(SoNotList * nl)
 {
   // FIXME: examine notification chain, and detect when an SoSpotLight is
-  // changed. When this happens we can just invalidate the depth map for 
+  // changed. When this happens we can just invalidate the depth map for
   // that spot light, and not the others.
 
   SoNotRec * rec = nl->getLastRec();
@@ -597,13 +600,22 @@ SoShadowGroup::notify(SoNotList * nl)
 
 // *************************************************************************
 
-void 
+void
 SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 {
   int i;
   SoState * state = action->getState();
-  
+
   if (!this->spotlightsvalid) {
+    float smoothing = PUBLIC(this)->smoothBorder.getValue();
+    int gaussmatrixsize = 0;
+    float gaussstandarddeviation = 0.6f;
+    
+    // just hardcode some values for now
+    if (smoothing > 0.9) gaussmatrixsize = 7;
+    else if (smoothing > 0.5) gaussmatrixsize = 5;
+    else if (smoothing > 0.01) gaussmatrixsize = 3;
+                           
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
 
@@ -612,14 +624,14 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     this->search.setSearchingAll(FALSE);
     this->search.apply(PUBLIC(this));
     SoPathList & pl = this->search.getPaths();
-    
+
     if (pl.getLength() != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
+                
         SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
-                                                                    PUBLIC(this)->gaussMatrixSize.getValue(),
-                                                                    PUBLIC(this)->gaussStandardDeviation.getValue());
+                                                                    gaussmatrixsize, gaussstandarddeviation);
         this->spotlights.append(cache);
       }
     }
@@ -642,12 +654,12 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     }
     this->spotlightsvalid = TRUE;
   }
-  
+
   for (i = 0; i < this->spotlights.getLength(); i++) {
     SoShadowSpotLightCache * cache = this->spotlights[i];
     assert(cache->texunit >= 0);
     SoTextureUnitElement::set(state, PUBLIC(this), cache->texunit);
-    
+
     SbMatrix mat = cache->matrix;
 
     assert(cache->texunit >= 0);
@@ -658,9 +670,9 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     else {
       SoMultiTextureMatrixElement::set(state, PUBLIC(this), cache->texunit, cache->matrix);
     }
-        
+
     // glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    
+
     this->renderDepthMap(cache, action);
 
     if (cache->texunit == 0) {
@@ -676,7 +688,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }
 
-void 
+void
 SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & transform)
 {
   SoPerspectiveCamera * cam = cache->camera;
@@ -695,41 +707,41 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
   SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
 
-  float visnear = PUBLIC(this)->visibilityNearRadius.getValue();  
+  float visnear = PUBLIC(this)->visibilityNearRadius.getValue();
   float visfar = PUBLIC(this)->visibilityRadius.getValue();
-  
+
   if ((visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
       (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) ||
       ((visnear < 0.0f) || (visfar < 0.0f))) {
-    
+
     // FIXME: cache bbox in the pimpl class
     this->bboxaction.apply(cache->depthmap->scene.getValue());
     SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
-    
+
     SbMatrix mat;
     mat.setTranslate(- cam->position.getValue());
     xbox.transform(mat);
     mat = cam->orientation.getValue().inverse();
     xbox.transform(mat);
     SbBox3f box = xbox.project();
-    
+
     // Bounding box was calculated in camera space, so we need to "flip"
     // the box (because camera is pointing in the (0,0,-1) direction
     // from origo.
     cache->nearval = -box.getMax()[2];
     cache->farval = -box.getMin()[2];
-    
+
     // light won't hit the scene
     // if (cache->farval <= 0.0f) return;
-    
+
     const int depthbits = 16;
     float r = (float) pow(2.0, (double) depthbits);
     float nearlimit = cache->farval / r;
-    
+
     if (cache->nearval < nearlimit) {
       cache->nearval = nearlimit;
     }
-    
+
     const float SLACK = 0.001f;
 
     cache->nearval = cache->nearval * (1.0f - SLACK);
@@ -737,7 +749,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
     if (visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) {
       float sx,sy,sz;
-      xbox.getSize(sx, sy, sz);      
+      xbox.getSize(sx, sy, sz);
       float smax =  SbMax(SbMax(sx, sy), sz);
       if (visnear > 0.0f) visnear = smax * visnear;
       if (visfar > 0.0f) visfar = smax  * visfar;
@@ -747,10 +759,10 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
       if (visfar > 0.0f) visfar = cache->farval * visfar;
     }
   }
-  
+
   if (visnear > 0.0f) cache->nearval = visnear;
   if (visfar > 0.0f) cache->farval = visfar;
-  
+
   if (cache->nearval != cam->nearDistance.getValue()) {
     cam->nearDistance = cache->nearval;
   }
@@ -760,11 +772,11 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 
   cache->fragment_farval->value = cache->farval;
   cache->vsm_farval->value = cache->farval;
-  
-  
+
+
   SbViewVolume vv = cam->getViewVolume(1.0f);
   SbMatrix affine, proj;
-  
+
   vv.getMatrices(affine, proj);
 
   cache->matrix = affine * proj;
@@ -784,7 +796,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
 }
 
 
-void 
+void
 SoShadowGroupP::renderDepthMap(SoShadowSpotLightCache * cache,
                                SoGLRenderAction * action)
 {
@@ -792,7 +804,7 @@ SoShadowGroupP::renderDepthMap(SoShadowSpotLightCache * cache,
   if (cache->gaussmap) cache->gaussmap->GLRender(action);
 }
 
-void 
+void
 SoShadowGroupP::setVertexShader(SoState * state)
 {
   int i;
@@ -800,24 +812,24 @@ SoShadowGroupP::setVertexShader(SoState * state)
   gen.reset(FALSE);
 
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-  
+
   state->push();
-  
+
   SbBool perpixelspot = FALSE;
   SbBool perpixelother = FALSE;
 
   this->getQuality(state, perpixelspot, perpixelother);
-  
+
   if (this->vertexshadercache) {
     this->vertexshadercache->unref();
   }
   this->vertexshadercache = new SoShaderProgramCache(state);
   this->vertexshadercache->ref();
-  
+
   // set active cache to record cache dependencies
   SoCacheElement::set(state, this->vertexshadercache);
   const SoNodeList & lights = SoLightElement::getLights(state);
-  
+
   int numspots = this->spotlights.getLength();
 
   for (i = 0; i < numspots; i++) {
@@ -835,7 +847,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
-  
+
   SbBool dirlight = FALSE;
   SbBool pointlight = FALSE;
   SbBool spotlight = FALSE;
@@ -849,9 +861,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
                        "vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);");
-  
+
   gen.addMainStatement("fragmentNormal = normal;");
-  
+
   if (!perpixelother) {
     for (i = 0; i < lights.getLength(); i++) {
       SoLight * l = (SoLight*) lights[i];
@@ -864,12 +876,12 @@ SoShadowGroupP::setVertexShader(SoState * state)
         str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
         gen.addMainStatement(str);
         spotlight = TRUE;
-        
+
       }
       else if (l->isOfType(SoPointLight::getClassTypeId())) {
         str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
         gen.addMainStatement(str);
-        pointlight = TRUE;      
+        pointlight = TRUE;
       }
       else {
         SoDebugError::postWarning("SoShadowGroupP::setVertexShader",
@@ -877,10 +889,10 @@ SoShadowGroupP::setVertexShader(SoState * state)
                                   l->getTypeId().getName().getString());
       }
     }
-    
+
     if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
     if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
-    
+
     gen.addMainStatement(
                          "vec4 color = gl_FrontLightModelProduct.sceneColor + "
                          "  ambient * gl_FrontMaterial.ambient + "
@@ -891,9 +903,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
   else {
     gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor;\n");
   }
-  
+
   gen.addMainStatement("vec4 pos = cameraTransform * ecPosition;\n"); // in world space
-  
+
   for (i = 0; i < numspots; i++) {
     spotlight = TRUE;
     SoShadowSpotLightCache * cache = this->spotlights[i];
@@ -914,13 +926,13 @@ SoShadowGroupP::setVertexShader(SoState * state)
   }
 
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
-  
+
   gen.addMainStatement(
 		       "perVertexColor = color.rgb;"
 		       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
 		       "gl_Position = ftransform();\n"
 		       "gl_FrontColor = gl_Color;");
-  
+
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
@@ -933,10 +945,10 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
-  
+
 }
 
-void 
+void
 SoShadowGroupP::setFragmentShader(SoState * state)
 {
   int i;
@@ -969,15 +981,15 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   eps.sprintf("const float THRESHOLD = %f;\n",
               PUBLIC(this)->threshold.getValue());
   gen.addDeclaration(eps, FALSE);
-  
+
   for (i = 0; i < numspots; i++) {
     SbString str;
     str.sprintf("uniform sampler2D shadowMap%d;", i);
     gen.addDeclaration(str, FALSE);
-    
+
     str.sprintf("uniform float farval%d;", i);
     gen.addDeclaration(str, FALSE);
-    
+
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
 
@@ -988,7 +1000,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   }
 
   SbString str;
-  
+
 #ifdef DISTRIBUTE_FACTOR
   str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
   gen.addDeclaration(str, FALSE);
@@ -999,7 +1011,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
 
   // FIXME: decide based on quality
- 
+
   if (perpixelspot) {
     gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
@@ -1028,7 +1040,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (perpixelspot) {
     for (i = 0; i < numspots; i++) {
       SbString str;
-      
+
       str.sprintf("diffuse = vec4(0.0); specular = vec4(0);"
                   "dist = SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
                   "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
@@ -1050,10 +1062,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
     if (perpixelother) {
       gen.addMainStatement("diffuse = vec4(0.0); ambient = vec4(0.0); specular = vec4(0.0);");
-      
+
       SbBool dirlight = FALSE;
       SbBool pointlight = FALSE;
-      
+
       for (i = 0; i < lights.getLength(); i++) {
         SoLight * l = (SoLight*) lights[i];
         if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
@@ -1068,7 +1080,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         else if (l->isOfType(SoPointLight::getClassTypeId())) {
           str.sprintf("PointLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
           gen.addMainStatement(str);
-          pointlight = TRUE;      
+          pointlight = TRUE;
         }
         else {
           SoDebugError::postWarning("SoShadowGroupP::setFragmentShader",
@@ -1076,15 +1088,15 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                                     l->getTypeId().getName().getString());
         }
       }
-      
+
       if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
       if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
 
       gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb + "
                            "diffuse.rgb * mydiffuse.rgb + specular.rgb * gl_FrontMaterial.specular.rgb;\n");
-    }    
+    }
   }
-  
+
   else {
     for (i = 0; i < numspots; i++) {
       SbString str;
@@ -1103,7 +1115,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       gen.addMainStatement(str);
     }
   }
-  gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, gl_Color.a) : vec4(texcolor.rgb, gl_Color.a);\n");
+  gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, mydiffuse.a) : mydiffuse;\n");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
@@ -1111,20 +1123,20 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
   this->fragmentshader->parameter.setNum(numspots*2);
-  
+
   if (this->fragmentshader->sourceProgram.getValue() != gen.getShaderProgram()) {
     this->fragmentshader->sourceProgram = gen.getShaderProgram();
     this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-    
+
     for (int i = 0; i < numspots; i++) {
       SoShadowSpotLightCache * cache = this->spotlights[i];
-      SoShaderParameter1i * shadowmap = 
+      SoShaderParameter1i * shadowmap =
         new SoShaderParameter1i();
       SbString str;
       str.sprintf("shadowMap%d", i);
       shadowmap->name = str;
       shadowmap->value = cache->texunit;
-      this->fragmentshader->parameter.set1Value(i*2, shadowmap); 
+      this->fragmentshader->parameter.set1Value(i*2, shadowmap);
     }
   }
 
@@ -1135,11 +1147,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     if (farval->name.getValue() != str) {
       farval->name = str;
     }
-    this->fragmentshader->parameter.set1Value(i*2+1, farval); 
+    this->fragmentshader->parameter.set1Value(i*2+1, farval);
   }
 
   if (1) { // test
-    SoShaderParameter1i * texmap = 
+    SoShaderParameter1i * texmap =
       new SoShaderParameter1i();
     SbString str;
     str.sprintf("textureMap0");
@@ -1158,7 +1170,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       this->lightmodel->name = "coin_light_model";
       this->lightmodel->value = 1;
     }
-    
+
     this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
     this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
     this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
@@ -1182,16 +1194,16 @@ SoShadowSpotLightCache::createVSMProgram(void)
 
   SoShaderGenerator & vgen = this->vsm_vertex_generator;
   SoShaderGenerator & fgen = this->vsm_fragment_generator;
-  
+
   vgen.reset(FALSE);
 
   vgen.addDeclaration("varying vec3 light_vec;", FALSE);
   vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
                         "gl_Position = ftransform();");
-  
+
   vshader->sourceProgram = vgen.getShaderProgram();
   vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-  
+
   fgen.reset(FALSE);
 #ifdef DISTRIBUTE_FACTOR
   SbString str;
@@ -1204,7 +1216,7 @@ SoShadowSpotLightCache::createVSMProgram(void)
 #ifdef DISTRIBUTE_FACTOR
                         "vec2 m = vec2(l, l*l);\n"
                         "vec2 f = fract(m * DISTRIBUTE_FACTOR);\n"
-                        
+
 #ifdef USE_NEGATIVE
                         "gl_FragColor.rg = (m - (f / DISTRIBUTE_FACTOR)) * 2.0 - vec2(1.0, 1.0);\n"
                         "gl_FragColor.ba = f * 2.0 - vec2(1.0, 1.0);\n"
@@ -1246,56 +1258,56 @@ SoShadowGroupP::shader_enable_cb(void * closure,
       SoGLTextureEnabledElement::set(state, enable);
     }
     else {
-      SoMultiTextureEnabledElement::set(state, NULL, unit, 
+      SoMultiTextureEnabledElement::set(state, NULL, unit,
                                         enable);
     }
   }
 }
 
-void 
+void
 SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
-  SbBool supported = 
+  SbBool supported =
     cc_glglue_has_framebuffer_objects(glue) &&
     cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
     cc_glglue_glext_supported(glue, "GL_ARB_texture_float");
-  
+
   if (!supported || !PUBLIC(this)->isActive.getValue()) {
     if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
     else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
     return;
   }
-  
+
   state->push();
-  
+
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     // a bit hackish, but saves creating yet another cache
     this->spotlightsvalid = FALSE;
   }
-  
+
   SbMatrix camtransform = SoViewingMatrixElement::get(state).inverse();
   if (camtransform != this->cameratransform->value.getValue()) {
     this->cameratransform->value = camtransform;
   }
-  
+
   SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
   SoShapeStyleElement::setShadowMapRendering(state, TRUE);
   this->updateSpotLights(action);
   SoShapeStyleElement::setShadowMapRendering(state, FALSE);
-  
+
 
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     this->setVertexShader(state);
   }
-  
+
   if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
     this->setFragmentShader(state);
   }
   this->shaderprogram->GLRender(action);
-  
+
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
@@ -1304,7 +1316,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   state->pop();
 }
 
-SoShaderProgram * 
+SoShaderProgram *
 SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, const float gaussstandarddeviation)
 {
   SoVertexShader * vshader = new SoVertexShader;
@@ -1320,19 +1332,19 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
   baseimage->value = 0;
 
   int kernelsize = size*size;
-  
+
   offset->value.setNum(kernelsize);
   kernel->value.setNum(kernelsize);
 
   SoShaderGenerator fgen;
   SbString str;
-  
+
   str.sprintf("const int KernelSize = %d;", kernelsize);
   fgen.addDeclaration(str, FALSE);
   fgen.addDeclaration("uniform vec2 offset[KernelSize];", FALSE);
   fgen.addDeclaration("uniform float kernelvalue[KernelSize];", FALSE);
   fgen.addDeclaration("uniform sampler2D baseimage;", FALSE);
-  
+
   fgen.addMainStatement(
                         "int i;\n"
                         "vec4 sum = vec4(0.0);\n"
@@ -1342,21 +1354,21 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
                         "}\n"
                         "gl_FragColor = sum;\n"
                         );
-  
+
   const double sigma = (double) gaussstandarddeviation;
   const int center = size / 2;
   const float dt = 1.0f / float(texsize);
-  
+
   SbVec2f * offsetptr = offset->value.startEditing();
   float * kernelptr = kernel->value.startEditing();
-  
+
   int c = 0;
   for (int y = 0; y < size; y++) {
     int dy = SbAbs(y - center);
     for (int x = 0; x < size; x++) {
       int dx = SbAbs(x - center);
-      
-      kernelptr[c] = (float) ((1.0 /  (2.0 * M_PI * sigma * sigma)) * exp(- double(dx*dx + dy*dy) / (2.0 * sigma * sigma))); 
+
+      kernelptr[c] = (float) ((1.0 /  (2.0 * M_PI * sigma * sigma)) * exp(- double(dx*dx + dy*dy) / (2.0 * sigma * sigma)));
       offsetptr[c] = SbVec2f(float(x-center) * dt, float(y-center)*dt);
       c++;
 
@@ -1370,7 +1382,7 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
 
   fshader->sourceProgram = fgen.getShaderProgram();
   fshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-  
+
   fshader->parameter.set1Value(0, offset);
   fshader->parameter.set1Value(1, kernel);
   fshader->parameter.set1Value(2, baseimage);
@@ -1385,7 +1397,7 @@ SoShadowSpotLightCache::createGaussFilter(const int texsize, const int size, con
   return program;
 }
 
-SoSeparator * 
+SoSeparator *
 SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2 * tex)
 {
   SoSeparator * sep = new SoSeparator;
@@ -1397,13 +1409,13 @@ SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2
     {1.0f, 0.0f, 0.0f},
     {1.0f, 1.0f, 0.0f},
     {0.0f, 1.0f, 0.0f}
-    
+
   };
 
   sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->faceType = SoShapeHints::CONVEX;
   sh->shapeType = SoShapeHints::SOLID;
-  
+
   sep->addChild(sh);
 
   camera->position = SbVec3f(0.5f, 0.5f, 2.0f);
@@ -1431,18 +1443,18 @@ SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2
   return sep;
 }
 
-void 
+void
 SoShadowSpotLightCache::shadowmap_glcallback(void * closure, SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
     SoShadowSpotLightCache * thisp = (SoShadowSpotLightCache*) closure;
-    
+
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
     SoTextureQualityElement::set(state, 0.0f);
     SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
     SoNormalElement::set(state, NULL, 0, NULL, FALSE);
-    
+
 
     SoOverrideElement::setNormalVectorOverride(state, NULL, TRUE);
     SoOverrideElement::setMaterialBindingOverride(state, NULL, TRUE);
@@ -1451,7 +1463,7 @@ SoShadowSpotLightCache::shadowmap_glcallback(void * closure, SoAction * action)
   }
 }
 
-void 
+void
 SoShadowSpotLightCache::shadowmap_post_glcallback(void * closure, SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
