@@ -73,6 +73,8 @@
 
 class SoGeoCoordinateP {
 public:
+  uint32_t originid;
+  uint32_t thisid;
   SbList <SbVec3f> coords;
 };
 
@@ -88,6 +90,8 @@ SO_NODE_SOURCE(SoGeoCoordinate);
 SoGeoCoordinate::SoGeoCoordinate(void)
 {
   PRIVATE(this) = new SoGeoCoordinateP;
+  PRIVATE(this)->originid = 0;
+  PRIVATE(this)->thisid = 0;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoCoordinate);
 
@@ -121,20 +125,27 @@ SoGeoCoordinate::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
-  PRIVATE(this)->coords.truncate(0);
-  const int n = this->point.getNum();
+  if (origin->getNodeId() != PRIVATE(this)->originid ||
+      this->getNodeId() != PRIVATE(this)->thisid) {
 
-  // FIXME: optimize (cache)
-  // FIXME: consider what to do with the current transformation on the state
+    if (PRIVATE(this)->originid != origin->getNodeId()) {
+      this->touch();
+    }
+    PRIVATE(this)->originid = origin->getNodeId();
+    PRIVATE(this)->thisid = this->getNodeId();
 
-  for (int i = 0; i < n; i++) {
-    SbMatrix m = this->getTransform(state, i);
-    SbVec3f p(0.0f, 0.0f, 0.0f);
-    m.multVecMatrix(p,p);
-    PRIVATE(this)->coords.append(p);
+    PRIVATE(this)->coords.truncate(0);
+    const int n = this->point.getNum();
+    
+    for (int i = 0; i < n; i++) {
+      SbMatrix m = this->getTransform(origin, i);
+      SbVec3f p(0.0f, 0.0f, 0.0f);
+      m.multVecMatrix(p,p);
+      PRIVATE(this)->coords.append(p);
+    }
   }
 
-  SoCoordinateElement::set3(state, this, n,
+  SoCoordinateElement::set3(state, this, PRIVATE(this)->coords.getLength(),
                             PRIVATE(this)->coords.getArrayPtr());
 }
 
@@ -176,17 +187,13 @@ SoGeoCoordinate::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 // *************************************************************************
 
 SbMatrix
-SoGeoCoordinate::getTransform(SoState * state, const int idx) const
+SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
 {
-  SoGeoOrigin * origin = SoGeoElement::get(state);
-  if (origin) {
-    return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
-                                     origin->geoSystem.getNum(),
-                                     origin->geoCoords.getValue(),
-
-                                     this->geoSystem.getValues(0),
-                                     this->geoSystem.getNum(),
-                                     this->point[idx]);
-  }
-  return SbMatrix::identity();
+  return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
+                                   origin->geoSystem.getNum(),
+                                   origin->geoCoords.getValue(),
+                                   
+                                   this->geoSystem.getValues(0),
+                                   this->geoSystem.getNum(),
+                                   this->point[idx]);
 }

@@ -31,6 +31,7 @@
 
 class SoGeoCoordinateP;
 class SoState;
+class SoGeoOrigin;
 
 class COIN_DLL_API SoGeoCoordinate : public SoNode {
   typedef SoNode inherited;
@@ -56,7 +57,7 @@ protected:
 
 private:
 
-  SbMatrix getTransform(SoState * state, const int idx) const;
+  SbMatrix getTransform(SoGeoOrigin * origin, const int idx) const;
 
   SoGeoCoordinateP * pimpl;
 };
