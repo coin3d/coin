@@ -124,6 +124,7 @@ void
 SoGeoCoordinate::doAction(SoAction * action)
 {
   SoState * state = action->getState();
+  SoGeoOrigin * origin = SoGeoElement::get(state);
 
   if (origin->getNodeId() != PRIVATE(this)->originid ||
       this->getNodeId() != PRIVATE(this)->thisid) {
