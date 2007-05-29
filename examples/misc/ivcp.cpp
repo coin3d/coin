@@ -58,13 +58,13 @@ main(int argc, char ** argv)
   SoNodeKit::init();
   SoInteraction::init();
 
-  if ( argc != 3 ) {
+  if (argc != 3 ) {
     fprintf(stdout, "Usage: %s infile outfile\n", argv[0]);
     return 0;
   }
 
   SoInput * in = new SoInput;
-  if ( !in->openFile(argv[1]) ) {
+  if (!in->openFile(argv[1])) {
     fprintf(stderr, "error: could not open file '%s'\n", argv[1]);
     delete in;
     SoDB::cleanup();
@@ -72,7 +72,7 @@ main(int argc, char ** argv)
   }
 
   SoNode * scene = NULL;
-  if ( !SoDB::read(in, scene) ) {
+  if (!SoDB::read(in, scene)) {
     fprintf(stderr, "error: could not read file '%s'\n", argv[1]);
     delete in;
     SoDB::cleanup();
@@ -81,12 +81,12 @@ main(int argc, char ** argv)
   delete in;
   scene->ref();
 
-  if ( scene->isOfType(SoForeignFileKit::getClassTypeId()) {
+  if (scene->isOfType(SoForeignFileKit::getClassTypeId())) {
     SoForeignFileKit * kit = (SoForeignFileKit *) scene;
-    if ( kit->canWriteScene() ) {
+    if (kit->canWriteScene() ) {
       SoNode * subscene = NULL;
       kit->writeScene(subscene);
-      if ( !subscene ) {
+      if (!subscene ) {
         return -1;
       }
       subscene->ref();
@@ -96,7 +96,7 @@ main(int argc, char ** argv)
   }
 
   SoOutput * out = new SoOutput;
-  if ( !out->openFile(argv[2]) ) {
+  if (!out->openFile(argv[2])) {
     fprintf(stderr, "error: could not open file '%s' for writing\n");
     scene->unref();
     delete out;
@@ -104,6 +104,10 @@ main(int argc, char ** argv)
     return -1;
   }
   
+#if 1
+  out->setBinary(TRUE);
+#endif
+
   SoWriteAction wa(out);
   wa.apply(scene);
 
