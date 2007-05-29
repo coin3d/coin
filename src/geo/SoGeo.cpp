@@ -192,8 +192,12 @@ SoGeo::calculateTransform(const SbString * originsystem,
   SbDPMatrix r = om * lm.inverse();
 
   // transform to a single precision matrix.
-  return SbMatrix(r[0][0], r[0][1], r[0][2], r[0][3],
-                  r[1][0], r[1][1], r[1][2], r[1][3],
-                  r[2][0], r[2][1], r[2][2], r[2][3],
-                  r[3][0], r[3][1], r[3][2], r[3][3]);  
+  return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
+                    static_cast<float>(r[0][2]), static_cast<float>(r[0][3]),
+                  static_cast<float>(r[1][0]), static_cast<float>(r[1][1]),
+                    static_cast<float>(r[1][2]), static_cast<float>(r[1][3]),
+                  static_cast<float>(r[2][0]), static_cast<float>(r[2][1]),
+                    static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
+                  static_cast<float>(r[3][0]), static_cast<float>(r[3][1]),
+                    static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));  
 }
