@@ -53,6 +53,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "SoGeo.h"
 
 #if COIN_DEBUG
@@ -190,5 +191,7 @@ SoGeoLocation::getTransform(SoState * state) const
                                      this->geoSystem.getNum(),
                                      this->geoCoords.getValue());
   }
+  SoDebugError::post("SoGeoLocation::getTransform",
+                     "No SoGeoOrigin node found on stack.");
   return SbMatrix::identity();
 }

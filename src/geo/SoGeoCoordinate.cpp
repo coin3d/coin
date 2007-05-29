@@ -46,6 +46,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGeoElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 
 #include "SoGeo.h"
@@ -126,18 +127,24 @@ SoGeoCoordinate::doAction(SoAction * action)
   SoState * state = action->getState();
   SoGeoOrigin * origin = SoGeoElement::get(state);
 
+  if (!origin) {
+    SoDebugError::post("SoGeoCoordinate::doAction",
+                       "No SoGeoOrigin node found on stack.");
+    return;
+  }
+  
   if (origin->getNodeId() != PRIVATE(this)->originid ||
       this->getNodeId() != PRIVATE(this)->thisid) {
 
     if (PRIVATE(this)->originid != origin->getNodeId()) {
-      this->touch();
+      this->touch(); // to invalidate caches that depends on this coordinate node
     }
     PRIVATE(this)->originid = origin->getNodeId();
     PRIVATE(this)->thisid = this->getNodeId();
 
     PRIVATE(this)->coords.truncate(0);
     const int n = this->point.getNum();
-    
+
     for (int i = 0; i < n; i++) {
       SbMatrix m = this->getTransform(origin, i);
       SbVec3f p(0.0f, 0.0f, 0.0f);
@@ -193,7 +200,7 @@ SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
   return SoGeo::calculateTransform(origin->geoSystem.getValues(0),
                                    origin->geoSystem.getNum(),
                                    origin->geoCoords.getValue(),
-                                   
+
                                    this->geoSystem.getValues(0),
                                    this->geoSystem.getNum(),
                                    this->point[idx]);

@@ -56,6 +56,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include "SoGeo.h"
 
@@ -231,5 +232,8 @@ SoGeoSeparator::getTransform(SoState * state) const
                                      this->geoSystem.getNum(),
                                      this->geoCoords.getValue());
   }
+  
+  SoDebugError::post("SoGeoSeparator::getTransform",
+                     "No SoGeoOrigin node found on stack.");
   return SbMatrix::identity();
 }
