@@ -332,7 +332,8 @@ RegularSources = \
 	SbViewVolume.cpp \
 	SbDPViewVolume.cpp \
 	SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	SbXfBox3f.cpp \
+	SbXfBox3d.cpp
 
 
 LinkHackSources = \
@@ -424,7 +425,7 @@ am__base_lst_SOURCES_DIST = dict.c hash.c heap.c list.c memalloc.c \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp all-base-c.c \
 	all-base-cpp.cpp
 am__objects_1 = all-base-c.$(OBJEXT) all-base-cpp.$(OBJEXT)
 am__objects_2 = dict.$(OBJEXT) hash.$(OBJEXT) heap.$(OBJEXT) \
@@ -450,7 +451,7 @@ am__objects_2 = dict.$(OBJEXT) hash.$(OBJEXT) heap.$(OBJEXT) \
 	SbVec4us.$(OBJEXT) SbVec4i32.$(OBJEXT) SbVec4ui32.$(OBJEXT) \
 	SbVec4f.$(OBJEXT) SbVec4d.$(OBJEXT) SbViewVolume.$(OBJEXT) \
 	SbDPViewVolume.$(OBJEXT) SbViewportRegion.$(OBJEXT) \
-	SbXfBox3f.$(OBJEXT)
+	SbXfBox3f.$(OBJEXT) SbXfBox3d.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_base_lst_OBJECTS = $(am__objects_3)
@@ -470,7 +471,7 @@ am__EXTRA_base_lst_SOURCES_DIST = SbGLUTessellator.h all-base-c.c \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp
 base_lst_OBJECTS = $(am_base_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -491,7 +492,7 @@ am__libbase_la_SOURCES_DIST = dict.c hash.c heap.c list.c memalloc.c \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp all-base-c.c \
 	all-base-cpp.cpp
 am__objects_6 = all-base-c.lo all-base-cpp.lo
 am__objects_7 = dict.lo hash.lo heap.lo list.lo memalloc.lo rbptree.lo \
@@ -508,7 +509,7 @@ am__objects_7 = dict.lo hash.lo heap.lo list.lo memalloc.lo rbptree.lo \
 	SbVec3f.lo SbVec3d.lo SbVec4b.lo SbVec4ub.lo SbVec4s.lo \
 	SbVec4us.lo SbVec4i32.lo SbVec4ui32.lo SbVec4f.lo SbVec4d.lo \
 	SbViewVolume.lo SbDPViewVolume.lo SbViewportRegion.lo \
-	SbXfBox3f.lo
+	SbXfBox3f.lo SbXfBox3d.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libbase_la_OBJECTS = $(am__objects_8)
@@ -528,7 +529,7 @@ am__EXTRA_libbase_la_SOURCES_DIST = SbGLUTessellator.h all-base-c.c \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp
 libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
 libbase@SUFFIX@LINKHACK_la_LDFLAGS =
 libbase@SUFFIX@LINKHACK_la_LIBADD =
@@ -547,7 +548,7 @@ am__libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = dict.c hash.c heap.c \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp all-base-c.c \
 	all-base-cpp.cpp
 am_libbase@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = SbGLUTessellator.h \
@@ -566,7 +567,7 @@ am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = SbGLUTessellator.h \
 	SbVec3f.cpp SbVec3d.cpp SbVec4b.cpp SbVec4ub.cpp SbVec4s.cpp \
 	SbVec4us.cpp SbVec4i32.cpp SbVec4ui32.cpp SbVec4f.cpp \
 	SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp
+	SbViewportRegion.cpp SbXfBox3f.cpp SbXfBox3d.cpp
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -637,6 +638,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SbViewVolume.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbViewportRegion.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbViewportRegion.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SbXfBox3d.Plo ./$(DEPDIR)/SbXfBox3d.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbXfBox3f.Plo ./$(DEPDIR)/SbXfBox3f.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-base-c.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-base-c.Po \
@@ -854,6 +856,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbViewVolume.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbViewportRegion.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbViewportRegion.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3d.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-c.Plo@am__quote@
