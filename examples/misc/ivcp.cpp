@@ -104,10 +104,6 @@ main(int argc, char ** argv)
     return -1;
   }
   
-#if 1
-  out->setBinary(TRUE);
-#endif
-
   SoWriteAction wa(out);
   wa.apply(scene);
 
