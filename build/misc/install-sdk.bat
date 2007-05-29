@@ -72,7 +72,7 @@ rem **********************************************************************
 rem * Copy files
 
 echo Installing header files...
-call ..\misc\install-headers.bat %3
+call ..\misc\install-headers.bat %msvc%
 
 if "%libname%"=="coin2" goto installcoindata
 if "%libname%"=="coin3" goto installcoindata
