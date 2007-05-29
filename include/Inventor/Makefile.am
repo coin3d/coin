@@ -71,6 +71,7 @@ PublicHeaders = \
 	SbViewVolume.h \
 	SbViewportRegion.h \
 	SbXfBox3f.h \
+	SbXfBox3d.h \
 	So.h \
 	SoDB.h \
 	SoFullPath.h \

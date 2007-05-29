@@ -67,7 +67,8 @@ RegularSources = \
 	SbViewVolume.cpp \
 	SbDPViewVolume.cpp \
 	SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	SbXfBox3f.cpp \
+	SbXfBox3d.cpp
 
 LinkHackSources = \
 	all-base-c.c \

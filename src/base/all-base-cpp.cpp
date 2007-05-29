@@ -30,7 +30,7 @@
 #include "SbBox3f.cpp"
 #include "SbBox3d.cpp"
 #include "SbXfBox3f.cpp"
-//#include "SbXfBox3d.cpp"
+#include "SbXfBox3d.cpp"
 
 #include "SbBSPTree.cpp"
 #include "SbClip.cpp"
