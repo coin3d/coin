@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{9573180B-AB8D-4E33-9B30-B7DCE05728DD}"
+	ProjectGUID="{2960CBC1-397C-4B59-AD10-EB9F15152E34}"
 	>
 	<Platforms>
 		<Platform
@@ -82,7 +82,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="..\misc\install-sdk.bat lib debug"
 			/>
 		</Configuration>
 		<Configuration
@@ -180,7 +179,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="..\misc\install-sdk.bat dll release"
 			/>
 		</Configuration>
 		<Configuration
@@ -257,7 +255,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="..\misc\install-sdk.bat lib release"
 			/>
 		</Configuration>
 		<Configuration
@@ -353,7 +350,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="..\misc\install-sdk.bat dll debug"
 			/>
 		</Configuration>
 	</Configurations>
@@ -4492,6 +4488,54 @@
 				</File>
 				<File
 					RelativePath="..\..\src\base\SbViewVolume.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\base/"
+							ProgramDataBaseFileName="StaticDebug\base/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\base/"
+							ProgramDataBaseFileName="Release\base/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\base/"
+							ProgramDataBaseFileName="StaticRelease\base/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\base/"
+							ProgramDataBaseFileName="Debug\base/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\base\SbXfBox3d.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -15245,6 +15289,54 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\fields\SoMFColorRGBA.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\fields/"
+							ProgramDataBaseFileName="StaticDebug\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\fields/"
+							ProgramDataBaseFileName="Release\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\fields/"
+							ProgramDataBaseFileName="StaticRelease\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\fields/"
+							ProgramDataBaseFileName="Debug\fields/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\fields\SoMFDouble.cpp"
 					>
 					<FileConfiguration
@@ -17406,6 +17498,54 @@
 				</File>
 				<File
 					RelativePath="..\..\src\fields\SoSFColor.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\fields/"
+							ProgramDataBaseFileName="StaticDebug\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\fields/"
+							ProgramDataBaseFileName="Release\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\fields/"
+							ProgramDataBaseFileName="StaticRelease\fields/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\fields/"
+							ProgramDataBaseFileName="Debug\fields/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fields\SoSFColorRGBA.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -33613,6 +33753,102 @@
 				Filter="c;cpp;ic;icc;h"
 				>
 				<File
+					RelativePath="..\..\src\shadows\SoGLShadowCullingElement.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shadows\SoShadowCulling.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\shadows\SoShadowGroup.cpp"
 					>
 					<FileConfiguration
@@ -40097,6 +40333,10 @@
 				Name="FXViz\nodes headers"
 				>
 				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h"
 					>
 				</File>
@@ -40108,6 +40348,10 @@
 			<Filter
 				Name="FXViz\elements headers"
 				>
+				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h"
 					>
@@ -41045,6 +41289,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\fields\SoMFColorRGBA.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\fields\SoMFDouble.h"
 					>
 				</File>
@@ -41234,6 +41482,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\fields\SoSFColor.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\fields\SoSFColorRGBA.h"
 					>
 				</File>
 				<File
@@ -42694,6 +42946,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbViewVolume.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SbXfBox3d.h"
 					>
 				</File>
 				<File

@@ -56,10 +56,6 @@ BSC32=bscmake.exe
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo /machine:I386 /out:"coin3s.lib"
 # ADD LIB32 /nologo /machine:I386 /out:"coin3s.lib"
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat lib release
-# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
 
@@ -86,10 +82,6 @@ BSC32=bscmake.exe
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
 # ADD LIB32 /nologo /machine:I386 /out:"coin3sd.lib"
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat lib debug
-# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 
@@ -120,10 +112,6 @@ LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386 /out:"coin3.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat dll release
-# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
 
@@ -152,10 +140,6 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll"
-# Begin Special Build Tool
-SOURCE="$(InputPath)"
-PostBuild_Cmds=..\misc\install-sdk.bat dll debug
-# End Special Build Tool
 
 !ENDIF
 
@@ -1332,6 +1316,19 @@ SOURCE=..\..\src\base\SbViewportRegion.cpp
 # Begin Source File
 
 SOURCE=..\..\src\base\SbXfBox3f.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbXfBox3d.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4195,6 +4192,19 @@ SOURCE=..\..\src\fields\SoMFColor.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\fields\SoMFColorRGBA.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\fields\SoMFDouble.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
@@ -4781,6 +4791,19 @@ SOURCE=..\..\src\fields\SoSFBox3d.cpp
 # Begin Source File
 
 SOURCE=..\..\src\fields\SoSFColor.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\fields"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\fields"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSFColorRGBA.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9259,6 +9282,32 @@ SOURCE=..\..\src\shadows\SoShadowStyleElement.cpp
 # PROP Intermediate_Dir "StaticDebug\shadows"
 !ENDIF
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shadows\SoShadowCulling.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shadows"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shadows\SoGLShadowCullingElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shadows"
+!ENDIF
+# End Source File
 # End Group
 # Begin Group "geo sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
@@ -11430,12 +11479,20 @@ SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h
 
 SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h
+# End Source File
 # End Group
 # Begin Group "FXViz\elements headers"
 # Set Default_Filter "h"
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h
 # End Source File
 # End Group
 # Begin Group "Inventor\bundles headers"
@@ -12365,6 +12422,10 @@ SOURCE=..\..\include\Inventor\fields\SoMFColor.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\fields\SoMFColorRGBA.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\fields\SoMFDouble.h
 # End Source File
 # Begin Source File
@@ -12554,6 +12615,10 @@ SOURCE=..\..\include\Inventor\fields\SoSFBox3d.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\fields\SoSFColor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\fields\SoSFColorRGBA.h
 # End Source File
 # Begin Source File
 
@@ -13995,6 +14060,10 @@ SOURCE=..\..\include\Inventor\SbViewportRegion.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\SbXfBox3f.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbXfBox3d.h
 # End Source File
 # Begin Source File
 

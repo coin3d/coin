@@ -7,7 +7,7 @@
 proper=true;
 
 rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln;
-rm -f install-headers.bat uninstall-headers.bat;
+rm -f ../misc/install-headers.bat ../misc/uninstall-headers.bat;
 
 if $proper; then
   rm -rf src;
@@ -56,9 +56,9 @@ if $proper; then
     -e "s/$source/..\\\\../g" \
     -e "s/$source_pwd/..\\\\../g" \
     -e 's/$/\r/g' \
-    <install-headers.bat >new.bat
+    <../misc/install-headers.bat >new.bat
 
-  mv new.bat install-headers.bat
+  mv new.bat ../misc/install-headers.bat
 fi
 
 echo "Done."
@@ -70,7 +70,7 @@ set -x
 grep -i "\\(c:\\|@\\)" coin3.dsp /dev/null
 grep -i "cygdrive" coin3.dsp /dev/null
 grep "svn" coin3.dsp /dev/null
-sort install-headers.bat | uniq -c | grep -v " 1 "
+sort ../misc/install-headers.bat | uniq -c | grep -v " 1 "
 grep "SOURCE=" coin3.dsp | sort | uniq -c | grep -v " 1 "
 set +x
 

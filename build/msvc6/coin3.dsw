@@ -15,6 +15,33 @@ Package=<4>
 
 ###############################################################################
 
+Project: "coin3_install"=.\coin3_install.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name coin3
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "coin3_uninstall"=.\coin3_uninstall.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Global:
 
 Package=<5>

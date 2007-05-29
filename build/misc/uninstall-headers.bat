@@ -133,7 +133,9 @@ del %COINDIR%\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h
 del %COINDIR%\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h
+del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h
 del %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h
+del %COINDIR%\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h
 del %COINDIR%\include\Inventor\bundles\SoBundle.h
 del %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h
 del %COINDIR%\include\Inventor\bundles\SoNormalBundle.h
@@ -358,6 +360,7 @@ del %COINDIR%\include\Inventor\fields\SoFieldData.h
 del %COINDIR%\include\Inventor\fields\SoMFBitMask.h
 del %COINDIR%\include\Inventor\fields\SoMFBool.h
 del %COINDIR%\include\Inventor\fields\SoMFColor.h
+del %COINDIR%\include\Inventor\fields\SoMFColorRGBA.h
 del %COINDIR%\include\Inventor\fields\SoMFDouble.h
 del %COINDIR%\include\Inventor\fields\SoMFEngine.h
 del %COINDIR%\include\Inventor\fields\SoMFEnum.h
@@ -406,6 +409,7 @@ del %COINDIR%\include\Inventor\fields\SoSFBox3i32.h
 del %COINDIR%\include\Inventor\fields\SoSFBox3f.h
 del %COINDIR%\include\Inventor\fields\SoSFBox3d.h
 del %COINDIR%\include\Inventor\fields\SoSFColor.h
+del %COINDIR%\include\Inventor\fields\SoSFColorRGBA.h
 del %COINDIR%\include\Inventor\fields\SoSFDouble.h
 del %COINDIR%\include\Inventor\fields\SoSFEngine.h
 del %COINDIR%\include\Inventor\fields\SoSFEnum.h
@@ -758,6 +762,7 @@ del %COINDIR%\include\Inventor\SbVec4d.h
 del %COINDIR%\include\Inventor\SbViewVolume.h
 del %COINDIR%\include\Inventor\SbViewportRegion.h
 del %COINDIR%\include\Inventor\SbXfBox3f.h
+del %COINDIR%\include\Inventor\SbXfBox3d.h
 del %COINDIR%\include\Inventor\So.h
 del %COINDIR%\include\Inventor\SoDB.h
 del %COINDIR%\include\Inventor\SoFullPath.h
