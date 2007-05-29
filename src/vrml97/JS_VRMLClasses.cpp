@@ -53,6 +53,9 @@
 #include <Inventor/fields/SoMFVec3d.h>
 #include <Inventor/fields/SoMFRotation.h>
 
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSeparator.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h> 
@@ -1480,7 +1483,12 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
     array[1] = NULL;
     input.setStringArray(array);
 
-    SoVRMLGroup * group = SoDB::readAllVRML(&input);
+    SoGroup * group;
+    
+    if (input.isFileVRML2())
+      group = SoDB::readAllVRML(&input);
+    else
+      group = SoDB::readAll(&input);
 
     if (group == NULL) {
       spidermonkey()->JS_ReportError(cx, "input is not legal VRML string");
