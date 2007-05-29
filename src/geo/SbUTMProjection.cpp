@@ -47,21 +47,21 @@ SbUTMProjection::project(const SbGeoAngle & LatRad,
   double a = this->ellipsoid.getA();
   double eccSquared = this->ellipsoid.getEccentricitySquared();
   double k0 = 0.9996;
-  
+
   double LongOrigin;
   double eccPrimeSquared;
   double N, T, C, A, M;
 
   //Make sure the longitude is between -180.00 .. 179.9
   double LongTemp = (int(LongRad.deg())+180)-int((int(LongRad.deg())+180)/360)*360-180; // -180.00 .. 179.9;
-  
+
   //  double LatRad = Lat*deg2rad;
   //  double LongRad = LongTemp*deg2rad;
   double LongOriginRad;
   int    ZoneNumber;
-  
+
   ZoneNumber = int((LongTemp + 180)/6) + 1;
-  
+
   if (this->forcedutmzone != -1) {
     ZoneNumber = this->forcedutmzone;
   }
@@ -69,7 +69,7 @@ SbUTMProjection::project(const SbGeoAngle & LatRad,
   const double deg2rad = M_PI / 180;
   const double rad2deg = 180.0 / M_PI;
   const double FOURTHPI = M_PI / 4;
-  
+
   LongOrigin = (ZoneNumber - 1)*6 - 180 + 3;  //+3 puts origin in middle of zone
   LongOriginRad = LongOrigin * deg2rad;
 
@@ -124,7 +124,7 @@ SbUTMProjection::unproject(const double UTMEasting,
   if (this->ellipsoid.getHemisphere() == 'S') {
     y -= 10000000.0; //remove 10,000,000 meter offset used for southern hemisphere
   }
-  
+
   LongOrigin = (ZoneNumber - 1)*6 - 180 + 3;  //+3 puts origin in middle of zone
   eccPrimeSquared = (eccSquared)/(1-eccSquared);
 

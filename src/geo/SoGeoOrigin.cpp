@@ -187,5 +187,5 @@ SoGeoOrigin::pick(SoPickAction * action)
 void
 SoGeoOrigin::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  //  SoGeoOrigin::doAction((SoAction *)action);
+  SoGeoOrigin::doAction((SoAction *)action);
 }
