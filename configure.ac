@@ -306,6 +306,8 @@ AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
+SIM_AC_STRIP_EXIT_DECLARATION
+
 # we only interface with C libraries
 AC_LANG(C)
 

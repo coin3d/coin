@@ -8241,6 +8241,22 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 
 AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
+# SIM_AC_STRIP_EXIT_DECLARATION
+#
+# Autoconf adds a declaration of exit() to confdefs.h, which causes
+# configure tests to fail later on when configuring for Visual C++
+# compilers.  This macro edits out the exit-declaration (which we
+# really don't need anyway) from the confdefs.h file.
+#
+# 2007-05-30 larsa
+
+AC_DEFUN([SIM_AC_STRIP_EXIT_DECLARATION], [
+mv confdefs.h confdefs.old
+egrep -v "void.*exit" confdefs.old >confdefs.h
+rm -f confdefs.old
+])
+
+
 # Usage:
 #   SIM_AC_COMPILE_DEBUG([ACTION-IF-DEBUG[, ACTION-IF-NOT-DEBUG]])
 #
