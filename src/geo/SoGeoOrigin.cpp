@@ -46,6 +46,10 @@
   camera) in the scene graph will be projected into that coordinate
   system.
 
+  The coordinate system will always have the Z axis point up from the
+  ground. The Y axis will point towards the north pole, and the X-axis
+  is found using the right hand rule. 
+
   \since Coin 2.5  
 */
 

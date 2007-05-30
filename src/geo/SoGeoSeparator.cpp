@@ -35,9 +35,12 @@
   \endcode
 
   This node specifies an absolute geographic coordinate system for the
-  children. When rendering (or applying other actions), Coin
-  will add a transformation which transforms the geometry into the
-  SoGeoOrigin coordinate system.
+  children. When rendering (or applying other actions), Coin will add
+  a transformation which transforms the geometry into the SoGeoOrigin
+  coordinate system. All objects will be rotated to make the local Z
+  axis point up from the ground (at the specified geo-location), the Y
+  axis will point towards the north pole, and the X axis is found
+  using the right hand rule.
 
   \sa SoGeoOrigin
   \since Coin 2.5

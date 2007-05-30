@@ -147,9 +147,7 @@ SoGeoCoordinate::doAction(SoAction * action)
 
     for (int i = 0; i < n; i++) {
       SbMatrix m = this->getTransform(origin, i);
-      SbVec3f p(0.0f, 0.0f, 0.0f);
-      m.multVecMatrix(p,p);
-      PRIVATE(this)->coords.append(p);
+      PRIVATE(this)->coords.append(SbVec3f(m[3]));
     }
   }
 
