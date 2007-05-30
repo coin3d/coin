@@ -58,7 +58,7 @@ static int find_utm_zone(const SbString & s)
 {
   if (s.getLength() < 2) return 0;
   if (s[0] != 'Z' && s[1] != 'z') return 0;
-  
+
   return (int) atoi(s.getString()+1);
 }
 
@@ -72,13 +72,13 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
   }
   else {
     double latitude, longitude, elev;
-    
+
     if (system[0] == "UTM") {
       SbUTMProjection proj(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
       SbGeoAngle lat, lng;
-      
+
       proj.unproject(coords[0], coords[1], &lat, &lng);
-      
+
       latitude = lat.rad();
       longitude = lng.rad();
       elev = coords[2];
@@ -92,26 +92,26 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
       assert(0 && "not supported");
       latitude = longitude = elev = 0.0;
     }
-    
+
     // formula based on http://en.wikipedia.org/wiki/Geodetic_system
-    
+
     double a = 6378137.0; // earth semimajor axis in meters
     double f = 1.0/298.257223563; // reciprocal flattening
     double e2 = 2*f - f*f; // eccentricity squared
-    
+
     double sinlat = sin(latitude);
     double coslat = cos(latitude);
     double chi = sqrt(1.0 - e2 * (sinlat*sinlat));
-    
-    
+
+
     p[0] = (a / chi + elev) * coslat * cos(longitude);
     p[1] = (a / chi + elev) * coslat * sin(longitude);
-    p[2] = (a * (1.0-e2)/ chi + elev) * sinlat; 
+    p[2] = (a * (1.0-e2)/ chi + elev) * sinlat;
   }
-  
+
   SbVec3d Z = p;
   (void) Z.normalize();
- 
+
   // FIXME: handle the case when origin is at the north or south pole
   SbVec3d Y(0.0, 0.0, 1.0);
   SbVec3d X = Y.cross(Z);
@@ -132,7 +132,7 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
   SbGeoAngle lat(latitude);
   SbGeoAngle lng(longitude);
 
-  fprintf(stderr,"coordinate system matrix: (%f %f) (%d %d %.2f, %d %d %.2f\n", 
+  fprintf(stderr,"coordinate system matrix: (%f %f) (%d %d %.2f, %d %d %.2f\n",
           latitude*180/M_PI, longitude*180.0/M_PI,
           lat.deg(), lat.minutes(), lat.seconds(),
           lng.deg(), lng.minutes(), lng.seconds());
@@ -155,10 +155,10 @@ static SbUTMProjection find_utm_projection(const SbString * system,
   if (system[0] != "UTM") { // find an UTM zone to project into
     assert(system[0] == "GD");
     // project to an UTM zone
-    
+
     double degree = coords[1];
     int zone = int ((degree + 180.0) / 6.0);
-    
+
     SbGeoAngle lat(coords[0], 0.0, 0.0, 'N');
     SbGeoAngle lng(coords[1], 0.0, 0.0, 'N');
 
@@ -173,7 +173,7 @@ static SbUTMProjection find_utm_projection(const SbString * system,
 
     return proj;
   }
-  
+
   // just return the original UTM Zone and coords
   projcoords = coords;
   return SbUTMProjection(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
@@ -189,7 +189,7 @@ SoGeo::calculateTransform(const SbString * originsystem,
 {
   SbDPMatrix om = find_coordinate_system(originsystem, numoriginsys, geocoords);
   SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
-  SbDPMatrix r = om * lm.inverse();
+  SbDPMatrix r = lm * om.inverse();
 
   // transform to a single precision matrix.
   return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
@@ -199,5 +199,5 @@ SoGeo::calculateTransform(const SbString * originsystem,
                   static_cast<float>(r[2][0]), static_cast<float>(r[2][1]),
                     static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
                   static_cast<float>(r[3][0]), static_cast<float>(r[3][1]),
-                    static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));  
+                    static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));
 }
