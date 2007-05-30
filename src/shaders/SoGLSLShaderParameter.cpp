@@ -173,6 +173,46 @@ SoGLSLShaderParameter::set4i(const SoGLShaderObject * shader,
     shader->GLContext()->glUniform4iARB(this->location, v[0], v[1], v[2], v[3]);
 }
 
+void
+SoGLSLShaderParameter::set1iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  if (this->isValid(shader, name, GL_INT))
+    shader->GLContext()->glUniform1ivARB(this->location, num, value);
+}
+
+void
+SoGLSLShaderParameter::set2iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC2_ARB))
+    shader->GLContext()->glUniform2ivARB(this->location, num, value);
+}
+
+void
+SoGLSLShaderParameter::set3iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * v, const char * name,
+                              const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC3_ARB))
+    shader->GLContext()->glUniform3ivARB(this->location, num, v);
+}
+
+void
+SoGLSLShaderParameter::set4iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * v, const char * name,
+                              const int)
+{
+  if (this->isValid(shader, name, GL_INT_VEC4_ARB))
+    shader->GLContext()->glUniform4ivARB(this->location, num, v);
+}
+
 #include <stdio.h>
 SbBool
 SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,

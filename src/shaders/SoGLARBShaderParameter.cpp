@@ -51,7 +51,7 @@ SoGLARBShaderParameter::set1f(const SoGLShaderObject * shader,
                               const float value, const char*, const int idx)
 {
   if (this->isValid(shader, idx))
-    cc_glglue_glProgramLocalParameter4f(shader->GLContext(), 
+    cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
 					this->target, this->identifier,
 					value, value, value, value);
 }
@@ -61,7 +61,7 @@ SoGLARBShaderParameter::set2f(const SoGLShaderObject * shader,
                               const float * value, const char*, const int idx)
 {
   if (this->isValid(shader, idx))
-    cc_glglue_glProgramLocalParameter4f(shader->GLContext(), 
+    cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
 					this->target, this->identifier,
 					value[0], value[1], value[0], value[0]);
 }
@@ -71,7 +71,7 @@ SoGLARBShaderParameter::set3f(const SoGLShaderObject * shader,
                               const float * value, const char*, const int idx)
 {
   if (this->isValid(shader, idx))
-    cc_glglue_glProgramLocalParameter4f(shader->GLContext(), 
+    cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
 					this->target, this->identifier,
 					value[0], value[1], value[2], value[0]);
 }
@@ -81,7 +81,7 @@ SoGLARBShaderParameter::set4f(const SoGLShaderObject * shader,
                               const float * value, const char*, const int idx)
 {
   if (this->isValid(shader, idx))
-    cc_glglue_glProgramLocalParameter4f(shader->GLContext(), 
+    cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
 					this->target, this->identifier,
 					value[0], value[1], value[2], value[3]);
 }
@@ -121,7 +121,7 @@ SoGLARBShaderParameter::setMatrix(const SoGLShaderObject *,
   // FIXME not implemented yet -- 20050128 martin
 }
 
-  
+
 void
 SoGLARBShaderParameter::setMatrixArray(const SoGLShaderObject *, const int,
 				       const float *, const char *, const int)
@@ -131,7 +131,7 @@ SoGLARBShaderParameter::setMatrixArray(const SoGLShaderObject *, const int,
 
 void
 SoGLARBShaderParameter::set1i(const SoGLShaderObject * shader,
-			      const int32_t value, const char * name, 
+			      const int32_t value, const char * name,
 			      const int)
 {
   // FIXME not implemented yet -- 20050222 martin
@@ -161,8 +161,44 @@ SoGLARBShaderParameter::set4i(const SoGLShaderObject * shader,
   // FIXME not implemented yet -- 20050222 martin
 }
 
+void
+SoGLARBShaderParameter::set1iv(const SoGLShaderObject * shader,
+                               const int num,
+                               const int32_t * value, const char * name,
+                               const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLARBShaderParameter::set2iv(const SoGLShaderObject * shader,
+                               const int num,
+                               const int32_t * value, const char * name,
+                               const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLARBShaderParameter::set3iv(const SoGLShaderObject * shader,
+                               const int num,
+                               const int32_t * value, const char * name,
+                               const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLARBShaderParameter::set4iv(const SoGLShaderObject * shader,
+                               const int num,
+                               const int32_t * value, const char * name,
+                               const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
 //FIXME: no type checking implemented 20050128 martin
-SbBool 
+SbBool
 SoGLARBShaderParameter::isValid(const SoGLShaderObject * shader, const int idx)
 {
   assert(shader);

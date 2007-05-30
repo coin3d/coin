@@ -644,3 +644,238 @@ SoShaderParameter1i::updateParameter(SoGLShaderObject *shader)
                                                                this->name.getValue().getString(),
                                                                this->identifier.getValue());
 }
+
+/* **************************************************************************
+ * *** SoShaderParameter2i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameter2i);
+
+SoShaderParameter2i::SoShaderParameter2i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter2i);
+  SO_NODE_ADD_FIELD(value, (0,0));
+}
+
+SoShaderParameter2i::~SoShaderParameter2i()
+{
+}
+
+void 
+SoShaderParameter2i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter2i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameter2i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set2i(shader,
+                                                               this->value.getValue().getValue(),
+                                                               this->name.getValue().getString(),
+                                                               this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameter3i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameter3i);
+
+SoShaderParameter3i::SoShaderParameter3i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter3i);
+  SO_NODE_ADD_FIELD(value, (0,0,0));
+}
+
+SoShaderParameter3i::~SoShaderParameter3i()
+{
+}
+
+void 
+SoShaderParameter3i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter3i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameter3i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set3i(shader,
+                                                               this->value.getValue().getValue(),
+                                                               this->name.getValue().getString(),
+                                                               this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameter4i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameter4i);
+
+SoShaderParameter4i::SoShaderParameter4i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter4i);
+  SO_NODE_ADD_FIELD(value, (0,0,0,0));
+}
+
+SoShaderParameter4i::~SoShaderParameter4i()
+{
+}
+
+void 
+SoShaderParameter4i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter4i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameter4i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set4i(shader,
+                                                               this->value.getValue().getValue(),
+                                                               this->name.getValue().getString(),
+                                                               this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameterArray1i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameterArray1i);
+
+SoShaderParameterArray1i::SoShaderParameterArray1i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameterArray1i);
+  SO_NODE_ADD_FIELD(value, (0));
+}
+
+SoShaderParameterArray1i::~SoShaderParameterArray1i()
+{
+}
+
+void 
+SoShaderParameterArray1i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray1i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameterArray1i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set1iv(shader,
+                                                                this->value.getNum(),
+                                                                (const int32_t*) this->value.getValues(0),
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameterArray2i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameterArray2i);
+
+SoShaderParameterArray2i::SoShaderParameterArray2i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameterArray2i);
+  SO_NODE_ADD_FIELD(value, (0,0));
+}
+
+SoShaderParameterArray2i::~SoShaderParameterArray2i()
+{
+}
+
+void 
+SoShaderParameterArray2i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray2i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameterArray2i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set2iv(shader,
+                                                                this->value.getNum(),
+                                                                (const int32_t*) this->value.getValues(0),
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameterArray3i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameterArray3i);
+
+SoShaderParameterArray3i::SoShaderParameterArray3i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameterArray3i);
+  SO_NODE_ADD_FIELD(value, (0,0,0));
+}
+
+SoShaderParameterArray3i::~SoShaderParameterArray3i()
+{
+}
+
+void 
+SoShaderParameterArray3i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray3i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameterArray3i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set3iv(shader,
+                                                                this->value.getNum(),
+                                                                (const int32_t*) this->value.getValues(0),
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
+}
+
+/* **************************************************************************
+ * *** SoShaderParameterArray4i ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameterArray4i);
+
+SoShaderParameterArray4i::SoShaderParameterArray4i()
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameterArray4i);
+  SO_NODE_ADD_FIELD(value, (0,0,0,0));
+}
+
+SoShaderParameterArray4i::~SoShaderParameterArray4i()
+{
+}
+
+void 
+SoShaderParameterArray4i::initClass()
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray4i,
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+}
+
+void
+SoShaderParameterArray4i::updateParameter(SoGLShaderObject *shader)
+{
+  this->ensureParameter(shader);
+  this->getGLShaderParameter(shader->getCacheContext())->set4iv(shader,
+                                                                this->value.getNum(),
+                                                                (const int32_t*) this->value.getValues(0),
+                                                                this->name.getValue().getString(),
+                                                                this->identifier.getValue());
+}

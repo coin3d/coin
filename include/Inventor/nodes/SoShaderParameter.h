@@ -27,8 +27,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
-#include <Inventor/fields/SoSFFloat.h> 
-#include <Inventor/fields/SoSFInt32.h> 
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFVec4f.h>
@@ -39,19 +39,16 @@
 #include <Inventor/fields/SoMFVec4f.h>
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/fields/SoMFMatrix.h>
-#include <Inventor/fields/SoSFNode.h> 
-#include <Inventor/fields/SoSFEnum.h> 
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFImage.h>
 
-#define VEC_I32_SUPPORT 0 // FIXME: what's this? 20050120 mortene.
-#if VEC_I32_SUPPORT
 #include <Inventor/fields/SoSFVec2i32.h>
 #include <Inventor/fields/SoSFVec3i32.h>
 #include <Inventor/fields/SoSFVec4i32.h>
 #include <Inventor/fields/SoMFVec2i32.h>
-#include <Inventor/fields/SoMFVec3i32.h> 
+#include <Inventor/fields/SoMFVec3i32.h>
 #include <Inventor/fields/SoMFVec4i32.h>
-#endif
 
 class SoGLShaderParameter;
 class SoGLShaderObject;
@@ -73,11 +70,11 @@ public:
   SoSFInt32 identifier;
 
   SoINTERNAL public:
-  static void initClass(); 
+  static void initClass();
 
 protected:
   SoShaderParameter();
-  virtual ~SoShaderParameter(); 
+  virtual ~SoShaderParameter();
 };
 
 /* **************************************************************************
@@ -98,7 +95,7 @@ protected:
   SoUniformShaderParameter();
   virtual ~SoUniformShaderParameter();
 
-  SbBool isRegularBehaviorFlag; 
+  SbBool isRegularBehaviorFlag;
 
   SoGLShaderParameter * getGLShaderParameter(const uint32_t cachecontext);
   void ensureParameter(SoGLShaderObject * shader);
@@ -122,7 +119,7 @@ public:
   SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
- 
+
 protected:
   virtual ~SoShaderParameter1f();
 };
@@ -171,7 +168,6 @@ protected:
  * *** SoShaderParameter2i ***
  * **************************************************************************/
 
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter2i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter2i);
@@ -187,7 +183,6 @@ public:
 protected:
   virtual ~SoShaderParameter2i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameter3f ***
@@ -214,7 +209,6 @@ protected:
  * *** SoShaderParameter3i ***
  * **************************************************************************/
 
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter3i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter3i);
@@ -231,7 +225,6 @@ public:
 protected:
   virtual ~SoShaderParameter3i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameter4f ***
@@ -258,7 +251,6 @@ protected:
  * *** SoShaderParameter4i ***
  * **************************************************************************/
 
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter4i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter4i);
@@ -275,7 +267,6 @@ public:
 protected:
   virtual ~SoShaderParameter4i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameterArray1f ***
@@ -302,7 +293,6 @@ protected:
  * *** SoShaderParameterArray1i ***
  * **************************************************************************/
 
-#if 0 // not implemented
 class COIN_DLL_API SoShaderParameterArray1i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray1i);
@@ -319,8 +309,6 @@ public:
 protected:
   virtual ~SoShaderParameterArray1i();
 };
-
-#endif // not implemented
 
 /* **************************************************************************
  * *** SoShaderParameterArray2f ***
@@ -346,8 +334,6 @@ protected:
 /* **************************************************************************
  * *** SoShaderParameterArray2i ***
  * **************************************************************************/
-
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray2i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray2i);
@@ -364,7 +350,6 @@ public:
 protected:
   virtual ~SoShaderParameterArray2i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameterArray3f ***
@@ -391,7 +376,6 @@ protected:
  * *** SoShaderParameterArray3i ***
  * **************************************************************************/
 
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray3i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray3i);
@@ -408,7 +392,6 @@ public:
 protected:
   virtual ~SoShaderParameterArray3i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameterArray4f ***
@@ -436,7 +419,6 @@ protected:
  * *** SoShaderParameterArray4i ***
  * **************************************************************************/
 
-#if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray4i : public SoUniformShaderParameter {
   typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray4i);
@@ -453,7 +435,6 @@ public:
 protected:
   virtual ~SoShaderParameterArray4i();
 };
-#endif
 
 /* **************************************************************************
  * *** SoShaderParameterMatrix ***
@@ -507,14 +488,14 @@ class COIN_DLL_API SoShaderStateMatrixParameter : public SoUniformShaderParamete
 
 public:
 
-  enum MatrixType { 
+  enum MatrixType {
     MODELVIEW,
     PROJECTION,
     TEXTURE,
     MODELVIEW_PROJECTION
   };
 
-  enum MatrixTransform{ 
+  enum MatrixTransform{
     IDENTITY,
     TRANSPOSE,
     INVERSE,

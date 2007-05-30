@@ -56,7 +56,7 @@ SoGLCgShaderParameter::setState(const SoGLShaderObject * shader,
                                 const char* name)
 {
   if (this->isValid(shader, name, CG_FLOAT4x4))
-    glue_cgGLSetStateMatrixParameter(this->cgParameter, matrix, transform);    
+    glue_cgGLSetStateMatrixParameter(this->cgParameter, matrix, transform);
 }
 
 void
@@ -79,7 +79,7 @@ void
 SoGLCgShaderParameter::set3f(const SoGLShaderObject * shader, const float * v,
                              const char* name, const int)
 {
-  if (this->isValid(shader, name, CG_FLOAT3)) 
+  if (this->isValid(shader, name, CG_FLOAT3))
     glue_cgGLSetParameter3f(this->cgParameter, v[0], v[1], v[2]);
 }
 
@@ -88,7 +88,7 @@ SoGLCgShaderParameter::set4f(const SoGLShaderObject * shader, const float * v,
                              const char* name, const int)
 {
   if (this->isValid(shader, name, CG_FLOAT4))
-    glue_cgGLSetParameter4f(this->cgParameter, v[0], v[1], v[2],v[3]); 
+    glue_cgGLSetParameter4f(this->cgParameter, v[0], v[1], v[2],v[3]);
 }
 
 void
@@ -134,27 +134,27 @@ SoGLCgShaderParameter::setMatrix(const SoGLShaderObject * shader,
 {
   // FIXME: Support of other matrices, e.g. float3x4? -- 20050128 martin
   if (this->isValid(shader, name, CG_FLOAT4x4)) {
-    // FIXME: check, whether column or row mode should be used 
+    // FIXME: check, whether column or row mode should be used
     //        (cgGLSetMatrixParameterfc or cgGLSetMatrixParameterfr?)
     //                                                -- 20050128 martin
     glue_cgGLSetMatrixParameterfc(this->cgParameter, value);
   }
 }
 
- 
+
 void
 SoGLCgShaderParameter::setMatrixArray(const SoGLShaderObject * shader,
 				      const int num, const float * value,
 				      const char * name, const int)
 {
   // *******************************************
-  // FIXME -> NOT TESTED YET!!! 20050128 martin 
+  // FIXME -> NOT TESTED YET!!! 20050128 martin
   // *******************************************
 
   // FIXME: Support of other matrices, e.g. float3x4? -- 20050128 martin
   int cnt = num;
   if (this->isValid(shader, name, CG_ARRAY, &cnt)) {
-    // FIXME: check, whether column or row mode should be used 
+    // FIXME: check, whether column or row mode should be used
     //       (cgGLSetMatrixParameterArrayfc or cgGLSetMatrixParameterArrayfr?)
     //                                             -- 20050128 martin
     glue_cgGLSetMatrixParameterArrayfc(this->cgParameter, 0, cnt, value);
@@ -193,6 +193,42 @@ SoGLCgShaderParameter::set4i(const SoGLShaderObject * shader,
   // FIXME not implemented yet -- 20050222 martin
 }
 
+void
+SoGLCgShaderParameter::set1iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLCgShaderParameter::set2iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLCgShaderParameter::set3iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
+void
+SoGLCgShaderParameter::set4iv(const SoGLShaderObject * shader,
+                              const int num,
+                              const int32_t * value, const char * name,
+                              const int)
+{
+  // probably not supported. pederb, 20070530
+}
+
 SbBool
 SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
 {
@@ -220,7 +256,7 @@ SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
   return FALSE;
 }
 
-SbBool 
+SbBool
 SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
 			       const char* name, CGtype type, int * num)
 {
@@ -229,14 +265,14 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
   if (strlen(name) == 0) return FALSE;
 
   // FIXME: how to handle a new compiled shader object? -- martin
-  if (this->isEqual(this->cacheType, type) && (this->cacheName == name) && 
+  if (this->isEqual(this->cacheType, type) && (this->cacheName == name) &&
       glue_cgIsParameter(this->cgParameter)) {
     if (num) { // assume: this->cacheType == CG_ARRAY
       if (this->cacheSize < *num) {
 	// FIXME: better error handling - 20050128 martin
 	SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
 				  "parameter %s[%d] < input[%d]!",
-				  this->cacheName.getString(), 
+				  this->cacheName.getString(),
 				  this->cacheSize, *num);
 	*num = this->cacheSize;
       }
@@ -247,20 +283,20 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
 
   CGprogram * cgProg = &((SoGLCgShaderObject*)shader)->cgProgram;
 
-  this->cacheType   = CG_UNKNOWN_TYPE;    
+  this->cacheType   = CG_UNKNOWN_TYPE;
   this->cgParameter = glue_cgGetNamedParameter(*cgProg, name);
   this->cacheName   = name;
   this->cacheSize   = 0;
 
   if (!glue_cgIsParameter(this->cgParameter)) return FALSE;
-  
+
   this->cacheType = glue_cgGetParameterType(this->cgParameter);
 
   if (!this->isEqual(this->cacheType, type)) {
     SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
                               "In main(): parameter %s [%s] is "
 			      "of wrong type [%s]!",
-                              this->cacheName.getString(), 
+                              this->cacheName.getString(),
 			      glue_cgGetTypeString(this->cacheType),
                               glue_cgGetTypeString(type));
     this->cacheType = CG_UNKNOWN_TYPE;

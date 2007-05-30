@@ -52,13 +52,18 @@ public: // satisfy SoGLShaderParameter protocol interface
   virtual void set3fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
   virtual void set4fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
 
-  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);  
+  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
   virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
 
   virtual void set1i(const SoGLShaderObject * shader, const int32_t value, const char * name, const int id);
   virtual void set2i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
   virtual void set3i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
   virtual void set4i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
+
+  virtual void set1iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
+  virtual void set2iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
+  virtual void set3iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
+  virtual void set4iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
 
 public:
   SoGLSLShaderParameter(void);
@@ -71,8 +76,8 @@ private:
   GLenum cacheType;
   SbBool isActive;
   int32_t programid;
-  
-  SbBool isValid(const SoGLShaderObject * shader, const char * name, 
+
+  SbBool isValid(const SoGLShaderObject * shader, const char * name,
                  GLenum type, int * num = NULL);
 };
 
