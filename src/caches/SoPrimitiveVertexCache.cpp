@@ -412,11 +412,11 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     int midx = vp[i]->getMaterialIndex();
     uint32_t col;
     if (PRIVATE(this)->packedptr) {
-      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
+      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse-1)];
     }
     else {
-      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
-      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse-1)];
+      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp-1)];
       col = tmpc.getPackedValue(tmpt);
     }
     if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
@@ -437,7 +437,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
 
       int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
       if (PRIVATE(this)->numbumpcoords) {
-        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords-1)];
       }
     }
     int32_t idx;
@@ -497,11 +497,11 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
     int midx = vp[i]->getMaterialIndex();
     uint32_t col;
     if (PRIVATE(this)->packedptr) {
-      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
+      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse-1)];
     }
     else {
-      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
-      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse-1)];
+      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp-1)];
       col = tmpc.getPackedValue(tmpt);
     }
     if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
@@ -521,7 +521,7 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
 
       int tidx  = v.texcoordidx = ((SoPointDetail*)pd)->getTextureCoordIndex();
       if (PRIVATE(this)->numbumpcoords) {
-        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords-1)];
       }
     }
     int32_t idx;
@@ -573,11 +573,11 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
   int midx = v0->getMaterialIndex();
   uint32_t col;
   if (PRIVATE(this)->packedptr) {
-    col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
+    col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse-1)];
   }
   else {
-    SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
-    float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+    SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse-1)];
+    float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp-1)];
     col = tmpc.getPackedValue(tmpt);
   }
   if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
@@ -593,7 +593,7 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
     SoPointDetail * pd = (SoPointDetail*) d;
     int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
     if (PRIVATE(this)->numbumpcoords) {
-      v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+      v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords-1)];
     }
   }
 
