@@ -33,6 +33,7 @@ class SoGLRenderAction;
 class SoAudioRenderAction;
 class SoHandleEventAction;
 class SoNode;
+class SoCamera;
 class SoNodeSensor;
 class SoOneShotSensor;
 class SoSensor;
@@ -45,12 +46,45 @@ class COIN_DLL_API SoSceneManager {
 public:
   SoSceneManager(void);
   virtual ~SoSceneManager();
+
+  enum RenderMode {
+    AS_IS,
+    WIREFRAME,
+    POINTS,
+    WIREFRAME_OVERLAY,
+    HIDDEN_LINE,
+    BOUNDING_BOX
+  };
+
+  enum StereoMode {
+    MONO,
+    ANAGLYPH,
+    QUAD_BUFFER,
+    INTERLEAVED_ROWS,
+    INTERLEAVED_COLUMNS
+  };
+
+  enum BufferType {
+    BUFFER_SINGLE,
+    BUFFER_DOUBLE
+  };
+  
   virtual void render(const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
   virtual void render(SoGLRenderAction * action,
                       const SbBool initmatrices = TRUE,
                       const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
+
+  void setCamera(SoCamera * camera);
+  SoCamera * getCamera(void) const;
+  void setDoubleBuffer(const SbBool enable);
+  void setRenderMode(const RenderMode mode);
+  RenderMode getRenderMode(void) const;
+  void setStereoMode(const StereoMode mode);
+  StereoMode getStereoMode(void) const;
+  void setStereoOffset(const float offset);
+  float getStereoOffset(void) const;
   virtual SbBool processEvent(const SoEvent * const event);
   void reinitialize(void);
   void scheduleRedraw(void);

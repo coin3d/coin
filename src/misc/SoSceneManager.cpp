@@ -52,11 +52,14 @@
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoInfo.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/system/gl.h>
@@ -65,64 +68,10 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
-// *************************************************************************
-
-class SoSceneManagerP {
-public:
-  enum {
-    FLAG_RGBMODE = 0x0001,
-    FLAG_ACTIVE = 0x0002
-  };
-
-  SbBool isActive(void) const { return this->flags & SoSceneManagerP::FLAG_ACTIVE; }
-
-  static void nodesensorCB(void * data, SoSensor * sensor);
-  static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
-
-  SoSceneManagerRenderCB * rendercb;
-  void * rendercbdata;
-
-  SoGLRenderAction * glaction;
-  SbBool deleteglaction;
-  SoAudioRenderAction *audiorenderaction;
-  SbBool deleteaudiorenderaction;
-  SoHandleEventAction * handleeventaction;
-  SbBool deletehandleeventaction;
-
-  SoNode * scene;
-  SoNodeSensor * rootsensor;
-  SoOneShotSensor * redrawshot;
-
-  SbColor backgroundcolor;
-  int backgroundindex;
-  uint32_t flags;
-  static SbBool touchtimer;
-
-  uint32_t redrawpri;
-  static void prerendercb(void * userdata, SoGLRenderAction * action);
-
-  static SbBool cleanupfunctionset;
-  static void cleanup(void);
-
-#ifdef COIN_THREADSAFE
-  SbMutex mutex;
-#endif // COIN_THREADSAFE
-  void lock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
-};
-
-SbBool SoSceneManagerP::touchtimer = TRUE;
-SbBool SoSceneManagerP::cleanupfunctionset = FALSE;
+#include "SoSceneManagerP.h"
 
 #define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->publ)
 
 // *************************************************************************
 
@@ -189,7 +138,8 @@ SoSceneManager::SoSceneManager(void)
 {
   assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
 
-  PRIVATE(this) = new SoSceneManagerP;
+  PRIVATE(this) = new SoSceneManagerP(this);
+  PRIVATE(this)->camera = NULL;
 
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->deleteglaction = TRUE;
@@ -213,6 +163,10 @@ SoSceneManager::SoSceneManager(void)
 
   PRIVATE(this)->rendercb = NULL;
   PRIVATE(this)->rendercbdata = NULL;
+
+  PRIVATE(this)->rendermode = AS_IS;
+  PRIVATE(this)->stereomode = MONO;
+  PRIVATE(this)->stereooffset = 1.0f;
 }
 
 /*!
@@ -300,69 +254,9 @@ SoSceneManager::render(SoGLRenderAction * action,
                        const SbBool clearwindow,
                        const SbBool clearzbuffer)
 {
-  GLbitfield mask = 0;
-  if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
-  if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
-
-  if (mask) {
-    if (PRIVATE(this)->flags & SoSceneManagerP::FLAG_RGBMODE) {
-      glClearColor(PRIVATE(this)->backgroundcolor[0],
-                   PRIVATE(this)->backgroundcolor[1],
-                   PRIVATE(this)->backgroundcolor[2],
-                   0.0f);
-    }
-    else {
-      glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
-    }
-    // Registering a callback is needed since the correct GL viewport
-    // is set by SoGLRenderAction before rendering. It might not be
-    // correct when we get here.
-    // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(PRIVATE(this)->prerendercb, 
-                                 (void*) (uintptr_t) mask);
-  }
-
-  if (initmatrices) {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-  }
-
-  // If there has been changes in the scene graph leading to a node
-  // sensor detect and schedule before we've gotten around to serving
-  // the current redraw -- remove it. This will prevent infinite loops
-  // in the case of scenegraph modifications between a nodesensor
-  // trigger and SoSceneManager::render() actually being called. It
-  // will also help us avoid "double redraws" at expose events.
-  PRIVATE(this)->lock();
-  if (PRIVATE(this)->rootsensor && PRIVATE(this)->rootsensor->isScheduled()) {
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoSceneManager::render",
-                           "rootsensor unschedule");
-#endif // debug
-    PRIVATE(this)->rootsensor->unschedule();
-  }
-  PRIVATE(this)->unlock();
-  // Apply the SoGLRenderAction to the scenegraph root.
-  if (PRIVATE(this)->scene) action->apply(PRIVATE(this)->scene);
-
-
-  // Automatically re-triggers rendering if any animation stuff is
-  // connected to the realTime field.
-  if (SoSceneManagerP::touchtimer) {
-    // FIXME: it would be more elegant to use a private field class
-    // inheriting SoSFTime ("SFRealTime") which could just be
-    // touch()'ed, and which would do lazy reading of time-of-day on
-    // demand. 20000316 mortene.
-    SoField * realtime = SoDB::getGlobalField("realTime");
-    if (realtime && (realtime->getTypeId() == SoSFTime::getClassTypeId())) {
-      // Note that this should not get in the way of a
-      // app-programmer controlled realTime field, as
-      // enableRealTimeUpdate(FALSE) should then have been called.
-      ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
-    }
-  }
+  (PRIVATE(this)->stereomode == MONO) ?
+    PRIVATE(this)->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
+    PRIVATE(this)->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
 }
 
 /*!
@@ -391,6 +285,93 @@ SoSceneManager::processEvent(const SoEvent * const event)
     handled = PRIVATE(this)->handleeventaction->isHandled();
   }
   return handled;
+}
+
+/*!  
+  Sets the camera to be used. If you do not set a camera, the
+  manager will search the scene graph for a camera (every frame).
+  Set the camera here to avoid this search.
+*/
+void 
+SoSceneManager::setCamera(SoCamera * camera)
+{
+  PRIVATE(this)->setCamera(camera);
+}
+
+/*!
+  Returns the current camera. If no camera has been set, the current
+  scene graph will be searched, and the first active camera will be
+  returned.
+*/
+SoCamera * 
+SoSceneManager::getCamera(void) const
+{
+  return PRIVATE(this)->getCamera();
+}
+
+/*!
+  Tell the scenemanager that double buffering is used
+ */
+void 
+SoSceneManager::setDoubleBuffer(const SbBool enable)
+{
+  PRIVATE(this)->doublebuffer = enable;
+}
+
+/*!
+  Sets the render mode.
+*/
+void 
+SoSceneManager::setRenderMode(const RenderMode mode)
+{
+  PRIVATE(this)->rendermode = mode;
+}
+
+/*!
+  Returns the current render mode.
+*/
+SoSceneManager::RenderMode 
+SoSceneManager::getRenderMode(void) const
+{
+  return PRIVATE(this)->rendermode;
+}
+
+/*!
+  Sets the stereo mode.
+*/
+void 
+SoSceneManager::setStereoMode(const StereoMode mode)
+{
+  PRIVATE(this)->stereomode = mode;
+  PRIVATE(this)->dummynode->touch();
+}
+
+/*!
+  Returns the current stereo mode.
+*/
+SoSceneManager::StereoMode 
+SoSceneManager::getStereoMode(void) const
+{
+  return PRIVATE(this)->stereomode;
+}
+
+/*!
+  Sets the stereo offset used when doing stereo rendering.
+*/
+void 
+SoSceneManager::setStereoOffset(const float offset)
+{
+  PRIVATE(this)->stereooffset = offset;
+  PRIVATE(this)->dummynode->touch();
+}
+
+/*!
+  Returns the current stereo offset.
+*/
+float 
+SoSceneManager::getStereoOffset(void) const
+{
+  return PRIVATE(this)->stereooffset;
 }
 
 /*!
@@ -935,72 +916,5 @@ SoSceneManager::isRealTimeUpdateEnabled(void)
   return SoSceneManagerP::touchtimer;
 }
 
-// *************************************************************************
-
-// Internal callback.
-void
-SoSceneManagerP::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
-#endif // debug
-
-  SoSceneManager * sm = (SoSceneManager *)data;
-
-  // Need to recheck the "active" flag, as it could have changed since
-  // it was tested in the SoSceneManager::scheduleRedraw() call.
-  if (PRIVATE(sm)->isActive()) { sm->redraw(); }
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
-#endif // debug
-}
-
-// Internal callback.
-void
-SoSceneManagerP::nodesensorCB(void * data, SoSensor * /* sensor */)
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::nodesensorCB",
-                         "detected change in scene graph");
-#endif // debug
-  ((SoSceneManager *)data)->scheduleRedraw();
-}
-
-void
-SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
-{
-  // remove callback again
-  action->removePreRenderCallback(prerendercb, userdata);
-  // MSVC7 on 64-bit Window wants it to go through this cast.
-  const uintptr_t bitfield = (uintptr_t)userdata;
-  GLbitfield mask = (GLbitfield)bitfield;
-
-#if COIN_DEBUG && 0 // debug
-  GLint view[4];
-  glGetIntegerv(GL_VIEWPORT, view);
-  SoDebugError::postInfo("SoSceneManagerP::prerendercb",
-                         "GL_VIEWPORT=<%d, %d, %d, %d>",
-                         view[0], view[1], view[2], view[3]);
-#endif // debug
-  
-  // clear the viewport
-  glClear(mask);
-
-  // We need to set the depth function here _after_ the glClear() call
-  // to work around what seems like an nVidia bug. If alpha testing is
-  // used without this call, the alpha test will always discard
-  // fragments. It basically seems like the alpha component is always
-  // 0.0 without this call. pederb, 2006-10-10
-
-  // GL_LEQUAL is the default depth function in SGI Inventor
-  glDepthFunc(GL_LEQUAL);
-}
-
-void
-SoSceneManagerP::cleanup(void)
-{
-  SoSceneManagerP::touchtimer = TRUE;
-  SoSceneManagerP::cleanupfunctionset = FALSE;
-}
 #undef PRIVATE
+#undef PUBLIC
