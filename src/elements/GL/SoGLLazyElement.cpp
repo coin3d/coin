@@ -585,7 +585,6 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
 
   assert(this->packedpointer);
 
-  SoGLShaderProgram * prog = SoGLShaderProgramElement::get((SoState*) stateptr);
   int stipplenum;
 
   for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
@@ -593,6 +592,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
       switch (i) {
       case LIGHT_MODEL_CASE:
         if (this->coinstate.lightmodel != this->glstate.lightmodel) {
+          SoGLShaderProgram * prog = SoGLShaderProgramElement::get((SoState*) stateptr);
           if (prog) prog->updateCoinParameter((SoState*)stateptr, SbName("coin_light_model"));
           this->sendLightModel(this->coinstate.lightmodel);
         }
