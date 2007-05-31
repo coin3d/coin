@@ -107,6 +107,20 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
     p[0] = (a / chi + elev) * coslat * cos(longitude);
     p[1] = (a / chi + elev) * coslat * sin(longitude);
     p[2] = (a * (1.0-e2)/ chi + elev) * sinlat;
+
+
+#if 0 // for debugging
+    SbUTMProjection utm(17,  SbGeoEllipsoid("WGS84"));
+    double east, north;
+    SbGeoAngle lat(latitude);
+    SbGeoAngle lng(longitude);
+
+    utm.project(lat,lng, &east, &north);
+
+    fprintf(stderr,"zone 17 coords: %g %g\n",
+            east, north);
+#endif // debugging
+
   }
 
   SbVec3d Z = p;
@@ -190,6 +204,7 @@ SoGeo::calculateTransform(const SbString * originsystem,
   SbDPMatrix om = find_coordinate_system(originsystem, numoriginsys, geocoords);
   SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
   SbDPMatrix r = lm * om.inverse();
+
 
   // transform to a single precision matrix.
   return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),

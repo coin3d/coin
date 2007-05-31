@@ -34,21 +34,63 @@
     }
   \endcode
 
-  A scene graph should only contain one GeoOrigin node, and all
-  geometry in the scene graph will be rendered relative to this
-  position. This means that the precision will be best if the
-  GeoOrigin position is as close to actual camera position as
-  possible.
-
   Coin needs a local Cartesian coordinate system when rendering. When
-  a SoGeoOrigin node is used, Coin will create a virtual coordinate
-  system at the SoGeoOrigin position, and all geometry (and the
-  camera) in the scene graph will be projected into that coordinate
-  system.
+  a SoGeoOrigin node is used, Coin will create a coordinate system at
+  the SoGeoOrigin position, and all geometry (and the camera) in the
+  scene graph will be projected into that coordinate system.
 
   The coordinate system will always have the Z axis point up from the
   ground. The Y axis will point towards the north pole, and the X-axis
   is found using the right hand rule. 
+
+  A scene graph should only contain one GeoOrigin node, and all
+  geometry in the scene graph will, as stated earlier, be rendered
+  relative to this position. This means that the precision will be
+  best if the GeoOrigin position is as close to actual camera position
+  as possible. If you move around on a large area, it might therefore
+  be a good idea too actually move the GeoOrigin postition instead of
+  the camera.
+
+  Example scene graph:
+  
+  \verbarim
+  
+  GeoOrigin { geoSystem "GD" geoCoords 40.77 -73.97 0 }
+
+  GeoSeparator {
+    # New York, NY
+    geoSystem  "GD"
+    geoCoords 40.67 -73.94 0
+
+    BaseColor { rgb 0 1 0 }
+    Cube { width 25000 height 25000 depth 25000 }
+    Translation { translation 0 0 30000 }
+    Text2 { string "New York" }
+  }
+
+  GeoSeparator {
+    # Los Angeles, CA
+    geoSystem "GD"
+    geoCoords 34.11 -118.4 0
+
+    BaseColor { rgb 1 0 0 }
+    Cube { width 25000 height 25000 depth 25000 }
+    Translation { translation 0 0 30000 }
+    Text2 { string "Los Angeles" }
+  }
+
+  GeoSeparator {
+    # Washington, DC
+    geoSystem [ "UTM" "Z17" ]
+    geoCoords  846889 4313850 0
+
+    BaseColor { rgb 0 1 1 }
+    Cube { width 25000 height 25000 depth 25000 }
+
+    Translation { translation 0 0 30000 }
+    Text2 { string "Washington" }    
+  }
+  \endverbatim
 
   \since Coin 2.5  
 */
