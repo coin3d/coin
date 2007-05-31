@@ -56,6 +56,7 @@ SoSceneManagerP::SoSceneManagerP(SoSceneManager * publ)
   this->stereostencilmaskvp = SbViewportRegion(0, 0);
   this->stereostencilmask = NULL;
   this->stereostenciltype = SoSceneManager::MONO;
+  this->texturesenabled = TRUE;
 }
 
 SoSceneManagerP::~SoSceneManagerP()
