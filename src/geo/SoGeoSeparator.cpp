@@ -57,7 +57,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -118,6 +118,7 @@ void
 SoGeoSeparator::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoGeoSeparator, SO_FROM_INVENTOR_1|SoNode::VRML1);
+  SoRayPickAction::addMethod(SoGeoSeparator::getClassTypeId(), SoNode::rayPickS);
 }
 
 // Doc from superclass.
@@ -195,13 +196,13 @@ SoGeoSeparator::callback(SoCallbackAction * action)
 
 // Doc from superclass.
 void
-SoGeoSeparator::pick(SoPickAction * action)
+SoGeoSeparator::rayPick(SoRayPickAction * action)
 {
   SoState * state = action->getState();
   state->push();
-
+  
   this->applyTransformation((SoAction *)action);
-  SoSeparator::pick(action);
+  SoSeparator::rayPick(action);
 
   state->pop();
 }
