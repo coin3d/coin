@@ -180,7 +180,7 @@ SoGLSLShaderParameter::set1iv(const SoGLShaderObject * shader,
                               const int)
 {
   if (this->isValid(shader, name, GL_INT))
-    shader->GLContext()->glUniform1ivARB(this->location, num, value);
+    shader->GLContext()->glUniform1ivARB(this->location, num, (const GLint*) value);
 }
 
 void
@@ -190,7 +190,7 @@ SoGLSLShaderParameter::set2iv(const SoGLShaderObject * shader,
                               const int)
 {
   if (this->isValid(shader, name, GL_INT_VEC2_ARB))
-    shader->GLContext()->glUniform2ivARB(this->location, num, value);
+    shader->GLContext()->glUniform2ivARB(this->location, num, (const GLint*)value);
 }
 
 void
@@ -200,7 +200,7 @@ SoGLSLShaderParameter::set3iv(const SoGLShaderObject * shader,
                               const int)
 {
   if (this->isValid(shader, name, GL_INT_VEC3_ARB))
-    shader->GLContext()->glUniform3ivARB(this->location, num, v);
+    shader->GLContext()->glUniform3ivARB(this->location, num, (const GLint*)v);
 }
 
 void
@@ -210,7 +210,7 @@ SoGLSLShaderParameter::set4iv(const SoGLShaderObject * shader,
                               const int)
 {
   if (this->isValid(shader, name, GL_INT_VEC4_ARB))
-    shader->GLContext()->glUniform4ivARB(this->location, num, v);
+    shader->GLContext()->glUniform4ivARB(this->location, num, (const GLint*)v);
 }
 
 #include <stdio.h>
