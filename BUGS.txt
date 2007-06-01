@@ -2667,18 +2667,18 @@ SoText2 {
 
 =====================================================================
 
-222 Lots of leaks in the SoClipPlaneManip.
+222 Any dragger instantation causes lots of memory leaks.
 
     The below program will, when the envvar
     COIN_DEBUG_TRACK_SOBASE_INSTANCES is set to "1", dump a debug log
     of lots of mem-leaks from SoBase-derived instances not being
-    deallocated when the SoClipPlaneManip node is deref'ed:
+    deallocated when the dragger node is deref'ed:
 
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
-#include <Inventor/manips/SoClipPlaneManip.h>
+#include <Inventor/manips/SoTranslate1Dragger.h>
 
 int
 main(void)
@@ -2687,7 +2687,7 @@ main(void)
   SoNodeKit::init();
   SoInteraction::init();
 
-  SoClipPlaneManip * c = new SoClipPlaneManip;
+  SoTranslate1Dragger * c = new SoTranslate1Dragger;
   c->ref();
   c->unref();
 
@@ -2695,6 +2695,10 @@ main(void)
   return 0;
 }
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    This seems to happen for any dragger, so it might be from the
+    static scene graph used as a template for the internal dragger
+    catalog.
 
     20070601 mortene.
 
