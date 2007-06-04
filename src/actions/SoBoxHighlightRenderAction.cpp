@@ -135,7 +135,7 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
 
   // find camera used to render node
   this->camerasearch->setFind(SoSearchAction::TYPE);
-  this->camerasearch->setInterest(SoSearchAction::LAST);
+  this->camerasearch->setInterest(SoSearchAction::FIRST); // find first camera to break out asap
   this->camerasearch->setType(SoCamera::getClassTypeId());
   this->camerasearch->apply((SoPath*) path);
 
@@ -262,19 +262,31 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
     if (PRIVATE(this)->searchaction == NULL) {
       PRIVATE(this)->searchaction = new SoSearchAction;
     }
+    SbBool searchall = FALSE;
     PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
-    PRIVATE(this)->searchaction->setInterest(SoSearchAction::ALL);
+    PRIVATE(this)->searchaction->setInterest(searchall ? SoSearchAction::ALL : SoSearchAction::FIRST);
     PRIVATE(this)->searchaction->apply(node);
-    const SoPathList & pathlist = PRIVATE(this)->searchaction->getPaths();
-    if ( pathlist.getLength() > 0 ) {
-      int i;
-      for ( i = 0; i < pathlist.getLength(); i++ ) {
-        SoPath * path = pathlist[i];
-        assert(path);
+
+    if (searchall) {
+      const SoPathList & pathlist = PRIVATE(this)->searchaction->getPaths();
+      if (pathlist.getLength() > 0) {
+        int i;
+        for (i = 0; i < pathlist.getLength(); i++) {
+          SoFullPath * path = (SoFullPath*) pathlist[i];
+          assert(path);
+          SoSelection * selection = (SoSelection *) path->getTail();
+          if (selection->getNumSelected() > 0)
+            this->drawBoxes(path, selection->getList());
+        }
+      }
+    }
+    else {
+      SoFullPath * path = (SoFullPath*) PRIVATE(this)->searchaction->getPath();
+      if (path) {
         SoSelection * selection = (SoSelection *) path->getTail();
-        assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
-        if ( selection->getNumSelected() > 0 )
+        if (selection->getNumSelected()) {
           this->drawBoxes(path, selection->getList());
+        }
       }
     }
     PRIVATE(this)->searchaction->reset();

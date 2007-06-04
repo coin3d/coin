@@ -952,6 +952,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowCulling.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
@@ -1349,6 +1352,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/shaders/SoGeometryShader.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderParameter.cpp \
+                         @path_tag@@coin_src_dir@/src/shadows/SoShadowGroup.cpp \
+                         @path_tag@@coin_src_dir@/src/shadows/SoShadowStyle.cpp \
+                         @path_tag@@coin_src_dir@/src/shadows/SoShadowCulling.cpp \
                          @path_tag@@coin_src_dir@/src/threads/barrier.c \
                          @path_tag@@coin_src_dir@/src/threads/condvar.c \
                          @path_tag@@coin_src_dir@/src/threads/fifo.c \
