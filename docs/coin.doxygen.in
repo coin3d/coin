@@ -843,6 +843,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoUnits.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexProperty.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderProgram.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderObject.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShader.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFragmentShader.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeometryShader.h \
@@ -1364,6 +1365,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/shaders/SoFragmentShader.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoGeometryShader.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShader.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoShaderObject.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderParameter.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowGroup.cpp \
