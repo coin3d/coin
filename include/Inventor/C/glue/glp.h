@@ -464,6 +464,8 @@ typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index,
 typedef char COIN_GLchar;
 typedef unsigned long COIN_GLhandle;
 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMPARAMETERIEXT)(COIN_GLhandle, GLenum, GLenum);
+
 typedef int (APIENTRY * COIN_PFNGLGETUNIFORMLOCATIONARBPROC)(COIN_GLhandle,
                                                              const COIN_GLchar *);
 typedef void (APIENTRY * COIN_PFNGLGETACTIVEUNIFORMARBPROC)(COIN_GLhandle,
@@ -733,6 +735,7 @@ struct cc_glglue {
   COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC glGetVertexAttribPointervARB;
 
   /* shader objects */
+  COIN_PFNGLPROGRAMPARAMETERIEXT glProgramParameteriEXT;
   COIN_PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
   COIN_PFNGLGETACTIVEUNIFORMARBPROC glGetActiveUniformARB;
   COIN_PFNGLUNIFORM1FARBPROC glUniform1fARB;

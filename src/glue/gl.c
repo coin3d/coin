@@ -1619,8 +1619,11 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glUniformMatrix3fvARB, COIN_PFNGLUNIFORMMATRIX3FVARBPROC);
     BIND_FUNCTION_WITH_WARN(glUniformMatrix4fvARB, COIN_PFNGLUNIFORMMATRIX4FVARBPROC);
 
-
-
+    
+    w->glProgramParameteriEXT = NULL;
+    if (cc_glglue_glext_supported(w, "GL_EXT_geometry_shader4")) {
+      BIND_FUNCTION_WITH_WARN(glProgramParameteriEXT, COIN_PFNGLPROGRAMPARAMETERIEXT);
+    }
 #undef BIND_FUNCTION_WITH_WARN
   } 
 #endif /* GL_ARB_shader_objects */
