@@ -820,6 +820,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3Transform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureMatrixTransform.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCombine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate2.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate3.h \
