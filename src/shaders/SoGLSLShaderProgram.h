@@ -50,6 +50,8 @@ public:
   void postShouldLink(void);
 
   void updateCoinParameter(SoState * state, const SbName & name);
+  void addProgramParameter(int mode, int value);
+  void removeProgramParameters(void);
 
 #if defined(SOURCE_HINT)
   SbString getSourceHint(void) const;
@@ -60,6 +62,7 @@ public:
   ~SoGLSLShaderProgram();
 
 protected:
+  SbList <int> programParameters;
   SbList <SoGLSLShaderObject *> shaderObjects;
   SbHash <COIN_GLhandle, uint32_t> programHandles;
 

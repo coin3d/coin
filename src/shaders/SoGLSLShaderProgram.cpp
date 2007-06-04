@@ -148,18 +148,21 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
   int cnt = this->shaderObjects.getLength();
 
   if (cnt > 0) {
+    int i;
     GLint didLink;
 
-    for (int i = 0; i < cnt; i++) {
+    for (i = 0; i < cnt; i++) {
       this->shaderObjects[i]->attach(programHandle);
-    } 
-#if 0 // for testing Geometry shaders
-    g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_INPUT_TYPE_EXT , GL_LINES);
-    g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_OUTPUT_TYPE_EXT , GL_TRIANGLES);
-    g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_VERTICES_OUT_EXT, 16);
-#endif // testing
-    g->glLinkProgramARB(programHandle);
+    }
 
+    for (i = 0; i < this->programParameters.getLength(); i += 2) {
+      g->glProgramParameteriEXT(programHandle, 
+                                (GLenum) this->programParameters[i],
+                                this->programParameters[i+1]);
+      
+    }
+
+    g->glLinkProgramARB(programHandle);
 
     if (SoGLSLShaderObject::didOpenGLErrorOccur(0)) {
       SoGLSLShaderObject::printInfoLog(g, programHandle, 0);
@@ -234,3 +237,17 @@ SoGLSLShaderProgram::updateCoinParameter(SoState * state, const SbName & name)
     this->shaderObjects[i]->updateCoinParameter(state, name, NULL);
   }
 }
+
+void 
+SoGLSLShaderProgram::addProgramParameter(int mode, int value)
+{
+  this->programParameters.append(mode);
+  this->programParameters.append(value);
+}
+
+void 
+SoGLSLShaderProgram::removeProgramParameters(void)
+{
+  this->programParameters.truncate(0);
+}
+

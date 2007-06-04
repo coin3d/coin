@@ -22,13 +22,13 @@
 \**************************************************************************/
 
 /*!
-  \class SoVertexProgram SoVertexProgram.h Inventor/nodes/SoVertexProgram.h
-  \brief The SoVertexProgram class is used for setting up vertex shader programs.
+  \class SoVertexShader SoVertexShader.h Inventor/nodes/SoVertexShader.h
+  \brief The SoVertexShader class is used for setting up vertex shader programs.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
-    VertexProgram {
+    VertexShader {
       isActive TRUE
       sourceType FILENAME
       sourceProgram ""

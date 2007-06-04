@@ -431,6 +431,9 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     else {
       assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
       shaderobject->setShaderType(SoGLShaderObject::GEOMETRY);
+      
+      SoGeometryShader * geomshader = (SoGeometryShader*) this->owner;
+      
     }
 
 #if defined(SOURCE_HINT)

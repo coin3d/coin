@@ -22,13 +22,13 @@
 \**************************************************************************/
 
 /*!
-  \class SoFragmentProgram SoFragmentProgram.h Inventor/nodes/SoFragmentProgram.h
-  \brief The SoFragmentProgram class is used for setting up fragment shader programs.
+  \class SoFragmentShader SoFragmentShader.h Inventor/nodes/SoFragmentShader.h
+  \brief The SoFragmentShader class is used for setting up fragment shader programs.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
-    FragmentProgram {
+    FragmentShader {
       isActive TRUE
       sourceType FILENAME
       sourceProgram ""

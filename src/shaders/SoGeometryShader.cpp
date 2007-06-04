@@ -22,8 +22,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoGeometryProgram SoGeometryProgram.h Inventor/nodes/SoGeometryProgram.h
-  \brief The SoGeometryProgram class is used for loading geometry shader programs.
+  \class SoGeometryShader SoGeometryShader.h Inventor/nodes/SoGeometryShader.h
+  \brief The SoGeometryShader class is used for loading geometry shader programs.
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -42,7 +42,9 @@
 */
 
 #include <Inventor/nodes/SoGeometryShader.h>
-
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include "SoGLShaderProgram.h"
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/C/glue/glp.h>
 
@@ -66,6 +68,21 @@ SoGeometryShader::initClass(void)
 SoGeometryShader::SoGeometryShader(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeometryShader);
+
+  SO_NODE_ADD_FIELD(inputType, (TRIANGLES_IN));
+  SO_NODE_ADD_FIELD(outputType, (TRIANGLE_STRIP_OUT));
+  SO_NODE_ADD_FIELD(maxEmit, (8));
+
+  SO_NODE_DEFINE_ENUM_VALUE(InputType, POINTS_IN);
+  SO_NODE_DEFINE_ENUM_VALUE(InputType, LINES_IN);
+  SO_NODE_DEFINE_ENUM_VALUE(InputType, TRIANGLES_IN);
+  
+  SO_NODE_DEFINE_ENUM_VALUE(OutputType, POINTS_OUT);
+  SO_NODE_DEFINE_ENUM_VALUE(OutputType, LINE_STRIP_OUT);
+  SO_NODE_DEFINE_ENUM_VALUE(OutputType, TRIANGLE_STRIP_OUT);
+
+  SO_NODE_SET_SF_ENUM_TYPE(inputType, InputType);
+  SO_NODE_SET_SF_ENUM_TYPE(outputType, OutputType);
 }
 
 /*!
@@ -73,6 +90,49 @@ SoGeometryShader::SoGeometryShader(void)
 */
 SoGeometryShader::~SoGeometryShader()
 {
+}
+
+void 
+SoGeometryShader::GLRender(SoGLRenderAction * action)
+{
+  if (this->isActive.getValue()) {
+    GLenum input = 0;
+    GLenum output = 0;
+
+    switch (this->inputType.getValue()) {
+    default:
+      assert(0 && "invalid input type");
+    case POINTS_IN:
+      input = GL_POINTS;
+      break;
+    case LINES_IN:
+      input = GL_LINES;
+      break;
+    case TRIANGLES_IN:
+      input = GL_TRIANGLES;
+      break;
+    }
+    switch (this->outputType.getValue()) {
+    default:
+      assert(0 && "invalid input type");
+    case POINTS_OUT:
+      output = GL_POINTS;
+      break;
+    case LINE_STRIP_OUT:
+      output = GL_LINE_STRIP;
+      break;
+    case TRIANGLE_STRIP_OUT:
+      output = GL_TRIANGLE_STRIP;
+      break;
+    }
+    SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(action->getState());
+    assert(shaderProgram);
+    
+    shaderProgram->addProgramParameter(GL_GEOMETRY_INPUT_TYPE_EXT, input); 
+    shaderProgram->addProgramParameter(GL_GEOMETRY_OUTPUT_TYPE_EXT, output); 
+    shaderProgram->addProgramParameter(GL_GEOMETRY_VERTICES_OUT_EXT, this->maxEmit.getValue());     
+  }
+  inherited::GLRender(action);
 }
 
 // *************************************************************************

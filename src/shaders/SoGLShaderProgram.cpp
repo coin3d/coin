@@ -77,6 +77,7 @@ SoGLShaderProgram::removeShaderObjects(void)
   this->arbShaderProgram->removeShaderObjects();
   this->cgShaderProgram->removeShaderObjects();
   this->glslShaderProgram->removeShaderObjects();
+  this->glslShaderProgram->removeProgramParameters();
 }
 
 void
@@ -88,7 +89,7 @@ SoGLShaderProgram::enable(SoState * state)
   this->arbShaderProgram->enable();
   this->cgShaderProgram->enable();
   this->glslShaderProgram->enable(glctx);
-  
+
   this->isenabled = TRUE;
   if (this->enablecb) {
     this->enablecb(this->enablecbclosure, state, TRUE);
@@ -111,7 +112,7 @@ SoGLShaderProgram::disable(SoState * state)
   }
 }
 
-void 
+void
 SoGLShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
                                      void * closure)
 {
@@ -119,7 +120,7 @@ SoGLShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
   this->enablecbclosure = closure;
 }
 
-void 
+void
 SoGLShaderProgram::updateCoinParameter(SoState * state, const SbName & name)
 {
   if (this->glslShaderProgram) {
@@ -127,6 +128,14 @@ SoGLShaderProgram::updateCoinParameter(SoState * state, const SbName & name)
     if (!enabled) this->enable(state);
     this->glslShaderProgram->updateCoinParameter(state, name);
     if (!enabled) this->disable(state);
+  }
+}
+
+void 
+SoGLShaderProgram::addProgramParameter(int name, int value)
+{
+  if (this->glslShaderProgram) {
+    this->glslShaderProgram->addProgramParameter(name, value);
   }
 }
 

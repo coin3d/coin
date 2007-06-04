@@ -25,6 +25,8 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoShaderObject.h>
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFInt32.h>
 
 // *************************************************************************
 
@@ -36,9 +38,27 @@ public:
   static void initClass(void);
   SoGeometryShader(void);
   virtual ~SoGeometryShader();
-  
+
+  enum InputType {
+    POINTS_IN,
+    LINES_IN,
+    TRIANGLES_IN
+  };
+
+  enum OutputType {
+    POINTS_OUT,
+    LINE_STRIP_OUT,
+    TRIANGLE_STRIP_OUT
+  };
+
+  SoSFEnum inputType;
+  SoSFEnum outputType;
+  SoSFInt32 maxEmit;
+
+  virtual void GLRender(SoGLRenderAction * action);
+
   static SbBool isSupported(SourceType sourceType);
-  
+
 };
 
 #endif /* ! COIN_SOGEOMETRYSHADER_H */

@@ -58,9 +58,10 @@ public:
 #if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
   SbString getSourceHint(void);
 #endif
-  
+
   void updateCoinParameter(SoState * state, const SbName & name);
-    
+  void addProgramParameter(int name, int value);
+
 private:
 
   class SoGLARBShaderProgram * arbShaderProgram;
