@@ -29,7 +29,7 @@
   SoVertexShader, SoFragmentShader, and SoGeometryShader. A typical scene graph
   with shaders will look something like this:
 
-  \begin verbarib
+  \begin verbatim
   
   Separator {
     ShaderProgram {
@@ -68,7 +68,6 @@
 
   \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
 
-  FIXME: more doc
 */
 
 #include "SoShader.h"
