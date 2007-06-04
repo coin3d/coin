@@ -963,6 +963,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowCulling.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoOrigin.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoSeparator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoLocation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoCoordinate.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
@@ -1450,6 +1454,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/hardcopy/VectorOutput.cpp \
                          @path_tag@@coin_src_dir@/src/hardcopy/VectorizeAction.cpp \
                          @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoOrigin.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoSeparator.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoLocation.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoCoordinate.cpp \
                          @path_tag@@coin_src_dir@/src/foreignfiles/SoForeignFileKit.cpp \
                          @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp
 
