@@ -835,6 +835,11 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTriangleStripSet.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoUnits.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexProperty.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderProgram.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFragmentShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeometryShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderParameter.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShape.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWAnchor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWInline.h \
@@ -1312,6 +1317,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoUnits.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexShader.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoVertexShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWAnchor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWInline.cpp \
@@ -1338,6 +1345,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/sensors/SoSensorManager.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoTimerQueueSensor.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoTimerSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoFragmentShader.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoGeometryShader.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoShaderParameter.cpp \
                          @path_tag@@coin_src_dir@/src/threads/barrier.c \
                          @path_tag@@coin_src_dir@/src/threads/condvar.c \
                          @path_tag@@coin_src_dir@/src/threads/fifo.c \
