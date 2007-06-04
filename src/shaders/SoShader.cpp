@@ -59,7 +59,7 @@
   installed). However, we recommend using GLSL since we will focus
   mostly on support this shader language.
 
-  Coin defines some named parameters which can be added by the
+  Coin defines some named parameters that can be added by the
   application programmer, and which will be automatically updated by
   Coin while traversing the scene graph.
 

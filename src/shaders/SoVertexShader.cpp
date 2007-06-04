@@ -25,6 +25,20 @@
   \class SoVertexProgram SoVertexProgram.h Inventor/nodes/SoVertexProgram.h
   \brief The SoVertexProgram class is used for setting up vertex shader programs.
   \ingroup nodes
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    VertexProgram {
+      isActive TRUE
+      sourceType FILENAME
+      sourceProgram ""
+      parameter []
+    }
+  \endcode
+  
+  \sa SoShaderObject
+  \sa SoShaderProgram
+  \since Coin 2.5
 */
 
 #include <Inventor/nodes/SoVertexShader.h>

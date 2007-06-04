@@ -21,6 +21,36 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoShaderProgram SoShaderProgram.h Inventor/nodes/SoShaderProgram.h
+  \brief The SoShaderProgram class is used to specify a set of vertex/geometry/fragment objects.
+
+  This node can store one of each of SoVertexShader, SoGeometryShader
+  and SoFragmentShader in its shaderObject field. Coin will load all
+  shader objects specified there, and attach all objects into a
+  program before binding it as the current shader program.
+
+  \ingroup nodes
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    ShaderProgram {
+      shaderObject []
+    }
+  \endcode
+
+  \sa SoShaderObject
+  \sa SoShaderProgram
+  \since Coin 2.5
+*/
+
+/*!
+  \var SoMFNode SoShaderProgram::shaderObject
+
+  The shader objects.
+
+*/
+
 #include <Inventor/nodes/SoShaderProgram.h>
 
 #include <assert.h>
@@ -67,6 +97,7 @@ SO_NODE_SOURCE(SoShaderProgram);
 
 // *************************************************************************
 
+// doc from parent
 void
 SoShaderProgram::initClass(void)
 {
@@ -76,6 +107,9 @@ SoShaderProgram::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLShaderProgramElement);
 }
 
+/*!
+  Constructor.
+*/
 SoShaderProgram::SoShaderProgram(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderProgram);
@@ -90,17 +124,22 @@ SoShaderProgram::SoShaderProgram(void)
   PRIVATE(this)->enablecbclosure = NULL;
 }
 
+/*!
+  Destructor.
+*/
 SoShaderProgram::~SoShaderProgram()
 {
   delete PRIVATE(this);
 }
 
+// doc from parent
 void
 SoShaderProgram::GLRender(SoGLRenderAction * action)
 {
   PRIVATE(this)->GLRender(action);
 }
 
+// doc from parent
 void
 SoShaderProgram::search(SoSearchAction * action)
 {
@@ -129,6 +168,9 @@ SoShaderProgram::search(SoSearchAction * action)
 #endif // disabled
 }
 
+/*!
+  Adds a callback which is called every time this program is enabled/disabled.
+*/
 void
 SoShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
                                    void * closure)

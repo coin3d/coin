@@ -26,6 +26,19 @@
   \brief The SoGeometryProgram class is used for loading geometry shader programs.
   \ingroup nodes
 
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    VertexProgram {
+      isActive TRUE
+      sourceType FILENAME
+      sourceProgram ""
+      parameter []
+    }
+  \endcode
+
+  \sa SoShaderObject
+  \sa SoShaderProgram
+  \since Coin 2.5
 */
 
 #include <Inventor/nodes/SoGeometryShader.h>

@@ -25,6 +25,20 @@
   \class SoFragmentProgram SoFragmentProgram.h Inventor/nodes/SoFragmentProgram.h
   \brief The SoFragmentProgram class is used for setting up fragment shader programs.
   \ingroup nodes
+
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    FragmentProgram {
+      isActive TRUE
+      sourceType FILENAME
+      sourceProgram ""
+      parameter []
+    }
+  \endcode
+
+  \sa SoShaderObject
+  \sa SoShaderProgram
+  \since Coin 2.5
 */
 
 #include <Inventor/nodes/SoFragmentShader.h>
