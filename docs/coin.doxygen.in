@@ -734,6 +734,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAsciiText.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBaseColor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBlinker.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapTransform.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMap.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCallback.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCamera.h \
@@ -818,13 +820,17 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3Transform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCombine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate2.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate3.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateBinding.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCube.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCylinder.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateDefault.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateFunction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinatePlane.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateSphere.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureScalePolicy.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureUnit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransform.h \
@@ -1220,6 +1226,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoBaseColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBlinker.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBumpMap.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoBumpMapCoordinate.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoBumpMapTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCallback.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoClipPlane.cpp \
@@ -1303,13 +1311,17 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2Transform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture3Transform.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCombine.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinate2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinate3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateBinding.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateCube.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateCylinder.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateDefault.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateEnvironment.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateFunction.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinatePlane.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateSphere.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureScalePolicy.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureUnit.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransform.cpp \
