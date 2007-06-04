@@ -153,11 +153,11 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
     for (int i = 0; i < cnt; i++) {
       this->shaderObjects[i]->attach(programHandle);
     } 
-
+#if 0 // for testing Geometry shaders
     g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_INPUT_TYPE_EXT , GL_LINES);
     g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_OUTPUT_TYPE_EXT , GL_TRIANGLES);
     g->glProgramParameteriEXT(programHandle,GL_GEOMETRY_VERTICES_OUT_EXT, 16);
-
+#endif // testing
     g->glLinkProgramARB(programHandle);
 
 
