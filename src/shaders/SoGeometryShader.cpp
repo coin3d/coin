@@ -121,6 +121,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include "SoGLShaderProgram.h"
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/C/glue/glp.h>
