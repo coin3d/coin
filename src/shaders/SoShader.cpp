@@ -29,7 +29,7 @@
   SoVertexShader, SoFragmentShader, and SoGeometryShader. A typical scene graph
   with shaders will look something like this:
 
-  \begin verbatim
+  \code
   
   Separator {
     ShaderProgram {
@@ -51,7 +51,7 @@
     Cube { }
   }
 
-  \end verbatim
+  \endcode
 
   This will render the Cube with the vertex and fragment shaders
   specified in myvertexshader.glsl and myfragmentshader.glsl. Coin

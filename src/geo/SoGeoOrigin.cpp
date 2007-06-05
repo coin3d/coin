@@ -53,7 +53,7 @@
 
   Example scene graph:
   
-  \verbarim
+  \code
   
   GeoOrigin { geoSystem "GD" geoCoords 40.77 -73.97 0 }
 
@@ -90,7 +90,7 @@
     Translation { translation 0 0 30000 }
     Text2 { string "Washington" }    
   }
-  \endverbatim
+  \endcode
 
   \since Coin 2.5  
 */
