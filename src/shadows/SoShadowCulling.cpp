@@ -30,7 +30,7 @@
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     ShadowCulling {
-        style CASTS_SHADOW_AND_SHADOWED
+        mode AS_IS_CULLING
     }
   \endcode
 
@@ -52,38 +52,29 @@
 // *************************************************************************
 
 /*!
-  \enum SoShadowCulling::Style
+  \enum SoShadowCulling::Mode
 
-  Enumerates the available style settings.
+  Enumerates the available culling modes.
 */
 
 /*!
-  \var SoSFEnum SoShadowCulling::style
-
-  The units which will be used for nodes following this node in the
-  traversal (until the next SoUnit node, if any). Default value of the
-  field is SoShadowCulling::CASTS_SHADOW_AND_SHADOWED.
+  \var SoSFEnum SoShadowCulling::mode
+  
+  Sets the culling mode. Default is AS_IS_CULLING.
 */
 
 /*!
-  \var SoShadowCulling::Style SoShadowCulling::NO_SHADOWING
-  Neither casts or recieves shadows.
+  \var SoShadowCulling::Mode SoShadowCulling::AS_IS_CULLING
+  
+  Use the culling specified in the scene graph.
 */
 
 /*!
-  \var SoShadowCulling::Style SoShadowCulling::CASTS_SHADOW
-  Casts shadow, but will no recieve any shadows.
+  \var SoShadowCulling::Style SoShadowCulling::NO_CULLING
+
+  Render both backfacing and frontfacting triangles into the shadow map.
 */
 
-/*!
-  \var SoShadowCulling::Style SoShadowCulling::SHADOWED
-  Receives shadows, but will not cast any shadow.
-*/
-
-/*!
-  \var SoShadowCulling::Style SoShadowCulling::CAST_SHADOW_AND_SHADOWED
-  Will cast and recieve shadows.
-*/
 
 // *************************************************************************
 

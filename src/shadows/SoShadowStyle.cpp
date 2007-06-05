@@ -58,9 +58,7 @@
 /*!
   \var SoSFEnum SoShadowStyle::style
 
-  The units which will be used for nodes following this node in the
-  traversal (until the next SoUnit node, if any). Default value of the
-  field is SoShadowStyle::CASTS_SHADOW_AND_SHADOWED.
+  Set the current shadow style. Default value is CAST_SHADOW_AND_SHADOWED.
 */
 
 /*!
