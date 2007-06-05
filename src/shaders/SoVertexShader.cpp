@@ -26,6 +26,9 @@
   \brief The SoVertexShader class is used for setting up vertex shader programs.
   \ingroup nodes
 
+  See \link coin_shaders Shaders in Coin \endlink for more information
+  on how to set up a scene graph with shaders.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     VertexShader {
@@ -35,7 +38,7 @@
       parameter []
     }
   \endcode
-  
+
   \sa SoShaderObject
   \sa SoShaderProgram
   \since Coin 2.5

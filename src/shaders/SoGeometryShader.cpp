@@ -26,19 +26,95 @@
   \brief The SoGeometryShader class is used for loading geometry shader programs.
   \ingroup nodes
 
+  See \link coin_shaders Shaders in Coin \endlink for more information
+  on how to set up a scene graph with shaders.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
-    VertexProgram {
+    GeometryShader {
       isActive TRUE
       sourceType FILENAME
       sourceProgram ""
       parameter []
+      inputType TRIANGLES_IN
+      outputType TRIANGLE_STRIP_OUT
+      maxEmit 8
     }
   \endcode
 
   \sa SoShaderObject
   \sa SoShaderProgram
   \since Coin 2.5
+*/
+
+/*!
+  \enum SoGeometryShader::InputType
+
+  Enumerates the input types.
+*/
+
+/*!
+  \enum SoGeometryShader::OutputType
+
+  Enumerates the output types.
+*/
+
+/*!
+  \var SoGeometryShader::InputType SoGeometryShader::TRIANGLES_IN.
+
+  Shader uses triangles as input. OpenGL will automatically convert quads
+  and polygons into triangles.
+*/
+
+/*!
+  \var SoGeometryShader::InputType SoGeometryShader::LINES_IN.
+
+  Shader uses lines as input.
+*/
+
+/*!
+  \var SoGeometryShader::InputType SoGeometryShader::POINTS_IN.
+
+  Shader uses points as input.
+*/
+
+/*!
+  \var SoGeometryShader::OutputType SoGeometryShader::POINTS_OUT.
+
+  Shader generates points.
+*/
+
+/*!
+  \var SoGeometryShader::OutputType SoGeometryShader::LINE_STRIP_OUT.
+
+  Shader generates line strips.
+*/
+
+/*!
+  \var SoGeometryShader::OutputType SoGeometryShader::TRIANLE_STRIP_OUT.
+
+  Shader generates triangle strips.
+*/
+
+
+/*!
+  \var SoSFEnum SoGeometryShader::inputType
+
+  The type of geometry used as input to the shader. Default value is TRIANGLES_IN.
+*/
+
+/*!
+  \var SoSFEnum SoGeometryShader::outputType
+  
+  The type of geometry generated from the shader. Default value is TRIANGLE_FAN_OUT.
+*/
+
+/*!
+  \var SoSFInt32 SoGeometryShader::maxEmit
+
+  The maximum number of vertices emitted from the shader. Default
+  value is 8. This corresponds to the GL_GEOMETRY_VERTICES_OUT_EXT
+  enum.
 */
 
 #include <Inventor/nodes/SoGeometryShader.h>
@@ -77,7 +153,7 @@ SoGeometryShader::SoGeometryShader(void)
   SO_NODE_DEFINE_ENUM_VALUE(InputType, POINTS_IN);
   SO_NODE_DEFINE_ENUM_VALUE(InputType, LINES_IN);
   SO_NODE_DEFINE_ENUM_VALUE(InputType, TRIANGLES_IN);
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(OutputType, POINTS_OUT);
   SO_NODE_DEFINE_ENUM_VALUE(OutputType, LINE_STRIP_OUT);
   SO_NODE_DEFINE_ENUM_VALUE(OutputType, TRIANGLE_STRIP_OUT);
@@ -93,7 +169,7 @@ SoGeometryShader::~SoGeometryShader()
 {
 }
 
-void 
+void
 SoGeometryShader::GLRender(SoGLRenderAction * action)
 {
   if (this->isActive.getValue()) {
@@ -113,7 +189,7 @@ SoGeometryShader::GLRender(SoGLRenderAction * action)
     else {
       GLenum input = 0;
       GLenum output = 0;
-      
+
       switch (this->inputType.getValue()) {
       default:
         assert(0 && "invalid input type");
@@ -142,10 +218,10 @@ SoGeometryShader::GLRender(SoGLRenderAction * action)
       }
       SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(action->getState());
       assert(shaderProgram);
-      
-      shaderProgram->addProgramParameter(GL_GEOMETRY_INPUT_TYPE_EXT, input); 
-      shaderProgram->addProgramParameter(GL_GEOMETRY_OUTPUT_TYPE_EXT, output); 
-      shaderProgram->addProgramParameter(GL_GEOMETRY_VERTICES_OUT_EXT, this->maxEmit.getValue());     
+
+      shaderProgram->addProgramParameter(GL_GEOMETRY_INPUT_TYPE_EXT, input);
+      shaderProgram->addProgramParameter(GL_GEOMETRY_OUTPUT_TYPE_EXT, output);
+      shaderProgram->addProgramParameter(GL_GEOMETRY_VERTICES_OUT_EXT, this->maxEmit.getValue());
     }
   }
   inherited::GLRender(action);

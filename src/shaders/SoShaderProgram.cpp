@@ -30,6 +30,9 @@
   shader objects specified there, and attach all objects into a
   program before binding it as the current shader program.
 
+  See \link coin_shaders Shaders in Coin \endlink for more information
+  on how to set up a scene graph with shaders.
+
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>

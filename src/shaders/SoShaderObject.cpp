@@ -26,6 +26,9 @@
 
   The SoShaderObject class is the superclass for all shader classes in Coin.
 
+  See \link coin_shaders Shaders in Coin \endlink for more information
+  on how to set up a scene graph with shaders.
+
   \sa SoShaderProgram
 */
 
@@ -39,7 +42,7 @@
   \var SoSFString SoShaderObject::sourceProgram
 
   The shader program, or a file name if the shader should be loaded from a file.
-  If the shader is loaded from a file, the shader type is identified by the 
+  If the shader is loaded from a file, the shader type is identified by the
   file extension. .glsl for GLSL shaders, .cg for Cg shaders, and .vp and .fp
   for ARB shaders.
 */
@@ -85,7 +88,7 @@
 
 /*!
   \var SoMFNode SoShaderObject::parameter
-  
+
   The shader program parameters.
 */
 
@@ -312,7 +315,7 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 /*!
   Returns the shader type detected in sourceProgram.
 */
-SoShaderObject::SourceType 
+SoShaderObject::SourceType
 SoShaderObject::getSourceType(void) const
 {
   return SELF->cachedSourceType;
@@ -431,9 +434,9 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     else {
       assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
       shaderobject->setShaderType(SoGLShaderObject::GEOMETRY);
-      
+
       SoGeometryShader * geomshader = (SoGeometryShader*) this->owner;
-      
+
     }
 
 #if defined(SOURCE_HINT)
