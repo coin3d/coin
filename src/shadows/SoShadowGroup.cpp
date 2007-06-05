@@ -1010,8 +1010,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
 
-  // FIXME: decide based on quality
-
   if (perpixelspot) {
     gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
@@ -1125,6 +1123,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   this->fragmentshader->parameter.setNum(numspots*2);
 
   if (this->fragmentshader->sourceProgram.getValue() != gen.getShaderProgram()) {
+    // invalidate spotlights, and make sure the cameratransform variable is updated
+    this->spotlightsvalid = TRUE;
+    this->cameratransform->value.touch();
     this->fragmentshader->sourceProgram = gen.getShaderProgram();
     this->fragmentshader->sourceType = SoShaderObject::GLSL_PROGRAM;
 
@@ -1150,31 +1151,30 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     this->fragmentshader->parameter.set1Value(i*2+1, farval);
   }
 
-  if (1) { // test
-    SoShaderParameter1i * texmap =
-      new SoShaderParameter1i();
-    SbString str;
-    str.sprintf("textureMap0");
-    texmap->name = str;
-    texmap->value = 0;
 
-    if (!this->texunit0) {
-      this->texunit0 = new SoShaderParameter1i;
-      this->texunit0->ref();
-      this->texunit0->name = "coin_texunit0_model";
-      this->texunit0->value = 0;
-    }
-    if (!this->lightmodel) {
-      this->lightmodel = new SoShaderParameter1i;
-      this->lightmodel->ref();
-      this->lightmodel->name = "coin_light_model";
-      this->lightmodel->value = 1;
-    }
-
-    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
-    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
-    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
+  SoShaderParameter1i * texmap =
+    new SoShaderParameter1i();
+  str.sprintf("textureMap0");
+  texmap->name = str;
+  texmap->value = 0;
+  
+  if (!this->texunit0) {
+    this->texunit0 = new SoShaderParameter1i;
+    this->texunit0->ref();
+    this->texunit0->name = "coin_texunit0_model";
+    this->texunit0->value = 0;
   }
+  if (!this->lightmodel) {
+    this->lightmodel = new SoShaderParameter1i;
+    this->lightmodel->ref();
+    this->lightmodel->name = "coin_light_model";
+    this->lightmodel->value = 1;
+  }
+  
+  this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
+  this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
+  this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
+  
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
@@ -1425,7 +1425,7 @@ SoShadowSpotLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2
 
   sep->addChild(camera);
   SoTextureUnit * unit = new SoTextureUnit;
-  unit->unit = 0; // FIXME: temporary
+  unit->unit = 0;
   sep->addChild(unit);
 
   sep->addChild(tex);
