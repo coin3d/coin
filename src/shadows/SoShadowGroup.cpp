@@ -117,7 +117,7 @@
   near plane based on the bounding box of the children. Default value
   is -1.0.
 
-  /sa visibilityFlag
+  \sa visibilityFlag
 */
 
 /*!
@@ -127,8 +127,8 @@
   maps.  If a negative value is provided, the group will calculate a
   near plane based on the bounding box of the children. Default value
   is -1.0.
-
-  /sa visibilityFlag
+  
+  \sa visibilityFlag
 */
 
 /*!
