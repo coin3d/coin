@@ -30,7 +30,7 @@
   with shaders will look something like this:
 
   \code
-  
+
   Separator {
     ShaderProgram {
       shaderObject [
@@ -68,6 +68,101 @@
 
   \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
 
+  Example scene graph that renders per-fragment OpenGL Phong lighting
+  for one light source. The shaders assume the first light source is a 
+  directional light. This is the case if you open the file in a standard
+  examiner viewer.
+  
+  The iv-file:
+  \code
+  Separator {
+    ShaderProgram {
+      shaderObject [
+        VertexShader {
+          sourceProgram "perpixel_vertex.glsl"   
+        }
+        FragmentShader {
+          sourceProgram "perpixel_fragment.glsl"   
+        }
+      ]    
+    }
+    Complexity { value 1.0 } 
+    Material { diffuseColor 1 0 0 specularColor 1 1 1 shininess 0.9 }
+    Sphere { }
+  
+    Translation { translation 3 0 0 }
+    Material { diffuseColor 0 1 0 specularColor 1 1 1 shininess 0.9 }
+    Cone { }
+
+    Translation { translation 3 0 0 }
+    Material { diffuseColor 0.8 0.4 0.1 specularColor 1 1 1 shininess 0.9 }
+    Cylinder { }
+  }
+  \endcode
+  
+  The vertex shader (perpixel_vertex.glsl):
+  \code
+  varying vec3 ecPosition3;
+  varying vec3 fragmentNormal;
+
+  void main(void)
+  {
+    vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
+    ecPosition3 = ecPosition.xyz / ecPosition.w;
+    fragmentNormal = normalize(gl_NormalMatrix * gl_Normal);
+  
+    gl_Position = ftransform();
+    gl_FrontColor = gl_Color;
+  }
+  \endcode
+
+  The fragment shader (perpixel_vertex.glsl):
+  \code
+  varying vec3 ecPosition3;
+  varying vec3 fragmentNormal;
+
+  void DirectionalLight(in int i,
+                        in vec3 normal,
+                        inout vec4 ambient,
+                        inout vec4 diffuse,
+                        inout vec4 specular)
+  {
+    float nDotVP; // normal . light direction
+    float nDotHV; // normal . light half vector
+    float pf;     // power factor
+
+    nDotVP = max(0.0, dot(normal, normalize(vec3(gl_LightSource[i].position))));
+    nDotHV = max(0.0, dot(normal, vec3(gl_LightSource[i].halfVector)));
+
+    if (nDotVP == 0.0)
+      pf = 0.0;
+    else
+      pf = pow(nDotHV, gl_FrontMaterial.shininess);
+
+    ambient += gl_LightSource[i].ambient;
+    diffuse += gl_LightSource[i].diffuse * nDotVP;
+    specular += gl_LightSource[i].specular * pf;
+  }
+
+  void main(void)
+  {
+    vec3 eye = -normalize(ecPosition3);
+    vec4 ambient = vec4(0.0);
+    vec4 diffuse = vec4(0.0);
+    vec4 specular = vec4(0.0);
+    vec3 color;
+
+    DirectionalLight(0, normalize(fragmentNormal), ambient, diffuse, specular);
+  
+    color = 
+      gl_FrontLightModelProduct.sceneColor.rgb +
+      ambient.rgb * gl_FrontMaterial.ambient.rgb +
+      diffuse.rgb * gl_Color.rgb +
+      specular.rgb * gl_FrontMaterial.specular.rgb;
+  
+    gl_FragColor = vec4(color, gl_Color.a);
+  }
+  \endcode
 */
 
 #include "SoShader.h"
