@@ -70,6 +70,58 @@
     }
   \endcode
 
+  Example scene graph:
+  \code
+
+  # to get some lighting when headlight is turned off in the viewer
+  DirectionalLight { direction 0 0 -1 intensity 0.2 }
+
+  ShadowGroup {
+    quality 1 # to get per pixel lighting
+
+    ShadowStyle { style NO_SHADOWING }
+
+    SpotLight {
+      location -8 -8 8.0
+      direction 1 1 -1 
+      cutOffAngle 0.35
+      dropOffRate 0.7
+    }
+
+    ShadowStyle { style CASTS_SHADOW_AND_SHADOWED }
+
+    Separator {
+      Complexity { value 1.0 }
+      Material { diffuseColor 1 1 0 specularColor 1 1 1 shininess 0.9 }
+      Shuttle { translation0 -3 1 0 translation1 3 -5 0 speed 0.25 on TRUE }
+      Translation { translation -5 0 2 }
+      Sphere { radius 2.0 }
+    }
+
+    Separator {
+      Material { diffuseColor 1 0 0 specularColor 1 1 1 shininess 0.9 }
+      Shuttle { translation0 0 -5 0 translation1 0 5 0 speed 0.15 on TRUE }
+      Translation { translation 0 0 -3 }
+      Cube { depth 1.8 }
+    }
+    Separator {
+      Material { diffuseColor 0 1 0 specularColor 1 1 1 shininess 0.9 }
+      Shuttle { translation0 -5 0 0 translation1 5 0 0 speed 0.3 on TRUE }
+      Translation { translation 0 0 -3 }
+      Cube { }
+    }
+
+    ShadowStyle { style SHADOWED }
+    Coordinate3 { point [ -10 -10 -3, 10 -10 -3, 10 10 -3, -10 10 -3 ] }
+    Material { specularColor 1 1 1 shininess 0.9 }
+ 
+    Complexity { textureQuality 0.1 }
+    Texture2 { image 2 2 3 0xffffff 0x225588 0x225588 0xffffff }
+    Texture2Transform { scaleFactor 4 4 }
+    FaceSet { numVertices 4 }
+  }
+
+  \endcode
 */
 
 
