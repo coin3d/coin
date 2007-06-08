@@ -282,6 +282,7 @@
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
@@ -531,6 +532,10 @@ public:
                       SoGLRenderAction * action);
   void updateSpotLights(SoGLRenderAction * action);
 
+  int32_t getFog(SoState * state) {
+    return SoEnvironmentElement::getFogType(state);
+  }
+  
   SoShadowGroup * master;
   SoSearchAction search;
   SoGetBoundingBoxAction bboxaction;
@@ -979,6 +984,20 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
 
+  int32_t fogType = this->getFog(state);
+  
+  switch (fogType) {
+  default:
+    assert(0 && "unknown fog type");
+  case SoEnvironmentElement::NONE:
+    // do nothing
+    break;
+  case SoEnvironmentElement::HAZE:
+  case SoEnvironmentElement::FOG:
+  case SoEnvironmentElement::SMOKE:
+    gen.addMainStatement("gl_FogFragCoord = abs(ecPosition3.z);\n");
+    break;
+  }
   gen.addMainStatement(
 		       "perVertexColor = color.rgb;"
 		       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
@@ -1165,6 +1184,29 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       gen.addMainStatement(str);
     }
   }
+
+  int32_t fogType = this->getFog(state);
+
+  switch (fogType) {
+  default:
+    assert(0 && "unknown fog type");
+  case SoEnvironmentElement::NONE:
+    // do nothing
+    break;
+  case SoEnvironmentElement::HAZE:
+    gen.addMainStatement("float fog = (gl_Fog.end - gl_FogFragCoord) * gl_Fog.scale;\n");
+    break;
+  case SoEnvironmentElement::FOG:
+    gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_FogFragCoord);\n");
+    break;
+  case SoEnvironmentElement::SMOKE:
+    gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n");
+    break;
+  }
+  if (fogType != SoEnvironmentElement::NONE) {
+    gen.addMainStatement("color = mix(gl_Fog.color.rgb, color, clamp(fog, 0.0, 1.0));\n");
+  }
+  
   gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, mydiffuse.a) : mydiffuse;\n");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
