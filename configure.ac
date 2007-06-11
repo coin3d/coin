@@ -1867,13 +1867,9 @@ SIM_AC_UNIQIFY_OPTION_LIST(LIBS, $LIBS)
 CPP_AC_SEARCH_ORDER_FILTER(CPPFLAGS, $CPPFLAGS)
 CPP_AC_SEARCH_ORDER_FILTER(COIN_EXTRA_CPPFLAGS, $COIN_EXTRA_CPPFLAGS)
 
-
-# The above mentioned "bug" might not be a bug for Unix platforms, but for
-# Windows you can't compile for both shared and static library linkage at
-# the same time, hence we do need to disable shared when enabling static
-# builds.  20041021 larsa
-
 AC_SUBST([LIBFLAGS], [])
+AC_SUBST([COIN_TESTSUITE_EXTRA_CPPFLAGS], [])
+AC_SUBST([COIN_TESTSUITE_EXTRA_LDFLAGS], [])
 
 # **************************************************************************
 # setup for <Inventor/system/gl.h>
@@ -1941,6 +1937,8 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 COIN_COMPILER="$CXX"
 
   if $BUILD_WITH_MSVC; then
+    COIN_TESTSUITE_EXTRA_CPPFLAGS="/Z7 /Fdtestsuite.pdb /EHsc"
+    COIN_TESTSUITE_EXTRA_LDFLAGS="/SUBSYSTEM:console /DEBUG"
     rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
@@ -2204,6 +2202,7 @@ AC_CONFIG_FILES([
 	src/shadows/Makefile
 	src/geo/Makefile
         src/foreignfiles/Makefile
+        testsuite/Makefile
         cfg/gendsp.pl
 ])
 

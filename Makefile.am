@@ -244,7 +244,12 @@ EXTRA_DIST = \
 	build/msvc8/include/config-debug.h \
 	build/msvc8/include/config-release.h \
 	build/msvc8/include/setup.h \
-	build/msvc8/install-headers.bat
+	build/msvc8/install-headers.bat \
+	testsuite/Makefile.in \
+	testsuite/TestSuiteInit.cpp \
+	testsuite/makeextract.sh \
+	testsuite/makemakefile.sh \
+	testsuite/README
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
@@ -357,8 +362,11 @@ endif
 install-symlinks: install
 	@(cd src; $(MAKE) install-symlinks;) 
 
-cvs-update:
-	@cd $(top_srcdir) && cvs -z3 -q update -dP
+svn-update:
+	@cd $(top_srcdir) && svn update
+
+testsuite-run:
+	@cd testsuite && $(MAKE)
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
