@@ -116,3 +116,17 @@ SoFragmentShader::isSupported(SourceType sourceType)
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoFragmentShader * node = new SoFragmentShader;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE

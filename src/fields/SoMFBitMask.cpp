@@ -33,8 +33,9 @@
 
 */
 
-#include <assert.h>
 #include <Inventor/fields/SoMFBitMask.h>
+
+#include <assert.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #if COIN_DEBUG
@@ -79,3 +80,15 @@ SoMFBitMask::write1Value(SoOutput * out, int idx) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFBitMask field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

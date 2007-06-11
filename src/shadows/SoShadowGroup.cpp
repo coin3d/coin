@@ -1566,3 +1566,18 @@ SoShadowSpotLightCache::shadowmap_post_glcallback(void * closure, SoAction * act
 }
 
 #undef PUBLIC
+
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoShadowGroup * node = new SoShadowGroup;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE

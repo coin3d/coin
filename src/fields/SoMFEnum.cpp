@@ -37,8 +37,10 @@
 
 // *************************************************************************
 
-#include <assert.h>
 #include <Inventor/fields/SoMFEnum.h>
+
+#include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
@@ -320,3 +322,15 @@ SoMFEnum::getEnum(const int idx, SbName & name) const
   return this->enumValues[idx];
 }
 
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFEnum field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

@@ -235,3 +235,17 @@ SoGeoOrigin::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoGeoOrigin::doAction((SoAction *)action);
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoGeoOrigin * node = new SoGeoOrigin;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE

@@ -134,3 +134,18 @@ SoShadowCulling::GLRender(SoGLRenderAction * action)
     }
   }
 }
+
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoShadowCulling * node = new SoShadowCulling;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE

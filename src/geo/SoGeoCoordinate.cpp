@@ -40,6 +40,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGeoCoordinate.h>
+
 #include <Inventor/nodes/SoGeoOrigin.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -203,3 +204,18 @@ SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
                                    this->geoSystem.getNum(),
                                    this->point[idx]);
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoGeoCoordinate * node = new SoGeoCoordinate;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  // BOOST_CHECK_EQUAL(node->point.getNum(), 1);
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE

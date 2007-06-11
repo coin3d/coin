@@ -40,8 +40,10 @@
 
 // *************************************************************************
 
-#include <assert.h>
 #include <Inventor/fields/SoMFColor.h>
+
+#include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -219,3 +221,15 @@ SoMFColor::set1HSVValue(int idx, const float hsv[3])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFColor field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

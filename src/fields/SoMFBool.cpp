@@ -38,8 +38,10 @@
 
 // *************************************************************************
 
-#include <assert.h>
 #include <Inventor/fields/SoMFBool.h>
+
+#include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -93,3 +95,28 @@ SoMFBool::getNumValuesPerLine(void) const
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFBool field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(array_ops)
+{
+  SoMFBool field;
+  field.set1Value(0, TRUE);
+  field.set1Value(1, FALSE);
+  field.set1Value(2, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 3);
+  field.deleteValues(1,1);
+  BOOST_CHECK_EQUAL(field.getNum(), 2);
+  BOOST_CHECK_EQUAL(field[0], TRUE);
+  BOOST_CHECK_EQUAL(field[1], TRUE);
+}
+
+#endif // COIN_TEST_SUITE

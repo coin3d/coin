@@ -139,3 +139,17 @@ SoAnnotation::GLRenderOffPath(SoGLRenderAction *)
 {
   // should never render, this is a separator node
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoAnnotation * node = new SoAnnotation;
+  assert(node);
+  node->ref();
+  BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  node->unref();
+}
+
+#endif // COIN_TEST_SUITE
