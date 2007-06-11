@@ -278,7 +278,7 @@ SoShader::init(void)
     SoShaderParameter1i::initClass();
 
   // FIXME: Do we need int32 support (like in TGS)? 20040924 martin
-#if 0
+#if 1
   if (SoShaderParameter2i::getClassTypeId() == SoType::badType())
     SoShaderParameter2i::initClass();
   if (SoShaderParameter3i::getClassTypeId() == SoType::badType())
