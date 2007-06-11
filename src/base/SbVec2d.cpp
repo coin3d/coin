@@ -247,7 +247,7 @@ SbVec2d::setValue(const SbVec2s & v)
   return *this;
 }
 /*!
-  Sets the value from an SbVec2b instance.
+  Sets the value from an SbVec2i32 instance.
   Returns reference to itself.
 
   \since 2007-05-13

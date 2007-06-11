@@ -36,7 +36,9 @@
 
 /*!
   \class SbVec2b Inventor/SbVec2b.h
+  \brief a vector class for containing two byte integers.
 
+  \sa SbVec2ub
   \since 2007-04-28
 */
 

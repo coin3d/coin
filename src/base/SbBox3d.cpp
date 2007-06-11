@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3d SbBox.h Inventor/SbBox.h
+  \class SbBox3d Inventor/SbBox3d.h
   \brief The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.
   \ingroup base
 
