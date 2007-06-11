@@ -288,7 +288,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	all-recursive install-data-recursive install-exec-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
-DIST_COMMON = $(noinst_HEADERS) $(thisinc_HEADERS) Makefile.am \
+DIST_COMMON = README $(noinst_HEADERS) $(thisinc_HEADERS) Makefile.am \
 	Makefile.in config.h.in discard.h.in setup.h.in
 DIST_SUBDIRS = $(SUBDIRS)
 all: discard.h config.h setup.h
