@@ -112,14 +112,14 @@ EODATA
 for obj in $objlist; do
   echo >&5 "	$obj \\"
 done
-echo >&5 "	$(EMPTY)"
+echo >&5 "	\$(EMPTY)"
 echo >&5 ""
 
 echo >&5 "TEST_SUITE_BUILT_FILES = \\"
 for extractfile in $extractlist; do
   echo >&5 "	$extractfile \\"
 done
-echo >&5 "	$(EMPTY)"
+echo >&5 "	\$(EMPTY)"
 echo >&5 ""
 
 cat <<"EODATA" >&5

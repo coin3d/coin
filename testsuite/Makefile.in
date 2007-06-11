@@ -9,9 +9,11 @@ OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex
-CPPFLAGS = $(INCLUDES) -g /Z7 /Fdtestsuite.pdb /EHsc @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
-LDFLAGS = -L$(top_builddir)/src
+CPPFLAGS = $(INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src
 LIBS = @COIN_EXTRA_LIBS@
+
+EMPTY =
 
 TEST_SUITE_OBJECTS = \
 	TestSuiteInit.$(OBJEXT) \
@@ -38,7 +40,7 @@ TEST_SUITE_OBJECTS = \
 	geoSoGeoLocation.$(OBJEXT) \
 	geoSoGeoOrigin.$(OBJEXT) \
 	geoSoGeoSeparator.$(OBJEXT) \
-
+	$(EMPTY)
 
 TEST_SUITE_BUILT_FILES = \
 	nodesSoAnnotation.cpp \
@@ -64,7 +66,7 @@ TEST_SUITE_BUILT_FILES = \
 	geoSoGeoLocation.cpp \
 	geoSoGeoOrigin.cpp \
 	geoSoGeoSeparator.cpp \
-
+	$(EMPTY)
 
 all: testsuite$(EXEEXT)
 	LD_LIBRARY_PATH=$(top_builddir)/src:$$LD_LIBRARY_PATH \
@@ -88,7 +90,7 @@ makefile-update:
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
-	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) /SUBSYSTEM:console /DEBUG $(LDFLAGS) $(LIBS)
+	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(LDFLAGS) $(LIBS)
 
 TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp Makefile
 	$(CXX) $(CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
