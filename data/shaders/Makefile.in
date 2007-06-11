@@ -90,6 +90,8 @@ COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
 COIN_SO_VERSION = @COIN_SO_VERSION@
+COIN_TESTSUITE_EXTRA_CPPFLAGS = @COIN_TESTSUITE_EXTRA_CPPFLAGS@
+COIN_TESTSUITE_EXTRA_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CPP = @CPP@
@@ -262,6 +264,8 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 
 SUBDIRS = lights vsm
+
+EXTRA_DIST = glsl2h.sh.in
 subdir = data/shaders
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs

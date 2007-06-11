@@ -2,4 +2,5 @@
 
 SUBDIRS = lights vsm
 
+EXTRA_DIST = glsl2h.sh.in
 

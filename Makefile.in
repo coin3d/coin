@@ -92,6 +92,8 @@ COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
 COIN_SO_VERSION = @COIN_SO_VERSION@
+COIN_TESTSUITE_EXTRA_CPPFLAGS = @COIN_TESTSUITE_EXTRA_CPPFLAGS@
+COIN_TESTSUITE_EXTRA_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CPP = @CPP@
@@ -496,7 +498,12 @@ EXTRA_DIST = \
 	build/msvc8/include/config-debug.h \
 	build/msvc8/include/config-release.h \
 	build/msvc8/include/setup.h \
-	build/msvc8/install-headers.bat
+	build/msvc8/install-headers.bat \
+	testsuite/Makefile.in \
+	testsuite/TestSuiteInit.cpp \
+	testsuite/makeextract.sh \
+	testsuite/makemakefile.sh \
+	testsuite/README
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -504,7 +511,7 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/discard.h \
 	$(top_builddir)/include/config.h \
 	$(top_builddir)/include/setup.h
-CONFIG_CLEAN_FILES = cfg/gendsp.pl
+CONFIG_CLEAN_FILES = testsuite/Makefile cfg/gendsp.pl
 DIST_SOURCES =
 DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA)
 
@@ -540,6 +547,8 @@ $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.ac $(ACLOCAL_M4)
 
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
+testsuite/Makefile: $(top_builddir)/config.status $(top_srcdir)/testsuite/Makefile.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 cfg/gendsp.pl: $(top_builddir)/config.status $(top_srcdir)/cfg/gendsp.pl.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
@@ -747,7 +756,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build/misc $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/data/shaders/lights $(distdir)/build/msvc6/data/shaders/vsm $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/data/shaders/lights $(distdir)/build/msvc7/data/shaders/vsm $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/data/shaders/lights $(distdir)/build/msvc8/data/shaders/vsm $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/data/shaders $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/build/misc $(distdir)/build/msvc6 $(distdir)/build/msvc6/data/draggerDefaults $(distdir)/build/msvc6/data/shaders/lights $(distdir)/build/msvc6/data/shaders/vsm $(distdir)/build/msvc6/include $(distdir)/build/msvc6/include/Inventor/C $(distdir)/build/msvc6/include/Inventor/system $(distdir)/build/msvc7 $(distdir)/build/msvc7/data/draggerDefaults $(distdir)/build/msvc7/data/shaders/lights $(distdir)/build/msvc7/data/shaders/vsm $(distdir)/build/msvc7/include $(distdir)/build/msvc7/include/Inventor/C $(distdir)/build/msvc7/include/Inventor/system $(distdir)/build/msvc8 $(distdir)/build/msvc8/data/draggerDefaults $(distdir)/build/msvc8/data/shaders/lights $(distdir)/build/msvc8/data/shaders/vsm $(distdir)/build/msvc8/include $(distdir)/build/msvc8/include/Inventor/C $(distdir)/build/msvc8/include/Inventor/system $(distdir)/cfg $(distdir)/data/shaders $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows $(distdir)/testsuite
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -1070,8 +1079,11 @@ doxygen-docs: built-sources
 install-symlinks: install
 	@(cd src; $(MAKE) install-symlinks;) 
 
-cvs-update:
-	@cd $(top_srcdir) && cvs -z3 -q update -dP
+svn-update:
+	@cd $(top_srcdir) && svn update
+
+testsuite-run:
+	@cd testsuite && $(MAKE)
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
