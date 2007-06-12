@@ -950,10 +950,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
     if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
     if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
 
-    gen.addMainStatement(
-                         "vec4 color = gl_FrontLightModelProduct.sceneColor + "
+    gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor + "
                          "  ambient * gl_FrontMaterial.ambient + "
-                         "  diffuse * gl_Color + "
+                         "  diffuse * gl_Color +"
                          "  specular * gl_FrontMaterial.specular;\n"
                          );
   }
@@ -1000,7 +999,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
     break;
   }
   gen.addMainStatement(
-		       "perVertexColor = color.rgb;"
+		       "perVertexColor = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));"
 		       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
 		       "gl_Position = ftransform();\n"
 		       "gl_FrontColor = gl_Color;");
@@ -1019,6 +1018,10 @@ SoShadowGroupP::setVertexShader(SoState * state)
     else {
       this->vertexshader->parameter.setNum(0);
     }
+#if 0 // for debugging
+    fprintf(stderr,"new vertex program: %s\n",
+            gen.getShaderProgram().getString());
+#endif
   }
 
 
@@ -1055,14 +1058,15 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   int numspots = this->spotlights.getLength();
 
-  SbString eps;
-  eps.sprintf("const float EPSILON = %f;\n",
-              PUBLIC(this)->epsilon.getValue());
-  gen.addDeclaration(eps, FALSE);
-  eps.sprintf("const float THRESHOLD = %f;\n",
-              PUBLIC(this)->threshold.getValue());
-  gen.addDeclaration(eps, FALSE);
-
+  if (numspots) {
+    SbString eps;
+    eps.sprintf("const float EPSILON = %f;",
+                PUBLIC(this)->epsilon.getValue());
+    gen.addDeclaration(eps, FALSE);
+    eps.sprintf("const float THRESHOLD = %f;",
+                PUBLIC(this)->threshold.getValue());
+    gen.addDeclaration(eps, FALSE);
+  }
   for (i = 0; i < numspots; i++) {
     SbString str;
     str.sprintf("uniform sampler2D shadowMap%d;", i);
@@ -1081,41 +1085,39 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   }
 
   SbString str;
-
+  if (numspots) {
 #ifdef DISTRIBUTE_FACTOR
-  str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
-  gen.addDeclaration(str, FALSE);
+    str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
+    gen.addDeclaration(str, FALSE);
 #endif
-
+  }
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
 
-  if (perpixelspot) {
+  if (perpixelspot && numspots) {
     gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
 
   const SoNodeList & lights = SoLightElement::getLights(state);
 
-  gen.addNamedFunction("vsm/VsmLookup", FALSE);
+  if (numspots) {
+    gen.addNamedFunction("vsm/VsmLookup", FALSE);
+  }
   gen.addMainStatement("vec3 eye = -normalize(ecPosition3);\n");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
                        "vec4 specular = vec4(0.0);"
                        "vec4 mydiffuse = gl_Color;\n"
-                       "vec4 texcolor = (coin_texunit0_model != 0) ? texture2D(textureMap0, gl_TexCoord[0].xy) : vec4(1.0);\n"
-                       "mydiffuse *= texcolor;\n");
+                       "vec4 texcolor = (coin_texunit0_model != 0) ? texture2D(textureMap0, gl_TexCoord[0].xy) : vec4(1.0);\n");
 
   gen.addMainStatement("vec3 color = perVertexColor;\n"
+                       "vec3 scolor = vec3(0.0);\n"
 		       "float dist;\n"
 		       "float shadeFactor;\n"
 		       "vec3 coord;\n"
 		       "vec4 map;\n");
-
-  if (!perpixelother) {
-    gen.addMainStatement("color *= texcolor.rgb;\n");
-  }
-
+  
   if (perpixelspot) {
     for (i = 0; i < numspots; i++) {
       SbString str;
@@ -1131,11 +1133,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
                   "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON, THRESHOLD) : 0.0;\n"
-                  "color += shadeFactor * diffuse.rgb * mydiffuse.rgb + "
-                  "shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
+                  "color += shadeFactor * diffuse.rgb * mydiffuse.rgb;"
+                  "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
                   lights.getLength()+i, i , i, i, i, i);
       gen.addMainStatement(str);
-
+      
     }
     gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb;\n");
 
@@ -1172,7 +1174,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
 
       gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb + "
-                           "diffuse.rgb * mydiffuse.rgb + specular.rgb * gl_FrontMaterial.specular.rgb;\n");
+                           "diffuse.rgb * mydiffuse.rgb;\n");
+      gen.addMainStatement("scolor += specular.rgb * gl_FrontMaterial.specular.rgb;\n");
     }
   }
 
@@ -1189,12 +1192,16 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
                   "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON, THRESHOLD) : 0.0;\n"
-                  "color += shadeFactor * spotVertexColor%d * texcolor.rgb;\n",
+                  "color += shadeFactor * spotVertexColor%d;\n",
                   lights.getLength()+i, i , i, i, i, i, i);
       gen.addMainStatement(str);
     }
   }
-
+  
+  gen.addMainStatement("color = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));");
+  gen.addMainStatement("if (coin_light_model != 0) { color *= texcolor.rgb; color += scolor; }\n"
+                       "else color = mydiffuse.rgb * texcolor.rgb;\n");
+  
   int32_t fogType = this->getFog(state);
 
   switch (fogType) {
@@ -1208,16 +1215,18 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     break;
   case SoEnvironmentElement::FOG:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_FogFragCoord);\n");
+    gen.addDeclaration("#version 110", TRUE);
     break;
   case SoEnvironmentElement::SMOKE:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n");
+    gen.addDeclaration("#version 110", TRUE);
     break;
   }
   if (fogType != SoEnvironmentElement::NONE) {
     gen.addMainStatement("color = mix(gl_Fog.color.rgb, color, clamp(fog, 0.0, 1.0));\n");
   }
-
-  gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, mydiffuse.a) : mydiffuse;\n");
+  
+  gen.addMainStatement("gl_FragColor = vec4(color, mydiffuse.a);");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
@@ -1243,6 +1252,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       shadowmap->value = cache->texunit;
       this->fragmentshader->parameter.set1Value(i*2, shadowmap);
     }
+#if 0 // for debugging
+    fprintf(stderr,"new fragment program: %s\n",
+            gen.getShaderProgram().getString());
+#endif // debugging
+
   }
 
   for (i = 0; i < numspots; i++) {
