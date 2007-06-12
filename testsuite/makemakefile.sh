@@ -99,10 +99,13 @@ prefix = @prefix@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
+@MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
+@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -lCoin
+
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex
 TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
 TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
-TS_LIBS = @COIN_EXTRA_LIBS@
+TS_LIBS = $(FRAMEWORKLIBADD) @COIN_EXTRA_LIBS@
 
 EMPTY =
 
