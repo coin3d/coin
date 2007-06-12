@@ -491,7 +491,7 @@ public:
     if (this->lightmodel) this->lightmodel->unref();
     if (this->texunit0) this->texunit0->unref();
     if (this->vertexshadercache) this->vertexshadercache->unref();
-    if (this->fragmentshadercache) this->vertexshadercache->unref();
+    if (this->fragmentshadercache) this->fragmentshadercache->unref();
     if (this->cameratransform) this->cameratransform->unref();
     if (this->vertexshader) this->vertexshader->unref();
     if (this->fragmentshader) this->fragmentshader->unref();
