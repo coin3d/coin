@@ -68,7 +68,7 @@ echo "" >&5
 # into the extract files for each COIN_TEST_SUITE block.  That would
 # slow this extraction process down a bit though, but should be worth it.
 cat $srcdir/$srcdirpath | \
-  sed -n -e '/^#if.*COIN_TEST_SUITE/,/^#endif.*COIN_TEST_SUITE/ { p }' | \
+  sed -n -e '/^#if.*COIN_TEST_SUITE/,/^#endif.*COIN_TEST_SUITE/ p' | \
   egrep -v "^#.*COIN_TEST_SUITE" >&5
 
 echo "" >&5

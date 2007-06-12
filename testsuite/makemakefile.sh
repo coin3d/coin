@@ -18,7 +18,7 @@ filelist=""
 extractlist=""
 objlist=""
 
-for file in `cd $srcdir; find src -type f -print`; do
+for file in `cd $srcdir; find src -type f -print | sort`; do
   # filter the find results
   case $file in
   */.svn/*)
@@ -93,15 +93,16 @@ srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
 CXX = @CXX@
+LDFLAGS = @LDFLAGS@
 
 prefix = @prefix@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex
-CPPFLAGS = $(INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
-LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src
-LIBS = @COIN_EXTRA_LIBS@
+TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex
+TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
+TS_LIBS = @COIN_EXTRA_LIBS@
 
 EMPTY =
 
@@ -124,16 +125,16 @@ echo >&5 ""
 
 cat <<"EODATA" >&5
 all: testsuite$(EXEEXT)
-	LD_LIBRARY_PATH=$(top_builddir)/src:$$LD_LIBRARY_PATH \
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
 	PATH=$(top_builddir)/src:$$PATH \
 	./testsuite --log_level=warning --show_progress=yes \
-	  --detect_memory_leaks=no
+	  --detect_memory_leaks=0
 
 verbose: testsuite$(EXEEXT)
-	LD_LIBRARY_PATH=$(top_builddir)/src:$$LD_LIBRARY_PATH \
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
 	PATH=$(top_builddir)/src:$$PATH \
 	./testsuite --log_level=all --show_progress=no \
-	  --detect_memory_leaks=no
+	  --detect_memory_leaks=0
 
 clean:
 	rm -f testsuite$(EXEEXT) *.pdb
@@ -145,10 +146,10 @@ makefile-update:
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
-	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(LDFLAGS) $(LIBS)
+	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(TS_LIBS)
 
 TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp Makefile
-	$(CXX) $(CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
+	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
 
 EODATA
 
@@ -165,7 +166,7 @@ while test x"$e" != x""; do
     echo >&5 "	\$(srcdir)/makeextract.sh \$(top_srcdir) $sourcefile"
     echo >&5 ""
     echo >&5 "$objectfile: $extractfile Makefile"
-    echo >&5 "	\$(CXX) \$(CPPFLAGS) -g -c $extractfile"
+    echo >&5 "	\$(CXX) \$(TS_CPPFLAGS) -g -c $extractfile"
     echo >&5 ""
   fi
 
