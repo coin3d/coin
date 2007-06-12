@@ -83,7 +83,7 @@
 
     SpotLight {
       location -8 -8 8.0
-      direction 1 1 -1 
+      direction 1 1 -1
       cutOffAngle 0.35
       dropOffRate 0.7
     }
@@ -114,7 +114,7 @@
     ShadowStyle { style SHADOWED }
     Coordinate3 { point [ -10 -10 -3, 10 -10 -3, 10 10 -3, -10 10 -3 ] }
     Material { specularColor 1 1 1 shininess 0.9 }
- 
+
     Complexity { textureQuality 0.1 }
     Texture2 { image 2 2 3 0xffffff 0x225588 0x225588 0xffffff }
     Texture2Transform { scaleFactor 4 4 }
@@ -179,7 +179,7 @@
   maps.  If a negative value is provided, the group will calculate a
   near plane based on the bounding box of the children. Default value
   is -1.0.
-  
+
   \sa visibilityFlag
 */
 
@@ -482,8 +482,6 @@ public:
     this->cameratransform->name = "cameraTransform";
     this->cameratransform->ref();
 
-    this->vertexshader->parameter.set1Value(0, this->cameratransform);
-
     this->shaderprogram->shaderObject.set1Value(0, this->vertexshader);
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
   }
@@ -535,7 +533,7 @@ public:
   int32_t getFog(SoState * state) {
     return SoEnvironmentElement::getFogType(state);
   }
-  
+
   SoShadowGroup * master;
   SoSearchAction search;
   SoGetBoundingBoxAction bboxaction;
@@ -667,12 +665,12 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     float smoothing = PUBLIC(this)->smoothBorder.getValue();
     int gaussmatrixsize = 0;
     float gaussstandarddeviation = 0.6f;
-    
+
     // just hardcode some values for now
     if (smoothing > 0.9) gaussmatrixsize = 7;
     else if (smoothing > 0.5) gaussmatrixsize = 5;
     else if (smoothing > 0.01) gaussmatrixsize = 3;
-                           
+
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
 
@@ -686,7 +684,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-                
+
         SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
                                                                     gaussmatrixsize, gaussstandarddeviation);
         this->spotlights.append(cache);
@@ -900,7 +898,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
     }
   }
 
-  gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
+  if (numspots) {
+    gen.addDeclaration("uniform mat4 cameraTransform;", FALSE);
+  }
   gen.addDeclaration("varying vec3 ecPosition3;", FALSE);
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
@@ -961,8 +961,9 @@ SoShadowGroupP::setVertexShader(SoState * state)
     gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor;\n");
   }
 
-  gen.addMainStatement("vec4 pos = cameraTransform * ecPosition;\n"); // in world space
-
+  if (numspots) {
+    gen.addMainStatement("vec4 pos = cameraTransform * ecPosition;\n"); // in world space
+  }
   for (i = 0; i < numspots; i++) {
     spotlight = TRUE;
     SoShadowSpotLightCache * cache = this->spotlights[i];
@@ -985,7 +986,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
 
   int32_t fogType = this->getFog(state);
-  
+
   switch (fogType) {
   default:
     assert(0 && "unknown fog type");
@@ -1011,7 +1012,16 @@ SoShadowGroupP::setVertexShader(SoState * state)
     this->vertexshader->sourceProgram = gen.getShaderProgram();
     this->vertexshader->sourceType = SoShaderObject::GLSL_PROGRAM;
     this->vertexshadercache->set(gen.getShaderProgram());
+
+    if (numspots) {
+      this->vertexshader->parameter.set1Value(0, this->cameratransform);
+    }
+    else {
+      this->vertexshader->parameter.setNum(0);
+    }
   }
+
+
   this->vertexshadercache->set(gen.getShaderProgram());
 
   state->pop();
@@ -1206,7 +1216,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (fogType != SoEnvironmentElement::NONE) {
     gen.addMainStatement("color = mix(gl_Fog.color.rgb, color, clamp(fog, 0.0, 1.0));\n");
   }
-  
+
   gen.addMainStatement("gl_FragColor = coin_light_model != 0 ? vec4(color, mydiffuse.a) : mydiffuse;\n");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
@@ -1251,7 +1261,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   str.sprintf("textureMap0");
   texmap->name = str;
   texmap->value = 0;
-  
+
   if (!this->texunit0) {
     this->texunit0 = new SoShaderParameter1i;
     this->texunit0->ref();
@@ -1264,11 +1274,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     this->lightmodel->name = "coin_light_model";
     this->lightmodel->value = 1;
   }
-  
+
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
-  
+
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
