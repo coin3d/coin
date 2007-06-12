@@ -126,12 +126,14 @@ echo >&5 ""
 cat <<"EODATA" >&5
 all: testsuite$(EXEEXT)
 	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
 	PATH=$(top_builddir)/src:$$PATH \
 	./testsuite --log_level=warning --show_progress=yes \
 	  --detect_memory_leaks=0
 
 verbose: testsuite$(EXEEXT)
 	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
 	PATH=$(top_builddir)/src:$$PATH \
 	./testsuite --log_level=all --show_progress=no \
 	  --detect_memory_leaks=0
