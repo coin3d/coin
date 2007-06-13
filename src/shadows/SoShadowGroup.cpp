@@ -1110,13 +1110,15 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "vec4 specular = vec4(0.0);"
                        "vec4 mydiffuse = gl_Color;\n"
                        "vec4 texcolor = (coin_texunit0_model != 0) ? texture2D(textureMap0, gl_TexCoord[0].xy) : vec4(1.0);\n");
+  
 
   gen.addMainStatement("vec3 color = perVertexColor;\n"
                        "vec3 scolor = vec3(0.0);\n"
 		       "float dist;\n"
 		       "float shadeFactor;\n"
 		       "vec3 coord;\n"
-		       "vec4 map;\n");
+		       "vec4 map;\n"
+                       "mydiffuse.a *= texcolor.a;\n");
   
   if (perpixelspot) {
     for (i = 0; i < numspots; i++) {
