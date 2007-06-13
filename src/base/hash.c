@@ -49,14 +49,14 @@ extern "C" {
 /* ********************************************************************** */
 /* private functions */
 
-static unsigned long
-hash_default_hashfunc(const unsigned long key)
+static cc_hash_key
+hash_default_hashfunc(const cc_hash_key key)
 {
   return key;
 }
 
 static unsigned int
-hash_get_index(cc_hash * ht, unsigned long key)
+hash_get_index(cc_hash * ht, cc_hash_key key)
 {
   assert(ht != NULL);
   key = ht->hashfunc(key);
@@ -185,7 +185,7 @@ cc_hash_clear(cc_hash * ht)
 
  */
 SbBool
-cc_hash_put(cc_hash * ht, unsigned long key, void * val)
+cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
 {
   unsigned int i = hash_get_index(ht, key);
   cc_hash_entry * he = ht->buckets[i];
@@ -222,7 +222,7 @@ cc_hash_put(cc_hash * ht, unsigned long key, void * val)
 
 */
 SbBool
-cc_hash_get(cc_hash * ht, unsigned long key, void ** val)
+cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val)
 {
   cc_hash_entry * he;
   unsigned int i = hash_get_index(ht, key);
@@ -242,7 +242,7 @@ cc_hash_get(cc_hash * ht, unsigned long key, void ** val)
   TRUE if found, FALSE otherwise.
 */
 SbBool
-cc_hash_remove(cc_hash * ht, unsigned long key)
+cc_hash_remove(cc_hash * ht, cc_hash_key key)
 {
   cc_hash_entry * he, *next, * prev;
   unsigned int i = hash_get_index(ht, key);

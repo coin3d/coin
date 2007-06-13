@@ -52,21 +52,23 @@ public:
 
   SbDict & operator=(const SbDict & from);
 
-  void applyToAll(void (* rtn)(unsigned long key, void * value)) const;
-  void applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
+  typedef uintptr_t Key;
+
+  void applyToAll(void (* rtn)(Key key, void * value)) const;
+  void applyToAll(void (* rtn)(Key key, void * value, void * data),
                   void * data) const;
   void clear(void);
 
-  SbBool enter(const unsigned long key, void * const value);
-  SbBool find(const unsigned long key, void *& value) const;
+  SbBool enter(const Key key, void * const value);
+  SbBool find(const Key key, void *& value) const;
   void makePList(SbPList & keys, SbPList & values);
-  SbBool remove(const unsigned long key);
+  SbBool remove(const Key key);
 
-  void setHashingFunction(unsigned long (*func)(const unsigned long key));
+  void setHashingFunction(Key (*func)(const Key key));
 
 private:
   struct cc_hash * hashtable;
-  static void copyval(unsigned long key, void * value, void * data);
+  static void copyval(Key key, void * value, void * data);
 };
 
 // *************************************************************************

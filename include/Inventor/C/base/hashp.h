@@ -35,7 +35,7 @@ extern "C" {
 #endif /* __cplusplus */
 
   struct cc_hash_entry {
-    unsigned long key;
+    cc_hash_key key;
     void * val;
     struct cc_hash_entry * next;
   };

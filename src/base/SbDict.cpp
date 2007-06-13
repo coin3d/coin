@@ -98,7 +98,7 @@ SbDict::operator=(const SbDict & from)
   Callback for copying values from one SbDict to another.
 */
 void
-SbDict::copyval(unsigned long key, void * value, void * data)
+SbDict::copyval(Key key, void * value, void * data)
 {
   SbDict * thisp = (SbDict *)data;
   thisp->enter(key, value);
@@ -122,7 +122,7 @@ SbDict::clear(void)
   data is changed to \a value, and \c FALSE is returned.
 */
 SbBool
-SbDict::enter(const unsigned long key, void * const value)
+SbDict::enter(const Key key, void * const value)
 {
   return cc_hash_put(this->hashtable, key, value);
 }
@@ -133,7 +133,7 @@ SbDict::enter(const unsigned long key, void * const value)
   in \a value. Otherwise, \c FALSE is returned.
 */
 SbBool
-SbDict::find(const unsigned long key, void *& value) const
+SbDict::find(const Key key, void *& value) const
 {
   return cc_hash_get(this->hashtable, key, &value);
 }
@@ -143,7 +143,7 @@ SbDict::find(const unsigned long key, void *& value) const
   with this key was present, \c FALSE otherwise.
 */
 SbBool
-SbDict::remove(const unsigned long key)
+SbDict::remove(const Key key)
 {
   return cc_hash_remove(this->hashtable, key);
 }
@@ -154,10 +154,10 @@ SbDict::remove(const unsigned long key)
 // call that function from our dummy callback. This is needed since
 // cc_hash only supports one apply function type.
 extern "C" {
-typedef void sbdict_dummy_apply_func(unsigned long, void *);
+typedef void sbdict_dummy_apply_func(SbDict::Key, void *);
 
 static void
-sbdict_dummy_apply(unsigned long key, void * value, void * closure)
+sbdict_dummy_apply(SbDict::Key key, void * value, void * closure)
 {
   sbdict_dummy_apply_func * func = (sbdict_dummy_apply_func*) closure;
   func(key, value);
@@ -167,7 +167,7 @@ sbdict_dummy_apply(unsigned long key, void * value, void * closure)
   Applies \a rtn to all entries in the dictionary.
 */
 void
-SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
+SbDict::applyToAll(void (* rtn)(Key key, void * value)) const
 {
   cc_hash_apply(this->hashtable, sbdict_dummy_apply, (void*) rtn);
 }
@@ -176,7 +176,7 @@ SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
   \overload
 */
 void
-SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
+SbDict::applyToAll(void (* rtn)(Key key, void * value, void * data),
                    void * data) const
 {
   cc_hash_apply(this->hashtable, (cc_hash_apply_func*)rtn, data);
@@ -189,13 +189,10 @@ typedef struct {
 
 
 static void
-sbdict_makeplist_cb(unsigned long key, void * value, void * closure)
+sbdict_makeplist_cb(SbDict::Key key, void * value, void * closure)
 {
   sbdict_makeplist_data * data = (sbdict_makeplist_data*) closure;
-  // Extra cast through uintptr_t to avoid a warning with MSVC 7 on
-  // 64-bit Windows.
-  const uintptr_t k = key;
-  data->keys->append((void *)k);
+  data->keys->append((void *) key);
   data->values->append(value);
 }
 
@@ -220,12 +217,12 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   clusters in only a few buckets, you should try setting a hashing
   function. If you're for instance using strings, you could use the
   static SbString::hash() function (you'd need to make a static function
-  that will cast from unsigned long to char * of course).
+  that will cast from SbDict::Key to char * of course).
 
   This function is not part of the OIV API.
 */
 void
-SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
+SbDict::setHashingFunction(Key (*func)(const Key key))
 {
   cc_hash_set_hash_func(this->hashtable, (cc_hash_func *)func);
 }

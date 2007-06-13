@@ -38,17 +38,18 @@
 extern "C" {
 #endif /* __cplusplus */
 
+  typedef uintptr_t cc_hash_key;
   typedef struct cc_hash cc_hash;
-  typedef unsigned long cc_hash_func(const unsigned long key);
-  typedef void cc_hash_apply_func(unsigned long key, void * val, void * closure);
+  typedef cc_hash_key cc_hash_func(const cc_hash_key key);
+  typedef void cc_hash_apply_func(cc_hash_key key, void * val, void * closure);
 
   COIN_DLL_API cc_hash * cc_hash_construct(unsigned int size, float loadfactor);
   COIN_DLL_API void cc_hash_destruct(cc_hash * ht);
   COIN_DLL_API void cc_hash_clear(cc_hash * ht);
 
-  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, unsigned long key, void * val);
-  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, unsigned long key, void ** val);
-  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, unsigned long key);
+  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, cc_hash_key key, void * val);
+  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val);
+  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, cc_hash_key key);
   COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure);
 
   COIN_DLL_API unsigned int cc_hash_get_num_elements(cc_hash * ht);
