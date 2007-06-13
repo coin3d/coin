@@ -112,6 +112,12 @@ SoGLShaderProgram::disable(SoState * state)
   }
 }
 
+SbBool 
+SoGLShaderProgram::isEnabled(void) const
+{
+  return this->isenabled;
+}
+
 void
 SoGLShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
                                      void * closure)
