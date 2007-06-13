@@ -461,6 +461,7 @@ public:
   SoShadowGroupP(SoShadowGroup * master) :
     master(master),
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
+    matrixaction(SbViewportRegion(SbVec2s(100,100))),
     spotlightsvalid(FALSE),
     shaderprogram(NULL),
     vertexshader(NULL),
@@ -537,6 +538,7 @@ public:
   SoShadowGroup * master;
   SoSearchAction search;
   SoGetBoundingBoxAction bboxaction;
+  SoGetMatrixAction matrixaction;
 
   SbBool spotlightsvalid;
   SbList <SoShadowSpotLightCache*> spotlights;
@@ -680,32 +682,46 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     this->search.apply(PUBLIC(this));
     SoPathList & pl = this->search.getPaths();
 
-    if (pl.getLength() != this->spotlights.getLength()) {
+    int numlights = 0;
+    for (i = 0; i < pl.getLength(); i++) {
+      SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)(pl[i]))->getTail();
+      if (sl->on.getValue()) numlights++;
+    }
+    
+    if (numlights != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
-
-        SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
-                                                                    gaussmatrixsize, gaussstandarddeviation);
-        this->spotlights.append(cache);
+        SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)pl[i])->getTail();
+        if (sl->on.getValue()) {
+          SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
+                                                                      gaussmatrixsize, gaussstandarddeviation);
+          this->spotlights.append(cache);
+        }
       }
     }
     // validate if spot light paths are still valid
+    int i2 = 0;
     for (i = 0; i < pl.getLength(); i++) {
       SoPath * path = pl[i];
-      SoShadowSpotLightCache * cache = this->spotlights[i];
-      int unit = (maxunits - 1) - i;
-      if (unit != cache->texunit) {
-        if (this->vertexshadercache) this->vertexshadercache->invalidate();
-        if (this->fragmentshadercache) this->fragmentshadercache->invalidate();
-        cache->texunit = unit;
-      }
-      if (*(cache->path) != *path) {
-        cache->path->unref();
-        cache->path = path->copy();
-      }
       SoSpotLight * sl = (SoSpotLight*) ((SoFullPath*)path)->getTail();
-      this->updateCamera(cache, SbMatrix::identity());
+      if (sl->on.getValue()) {
+        SoShadowSpotLightCache * cache = this->spotlights[i2];
+        int unit = (maxunits - 1) - i2;
+        if (unit != cache->texunit) {
+          if (this->vertexshadercache) this->vertexshadercache->invalidate();
+          if (this->fragmentshadercache) this->fragmentshadercache->invalidate();
+          cache->texunit = unit;
+        }
+        if (*(cache->path) != *path) {
+          cache->path->unref();
+          cache->path = path->copy();
+        }
+        this->matrixaction.apply(path);
+
+        this->updateCamera(cache, this->matrixaction.getMatrix());
+        i2++;
+      }
     }
     this->spotlightsvalid = TRUE;
   }
@@ -753,8 +769,8 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   transform.multVecMatrix(pos, pos);
   cam->position.setValue(pos);
 
-
   SbVec3f dir = light->direction.getValue();
+  transform.multDirMatrix(dir, dir);
   (void) dir.normalize();
 
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
