@@ -1396,6 +1396,18 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
     cc_glglue_glext_supported(glue, "GL_ARB_texture_float");
 
   if (!supported || !PUBLIC(this)->isActive.getValue()) {
+    if (!supported && PUBLIC(this)->isActive.getValue()) {
+      static int first = 1;
+      if (first) {
+        first = 0;
+        SbString msg("Unable to render shadows.");
+        if (!cc_glglue_has_framebuffer_objects(glue)) msg += " Frame buffer objects not supported.";
+        if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) " OpenGL version < 2.0.";
+        if (!cc_glglue_glext_supported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
+        SoDebugError::postWarning("SoShadowGroupP::GLRender",
+                                  msg.getString());
+      }
+    }
     if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
     else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
     return;
