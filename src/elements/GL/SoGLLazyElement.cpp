@@ -593,7 +593,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
       case LIGHT_MODEL_CASE:
         if (this->coinstate.lightmodel != this->glstate.lightmodel) {
           SoGLShaderProgram * prog = SoGLShaderProgramElement::get((SoState*) stateptr);
-          if (prog) prog->updateCoinParameter((SoState*)stateptr, SbName("coin_light_model"));
+          if (prog) prog->updateCoinParameter((SoState*)stateptr, SbName("coin_light_model"), this->coinstate.lightmodel);
           this->sendLightModel(this->coinstate.lightmodel);
         }
         break;

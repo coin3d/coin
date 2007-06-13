@@ -61,7 +61,7 @@ public:
   static SbBool didOpenGLErrorOccur(int objType);
   static void printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int objType);
 
-  virtual void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param);
+  virtual void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value);
 
 private:
   COIN_GLhandle programHandle;

@@ -222,24 +222,15 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
 #include <stdio.h>
 
 void 
-SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param)
+SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value)
 {
   COIN_GLhandle pHandle = this->programHandle;
   if (pHandle) {
     const cc_glglue * glue = this->GLContext();
     
     // FIXME: set up a dict for the supported Coin variables 
-    int value = 0;
     SoShaderParameter1i * p = (SoShaderParameter1i*) param;
     
-    if (name == SbName("coin_texunit0_model")) {
-      SoTextureImageElement::Model model;
-      SbColor dummy;
-      value =  SoGLTextureImageElement::get(state, model, dummy) != NULL;
-    }
-    else if (name == SbName("coin_light_model")) {
-      value = (int) SoLightModelElement::get(state);
-    }
     if (p) {
       if (p->value.getValue() != value) p->value = value;
     }

@@ -49,7 +49,7 @@ public:
   void disable(const cc_glglue * g);
   void postShouldLink(void);
 
-  void updateCoinParameter(SoState * state, const SbName & name);
+  void updateCoinParameter(SoState * state, const SbName & name, const int value);
   void addProgramParameter(int mode, int value);
   void removeProgramParameters(void);
 

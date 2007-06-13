@@ -121,17 +121,17 @@ SoGLShaderProgram::setEnableCallback(SoShaderProgramEnableCB * cb,
 }
 
 void
-SoGLShaderProgram::updateCoinParameter(SoState * state, const SbName & name)
+SoGLShaderProgram::updateCoinParameter(SoState * state, const SbName & name, const int value)
 {
   if (this->glslShaderProgram) {
     SbBool enabled = this->isenabled;
     if (!enabled) this->enable(state);
-    this->glslShaderProgram->updateCoinParameter(state, name);
+    this->glslShaderProgram->updateCoinParameter(state, name, value);
     if (!enabled) this->disable(state);
   }
 }
 
-void 
+void
 SoGLShaderProgram::addProgramParameter(int name, int value)
 {
   if (this->glslShaderProgram) {

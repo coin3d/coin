@@ -59,7 +59,7 @@ public:
   SbString getSourceHint(void);
 #endif
 
-  void updateCoinParameter(SoState * state, const SbName & name);
+  void updateCoinParameter(SoState * state, const SbName & name, const int value);
   void addProgramParameter(int name, int value);
 
 private:
