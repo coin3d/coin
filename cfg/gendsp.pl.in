@@ -586,6 +586,7 @@ $dependfile = "";
 $studiofile = "";
 $installstudiofile = "";
 $uninstallstudiofile = "";
+$docstudiofile = "";
 $outputfile = "";
 
 $LIBRARY = "";
@@ -628,8 +629,10 @@ for $arg (@ARGV) {
       $studiofile =~ s/^.*=//g;
       $installstudiofile = $studiofile;
       $uninstallstudiofile = $studiofile;
+      $docstudiofile = $studiofile;
       $installstudiofile =~ s/.dsp/_install.dsp/;
       $uninstallstudiofile =~ s/.dsp/_uninstall.dsp/;
+      $docstudiofile =~ s/.dsp/_docs.dsp/;
       # FIXME: we don't get the -D*_INTERNAL flag when closing, so we
       # have to set up the variables here too.
       $library = $studiofile;
@@ -707,6 +710,12 @@ if ( -f $studiofile ) {
     "..\\misc\\uninstall-headers.bat"
   );
 
+  @docsrcfiles = (
+    "..\\misc\\build-docs.bat",
+    "docs\\${library}\@${LIBRARY}_MAJOR_VERSION\@.doxygen",
+    "html\\index.html"
+  );
+
   &CreateScriptDSP($installstudiofile,
                    "${library}\@${LIBRARY}_MAJOR_VERSION\@_install",
                    "..\\misc\\install-sdk.bat",
@@ -716,6 +725,11 @@ if ( -f $studiofile ) {
                    "${library}\@${LIBRARY}_MAJOR_VERSION\@_uninstall",
                    "..\\misc\\uninstall-sdk.bat",
                    @uninstallrcfiles);
+
+  &CreateScriptDSP($docstudiofile,
+                   "${library}\@${LIBRARY}_MAJOR_VERSION\@_docs",
+                   "..\\misc\\build-docs.bat",
+                   @docsrcfiles);
 
   open(DSP, ">${studiofile}");
   print DSP <<"_EODSP";
@@ -1354,6 +1368,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "${library}\@${LIBRARY}_MAJOR_VERSION\@_docs"=.\\${library}\@${LIBRARY}_MAJOR_VERSION\@_docs.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Global:
 
 Package=<5>
@@ -1374,6 +1400,7 @@ _EODSW
   SubstFile($studiofile);
   SubstFile($installstudiofile);
   SubstFile($uninstallstudiofile);
+  SubstFile($docstudiofile);
   SubstFile($workspacefile);
   $installheadersfile = $studiofile;
   $installheadersfile =~ s,([^\\/0-9]*)[0-9][^\\/]*\.dsp,install-headers.bat,;
@@ -1442,6 +1469,7 @@ _EODSW
   CRLFFile($studiofile);
   CRLFFile($installstudiofile);
   CRLFFile($uninstallstudiofile);
+  CRLFFile($docstudiofile);
   CRLFFile($workspacefile);
   # clean out temporary files
 

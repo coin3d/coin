@@ -69,56 +69,11 @@
 #endif // COIN_THREADSAFE
 
 #include "SoSceneManagerP.h"
+#include "SoRenderManager.h"
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
-// *************************************************************************
-
-// This class inherits SoNodeSensor and overrides its notify() method
-// to provide a means of debugging notifications on the root node.
-//
-// Good for debugging cases when there are continuous redraws due to
-// scene graph changes we have no clue as to the source of.
-//
-// A sensor of this class is only made if the below debugging envvar
-// is set. Otherwise, and ordinary SoNodeSensor is used instead.
-
-class SoSceneManagerRootSensor : public SoNodeSensor {
-  typedef SoNodeSensor inherited;
-
-public:
-  SoSceneManagerRootSensor(SoSensorCB * func, void * data) : inherited(func, data) { }
-  virtual ~SoSceneManagerRootSensor() { }
-
-  virtual void notify(SoNotList * l);
-
-  static SbBool debug(void);
-
-private:
-  static int debugrootnotifications;
-};
-
-int SoSceneManagerRootSensor::debugrootnotifications = -1;
-
-void
-SoSceneManagerRootSensor::notify(SoNotList * l)
-{
-  l->print();
-  (void)fprintf(stdout, "end\n");
-
-  inherited::notify(l);
-}
-
-SbBool
-SoSceneManagerRootSensor::debug(void)
-{
-  if (SoSceneManagerRootSensor::debugrootnotifications == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_ROOT_NOTIFICATIONS");
-    SoSceneManagerRootSensor::debugrootnotifications = env && (atoi(env) > 0);
-  }
-  return SoSceneManagerRootSensor::debugrootnotifications ? TRUE : FALSE;
-}
 
 // *************************************************************************
 
@@ -152,11 +107,11 @@ SoSceneManager::SoSceneManager(void)
   PRIVATE(this)->deletehandleeventaction = TRUE;
 
   PRIVATE(this)->scene = NULL;
-  PRIVATE(this)->rootsensor = NULL;
   PRIVATE(this)->redrawshot = NULL;
 
   PRIVATE(this)->backgroundindex = 0;
   PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
+
   // rgbmode by default
   PRIVATE(this)->flags = SoSceneManagerP::FLAG_RGBMODE;
   PRIVATE(this)->redrawpri = SoSceneManager::getDefaultRedrawPriority();
@@ -167,6 +122,8 @@ SoSceneManager::SoSceneManager(void)
   PRIVATE(this)->rendermode = AS_IS;
   PRIVATE(this)->stereomode = MONO;
   PRIVATE(this)->stereooffset = 1.0f;
+
+  this->rendermanager = new SoRenderManager(this);
 }
 
 /*!
@@ -179,9 +136,8 @@ SoSceneManager::~SoSceneManager()
   if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
 
   this->setSceneGraph(NULL);
-  delete PRIVATE(this)->rootsensor;
+  delete this->rendermanager;
   delete PRIVATE(this)->redrawshot;
-
   delete PRIVATE(this);
 }
 
@@ -245,7 +201,7 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   values before rendering.
 
   \COIN_FUNCTION_EXTENSION
-
+  
   \since Coin 2.0
  */
 void
@@ -254,9 +210,7 @@ SoSceneManager::render(SoGLRenderAction * action,
                        const SbBool clearwindow,
                        const SbBool clearzbuffer)
 {
-  (PRIVATE(this)->stereomode == MONO) ?
-    PRIVATE(this)->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
-    PRIVATE(this)->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
+  this->rendermanager->render(action, initmatrices, clearwindow, clearzbuffer);
 }
 
 /*!
@@ -319,6 +273,15 @@ SoSceneManager::setDoubleBuffer(const SbBool enable)
 }
 
 /*!
+  returns if the scenemanager is double buffered
+ */
+SbBool 
+SoSceneManager::isDoubleBuffer(void) const
+{
+  return PRIVATE(this)->doublebuffer;
+}
+
+/*!
   Sets the render mode.
 */
 void 
@@ -343,7 +306,7 @@ void
 SoSceneManager::setStereoMode(const StereoMode mode)
 {
   PRIVATE(this)->stereomode = mode;
-  PRIVATE(this)->dummynode->touch();
+  this->rendermanager->touch();
 }
 
 /*!
@@ -362,7 +325,7 @@ void
 SoSceneManager::setStereoOffset(const float offset)
 {
   PRIVATE(this)->stereooffset = offset;
-  PRIVATE(this)->dummynode->touch();
+  this->rendermanager->touch();
 }
 
 /*!
@@ -393,7 +356,7 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  PRIVATE(this)->lock();
+  this->rendermanager->lock();
   if (PRIVATE(this)->isActive() && PRIVATE(this)->rendercb) {
     if (!PRIVATE(this)->redrawshot) {
       PRIVATE(this)->redrawshot =
@@ -408,7 +371,7 @@ SoSceneManager::scheduleRedraw(void)
 #endif // debug
     PRIVATE(this)->redrawshot->schedule();
   }
-  PRIVATE(this)->unlock();
+  this->rendermanager->unlock();
 }
 
 /*!
@@ -442,7 +405,8 @@ SoSceneManager::redraw(void)
 void
 SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
-  if (PRIVATE(this)->rootsensor) PRIVATE(this)->rootsensor->detach();
+  assert(this->rendermanager);
+  this->rendermanager->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
   SoNode * oldroot = PRIVATE(this)->scene;
@@ -451,19 +415,7 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
-
-    if (!PRIVATE(this)->rootsensor) {
-      SoNodeSensor * n;
-      if (SoSceneManagerRootSensor::debug()) {
-        n = new SoSceneManagerRootSensor(SoSceneManagerP::nodesensorCB, this);
-      }
-      else {
-        n = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
-      }
-      PRIVATE(this)->rootsensor = n;
-    }
-
-    PRIVATE(this)->rootsensor->attach(sceneroot);
+    this->rendermanager->attachRootSensor(sceneroot);
   }
 
   if (oldroot) oldroot->unref();
@@ -672,12 +624,9 @@ SoSceneManager::getBackgroundIndex(void) const
 void
 SoSceneManager::setRGBMode(const SbBool flag)
 {
-  if (flag) {
-    PRIVATE(this)->flags |= SoSceneManagerP::FLAG_RGBMODE;
-  }
-  else {
+  flag ?
+    PRIVATE(this)->flags |= SoSceneManagerP::FLAG_RGBMODE:
     PRIVATE(this)->flags &= ~SoSceneManagerP::FLAG_RGBMODE;
-  }
 }
 
 /*!

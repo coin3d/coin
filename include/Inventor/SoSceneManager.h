@@ -79,6 +79,7 @@ public:
   void setCamera(SoCamera * camera);
   SoCamera * getCamera(void) const;
   void setDoubleBuffer(const SbBool enable);
+  SbBool isDoubleBuffer(void) const;
   void setRenderMode(const RenderMode mode);
   RenderMode getRenderMode(void) const;
   void setStereoMode(const StereoMode mode);
@@ -129,8 +130,9 @@ protected:
   void redraw(void);
 
 private:
-  class SoSceneManagerP * pimpl;
+  class SoRenderManager * rendermanager;
   friend class SoSceneManagerP;
+  class SoSceneManagerP * pimpl;
 };
 
 #endif // !COIN_SOSCENEMANAGER_H

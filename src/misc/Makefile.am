@@ -26,6 +26,7 @@ RegularSources = \
 	SoProtoInstance.cpp \
 	SoSceneManager.cpp \
 	SoSceneManagerP.cpp \
+        SoRenderManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
 	SoOffscreenAGLData.cpp \
@@ -65,6 +66,7 @@ PrivateHeaders = \
 	SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h \
         SoSceneManagerP.h \
+        SoRenderManager.h \
 	cppmangle.icc \
 	systemsanity.icc
 ObsoleteHeaders =
