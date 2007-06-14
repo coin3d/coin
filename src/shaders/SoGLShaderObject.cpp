@@ -90,7 +90,7 @@ SoGLShaderObject::getParametersDirty(void) const
   return this->paramsdirty;
 }
 
-void 
-SoGLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param)
+void
+SoGLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int val)
 {
 }

@@ -44,7 +44,7 @@ class SoGLShaderObject
 {
 public:
   SoGLShaderObject(const uint32_t cachecontext);
-  virtual ~SoGLShaderObject() { } 
+  virtual ~SoGLShaderObject() { }
 
   const cc_glglue * GLContext(void) const;
   uint32_t getCacheContext(void) const;
@@ -55,7 +55,7 @@ public:
   virtual SoShader::Type shaderType(void) const = 0;
   virtual SoGLShaderParameter* getNewParameter(void) const = 0;
   virtual void updateCoinParameter(SoState * state, const SbName & name,
-                                   SoShaderParameter * param = NULL);
+                                   SoShaderParameter * param, const int val);
 
 public:
 
@@ -70,7 +70,7 @@ public:
 
   void setIsActive(SbBool flag);
   SbBool isActive(void) const;
-  
+
   void setParametersDirty(SbBool flag);
   SbBool getParametersDirty(void) const;
 
@@ -89,4 +89,3 @@ private:
 };
 
 #endif /* ! COIN_SOGLSHADEROBJECT_H */
-

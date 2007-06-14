@@ -620,7 +620,8 @@ SoShaderObjectP::updateParameters(const uint32_t cachecontext, int start, int nu
   }
 }
 
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 void
 SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * state)
@@ -635,7 +636,15 @@ SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * sta
     SbName name = param->name.getValue();
 
     if (strncmp(name.getString(), "coin_", 5) == 0) {
-      shaderobject->updateCoinParameter(state, name);
+      if (name == "coin_texunit0_model") {
+        SoTextureImageElement::Model model;
+        SbColor dummy;
+        SbBool tex = SoGLTextureImageElement::get(state, model, dummy) != NULL;
+        shaderobject->updateCoinParameter(state, name, NULL, tex ? model : 0);
+      }
+      else if (name == "coin_light_model") {
+        shaderobject->updateCoinParameter(state, name, NULL, SoLazyElement::getLightModel(state));
+      }
     }
   }
 }
