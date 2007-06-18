@@ -56,13 +56,8 @@ void
 SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
                               SoGLShaderProgram* program)
 {
-  // don't supply node in getElement() (just supply NULL) since this
-  // will create a cache dependeny.  shader programs shouldn't affect
-  // the caches, but it should be possible to change a shader variable
-  // without invalidating render caches.  pederb, 2007-06-14
-
   SoGLShaderProgramElement* element =
-    (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, NULL);
+    (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, node);
   if (program != element->shaderProgram) {
     if (element->shaderProgram) element->shaderProgram->disable(state);
     element->shaderProgram = program;
