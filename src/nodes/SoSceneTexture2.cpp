@@ -333,9 +333,11 @@ public:
   SoGLRenderAction * glaction;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
   
-  void createFramebufferObjects(const cc_glglue * glue, SoState * state);
+  SbBool createFramebufferObjects(const cc_glglue * glue, SoState * state,
+                                  const SoSceneTexture2::Type type,
+                                  const SbBool warn);
   void deleteFrameBufferObjects(const cc_glglue * glue, SoState * state);
-  SbBool checkFramebufferStatus(const cc_glglue * glue);
+  SbBool checkFramebufferStatus(const cc_glglue * glue, const SbBool warn);
   
   GLuint fbo_frameBuffer;
   GLuint fbo_depthBuffer;
@@ -740,9 +742,22 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
       }
       this->glimage->setFlags(flags);
     }
+
+    SbBool finished = FALSE;
     
-    this->deleteFrameBufferObjects(glue, state);
-    this->createFramebufferObjects(glue, state);
+    SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
+    while (!finished) {
+      this->deleteFrameBufferObjects(glue, state);
+      finished = TRUE;
+      SbBool warn = type == SoSceneTexture2::RGBA32F ? FALSE : TRUE;
+
+      if (!this->createFramebufferObjects(glue, state, type, warn)) {
+        if (type == SoSceneTexture2::RGBA32F) { // common case. Fall back to 16 bit floating point textures
+          type = SoSceneTexture2::RGBA16F;
+          finished = FALSE;
+        }
+      }
+    }
 
     // FIXME: for some reason we need to do this every frame. Investigate why.
     if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
@@ -776,7 +791,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 
   // set up framebuffer for rendering
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
-  this->checkFramebufferStatus(glue);
+  this->checkFramebufferStatus(glue, TRUE);
 
   SoViewportRegionElement::set(state, SbViewportRegion(this->fbo_size));  
   SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
@@ -808,10 +823,8 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, 0);
   }
   
-
-
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
-  this->checkFramebufferStatus(glue);
+  this->checkFramebufferStatus(glue, TRUE);
 
   // restore old clear color
   glClearColor(oldclearcolor[0], oldclearcolor[1], oldclearcolor[2], oldclearcolor[3]);
@@ -1069,15 +1082,15 @@ static void soscenetexture2_translate_type(SoSceneTexture2::Type type, GLenum & 
   }
 }
 
-void 
-SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state)
+SbBool
+SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * state,
+                                           const SoSceneTexture2::Type type,
+                                           const SbBool warn)
 {
   assert(this->fbo_texture == NULL);
   assert(this->fbo_depthmap == NULL);
   assert(this->fbo_frameBuffer == GL_INVALID_VALUE);
   assert(this->fbo_depthBuffer == GL_INVALID_VALUE);
-
-  SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
 
   cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
@@ -1195,8 +1208,15 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                                       GL_RENDERBUFFER_EXT, 
                                       this->fbo_depthBuffer);
   
-  this->checkFramebufferStatus(glue);
-	cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);
+  SbBool ret = this->checkFramebufferStatus(glue, warn);
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);
+
+  // just testing
+  if (type == SoSceneTexture2::RGBA32F) {
+    return FALSE;
+  }
+
+  return ret;
 }
 
 void 
@@ -1210,23 +1230,23 @@ SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * sta
     this->fbo_depthmap->unref(state);
     this->fbo_depthmap = NULL;
   }
-	if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
-		cc_glglue_glDeleteFramebuffers(glue, 1, &this->fbo_frameBuffer);
+  if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
+    cc_glglue_glDeleteFramebuffers(glue, 1, &this->fbo_frameBuffer);
     this->fbo_frameBuffer = GL_INVALID_VALUE;
   }
-	if (this->fbo_depthBuffer != GL_INVALID_VALUE) {
-		cc_glglue_glDeleteRenderbuffers(glue, 1, &this->fbo_depthBuffer);
+  if (this->fbo_depthBuffer != GL_INVALID_VALUE) {
+    cc_glglue_glDeleteRenderbuffers(glue, 1, &this->fbo_depthBuffer);
     this->fbo_depthBuffer = GL_INVALID_VALUE;
   }
 }
 
 SbBool
-SoSceneTexture2P::checkFramebufferStatus(const cc_glglue * glue)
+SoSceneTexture2P::checkFramebufferStatus(const cc_glglue * glue, const SbBool warn)
 {
   // check if the buffers have been successfully set up
-	GLenum status = cc_glglue_glCheckFramebufferStatus(glue, GL_FRAMEBUFFER_EXT);
+  GLenum status = cc_glglue_glCheckFramebufferStatus(glue, GL_FRAMEBUFFER_EXT);
   SbString error("");
-	switch (status){
+  switch (status){
   case GL_FRAMEBUFFER_COMPLETE_EXT:
     break;
   case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
@@ -1251,11 +1271,12 @@ SoSceneTexture2P::checkFramebufferStatus(const cc_glglue * glue)
     error = "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT\n";
     break;
   default: break;
-	}
+  }
   if (error != "") {
-    SoDebugError::post("SoSceneTexture2P::createFramebufferObjects", 
-                       "GL Framebuffer error: %s", error.getString());
-    // FIXME: should fall back to pbuffers if possible
+    if (warn) {
+      SoDebugError::post("SoSceneTexture2P::createFramebufferObjects", 
+                         "GL Framebuffer error: %s", error.getString());
+    }
     return FALSE;
   }
   return TRUE;
