@@ -29,6 +29,9 @@
 #include "SoGLCgShaderObject.h"
 #include "SoGLSLShaderObject.h"
 
+
+static uint32_t shaderid = 0;
+
 // *************************************************************************
 
 SoGLShaderObject::SoGLShaderObject(const uint32_t cachecontext)
@@ -38,6 +41,7 @@ SoGLShaderObject::SoGLShaderObject(const uint32_t cachecontext)
   this->paramsdirty = TRUE;
   this->glctx = cc_glglue_instance(cachecontext);
   this->cachecontext = cachecontext;
+  this->id = ++shaderid;
 }
 
 const cc_glglue *
@@ -93,4 +97,10 @@ SoGLShaderObject::getParametersDirty(void) const
 void
 SoGLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int val)
 {
+}
+
+uint32_t 
+SoGLShaderObject::getShaderObjectId(void) const
+{
+  return this->id;
 }

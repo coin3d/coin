@@ -56,6 +56,7 @@ SoGLShaderProgram::~SoGLShaderProgram()
 void
 SoGLShaderProgram::addShaderObject(SoGLShaderObject *shader)
 {
+  this->objectids.append(shader->getShaderObjectId());
   switch (shader->shaderType()) {
   case SoShader::ARB_SHADER:
     this->arbShaderProgram->addShaderObject((SoGLARBShaderObject*)shader);
@@ -78,6 +79,7 @@ SoGLShaderProgram::removeShaderObjects(void)
   this->cgShaderProgram->removeShaderObjects();
   this->glslShaderProgram->removeShaderObjects();
   this->glslShaderProgram->removeProgramParameters();
+  this->objectids.truncate(0);
 }
 
 void
@@ -143,6 +145,12 @@ SoGLShaderProgram::addProgramParameter(int name, int value)
   if (this->glslShaderProgram) {
     this->glslShaderProgram->addProgramParameter(name, value);
   }
+}
+
+void 
+SoGLShaderProgram::getShaderObjectIds(SbList <uint32_t> & ids) const
+{
+  ids = this->objectids;
 }
 
 

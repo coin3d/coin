@@ -33,6 +33,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/nodes/SoShaderProgram.h>
+#include <Inventor/lists/SbList.h>
 
 class SoGLShaderObject;
 class SoState;
@@ -62,6 +63,8 @@ public:
   void updateCoinParameter(SoState * state, const SbName & name, const int value);
   void addProgramParameter(int name, int value);
 
+  void getShaderObjectIds(SbList <uint32_t> & ids) const;
+
 private:
 
   class SoGLARBShaderProgram * arbShaderProgram;
@@ -71,6 +74,7 @@ private:
   SbBool isenabled;
   SoShaderProgramEnableCB * enablecb;
   void * enablecbclosure;
+  SbList <uint32_t> objectids;
 };
 
 #endif /* ! COIN_SOGLSHADERPROGRAM_H */

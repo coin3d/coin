@@ -94,3 +94,29 @@ SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
     if (this->shaderProgram) this->shaderProgram->enable(state);
   }
 }
+
+SbBool 
+SoGLShaderProgramElement::matches(const SoElement * element) const
+{
+  SoGLShaderProgramElement * elem = (SoGLShaderProgramElement*) element;
+
+  if (elem->shaderProgram) {
+    // just use elem->objectid to avoid allocating a new SbList
+    elem->objectids.truncate(0);
+    elem->shaderProgram->getShaderObjectIds(elem->objectids);
+    return this->objectids == elem->objectids;    
+  } 
+  // no shader program, return TRUE if cache had no shader objects
+  return this->objectids.getLength() == 0;
+}
+
+SoElement * 
+SoGLShaderProgramElement::copyMatchInfo(void) const
+{
+  assert(getTypeId().canCreateInstance());
+  SoGLShaderProgramElement * element =
+    (SoGLShaderProgramElement *)(getTypeId().createInstance());
+  
+  if (this->shaderProgram) this->shaderProgram->getShaderObjectIds(element->objectids);
+  return element;
+}

@@ -57,6 +57,8 @@ public:
   virtual void updateCoinParameter(SoState * state, const SbName & name,
                                    SoShaderParameter * param, const int val);
 
+  uint32_t getShaderObjectId(void) const;
+
 public:
 
   enum ShaderType {
@@ -86,6 +88,7 @@ private:
   ShaderType shadertype;
   SbBool isActiveFlag ;
   SbBool paramsdirty;
+  uint32_t id;
 };
 
 #endif /* ! COIN_SOGLSHADEROBJECT_H */

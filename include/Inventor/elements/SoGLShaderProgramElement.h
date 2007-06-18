@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/lists/SbList.h>
 
 class SoGLShaderProgram;
 
@@ -44,12 +45,16 @@ public:
   virtual void push(SoState *);
   virtual void pop(SoState * state, const SoElement *prevTopElement);
 
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
+
 SoINTERNAL public:
   static void initClass(void);
   SoGLShaderProgram *shaderProgram;
 
 private:
   virtual ~SoGLShaderProgramElement();
+  SbList <uint32_t> objectids;
 };
 
 #endif /* ! COIN_SOSHADERPROGRAMELEMENT_H */
