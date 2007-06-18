@@ -29,7 +29,9 @@ if $proper; then
 
   ../../configure --enable-msvcdsp --with-msvcrt=mt \
     --enable-3ds-import \
-    --disable-debug --disable-symbols --enable-optimization || exit 1;
+    --disable-debug --disable-symbols --enable-optimization \
+    --enable-html \
+    || exit 1;
   mv include/config.h include/config-release.h;
 
   cp ../misc/config-wrapper.h include/config.h;

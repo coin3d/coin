@@ -467,10 +467,12 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBSPTree.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbClip.h \
@@ -489,17 +491,30 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbString.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbTesselator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbTime.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4us.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ui32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewVolume.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewportRegion.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoDB.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoFullPath.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoInput.h \
@@ -631,6 +646,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBitMask.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBool.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColorRGBA.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFDouble.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEngine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEnum.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFFloat.h \
@@ -646,13 +663,38 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFTime.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUInt32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4us.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ui32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMField.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBitMask.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBool.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColorRGBA.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFDouble.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEngine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEnum.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFFloat.h \
@@ -671,11 +713,24 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFTrigger.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUInt32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3i32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4us.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ui32.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4d.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSField.h \
                          @path_tag@@coin_src_dir@/include/Inventor/lists/SbIntList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/lists/SbList.h \
@@ -1008,12 +1063,20 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/base/SbString.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbTesselator.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbTime.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2b.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2i32.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3b.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3i32.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3d.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4b.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4s.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4i32.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec4d.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewVolume.cpp \
@@ -1116,6 +1179,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/fields/SoMFBitMask.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFBool.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFColor.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFColorRGBA.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFDouble.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFEngine.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFEnum.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFFloat.cpp \
@@ -1131,13 +1196,38 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/fields/SoMFTime.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFUInt32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFUShort.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2i32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3i32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ub.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4us.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ui32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4d.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMField.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBitMask.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBool.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3d.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFColor.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFColorRGBA.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFDouble.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFEngine.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFEnum.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFFloat.cpp \
@@ -1156,9 +1246,24 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/fields/SoSFTrigger.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFUInt32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFUShort.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2i32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3i32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4b.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ub.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4us.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ui32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4d.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSField.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoInput.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoOutput.cpp \
