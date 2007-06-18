@@ -144,7 +144,7 @@ SOURCE=docs\coin3.doxygen
 # End Source File
 # Begin Source File
 
-SOURCE=html\index.html
+SOURCE=..\html\index.html
 # End Source File
 # End Group
 # End Target

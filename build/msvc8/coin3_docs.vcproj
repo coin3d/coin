@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="coin3_uninstall"
-	ProjectGUID="{CA0E840F-D048-41B6-B8E3-5DC40532F610}"
+	Name="coin3_docs"
+	ProjectGUID="{33CD40DA-E0F0-445F-BF4D-A5896971C4E2}"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>
@@ -15,6 +15,29 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
+			Name="LIB (Debug)|Win32"
+			OutputDirectory=".\StaticDebug"
+			IntermediateDirectory=".\StaticDebug"
+			ConfigurationType="0"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\build-docs.bat lib debug msvc8 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc8 coin3 "
+				CleanCommandLine=""
+				Output="coin3_docs.exe"
+				PreprocessorDefinitions=""
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
 			Name="DLL (Release)|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
@@ -25,10 +48,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc8 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll release msvc8 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc8 coin3 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -48,10 +71,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc8 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll debug msvc8 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc8 coin3 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -71,33 +94,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc8 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat lib release msvc8 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc8 coin3 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
-				PreprocessorDefinitions=""
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
-			/>
-		</Configuration>
-		<Configuration
-			Name="LIB (Debug)|Win32"
-			OutputDirectory=".\StaticDebug"
-			IntermediateDirectory=".\StaticDebug"
-			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc8 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc8 coin3 "
-				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -115,11 +115,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;bat"
 			>
 			<File
-				RelativePath="..\misc\uninstall-headers.bat"
+				RelativePath="..\misc\build-docs.bat"
 				>
 			</File>
 			<File
-				RelativePath="..\misc\uninstall-sdk.bat"
+				RelativePath="docs\coin3.doxygen"
+				>
+			</File>
+			<File
+				RelativePath="..\html\index.html"
 				>
 			</File>
 		</Filter>

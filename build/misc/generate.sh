@@ -1,13 +1,29 @@
-#! /bin/sh
+#! /bin/bash
 #
 # This manages the generation of the Visual Studio build files for Windows.
-#
-# 20041214 larsa
+
+project=coin3
+
+function cleansolution() {
+  name=$1;
+  rm -f ${name}.dsw ${name}.sln;
+}
+
+function cleanproject() {
+  name=$1;
+  rm -f ${name}.dsp ${name}.vcproj;
+}
 
 proper=true;
 
-rm -f coin3.dsp coin3.dsw coin3.vcproj coin3.sln;
+cleansolution ${project}
+cleanproject ${project}
+cleanproject ${project}_install
+cleanproject ${project}_uninstall
+cleanproject ${project}_docs
+
 rm -f ../misc/install-headers.bat ../misc/uninstall-headers.bat;
+rm -f install-headers.bat uninstall-headers.bat;
 
 if $proper; then
   rm -rf src;
@@ -30,7 +46,6 @@ if $proper; then
   ../../configure --enable-msvcdsp --with-msvcrt=mt \
     --enable-3ds-import \
     --disable-debug --disable-symbols --enable-optimization \
-    --enable-html \
     || exit 1;
   mv include/config.h include/config-release.h;
 
@@ -50,7 +65,7 @@ if $proper; then
     -e 's/$/\r/g' \
     <coin3.dsp >new.dsp
 
-  mv new.dsp coin3.dsp
+  mv new.dsp ${project}.dsp
 
   sed \
     -e "s/$build/./g" \
@@ -63,17 +78,30 @@ if $proper; then
   mv new.bat ../misc/install-headers.bat
 fi
 
+make docs/coin.doxygen
+mv docs/coin.doxygen docs/doxygen.bak
+sed \
+  -e "s/$build/./g" \
+  -e "s/$build_pwd//g" \
+  -e "s/$source/..\\\\../g" \
+  -e "s/$source_pwd/..\\\\../g" \
+  -e "s/GENERATE_HTML.*=.*NO/GENERATE_HTML = YES/g" \
+  -e "s/HTML_OUTPUT.*=.*/HTML_OUTPUT = ..\\\\html/g" \
+  -e 's/$/\r/g' \
+  <docs/doxygen.bak >docs/${project}.doxygen
+rm docs/doxygen.bak
+
 echo "Done."
-echo "Make sure the coin3.dsp file does not contain any absolute paths."
+echo "Make sure the ${project}.dsp file does not contain any absolute paths."
 echo "Here are some indicator tests."
 echo ""
 
 set -x
-grep -i "\\(c:\\|@\\)" coin3.dsp /dev/null
-grep -i "cygdrive" coin3.dsp /dev/null
-grep "svn" coin3.dsp /dev/null
+grep -i "\\(c:\\|@\\)" ${project}.dsp /dev/null
+grep -i "cygdrive" ${project}.dsp /dev/null
+grep "svn" ${project}.dsp /dev/null
 sort ../misc/install-headers.bat | uniq -c | grep -v " 1 "
-grep "SOURCE=" coin3.dsp | sort | uniq -c | grep -v " 1 "
+grep "SOURCE=" ${project}.dsp | sort | uniq -c | grep -v " 1 "
 set +x
 
 echo ""
