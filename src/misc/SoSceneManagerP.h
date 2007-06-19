@@ -21,6 +21,9 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_SOSCENEMANAGERP_H
+#define COIN_SOSCENEMANAGERP_H
+
 #include <Inventor/system/gl.h>
 #include <Inventor/SoSceneManager.h>
 #include <Inventor/SbViewportRegion.h>
@@ -78,4 +81,8 @@ public:
 
   uint32_t flags;  
   uint32_t redrawpri;
+
+  SbPList superimpositions;
 };
+
+#endif // COIN_SOSCENEMANAGERP_H

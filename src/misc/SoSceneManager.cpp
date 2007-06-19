@@ -211,7 +211,43 @@ SoSceneManager::render(SoGLRenderAction * action,
                        const SbBool clearzbuffer)
 {
   this->rendermanager->render(action, initmatrices, clearwindow, clearzbuffer);
+  
+  for (int i = 0; i < PRIVATE(this)->superimpositions.getLength(); i++) {
+    Superimposition * s = (Superimposition *) PRIVATE(this)->superimpositions[i];
+    s->render();
+  }
 }
+
+/*!
+
+ */
+Superimposition *
+SoSceneManager::addSuperimposition(SoNode * scene, 
+                                   SbBool enabled,
+                                   uint32_t flags)
+{
+  Superimposition * s = new Superimposition(scene, enabled, this, flags);
+  PRIVATE(this)->superimpositions.append(s);
+  return s;
+}
+
+/*!
+
+ */
+void
+SoSceneManager::removeSuperimposition(Superimposition * s)
+{
+  int idx = -1;
+  idx = PRIVATE(this)->superimpositions.find(s);
+  if (idx == -1) {
+    SoDebugError::post("SoSceneManager::removeSuperimposition",
+                       "no such superimposition");
+  }
+  
+  PRIVATE(this)->superimpositions.remove(idx);
+  delete s;
+}
+
 
 /*!
   Process the given event by applying an SoHandleEventAction on the

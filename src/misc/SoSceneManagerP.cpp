@@ -115,5 +115,82 @@ SoSceneManagerP::cleanup(void)
   SoSceneManagerP::cleanupfunctionset = FALSE;
 }
 
+//**********************************************************************************
+// Superimposition
+//**********************************************************************************
+
+class SuperimpositionP {
+public:
+  SoNode * scene;
+  SbBool enabled;
+  SoSceneManager * manager;
+  SoNodeSensor * sensor;
+  uint32_t stateflags;
+};
+
+Superimposition::Superimposition(SoNode * scene,
+                                 SbBool enabled,
+                                 SoSceneManager * manager,
+                                 uint32_t flags)
+{
+  assert(scene != NULL);
+  PRIVATE(this) = new SuperimpositionP;
+
+  PRIVATE(this)->scene = scene;
+  PRIVATE(this)->scene->ref();
+  
+  PRIVATE(this)->enabled = enabled;
+  PRIVATE(this)->stateflags = flags;
+  
+  PRIVATE(this)->manager = manager;
+  PRIVATE(this)->sensor = new SoNodeSensor(Superimposition::changeCB, this);
+  PRIVATE(this)->sensor->attach(PRIVATE(this)->scene);
+}
+
+Superimposition::~Superimposition()
+{
+  PRIVATE(this)->scene->unref();
+  delete PRIVATE(this)->sensor;
+  delete PRIVATE(this);
+}
+
+void 
+Superimposition::render(void) 
+{
+  if (!PRIVATE(this)->enabled) return;
+
+  SbBool zbufferwason = glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE;
+  
+  PRIVATE(this)->stateflags & Superimposition::ZBUFFERON ?
+    glEnable(GL_DEPTH_TEST):
+    glDisable(GL_DEPTH_TEST);
+
+  if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER)
+    glClear(GL_DEPTH_BUFFER_BIT);
+  
+  PRIVATE(this)->manager->getGLRenderAction()->apply(PRIVATE(this)->scene);
+  
+  zbufferwason ?
+    glEnable(GL_DEPTH_TEST):
+    glDisable(GL_DEPTH_TEST);
+}
+
+void 
+Superimposition::setEnabled(SbBool yes)
+{
+  PRIVATE(this)->enabled = yes;
+}
+
+void 
+Superimposition::changeCB(void * data, SoSensor * sensor) 
+{
+  Superimposition * thisp = (Superimposition *) data;
+  assert(thisp && PRIVATE(thisp)->manager);
+  if (PRIVATE(thisp)->stateflags & Superimposition::AUTOREDRAW) {
+    PRIVATE(thisp)->manager->scheduleRedraw();
+  }
+}
+
+
 #undef PRIVATE
 #undef PUBLIC
