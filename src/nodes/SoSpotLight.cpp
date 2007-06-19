@@ -177,8 +177,8 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   glLightfv(light, GL_SPOT_DIRECTION, this->direction.getValue().getValue());
 
   float cutoff = this->cutOffAngle.getValue() * 180.0f / float(M_PI);
-  float dropoff = this->dropOffRate.getValue() * 128.0f;
-
+  float dropoff = SbClamp(this->dropOffRate.getValue(), 0.0f, 1.0f) * 128.0f;
+  
   glLightf(light, GL_SPOT_EXPONENT, dropoff);
   glLightf(light, GL_SPOT_CUTOFF, cutoff);
 }
