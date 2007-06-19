@@ -346,11 +346,15 @@ public:
 
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
+    this->vsm_nearval = NULL;
     this->gaussmap = NULL;
     this->texunit = -1;
 
     this->fragment_farval = new SoShaderParameter1f;
     this->fragment_farval->ref();
+
+    this->fragment_nearval = new SoShaderParameter1f;
+    this->fragment_nearval->ref();
 
     this->createVSMProgram();
 
@@ -421,7 +425,9 @@ public:
   ~SoShadowSpotLightCache() {
     if (this->vsm_program) this->vsm_program->unref();
     if (this->vsm_farval) this->vsm_farval->unref();
+    if (this->vsm_nearval) this->vsm_nearval->unref();
     if (this->fragment_farval) this->fragment_farval->unref();
+    if (this->fragment_nearval) this->fragment_nearval->unref();
     if (this->light) this->light->unref();
     if (this->path) this->path->unref();
     if (this->gaussmap) this->gaussmap->unref();
@@ -448,7 +454,9 @@ public:
 
   SoShaderProgram * vsm_program;
   SoShaderParameter1f * vsm_farval;
+  SoShaderParameter1f * vsm_nearval;
   SoShaderParameter1f * fragment_farval;
+  SoShaderParameter1f * fragment_nearval;
   SoShaderGenerator vsm_vertex_generator;
   SoShaderGenerator vsm_fragment_generator;
 
@@ -844,12 +852,13 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   cache->fragment_farval->value = cache->farval;
   cache->vsm_farval->value = cache->farval;
 
+  cache->fragment_nearval->value = cache->nearval;
+  cache->vsm_nearval->value = cache->nearval;
 
   SbViewVolume vv = cam->getViewVolume(1.0f);
   SbMatrix affine, proj;
 
   vv.getMatrices(affine, proj);
-
   cache->matrix = affine * proj;
 
 #if 0
@@ -1091,6 +1100,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     str.sprintf("uniform float farval%d;", i);
     gen.addDeclaration(str, FALSE);
 
+    str.sprintf("uniform float nearval%d;", i);
+    gen.addDeclaration(str, FALSE);
+
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
 
@@ -1150,10 +1162,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON, THRESHOLD) : 0.0;\n"
+                  "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 0.0;\n"
                   "color += shadeFactor * diffuse.rgb * mydiffuse.rgb;"
                   "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
-                  lights.getLength()+i, i , i, i, i, i);
+                  lights.getLength()+i, i , i, i, i, i, i,i);
       gen.addMainStatement(str);
       
     }
@@ -1251,7 +1263,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
-  this->fragmentshader->parameter.setNum(numspots*2);
+  this->fragmentshader->parameter.setNum(numspots*3);
 
   if (this->fragmentshader->sourceProgram.getValue() != gen.getShaderProgram()) {
     // invalidate spotlights, and make sure the cameratransform variable is updated
@@ -1268,7 +1280,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       str.sprintf("shadowMap%d", i);
       shadowmap->name = str;
       shadowmap->value = cache->texunit;
-      this->fragmentshader->parameter.set1Value(i*2, shadowmap);
+      this->fragmentshader->parameter.set1Value(i*3, shadowmap);
     }
 #if 0 // for debugging
     fprintf(stderr,"new fragment program: %s\n",
@@ -1284,7 +1296,17 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     if (farval->name.getValue() != str) {
       farval->name = str;
     }
-    this->fragmentshader->parameter.set1Value(i*2+1, farval);
+    this->fragmentshader->parameter.set1Value(i*3+1, farval);
+  }
+
+  for (i = 0; i < numspots; i++) {
+    SbString str;
+    SoShaderParameter1f *nearval = this->spotlights[i]->fragment_nearval;
+    str.sprintf("nearval%d", i);
+    if (nearval->name.getValue() != str) {
+      nearval->name = str;
+    }
+    this->fragmentshader->parameter.set1Value(i*3+2, nearval);
   }
 
 
@@ -1348,7 +1370,8 @@ SoShadowSpotLightCache::createVSMProgram(void)
 #endif
   fgen.addDeclaration("varying vec3 light_vec;", FALSE);
   fgen.addDeclaration("uniform float farval;", FALSE);
-  fgen.addMainStatement("float l = length(light_vec) / farval;\n"
+  fgen.addDeclaration("uniform float nearval;", FALSE);
+  fgen.addMainStatement("float l = (length(light_vec) - nearval) / (farval-nearval);\n"
 #ifdef DISTRIBUTE_FACTOR
                         "vec2 m = vec2(l, l*l);\n"
                         "vec2 f = fract(m * DISTRIBUTE_FACTOR);\n"
@@ -1377,7 +1400,13 @@ SoShadowSpotLightCache::createVSMProgram(void)
   this->vsm_farval = new SoShaderParameter1f;
   this->vsm_farval->ref();
   this->vsm_farval->name = "farval";
+
+  this->vsm_nearval = new SoShaderParameter1f;
+  this->vsm_nearval->ref();
+  this->vsm_nearval->name = "nearval";
+
   fshader->parameter = this->vsm_farval;
+  fshader->parameter.set1Value(1, this->vsm_nearval);
 }
 
 void
