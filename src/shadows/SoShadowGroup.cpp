@@ -781,8 +781,10 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   transform.multDirMatrix(dir, dir);
   (void) dir.normalize();
 
+  const float cammul = 2.0f;
+
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-  cam->heightAngle.setValue(light->cutOffAngle.getValue() * 2.0f);
+  cam->heightAngle.setValue(light->cutOffAngle.getValue() * cammul);
 
   SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
 
@@ -848,9 +850,11 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   if (cache->farval != cam->farDistance.getValue()) {
     cam->farDistance = cache->farval;
   }
+  
+  float realfarval = cache->farval / float(cos(light->cutOffAngle.getValue() * cammul));
 
-  cache->fragment_farval->value = cache->farval;
-  cache->vsm_farval->value = cache->farval;
+  cache->fragment_farval->value = realfarval;
+  cache->vsm_farval->value = realfarval;
 
   cache->fragment_nearval->value = cache->nearval;
   cache->vsm_nearval->value = cache->nearval;
@@ -1082,6 +1086,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   SoCacheElement::set(state, this->fragmentshadercache);
 
   int numspots = this->spotlights.getLength();
+  SbBool dirspot = FALSE;
 
   if (numspots) {
     SbString eps;
@@ -1151,9 +1156,16 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (perpixelspot) {
     for (i = 0; i < numspots; i++) {
       SbString str;
+      SbString spotname("SpotLight");
+      SbString insidetest(")");
 
+      if (this->spotlights[i]->light->dropOffRate.getValue() < 0.0f) {
+        dirspot = TRUE;
+        spotname = "DirSpotLight";
+        insidetest = "&& coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0)";
+    }
       str.sprintf("diffuse = vec4(0.0); specular = vec4(0);"
-                  "dist = SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
+                  "dist = %s(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
                   "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
                   "map = texture2D(shadowMap%d, coord.xy);\n"
 #ifdef USE_NEGATIVE
@@ -1162,10 +1174,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 0.0;\n"
+                  "shadeFactor = (shadowCoord%d.z > -1.0%s ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
                   "color += shadeFactor * diffuse.rgb * mydiffuse.rgb;"
                   "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
-                  lights.getLength()+i, i , i, i, i, i, i,i);
+                  spotname.getString(), lights.getLength()+i, i , i, i, i, insidetest.getString(), i, i, i);
       gen.addMainStatement(str);
       
     }
@@ -1211,6 +1223,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   else {
     for (i = 0; i < numspots; i++) {
+      SbString insidetest(")");
+      if (this->spotlights[i]->light->dropOffRate.getValue() < 0.0f) {
+        insidetest = "&& coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0)";
+      }
       SbString str;
       str.sprintf("dist = length(vec3(gl_LightSource[%d].position) - ecPosition3);\n"
                   "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
@@ -1221,9 +1237,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = shadowCoord%d.z > -1.0 ? VsmLookup(map, dist/farval%d, EPSILON, THRESHOLD) : 0.0;\n"
+                  "shadeFactor = shadowCoord%d.z > -1.0%s ? VsmLookup(map, (dist - nearval%d)/(farval%d-nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
                   "color += shadeFactor * spotVertexColor%d;\n",
-                  lights.getLength()+i, i , i, i, i, i, i);
+                  lights.getLength()+i, i , i, i, i, i,insidetest.getString(), i,i,i);
       gen.addMainStatement(str);
     }
   }
@@ -1260,6 +1276,33 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
+
+  if (dirspot) {
+    gen.addDeclaration("float DirSpotLight(in int i, in vec3 eye, in vec3 ecPosition3,\n"
+                       "in vec3 normal,\n"
+                       "inout vec4 ambient,\n"
+                       "inout vec4 diffuse,\n"
+                       "inout vec4 specular)\n"
+                       "{\n"
+                       "float nDotVP;\n"
+                       "float nDotHV;\n"
+                       "float pf;\n"
+                       "vec3 dir = -normalize(vec3(gl_LightSource[i].spotDirection));\n"
+                       "vec3 hv = normalize(eye + dir);\n"
+                       "nDotVP = max(0.0, dot(normal, dir));\n"
+                       "nDotHV = max(0.0, dot(normal, hv));\n"
+                       "float shininess = gl_FrontMaterial.shininess;\n"
+                       "if (nDotVP == 0.0)\n"
+                       "pf = 0.0;\n"
+                       "else\n"
+                       "pf = pow(nDotHV, shininess);\n"
+                       "ambient += gl_LightSource[i].ambient;\n"
+                       "diffuse += gl_LightSource[i].diffuse * nDotVP;\n"
+                       "specular += gl_LightSource[i].specular * pf;\n"
+                       "return length(vec3(gl_LightSource[i].position) - ecPosition3);\n"
+                       "}", FALSE);
+  }
+
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
