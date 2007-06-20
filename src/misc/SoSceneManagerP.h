@@ -82,7 +82,7 @@ public:
   uint32_t flags;  
   uint32_t redrawpri;
 
-  SbPList superimpositions;
+  SbPList * superimpositions;
 };
 
 #endif // COIN_SOSCENEMANAGERP_H

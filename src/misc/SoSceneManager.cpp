@@ -123,6 +123,8 @@ SoSceneManager::SoSceneManager(void)
   PRIVATE(this)->stereomode = MONO;
   PRIVATE(this)->stereooffset = 1.0f;
 
+  PRIVATE(this)->superimpositions = NULL;
+
   this->rendermanager = new SoRenderManager(this);
 }
 
@@ -138,6 +140,14 @@ SoSceneManager::~SoSceneManager()
   this->setSceneGraph(NULL);
   delete this->rendermanager;
   delete PRIVATE(this)->redrawshot;
+
+  if (PRIVATE(this)->superimpositions != NULL) {
+    while ( PRIVATE(this)->superimpositions->getLength() > 0 ) {
+      this->removeSuperimposition((Superimposition *)(*PRIVATE(this)->superimpositions)[0]);
+    }
+    delete PRIVATE(this)->superimpositions;
+  }
+  
   delete PRIVATE(this);
 }
 
@@ -212,9 +222,11 @@ SoSceneManager::render(SoGLRenderAction * action,
 {
   this->rendermanager->render(action, initmatrices, clearwindow, clearzbuffer);
   
-  for (int i = 0; i < PRIVATE(this)->superimpositions.getLength(); i++) {
-    Superimposition * s = (Superimposition *) PRIVATE(this)->superimpositions[i];
-    s->render();
+  if (PRIVATE(this)->superimpositions) {
+    for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
+      Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
+      s->render();
+    }
   }
 }
 
@@ -226,8 +238,11 @@ SoSceneManager::addSuperimposition(SoNode * scene,
                                    SbBool enabled,
                                    uint32_t flags)
 {
+  if (!PRIVATE(this)->superimpositions) {
+    PRIVATE(this)->superimpositions = new SbPList;
+  }
   Superimposition * s = new Superimposition(scene, enabled, this, flags);
-  PRIVATE(this)->superimpositions.append(s);
+  PRIVATE(this)->superimpositions->append(s);
   return s;
 }
 
@@ -238,14 +253,19 @@ void
 SoSceneManager::removeSuperimposition(Superimposition * s)
 {
   int idx = -1;
-  idx = PRIVATE(this)->superimpositions.find(s);
-  if (idx == -1) {
-    SoDebugError::post("SoSceneManager::removeSuperimposition",
-                       "no such superimposition");
-  }
-  
-  PRIVATE(this)->superimpositions.remove(idx);
+  if (!PRIVATE(this)->superimpositions) goto error;
+  if ((idx = PRIVATE(this)->superimpositions->find(s)) == -1) goto error;
+
+  PRIVATE(this)->superimpositions->remove(idx);
   delete s;
+  return;
+
+ error:
+#if COIN_DEBUG
+  SoDebugError::post("SoSceneManager::removeSuperimposition",
+                     "no such superimposition");
+#endif // COIN_DEBUG
+  return;
 }
 
 
