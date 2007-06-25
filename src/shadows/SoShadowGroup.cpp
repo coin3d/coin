@@ -335,7 +335,7 @@ public:
     // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
     // if (maxtexsize < maxsize) maxsize = maxtexsize;
 
-    GLenum internalformat = GL_RGBA32F_ARB;
+    GLenum internalformat = GL_RGBA16F_ARB;
     GLenum format = GL_RGBA;
     GLenum type = GL_FLOAT;
 
@@ -683,6 +683,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
+    int maxlights = maxunits - 1;
 
     this->search.setType(SoSpotLight::getClassTypeId());
     this->search.setInterest(SoSearchAction::ALL);
@@ -693,15 +694,15 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     int numlights = 0;
     for (i = 0; i < pl.getLength(); i++) {
       SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)(pl[i]))->getTail();
-      if (sl->on.getValue()) numlights++;
+      if (sl->on.getValue() && (numlights < maxlights)) numlights++;
     }
-    
+
     if (numlights != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
         SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)pl[i])->getTail();
-        if (sl->on.getValue()) {
+        if (sl->on.getValue() && (this->spotlights.getLength() < maxlights)) {
           SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
                                                                       gaussmatrixsize, gaussstandarddeviation);
           this->spotlights.append(cache);
@@ -713,7 +714,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     for (i = 0; i < pl.getLength(); i++) {
       SoPath * path = pl[i];
       SoSpotLight * sl = (SoSpotLight*) ((SoFullPath*)path)->getTail();
-      if (sl->on.getValue()) {
+      if (sl->on.getValue() && (i2 < maxlights)) {
         SoShadowSpotLightCache * cache = this->spotlights[i2];
         int unit = (maxunits - 1) - i2;
         if (unit != cache->texunit) {
@@ -733,7 +734,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     }
     this->spotlightsvalid = TRUE;
   }
-
+  
   for (i = 0; i < this->spotlights.getLength(); i++) {
     SoShadowSpotLightCache * cache = this->spotlights[i];
     assert(cache->texunit >= 0);
@@ -1518,21 +1519,19 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   this->updateSpotLights(action);
   SoShapeStyleElement::setShadowMapRendering(state, FALSE);
 
-
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     this->setVertexShader(state);
   }
-
+  
   if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
     this->setFragmentShader(state);
   }
   this->shaderprogram->GLRender(action);
-
+  
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
   SoShapeStyleElement::setShadowsRendering(state, FALSE);
-
   state->pop();
 }
 
@@ -1693,7 +1692,6 @@ SoShadowSpotLightCache::shadowmap_post_glcallback(void * closure, SoAction * act
 
 #undef PUBLIC
 
-
 #ifdef COIN_TEST_SUITE
 
 BOOST_AUTO_TEST_CASE(initialized)
@@ -1707,3 +1705,4 @@ BOOST_AUTO_TEST_CASE(initialized)
 }
 
 #endif // COIN_TEST_SUITE
+
