@@ -135,6 +135,10 @@ cc_internal_ftime(cc_time * t)
 
 /* ********************************************************************** */
 
+/*!
+  Returns current time in seconds.
+  FIXME: Specify call overhead and resolution.
+*/
 cc_time
 cc_time_gettimeofday(void)
 {
