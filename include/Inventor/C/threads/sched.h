@@ -50,17 +50,17 @@ typedef void cc_sched_f(void * closure);
   COIN_DLL_API void cc_sched_set_num_threads(cc_sched * sched, int num);
   COIN_DLL_API int cc_sched_get_num_threads(cc_sched * sched);
 
-  COIN_DLL_API unsigned long cc_sched_schedule(cc_sched * sched, 
-                                               cc_sched_f * workfunc, 
-                                               void * closure,
-                                               float priority);
+  COIN_DLL_API uint32_t cc_sched_schedule(cc_sched * sched, 
+                                          cc_sched_f * workfunc, 
+                                          void * closure,
+                                          float priority);
   COIN_DLL_API SbBool cc_sched_unschedule(cc_sched * sched, 
-                                          unsigned long schedid); 
+                                          uint32_t schedid); 
   COIN_DLL_API void cc_sched_wait_all(cc_sched * sched);
   COIN_DLL_API int cc_sched_get_num_remaining(cc_sched * sched);
   COIN_DLL_API void cc_sched_set_num_allowed(cc_sched * sched, int num);
   COIN_DLL_API void cc_sched_change_priority(cc_sched * sched, 
-                                             unsigned long schedid, 
+                                             uint32_t schedid, 
                                              float priority);
 
 /* ********************************************************************** */

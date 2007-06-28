@@ -49,9 +49,9 @@ struct cc_sched {
   cc_heap * itemheap;            /*! Scheduled jobs sorted by priority */
   cc_memalloc * itemalloc;
   cc_dict * schedid_dict;        /*! Map from schedid to item* */
-  unsigned long schedid_counter; /*! schedid generator */
-  int numallowed;               /*! Max # of scheduled jobs per batch,
-                                 -1 for unlimited */
+  uint32_t schedid_counter;      /*! schedid generator */
+  int numallowed;                /*! Max # of scheduled jobs per batch,
+                                   -1 for unlimited */
   SbBool iswaitingall;
 };
 
