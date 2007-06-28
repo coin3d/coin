@@ -48,16 +48,16 @@ cc_sched * cc_sched_construct(int numthreads) { assert(FALSE); return NULL; }
 void cc_sched_destruct(cc_sched * sched) { assert(FALSE); }
 void cc_sched_set_num_threads(cc_sched * sched, int num) { assert(FALSE); }
 int cc_sched_get_num_threads(cc_sched * sched) { assert(FALSE); return 0; }
-unsigned long cc_sched_schedule(cc_sched * sched, 
-                                cc_sched_f * workfunc, void * closure,
-                                float priority) { assert(FALSE); }
+uint32_t cc_sched_schedule(cc_sched * sched, 
+                           cc_sched_f * workfunc, void * closure,
+                           float priority) { assert(FALSE); }
 void cc_sched_wait_all(cc_sched * sched) { assert(FALSE); }
 SbBool cc_sched_unschedule(cc_sched * sched, 
-                           unsigned long schedid) { assert(FALSE); }
+                           uint32_t schedid) { assert(FALSE); }
 void cc_sched_set_num_allowed(cc_sched * sched, 
                               int num)  { assert(FALSE); }
 void cc_sched_change_priority(cc_sched * sched, 
-                              unsigned long schedid, 
+                              uint32_t schedid, 
                               float priority)  { assert(FALSE); }
 
 #else /* HAVE_THREADS */
@@ -84,7 +84,7 @@ typedef struct {
   cc_sched_f * workfunc;
   void * closure;
   float priority;
-  unsigned long schedid;
+  uint32_t schedid;
 } sched_item;
 
 static int
@@ -158,11 +158,18 @@ cc_sched_construct(int numthreads)
 
 /*!
   Destruct the scheduler.
+
+  This method will block until all currently executing jobs have finished.
+  Any remaining scheduled jobs will be cancelled.
+
+  Note that this differs from Coin-2. To emulate Coin-2 behavior, call
+  cc_sched_wait_all() before calling this method.
 */
 void
 cc_sched_destruct(cc_sched * sched)
 {
-  cc_sched_wait_all(sched);
+  cc_sched_set_num_allowed(sched, 0); // Exit inner scheduler loop faster
+  cc_wpool_wait_all(sched->pool); // Make sure all worker threads are finished
 
   cc_dict_destruct(sched->schedid_dict);
   cc_heap_destruct(sched->itemheap);
@@ -202,7 +209,7 @@ cc_sched_get_num_threads(cc_sched * sched)
   Note that jobs are automatically unscheduled when triggered, just before
   calling the work function.
 */
-unsigned long
+uint32_t
 cc_sched_schedule(cc_sched * sched,
                   cc_sched_f * workfunc, void * closure,
                   float priority)
@@ -232,14 +239,17 @@ cc_sched_schedule(cc_sched * sched,
 }
 
 /*!
-  Attempt to unschedule a job. \a schedobj must be a pointer returned
+  Attempt to unschedule a job. \a schedid must be an id returned
   from cc_sched_schedule().
 
   Note that jobs are automatically unscheduled when triggered, just before
   calling the work function.
+
+  Returns TRUE if job was successfully removed, FALSE if job wasn't found
+  in the internal dict.
 */
 SbBool
-cc_sched_unschedule(cc_sched * sched, unsigned long schedid)
+cc_sched_unschedule(cc_sched * sched, uint32_t schedid)
 {
   SbBool didremove = FALSE;
   void * item = NULL;
@@ -310,7 +320,7 @@ cc_sched_set_num_allowed(cc_sched * sched, int num)
 */
 void 
 cc_sched_change_priority(cc_sched * sched, 
-                         unsigned long schedid, float priority)
+                         uint32_t schedid, float priority)
 {
   void * item;
   cc_mutex_lock(sched->mutex);
