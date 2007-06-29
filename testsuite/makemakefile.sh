@@ -2,9 +2,22 @@
 # **************************************************************************
 
 makefile=$1
+filter=""
+
+shift
+while test $# -gt 0; do
+  case $1 in
+  filter=*)
+    filter=`echo $1 | cut -d= -f2-`
+    ;;
+  *)
+    ;;
+  esac
+  shift
+done
 
 if test x"$makefile" = x""; then
-  echo "Usage: $0 Makefile"
+  echo "Usage: $0 Makefile [filter=...]"
   exit
 fi
 
@@ -31,13 +44,15 @@ for file in `cd $srcdir; find src -type f -print | sort`; do
     ;;
   esac
 
-  infile=$srcdir/$file
-
-  if test `grep -c "^#if.*COIN_TEST_SUITE" $infile` = 0; then
-    continue
-  fi
-
-  filelist="$filelist $file"
+  case $file in
+  *${filter}*)
+    infile=$srcdir/$file
+    if test `grep -c "^#if.*COIN_TEST_SUITE" $infile` = 0; then
+      continue
+    fi
+    filelist="$filelist $file"
+    ;;
+  esac
 done
 
 # **************************************************************************
@@ -147,7 +162,7 @@ clean:
 	rm -f $(TEST_SUITE_BUILT_FILES)
 
 makefile-update:
-	( cd $(srcdir); ./makemakefile.sh Makefile.in )
+	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile

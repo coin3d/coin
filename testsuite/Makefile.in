@@ -92,7 +92,7 @@ clean:
 	rm -f $(TEST_SUITE_BUILT_FILES)
 
 makefile-update:
-	( cd $(srcdir); ./makemakefile.sh Makefile.in )
+	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
