@@ -44,6 +44,9 @@
 
 SO_MFIELD_SOURCE(SoMFVec3d, SbVec3d, const SbVec3d &);
 
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec3d, SbVec3d, SbVec3d);
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec3d, SbVec3d, double);
+
 // *************************************************************************
 
 // Override from parent class.
