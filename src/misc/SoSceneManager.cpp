@@ -63,13 +63,11 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/system/gl.h>
-#include "AudioTools.h"
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#include <Inventor/navigation/SoNavigationSystem.h>
+#include <Inventor/SoRenderManager.h>
+#include <Inventor/SoEventManager.h>
 
 #include "SoSceneManagerP.h"
-#include "SoRenderManager.h"
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
@@ -94,38 +92,15 @@ SoSceneManager::SoSceneManager(void)
   assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
 
   PRIVATE(this) = new SoSceneManagerP(this);
-  PRIVATE(this)->camera = NULL;
-
-  PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
-  PRIVATE(this)->deleteglaction = TRUE;
-
-  PRIVATE(this)->audiorenderaction = new SoAudioRenderAction();
-  PRIVATE(this)->deleteaudiorenderaction = TRUE;
-
-  PRIVATE(this)->handleeventaction =
-    new SoHandleEventAction(SbViewportRegion(400, 400));
-  PRIVATE(this)->deletehandleeventaction = TRUE;
-
-  PRIVATE(this)->scene = NULL;
-  PRIVATE(this)->redrawshot = NULL;
-
-  PRIVATE(this)->backgroundindex = 0;
-  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
-
-  // rgbmode by default
-  PRIVATE(this)->flags = SoSceneManagerP::FLAG_RGBMODE;
-  PRIVATE(this)->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
   PRIVATE(this)->rendercb = NULL;
   PRIVATE(this)->rendercbdata = NULL;
 
-  PRIVATE(this)->rendermode = AS_IS;
-  PRIVATE(this)->stereomode = MONO;
-  PRIVATE(this)->stereooffset = 1.0f;
+  PRIVATE(this)->scene = NULL;
+  PRIVATE(this)->camera = NULL;
 
-  PRIVATE(this)->superimpositions = NULL;
-
-  this->rendermanager = new SoRenderManager(this);
+  PRIVATE(this)->rendermanager = new SoRenderManager;
+  PRIVATE(this)->eventmanager = new SoEventManager;
 }
 
 /*!
@@ -133,22 +108,13 @@ SoSceneManager::SoSceneManager(void)
  */
 SoSceneManager::~SoSceneManager()
 {
-  if (PRIVATE(this)->deleteglaction) delete PRIVATE(this)->glaction;
-  if (PRIVATE(this)->deleteaudiorenderaction) delete PRIVATE(this)->audiorenderaction;
-  if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
-
   this->setSceneGraph(NULL);
-  delete this->rendermanager;
-  delete PRIVATE(this)->redrawshot;
-
-  if (PRIVATE(this)->superimpositions != NULL) {
-    while ( PRIVATE(this)->superimpositions->getLength() > 0 ) {
-      this->removeSuperimposition((Superimposition *)(*PRIVATE(this)->superimpositions)[0]);
-    }
-    delete PRIVATE(this)->superimpositions;
-  }
   
+  if (PRIVATE(this)->camera) PRIVATE(this)->camera->unref();
+
   delete PRIVATE(this);
+  delete PRIVATE(this)->rendermanager;
+  delete PRIVATE(this)->eventmanager;
 }
 
 /*!
@@ -164,35 +130,7 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-  // FIXME: according to a user, TGS Inventor seems to disable the
-  // redraw SoOneShotSensor while the scene graph is being rendered,
-  // which Coin does not do. SGI Inventor probably has the same
-  // behavior as TGS Inventor. (Should investigate this.)
-  //
-  // pederb suggests keeping the current behavior in Coin, even though
-  // this may cause trouble for code being ported from SGI / TGS
-  // Inventor, as it is convenient to "touch()" a node for triggering
-  // continuous animation. Besides, making Coin compatible with SGI
-  // (?) / TGS Inventor now may cause problems for existing Coin
-  // client code.
-  //
-  // I'm however not too happy with this fairly large incompatibility.
-  // Any usable suggestions for a resolution of this problem would be
-  // welcome.
-  //
-  // 20050809 mortene.
-
-  if (PRIVATE(this)->scene && 
-      // Order is important below, because we don't want to call
-      // SoAudioDevice::instance() unless we need to -- as it triggers
-      // loading the OpenAL library, which should only be loaded on
-      // demand.
-      coin_sound_should_traverse() &&
-      SoAudioDevice::instance()->haveSound() &&
-      SoAudioDevice::instance()->isEnabled())
-    PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
-
-  this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
+  PRIVATE(this)->rendermanager->render(clearwindow, clearzbuffer);
 }
 
 /*!
@@ -220,54 +158,8 @@ SoSceneManager::render(SoGLRenderAction * action,
                        const SbBool clearwindow,
                        const SbBool clearzbuffer)
 {
-  this->rendermanager->render(action, initmatrices, clearwindow, clearzbuffer);
-  
-  if (PRIVATE(this)->superimpositions) {
-    for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
-      Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
-      s->render();
-    }
-  }
+  PRIVATE(this)->rendermanager->render(action, initmatrices, clearwindow, clearzbuffer);
 }
-
-/*!
-
- */
-Superimposition *
-SoSceneManager::addSuperimposition(SoNode * scene, 
-                                   SbBool enabled,
-                                   uint32_t flags)
-{
-  if (!PRIVATE(this)->superimpositions) {
-    PRIVATE(this)->superimpositions = new SbPList;
-  }
-  Superimposition * s = new Superimposition(scene, enabled, this, flags);
-  PRIVATE(this)->superimpositions->append(s);
-  return s;
-}
-
-/*!
-
- */
-void
-SoSceneManager::removeSuperimposition(Superimposition * s)
-{
-  int idx = -1;
-  if (!PRIVATE(this)->superimpositions) goto error;
-  if ((idx = PRIVATE(this)->superimpositions->find(s)) == -1) goto error;
-
-  PRIVATE(this)->superimpositions->remove(idx);
-  delete s;
-  return;
-
- error:
-#if COIN_DEBUG
-  SoDebugError::post("SoSceneManager::removeSuperimposition",
-                     "no such superimposition");
-#endif // COIN_DEBUG
-  return;
-}
-
 
 /*!
   Process the given event by applying an SoHandleEventAction on the
@@ -276,121 +168,29 @@ SoSceneManager::removeSuperimposition(Superimposition * s)
 SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
 {
-  assert(PRIVATE(this)->handleeventaction);
-
-  SbBool handled = FALSE;
-  if ( PRIVATE(this)->handleeventaction->getState() != NULL &&
-       PRIVATE(this)->handleeventaction->getState()->getDepth() != 0 ) {
-    // recursive invocation - action currently in use
-#if COIN_DEBUG
-    SoDebugError::post("SoSceneManager::processEvent",
-                       "Recursive invocation detected. Delay processing event "
-                       "until the current event is finished processing.");
-#endif // COIN_DEBUG
-  } else if ( PRIVATE(this)->scene == NULL ) {
-    // nothing
-  } else {
-    PRIVATE(this)->handleeventaction->setEvent(event);
-    PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
-    handled = PRIVATE(this)->handleeventaction->isHandled();
-  }
-  return handled;
+  return PRIVATE(this)->eventmanager->processEvent(event);
 }
 
 /*!  
-  Sets the camera to be used. If you do not set a camera, the
-  manager will search the scene graph for a camera (every frame).
-  Set the camera here to avoid this search.
+  Sets the camera to be used.
 */
 void 
 SoSceneManager::setCamera(SoCamera * camera)
 {
-  PRIVATE(this)->setCamera(camera);
+  if (PRIVATE(this)->camera) {
+    PRIVATE(this)->camera->unref();
+  }
+  PRIVATE(this)->camera = camera;
+  if (camera) camera->ref();
 }
 
 /*!
-  Returns the current camera. If no camera has been set, the current
-  scene graph will be searched, and the first active camera will be
-  returned.
+  Returns the current camera.
 */
 SoCamera * 
 SoSceneManager::getCamera(void) const
 {
-  return PRIVATE(this)->getCamera();
-}
-
-/*!
-  Tell the scenemanager that double buffering is used
- */
-void 
-SoSceneManager::setDoubleBuffer(const SbBool enable)
-{
-  PRIVATE(this)->doublebuffer = enable;
-}
-
-/*!
-  returns if the scenemanager is double buffered
- */
-SbBool 
-SoSceneManager::isDoubleBuffer(void) const
-{
-  return PRIVATE(this)->doublebuffer;
-}
-
-/*!
-  Sets the render mode.
-*/
-void 
-SoSceneManager::setRenderMode(const RenderMode mode)
-{
-  PRIVATE(this)->rendermode = mode;
-}
-
-/*!
-  Returns the current render mode.
-*/
-SoSceneManager::RenderMode 
-SoSceneManager::getRenderMode(void) const
-{
-  return PRIVATE(this)->rendermode;
-}
-
-/*!
-  Sets the stereo mode.
-*/
-void 
-SoSceneManager::setStereoMode(const StereoMode mode)
-{
-  PRIVATE(this)->stereomode = mode;
-  this->rendermanager->touch();
-}
-
-/*!
-  Returns the current stereo mode.
-*/
-SoSceneManager::StereoMode 
-SoSceneManager::getStereoMode(void) const
-{
-  return PRIVATE(this)->stereomode;
-}
-
-/*!
-  Sets the stereo offset used when doing stereo rendering.
-*/
-void 
-SoSceneManager::setStereoOffset(const float offset)
-{
-  PRIVATE(this)->stereooffset = offset;
-  this->rendermanager->touch();
-}
-
-/*!
-  Returns the current stereo offset.
-*/
-float 
-SoSceneManager::getStereoOffset(void) const
-{
-  return PRIVATE(this)->stereooffset;
+  return PRIVATE(this)->camera;
 }
 
 /*!
@@ -400,7 +200,7 @@ SoSceneManager::getStereoOffset(void) const
 void
 SoSceneManager::reinitialize(void)
 {
-  PRIVATE(this)->glaction->invalidateState();
+  PRIVATE(this)->rendermanager->reinitialize();
 }
 
 /*!
@@ -412,22 +212,7 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  this->rendermanager->lock();
-  if (PRIVATE(this)->isActive() && PRIVATE(this)->rendercb) {
-    if (!PRIVATE(this)->redrawshot) {
-      PRIVATE(this)->redrawshot =
-        new SoOneShotSensor(SoSceneManagerP::redrawshotTriggeredCB, this);
-      PRIVATE(this)->redrawshot->setPriority(this->getRedrawPriority());
-    }
-
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoSceneManager::scheduleRedraw",
-                           "scheduling redrawshot (oneshotsensor) %p",
-                           PRIVATE(this)->redrawshot);
-#endif // debug
-    PRIVATE(this)->redrawshot->schedule();
-  }
-  this->rendermanager->unlock();
+  PRIVATE(this)->rendermanager->scheduleRedraw();
 }
 
 /*!
@@ -436,7 +221,7 @@ SoSceneManager::scheduleRedraw(void)
 int
 SoSceneManager::isActive(void) const
 {
-  return PRIVATE(this)->isActive();
+  return PRIVATE(this)->rendermanager->isActive();
 }
 
 /*!
@@ -445,9 +230,7 @@ SoSceneManager::isActive(void) const
 void
 SoSceneManager::redraw(void)
 {
-  if (PRIVATE(this)->rendercb) {
-    PRIVATE(this)->rendercb(PRIVATE(this)->rendercbdata, this);
-  }
+  PRIVATE(this)->rendermanager->redraw();
 }
 
 /*!
@@ -461,19 +244,22 @@ SoSceneManager::redraw(void)
 void
 SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
-  assert(this->rendermanager);
-  this->rendermanager->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
   SoNode * oldroot = PRIVATE(this)->scene;
-
+  
   PRIVATE(this)->scene = sceneroot;
+
+  PRIVATE(this)->rendermanager->setSceneGraph(sceneroot);
+  PRIVATE(this)->eventmanager->setSceneGraph(sceneroot);
 
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
-    this->rendermanager->attachRootSensor(sceneroot);
+    PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
+    PRIVATE(this)->rendermanager->setCamera(PRIVATE(this)->camera);
+    PRIVATE(this)->eventmanager->setCamera(PRIVATE(this)->camera);
   }
-
+  
   if (oldroot) oldroot->unref();
 }
 
@@ -485,7 +271,6 @@ SoSceneManager::getSceneGraph(void) const
 {
   return PRIVATE(this)->scene;
 }
-
 /*!
   Update window size of our SoGLRenderAction's viewport settings.
 
@@ -498,18 +283,7 @@ SoSceneManager::getSceneGraph(void) const
 void
 SoSceneManager::setWindowSize(const SbVec2s & newsize)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::setWindowSize",
-                         "(%d, %d)", newsize[0], newsize[1]);
-#endif // debug
-
-  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
-  region.setWindowSize(newsize[0], newsize[1]);
-  PRIVATE(this)->glaction->setViewportRegion(region);
-
-  region = PRIVATE(this)->handleeventaction->getViewportRegion();
-  region.setWindowSize(newsize[0], newsize[1]);
-  PRIVATE(this)->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->rendermanager->setWindowSize(newsize);
 }
 
 /*!
@@ -520,7 +294,7 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
-  return PRIVATE(this)->glaction->getViewportRegion().getWindowSize();
+  return PRIVATE(this)->rendermanager->getWindowSize();
 }
 
 /*!
@@ -535,15 +309,8 @@ SoSceneManager::setSize(const SbVec2s & newsize)
                          "(%d, %d)", newsize[0], newsize[1]);
 #endif // debug
 
-  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
-  SbVec2s origin = region.getViewportOriginPixels();
-  region.setViewportPixels(origin, newsize);
-  PRIVATE(this)->glaction->setViewportRegion(region);
-
-  region = PRIVATE(this)->handleeventaction->getViewportRegion();
-  origin = region.getViewportOriginPixels();
-  region.setViewportPixels(origin, newsize);
-  PRIVATE(this)->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->rendermanager->setSize(newsize);
+  PRIVATE(this)->eventmanager->setSize(newsize);
 }
 
 /*!
@@ -552,7 +319,7 @@ SoSceneManager::setSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getSize(void) const
 {
-  return PRIVATE(this)->glaction->getViewportRegion().getViewportSizePixels();
+  return PRIVATE(this)->rendermanager->getSize();
 }
 
 /*!
@@ -569,15 +336,8 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
                          "(%d, %d)", newOrigin[0], newOrigin[1]);
 #endif // debug
 
-  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
-  SbVec2s size = region.getViewportSizePixels();
-  region.setViewportPixels(newOrigin, size);
-  PRIVATE(this)->glaction->setViewportRegion(region);
-
-  region = PRIVATE(this)->handleeventaction->getViewportRegion();
-  size = region.getViewportSizePixels();
-  region.setViewportPixels(newOrigin, size);
-  PRIVATE(this)->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->rendermanager->setOrigin(newOrigin);
+  PRIVATE(this)->eventmanager->setOrigin(newOrigin);
 }
 
 /*!
@@ -588,7 +348,7 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
-  return PRIVATE(this)->glaction->getViewportRegion().getViewportOriginPixels();
+  return PRIVATE(this)->rendermanager->getOrigin();
 }
 
 /*!
@@ -615,8 +375,8 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
                          vpsp[0], vpsp[1]);
 #endif // debug
 
-  PRIVATE(this)->glaction->setViewportRegion(newregion);
-  PRIVATE(this)->handleeventaction->setViewportRegion(newregion);
+  PRIVATE(this)->rendermanager->setViewportRegion(newregion);
+  PRIVATE(this)->eventmanager->setViewportRegion(newregion);
 }
 
 /*!
@@ -628,7 +388,7 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {
-  return PRIVATE(this)->glaction->getViewportRegion();
+  return PRIVATE(this)->rendermanager->getViewportRegion();
 }
 
 /*!
@@ -637,7 +397,7 @@ SoSceneManager::getViewportRegion(void) const
 void
 SoSceneManager::setBackgroundColor(const SbColor & color)
 {
-  PRIVATE(this)->backgroundcolor = color;
+  PRIVATE(this)->rendermanager->setBackgroundColor(color);
 }
 
 /*!
@@ -647,7 +407,7 @@ SoSceneManager::setBackgroundColor(const SbColor & color)
 const SbColor &
 SoSceneManager::getBackgroundColor(void) const
 {
-  return PRIVATE(this)->backgroundcolor;
+  return PRIVATE(this)->rendermanager->getBackgroundColor();
 }
 
 /*!
@@ -659,7 +419,7 @@ SoSceneManager::getBackgroundColor(void) const
 void
 SoSceneManager::setBackgroundIndex(const int index)
 {
-  PRIVATE(this)->backgroundindex = index;
+  PRIVATE(this)->rendermanager->setBackgroundIndex(index);
 }
 
 /*!
@@ -670,7 +430,7 @@ SoSceneManager::setBackgroundIndex(const int index)
 int
 SoSceneManager::getBackgroundIndex(void) const
 {
-  return PRIVATE(this)->backgroundindex;
+  return PRIVATE(this)->rendermanager->getBackgroundIndex();
 }
 
 /*!
@@ -678,11 +438,9 @@ SoSceneManager::getBackgroundIndex(void) const
   colorindex mode will be used instead.
 */
 void
-SoSceneManager::setRGBMode(const SbBool flag)
+SoSceneManager::setRGBMode(const SbBool yes)
 {
-  flag ?
-    PRIVATE(this)->flags |= SoSceneManagerP::FLAG_RGBMODE:
-    PRIVATE(this)->flags &= ~SoSceneManagerP::FLAG_RGBMODE;
+  PRIVATE(this)->rendermanager->setRGBMode(yes);
 }
 
 /*!
@@ -691,7 +449,7 @@ SoSceneManager::setRGBMode(const SbBool flag)
 SbBool
 SoSceneManager::isRGBMode(void) const
 {
-  return (PRIVATE(this)->flags & SoSceneManagerP::FLAG_RGBMODE) != 0;
+  return PRIVATE(this)->rendermanager->isRGBMode();
 }
 
 /*!
@@ -700,7 +458,7 @@ SoSceneManager::isRGBMode(void) const
 void
 SoSceneManager::activate(void)
 {
-  PRIVATE(this)->flags |= SoSceneManagerP::FLAG_ACTIVE;
+  PRIVATE(this)->rendermanager->activate();
 }
 
 /*!
@@ -709,7 +467,7 @@ SoSceneManager::activate(void)
 void
 SoSceneManager::deactivate(void)
 {
-  PRIVATE(this)->flags &= ~SoSceneManagerP::FLAG_ACTIVE;
+  PRIVATE(this)->rendermanager->deactivate();
 }
 
 /*!
@@ -723,6 +481,7 @@ SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
 {
   PRIVATE(this)->rendercb = f;
   PRIVATE(this)->rendercbdata = userdata;
+  PRIVATE(this)->rendermanager->setRenderCallback(SoSceneManagerP::renderCB, PRIVATE(this));
 }
 
 /*!
@@ -735,7 +494,7 @@ SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
 SbBool
 SoSceneManager::isAutoRedraw(void) const
 {
-  return PRIVATE(this)->rendercb != NULL;
+  return PRIVATE(this)->rendermanager->isAutoRedraw();
 }
 
 /*!
@@ -748,9 +507,7 @@ SoSceneManager::isAutoRedraw(void) const
 void
 SoSceneManager::setRedrawPriority(const uint32_t priority)
 {
-  PRIVATE(this)->redrawpri = priority;
-
-  if (PRIVATE(this)->redrawshot) PRIVATE(this)->redrawshot->setPriority(priority);
+  PRIVATE(this)->rendermanager->setRedrawPriority(priority);
 }
 
 /*!
@@ -759,7 +516,7 @@ SoSceneManager::setRedrawPriority(const uint32_t priority)
 uint32_t
 SoSceneManager::getRedrawPriority(void) const
 {
-  return PRIVATE(this)->redrawpri;
+  return PRIVATE(this)->rendermanager->getRedrawPriority();
 }
 
 /*!
@@ -771,8 +528,7 @@ SoSceneManager::getRedrawPriority(void) const
 void
 SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 {
-  PRIVATE(this)->glaction->setSmoothing(smoothing);
-  PRIVATE(this)->glaction->setNumPasses(numpasses);
+  PRIVATE(this)->rendermanager->setAntialiasing(smoothing, numpasses);
 }
 
 /*!
@@ -783,8 +539,7 @@ SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 void
 SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 {
-  smoothing = PRIVATE(this)->glaction->isSmoothing();
-  numpasses = PRIVATE(this)->glaction->getNumPasses();
+  PRIVATE(this)->rendermanager->getAntialiasing(smoothing, numpasses);
 }
 
 /*!
@@ -794,31 +549,7 @@ SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
-  SbBool haveregion = FALSE;
-  SbViewportRegion region;
-  if (PRIVATE(this)->glaction) { // remember existing viewport region
-    region = PRIVATE(this)->glaction->getViewportRegion();
-    haveregion = TRUE;
-  } else if (PRIVATE(this)->handleeventaction) {
-    region = PRIVATE(this)->handleeventaction->getViewportRegion();
-    haveregion = TRUE;
-  }
-
-  if (PRIVATE(this)->deleteglaction) {
-    delete PRIVATE(this)->glaction;
-    PRIVATE(this)->glaction = NULL;
-  }
-
-  // If action change, we need to invalidate state to enable lazy GL
-  // elements to be evaluated correctly.
-  //
-  // Note that the SGI and TGS Inventor implementations doesn't do
-  // this -- which smells of a bug.
-  if (action && action != PRIVATE(this)->glaction) action->invalidateState();
-  PRIVATE(this)->glaction = action;
-  PRIVATE(this)->deleteglaction = FALSE;
-  if (PRIVATE(this)->glaction && haveregion)
-    PRIVATE(this)->glaction->setViewportRegion(region);
+  PRIVATE(this)->rendermanager->setGLRenderAction(action);
 }
 
 /*!
@@ -827,7 +558,7 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 SoGLRenderAction *
 SoSceneManager::getGLRenderAction(void) const
 {
-  return PRIVATE(this)->glaction;
+  return PRIVATE(this)->rendermanager->getGLRenderAction();
 }
 
 /*!
@@ -837,17 +568,7 @@ SoSceneManager::getGLRenderAction(void) const
 void
 SoSceneManager::setAudioRenderAction(SoAudioRenderAction * const action)
 {
-  if (PRIVATE(this)->deleteaudiorenderaction) {
-    delete PRIVATE(this)->audiorenderaction;
-    PRIVATE(this)->audiorenderaction = NULL;
-  }
-
-  // If action change, we need to invalidate state to enable lazy GL
-  // elements to be evaluated correctly.
-  //
-  if (action && action != PRIVATE(this)->audiorenderaction) action->invalidateState();
-  PRIVATE(this)->audiorenderaction = action;
-  PRIVATE(this)->deleteaudiorenderaction = FALSE;
+  PRIVATE(this)->rendermanager->setAudioRenderAction(action);
 }
 
 /*!
@@ -856,7 +577,7 @@ SoSceneManager::setAudioRenderAction(SoAudioRenderAction * const action)
 SoAudioRenderAction *
 SoSceneManager::getAudioRenderAction(void) const
 {
-  return PRIVATE(this)->audiorenderaction;
+  return PRIVATE(this)->rendermanager->getAudioRenderAction();
 }
 
 /*!
@@ -866,11 +587,7 @@ SoSceneManager::getAudioRenderAction(void) const
 void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 {
-  if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
-  PRIVATE(this)->handleeventaction = hea;
-  PRIVATE(this)->deletehandleeventaction = FALSE;
-  if (PRIVATE(this)->handleeventaction && PRIVATE(this)->glaction)
-    PRIVATE(this)->handleeventaction->setViewportRegion(PRIVATE(this)->glaction->getViewportRegion());
+  PRIVATE(this)->eventmanager->setHandleEventAction(hea);
 }
 
 /*!
@@ -879,7 +596,8 @@ SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 SoHandleEventAction *
 SoSceneManager::getHandleEventAction(void) const
 {
-  return PRIVATE(this)->handleeventaction;
+//   return PRIVATE(this)->handleeventaction;
+  return PRIVATE(this)->eventmanager->getHandleEventAction();
 }
 
 /*!
@@ -890,7 +608,7 @@ SoSceneManager::getHandleEventAction(void) const
 uint32_t
 SoSceneManager::getDefaultRedrawPriority(void)
 {
-  return 10000;
+  return SoRenderManager::getDefaultRedrawPriority();
 }
 
 /*!
@@ -904,11 +622,7 @@ SoSceneManager::getDefaultRedrawPriority(void)
 void
 SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 {
-  SoSceneManagerP::touchtimer = flag;
-  if (!SoSceneManagerP::cleanupfunctionset) {
-    coin_atexit((coin_atexit_f*) SoSceneManagerP::cleanup, CC_ATEXIT_NORMAL);
-    SoSceneManagerP::cleanupfunctionset = TRUE;
-  }
+  SoRenderManager::enableRealTimeUpdate(flag);
 }
 
 /*!
@@ -918,7 +632,7 @@ SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 SbBool
 SoSceneManager::isRealTimeUpdateEnabled(void)
 {
-  return SoSceneManagerP::touchtimer;
+  return SoRenderManager::isRealTimeUpdateEnabled();
 }
 
 #undef PRIVATE

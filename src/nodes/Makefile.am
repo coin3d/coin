@@ -105,7 +105,8 @@ RegularSources = \
 	SoUnknownNode.cpp \
 	SoVertexProperty.cpp \
 	SoWWWAnchor.cpp \
-	SoWWWInline.cpp
+	SoWWWInline.cpp \
+        SoViewerNavigationMode.cpp 
 LinkHackSources = \
 	all-nodes-cpp.cpp
 

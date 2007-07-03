@@ -294,6 +294,8 @@ RegularSources = \
 	SoSceneManager.cpp \
 	SoSceneManagerP.cpp \
         SoRenderManager.cpp \
+	SoRenderManagerP.cpp \
+        SoEventManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
 	SoOffscreenAGLData.cpp \
@@ -335,7 +337,7 @@ PrivateHeaders = \
 	SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h \
         SoSceneManagerP.h \
-        SoRenderManager.h \
+        SoRenderManagerP.h \
 	cppmangle.icc \
 	systemsanity.icc
 
@@ -410,13 +412,13 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
-	all-misc-cpp.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp all-misc-cpp.cpp
 am__objects_1 = all-misc-cpp.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoCompactPathList.$(OBJEXT) SoContextHandler.$(OBJEXT) \
@@ -430,6 +432,7 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoPrimitiveVertex.$(OBJEXT) SoProto.$(OBJEXT) \
 	SoProtoInstance.$(OBJEXT) SoSceneManager.$(OBJEXT) \
 	SoSceneManagerP.$(OBJEXT) SoRenderManager.$(OBJEXT) \
+	SoRenderManagerP.$(OBJEXT) SoEventManager.$(OBJEXT) \
 	SoType.$(OBJEXT) SoOffscreenRenderer.$(OBJEXT) \
 	SoOffscreenAGLData.$(OBJEXT) SoOffscreenGLXData.$(OBJEXT) \
 	SoOffscreenWGLData.$(OBJEXT) SoVBO.$(OBJEXT) \
@@ -449,7 +452,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
 	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManager.h \
+	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
 	SoChildList.cpp SoCompactPathList.cpp SoContextHandler.cpp \
 	SoGL.cpp SoGLImage.cpp SoGLCubeMapImage.cpp SoGLBigImage.cpp \
@@ -458,12 +461,13 @@ am__EXTRA_misc_lst_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp SoPath.cpp \
 	SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -477,13 +481,13 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
-	all-misc-cpp.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp all-misc-cpp.cpp
 am__objects_6 = all-misc-cpp.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoCompactPathList.lo \
 	SoContextHandler.lo SoGL.lo SoGLImage.lo SoGLCubeMapImage.lo \
@@ -492,13 +496,13 @@ am__objects_7 = SoBase.lo SoChildList.lo SoCompactPathList.lo \
 	SoFullPath.lo SoTempPath.lo SoLightPath.lo SoInteraction.lo \
 	SoPath.lo SoPick.lo SoPickedPoint.lo SoPrimitiveVertex.lo \
 	SoProto.lo SoProtoInstance.lo SoSceneManager.lo \
-	SoSceneManagerP.lo SoRenderManager.lo SoType.lo \
-	SoOffscreenRenderer.lo SoOffscreenAGLData.lo \
-	SoOffscreenGLXData.lo SoOffscreenWGLData.lo SoVBO.lo \
-	SoShaderGenerator.lo SoVertexArrayIndexer.lo SoGenerate.lo \
-	SoLockManager.lo SoAudioDevice.lo AudioTools.lo \
-	CoinStaticObjectInDLL.lo CoinOffscreenGLCanvas.lo SoDebug.lo \
-	SoJavaScriptEngine.lo
+	SoSceneManagerP.lo SoRenderManager.lo SoRenderManagerP.lo \
+	SoEventManager.lo SoType.lo SoOffscreenRenderer.lo \
+	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
+	SoOffscreenWGLData.lo SoVBO.lo SoShaderGenerator.lo \
+	SoVertexArrayIndexer.lo SoGenerate.lo SoLockManager.lo \
+	SoAudioDevice.lo AudioTools.lo CoinStaticObjectInDLL.lo \
+	CoinOffscreenGLCanvas.lo SoDebug.lo SoJavaScriptEngine.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
@@ -510,7 +514,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
 	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManager.h \
+	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
 	SoChildList.cpp SoCompactPathList.cpp SoContextHandler.cpp \
 	SoGL.cpp SoGLImage.cpp SoGLCubeMapImage.cpp SoGLBigImage.cpp \
@@ -519,12 +523,13 @@ am__EXTRA_libmisc_la_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp SoPath.cpp \
 	SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -536,13 +541,13 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
 	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp \
-	all-misc-cpp.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
@@ -552,7 +557,7 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
 	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManager.h \
+	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
 	SoChildList.cpp SoCompactPathList.cpp SoContextHandler.cpp \
 	SoGL.cpp SoGLImage.cpp SoGLCubeMapImage.cpp SoGLBigImage.cpp \
@@ -561,12 +566,13 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDBP.h AudioTools.h \
 	SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp SoPath.cpp \
 	SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
 	SoProtoInstance.cpp SoSceneManager.cpp SoSceneManagerP.cpp \
-	SoRenderManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoVBO.cpp SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoAudioDevice.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp SoDebug.cpp SoJavaScriptEngine.cpp
+	SoRenderManager.cpp SoRenderManagerP.cpp SoEventManager.cpp \
+	SoType.cpp SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
+	SoShaderGenerator.cpp SoVertexArrayIndexer.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp CoinOffscreenGLCanvas.cpp SoDebug.cpp \
+	SoJavaScriptEngine.cpp
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -588,6 +594,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoDB.Plo ./$(DEPDIR)/SoDB.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDBP.Plo ./$(DEPDIR)/SoDBP.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDebug.Plo ./$(DEPDIR)/SoDebug.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoEventManager.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoEventManager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFullPath.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFullPath.Po ./$(DEPDIR)/SoGL.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGL.Po ./$(DEPDIR)/SoGLBigImage.Plo \
@@ -630,6 +638,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoProtoInstance.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoRenderManager.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoRenderManager.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoRenderManagerP.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoRenderManagerP.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSceneManager.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSceneManager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSceneManagerP.Plo \
@@ -753,6 +763,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDBP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDebug.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDebug.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEventManager.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEventManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFullPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFullPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGL.Plo@am__quote@
@@ -803,6 +815,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProtoInstance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManagerP.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManagerP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneManagerP.Plo@am__quote@

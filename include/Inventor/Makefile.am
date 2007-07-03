@@ -1,7 +1,7 @@
 
 SUBDIRS = C MPEG VRMLnodes actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
-          misc nodekits nodes projectors sensors system threads
+          misc nodekits nodes projectors sensors system threads navigation
 
 PublicHeaders = \
 	Sb.h \
@@ -85,6 +85,8 @@ PublicHeaders = \
 	SoPickedPoint.h \
 	SoPrimitiveVertex.h \
 	SoSceneManager.h \
+        SoRenderManager.h \
+        SoEventManager.h \
 	SoType.h \
 	non_winsys.h \
 	oivwin32.h

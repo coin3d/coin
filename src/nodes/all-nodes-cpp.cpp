@@ -124,3 +124,4 @@
 #include "SoVertexProperty.cpp"
 #include "SoWWWAnchor.cpp"
 #include "SoWWWInline.cpp"
+#include "SoViewerNavigationMode.cpp"

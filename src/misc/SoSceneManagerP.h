@@ -1,3 +1,6 @@
+#ifndef COIN_SOSCENEMANAGERP_H
+#define COIN_SOSCENEMANAGERP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,68 +24,30 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSCENEMANAGERP_H
-#define COIN_SOSCENEMANAGERP_H
-
-#include <Inventor/system/gl.h>
 #include <Inventor/SoSceneManager.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoLazyElement.h>
 
 class SoCamera;
-class SoInfo;
+class SbMatrix;
+class SoSearchAction;
 
 class SoSceneManagerP {
 public:
   SoSceneManagerP(SoSceneManager * publ);
   ~SoSceneManagerP();
 
-  enum {
-    FLAG_RGBMODE = 0x0001,
-    FLAG_ACTIVE = 0x0002
-  };
+  SoCamera * searchForCamera(SoNode * root,
+                             SoCamera * defcamera = NULL);
+  static void renderCB(void * userdata, class SoRenderManager * mgr);
 
-  SbBool isActive(void) const { return this->flags & SoSceneManagerP::FLAG_ACTIVE; }
-  static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
-        
-  void setCamera(SoCamera * camera);
-  SoCamera * getCamera(void);
-  static void cleanup(void);
-  static SbBool cleanupfunctionset;
-
-  SbColor backgroundcolor;
-
-  SoSceneManager::RenderMode rendermode;
-  SoSceneManager::StereoMode stereomode;
-
-  float stereooffset;
-  SoSearchAction searchaction;
   SoCamera * camera;
-  SbBool doublebuffer;
-
+  SoNode * scene;
   SoSceneManagerRenderCB * rendercb;
   void * rendercbdata;
-  static SbBool touchtimer;
-  
-  SoGLRenderAction * glaction;
-  SbBool deleteglaction;
-  SoAudioRenderAction *audiorenderaction;
-  SbBool deleteaudiorenderaction;
-  SoHandleEventAction * handleeventaction;
-  SbBool deletehandleeventaction;
-  
-  SoNode * scene;
-  SoOneShotSensor * redrawshot;
-  
+  SoSearchAction * searchaction;
   SoSceneManager * publ;
-  
-  int backgroundindex;
-
-  uint32_t flags;  
-  uint32_t redrawpri;
-
-  SbPList * superimpositions;
+  class SoRenderManager * rendermanager;
+  class SoEventManager * eventmanager;
 };
 
 #endif // COIN_SOSCENEMANAGERP_H

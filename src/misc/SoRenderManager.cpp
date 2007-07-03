@@ -21,8 +21,9 @@
  *
 \**************************************************************************/
 
-#include "SoRenderManager.h"
+#include <Inventor/SoRenderManager.h>
 
+#include <Inventor/system/gl.h>
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
@@ -35,80 +36,147 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SoSceneManager.h>
+#include "AudioTools.h"
 
-// *************************************************************************
+#include "SoRenderManagerP.h"
 
-// This class inherits SoNodeSensor and overrides its notify() method
-// to provide a means of debugging notifications on the root node.
-//
-// Good for debugging cases when there are continuous redraws due to
-// scene graph changes we have no clue as to the source of.
-//
-// A sensor of this class is only made if the below debugging envvar
-// is set. Otherwise, and ordinary SoNodeSensor is used instead.
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->publ)
 
-class SoRenderManagerRootSensor : public SoNodeSensor {
-  typedef SoNodeSensor inherited;
-
-public:
-  SoRenderManagerRootSensor(SoSensorCB * func, void * data) : inherited(func, data) { }
-  virtual ~SoRenderManagerRootSensor() { }
-  
-  virtual void notify(SoNotList * l);
-  
-  static SbBool debug(void);
-
-private:
-  static int debugrootnotifications;
-};
-
-int SoRenderManagerRootSensor::debugrootnotifications = -1;
-
-void
-SoRenderManagerRootSensor::notify(SoNotList * l)
+SoRenderManager::SoRenderManager(void)
 {
-  l->print();
-  (void)fprintf(stdout, "end\n");
+  assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
 
-  inherited::notify(l);
-}
+  PRIVATE(this) = new SoRenderManagerP(this);
 
-SbBool
-SoRenderManagerRootSensor::debug(void)
-{
-  if (SoRenderManagerRootSensor::debugrootnotifications == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_ROOT_NOTIFICATIONS");
-    SoRenderManagerRootSensor::debugrootnotifications = env && (atoi(env) > 0);
-  }
-  return SoRenderManagerRootSensor::debugrootnotifications ? TRUE : FALSE;
-}
+  PRIVATE(this)->dummynode = new SoInfo;
+  PRIVATE(this)->dummynode->ref();  
 
-// *************************************************************************
+  PRIVATE(this)->rootsensor = NULL;
+  PRIVATE(this)->scene = NULL;
+  PRIVATE(this)->camera = NULL;
+  PRIVATE(this)->rendercb = NULL;
+  PRIVATE(this)->rendercbdata = NULL;
+  PRIVATE(this)->redrawshot = NULL;
+  PRIVATE(this)->stereostencilmask = NULL;
+  PRIVATE(this)->superimpositions = NULL;
 
+  PRIVATE(this)->doublebuffer = TRUE;
+  PRIVATE(this)->deleteaudiorenderaction = TRUE;
+  PRIVATE(this)->deleteglaction = TRUE;
+  PRIVATE(this)->isactive = TRUE;
+  PRIVATE(this)->texturesenabled = TRUE;
 
+  PRIVATE(this)->nearplanevalue = 0.6f;
+  PRIVATE(this)->stereooffset = 1.0f;
+  PRIVATE(this)->isrgbmode = TRUE;
+  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
+  PRIVATE(this)->backgroundindex = 0;
+  PRIVATE(this)->overlaycolor = SbColor(1.0f, 0.0f, 0.0f);
+  PRIVATE(this)->stereostencilmaskvp = SbViewportRegion(0, 0);
 
-SoRenderManager::SoRenderManager(SoSceneManager * scenemanager)
-{
-  this->scenemanager = scenemanager;
-  this->dummynode = new SoInfo;
-  this->dummynode->ref();  
-  this->rootsensor = NULL;
-  this->texturesenabled = TRUE;
-  this->overlaycolor = SbColor(1.0f, 0.0f, 0.0f);
-  this->stereostencilmaskvp = SbViewportRegion(0, 0);
-  this->stereostencilmask = NULL;
-  this->stereostenciltype = SoSceneManager::MONO;
+  PRIVATE(this)->stereostenciltype = SoRenderManager::MONO;
+  PRIVATE(this)->rendermode = SoRenderManager::AS_IS;
+  PRIVATE(this)->stereomode = SoRenderManager::MONO;
+  PRIVATE(this)->autoclipping = SoRenderManager::NO_AUTO_CLIPPING;
+  PRIVATE(this)->redrawpri = SoRenderManager::getDefaultRedrawPriority();
+
+  PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
+  PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
+
+  PRIVATE(this)->clipsensor = 
+    new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
+  PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
+
 }
 
 SoRenderManager::~SoRenderManager()
 {
-  this->dummynode->unref();
-  if (this->rootsensor)
-    delete this->rootsensor;
+  PRIVATE(this)->dummynode->unref();
+
+  if (PRIVATE(this)->deleteglaction) delete PRIVATE(this)->glaction;
+  if (PRIVATE(this)->deleteaudiorenderaction) delete PRIVATE(this)->audiorenderaction;
+  if (PRIVATE(this)->rootsensor) delete PRIVATE(this)->rootsensor;
+  if (PRIVATE(this)->redrawshot) delete PRIVATE(this)->redrawshot;
+
+  if (PRIVATE(this)->superimpositions != NULL) {
+    while (PRIVATE(this)->superimpositions->getLength() > 0) {
+      this->removeSuperimposition((Superimposition *)(*PRIVATE(this)->superimpositions)[0]);
+    }
+    delete PRIVATE(this)->superimpositions;
+  }
+
+  delete PRIVATE(this)->clipsensor;
+  delete PRIVATE(this);
+}
+
+/*!
+  Set the node which is top of the scene graph we're managing.  The \a
+  sceneroot node reference count will be increased by 1, and any
+  previously set scene graph top node will have it's reference count
+  decreased by 1.
+
+  \sa getSceneGraph()
+*/
+void
+SoRenderManager::setSceneGraph(SoNode * const sceneroot)
+{
+  this->detachClipSensor();
+  this->detachRootSensor();
+  // Don't unref() until after we've set up the new root, in case the
+  // old root == the new sceneroot. (Just to be that bit more robust.)
+  SoNode * oldroot = PRIVATE(this)->scene;
+  
+  PRIVATE(this)->scene = sceneroot;
+  
+  if (PRIVATE(this)->scene) {
+    PRIVATE(this)->scene->ref();
+    //PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
+    
+    this->attachRootSensor(PRIVATE(this)->scene);
+    this->attachClipSensor(PRIVATE(this)->scene);
+  }
+  
+  if (oldroot) oldroot->unref();
+}
+
+/*!
+  Returns pointer to root of scene graph.
+ */
+SoNode *
+SoRenderManager::getSceneGraph(void) const
+{
+  return PRIVATE(this)->scene;
+}
+
+/*!  
+  Sets the camera to be used.
+*/
+void 
+SoRenderManager::setCamera(SoCamera * camera)
+{
+  if (PRIVATE(this)->camera) {
+    PRIVATE(this)->camera->unref();
+  }
+  PRIVATE(this)->camera = camera;
+  if (camera) camera->ref();
+}
+
+/*!
+  Returns the current camera.
+*/
+SoCamera * 
+SoRenderManager::getCamera(void) const
+{
+  return PRIVATE(this)->camera;
 }
 
 // Internal callback.
@@ -116,44 +184,58 @@ void
 SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::nodesensorCB",
+  SoDebugError::postInfo("SoRenderManager::nodesensorCB",
                          "detected change in scene graph");
 #endif // debug
-  ((SoSceneManager *)data)->scheduleRedraw();
+  ((SoRenderManager *)data)->scheduleRedraw();
 }
 
 void 
 SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 {
-  if (!this->rootsensor) {
+  if (!PRIVATE(this)->rootsensor) {
     (SoRenderManagerRootSensor::debug()) ?
-      this->rootsensor = new SoRenderManagerRootSensor(SoRenderManager::nodesensorCB, this->scenemanager):
-      this->rootsensor = new SoNodeSensor(SoRenderManager::nodesensorCB, this->scenemanager);
+      PRIVATE(this)->rootsensor = new SoRenderManagerRootSensor(SoRenderManager::nodesensorCB, this):
+      PRIVATE(this)->rootsensor = new SoNodeSensor(SoRenderManager::nodesensorCB, this);
   }
-  this->rootsensor->attach(sceneroot);
+  PRIVATE(this)->rootsensor->attach(sceneroot);
 }
 
 void 
 SoRenderManager::detachRootSensor(void)
 {
-  if (this->rootsensor) {
-    this->rootsensor->detach();
+  if (PRIVATE(this)->rootsensor) {
+    PRIVATE(this)->rootsensor->detach();
   }
 }
 
 void 
-SoRenderManager::touch(void)
+SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 {
-  this->dummynode->touch();
+  PRIVATE(this)->clipsensor->attach(sceneroot);
+  if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
+    PRIVATE(this)->clipsensor->schedule();
+  }
 }
 
 void 
-SoRenderManager::clearBuffers(SbBool color, SbBool depth) 
+SoRenderManager::detachClipSensor(void)
+{
+  if (PRIVATE(this)->clipsensor->isScheduled()) {
+    PRIVATE(this)->clipsensor->unschedule();
+  }
+  if (PRIVATE(this)->clipsensor->getAttachedNode()) {
+    PRIVATE(this)->clipsensor->detach();
+  }
+}
+
+void 
+SoRenderManager::clearBuffers(SbBool color, SbBool depth)
 {
   GLbitfield mask = 0;
   if (color) mask |= GL_COLOR_BUFFER_BIT;
   if (depth) mask |= GL_DEPTH_BUFFER_BIT;
-  const SbColor bgcol = this->scenemanager->getBackgroundColor();
+  const SbColor bgcol = PRIVATE(this)->backgroundcolor;
   glClearColor(bgcol[0], bgcol[1], bgcol[2], 0.0f);
   glClear(mask);
 }
@@ -188,15 +270,106 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
   glDepthFunc(GL_LEQUAL);
 }
 
+/*!
+
+ */
+Superimposition *
+SoRenderManager::addSuperimposition(SoNode * scene, 
+                                    SbBool enabled,
+                                    uint32_t flags)
+{
+  if (!PRIVATE(this)->superimpositions) {
+    PRIVATE(this)->superimpositions = new SbPList;
+  }
+  Superimposition * s = new Superimposition(scene, enabled, this, flags);
+  PRIVATE(this)->superimpositions->append(s);
+  return s;
+}
+
+/*!
+
+ */
+void
+SoRenderManager::removeSuperimposition(Superimposition * s)
+{
+  int idx = -1;
+  if (!PRIVATE(this)->superimpositions) goto error;
+  if ((idx = PRIVATE(this)->superimpositions->find(s)) == -1) goto error;
+
+  PRIVATE(this)->superimpositions->remove(idx);
+  delete s;
+  return;
+
+ error:
+#if COIN_DEBUG
+  SoDebugError::post("SoSceneManager::removeSuperimposition",
+                     "no such superimposition");
+#endif // COIN_DEBUG
+  return;
+}
+
+
+/*!
+  Render the scene graph.
+
+  If \a clearwindow is \c TRUE, clear the rendering buffer before
+  drawing. If \a clearzbuffer is \c TRUE, clear the depth buffer
+  values before rendering. Both of these arguments should normally be
+  \c TRUE, but they can be set to \c FALSE to optimize for special
+  cases (e.g. when doing wireframe rendering one doesn't need a depth
+  buffer).
+ */
+void
+SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
+{
+  // FIXME: according to a user, TGS Inventor seems to disable the
+  // redraw SoOneShotSensor while the scene graph is being rendered,
+  // which Coin does not do. SGI Inventor probably has the same
+  // behavior as TGS Inventor. (Should investigate this.)
+  //
+  // pederb suggests keeping the current behavior in Coin, even though
+  // this may cause trouble for code being ported from SGI / TGS
+  // Inventor, as it is convenient to "touch()" a node for triggering
+  // continuous animation. Besides, making Coin compatible with SGI
+  // (?) / TGS Inventor now may cause problems for existing Coin
+  // client code.
+  //
+  // I'm however not too happy with this fairly large incompatibility.
+  // Any usable suggestions for a resolution of this problem would be
+  // welcome.
+  //
+  // 20050809 mortene.
+
+  if (PRIVATE(this)->scene && 
+      // Order is important below, because we don't want to call
+      // SoAudioDevice::instance() unless we need to -- as it triggers
+      // loading the OpenAL library, which should only be loaded on
+      // demand.
+      coin_sound_should_traverse() &&
+      SoAudioDevice::instance()->haveSound() &&
+      SoAudioDevice::instance()->isEnabled())
+    PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
+
+  this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
+}
+
+
 void
 SoRenderManager::render(SoGLRenderAction * action,
                         const SbBool initmatrices,
                         const SbBool clearwindow,
                         const SbBool clearzbuffer)
 {
-  (this->scenemanager->getStereoMode() == SoSceneManager::MONO) ?
+  (this->getStereoMode() == SoRenderManager::MONO) ?
     this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
     this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
+
+  if (PRIVATE(this)->superimpositions) {
+    for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
+      Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
+      s->render();
+    }
+  }
 }
 
 void
@@ -210,19 +383,18 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
   
   if (mask) {
-    if (this->scenemanager->isRGBMode()) {
-      SbColor bgcolor = this->scenemanager->getBackgroundColor();
+    if (PRIVATE(this)->isrgbmode) {
+      SbColor bgcolor = PRIVATE(this)->backgroundcolor;
       glClearColor(bgcolor[0], bgcolor[1], bgcolor[2], 0.0f);
     }
     else {
-      glClearIndex((GLfloat) this->scenemanager->getBackgroundIndex());
+      glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
     }
     // Registering a callback is needed since the correct GL viewport
     // is set by SoGLRenderAction before rendering. It might not be
     // correct when we get here.
     // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(this->prerendercb, 
-                                 (void*) (uintptr_t) mask);
+    action->addPreRenderCallback(this->prerendercb, (void*) (uintptr_t) mask);
   }
 
   if (initmatrices) {
@@ -238,23 +410,23 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   // in the case of scenegraph modifications between a nodesensor
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
-  this->lock();
-  if (this->rootsensor && this->rootsensor->isScheduled()) {
+  PRIVATE(this)->lock();
+  if (PRIVATE(this)->rootsensor && PRIVATE(this)->rootsensor->isScheduled()) {
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
                            "rootsensor unschedule");
 #endif // debug
-    this->rootsensor->unschedule();
+    PRIVATE(this)->rootsensor->unschedule();
   }
-  this->unlock();
+  PRIVATE(this)->unlock();
   // Apply the SoGLRenderAction to the scenegraph root.
-  if (this->scenemanager->getSceneGraph()) {
-    action->apply(this->scenemanager->getSceneGraph());
+  if (PRIVATE(this)->scene) {
+    action->apply(PRIVATE(this)->scene);
   }
 
   // Automatically re-triggers rendering if any animation stuff is
   // connected to the realTime field.
-  if (this->scenemanager->isRealTimeUpdateEnabled()) {
+  if (PRIVATE(this)->scenemanager->isRealTimeUpdateEnabled()) {
     // FIXME: it would be more elegant to use a private field class
     // inheriting SoSFTime ("SFRealTime") which could just be
     // touch()'ed, and which would do lazy reading of time-of-day on
@@ -279,32 +451,31 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
   SoState * state = action->getState();
   state->push();
 
-  SoNode * node = this->dummynode;
+  SoNode * node = PRIVATE(this)->dummynode;
 
-  if (!this->texturesenabled) {
+  if (!this->isTexturesEnabled()) {
     SoTextureQualityElement::set(state, node, 0.0f);
     SoTextureOverrideElement::setQualityOverride(state, TRUE);
   }
-  
-  switch (this->scenemanager->getRenderMode()) {
-  case SoSceneManager::AS_IS:
+  switch (this->getRenderMode()) {
+  case SoRenderManager::AS_IS:
     this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
     break;
-  case SoSceneManager::WIREFRAME:
+  case SoRenderManager::WIREFRAME:
     SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
     SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
     SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
     SoOverrideElement::setLightModelOverride(state, node, TRUE);
     this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
     break;
-  case SoSceneManager::POINTS:
+  case SoRenderManager::POINTS:
     SoDrawStyleElement::set(state, node, SoDrawStyleElement::POINTS);
     SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
     SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
     SoOverrideElement::setLightModelOverride(state, node, TRUE);
     this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
     break;
-  case SoSceneManager::HIDDEN_LINE:
+  case SoRenderManager::HIDDEN_LINE:
     {
       // must clear before setting draw mask
       this->clearBuffers(TRUE, TRUE);
@@ -330,7 +501,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
     }
     break;
-  case SoSceneManager::WIREFRAME_OVERLAY:
+  case SoRenderManager::WIREFRAME_OVERLAY:
       SoPolygonOffsetElement::set(state, node, 1.0f, 1.0f,
                                   SoPolygonOffsetElement::FILLED, TRUE);
       SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
@@ -338,8 +509,8 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
                                   SoPolygonOffsetElement::FILLED, FALSE);
       
-      SoLazyElement::setDiffuse(state, node, 1, &this->overlaycolor, 
-                                &this->colorpacker);
+      SoLazyElement::setDiffuse(state, node, 1, &PRIVATE(this)->overlaycolor, 
+                                &PRIVATE(this)->colorpacker);
       SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
       SoMaterialBindingElement::set(state, node, SoMaterialBindingElement::OVERALL);
       SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
@@ -350,7 +521,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       this->actuallyRender(action, initmatrices, FALSE, FALSE);    
     break;
 
-  case SoSceneManager::BOUNDING_BOX:
+  case SoRenderManager::BOUNDING_BOX:
     SoComplexityTypeElement::set(state, node, SoComplexityTypeElement::BOUNDING_BOX);
     SoOverrideElement::setComplexityTypeOverride(state, node, TRUE);
     this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
@@ -369,28 +540,27 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
                               SbBool clearwindow,
                               SbBool clearzbuffer)
 {
-  SoCamera * camera = this->scenemanager->getCamera();
-  if (!camera) return;
+  if (!PRIVATE(this)->camera) return;
 
   this->clearBuffers(TRUE, TRUE);
-  camera->setStereoAdjustment(this->scenemanager->getStereoOffset());
+  PRIVATE(this)->camera->setStereoAdjustment(PRIVATE(this)->stereooffset);
   
   SbBool stenciltestenabled = glIsEnabled(GL_STENCIL_TEST);
 
   // left eye
-  camera->setStereoMode(SoCamera::LEFT_VIEW);
+  PRIVATE(this)->camera->setStereoMode(SoCamera::LEFT_VIEW);
 
-  switch (this->scenemanager->getStereoMode()) {
-  case SoSceneManager::ANAGLYPH:
+  switch (PRIVATE(this)->stereomode) {
+  case SoRenderManager::ANAGLYPH:
     glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE);
     this->renderSingle(action, initmatrices, FALSE, FALSE);
     break;
-  case SoSceneManager::QUAD_BUFFER:
-    glDrawBuffer(this->scenemanager->isDoubleBuffer() ? GL_BACK_LEFT : GL_FRONT_LEFT);
+  case SoRenderManager::QUAD_BUFFER:
+    glDrawBuffer(PRIVATE(this)->doublebuffer ? GL_BACK_LEFT : GL_FRONT_LEFT);
     this->renderSingle(action, initmatrices, clearwindow, clearzbuffer);
     break;
-  case SoSceneManager::INTERLEAVED_ROWS:
-  case SoSceneManager::INTERLEAVED_COLUMNS:
+  case SoRenderManager::INTERLEAVED_ROWS:
+  case SoRenderManager::INTERLEAVED_COLUMNS:
     this->initStencilBufferForInterleavedStereo();
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
@@ -403,20 +573,20 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
   }
 
   // right eye
-  camera->setStereoMode(SoCamera::RIGHT_VIEW);
+  PRIVATE(this)->camera->setStereoMode(SoCamera::RIGHT_VIEW);
 
-  switch (this->scenemanager->getStereoMode()) {
-  case SoSceneManager::ANAGLYPH:
+  switch (PRIVATE(this)->stereomode) {
+  case SoRenderManager::ANAGLYPH:
     glClear(GL_DEPTH_BUFFER_BIT);
     glColorMask(GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE);
     this->renderSingle(action, initmatrices, FALSE, TRUE);
     break;
-  case SoSceneManager::QUAD_BUFFER:
-    glDrawBuffer(this->scenemanager->isDoubleBuffer() ? GL_BACK_RIGHT : GL_FRONT_RIGHT);
+  case SoRenderManager::QUAD_BUFFER:
+    glDrawBuffer(PRIVATE(this)->doublebuffer ? GL_BACK_RIGHT : GL_FRONT_RIGHT);
     this->renderSingle(action, initmatrices, clearwindow, clearzbuffer);
     break;
-  case SoSceneManager::INTERLEAVED_ROWS:
-  case SoSceneManager::INTERLEAVED_COLUMNS:
+  case SoRenderManager::INTERLEAVED_ROWS:
+  case SoRenderManager::INTERLEAVED_COLUMNS:
     glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
     this->renderSingle(action, initmatrices, FALSE, FALSE);
     break;
@@ -426,17 +596,17 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
   }
 
   // restore / post render operations
-  camera->setStereoMode(SoCamera::MONOSCOPIC);
+  PRIVATE(this)->camera->setStereoMode(SoCamera::MONOSCOPIC);
 
-  switch (this->scenemanager->getStereoMode()) {
-  case SoSceneManager::ANAGLYPH:
+  switch (PRIVATE(this)->stereomode) {
+  case SoRenderManager::ANAGLYPH:
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     break;
-  case SoSceneManager::QUAD_BUFFER:
-    glDrawBuffer(this->scenemanager->isDoubleBuffer() ? GL_BACK : GL_FRONT);
+  case SoRenderManager::QUAD_BUFFER:
+    glDrawBuffer(PRIVATE(this)->doublebuffer ? GL_BACK : GL_FRONT);
     break;
-  case SoSceneManager::INTERLEAVED_ROWS:
-  case SoSceneManager::INTERLEAVED_COLUMNS:
+  case SoRenderManager::INTERLEAVED_ROWS:
+  case SoRenderManager::INTERLEAVED_COLUMNS:
     stenciltestenabled ?
       glEnable(GL_STENCIL_TEST) :
       glDisable(GL_STENCIL_TEST);
@@ -448,45 +618,66 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
 }
 
 void
+SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
+{
+  PRIVATE(this)->autoclipping = autoclipping;
+
+  if (PRIVATE(this)->scene) {
+    switch (autoclipping) {
+    case SoRenderManager::NO_AUTO_CLIPPING:
+      this->detachClipSensor();
+      break;
+    case SoRenderManager::FIXED_NEAR_PLANE:
+    case SoRenderManager::VARIABLE_NEAR_PLANE:
+      if (!PRIVATE(this)->clipsensor->getAttachedNode()) {
+        PRIVATE(this)->clipsensor->attach(PRIVATE(this)->scene);
+      }
+      PRIVATE(this)->clipsensor->schedule();
+      break;
+    }
+  }
+}
+
+void
 SoRenderManager::initStencilBufferForInterleavedStereo(void)
 {
-  const SbViewportRegion & currentvp = this->scenemanager->getGLRenderAction()->getViewportRegion();
-  if (this->stereostencilmaskvp == currentvp) { return; } // the common case
+  const SbViewportRegion & currentvp = PRIVATE(this)->glaction->getViewportRegion();
+  if (PRIVATE(this)->stereostencilmaskvp == currentvp) { return; } // the common case
 
-  SoSceneManager::StereoMode s = this->scenemanager->getStereoMode();
-  assert((s == SoSceneManager::INTERLEAVED_ROWS) ||
-         (s == SoSceneManager::INTERLEAVED_COLUMNS));
+  SoRenderManager::StereoMode s = PRIVATE(this)->stereomode;
+  assert((s == SoRenderManager::INTERLEAVED_ROWS) ||
+         (s == SoRenderManager::INTERLEAVED_COLUMNS));
 
   // Find out whether or not we need to regenerate the mask data.
-  SbBool allocnewmask = (this->stereostencilmask == NULL);
+  SbBool allocnewmask = (PRIVATE(this)->stereostencilmask == NULL);
 
   const SbVec2s neworigin = currentvp.getViewportOriginPixels();
   const SbVec2s newsize = currentvp.getViewportSizePixels();
 
-  const SbVec2s oldorigin = this->stereostencilmaskvp.getViewportOriginPixels();
-  const SbVec2s oldsize = this->stereostencilmaskvp.getViewportSizePixels();
+  const SbVec2s oldorigin = PRIVATE(this)->stereostencilmaskvp.getViewportOriginPixels();
+  const SbVec2s oldsize = PRIVATE(this)->stereostencilmaskvp.getViewportSizePixels();
 
   allocnewmask = allocnewmask ||
     ((oldsize[0] + 7) / 8 * oldsize[1]) < ((newsize[0] + 7) / 8 * newsize[1]);
 
-  const SbBool fillmask = allocnewmask || (this->stereostenciltype != s) ||
-    ((s == SoSceneManager::INTERLEAVED_ROWS) && (oldsize[0] != newsize[0]));
+  const SbBool fillmask = allocnewmask || (PRIVATE(this)->stereostenciltype != s) ||
+    ((s == SoRenderManager::INTERLEAVED_ROWS) && (oldsize[0] != newsize[0]));
 
-  const SbBool layoutchange = !(this->stereostencilmaskvp == currentvp);
+  const SbBool layoutchange = !(PRIVATE(this)->stereostencilmaskvp == currentvp);
 
   const short bytewidth = (newsize[0] + 7) / 8;
 
   if (allocnewmask) {
-    delete[] this->stereostencilmask;
-    this->stereostencilmask = new GLubyte[bytewidth * newsize[1]];
+    delete[] PRIVATE(this)->stereostencilmask;
+    PRIVATE(this)->stereostencilmask = new GLubyte[bytewidth * newsize[1]];
   }
 
-  this->stereostencilmaskvp = currentvp;
+  PRIVATE(this)->stereostencilmaskvp = currentvp;
 
   if (fillmask) {
-    GLubyte * mask = this->stereostencilmask;
+    GLubyte * mask = PRIVATE(this)->stereostencilmask;
 
-    if (s == SoSceneManager::INTERLEAVED_COLUMNS) {
+    if (s == SoRenderManager::INTERLEAVED_COLUMNS) {
       // alternating columns of 0's and 1's
       (void)memset(mask, 0x55, bytewidth * newsize[1]);
     }
@@ -498,7 +689,7 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
       }
     }
 
-    this->stereostenciltype = s;
+    PRIVATE(this)->stereostenciltype = s;
   }
 
   if (layoutchange) {
@@ -534,7 +725,7 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
 
     glRasterPos2f(0, 0);
     glDrawPixels(newsize[0], newsize[1], GL_STENCIL_INDEX, GL_BITMAP,
-                 this->stereostencilmask);
+                 PRIVATE(this)->stereostencilmask);
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -542,3 +733,587 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
     glPopMatrix();
   }
 }
+
+/*!
+  Reinitialize after parameters affecting the OpenGL context has
+  changed.
+*/
+void
+SoRenderManager::reinitialize(void)
+{
+  PRIVATE(this)->glaction->invalidateState();
+}
+
+/*!
+  Redraw at first opportunity as system becomes idle.
+
+  Multiple calls to this method before an actual redraw has taken
+  place will only result in a single redraw of the scene.
+*/
+void
+SoRenderManager::scheduleRedraw(void)
+{
+  PRIVATE(this)->lock();
+  if (this->isActive() && PRIVATE(this)->rendercb) {
+    if (!PRIVATE(this)->redrawshot) {
+      PRIVATE(this)->redrawshot = 
+        new SoOneShotSensor(SoRenderManagerP::redrawshotTriggeredCB, this);
+      PRIVATE(this)->redrawshot->setPriority(this->getRedrawPriority());
+    }
+
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoRenderManager::scheduleRedraw",
+                           "scheduling redrawshot (oneshotsensor) %p",
+                           PRIVATE(this)->redrawshot);
+#endif // debug
+    PRIVATE(this)->redrawshot->schedule();
+  }
+  PRIVATE(this)->unlock();
+}
+
+/*!
+  Update window size of our SoGLRenderAction's viewport settings.
+
+  Note that this will \e only change the information about window
+  dimensions, the actual viewport size and origin (ie the rectangle
+  which redraws are confined to) will stay the same.
+
+  \sa setViewportRegion()
+*/
+void
+SoRenderManager::setWindowSize(const SbVec2s & newsize)
+{
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoRenderManager::setWindowSize",
+                         "(%d, %d)", newsize[0], newsize[1]);
+#endif // debug
+
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
+  region.setWindowSize(newsize[0], newsize[1]);
+  PRIVATE(this)->glaction->setViewportRegion(region);
+
+//   region = PRIVATE(this)->handleeventaction->getViewportRegion();
+//   region.setWindowSize(newsize[0], newsize[1]);
+//   PRIVATE(this)->handleeventaction->setViewportRegion(region);
+}
+
+/*!
+  Returns the current render action window size.
+
+  \sa setWindowSize()
+*/
+const SbVec2s &
+SoRenderManager::getWindowSize(void) const
+{
+  return PRIVATE(this)->glaction->getViewportRegion().getWindowSize();
+}
+
+/*!
+  Set size of rendering area for the viewport within the current
+  window.
+*/
+void
+SoRenderManager::setSize(const SbVec2s & newsize)
+{
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoRenderManager::setSize",
+                         "(%d, %d)", newsize[0], newsize[1]);
+#endif // debug
+
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
+  SbVec2s origin = region.getViewportOriginPixels();
+  region.setViewportPixels(origin, newsize);
+  PRIVATE(this)->glaction->setViewportRegion(region);
+}
+
+/*!
+  Returns size of render area.
+ */
+const SbVec2s &
+SoRenderManager::getSize(void) const
+{
+  return PRIVATE(this)->glaction->getViewportRegion().getViewportSizePixels();
+}
+
+/*!
+  Set \e only the origin of the viewport region within the rendering
+  window.
+
+  \sa setViewportRegion(), setWindowSize()
+*/
+void
+SoRenderManager::setOrigin(const SbVec2s & newOrigin)
+{
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoRenderManager::setOrigin",
+                         "(%d, %d)", newOrigin[0], newOrigin[1]);
+#endif // debug
+
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
+  SbVec2s size = region.getViewportSizePixels();
+  region.setViewportPixels(newOrigin, size);
+  PRIVATE(this)->glaction->setViewportRegion(region);
+}
+
+/*!
+  Returns origin of rendering area viewport.
+
+  \sa setOrigin()
+*/
+const SbVec2s &
+SoRenderManager::getOrigin(void) const
+{
+  return PRIVATE(this)->glaction->getViewportRegion().getViewportOriginPixels();
+}
+
+/*!
+  Update our SoGLRenderAction's viewport settings.
+
+  This will change \e both the information about window dimensions and
+  the actual viewport size and origin.
+
+  \sa setWindowSize()
+*/
+void
+SoRenderManager::setViewportRegion(const SbViewportRegion & newregion)
+{
+  PRIVATE(this)->glaction->setViewportRegion(newregion);
+}
+
+/*!
+  Returns current viewport region used by the renderaction and the
+  event handling.
+
+  \sa setViewportRegion()
+*/
+const SbViewportRegion &
+SoRenderManager::getViewportRegion(void) const
+{
+  return PRIVATE(this)->glaction->getViewportRegion();
+}
+
+/*!
+  Sets color of rendering canvas.
+ */
+void
+SoRenderManager::setBackgroundColor(const SbColor & color)
+{
+  PRIVATE(this)->backgroundcolor = color;
+}
+
+/*!
+  Returns color used for clearing the rendering area before rendering
+  the scene.
+ */
+const SbColor &
+SoRenderManager::getBackgroundColor(void) const
+{
+  return PRIVATE(this)->backgroundcolor;
+}
+
+/*!
+  Set index of background color in the color lookup table if rendering
+  in colorindex mode.
+
+  Note: colorindex mode is not supported yet in Coin.
+ */
+void
+SoRenderManager::setBackgroundIndex(const int index)
+{
+  PRIVATE(this)->backgroundindex = index;
+}
+
+/*!
+  Returns index of colormap for background filling.
+
+  \sa setBackgroundIndex()
+ */
+int
+SoRenderManager::getBackgroundIndex(void) const
+{
+  return PRIVATE(this)->backgroundindex;
+}
+
+/*!
+  Turn RGB truecolor mode on or off. If you turn truecolor mode off,
+  colorindex mode will be used instead.
+*/
+void
+SoRenderManager::setRGBMode(const SbBool yes)
+{
+  PRIVATE(this)->isrgbmode = yes;
+}
+
+/*!
+  Returns the "truecolor or colorindex" mode flag.
+ */
+SbBool
+SoRenderManager::isRGBMode(void) const
+{
+  return PRIVATE(this)->isrgbmode;
+}
+
+/*!
+  Tell the scenemanager that double buffering is used
+ */
+void 
+SoRenderManager::setDoubleBuffer(const SbBool enable)
+{
+  PRIVATE(this)->doublebuffer = enable;
+}
+
+/*!
+  returns if the scenemanager is double buffered
+ */
+SbBool 
+SoRenderManager::isDoubleBuffer(void) const
+{
+  return PRIVATE(this)->doublebuffer;
+}
+
+/*!
+  Set the callback function \a f to invoke when rendering the
+  scene. \a userdata will be passed as the first argument of the
+  function.
+ */
+void
+SoRenderManager::setRenderCallback(SoRenderManagerRenderCB * f,
+                                  void * const userdata)
+{
+  PRIVATE(this)->rendercb = f;
+  PRIVATE(this)->rendercbdata = userdata;
+}
+
+/*!
+  Activate rendering and event handling. Default is \c off.
+ */
+void
+SoRenderManager::activate(void)
+{
+  PRIVATE(this)->isactive = TRUE;
+}
+
+/*!
+  Deactive rendering and event handling.
+ */
+void
+SoRenderManager::deactivate(void)
+{
+  PRIVATE(this)->isactive = FALSE;
+}
+
+/*!
+  Returns the \e active flag.
+ */
+int
+SoRenderManager::isActive(void) const
+{
+  return PRIVATE(this)->isactive;
+}
+
+/*!
+  Do an immediate redraw by calling the redraw callback function.
+ */
+void
+SoRenderManager::redraw(void)
+{
+  if (PRIVATE(this)->rendercb) {
+    PRIVATE(this)->rendercb(PRIVATE(this)->rendercbdata, this);
+  }
+}
+
+/*!
+  Returns \c TRUE if the SoSceneManager automatically redraws the
+  scene upon detecting changes in the scene graph.
+
+  The automatic redraw is turned on and off by setting either a valid
+  callback function with setRenderCallback(), or by passing \c NULL.
+ */
+SbBool
+SoRenderManager::isAutoRedraw(void) const
+{
+  return PRIVATE(this)->rendercb != NULL;
+}
+
+
+/*!
+  Sets the render mode.
+*/
+void 
+SoRenderManager::setRenderMode(const RenderMode mode)
+{
+  PRIVATE(this)->rendermode = mode;
+  PRIVATE(this)->dummynode->touch();
+}
+
+/*!
+  Returns the current render mode.
+*/
+SoRenderManager::RenderMode 
+SoRenderManager::getRenderMode(void) const
+{
+  return PRIVATE(this)->rendermode;
+}
+
+/*!
+  Sets the stereo mode.
+*/
+void 
+SoRenderManager::setStereoMode(const StereoMode mode)
+{
+  PRIVATE(this)->stereomode = mode;
+  PRIVATE(this)->dummynode->touch();
+}
+
+/*!
+  Returns the current stereo mode.
+*/
+SoRenderManager::StereoMode 
+SoRenderManager::getStereoMode(void) const
+{
+  return PRIVATE(this)->stereomode;
+}
+
+/*!
+  Sets the stereo offset used when doing stereo rendering.
+*/
+void 
+SoRenderManager::setStereoOffset(const float offset)
+{
+  PRIVATE(this)->stereooffset = offset;
+  PRIVATE(this)->dummynode->touch();
+}
+
+/*!
+  Returns the current stereo offset.
+*/
+float 
+SoRenderManager::getStereoOffset(void) const
+{
+  return PRIVATE(this)->stereooffset;
+}
+
+/*!
+  Turn antialiased rendering on or off.
+
+  See documentation for SoGLRenderAction::setSmoothing() and
+  SoGLRenderAction::setNumPasses().
+ */
+void
+SoRenderManager::setAntialiasing(const SbBool smoothing, const int numpasses)
+{
+  PRIVATE(this)->glaction->setSmoothing(smoothing);
+  PRIVATE(this)->glaction->setNumPasses(numpasses);
+}
+
+/*!
+  Returns rendering pass information.
+
+  \sa setAntialiasing()
+ */
+void
+SoRenderManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
+{
+  smoothing = PRIVATE(this)->glaction->isSmoothing();
+  numpasses = PRIVATE(this)->glaction->getNumPasses();
+}
+
+/*!
+  Set the \a action to use for rendering. Overrides the default action
+  made in the constructor.
+ */
+void
+SoRenderManager::setGLRenderAction(SoGLRenderAction * const action)
+{
+  SbBool haveregion = FALSE;
+  SbViewportRegion region;
+  if (PRIVATE(this)->glaction) { // remember existing viewport region
+    region = PRIVATE(this)->glaction->getViewportRegion();
+    haveregion = TRUE;
+  }
+  if (PRIVATE(this)->deleteglaction) {
+    delete PRIVATE(this)->glaction;
+    PRIVATE(this)->glaction = NULL;
+  }
+
+  // If action change, we need to invalidate state to enable lazy GL
+  // elements to be evaluated correctly.
+  //
+  // Note that the SGI and TGS Inventor implementations doesn't do
+  // this -- which smells of a bug.
+  if (action && action != PRIVATE(this)->glaction) action->invalidateState();
+  PRIVATE(this)->glaction = action;
+  PRIVATE(this)->deleteglaction = FALSE;
+  if (PRIVATE(this)->glaction && haveregion)
+    PRIVATE(this)->glaction->setViewportRegion(region);
+}
+
+/*!
+  Returns pointer to render action.
+ */
+SoGLRenderAction *
+SoRenderManager::getGLRenderAction(void) const
+{
+  return PRIVATE(this)->glaction;
+}
+
+/*!
+  This method returns the current autoclipping strategy.
+
+  \sa setAutoClipping
+*/
+
+SoRenderManager::AutoClippingStrategy
+SoRenderManager::getAutoClipping(void) const
+{
+  return PRIVATE(this)->autoclipping;
+}
+
+/*!
+  When the NbSceneManager::FIXED_NEAR_PLANE autoclipping strategy is
+  used, you set the value of the near plane distance with this method.
+
+  \sa setAutoClipping, getNearPlaneValue, NbSceneManager::AutoClippingStrategy
+*/
+
+void
+SoRenderManager::setNearPlaneValue(float value)
+{
+  PRIVATE(this)->nearplanevalue = value;
+}
+
+/*!
+  This method returns the near plane distance value that will be used
+  when the NbSceneManager::FIXED_NEAR_PLANE autoclipping strategy is used.
+
+  Default value is 0.6.
+
+  \sa setAutoClipping, setNearPlaneValue,  NbSceneManager::AutoClippingStrategy
+*/
+
+float
+SoRenderManager::getNearPlaneValue(void) const
+{
+  return PRIVATE(this)->nearplanevalue;
+}
+
+/*!
+  Enable/disable textures when rendering.
+  Defaults to TRUE.
+
+  \sa isTexturesEnabled
+*/
+
+void 
+SoRenderManager::setTexturesEnabled(const SbBool onoff)
+{
+  PRIVATE(this)->texturesenabled = onoff;
+}
+
+/*!
+  Returns whether textures are enabled or not.
+
+  \sa setTexturesEnabled
+*/
+
+SbBool 
+SoRenderManager::isTexturesEnabled(void) const
+{
+  return PRIVATE(this)->texturesenabled;
+}
+
+/*!
+  Set up the redraw \a priority for the SoOneShotSensor used to
+  trigger redraws. By setting this lower than for your own sensors,
+  you can make sure some code is always run before redraw happens.
+
+  \sa SoDelayQueueSensor
+ */
+void
+SoRenderManager::setRedrawPriority(const uint32_t priority)
+{
+  PRIVATE(this)->redrawpri = priority;
+
+  if (PRIVATE(this)->redrawshot) PRIVATE(this)->redrawshot->setPriority(priority);
+}
+
+/*!
+  Returns value of priority on the redraw sensor.
+ */
+uint32_t
+SoRenderManager::getRedrawPriority(void) const
+{
+  return PRIVATE(this)->redrawpri;
+}
+
+/*!
+  Set the \a action to use for rendering audio. Overrides the default action
+  made in the constructor.
+ */
+void
+SoRenderManager::setAudioRenderAction(SoAudioRenderAction * const action)
+{
+  if (PRIVATE(this)->deleteaudiorenderaction) {
+    delete PRIVATE(this)->audiorenderaction;
+    PRIVATE(this)->audiorenderaction = NULL;
+  }
+
+  // If action change, we need to invalidate state to enable lazy GL
+  // elements to be evaluated correctly.
+  //
+  if (action && action != PRIVATE(this)->audiorenderaction) action->invalidateState();
+  PRIVATE(this)->audiorenderaction = action;
+  PRIVATE(this)->deleteaudiorenderaction = FALSE;
+}
+
+/*!
+  Returns pointer to audio render action.
+ */
+SoAudioRenderAction *
+SoRenderManager::getAudioRenderAction(void) const
+{
+  return PRIVATE(this)->audiorenderaction;
+}
+
+/*!
+  Returns the default priority of the redraw sensor.
+
+  \sa SoDelayQueueSensor, setRedrawPriority()
+ */
+uint32_t
+SoRenderManager::getDefaultRedrawPriority(void)
+{
+  return 10000;
+}
+
+/*!
+  Set whether or not for SoSceneManager instances to "touch" the
+  global \c realTime field after a redraw. If this is not done,
+  redrawing when animating the scene will only happen as fast as the
+  \c realTime interval goes (which defaults to 12 times a second).
+
+  \sa SoDB::setRealTimeInterval()
+ */
+void
+SoRenderManager::enableRealTimeUpdate(const SbBool flag)
+{
+  SoRenderManagerP::touchtimer = flag;
+  if (!SoRenderManagerP::cleanupfunctionset) {
+    coin_atexit((coin_atexit_f*) SoRenderManagerP::cleanup, CC_ATEXIT_NORMAL);
+    SoRenderManagerP::cleanupfunctionset = TRUE;
+  }
+}
+
+/*!
+  Returns whether or not we automatically notifies everything
+  connected to the \c realTime field after a redraw.
+ */
+SbBool
+SoRenderManager::isRealTimeUpdateEnabled(void)
+{
+  return SoRenderManagerP::touchtimer;
+}
+
+
+#undef PRIVATE
+#undef PUBLIC

@@ -293,7 +293,7 @@ CLEANFILES = \
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
-	nodes shapenodes projectors sensors upgraders \
+	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads mpeg shaders $(VRML97DIR) foreignfiles .
 
 
@@ -319,7 +319,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 @HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	shapenodes/libshapenodes.la projectors/libprojectors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la upgraders/libupgraders.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
@@ -354,7 +354,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	errors/errors.lst events/events.lst fields/fields.lst \
 	fonts/fonts.lst glue/glue.lst io/io.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
-	projectors/projectors.lst sensors/sensors.lst \
+	projectors/projectors.lst sensors/sensors.lst navigation/navigation.lst \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
@@ -401,6 +401,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	shapenodes/shapenodes.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	projectors/projectors.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	sensors/sensors.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	navigation/navigation.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	details/details.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	draggers/draggers.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	manips/manips.lst \
@@ -436,6 +437,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	shapenodes/shapenodes.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	projectors/projectors.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	sensors/sensors.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	navigation/navigation.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	details/details.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	draggers/draggers.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	manips/manips.lst \
@@ -470,6 +472,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	shapenodes/shapenodes.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	projectors/projectors.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	sensors/sensors.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	navigation/navigation.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	details/details.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	draggers/draggers.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	manips/manips.lst \
@@ -506,6 +509,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	shapenodes/shapenodes.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	projectors/projectors.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	sensors/sensors.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	navigation/navigation.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	details/details.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	draggers/draggers.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	manips/manips.lst \
@@ -553,6 +557,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
@@ -588,6 +593,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
@@ -624,6 +630,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
@@ -660,6 +667,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
@@ -709,9 +717,9 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 DIST_COMMON = Makefile.am Makefile.in
 DIST_SUBDIRS = extensions actions base bundles caches details draggers \
 	elements engines errors events fields fonts glue io manips misc \
-	lists nodekits nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders vrml97 \
-	foreignfiles .
+	lists nodekits navigation nodes shapenodes projectors sensors \
+	upgraders 3ds collision hardcopy shadows geo threads mpeg \
+	shaders vrml97 foreignfiles .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: all-recursive
@@ -1243,7 +1251,7 @@ install-symlinks:
 	@for dir in \
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
-	    nodes shapenodes projectors sensors upgraders 3ds collision \
+	    nodes navigation shapenodes projectors sensors upgraders 3ds collision \
 	    hardcopy threads mpeg shaders shadows geo $(VRML97DIR) foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
@@ -1284,6 +1292,7 @@ uninstall-local:
 	  "$$baseincdir/misc" \
 	  "$$baseincdir/nodekits" \
 	  "$$baseincdir/nodes" \
+	  "$$baseincdir/navigation" \
 	  "$$baseincdir/projectors" \
 	  "$$baseincdir/sensors" \
 	  "$$baseincdir/system" \

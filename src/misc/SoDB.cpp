@@ -359,6 +359,7 @@
 
 #include "../shaders/SoShader.h"
 #include "../geo/SoGeo.h"
+#include <Inventor/navigation/SoNavigation.h>
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
@@ -545,6 +546,7 @@ SoDB::init(void)
   // FIXME: probably temporary. Add FXViz::init() or something? pederb, 2007-03-09
   SoShadowGroup::init();
   SoGeo::init();
+  SoNavigation::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();

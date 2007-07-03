@@ -33,7 +33,7 @@ endif
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
-	nodes shapenodes projectors sensors upgraders \
+	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads mpeg shaders $(VRML97DIR) foreignfiles .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
@@ -65,7 +65,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
 	shapenodes/libshapenodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la upgraders/libupgraders.la \
+	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
@@ -98,7 +98,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	errors/errors.lst events/events.lst fields/fields.lst \
 	fonts/fonts.lst glue/glue.lst io/io.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
-	projectors/projectors.lst sensors/sensors.lst \
+	projectors/projectors.lst sensors/sensors.lst navigation/navigation.lst \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
@@ -186,7 +186,7 @@ install-symlinks:
 	@for dir in \
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
-	    nodes shapenodes projectors sensors upgraders 3ds collision \
+	    nodes navigation shapenodes projectors sensors upgraders 3ds collision \
 	    hardcopy threads mpeg shaders shadows geo $(VRML97DIR) foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
@@ -227,6 +227,7 @@ uninstall-local:
 	  "$$baseincdir/misc" \
 	  "$$baseincdir/nodekits" \
 	  "$$baseincdir/nodes" \
+	  "$$baseincdir/navigation" \
 	  "$$baseincdir/projectors" \
 	  "$$baseincdir/sensors" \
 	  "$$baseincdir/system" \

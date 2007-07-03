@@ -23,25 +23,14 @@
 
 #include "SoSceneManagerP.h"
 
+#include <Inventor/SoDB.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoPolygonOffsetElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/fields/SoSFTime.h>
-#include <Inventor/SoDB.h>
 
-SbBool SoSceneManagerP::touchtimer = TRUE;
-SbBool SoSceneManagerP::cleanupfunctionset = FALSE;
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
@@ -49,148 +38,42 @@ SbBool SoSceneManagerP::cleanupfunctionset = FALSE;
 SoSceneManagerP::SoSceneManagerP(SoSceneManager * publ) 
 {
   PUBLIC(this) = publ;
-  this->doublebuffer = TRUE;
+  this->searchaction = new SoSearchAction;
 }
 
 SoSceneManagerP::~SoSceneManagerP()
 {
-  if (this->camera) {
-    this->camera->unref();
-  }
+  delete this->searchaction;
 }
 
-// Internal callback.
-void
-SoSceneManagerP::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
-#endif // debug
-
-  SoSceneManager * sm = (SoSceneManager *)data;
-
-  // Need to recheck the "active" flag, as it could have changed since
-  // it was tested in the SoSceneManager::scheduleRedraw() call.
-  if (PRIVATE(sm)->isActive()) { sm->redraw(); }
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
-#endif // debug
-}
-
-void
-SoSceneManagerP::setCamera(SoCamera * camera)
-{
-  if (this->camera) {
-    this->camera->unref();
-  }
-  this->camera = camera;
-  if (camera) camera->ref();
-}
+// defcamera is the default camera returned if none is found in root
 
 SoCamera * 
-SoSceneManagerP::getCamera(void) 
+SoSceneManagerP::searchForCamera(SoNode * root,
+                                 SoCamera * defcamera)
 {
-  if (this->camera) return this->camera;
-  
-  this->searchaction.setType(SoCamera::getClassTypeId());
-  this->searchaction.setInterest(SoSearchAction::FIRST);
+  this->searchaction->setType(SoCamera::getClassTypeId());
+  this->searchaction->setInterest(SoSearchAction::FIRST);
   SbBool old = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
-  this->searchaction.apply(PUBLIC(this)->getSceneGraph());
+  this->searchaction->apply(root);
   SoBaseKit::setSearchingChildren(old);
-  SoFullPath * path = (SoFullPath*) this->searchaction.getPath();
+  SoFullPath * path = (SoFullPath*) this->searchaction->getPath();
   if (path) {
     SoNode * tail = path->getTail();
-    this->searchaction.reset();
+    this->searchaction->reset();
     return (SoCamera*) tail;
   }
-  return NULL;
-}
-
-void
-SoSceneManagerP::cleanup(void)
-{
-  SoSceneManagerP::touchtimer = TRUE;
-  SoSceneManagerP::cleanupfunctionset = FALSE;
-}
-
-//**********************************************************************************
-// Superimposition
-//**********************************************************************************
-
-class SuperimpositionP {
-public:
-  SoNode * scene;
-  SbBool enabled;
-  SoSceneManager * manager;
-  SoNodeSensor * sensor;
-  uint32_t stateflags;
-};
-
-Superimposition::Superimposition(SoNode * scene,
-                                 SbBool enabled,
-                                 SoSceneManager * manager,
-                                 uint32_t flags)
-{
-  assert(scene != NULL);
-  PRIVATE(this) = new SuperimpositionP;
-
-  PRIVATE(this)->scene = scene;
-  PRIVATE(this)->scene->ref();
-  
-  PRIVATE(this)->enabled = enabled;
-  PRIVATE(this)->stateflags = flags;
-  
-  PRIVATE(this)->manager = manager;
-  PRIVATE(this)->sensor = new SoNodeSensor(Superimposition::changeCB, this);
-  PRIVATE(this)->sensor->attach(PRIVATE(this)->scene);
-}
-
-Superimposition::~Superimposition()
-{
-  PRIVATE(this)->scene->unref();
-  delete PRIVATE(this)->sensor;
-  delete PRIVATE(this);
+  return defcamera;
 }
 
 void 
-Superimposition::render(void) 
+SoSceneManagerP::renderCB(void * userdata, class SoRenderManager * mgr)
 {
-  if (!PRIVATE(this)->enabled) return;
-
-  SbBool zbufferwason = glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE;
-  
-  PRIVATE(this)->stateflags & Superimposition::ZBUFFERON ?
-    glEnable(GL_DEPTH_TEST):
-    glDisable(GL_DEPTH_TEST);
-
-  if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER)
-    glClear(GL_DEPTH_BUFFER_BIT);
-  
-  PRIVATE(this)->manager->getGLRenderAction()->apply(PRIVATE(this)->scene);
-  
-  zbufferwason ?
-    glEnable(GL_DEPTH_TEST):
-    glDisable(GL_DEPTH_TEST);
+  SoSceneManagerP * thisp = (SoSceneManagerP *) userdata;
+  assert(thisp);
+  thisp->rendercb(thisp->rendercbdata, PUBLIC(thisp));
 }
-
-void 
-Superimposition::setEnabled(SbBool yes)
-{
-  PRIVATE(this)->enabled = yes;
-}
-
-void 
-Superimposition::changeCB(void * data, SoSensor * sensor) 
-{
-  Superimposition * thisp = (Superimposition *) data;
-  assert(thisp && PRIVATE(thisp)->manager);
-  if (PRIVATE(thisp)->stateflags & Superimposition::AUTOREDRAW) {
-    PRIVATE(thisp)->manager->scheduleRedraw();
-  }
-}
-
 
 #undef PRIVATE
 #undef PUBLIC

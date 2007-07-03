@@ -1802,7 +1802,7 @@ if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
-    manips misc lists nodekits nodes shapenodes projectors \
+    manips misc lists nodekits navigation nodes shapenodes projectors \
     sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
     mpeg 3ds:format3ds; \
   do
@@ -2145,6 +2145,7 @@ AC_CONFIG_FILES([
         include/Inventor/lock/Makefile
         include/Inventor/manips/Makefile
         include/Inventor/misc/Makefile
+        include/Inventor/navigation/Makefile
         include/Inventor/nodekits/Makefile
         include/Inventor/nodes/Makefile
         include/Inventor/projectors/Makefile
@@ -2186,6 +2187,7 @@ AC_CONFIG_FILES([
         src/manips/Makefile
         src/misc/Makefile
         src/lists/Makefile
+        src/navigation/Makefile
         src/nodekits/Makefile
         src/nodes/Makefile
         src/projectors/Makefile
