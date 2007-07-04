@@ -537,6 +537,12 @@ glglue_cleanup(void)
 #endif
 }
 
+static SbBool 
+glglue_has_nvidia_framebuffer_object_bug(int major, int minor, int release)
+{
+  return (major == 2) && (minor == 0) && (release == 0);
+}
+
 /*
   Set the OpenGL version variables in the given cc_glglue struct
   instance.
@@ -1716,34 +1722,34 @@ glglue_resolve_symbols(cc_glglue * w)
      SoGLRenderAction). (20031124 handegar) */
   w->can_do_sortedlayersblend =
     (w->has_nv_register_combiners &&
-      w->has_ext_texture_rectangle &&
-      w->has_nv_texture_shader &&
-      w->has_depth_texture &&
-      w->has_shadow) ||
+     w->has_ext_texture_rectangle &&
+     w->has_nv_texture_shader &&
+     w->has_depth_texture &&
+     w->has_shadow) ||
     w->has_arb_fragment_program;
-
-
+  
+  
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
-		w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
-		w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
-		w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
-		w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
-		w->glRenderbufferStorage = (COIN_PFNGLRENDERBUFFERSTORAGEPROC)cc_glglue_getprocaddress("glRenderbufferStorageEXT");
-		w->glGetRenderbufferParameteriv = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress("glGetRenderbufferParameterivEXT");
-		w->glIsFramebuffer = (COIN_PFNGLISFRAMEBUFFERPROC)cc_glglue_getprocaddress("glIsFramebufferEXT");
-		w->glBindFramebuffer = (COIN_PFNGLBINDFRAMEBUFFERPROC)cc_glglue_getprocaddress("glBindFramebufferEXT");
-		w->glDeleteFramebuffers = (COIN_PFNGLDELETEFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glDeleteFramebuffersEXT");
-		w->glGenFramebuffers = (COIN_PFNGLGENFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glGenFramebuffersEXT");
-		w->glCheckFramebufferStatus = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)cc_glglue_getprocaddress("glCheckFramebufferStatusEXT");
-		w->glFramebufferTexture1D = (COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)cc_glglue_getprocaddress("glFramebufferTexture1DEXT");
-		w->glFramebufferTexture2D = (COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)cc_glglue_getprocaddress("glFramebufferTexture2DEXT");
-		w->glFramebufferTexture3D = (COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)cc_glglue_getprocaddress("glFramebufferTexture3DEXT");
-		w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress("glFramebufferRenderbufferEXT");
-		w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
+    w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
+    w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
+    w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
+    w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
+    w->glRenderbufferStorage = (COIN_PFNGLRENDERBUFFERSTORAGEPROC)cc_glglue_getprocaddress("glRenderbufferStorageEXT");
+    w->glGetRenderbufferParameteriv = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress("glGetRenderbufferParameterivEXT");
+    w->glIsFramebuffer = (COIN_PFNGLISFRAMEBUFFERPROC)cc_glglue_getprocaddress("glIsFramebufferEXT");
+    w->glBindFramebuffer = (COIN_PFNGLBINDFRAMEBUFFERPROC)cc_glglue_getprocaddress("glBindFramebufferEXT");
+    w->glDeleteFramebuffers = (COIN_PFNGLDELETEFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glDeleteFramebuffersEXT");
+    w->glGenFramebuffers = (COIN_PFNGLGENFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glGenFramebuffersEXT");
+    w->glCheckFramebufferStatus = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)cc_glglue_getprocaddress("glCheckFramebufferStatusEXT");
+    w->glFramebufferTexture1D = (COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)cc_glglue_getprocaddress("glFramebufferTexture1DEXT");
+    w->glFramebufferTexture2D = (COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)cc_glglue_getprocaddress("glFramebufferTexture2DEXT");
+    w->glFramebufferTexture3D = (COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)cc_glglue_getprocaddress("glFramebufferTexture3DEXT");
+    w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress("glFramebufferRenderbufferEXT");
+    w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
       cc_glglue_getprocaddress("glGetFramebufferAttachmentParameterivEXT");
-		w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
-
-		if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers || 
+    w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
+    
+    if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers || 
         !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv || 
         !w->glIsFramebuffer || !w->glBindFramebuffer || !w->glDeleteFramebuffers || 
         !w->glGenFramebuffers || !w->glCheckFramebufferStatus || !w->glFramebufferTexture1D || 
@@ -1751,9 +1757,17 @@ glglue_resolve_symbols(cc_glglue * w)
         !w->glGetFramebufferAttachmentParameteriv || !w->glGenerateMipmap) {
       w->has_fbo = FALSE;
     }
-		else {
-			w->has_fbo = TRUE;
+    else {
+      w->has_fbo = TRUE;
     }
+  }
+  
+  /* 
+     Disable features based on known driver bugs  here. 
+     FIXME: move the driver workarounds to some other module. pederb, 2007-07-04 
+  */
+  if (w->vendor_is_nvidia && w->has_fbo) {
+    w->has_fbo = !glglue_has_nvidia_framebuffer_object_bug(w->version.major, w->version.minor, w->version.release);
   }
 }
 
