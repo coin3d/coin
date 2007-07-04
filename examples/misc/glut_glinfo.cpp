@@ -43,7 +43,7 @@ expose_cb(void)
 int
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
         int nCmdShow)
-
+{
 #else // UNIX
 
 int
