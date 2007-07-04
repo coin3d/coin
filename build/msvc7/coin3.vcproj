@@ -19457,6 +19457,48 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\misc\SoEventManager.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\misc/"
+							ProgramDataBaseFileName="StaticDebug\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\misc/"
+							ProgramDataBaseFileName="Release\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\misc/"
+							ProgramDataBaseFileName="StaticRelease\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\misc/"
+							ProgramDataBaseFileName="Debug\misc/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\misc\SoFullPath.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -20466,6 +20508,48 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\SoRenderManager.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\misc/"
+							ProgramDataBaseFileName="StaticDebug\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\misc/"
+							ProgramDataBaseFileName="Release\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\misc/"
+							ProgramDataBaseFileName="StaticRelease\misc/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\misc/"
+							ProgramDataBaseFileName="Debug\misc/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoRenderManagerP.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -22150,6 +22234,724 @@
 							BasicRuntimeChecks="3"
 							ObjectFile=".\Debug\nodekits/"
 							ProgramDataBaseFileName="Debug\nodekits/"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="navigation sources"
+				Filter="c;cpp;ic;icc;h">
+				<File
+					RelativePath="..\..\src\navigation\SoCenterMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoEvent.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoIdleMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigation.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigationControl.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigationMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigationState.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigationSystem.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoNavigationVehicle.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoOrthoCenterMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoPanMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoPickMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoPitchMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoRollMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoRotateMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoYawMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoZoomMode.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
 					</FileConfiguration>
 				</File>
 			</Filter>
@@ -26400,6 +27202,48 @@
 				</File>
 				<File
 					RelativePath="..\..\src\nodes\SoVertexProperty.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\nodes\SoViewerNavigationMode.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -36874,6 +37718,9 @@
 					RelativePath="..\..\include\Inventor\nodes\SoVertexShape.h">
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoViewerNavigationMode.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoWWWAnchor.h">
 				</File>
 				<File
@@ -37005,6 +37852,61 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\threads\SbTypedStorage.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Inventor\navigation headers"
+				Filter="">
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoCenterMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoIdleMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigation.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigationControl.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigationMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigationState.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigationSystem.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoNavigationVehicle.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoOrthoCenterMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoPanMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoPickMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoPitchMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoRollMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoRotateMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoSubMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoYawMode.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoZoomMode.h">
 				</File>
 			</Filter>
 			<Filter
@@ -37227,6 +38129,9 @@
 					RelativePath="..\..\include\Inventor\SoDB.h">
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\SoEventManager.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\SoFullPath.h">
 				</File>
 				<File
@@ -37255,6 +38160,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SoPrimitiveVertex.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SoRenderManager.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SoSceneManager.h">
@@ -40600,6 +41508,37 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\systemsanity.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="navigation local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\navigation\SoEvent.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
