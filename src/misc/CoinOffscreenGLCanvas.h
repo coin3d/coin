@@ -50,6 +50,8 @@ public:
                   unsigned int nrcomponents) const;
 
   static SbBool debug(void);
+  
+  static SbBool allowResourcehog(void);
 
 private:
   static SbBool clampSize(SbVec2s & s);

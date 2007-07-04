@@ -100,7 +100,7 @@ CoinOffscreenGLCanvas::setWantedSize(SbVec2s reqsize)
   // even if we already have a large enough canvas.
   size_t oldres = (size_t)this->size[0] * (size_t)this->size[1];
   size_t newres = (size_t)reqsize[0] * (size_t)reqsize[1];
-  const SbBool resourcehog = (oldres > (newres * 16));
+  const SbBool resourcehog = (oldres > (newres * 16)) && !CoinOffscreenGLCanvas::allowResourcehog();
 
   // Since the operation of context destruction and reconstruction has
   // the potential to be such a costly operation (because GL caches
@@ -436,6 +436,19 @@ CoinOffscreenGLCanvas::debug(void)
     flag = env && (atoi(env) > 0);
   }
   return flag;
+}
+
+SbBool
+CoinOffscreenGLCanvas::allowResourcehog(void)
+{
+  static int resourcehog_flag = -1; // -1 means "not initialized" in this context
+  if (resourcehog_flag == -1) {
+    const char * env = coin_getenv("COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG");
+    resourcehog_flag = env && (atoi(env) > 0);
+    SoDebugError::postInfo("CoinOffscreenGLCanvas",
+                           "Ignoring resource hogging due to set COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG environment variable.");
+  }
+  return resourcehog_flag;
 }
 
 // *************************************************************************
