@@ -370,6 +370,7 @@ GLUWrapper(void)
       "GLU", "MesaGLU",
       "libGLU", "libMesaGLU",
       "libGLU.so", "libMesaGLU.so",
+      "libGLU.so.1", /* Some Debian distributions do not supply a symlink for libGLU.so, only libGLU.so.1 */
       NULL
     };
     possiblelibnames[0] = coin_getenv("COIN_GLU_LIBNAME");
