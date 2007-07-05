@@ -52,6 +52,12 @@ class SoNavigationControl;
 #define SO_EXAMINER_WAITFORCENTER_MODE  "examiner:wait_for_center"
 #define SO_EXAMINER_CENTER_MODE         "examiner:center"
 
+#define SO_PLANEVIEWER_SYSTEM           "planeviewer"
+#define SO_PLANEVIEWER_IDLE_MODE        "planeviewer:idle"
+#define SO_PLANEVIEWER_PAN_MODE         "planeviewer:pan"
+#define SO_PLANEVIEWER_WAITFORZOOM_MODE "planeviewer:wait_for_zoom"
+#define SO_PLANEVIEWER_ZOOM_MODE        "planeviewer:zoom"
+
 // some simple button1-modes
 #define SO_PANNER_SYSTEM                "panner"
 #define SO_PANNER_IDLE_MODE             "panner:idle"
@@ -117,7 +123,7 @@ public:
   SbName getCurrentModeName(void) const;
   SoNavigationMode * getMode(SbName name) const;
   SoNavigationMode * getCurrentMode(void) const;
-  
+
   enum TransitionType {
     INITIAL,
     STACK,

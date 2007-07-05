@@ -191,6 +191,7 @@ public:
   static void initCentererSystem(void);
   static void initPickerSystem(void);
   static void initIdleSystem(void);
+  static void initPlaneViewerSystem(void);
 
 };
 
@@ -235,6 +236,7 @@ SoNavigationSystem::cleanClass(void)
   DELETE_SYSTEM(SO_PANNER_SYSTEM);
   DELETE_SYSTEM(SO_CENTERER_SYSTEM);
   DELETE_SYSTEM(SO_PICKER_SYSTEM);
+  DELETE_SYSTEM(SO_PLANEVIEWER_SYSTEM);
 
 #undef DELETE_SYSTEM
 
@@ -834,10 +836,6 @@ SoNavigationSystemP::initExaminerSystem(void)
   escapedown->setKey(SoKeyboardEvent::ESCAPE);
   escapedown->setState(SoButtonEvent::DOWN);
   
-  SoKeyboardEvent * spacedown = new SoKeyboardEvent;
-  spacedown->setKey(SoKeyboardEvent::SPACE);
-  spacedown->setState(SoButtonEvent::DOWN);
-
   SoKeyboardEvent * shiftdown = new SoKeyboardEvent;
   shiftdown->setKey(SoKeyboardEvent::LEFT_SHIFT);
   shiftdown->setState(SoButtonEvent::DOWN);
@@ -959,7 +957,6 @@ SoNavigationSystemP::initExaminerSystem(void)
 
   SoNavigationSystem::registerSystem(examiner);
   
-  delete spacedown;
   delete escapedown;
   delete key_sdown;
   delete button1down;
@@ -1144,6 +1141,76 @@ SoNavigationSystemP::initIdleSystem(void)
 }
 
 void 
+SoNavigationSystemP::initPlaneViewerSystem(void)
+{
+  SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
+  button1down->setButton(SoMouseButtonEvent::BUTTON1);
+  button1down->setState(SoButtonEvent::DOWN);
+  SoMouseButtonEvent * button1up = new SoMouseButtonEvent;
+  button1up->setButton(SoMouseButtonEvent::BUTTON1);
+  button1up->setState(SoButtonEvent::UP);
+
+  SoMouseButtonEvent * button2down = new SoMouseButtonEvent;
+  button2down->setButton(SoMouseButtonEvent::BUTTON2);
+  button2down->setState(SoButtonEvent::DOWN);
+  SoMouseButtonEvent * button2up = new SoMouseButtonEvent;
+  button2up->setButton(SoMouseButtonEvent::BUTTON2);
+  button2up->setState(SoButtonEvent::UP);
+
+  SoKeyboardEvent * escapedown = new SoKeyboardEvent;
+  escapedown->setKey(SoKeyboardEvent::ESCAPE);
+  escapedown->setState(SoButtonEvent::DOWN);
+
+  SoKeyboardEvent * shiftdown = new SoKeyboardEvent;
+  shiftdown->setKey(SoKeyboardEvent::LEFT_SHIFT);
+  shiftdown->setState(SoButtonEvent::DOWN);
+  SoKeyboardEvent * shiftup = new SoKeyboardEvent;
+  shiftup->setKey(SoKeyboardEvent::LEFT_SHIFT);
+  shiftup->setState(SoButtonEvent::UP);
+  
+  SoNavigationSystem * planeviewer = new SoNavigationSystem(SO_PLANEVIEWER_SYSTEM);
+  SoIdleMode * idle = new SoIdleMode(SO_PLANEVIEWER_IDLE_MODE);
+  SoPanMode * pan = new SoPanMode(SO_PLANEVIEWER_PAN_MODE);
+  
+  SoIdleMode * waitforzoom =
+    new SoIdleMode(SO_PLANEVIEWER_WAITFORZOOM_MODE);
+  SoZoomMode * zoom =
+    new SoZoomMode(SO_PLANEVIEWER_ZOOM_MODE);
+  
+  planeviewer->addMode(idle);
+  planeviewer->addMode(pan);
+  planeviewer->addMode(zoom);
+  planeviewer->addMode(waitforzoom);
+  
+  planeviewer->addModeTransition(idle, SoNavigationSystem::INITIAL);
+  planeviewer->addModeTransition(idle, waitforzoom,
+                                 SoNavigationSystem::STACK, shiftdown);
+  planeviewer->addModeTransition(waitforzoom, SoNavigationSystem::FINISH, shiftup, shiftdown);
+  planeviewer->addModeTransition(idle, pan,
+                                 SoNavigationSystem::STACK, button1down);
+  planeviewer->addModeTransition(pan, SoNavigationSystem::FINISH, button1up);
+  planeviewer->addModeTransition(idle, zoom,
+                                 SoNavigationSystem::STACK, button2down);
+  planeviewer->addModeTransition(zoom, SoNavigationSystem::FINISH, button2up, button2down);
+  
+  planeviewer->addModeTransition(zoom, SoNavigationSystem::FINISH, button1up, button1down);
+
+  planeviewer->addModeTransition(pan, SoNavigationSystem::ABORT, escapedown);
+  planeviewer->addModeTransition(zoom, SoNavigationSystem::ABORT, escapedown);
+
+  planeviewer->addModeTransition(waitforzoom, zoom, SoNavigationSystem::SWITCH, button1down);
+
+  SoNavigationSystem::registerSystem(planeviewer);
+
+  delete shiftdown;
+  delete shiftup;
+  delete escapedown;
+  delete button1down;
+  delete button1up;
+}
+
+
+void 
 SoNavigationSystemP::initBuiltinSystems(void)
 {
   initExaminerSystem();
@@ -1153,4 +1220,5 @@ SoNavigationSystemP::initBuiltinSystems(void)
   initCentererSystem();
   initPickerSystem();
   initIdleSystem();
+  initPlaneViewerSystem();
 }
