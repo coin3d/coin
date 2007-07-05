@@ -33,52 +33,52 @@ struct SbTVertex;
 class SbHeap;
 class SbVec3f;
 
+typedef void SbTesselatorCB(void * v0, void * v1, void * v2, void * data);
+
 class COIN_DLL_API SbTesselator {
 public:
-  SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
-                                void * data) = NULL, void * userdata = NULL);
+  SbTesselator(SbTesselatorCB * func = NULL, void * data = NULL);
   ~SbTesselator(void);
 
   void beginPolygon(SbBool keepVertices = FALSE,
                     const SbVec3f & normal = SbVec3f(0.0f, 0.0f, 0.0f));
-  void addVertex(const SbVec3f &v, void *data);
+  void addVertex(const SbVec3f &v, void * data);
   void endPolygon(void);
-  void setCallback(void (*callback)(void *v0, void *v1, void *v2, void *data),
-                   void *data);
+  void setCallback(SbTesselatorCB * func, void * data);
 
 private:
-  struct SbTVertex *newVertex(void);
+  struct SbTVertex * newVertex(void);
   void cleanUp(void);
 
   int currVertex;
   SbList <struct SbTVertex*> vertexStorage;
-  SbHeap *heap;
+  SbHeap * heap;
 
-  SbTVertex *headV,*tailV;
+  SbTVertex * headV, * tailV;
   int numVerts;
   SbVec3f polyNormal;
   int X,Y;
   int polyDir;
-  void (*callback)(void *v0,void *v1,void *v2,void *data);
-  void *callbackData;
+  void (*callback)(void * v0,void * v1,void * v2,void * data);
+  void * callbackData;
   SbBool hasNormal;
   SbBool keepVertices;
 
-  void emitTriangle(SbTVertex *v);
-  void cutTriangle(SbTVertex *t);
+  void emitTriangle(SbTVertex * v);
+  void cutTriangle(SbTVertex * t);
   void calcPolygonNormal(void);
 
   SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
                       const SbVec3f &c, float &cx, float &cy);
   float circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
-  float circleSize(SbTVertex *v);
+  float circleSize(SbTVertex * v);
   float dot2D(const SbVec3f &v1, const SbVec3f &v2);
-  SbBool clippable(SbTVertex *v);
-  SbBool isTriangle(SbTVertex *v);
-  SbBool pointInTriangle(SbTVertex *p,SbTVertex *t);
-  float area(SbTVertex *t);
+  SbBool clippable(SbTVertex * v);
+  SbBool isTriangle(SbTVertex * v);
+  SbBool pointInTriangle(SbTVertex * p, SbTVertex * t);
+  float area(SbTVertex * t);
 
-  static float heap_evaluate(void *v);
+  static float heap_evaluate(void * v);
   static int heap_compare(void * v0, void * v1);
 };
 

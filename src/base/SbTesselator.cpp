@@ -58,8 +58,9 @@
 
   SbTesselator mytessellator(tess_cb, NULL);
   mytessellator.beginPolygon();
-  for (int i=0; i < 4; i++)
+  for (int i=0; i < 4; i++) {
     mytessellator.addVertex(vertices[i], &vertices[i]);
+  }
   mytessellator.endPolygon();
 
   \endcode
@@ -173,15 +174,13 @@ enum {OXY,OXZ,OYZ};
   vertex and the \a userdata pointer. The vertex pointers are
   specified in the SbTesselator::addVertex() method.
 */
-SbTesselator::SbTesselator(void (*callbackptr)(void * v0, void * v1, void * v2,
-                                               void * data),
-                           void * userdata)
+SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
 {
-  this->setCallback(callbackptr, userdata);
+  this->setCallback(func, data);
   this->headV = this->tailV = NULL;
   this->currVertex = 0;  
 
-  this->heap = (SbHeap*) new SbTesselatorP;
+  this->heap = (SbHeap *) new SbTesselatorP;
   PRIVATE(this)->heap =
     cc_heap_construct(256, (cc_heap_compare_cb *) heap_compare, TRUE);
   PRIVATE(this)->epsilon = FLT_EPSILON;
@@ -193,8 +192,8 @@ SbTesselator::SbTesselator(void (*callbackptr)(void * v0, void * v1, void * v2,
 SbTesselator::~SbTesselator()
 {
   cleanUp();
-  int i,n = this->vertexStorage.getLength();
-  for (i = 0; i < n; i++) delete this->vertexStorage[i];
+  int i, n = this->vertexStorage.getLength();
+  for (i = 0; i < n; i++) { delete this->vertexStorage[i]; }
   
   cc_heap_destruct(PRIVATE(this)->heap);
   delete PRIVATE(this);
@@ -399,13 +398,9 @@ SbTesselator::endPolygon()
   Sets the callback function for this tessellator.
 */
 void
-SbTesselator::setCallback(void (*callbackptr)(void *v0,
-                                              void *v1,
-                                              void *v2,
-                                              void *data),
-                          void *data)
+SbTesselator::setCallback(SbTesselatorCB * func, void *data)
 {
-  this->callback = callbackptr;
+  this->callback = func;
   this->callbackData = data;
 }
 
@@ -427,7 +422,7 @@ point_on_edge(const float x, const float y,
 
   float ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
 
-  if (fabs(y-ny)<= eps) {
+  if (fabs(y-ny) <= eps) {
     return TRUE;
   }
   return FALSE;
@@ -454,19 +449,26 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   const float *v1 = t->v.getValue();
   const float *v2 = t->next->next->v.getValue();
 
-  if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
-    tst = (tst==FALSE ? TRUE : FALSE);
+  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
+      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
+    tst = !tst;
+  }
+
   v2 = v1;
   v1 = t->next->v.getValue();
-  if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
-    tst = (tst==FALSE ? TRUE : FALSE);
+
+  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
+      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
+    tst = !tst;
+  }
+
   v2 = v1;
   v1 = t->next->next->v.getValue();
-  if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
-    tst = (tst==FALSE ? TRUE : FALSE);
+
+  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
+      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
+    tst = !tst;
+  }
 
   // the pointInTriangle test might fail for vertices that are on one
   // of the triangle edges. Do a point_on_edge test for all three
@@ -489,16 +491,19 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   //               -0.3   0.1   0.0 ]
   //    }
   //    coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1]
-  if (tst == FALSE) {
-    if (point_on_edge(x,y,t->v.getValue(),
-                      t->next->v.getValue(),X,Y, PRIVATE(this)->epsilon))
+  if (!tst) {
+    if (point_on_edge(x, y, t->v.getValue(),
+                      t->next->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
       return TRUE;
-    if (point_on_edge(x,y,t->next->v.getValue(),
-                      t->next->next->v.getValue(),X,Y, PRIVATE(this)->epsilon))
+    }
+    if (point_on_edge(x, y, t->next->v.getValue(),
+                      t->next->next->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
       return TRUE;
-    if (point_on_edge(x,y,t->next->next->v.getValue(),
-                      t->v.getValue(),X,Y, PRIVATE(this)->epsilon))
+    }
+    if (point_on_edge(x, y, t->next->next->v.getValue(),
+                      t->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
       return TRUE;
+    }
   }
   return tst;
 }
@@ -511,10 +516,9 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
 SbBool
 SbTesselator::isTriangle(SbTVertex *v)
 {
-  if (((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-       (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X]))*this->polyDir>0.0)
-    return TRUE;
-  else return FALSE;
+  return (((v->next->v[X]-v->v[X]) * (v->next->next->v[Y]-v->v[Y]) -
+	   (v->next->v[Y]-v->v[Y]) * (v->next->next->v[X]-v->v[X])) *
+	  this->polyDir > 0.0) ? TRUE : FALSE;
 }
 
 //
@@ -539,7 +543,7 @@ SbTesselator::clippable(SbTVertex *v)
   for (int i = 0; i < l.getLength(); i++) {
     SbTVertex * vtx = (SbTVertex*) PRIVATE(this)->bsptree.getUserData(l[i]);
     if (vtx != v && vtx != v->next && vtx != v->next->next) {
-      if (pointInTriangle(vtx, v)) return FALSE;
+      if (pointInTriangle(vtx, v)) { return FALSE; }
     }
   }
   return TRUE;
