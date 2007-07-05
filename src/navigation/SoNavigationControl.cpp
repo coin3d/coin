@@ -335,9 +335,9 @@ SoNavigationControl::viewAll(void) const
     }
     SoBaseKit::setSearchingChildren(sc);
   }
-  const float slack = 0.001f;
   SbViewportRegion vp(this->getViewportSize());
-  camera->viewAll(root, vp, slack);
+  camera->viewAll(root, vp);
+
   if (PRIVATE(this)->utmcamtype != SoType::badType() &&
       camera->isOfType(PRIVATE(this)->utmcamtype)) {
     // move from position to utmposition and set position to (0,0,0)
@@ -387,7 +387,7 @@ SoNavigationControl::viewPart(SoPath * path, const SbVec3f & in, const SbVec3f &
     SoBaseKit::setSearchingChildren(oldsearch);
 
     SbViewportRegion vp(this->getViewportSize());
-    camera->viewAll(path, vp, 0.001f);
+    camera->viewAll(path, vp);
 
     if (PRIVATE(this)->utmcamtype != SoType::badType() &&
         camera->isOfType(PRIVATE(this)->utmcamtype)) {
