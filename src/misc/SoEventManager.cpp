@@ -54,7 +54,7 @@ public:
 SoEventManager::SoEventManager(void)
 {
   PRIVATE(this) = new SoEventManagerP;
-  PRIVATE(this)->navigationsystem = SoNavigationSystem::getByName(SO_IDLER_SYSTEM);
+  PRIVATE(this)->navigationsystem = SoNavigationSystem::createByName(SO_EXAMINER_SYSTEM);
   PRIVATE(this)->navigationstate = SoEventManager::NO_NAVIGATION;
   PRIVATE(this)->handleeventaction = new SoHandleEventAction(SbViewportRegion(400, 400));
   PRIVATE(this)->deletehandleeventaction = TRUE;
@@ -67,6 +67,7 @@ SoEventManager::SoEventManager(void)
 
 SoEventManager::~SoEventManager()
 {
+  delete PRIVATE(this)->navigationsystem;
   if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
   delete PRIVATE(this);
 }
