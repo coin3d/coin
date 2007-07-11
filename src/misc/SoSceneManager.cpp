@@ -112,9 +112,9 @@ SoSceneManager::~SoSceneManager()
   
   if (PRIVATE(this)->camera) PRIVATE(this)->camera->unref();
 
-  delete PRIVATE(this);
   delete PRIVATE(this)->rendermanager;
   delete PRIVATE(this)->eventmanager;
+  delete PRIVATE(this);
 }
 
 /*!
