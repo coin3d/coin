@@ -21,6 +21,9 @@ endif
 
 SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA= Coin.pc
+
 BUILT_SOURCES = \
 	include/Inventor/C/basic.h \
 	include/Inventor/system/gl-headers.h \
@@ -38,6 +41,7 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
+	Coin.pc \
 	Info.plist \
 	version.plist \
 	docs/coin.doxygen \
@@ -70,6 +74,7 @@ EXTRA_DIST = \
 	RELNOTES \
 	bootstrap \
 	coin.cfg.in \
+	Coin.pc.in \
 	Info.plist.in \
 	version.plist.in \
 	data/shaders/glsl2h.sh.in \
@@ -262,6 +267,9 @@ EXTRA_DIST = \
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
+
+Coin.pc: config.status $(srcdir)/Coin.pc.in
+	@$(SHELL) config.status --file=$@:Coin.pc.in
 
 Info.plist: config.status $(srcdir)/Info.plist.in
 	@$(SHELL) config.status --file=$@:Info.plist.in
