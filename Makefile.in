@@ -276,6 +276,9 @@ target_vendor = @target_vendor@
 
 SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = Coin.pc
+
 BUILT_SOURCES = \
 	include/Inventor/C/basic.h \
 	include/Inventor/system/gl-headers.h \
@@ -295,6 +298,7 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
+	Coin.pc \
 	Info.plist \
 	version.plist \
 	docs/coin.doxygen \
@@ -324,6 +328,7 @@ EXTRA_DIST = \
 	RELNOTES \
 	bootstrap \
 	coin.cfg.in \
+	Coin.pc.in \
 	Info.plist.in \
 	version.plist.in \
 	data/shaders/glsl2h.sh.in \
@@ -513,7 +518,8 @@ CONFIG_HEADER = $(top_builddir)/include/discard.h \
 	$(top_builddir)/include/setup.h
 CONFIG_CLEAN_FILES = testsuite/Makefile cfg/gendsp.pl
 DIST_SOURCES =
-DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA)
+DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA) \
+	$(pkgconfig_DATA)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
@@ -614,6 +620,24 @@ uninstall-frameworkdataDATA:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(frameworkdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(frameworkdatadir)/$$f; \
+	done
+pkgconfigDATA_INSTALL = $(INSTALL_DATA)
+install-pkgconfigDATA: $(pkgconfig_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(pkgconfigdir)
+	@list='$(pkgconfig_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(pkgconfigDATA_INSTALL) $$d$$p $(DESTDIR)$(pkgconfigdir)/$$f"; \
+	  $(pkgconfigDATA_INSTALL) $$d$$p $(DESTDIR)$(pkgconfigdir)/$$f; \
+	done
+
+uninstall-pkgconfigDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkgconfig_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(pkgconfigdir)/$$f"; \
+	  rm -f $(DESTDIR)$(pkgconfigdir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -871,7 +895,7 @@ check: $(BUILT_SOURCES)
 all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir) $(DESTDIR)$(m4datadir) $(DESTDIR)$(frameworkdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir) $(DESTDIR)$(m4datadir) $(DESTDIR)$(frameworkdatadir) $(DESTDIR)$(pkgconfigdir)
 
 install: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) install-recursive
@@ -919,7 +943,8 @@ info: info-recursive
 info-am:
 
 install-data-am: install-cfgdataDATA install-data-local \
-	install-dist_m4dataDATA install-frameworkdataDATA
+	install-dist_m4dataDATA install-frameworkdataDATA \
+	install-pkgconfigDATA
 
 install-exec-am: install-exec-local
 
@@ -947,7 +972,8 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-cfgdataDATA uninstall-dist_m4dataDATA \
-	uninstall-frameworkdataDATA uninstall-info-am
+	uninstall-frameworkdataDATA uninstall-info-am \
+	uninstall-pkgconfigDATA
 
 uninstall-info: uninstall-info-recursive
 
@@ -962,15 +988,17 @@ uninstall-info: uninstall-info-recursive
 	install-dist_m4dataDATA install-exec install-exec-am \
 	install-exec-local install-exec-recursive \
 	install-frameworkdataDATA install-info install-info-am \
-	install-info-recursive install-man install-recursive \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am installdirs-recursive maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
-	pdf pdf-am pdf-recursive ps ps-am ps-recursive tags \
-	tags-recursive uninstall uninstall-am uninstall-cfgdataDATA \
+	install-info-recursive install-man install-pkgconfigDATA \
+	install-recursive install-strip installcheck installcheck-am \
+	installdirs installdirs-am installdirs-recursive \
+	maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-recursive pdf pdf-am \
+	pdf-recursive ps ps-am ps-recursive tags tags-recursive \
+	uninstall uninstall-am uninstall-cfgdataDATA \
 	uninstall-dist_m4dataDATA uninstall-frameworkdataDATA \
-	uninstall-info-am uninstall-info-recursive uninstall-recursive
+	uninstall-info-am uninstall-info-recursive \
+	uninstall-pkgconfigDATA uninstall-recursive
 
 
 # FIXME: These files should really be added instead of the ones
@@ -984,6 +1012,9 @@ uninstall-info: uninstall-info-recursive
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
+
+Coin.pc: config.status $(srcdir)/Coin.pc.in
+	@$(SHELL) config.status --file=$@:Coin.pc.in
 
 Info.plist: config.status $(srcdir)/Info.plist.in
 	@$(SHELL) config.status --file=$@:Info.plist.in
