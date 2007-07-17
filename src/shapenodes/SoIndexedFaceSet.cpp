@@ -184,6 +184,7 @@
 #include <Inventor/system/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
@@ -852,6 +853,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       }
     }
     faceDetail.incFaceIndex();
+    faceDetail.incPartIndex();
     if (mbind == PER_VERTEX_INDEXED) {
       mindices++;
     }
@@ -917,6 +919,12 @@ SoIndexedFaceSet::useConvexCache(SoAction * action,
                                  const int32_t * nindices,
                                  const SbBool normalsfromcache)
 {
+  // we don't want to use this cache when picking, since we want
+  // SoFaceDetail to set faceindex and partindex according to the
+  // polygons specified in the coordIndex field instead of the
+  // generated triangles
+  if (action->isOfType(SoRayPickAction::getClassTypeId())) return FALSE;
+
   SoState * state = action->getState();
   if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
     return FALSE;
