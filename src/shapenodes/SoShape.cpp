@@ -27,7 +27,7 @@
   \ingroup nodes
 
   The node types which have actual geometry to render inherits this
-  class. For convenince, the SoShape class contains various common
+  class. For convenience, the SoShape class contains various common
   code used by the subclasses.
 */
 
