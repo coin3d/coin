@@ -461,7 +461,6 @@ Section 07 -- Library Dependencies
   MSVC 7:
 
     dumpbin /dependents <app.exe>
-                      
 
 
 INCOMING
