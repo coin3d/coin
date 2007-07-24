@@ -70,7 +70,6 @@ cc_string_remove_substring(cc_string * me, int start, int end)
     cc_debugerror_postwarning("cc_string_remove_substring",
                               "invalid arguments [%d, %d] for string ``%s''",
                               start, end, cc_string_get_text(me));
-    return;
   }
 #endif /* COIN_DEBUG */
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
