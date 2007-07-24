@@ -1029,13 +1029,8 @@ SoInput::getHeader(void)
 {
   (void) this->checkHeader();
   SoInput_FileInfo * fi = this->getTopOfStack();
-  
-  if (fi) {
-    return fi->ivHeader();
-  }
-  else {
-    return SbString("");
-  }
+
+  return fi ? fi->ivHeader() : SbString("");
 }
 
 /*!
@@ -1046,7 +1041,7 @@ SoInput::getHeader(void)
 float
 SoInput::getIVVersion(void)
 {
-  if (!this->checkHeader()) return 0.0f;
+  if (this->filestack.getLength() && !this->checkHeader()) { return 0.0f; }
   return this->getTopOfStack()->ivVersion();
 }
 
