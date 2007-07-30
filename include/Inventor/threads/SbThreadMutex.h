@@ -1,5 +1,5 @@
-#ifndef COIN_SBTHREADAUTOLOCK_H
-#define COIN_SBTHREADAUTOLOCK_H
+#ifndef COIN_SBTHREADMUTEX_H
+#define COIN_SBTHREADMUTEX_H
 
 /**************************************************************************\
  *
@@ -24,31 +24,38 @@
  *
 \**************************************************************************/
 
-#include <Inventor/threads/SbThreadMutex.h>
-#include <Inventor/threads/SbMutex.h>
+#include <Inventor/SbBasic.h>
+#include <Inventor/C/threads/recmutex.h>
 
-class SbThreadAutoLock
-{
-protected:
-  SbMutex * mutex;
-  SbThreadMutex * recmutex;
-
+class SbThreadMutex {
 public:
-  SbThreadAutoLock(SbMutex * mutexptr) {
-    this->mutex = mutexptr;
-    this->mutex->lock();
-    this->recmutex = NULL;
-  }
-  SbThreadAutoLock(SbThreadMutex * mutexptr) {
-    this->recmutex = mutexptr;
-    this->recmutex->lock();
-    this->mutex = NULL;
+  SbThreadMutex(void) { this->mutex = cc_recmutex_construct(); }
+  ~SbThreadMutex() { cc_recmutex_destruct(this->mutex); }
+
+  int lock(void) {
+    return cc_recmutex_lock(this->mutex);
   }
 
-  ~SbThreadAutoLock() {
-    if (this->mutex) this->mutex->unlock();
-    if (this->recmutex) this->recmutex->unlock();
+  SbBool tryLock(void) {
+    return cc_recmutex_try_lock(this->mutex) == CC_OK;
   }
+  
+  int unlock(void) {
+    return cc_recmutex_unlock(this->mutex);
+  }
+
+private:
+  // FIXME: we need access to C mutex structur. Should we use friend,
+  // or should we add a new public method to get to this structure?
+  // pederb, 2002-06-26
+  friend class SbCondVar;
+  cc_recmutex * mutex;
 };
 
-#endif // !COIN_SBTHREADAUTOLOCK_H
+
+#ifndef COIN_INTERNAL
+// For TGS Inventor compile-time compatibility.
+#include <Inventor/threads/SbThreadAutoLock.h>
+#endif // COIN_INTERNAL
+
+#endif // !COIN_SBTHREADMUTEX_H

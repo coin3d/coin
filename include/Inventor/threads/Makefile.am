@@ -2,6 +2,7 @@
 PublicHeaders = \
 	SbThread.h \
 	SbMutex.h \
+	SbThreadMutex.h \
 	SbRWMutex.h \
 	SbCondVar.h \
 	SbStorage.h \
