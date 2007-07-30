@@ -86,27 +86,26 @@ cc_recmutex_destruct(cc_recmutex * recmutex)
   free(recmutex);
 }
 
-
 /*
-  Lock a recursive mutex. Returns the nesting level.
+  Internal function used by cc_recmutex_lock() and cc_recmutex_try_lock().
 */
-
-int
-cc_recmutex_lock(cc_recmutex * recmutex)
+static int recmutex_lock_internal(cc_recmutex * recmutex, int wait)
 {
-  int level;
+  int level = -1; /* return -1 for recmutex_try_lock() if we couldn't get the mutex */
   unsigned long id = cc_thread_id();
-
+  
   assert(recmutex != NULL);
   cc_mutex_lock(&recmutex->mutex);
   if (recmutex->level == 0) {
     recmutex->level++;
     recmutex->threadid = id;
+    level = recmutex->level;
   }
   else if (id == recmutex->threadid) {
     recmutex->level++;
+    level = recmutex->level;
   }
-  else {
+  else if (wait) {
     recmutex->waiters++;
     /* wait in loop, since some thread might snatch the mutex before 
        us when we receive a signal */
@@ -118,10 +117,30 @@ cc_recmutex_lock(cc_recmutex * recmutex)
     recmutex->waiters--;
     recmutex->threadid = id;
     recmutex->level++;
+    level = recmutex->level;
   }
-  level = recmutex->level;
   cc_mutex_unlock(&recmutex->mutex);
-  return level;
+  return level;  
+}
+
+/*
+  Lock a recursive mutex. Returns the nesting level.
+*/
+
+int
+cc_recmutex_lock(cc_recmutex * recmutex)
+{
+  return recmutex_lock_internal(recmutex, TRUE);
+}
+
+/*
+  Attempts to lock a recursive mutex. Returns TRUE if thread got the lock
+  or already had the lock.
+*/
+int 
+cc_recmutex_try_lock(cc_recmutex * recmutex)
+{
+  return recmutex_lock_internal(recmutex, FALSE) >= 0;
 }
 
 /*

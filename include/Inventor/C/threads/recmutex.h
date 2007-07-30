@@ -38,6 +38,7 @@ COIN_DLL_API void cc_recmutex_destruct(cc_recmutex * recmutex);
 
 COIN_DLL_API int cc_recmutex_lock(cc_recmutex * recmutex);
 COIN_DLL_API int cc_recmutex_unlock(cc_recmutex * recmutex);
+COIN_DLL_API int cc_recmutex_try_lock(cc_recmutex * recmutex);
 
 /* ********************************************************************** */
 
