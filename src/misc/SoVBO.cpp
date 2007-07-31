@@ -33,6 +33,7 @@
 #include "SoVBO.h"
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbVec3f.h>
@@ -328,16 +329,22 @@ SoVBO::getVertexCountMaxLimit(void)
 }
 
 SbBool 
-SoVBO::shouldCreateVBO(const uint32_t contextid, const int numdata)
+SoVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int numdata)
 {
   if (!vbo_enabled || !vbo_render_as_vertex_arrays) return FALSE;
   int minv = SoVBO::getVertexCountMinLimit();
   int maxv = SoVBO::getVertexCountMaxLimit();
-  return (numdata >= minv) && (numdata <= maxv) && SoVBO::isVBOFast(contextid);
+  return 
+    (numdata >= minv) && 
+    (numdata <= maxv) &&
+    SoVBO::isVBOFast(contextid) &&
+    !(SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP);
+
 }
 
 SbBool 
-SoVBO::shouldRenderAsVertexArrays(const uint32_t contextid,
+SoVBO::shouldRenderAsVertexArrays(SoState * state,
+				  const uint32_t contextid,
                                   const int numdata)
 {
   // FIXME: consider also using results from the performance tests

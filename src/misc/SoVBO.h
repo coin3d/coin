@@ -32,6 +32,8 @@
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/gl.h>
 
+class SoState;
+
 class SoVBO {
  public:
   SoVBO(const GLenum target = GL_ARRAY_BUFFER,
@@ -51,8 +53,9 @@ class SoVBO {
   static int getVertexCountMaxLimit(void);
 
   static void testGLPerformance(const uint32_t contextid);
-  static SbBool shouldCreateVBO(const uint32_t contextid, const int numdata);
-  static SbBool shouldRenderAsVertexArrays(const uint32_t contextid,
+  static SbBool shouldCreateVBO(SoState * state, const uint32_t contextid, const int numdata);
+  static SbBool shouldRenderAsVertexArrays(SoState * statea,
+					   const uint32_t contextid,
                                            const int numdata);
 
  private:

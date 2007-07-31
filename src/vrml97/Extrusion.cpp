@@ -543,7 +543,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   }
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(contextid);
-  SbBool vbo = SoVBO::shouldCreateVBO(contextid, PRIVATE(this)->coord.getLength());
+  SbBool vbo = SoVBO::shouldCreateVBO(state, contextid, PRIVATE(this)->coord.getLength());
 
   if (vbo) PRIVATE(this)->updateVBO(action);
 

@@ -174,7 +174,7 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
 
   // no point setting up OpenGL for vertex arrays for fewer than 20 points
   SbBool dova = 
-    SoVBO::shouldRenderAsVertexArrays(contextid, numpts) && 
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
     cc_glglue_has_vertex_array(glue);
   
   if (dova && matpervertex) {

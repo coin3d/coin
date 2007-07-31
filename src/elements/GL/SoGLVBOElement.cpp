@@ -247,6 +247,6 @@ SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
   // on SoGLCacheContextElement. 
   return 
     cc_glglue_has_vertex_buffer_object(glue) &&
-    SoVBO::shouldCreateVBO(glue->contextid, numdata);
+    SoVBO::shouldCreateVBO(state, glue->contextid, numdata);
 }
 

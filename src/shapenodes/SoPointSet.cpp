@@ -242,7 +242,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   const uint32_t contextid = action->getCacheContext();
 
   SbBool dova = 
-    SoVBO::shouldRenderAsVertexArrays(contextid, numpts) && 
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
     cc_glglue_has_vertex_array(glue);
   
   if (dova && (mbind == PER_VERTEX)) {

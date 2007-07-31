@@ -307,7 +307,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   SbBool dova = 
     !drawPoints && 
-    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     (!doTextures || (tindices == cindices)) &&
     ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&

@@ -319,7 +319,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   SbBool dova = 
     !drawPoints &&
-    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     cc_glglue_has_vertex_array(sogl_glue_instance(state));
   
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);

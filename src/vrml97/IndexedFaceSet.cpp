@@ -524,7 +524,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const uint32_t contextid = action->getCacheContext();
 
   SbBool dova = 
-    SoVBO::shouldRenderAsVertexArrays(contextid, numindices) &&
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     !convexcacheused && !normalCacheUsed &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
