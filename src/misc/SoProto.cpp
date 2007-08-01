@@ -87,6 +87,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
@@ -899,6 +901,47 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   return cpy;
 }
 
+static SoNode * 
+locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
+{
+  if (org == NULL) return NULL;
+  if (cpy == NULL) return NULL;
+
+  if (org->getTypeId() != cpy->getTypeId()) return NULL;
+  if (org == searchfor) return cpy;
+  
+  const SoFieldData * fd = org->getFieldData();
+  int n = fd->getNumFields();
+  int i;
+
+  SoType sosftype = SoSFNode::getClassTypeId();
+  for (i = 0; i < n; i++) {
+    SoField * orgf = fd->getField(org, i);
+    if (orgf->getTypeId() == sosftype) {
+      SoNode * orgnode = ((SoSFNode*) orgf)->getValue();
+      if (orgnode != NULL) {
+        SoField * cpyf = fd->getField(cpy, i);
+
+        SoNode * found = locate_node_copy(searchfor, orgnode, ((SoSFNode*) cpyf)->getValue());
+        if (found) return found;
+      }
+    }
+  }
+
+  SoChildList * cl = org->getChildren();
+  if (cl) {
+    SoChildList * cl2 = cpy->getChildren();
+    n = SbMin(cl->getLength(), cl2->getLength());
+    for (i = 0; i < n; i++) {
+      SoNode * orgnode = (*cl)[i];
+      SoNode * found = locate_node_copy(searchfor, (*cl)[i], (*cl2)[i]);
+      if (found) return found;
+    }
+  }
+  return NULL;
+}
+
+
 //
 // Connects all IS references for the a new instance
 //
@@ -913,10 +956,9 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 
   const int n = PRIVATE(this)->isfieldlist.getLength();
 
-  SoSearchAction sa;
   for (int i = 0; i < n; i++) {
     SoNode * node = PRIVATE(this)->isnodelist[i];
-
+    
     SbName fieldname = PRIVATE(this)->isfieldlist[i];
     fieldname = soproto_find_fieldname(node, fieldname);
     SoField * dstfield = node->getField(fieldname);
@@ -944,42 +986,16 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       isprotoinstance = TRUE;
     }
     SbName iname = PRIVATE(this)->isnamelist[i];
-    sa.setNode(node);
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(TRUE);
-    sa.apply(src);
-    SoFullPath * path = (SoFullPath*) sa.getPath();
-    if (!path) {
-      SoDebugError::postWarning("SoProto::connectISRefs",
-                                "Unable to resolve '%s' from '%s' in '%s' PROTO",
-                                fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
 
+    node = locate_node_copy(node, src, dst);
+
+    if (!node) {
+      SoDebugError::postWarning("SoProto::connectISRefs",
+                                "Unable to find '%s' from '%s' in '%s' PROTO",
+                                fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
       continue;
     }
-
-    node = dst;
-
-    int k;
-    // browse path to find the correct (copied) node.
-    for (k = 1; k < path->getLength(); k++) {
-      int idx = path->getIndex(k);
-      if (!node->getChildren()) break;
-      node = (*(node->getChildren()))[idx];
-
-      // do some extra tests here to be more robust on invalid input
-      // files (for instance multiple IS refs to/from the same field)
-      SoNode * tstnode = path->getNode(k);
-      if (!node || tstnode->getTypeId() != node->getTypeId()) break;
-    }
-
-    if (k < path->getLength()) {
-      SoDebugError::postWarning("SoProto::connectISRefs",
-                                "Unable to resolve '%s' from '%s' in '%s' PROTO",
-                                fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
-
-      continue;
-    }
-
+    
     if (dstfield) {
       if (isprotoinstance) {
         node = SoProtoInstance::findProtoInstance(node);
@@ -1053,7 +1069,6 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       }
 #endif // COIN_DEBUG
     }
-    sa.reset();
   }
 }
 
