@@ -1459,16 +1459,21 @@ SoShadowGroupP::shader_enable_cb(void * closure,
                                  const SbBool enable)
 {
   SoShadowGroupP * thisp = (SoShadowGroupP*) closure;
+  
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   for (int i = 0; i < thisp->spotlights.getLength(); i++) {
     SoShadowSpotLightCache * cache = thisp->spotlights[i];
     int unit = cache->texunit;
     if (unit == 0) {
-      SoGLTextureEnabledElement::set(state, enable);
+      if (enable) glEnable(GL_TEXTURE_2D);
+      else glDisable(GL_TEXTURE_2D);
     }
     else {
-      SoMultiTextureEnabledElement::set(state, NULL, unit,
-                                        enable);
+      cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
+      if (enable) glEnable(GL_TEXTURE_2D);
+      else glDisable(GL_TEXTURE_2D);
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE0);      
     }
   }
 }
