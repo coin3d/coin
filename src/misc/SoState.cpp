@@ -106,6 +106,7 @@ public:
   SoAction * action;
   SoElement ** initial;
   int depth;
+  SbBool ispopping;
   class sostate_pushstore * pushstore;
 };
 
@@ -130,6 +131,7 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 
   THIS->action = theAction;
   THIS->depth = 0;
+  THIS->ispopping = FALSE;
   this->cacheopen = FALSE;
 
   int i;
@@ -215,6 +217,11 @@ SoState::getAction(void) const
 SoElement *
 SoState::getElement(const int stackindex)
 {
+  // catch attempts at setting an element from another element's pop()
+  // method (yes, I did this stupid mistake myself and spent a long
+  // time debugging it, pederb, 2007-08-01)
+  assert(!THIS->ispopping);
+
   if (!this->isElementEnabled(stackindex)) return NULL;
   SoElement * element = this->stack[stackindex];
 
@@ -276,6 +283,7 @@ SoState::push(void)
 void
 SoState::pop(void)
 {
+  THIS->ispopping = TRUE;
   THIS->depth--;
   int n = THIS->pushstore->elements.getLength();
   if (n) {
@@ -291,6 +299,7 @@ SoState::pop(void)
   }
   THIS->pushstore->elements.truncate(0);
   THIS->pushstore = THIS->pushstore->prev;
+  THIS->ispopping = FALSE;
 }
 
 /*!
