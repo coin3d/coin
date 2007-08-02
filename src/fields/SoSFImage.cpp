@@ -74,7 +74,7 @@
   columns along Y (height, bottom to top).
 
   Here's a simple example of the file format serialization, for a 2x2
-  RGB-image inside an SoTexture2 node, as mapped unto an SoCube:
+  RGB-image inside an SoTexture2 node, as mapped onto an SoCube:
 
   \code
   Complexity { textureQuality 0.1 }   # set low to avoid smoothing
@@ -98,7 +98,7 @@
 
   The cube has only been \e slightly rotated, so as you can see from
   the snapshot, the Y-rows are mapped from bottom to top, while the
-  X-column pixels are mapped unto the cube from left to right.
+  X-column pixels are mapped onto the cube from left to right.
 
   \sa SoTexture2, SoSFImage3
 */

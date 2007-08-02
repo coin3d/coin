@@ -132,7 +132,7 @@
   \var SoSFEnum SoBumpMap::wrapS
 
   Wrapping strategy for the S coordinate when the bump map is
-  narrower than the object to map unto.
+  narrower than the object to map onto.
 
   Default value is SoBumpMap::REPEAT.
 */
@@ -140,7 +140,7 @@
   \var SoSFEnum SoBumpMap::wrapT
 
   Wrapping strategy for the T coordinate when the bump map is
-  shorter than the object to map unto.
+  shorter than the object to map onto.
 
   Default value is SoBumpMap::REPEAT.
 */

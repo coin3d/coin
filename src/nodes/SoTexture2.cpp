@@ -217,7 +217,7 @@
   \enum SoTexture2::Model
 
   Texture mapping model, for deciding how to "merge" the texturemap
-  with the object it is mapped unto.
+  with the object it is mapped onto.
 */
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
@@ -315,7 +315,7 @@
   \var SoSFEnum SoTexture2::wrapS
 
   Wrapping strategy for the S coordinate when the texturemap is
-  narrower than the object to map unto.
+  narrower than the object to map onto.
 
   Default value is SoTexture2::REPEAT.
 */
@@ -323,7 +323,7 @@
   \var SoSFEnum SoTexture2::wrapT
 
   Wrapping strategy for the T coordinate when the texturemap is
-  shorter than the object to map unto.
+  shorter than the object to map onto.
 
   Default value is SoTexture2::REPEAT.
 */
