@@ -919,12 +919,11 @@ SoIndexedFaceSet::useConvexCache(SoAction * action,
                                  const int32_t * nindices,
                                  const SbBool normalsfromcache)
 {
-  // we don't want to use this cache when picking, since we want
-  // SoFaceDetail to set faceindex and partindex according to the
-  // polygons specified in the coordIndex field instead of the
-  // generated triangles
-  if (action->isOfType(SoRayPickAction::getClassTypeId())) return FALSE;
-
+  // we only want to use the convex data cache when rendering. All
+  // other actions should work on the original data to ensure correct
+  // part and face indices.
+  if (!action->isOfType(SoGLRenderAction::getClassTypeId())) return FALSE;
+  
   SoState * state = action->getState();
   if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
     return FALSE;
