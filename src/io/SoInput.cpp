@@ -930,7 +930,7 @@ SoInput::getCurFileName(void) const
   makeSceneGraph(void) {
     static const char * inlinescenegraph[] = {
       "#Inventor V2.1 ascii\n",
-      ""\n,
+      "\n",
       "Separator {\n",
       "  Cube {\n",
       "  }\n",
