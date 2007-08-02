@@ -929,12 +929,12 @@ SoInput::getCurFileName(void) const
   SoNode *
   makeSceneGraph(void) {
     static const char * inlinescenegraph[] = {
-      "#Inventor V2.1 ascii",
-      "",
-      "Separator {",
-      "  Cube {",
-      "  }",
-      "}",
+      "#Inventor V2.1 ascii\n",
+      ""\n,
+      "Separator {\n",
+      "  Cube {\n",
+      "  }\n",
+      "}\n",
       NULL
     };
     SoInput in;
