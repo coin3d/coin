@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{B85B7CBA-A24B-4B7D-B441-2C9A0450060F}"
+	ProjectGUID="{F1E53F7C-A341-418C-9B12-FCBF7BB01805}"
 	>
 	<Platforms>
 		<Platform
@@ -43731,6 +43731,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\threads\SbThreadAutoLock.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\threads\SbThreadMutex.h"
 					>
 				</File>
 				<File

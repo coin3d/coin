@@ -693,6 +693,7 @@ copy /Y ..\%msvc%\include\Inventor\system\gl-headers.h %COINDIR%\include\Invento
 copy /Y ..\%msvc%\include\Inventor\system\inttypes.h %COINDIR%\include\Inventor\system\inttypes.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbThread.h %COINDIR%\include\Inventor\threads\SbThread.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbMutex.h %COINDIR%\include\Inventor\threads\SbMutex.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbThreadMutex.h %COINDIR%\include\Inventor\threads\SbThreadMutex.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbRWMutex.h %COINDIR%\include\Inventor\threads\SbRWMutex.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbCondVar.h %COINDIR%\include\Inventor\threads\SbCondVar.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\threads\SbStorage.h %COINDIR%\include\Inventor\threads\SbStorage.h >nul:

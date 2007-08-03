@@ -693,6 +693,7 @@ del %COINDIR%\include\Inventor\system\gl-headers.h
 del %COINDIR%\include\Inventor\system\inttypes.h
 del %COINDIR%\include\Inventor\threads\SbThread.h
 del %COINDIR%\include\Inventor\threads\SbMutex.h
+del %COINDIR%\include\Inventor\threads\SbThreadMutex.h
 del %COINDIR%\include\Inventor\threads\SbRWMutex.h
 del %COINDIR%\include\Inventor\threads\SbCondVar.h
 del %COINDIR%\include\Inventor\threads\SbStorage.h

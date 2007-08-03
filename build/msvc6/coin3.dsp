@@ -14057,6 +14057,10 @@ SOURCE=..\..\include\Inventor\threads\SbMutex.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\threads\SbThreadMutex.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\threads\SbRWMutex.h
 # End Source File
 # Begin Source File

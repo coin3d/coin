@@ -37851,6 +37851,9 @@
 					RelativePath="..\..\include\Inventor\threads\SbThreadAutoLock.h">
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\threads\SbThreadMutex.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\threads\SbTypedStorage.h">
 				</File>
 			</Filter>
