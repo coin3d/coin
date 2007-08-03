@@ -108,11 +108,11 @@ SbUTMProjection::unproject(const double UTMEasting,
   double e1 = (1-sqrt(1-eccSquared))/(1+sqrt(1-eccSquared));
   double N1, T1, C1, R1, D, M;
   double LongOrigin;
-  double mu, phi1, phi1Rad;
+  double mu,/* phi1,*/ phi1Rad;
   double x, y;
   int ZoneNumber;
-  char* ZoneLetter;
-  int NorthernHemisphere; //1 for northern hemispher, 0 for southern
+  //char* ZoneLetter;
+  //int NorthernHemisphere; //1 for northern hemispher, 0 for southern
 
   x = UTMEasting - 500000.0; //remove 500,000 meter offset for longitude
   y = UTMNorthing;
