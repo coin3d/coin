@@ -941,8 +941,8 @@ static JSBool SFVec3d_negate(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec2f_substract(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec2f_subtract(JSContext * cx, JSObject * obj, uintN argc,
+                               jsval * argv, jsval * rval)
 {
   SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -955,8 +955,8 @@ static JSBool SFVec2f_substract(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
-static JSBool SFVec3f_substract(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec3f_subtract(JSContext * cx, JSObject * obj, uintN argc,
+                               jsval * argv, jsval * rval)
 {
   SbVec3f & vec1 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -970,8 +970,8 @@ static JSBool SFVec3f_substract(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
-static JSBool SFVec3d_substract(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec3d_subtract(JSContext * cx, JSObject * obj, uintN argc,
+                               jsval * argv, jsval * rval)
 {
   SbVec3d & vec1 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -1135,7 +1135,7 @@ static JSFunctionSpec SFVec2fFunctions[] = {
   {"length", SFVec2_length, 0, 0, 0},
   {"multiply", SFVec2f_multiply, 1, 0, 0},
   {"normalize", SFVec2f_normalize, 0, 0, 0},
-  {"substract", SFVec2f_substract, 1, 0, 0},
+  {"subtract", SFVec2f_subtract, 1, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
 
@@ -1147,7 +1147,7 @@ static JSFunctionSpec SFVec3fFunctions[] = {
   {"multiply", SFVec3f_multiply, 1, 0, 0},
   {"normalize", SFVec3f_normalize, 0, 0, 0},
   {"negate", SFVec3f_negate, 0, 0, 0},
-  {"substract", SFVec3f_substract, 1, 0, 0},
+  {"subtract", SFVec3f_subtract, 1, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
 
@@ -1159,7 +1159,7 @@ static JSFunctionSpec SFVec3dFunctions[] = {
   {"multiply", SFVec3d_multiply, 1, 0, 0},
   {"normalize", SFVec3d_normalize, 0, 0, 0},
   {"negate", SFVec3d_negate, 0, 0, 0},
-  {"substract", SFVec3d_substract, 1, 0, 0},
+  {"subtract", SFVec3d_subtract, 1, 0, 0},
   {NULL, NULL, 0, 0, 0}
 };
 
