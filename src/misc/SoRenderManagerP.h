@@ -47,7 +47,7 @@ class SoNode;
 class SoGetBoundingBoxAction;
 class SoGetMatrixAction;
 class SoSearchAction;
-
+class SbPList;
 
 class SoRenderManagerP {
 public:
