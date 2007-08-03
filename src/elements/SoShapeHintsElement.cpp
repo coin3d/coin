@@ -81,7 +81,7 @@ SoShapeHintsElement::push(SoState * state)
 void 
 SoShapeHintsElement::pop(SoState * state, const SoElement * prevtopelement)
 {
-  this->updateLazyElement(state);
+  inherited::pop(state, prevtopelement);
 }
 
 //! FIXME: write doc.
