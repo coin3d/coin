@@ -50,9 +50,9 @@ The thing that doesn't get updated automatically is the *list* of
 files that actually contain test-case code, which you must trigger
 manual updating of by running "make makefile-update" as mentioned above.
 
-Run the tests by running "make testsuite-run in the top-level directory, or
-by running "make" in the testsuite directory (after buildig Coin, of 
-course.)
+Run the tests by running "make testsuite-run" in the top-level directory,
+or by running "make" in the testsuite directory (after building Coin, of 
+course).
 
 If the test-suite crashes (as opposed to just reporting errors),
 running "make verbose" might be helpful to figure out exactly which
