@@ -26,9 +26,9 @@
 
 #if defined(IV_STRICT)
 #error SoMFLong has been obsoleted. Use SoMFInt32 instead.
-#else
-#warning SoMFLong has been obsoleted. Use SoMFInt32 instead.
-#endif // IV_STRICT
+#else // !IV_STRICT
+//#warning SoMFLong has been obsoleted. Use SoMFInt32 instead.
+#endif // !IV_STRICT
 
 #include <Inventor/fields/SoMFInt32.h>
 typedef SoMFInt32 SoMFLong;
