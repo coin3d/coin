@@ -126,6 +126,7 @@ EMPTY =
 
 TEST_SUITE_OBJECTS = \
 	TestSuiteInit.$(OBJEXT) \
+	TestSuiteUtils.$(OBJEXT) \
 EODATA
 
 for obj in $objlist; do
@@ -170,6 +171,9 @@ testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
 
 TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
+
+TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp Makefile
+	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
 
 EODATA
 
