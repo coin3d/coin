@@ -155,6 +155,14 @@
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 // *************************************************************************
 
 /*!
@@ -243,13 +251,44 @@
 
 class SoMaterialP {
 public:
-  SoMaterialP() : vbo(NULL) { }
+  SoMaterialP() : 
+#ifdef COIN_THREADSAFE
+    colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker),
+#endif // COIN_THREADSAFE
+    vbo(NULL) { }
   ~SoMaterialP() { delete this->vbo; }
   
   int materialtype;
   int transparencyflag;
-  SoColorPacker colorpacker;
+  
+#ifdef COIN_THREADSAFE
+  SbStorage colorpacker_storage;
+#else // COIN_THREADSAFE
+  SoColorPacker single_colorpacker;
+#endif // COIN_THREADSAFE
+  
+  SoColorPacker * getColorPacker(void) {
+#ifdef COIN_THREADSAFE
+    SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+    return * cptr;
+#else // COIN_THREADSAFE
+    return &this->single_colorpacker;
+#endif // COIN_THREADSAFE
+  }
+
   SoVBO * vbo;
+
+#ifdef COIN_THREADSAFE
+private:
+  static void alloc_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    *cptr = new SoColorPacker;
+  }
+  static void free_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    delete *cptr;
+  }
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -433,7 +472,7 @@ SoMaterial::doAction(SoAction * action)
 
     const int numtransp = this->transparency.getNum();
     SoLazyElement::setMaterials(state, this, bitmask, 
-                                &THIS->colorpacker,
+                                THIS->getColorPacker(),
                                 diffuseptr, numdiffuse, 
                                 this->transparency.getValues(0), numtransp,
                                 bitmask & SoLazyElement::AMBIENT_MASK ? 

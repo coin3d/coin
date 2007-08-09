@@ -93,6 +93,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/threads/SbStorage.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -146,17 +147,29 @@
 SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb = NULL;
 void * SoWWWInline::fetchurlcbdata = NULL;
 SbColor * SoWWWInline::bboxcolor = NULL;
-static SoColorPacker * wwwinline_colorpacker = NULL;
+static SbStorage * wwwinline_colorpacker_storage = NULL;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
 SbBool SoWWWInline::readassofile = FALSE;
+
+static void alloc_colorpacker(void * ptr)
+{
+  SoColorPacker ** cptr = (SoColorPacker**) ptr;
+  *cptr = new SoColorPacker;
+}
+
+static void free_colorpacker(void * ptr)
+{
+  SoColorPacker ** cptr = (SoColorPacker**) ptr;
+  delete *cptr;
+}
 
 void
 SoWWWInline::cleanup(void)
 {
   delete SoWWWInline::bboxcolor;
   SoWWWInline::bboxcolor = NULL;
-  delete wwwinline_colorpacker;
-  wwwinline_colorpacker = NULL;
+  delete wwwinline_colorpacker_storage;
+  wwwinline_colorpacker_storage = NULL;
 
   SoWWWInline::fetchurlcb = NULL;
   SoWWWInline::fetchurlcbdata = NULL;
@@ -212,7 +225,7 @@ SoWWWInline::SoWWWInline()
   // systemloaders that hate static constructors in C++ libraries.
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
-    wwwinline_colorpacker = new SoColorPacker;
+    wwwinline_colorpacker_storage = new SbStorage(sizeof(void*), alloc_colorpacker, free_colorpacker);
     coin_atexit((coin_atexit_f *)SoWWWInline::cleanup, CC_ATEXIT_NORMAL);
   }
 }
@@ -431,7 +444,9 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   state->push();
 
-  SoLazyElement::setDiffuse(state, this, 1, SoWWWInline::bboxcolor, wwwinline_colorpacker);
+  SoColorPacker ** cptr = (SoColorPacker**) wwwinline_colorpacker_storage->get();
+
+  SoLazyElement::setDiffuse(state, this, 1, SoWWWInline::bboxcolor, *cptr);
 
   // disable lighting
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);

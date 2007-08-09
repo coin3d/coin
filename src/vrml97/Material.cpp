@@ -126,13 +126,54 @@
 
 #include <stdlib.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoVRMLMaterialP {
 public:
+  
+  SoVRMLMaterialP() 
+#ifdef COIN_THREADSAFE
+    : colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
+#endif // COIN_THREADSAFE
+  {}
+
   SbColor tmpambient;
   float tmptransparency;
-  SoColorPacker colorpacker;
+
+#ifdef COIN_THREADSAFE
+  SbStorage colorpacker_storage;
+#else // COIN_THREADSAFE
+  SoColorPacker single_colorpacker;
+#endif // COIN_THREADSAFE
+  
+  SoColorPacker * getColorPacker(void) {
+#ifdef COIN_THREADSAFE
+    SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+    return * cptr;
+#else // COIN_THREADSAFE
+    return &this->single_colorpacker;
+#endif // COIN_THREADSAFE
+  }
+
+#ifdef COIN_THREADSAFE
+private:
+  static void alloc_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    *cptr = new SoColorPacker;
+  }
+  static void free_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    delete *cptr;
+  }
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -258,7 +299,7 @@ SoVRMLMaterial::doAction(SoAction * action)
 #endif // COIN_DEBUG
     
     SoLazyElement::setMaterials(state, this, bitmask,
-                                &PRIVATE(this)->colorpacker,
+                                PRIVATE(this)->getColorPacker(),
                                 &this->diffuseColor.getValue(), 1,
                                 &PRIVATE(this)->tmptransparency, 1,
                                 PRIVATE(this)->tmpambient,

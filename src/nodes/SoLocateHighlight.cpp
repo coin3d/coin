@@ -59,6 +59,14 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/C/tidbitsp.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 // *************************************************************************
 
 /*!
@@ -112,8 +120,27 @@
 
 class SoLocateHighlightP {
 public:
+  SoLocateHighlightP() 
+#ifdef COIN_THREADSAFE
+    : colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
+#endif // COIN_THREADSAFE
+  {}
+
+#ifdef COIN_THREADSAFE
+  SbStorage colorpacker_storage;
+#else // COIN_THREADSAFE
+  SoColorPacker single_colorpacker;
+#endif // COIN_THREADSAFE
+  
+  SoColorPacker * getColorPacker(void) {
+#ifdef COIN_THREADSAFE
+    SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+    return * cptr;
+#else // COIN_THREADSAFE
+    return &this->single_colorpacker;
+#endif // COIN_THREADSAFE
+  }
   SbBool highlighted;
-  SoColorPacker colorpacker;
   static SoFullPath * currenthighlight;
 
   static void atexit_cleanup(void) {
@@ -122,6 +149,18 @@ public:
       SoLocateHighlightP::currenthighlight = NULL;
     }
   }
+#ifdef COIN_THREADSAFE
+private:
+  static void alloc_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    *cptr = new SoColorPacker;
+  }
+  static void free_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    delete *cptr;
+  }
+#endif // COIN_THREADSAFE
+
 };
 
 SoFullPath * SoLocateHighlightP::currenthighlight = NULL;
@@ -265,7 +304,7 @@ SoLocateHighlight::setOverride(SoGLRenderAction * action)
   if (mystyle == SoLocateHighlight::EMISSIVE_DIFFUSE) {
     SoLazyElement::setDiffuse(state, this,
                                1, &this->color.getValue(),
-                              &PRIVATE(this)->colorpacker);
+                              PRIVATE(this)->getColorPacker());
     SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
   }
 }

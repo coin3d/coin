@@ -80,7 +80,6 @@ public:
   SoMatrixTransform * bboxtransform;
   SoCube * bboxcube;
   SoDrawStyle * drawstyle;
-  SoColorPacker colorpacker;
 
   void initBoxGraph();
   void drawHighlightBox(const SoPath * path);

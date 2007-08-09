@@ -27,6 +27,10 @@
 
 #ifdef HAVE_VRML97
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \class SoVRMLColor SoVRMLColor.h Inventor/VRMLnodes/SoVRMLColor.h
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
@@ -75,10 +79,43 @@
 
 class SoVRMLColorP {
  public:
-  SoVRMLColorP() : vbo(NULL) { }
+  SoVRMLColorP() : 
+#ifdef COIN_THREADSAFE
+    colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker),
+#endif // COIN_THREADSAFE
+    vbo(NULL) 
+  { }
+
   ~SoVRMLColorP() { delete this->vbo; }
-  SoColorPacker colorpacker;
+
+#ifdef COIN_THREADSAFE
+  SbStorage colorpacker_storage;
+#else // COIN_THREADSAFE
+  SoColorPacker single_colorpacker;
+#endif // COIN_THREADSAFE
+  
+  SoColorPacker * getColorPacker(void) {
+#ifdef COIN_THREADSAFE
+    SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+    return * cptr;
+#else // COIN_THREADSAFE
+    return &this->single_colorpacker;
+#endif // COIN_THREADSAFE
+  }
+
   SoVBO * vbo;
+
+#ifdef COIN_THREADSAFE
+private:
+  static void alloc_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    *cptr = new SoColorPacker;
+  }
+  static void free_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    delete *cptr;
+  }
+#endif // COIN_THREADSAFE
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -125,7 +162,7 @@ SoVRMLColor::doAction(SoAction * action)
                               this,
                               num,
                               this->color.getValues(0),
-                              &PRIVATE(this)->colorpacker);
+                              PRIVATE(this)->getColorPacker());
 
     if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
       SbBool setvbo = FALSE;

@@ -59,6 +59,7 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSelection.h>
+#include <Inventor/threads/SbStorage.h>
 
 // *************************************************************************
 
@@ -76,7 +77,9 @@
 
 class SoLineHighlightRenderActionP {
 public:
-  SoLineHighlightRenderActionP(SoLineHighlightRenderAction * o) {
+  SoLineHighlightRenderActionP(SoLineHighlightRenderAction * o) 
+    : colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
+  {
     this->owner = o;
 
     PUBLIC(this)->hlVisible = TRUE;
@@ -102,10 +105,20 @@ public:
   uint16_t linepattern;
   float linewidth;
   SoTempPath * postprocpath;
-  SoColorPacker colorpacker;
+  SbStorage colorpacker_storage;
 
 private:
   SoLineHighlightRenderAction * owner;
+
+private:
+  static void alloc_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    *cptr = new SoColorPacker;
+  }
+  static void free_colorpacker(void * data) {
+    SoColorPacker ** cptr = (SoColorPacker**) data;
+    delete *cptr;
+  }
 };
 
 // *************************************************************************
@@ -301,7 +314,10 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   PUBLIC(this)->setNumPasses(1);
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, &this->colorpacker);
+  
+  SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+
+  SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, *cptr);
   // FIXME: we should check this versus the actual max line width
   // supported by the underlying OpenGL context. 20050610 mortene.
   SoLineWidthElement::set(state, this->linewidth);
