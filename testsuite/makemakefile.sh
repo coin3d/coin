@@ -117,7 +117,7 @@ EXEEXT = @EXEEXT@
 @MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
 @MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -lCoin
 
-TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex
+TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
 TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
 TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
 TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@
@@ -169,10 +169,10 @@ makefile-update:
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
 	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(TS_LIBS)
 
-TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp Makefile
+TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
 
-TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp Makefile
+TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
 
 EODATA
@@ -189,7 +189,7 @@ while test x"$e" != x""; do
     echo >&5 "$extractfile: \$(top_srcdir)/$sourcefile \$(srcdir)/makeextract.sh"
     echo >&5 "	\$(srcdir)/makeextract.sh \$(top_srcdir) $sourcefile"
     echo >&5 ""
-    echo >&5 "$objectfile: $extractfile Makefile"
+    echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h Makefile"
     echo >&5 "	\$(CXX) \$(TS_CPPFLAGS) -g -c $extractfile"
     echo >&5 ""
   fi

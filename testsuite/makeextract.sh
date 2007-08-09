@@ -62,7 +62,7 @@ echo "#include <stdio.h>" >&5
 echo "" >&5
 echo "#include <TestSuiteUtils.h>" >&5
 echo "" >&5
-echo "using SIM::Coin3D::Coin;" >&5
+echo "using namespace SIM::Coin3D::Coin;" >&5
 echo "" >&5
 echo "BOOST_AUTO_TEST_SUITE(${class}_TestSuite);" >&5
 echo "" >&5

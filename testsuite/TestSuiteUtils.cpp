@@ -23,7 +23,7 @@
 
 #include <TestSuiteUtils.h>
 
-using SIM::Coin3D::Coin;
+using namespace SIM::Coin3D::Coin;
 
 namespace {
 int debugwarningcount = 0;
