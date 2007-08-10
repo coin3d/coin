@@ -911,7 +911,18 @@ locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
   if (org == searchfor) return cpy;
   
   const SoFieldData * fd = org->getFieldData();
+  const SoFieldData * fd2 = cpy->getFieldData();
+  
   int n = fd->getNumFields();
+  int n2 = fd2->getNumFields();
+
+  if (n != n2) {
+    // should never happen (in theory)
+    SoDebugError::postWarning("SoProto::locate_node_copy",
+                              "SoFieldData mismatch in PROTO scene.");
+    return NULL;
+  }
+
   int i;
 
   SoType sosftype = SoSFNode::getClassTypeId();
@@ -920,10 +931,16 @@ locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
     if (orgf->getTypeId() == sosftype) {
       SoNode * orgnode = ((SoSFNode*) orgf)->getValue();
       if (orgnode != NULL) {
-        SoField * cpyf = fd->getField(cpy, i);
-
-        SoNode * found = locate_node_copy(searchfor, orgnode, ((SoSFNode*) cpyf)->getValue());
-        if (found) return found;
+        SoField * cpyf = fd2->getField(cpy, i);
+        if (cpyf->getTypeId() == sosftype) {
+          SoNode * found = locate_node_copy(searchfor, orgnode, ((SoSFNode*) cpyf)->getValue());
+          if (found) return found;
+        }
+        else {
+          SoDebugError::postWarning("SoProto::locate_node_copy",
+                                    "SoField mismatch in PROTO scene.");
+          return NULL;
+        }
       }
     }
   }
