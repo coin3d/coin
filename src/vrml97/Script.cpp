@@ -765,8 +765,12 @@ SoVRMLScriptP::initialize(void)
   }
 
   if (this->engine == NULL) {
-    SoDebugError::postWarning("SoVRMLScript::initialize",
-                              "No script language evaluation engine available.");
+    static int first = 1;
+    if (first) {
+      SoDebugError::postWarning("SoVRMLScript::initialize",
+                                "No script language evaluation engine available.");
+      first = 0;
+    }
     return;
   }
 
