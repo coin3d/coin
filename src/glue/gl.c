@@ -1214,6 +1214,22 @@ glglue_resolve_symbols(cc_glglue * w)
     if (env && (atoi(env) > 0)) { w->glBindBuffer = NULL; }
   }
 
+
+  /*
+    All Intel drivers usually crash when we try to use VBO. This might be a bug in
+    our VBO code, but we choose to disable VBO rendering for all Intel cards until
+    we have time to look into this. pederb, 2007-08-16 
+  */
+  if (w->glBindBuffer) {
+    /* Enable users to override this workaround by setting COIN_VBO=1 */
+    const char * env = coin_getenv("COIN_VBO");
+    if (!env || (atoi(env) > 0)) {
+      if (strstr(w->vendorstr, "Tungsten") || /* Tungsten Graphics develops Linux drivers for Intel */
+	  strstr(w->vendorstr, "Intel")) {
+	w->glBindBuffer = NULL;
+      }
+    }
+  }
 #endif /* GL_ARB_vertex_buffer_object */
 
   if (w->glBindBuffer) {
