@@ -40,6 +40,7 @@ public:
 
   void reset(const SbBool freeoldstrings);
 
+  void setVersion(const SbString & str);
   void addDefine(const SbString & str, const SbBool checkexists);
   void addDeclaration(const SbString & str, const SbBool checkexists);
   void addFunction(const SbString & str, const SbBool checkexists);
@@ -50,6 +51,7 @@ public:
   const SbString & getShaderProgram(void);
 
 private:
+  SbString version;
   SbString defines;
   SbString declarations;
   SbString functions;

@@ -51,6 +51,7 @@ SoShaderGenerator::~SoShaderGenerator()
 void 
 SoShaderGenerator::reset(const SbBool freeoldstrings)
 {
+  this->version.makeEmpty(freeoldstrings);
   this->defines.makeEmpty(freeoldstrings);
   this->declarations.makeEmpty(freeoldstrings);
   this->functions.makeEmpty(freeoldstrings);
@@ -59,6 +60,12 @@ SoShaderGenerator::reset(const SbBool freeoldstrings)
   this->dirty = FALSE;
 }
 
+
+void 
+SoShaderGenerator::setVersion(const SbString & str)
+{
+  this->version = str;
+}
 
 /*!
   Adds a define to the shader program.
@@ -136,6 +143,7 @@ SoShaderGenerator::getShaderProgram(void)
 {
   if (this->dirty) {
     this->combined.makeEmpty(FALSE);
+    this->combined += this->version;
     this->combined += this->defines;
   
     this->combined += this->declarations;
