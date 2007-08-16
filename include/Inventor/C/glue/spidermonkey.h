@@ -187,6 +187,7 @@ struct JSErrorReport {
 #define JSVAL_SETTAG(v,t) ((v) | (t))
 #define JSVAL_CLRTAG(v)         ((v) & ~(jsval)JSVAL_TAGMASK)
 
+#define JSVAL_IS_PRIMITIVE(v)   (!JSVAL_IS_OBJECT(v) || JSVAL_IS_NULL(v))
 #define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
 #define JSVAL_IS_NUMBER(v)      (JSVAL_IS_INT(v) || JSVAL_IS_DOUBLE(v))
 #define JSVAL_IS_INT(v)         (((v) & JSVAL_INT) && (v) != JSVAL_VOID)
@@ -250,6 +251,7 @@ struct JSErrorReport {
 #define JSOPTION_VAROBJFIX              JS_BIT(2)
 #define JSOPTION_PRIVATE_IS_NSISUPPORTS JS_BIT(3)
 #define JSOPTION_COMPILE_N_GO           JS_BIT(4)
+
 
 /* Function typedefs. *************************************************** */
 
@@ -353,6 +355,7 @@ typedef struct JSIdArray * (* JS_Enumerate_t)(JSContext *, JSObject *);
 typedef JSBool (* JS_IdToValue_t)(JSContext *, jsid, jsval *);
 typedef const char * (* JS_GetFunctionName_t)(JSFunction *);
 typedef JSObject * (* JS_GetConstructor_t)(JSContext *, JSObject *);
+typedef void (* JS_DestroyIdArray_t)(JSContext *, struct JSIdArray *);
 
 
 /* Access interface. **************************************************** */
@@ -454,6 +457,7 @@ typedef struct {
   JS_IdToValue_t JS_IdToValue;
   JS_GetFunctionName_t JS_GetFunctionName;
   JS_GetConstructor_t JS_GetConstructor;
+  JS_DestroyIdArray_t JS_DestroyIdArray;
 
 } SpiderMonkey_t;
 
