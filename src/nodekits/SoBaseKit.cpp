@@ -2368,9 +2368,12 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
     // indices belong to which catalog parts), we just disallow it for
     // now. 20020808 mortene.
     SoDebugError::postWarning("SoBaseKit::setPart",
-                              "Node pointer (%p) is already used under the same group node in the catalog "
-                              "as a child of %s -- this is not allowed",
-                              node, catalog->getName(parentIdx).getString());
+                              "Node pointer (%p, '%s', '%s') is already used under the same group node in the catalog "
+                              "as a child of part '%s' -- this is not allowed",
+                              node,
+                              node->getName().getString(),
+                              node->getTypeId().getName().getString(),
+                              catalog->getName(parentIdx).getString());
     return FALSE;
   }
 
