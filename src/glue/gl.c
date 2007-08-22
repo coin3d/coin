@@ -1220,6 +1220,8 @@ glglue_resolve_symbols(cc_glglue * w)
     our VBO code, but we choose to disable VBO rendering for all Intel cards until
     we have time to look into this. pederb, 2007-08-16 
   */
+
+#ifndef HAVE_AGL /* bug is not present on Mac OS X */
   if (w->glBindBuffer) {
     /* Enable users to override this workaround by setting COIN_VBO=1 */
     const char * env = coin_getenv("COIN_VBO");
@@ -1230,6 +1232,7 @@ glglue_resolve_symbols(cc_glglue * w)
       }
     }
   }
+#endif /* !HAVE_AGL */
 #endif /* GL_ARB_vertex_buffer_object */
 
   if (w->glBindBuffer) {
