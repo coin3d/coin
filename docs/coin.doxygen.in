@@ -887,6 +887,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateFunction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinatePlane.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateSphere.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCubeMap.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureScalePolicy.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureUnit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransform.h \
@@ -1433,6 +1434,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateFunction.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinatePlane.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateSphere.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCubeMap.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureScalePolicy.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureUnit.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransform.cpp \
