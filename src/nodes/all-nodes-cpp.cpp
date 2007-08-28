@@ -48,6 +48,7 @@
 #include "SoFile.cpp"
 #include "SoFont.cpp"
 #include "SoFontStyle.cpp"
+#include "SoFrustumCamera.cpp"
 #include "SoGroup.cpp"
 #include "SoInfo.cpp"
 #include "SoLOD.cpp"

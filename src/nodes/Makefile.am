@@ -29,6 +29,7 @@ RegularSources = \
 	SoFile.cpp \
 	SoFont.cpp \
 	SoFontStyle.cpp \
+	SoFrustumCamera.cpp \
 	SoGroup.cpp \
 	SoInfo.cpp \
 	SoLOD.cpp \

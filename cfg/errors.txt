@@ -57,6 +57,21 @@ If you still can't get the configure script to detect the presence of
 and how to use the Qt library, please mail the config.log file to
 <coin-support@coin3d.org> and ask for help.
 
+!no-pkgconfig-qt
+Could not gather the configure flags for Qt through pkg-config. Please
+ensure that the qt pkg-config metadata .pc files, such as QtCore.pc,
+exist on your system. In case the metadata .pc files are installed
+into a non-default location verify that the PKG_CONFIG_PATH environment
+variable points to the correct directory.
+
+Further details in how to set the PKG_CONFIG_PATH environment variable
+can be found in the pkg-config(1) man page.
+
+!no-gdiplus
+Could not find a way to build against GDI+ (GdiPlus.h / -lgdiplus).
+GDI+ is part of the Microsoft Windows SDK download.  Make sure you have
+the MS Windows SDK set up correctly for your compiler.
+
 !no-qgl
 The configure script could not find any way to build code which uses
 Qt's OpenGL bindings (called "QGL"), neither as part of the main Qt

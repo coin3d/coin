@@ -30,6 +30,7 @@ PublicHeaders = \
 	SoFile.h \
 	SoFont.h \
 	SoFontStyle.h \
+	SoFrustumCamera.h \
 	SoGeoOrigin.h \
 	SoGeoLocation.h \
 	SoGeoSeparator.h \

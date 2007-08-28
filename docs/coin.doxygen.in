@@ -811,6 +811,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFile.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFont.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFontStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFrustumCamera.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGroup.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoImage.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedFaceSet.h \
@@ -1359,6 +1360,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoFile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFont.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFontStyle.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoFrustumCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoGroup.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoImage.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedFaceSet.cpp \

@@ -294,6 +294,7 @@ RegularSources = \
 	SoFile.cpp \
 	SoFont.cpp \
 	SoFontStyle.cpp \
+	SoFrustumCamera.cpp \
 	SoGroup.cpp \
 	SoInfo.cpp \
 	SoLOD.cpp \
@@ -453,8 +454,8 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -496,16 +497,16 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoDrawStyle.$(OBJEXT) SoEnvironment.$(OBJEXT) \
 	SoEventCallback.$(OBJEXT) SoExtSelection.$(OBJEXT) \
 	SoFile.$(OBJEXT) SoFont.$(OBJEXT) SoFontStyle.$(OBJEXT) \
-	SoGroup.$(OBJEXT) SoInfo.$(OBJEXT) SoLOD.$(OBJEXT) \
-	SoLabel.$(OBJEXT) SoLevelOfDetail.$(OBJEXT) SoLight.$(OBJEXT) \
-	SoLightModel.$(OBJEXT) SoLinearProfile.$(OBJEXT) \
-	SoListener.$(OBJEXT) SoLocateHighlight.$(OBJEXT) \
-	SoMaterial.$(OBJEXT) SoMaterialBinding.$(OBJEXT) \
-	SoMatrixTransform.$(OBJEXT) SoMultipleCopy.$(OBJEXT) \
-	SoNode.$(OBJEXT) SoNormal.$(OBJEXT) SoNormalBinding.$(OBJEXT) \
-	SoNurbsProfile.$(OBJEXT) SoOrthographicCamera.$(OBJEXT) \
-	SoPackedColor.$(OBJEXT) SoPathSwitch.$(OBJEXT) \
-	SoPattern.$(OBJEXT) SoPendulum.$(OBJEXT) \
+	SoFrustumCamera.$(OBJEXT) SoGroup.$(OBJEXT) SoInfo.$(OBJEXT) \
+	SoLOD.$(OBJEXT) SoLabel.$(OBJEXT) SoLevelOfDetail.$(OBJEXT) \
+	SoLight.$(OBJEXT) SoLightModel.$(OBJEXT) \
+	SoLinearProfile.$(OBJEXT) SoListener.$(OBJEXT) \
+	SoLocateHighlight.$(OBJEXT) SoMaterial.$(OBJEXT) \
+	SoMaterialBinding.$(OBJEXT) SoMatrixTransform.$(OBJEXT) \
+	SoMultipleCopy.$(OBJEXT) SoNode.$(OBJEXT) SoNormal.$(OBJEXT) \
+	SoNormalBinding.$(OBJEXT) SoNurbsProfile.$(OBJEXT) \
+	SoOrthographicCamera.$(OBJEXT) SoPackedColor.$(OBJEXT) \
+	SoPathSwitch.$(OBJEXT) SoPattern.$(OBJEXT) SoPendulum.$(OBJEXT) \
 	SoPerspectiveCamera.$(OBJEXT) SoPickStyle.$(OBJEXT) \
 	SoPointLight.$(OBJEXT) SoPolygonOffset.$(OBJEXT) \
 	SoProfile.$(OBJEXT) SoProfileCoordinate2.$(OBJEXT) \
@@ -552,8 +553,8 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -595,8 +596,8 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -633,13 +634,14 @@ am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoCamera.lo SoClipPlane.lo SoColorIndex.lo SoComplexity.lo \
 	SoCoordinate3.lo SoCoordinate4.lo SoDirectionalLight.lo \
 	SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo \
-	SoExtSelection.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo \
-	SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo SoLight.lo \
-	SoLightModel.lo SoLinearProfile.lo SoListener.lo \
-	SoLocateHighlight.lo SoMaterial.lo SoMaterialBinding.lo \
-	SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo SoNormal.lo \
-	SoNormalBinding.lo SoNurbsProfile.lo SoOrthographicCamera.lo \
-	SoPackedColor.lo SoPathSwitch.lo SoPattern.lo SoPendulum.lo \
+	SoExtSelection.lo SoFile.lo SoFont.lo SoFontStyle.lo \
+	SoFrustumCamera.lo SoGroup.lo SoInfo.lo SoLOD.lo SoLabel.lo \
+	SoLevelOfDetail.lo SoLight.lo SoLightModel.lo \
+	SoLinearProfile.lo SoListener.lo SoLocateHighlight.lo \
+	SoMaterial.lo SoMaterialBinding.lo SoMatrixTransform.lo \
+	SoMultipleCopy.lo SoNode.lo SoNormal.lo SoNormalBinding.lo \
+	SoNurbsProfile.lo SoOrthographicCamera.lo SoPackedColor.lo \
+	SoPathSwitch.lo SoPattern.lo SoPendulum.lo \
 	SoPerspectiveCamera.lo SoPickStyle.lo SoPointLight.lo \
 	SoPolygonOffset.lo SoProfile.lo SoProfileCoordinate2.lo \
 	SoProfileCoordinate3.lo SoResetTransform.lo SoRotation.lo \
@@ -675,8 +677,8 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -716,8 +718,8 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -757,8 +759,8 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
@@ -835,11 +837,13 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoFile.Plo ./$(DEPDIR)/SoFile.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFont.Plo ./$(DEPDIR)/SoFont.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFontStyle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFontStyle.Po ./$(DEPDIR)/SoGroup.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGroup.Po ./$(DEPDIR)/SoInfo.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInfo.Po ./$(DEPDIR)/SoLOD.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoLOD.Po ./$(DEPDIR)/SoLabel.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoLabel.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoFontStyle.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoFrustumCamera.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoFrustumCamera.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGroup.Plo ./$(DEPDIR)/SoGroup.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoInfo.Plo ./$(DEPDIR)/SoInfo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoLOD.Plo ./$(DEPDIR)/SoLOD.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoLabel.Plo ./$(DEPDIR)/SoLabel.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLevelOfDetail.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLevelOfDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLight.Plo ./$(DEPDIR)/SoLight.Po \
@@ -1119,6 +1123,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFontStyle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFontStyle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFrustumCamera.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFrustumCamera.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGroup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInfo.Plo@am__quote@
