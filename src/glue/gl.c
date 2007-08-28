@@ -1221,18 +1221,18 @@ glglue_resolve_symbols(cc_glglue * w)
     we have time to look into this. pederb, 2007-08-16 
   */
 
-#ifndef HAVE_AGL /* bug is not present on Mac OS X */
   if (w->glBindBuffer) {
-    /* Enable users to override this workaround by setting COIN_VBO=1 */
-    const char * env = coin_getenv("COIN_VBO");
-    if (!env || (atoi(env) > 0)) {
-      if (strstr(w->vendorstr, "Tungsten") || /* Tungsten Graphics develops Linux drivers for Intel */
-	  strstr(w->vendorstr, "Intel")) {
-	w->glBindBuffer = NULL;
+    if (coin_runtime_os() != COIN_OS_X) { /* Apple has proper drivers */
+      /* Enable users to override this workaround by setting COIN_VBO=1 */
+      const char * env = coin_getenv("COIN_VBO");
+      if (!env || (atoi(env) > 0)) {
+	if (strstr(w->vendorstr, "Tungsten") || /* Tungsten Graphics develops Linux drivers for Intel */
+	    strstr(w->vendorstr, "Intel")) {
+	  w->glBindBuffer = NULL;
+	}
       }
     }
   }
-#endif /* !HAVE_AGL */
 #endif /* GL_ARB_vertex_buffer_object */
 
   if (w->glBindBuffer) {
