@@ -477,7 +477,8 @@ public:
     vertexshadercache(NULL),
     fragmentshadercache(NULL),
     texunit0(NULL),
-    lightmodel(NULL)
+    lightmodel(NULL),
+    numtexunitsinscene(1)
   {
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -564,6 +565,7 @@ public:
   SoShaderParameter1i * texunit0;
   SoShaderParameter1i * lightmodel;
 
+  int numtexunitsinscene;
 };
 
 // *************************************************************************
@@ -766,6 +768,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
+  this->search.reset();
 }
 
 void
