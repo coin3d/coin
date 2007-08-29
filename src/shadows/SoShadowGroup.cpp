@@ -1265,11 +1265,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     break;
   case SoEnvironmentElement::FOG:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_FogFragCoord);\n");
-    gen.addDeclaration("#version 110", TRUE);
+    gen.setVersion("#version 110", TRUE);
     break;
   case SoEnvironmentElement::SMOKE:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n");
-    gen.addDeclaration("#version 110", TRUE);
+    gen.setVersion("#version 110", TRUE);
     break;
   }
   if (fogType != SoEnvironmentElement::NONE) {
@@ -1282,31 +1282,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
 
   if (dirspot) {
-    gen.addDeclaration("float DirSpotLight(in int i, in vec3 eye, in vec3 ecPosition3,\n"
-                       "in vec3 normal,\n"
-                       "inout vec4 ambient,\n"
-                       "inout vec4 diffuse,\n"
-                       "inout vec4 specular)\n"
-                       "{\n"
-                       "float nDotVP;\n"
-                       "float nDotHV;\n"
-                       "float pf;\n"
-                       "vec3 dir = -normalize(vec3(gl_LightSource[i].spotDirection));\n"
-                       "vec3 hv = normalize(eye + dir);\n"
-                       "nDotVP = max(0.0, dot(normal, dir));\n"
-                       "nDotHV = max(0.0, dot(normal, hv));\n"
-                       "float shininess = gl_FrontMaterial.shininess;\n"
-                       "if (nDotVP == 0.0)\n"
-                       "pf = 0.0;\n"
-                       "else\n"
-                       "pf = pow(nDotHV, shininess);\n"
-                       "ambient += gl_LightSource[i].ambient;\n"
-                       "diffuse += gl_LightSource[i].diffuse * nDotVP;\n"
-                       "specular += gl_LightSource[i].specular * pf;\n"
-                       "return length(vec3(gl_LightSource[i].position) - ecPosition3);\n"
-                       "}", FALSE);
+    gen.addNamedFunction("lights/DirSpotLight", FALSE);
   }
-
 
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
