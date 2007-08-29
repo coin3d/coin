@@ -1241,9 +1241,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = shadowCoord%d.z > -1.0%s ? VsmLookup(map, (dist - nearval%d)/(farval%d-nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
+                  "shadeFactor = (shadowCoord%d.z > -1.0%s ? VsmLookup(map, (dist - nearval%d)/(farval%d-nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
                   "color += shadeFactor * spotVertexColor%d;\n",
-                  lights.getLength()+i, i , i, i, i, i,insidetest.getString(), i,i,i);
+                  lights.getLength()+i, i , i, i, i,insidetest.getString(), i,i,i,i);
       gen.addMainStatement(str);
     }
   }
