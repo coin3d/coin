@@ -6,7 +6,8 @@
 BUILT_SOURCES = \
 	PointLight.h \
 	SpotLight.h \
-	DirectionalLight.h
+	DirectionalLight.h \
+	DirSpotLight.h
 
 DISTCLEANFILES = \
 	$(BUILT_SOURCES) \
@@ -16,7 +17,8 @@ shaderslightsdatadir = $(datadir)/Coin/shaders/lights
 dist_shaderslightsdata_DATA = \
 	PointLight.glsl \
 	SpotLight.glsl \
-	DirectionalLight.glsl
+	DirectionalLight.glsl \
+	DirSpotLight.glsl
 
 # This is necessary to include so the headers are actually built.
 all-local: $(BUILT_SOURCES)
@@ -39,6 +41,9 @@ SpotLight.h: $(srcdir)/SpotLight.glsl glsl2h.sh
 
 DirectionalLight.h: $(srcdir)/DirectionalLight.glsl glsl2h.sh
 	if ./glsl2h.sh $(srcdir)/DirectionalLight.glsl > $@; then :; else rm -f $@; exit 1; fi
+
+DirSpotLight.h: $(srcdir)/DirSpotLight.glsl glsl2h.sh
+	if ./glsl2h.sh $(srcdir)/DirSpotLight.glsl > $@; then :; else rm -f $@; exit 1; fi
 
 install-dist_shaderslightsdataDATA: $(dist_shaderslightsdata_DATA)
 	@$(NORMAL_INSTALL)

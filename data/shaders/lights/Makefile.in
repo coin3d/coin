@@ -266,7 +266,8 @@ target_vendor = @target_vendor@
 BUILT_SOURCES = \
 	PointLight.h \
 	SpotLight.h \
-	DirectionalLight.h
+	DirectionalLight.h \
+	DirSpotLight.h
 
 
 DISTCLEANFILES = \
@@ -278,7 +279,8 @@ shaderslightsdatadir = $(datadir)/Coin/shaders/lights
 dist_shaderslightsdata_DATA = \
 	PointLight.glsl \
 	SpotLight.glsl \
-	DirectionalLight.glsl
+	DirectionalLight.glsl \
+	DirSpotLight.glsl
 
 subdir = data/shaders/lights
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -468,6 +470,9 @@ SpotLight.h: $(srcdir)/SpotLight.glsl glsl2h.sh
 
 DirectionalLight.h: $(srcdir)/DirectionalLight.glsl glsl2h.sh
 	if ./glsl2h.sh $(srcdir)/DirectionalLight.glsl > $@; then :; else rm -f $@; exit 1; fi
+
+DirSpotLight.h: $(srcdir)/DirSpotLight.glsl glsl2h.sh
+	if ./glsl2h.sh $(srcdir)/DirSpotLight.glsl > $@; then :; else rm -f $@; exit 1; fi
 
 install-dist_shaderslightsdataDATA: $(dist_shaderslightsdata_DATA)
 	@$(NORMAL_INSTALL)

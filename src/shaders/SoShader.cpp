@@ -187,6 +187,7 @@
 #include <data/shaders/lights/SpotLight.h>
 #include <data/shaders/lights/PointLight.h>
 #include <data/shaders/lights/DirectionalLight.h>
+#include <data/shaders/lights/DirSpotLight.h>
 #include <data/shaders/vsm/VsmLookup.h>
 
 // *************************************************************************
@@ -377,5 +378,6 @@ SoShader::setupBuiltinShaders(void)
   shader_builtin_dict->put(SbName("lights/PointLight").getString(), (char*) POINTLIGHT_shadersource);
   shader_builtin_dict->put(SbName("lights/SpotLight").getString(), (char*) SPOTLIGHT_shadersource);
   shader_builtin_dict->put(SbName("lights/DirectionalLight").getString(), (char*) DIRECTIONALLIGHT_shadersource);
+  shader_builtin_dict->put(SbName("lights/DirSpotLight").getString(), (char*) DIRSPOTLIGHT_shadersource);
   shader_builtin_dict->put(SbName("vsm/VsmLookup").getString(), (char*) VSMLOOKUP_shadersource);
 }
