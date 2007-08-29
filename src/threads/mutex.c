@@ -274,7 +274,7 @@ cc_mutex_global_unlock(void)
 {
   (void) cc_mutex_unlock(cc_global_mutex);
 }
-
+ 
 /* ********************************************************************** */
 
 /*!
@@ -324,6 +324,54 @@ cc_mutex_global_unlock(void)
   locked or not.  This is a non-blocking operation.
 */
 
+
+/*!
+  \class SbThreadMutex Inventor/threads/SbThreadMutex.h
+  \brief A basic class for managing a recursive  mutex.
+  \ingroup threads
+
+  This class provides a portable framework around the mutex interface
+  of the underlying native thread-handling toolkit.
+*/
+
+/*!
+  \fn SbThreadMutex::SbThreadMutex(void)
+
+  Constructor.
+*/
+
+/*!
+  \fn SbThreadMutex::~SbThreadMutex()
+
+  Destructor.
+*/
+
+/*!
+  \fn int SbThreadMutex::lock(void)
+
+  This method locks the mutex. \c 0 is returned on success.
+
+  If the mutex was previously unlocked, the thread will lock the mutex
+  and continue running. If the mutex was already locked by another thread
+  when this call is made, this method will block until the other thread holding
+  the mutex releases it.
+
+  This is a blocking operation.
+*/
+
+/*!
+  \fn int SbThreadMutex::unlock(void)
+
+  This method unlocks the mutex.
+*/
+
+/*!
+  \fn SbBool SbThreadMutex::tryLock(void)
+
+  This method tries to lock the mutex, and returns whether it was
+  locked by another thread or not. This is a non-blocking operation.
+*/
+
 /* ********************************************************************** */
 
 /*!
@@ -359,14 +407,21 @@ cc_mutex_global_unlock(void)
 */
 
 /*!
+  \fn SbThreadAutoLock::SbThreadAutoLock(SbThreadMutex * mutex)
+
+  The constructor calls SbThreadMutex::lock() on \a mutex.
+*/
+
+/*!
   \fn SbThreadAutoLock::~SbThreadAutoLock()
 
-  The destructor calls SbMutex::unlock() on the mutex passed in as a
+  The destructor calls unlock() on the mutex passed in as a
   parameter to the constructor.
 */
 
 /*!
   \var SbThreadAutoLock::mutex
+  \var SbThreadAutoLock::recmutex
 
   \COININTERNAL
 */
