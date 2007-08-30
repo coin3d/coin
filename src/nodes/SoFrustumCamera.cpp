@@ -58,7 +58,7 @@
   The top clipping plane position. Default value is 0.5.
 */
 
-#include <Inventor/nodes/SoSoFrustumCamera.h>
+#include <Inventor/nodes/SoFrustumCamera.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbSphere.h>
