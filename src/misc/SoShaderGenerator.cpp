@@ -65,6 +65,7 @@ void
 SoShaderGenerator::setVersion(const SbString & str)
 {
   this->version = str;
+  this->version += "\n";
 }
 
 /*!
