@@ -714,7 +714,6 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   SbBool mipmap = this->shouldCreateMipmap(state);
-  mipmap = FALSE;
   
   if ((this->fbo_size != size) || (mipmap != this->fbo_mipmap)) {
     this->fbo_mipmap = mipmap;
@@ -1125,7 +1124,6 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   
   // for mipmaps
   // FIXME: add support for CLAMP_TO_BORDER in SoSceneTexture2 and SoTextureImageElement
-
 
   GLenum wraps = (GLenum) PUBLIC(this)->wrapS.getValue();
   GLenum wrapt = (GLenum) PUBLIC(this)->wrapT.getValue();
