@@ -83,7 +83,7 @@ SoNotList::append(SoNotRec * const rec)
   this->tail = rec;
   if (!this->head) this->head = rec;
   
-  if (!this->firstnoderec && rec->getBase()->isOfType(SoNode::getClassTypeId())) 
+  if (!this->firstnoderec && rec->getBase() && rec->getBase()->isOfType(SoNode::getClassTypeId())) 
     this->firstnoderec = rec;
 }
 
