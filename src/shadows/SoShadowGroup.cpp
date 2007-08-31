@@ -213,6 +213,9 @@
 /*!
   \var SoSFInt32 SoShadowGroup::smoothBorder
 
+  We have some problems with this feature so it's not supported at the
+  moment.
+
   Used to add shadow border smoothing. This is currently done as a
   post processing step on the shadow map. The algorithm used is Gauss
   Smoothing, but in the future we'll probably change this, and use a
@@ -675,6 +678,8 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
   if (!this->spotlightsvalid) {
     float smoothing = PUBLIC(this)->smoothBorder.getValue();
+    smoothing = 0.0f; // FIXME: temporary until we have time to fix this feature
+
     int gaussmatrixsize = 0;
     float gaussstandarddeviation = 0.6f;
 
