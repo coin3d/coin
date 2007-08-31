@@ -474,6 +474,7 @@ public:
     bboxaction(SbViewportRegion(SbVec2s(100,100))),
     matrixaction(SbViewportRegion(SbVec2s(100,100))),
     spotlightsvalid(FALSE),
+    needscenesearch(TRUE),
     shaderprogram(NULL),
     vertexshader(NULL),
     fragmentshader(NULL),
@@ -553,6 +554,7 @@ public:
   SoGetMatrixAction matrixaction;
 
   SbBool spotlightsvalid;
+  SbBool needscenesearch;
   SbList <SoShadowSpotLightCache*> spotlights;
 
   SoShaderProgram * shaderprogram;
@@ -654,12 +656,24 @@ SoShadowGroup::notify(SoNotList * nl)
   SoNotRec * rec = nl->getLastRec();
   if (rec->getBase() != this) {
     // was not notified through a field, subgraph was changed
-    PRIVATE(this)->spotlightsvalid = FALSE;
+
+    rec = nl->getFirstRecAtNode();
+    if (rec) {
+      SoNode * node = (SoNode*) rec->getBase();
+      if (node->isOfType(SoGroup::getClassTypeId())) {
+        // first rec was from a group node, we need to search the scene graph again
+        PRIVATE(this)->spotlightsvalid = FALSE;
+        PRIVATE(this)->needscenesearch = TRUE;
+      }
+      else {
+        PRIVATE(this)->spotlightsvalid = FALSE;        
+      }
+    }
   }
+
   if (PRIVATE(this)->vertexshadercache) {
     PRIVATE(this)->vertexshadercache->invalidate();
   }
-
   if (PRIVATE(this)->fragmentshadercache) {
     PRIVATE(this)->fragmentshadercache->invalidate();
   }
@@ -692,10 +706,13 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     int maxunits = cc_glglue_max_texture_units(glue);
     int maxlights = maxunits - 1;
 
-    this->search.setType(SoSpotLight::getClassTypeId());
-    this->search.setInterest(SoSearchAction::ALL);
-    this->search.setSearchingAll(FALSE);
-    this->search.apply(PUBLIC(this));
+    if (this->needscenesearch || this->search.getPaths().getLength() == 0) {
+      this->search.setType(SoSpotLight::getClassTypeId());
+      this->search.setInterest(SoSearchAction::ALL);
+      this->search.setSearchingAll(FALSE);
+      this->search.apply(PUBLIC(this));
+      this->needscenesearch = FALSE;
+    }
     SoPathList & pl = this->search.getPaths();
 
     int numlights = 0;
@@ -734,14 +751,13 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
           cache->path = path->copy();
         }
         this->matrixaction.apply(path);
-
+        
         this->updateCamera(cache, this->matrixaction.getMatrix());
         i2++;
       }
     }
     this->spotlightsvalid = TRUE;
   }
-  
   for (i = 0; i < this->spotlights.getLength(); i++) {
     SoShadowSpotLightCache * cache = this->spotlights[i];
     assert(cache->texunit >= 0);
@@ -773,7 +789,6 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
-  this->search.reset();
 }
 
 void
