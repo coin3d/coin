@@ -241,7 +241,7 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
   }
   SoBase::staticDataUnlock();
   if (setvbo) {
-    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
+    SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->vbo);
   }
 }
 
