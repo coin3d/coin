@@ -237,6 +237,7 @@ SoVRMLScriptP::cleanup(void)
 
   if (SoVRMLScriptP::useSpiderMonkey()) {
     // Destroy javascript runtime
+    
     SoJavaScriptEngine::shutdown();
   }
 #endif // !COIN_HAVE_JAVASCRIPT
@@ -741,13 +742,17 @@ SoVRMLScriptP::initialize(void)
 
   SbString script;
 
-  for (int index=0; index<PUBLIC(this)->url.getNum(); ++index) {
+  for (int index = 0; index < PUBLIC(this)->url.getNum(); ++index) {
     SbString s(PUBLIC(this)->url[index].getString());
 
     // javascript support
     const char jsPrefix[] = "javascript:";
+    const char jsPrefix2[] = "vrmlscript:";
     const size_t jsPrefixlen = sizeof(jsPrefix) - 1;
-    if (s.getLength() > (int)jsPrefixlen && s.getSubString(0, jsPrefixlen -1) == jsPrefix) {
+    const size_t jsPrefixlen2 = sizeof(jsPrefix2) - 1;
+    if (s.getLength() > (int)jsPrefixlen && 
+        ((s.getSubString(0, jsPrefixlen -1) == jsPrefix) ||
+         (s.getSubString(0, jsPrefixlen2 -1) == jsPrefix2))) {
       // starting javascript engine
       if (!SoVRMLScriptP::useSpiderMonkey()) {
         if (SoVRMLScriptP::debug()) {

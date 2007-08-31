@@ -65,7 +65,7 @@ public:
   const double & operator [] (const int i) const { return vec[i]; }
 
   SbVec3d cross(const SbVec3d & v) const;
-  double dot(const SbVec3d & v) const { return vec[0] * v[0] + vec[1] * v[1] + vec[2] * v[2]; }
+  double dot(const SbVec3d & v) const { return vec[0] * v.vec[0] + vec[1] * v.vec[1] + vec[2] * v.vec[2]; }
   SbBool equals(const SbVec3d & v, double tolerance) const;
   SbVec3d getClosestAxis(void) const;
   double length(void) const;
