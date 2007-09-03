@@ -31,6 +31,10 @@
   SoCamera::nearDistance and SoCamera::farDistance for the two last
   glFrustum() parameters.
 
+  This camera can be useful in applications that require full control
+  over the view frustum, such as in CAVE or other multipipe
+  applications.
+
   \since Coin 2.5
 */
 
@@ -83,7 +87,7 @@ SoFrustumCamera::SoFrustumCamera(void)
   Destructor.
 */
 SoFrustumCamera::~SoFrustumCamera(void)
-{  
+{
 }
 
 // Doc in superclass.
@@ -94,7 +98,7 @@ SoFrustumCamera::initClass(void)
 }
 
 // Doc in superclass.
-void 
+void
 SoFrustumCamera::scaleHeight(float scalefactor)
 {
   this->top = this->top.getValue() * scalefactor;
@@ -102,7 +106,7 @@ SoFrustumCamera::scaleHeight(float scalefactor)
 }
 
 // Doc in superclass.
-SbViewVolume 
+SbViewVolume
 SoFrustumCamera::getViewVolume(float useaspectratio) const
 {
   SbViewVolume vv;
@@ -125,7 +129,7 @@ SoFrustumCamera::getViewVolume(float useaspectratio) const
                this->bottom.getValue(),
                this->top.getValue(),
                this->nearDistance.getValue(),
-               this->farDistance.getValue());    
+               this->farDistance.getValue());
   }
   vv.rotateCamera(this->orientation.getValue());
   vv.translateCamera(this->position.getValue());
@@ -133,7 +137,7 @@ SoFrustumCamera::getViewVolume(float useaspectratio) const
 }
 
 // Doc in superclass.
-void 
+void
 SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
 {
 
@@ -172,9 +176,9 @@ SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
 
   (void) tvec.normalize();
   (void) bvec.normalize();
-  
+
   float heightangle = (float) acos((double)SbClamp(tvec.dot(bvec), 0.0f, 1.0f));
-  
+
   // Move the camera to the edge of the bounding sphere, while still
   // pointing at the scene.
   SbVec3f direction = this->position.getValue() - box.getCenter();
@@ -196,4 +200,3 @@ SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
   // on the distance between the camera and the scene.
   this->focalDistance = distance_to_midpoint;
 }
-
