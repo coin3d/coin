@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{F1E53F7C-A341-418C-9B12-FCBF7BB01805}"
+	ProjectGUID="{9DEE9F45-0BBF-4AAC-926C-2D02E7D85125}"
 	>
 	<Platforms>
 		<Platform
@@ -27622,6 +27622,54 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\nodes\SoFrustumCamera.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\nodes\SoGroup.cpp"
 					>
 					<FileConfiguration
@@ -43139,6 +43187,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\nodes\SoFragmentShader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoFrustumCamera.h"
 					>
 				</File>
 				<File

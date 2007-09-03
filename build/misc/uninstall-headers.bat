@@ -554,6 +554,7 @@ del %COINDIR%\include\Inventor\nodes\SoFaceSet.h
 del %COINDIR%\include\Inventor\nodes\SoFile.h
 del %COINDIR%\include\Inventor\nodes\SoFont.h
 del %COINDIR%\include\Inventor\nodes\SoFontStyle.h
+del %COINDIR%\include\Inventor\nodes\SoFrustumCamera.h
 del %COINDIR%\include\Inventor\nodes\SoGeoOrigin.h
 del %COINDIR%\include\Inventor\nodes\SoGeoLocation.h
 del %COINDIR%\include\Inventor\nodes\SoGeoSeparator.h

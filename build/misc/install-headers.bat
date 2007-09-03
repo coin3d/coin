@@ -554,6 +554,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoFaceSet.h %COINDIR%\include\Inv
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoFile.h %COINDIR%\include\Inventor\nodes\SoFile.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoFont.h %COINDIR%\include\Inventor\nodes\SoFont.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoFontStyle.h %COINDIR%\include\Inventor\nodes\SoFontStyle.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoFrustumCamera.h %COINDIR%\include\Inventor\nodes\SoFrustumCamera.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoGeoOrigin.h %COINDIR%\include\Inventor\nodes\SoGeoOrigin.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoGeoLocation.h %COINDIR%\include\Inventor\nodes\SoGeoLocation.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoGeoSeparator.h %COINDIR%\include\Inventor\nodes\SoGeoSeparator.h >nul:

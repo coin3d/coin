@@ -7573,6 +7573,19 @@ SOURCE=..\..\src\nodes\SoFontStyle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoFrustumCamera.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoGroup.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -13489,6 +13502,10 @@ SOURCE=..\..\include\Inventor\nodes\SoFontStyle.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\nodes\SoFrustumCamera.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\nodes\SoGeoOrigin.h
 # End Source File
 # Begin Source File
@@ -14655,6 +14672,12 @@ SOURCE=.\data\draggerDefaults\translate2Dragger.h
 # Begin Group "lights local includes"
 
 # PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=.\data\shaders\lights\DirSpotLight.h
+
+# PROP Exclude_From_Build 1
+# End Source File
 # Begin Source File
 
 SOURCE=.\data\shaders\lights\DirectionalLight.h
