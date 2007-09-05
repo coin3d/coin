@@ -929,7 +929,8 @@ calculate_y_axis(const SbVec3f * spine, const int i,
       Y = spine[i+1] - spine[i-1];
     }
     else {
-      Y = spine[1] - spine[numspine-1];
+      // use numspine-2, since for closed spines, the last spine point == the first point
+      Y = spine[1] - spine[numspine >= 2 ? numspine-2 : numspine-1];
     }
   }
   else {
