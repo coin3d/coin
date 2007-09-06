@@ -127,6 +127,7 @@ EMPTY =
 TEST_SUITE_OBJECTS = \
 	TestSuiteInit.$(OBJEXT) \
 	TestSuiteUtils.$(OBJEXT) \
+	TestSuiteMisc.$(OBJEXT) \
 EODATA
 
 for obj in $objlist; do
@@ -175,6 +176,9 @@ TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h 
 TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
 
+TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h Makefile
+	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
+
 EODATA
 
 e="$extractlist ";
@@ -189,7 +193,7 @@ while test x"$e" != x""; do
     echo >&5 "$extractfile: \$(top_srcdir)/$sourcefile \$(srcdir)/makeextract.sh"
     echo >&5 "	\$(srcdir)/makeextract.sh \$(top_srcdir) $sourcefile"
     echo >&5 ""
-    echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h Makefile"
+    echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h \$(srcdir)/TestSuiteMisc.h Makefile"
     echo >&5 "	\$(CXX) \$(TS_CPPFLAGS) -g -c $extractfile"
     echo >&5 ""
   fi

@@ -39,12 +39,15 @@
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
 
+#include <TestSuiteUtils.h>
+
 class Initializer {
 public:
   Initializer(void) {
     SoDB::init();
     SoNodeKit::init();
     SoInteraction::init();
+    SIM::Coin3D::Coin::TestSuite::Init();
   }
 };
 

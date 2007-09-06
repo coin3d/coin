@@ -28,17 +28,23 @@ namespace SIM { namespace Coin3D { namespace Coin { namespace TestSuite {
 
 void Init(void);
 
-void ResetDebugWarningCount(void);
+void PushMessageSuppressFilters(char * patterns[]);
+void PopMessageSuppressFilters(void);
+
+void ResetDebugInfoCount(int count = 0);
+int GetDebugInfoCount(void);
+
+void ResetDebugWarningCount(int count = 0);
 int GetDebugWarningCount(void);
 
-void ResetDebugErrorCount(void);
+void ResetDebugErrorCount(int count = 0);
 int GetDebugErrorCount(void);
 
-void ResetReadWarningCount(void);
-int GetReadWarningCount(void);
-
-void ResetReadErrorCount(void);
+void ResetReadErrorCount(int count = 0);
 int GetReadErrorCount(void);
+
+void ResetMemoryErrorCount(int count = 0);
+int GetMemoryErrorCount(void);
 
 } } } } // namespace
 

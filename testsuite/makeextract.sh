@@ -59,10 +59,13 @@ echo "#include <boost/test/unit_test.hpp>" >&5
 echo "" >&5
 echo "#include <assert.h>" >&5
 echo "#include <stdio.h>" >&5
+echo "#include <iostream>" >&5
 echo "" >&5
 echo "#include <TestSuiteUtils.h>" >&5
+echo "#include <TestSuiteMisc.h>" >&5
 echo "" >&5
 echo "using namespace SIM::Coin3D::Coin;" >&5
+echo "using namespace SIM::Coin3D::Coin::TestSuite;" >&5
 echo "" >&5
 echo "BOOST_AUTO_TEST_SUITE(${class}_TestSuite);" >&5
 echo "" >&5

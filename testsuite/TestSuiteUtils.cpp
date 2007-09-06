@@ -21,30 +21,145 @@
  *
 \**************************************************************************/
 
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoMemoryError.h>
+#include <Inventor/errors/SoReadError.h>
+
 #include <TestSuiteUtils.h>
 
 using namespace SIM::Coin3D::Coin;
 
 namespace {
+
+int debuginfocount = 0;
 int debugwarningcount = 0;
 int debugerrorcount = 0;
-int readwarningcount = 0;
 int readerrorcount = 0;
-} // anonymous
+int memoryerrorcount = 0;
 
-// TODO: add system for push/pop-filtering specific warnings away from the
-// testsuite run output.
+struct filterset {
+  char ** filters;
+  filterset * next;
+} * messagefilters = NULL;
+
+int
+should_filter(const SbString & msg)
+{
+  filterset * filters = messagefilters;
+  while (filters != NULL) {
+    const char * pattern = NULL;
+    for (int i = 0; filters->filters[i] != NULL; ++i) {
+      if (msg.find(filters->filters[i])) {
+        return 1;
+      }
+    }
+    filters = filters->next;
+  }
+  return 0;
+}
+
+void
+debugerrormsg_handler(const SoError * error, void * data)
+{
+  assert(error);
+  const SoDebugError * dbgerror = static_cast<const SoDebugError *>(error);
+  switch (dbgerror->getSeverity()) {
+  case SoDebugError::INFO:
+    ++debuginfocount;
+    break;
+  case SoDebugError::WARNING:
+    ++debugwarningcount;
+    break;
+  case SoDebugError::ERROR:
+    ++debugerrorcount;
+    break;
+  default:
+    assert(0 && "schizofrene SoDebugError error");
+  }
+
+  const SbString & msg = error->getDebugString();
+  if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
+}
+
+void
+readerrormsg_handler(const SoError * error, void * data)
+{
+  ++readerrorcount;
+
+  const SbString & msg = error->getDebugString();
+  if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
+}
+
+void
+memoryerrormsg_handler(const SoError * error, void * data)
+{
+  ++memoryerrorcount;
+
+  const SbString & msg = error->getDebugString();
+  if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
+}
+
+} // anonymous
 
 void
 TestSuite::Init(void)
 {
-  // FIXME: add error handlers that increment counters
+  SoDebugError::setHandlerCallback(debugerrormsg_handler, NULL);
+  SoReadError::setHandlerCallback(readerrormsg_handler, NULL);
+  SoMemoryError::setHandlerCallback(memoryerrormsg_handler, NULL);
 }
 
 void
-TestSuite::ResetDebugWarningCount(void)
+TestSuite::PushMessageSuppressFilters(char * patterns[])
 {
-  debugwarningcount = 0;
+  filterset * filters = new filterset;
+  filters->next = messagefilters;
+  messagefilters = filters;
+
+  int count = 0;
+  for (; patterns[count] != NULL; ++count) { }
+  filters->filters = new char * [ count + 1 ];
+  for (int i = 0; i < count; ++i ) {
+    filters->filters[i] = new char [ strlen(patterns[i]) + 1 ];
+    strcpy(filters->filters[i], patterns[i]);
+  }
+  filters->filters[count] = NULL;
+}
+
+void
+TestSuite::PopMessageSuppressFilters(void)
+{
+  assert(messagefilters);
+  filterset * filters = messagefilters;
+  messagefilters = filters->next;
+
+  for (int i = 0; filters->filters[i] != NULL; ++i) {
+    delete [] filters->filters[i];
+  }
+  delete [] filters->filters;
+  delete filters;
+}
+
+void
+TestSuite::ResetDebugInfoCount(int count)
+{
+  debuginfocount = count;
+}
+
+int
+TestSuite::GetDebugInfoCount(void)
+{
+  return debuginfocount;
+}
+
+void
+TestSuite::ResetDebugWarningCount(int count)
+{
+  debugwarningcount = count;
 }
 
 int
@@ -54,9 +169,9 @@ TestSuite::GetDebugWarningCount(void)
 }
 
 void
-TestSuite::ResetDebugErrorCount(void)
+TestSuite::ResetDebugErrorCount(int count)
 {
-  debugerrorcount = 0;
+  debugerrorcount = count;
 }
 
 int
@@ -66,21 +181,9 @@ TestSuite::GetDebugErrorCount(void)
 }
 
 void
-TestSuite::ResetReadWarningCount(void)
+TestSuite::ResetReadErrorCount(int count)
 {
-  readwarningcount = 0;
-}
-
-int
-TestSuite::GetReadWarningCount(void)
-{
-  return readwarningcount;
-}
-
-void
-TestSuite::ResetReadErrorCount(void)
-{
-  readerrorcount = 0;
+  readerrorcount = count;
 }
 
 int
@@ -89,3 +192,14 @@ TestSuite::GetReadErrorCount(void)
   return readerrorcount;
 }
 
+void
+TestSuite::ResetMemoryErrorCount(int count)
+{
+  memoryerrorcount = count;
+}
+
+int
+TestSuite::GetMemoryErrorCount(void)
+{
+  return memoryerrorcount;
+}
