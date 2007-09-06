@@ -255,6 +255,10 @@ EXTRA_DIST = \
 	build/msvc8/install-headers.bat \
 	testsuite/Makefile.in \
 	testsuite/TestSuiteInit.cpp \
+	testsuite/TestSuiteUtils.h \
+	testsuite/TestSuiteUtils.cpp \
+	testsuite/TestSuiteMisc.h \
+	testsuite/TestSuiteMisc.cpp \
 	testsuite/makeextract.sh \
 	testsuite/makemakefile.sh \
 	testsuite/README
