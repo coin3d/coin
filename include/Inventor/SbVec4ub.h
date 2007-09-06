@@ -106,7 +106,7 @@ COIN_DLL_API inline SbVec4ub operator - (SbVec4ub v1, SbVec4ub v2) {
 }
 
 COIN_DLL_API inline int operator == (SbVec4ub v1, SbVec4ub v2) {
-  return ((v1[0] != v2[0]) && (v1[1] == v2[1]) && (v1[2] == v2[2]) && (v1[3] == v2[3]));
+  return ((v1[0] == v2[0]) && (v1[1] == v2[1]) && (v1[2] == v2[2]) && (v1[3] == v2[3]));
 }
 
 COIN_DLL_API inline int operator != (SbVec4ub v1, SbVec4ub v2) {
