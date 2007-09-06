@@ -101,3 +101,26 @@ SoSFVec4ub::setValue(const uint8_t xyzw[4])
 {
   this->setValue(SbVec4ub(xyzw));
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec4ub field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  // no default value initialization
+  field.setValue(1, 2, 3, 4);
+  BOOST_CHECK_EQUAL(field.getValue(), SbVec4ub(1, 2, 3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(textinput)
+{
+  ResetReadErrorCount();
+  SoSFVec4ub field;
+  field.set("1 2 3 4");
+  BOOST_CHECK_EQUAL(field.getValue(), SbVec4ub(1, 2, 3, 4));
+  BOOST_CHECK_EQUAL(GetReadErrorCount(), 0);
+}
+
+#endif // COIN_TEST_SUITE
