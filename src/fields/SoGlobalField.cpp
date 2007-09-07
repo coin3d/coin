@@ -150,7 +150,9 @@ SoGlobalField::clean(void)
 
 #endif // COIN_DEBUG
 
-  delete SoGlobalField::allcontainers;
+  // FIXME: Temporarily disabled since it causes an assert failure
+  // (FIXME: insert filed bug number here). kintel 20070907.
+  //  delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
   SoGlobalField::classTypeId STATIC_SOTYPE_INIT;
 }
