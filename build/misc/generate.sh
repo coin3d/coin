@@ -22,7 +22,6 @@ cleanproject ${project}_install
 cleanproject ${project}_uninstall
 cleanproject ${project}_docs
 
-rm -f ../misc/install-headers.bat ../misc/uninstall-headers.bat;
 rm -f install-headers.bat uninstall-headers.bat;
 
 if $proper; then
@@ -73,9 +72,19 @@ if $proper; then
     -e "s/$source/..\\\\../g" \
     -e "s/$source_pwd/..\\\\../g" \
     -e 's/$/\r/g' \
-    <../misc/install-headers.bat >new.bat
+    <install-headers.bat >new.bat
 
-  mv new.bat ../misc/install-headers.bat
+  mv -f new.bat ../misc/install-headers.bat
+
+  sed \
+    -e "s/$build/./g" \
+    -e "s/$build_pwd//g" \
+    -e "s/$source/..\\\\../g" \
+    -e "s/$source_pwd/..\\\\../g" \
+    -e 's/$/\r/g' \
+    <uninstall-headers.bat >new.bat
+
+  mv -f new.bat ../misc/uninstall-headers.bat
 fi
 
 make docs/coin.doxygen
