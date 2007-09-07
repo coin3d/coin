@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{9DEE9F45-0BBF-4AAC-926C-2D02E7D85125}"
+	ProjectGUID="{5E2FC8E6-C87D-4D75-B577-29B42021038D}"
 	>
 	<Platforms>
 		<Platform
@@ -44986,6 +44986,42 @@
 				>
 				<File
 					RelativePath="data\shaders\lights\DirectionalLight.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="data\shaders\lights\DirSpotLight.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
