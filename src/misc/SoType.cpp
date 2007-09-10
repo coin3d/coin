@@ -200,7 +200,7 @@ static Name2HandleMap * module_dict = NULL;
 void
 SoType::init(void)
 {
-  coin_atexit((coin_atexit_f *)SoType::clean, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f *)SoType::clean, CC_ATEXIT_SOTYPE);
 
   // If any of these assert fails, it is probably because
   // SoType::init() has been called for a second time. --mortene

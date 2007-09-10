@@ -1194,6 +1194,12 @@ coin_atexit_cleanup(void)
 
   isexiting = TRUE;
 
+  /* delete mutex here to make sure this is done before the threading subsystem is shut down */ 
+#ifdef COIN_THREADSAFE
+  cc_mutex_destruct(atexit_list_monitor);
+  atexit_list_monitor = NULL;
+#endif /* COIN_THREADSAFE */
+
   debugstr = coin_getenv("COIN_DEBUG_CLEANUP");
   debug = debugstr && (atoi(debugstr) > 0);
 
@@ -1220,11 +1226,6 @@ coin_atexit_cleanup(void)
   cc_list_destruct(atexit_list);
   atexit_list = NULL;
   isexiting = FALSE;
-
-#ifdef COIN_THREADSAFE
-  cc_mutex_destruct(atexit_list_monitor);
-  atexit_list_monitor = NULL;
-#endif /* COIN_THREADSAFE */
 
   if (debug) {
     fprintf(stdout, "coin_atexit_cleanup: fini\n");

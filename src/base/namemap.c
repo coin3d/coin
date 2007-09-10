@@ -108,7 +108,7 @@ namemap_init(void)
 
   headchunk = NULL;
 
-  coin_atexit((coin_atexit_f *)namemap_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f *)namemap_cleanup, CC_ATEXIT_SBNAME);
 }
 
 static const char *

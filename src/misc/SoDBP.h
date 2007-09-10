@@ -60,6 +60,7 @@ public:
   static void variableArgsSanityCheck(void);
 
   static void clean(void);
+  static void removeRealTimeFieldCB(void);
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
   static void listWin32ProcessModules(void);
 
@@ -73,8 +74,8 @@ public:
   static SbBool is3dsFile(SoInput * in);
   static SoSeparator * read3DSFile(SoInput * in);
 
-  static void progress(const SbName & itemid, 
-                       float fraction, 
+  static void progress(const SbName & itemid,
+                       float fraction,
                        SbBool interruptible);
 
   struct ProgressCallbackInfo {

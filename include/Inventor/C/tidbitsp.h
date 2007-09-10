@@ -74,6 +74,25 @@ enum coin_atexit_priorities {
      code: */
   CC_ATEXIT_NORMAL = 0,
 
+  /* The realTime field should be cleaned up before normal cleanups
+     are called, since the global field list will be cleaned up there.
+  */
+  CC_ATEXIT_REALTIME_FIELD = CC_ATEXIT_NORMAL + 10,
+
+  /* 
+     Cleanups for static SoDB data (sensor manager, converters++)
+   */
+  CC_ATEXIT_SODB = CC_ATEXIT_NORMAL - 20,
+  /*
+    SoBase (the base class) cleanup.
+   */
+  CC_ATEXIT_SOBASE = CC_ATEXIT_NORMAL - 30,
+
+  /*
+    Typesystem cleanup.
+  */
+  CC_ATEXIT_SOTYPE  = CC_ATEXIT_NORMAL - 40,
+  
   /* later, in case e.g. some nodes' clean-up depends on the font
      subsystem still being up'n'running: */
   CC_ATEXIT_FONT_SUBSYSTEM = CC_ATEXIT_NORMAL - 100,
@@ -81,11 +100,16 @@ enum coin_atexit_priorities {
   /* still later, so clean-up code can use e.g. SoDebugError to report
      problems, output debugging info, etc: */
   CC_ATEXIT_MSG_SUBSYSTEM = CC_ATEXIT_NORMAL - 200,
-
+  /*
+    Clean up the SbName dictionary. Should be done as late as
+    possible, since SbName is used a lot in other modules.
+  */
+  CC_ATEXIT_SBNAME = CC_ATEXIT_NORMAL - 500,
+  
   /* needs to happen late, since CC_ATEXIT_NORMAL clean-up routines
      will for instance often want to dealloc mutexes: */
   CC_ATEXIT_THREADING_SUBSYSTEM = CC_ATEXIT_NORMAL - 1000,
-  
+
   /* dynamically loaded libraries should be the last to go, as other
      code in Coin will be dependent on functionality in these in its
      own clean-up code: */

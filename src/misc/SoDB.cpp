@@ -618,10 +618,10 @@ SoDB::init(void)
   // "Not a valid Inventor file." We should rather spit out a warning
   // and read it anyway if we detect it's a close match. 20020920 mortene.
 
-
-
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
-
+  // use a callback to remove the realTime field
+  coin_atexit((coin_atexit_f *)SoDBP::removeRealTimeFieldCB, CC_ATEXIT_REALTIME_FIELD);
+  
   SoDBP::globaltimersensor = new SoTimerSensor;
   SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
   // An interval of 1/12 is pretty low for today's standards, but this
@@ -661,7 +661,7 @@ SoDB::init(void)
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes with the same
   // priority.
-  coin_atexit((coin_atexit_f *)SoDBP::clean, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f *)SoDBP::clean, CC_ATEXIT_SODB);
 }
 
 /*!

@@ -107,11 +107,6 @@ SoDBP::clean(void)
   delete SoDBP::globaltimersensor;
   delete SoDBP::converters;
 
-  // Must be done /before/ killing off the SoSensorManager instance,
-  // in case there is an SoFieldSensor attached to the realTime global
-  // field. Will delete the field.
-  SoDB::renameGlobalField("realTime", "");
-
   delete SoDBP::sensormanager;
 
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
@@ -121,6 +116,12 @@ SoDBP::clean(void)
 #ifdef COIN_THREADSAFE
   delete sodb_globalmutex;
 #endif // COIN_THREADSAFE
+}
+
+void 
+SoDBP::removeRealTimeFieldCB(void)
+{
+  SoDB::renameGlobalField("realTime", "");
 }
 
 // This is the timer sensor callback which updates the realTime global

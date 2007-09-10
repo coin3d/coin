@@ -446,7 +446,7 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
-  coin_atexit((coin_atexit_f *)SoBase::cleanClass, CC_ATEXIT_NORMAL);
+  coin_atexit((coin_atexit_f *)SoBase::cleanClass, CC_ATEXIT_SOBASE);
 
   // check_for_leaks() goes through the allocation list, and checks if
   // all allocated SoBase-derived instances was deallocated before the
