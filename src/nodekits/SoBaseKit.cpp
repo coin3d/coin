@@ -1912,6 +1912,15 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
       }
     }
   }
+#if COIN_DEBUG
+  else {
+    SoDebugError::postWarning("SoBaseKit::setAnyPart",
+                              "part '%s' not found in %s",
+                              partname.getString(),
+                              this->getTypeId().getName().getString());
+  }
+#endif // COIN_DEBUG
+
   // FIXME:
   // run cleanup, in case some node has been temporarily created while
   // searching for the part?? pederb, 2000-01-05
