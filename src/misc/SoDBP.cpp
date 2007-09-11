@@ -4,6 +4,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
@@ -121,7 +122,7 @@ SoDBP::clean(void)
 void 
 SoDBP::removeRealTimeFieldCB(void)
 {
-  SoDB::renameGlobalField("realTime", "");
+  SoGlobalField::getGlobalFieldContainer("realTime")->unref();
 }
 
 // This is the timer sensor callback which updates the realTime global

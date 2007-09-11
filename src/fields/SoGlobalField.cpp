@@ -51,6 +51,8 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
+#include <assert.h>
+#include <string.h>
 
 // *************************************************************************
 
@@ -90,6 +92,7 @@ SoGlobalField::SoGlobalField(const SbName & name, SoField * field)
 // Destructor.
 SoGlobalField::~SoGlobalField()
 {
+  SoGlobalField::allcontainers->removeItem(this);
 #if COIN_DEBUG && 0 // debug
   SoField * field = this->classfielddata->getField(this, 0);
   SoDebugError::postInfo("SoGlobalField::~SoGlobalField",
@@ -124,6 +127,10 @@ SoGlobalField::initClass(void)
                        SoGlobalField::createInstance);
 
   SoGlobalField::allcontainers = new SoBaseList;
+  // don't reference count items in this list. We need the refcount to
+  // go down to 0 to detect when a global field is no longer
+  // referenced
+  SoGlobalField::allcontainers->addReferences(FALSE);
   coin_atexit((coin_atexit_f *)SoGlobalField::clean, CC_ATEXIT_NORMAL);
 }
 
@@ -144,15 +151,13 @@ SoGlobalField::clean(void)
     // "cleaned up" already.
     printf("Global field '%s' not deallocated -- use "
            "SoDB::renameGlobalField() on exit to "
-           "accomplish this.",
-           gf->getName().getString());
+           "accomplish this. Refcount: %d\n",
+           gf->getName().getString(), gf->getRefCount());
   }
 
 #endif // COIN_DEBUG
 
-  // FIXME: Temporarily disabled since it causes an assert failure
-  // (FIXME: insert filed bug number here). kintel 20070907.
-  //  delete SoGlobalField::allcontainers;
+  delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
   SoGlobalField::classTypeId STATIC_SOTYPE_INIT;
 }
@@ -165,6 +170,7 @@ SoGlobalField::getGlobalFieldIndex(const SbName & name)
   int idx = SoGlobalField::allcontainers->getLength() - 1;
   while (idx >= 0 && (*SoGlobalField::allcontainers)[idx]->getName() != name)
     idx--;
+
   return idx;
 }
 
@@ -231,7 +237,7 @@ SoGlobalField::setName(const SbName & newname)
 {
   // Set name of this instance.
   inherited::setName(newname);
-
+  
   if (this->classfielddata) {
     // SoFieldData doesn't have a rename method, so we do a little
     // hack to rename our field.

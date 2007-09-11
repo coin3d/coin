@@ -1685,7 +1685,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     // SoGlobalField's constructor automatically adds itself to the
     // list of global fields without checking if the field already
     // exists.
-    globalfield->ref(); // increase refcount to 2, so the next call will not destruct the node
+    globalfield->ref(); // increase refcount to 1, so the next call will not destruct the node
     SoGlobalField::removeGlobalFieldContainer(globalfield);
     globalfield->unrefNoDelete(); // corrects ref count back to zero
 
@@ -1721,8 +1721,12 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
         in->addReference(refname, container);
       }
 
-      // Remove newly made SoGlobalField, use the existing one instead:
-      base->ref(); base->unref();
+      // Remove newly made SoGlobalField, use the existing one instead.
+      // Add it to the global field list before deleting it (we
+      // manually removed it earlier to test it the field was already
+      // in the database)
+      SoGlobalField::addGlobalFieldContainer((SoGlobalField*) base);
+      base->ref(); base->unref(); // this will delete the global field, and remove it from the database
       base = container;
       container->getFieldData()->getField(container, 0)->touch();
     }

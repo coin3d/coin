@@ -619,6 +619,8 @@ SoDB::init(void)
   // and read it anyway if we detect it's a close match. 20020920 mortene.
 
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
+  SoGlobalField::getGlobalFieldContainer("realTime")->ref();
+
   // use a callback to remove the realTime field
   coin_atexit((coin_atexit_f *)SoDBP::removeRealTimeFieldCB, CC_ATEXIT_REALTIME_FIELD);
   

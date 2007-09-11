@@ -118,6 +118,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/fields/SoGlobalField.h>
 #include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
@@ -755,6 +756,11 @@ SoField::isConnectionEnabled(void) const
 SbBool
 SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 {
+  // detect and ref() global fields. This is done to automatically
+  // detect when the last reference to a global field is deleted
+  if (master->getContainer() && master->getContainer()->isOfType(SoGlobalField::getClassTypeId())) {
+    master->getContainer()->ref();
+  }
   // Initialize.  /////////////////////////////////////////////////
 
   this->extendStorageIfNecessary();
@@ -987,6 +993,7 @@ SoField::disconnect(SoField * master)
 
   // Remove bookkeeping material.
   if (!containerisconverter) master->storage->slaves.removeItem(this);
+
   this->storage->masterfields.remove(idx);
 
   SoFieldConverter * converter = this->storage->findConverter(master);
@@ -1005,6 +1012,12 @@ SoField::disconnect(SoField * master)
   }
   else { // No converter, just a direct link.
     master->removeAuditor(this, SoNotRec::FIELD);
+  }
+
+  // detect and unref() global fields. This is done to detect when the
+  // last reference to a global fields is deleted.
+  if (master->getContainer() && master->getContainer()->isOfType(SoGlobalField::getClassTypeId())) {
+    master->getContainer()->unref();
   }
 }
 
