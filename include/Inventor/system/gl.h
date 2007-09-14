@@ -1995,7 +1995,7 @@
 #define GLU_FILL 100012
 #endif /* ! GLU_FILL */
 #ifndef GLU_SILHOUETTE
-#define GLU_SILHOUETTE 10001
+#define GLU_SILHOUETTE 100013
 #endif /* ! GLU_SILHOUETTE */
 
 /* Tesselator */
