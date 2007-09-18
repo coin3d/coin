@@ -34,6 +34,8 @@
 */
 
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 #if COIN_DEBUG
@@ -53,6 +55,7 @@ void
 SoGLViewingMatrixElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLViewingMatrixElement, inherited);
+  SoResetMatrixElement::initClass();
 }
 
 /*!
@@ -118,6 +121,9 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 {
   inherited::setElt(matrix);
   this->modelmatrix = SoModelMatrixElement::get(this->state, this->mmidentity);
+  if (this->state->isElementEnabled(SoResetMatrixElement::getClassStackIndex())) {
+    SoResetMatrixElement::set(this->state, this->modelmatrix);
+  }
   this->updategl();
 }
 
@@ -147,6 +153,9 @@ SoGLViewingMatrixElement::updategl(void)
 SbMatrix 
 SoGLViewingMatrixElement::getResetMatrix(SoState * state)
 {
+  if (state->isElementEnabled(SoResetMatrixElement::getClassStackIndex())) {
+    return SoResetMatrixElement::get(state);
+  }
   const SoGLViewingMatrixElement * element = (const SoGLViewingMatrixElement *)
     SoElement::getConstElement(state, classStackIndex);
   
@@ -160,3 +169,67 @@ SoGLViewingMatrixElement::getResetMatrix(SoState * state)
   }
   return mat;
 }
+
+/**************************************************************************/
+
+SO_ELEMENT_SOURCE(SoResetMatrixElement);
+
+// doc in parent
+void
+SoResetMatrixElement::initClass(void)
+{
+  SO_ELEMENT_INIT_CLASS(SoResetMatrixElement, inherited);
+}
+
+/*!
+  The destructor.
+*/
+SoResetMatrixElement::~SoResetMatrixElement(void)
+{
+}
+
+// doc in parent
+void
+SoResetMatrixElement::init(SoState * stateptr)
+{
+  this->matrix = SbMatrix::identity();
+}
+
+void
+SoResetMatrixElement::set(SoState * stateptr, const SbMatrix & matrix)
+{
+  SoResetMatrixElement * elem = (SoResetMatrixElement*) 
+    SoElement::getElement(stateptr, SoResetMatrixElement::classStackIndex);
+  elem->setElt(matrix);
+}
+
+const SbMatrix  & 
+SoResetMatrixElement::get(SoState * state)
+{
+  const SoResetMatrixElement * elem = (const SoResetMatrixElement*)
+    SoElement::getConstElement(state, SoResetMatrixElement::classStackIndex);
+  return elem->matrix;
+}
+
+void
+SoResetMatrixElement::setElt(const SbMatrix & matrix_in)
+{
+  this->matrix = matrix_in;
+}
+
+SbBool 
+SoResetMatrixElement::matches(const SoElement * element) const
+{
+  const SoResetMatrixElement * other = (const SoResetMatrixElement*) element;
+  return this->matrix == other->matrix;
+}
+
+SoElement * 
+SoResetMatrixElement::copyMatchInfo(void) const
+{
+  SoResetMatrixElement * element =
+    (SoResetMatrixElement *)(getTypeId().createInstance());
+  element->matrix = this->matrix;
+  return element;
+}
+

@@ -55,4 +55,31 @@ private:
   void updategl(void);
 };
 
+// private helper element to avoid caching problems with SoResetTransform
+// FIXME: consider moving this element to a separate file.
+class SoResetMatrixElement : public SoElement {
+  typedef SoElement inherited;
+  
+  SO_ELEMENT_HEADER(SoResetMatrixElement);
+
+public:
+  static void initClass(void);
+protected:
+  virtual ~SoResetMatrixElement();
+
+public:
+  virtual void init(SoState * state);
+  static void set(SoState * const state, const SbMatrix & m);
+  static const SbMatrix  & get(SoState * state);
+
+protected:
+  virtual void setElt(const SbMatrix & matrix);
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
+
+private:
+  SbMatrix matrix;
+};
+
+
 #endif // !COIN_SOGLVIEWINGMATRIXELEMENT_H

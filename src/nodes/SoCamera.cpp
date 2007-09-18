@@ -368,6 +368,7 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLProjectionMatrixElement);
   SO_ENABLE(SoGLRenderAction, SoViewVolumeElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewingMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoResetMatrixElement);
   SO_ENABLE(SoGLRenderAction, SoCullElement);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoFocalDistanceElement);

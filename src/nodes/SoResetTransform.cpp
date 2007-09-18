@@ -116,11 +116,6 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
   if (!this->whatToReset.isIgnored() &&
       (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
     SoState * state = action->getState();
-    // It's impossible to cache separators with this node as a child.
-    // Invalidate the caches to help the auto cache logic. 
-    // pederb, 2005-01-13
-    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);     
-    SoCacheElement::invalidate(state);
     SoGLModelMatrixElement::makeIdentity(state, this);
   }
 }
