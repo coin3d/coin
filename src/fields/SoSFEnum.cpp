@@ -32,6 +32,20 @@
   A field of this type stores its value to file as the symbolic
   name, rather than the actual integer value.
 
+  SoSFEnum instances are initialized on an instance basis, usually in
+  the constructor of the fieldcontainer with the macros
+  SO_NODE_DEFINE_ENUM_VALUE(enumtype, symbolvalue) and
+  SO_NODE_SET_SF_ENUM_TYPE(enumfield, enumtype) for nodes, or for
+  engines; SO_ENGINE_DEFINE_ENUM_VALUE() and
+  SO_ENGINE_SET_SF_ENUM_TYPE().
+
+  Example initialization from the constructor of the SoCone class:
+  \code
+  SO_NODE_DEFINE_ENUM_VALUE(Part, SIDES);
+  SO_NODE_DEFINE_ENUM_VALUE(Part, BOTTOM);
+  SO_NODE_DEFINE_ENUM_VALUE(Part, ALL);
+  SO_NODE_SET_SF_ENUM_TYPE(parts, Part); \endcode
+
   \sa SoMFEnum, SoSFBitMask
 */
 
