@@ -69,11 +69,14 @@
 /*!
   \page dynload_overview Dynamic Loading of Extension Nodes
 
-  When Coin tries to get hold of a node type object (SoType) for
-  a class based on the name string of the node type, it will -
-  if no such node type has been initialized yet - scan the file
-  system for a dynamically loadable extension node with that
-  given name.
+  When Coin tries to get hold of a node type object (SoType) for a
+  class based on the name string of the node type, it will - if no
+  such node type has been initialized yet - scan the file system for a
+  dynamically loadable extension node with that given name.  This can
+  be completely disabled by setting the environment variable
+  COIN_NO_SOTYPE_DYNLOAD to a positive integer value, new from Coin
+  v2.5.0.
+
   On UNIX, extensions nodes are regular .so files.
   On Win32, extension nodes are built as DLLs.
   On Mac OS X systems, extension nodes are built as .dylib files. (Note:
@@ -168,13 +171,19 @@ template class SbList<SoTypeData *>;
 
 // *************************************************************************
 
+// list of SoType internal data structures, indexed over SoType 'data' id.
 SbList<SoTypeData *> * SoType::typedatalist = NULL;
 
+// hash map from type name to SoType 'data' id.
 typedef SbHash<int16_t, const char *> Name2IdMap;
 static Name2IdMap * type_dict = NULL;
 
+// hash map from type name to handle for dynamically loaded library
 typedef SbHash<cc_libhandle, const char *> Name2HandleMap;
 static Name2HandleMap * module_dict = NULL;
+
+typedef SbHash<void *, const char *> NameMap;
+static NameMap * dynload_tries = NULL;
 
 // *************************************************************************
 
@@ -194,7 +203,6 @@ static Name2HandleMap * module_dict = NULL;
 
 /*!
   This static method initializes the type system.
-
 */
 
 void
@@ -211,6 +219,8 @@ SoType::init(void)
 
   SoType::typedatalist->append(new SoTypeData(SbName("BadType")));
   type_dict->put(SbName("BadType").getString(), 0);
+
+  dynload_tries = new NameMap;
 }
 
 // Clean up internal resource usage.
@@ -222,6 +232,8 @@ SoType::clean(void)
   for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
   delete SoType::typedatalist;
   SoType::typedatalist = NULL;
+  delete dynload_tries;
+  dynload_tries = NULL;
   delete type_dict;
   type_dict = NULL;
   delete module_dict;
@@ -449,6 +461,13 @@ typedef void initClassFunction(void);
 SoType
 SoType::fromName(const SbName name)
 {
+  static int enable_dynload = -1;
+  if (enable_dynload == -1) {
+    enable_dynload = TRUE; // the default setting
+    const char * env = coin_getenv("COIN_NO_SOTYPE_DYNLOAD");
+    if (env && atoi(env) > 0) enable_dynload = FALSE;
+  }
+
   assert((type_dict != NULL) && "SoType static class data not yet initialized");
 
   // It should be possible to specify a type name with the "So" prefix
@@ -465,95 +484,118 @@ SoType::fromName(const SbName name)
       return SoType::badType();
     }
 
-    // find out which C++ name mangling scheme the compiler uses
-    static mangleFunc * manglefunc = getManglingFunction();
-    if ( manglefunc == NULL ) {
-      // dynamic loading is not yet supported for this compiler suite
-      static long first = 1;
-      if ( first ) {
-        const char * env = coin_getenv("COIN_DEBUG_DL");
-        if (env && (atoi(env) > 0)) {
-          SoDebugError::post("SoType::fromName",
-                             "unable to figure out the C++ name mangling scheme");
+    if (enable_dynload) {
+
+      // find out which C++ name mangling scheme the compiler uses
+      static mangleFunc * manglefunc = getManglingFunction();
+      if ( manglefunc == NULL ) {
+        // dynamic loading is not yet supported for this compiler suite
+        static long first = 1;
+        if ( first ) {
+          const char * env = coin_getenv("COIN_DEBUG_DL");
+          if (env && (atoi(env) > 0)) {
+            SoDebugError::post("SoType::fromName",
+                               "unable to figure out the C++ name mangling scheme");
+          }
+          first = 0;
         }
-        first = 0;
+        return SoType::badType();
       }
-      return SoType::badType();
-    }
-    SbString mangled = manglefunc(name.getString());
+      SbString mangled = manglefunc(name.getString());
 
-    if ( module_dict == NULL ) {
-      module_dict = new Name2HandleMap;
-    }
+      if ( module_dict == NULL ) {
+        module_dict = new Name2HandleMap;
+      }
 
-    // FIXME: should we search the application code for the initClass()
-    // symbol first?  dlopen(NULL) might not be portable enough, but it
-    // could be a cool feature.  20030223 larsa
+      // FIXME: should we search the application code for the initClass()
+      // symbol first?  dlopen(NULL) might not be portable enough, but it
+      // could be a cool feature.  20030223 larsa
 
-    // FIXME: We probably should use loadable modules (type MH_BUNDLE)
-    // instead of shared libraries for dynamic extension nodes, on Mac
-    // OS X, since (1) this is the Recommended Way for dynamically
-    // loadable code and (2) it allows us to unload them when they are
-    // no longer needed. Note that this would require major changes to
-    // the Mac cc_dl_open() and cc_dl_sym() code. 20030318 kyrah
+      // FIXME: We probably should use loadable modules (type MH_BUNDLE)
+      // instead of shared libraries for dynamic extension nodes, on Mac
+      // OS X, since (1) this is the Recommended Way for dynamically
+      // loadable code and (2) it allows us to unload them when they are
+      // no longer needed. Note that this would require major changes to
+      // the Mac cc_dl_open() and cc_dl_sym() code. 20030318 kyrah
 
-    SbString modulename;
-    static const char * modulenamepatterns[] = {
-      "%s.so", "lib%s.so", "%s.dll", "lib%s.dll", "%s.dylib", "lib%s.dylib",
-      NULL
-    };
+      static const char * modulenamepatterns[] = {
+        "%s.so", "lib%s.so", "%s.dll", "lib%s.dll", "%s.dylib", "lib%s.dylib",
+        NULL
+      };
 
-    cc_libhandle handle = NULL;
-    int i;
-    for ( i = 0; (modulenamepatterns[i] != NULL) && (handle == NULL); i++ ) {
-      modulename.sprintf(modulenamepatterns[i], name.getString());
-      SbName module(modulename.getString());
+      SbString modulenamestring;
+      cc_libhandle handle = NULL;
+      int i;
+      for ( i = 0; (modulenamepatterns[i] != NULL) && (handle == NULL); i++ ) {
+        modulenamestring.sprintf(modulenamepatterns[i], name.getString());
 
-      cc_libhandle idx = NULL;
-      if ( module_dict->get(module.getString(), idx) ) {
-        // Module has been loaded, but type is not yet finished initializing.
-        // SoType::badType() is here the expected return value.  See below.
+        // We need to move the name string to an SbName since we use
+        // the name string pointer for hash tables and need identical
+        // names to produce the same pointers.
+        SbName module(modulenamestring.getString());
+
+        // Register all the module names we have tried so we don't try
+        // them again.
+        if (dynload_tries == NULL) dynload_tries = new NameMap;
+        void * dummy;
+        if (dynload_tries->get(module.getString(), dummy))
+          continue; // already tried
+        dynload_tries->put(module.getString(), NULL);
+        
+        cc_libhandle idx = NULL;
+        if ( module_dict->get(module.getString(), idx) ) {
+          // Module has been loaded, but type is not yet finished initializing.
+          // SoType::badType() is here the expected return value.  See below.
+          return SoType::badType();
+        }
+        
+        // FIXME: should we maybe use a Coin-specific search path variable
+        // instead of the LD_LIBRARY_PATH one?  20020216 larsa
+
+        handle = cc_dl_open(module.getString());
+        if ( handle != NULL ) {
+          // We register the module so we don't recurse infinitely in the
+          // initClass() function which calls SoType::fromName() on itself
+          // which expects SoType::badType() in return.  See above.
+          module_dict->put(module.getString(), handle);
+
+          if (i > 0) {
+            // We now know the file pattern used on this system, so we
+            // should prioritize that pattern first.
+            const char * pattern = modulenamepatterns[i];
+            modulenamepatterns[i] = modulenamepatterns[0];
+            modulenamepatterns[0] = pattern;
+          }
+        }
+      }
+
+      if ( handle == NULL ) return SoType::badType();
+    
+      // find and invoke the initClass() function.
+      // FIXME: declspec stuff
+      initClassFunction * initClass = (initClassFunction *) cc_dl_sym(handle, mangled.getString());
+      if ( initClass == NULL ) {
+        // FIXME: if a module is found and opened and initialization
+        // fails, the remaining module name patterns are not tried.
+        // might trigger as a problem one day...  2030224 larsa
+#if COIN_DEBUG
+        SoDebugError::postWarning("SoType::fromName",
+                                  "Mangled symbol %s not found in module %s. "
+                                  "It might be compiled with the wrong compiler / "
+                                  "compiler-settings or something similar.",
+                                  mangled.getString(), modulenamestring.getString());
+#endif
+        cc_dl_close(handle);
         return SoType::badType();
       }
 
-      // FIXME: should we maybe use a Coin-specific search path variable
-      // instead of the LD_LIBRARY_PATH one?  20020216 larsa
+      initClass();
 
-      handle = cc_dl_open(module.getString());
-      if ( handle != NULL ) {
-        // We register the module so we don't recurse infinitely in the
-        // initClass() function which calls SoType::fromName() on itself
-        // which expects SoType::badType() in return.  See above.
-        module_dict->put(module.getString(), handle);
+      // We run these tests to get the index.
+      if (!type_dict->get(name.getString(), index) &&
+          !type_dict->get(noprefixname.getString(), index)) {
+        assert(0 && "how did this happen?");
       }
-    }
-
-    if ( handle == NULL ) return SoType::badType();
-
-    // find and invoke the initClass() function.
-    // FIXME: declspec stuff
-    initClassFunction * initClass = (initClassFunction *) cc_dl_sym(handle, mangled.getString());
-    if ( initClass == NULL ) {
-      // FIXME: if a module is found and opened and initialization
-      // fails, the remaining module name patterns are not tried.
-      // might trigger as a problem one day...  2030224 larsa
-#if COIN_DEBUG
-      SoDebugError::postWarning("SoType::fromName",
-                                "Mangled symbol %s not found in module %s. "
-                                "It might be compiled with the wrong compiler / "
-                                "compiler-settings or something similar.",
-                                mangled.getString(), modulename.getString());
-#endif
-      cc_dl_close(handle);
-      return SoType::badType();
-    }
-
-    initClass();
-
-    // We run these tests to get the index.
-    if (!type_dict->get(name.getString(), index) &&
-        !type_dict->get(noprefixname.getString(), index)) {
-      assert(0 && "how did this happen?");
     }
   }
 
