@@ -39,9 +39,9 @@ public:
   SoCone(void);
 
   enum Part {
-    SIDES = 1,
-    BOTTOM,
-    ALL
+    SIDES   = 0x01,
+    BOTTOM  = 0x02,
+    ALL     = (SIDES|BOTTOM)
   };
 
   SoSFBitMask parts;
