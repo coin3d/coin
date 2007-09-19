@@ -37006,22 +37006,34 @@ fi
                               ac_config_headers="$ac_config_headers include/discard.h include/config.h include/setup.h"
 
 
-sim_ac_tmpfile=/tmp/Coin-2-config-h.$$
 
-sed -e '/^\/\* for setup.h \*\//, /^$/ d' \
+
+sim_ac_tmpfile1=/tmp/config-h-1.$$
+sim_ac_tmpfile2=/tmp/config-h-2.$$
+
+sed \
+  -e 's/\r//g' \
+  -e '/^\/\* for setup.h \*\//, /^$/ d' \
   <$srcdir/include/discard.h.in \
-  >$sim_ac_tmpfile
+  >$sim_ac_tmpfile1
 
-if cmp -s $sim_ac_tmpfile $srcdir/include/config.h.in; then
+sed \
+  -e 's/\r//g' \
+  <$srcdir/include/config.h.in \
+  >$sim_ac_tmpfile2
+
+if cmp -s $sim_ac_tmpfile1 $sim_ac_tmpfile2; then
   :
 else
-  rm $sim_ac_tmpfile
+  rm -f $sim_ac_tmpfile1 $sim_ac_tmpfile2
   { { echo "$as_me:$LINENO: error: config.h.in is out of sync - maintainer must update" >&5
 echo "$as_me: error: config.h.in is out of sync - maintainer must update" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-rm $sim_ac_tmpfile
+rm $sim_ac_tmpfile1 $sim_ac_tmpfile2
+
+
 
 # **************************************************************************
 
