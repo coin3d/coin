@@ -2101,20 +2101,7 @@ SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_d
 
 AM_CONFIG_HEADER([include/discard.h include/config.h include/setup.h])
 
-sim_ac_tmpfile=/tmp/Coin-2-config-h.$$
-
-sed -e '/^\/\* for setup.h \*\//, /^$/ d' \
-  <$srcdir/include/discard.h.in \
-  >$sim_ac_tmpfile
-
-if cmp -s $sim_ac_tmpfile $srcdir/include/config.h.in; then
-  :
-else
-  rm $sim_ac_tmpfile
-  AC_ERROR([config.h.in is out of sync - maintainer must update])
-fi
-
-rm $sim_ac_tmpfile
+SIM_AC_COIN_CONFIG_H_CHECK
 
 # **************************************************************************
 
