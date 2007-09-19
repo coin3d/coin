@@ -182,6 +182,7 @@ static Name2IdMap * type_dict = NULL;
 typedef SbHash<cc_libhandle, const char *> Name2HandleMap;
 static Name2HandleMap * module_dict = NULL;
 
+// hash map for flagging all the shared library names we have tried
 typedef SbHash<void *, const char *> NameMap;
 static NameMap * dynload_tries = NULL;
 
