@@ -30,6 +30,11 @@ Did you perhaps forget to set up the environment variable QTDIR to the
 base of the Qt installation directory? Or if it was already set up,
 double check to see that it is pointing at the correct directory.
 
+!no-rcc
+The Qt ''rcc'' utility was not found in the same directory as the
+other Qt utilities such as ''moc'' or ''uic''. Make sure Qt is
+properly installed on your system.
+
 !no-qt
 Could not find any way to build against the Qt library. If you
 are sure Qt is properly installed on your system, see the file

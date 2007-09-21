@@ -529,7 +529,9 @@ if ( $ARGV[0] eq "--register-public-header" ) {
   $installheadersfile =~ m,(msvc[678]),;
   $msvc = $1;
 
-  $installheadersfile =~ s,msvc[678]/,misc/,;
+  # don't generate inside misc/ to be able to generate concurrently in several
+  # msvc*/-directories...
+  # $installheadersfile =~ s,msvc[678]/,misc/,;
 
   # sourcedirq=`echo "$sourcedir" | sed -e 's,\\\\,\\\\,g'`
   # builddirq=`echo "$builddir" | sed -e 's,\\\\,\\\\,g'`
@@ -1404,7 +1406,9 @@ _EODSW
   SubstFile($workspacefile);
   $installheadersfile = $studiofile;
   $installheadersfile =~ s,([^\\/0-9]*)[0-9][^\\/]*\.dsp,install-headers.bat,;
-  $installheadersfile =~ s,msvc[678]/,misc/,;
+  # don't generate install-headers inside misc/ to be able to generate
+  # concurrently inside several msvc*/-directories.
+  # $installheadersfile =~ s,msvc[678]/,misc/,;
   $uninstallheadersfile = $installheadersfile;
   $uninstallheadersfile =~ s/install-hea/uninstall-hea/;
   SubstBatFile($installheadersfile);
