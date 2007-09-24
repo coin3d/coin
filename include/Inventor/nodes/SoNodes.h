@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoFrustumCamera.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoCone.h>
