@@ -384,7 +384,7 @@ SoFieldP::hashExitCleanup(void)
 void *
 SoFieldP::hashRealloc(void * bufptr, size_t size)
 {
-  CC_MUTEX_UNLOCK(sofield_mutex);
+  CC_MUTEX_LOCK(sofield_mutex);
 
   char ** bufptrptr = NULL;
   int ok = SoFieldP::ptrhash->get((char *)bufptr, bufptrptr);
