@@ -63,33 +63,34 @@
   application programmer, and which will be automatically updated by
   Coin while traversing the scene graph.
 
-  \li coin_texunit0_model - Set to 0 when texturing is disabled, and
-  to SoTextureImageElement::Model if there's a current texture on the state.
+  \li coin_texunit[n]_model - Set to 0 when texturing is disabled, and
+  to SoTextureImageElement::Model if there's a current texture on the state
+  for unit \a n.
 
   \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
 
   Example scene graph that renders per-fragment OpenGL Phong lighting
-  for one light source. The shaders assume the first light source is a 
+  for one light source. The shaders assume the first light source is a
   directional light. This is the case if you open the file in a standard
   examiner viewer.
-  
+
   The iv-file:
   \code
   Separator {
     ShaderProgram {
       shaderObject [
         VertexShader {
-          sourceProgram "perpixel_vertex.glsl"   
+          sourceProgram "perpixel_vertex.glsl"
         }
         FragmentShader {
-          sourceProgram "perpixel_fragment.glsl"   
+          sourceProgram "perpixel_fragment.glsl"
         }
-      ]    
+      ]
     }
-    Complexity { value 1.0 } 
+    Complexity { value 1.0 }
     Material { diffuseColor 1 0 0 specularColor 1 1 1 shininess 0.9 }
     Sphere { }
-  
+
     Translation { translation 3 0 0 }
     Material { diffuseColor 0 1 0 specularColor 1 1 1 shininess 0.9 }
     Cone { }
@@ -99,7 +100,7 @@
     Cylinder { }
   }
   \endcode
-  
+
   The vertex shader (perpixel_vertex.glsl):
   \code
   varying vec3 ecPosition3;
@@ -110,7 +111,7 @@
     vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
     ecPosition3 = ecPosition.xyz / ecPosition.w;
     fragmentNormal = normalize(gl_NormalMatrix * gl_Normal);
-  
+
     gl_Position = ftransform();
     gl_FrontColor = gl_Color;
   }
@@ -153,13 +154,13 @@
     vec3 color;
 
     DirectionalLight(0, normalize(fragmentNormal), ambient, diffuse, specular);
-  
-    color = 
+
+    color =
       gl_FrontLightModelProduct.sceneColor.rgb +
       ambient.rgb * gl_FrontMaterial.ambient.rgb +
       diffuse.rgb * gl_Color.rgb +
       specular.rgb * gl_FrontMaterial.specular.rgb;
-  
+
     gl_FragColor = vec4(color, gl_Color.a);
   }
   \endcode
