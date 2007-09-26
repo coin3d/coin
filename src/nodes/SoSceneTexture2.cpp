@@ -773,12 +773,15 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   
   state->push();
 
+  // reset OpenGL/Coin state
+  SoLazyElement::setToDefault(state);
   SoShapeStyleElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
+  SoLazyElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
 
   // disable all active textures
   SoMultiTextureEnabledElement::disableAll(state);
   SoGLTextureEnabledElement::set(state, PUBLIC(this), FALSE);
-  
+
   // just disable all active light source
   int numlights = SoLightElement::getLights(state).getLength();
   for (i = 0; i < numlights; i++) {
