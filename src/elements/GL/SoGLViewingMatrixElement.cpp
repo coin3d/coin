@@ -88,16 +88,7 @@ SoGLViewingMatrixElement::pop(SoState * stateptr,
                               const SoElement * prevTopElement)
 {
   this->capture(stateptr);
-  // we can't simply use updategl() since we need the reset matrix
-  SbMatrix mat = this->viewingMatrix;
-  if (!this->mmidentity) {
-    // first eliminate model matrix part of matrix
-    mat.multRight(this->modelmatrix);
-    // then move geometry to account for the transformations prior to
-    // the camera
-    mat.multLeft(this->modelmatrix.inverse());
-  }
-  glLoadMatrixf((float*)mat);
+  this->updategl();
 }
 
 /*!
@@ -122,7 +113,12 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
   inherited::setElt(matrix);
   this->modelmatrix = SoModelMatrixElement::get(this->state, this->mmidentity);
   if (this->state->isElementEnabled(SoResetMatrixElement::getClassStackIndex())) {
-    SoResetMatrixElement::set(this->state, this->modelmatrix);
+    SbMatrix mat = this->viewingMatrix;
+    if (!this->mmidentity) {
+      mat.multRight(this->modelmatrix);
+      mat.multLeft(this->modelmatrix.inverse());
+    }
+    SoResetMatrixElement::set(this->state, mat);
   }
   this->updategl();
 }
