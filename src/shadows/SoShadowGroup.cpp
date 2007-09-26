@@ -43,13 +43,13 @@
   light, so for this node to work 100%, you need to have
   num-spotlights free texture units while rendering the subgraph.
 
-  Currently, we don't support scenes with multiple textures while
-  doing shadow rendering. This is due to the fact that we emulate the
-  OpenGL shading model in shaders programs, and we're still working on
-  creating a solution that updates the shader program during the scene
-  graph traversal. Right now a shader program is created when
-  entering the SoShadowGroup node, and this is used for the entire
-  subgraph.
+  Currently, we only support scenes with maximum two texture units
+  active while doing shadow rendering (unit 0 and unit 1). This is due
+  to the fact that we emulate the OpenGL shading model in a shader
+  program, and we're still working on creating a solution that updates
+  the shader program during the scene graph traversal. Right now a
+  shader program is created when entering the SoShadowGroup node, and
+  this is used for the entire subgraph.
 
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -481,6 +481,7 @@ public:
     vertexshadercache(NULL),
     fragmentshadercache(NULL),
     texunit0(NULL),
+    texunit1(NULL),
     lightmodel(NULL),
     numtexunitsinscene(1)
   {
@@ -502,6 +503,7 @@ public:
   ~SoShadowGroupP() {
     if (this->lightmodel) this->lightmodel->unref();
     if (this->texunit0) this->texunit0->unref();
+    if (this->texunit1) this->texunit1->unref();
     if (this->vertexshadercache) this->vertexshadercache->unref();
     if (this->fragmentshadercache) this->fragmentshadercache->unref();
     if (this->cameratransform) this->cameratransform->unref();
@@ -568,6 +570,7 @@ public:
   SoShaderProgramCache * vertexshadercache;
   SoShaderProgramCache * fragmentshadercache;
   SoShaderParameter1i * texunit0;
+  SoShaderParameter1i * texunit1;
   SoShaderParameter1i * lightmodel;
 
   int numtexunitsinscene;
@@ -703,16 +706,36 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     else if (smoothing > 0.01) gaussmatrixsize = 3;
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-    int maxunits = cc_glglue_max_texture_units(glue);
-    int maxlights = maxunits - 1;
 
     if (this->needscenesearch || this->search.getPaths().getLength() == 0) {
+      // first, search for texture unit nodes
+      this->search.setType(SoTextureUnit::getClassTypeId());
+      this->search.setInterest(SoSearchAction::ALL);
+      this->search.setSearchingAll(FALSE);
+      this->search.apply(PUBLIC(this));
+      
+      int lastenabled;
+      (void) SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+      this->numtexunitsinscene = lastenabled + 1;
+
+      for (i = 0; i < this->search.getPaths().getLength(); i++) {
+        SoFullPath * p = (SoFullPath*) this->search.getPaths()[i];
+        SoTextureUnit * unit = (SoTextureUnit*) p->getTail();
+        if (unit->unit.getValue() >= this->numtexunitsinscene) {
+          this->numtexunitsinscene = unit->unit.getValue() + 1;
+        }
+      }
+      if (this->numtexunitsinscene == 0) this->numtexunitsinscene = 1;
+
+      this->search.reset();
       this->search.setType(SoSpotLight::getClassTypeId());
       this->search.setInterest(SoSearchAction::ALL);
       this->search.setSearchingAll(FALSE);
       this->search.apply(PUBLIC(this));
       this->needscenesearch = FALSE;
     }
+    int maxunits = cc_glglue_max_texture_units(glue);
+    int maxlights = maxunits - this->numtexunitsinscene;
     SoPathList & pl = this->search.getPaths();
 
     int numlights = 0;
@@ -1054,6 +1077,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   gen.addMainStatement(
 		       "perVertexColor = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));"
 		       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
+		       "gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;\n"
 		       "gl_Position = ftransform();\n"
 		       "gl_FrontColor = gl_Color;");
 
@@ -1167,8 +1191,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "vec4 specular = vec4(0.0);"
                        "vec4 mydiffuse = gl_Color;\n"
                        "vec4 texcolor = (coin_texunit0_model != 0) ? texture2D(textureMap0, gl_TexCoord[0].xy) : vec4(1.0);\n");
-  
 
+  if (this->numtexunitsinscene > 1) {
+    gen.addMainStatement("if (coin_texunit1_model != 0) texcolor *= texture2D(textureMap1, gl_TexCoord[1].xy);\n");
+  }
   gen.addMainStatement("vec3 color = perVertexColor;\n"
                        "vec3 scolor = vec3(0.0);\n"
 		       "float dist;\n"
@@ -1299,6 +1325,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addMainStatement("gl_FragColor = vec4(color, mydiffuse.a);");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
+  if (this->numtexunitsinscene > 1) {
+    gen.addDeclaration("uniform int coin_texunit1_model;\n", FALSE);
+    gen.addDeclaration("uniform sampler2D textureMap1;\n", FALSE);
+  }
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
 
   if (dirspot) {
@@ -1360,23 +1390,41 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   texmap->name = str;
   texmap->value = 0;
 
+  SoShaderParameter1i * texmap1 = NULL;
+  
   if (!this->texunit0) {
     this->texunit0 = new SoShaderParameter1i;
     this->texunit0->ref();
     this->texunit0->name = "coin_texunit0_model";
     this->texunit0->value = 0;
   }
+  
+  if (this->numtexunitsinscene > 1) {
+    if (!this->texunit1) {
+      this->texunit1 = new SoShaderParameter1i;
+      this->texunit1->ref();
+      this->texunit1->name = "coin_texunit1_model";
+      this->texunit1->value = 0;
+    }
+    texmap1 = new SoShaderParameter1i();
+    str.sprintf("textureMap1");
+    texmap1->name = str;
+    texmap1->value = 1;
+  }
+                       
   if (!this->lightmodel) {
     this->lightmodel = new SoShaderParameter1i;
     this->lightmodel->ref();
     this->lightmodel->name = "coin_light_model";
     this->lightmodel->value = 1;
   }
-
+  
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
+  if (texmap1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
+  if (this->numtexunitsinscene > 1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
-
+  
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
