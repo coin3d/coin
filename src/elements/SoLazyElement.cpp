@@ -211,7 +211,7 @@ SoLazyElement::copyMatchInfo(void) const
 void 
 SoLazyElement::setToDefault(SoState * state)
 {
-  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  SoLazyElement * elem = SoLazyElement::getWInstance(state);
   elem->SoLazyElement::init(state);
 }
 
