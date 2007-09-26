@@ -57,6 +57,7 @@ class SoGLDisplayListP {
   unsigned int firstindex;
   int context;
   int refcount;
+  int openindex;
   SbBool mipmap;
   GLenum texturetarget;
 };
@@ -226,7 +227,11 @@ void
 SoGLDisplayList::open(SoState * state, int index)
 {
   if (PRIVATE(this)->type == DISPLAY_LIST) {
-    glNewList((GLuint) (PRIVATE(this)->firstindex+index), GL_COMPILE_AND_EXECUTE);
+    PRIVATE(this)->openindex = index;
+    // using GL_COMPILE here instead of GL_COMPILE_AND_EXECUTE will
+    // lead to much higher performance on nVidia cards, and doesn't
+    // hurt performance for other vendors.
+    glNewList((GLuint) (PRIVATE(this)->firstindex+PRIVATE(this)->openindex), GL_COMPILE);
   }
   else {
     assert(PRIVATE(this)->type == TEXTURE_OBJECT);
@@ -250,6 +255,7 @@ SoGLDisplayList::close(SoState * state)
                          "to store full display list. Expect flaws in "
                          "rendering.");
     }
+    glCallList((GLuint) (PRIVATE(this)->firstindex + PRIVATE(this)->openindex));
   }
   else {
     const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
