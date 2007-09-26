@@ -81,17 +81,17 @@ public:
     SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,           // 0x1000
     GLIMAGE_MASK = 1 << GLIMAGE_CASE,                   // 0x2000
     ALPHATEST_MASK = 1 << ALPHATEST_CASE,               // 0x4000
-    ALL_MASK = (1 << LAZYCASES_LAST)-1            
+    ALL_MASK = (1 << LAZYCASES_LAST)-1
   };
-  
+
   enum internalMasks{
-    OTHER_COLOR_MASK = AMBIENT_MASK|EMISSIVE_MASK|SPECULAR_MASK|SHININESS_MASK,   
-    ALL_COLOR_MASK = OTHER_COLOR_MASK|DIFFUSE_MASK, 
-    NO_COLOR_MASK = ALL_MASK & (~ALL_COLOR_MASK), 
-    ALL_BUT_DIFFUSE_MASK = ALL_MASK &(~ DIFFUSE_MASK), 
+    OTHER_COLOR_MASK = AMBIENT_MASK|EMISSIVE_MASK|SPECULAR_MASK|SHININESS_MASK,
+    ALL_COLOR_MASK = OTHER_COLOR_MASK|DIFFUSE_MASK,
+    NO_COLOR_MASK = ALL_MASK & (~ALL_COLOR_MASK),
+    ALL_BUT_DIFFUSE_MASK = ALL_MASK &(~ DIFFUSE_MASK),
     DIFFUSE_ONLY_MASK = ALL_MASK &(~ OTHER_COLOR_MASK)
   };
-  
+
   enum LightModel {
     BASE_COLOR,
     PHONG
@@ -107,6 +107,7 @@ public:
   virtual SbBool matches(const SoElement *) const;
   virtual SoElement *copyMatchInfo(void) const;
 
+  static void setToDefault(SoState * state);
   static void setDiffuse(SoState * state, SoNode * node, int32_t numcolors,
                          const SbColor * colors, SoColorPacker * packer);
   static void setTransparency(SoState *state, SoNode *node, int32_t numvalues,
@@ -130,7 +131,7 @@ public:
   static void setShadeModel(SoState * state, SbBool flatshading);
   static void setGLImageId(SoState * state, uint32_t glimageid, SbBool alphatest);
   static void setAlphaTest(SoState * state, SbBool onoff);
-                          
+
   static const SbColor & getDiffuse(SoState* state, int index);
   static float getTransparency(SoState*, int index);
   static const uint32_t * getPackedColors(SoState*);
@@ -165,7 +166,7 @@ public:
 
   static void setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
                            SoColorPacker * cPacker,
-                           const SbColor * diffuse, 
+                           const SbColor * diffuse,
                            const int numdiffuse,
                            const float * transp,
                            const int numtransp,
@@ -185,7 +186,7 @@ public:
   static void setTransparencyType(SoState * state, int32_t type);
 
 protected:
-  
+
   struct COIN_DLL_API CoinState {
     SbColor ambient;
     SbColor specular;
@@ -222,15 +223,15 @@ protected:
   virtual void lazyDidSet(uint32_t mask);
   virtual void lazyDidntSet(uint32_t mask);
 
-  virtual void setDiffuseElt(SoNode*,  int32_t numcolors, 
-                             const SbColor * colors, SoColorPacker * packer);   
-  virtual void setPackedElt(SoNode * node, int32_t numcolors, 
+  virtual void setDiffuseElt(SoNode*,  int32_t numcolors,
+                             const SbColor * colors, SoColorPacker * packer);
+  virtual void setPackedElt(SoNode * node, int32_t numcolors,
                             const uint32_t * colors, const SbBool packedtransparency);
-  virtual void setColorIndexElt(SoNode * node, int32_t numindices, 
+  virtual void setColorIndexElt(SoNode * node, int32_t numindices,
                                 const int32_t * indices);	
-  virtual void setTranspElt(SoNode * node, int32_t numtransp, 
+  virtual void setTranspElt(SoNode * node, int32_t numtransp,
                             const float * transp, SoColorPacker * packer);
-  
+
   virtual void setTranspTypeElt(int32_t type);
   virtual void setAmbientElt(const SbColor* color);
   virtual void setEmissiveElt(const SbColor* color);
@@ -240,8 +241,8 @@ protected:
   virtual void enableBlendingElt(int sfactor, int dfactor);
   virtual void disableBlendingElt(void);
   virtual void setLightModelElt(SoState *state, int32_t model);
-  virtual void setMaterialElt(SoNode * node, uint32_t bitmask, 
-                              SoColorPacker * packer, 
+  virtual void setMaterialElt(SoNode * node, uint32_t bitmask,
+                              SoColorPacker * packer,
                               const SbColor * diffuse, const int numdiffuse,
                               const float * transp, const int numtransp,
                               const SbColor & ambient,

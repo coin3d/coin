@@ -204,6 +204,17 @@ SoLazyElement::copyMatchInfo(void) const
   return NULL;
 }
 
+/*!  
+  Internal function used for resetting the OpenGL state before FBO
+  rendering.
+*/
+void 
+SoLazyElement::setToDefault(SoState * state)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  elem->SoLazyElement::init(state);
+}
+
 // ! FIXME: write doc
 
 void
