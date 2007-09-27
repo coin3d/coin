@@ -503,6 +503,19 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
     length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
     expand = (length == -1);
     if ( expand ) {
+      /* Note: On MSWindows, using Microsoft's CRT, _vsnprintf(),
+         called by coin_vsnprintf(), doesn't add a terminating '0' at
+         the end of the buffer if the number of characters to write is
+         equal to or larger than the buffer size (second parameter to
+         _vsnprintf). This is documented in MSDN's entry for
+         _vsnprintf().
+
+         To make sure me->buffer never contains a string that is not
+         '0'-terminated, we clear the buffer below before we grow it
+         and retry coin_vsnprintf().
+      
+         20070927 thammer.  */
+      cc_string_clear_no_free(me);
       /* increase linearly in 1Kb intervals */
       cc_string_grow_buffer(me, me->bufsize + 1024);
     }
