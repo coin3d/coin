@@ -1911,6 +1911,13 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
         return kit->setPart(partNum, from);
       }
     }
+    else {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoBaseKit::setAnyPart",
+                                "attempted to set non-public part ``%s''",
+                                partname.getString());
+#endif // COIN_DEBUG
+    }
   }
 #if COIN_DEBUG
   else {
