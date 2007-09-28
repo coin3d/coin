@@ -1788,6 +1788,15 @@ glglue_resolve_symbols(cc_glglue * w)
   if (w->vendor_is_nvidia && w->has_fbo) {
     w->has_fbo = !glglue_has_nvidia_framebuffer_object_bug(w->version.major, w->version.minor, w->version.release);
   }
+
+  /*
+     Option to disable FBO feature even if it's available. 
+  */
+  if ((glglue_resolve_envvar("COIN_DONT_USE_FBO") == 1) && w->has_fbo) {
+    // TODO: print proper warning
+    w->has_fbo = FALSE;
+  }
+
 }
 
 #undef PROC
