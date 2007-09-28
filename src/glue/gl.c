@@ -1790,10 +1790,11 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 
   /*
-     Option to disable FBO feature even if it's available. 
+     Option to disable FBO feature even if it's available.
+     FIXME: FBO rendering fails in at least one application. To fix it properly
+     we need to reproduce this bug in a minimal testcase. jkg, 2007-09-28
   */
   if ((glglue_resolve_envvar("COIN_DONT_USE_FBO") == 1) && w->has_fbo) {
-    // TODO: print proper warning
     w->has_fbo = FALSE;
   }
 
