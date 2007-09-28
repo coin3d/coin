@@ -537,7 +537,7 @@ glglue_cleanup(void)
 #endif
 }
 
-static SbBool 
+static SbBool
 glglue_has_nvidia_framebuffer_object_bug(int major, int minor, int release)
 {
   return (major == 2) && (minor == 0) && (release == 0);
@@ -909,7 +909,7 @@ glglue_resolve_symbols(cc_glglue * w)
   w->maxtextureunits = 1; /* when multitexturing is not available */
   if (w->glActiveTexture) {
     GLint tmp;
-    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &tmp);
+    glGetIntegerv(GL_MAX_TEXTURE_COORDS_ARB, &tmp);
     w->maxtextureunits = (int) tmp;
   }
 
@@ -1125,8 +1125,8 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #if defined(GL_VERSION_1_2)
   w->glDrawRangeElements = NULL;
-  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) 
-    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);   
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0))
+    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);
 #endif /* GL_VERSION_1_2 */
 
 
@@ -1148,7 +1148,7 @@ glglue_resolve_symbols(cc_glglue * w)
 
   w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_objects() works  */
 #if defined(GL_VERSION_1_5)
-  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {   
+  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
     w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBuffer);
     w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffers);
     w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffers);
@@ -1178,7 +1178,7 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointervARB);
   }
 
-#if defined(HAVE_GLX)  
+#if defined(HAVE_GLX)
   /* ARB_vertex_buffer_object does not work properly on Linux when
      using the Nvidia 44.96 driver (version 1.4.0). The VBO extension
      is therefore disabled for this driver. The issue was solved for
@@ -1218,7 +1218,7 @@ glglue_resolve_symbols(cc_glglue * w)
   /*
     All Intel drivers usually crash when we try to use VBO. This might be a bug in
     our VBO code, but we choose to disable VBO rendering for all Intel cards until
-    we have time to look into this. pederb, 2007-08-16 
+    we have time to look into this. pederb, 2007-08-16
   */
 
   if (w->glBindBuffer) {
@@ -1271,7 +1271,7 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glGetFinalCombinerInputParameterivNV = NULL;
   w->has_nv_register_combiners = FALSE;
 
-#ifdef GL_NV_register_combiners  
+#ifdef GL_NV_register_combiners
 
   if (cc_glglue_glext_supported(w, "GL_NV_register_combiners")) {
 
@@ -1291,7 +1291,7 @@ glglue_resolve_symbols(cc_glglue * w)
        } \
      } \
    } while (0)
-        
+
     w->has_nv_register_combiners = TRUE;
     BIND_FUNCTION_WITH_WARN(glCombinerParameterfvNV, COIN_PFNGLCOMBINERPARAMETERFVNVPROC);
     BIND_FUNCTION_WITH_WARN(glCombinerParameterivNV, COIN_PFNGLCOMBINERPARAMETERIVNVPROC);
@@ -1306,27 +1306,27 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glGetCombinerOutputParameterivNV, COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC);
     BIND_FUNCTION_WITH_WARN(glGetFinalCombinerInputParameterfvNV, COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC);
     BIND_FUNCTION_WITH_WARN(glGetFinalCombinerInputParameterivNV, COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC);
-   
+
 #undef BIND_FUNCTION_WITH_WARN
-  }     
+  }
 #endif /* GL_NV_register_combiners */
- 
-  
+
+
   /* GL_[NV/EXT]_texture_rectangle */
   w->has_ext_texture_rectangle = (cc_glglue_glext_supported(w, "GL_EXT_texture_rectangle") ||
-                                  cc_glglue_glext_supported(w, "GL_NV_texture_rectangle")); 
+                                  cc_glglue_glext_supported(w, "GL_NV_texture_rectangle"));
 
   /* GL_NV_texture_shader */
   w->has_nv_texture_shader = cc_glglue_glext_supported(w, "GL_NV_texture_shader");
 
   /* GL_ARB_shadow */
-  w->has_shadow = (cc_glglue_glext_supported(w, "GL_ARB_shadow") || 
+  w->has_shadow = (cc_glglue_glext_supported(w, "GL_ARB_shadow") ||
                    cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
 
   /* GL_ARB_depth_texture */
   w->has_depth_texture = (cc_glglue_glext_supported(w, "GL_ARB_depth_texture") ||
                           cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
-  
+
   /* GL_[ARB/EXT]_texture_env_combine */
   w->has_texture_env_combine = (cc_glglue_glext_supported(w, "GL_ARB_texture_env_combine") ||
                                 cc_glglue_glext_supported(w, "GL_EXT_texture_env_combine") ||
@@ -1353,10 +1353,10 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glGetProgramStringARB = NULL;
   w->glIsProgramARB = NULL;
   w->has_arb_fragment_program = FALSE;
-  
+
 #ifdef GL_ARB_fragment_program
   if (cc_glglue_glext_supported(w, "GL_ARB_fragment_program")) {
-   
+
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
@@ -1373,7 +1373,7 @@ glglue_resolve_symbols(cc_glglue * w)
        } \
      } \
    } while (0)
- 
+
     w->has_arb_fragment_program = TRUE;
     BIND_FUNCTION_WITH_WARN(glProgramStringARB, COIN_PFNGLPROGRAMSTRINGARBPROC);
     BIND_FUNCTION_WITH_WARN(glBindProgramARB, COIN_PFNGLBINDPROGRAMARBPROC);
@@ -1396,7 +1396,7 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glIsProgramARB, COIN_PFNGLISPROGRAMARBPROC);
 
 #undef BIND_FUNCTION_WITH_WARN
- } 
+ }
 #endif /* GL_ARB_fragment_program */
 
   w->has_arb_vertex_program = FALSE;
@@ -1550,7 +1550,7 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glIsProgramARB, COIN_PFNGLISPROGRAMARBPROC);
 
 #undef BIND_FUNCTION_WITH_WARN
-  } 
+  }
 #endif /* GL_ARB_vertex_program */
 
 
@@ -1644,18 +1644,18 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glUniformMatrix3fvARB, COIN_PFNGLUNIFORMMATRIX3FVARBPROC);
     BIND_FUNCTION_WITH_WARN(glUniformMatrix4fvARB, COIN_PFNGLUNIFORMMATRIX4FVARBPROC);
 
-    
+
     w->glProgramParameteriEXT = NULL;
     if (cc_glglue_glext_supported(w, "GL_EXT_geometry_shader4")) {
       BIND_FUNCTION_WITH_WARN(glProgramParameteriEXT, COIN_PFNGLPROGRAMPARAMETERIEXT);
     }
 #undef BIND_FUNCTION_WITH_WARN
-  } 
+  }
 #endif /* GL_ARB_shader_objects */
 
   w->glGenQueries = NULL; /* so that cc_glglue_has_occlusion_query() works  */
 #if defined(GL_VERSION_1_5)
-  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {   
+  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
     w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(glGenQueries);
     w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(glDeleteQueries);
     w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(glIsQuery);
@@ -1701,7 +1701,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #if defined(GL_NV_vertex_array_range) && (defined(HAVE_GLX) || defined(HAVE_WGL))
   if (cc_glglue_glext_supported(w, "GL_NV_vertex_array_range")) {
     w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(glVertexArrayRangeNV);
-    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);                
+    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);
 #ifdef HAVE_GLX
     w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(glXAllocateMemoryNV);
     w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(glXFreeMemoryNV);
@@ -1733,7 +1733,7 @@ glglue_resolve_symbols(cc_glglue * w)
         cc_glglue_glext_supported(w, "GL_ARB_texture_env_dot3")))) {
     w->can_do_bumpmapping = TRUE;
   }
-  
+
   /* FIXME: We should be able to support more than one way to do order
      independent transparency (eg. by using fragment
      programming). This would demand a different combinations of
@@ -1746,8 +1746,8 @@ glglue_resolve_symbols(cc_glglue * w)
      w->has_depth_texture &&
      w->has_shadow) ||
     w->has_arb_fragment_program;
-  
-  
+
+
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
     w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
     w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
@@ -1767,12 +1767,12 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
       cc_glglue_getprocaddress("glGetFramebufferAttachmentParameterivEXT");
     w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
-    
-    if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers || 
-        !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv || 
-        !w->glIsFramebuffer || !w->glBindFramebuffer || !w->glDeleteFramebuffers || 
-        !w->glGenFramebuffers || !w->glCheckFramebufferStatus || !w->glFramebufferTexture1D || 
-        !w->glFramebufferTexture2D || !w->glFramebufferTexture3D || !w->glFramebufferRenderbuffer ||  
+
+    if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers ||
+        !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv ||
+        !w->glIsFramebuffer || !w->glBindFramebuffer || !w->glDeleteFramebuffers ||
+        !w->glGenFramebuffers || !w->glCheckFramebufferStatus || !w->glFramebufferTexture1D ||
+        !w->glFramebufferTexture2D || !w->glFramebufferTexture3D || !w->glFramebufferRenderbuffer ||
         !w->glGetFramebufferAttachmentParameteriv || !w->glGenerateMipmap) {
       w->has_fbo = FALSE;
     }
@@ -1780,10 +1780,10 @@ glglue_resolve_symbols(cc_glglue * w)
       w->has_fbo = TRUE;
     }
   }
-  
-  /* 
-     Disable features based on known driver bugs  here. 
-     FIXME: move the driver workarounds to some other module. pederb, 2007-07-04 
+
+  /*
+     Disable features based on known driver bugs  here.
+     FIXME: move the driver workarounds to some other module. pederb, 2007-07-04
   */
   if (w->vendor_is_nvidia && w->has_fbo) {
     w->has_fbo = !glglue_has_nvidia_framebuffer_object_bug(w->version.major, w->version.minor, w->version.release);
@@ -1817,8 +1817,8 @@ glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
                                         const char * renderer,
                                         const char * version)
 {
-  /* 
-   * FIXME: is there a better way to test if we're on Mac OS X 
+  /*
+   * FIXME: is there a better way to test if we're on Mac OS X
    * pederb, 20051026
    */
 #ifndef HAVE_AGL /* bug is not present on Mac OS X */
@@ -1903,7 +1903,7 @@ glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
        36,37,38,39,-1,
        40,41,42,43,-1
      ]
-   } 
+   }
   *
   */
   return
@@ -2209,14 +2209,14 @@ cc_glglue_instance(int contextid)
          glGetError() to GL_INVALID_VALUE if this size is attempted
          used. So the boundary range fix in the next line of code is a
          workaround for that OpenGL implementation bug.
-         
+
          0.0f and lower values are explicitly disallowed, according to
          the OpenGL 1.3 specification, Chapter 3.3. */
-      if (vals[0] <= 0.0f) { 
+      if (vals[0] <= 0.0f) {
         vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
       }
       gi->point_size_range[0] = vals[0];
-      gi->point_size_range[1] = vals[1]; 
+      gi->point_size_range[1] = vals[1];
     }
     {
       GLfloat vals[2];
@@ -2227,8 +2227,8 @@ cc_glglue_instance(int contextid)
          lowest linewidth, but it will still set the return value of
          glGetError() to GL_INVALID_VALUE if this size is attempted
          used. This is a workaround for what looks like an OpenGL bug. */
-      
-      if (vals[0] <= 0.0f) { 
+
+      if (vals[0] <= 0.0f) {
         vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
       }
       gi->line_width_range[0] = vals[0];
@@ -2251,7 +2251,7 @@ cc_glglue_instance(int contextid)
                              "Rendering is %sdirect.",
                              gi->glx.isdirect ? "" : "in");
     }
-    
+
     /* anisotropic test */
     gi->can_do_anisotropic_filtering = FALSE;
     gi->max_anisotropy = 0.0f;
@@ -2270,7 +2270,7 @@ cc_glglue_instance(int contextid)
     gi->vbo_in_displaylist_ok = !glglue_check_ati_vbo_in_displaylist_bug(gi->vendorstr,
                                                                          gi->rendererstr,
                                                                          gi->versionstr);
-    
+
     glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
 
     /* Resolve our function pointers. */
@@ -2285,7 +2285,7 @@ cc_glglue_instance(int contextid)
   if (!found && gl_instance_created_cblist) {
     int i, n = cc_list_get_length(gl_instance_created_cblist) / 2;
     for (i = 0; i < n; i++) {
-      coin_glglue_instance_created_cb * cb = 
+      coin_glglue_instance_created_cb * cb =
         (coin_glglue_instance_created_cb *) cc_list_get(gl_instance_created_cblist, i*2);
       cb(contextid, cc_list_get(gl_instance_created_cblist, i*2+1));
     }
@@ -2310,7 +2310,7 @@ cc_glglue_instance_from_context_ptr(void * ctx)
   return cc_glglue_instance(id);
 }
 
-void 
+void
 coin_glglue_destruct(uint32_t contextid)
 {
   SbBool found;
@@ -2656,7 +2656,7 @@ cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
     cc_glglue_glext_supported(w, "GL_SGIS_texture_edge_clamp");
 }
 
-void 
+void
 cc_glglue_glPushClientAttrib(const cc_glglue * w, GLbitfield mask)
 {
   if (!glglue_allow_newer_opengl(w)) return;
@@ -2664,7 +2664,7 @@ cc_glglue_glPushClientAttrib(const cc_glglue * w, GLbitfield mask)
   w->glPushClientAttrib(mask);
 }
 
-void 
+void
 cc_glglue_glPopClientAttrib(const cc_glglue * w)
 {
   if (!glglue_allow_newer_opengl(w)) return;
@@ -3391,19 +3391,19 @@ cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue)
   return glue->can_do_sortedlayersblend;
 }
 
-int 
+int
 cc_glglue_get_max_lights(const cc_glglue * glue)
 {
   return glue->max_lights;
 }
 
-const float * 
+const float *
 cc_glglue_get_line_width_range(const cc_glglue * glue)
 {
   return glue->line_width_range;
 }
 
-const float * 
+const float *
 cc_glglue_get_point_size_range(const cc_glglue * glue)
 {
   return glue->point_size_range;
@@ -3412,12 +3412,12 @@ cc_glglue_get_point_size_range(const cc_glglue * glue)
 /* GL_NV_register_combiners functions */
 SbBool
 cc_glglue_has_nv_register_combiners(const cc_glglue * glue)
-{  
+{
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_nv_register_combiners;
 }
 
-void 
+void
 cc_glglue_glCombinerParameterfvNV(const cc_glglue * glue,
                                   GLenum pname,
                                   const GLfloat *params)
@@ -3425,7 +3425,7 @@ cc_glglue_glCombinerParameterfvNV(const cc_glglue * glue,
   glue->glCombinerParameterfvNV(pname, params);
 }
 
-void 
+void
 cc_glglue_glCombinerParameterivNV(const cc_glglue * glue,
                                   GLenum pname,
                                   const GLint *params)
@@ -3433,7 +3433,7 @@ cc_glglue_glCombinerParameterivNV(const cc_glglue * glue,
   glue->glCombinerParameterivNV(pname, params);
 }
 
-void 
+void
 cc_glglue_glCombinerParameterfNV(const cc_glglue * glue,
                                  GLenum pname,
                                  GLfloat param)
@@ -3441,7 +3441,7 @@ cc_glglue_glCombinerParameterfNV(const cc_glglue * glue,
   glue->glCombinerParameterfNV(pname, param);
 }
 
-void 
+void
 cc_glglue_glCombinerParameteriNV(const cc_glglue * glue,
                                  GLenum pname,
                                  GLint param)
@@ -3449,7 +3449,7 @@ cc_glglue_glCombinerParameteriNV(const cc_glglue * glue,
   glue->glCombinerParameteriNV(pname, param);
 }
 
-void 
+void
 cc_glglue_glCombinerInputNV(const cc_glglue * glue,
                             GLenum stage,
                             GLenum portion,
@@ -3461,10 +3461,10 @@ cc_glglue_glCombinerInputNV(const cc_glglue * glue,
   glue->glCombinerInputNV(stage, portion, variable, input, mapping, componentUsage);
 }
 
-void 
+void
 cc_glglue_glCombinerOutputNV(const cc_glglue * glue,
                              GLenum stage,
-                             GLenum portion, 
+                             GLenum portion,
                              GLenum abOutput,
                              GLenum cdOutput,
                              GLenum sumOutput,
@@ -3478,7 +3478,7 @@ cc_glglue_glCombinerOutputNV(const cc_glglue * glue,
                            abDotProduct, cdDotProduct, muxSum);
 }
 
-void 
+void
 cc_glglue_glFinalCombinerInputNV(const cc_glglue * glue,
                                  GLenum variable,
                                  GLenum input,
@@ -3488,7 +3488,7 @@ cc_glglue_glFinalCombinerInputNV(const cc_glglue * glue,
   glue->glFinalCombinerInputNV(variable, input, mapping, componentUsage);
 }
 
-void 
+void
 cc_glglue_glGetCombinerInputParameterfvNV(const cc_glglue * glue,
                                           GLenum stage,
                                           GLenum portion,
@@ -3499,7 +3499,7 @@ cc_glglue_glGetCombinerInputParameterfvNV(const cc_glglue * glue,
   glue->glGetCombinerInputParameterfvNV(stage, portion, variable, pname, params);
 }
 
-void 
+void
 cc_glglue_glGetCombinerInputParameterivNV(const cc_glglue * glue,
                                           GLenum stage,
                                           GLenum portion,
@@ -3510,27 +3510,27 @@ cc_glglue_glGetCombinerInputParameterivNV(const cc_glglue * glue,
   glue->glGetCombinerInputParameterivNV(stage, portion, variable, pname, params);
 }
 
-void 
+void
 cc_glglue_glGetCombinerOutputParameterfvNV(const cc_glglue * glue,
                                            GLenum stage,
-                                           GLenum portion, 
+                                           GLenum portion,
                                            GLenum pname,
                                            GLfloat *params)
 {
   glue->glGetCombinerOutputParameterfvNV(stage, portion, pname, params);
 }
 
-void 
+void
 cc_glglue_glGetCombinerOutputParameterivNV(const cc_glglue * glue,
                                            GLenum stage,
-                                           GLenum portion, 
+                                           GLenum portion,
                                            GLenum pname,
                                            GLint *params)
 {
   glue->glGetCombinerOutputParameterivNV(stage, portion, pname, params);
 }
 
-void 
+void
 cc_glglue_glGetFinalCombinerInputParameterfvNV(const cc_glglue * glue,
                                                GLenum variable,
                                                GLenum pname,
@@ -3539,7 +3539,7 @@ cc_glglue_glGetFinalCombinerInputParameterfvNV(const cc_glglue * glue,
   glue->glGetFinalCombinerInputParameterfvNV(variable, pname, params);
 }
 
-void 
+void
 cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
                                                GLenum variable,
                                                GLenum pname,
@@ -3567,25 +3567,25 @@ cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
 
 void
 cc_glglue_glProgramString(const cc_glglue * glue,
-                          GLenum target, 
-                          GLenum format, 
-                          GLsizei len, 
+                          GLenum target,
+                          GLenum format,
+                          GLsizei len,
                           const GLvoid *string)
 {
   glue->glProgramStringARB(target, format, len, string);
 }
 
 void
-cc_glglue_glBindProgram(const cc_glglue * glue, 
-                        GLenum target, 
+cc_glglue_glBindProgram(const cc_glglue * glue,
+                        GLenum target,
                         GLuint program)
 {
   glue->glBindProgramARB(target, program);
 }
 
 void
-cc_glglue_glDeletePrograms(const cc_glglue * glue, 
-                           GLsizei n, 
+cc_glglue_glDeletePrograms(const cc_glglue * glue,
+                           GLsizei n,
                            const GLuint *programs)
 {
   glue->glDeleteProgramsARB(n, programs);
@@ -3593,7 +3593,7 @@ cc_glglue_glDeletePrograms(const cc_glglue * glue,
 
 void
 cc_glglue_glGenPrograms(const cc_glglue * glue,
-                        GLsizei n, 
+                        GLsizei n,
                         GLuint *programs)
 {
   glue->glGenProgramsARB(n, programs);
@@ -3603,9 +3603,9 @@ void
 cc_glglue_glProgramEnvParameter4d(const cc_glglue * glue,
                                   GLenum target,
                                   GLuint index,
-                                  GLdouble x, 
-                                  GLdouble y, 
-                                  GLdouble z, 
+                                  GLdouble x,
+                                  GLdouble y,
+                                  GLdouble z,
                                   GLdouble w)
 {
   glue->glProgramEnvParameter4dARB(target, index, x, y, z, w);
@@ -3621,20 +3621,20 @@ cc_glglue_glProgramEnvParameter4dv(const cc_glglue * glue,
 }
 
 void
-cc_glglue_glProgramEnvParameter4f(const cc_glglue * glue, 
-                                  GLenum target, 
+cc_glglue_glProgramEnvParameter4f(const cc_glglue * glue,
+                                  GLenum target,
                                   GLuint index,
-                                  GLfloat x, 
-                                  GLfloat y, 
-                                  GLfloat z, 
+                                  GLfloat x,
+                                  GLfloat y,
+                                  GLfloat z,
                                   GLfloat w)
 {
   glue->glProgramEnvParameter4fARB(target, index, x, y, z, w);
 }
 
 void
-cc_glglue_glProgramEnvParameter4fv(const cc_glglue * glue, 
-                                   GLenum target, 
+cc_glglue_glProgramEnvParameter4fv(const cc_glglue * glue,
+                                   GLenum target,
                                    GLuint index,
                                    const GLfloat *params)
 {
@@ -3642,20 +3642,20 @@ cc_glglue_glProgramEnvParameter4fv(const cc_glglue * glue,
 }
 
 void
-cc_glglue_glProgramLocalParameter4d(const cc_glglue * glue, 
-                                    GLenum target, 
+cc_glglue_glProgramLocalParameter4d(const cc_glglue * glue,
+                                    GLenum target,
                                     GLuint index,
-                                    GLdouble x, 
-                                    GLdouble y, 
-                                    GLdouble z, 
+                                    GLdouble x,
+                                    GLdouble y,
+                                    GLdouble z,
                                     GLdouble w)
 {
   glue->glProgramLocalParameter4dARB(target, index, x, y, z, w);
 }
 
 void
-cc_glglue_glProgramLocalParameter4dv(const cc_glglue * glue, 
-                                     GLenum target, 
+cc_glglue_glProgramLocalParameter4dv(const cc_glglue * glue,
+                                     GLenum target,
                                      GLuint index,
                                      const GLdouble *params)
 {
@@ -3663,20 +3663,20 @@ cc_glglue_glProgramLocalParameter4dv(const cc_glglue * glue,
 }
 
 void
-cc_glglue_glProgramLocalParameter4f(const cc_glglue * glue, 
-                                    GLenum target, 
+cc_glglue_glProgramLocalParameter4f(const cc_glglue * glue,
+                                    GLenum target,
                                     GLuint index,
-                                    GLfloat x, 
-                                    GLfloat y, 
-                                    GLfloat z, 
+                                    GLfloat x,
+                                    GLfloat y,
+                                    GLfloat z,
                                     GLfloat w)
 {
   glue->glProgramLocalParameter4fARB(target, index, x, y, z, w);
 }
 
 void
-cc_glglue_glProgramLocalParameter4fv(const cc_glglue * glue, 
-                                     GLenum target, 
+cc_glglue_glProgramLocalParameter4fv(const cc_glglue * glue,
+                                     GLenum target,
                                      GLuint index,
                                      const GLfloat *params)
 {
@@ -3684,8 +3684,8 @@ cc_glglue_glProgramLocalParameter4fv(const cc_glglue * glue,
 }
 
 void
-cc_glglue_glGetProgramEnvParameterdv(const cc_glglue * glue, 
-                                     GLenum target, 
+cc_glglue_glGetProgramEnvParameterdv(const cc_glglue * glue,
+                                     GLenum target,
                                      GLuint index,
                                      GLdouble *params)
 {
@@ -3694,8 +3694,8 @@ cc_glglue_glGetProgramEnvParameterdv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetProgramEnvParameterfv(const cc_glglue * glue,
-                                     GLenum target, 
-                                     GLuint index, 
+                                     GLenum target,
+                                     GLuint index,
                                      GLfloat *params)
 {
   glue->glGetProgramEnvParameterfvARB(target, index, params);
@@ -3703,7 +3703,7 @@ cc_glglue_glGetProgramEnvParameterfv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetProgramLocalParameterdv(const cc_glglue * glue,
-                                       GLenum target, 
+                                       GLenum target,
                                        GLuint index,
                                        GLdouble *params)
 {
@@ -3712,17 +3712,17 @@ cc_glglue_glGetProgramLocalParameterdv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetProgramLocalParameterfv(const cc_glglue * glue,
-                                       GLenum target, 
-                                       GLuint index, 
+                                       GLenum target,
+                                       GLuint index,
                                        GLfloat *params)
 {
   glue->glGetProgramLocalParameterfvARB(target, index, params);
 }
 
 void
-cc_glglue_glGetProgramiv(const cc_glglue * glue, 
-                         GLenum target, 
-                         GLenum pname, 
+cc_glglue_glGetProgramiv(const cc_glglue * glue,
+                         GLenum target,
+                         GLenum pname,
                          GLint *params)
 {
   glue->glGetProgramivARB(target, pname, params);
@@ -3730,15 +3730,15 @@ cc_glglue_glGetProgramiv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetProgramString(const cc_glglue * glue,
-                             GLenum target, 
-                             GLenum pname, 
+                             GLenum target,
+                             GLenum pname,
                              GLvoid *string)
 {
   glue->glGetProgramStringARB(target, pname, string);
 }
 
 SbBool
-cc_glglue_glIsProgram(const cc_glglue * glue, 
+cc_glglue_glIsProgram(const cc_glglue * glue,
                       GLuint program)
 {
   return glue->glIsProgramARB(program);
@@ -3753,42 +3753,42 @@ cc_glglue_has_arb_vertex_program(const cc_glglue * glue)
   return glue->has_arb_vertex_program;
 }
 
-void 
+void
 cc_glglue_glVertexAttrib1s(const cc_glglue * glue,
                            GLuint index, GLshort x)
 {
   glue->glVertexAttrib1sARB(index, x);
 }
 
-void 
+void
 cc_glglue_glVertexAttrib1f(const cc_glglue * glue,
                            GLuint index, GLfloat x)
 {
   glue->glVertexAttrib1fARB(index, x);
 }
 
-void 
+void
 cc_glglue_glVertexAttrib1d(const cc_glglue * glue,
                            GLuint index, GLdouble x)
 {
   glue->glVertexAttrib1dARB(index, x);
 }
 
-void 
+void
 cc_glglue_glVertexAttrib2s(const cc_glglue * glue,
                            GLuint index, GLshort x, GLshort y)
 {
   glue->glVertexAttrib2sARB(index, x, y);
 }
 
-void 
+void
 cc_glglue_glVertexAttrib2f(const cc_glglue * glue,
                            GLuint index, GLfloat x, GLfloat y)
 {
   glue->glVertexAttrib2fARB(index, x, y);
 }
 
-void 
+void
 cc_glglue_glVertexAttrib2d(const cc_glglue * glue,
                            GLuint index, GLdouble x, GLdouble y)
 {
@@ -3797,7 +3797,7 @@ cc_glglue_glVertexAttrib2d(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib3s(const cc_glglue * glue,
-                           GLuint index, GLshort x, 
+                           GLuint index, GLshort x,
                            GLshort y, GLshort z)
 {
   glue->glVertexAttrib3sARB(index, x, y, z);
@@ -3805,7 +3805,7 @@ cc_glglue_glVertexAttrib3s(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib3f(const cc_glglue * glue,
-                           GLuint index, GLfloat x, 
+                           GLuint index, GLfloat x,
                            GLfloat y, GLfloat z)
 {
   glue->glVertexAttrib3fARB(index, x, y, z);
@@ -3813,7 +3813,7 @@ cc_glglue_glVertexAttrib3f(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib3d(const cc_glglue * glue,
-                           GLuint index, GLdouble x, 
+                           GLuint index, GLdouble x,
                            GLdouble y, GLdouble z)
 {
   glue->glVertexAttrib3dARB(index, x, y, z);
@@ -3821,7 +3821,7 @@ cc_glglue_glVertexAttrib3d(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib4s(const cc_glglue * glue,
-                           GLuint index, GLshort x, 
+                           GLuint index, GLshort x,
                            GLshort y, GLshort z, GLshort w)
 {
   glue->glVertexAttrib4sARB(index, x, y, z, w);
@@ -3829,7 +3829,7 @@ cc_glglue_glVertexAttrib4s(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib4f(const cc_glglue * glue,
-                           GLuint index, GLfloat x, 
+                           GLuint index, GLfloat x,
                            GLfloat y, GLfloat z, GLfloat w)
 {
   glue->glVertexAttrib4fARB(index, x, y, z, w);
@@ -3837,7 +3837,7 @@ cc_glglue_glVertexAttrib4f(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib4d(const cc_glglue * glue,
-                           GLuint index, GLdouble x, 
+                           GLuint index, GLdouble x,
                            GLdouble y, GLdouble z, GLdouble w)
 {
   glue->glVertexAttrib4dARB(index, x, y, z, w);
@@ -3845,7 +3845,7 @@ cc_glglue_glVertexAttrib4d(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttrib4Nub(const cc_glglue * glue,
-                             GLuint index, GLubyte x, 
+                             GLuint index, GLubyte x,
                              GLubyte y, GLubyte z, GLubyte w)
 {
   glue->glVertexAttrib4NubARB(index, x, y, z, w);
@@ -4014,9 +4014,9 @@ cc_glglue_glVertexAttrib4Nuiv(const cc_glglue * glue,
 
 void
 cc_glglue_glVertexAttribPointer(const cc_glglue * glue,
-                                GLuint index, GLint size, 
+                                GLuint index, GLint size,
                                 GLenum type, GLboolean normalized,
-                                GLsizei stride, 
+                                GLsizei stride,
                                 const GLvoid *pointer)
 {
   glue->glVertexAttribPointerARB(index, size, type, normalized, stride, pointer);
@@ -4038,7 +4038,7 @@ cc_glglue_glDisableVertexAttribArray(const cc_glglue * glue,
 
 void
 cc_glglue_glGetVertexAttribdv(const cc_glglue * glue,
-                              GLuint index, GLenum pname, 
+                              GLuint index, GLenum pname,
                               GLdouble *params)
 {
   glue->glGetVertexAttribdvARB(index, pname, params);
@@ -4046,7 +4046,7 @@ cc_glglue_glGetVertexAttribdv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetVertexAttribfv(const cc_glglue * glue,
-                              GLuint index, GLenum pname, 
+                              GLuint index, GLenum pname,
                               GLfloat *params)
 {
   glue->glGetVertexAttribfvARB(index, pname, params);
@@ -4054,7 +4054,7 @@ cc_glglue_glGetVertexAttribfv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetVertexAttribiv(const cc_glglue * glue,
-                              GLuint index, GLenum pname, 
+                              GLuint index, GLenum pname,
                               GLint *params)
 {
   glue->glGetVertexAttribivARB(index, pname, params);
@@ -4062,7 +4062,7 @@ cc_glglue_glGetVertexAttribiv(const cc_glglue * glue,
 
 void
 cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue,
-                                    GLuint index, GLenum pname, 
+                                    GLuint index, GLenum pname,
                                     GLvoid **pointer)
 {
   glue->glGetVertexAttribPointervARB(index, pname, pointer);
@@ -4081,66 +4081,66 @@ cc_glglue_has_occlusion_query(const cc_glglue * glue)
 }
 
 void
-cc_glglue_glGenQueries(const cc_glglue * glue, 
+cc_glglue_glGenQueries(const cc_glglue * glue,
                        GLsizei n, GLuint * ids)
 {
   glue->glGenQueries(n, ids);
 }
 
 void
-cc_glglue_glDeleteQueries(const cc_glglue * glue, 
+cc_glglue_glDeleteQueries(const cc_glglue * glue,
                           GLsizei n, const GLuint *ids)
 {
   glue->glDeleteQueries(n, ids);
 }
 
 GLboolean
-cc_glglue_glIsQuery(const cc_glglue * glue, 
+cc_glglue_glIsQuery(const cc_glglue * glue,
                     GLuint id)
 {
   return glue->glIsQuery(id);
 }
 
 void
-cc_glglue_glBeginQuery(const cc_glglue * glue, 
+cc_glglue_glBeginQuery(const cc_glglue * glue,
                        GLenum target, GLuint id)
 {
   glue->glBeginQuery(target, id);
 }
 
 void
-cc_glglue_glEndQuery(const cc_glglue * glue, 
+cc_glglue_glEndQuery(const cc_glglue * glue,
                      GLenum target)
 {
   glue->glEndQuery(target);
 }
 
 void
-cc_glglue_glGetQueryiv(const cc_glglue * glue, 
-                       GLenum target, GLenum pname, 
+cc_glglue_glGetQueryiv(const cc_glglue * glue,
+                       GLenum target, GLenum pname,
                        GLint * params)
 {
   glue->glGetQueryiv(target, pname, params);
 }
 
 void
-cc_glglue_glGetQueryObjectiv(const cc_glglue * glue, 
-                             GLuint id, GLenum pname, 
+cc_glglue_glGetQueryObjectiv(const cc_glglue * glue,
+                             GLuint id, GLenum pname,
                              GLint * params)
 {
   glue->glGetQueryObjectiv(id, pname, params);
 }
 
 void
-cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue, 
-                              GLuint id, GLenum pname, 
+cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue,
+                              GLuint id, GLenum pname,
                               GLuint * params)
 {
   glue->glGetQueryObjectuiv(id, pname, params);
 }
 
 /* GL_NV_texture_rectangle (identical to GL_EXT_texture_rectangle) */
-SbBool 
+SbBool
 cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
@@ -4148,7 +4148,7 @@ cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 }
 
 /* GL_EXT_texture_rectangle */
-SbBool 
+SbBool
 cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
@@ -4164,7 +4164,7 @@ cc_glglue_has_nv_texture_shader(const cc_glglue * glue)
 }
 
 /* GL_ARB_shadow */
-SbBool 
+SbBool
 cc_glglue_has_arb_shadow(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
@@ -4180,7 +4180,7 @@ cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 }
 
 /* GL_EXT_texture_env_combine || GL_ARB_texture_env_combine || OGL 1.4 */
-SbBool 
+SbBool
 cc_glglue_has_texture_env_combine(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
@@ -4240,7 +4240,7 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 
 /* offscreen rendering callback handling */
 
-void 
+void
 cc_glglue_context_set_offscreen_cb_functions(cc_glglue_offscreen_cb_functions* p)
 {
   offscreen_cb = p;
@@ -4300,7 +4300,7 @@ cc_glglue_context_reinstate_previous(void * ctx)
 
   if (offscreen_cb && offscreen_cb->reinstate_previous) {
     (*offscreen_cb->reinstate_previous)(ctx);
-  } else { 
+  } else {
 #ifdef HAVE_GLX
   glxglue_context_reinstate_previous(ctx);
 #elif defined(HAVE_AGL)
@@ -4318,7 +4318,7 @@ cc_glglue_context_destruct(void * ctx)
 {
   if (offscreen_cb && offscreen_cb->destruct) {
     (*offscreen_cb->destruct)(ctx);
-  } else { 
+  } else {
 #ifdef HAVE_GLX
   glxglue_context_destruct(ctx);
 #elif defined(HAVE_AGL)
@@ -4470,12 +4470,12 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 
   /* Force an additional limit to the maximum tilesize to 4096x4096
      pixels.
-  
+
      This is done to work around a problem with some OpenGL drivers: a
      huge value is returned for the maximum offscreen OpenGL canvas,
      where the driver obviously does not take into account the amount
      of memory needed to actually allocate such a large buffer.
-  
+
      This problem has at least been observed with the MS Windows XP
      software OpenGL renderer, which reports a maximum viewport size
      of 16k x 16k pixels.
@@ -4522,7 +4522,7 @@ cc_glglue_context_can_render_to_texture(void * ctx)
   return wglglue_context_can_render_to_texture(ctx);
 #else
   /* GLX */
-  return FALSE; 
+  return FALSE;
 #endif
 }
 
@@ -4596,7 +4596,7 @@ compute_log(int value)
 static SbBool
 proxy_mipmap_2d(int width, int height,
                 GLenum internalFormat,
-                GLenum format,  
+                GLenum format,
                 GLenum type,
                 SbBool mipmap)
 {
@@ -4608,7 +4608,7 @@ proxy_mipmap_2d(int width, int height,
                format, type, NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                            GL_TEXTURE_WIDTH, &w);
-  
+
   if (w == 0) return FALSE;
   if (!mipmap) return TRUE;
 
@@ -4628,8 +4628,8 @@ proxy_mipmap_2d(int width, int height,
 /* proxy mipmap creation. 3D version. */
 static SbBool
 proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
-                GLenum internalFormat, 
-                GLenum format, 
+                GLenum internalFormat,
+                GLenum format,
                 GLenum type,
                 SbBool mipmap)
 {
@@ -4637,8 +4637,8 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
   int level;
   int levels = compute_log(cc_max(cc_max(width, height), depth));
 
-  cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, internalFormat, 
-                         width, height, depth, 0, format, type, 
+  cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, internalFormat,
+                         width, height, depth, 0, format, type,
                          NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                            GL_TEXTURE_WIDTH, &w);
@@ -4649,7 +4649,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     if (depth > 1) depth >>= 1;
-    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat, 
+    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat,
                            width, height, depth, 0, format, type,
                            NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
@@ -4661,7 +4661,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
 
 SbBool
 cc_glglue_is_texture_size_legal(const cc_glglue * glw,
-                                int xsize, int ysize, int zsize, 
+                                int xsize, int ysize, int zsize,
                                 int bytespertexel, SbBool mipmap)
 {
   GLenum internalformat;
@@ -4683,24 +4683,24 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
     format = internalformat = GL_RGBA8;
     break;
   }
-  
-  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
+
+  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize,
                                            internalformat, format, type, mipmap);
 }
 
 /*!
-  Note that the \e internalformat parameter corresponds to the \e 
+  Note that the \e internalformat parameter corresponds to the \e
   internalFormat parameter to glTexImage2D; either the number of
   components per texel or a constant specifying the internal texture format.
  */
 SbBool
 coin_glglue_is_texture_size_legal(const cc_glglue * glw,
-                                  int xsize, int ysize, int zsize, 
+                                  int xsize, int ysize, int zsize,
                                   GLenum internalformat,
                                   GLenum format,
                                   GLenum type,
                                   SbBool mipmap)
- { 
+ {
   if (zsize == 0) { /* 2D textures */
     if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
       if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
@@ -4805,7 +4805,7 @@ float cc_glglue_get_max_anisotropy(const cc_glglue * glue)
   return glue->max_anisotropy;
 }
 
-SbBool 
+SbBool
 cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue)
 {
   return glue->can_do_anisotropic_filtering;
@@ -4889,7 +4889,7 @@ coin_gl_current_context(void)
 
 /* ********************************************************************** */
 
-SbBool 
+SbBool
 coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 {
   return glw->vbo_in_displaylist_ok;
@@ -4897,7 +4897,7 @@ coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 
 /* ********************************************************************** */
 
-uint32_t 
+uint32_t
 coin_glglue_get_contextid(const cc_glglue * glue)
 {
   return glue->contextid;
@@ -4911,7 +4911,7 @@ static void cleanup_instance_created_list(void)
   gl_instance_created_cblist = NULL;
 }
 
-void 
+void
 coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
                                           void * closure)
 {
@@ -4925,126 +4925,126 @@ coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
 
 /* ********************************************************************** */
 
-void 
+void
 cc_glglue_glIsRenderbuffer(const cc_glglue * glue, GLuint renderbuffer)
 {
   assert(glue->has_fbo);
   glue->glIsRenderbuffer(renderbuffer);
 }
 
-void 
+void
 cc_glglue_glBindRenderbuffer(const cc_glglue * glue, GLenum target, GLuint renderbuffer)
-{ 
+{
   assert(glue->has_fbo);
   glue->glBindRenderbuffer(target, renderbuffer);
 }
 
-void 
+void
 cc_glglue_glDeleteRenderbuffers(const cc_glglue * glue, GLsizei n, const GLuint *renderbuffers)
-{ 
+{
   assert(glue->has_fbo);
   glue->glDeleteRenderbuffers(n, renderbuffers);
 }
 
-void 
+void
 cc_glglue_glGenRenderbuffers(const cc_glglue * glue, GLsizei n, GLuint *renderbuffers)
-{ 
+{
   assert(glue->has_fbo);
   glue->glGenRenderbuffers(n, renderbuffers);
 }
 
-void 
+void
 cc_glglue_glRenderbufferStorage(const cc_glglue * glue, GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 {
   assert(glue->has_fbo);
   glue->glRenderbufferStorage(target, internalformat, width, height);
 }
 
-void 
+void
 cc_glglue_glGetRenderbufferParameteriv(const cc_glglue * glue, GLenum target, GLenum pname, GLint * params)
-{ 
+{
   assert(glue->has_fbo);
   glue->glGetRenderbufferParameteriv(target, pname, params);
 }
 
-GLboolean 
+GLboolean
 cc_glglue_glIsFramebuffer(const cc_glglue * glue, GLuint framebuffer)
 {
   assert(glue->has_fbo);
   return glue->glIsFramebuffer(framebuffer);
 }
 
-void 
+void
 cc_glglue_glBindFramebuffer(const cc_glglue * glue, GLenum target, GLuint framebuffer)
 {
   assert(glue->has_fbo);
   glue->glBindFramebuffer(target, framebuffer);
 }
 
-void 
+void
 cc_glglue_glDeleteFramebuffers(const cc_glglue * glue, GLsizei n, const GLuint * framebuffers)
 {
   assert(glue->has_fbo);
   glue->glDeleteFramebuffers(n, framebuffers);
 }
 
-void 
+void
 cc_glglue_glGenFramebuffers(const cc_glglue * glue, GLsizei n, GLuint * framebuffers)
 {
   assert(glue->has_fbo);
   glue->glGenFramebuffers(n, framebuffers);
 }
 
-GLenum 
+GLenum
 cc_glglue_glCheckFramebufferStatus(const cc_glglue * glue, GLenum target)
 {
   assert(glue->has_fbo);
   return glue->glCheckFramebufferStatus(target);
 }
 
-void 
+void
 cc_glglue_glFramebufferTexture1D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
   assert(glue->has_fbo);
   glue->glFramebufferTexture1D(target, attachment, textarget, texture, level);
 }
 
-void 
+void
 cc_glglue_glFramebufferTexture2D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
   assert(glue->has_fbo);
   glue->glFramebufferTexture2D(target, attachment, textarget, texture, level);
 }
 
-void 
+void
 cc_glglue_glFramebufferTexture3D(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
-{ 
+{
   assert(glue->has_fbo);
   glue->glFramebufferTexture3D(target, attachment, textarget, texture, level,zoffset);
 }
 
-void 
+void
 cc_glglue_glFramebufferRenderbuffer(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
   assert(glue->has_fbo);
   glue->glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 }
 
-void 
+void
 cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum pname, GLint * params)
 {
   assert(glue->has_fbo);
   glue->glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
 }
 
-void 
+void
 cc_glglue_glGenerateMipmap(const cc_glglue * glue, GLenum target)
 {
   assert(glue->has_fbo);
   glue->glGenerateMipmap(target);
 }
 
-SbBool 
+SbBool
 cc_glglue_has_framebuffer_objects(const cc_glglue * glue)
 {
   return glue->has_fbo;
