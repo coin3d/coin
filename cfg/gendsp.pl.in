@@ -782,8 +782,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_LIB_DSP_DEFS\@ /YX /FD /Gs /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_LIB_DSP_DEFS\@ /YX /FD /Gs /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "NDEBUG"
 # ADD RSC /l 0x414 /d "NDEBUG"
@@ -808,8 +808,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /YX /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
+# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"
@@ -834,8 +834,8 @@ LIB32=link.exe -lib
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_DSP_DEFS\@ /YX /FD /Gs /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_DSP_DEFS\@ /YX /FD /Gs /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_DSP_DEFS\@ /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=0 \@${LIBRARY}_DSP_DEFS\@ /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -846,8 +846,8 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /machine:I386
-# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /machine:I386 /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@.dll" /opt:nowin98
+# ADD BASE LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)"
@@ -863,8 +863,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_DSP_DEFS\@ /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_DSP_DEFS\@ /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_DSP_DEFS\@ /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_DSP_DEFS\@ /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -876,7 +876,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@d.dll"
+# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@d.dll" /opt:nowin98
 
 !ENDIF
 
