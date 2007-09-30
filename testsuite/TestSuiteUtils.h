@@ -28,7 +28,7 @@ namespace SIM { namespace Coin3D { namespace Coin { namespace TestSuite {
 
 void Init(void);
 
-void PushMessageSuppressFilters(char * patterns[]);
+void PushMessageSuppressFilters(const char * patterns[]);
 void PopMessageSuppressFilters(void);
 
 void ResetDebugInfoCount(int count = 0);

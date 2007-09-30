@@ -80,7 +80,6 @@ debugerrormsg_handler(const SoError * error, void * data)
   default:
     assert(0 && "schizofrene SoDebugError error");
   }
-
   const SbString & msg = error->getDebugString();
   if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
 }
@@ -89,7 +88,6 @@ void
 readerrormsg_handler(const SoError * error, void * data)
 {
   ++readerrorcount;
-
   const SbString & msg = error->getDebugString();
   if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
 }
@@ -98,7 +96,6 @@ void
 memoryerrormsg_handler(const SoError * error, void * data)
 {
   ++memoryerrorcount;
-
   const SbString & msg = error->getDebugString();
   if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
 }
@@ -114,7 +111,7 @@ TestSuite::Init(void)
 }
 
 void
-TestSuite::PushMessageSuppressFilters(char * patterns[])
+TestSuite::PushMessageSuppressFilters(const char * patterns[])
 {
   filterset * filters = new filterset;
   filters->next = messagefilters;
