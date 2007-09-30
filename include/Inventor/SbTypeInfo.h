@@ -201,6 +201,8 @@ class SoMFVec4d;
 
 // *************************************************************************
 
+// namespace SIM { namespace Coin3D { namespace Coin {
+
 template <typename T>
 struct SbTypeInfo {
   typedef T Type;
@@ -792,5 +794,531 @@ struct SbTypeInfo<SbDPMatrix> {
 };
 
 // *************************************************************************
+
+template<>
+struct SbTypeInfo<SoSFBitMask> {
+  typedef SoSFBitMask Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBool> {
+  typedef SoSFBool Type;
+  typedef SbBool DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox2d> {
+  typedef SoSFBox2d Type;
+  typedef SbBox2d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox2f> {
+  typedef SoSFBox2f Type;
+  typedef SbBox2f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox2i32> {
+  typedef SoSFBox2i32 Type;
+  typedef SbBox2i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox2s> {
+  typedef SoSFBox2s Type;
+  typedef SbBox2s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox3d> {
+  typedef SoSFBox3d Type;
+  typedef SbBox3d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox3f> {
+  typedef SoSFBox3f Type;
+  typedef SbBox3f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox3i32> {
+  typedef SoSFBox3i32 Type;
+  typedef SbBox3i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFBox3s> {
+  typedef SoSFBox3s Type;
+  typedef SbBox3s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFColor> {
+  typedef SoSFColor Type;
+  typedef SbColor DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFColorRGBA> {
+  typedef SoSFColorRGBA Type;
+  typedef SbColorRGBA DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFDouble> {
+  typedef SoSFDouble Type;
+  typedef double DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFEngine> {
+  typedef SoSFEngine Type;
+  typedef SoEngine * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFEnum> {
+  typedef SoSFEnum Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFFloat> {
+  typedef SoSFFloat Type;
+  typedef float DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFImage3> {
+  typedef SoSFImage3 Type;
+  typedef SoImage3 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFImage> {
+  typedef SoSFImage Type;
+  typedef SbImage DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFInt32> {
+  typedef SoSFInt32 Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFMatrix> {
+  typedef SoSFMatrix Type;
+  typedef SbMatrix DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFName> {
+  typedef SoSFName Type;
+  typedef SbName DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFNode> {
+  typedef SoSFNode Type;
+  typedef SoNode * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFPath> {
+  typedef SoSFPath Type;
+  typedef SoPath * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFPlane> {
+  typedef SoSFPlane Type;
+  typedef SbPlane DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFRotation> {
+  typedef SoSFRotation Type;
+  typedef SbRotation DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFShort> {
+  typedef SoSFShort Type;
+  typedef short DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFString> {
+  typedef SoSFString Type;
+  typedef SbString DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFTime> {
+  typedef SoSFTime Type;
+  typedef SbTime DataType;
+};
+
+//template<>
+//struct SbTypeInfo<SoSFTrigger> {
+//  typedef SoSFTrigger Type;
+//  typedef SoTrigger DataType;
+//};
+
+template<>
+struct SbTypeInfo<SoSFUInt32> {
+  typedef SoSFUInt32 Type;
+  typedef uint32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFUShort> {
+  typedef SoSFUShort Type;
+  typedef unsigned short DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec2b> {
+  typedef SoSFVec2b Type;
+  typedef SbVec2b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec2d> {
+  typedef SoSFVec2d Type;
+  typedef SbVec2d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec2f> {
+  typedef SoSFVec2f Type;
+  typedef SbVec2f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec2i32> {
+  typedef SoSFVec2i32 Type;
+  typedef SbVec2i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec2s> {
+  typedef SoSFVec2s Type;
+  typedef SbVec2s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec3b> {
+  typedef SoSFVec3b Type;
+  typedef SbVec3b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec3d> {
+  typedef SoSFVec3d Type;
+  typedef SbVec3d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec3f> {
+  typedef SoSFVec3f Type;
+  typedef SbVec3f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec3i32> {
+  typedef SoSFVec3i32 Type;
+  typedef SbVec3i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec3s> {
+  typedef SoSFVec3s Type;
+  typedef SbVec3s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4b> {
+  typedef SoSFVec4b Type;
+  typedef SbVec4b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4d> {
+  typedef SoSFVec4d Type;
+  typedef SbVec4d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4f> {
+  typedef SoSFVec4f Type;
+  typedef SbVec4f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4i32> {
+  typedef SoSFVec4i32 Type;
+  typedef SbVec4i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4s> {
+  typedef SoSFVec4s Type;
+  typedef SbVec4s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4ub> {
+  typedef SoSFVec4ub Type;
+  typedef SbVec4ub DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4ui32> {
+  typedef SoSFVec4ui32 Type;
+  typedef SbVec4ui32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoSFVec4us> {
+  typedef SoSFVec4us Type;
+  typedef SbVec4us DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFBitMask> {
+  typedef SoMFBitMask Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFBool> {
+  typedef SoMFBool Type;
+  typedef SbBool DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFColor> {
+  typedef SoMFColor Type;
+  typedef SbColor DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFColorRGBA> {
+  typedef SoMFColorRGBA Type;
+  typedef SbColorRGBA DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFDouble> {
+  typedef SoMFDouble Type;
+  typedef double DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFEngine> {
+  typedef SoMFEngine Type;
+  typedef SoEngine * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFEnum> {
+  typedef SoMFEnum Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFFloat> {
+  typedef SoMFFloat Type;
+  typedef float DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFInt32> {
+  typedef SoMFInt32 Type;
+  typedef int32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFMatrix> {
+  typedef SoMFMatrix Type;
+  typedef SbMatrix DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFName> {
+  typedef SoSFVec4us Type;
+  typedef SbVec4us DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFNode> {
+  typedef SoMFNode Type;
+  typedef SoNode * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFPath> {
+  typedef SoMFPath Type;
+  typedef SoPath * DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFPlane> {
+  typedef SoMFPlane Type;
+  typedef SbPlane DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFRotation> {
+  typedef SoMFRotation Type;
+  typedef SbRotation DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFShort> {
+  typedef SoMFShort Type;
+  typedef short DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFString> {
+  typedef SoMFString Type;
+  typedef SbString DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFTime> {
+  typedef SoMFTime Type;
+  typedef SbTime DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFUInt32> {
+  typedef SoMFUInt32 Type;
+  typedef uint32_t DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFUShort> {
+  typedef SoMFUShort Type;
+  typedef unsigned short DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec2b> {
+  typedef SoMFVec2b Type;
+  typedef SbVec2b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec2d> {
+  typedef SoMFVec2d Type;
+  typedef SbVec2d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec2f> {
+  typedef SoMFVec2f Type;
+  typedef SbVec2f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec2i32> {
+  typedef SoMFVec2i32 Type;
+  typedef SbVec2i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec2s> {
+  typedef SoMFVec2s Type;
+  typedef SbVec2s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec3b> {
+  typedef SoMFVec3b Type;
+  typedef SbVec3b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec3d> {
+  typedef SoMFVec3d Type;
+  typedef SbVec3d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec3f> {
+  typedef SoMFVec3f Type;
+  typedef SbVec3f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec3i32> {
+  typedef SoMFVec3i32 Type;
+  typedef SbVec3i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec3s> {
+  typedef SoMFVec3s Type;
+  typedef SbVec3s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4b> {
+  typedef SoMFVec4b Type;
+  typedef SbVec4b DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4d> {
+  typedef SoMFVec4d Type;
+  typedef SbVec4d DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4f> {
+  typedef SoMFVec4f Type;
+  typedef SbVec4f DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4i32> {
+  typedef SoMFVec4i32 Type;
+  typedef SbVec4i32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4s> {
+  typedef SoMFVec4s Type;
+  typedef SbVec4s DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4ub> {
+  typedef SoMFVec4ub Type;
+  typedef SbVec4ub DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4ui32> {
+  typedef SoMFVec4ui32 Type;
+  typedef SbVec4ui32 DataType;
+};
+
+template<>
+struct SbTypeInfo<SoMFVec4us> {
+  typedef SoMFVec4us Type;
+  typedef SbVec4us DataType;
+};
+
+// *************************************************************************
+
+// } } } // namespace SIM::Coin3D::Coin
 
 #endif // !COIN_SBTYPEINFO_H
