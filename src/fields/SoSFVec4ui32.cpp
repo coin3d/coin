@@ -101,3 +101,16 @@ SoSFVec4ui32::setValue(const uint32_t xyzw[4])
 {
   this->setValue(SbVec4ui32(xyzw));
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec4ui32 field;
+  BOOST_CHECK_MESSAGE(SoSFVec4ui32::getClassTypeId() != SoType::badType(),
+                      "SoSFVec4ui32 class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

@@ -51,6 +51,7 @@
 #define COIN_INTERNAL_SOSFENGINE
 
 #include <Inventor/fields/SoSFEngine.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 
 #include <Inventor/SoInput.h>
@@ -302,3 +303,16 @@ SoSFEngine::referencesCopy(void) const
 // Kill the type-specific define.
 #undef COIN_INTERNAL_SOSFENGINE
 //$ END TEMPLATE SFNodeEnginePath
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFEngine field;
+  BOOST_CHECK_MESSAGE(SoSFEngine::getClassTypeId() != SoType::badType(),
+                      "SoSFEngine class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

@@ -35,6 +35,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFVec3d.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -97,3 +98,16 @@ SoSFVec3d::setValue(const double xyz[3])
 {
   this->setValue(SbVec3d(xyz));
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec3d field;
+  BOOST_CHECK_MESSAGE(SoSFVec3d::getClassTypeId() != SoType::badType(),
+                      "SoSFVec3d class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

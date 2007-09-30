@@ -142,3 +142,29 @@ SoSFColorRGBA::setHSVValue(const float hsva[4])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFColorRGBA field;
+  BOOST_CHECK_MESSAGE(SoSFColorRGBA::getClassTypeId() != SoType::badType(),
+                      "SoSFColorRGBA class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+BOOST_AUTO_TEST_CASE(textinput)
+{
+  SbBool ok;
+  SoSFColorRGBA field;
+  ok = field.set("0.0 .5 0 1");
+  BOOST_CHECK_MESSAGE(ok == TRUE, "could not set value");
+  BOOST_CHECK_EQUAL(field.getValue(), SbColorRGBA(0, .5, 0, 1));
+  ok = field.set("0 0.5 1");
+  BOOST_CHECK_MESSAGE(ok == FALSE, "accepted invalid (missing component) value");
+  ok = field.set("1 2 3 4");
+  //BOOST_CHECK_MESSAGE(ok == FALSE, "accepted out-of-range value");
+}
+
+#endif // COIN_TEST_SUITE

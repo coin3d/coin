@@ -145,3 +145,16 @@ SoSFRotation::setValue(const SbVec3f & axis, const float angle)
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFRotation field;
+  BOOST_CHECK_MESSAGE(SoSFRotation::getClassTypeId() != SoType::badType(),
+                      "SoSFRotation class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

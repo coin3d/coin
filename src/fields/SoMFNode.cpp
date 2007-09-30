@@ -50,6 +50,7 @@
 #define COIN_INTERNAL_SOMFNODE
 
 #include <Inventor/fields/SoMFNode.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/SoOutput.h>
@@ -593,3 +594,15 @@ SoMFNode::replaceNode(SoNode * oldnode, SoNode * newnode)
   int idx = this->findNode(oldnode);
   if (idx >= 0) this->replaceNode(idx, newnode);
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFNode field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

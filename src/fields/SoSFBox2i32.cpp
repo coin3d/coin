@@ -129,3 +129,16 @@ SoSFBox2i32::getValue(SbBox2i32 & box) const
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFBox2i32 field;
+  BOOST_CHECK_MESSAGE(SoSFBox2i32::getClassTypeId() != SoType::badType(),
+                      "SoSFBox2i32 class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

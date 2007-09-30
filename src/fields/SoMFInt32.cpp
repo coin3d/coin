@@ -36,8 +36,10 @@
   \sa SoSFInt32
 */
 
-#include <assert.h>
 #include <Inventor/fields/SoMFInt32.h>
+
+#include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #if COIN_DEBUG
@@ -91,3 +93,15 @@ SoMFInt32::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFInt32 field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

@@ -51,6 +51,7 @@
 #define COIN_INTERNAL_SOSFNODE
 
 #include <Inventor/fields/SoSFNode.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 
 #include <Inventor/SoInput.h>
@@ -302,3 +303,16 @@ SoSFNode::referencesCopy(void) const
 // Kill the type-specific define.
 #undef COIN_INTERNAL_SOSFNODE
 //$ END TEMPLATE SFNodeEnginePath
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFNode field;
+  BOOST_CHECK_MESSAGE(SoSFNode::getClassTypeId() != SoType::badType(),
+                      "SoSFNode class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

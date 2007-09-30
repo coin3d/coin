@@ -42,6 +42,7 @@
 #include <Inventor/fields/SoMFVec4ub.h>
 
 #include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -146,3 +147,38 @@ SoMFVec4ub::setValue(const uint8_t xyzw[4])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFVec4ub field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(textinput)
+{
+  SbBool ok;
+  SoMFVec4ub field;
+  ok = field.set("[]");
+  BOOST_CHECK_EQUAL(ok, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+  ok = field.set("1 2 3 4");
+  BOOST_CHECK_EQUAL(ok, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 1);
+  ok = field.set("[1 2 3 4]");
+  BOOST_CHECK_EQUAL(ok, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 1);
+  ok = field.set("[1 2 3 4 1 2 3 4]");
+  BOOST_CHECK_EQUAL(ok, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 2);
+  BOOST_CHECK_EQUAL(field[0], field[1]);
+  ok = field.set("[1 2 3 4, 1 2 3 4,]");
+  BOOST_CHECK_EQUAL(ok, TRUE);
+  BOOST_CHECK_EQUAL(field.getNum(), 2);
+  BOOST_CHECK_EQUAL(field[0], field[1]);
+}
+
+#endif // COIN_TEST_SUITE

@@ -102,3 +102,16 @@ SoSFVec3i32::setValue(const int32_t xyz[3])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec3i32 field;
+  BOOST_CHECK_MESSAGE(SoSFVec3i32::getClassTypeId() != SoType::badType(),
+                      "SoSFVec3i32 class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

@@ -83,3 +83,16 @@ SoSFPlane::writeValue(SoOutput * out) const
 #endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFPlane field;
+  BOOST_CHECK_MESSAGE(SoSFPlane::getClassTypeId() != SoType::badType(),
+                      "SoSFPlane class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

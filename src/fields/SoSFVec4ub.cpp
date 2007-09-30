@@ -107,6 +107,8 @@ SoSFVec4ub::setValue(const uint8_t xyzw[4])
 BOOST_AUTO_TEST_CASE(initialized)
 {
   SoSFVec4ub field;
+  BOOST_CHECK_MESSAGE(SoSFVec4ub::getClassTypeId() != SoType::badType(),
+                      "SoSFVec4ub class not initialized");
   BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
                       "missing class initialization");
   // no default value initialization

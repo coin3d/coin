@@ -100,3 +100,16 @@ SoSFVec4f::setValue(const float xyzw[4])
 {
   this->setValue(SbVec4f(xyzw));
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec4f field;
+  BOOST_CHECK_MESSAGE(SoSFVec4f::getClassTypeId() != SoType::badType(),
+                      "SoSFVec4f class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

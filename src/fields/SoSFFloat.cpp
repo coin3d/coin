@@ -77,3 +77,16 @@ SoSFFloat::writeValue(SoOutput * out) const
 #endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFFloat field;
+  BOOST_CHECK_MESSAGE(SoSFFloat::getClassTypeId() != SoType::badType(),
+                      "SoSFFloat class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

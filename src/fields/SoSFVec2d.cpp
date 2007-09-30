@@ -101,3 +101,16 @@ SoSFVec2d::setValue(const double xy[2])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec2d field;
+  BOOST_CHECK_MESSAGE(SoSFVec2d::getClassTypeId() != SoType::badType(),
+                      "SoSFVec2d class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

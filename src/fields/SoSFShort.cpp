@@ -35,6 +35,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFShort.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -76,3 +77,16 @@ SoSFShort::writeValue(SoOutput * out) const
 #endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFShort field;
+  BOOST_CHECK_MESSAGE(SoSFShort::getClassTypeId() != SoType::badType(),
+                      "SoSFShort class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

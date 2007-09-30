@@ -103,6 +103,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFImage3.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -338,3 +339,16 @@ SoSFImage3::finishEditing(void)
 {
   this->valueChanged();
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFImage3 field;
+  BOOST_CHECK_MESSAGE(SoSFImage3::getClassTypeId() != SoType::badType(),
+                      "SoSFImage3 class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

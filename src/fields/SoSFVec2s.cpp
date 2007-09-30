@@ -38,6 +38,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFVec2s.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -105,3 +106,16 @@ SoSFVec2s::setValue(const short xy[2])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec2s field;
+  BOOST_CHECK_MESSAGE(SoSFVec2s::getClassTypeId() != SoType::badType(),
+                      "SoSFVec2s class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

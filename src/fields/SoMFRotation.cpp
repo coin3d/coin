@@ -35,6 +35,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoMFRotation.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -150,3 +151,15 @@ SoMFRotation::setValue(const SbVec3f & axis, const float angle)
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFRotation field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

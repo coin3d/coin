@@ -141,3 +141,16 @@ SoSFColor::setHSVValue(const float hsv[3])
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFColor field;
+  BOOST_CHECK_MESSAGE(SoSFColor::getClassTypeId() != SoType::badType(),
+                      "SoSFColor class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

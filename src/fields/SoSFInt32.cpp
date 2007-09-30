@@ -35,6 +35,7 @@
 // *************************************************************************
 
 #include <Inventor/fields/SoSFInt32.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -85,3 +86,16 @@ SoSFInt32::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFInt32 field;
+  BOOST_CHECK_MESSAGE(SoSFInt32::getClassTypeId() != SoType::badType(),
+                      "SoSFInt32 class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

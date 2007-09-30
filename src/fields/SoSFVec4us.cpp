@@ -101,3 +101,38 @@ SoSFVec4us::setValue(const unsigned short xyzw[4])
 {
   this->setValue(SbVec4us(xyzw));
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFVec4us field;
+  BOOST_CHECK_MESSAGE(SoSFVec4us::getClassTypeId() != SoType::badType(),
+                      "SoSFVec4us class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+BOOST_AUTO_TEST_CASE(textinput)
+{
+  SoSFVec4us field;
+  field.set("1 2 3 4");
+  BOOST_CHECK_EQUAL(field.getValue(), SbVec4us(1, 2, 3, 4));
+  const char * filters[] = { "read error", NULL }; // all read error messages
+  TestSuite::ResetReadErrorCount();
+  // TestSuite::PushMessageSuppressFilters(filters);
+  SbBool ok;
+  ok = field.set("-3 4 32 3"); // should emit error message on '-3'
+  BOOST_CHECK_EQUAL(ok, FALSE);
+  //BOOST_CHECK_EQUAL(TestSuite::GetReadErrorCount(), 1);
+  ok = field.set("3 525 32 3"); // should emit error message on '525'
+  //BOOST_CHECK_EQUAL(ok, FALSE);
+  //BOOST_CHECK_EQUAL(TestSuite::GetReadErrorCount(), 2);
+  ok = field.set("3 32 3"); // error on account of too few numbers
+  BOOST_CHECK_EQUAL(ok, FALSE);
+  //BOOST_CHECK_EQUAL(TestSuite::GetReadErrorCount(), 3);
+  // TestSuite::PopMessageSuppressFilters();
+  TestSuite::ResetReadErrorCount();
+}
+
+#endif // COIN_TEST_SUITE

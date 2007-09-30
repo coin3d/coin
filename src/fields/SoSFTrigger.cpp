@@ -38,6 +38,7 @@
 */
 
 #include <Inventor/fields/SoSFTrigger.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 
 
@@ -140,3 +141,16 @@ SoSFTrigger::writeValue(SoOutput * out) const
 {
   return;
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoSFTrigger field;
+  BOOST_CHECK_MESSAGE(SoSFTrigger::getClassTypeId() != SoType::badType(),
+                      "SoSFTrigger class not initialized");
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+}
+
+#endif // COIN_TEST_SUITE

@@ -35,8 +35,10 @@
 
 // *************************************************************************
 
-#include <assert.h>
 #include <Inventor/fields/SoMFString.h>
+
+#include <assert.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -134,3 +136,15 @@ SoMFString::deleteText(const int fromline, const int fromchar,
 }
 
 // *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFString field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE

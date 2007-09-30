@@ -49,6 +49,7 @@
 #define COIN_INTERNAL_SOMFPATH
 
 #include <Inventor/fields/SoMFPath.h>
+
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFPath.h>
 #include <Inventor/SoOutput.h>
@@ -474,3 +475,15 @@ SoMFPath::notify(SoNotList * l)
 
   inherited::notify(l);
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SoMFPath field;
+  BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
+                      "missing class initialization");
+  BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+#endif // COIN_TEST_SUITE
