@@ -305,6 +305,9 @@ AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
 AC_PROG_CXX
 AC_PROG_CXXCPP
+if $BUILD_WITH_MSVC; then
+  SIM_AC_MSC_VERSION
+fi
 
 SIM_AC_STRIP_EXIT_DECLARATION
 
@@ -1937,7 +1940,7 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 COIN_COMPILER="$CXX"
 
   if $BUILD_WITH_MSVC; then
-    COIN_TESTSUITE_EXTRA_CPPFLAGS="/Z7 /Fdtestsuite.pdb /EHsc"
+    COIN_TESTSUITE_EXTRA_CPPFLAGS="/Fdtestsuite.pdb /EHsc"
     COIN_TESTSUITE_EXTRA_LDFLAGS="/SUBSYSTEM:console /DEBUG"
     rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
@@ -1964,8 +1967,8 @@ COIN_COMPILER="$CXX"
 	;;
       *)
         SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, with symbols])
-        CFLAGS="-g /Z7 /Yd $CFLAGS"
-        CXXFLAGS="-g /Z7 /Yd $CXXFLAGS"
+        CFLAGS="-g $CFLAGS"
+        CXXFLAGS="-g $CXXFLAGS"
 	;;
       esac
     else
@@ -1973,14 +1976,16 @@ COIN_COMPILER="$CXX"
       case $enable_symbols in
       no | false)
         SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                     [dynamic .dll, no symbols])
-        LIBFLAGS="$LIBFLAGS /RELEASE"
+                                     [dynamic .dll (release) + .pdb])
+        CFLAGS="-g $CFLAGS"
+        CXXFLAGS="-g $CXXFLAGS"
+        LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
         ;;
       *)
         SIM_AC_CONFIGURATION_SETTING([Coin build type],
                                      [dynamic .dll + .pdb])
-        CFLAGS="-g /Z7 /Yd $CFLAGS"
-        CXXFLAGS="-g /Z7 /Yd $CXXFLAGS"
+        CFLAGS="-g $CFLAGS"
+        CXXFLAGS="-g $CXXFLAGS"
         LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
         ;;
       esac
