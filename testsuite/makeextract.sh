@@ -74,9 +74,11 @@ echo "" >&5
 # source files, not the extract files), we should insert #file-directives
 # into the extract files for each COIN_TEST_SUITE block.  That would
 # slow this extraction process down a bit though, but should be worth it.
-cat $srcdir/$srcdirpath | \
-  sed -n -e '/^#if.*COIN_TEST_SUITE/,/^#endif.*COIN_TEST_SUITE/ p' | \
-  egrep -v "^#.*COIN_TEST_SUITE" >&5
+cat $srcdir/$srcdirpath | egrep -n "*" | \
+  sed -n -e '/:#if.*COIN_TEST_SUITE/,/:#endif.*COIN_TEST_SUITE/ p' | \
+  sed -e 's,\([0-9]*\):#ifdef.*COIN_TEST_SUITE,#line \1 "'$srcdirpath'",' | \
+  egrep -v ":#.*COIN_TEST_SUITE" | \
+  sed -e 's,[0-9]*:,,' >&5
 
 echo "" >&5
 echo "BOOST_AUTO_TEST_SUITE_END();" >&5
