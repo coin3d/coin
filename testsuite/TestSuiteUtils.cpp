@@ -29,6 +29,12 @@
 #include <Inventor/errors/SoMemoryError.h>
 #include <Inventor/errors/SoReadError.h>
 
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+
 #include <TestSuiteUtils.h>
 
 using namespace SIM::Coin3D::Coin;
@@ -100,7 +106,7 @@ memoryerrormsg_handler(const SoError * error, void * data)
   if (!should_filter(msg)) fprintf(stderr, "%s\n", msg.getString());
 }
 
-} // anonymous
+} // anonymous namespace
 
 void
 TestSuite::Init(void)
@@ -199,4 +205,35 @@ int
 TestSuite::GetMemoryErrorCount(void)
 {
   return memoryerrorcount;
+}
+
+SoNode *
+TestSuite::ReadInventorFile(const char * filename)
+{
+  assert(filename);
+  SoNode * root = NULL;
+  {
+    SoInput in;
+    if (!in.openFile(filename)) {
+      return NULL;
+    }
+    root = SoDB::readAll(&in);
+  }
+  return root;
+}
+
+int
+TestSuite::WriteInventorFile(const char * filename, SoNode * root)
+{
+  assert(filename);
+  assert(root);
+  SoOutput out;
+  if (!out.openFile(filename)) {
+    return FALSE;
+  }
+  SoWriteAction wa(&out);
+  root->ref();
+  wa.apply(root);
+  root->unrefNoDelete();
+  return TRUE;
 }

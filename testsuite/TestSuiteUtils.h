@@ -24,6 +24,8 @@
  *
 \**************************************************************************/
 
+class SoNode;
+
 namespace SIM { namespace Coin3D { namespace Coin { namespace TestSuite {
 
 void Init(void);
@@ -45,6 +47,9 @@ int GetReadErrorCount(void);
 
 void ResetMemoryErrorCount(int count = 0);
 int GetMemoryErrorCount(void);
+
+SoNode * ReadInventorFile(const char * filename);
+int WriteInventorFile(const char * filename, SoNode * root);
 
 } } } } // namespace
 

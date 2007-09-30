@@ -130,6 +130,12 @@ TEST_SUITE_OBJECTS = \
 	TestSuiteMisc.$(OBJEXT) \
 EODATA
 
+if test x"$filter" = x""; then
+cat <<"EODATA" >&5
+	StandardTests.$(OBJEXT) \
+EODATA
+fi
+
 for obj in $objlist; do
   echo >&5 "	$obj \\"
 done
@@ -178,6 +184,9 @@ TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.
 
 TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
+
+StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h Makefile
+	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
 
 EODATA
 

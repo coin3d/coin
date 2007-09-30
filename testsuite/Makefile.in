@@ -23,6 +23,7 @@ TEST_SUITE_OBJECTS = \
 	TestSuiteInit.$(OBJEXT) \
 	TestSuiteUtils.$(OBJEXT) \
 	TestSuiteMisc.$(OBJEXT) \
+	StandardTests.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
 	fieldsSoMFBool.$(OBJEXT) \
 	fieldsSoMFColor.$(OBJEXT) \
@@ -268,6 +269,9 @@ TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.
 
 TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
+
+StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h Makefile
+	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
 
 fieldsSoMFBitMask.cpp: $(top_srcdir)/src/fields/SoMFBitMask.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFBitMask.cpp
