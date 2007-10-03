@@ -69,7 +69,7 @@ T &
 SbLazyPimplPtr<T>::get(void) const
 {
   if (this->ptr == NULL) {
-    this->set(this->getNew());
+    this->ptr = this->getNew();
   }
   return *(this->ptr);
 }
