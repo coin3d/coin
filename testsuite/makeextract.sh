@@ -51,32 +51,45 @@ esac
 
 exec 5>${token}.cpp
 
+# include the declaration header for the current class
 cat $srcdir/$srcdirpath | grep "^#include" | head -1 >&5
 
-echo "" >&5
-echo "#define BOOST_TEST_NO_LIB 1" >&5
-echo "#include <boost/test/unit_test.hpp>" >&5
-echo "" >&5
-echo "#include <assert.h>" >&5
-echo "#include <stdio.h>" >&5
-echo "#include <iostream>" >&5
-echo "" >&5
-echo "#include <TestSuiteUtils.h>" >&5
-echo "#include <TestSuiteMisc.h>" >&5
-echo "" >&5
-echo "using namespace SIM::Coin3D::Coin;" >&5
-echo "using namespace SIM::Coin3D::Coin::TestSuite;" >&5
-echo "" >&5
-echo "BOOST_AUTO_TEST_SUITE(${class}_TestSuite);" >&5
-echo "" >&5
+cat >&5 <<EOF
 
-# FIXME: to get compile errors to point to the correct place (the original
-# source files, not the extract files), we should insert #file-directives
-# into the extract files for each COIN_TEST_SUITE block.  That would
-# slow this extraction process down a bit though, but should be worth it.
+#define BOOST_TEST_NO_LIB 1
+#include <boost/test/unit_test.hpp>
+#include <boost/intrusive_ptr.hpp>
+
+#include <assert.h>
+#include <stdio.h>
+#include <iostream>
+
+#include <TestSuiteUtils.h>
+#include <TestSuiteMisc.h>
+
+EOF
+
+# include all includes inside the TEST_SUITE scope up here
+cat $srcdir/$srcdirpath | \
+  sed -n -e '/^#if.*COIN_TEST_SUITE/,/^#endif.*COIN_TEST_SUITE/ p' | \
+  egrep "^#include" >&5
+
+cat >&5 <<EOF
+
+using namespace SIM::Coin3D::Coin;
+
+BOOST_AUTO_TEST_SUITE(${class}_TestSuite);
+
+EOF
+
+# extract the testsuite parts of the .cpp file, strip out the #ifdef
+# wrapper, and insert #line directives to make error messages point to
+# the original source file instead of the generated one.
+
 cat $srcdir/$srcdirpath | egrep -n "*" | \
   sed -n -e '/:#if.*COIN_TEST_SUITE/,/:#endif.*COIN_TEST_SUITE/ p' | \
   sed -e 's,\([0-9]*\):#ifdef.*COIN_TEST_SUITE,#line \1 "'$srcdirpath'",' | \
+  sed -e 's,\([0-9]*\):#include.*,#line \1 "'$srcdirpath'",' | \
   egrep -v ":#.*COIN_TEST_SUITE" | \
   sed -e 's,[0-9]*:,,' >&5
 
