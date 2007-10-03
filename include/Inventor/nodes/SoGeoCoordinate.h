@@ -57,6 +57,9 @@ protected:
   virtual ~SoGeoCoordinate(void);
 
 private:
+  SoGeoCoordinate(const SoGeoCoordinate & rhs);
+  SoGeoCoordinate & operator = (const SoGeoCoordinate & rhs);
+
   SbMatrix getTransform(SoGeoOrigin * origin, const int idx) const;
 
   SbPimplPtr<SoGeoCoordinateP> pimpl;

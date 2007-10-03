@@ -55,9 +55,12 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoGeoSeparator();
+  virtual ~SoGeoSeparator(void);
 
 private:
+  SoGeoSeparator(const SoGeoSeparator & rhs);
+  SoGeoSeparator & operator = (const SoGeoSeparator & rhs);
+
   void applyTransformation(SoAction * action);
   SbMatrix getTransform(SoState * state) const;
 
