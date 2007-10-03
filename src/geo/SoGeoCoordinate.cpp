@@ -91,7 +91,6 @@ SO_NODE_SOURCE(SoGeoCoordinate);
 */
 SoGeoCoordinate::SoGeoCoordinate(void)
 {
-  PRIVATE(this) = new SoGeoCoordinateP;
   PRIVATE(this)->originid = 0;
   PRIVATE(this)->thisid = 0;
 
@@ -109,9 +108,8 @@ SoGeoCoordinate::SoGeoCoordinate(void)
 /*!
   Destructor.
 */
-SoGeoCoordinate::~SoGeoCoordinate()
+SoGeoCoordinate::~SoGeoCoordinate(void)
 {
-  delete PRIVATE(this);
 }
 
 // Doc from superclass.
@@ -209,13 +207,12 @@ SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
 
 BOOST_AUTO_TEST_CASE(initialized)
 {
-  SoGeoCoordinate * node = new SoGeoCoordinate;
-  assert(node);
-  node->ref();
+  BOOST_CHECK_MESSAGE(SoGeoCoordinate::getClassTypeId() != SoType::badType(),
+                      "SoGeoCoordinate class not initializated");
+  boost::intrusive_ptr<SoGeoCoordinate> node(new SoGeoCoordinate);
   BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
                       "missing class initialization");
-  // BOOST_CHECK_EQUAL(node->point.getNum(), 1);
-  node->unref();
+  BOOST_CHECK_EQUAL(node->point.getNum(), 1);
 }
 
 #endif // COIN_TEST_SUITE

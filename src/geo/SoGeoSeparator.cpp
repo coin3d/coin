@@ -88,6 +88,13 @@
 
 // *************************************************************************
 
+class SoGeoSeparatorP {
+private:
+  SoGeoSeparatorP(void) {
+    assert(FALSE);
+  }
+};
+
 SO_NODE_SOURCE(SoGeoSeparator);
 
 /*!
@@ -109,7 +116,7 @@ SoGeoSeparator::SoGeoSeparator(void)
 /*!
   Destructor.
 */
-SoGeoSeparator::~SoGeoSeparator()
+SoGeoSeparator::~SoGeoSeparator(void)
 {
 }
 
@@ -246,12 +253,11 @@ SoGeoSeparator::getTransform(SoState * state) const
 
 BOOST_AUTO_TEST_CASE(initialized)
 {
-  SoGeoSeparator * node = new SoGeoSeparator;
-  assert(node);
-  node->ref();
+  BOOST_CHECK_MESSAGE(SoGeoSeparator::getClassTypeId() != SoType::badType(),
+                      "SoGeoSeparator class not initialized");
+  boost::intrusive_ptr<SoGeoSeparator> node(new SoGeoSeparator);
   BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
-                      "missing class initialization");
-  node->unref();
+                      "SoGeoSeparator object wrongly initialized");
 }
 
 #endif // COIN_TEST_SUITE

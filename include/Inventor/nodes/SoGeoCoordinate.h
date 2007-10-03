@@ -24,6 +24,7 @@
  *
 \**************************************************************************/
 
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/fields/SoMFString.h>
@@ -53,14 +54,13 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
-  virtual ~SoGeoCoordinate();
+  virtual ~SoGeoCoordinate(void);
 
 private:
-
   SbMatrix getTransform(SoGeoOrigin * origin, const int idx) const;
 
-  SoGeoCoordinateP * pimpl;
-};
+  SbPimplPtr<SoGeoCoordinateP> pimpl;
 
+};
 
 #endif // COIN_SOGEOCOORDINATE_H

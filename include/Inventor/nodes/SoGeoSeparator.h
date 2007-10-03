@@ -24,6 +24,7 @@
  *
 \**************************************************************************/
 
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SbMatrix.h>
@@ -60,7 +61,8 @@ private:
   void applyTransformation(SoAction * action);
   SbMatrix getTransform(SoState * state) const;
 
-  SoGeoSeparatorP * pimpl;
+  SbLazyPimplPtr<SoGeoSeparatorP> pimpl;
+
 };
 
 
