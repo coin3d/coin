@@ -142,9 +142,13 @@ EXTRA_DIST = \
 	packaging/windows/post.nsi.in \
 	examples/bindings/glutiv.cpp \
 	build/misc/generate.sh \
+	build/misc/build-docs.bat \
 	build/misc/config-wrapper.h \
-	build/misc/install-sdk.bat \
 	build/misc/create-directories.bat \
+	build/misc/install-headers.bat \
+	build/misc/install-sdk.bat \
+	build/misc/uninstall-headers.bat \
+	build/misc/uninstall-sdk.bat \
 	build/msvc6/data/draggerDefaults/centerballDragger.h \
 	build/msvc6/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc6/data/draggerDefaults/dragPointDragger.h \
@@ -180,7 +184,6 @@ EXTRA_DIST = \
 	build/msvc6/include/config-debug.h \
 	build/msvc6/include/config-release.h \
 	build/msvc6/include/setup.h \
-	build/msvc6/install-headers.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc7/data/draggerDefaults/dragPointDragger.h \
@@ -216,7 +219,6 @@ EXTRA_DIST = \
 	build/msvc7/include/config-debug.h \
 	build/msvc7/include/config-release.h \
 	build/msvc7/include/setup.h \
-	build/msvc7/install-headers.bat \
 	build/msvc8/data/draggerDefaults/centerballDragger.h \
 	build/msvc8/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc8/data/draggerDefaults/dragPointDragger.h \
@@ -252,8 +254,8 @@ EXTRA_DIST = \
 	build/msvc8/include/config-debug.h \
 	build/msvc8/include/config-release.h \
 	build/msvc8/include/setup.h \
-	build/msvc8/install-headers.bat \
 	testsuite/Makefile.in \
+	testsuite/StandardTests.cpp \
 	testsuite/TestSuiteInit.cpp \
 	testsuite/TestSuiteUtils.h \
 	testsuite/TestSuiteUtils.cpp \
