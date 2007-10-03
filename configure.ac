@@ -2144,6 +2144,7 @@ AC_CONFIG_FILES([
         include/Inventor/sensors/Makefile
         include/Inventor/system/Makefile
         include/Inventor/threads/Makefile
+        include/Inventor/tools/Makefile
         include/Inventor/annex/Makefile
         include/Inventor/annex/HardCopy/Makefile
         include/Inventor/annex/ForeignFiles/Makefile

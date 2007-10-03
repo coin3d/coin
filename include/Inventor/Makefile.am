@@ -1,7 +1,8 @@
 
 SUBDIRS = C MPEG VRMLnodes actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
-          misc nodekits nodes projectors sensors system threads navigation
+          misc navigation nodekits nodes projectors sensors system threads \
+          tools
 
 PublicHeaders = \
 	Sb.h \
