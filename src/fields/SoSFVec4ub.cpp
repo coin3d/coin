@@ -106,23 +106,26 @@ SoSFVec4ub::setValue(const uint8_t xyzw[4])
 
 BOOST_AUTO_TEST_CASE(initialized)
 {
-  SoSFVec4ub field;
   BOOST_CHECK_MESSAGE(SoSFVec4ub::getClassTypeId() != SoType::badType(),
                       "SoSFVec4ub class not initialized");
+  SoSFVec4ub field;
   BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
-                      "missing class initialization");
-  // no default value initialization
+                      "SoSFVec4ub object wrongly initialized");
+  // no default value initialization to test
   field.setValue(1, 2, 3, 4);
   BOOST_CHECK_EQUAL(field.getValue(), SbVec4ub(1, 2, 3, 4));
 }
 
 BOOST_AUTO_TEST_CASE(textinput)
 {
-  ResetReadErrorCount();
+  TestSuite::ResetReadErrorCount();
+  SbBool ok;
   SoSFVec4ub field;
-  field.set("1 2 3 4");
+  ok = field.set("1 2 3 4");
+  BOOST_CHECK_MESSAGE(ok == TRUE, "SoSFVec4ub read error");
   BOOST_CHECK_EQUAL(field.getValue(), SbVec4ub(1, 2, 3, 4));
-  BOOST_CHECK_EQUAL(GetReadErrorCount(), 0);
+  BOOST_CHECK_EQUAL(TestSuite::GetReadErrorCount(), 0);
+  TestSuite::ResetReadErrorCount();
 }
 
 #endif // COIN_TEST_SUITE
