@@ -37,7 +37,7 @@
 
 /* ********************************************************************** */
 
-template <typename T>
+template <class T>
 class COIN_DLL_API SbPimplPtr {
 public:
   SbPimplPtr(void);
@@ -50,8 +50,8 @@ public:
 
   SbPimplPtr<T> & operator = (const SbPimplPtr<T> & copy);
 
-  bool operator == (const SbPimplPtr<T> & rhs) const;
-  bool operator != (const SbPimplPtr<T> & rhs) const;
+  SbBool operator == (const SbPimplPtr<T> & rhs) const;
+  SbBool operator != (const SbPimplPtr<T> & rhs) const;
 
   const T * operator -> (void) const;
   T * operator -> (void);

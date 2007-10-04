@@ -38,7 +38,7 @@
 
 /* ********************************************************************** */
 
-template <typename T>
+template <class T>
 class COIN_DLL_API SbLazyPimplPtr {
 public:
   SbLazyPimplPtr(void);
@@ -51,8 +51,8 @@ public:
 
   SbLazyPimplPtr<T> & operator = (const SbLazyPimplPtr<T> & copy);
 
-  bool operator == (const SbLazyPimplPtr<T> & rhs) const;
-  bool operator != (const SbLazyPimplPtr<T> & rhs) const;
+  SbBool operator == (const SbLazyPimplPtr<T> & rhs) const;
+  SbBool operator != (const SbLazyPimplPtr<T> & rhs) const;
 
   const T * operator -> (void) const;
   T * operator -> (void);

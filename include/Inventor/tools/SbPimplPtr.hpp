@@ -88,14 +88,14 @@ SbPimplPtr<T>::operator = (const SbPimplPtr<T> & copy)
 }
 
 template <typename T>
-bool
+SbBool
 SbPimplPtr<T>::operator == (const SbPimplPtr<T> & rhs) const
 {
   return this->get() == rhs.get();
 }
 
 template <typename T>
-bool
+SbBool
 SbPimplPtr<T>::operator != (const SbPimplPtr<T> & rhs) const
 {
   return !(*this == rhs);

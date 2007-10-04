@@ -90,14 +90,14 @@ SbLazyPimplPtr<T>::operator = (const SbLazyPimplPtr<T> & copy)
 }
 
 template <typename T>
-bool
+SbBool
 SbLazyPimplPtr<T>::operator == (const SbLazyPimplPtr<T> & rhs) const
 {
   return this->get() == rhs.get();
 }
 
 template <typename T>
-bool
+SbBool
 SbLazyPimplPtr<T>::operator != (const SbLazyPimplPtr<T> & rhs) const
 {
   return !(*this == rhs);
