@@ -61,7 +61,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  ~SoSpotLightManip();
+  virtual ~SoSpotLightManip(void);
 
   void setDragger(SoDragger * newdragger);
 

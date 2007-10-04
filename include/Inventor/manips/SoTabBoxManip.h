@@ -36,7 +36,7 @@ public:
   SoTabBoxManip(void);
 
 protected:
-  ~SoTabBoxManip();
+  virtual ~SoTabBoxManip(void);
 };
 
 #endif // !COIN_SOTABBOXMANIP_H

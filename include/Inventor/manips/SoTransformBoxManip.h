@@ -36,7 +36,7 @@ public:
   SoTransformBoxManip(void);
 
 protected:
-  ~SoTransformBoxManip();
+  virtual ~SoTransformBoxManip(void);
 };
 
 #endif // !COIN_SOTRANSFORMBOXMANIP_H

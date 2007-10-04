@@ -42,7 +42,7 @@ public:
   void unsquishKnobs(void);
 
 protected:
-  ~SoTransformerManip();
+  virtual ~SoTransformerManip(void);
 };
 
 #endif // !COIN_SOTRANSFORMERMANIP_H

@@ -61,7 +61,7 @@ public:
   virtual SoChildList * getChildren(void) const;
 
 protected:
-  ~SoTransformManip();
+  virtual ~SoTransformManip(void);
 
   void setDragger(SoDragger * newdragger);
 

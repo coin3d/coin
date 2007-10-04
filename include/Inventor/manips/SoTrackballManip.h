@@ -36,7 +36,8 @@ public:
   SoTrackballManip(void);
 
 protected:
-  ~SoTrackballManip();
+  virtual ~SoTrackballManip(void);
+
 };
 
 #endif // !COIN_SOTRACKBALLMANIP_H

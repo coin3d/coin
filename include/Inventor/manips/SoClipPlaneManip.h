@@ -64,7 +64,7 @@ public:
   SoSFVec3f draggerPosition;
 
 protected:
-  ~SoClipPlaneManip();
+  virtual ~SoClipPlaneManip(void);
 
   void setDragger(SoDragger * newdragger);
 

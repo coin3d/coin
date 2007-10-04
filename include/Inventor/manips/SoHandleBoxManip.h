@@ -36,7 +36,7 @@ public:
   SoHandleBoxManip(void);
 
 protected:
-  ~SoHandleBoxManip();
+  virtual ~SoHandleBoxManip(void);
 };
 
 #endif // !COIN_SOHANDLEBOXMANIP_H

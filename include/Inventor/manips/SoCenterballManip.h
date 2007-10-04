@@ -36,7 +36,7 @@ public:
   SoCenterballManip(void);
 
 protected:
-  ~SoCenterballManip();
+  virtual ~SoCenterballManip(void);
 
   virtual void setDragger(SoDragger * newDragger);
 

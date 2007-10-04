@@ -36,7 +36,7 @@ public:
   SoJackManip(void);
 
 protected:
-  ~SoJackManip();
+  virtual ~SoJackManip(void);
 };
 
 #endif // !COIN_SOJACKMANIP_H
