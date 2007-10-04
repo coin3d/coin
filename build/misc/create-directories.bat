@@ -159,6 +159,11 @@ echo mkdir %COINDIR%\include\Inventor\misc
 mkdir misc
 :miscexists
 
+if exist navigation\*.* goto navigationexists
+echo mkdir %COINDIR%\include\Inventor\navigation
+mkdir navigation
+:navigationexists
+
 if exist nodekits\*.* goto nodekitsexists
 echo mkdir %COINDIR%\include\Inventor\nodekits
 mkdir nodekits
@@ -188,6 +193,11 @@ if exist threads\*.* goto threadsexists
 echo mkdir %COINDIR%\include\Inventor\threads
 mkdir threads
 :threadsexists
+
+if exist tools\*.* goto toolssexists
+echo mkdir %COINDIR%\include\Inventor\tools
+mkdir tools
+:toolsexists
 
 popd
 
