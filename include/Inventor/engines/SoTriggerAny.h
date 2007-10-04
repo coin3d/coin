@@ -52,7 +52,7 @@ public:
   SoEngineOutput output;  // SoSFTrigger
 
 protected:
-  ~SoTriggerAny();
+  virtual ~SoTriggerAny(void);
 
 private:
   virtual void evaluate(void);

@@ -57,7 +57,7 @@ public:
   static void initClass();
 
 protected:
-  ~SoBoolOperation();
+  virtual ~SoBoolOperation(void);
 
 private:
   virtual void evaluate();

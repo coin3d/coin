@@ -50,6 +50,7 @@ public:
   SoMFVec3f center;
 
   SoEngineOutput matrix; // SoMFMatrix
+
 };
 
 #endif // !COIN_SOCOMPOSEMATRIX_H

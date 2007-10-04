@@ -36,7 +36,7 @@ class SoNodeEngine;
 class COIN_DLL_API SoEngineOutput {
 public:
   SoEngineOutput(void);
-  virtual ~SoEngineOutput();
+  virtual ~SoEngineOutput(void);
 
   SoType getConnectionType(void) const;
   int getForwardConnections(SoFieldList & fl) const;

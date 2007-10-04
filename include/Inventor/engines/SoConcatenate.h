@@ -46,7 +46,7 @@ public:
 
 private:
   SoConcatenate(void);
-  ~SoConcatenate();
+  virtual ~SoConcatenate(void);
 
   virtual void evaluate(void);
 

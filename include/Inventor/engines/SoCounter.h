@@ -49,7 +49,7 @@ public:
   SoEngineOutput syncOut; // SoSFTrigger
 
 protected:
-  ~SoCounter(void);
+  virtual ~SoCounter(void);
 
 private:
   virtual void evaluate(void);

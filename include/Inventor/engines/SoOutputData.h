@@ -39,10 +39,10 @@ class SoType;
 
 class COIN_DLL_API SoEngineOutputData {
 public:
-  SoEngineOutputData();
+  SoEngineOutputData(void);
   SoEngineOutputData(const SoEngineOutputData * data);
   SoEngineOutputData(int approxnum);
-  ~SoEngineOutputData();
+  ~SoEngineOutputData(void);
 
   void addOutput(const SoEngine * base, const char *name,
                  const SoEngineOutput * output, SoType type);

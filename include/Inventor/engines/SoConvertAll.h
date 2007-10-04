@@ -45,7 +45,7 @@ public:
   SoConvertAll(const SoType from, const SoType to);
 
 protected:
-  virtual ~SoConvertAll();
+  virtual ~SoConvertAll(void);
   virtual void evaluate(void);
   virtual SoField * getInput(SoType type);
   virtual SoEngineOutput * getOutput(SoType type);

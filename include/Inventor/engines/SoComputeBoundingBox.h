@@ -54,7 +54,7 @@ public:
   const SbViewportRegion & getViewportRegion(void) const;
 
 protected:
-  virtual ~SoComputeBoundingBox();
+  virtual ~SoComputeBoundingBox(void);
 
 private:
   virtual void evaluate(void);

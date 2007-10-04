@@ -55,7 +55,7 @@ public:
   static void initClass();
 
 protected:
-  virtual ~SoTimeCounter();
+  virtual ~SoTimeCounter(void);
 
   virtual void inputChanged(SoField * which);
   virtual void writeInstance(SoOutput * out);

@@ -53,7 +53,7 @@ public:
   static void initClass(void);
 
 protected:
-  ~SoCalculator(void);
+  virtual ~SoCalculator(void);
 
   virtual void inputChanged(SoField * which);
 

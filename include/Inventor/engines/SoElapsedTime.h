@@ -50,7 +50,7 @@ public:
   SoEngineOutput timeOut; // SoSFTime
 
 protected:
-  ~SoElapsedTime();
+  virtual ~SoElapsedTime(void);
 
   virtual void writeInstance(SoOutput * out);
 

@@ -46,6 +46,7 @@ public:
   SoMFFloat angle;
 
   SoEngineOutput rotation; // SoMFRotation
+
 };
 
 #endif // !COIN_SOCOMPOSEROTATION_H

@@ -60,7 +60,7 @@ public:
 
 protected:
   SoEngine(void);
-  virtual ~SoEngine();
+  virtual ~SoEngine(void);
   virtual void evaluate(void) = 0;
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);

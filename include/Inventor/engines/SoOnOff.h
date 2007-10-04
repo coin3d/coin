@@ -46,7 +46,7 @@ public:
   SoEngineOutput isOff; // SoSFBool
 
 protected:
- ~SoOnOff();
+  virtual ~SoOnOff(void);
 
 private:
   virtual void evaluate(void);

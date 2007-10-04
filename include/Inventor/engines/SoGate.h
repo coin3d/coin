@@ -52,7 +52,7 @@ protected:
 
 private:
   SoGate(void);
-  ~SoGate();
+  virtual ~SoGate(void);
 
   virtual void evaluate(void);
 

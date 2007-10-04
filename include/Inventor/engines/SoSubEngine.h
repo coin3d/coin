@@ -242,7 +242,7 @@ _class_::atexit_cleanup(void) \
   private: \
     virtual void evaluate(); \
   protected: \
-    ~_name_();\
+    virtual ~_name_();\
   public: \
    _name_(); \
     static void initClass()

@@ -42,7 +42,7 @@ public:
 
 protected:
   SoInterpolate();
-  virtual ~SoInterpolate();
+  virtual ~SoInterpolate(void);
 };
 
 

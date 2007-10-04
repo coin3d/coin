@@ -51,7 +51,7 @@ public:
 
 protected:
   SoNodeEngine(void);
-  virtual ~SoNodeEngine();
+  virtual ~SoNodeEngine(void);
   virtual void evaluate(void) = 0;
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);

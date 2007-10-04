@@ -47,7 +47,7 @@ public:
 
 private:
   SoSelectOne(void);
-  ~SoSelectOne();
+  virtual ~SoSelectOne(void);
 
   virtual void evaluate(void);
 

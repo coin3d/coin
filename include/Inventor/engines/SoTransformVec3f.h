@@ -46,7 +46,7 @@ public:
   SoEngineOutput normalDirection; // SoMFVec3f
 
 protected:
-  virtual ~SoTransformVec3f();
+  virtual ~SoTransformVec3f(void);
 
 private:
   virtual void evaluate(void);

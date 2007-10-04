@@ -54,7 +54,7 @@ public:
   SoEngineOutput ramp;     // SoSFFloat
 
 protected:
-  ~SoOneShot();
+  virtual ~SoOneShot(void);
 
 private:
   virtual void evaluate(void);

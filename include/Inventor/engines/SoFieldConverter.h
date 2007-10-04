@@ -43,7 +43,7 @@ public:
 
 protected:
   SoFieldConverter(void);
-  virtual ~SoFieldConverter();
+  virtual ~SoFieldConverter(void);
 };
 
 #endif // !COIN_SOFIELDCONVERTER_H
