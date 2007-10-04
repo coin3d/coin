@@ -35,7 +35,11 @@
   bit is set in the value when exporting, the bits are written like
   this: "(BITNAME|BITNAME|BITNAME|...)".
 
-  \sa SoMFBitMask
+  SoSFBitMask instances are derived from SoSFEnum instances, and are
+  initialized in the same way using the exact same enum-field-related
+  macros.
+
+  \sa SoMFBitMask, SoSFEnum
 */
 
 // *************************************************************************
@@ -215,7 +219,6 @@ SoSFBitMask::writeValue(SoOutput * out) const
 
 #endif // DOXYGEN_SKIP_THIS
 
-
 #ifdef COIN_TEST_SUITE
 
 #include <Inventor/SbName.h>
@@ -250,14 +253,14 @@ BOOST_AUTO_TEST_CASE(textinput)
   field2.setEnums(3, values1, names1);
   field3.setEnums(3, values2, names2);
 
-  ResetReadErrorCount();
+  TestSuite::ResetReadErrorCount();
   static const char * filters[] = { "Unknown SoSFBitMask bit mask value", NULL };
-  PushMessageSuppressFilters(filters);
+  TestSuite::PushMessageSuppressFilters(filters);
   ok = field1.set("OTHER1"); // should output error
   BOOST_CHECK_MESSAGE(ok == FALSE, "accepted 'OTHER1' erroneously");
-  PopMessageSuppressFilters();
-  BOOST_CHECK_EQUAL(GetReadErrorCount(), 1);
-  ResetReadErrorCount();
+  TestSuite::PopMessageSuppressFilters();
+  BOOST_CHECK_EQUAL(TestSuite::GetReadErrorCount(), 1);
+  TestSuite::ResetReadErrorCount();
 
   ok = field1.set("VALUE2");
   BOOST_CHECK_MESSAGE(ok == TRUE, "did not accept 'VALUE2'");
