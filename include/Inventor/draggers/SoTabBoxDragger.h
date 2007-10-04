@@ -68,7 +68,7 @@ public:
   void adjustScaleTabSize(void);
 
 protected:
-  ~SoTabBoxDragger();
+  virtual ~SoTabBoxDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

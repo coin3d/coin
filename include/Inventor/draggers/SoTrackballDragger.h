@@ -76,7 +76,7 @@ public:
   void setAnimationEnabled(SbBool newval);
 
 protected:
-  ~SoTrackballDragger();
+  virtual ~SoTrackballDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

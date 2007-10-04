@@ -55,7 +55,7 @@ public:
   SoSFVec3f translation;
 
 protected:
-  ~SoTranslate2Dragger();
+  virtual ~SoTranslate2Dragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   static void startCB(void * f, SoDragger * d);

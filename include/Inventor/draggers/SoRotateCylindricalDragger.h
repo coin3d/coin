@@ -55,7 +55,7 @@ public:
   const SbCylinderProjector * getProjector(void) const;
 
 protected:
-  ~SoRotateCylindricalDragger();
+  virtual ~SoRotateCylindricalDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   virtual void copyContents(const SoFieldContainer * fromfc,

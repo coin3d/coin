@@ -47,7 +47,7 @@ public:
   SoSFVec3f translation;
 
 protected:
-  ~SoPointLightDragger();
+  virtual ~SoPointLightDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

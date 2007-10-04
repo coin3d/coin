@@ -68,8 +68,7 @@ public:
   void adjustScaleTabSize(void);
 
 protected:
-
-  ~SoTabPlaneDragger();
+  virtual ~SoTabPlaneDragger(void);
 
   virtual void GLRender(SoGLRenderAction * action);
 

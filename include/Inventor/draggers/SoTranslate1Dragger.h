@@ -52,7 +52,7 @@ static void initClass(void);
   SoSFVec3f translation;
 
 protected:
-  ~SoTranslate1Dragger();
+  virtual ~SoTranslate1Dragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   static void startCB(void * f, SoDragger * d);

@@ -86,7 +86,7 @@ public:
   SoSFVec3f translation;
 
 protected:
-  ~SoDragPointDragger();
+  virtual ~SoDragPointDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

@@ -68,7 +68,7 @@ public:
   SoSFVec3f center;
 
 protected:
-  ~SoCenterballDragger();
+  virtual ~SoCenterballDragger(void);
   void transferCenterDraggerMotion(SoDragger * childdragger);
   void setSwitches(SoDragger * activechild);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);

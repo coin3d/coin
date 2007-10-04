@@ -135,7 +135,7 @@ public:
 
 protected:
   SoDragger(void);
-  virtual ~SoDragger();
+  virtual ~SoDragger(void);
 
   SbVec2f getNormalizedLocaterPosition(void);
   SbVec2s getLocaterPosition(void);

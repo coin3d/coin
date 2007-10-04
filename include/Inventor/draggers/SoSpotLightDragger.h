@@ -61,7 +61,7 @@ public:
   SoSFFloat angle;
 
 protected:
-  ~SoSpotLightDragger();
+  virtual ~SoSpotLightDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

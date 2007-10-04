@@ -57,7 +57,7 @@ public:
   const SbSphereProjector * getProjector(void) const;
 
 protected:
-  ~SoRotateSphericalDragger();
+  virtual ~SoRotateSphericalDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   virtual void copyContents(const SoFieldContainer * fromfc,

@@ -78,7 +78,7 @@ public:
   SoSFVec3f scaleFactor;
 
 protected:
-  ~SoTransformBoxDragger();
+  virtual ~SoTransformBoxDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

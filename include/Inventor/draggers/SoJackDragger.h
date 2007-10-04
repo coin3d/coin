@@ -53,7 +53,7 @@ public:
   SoSFVec3f scaleFactor;
 
 protected:
-  ~SoJackDragger();
+  virtual ~SoJackDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

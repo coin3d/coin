@@ -52,7 +52,7 @@ public:
   SoSFVec3f scaleFactor;
 
 protected:
-  ~SoScale1Dragger();
+  virtual ~SoScale1Dragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   static void startCB(void * f, SoDragger * d);

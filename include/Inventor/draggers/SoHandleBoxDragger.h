@@ -121,7 +121,7 @@ public:
   SoSFVec3f translation;
 
 protected:
-  ~SoHandleBoxDragger();
+  virtual ~SoHandleBoxDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

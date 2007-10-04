@@ -52,7 +52,7 @@ public:
   SoSFRotation rotation;
 
 protected:
-  ~SoRotateDiscDragger();
+  virtual ~SoRotateDiscDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
   static void startCB(void * f, SoDragger * d);

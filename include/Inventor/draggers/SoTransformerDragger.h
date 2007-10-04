@@ -230,7 +230,7 @@ public:
   SbVec3f getInteractiveCenterInBoxSpace(void);
 
 protected:
-  ~SoTransformerDragger();
+  virtual ~SoTransformerDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 

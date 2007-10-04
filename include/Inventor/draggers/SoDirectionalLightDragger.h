@@ -52,7 +52,7 @@ public:
   SoSFVec3f translation;
 
 protected:
-  ~SoDirectionalLightDragger();
+  virtual ~SoDirectionalLightDragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
 
