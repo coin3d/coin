@@ -84,8 +84,13 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
-// cc_debugerror_post() is not attempted resolved before template is used,
-// hence the missing Inventor/errors/SoDebugError.h #include
+// SbDividerChk() - checks if divide-by-zero is attempted, and emits a
+// warning if so for debug builds.  inlined like this to not take much
+// screenspace in inline functions.
+
+// cc_debugerror_post() is not attempted resolved before the template is
+// used, hence the missing Inventor/errors/SoDebugError.h #include. This
+// "trick" does only work *portably* for functions in the global namespace.
 
 template <typename Type>
 inline void SbDividerChk(const char * funcname, Type divider) {
