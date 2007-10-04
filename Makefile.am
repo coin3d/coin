@@ -21,6 +21,8 @@ endif
 
 SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
+include include/boost/Makefile.inc
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA= Coin.pc
 
@@ -263,7 +265,9 @@ EXTRA_DIST = \
 	testsuite/TestSuiteMisc.cpp \
 	testsuite/makeextract.sh \
 	testsuite/makemakefile.sh \
-	testsuite/README
+	testsuite/README \
+	include/boost/Makefile.inc \
+	$(BOOST_HEADER_FILES)
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
