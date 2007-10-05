@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/nodes/SoTexture.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoMFString.h>
@@ -35,8 +36,8 @@ class SoFieldSensor;
 class SoSensor;
 class SoTextureCubeMapP;
 
-class COIN_DLL_API SoTextureCubeMap : public SoNode {
-  typedef SoNode inherited;
+class COIN_DLL_API SoTextureCubeMap : public SoTexture {
+  typedef SoTexture inherited;
 
   SO_NODE_HEADER(SoTextureCubeMap);
 
