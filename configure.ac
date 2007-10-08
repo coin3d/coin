@@ -1979,8 +1979,8 @@ COIN_COMPILER="$CXX"
       no | false)
         SIM_AC_CONFIGURATION_SETTING([Coin build type],
                                      [dynamic .dll (release) + .pdb])
-        CFLAGS="-g $CFLAGS"
-        CXXFLAGS="-g $CXXFLAGS"
+        # CFLAGS="-g $CFLAGS"
+        # CXXFLAGS="-g $CXXFLAGS"
         LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
         ;;
       *)
