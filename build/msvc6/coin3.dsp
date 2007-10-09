@@ -45,8 +45,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /Gs /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /Og /Oi /Oy /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /Gs /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "NDEBUG"
 # ADD RSC /l 0x414 /d "NDEBUG"
@@ -71,8 +71,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /YX /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"
@@ -97,8 +97,8 @@ LIB32=link.exe -lib
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /Gs /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Og /Oi /Oy /Ob2 /Gy /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /Gs /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -109,8 +109,8 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386
-# ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386 /out:"coin3.dll" /opt:nowin98
+# ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -126,8 +126,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -139,7 +139,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll"
+# ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll" /opt:nowin98
 
 !ENDIF
 
@@ -13319,6 +13319,77 @@ SOURCE=..\..\include\Inventor\misc\SoScriptEngine.h
 SOURCE=..\..\include\Inventor\misc\SoJavaScriptEngine.h
 # End Source File
 # End Group
+# Begin Group "Inventor\navigation headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoCenterMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoIdleMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigationControl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigationMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigationState.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigationSystem.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigationVehicle.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoOrthoCenterMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoPanMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoPickMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoPitchMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoRollMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoRotateMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoSubMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoYawMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoZoomMode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoNavigation.h
+# End Source File
+# End Group
 # Begin Group "Inventor\nodekits headers"
 # Set Default_Filter "h"
 # Begin Source File
@@ -14105,75 +14176,23 @@ SOURCE=..\..\include\Inventor\threads\SbBarrier.h
 SOURCE=..\..\include\Inventor\threads\SbThreadAutoLock.h
 # End Source File
 # End Group
-# Begin Group "Inventor\navigation headers"
+# Begin Group "Inventor\tools headers"
 # Set Default_Filter "h"
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\navigation\SoCenterMode.h
+SOURCE=..\..\include\Inventor\tools\SbPimplPtr.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\navigation\SoIdleMode.h
+SOURCE=..\..\include\Inventor\tools\SbPimplPtr.hpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\navigation\SoNavigationControl.h
+SOURCE=..\..\include\Inventor\tools\SbLazyPimplPtr.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\navigation\SoNavigationMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationState.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationSystem.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationVehicle.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoOrthoCenterMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPanMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPickMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPitchMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoRollMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoRotateMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoSubMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoYawMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoZoomMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigation.h
+SOURCE=..\..\include\Inventor\tools\SbLazyPimplPtr.hpp
 # End Source File
 # End Group
 # Begin Group "Inventor headers"
