@@ -522,7 +522,11 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
     break;
 
   case SoRenderManager::BOUNDING_BOX:
+    SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+    SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
     SoComplexityTypeElement::set(state, node, SoComplexityTypeElement::BOUNDING_BOX);
+    SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+    SoOverrideElement::setLightModelOverride(state, node, TRUE);
     SoOverrideElement::setComplexityTypeOverride(state, node, TRUE);
     this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
     break;
