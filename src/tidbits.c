@@ -1125,12 +1125,12 @@ coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * j
     jitter16
   };
 
-  float * jittab = jittertab[numpasses-2];
-
   /* FIXME: support more rendering passes by generating jitter tables
    * using some clever algorithm. pederb, 2001-02-21 */
   if (numpasses > 16) numpasses = 16;
   if (curpass >= numpasses) curpass = numpasses - 1;
+
+  float * jittab = jittertab[numpasses-2];
 
   if (numpasses < 2) {
     jitter[0] = 0.0f;
