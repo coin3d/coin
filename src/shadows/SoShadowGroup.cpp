@@ -122,6 +122,7 @@
   }
 
   \endcode
+
 */
 
 
@@ -296,6 +297,7 @@
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -501,6 +503,7 @@ public:
     this->shaderprogram->shaderObject.set1Value(1, this->fragmentshader);
   }
   ~SoShadowGroupP() {
+    this->clearSpotlightPaths();
     if (this->lightmodel) this->lightmodel->unref();
     if (this->texunit0) this->texunit0->unref();
     if (this->texunit1) this->texunit1->unref();
@@ -514,6 +517,27 @@ public:
   }
 
   SoShaderProgram * createVSMProgram(void);
+
+  void clearSpotlightPaths(void) {
+    for (int i = 0; i < this->spotlightpaths.getLength(); i++) {
+      this->spotlightpaths[i]->unref();
+    }
+    this->spotlightpaths.truncate(0);
+  }
+  void copySpotlightPaths(const SoPathList & pl) {
+    this->clearSpotlightPaths();
+    for (int i = 0; i < pl.getLength(); i++) {
+      SoFullPath * p = (SoFullPath*) pl[i];
+      SoTempPath * tp = new SoTempPath(p->getLength());
+      tp->ref();
+      tp->setHead(p->getHead());
+
+      for (int j = 1; j < p->getLength(); j++) {
+        tp->append(p->getNode(j));
+      }
+      this->spotlightpaths.append(tp);
+    }
+  }
 
   void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
     float quality = this->master->quality.getValue();
@@ -551,7 +575,8 @@ public:
   }
 
   SoShadowGroup * master;
-  SoSearchAction search;
+  SoSearchAction searchaction;
+  SbList <SoTempPath*> spotlightpaths;
   SoGetBoundingBoxAction bboxaction;
   SoGetMatrixAction matrixaction;
 
@@ -707,19 +732,19 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
-    if (this->needscenesearch || this->search.getPaths().getLength() == 0) {
+    if (this->needscenesearch || this->spotlightpaths.getLength() == 0) {
       // first, search for texture unit nodes
-      this->search.setType(SoTextureUnit::getClassTypeId());
-      this->search.setInterest(SoSearchAction::ALL);
-      this->search.setSearchingAll(FALSE);
-      this->search.apply(PUBLIC(this));
+      this->searchaction.setType(SoTextureUnit::getClassTypeId());
+      this->searchaction.setInterest(SoSearchAction::ALL);
+      this->searchaction.setSearchingAll(FALSE);
+      this->searchaction.apply(PUBLIC(this));
       
       int lastenabled;
       (void) SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
       this->numtexunitsinscene = lastenabled + 1;
 
-      for (i = 0; i < this->search.getPaths().getLength(); i++) {
-        SoFullPath * p = (SoFullPath*) this->search.getPaths()[i];
+      for (i = 0; i < this->searchaction.getPaths().getLength(); i++) {
+        SoFullPath * p = (SoFullPath*) this->searchaction.getPaths()[i];
         SoTextureUnit * unit = (SoTextureUnit*) p->getTail();
         if (unit->unit.getValue() >= this->numtexunitsinscene) {
           this->numtexunitsinscene = unit->unit.getValue() + 1;
@@ -727,17 +752,20 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       }
       if (this->numtexunitsinscene == 0) this->numtexunitsinscene = 1;
 
-      this->search.reset();
-      this->search.setType(SoSpotLight::getClassTypeId());
-      this->search.setInterest(SoSearchAction::ALL);
-      this->search.setSearchingAll(FALSE);
-      this->search.apply(PUBLIC(this));
+      this->searchaction.reset();
+      this->searchaction.setType(SoSpotLight::getClassTypeId());
+      this->searchaction.setInterest(SoSearchAction::ALL);
+      this->searchaction.setSearchingAll(FALSE);
+      this->searchaction.apply(PUBLIC(this));
       this->needscenesearch = FALSE;
+      
+      this->copySpotlightPaths(this->searchaction.getPaths());
+      this->searchaction.reset();
     }
     int maxunits = cc_glglue_max_texture_units(glue);
     int maxlights = maxunits - this->numtexunitsinscene;
-    SoPathList & pl = this->search.getPaths();
-
+    SbList <SoTempPath*> & pl = this->spotlightpaths;
+    
     int numlights = 0;
     for (i = 0; i < pl.getLength(); i++) {
       SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)(pl[i]))->getTail();
@@ -808,8 +836,6 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       SoGLMultiTextureEnabledElement::set(state, PUBLIC(this), cache->texunit,
                                           SoGLMultiTextureEnabledElement::DISABLED);
     }
-
-
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }
