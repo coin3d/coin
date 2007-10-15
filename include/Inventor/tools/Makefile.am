@@ -21,31 +21,31 @@ ObsoleteHeaders =
 EXTRA_DIST = $(PrivateHeaders)
 
 if MAC_FRAMEWORK
-libeventsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/events
+libtoolsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/tools
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libeventsincdir = $(includedir)/Inventor/events
+libtoolsincdir = $(includedir)/Inventor/tools
 endif
-libeventsinc_HEADERS = $(PublicHeaders)
+libtoolsinc_HEADERS = $(PublicHeaders)
 
-install-libeventsincHEADERS: $(libeventsinc_HEADERS)
+install-libtoolsincHEADERS: $(libtoolsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libeventsinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libeventsincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libeventsincdir); \
+	@if test x"$(libtoolsinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libtoolsincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libtoolsincdir); \
 	fi
-	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libtoolsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libeventsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libtoolsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libeventsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libtoolsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

@@ -284,11 +284,11 @@ ObsoleteHeaders =
 # within the Makefile.am itself. 19991201 mortene.
 EXTRA_DIST = $(PrivateHeaders)
 
-@MAC_FRAMEWORK_TRUE@libeventsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/events
-@MAC_FRAMEWORK_FALSE@libeventsincdir = $(includedir)/Inventor/events
+@MAC_FRAMEWORK_TRUE@libtoolsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/tools
+@MAC_FRAMEWORK_FALSE@libtoolsincdir = $(includedir)/Inventor/tools
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
-libeventsinc_HEADERS = $(PublicHeaders)
+libtoolsinc_HEADERS = $(PublicHeaders)
 subdir = include/Inventor/tools
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -297,9 +297,9 @@ CONFIG_HEADER = $(top_builddir)/include/discard.h \
 	$(top_builddir)/include/setup.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(libeventsinc_HEADERS)
+HEADERS = $(libtoolsinc_HEADERS)
 
-DIST_COMMON = $(libeventsinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libtoolsinc_HEADERS) Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -318,14 +318,14 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-libeventsincHEADERS_INSTALL = $(INSTALL_HEADER)
+libtoolsincHEADERS_INSTALL = $(INSTALL_HEADER)
 
-uninstall-libeventsincHEADERS:
+uninstall-libtoolsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libtoolsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libeventsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libeventsincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libtoolsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libtoolsincdir)/$$f; \
 	done
 
 ETAGS = etags
@@ -418,7 +418,7 @@ check: check-am
 all-am: Makefile $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libeventsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libtoolsincdir)
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -460,7 +460,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libeventsincHEADERS
+install-data-am: install-libtoolsincHEADERS
 
 install-exec-am:
 
@@ -486,37 +486,37 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-libeventsincHEADERS
+uninstall-am: uninstall-info-am uninstall-libtoolsincHEADERS
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool ctags distclean distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
 	info-am install install-am install-data install-data-am \
 	install-exec install-exec-am install-info install-info-am \
-	install-libeventsincHEADERS install-man install-strip \
+	install-libtoolsincHEADERS install-man install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-info-am uninstall-libeventsincHEADERS
+	uninstall-am uninstall-info-am uninstall-libtoolsincHEADERS
 
 
-install-libeventsincHEADERS: $(libeventsinc_HEADERS)
+install-libtoolsincHEADERS: $(libtoolsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libeventsinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libeventsincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libeventsincdir); \
+	@if test x"$(libtoolsinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libtoolsincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libtoolsincdir); \
 	fi
-	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libtoolsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libeventsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libtoolsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libeventsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libtoolsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
