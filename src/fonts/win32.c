@@ -286,6 +286,61 @@ cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
   free(kerning);
 }
 
+/*
+  Wrapper for 
+  int tolower(int)
+*/
+static char cc_flww32_chartolower(char c)
+{
+  return (char)tolower(c);
+}
+ 
+/* 
+  Simply passes the parameters to the GDI function CreateFont() and returns the result
+*/
+static HFONT cc_flww32_create_font(const char* fontname, int sizey, 
+                                   float angle, BOOL bold, BOOL italic)
+{
+  HFONT font;
+  font = CreateFont(-sizey, 
+                    /* Using a negative 'sizey'. Otherwise
+                       leads to less details as it seems like
+                       the Win32 systems tries to 'quantize'
+                       the glyph to match the pixels of the
+                       choosen resolution. */
+                    0, /* let Win32 choose to get correct aspect ratio */
+                    (int) (10 * (angle * 180) / M_PI) , /* escapement */
+                    (int) (10 * (angle * 180) / M_PI) , /* orientation */
+                    bold ? FW_BOLD : FW_DONTCARE, /* weight */
+                    italic, FALSE, FALSE, /* italic, underline, strikeout */
+                    /* FIXME: using DEFAULT_CHARSET is probably not
+                       what we should do, AFAICT from a quick
+                       read-over of the CreateFont() API
+                       doc. 20030530 mortene. */
+                     DEFAULT_CHARSET,
+                     /* FIXME: to also make it possible to use
+                        Window's raster fonts, this should rather be
+                        OUT_DEFAULT_PRECIS. Then when
+                        GetGlyphOutline() fails on a font, we should
+                        grab it's bitmap by using TextOut() and
+                        GetDIBits(). 20030610 mortene.
+                     */
+                     OUT_TT_ONLY_PRECIS, /* output precision */
+                     CLIP_DEFAULT_PRECIS, /* clipping precision */
+                     PROOF_QUALITY, /* output quality */
+                     DEFAULT_PITCH, /* pitch and family */
+                     fontname); /* typeface name */
+
+  if (!font) {
+    DWORD lasterr = GetLastError();
+    cc_string * str = cc_string_construct_new();
+    cc_string_sprintf(str, "CreateFont(%d, ..., '%s')", sizey, fontname);
+    cc_win32_print_error("cc_flww32_get_font", cc_string_get_text(str), lasterr);
+    cc_string_destruct(str);
+    return NULL;
+  }
+  return font;
+}
 
 /* ************************************************************************* */
 
@@ -302,7 +357,15 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
   cc_dict * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
-  HFONT wfont;
+  HFONT wfont, wfont2;
+
+  cc_string * realname;
+  cc_string * namelower;
+  cc_string * basename;
+  const char * tmp;
+  const char * bold;
+  const char * italic;
+  int baselen;
 
   /* FIXME: glyph2d.c will pass in complexity==-1.0f, so this can be
      used to detect that the font will be used for 2D font rendering
@@ -313,43 +376,83 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
     sizey = flww32_calcfontsize(complexity);
   }
 
-  wfont = CreateFont(-sizey, /* Using a negative 'sizey'. Otherwise
-                                leads to less details as it seems like
-                                the Win32 systems tries to 'quantize'
-                                the glyph to match the pixels of the
-                                choosen resolution. */
-                     0, /* let Win32 choose to get correct aspect
-                           ratio */
-                     (int) (10 * (angle * 180) / M_PI) , /* escapement */
-                     (int) (10 * (angle * 180) / M_PI) , /* orientation */
-                     FW_DONTCARE, /* weight */
-                     FALSE, FALSE, FALSE, /* italic, underline, strikeout */
-                     /* FIXME: using DEFAULT_CHARSET is probably not
-                        what we should do, AFAICT from a quick
-                        read-over of the CreateFont() API
-                        doc. 20030530 mortene. */
-                     DEFAULT_CHARSET,
-                     /* FIXME: to also make it possible to use
-                        Window's raster fonts, this should rather be
-                        OUT_DEFAULT_PRECIS. Then when
-                        GetGlyphOutline() fails on a font, we should
-                        grab it's bitmap by using TextOut() and
-                        GetDIBits(). 20030610 mortene.
-                     */
-                     OUT_TT_ONLY_PRECIS, /* output precision */
-                     CLIP_DEFAULT_PRECIS, /* clipping precision */
-                     PROOF_QUALITY, /* output quality */
-                     DEFAULT_PITCH, /* pitch and family */
-                     fontname); /* typeface name */
-
+  wfont = cc_flww32_create_font(fontname, sizey, angle, FALSE, FALSE);
   if (!wfont) {
-    DWORD lasterr = GetLastError();
-    cc_string * str = cc_string_construct_new();
-    cc_string_sprintf(str, "CreateFont(%d, ..., '%s')", sizey, fontname);
-    cc_win32_print_error("cc_flww32_get_font", cc_string_get_text(str), lasterr);
-    cc_string_destruct(str);
     return NULL;
   }
+
+  /* 
+  Some windows fonts (like "Courier New") have separate entries for the bold 
+  ("Courier New Bold"), italic ("Courier New Italic") and bold+italic ("Courier New Bold Italic")
+  versions, and will work with the previous approach. Others (like "Lucida Console") 
+  use the same font for all the versions, and will not be found if we specify bold/italic as 
+  part of the font name, instead we get a default font back from GDI (Arial plain). This is also
+  the case if the parameters are specified in the wrong order (i.e. "Courier New Italic Bold").
+  (wiesener 20071010)
+  */
+
+  realname = cc_string_construct_new();
+  cc_flww32_get_font_name(wfont, realname);
+
+  if (cc_string_length(realname) != strlen(fontname) ||
+      coin_strncasecmp(cc_string_get_text(realname), fontname, strlen(fontname))) {
+    /*
+    The names are different, we probably got a bogus font (Arial plain)
+    Let's try stripping the bold/italic part from the font name and set those as flags instead
+    */
+    if (cc_font_debug()) {
+      cc_debugerror_postinfo("cc_flww32_get_font",
+        "Tried fetching '%s', got '%s'. Will try stripping bold/italic.",
+        fontname, cc_string_get_text(realname));
+    }
+
+    namelower = cc_string_construct_new();
+    cc_string_set_text(namelower, fontname);
+    cc_string_apply(namelower, cc_flww32_chartolower);
+
+    tmp = cc_string_get_text(namelower);
+
+    bold = strstr(tmp, " bold");
+    italic = strstr(tmp, " italic");
+    /* FIXME: Should we also try to handle fontconfig style font specification, 
+       ie. "bold:italic"? This has most likely never worked with the previous 
+       approach. (wiesener 20071016)
+    */
+    if ( bold || italic)
+    {
+      baselen = 0;
+      if (!bold || (italic && (bold > italic)))
+      {
+        baselen = (int) (italic - tmp);
+      }
+      else
+      {
+        baselen = (int) (bold - tmp);
+      }
+      basename = cc_string_construct_new();
+      cc_string_set_text(basename, fontname);
+      cc_string_remove_substring(basename, baselen, 
+          cc_string_length(basename) - 1);
+
+      /* try constructing the font again: */
+      wfont2 = cc_flww32_create_font(cc_string_get_text(basename), sizey, angle,  
+                                     bold ? TRUE : FALSE, italic ? TRUE : FALSE);
+      if (wfont2) {
+        cc_flww32_get_font_name(wfont2, realname);
+        if (cc_string_length(realname) == baselen &&
+            !coin_strncasecmp(cc_string_get_text(realname), 
+                              cc_string_get_text(basename), 
+                              baselen)) {
+          /* The new font was a perfect match. Replace the old one. */
+          DeleteObject(wfont);
+          wfont = wfont2;
+        }
+      }
+      cc_string_destruct(basename);
+    }
+    cc_string_destruct(namelower);
+  }
+  cc_string_destruct(realname);
 
   /*
      Constructing a multilevel kerninghash for this font
