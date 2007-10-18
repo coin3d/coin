@@ -415,7 +415,7 @@ SoVRMLBillboard::performRotation(SoState * state) const
   SbVec3f up, look, right;
   
   imm.multDirMatrix(vv.getViewUp(), up);
-  imm.multDirMatrix(vv.getProjectionDirection(), look);
+  imm.multDirMatrix(-vv.getProjectionDirection(), look);
 
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
     // always orient the billboard towards the viewer
