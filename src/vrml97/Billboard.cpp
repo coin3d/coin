@@ -415,21 +415,8 @@ SoVRMLBillboard::performRotation(SoState * state) const
   SbVec3f up, look, right;
   
   imm.multDirMatrix(vv.getViewUp(), up);
-  
-  // The billboard-to-camera vector is the billboard position minus
-  // the camera position (i.e. the projection point), but since we're
-  // working in local coordinates, the position of the billboard is
-  // assumed to be origo. This might not be 100% correct, but it
-  // allows us to use the projection point as the billboard-to-camera
-  // vector directly.
-  imm.multVecMatrix(vv.getProjectionPoint(), look);
-  
-  if (look.length() < FLT_EPSILON) {
-    // projection point is in origo => orientation of the billboard is
-    // undefined.
-    return;
-  }
-  
+  imm.multDirMatrix(vv.getProjectionDirection(), look);
+
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
     // always orient the billboard towards the viewer
     right = up.cross(look);
