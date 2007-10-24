@@ -42,7 +42,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if COIN_THREADSAFE
+#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
