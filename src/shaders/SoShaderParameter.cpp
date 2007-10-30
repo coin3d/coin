@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoShaderParamter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \class SoShaderParameter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
 
   The SoShaderParameter class is the base class for all shader parameter classes.
 

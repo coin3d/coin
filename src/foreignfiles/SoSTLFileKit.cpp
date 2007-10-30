@@ -90,7 +90,7 @@ public:
 // *************************************************************************
 
 /*!
-  \class SoSTLFileKit ForeignFiles/SoSTLFileKit.h
+  \class SoSTLFileKit SoSTLFileKit.h ForeignFiles/SoSTLFileKit.h
   \brief SoSTLFileKit is a class for using STL files with Coin.
 
   Class for using STL files with Coin.  You can use it to read and
