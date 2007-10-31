@@ -40,7 +40,6 @@
 #include <Inventor/misc/SoNotification.h>
 
 class SbMatrix;
-class SoSceneManager;
 class SoNodeSensor;
 class SoInfo;
 class SoNode;
@@ -73,8 +72,6 @@ public:
   }
 
   SoRenderManager * publ;
-  SoSceneManager * scenemanager;
-
   SoNodeSensor * rootsensor;
   SoNode * scene;
   SoCamera * camera;

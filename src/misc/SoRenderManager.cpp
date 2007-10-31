@@ -43,7 +43,6 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/SoSceneManager.h>
 #include "AudioTools.h"
 
 #include "SoRenderManagerP.h"
@@ -426,7 +425,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
 
   // Automatically re-triggers rendering if any animation stuff is
   // connected to the realTime field.
-  if (PRIVATE(this)->scenemanager->isRealTimeUpdateEnabled()) {
+  if (SoRenderManager::isRealTimeUpdateEnabled()) {
     // FIXME: it would be more elegant to use a private field class
     // inheriting SoSFTime ("SFRealTime") which could just be
     // touch()'ed, and which would do lazy reading of time-of-day on
