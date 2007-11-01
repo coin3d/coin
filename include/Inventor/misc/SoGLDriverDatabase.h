@@ -24,6 +24,14 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
+// FIXME: consider if this should be part of the public Coin API. It
+// will be useful for appliction/library programmers that make
+// extension nodes with OpenGL code.
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/lists/SbList.h>
 
