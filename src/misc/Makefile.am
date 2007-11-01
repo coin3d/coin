@@ -4,6 +4,7 @@ RegularSources = \
 	SoCompactPathList.cpp \
 	SoContextHandler.cpp \
 	SoGL.cpp \
+	SoGLDriverDatabase.cpp \
 	SoGLImage.cpp \
 	SoGLCubeMapImage.cpp \
 	SoGLBigImage.cpp \
