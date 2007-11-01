@@ -44,6 +44,55 @@
 #include <string.h>
 
 class SoGLDriverDatabaseP {
+  void initFunctions(void) {
+    // define some reserved feature names for features that cannot be
+    // tested directly as a single OpenGL extension test.
+    this->gluefunctions.put(SbName("COIN_multidraw_vertex_arrays").getString(),
+                            cc_glglue_has_multidraw_vertex_arrays);
+    this->gluefunctions.put(SbName("COIN_polygon_offset").getString(),
+                            cc_glglue_has_polygon_offset);
+    this->gluefunctions.put(SbName("COIN_texture_objects").getString(),
+                            cc_glglue_has_texture_objects);
+    this->gluefunctions.put(SbName("COIN_3d_textures").getString(),
+                            cc_glglue_has_3d_textures);
+    this->gluefunctions.put(SbName("COIN_multitexture").getString(),
+                            cc_glglue_has_multitexture);
+    this->gluefunctions.put(SbName("COIN_texsubimage").getString(),
+                            cc_glglue_has_texsubimage);
+    this->gluefunctions.put(SbName("COIN_2d_proxy_textures").getString(),
+                            cc_glglue_has_2d_proxy_textures);
+    this->gluefunctions.put(SbName("COIN_texture_edge_clamp").getString(),
+                            cc_glglue_has_texture_edge_clamp);
+    this->gluefunctions.put(SbName("COIN_texture_compression").getString(),
+                            cc_glue_has_texture_compression);
+    this->gluefunctions.put(SbName("COIN_color_tables").getString(),
+                            cc_glglue_has_color_tables);
+    this->gluefunctions.put(SbName("COIN_color_subtables").getString(),
+                            cc_glglue_has_color_subtables);
+    this->gluefunctions.put(SbName("COIN_paletted_textures").getString(),
+                            cc_glglue_has_paletted_textures);
+    this->gluefunctions.put(SbName("COIN_blend_equation").getString(),
+                            cc_glglue_has_blendequation);
+    this->gluefunctions.put(SbName("COIN_vertex_array").getString(),
+                            cc_glglue_has_vertex_array);
+    this->gluefunctions.put(SbName("COIN_nv_vertex_array_range").getString(),
+                            cc_glglue_has_nv_vertex_array_range);
+    this->gluefunctions.put(SbName("COIN_vertex_buffer_object").getString(),
+                            cc_glglue_has_vertex_buffer_object);
+    this->gluefunctions.put(SbName("COIN_arb_fragment_program").getString(),
+                            cc_glglue_has_arb_fragment_program);
+    this->gluefunctions.put(SbName("COIN_arb_vertex_program").getString(),
+                            cc_glglue_has_arb_vertex_program);
+    this->gluefunctions.put(SbName("COIN_occlusion_query").getString(),
+                            cc_glglue_has_occlusion_query);
+    this->gluefunctions.put(SbName("COIN_framebuffer_object").getString(),
+                            cc_glglue_has_framebuffer_objects);
+    this->gluefunctions.put(SbName("COIN_anisotropic_filtering").getString(),
+                            cc_glglue_can_do_anisotropic_filtering);
+    this->gluefunctions.put(SbName("COIN_sorted_layers_blend").getString(),
+                            cc_glglue_can_do_sortedlayersblend);
+  }
+  
   class SoGLDriver {
   public:
     typedef struct {
@@ -55,7 +104,7 @@ class SoGLDriverDatabaseP {
     SbList <SbName> vendor;
     SbList <SbName> renderer;
     SbList <versionrange> version;
-    
+
     SbList <SbName> broken;
     SbList <SbName> slow;
     SbList <SbName> fast;
@@ -78,6 +127,10 @@ class SoGLDriverDatabaseP {
   };
   
 public:
+  SoGLDriverDatabaseP() {
+    this->initFunctions();
+  }
+
   SbBool isSupported(const cc_glglue * context, const SbName & feature) {
     // check if we're asking about an actual GL extension
     if (feature.getLength() > 3) {
@@ -151,7 +204,7 @@ private:
   
   SoGLDriver * findGLDriver(const cc_glglue * context) {
     int major, minor, micro;
-    SbName platform("");;
+    SbName platform("");
     SbName vendor(context->vendorstr);
     SbName renderer(context->rendererstr);
 
@@ -167,6 +220,9 @@ private:
   SbHash <SbBool, FeatureID> brokencache; 
   SbHash <SbBool, FeatureID> slowcache; 
   SbHash <SbBool, FeatureID> fastcache; 
+
+  typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
+  SbHash <glglue_feature_test_f *, const char *> gluefunctions;
 };
 
 
@@ -226,6 +282,7 @@ SoGLDriverDatabase::pimpl(void)
   if (pimpl_instance == NULL) {
     pimpl_instance = new SoGLDriverDatabaseP;
     cc_coin_atexit((coin_atexit_f*) sogldriverdatabase_atexit);
+
   }
   return pimpl_instance;
 }
