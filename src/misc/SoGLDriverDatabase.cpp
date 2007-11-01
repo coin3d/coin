@@ -43,24 +43,23 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <string.h>
 
-class SoGLDriver {
-public:
-  typedef struct {
-    int maxmajor, maxminor, maxmicro;
-    int minmajor, minminor, minmicro;
-  } versionrange;
-  
-  SbList <SbName> platform;
-  SbList <SbName> vendor;
-  SbList <SbName> renderer;
-  SbList <versionrange> version;
-  
-  SbList <SbName> broken;
-  SbList <SbName> slow;
-  SbList <SbName> fast;
-};
-
 class SoGLDriverDatabaseP {
+  class SoGLDriver {
+  public:
+    typedef struct {
+      int maxmajor, maxminor, maxmicro;
+      int minmajor, minminor, minmicro;
+    } versionrange;
+    
+    SbList <SbName> platform;
+    SbList <SbName> vendor;
+    SbList <SbName> renderer;
+    SbList <versionrange> version;
+    
+    SbList <SbName> broken;
+    SbList <SbName> slow;
+    SbList <SbName> fast;
+  };
 public:
   class FeatureID {
   public:
@@ -149,7 +148,7 @@ public:
 
 private:
   
-  SoGLDriver * findGLDriver(const cc_glglue * context) {    
+  SoGLDriver * findGLDriver(const cc_glglue * context) {
     int major, minor, micro;
     SbName platform("");;
     SbName vendor(context->vendorstr);
