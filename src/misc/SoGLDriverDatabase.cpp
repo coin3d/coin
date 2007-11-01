@@ -60,7 +60,7 @@ class SoGLDriverDatabaseP {
     SbList <SbName> slow;
     SbList <SbName> fast;
   };
-public:
+
   class FeatureID {
   public:
     uint32_t contextid;
@@ -77,6 +77,7 @@ public:
     }
   };
   
+public:
   SbBool isSupported(const cc_glglue * context, const SbName & feature) {
     // check if we're asking about an actual GL extension
     if (feature.getLength() > 3) {
