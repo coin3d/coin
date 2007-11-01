@@ -47,50 +47,50 @@ class SoGLDriverDatabaseP {
   void initFunctions(void) {
     // define some reserved feature names for features that cannot be
     // tested directly as a single OpenGL extension test.
-    this->gluefunctions.put(SbName("COIN_multidraw_vertex_arrays").getString(),
-                            cc_glglue_has_multidraw_vertex_arrays);
-    this->gluefunctions.put(SbName("COIN_polygon_offset").getString(),
-                            cc_glglue_has_polygon_offset);
-    this->gluefunctions.put(SbName("COIN_texture_objects").getString(),
-                            cc_glglue_has_texture_objects);
-    this->gluefunctions.put(SbName("COIN_3d_textures").getString(),
-                            cc_glglue_has_3d_textures);
-    this->gluefunctions.put(SbName("COIN_multitexture").getString(),
-                            cc_glglue_has_multitexture);
-    this->gluefunctions.put(SbName("COIN_texsubimage").getString(),
-                            cc_glglue_has_texsubimage);
-    this->gluefunctions.put(SbName("COIN_2d_proxy_textures").getString(),
-                            cc_glglue_has_2d_proxy_textures);
-    this->gluefunctions.put(SbName("COIN_texture_edge_clamp").getString(),
-                            cc_glglue_has_texture_edge_clamp);
-    this->gluefunctions.put(SbName("COIN_texture_compression").getString(),
-                            cc_glue_has_texture_compression);
-    this->gluefunctions.put(SbName("COIN_color_tables").getString(),
-                            cc_glglue_has_color_tables);
-    this->gluefunctions.put(SbName("COIN_color_subtables").getString(),
-                            cc_glglue_has_color_subtables);
-    this->gluefunctions.put(SbName("COIN_paletted_textures").getString(),
-                            cc_glglue_has_paletted_textures);
-    this->gluefunctions.put(SbName("COIN_blend_equation").getString(),
-                            cc_glglue_has_blendequation);
-    this->gluefunctions.put(SbName("COIN_vertex_array").getString(),
-                            cc_glglue_has_vertex_array);
-    this->gluefunctions.put(SbName("COIN_nv_vertex_array_range").getString(),
-                            cc_glglue_has_nv_vertex_array_range);
-    this->gluefunctions.put(SbName("COIN_vertex_buffer_object").getString(),
-                            cc_glglue_has_vertex_buffer_object);
-    this->gluefunctions.put(SbName("COIN_arb_fragment_program").getString(),
-                            cc_glglue_has_arb_fragment_program);
-    this->gluefunctions.put(SbName("COIN_arb_vertex_program").getString(),
-                            cc_glglue_has_arb_vertex_program);
-    this->gluefunctions.put(SbName("COIN_occlusion_query").getString(),
-                            cc_glglue_has_occlusion_query);
-    this->gluefunctions.put(SbName("COIN_framebuffer_object").getString(),
-                            cc_glglue_has_framebuffer_objects);
-    this->gluefunctions.put(SbName("COIN_anisotropic_filtering").getString(),
-                            cc_glglue_can_do_anisotropic_filtering);
-    this->gluefunctions.put(SbName("COIN_sorted_layers_blend").getString(),
-                            cc_glglue_can_do_sortedlayersblend);
+    this->featuremap.put(SbName("COIN_multidraw_vertex_arrays").getString(),
+                         cc_glglue_has_multidraw_vertex_arrays);
+    this->featuremap.put(SbName("COIN_polygon_offset").getString(),
+                         cc_glglue_has_polygon_offset);
+    this->featuremap.put(SbName("COIN_texture_objects").getString(),
+                         cc_glglue_has_texture_objects);
+    this->featuremap.put(SbName("COIN_3d_textures").getString(),
+                         cc_glglue_has_3d_textures);
+    this->featuremap.put(SbName("COIN_multitexture").getString(),
+                         cc_glglue_has_multitexture);
+    this->featuremap.put(SbName("COIN_texsubimage").getString(),
+                         cc_glglue_has_texsubimage);
+    this->featuremap.put(SbName("COIN_2d_proxy_textures").getString(),
+                         cc_glglue_has_2d_proxy_textures);
+    this->featuremap.put(SbName("COIN_texture_edge_clamp").getString(),
+                         cc_glglue_has_texture_edge_clamp);
+    this->featuremap.put(SbName("COIN_texture_compression").getString(),
+                         cc_glue_has_texture_compression);
+    this->featuremap.put(SbName("COIN_color_tables").getString(),
+                         cc_glglue_has_color_tables);
+    this->featuremap.put(SbName("COIN_color_subtables").getString(),
+                         cc_glglue_has_color_subtables);
+    this->featuremap.put(SbName("COIN_paletted_textures").getString(),
+                         cc_glglue_has_paletted_textures);
+    this->featuremap.put(SbName("COIN_blend_equation").getString(),
+                         cc_glglue_has_blendequation);
+    this->featuremap.put(SbName("COIN_vertex_array").getString(),
+                         cc_glglue_has_vertex_array);
+    this->featuremap.put(SbName("COIN_nv_vertex_array_range").getString(),
+                         cc_glglue_has_nv_vertex_array_range);
+    this->featuremap.put(SbName("COIN_vertex_buffer_object").getString(),
+                         cc_glglue_has_vertex_buffer_object);
+    this->featuremap.put(SbName("COIN_arb_fragment_program").getString(),
+                         cc_glglue_has_arb_fragment_program);
+    this->featuremap.put(SbName("COIN_arb_vertex_program").getString(),
+                         cc_glglue_has_arb_vertex_program);
+    this->featuremap.put(SbName("COIN_occlusion_query").getString(),
+                         cc_glglue_has_occlusion_query);
+    this->featuremap.put(SbName("COIN_framebuffer_object").getString(),
+                         cc_glglue_has_framebuffer_objects);
+    this->featuremap.put(SbName("COIN_anisotropic_filtering").getString(),
+                         cc_glglue_can_do_anisotropic_filtering);
+    this->featuremap.put(SbName("COIN_sorted_layers_blend").getString(),
+                         cc_glglue_can_do_sortedlayersblend);
   }
   
   class SoGLDriver {
@@ -133,10 +133,18 @@ public:
 
   SbBool isSupported(const cc_glglue * context, const SbName & feature) {
     // check if we're asking about an actual GL extension
-    if (feature.getLength() > 3) {
-      const char * str = feature.getString();
-      if ((str[0] == 'G') && (str[1] == 'L') && (str[2] == '_')) {
-        if (!cc_glglue_glext_supported(context, feature)) return FALSE;
+    const char * str = feature.getString();
+    if ((feature.getLength() > 3) && (str[0] == 'G') && (str[1] == 'L') && (str[2] == '_')) {
+      if (!cc_glglue_glext_supported(context, feature)) return FALSE;
+    }
+    else { // check our lookup table
+      glglue_feature_test_f * testfunc;
+      if (this->featuremap.get(feature.getString(), testfunc)) {
+        if (!testfunc(context)) return FALSE;
+      }
+      else {
+        SoDebugError::post("SoGLDriverDatabase::isSupported",
+                           "Unknown feature '%s'.", feature.getString());
       }
     }
     return !this->isBroken(context, feature);
@@ -222,7 +230,7 @@ private:
   SbHash <SbBool, FeatureID> fastcache; 
 
   typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
-  SbHash <glglue_feature_test_f *, const char *> gluefunctions;
+  SbHash <glglue_feature_test_f *, const char *> featuremap;
 };
 
 
