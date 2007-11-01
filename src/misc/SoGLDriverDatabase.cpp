@@ -40,6 +40,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <string.h>
 
 class SoGLDriver {
@@ -103,10 +104,47 @@ public:
     return broken;
   }
   SbBool isSlow(const cc_glglue * context, const SbName & feature) {
-    return FALSE;
+    if (!this->isSupported(context, feature)) {
+      SoDebugError::post("SoGLDriverDatabase::isSlow",
+                         "Feature '%s' is not supported for the specified context.",
+                         feature.getString());
+      return TRUE;
+    }
+    FeatureID f;
+    f.contextid = context->contextid;
+    f.feature = feature;
+
+    SbBool slow = FALSE;
+    if (!this->slowcache.get(f, slow)) {
+      SoGLDriver * driver = this->findGLDriver(context);
+      if (driver) {
+        if (driver->slow.find(feature)) slow = TRUE;
+      }
+      this->slowcache.put(f, slow);
+    }
+    return slow;    
   }
   SbBool isFast(const cc_glglue * context, const SbName & feature) {
-    return FALSE;
+    if (!this->isSupported(context, feature)) {
+      SoDebugError::post("SoGLDriverDatabase::isFast",
+                         "Feature '%s' is not supported for the specified context.",
+                         feature.getString());
+      return FALSE;
+    }
+
+    FeatureID f;
+    f.contextid = context->contextid;
+    f.feature = feature;
+
+    SbBool fast = FALSE;
+    if (!this->fastcache.get(f, fast)) {
+      SoGLDriver * driver = this->findGLDriver(context);
+      if (driver) {
+        if (driver->fast.find(feature)) fast = TRUE;
+      }
+      this->fastcache.put(f, fast);
+    }
+    return fast;
   }
 
 private:
