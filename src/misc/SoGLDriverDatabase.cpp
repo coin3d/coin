@@ -64,11 +64,11 @@ public:
   class FeatureID {
   public:
     uint32_t contextid;
-    const char * feature; // unique pointer from SbName
+    SbName feature;
 
     // needed for SbHash
     operator unsigned long(void) const {
-      unsigned long bitmask = (unsigned long) ((uintptr_t) this->feature);
+      unsigned long bitmask = (unsigned long) ((uintptr_t) this->feature.getString());
       bitmask ^= contextid;
       return bitmask;
     }
@@ -77,7 +77,6 @@ public:
     }
   };
   
-
   SbBool isSupported(const cc_glglue * context, const SbName & feature) {
     // check if we're asking about an actual GL extension
     if (feature.getLength() > 3) {
@@ -91,7 +90,7 @@ public:
   SbBool isBroken(const cc_glglue * context, const SbName & feature) {
     FeatureID f;
     f.contextid = context->contextid;
-    f.feature = feature.getString();
+    f.feature = feature;
 
     SbBool broken = FALSE;
     if (!this->brokencache.get(f, broken)) {
