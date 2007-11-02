@@ -31,10 +31,11 @@ endif
 # **************************************************************************
 
 SUBDIRS = \
-	extensions actions base bundles caches details draggers elements \
+	extensions xml actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders $(VRML97DIR) foreignfiles .
+	3ds collision hardcopy shadows geo threads mpeg shaders \
+	$(VRML97DIR) foreignfiles .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
@@ -69,6 +70,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
+	xml/libxml.la xml/expat/libexpat.la \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
@@ -104,6 +106,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
 	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
+	xml/xml.lst xml/expat/expat.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 # **************************************************************************
@@ -187,7 +190,7 @@ install-symlinks:
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
 	    nodes navigation shapenodes projectors sensors upgraders 3ds collision \
-	    hardcopy threads mpeg shaders shadows geo $(VRML97DIR) foreignfiles ; do \
+	    hardcopy threads mpeg shaders shadows geo xml $(VRML97DIR) foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
 
@@ -235,6 +238,8 @@ uninstall-local:
 	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/MPEG" \
+	  "$$baseincdir/XML" \
+	  "$$baseincdir/C/XML" \
 	  "$$baseincdir/C/base" \
 	  "$$baseincdir/C/errors" \
 	  "$$baseincdir/C/glue" \

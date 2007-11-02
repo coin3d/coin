@@ -4,7 +4,7 @@ else
 THREADSDIR =
 endif
 
-SUBDIRS = base errors glue $(THREADSDIR)
+SUBDIRS = XML base errors glue $(THREADSDIR)
 
 
 BUILT_SOURCES = \

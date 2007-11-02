@@ -580,7 +580,7 @@ AC_SUBST([HAVE_THREADSAFE])
 # the result from compilation, not just pre-processing. (A space is enough
 # to indicate non-emptiness.)
 AC_CHECK_HEADERS(
-  [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h ieeefp.h],
+  [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h strings.h ieeefp.h],
   [], [],
   [ ])
 
@@ -1162,6 +1162,24 @@ AC_TRY_LINK([
 ], [
   AC_MSG_RESULT([no])
 ])
+
+AC_MSG_CHECKING([for memmove() function])
+AC_TRY_COMPILE(
+ [#include <string.h>],
+ [(void) memmove(0, 0, 0);],
+ [AC_DEFINE(HAVE_MEMMOVE, 1, [define if memmove() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
+AC_MSG_CHECKING([for bcopy() function])
+AC_TRY_COMPILE(
+ [#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif],
+ [(void) bcopy(0, 0, 0);],
+ [AC_DEFINE(HAVE_BCOPY, 1, [define if bcopy() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
 
 AC_MSG_CHECKING([for _logb() function])
 AC_TRY_LINK([
@@ -1966,12 +1984,12 @@ COIN_COMPILER="$CXX"
       case $enable_symbols in
       no | false)
         SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, no symbols])
-	;;
+        ;;
       *)
         SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, with symbols])
         CFLAGS="-g $CFLAGS"
         CXXFLAGS="-g $CXXFLAGS"
-	;;
+        ;;
       esac
     else
       LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
@@ -2118,12 +2136,14 @@ AC_CONFIG_FILES([
         include/Makefile
         include/Inventor/Makefile
         include/Inventor/C/Makefile
+        include/Inventor/C/XML/Makefile
         include/Inventor/C/base/Makefile
         include/Inventor/C/errors/Makefile
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
         include/Inventor/MPEG/Makefile
         include/Inventor/VRMLnodes/Makefile
+        include/Inventor/XML/Makefile
         include/Inventor/actions/Makefile
         include/Inventor/bundles/Makefile
         include/Inventor/caches/Makefile
@@ -2155,9 +2175,9 @@ AC_CONFIG_FILES([
         include/Inventor/annex/FXViz/nodes/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
-	data/shaders/Makefile
-	data/shaders/lights/Makefile
-	data/shaders/vsm/Makefile
+        data/shaders/Makefile
+        data/shaders/lights/Makefile
+        data/shaders/vsm/Makefile
         man/Makefile
         man/man1/Makefile
         man/man3/Makefile
@@ -2196,9 +2216,11 @@ AC_CONFIG_FILES([
         src/hardcopy/Makefile
         src/mpeg/Makefile
         src/shaders/Makefile
-	src/shadows/Makefile
-	src/geo/Makefile
+        src/shadows/Makefile
+        src/geo/Makefile
         src/foreignfiles/Makefile
+        src/xml/Makefile
+        src/xml/expat/Makefile
         testsuite/Makefile
         cfg/gendsp.pl
 ])
