@@ -854,10 +854,14 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   transform.multDirMatrix(dir, dir);
   (void) dir.normalize();
 
-  const float cammul = 2.0f;
-
+  float cutoff = light->cutOffAngle.getValue();
+  // the maximum heightAngle we can render with a camera is < PI/2,.
+  // The max cutoff is therefore PI/4. Some slack is needed, and 0.78
+  // is about the maximum angle we can do.
+  if (cutoff > 0.78f) cutoff = 0.78f;
+  
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-  cam->heightAngle.setValue(light->cutOffAngle.getValue() * cammul);
+  cam->heightAngle.setValue(cutoff * 2.0f);
 
   SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
 
@@ -924,8 +928,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
     cam->farDistance = cache->farval;
   }
   
-  float realfarval = cache->farval / float(cos(light->cutOffAngle.getValue() * cammul));
-
+  float realfarval = cache->farval / float(cos(cutoff * 2.0f));  
   cache->fragment_farval->value = realfarval;
   cache->vsm_farval->value = realfarval;
 
