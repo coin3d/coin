@@ -9322,9 +9322,10 @@ SIM_AC_COMPILE_DEBUG([
     *wrapmsvc* )
       if $sim_ac_simian; then
         if $sim_ac_source_release; then :; else
+          :
           # break build on warnings, except for in official source code releases
-          SIM_AC_CC_COMPILER_OPTION([/WX], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"])
-          SIM_AC_CXX_COMPILER_OPTION([/WX], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"])
+          #SIM_AC_CC_COMPILER_OPTION([/WX], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"])
+          #SIM_AC_CXX_COMPILER_OPTION([/WX], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"])
         fi
       fi
 

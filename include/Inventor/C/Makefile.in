@@ -265,7 +265,7 @@ target_vendor = @target_vendor@
 @BUILD_WITH_THREADS_FALSE@THREADSDIR = 
 @BUILD_WITH_THREADS_TRUE@THREADSDIR = threads
 
-SUBDIRS = base errors glue $(THREADSDIR)
+SUBDIRS = XML base errors glue $(THREADSDIR)
 
 BUILT_SOURCES = \
 	basic.h
@@ -321,7 +321,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = $(libcinc_HEADERS) Makefile.am Makefile.in
-DIST_SUBDIRS = base errors glue threads
+DIST_SUBDIRS = XML base errors glue threads
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

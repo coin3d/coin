@@ -291,10 +291,11 @@ CLEANFILES = \
 
 # **************************************************************************
 SUBDIRS = \
-	extensions actions base bundles caches details draggers elements \
+	extensions xml actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders $(VRML97DIR) foreignfiles .
+	3ds collision hardcopy shadows geo threads mpeg shaders \
+	$(VRML97DIR) foreignfiles .
 
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
@@ -323,6 +324,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 @HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la xml/expat/libexpat.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97LIBADD) $(SUPERGLULIBADD)
 
 
@@ -360,6 +362,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
 	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
+	xml/xml.lst xml/expat/expat.lst \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-headerpad_max_install_names 
@@ -415,6 +418,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	shadows/shadows.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	geo/geo.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	foreignfiles/foreignfiles.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	xml/xml.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	xml/expat/expat.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	actions/actions.lst \
@@ -450,7 +455,9 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	shaders/shaders.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	shadows/shadows.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	geo/geo.lst \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	xml/xml.lst \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	xml/expat/expat.lst
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	actions/actions.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	base/base.lst \
@@ -486,6 +493,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	shadows/shadows.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	geo/geo.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	foreignfiles/foreignfiles.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	xml/xml.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	xml/expat/expat.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	$(VRML97DIR)/vrml97.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
@@ -523,6 +532,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	shadows/shadows.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	geo/geo.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	xml/xml.lst \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	xml/expat/expat.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	$(VRML97DIR)/vrml97.lst
 am__objects_1 = tidbits.$(OBJEXT) CoinGLPerformance.$(OBJEXT) \
 	coin-dummy.$(OBJEXT)
@@ -566,7 +577,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shaders/libshaders.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
@@ -603,6 +616,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
+@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
@@ -640,6 +655,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
@@ -677,6 +694,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
+@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
 am__objects_3 = tidbits.lo CoinGLPerformance.lo coin-dummy.lo
@@ -715,11 +734,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = Makefile.am Makefile.in
-DIST_SUBDIRS = extensions actions base bundles caches details draggers \
-	elements engines errors events fields fonts glue io manips misc \
-	lists nodekits navigation nodes shapenodes projectors sensors \
-	upgraders 3ds collision hardcopy shadows geo threads mpeg \
-	shaders vrml97 foreignfiles .
+DIST_SUBDIRS = extensions xml actions base bundles caches details \
+	draggers elements engines errors events fields fonts glue io \
+	manips misc lists nodekits navigation nodes shapenodes \
+	projectors sensors upgraders 3ds collision hardcopy shadows geo \
+	threads mpeg shaders vrml97 foreignfiles .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: all-recursive
@@ -1252,7 +1271,7 @@ install-symlinks:
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
 	    nodes navigation shapenodes projectors sensors upgraders 3ds collision \
-	    hardcopy threads mpeg shaders shadows geo $(VRML97DIR) foreignfiles ; do \
+	    hardcopy threads mpeg shaders shadows geo xml $(VRML97DIR) foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
 
@@ -1300,6 +1319,8 @@ uninstall-local:
 	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/MPEG" \
+	  "$$baseincdir/XML" \
+	  "$$baseincdir/C/XML" \
 	  "$$baseincdir/C/base" \
 	  "$$baseincdir/C/errors" \
 	  "$$baseincdir/C/glue" \
