@@ -2556,38 +2556,6 @@ Text2 {
     
 =====================================================================
 
-218 SoVRMLBillboard::axisOfRotation does not work with transformed geometry?
-
-    This very much looks like a bug:
-
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-#VRML V2.0 utf8
-
-Billboard {
-   axisOfRotation 0 0 1
-   children [
-      Transform {
-         rotation 1 0 0 1.57
-         children Box { size 2 1 4 }
-      }
-   ]
-}
-
-Transform {
-   translation 0 0 -2
-   children [ Box { size 10 10 0.1 } ]
-}
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-
-    (Disable the rotation in the Transform node, and then it works as
-    expected. It definitely seems wrong to me that rotating the
-    geometry in its local coordinate system should *disable* the
-    influence of the axisOfRotation field completely.)
-
-    20061107 mortene
-
-=====================================================================
-
 219 View All doesn't work properly with SoText2 nodes
 
 Pressing "View All" in an examinerviewer with the attached scenegraph
