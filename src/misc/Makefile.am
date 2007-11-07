@@ -1,5 +1,6 @@
 RegularSources = \
 	SoBase.cpp \
+	SoBaseP.cpp \
 	SoChildList.cpp \
 	SoCompactPathList.cpp \
 	SoContextHandler.cpp \
@@ -52,6 +53,7 @@ LinkHackSources = \
 PublicHeaders =
 PrivateHeaders = \
         SoDBP.h \
+        SoBaseP.h \
 	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \

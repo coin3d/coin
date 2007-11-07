@@ -55,6 +55,7 @@
 // *************************************************************************
 
 #include <Inventor/misc/SoBase.h>
+#include "SoBaseP.h"
 
 #include <assert.h>
 #include <string.h>
@@ -150,104 +151,6 @@
   \COININTERNAL
 */
 
-// *************************************************************************
-
-// FIXME: should implement and use a proper set-abstraction
-// datatype. 20050524 mortene.
-typedef SbHash<void *, const SoBase *> SoBaseSet;
-
-class SoBaseP {
-public:
-  static void * mutex;
-  static void * name2obj_mutex;
-  static void * obj2name_mutex;
-  static void * auditor_mutex;
-  static void * global_mutex;
-
-  static SbHash<SoAuditorList *, const SoBase *> * auditordict;
-  static SbHash<SbPList *, const char *> * name2obj;
-  static SbHash<const char *, const SoBase *> * obj2name;
-
-  static void auditordict_cb(const SoBase * const & key, SoAuditorList * const & value, void * closure);
-  static void cleanup_auditordict(void);
-
-  static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
-
-  static void check_for_leaks(void);
-  static SbBool trackbaseobjects;
-  static void * allbaseobj_mutex;
-  static SoBaseSet * allbaseobj; // maps from SoBase * to NULL
-};
-
-void * SoBaseP::mutex = NULL;
-void * SoBaseP::name2obj_mutex = NULL;
-void * SoBaseP::obj2name_mutex = NULL;
-void * SoBaseP::auditor_mutex = NULL;
-void * SoBaseP::global_mutex = NULL;
-
-SbHash<SoAuditorList *, const SoBase *> * SoBaseP::auditordict = NULL;
-
-// Only a small number of SoBase derived objects will under usual
-// conditions have designated names, so we use a couple of static
-// dictionary objects to keep track of them. Since we avoid storing a
-// pointer for each and every object, we'll cut down on a decent
-// amount of memory use this way (SoBase should be kept as slim as
-// possible, as any dead weight is brought along in a lot of objects).
-SbHash<SbPList *, const char *> * SoBaseP::name2obj = NULL;
-SbHash<const char *, const SoBase *> * SoBaseP::obj2name = NULL;
-
-// This is used for debugging purposes: it stores a pointer to all
-// SoBase-derived objects that have been allocated and not
-// deallocated.
-SbBool SoBaseP::trackbaseobjects = FALSE;
-void * SoBaseP::allbaseobj_mutex = NULL;
-SoBaseSet * SoBaseP::allbaseobj = NULL; // maps from SoBase * to NULL
-
-void
-SoBaseP::auditordict_cb(const SoBase * const &, SoAuditorList * const & l, void *)
-{
-  delete l;
-}
-
-void
-SoBaseP::cleanup_auditordict(void)
-{
-  if (SoBaseP::auditordict) {
-    SoBaseP::auditordict->apply(SoBaseP::auditordict_cb, NULL);
-    delete SoBaseP::auditordict;
-    SoBaseP::auditordict = NULL;
-  }
-}
-
-void
-SoBaseP::check_for_leaks(void)
-{
-#if COIN_DEBUG
-  if (SoBaseP::trackbaseobjects) {
-    SbList<const SoBase *> keys;
-    SoBaseP::allbaseobj->makeKeyList(keys);
-    const unsigned int len = keys.getLength();
-    if (len > 0) {
-      // Use printf()s, in case SoDebugError has been made defunct by
-      // previous coin_atexit() work.
-      (void)printf("\nSoBase-derived instances not deallocated:\n");
-
-      for (unsigned int i=0; i < len; i++) {
-        const SoBase * base = keys[i];
-        base->assertAlive();
-        const SbName name = base->getName();
-        const SoType t = base->getTypeId();
-        SbString s;
-        s.sprintf("\"%s\"", name.getString());
-        (void)printf("\t%p type==(0x%04x, '%s') name=='%s'\n",
-                     base, t.getKey(), t.getName().getString(),
-                     name == "" ? "no name" : s.getString());
-      }
-      (void)printf("\n");
-    }
-  }
-#endif // COIN_DEBUG
-}
 
 // *************************************************************************
 
@@ -1475,13 +1378,6 @@ uint32_t
 SoBase::getCurrentWriteCounter(void)
 {
   return SoBase::writecounter;
-}
-
-// Used to free the SbPLists in the name<->object dict.
-void
-SoBaseP::emptyName2ObjHash(const char * const &, SbPList * const & l, void *)
-{
-  delete l;
 }
 
 // Reads the name of a reference after a "USE" keyword and finds the
