@@ -133,6 +133,8 @@ private:
 
   static SbBool tracerefs;
   static uint32_t writecounter;
+
+  friend class SoBaseP;
 };
 
 // support for boost::intrusive_ptr<SoBase>
