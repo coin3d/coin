@@ -57,7 +57,9 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
+#include "../misc/SoBaseP.h"
 #include <Inventor/nodes/SoNode.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -310,10 +312,10 @@ SoMFNode::copyValue(int to, int from)
 SbBool
 SoMFNode::read1Value(SoInput * in, int index)
 {
-  SoSFNode sfnode;
-  SbBool result = sfnode.readValue(in);
-  if (result) this->set1Value(index, sfnode.getValue());
-  return result;
+  SoNode * node = SoBaseP::readNode(in);
+  if (!node) return FALSE;
+  this->set1Value(index, node);
+  return TRUE;
 }
 
 // Export a single node.

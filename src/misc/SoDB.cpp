@@ -36,13 +36,13 @@
 
   For an excellently written, detailed, tutorial-style introduction to
   the Open Inventor API used by the Coin library, we highly recommend
-  the book «The Inventor Mentor» (subtitle: «Programming
-  Object-Oriented 3D Graphics with Open Inventor»), ISBN
+  the book ï¿½The Inventor Mentorï¿½ (subtitle: ï¿½Programming
+  Object-Oriented 3D Graphics with Open Inventorï¿½), ISBN
   0-201-62495-8. It walks the Coin application programmer through all
   the principles applied in the API, richly illustrated and with
   numerous, well documented code examples.
 
-  (The «Inventor Mentor» is getting a bit old, but don't let that put
+  (The ï¿½Inventor Mentorï¿½ is getting a bit old, but don't let that put
   you off. We heartily recommend this book as it covers all the basic
   design principles, aswell as the major parts of the API, in an
   excellent manner.)
@@ -1874,3 +1874,116 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 }
 
 /* *********************************************************************** */
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SoInput.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/fields/SoMFNode.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/threads/SbThread.h>
+#include <Inventor/threads/SbCondVar.h>
+#include <Inventor/threads/SbMutex.h>
+
+// Do-nothing error handler for ignoring read errors while testing.
+static void
+readErrorHandler(const SoError * error, void * data)
+{
+}
+
+// If an error will cause the import to hang, the test will be run
+// in a seperate thread to detect this situation. We need to do a
+// timed wait on a conditional variable to enable this.
+static SbMutex mutex;
+static SbCondVar condvar;
+
+static void *
+readThread(void * param)
+{
+  SoInput * in = (SoInput *) param;
+  SoSeparator * root = SoDB::readAll(in);
+  condvar.wakeOne(); // Signal main thread before terminating
+  return 0;
+}
+
+BOOST_AUTO_TEST_CASE(readChildList)
+{
+  static const char scene[] = "#VRML V2.0 utf8\n"
+                              "DEF TestGroup Group { children [Group{}, Group{}, Group{}] }";
+  SoInput in;
+  in.setBuffer((void *) scene, strlen(scene));
+  SoSeparator * root = SoDB::readAll(&in);
+  BOOST_REQUIRE(root);
+  SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
+  BOOST_REQUIRE_MESSAGE(group->getNumChildren() == 3, "Unexpected number of children");
+  for (int i = 0; i < group->getNumChildren(); i++) {
+    BOOST_REQUIRE_MESSAGE(group->getChild(i)->isOfType(SoGroup::getClassTypeId()), "Unexpected type");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(readEmptyChildList)
+{
+  // FIXME: We are forced to restore the global state before terminating,
+  // or independent tests could fail. (sveinung 20071108)
+  SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
+  SoReadError::setHandlerCallback(readErrorHandler, NULL);
+
+  static const char scene[] = "#VRML V2.0 utf8\n"
+                              "DEF TestGroup Group { children }";
+  SoInput in;
+  in.setBuffer((void *) scene, strlen(scene));
+  SoSeparator * root = SoDB::readAll(&in);
+  if (root) {
+    SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
+    BOOST_CHECK_MESSAGE(group->getNumChildren() == 0, "Should have no children");
+  }
+  BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
+
+  SoReadError::setHandlerCallback(prevErrorCB, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(readNullChildList)
+{
+  // FIXME: We are forced to restore the global state before terminating,
+  // or independent tests could fail. (sveinung 20071108)
+  SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
+  SoReadError::setHandlerCallback(readErrorHandler, NULL);
+
+  static const char scene[] = "#VRML V2.0 utf8\n"
+                              "PROTO Object [ field MFNode testChildren NULL ] { }\n"
+                              "DEF TestObject Object { }";
+  SoInput in;
+  in.setBuffer((void *) scene, strlen(scene));
+  SoSeparator * root = SoDB::readAll(&in);
+  if (root) {
+    SoNode * object = (SoNode *) SoNode::getByName("TestObject");
+    SoMFNode * field = (SoMFNode *) object->getField("testChildren");
+    BOOST_CHECK_MESSAGE(field->getNumNodes() == 0, "Should have no children");
+  }
+  BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
+
+  SoReadError::setHandlerCallback(prevErrorCB, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(readInvalidChildList)
+{
+  // FIXME: We are forced to restore the global state before terminating,
+  // or independent tests could fail. (sveinung 20071108)
+  SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
+  SoReadError::setHandlerCallback(readErrorHandler, NULL);
+
+  static const char scene[] = "#VRML V2.0 utf8\n"
+                              "Group { children[0] }";
+  SoInput in;
+  in.setBuffer((void *) scene, strlen(scene));
+  SbThread * thread = SbThread::create(readThread, (void *) &in);
+  // FIXME: When the read thread hangs, this test will produce random additional output.
+  // The thread is likely in a infinite loop and will eat CPU cycles. Destroying the
+  // thread will however create even more unwanted output. (sveinung 20071108)
+  BOOST_CHECK_MESSAGE(condvar.timedWait(mutex, SbTime(0.5)), "Read thread hangs");
+
+  SoReadError::setHandlerCallback(prevErrorCB, NULL);
+}
+
+#endif // COIN_TEST_SUITE

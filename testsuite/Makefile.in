@@ -78,8 +78,8 @@ TEST_SUITE_OBJECTS = \
 	fieldsSoSFEngine.$(OBJEXT) \
 	fieldsSoSFEnum.$(OBJEXT) \
 	fieldsSoSFFloat.$(OBJEXT) \
-	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFImage3.$(OBJEXT) \
+	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFInt32.$(OBJEXT) \
 	fieldsSoSFMatrix.$(OBJEXT) \
 	fieldsSoSFName.$(OBJEXT) \
@@ -116,6 +116,7 @@ TEST_SUITE_OBJECTS = \
 	geoSoGeoLocation.$(OBJEXT) \
 	geoSoGeoOrigin.$(OBJEXT) \
 	geoSoGeoSeparator.$(OBJEXT) \
+	miscSoDB.$(OBJEXT) \
 	nodesSoAnnotation.$(OBJEXT) \
 	shadersSoFragmentShader.$(OBJEXT) \
 	shadersSoGeometryShader.$(OBJEXT) \
@@ -184,8 +185,8 @@ TEST_SUITE_BUILT_FILES = \
 	fieldsSoSFEngine.cpp \
 	fieldsSoSFEnum.cpp \
 	fieldsSoSFFloat.cpp \
-	fieldsSoSFImage.cpp \
 	fieldsSoSFImage3.cpp \
+	fieldsSoSFImage.cpp \
 	fieldsSoSFInt32.cpp \
 	fieldsSoSFMatrix.cpp \
 	fieldsSoSFName.cpp \
@@ -222,6 +223,7 @@ TEST_SUITE_BUILT_FILES = \
 	geoSoGeoLocation.cpp \
 	geoSoGeoOrigin.cpp \
 	geoSoGeoSeparator.cpp \
+	miscSoDB.cpp \
 	nodesSoAnnotation.cpp \
 	shadersSoFragmentShader.cpp \
 	shadersSoGeometryShader.cpp \
@@ -597,17 +599,17 @@ fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextrac
 fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
 
-fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
-
-fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
-	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
-
 fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
 
 fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
+
+fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
+
+fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
+	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
 
 fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp
@@ -824,6 +826,12 @@ geoSoGeoSeparator.cpp: $(top_srcdir)/src/geo/SoGeoSeparator.cpp $(srcdir)/makeex
 
 geoSoGeoSeparator.$(OBJEXT): geoSoGeoSeparator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
 	$(CXX) $(TS_CPPFLAGS) -g -c geoSoGeoSeparator.cpp
+
+miscSoDB.cpp: $(top_srcdir)/src/misc/SoDB.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoDB.cpp
+
+miscSoDB.$(OBJEXT): miscSoDB.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h Makefile
+	$(CXX) $(TS_CPPFLAGS) -g -c miscSoDB.cpp
 
 nodesSoAnnotation.cpp: $(top_srcdir)/src/nodes/SoAnnotation.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/nodes/SoAnnotation.cpp
