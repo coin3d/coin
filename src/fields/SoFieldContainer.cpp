@@ -722,7 +722,7 @@ SoFieldContainer::copyContents(const SoFieldContainer * from,
   this->setName(from->getName());
   this->donotify = from->donotify;
   this->copyFieldValues(from, copyconnections);
-  this->setUserData(from->getUserData());
+  if (from->getUserData()) this->setUserData(from->getUserData());
 }
 
 
