@@ -1986,4 +1986,21 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
   SoReadError::setHandlerCallback(prevErrorCB, NULL);
 }
 
+BOOST_AUTO_TEST_CASE(testAlternateRepNull)
+{
+  // FIXME: We are forced to restore the global state before terminating,
+  // or independent tests could fail. (sveinung 20071108)
+  SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
+  SoReadError::setHandlerCallback(readErrorHandler, NULL);
+
+  static const char scene[] = "#Inventor V2.1 ascii\n"
+                              "ExtensionNode { fields [ SFNode alternateRep ] }";
+  SoInput in;
+  in.setBuffer((void *) scene, strlen(scene));
+  SoSeparator * root = SoDB::readAll(&in);
+  BOOST_CHECK_MESSAGE(root, "Import should succeed");
+
+  SoReadError::setHandlerCallback(prevErrorCB, NULL);
+}
+
 #endif // COIN_TEST_SUITE

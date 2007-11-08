@@ -159,6 +159,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
         SoDebugError::postInfo("SoUnknownNode::readInstance",
                                "found alternate representation");
 #endif // debug
+        if (!f->getValue()) break;
         PRIVATE(this)->alternate->truncate(0);
         PRIVATE(this)->alternate->append(f->getValue());
       }
