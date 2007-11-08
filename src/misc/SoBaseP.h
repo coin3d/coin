@@ -27,8 +27,10 @@
 #include <Inventor/misc/SbHash.h>
 
 class SoBase;
+class SoNode;
 class SoAuditorList;
 class SbPList;
+class SoInput;
 
 #ifndef COIN_INTERNAL
 #error this is a private header file
@@ -41,6 +43,8 @@ typedef SbHash<void *, const SoBase *> SoBaseSet;
 
 class SoBaseP {
 public:
+  static SoNode * readNode(SoInput * in);
+
   static void * mutex;
   static void * name2obj_mutex;
   static void * obj2name_mutex;

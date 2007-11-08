@@ -24,9 +24,23 @@
 #include "SoBaseP.h"
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoAuditorList.h>
 #include <Inventor/misc/SoBase.h>
+#include <Inventor/nodes/SoNode.h>
+
+// Create a new SoNode-derived instance from the input stream.
+SoNode *
+SoBaseP::readNode(SoInput * in)
+{
+  SbName name;
+  if (!in->read(name, TRUE)) return NULL;
+  SoBase * node = NULL;
+  if (!SoBase::readBase(in, name, node)) return NULL;
+  assert(node->isOfType(SoNode::getClassTypeId()));
+  return (SoNode *) node;
+}
 
 // Used to free the SbPLists in the name<->object dict.
 void
