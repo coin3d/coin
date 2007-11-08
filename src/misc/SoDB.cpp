@@ -1882,29 +1882,11 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/threads/SbThread.h>
-#include <Inventor/threads/SbCondVar.h>
-#include <Inventor/threads/SbMutex.h>
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
 readErrorHandler(const SoError * error, void * data)
 {
-}
-
-// If an error will cause the import to hang, the test will be run
-// in a seperate thread to detect this situation. We need to do a
-// timed wait on a conditional variable to enable this.
-static SbMutex mutex;
-static SbCondVar condvar;
-
-static void *
-readThread(void * param)
-{
-  SoInput * in = (SoInput *) param;
-  SoSeparator * root = SoDB::readAll(in);
-  condvar.wakeOne(); // Signal main thread before terminating
-  return 0;
 }
 
 BOOST_AUTO_TEST_CASE(readChildList)
@@ -1977,11 +1959,8 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
                               "Group { children[0] }";
   SoInput in;
   in.setBuffer((void *) scene, strlen(scene));
-  SbThread * thread = SbThread::create(readThread, (void *) &in);
-  // FIXME: When the read thread hangs, this test will produce random additional output.
-  // The thread is likely in a infinite loop and will eat CPU cycles. Destroying the
-  // thread will however create even more unwanted output. (sveinung 20071108)
-  BOOST_CHECK_MESSAGE(condvar.timedWait(mutex, SbTime(0.5)), "Read thread hangs");
+  SoSeparator * root = SoDB::readAll(&in);
+  BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
 
   SoReadError::setHandlerCallback(prevErrorCB, NULL);
 }
