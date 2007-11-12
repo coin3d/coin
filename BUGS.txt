@@ -2354,29 +2354,6 @@ SoText2 {
 
 =====================================================================
 
-220 The realTime global field is not written to a .iv file
-
-Reading and then writing the attached file results in the Text2 node
-having its string set to "" instead of being connected to the realTime
-field.
-
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-#Inventor V2.1 ascii
-
-Separator {
-  Text2 {
-    string "" = GlobalField {
-      type "SFTime"
-      realTime 0
-    } . realTime
-  }
-}
-----8<-------------- [snip] -------8<-------------- [snip] -------------
-
-    20061129 kintel
-
-=====================================================================
-
 221 Global field values are not evaluated when reading from file
 
 When creating and connecting from a global field from an .iv file, the
