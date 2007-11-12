@@ -263,3 +263,70 @@ SoWriteAction::shouldCompactPathLists(void) const
 {
   return FALSE;
 }
+
+#ifdef COIN_TEST_SUITE
+
+// check that the realTime GlobalField is written if it has any
+// forward connections.
+
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/C/tidbits.h>
+
+BOOST_AUTO_TEST_CASE(GlobalField)
+{
+  SoDB::init();
+  
+  static const char inlinescenegraph[] = 
+    "#Inventor V2.1 ascii\n"
+    "\n"
+    "\n"
+    "Separator {\n"
+    "\n"
+    "  Text2 { \n"
+    "    string \"\" = GlobalField { \n"
+    "      type \"SFTime\" realTime 0 \n"
+    "\n"
+    "    } . realTime \n"
+    "  }\n"
+    "}\n";
+  
+  // read scene
+  SoInput in;
+  in.setBuffer((void *) inlinescenegraph, strlen(inlinescenegraph));
+  SoSeparator * top = SoDB::readAll(&in);
+  BOOST_REQUIRE(top);
+  top->ref();
+  
+  // write scene
+  SoOutput out;
+  const int buffer_size = 1024;
+  char * buffer = (char *)malloc(buffer_size);
+  out.setBuffer(buffer, buffer_size, NULL);
+  
+  SoWriteAction wa(&out);
+  wa.apply((SoNode *)top);
+  
+  top->unref();
+  top = NULL;
+
+  // read scene again to check if realTime field was written
+  in.setBuffer((void *)buffer, strlen(buffer));
+  top = SoDB::readAll(&in);
+  BOOST_REQUIRE(top);
+  top->ref();
+
+  SoText2 * text = (SoText2 *)top->getChild(0);
+  BOOST_REQUIRE(text);
+
+  SoField * string = text->getField("string");
+  BOOST_REQUIRE(string);
+  BOOST_CHECK_MESSAGE(string->isConnected(), "String field not connected to realTime field in written scene graph");
+
+  top->unref();
+}
+
+#endif // COIN_TEST_SUITE
