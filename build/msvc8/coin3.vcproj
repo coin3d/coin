@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{6A256DDD-20CD-4259-9082-F1C442E4E358}"
+	ProjectGUID="{3D072756-1D97-4293-ACE1-4A7C1F691DBE}"
 	>
 	<Platforms>
 		<Platform
@@ -497,6 +497,566 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<Filter
+				Name="xml/expat sources"
+				Filter="c;cpp;ic;icc;h"
+				>
+				<File
+					RelativePath="..\..\src\xml\expat\xmlparse.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml\expat/"
+							ProgramDataBaseFileName="StaticDebug\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml\expat/"
+							ProgramDataBaseFileName="Release\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml\expat/"
+							ProgramDataBaseFileName="StaticRelease\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml\expat/"
+							ProgramDataBaseFileName="Debug\xml\expat/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\expat\xmlrole.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml\expat/"
+							ProgramDataBaseFileName="StaticDebug\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml\expat/"
+							ProgramDataBaseFileName="Release\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml\expat/"
+							ProgramDataBaseFileName="StaticRelease\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml\expat/"
+							ProgramDataBaseFileName="Debug\xml\expat/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\expat\xmltok.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml\expat/"
+							ProgramDataBaseFileName="StaticDebug\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml\expat/"
+							ProgramDataBaseFileName="Release\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml\expat/"
+							ProgramDataBaseFileName="StaticRelease\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml\expat/"
+							ProgramDataBaseFileName="Debug\xml\expat/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\expat\xmltok_impl.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml\expat/"
+							ProgramDataBaseFileName="StaticDebug\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml\expat/"
+							ProgramDataBaseFileName="Release\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml\expat/"
+							ProgramDataBaseFileName="StaticRelease\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml\expat/"
+							ProgramDataBaseFileName="Debug\xml\expat/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\expat\xmltok_ns.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml\expat/"
+							ProgramDataBaseFileName="StaticDebug\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml\expat/"
+							ProgramDataBaseFileName="Release\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml\expat/"
+							ProgramDataBaseFileName="StaticRelease\xml\expat/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml\expat/"
+							ProgramDataBaseFileName="Debug\xml\expat/"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="xml sources"
+				Filter="c;cpp;ic;icc;h"
+				>
+				<File
+					RelativePath="..\..\src\xml\document.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\element.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\entity.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\parser.c"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\path.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\xml\utils.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 			<Filter
 				Name="actions sources"
 				Filter="c;cpp;ic;icc;h"
@@ -22932,6 +23492,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\misc\SoBaseP.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\misc/"
+							ProgramDataBaseFileName="StaticDebug\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\misc/"
+							ProgramDataBaseFileName="Release\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\misc/"
+							ProgramDataBaseFileName="StaticRelease\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\misc/"
+							ProgramDataBaseFileName="Debug\misc/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\misc\SoChildList.cpp"
 					>
 					<FileConfiguration
@@ -23483,6 +24093,56 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\SoGLCubeMapImage.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\misc/"
+							ProgramDataBaseFileName="StaticDebug\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\misc/"
+							ProgramDataBaseFileName="Release\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\misc/"
+							ProgramDataBaseFileName="StaticRelease\misc/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\misc/"
+							ProgramDataBaseFileName="Debug\misc/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLDriverDatabase.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -42545,6 +43205,46 @@
 				>
 			</File>
 			<Filter
+				Name="Inventor\C\XML headers"
+				>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\attribute.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\document.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\element.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\entity.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\parser.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\path.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\types.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\utils.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\C\XML\world.h"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="Inventor\C\base headers"
 				>
 				<File
@@ -48656,6 +49356,42 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\misc\SoGLDriverDatabase.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\misc\SoPick.h"
 					>
 					<FileConfiguration
@@ -49849,6 +50585,42 @@
 				</File>
 				<File
 					RelativePath="..\..\src\misc\cppmangle.icc"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoBaseP.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

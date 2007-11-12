@@ -103,6 +103,9 @@
 /* Define if assert() uses __builtin_expect() */
 /* #undef HAVE_ASSERT_WITH_BUILTIN_EXPECT */
 
+/* define if bcopy() is available */
+#define HAVE_BCOPY 1
+
 /* Define to use bzip2 */
 /* #undef HAVE_BZIP2 */
 
@@ -228,6 +231,9 @@
 
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 /* #undef HAVE_MACH_O_DYLD_H */
+
+/* define if memmove() is available */
+#define HAVE_MEMMOVE 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
