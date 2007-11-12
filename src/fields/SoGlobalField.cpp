@@ -325,11 +325,7 @@ void
 SoGlobalField::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(this->classfielddata);
-  // The global realTime field will never be written to file and
-  // should thus never be writeref'ed.
-  if (getGlobalField() != SoDB::getGlobalField("realTime")) {
-    inherited::addWriteReference(out, FALSE);
-  }
+  inherited::addWriteReference(out, FALSE);
 }
 
 
