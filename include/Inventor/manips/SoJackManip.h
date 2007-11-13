@@ -25,6 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoJackManipP;
 
 class COIN_DLL_API SoJackManip : public SoTransformManip {
   typedef SoTransformManip inherited;
@@ -37,6 +40,13 @@ public:
 
 protected:
   virtual ~SoJackManip(void);
-};
+
+private:
+  SbLazyPimplPtr<SoJackManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoJackManip(const SoJackManip & rhs);
+  SoJackManip & operator = (const SoJackManip & rhs);
+}; // SoJackManip
 
 #endif // !COIN_SOJACKMANIP_H

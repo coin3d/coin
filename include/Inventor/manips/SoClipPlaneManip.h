@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoClipPlane.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SbBox3f;
@@ -34,6 +35,7 @@ class SoFieldSensor;
 class SoPath;
 class SoSensor;
 
+class SoClipPlaneManipP;
 
 class COIN_DLL_API SoClipPlaneManip : public SoClipPlane {
   typedef SoClipPlane inherited;
@@ -82,6 +84,12 @@ private:
   int currAxis;
   void attachSensors(const SbBool onoff);
 
-};
+private:
+  SbLazyPimplPtr<SoClipPlaneManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoClipPlaneManip(const SoClipPlaneManip & rhs);
+  SoClipPlaneManip & operator = (const SoClipPlaneManip & rhs);
+}; // SoClipPlaneManip
 
 #endif // !COIN_SOCLIPPLANEMANIP_H

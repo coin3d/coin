@@ -25,16 +25,17 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoPointLight.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #ifndef COIN_INTERNAL
 #include <Inventor/draggers/SoDragger.h>
-#endif
+#endif // !COIN_INTERNAL
 
 class SoChildList;
 class SoDragger;
 class SoFieldSensor;
 class SoPath;
 class SoSensor;
-
+class SoPointLightManipP;
 
 class COIN_DLL_API SoPointLightManip : public SoPointLight {
   typedef SoPointLight inherited;
@@ -78,6 +79,12 @@ protected:
 private:
   void attachSensors(const SbBool onoff);
 
-};
+private:
+  SbLazyPimplPtr<SoPointLightManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoPointLightManip(const SoPointLightManip & rhs);
+  SoPointLightManip & operator = (const SoPointLightManip & rhs);
+}; // SoPointLightManip
 
 #endif // !COIN_SOPOINTLIGHTMANIP_H

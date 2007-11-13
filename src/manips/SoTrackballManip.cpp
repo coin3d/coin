@@ -86,6 +86,10 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
 
+class SoTrackballManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoTrackballManip);
 
 

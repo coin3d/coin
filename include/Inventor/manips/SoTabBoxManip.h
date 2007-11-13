@@ -25,6 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoTabBoxManipP;
 
 class COIN_DLL_API SoTabBoxManip : public SoTransformManip {
   typedef SoTransformManip inherited;
@@ -37,6 +40,13 @@ public:
 
 protected:
   virtual ~SoTabBoxManip(void);
-};
+
+private:
+  SbLazyPimplPtr<SoTabBoxManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTabBoxManip(const SoTabBoxManip & rhs);
+  SoTabBoxManip & operator = (const SoTabBoxManip & rhs);
+}; // SoTabBoxManip
 
 #endif // !COIN_SOTABBOXMANIP_H

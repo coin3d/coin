@@ -25,6 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoTrackballManipP;
 
 class COIN_DLL_API SoTrackballManip : public SoTransformManip {
   typedef SoTransformManip inherited;
@@ -38,6 +41,12 @@ public:
 protected:
   virtual ~SoTrackballManip(void);
 
-};
+private:
+  SbLazyPimplPtr<SoTrackballManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTrackballManip(const SoTrackballManip & rhs);
+  SoTrackballManip & operator = (const SoTrackballManip & rhs);
+}; // SoTrackballManip
 
 #endif // !COIN_SOTRACKBALLMANIP_H

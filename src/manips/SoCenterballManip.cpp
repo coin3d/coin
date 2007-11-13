@@ -45,6 +45,10 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h>
 
+class SoCenterballManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoCenterballManip);
 
 

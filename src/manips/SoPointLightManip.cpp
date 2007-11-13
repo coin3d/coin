@@ -71,6 +71,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+class SoPointLightManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoPointLightManip);
 
 

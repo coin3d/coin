@@ -44,6 +44,10 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTabBoxDragger.h>
 
+class SoTabBoxManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoTabBoxManip);
 
 // Doc in superclass.

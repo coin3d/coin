@@ -81,6 +81,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+class SoSpotLightManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoSpotLightManip);
 
 

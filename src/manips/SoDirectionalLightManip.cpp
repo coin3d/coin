@@ -58,6 +58,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+class SoDirectionalLightManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoDirectionalLightManip);
 
 /*!

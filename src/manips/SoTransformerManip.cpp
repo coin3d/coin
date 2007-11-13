@@ -47,6 +47,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+class SoTransformerManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoTransformerManip);
 
 

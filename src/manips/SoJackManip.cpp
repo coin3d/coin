@@ -42,6 +42,10 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoJackDragger.h>
 
+class SoJackManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoJackManip);
 
 

@@ -140,6 +140,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+class SoClipPlaneManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoClipPlaneManip);
 
 /*!

@@ -25,6 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoCenterballManipP;
 
 class COIN_DLL_API SoCenterballManip : public SoTransformManip {
   typedef SoTransformManip inherited;
@@ -42,6 +45,13 @@ protected:
 
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
-};
+
+private:
+  SbLazyPimplPtr<SoCenterballManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoCenterballManip(const SoCenterballManip & rhs);
+  SoCenterballManip & operator = (const SoCenterballManip & rhs);
+}; // SoCenterBallManip
 
 #endif // !COIN_SOCENTERBALLMANIP_H

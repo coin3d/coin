@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #ifndef COIN_INTERNAL
 #include <Inventor/draggers/SoDragger.h>
 #endif
@@ -36,6 +37,7 @@ class SoPath;
 class SoSensor;
 class SbVec3f;
 class SbMatrix;
+class SoDirectionalLightManipP;
 
 class COIN_DLL_API SoDirectionalLightManip : public SoDirectionalLight {
   typedef SoDirectionalLight inherited;
@@ -79,6 +81,11 @@ protected:
 private:
   void attachSensors(const SbBool onoff);
 
-};
+private:
+  SbLazyPimplPtr<SoDirectionalLightManipP> pimpl;
+
+  SoDirectionalLightManip(const SoDirectionalLightManip & rhs);
+  SoDirectionalLightManip & operator = (const SoDirectionalLightManip & rhs);
+}; // SoDirectionalLightManip
 
 #endif // !COIN_SODIRECTIONALLIGHTMANIP_H

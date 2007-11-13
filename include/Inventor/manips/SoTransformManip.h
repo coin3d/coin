@@ -25,16 +25,17 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #ifndef COIN_INTERNAL
 #include <Inventor/draggers/SoDragger.h>
-#endif
+#endif // !COIN_INTERNAL
 
 class SoChildList;
 class SoDragger;
 class SoFieldSensor;
 class SoPath;
 class SoSensor;
-
+class SoTransformManipP;
 
 class COIN_DLL_API SoTransformManip : public SoTransform {
   typedef SoTransform inherited;
@@ -81,6 +82,12 @@ protected:
 
   void attachSensors(const SbBool onoff);
 
-};
+private:
+  SbLazyPimplPtr<SoTransformManipP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTransformManip(const SoTransformManip & rhs);
+  SoTransformManip & operator = (const SoTransformManip & rhs);
+}; // SoTransformManip
 
 #endif // !COIN_SOTRANSFORMMANIP_H

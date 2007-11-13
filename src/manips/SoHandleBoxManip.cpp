@@ -39,6 +39,10 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 
+class SoHandleBoxManipP {
+public:
+};
+
 SO_NODE_SOURCE(SoHandleBoxManip);
 
 // Doc in super.
