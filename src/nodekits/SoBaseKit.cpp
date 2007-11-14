@@ -774,8 +774,8 @@ SoBaseKit::getPartString(const SoBase * part)
 }
 
 /*!
-  Calls SoBaseKit::createPathToAnyPart() with \a leafcheck \c FALSE,
-  and \a publiccheck \c FALSE (and other arguments as given to this
+  Calls SoBaseKit::createPathToAnyPart() with \a leafcheck \c TRUE,
+  and \a publiccheck \c TRUE (and other arguments as given to this
   function).
 
   See SoBaseKit::createPathToAnyPart() for documentation.
