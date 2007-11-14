@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
-#include <Inventor/tools/SbPimplPtr.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
