@@ -84,6 +84,9 @@
   \COININTERNAL
 */
 
+class SoDragPointDraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoDragPointDragger);
 

@@ -70,6 +70,10 @@
   \COININTERNAL
 */
 
+class SoScale1DraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoScale1Dragger);
 
 

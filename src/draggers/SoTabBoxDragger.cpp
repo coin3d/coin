@@ -79,6 +79,10 @@
   \COININTERNAL
 */
 
+class SoTabBoxDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoTabBoxDragger);
 
 

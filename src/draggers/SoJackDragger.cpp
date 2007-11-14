@@ -120,6 +120,9 @@
   \COININTERNAL
 */
 
+class SoJackDraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoJackDragger);
 

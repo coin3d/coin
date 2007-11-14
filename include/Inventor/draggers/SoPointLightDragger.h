@@ -25,20 +25,19 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoPointLightDraggerP;
 
 class COIN_DLL_API SoPointLightDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoPointLightDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(material);
   SO_KIT_CATALOG_ENTRY_HEADER(translator);
-
 
 public:
   static void initClass(void);
@@ -55,6 +54,13 @@ protected:
   static void valueChangedCB(void * f, SoDragger * d);
 
   SoFieldSensor * fieldSensor;
-};
+
+private:
+  SbLazyPimplPtr<SoPointLightDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoPointLightDragger(const SoPointLightDragger & rhs);
+  SoPointLightDragger & operator = (const SoPointLightDragger & rhs);
+}; // SoPointLightDragger
 
 #endif // !COIN_SOPOINTLIGHTDRAGGER_H

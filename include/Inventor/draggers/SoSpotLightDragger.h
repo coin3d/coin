@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -32,13 +33,12 @@
 class SoSensor;
 class SoFieldSensor;
 class SbPlaneProjector;
-
+class SoSpotLightDraggerP;
 
 class COIN_DLL_API SoSpotLightDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoSpotLightDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(beam);
   SO_KIT_CATALOG_ENTRY_HEADER(beamActive);
   SO_KIT_CATALOG_ENTRY_HEADER(beamPlacement);
@@ -50,7 +50,6 @@ class COIN_DLL_API SoSpotLightDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(translator);
   SO_KIT_CATALOG_ENTRY_HEADER(translatorRotInv);
   SO_KIT_CATALOG_ENTRY_HEADER(translatorSep);
-
 
 public:
   static void initClass(void);
@@ -81,6 +80,13 @@ protected:
   SoFieldSensor * translFieldSensor;
   SoFieldSensor * angleFieldSensor;
   SbPlaneProjector * planeProj;
-};
+
+private:
+  SbLazyPimplPtr<SoSpotLightDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoSpotLightDragger(const SoSpotLightDragger & rhs);
+  SoSpotLightDragger & operator = (const SoSpotLightDragger & rhs);
+}; // SoSpotLightDragger
 
 #endif // !COIN_SOSPOTLIGHTDRAGGER_H

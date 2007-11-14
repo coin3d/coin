@@ -100,8 +100,7 @@ public:
 
 SO_KIT_SOURCE(SoTranslate2Dragger);
 
-#define THIS this->pimpl
-#define THISP thisp->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // doc in superclass
 void
@@ -162,7 +161,6 @@ SoTranslate2Dragger::initClass(void)
   \NODEKIT_POST_TABLE
 */
 SoTranslate2Dragger::SoTranslate2Dragger(void)
-  : pimpl(new SoTranslate2DraggerP)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTranslate2Dragger);
 
@@ -228,7 +226,6 @@ SoTranslate2Dragger::~SoTranslate2Dragger()
 {
   delete this->planeProj;
   delete this->fieldSensor;
-  delete this->pimpl;
 }
 
 // doc in superclass
@@ -350,7 +347,7 @@ SoTranslate2Dragger::dragStart(void)
     this->constraintState = CONSTRAINT_WAIT;
   }
 
-  THIS->extramotion = SbVec3f(0, 0, 0);
+  PRIVATE(this)->extramotion = SbVec3f(0, 0, 0);
 }
 
 /*! \COININTERNAL
@@ -374,7 +371,7 @@ SoTranslate2Dragger::drag(void)
     SbVec3f worldProjPt;
     this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
     this->setStartingPoint(worldProjPt);
-    THIS->extramotion += THIS->lastmotion;
+    PRIVATE(this)->extramotion += PRIVATE(this)->lastmotion;
     
     SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
@@ -422,9 +419,9 @@ SoTranslate2Dragger::drag(void)
     motion[1] += projPt[1] - localrestartpt[1];
     break;
   }
-  THIS->lastmotion = motion;
+  PRIVATE(this)->lastmotion = motion;
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(),
-                                                THIS->extramotion+motion));
+                                                PRIVATE(this)->extramotion+motion));
 }
 
 /*! \COININTERNAL
@@ -443,3 +440,5 @@ SoTranslate2Dragger::dragFinish(void)
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
   this->constraintState = CONSTRAINT_OFF;
 }
+
+#undef PRIVATE

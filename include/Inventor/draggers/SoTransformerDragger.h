@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -32,7 +33,7 @@
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoTransformerDraggerP;
 
 class COIN_DLL_API SoTransformerDragger : public SoDragger {
   typedef SoDragger inherited;
@@ -175,7 +176,6 @@ class COIN_DLL_API SoTransformerDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(zCircleFeedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(zCrosshairFeedback);
 
-
 public:
   static void initClass(void);
   SoTransformerDragger(void);
@@ -291,8 +291,13 @@ private:
 
   State state;
 
-  class SoTransformerDraggerP * pimpl;
+private:
+  SbPimplPtr<SoTransformerDraggerP> pimpl;
   friend class SoTransformerDraggerP;
-};
+
+  // NOT IMPLEMENTED:
+  SoTransformerDragger(const SoTransformerDragger & rhs);
+  SoTransformerDragger & operator = (const SoTransformerDragger & rhs);
+}; // SoTransformerDragger
 
 #endif // !COIN_SOTRANSFORMERDRAGGER_H

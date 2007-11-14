@@ -25,17 +25,17 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoDragPointDraggerP;
 
 class COIN_DLL_API SoDragPointDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoDragPointDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(noRotSep);
   SO_KIT_CATALOG_ENTRY_HEADER(planeFeedbackSep);
   SO_KIT_CATALOG_ENTRY_HEADER(planeFeedbackSwitch);
@@ -74,16 +74,15 @@ class COIN_DLL_API SoDragPointDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(zTranslator);
   SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSwitch);
 
-
 public:
   static void initClass(void);
   SoDragPointDragger(void);
 
+  SoSFVec3f translation;
+
   void setJumpLimit(const float limit);
   float getJumpLimit(void) const;
   void showNextDraggerSet(void);
-
-  SoSFVec3f translation;
 
 protected:
   virtual ~SoDragPointDragger(void);
@@ -109,6 +108,13 @@ private:
   void updateSwitchNodes();
   int currAxis;
   float jumpLimit;
-};
+
+private:
+  SbLazyPimplPtr<SoDragPointDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoDragPointDragger(const SoDragPointDragger & rhs);
+  SoDragPointDragger & operator = (const SoDragPointDragger & rhs);
+}; // SoDragPointDragger
 
 #endif // !COIN_SODRAGPOINTDRAGGER_H

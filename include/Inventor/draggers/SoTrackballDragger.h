@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec2f.h>
@@ -36,12 +37,12 @@ class SbSphereProjector;
 class SbCylinderProjector;
 class SbLineProjector;
 class SoTimerSensor;
+class SoTrackballDraggerP;
 
 class COIN_DLL_API SoTrackballDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTrackballDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(XRotator);
   SO_KIT_CATALOG_ENTRY_HEADER(XRotatorActive);
   SO_KIT_CATALOG_ENTRY_HEADER(XRotatorSwitch);
@@ -63,7 +64,6 @@ class COIN_DLL_API SoTrackballDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(userRotator);
   SO_KIT_CATALOG_ENTRY_HEADER(userRotatorActive);
   SO_KIT_CATALOG_ENTRY_HEADER(userRotatorSwitch);
-
 
 public:
   static void initClass(void);
@@ -100,8 +100,13 @@ private:
   void updateUserAxisSwitches(const SbBool setactive = FALSE);
   static void timerSensorCB(void *, SoSensor *);
 
-  class SoTrackballDraggerP * pimpl;
+private:
+  SbPimplPtr<SoTrackballDraggerP> pimpl;
   friend class SoTrackballDraggerP;
-};
+
+  // NOT IMPLEMENTED:
+  SoTrackballDragger(const SoTrackballDragger & rhs);
+  SoTrackballDragger & operator = (const SoTrackballDragger & rhs);
+}; // SoTrackballDragger
 
 #endif // !COIN_SOTRACKBALLDRAGGER_H

@@ -25,12 +25,13 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoDirectionalLightDraggerP;
 
 class COIN_DLL_API SoDirectionalLightDragger : public SoDragger {
   typedef SoDragger inherited;
@@ -61,6 +62,13 @@ protected:
 
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * translFieldSensor;
-};
+
+private:
+  SbLazyPimplPtr<SoDirectionalLightDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoDirectionalLightDragger(const SoDirectionalLightDragger & rhs);
+  SoDirectionalLightDragger & operator = (const SoDirectionalLightDragger & rhs);
+}; // SoDirectionalLightDragger
 
 #endif // !COIN_SODIRECTIONALLIGHTDRAGGER_H

@@ -25,25 +25,24 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbPlaneProjector;
-
+class SoScale2DraggerP;
 
 class COIN_DLL_API SoScale2Dragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoScale2Dragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(feedback);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(scaler);
   SO_KIT_CATALOG_ENTRY_HEADER(scalerActive);
   SO_KIT_CATALOG_ENTRY_HEADER(scalerSwitch);
-
 
 public:
   static void initClass(void);
@@ -67,6 +66,13 @@ protected:
 
   SoFieldSensor * fieldSensor;
   SbPlaneProjector * planeProj;
-};
+
+private:
+  SbLazyPimplPtr<SoScale2DraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoScale2Dragger(const SoScale2Dragger & rhs);
+  SoScale2Dragger & operator = (const SoScale2Dragger & rhs);
+}; // SoScale2Dragger
 
 #endif // !COIN_SOSCALE2DRAGGER_H

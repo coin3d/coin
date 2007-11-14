@@ -25,25 +25,24 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbLineProjector;
-
+class SoTranslate1DraggerP;
 
 class COIN_DLL_API SoTranslate1Dragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTranslate1Dragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(feedback);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(translator);
   SO_KIT_CATALOG_ENTRY_HEADER(translatorActive);
   SO_KIT_CATALOG_ENTRY_HEADER(translatorSwitch);
-
 
 public:
 static void initClass(void);
@@ -67,6 +66,13 @@ protected:
 
   SoFieldSensor * fieldSensor;
   SbLineProjector * lineProj;
-};
+
+private:
+  SbLazyPimplPtr<SoTranslate1DraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTranslate1Dragger(const SoTranslate1Dragger & rhs);
+  SoTranslate1Dragger & operator = (const SoTranslate1Dragger & rhs);
+}; // SoTranslate1Dragger
 
 #endif // !COIN_SOTRANSLATE1DRAGGER_H

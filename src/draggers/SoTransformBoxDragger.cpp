@@ -99,6 +99,9 @@
   \COININTERNAL
 */
 
+class SoTransformBoxDraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoTransformBoxDragger);
 

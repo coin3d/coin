@@ -111,6 +111,10 @@ static int uniform_ctrl_lookup[8][6] = {
   { 2,3,6,1,4,5 }
 };
 
+class SoHandleBoxDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoHandleBoxDragger);
 
 

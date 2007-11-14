@@ -71,6 +71,9 @@
   \COININTERNAL
 */
 
+class SoScaleUniformDraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoScaleUniformDragger);
 

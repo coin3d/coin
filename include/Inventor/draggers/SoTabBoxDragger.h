@@ -25,17 +25,17 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoTabBoxDraggerP;
 
 class COIN_DLL_API SoTabBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTabBoxDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(boxGeom);
   SO_KIT_CATALOG_ENTRY_HEADER(surroundScale);
   SO_KIT_CATALOG_ENTRY_HEADER(tabPlane1);
@@ -56,7 +56,6 @@ class COIN_DLL_API SoTabBoxDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6);
   SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6Sep);
   SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6Xf);
-
 
 public:
   static void initClass(void);
@@ -81,6 +80,13 @@ protected:
 
 private:
   void initTransformNodes(void);
-};
+
+private:
+  SbLazyPimplPtr<SoTabBoxDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTabBoxDragger(const SoTabBoxDragger & rhs);
+  SoTabBoxDragger & operator = (const SoTabBoxDragger & rhs);
+}; // SoTabBoxDragger
 
 #endif // !COIN_SOTABBOXDRAGGER_H

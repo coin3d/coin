@@ -115,6 +115,10 @@
   \COININTERNAL
 */
 
+class SoSpotLightDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoSpotLightDragger);
 
 // doc in superclass

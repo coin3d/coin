@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
@@ -32,20 +33,18 @@
 class SoSensor;
 class SoFieldSensor;
 class SbSphereProjector;
-
+class SoRotateSphericalDraggerP;
 
 class COIN_DLL_API SoRotateSphericalDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoRotateSphericalDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(feedback);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(rotator);
   SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
   SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
-
 
 public:
   static void initClass(void);
@@ -78,6 +77,13 @@ protected:
   SbVec3f prevWorldHitPt;
   SbSphereProjector * sphereProj;
   SbBool userProj;
-};
+
+private:
+  SbLazyPimplPtr<SoRotateSphericalDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoRotateSphericalDragger(const SoRotateSphericalDragger & rhs);
+  SoRotateSphericalDragger & operator = (const SoRotateSphericalDragger & rhs);
+}; // SoRotateSphericalDragger
 
 #endif // !COIN_SOROTATESPHERICALDRAGGER_H

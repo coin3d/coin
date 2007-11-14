@@ -88,6 +88,9 @@
   \COININTERNAL
 */
 
+class SoTranslate1DraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoTranslate1Dragger);
 

@@ -25,18 +25,19 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbPlaneProjector;
 class SbLineProjector;
+class SoHandleBoxDraggerP;
 
 class COIN_DLL_API SoHandleBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoHandleBoxDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(arrow1);
   SO_KIT_CATALOG_ENTRY_HEADER(arrow1Switch);
   SO_KIT_CATALOG_ENTRY_HEADER(arrow2);
@@ -141,7 +142,6 @@ protected:
   SoFieldSensor * scaleFieldSensor;
 
 private:
-
   void updateSwitches();
   void updateArrows();
   SoNode *getNodeFieldNode(const char *fieldname);
@@ -157,6 +157,13 @@ private:
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SbVec3f getDraggerCenter();
   SbVec3f calcCtrlOffset(const SbVec3f startpt);
-};
+
+private:
+  SbLazyPimplPtr<SoHandleBoxDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoHandleBoxDragger(const SoHandleBoxDragger & rhs);
+  SoHandleBoxDragger & operator = (const SoHandleBoxDragger & rhs);
+}; // SoHandleBoxDragger
 
 #endif // !COIN_SOHANDLEBOXDRAGGER_H

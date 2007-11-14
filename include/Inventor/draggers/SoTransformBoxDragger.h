@@ -25,18 +25,18 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoTransformBoxDraggerP;
 
 class COIN_DLL_API SoTransformBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTransformBoxDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(antiSquish);
   SO_KIT_CATALOG_ENTRY_HEADER(rotator1);
   SO_KIT_CATALOG_ENTRY_HEADER(rotator1Rot);
@@ -68,7 +68,6 @@ class COIN_DLL_API SoTransformBoxDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(translator6Rot);
   SO_KIT_CATALOG_ENTRY_HEADER(translator6Sep);
 
-
 public:
   static void initClass(void);
   SoTransformBoxDragger(void);
@@ -93,6 +92,13 @@ protected:
 private:
   void addChildDragger(SoDragger * child);
   void removeChildDragger(SoDragger * child);
-};
+
+private:
+  SbLazyPimplPtr<SoTransformBoxDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTransformBoxDragger(const SoTransformBoxDragger & rhs);
+  SoTransformBoxDragger & operator = (const SoTransformBoxDragger & rhs);
+}; // SoTransformBoxDragger
 
 #endif // !COIN_SOTRANSFORMBOXDRAGGER_H

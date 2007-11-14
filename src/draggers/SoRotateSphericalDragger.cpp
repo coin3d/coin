@@ -84,6 +84,10 @@
   \COININTERNAL
 */
 
+class SoRotateSphericalDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoRotateSphericalDragger);
 
 

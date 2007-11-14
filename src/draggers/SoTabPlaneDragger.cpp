@@ -115,6 +115,10 @@ static float cornertab_lookup[] = {
 #define Z_OFFSET 0.01f       // dummy offset for tabs to get "correct" picking
 #define TABSIZE 10.0f        // size (in pixels when projected to screen) of tabs
 
+class SoTabPlaneDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoTabPlaneDragger);
 
 // doc in superclass

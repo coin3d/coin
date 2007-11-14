@@ -68,6 +68,10 @@
   it does not have to part of a SoPointLight node specifically.
 */
 
+class SoPointLightDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoPointLightDragger);
 
 // doc in superclass

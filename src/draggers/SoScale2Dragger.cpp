@@ -74,6 +74,10 @@
   \COININTERNAL
 */
 
+class SoScale2DraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoScale2Dragger);
 
 

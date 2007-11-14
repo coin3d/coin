@@ -25,12 +25,13 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoCenterballDraggerP;
 
 class COIN_DLL_API SoCenterballDragger : public SoDragger {
   typedef SoDragger inherited;
@@ -90,6 +91,13 @@ private:
   SbVec3f savedcenter;
   void addChildDragger(SoDragger *child);
   void removeChildDragger(const char *childname);
-};
+
+private:
+  SbLazyPimplPtr<SoCenterballDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoCenterballDragger(const SoCenterballDragger & rhs);
+  SoCenterballDragger & operator & (const SoCenterballDragger & rhs);
+}; // SoCenterballDragger
 
 #endif // !COIN_SOCENTERBALLDRAGGER_H

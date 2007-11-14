@@ -79,6 +79,9 @@
   \COININTERNAL
 */
 
+class SoRotateDiscDraggerP {
+public:
+};
 
 SO_KIT_SOURCE(SoRotateDiscDragger);
 

@@ -25,18 +25,18 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbPlaneProjector;
-
+class SoTranslate2DraggerP;
 
 class COIN_DLL_API SoTranslate2Dragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTranslate2Dragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(axisFeedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(feedback);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
@@ -46,7 +46,6 @@ class COIN_DLL_API SoTranslate2Dragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(translatorSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(xAxisFeedback);
   SO_KIT_CATALOG_ENTRY_HEADER(yAxisFeedback);
-
 
 public:
   static void initClass(void);
@@ -76,7 +75,12 @@ protected:
 private:
   int constraintState;
 
-  class SoTranslate2DraggerP * pimpl;
-};
+private:
+  SbPimplPtr<SoTranslate2DraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTranslate2Dragger(const SoTranslate2Dragger & rhs);
+  SoTranslate2Dragger & operator = (const SoTranslate2Dragger & rhs);
+}; // SoTranslate2Dragger
 
 #endif // !COIN_SOTRANSLATE2DRAGGER_H

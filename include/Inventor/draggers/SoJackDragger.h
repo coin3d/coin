@@ -25,24 +25,23 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFRotation.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SoJackDraggerP;
 
 class COIN_DLL_API SoJackDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoJackDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(antiSquish);
   SO_KIT_CATALOG_ENTRY_HEADER(rotator);
   SO_KIT_CATALOG_ENTRY_HEADER(scaler);
   SO_KIT_CATALOG_ENTRY_HEADER(surroundScale);
   SO_KIT_CATALOG_ENTRY_HEADER(translator);
-
 
 public:
   static void initClass(void);
@@ -68,6 +67,13 @@ protected:
 private:
   void addChildDragger(SoDragger *child);
   void removeChildDragger(const char *childname);
-};
+
+private:
+  SbLazyPimplPtr<SoJackDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoJackDragger(const SoJackDragger & rhs);
+  SoJackDragger & operator = (const SoJackDragger & rhs);
+}; // SoJackDragger
 
 #endif // !COIN_SOJACKDRAGGER_H

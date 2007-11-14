@@ -95,6 +95,10 @@
   \COININTERNAL
 */
 
+class SoDirectionalLightDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoDirectionalLightDragger);
 
 

@@ -25,25 +25,24 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFRotation.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbPlaneProjector;
-
+class SoRotateDiscDraggerP;
 
 class COIN_DLL_API SoRotateDiscDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoRotateDiscDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(feedback);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
   SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
   SO_KIT_CATALOG_ENTRY_HEADER(rotator);
   SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
   SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
-
 
 public:
   static void initClass(void);
@@ -67,6 +66,13 @@ protected:
 
   SoFieldSensor * fieldSensor;
   SbPlaneProjector * planeProj;
-};
+
+private:
+  SbLazyPimplPtr<SoRotateDiscDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoRotateDiscDragger(const SoRotateDiscDragger & rhs);
+  SoRotateDiscDragger & operator = (const SoRotateDiscDragger & rhs);
+}; // SoRotateDiscDragger
 
 #endif // !COIN_SOROTATEDISCDRAGGER_H

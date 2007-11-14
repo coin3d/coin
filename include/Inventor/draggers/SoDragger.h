@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SbMatrix.h>
@@ -33,10 +34,9 @@
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
 #ifndef COIN_INTERNAL
- // For Open Inventor compatibility.
- #include <Inventor/nodes/SoScale.h>
-#endif // COIN_INTERNAL
-
+// For Open Inventor compatibility.
+#include <Inventor/nodes/SoScale.h>
+#endif // !COIN_INTERNAL
 
 class SbRotation;
 class SbVec2f;
@@ -46,15 +46,14 @@ class SbViewportRegion;
 class SoDragger;
 class SoEvent;
 class SoPickedPoint;
+class SoDraggerP;
 
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
-
 
 class COIN_DLL_API SoDragger : public SoInteractionKit {
   typedef SoInteractionKit inherited;
 
   SO_KIT_HEADER(SoDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(motionMatrix);
 
 public:
@@ -171,7 +170,12 @@ private:
   void eventHandled(const SoEvent * event, SoHandleEventAction * action);
   static float minscale;
   
-  class SoDraggerP * pimpl;
-};
+private:
+  SbPimplPtr<SoDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoDragger(const SoDragger & rhs);
+  SoDragger & operator = (const SoDragger & rhs);
+}; // SoDragger
 
 #endif // !COIN_SODRAGGER_H

@@ -51,6 +51,10 @@
 
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
 
+class SoRotateCylindricalDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
 
 /*!

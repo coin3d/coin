@@ -129,6 +129,10 @@
   \COININTERNAL
 */
 
+class SoCenterballDraggerP {
+public:
+};
+
 SO_KIT_SOURCE(SoCenterballDragger);
 
 // doc in superclass

@@ -25,19 +25,19 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
 class SbLineProjector;
 class SbPlaneProjector;
-
+class SoTabPlaneDraggerP;
 
 class COIN_DLL_API SoTabPlaneDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTabPlaneDragger);
-
   SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleCoords);
   SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab0);
   SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab1);
@@ -56,7 +56,6 @@ class COIN_DLL_API SoTabPlaneDragger : public SoDragger {
   SO_KIT_CATALOG_ENTRY_HEADER(scaleTabNormalBinding);
   SO_KIT_CATALOG_ENTRY_HEADER(scaleTabs);
   SO_KIT_CATALOG_ENTRY_HEADER(translator);
-
 
 public:
   static void initClass(void);
@@ -113,6 +112,13 @@ private:
   SbBool adjustTabs;
   SbVec3f worldRestartPt;
   SbVec3f scaleCenter;
-};
+
+private:
+  SbLazyPimplPtr<SoTabPlaneDraggerP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoTabPlaneDragger(const SoTabPlaneDragger & rhs);
+  SoTabPlaneDragger & operator = (const SoTabPlaneDragger & rhs);
+}; // SoTabPlaneDragger
 
 #endif // !COIN_SOTABPLANEDRAGGER_H
