@@ -48,7 +48,7 @@
    int write_scenegraph(const char * filename, SoNode * root)
    {
      SoOutput output;
-     if (output.openFile(filename)) return 0;
+     if (!output.openFile(filename)) return 0;
 
      // This is where the action is.  ;-)
      SoWriteAction wa(&output);
