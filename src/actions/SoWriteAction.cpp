@@ -106,6 +106,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #include "../io/SoWriterefCounter.h"
 
+class SoWriteActionP {
+public:
+};
+
 SO_ACTION_SOURCE(SoWriteAction);
 
 

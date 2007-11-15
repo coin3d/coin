@@ -32,6 +32,7 @@ class SoEvent;
 class SoPickedPoint;
 class SoPickedPointList;
 
+class SoHandleEventActionP;
 
 class COIN_DLL_API SoHandleEventAction : public SoAction {
   typedef SoAction inherited;
@@ -39,9 +40,10 @@ class COIN_DLL_API SoHandleEventAction : public SoAction {
   SO_ACTION_HEADER(SoHandleEventAction);
 
 public:
-  SoHandleEventAction(const SbViewportRegion & viewportregion);
-  virtual ~SoHandleEventAction();
   static void initClass(void);
+
+  SoHandleEventAction(const SbViewportRegion & viewportregion);
+  virtual ~SoHandleEventAction(void);
 
   void setViewportRegion(const SbViewportRegion & newregion);
   const SbViewportRegion & getViewportRegion(void) const;
@@ -62,8 +64,12 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  class SoHandleEventActionP * pimpl;
-};
+  SbPimplPtr<SoHandleEventActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoHandleEventAction(const SoHandleEventAction & rhs);
+  SoHandleEventAction & operator = (const SoHandleEventAction & rhs);
+}; // SoHandleEventAction
 
 #ifndef COIN_INTERNAL
 // For SGI / TGS Open Inventor compile-time compatibility.

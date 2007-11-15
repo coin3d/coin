@@ -61,6 +61,9 @@
   The viewport region used by pick actions.
 */
 
+class SoPickActionP {
+public:
+};
 
 SO_ACTION_SOURCE(SoPickAction);
 

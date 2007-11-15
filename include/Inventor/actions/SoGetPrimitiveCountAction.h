@@ -26,8 +26,10 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 
+class SoGetPrimitiveCountActionP;
 
 class COIN_DLL_API SoGetPrimitiveCountAction : public SoAction {
   typedef SoAction inherited;
@@ -35,10 +37,10 @@ class COIN_DLL_API SoGetPrimitiveCountAction : public SoAction {
   SO_ACTION_HEADER(SoGetPrimitiveCountAction);
 
 public:
-  SoGetPrimitiveCountAction(void);
-  virtual ~SoGetPrimitiveCountAction();
-
   static void initClass(void);
+
+  SoGetPrimitiveCountAction(void);
+  virtual ~SoGetPrimitiveCountAction(void);
 
   int getTriangleCount(void) const;
   int getLineCount(void) const;
@@ -85,6 +87,13 @@ private:
   SbBool nonvertexastris;
   SoDecimationTypeElement::Type decimationtype;
   float decimationpercentage;
-};
+
+private:
+  SbLazyPimplPtr<SoGetPrimitiveCountActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoGetPrimitiveCountAction(const SoGetPrimitiveCountAction & rhs);
+  SoGetPrimitiveCountAction & operator = (const SoGetPrimitiveCountAction & rhs);
+}; // SoGetPrimitiveCountAction
 
 #endif // !COIN_SOGETPRIMITIVECOUNTACTION_H

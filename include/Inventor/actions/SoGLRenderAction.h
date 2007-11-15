@@ -36,16 +36,18 @@ typedef void SoGLRenderPassCB(void * userdata);
 typedef void SoGLPreRenderCB(void * userdata, class SoGLRenderAction * action);
 typedef float SoGLSortedObjectOrderCB(void * userdata, SoGLRenderAction * action);
 
+class SoGLRenderActionP;
+
 class COIN_DLL_API SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGLRenderAction);
 
 public:
-  SoGLRenderAction(const SbViewportRegion & viewportregion);
-  virtual ~SoGLRenderAction();
-
   static void initClass(void);
+
+  SoGLRenderAction(const SbViewportRegion & viewportregion);
+  virtual ~SoGLRenderAction(void);
 
   enum TransparencyType {
     SCREEN_DOOR,
@@ -117,9 +119,13 @@ private:
   void addTransPath(SoPath * path);
   void doPathSort(void);
 
-  class SoGLRenderActionP * pimpl;
+private:
+  SbPimplPtr<SoGLRenderActionP> pimpl;
   friend class SoGLRenderActionP;
-};
+
+  SoGLRenderAction(const SoGLRenderAction & rhs);
+  SoGLRenderAction & operator = (const SoGLRenderAction & rhs);
+}; // SoGLRenderAction
 
 #endif // !COIN_SOGLRENDERACTION_H
 

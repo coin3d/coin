@@ -36,6 +36,7 @@ class SbViewVolume;
 class SbViewportRegion;
 class SoPickedPoint;
 class SoPickedPointList;
+class SoRayPickActionP;
 
 class COIN_DLL_API SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
@@ -83,7 +84,11 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  class SoRayPickActionP * pimpl;
-};
+  SbPimplPtr<SoRayPickActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoRayPickAction(const SoRayPickAction & rhs);
+  SoRayPickAction & operator = (const SoRayPickAction & rhs);
+}; // SoRayPickAction
 
 #endif // !COIN_SORAYPICKACTION_H

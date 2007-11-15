@@ -57,9 +57,7 @@
 
 class SoHandleEventActionP {
 public:
-  SoHandleEventActionP(SoHandleEventAction * o) {
-    this->owner = o;
-  }
+  SoHandleEventActionP(void) : owner(NULL) { }
 
   // Hidden private methods.
 
@@ -75,11 +73,11 @@ public:
   SbBool pickvalid;
   SbBool didpickall;
   SoRayPickAction * pickaction;
-private:
+
   SoHandleEventAction * owner;
 };
 
-#define THIS (this->pimpl)
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -107,14 +105,14 @@ SoHandleEventAction::initClass(void)
 */
 SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion)
 {
-  THIS = new SoHandleEventActionP(this);
-  THIS->viewport = viewportregion;
-  THIS->event = NULL;
-  THIS->grabber = NULL;
-  THIS->pickroot = NULL;
-  THIS->pickvalid = FALSE;
-  THIS->didpickall = FALSE;
-  THIS->pickaction = NULL;
+  PRIVATE(this)->owner = this;
+  PRIVATE(this)->viewport = viewportregion;
+  PRIVATE(this)->event = NULL;
+  PRIVATE(this)->grabber = NULL;
+  PRIVATE(this)->pickroot = NULL;
+  PRIVATE(this)->pickvalid = FALSE;
+  PRIVATE(this)->didpickall = FALSE;
+  PRIVATE(this)->pickaction = NULL;
 
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 }
@@ -124,9 +122,8 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
 */
 SoHandleEventAction::~SoHandleEventAction()
 {
-  if (THIS->pickroot) THIS->pickroot->unref();
-  delete THIS->pickaction;
-  delete THIS;
+  if (PRIVATE(this)->pickroot) PRIVATE(this)->pickroot->unref();
+  delete PRIVATE(this)->pickaction;
 }
 
 /*!
@@ -136,8 +133,8 @@ SoHandleEventAction::~SoHandleEventAction()
 void
 SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  THIS->viewport = newregion;
-  if (THIS->pickaction) THIS->pickaction->setViewportRegion(newregion);
+  PRIVATE(this)->viewport = newregion;
+  if (PRIVATE(this)->pickaction) PRIVATE(this)->pickaction->setViewportRegion(newregion);
 }
 
 /*!
@@ -177,7 +174,7 @@ SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoHandleEventAction::getViewportRegion(void) const
 {
-  return THIS->viewport;
+  return PRIVATE(this)->viewport;
 }
 
 /*!
@@ -186,7 +183,7 @@ SoHandleEventAction::getViewportRegion(void) const
 void
 SoHandleEventAction::setEvent(const SoEvent * ev)
 {
-  THIS->event = ev;
+  PRIVATE(this)->event = ev;
 }
 
 /*!
@@ -195,7 +192,7 @@ SoHandleEventAction::setEvent(const SoEvent * ev)
 const SoEvent *
 SoHandleEventAction::getEvent(void) const
 {
-  return THIS->event;
+  return PRIVATE(this)->event;
 }
 
 /*!
@@ -240,9 +237,9 @@ SoHandleEventAction::setGrabber(SoNode * node)
   // performance, but is also necessary to remove the potential for
   // infinite recursion. See comment in releaseGrabber().
 
-  if (node != THIS->grabber) {
+  if (node != PRIVATE(this)->grabber) {
     this->releaseGrabber();
-    THIS->grabber = node;
+    PRIVATE(this)->grabber = node;
     if (node) node->grabEventsSetup();
   }
 }
@@ -261,8 +258,8 @@ SoHandleEventAction::releaseGrabber(void)
   // recursive calls from grabEventsCleanup() back to this method
   // (which happens from dragger classes).
 
-  SoNode * old = THIS->grabber;
-  THIS->grabber = NULL;
+  SoNode * old = PRIVATE(this)->grabber;
+  PRIVATE(this)->grabber = NULL;
   if (old) old->grabEventsCleanup();
 }
 
@@ -272,7 +269,7 @@ SoHandleEventAction::releaseGrabber(void)
 SoNode *
 SoHandleEventAction::getGrabber(void) const
 {
-  return THIS->grabber;
+  return PRIVATE(this)->grabber;
 }
 
 /*!
@@ -282,10 +279,10 @@ SoHandleEventAction::getGrabber(void) const
 void
 SoHandleEventAction::setPickRoot(SoNode * node)
 {
-  if (THIS->pickroot != NULL) THIS->pickroot->unref();
-  THIS->pickroot = node;
-  THIS->pickroot->ref();
-  THIS->pickvalid = FALSE;
+  if (PRIVATE(this)->pickroot != NULL) PRIVATE(this)->pickroot->unref();
+  PRIVATE(this)->pickroot = node;
+  PRIVATE(this)->pickroot->ref();
+  PRIVATE(this)->pickvalid = FALSE;
 }
 
 /*!
@@ -295,7 +292,7 @@ SoHandleEventAction::setPickRoot(SoNode * node)
 SoNode *
 SoHandleEventAction::getPickRoot(void) const
 {
-  return THIS->pickroot;
+  return PRIVATE(this)->pickroot;
 }
 
 /*!
@@ -304,7 +301,7 @@ SoHandleEventAction::getPickRoot(void) const
 void
 SoHandleEventAction::setPickRadius(const float radiusinpixels)
 {
-  THIS->getPickAction()->setRadius(radiusinpixels);
+  PRIVATE(this)->getPickAction()->setRadius(radiusinpixels);
 }
 
 /*!
@@ -314,10 +311,10 @@ SoHandleEventAction::setPickRadius(const float radiusinpixels)
 const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
-  SoRayPickAction * ra = THIS->getPickAction();
-  if (!THIS->pickvalid || THIS->didpickall) {
+  SoRayPickAction * ra = PRIVATE(this)->getPickAction();
+  if (!PRIVATE(this)->pickvalid || PRIVATE(this)->didpickall) {
     ra->setPickAll(FALSE);
-    THIS->doPick(ra);
+    PRIVATE(this)->doPick(ra);
   }
   return ra->getPickedPoint();
 }
@@ -328,10 +325,10 @@ SoHandleEventAction::getPickedPoint(void)
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
-  SoRayPickAction * ra = THIS->getPickAction();
-  if (!THIS->pickvalid || !THIS->didpickall) {
+  SoRayPickAction * ra = PRIVATE(this)->getPickAction();
+  if (!PRIVATE(this)->pickvalid || !PRIVATE(this)->didpickall) {
     ra->setPickAll(TRUE);
-    THIS->doPick(ra);
+    PRIVATE(this)->doPick(ra);
   }
   return ra->getPickedPointList();
 }
@@ -341,13 +338,13 @@ SoHandleEventAction::getPickedPointList(void)
 void
 SoHandleEventAction::beginTraversal(SoNode * node)
 {
-  assert(THIS->event);
+  assert(PRIVATE(this)->event);
   this->setPickRoot(node);
 
   this->getState()->push();
-  SoViewportRegionElement::set(this->getState(), THIS->viewport);
-  if (THIS->grabber) {
-    this->traverse(THIS->grabber);
+  SoViewportRegionElement::set(this->getState(), PRIVATE(this)->viewport);
+  if (PRIVATE(this)->grabber) {
+    this->traverse(PRIVATE(this)->grabber);
   }
   if (!this->isHandled()) {
     this->traverse(node);
@@ -355,8 +352,8 @@ SoHandleEventAction::beginTraversal(SoNode * node)
   this->getState()->pop();
   
   // clear the picked point list
-  THIS->getPickAction()->reset();
-  THIS->pickvalid = FALSE;
+  PRIVATE(this)->getPickAction()->reset();
+  PRIVATE(this)->pickvalid = FALSE;
 }
 
 //////// Hidden private methods for //////////////////////////////////////
@@ -403,3 +400,5 @@ SoHandleEventActionP::doPick(SoRayPickAction * ra)
   this->didpickall = ra->isPickAll();
   this->pickvalid = TRUE;
 }
+
+#undef PRIVATE

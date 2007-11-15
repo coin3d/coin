@@ -35,20 +35,24 @@ class COIN_DLL_API SoSimplifyAction : public SoAction {
   SO_ACTION_HEADER(SoSimplifyAction);
 
 public:
+  static void initClass(void);
+
   SoSimplifyAction(void);
-  virtual ~SoSimplifyAction();
+  virtual ~SoSimplifyAction(void);
 
   virtual void apply(SoNode * root);
   virtual void apply(SoPath * path);
   virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
 
-  static void initClass(void);
-
 protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  SoSimplifyActionP * pimpl;
-};
+  SbPimplPtr<SoSimplifyActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoSimplifyAction(const SoSimplifyAction & rhs);
+  SoSimplifyAction & operator = (const SoSimplifyAction & rhs);
+}; // SoSimplifyAction
 
 #endif // !COIN_SOSIMPLIFYACTION_H

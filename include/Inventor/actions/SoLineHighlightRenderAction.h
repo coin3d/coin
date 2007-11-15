@@ -27,17 +27,19 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 
+class SoLineHighlightRenderActionP;
+
 class COIN_DLL_API SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
   SO_ACTION_HEADER(SoLineHighlightRenderAction);
 
 public:
+  static void initClass(void);
+
   SoLineHighlightRenderAction(void);
   SoLineHighlightRenderAction(const SbViewportRegion & viewportregion);
-  virtual ~SoLineHighlightRenderAction();
-
-  static void initClass(void);
+  virtual ~SoLineHighlightRenderAction(void);
 
   virtual void apply(SoNode * node);
   virtual void apply(SoPath * path);
@@ -61,8 +63,12 @@ protected:
   // the action to conform more to OIV. pederb, 20000222
 
 private:
-  class SoLineHighlightRenderActionP * pimpl;
+  SbPimplPtr<SoLineHighlightRenderActionP> pimpl;
   friend class SoLineHighlightRenderActionP;
-};
+
+  // NOT IMPLEMENTED:
+  SoLineHighlightRenderAction(const SoLineHighlightRenderAction & rhs);
+  SoLineHighlightRenderAction & operator = (const SoLineHighlightRenderAction & rhs);
+}; // SoLineHighlightRenderAction
 
 #endif // !COIN_SOLINEHIGHLIGHTRENDERACTION_H

@@ -27,6 +27,7 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
+class SoToVRMLActionP;
 
 class COIN_DLL_API SoToVRMLAction : public SoAction {
   typedef SoAction inherited;
@@ -34,10 +35,10 @@ class COIN_DLL_API SoToVRMLAction : public SoAction {
   SO_ACTION_HEADER(SoToVRMLAction);
 
 public:
-  SoToVRMLAction(void);
-  virtual ~SoToVRMLAction();
-
   static void initClass(void);
+
+  SoToVRMLAction(void);
+  virtual ~SoToVRMLAction(void);
 
   virtual void apply(SoNode * node);
   virtual void apply(SoPath * path);
@@ -73,8 +74,12 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  class SoToVRMLActionP * pimpl;
+  SbPimplPtr<SoToVRMLActionP> pimpl;
   friend class SoToVRMLActionP;
-};
+
+  // NOT IMPLEMENTED:
+  SoToVRMLAction(const SoToVRMLAction & rhs);
+  SoToVRMLAction & operator = (const SoToVRMLAction & rhs);
+}; // SoToVRMLAction
 
 #endif // !COIN_SOTOVRMLACTION_H

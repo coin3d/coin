@@ -34,7 +34,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -62,14 +62,7 @@
 class SoAudioRenderActionP
 {
 public:
-  SoAudioRenderActionP(SoAudioRenderAction * master) : master(master) {};
-  SoAudioRenderAction *master;
 };
-
-#undef PRIVATE
-#define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
-#define PUBLIC(p) ((p)->master)
 
 SO_ACTION_SOURCE(SoAudioRenderAction);
 
@@ -92,13 +85,10 @@ void SoAudioRenderAction::initClass()
 SoAudioRenderAction::SoAudioRenderAction()
 {
   SO_ACTION_CONSTRUCTOR(SoAudioRenderAction);
-
-  PRIVATE(this) = new SoAudioRenderActionP(this);
 }
 
 SoAudioRenderAction::~SoAudioRenderAction()
 {
-  delete PRIVATE(this);
 }
 
 void SoAudioRenderAction::beginTraversal(SoNode *node)

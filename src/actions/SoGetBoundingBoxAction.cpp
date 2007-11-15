@@ -207,6 +207,9 @@
   \COININTERNAL
 */
 
+class SoGetBoundingBoxActionP {
+public:
+};
 
 SO_ACTION_SOURCE(SoGetBoundingBoxAction);
 

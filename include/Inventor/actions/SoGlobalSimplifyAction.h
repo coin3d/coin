@@ -25,6 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/actions/SoSimplifyAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoGlobalSimplifyActionP;
 
 class COIN_DLL_API SoGlobalSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
@@ -32,12 +35,20 @@ class COIN_DLL_API SoGlobalSimplifyAction : public SoSimplifyAction {
   SO_ACTION_HEADER(SoGlobalSimplifyAction);
 
 public:
-  SoGlobalSimplifyAction(void);
-  virtual ~SoGlobalSimplifyAction();
   static void initClass(void);
+
+  SoGlobalSimplifyAction(void);
+  virtual ~SoGlobalSimplifyAction(void);
 
 protected:
   virtual void beginTraversal(SoNode * node);
-};
+
+private:
+  SbLazyPimplPtr<SoGlobalSimplifyActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoGlobalSimplifyAction(const SoGlobalSimplifyAction & rhs);
+  SoGlobalSimplifyAction & operator = (const SoGlobalSimplifyAction & rhs);
+}; // SoGlobalSimplifyAction
 
 #endif // !COIN_SOGLOBALSIMPLIFYACTION_H

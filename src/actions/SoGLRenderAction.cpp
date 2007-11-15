@@ -483,8 +483,7 @@
 
 class SoGLRenderActionP {
 public:
-  SoGLRenderActionP(SoGLRenderAction * action)
-    : action(action) { }
+  SoGLRenderActionP(void) : action(NULL) { }
 
   SoGLRenderAction * action;
   SbViewportRegion viewport;
@@ -616,8 +615,7 @@ static const char * sortedlayersblendprogram =
 "ADD result.color, fragment.color.primary, tmp;\n"
 "END";
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor. Sets up the render action for rendering within the
@@ -627,38 +625,38 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);
 
-  THIS = new SoGLRenderActionP(this);
+  PRIVATE(this)->action = this;
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
-  THIS->viewport = viewportregion;
+  PRIVATE(this)->viewport = viewportregion;
 
-  THIS->passcallback = NULL;
-  THIS->passcallbackdata = NULL;
-  THIS->smoothing = FALSE;
-  THIS->numpasses = 1;
-  THIS->transparencytype = SoGLRenderAction::SCREEN_DOOR;
-  THIS->delayedpathrender = FALSE;
-  THIS->transparencyrender = FALSE;
-  THIS->isrendering = FALSE;
-  THIS->passupdate = FALSE;
-  THIS->bboxaction = new SoGetBoundingBoxAction(viewportregion);
-  THIS->updateorigin.setValue(0.0f, 0.0f);
-  THIS->updatesize.setValue(1.0f, 1.0f);
-  THIS->rendering = SoGLRenderActionP::RENDERING_UNSET;
-  THIS->abortcallback = NULL;
-  THIS->cachecontext = 0;
-  THIS->needglinit = TRUE;
-  THIS->sortedlayersblendpasses = 4; 
-  THIS->rgbatextureids = NULL;
-  THIS->viewportheight = 0;
-  THIS->viewportwidth = 0;
-  THIS->sortedlayersblendinitialized = FALSE;
-  THIS->sortedlayersblendcounter = 0;
-  THIS->usenvidiaregistercombiners = FALSE;
+  PRIVATE(this)->passcallback = NULL;
+  PRIVATE(this)->passcallbackdata = NULL;
+  PRIVATE(this)->smoothing = FALSE;
+  PRIVATE(this)->numpasses = 1;
+  PRIVATE(this)->transparencytype = SoGLRenderAction::SCREEN_DOOR;
+  PRIVATE(this)->delayedpathrender = FALSE;
+  PRIVATE(this)->transparencyrender = FALSE;
+  PRIVATE(this)->isrendering = FALSE;
+  PRIVATE(this)->passupdate = FALSE;
+  PRIVATE(this)->bboxaction = new SoGetBoundingBoxAction(viewportregion);
+  PRIVATE(this)->updateorigin.setValue(0.0f, 0.0f);
+  PRIVATE(this)->updatesize.setValue(1.0f, 1.0f);
+  PRIVATE(this)->rendering = SoGLRenderActionP::RENDERING_UNSET;
+  PRIVATE(this)->abortcallback = NULL;
+  PRIVATE(this)->cachecontext = 0;
+  PRIVATE(this)->needglinit = TRUE;
+  PRIVATE(this)->sortedlayersblendpasses = 4; 
+  PRIVATE(this)->rgbatextureids = NULL;
+  PRIVATE(this)->viewportheight = 0;
+  PRIVATE(this)->viewportwidth = 0;
+  PRIVATE(this)->sortedlayersblendinitialized = FALSE;
+  PRIVATE(this)->sortedlayersblendcounter = 0;
+  PRIVATE(this)->usenvidiaregistercombiners = FALSE;
 
-  THIS->sortedobjectstrategy = BBOX_CENTER;
-  THIS->sortedobjectcb = NULL;
-  THIS->sortedobjectclosure = NULL;
+  PRIVATE(this)->sortedobjectstrategy = BBOX_CENTER;
+  PRIVATE(this)->sortedobjectcb = NULL;
+  PRIVATE(this)->sortedobjectclosure = NULL;
 }
 
 /*!
@@ -666,8 +664,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 */
 SoGLRenderAction::~SoGLRenderAction()
 {
-  delete THIS->bboxaction;
-  delete THIS;
+  delete PRIVATE(this)->bboxaction;
 }
 
 /*!
@@ -677,8 +674,8 @@ SoGLRenderAction::~SoGLRenderAction()
 void
 SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  THIS->viewport = newregion;
-  THIS->bboxaction->setViewportRegion(newregion);
+  PRIVATE(this)->viewport = newregion;
+  PRIVATE(this)->bboxaction->setViewportRegion(newregion);
   // The SoViewportRegionElement is not set here, as it is always
   // initialized before redraw in beginTraversal().
 }
@@ -689,7 +686,7 @@ SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoGLRenderAction::getViewportRegion(void) const
 {
-  return THIS->viewport;
+  return PRIVATE(this)->viewport;
 }
 
 /*!
@@ -703,8 +700,8 @@ SoGLRenderAction::getViewportRegion(void) const
 void
 SoGLRenderAction::setUpdateArea(const SbVec2f & origin, const SbVec2f & size)
 {
-  THIS->updateorigin = origin;
-  THIS->updatesize = size;
+  PRIVATE(this)->updateorigin = origin;
+  PRIVATE(this)->updatesize = size;
 }
 
 /*!
@@ -714,8 +711,8 @@ SoGLRenderAction::setUpdateArea(const SbVec2f & origin, const SbVec2f & size)
 void
 SoGLRenderAction::getUpdateArea(SbVec2f & origin, SbVec2f & size) const
 {
-  origin = THIS->updateorigin;
-  size = THIS->updatesize;
+  origin = PRIVATE(this)->updateorigin;
+  size = PRIVATE(this)->updatesize;
 }
 
 /*!
@@ -758,8 +755,8 @@ void
 SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
                                    void * const userdata)
 {
-  THIS->abortcallback = func;
-  THIS->abortcallbackdata = userdata;
+  PRIVATE(this)->abortcallback = func;
+  PRIVATE(this)->abortcallbackdata = userdata;
 }
 
 /*!
@@ -771,9 +768,9 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 { 
-  if (THIS->transparencytype != type) {
-    THIS->transparencytype = type;
-    THIS->needglinit = TRUE;
+  if (PRIVATE(this)->transparencytype != type) {
+    PRIVATE(this)->transparencytype = type;
+    PRIVATE(this)->needglinit = TRUE;
   }
 }
 
@@ -783,7 +780,7 @@ SoGLRenderAction::setTransparencyType(const TransparencyType type)
 SoGLRenderAction::TransparencyType
 SoGLRenderAction::getTransparencyType(void) const
 {
-  return THIS->transparencytype;
+  return PRIVATE(this)->transparencytype;
 }
 
 /*!
@@ -807,9 +804,9 @@ SoGLRenderAction::getTransparencyType(void) const
 void
 SoGLRenderAction::setSmoothing(const SbBool smooth)
 {
-  if (smooth != THIS->smoothing) {
-    THIS->smoothing = smooth;
-    THIS->needglinit = TRUE;
+  if (smooth != PRIVATE(this)->smoothing) {
+    PRIVATE(this)->smoothing = smooth;
+    PRIVATE(this)->needglinit = TRUE;
   }
 }
 
@@ -819,7 +816,7 @@ SoGLRenderAction::setSmoothing(const SbBool smooth)
 SbBool
 SoGLRenderAction::isSmoothing(void) const
 {
-  return THIS->smoothing;
+  return PRIVATE(this)->smoothing;
 }
 
 /*!
@@ -830,7 +827,7 @@ SoGLRenderAction::isSmoothing(void) const
 void
 SoGLRenderAction::setNumPasses(const int num)
 {
-  THIS->numpasses = num;
+  PRIVATE(this)->numpasses = num;
 }
 
 /*!
@@ -839,7 +836,7 @@ SoGLRenderAction::setNumPasses(const int num)
 int
 SoGLRenderAction::getNumPasses(void) const
 {
-  return THIS->numpasses;
+  return PRIVATE(this)->numpasses;
 }
 
 /*!
@@ -848,7 +845,7 @@ SoGLRenderAction::getNumPasses(void) const
 void
 SoGLRenderAction::setPassUpdate(const SbBool flag)
 {
-  THIS->passupdate = flag;
+  PRIVATE(this)->passupdate = flag;
 }
 
 /*!
@@ -859,7 +856,7 @@ SoGLRenderAction::setPassUpdate(const SbBool flag)
 SbBool
 SoGLRenderAction::isPassUpdate(void) const
 {
-  return THIS->passupdate;
+  return PRIVATE(this)->passupdate;
 }
 
 /*!
@@ -870,8 +867,8 @@ void
 SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
                                   void * const userdata)
 {
-  THIS->passcallback = func;
-  THIS->passcallbackdata = userdata;
+  PRIVATE(this)->passcallback = func;
+  PRIVATE(this)->passcallbackdata = userdata;
 }
 
 /*!
@@ -891,8 +888,8 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
 void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
-  if (context != THIS->cachecontext) {
-    THIS->cachecontext = context;
+  if (context != PRIVATE(this)->cachecontext) {
+    PRIVATE(this)->cachecontext = context;
     this->invalidateState();
   }
 }
@@ -903,7 +900,7 @@ SoGLRenderAction::setCacheContext(const uint32_t context)
 uint32_t
 SoGLRenderAction::getCacheContext(void) const
 {
-  return THIS->cachecontext;
+  return PRIVATE(this)->cachecontext;
 }
 
 /*!
@@ -915,7 +912,7 @@ SoGLRenderAction::getCacheContext(void) const
 void 
 SoGLRenderAction::setSortedLayersNumPasses(int num)
 {
-  THIS->sortedlayersblendpasses = num;
+  PRIVATE(this)->sortedlayersblendpasses = num;
 }
  
 /*!
@@ -925,7 +922,7 @@ SoGLRenderAction::setSortedLayersNumPasses(int num)
 int 
 SoGLRenderAction::getSortedLayersNumPasses() const
 {
-  return THIS->sortedlayersblendpasses;
+  return PRIVATE(this)->sortedlayersblendpasses;
 }
 
 
@@ -934,7 +931,7 @@ SoGLRenderAction::getSortedLayersNumPasses() const
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
-  if (THIS->isrendering) {
+  if (PRIVATE(this)->isrendering) {
     inherited::beginTraversal(node);
     return;
   }
@@ -945,22 +942,22 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   // SoQt/SoWin/SoXt viewers will also apply a SoGetBoundingBoxAction
   // so we don't do this by default yet.
   if (COIN_GLBBOX) {
-    THIS->bboxaction->apply(node);
+    PRIVATE(this)->bboxaction->apply(node);
   }
   int err_before_init = GL_NO_ERROR;
 
   if (sogl_glerror_debugging()) {
     err_before_init = glGetError();
   }
-  if (THIS->needglinit) {
-    THIS->needglinit = FALSE;
+  if (PRIVATE(this)->needglinit) {
+    PRIVATE(this)->needglinit = FALSE;
 
     // we are always using GL_COLOR_MATERIAL in Coin
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_NORMALIZE);
 
-    if (THIS->smoothing) {
+    if (PRIVATE(this)->smoothing) {
       glEnable(GL_POINT_SMOOTH);
       glEnable(GL_LINE_SMOOTH);
     }
@@ -984,7 +981,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
                               coin_glerror_string(err));
   }
 
-  THIS->render(node);
+  PRIVATE(this)->render(node);
   // GL errors after rendering will be caught in SoNode::GLRenderS().
 }
 
@@ -1013,20 +1010,20 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     SoShapeStyleElement::getTransparencyType(thestate);
 
 
-  if (THIS->transparencytype == SORTED_LAYERS_BLEND) {
+  if (PRIVATE(this)->transparencytype == SORTED_LAYERS_BLEND) {
 
     // Do not cache anything. We must have full control!
     SoCacheElement::invalidate(thestate);
     
-    THIS->sortedlayersblendprojectionmatrix = 
+    PRIVATE(this)->sortedlayersblendprojectionmatrix = 
       SoProjectionMatrixElement::get(thestate);
 
     if (!SoTextureEnabledElement::get(thestate)) {
-      if (glue->has_arb_fragment_program && !THIS->usenvidiaregistercombiners) {
-        THIS->setupFragmentProgram();
+      if (glue->has_arb_fragment_program && !PRIVATE(this)->usenvidiaregistercombiners) {
+        PRIVATE(this)->setupFragmentProgram();
       }
       else {
-        THIS->setupRegisterCombinersNV();
+        PRIVATE(this)->setupRegisterCombinersNV();
       }
     } 
 
@@ -1039,7 +1036,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 
   // check common cases first
   if (!istransparent || transptype == SoGLRenderAction::NONE || transptype == SoGLRenderAction::SCREEN_DOOR) {
-    if (THIS->smoothing) {
+    if (PRIVATE(this)->smoothing) {
       SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
     else SoLazyElement::disableBlending(thestate);
@@ -1051,15 +1048,15 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 
   // for the transparency render pass(es) we should always render when
   // we get here.
-  if (THIS->transparencyrender) {
-    THIS->setupBlending(thestate, transptype);
+  if (PRIVATE(this)->transparencyrender) {
+    PRIVATE(this)->setupBlending(thestate, transptype);
     return FALSE;
   }
   // check for special case when rendering delayed paths.  we don't
   // want to add these objects to the list of transparent objects, but
   // render right away.
-  if (THIS->delayedpathrender) {
-    THIS->setupBlending(thestate, transptype);
+  if (PRIVATE(this)->delayedpathrender) {
+    PRIVATE(this)->setupBlending(thestate, transptype);
     return FALSE;
   }
   switch (transptype) {
@@ -1081,7 +1078,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
-    THIS->addSortTransPath(this->getCurPath()->copy());
+    PRIVATE(this)->addSortTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
     if (thestate->isCacheOpen()) {
       SoCacheElement::invalidate(thestate);
@@ -1101,7 +1098,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 int
 SoGLRenderAction::getCurPass(void) const
 {
-  return THIS->currentpass;
+  return PRIVATE(this)->currentpass;
 }
 
 /*!
@@ -1135,8 +1132,8 @@ SoGLRenderAction::abortNow(void)
 #endif // debug
 
   SbBool abort = FALSE;
-  if (THIS->abortcallback) {
-    switch (THIS->abortcallback(THIS->abortcallbackdata)) {
+  if (PRIVATE(this)->abortcallback) {
+    switch (PRIVATE(this)->abortcallback(PRIVATE(this)->abortcallbackdata)) {
     case CONTINUE:
       break;
     case ABORT:
@@ -1177,7 +1174,7 @@ SoGLRenderAction::abortNow(void)
 void
 SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 {
-  THIS->rendering = isremote ?
+  PRIVATE(this)->rendering = isremote ?
     SoGLRenderActionP::RENDERING_SET_INDIRECT :
     SoGLRenderActionP::RENDERING_SET_DIRECT;
 }
@@ -1191,11 +1188,11 @@ SbBool
 SoGLRenderAction::getRenderingIsRemote(void) const
 {
   SbBool isdirect;
-  if (THIS->rendering == SoGLRenderActionP::RENDERING_UNSET) {
+  if (PRIVATE(this)->rendering == SoGLRenderActionP::RENDERING_UNSET) {
     isdirect = TRUE;
   }
   else {
-    isdirect = THIS->rendering == SoGLRenderActionP::RENDERING_SET_DIRECT;
+    isdirect = PRIVATE(this)->rendering == SoGLRenderActionP::RENDERING_SET_DIRECT;
   }
   return !isdirect;
 }
@@ -1208,8 +1205,8 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
 {
   SoState * thestate = this->getState();
   SoCacheElement::invalidate(thestate);
-  assert(!THIS->delayedpathrender);
-  THIS->delayedpaths.append(path);
+  assert(!PRIVATE(this)->delayedpathrender);
+  PRIVATE(this)->delayedpaths.append(path);
 }
 
 /*!
@@ -1219,7 +1216,7 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
 SbBool
 SoGLRenderAction::isRenderingDelayedPaths(void) const
 {
-  return THIS->delayedpathrender;
+  return PRIVATE(this)->delayedpathrender;
 }
 
 // Remember a path containing a transparent object for later
@@ -1230,7 +1227,7 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 void
 SoGLRenderAction::addTransPath(SoPath * path)
 {
-  THIS->transpobjpaths.append(path);
+  PRIVATE(this)->transpobjpaths.append(path);
 }
 
 // Documented in superclass. Overridden to reinitialize GL state on
@@ -1239,7 +1236,7 @@ void
 SoGLRenderAction::invalidateState(void)
 {
   inherited::invalidateState();
-  THIS->needglinit = TRUE;
+  PRIVATE(this)->needglinit = TRUE;
 }
 
 // Sort paths with transparent objects before rendering.
@@ -1247,10 +1244,10 @@ void
 SoGLRenderAction::doPathSort(void)
 {
   // need to cast to SbPList to avoid ref/unref problems
-  SbPList * plist = (SbPList *)&THIS->sorttranspobjpaths;
-  float * darray = (float *)THIS->sorttranspobjdistances.getArrayPtr();
+  SbPList * plist = (SbPList *)&PRIVATE(this)->sorttranspobjpaths;
+  float * darray = (float *)PRIVATE(this)->sorttranspobjdistances.getArrayPtr();
 
-  int i, j, distance, n = THIS->sorttranspobjdistances.getLength();
+  int i, j, distance, n = PRIVATE(this)->sorttranspobjdistances.getLength();
   void * ptmp;
   float dtmp;
 
@@ -1297,7 +1294,7 @@ SoGLRenderAction::doPathSort(void)
 void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  THIS->precblist.addCallback((SoCallbackListCB*) func, userdata);
+  PRIVATE(this)->precblist.addCallback((SoCallbackListCB*) func, userdata);
 }
 
 /*!
@@ -1310,7 +1307,7 @@ SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 void
 SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  THIS->precblist.removeCallback((SoCallbackListCB*) func, userdata);
+  PRIVATE(this)->precblist.removeCallback((SoCallbackListCB*) func, userdata);
 }
 
 /*!
@@ -1337,9 +1334,9 @@ SoGLRenderAction::setSortedObjectOrderStrategy(const SortedObjectOrderStrategy s
                                                SoGLSortedObjectOrderCB * cb,
                                                void * closure)
 {
-  THIS->sortedobjectstrategy = strategy;
-  THIS->sortedobjectcb = cb;
-  THIS->sortedobjectclosure = closure;
+  PRIVATE(this)->sortedobjectstrategy = strategy;
+  PRIVATE(this)->sortedobjectcb = cb;
+  PRIVATE(this)->sortedobjectclosure = closure;
 }
 
 #undef THIS
@@ -2302,3 +2299,5 @@ SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
 }
 
 // *************************************************************************
+
+#undef PRIVATE

@@ -49,6 +49,7 @@ class SbVec3f;
 class SbVec4f;
 class SbViewVolume;
 class SoCallbackAction;
+class SoCallbackActionP;
 class SoCallbackData;
 class SoPrimitiveVertex;
 class SoShape;
@@ -73,12 +74,11 @@ class COIN_DLL_API SoCallbackAction : public SoAction {
   SO_ACTION_HEADER(SoCallbackAction);
 
 public:
+  static void initClass(void);
+
   SoCallbackAction(void);
   SoCallbackAction(const SbViewportRegion & vp);
-
-  virtual ~SoCallbackAction();
-
-  static void initClass(void);
+  virtual ~SoCallbackAction(void);
 
   void setViewportRegion(const SbViewportRegion & vp);
 
@@ -175,8 +175,13 @@ protected:
 
 private:
   void commonConstructor(void);
-  class SoCallbackActionP * pimpl;
+
+private:
+  SbPimplPtr<SoCallbackActionP> pimpl;
   friend class SoCallbackActionP;
-};
+
+  SoCallbackAction(const SoCallbackAction & rhs);
+  SoCallbackAction & operator = (const SoCallbackAction & rhs);
+}; // SoCallbackAction
 
 #endif // !COIN_SOCALLBACKACTION_H

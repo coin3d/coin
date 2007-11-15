@@ -27,6 +27,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 // Include instead of using forward declarations to be compatible with
 // Open Inventor (and besides, all the other action class definitions
@@ -42,7 +43,7 @@
 // in <sys/unistd.h>.  That define destroys the SoAction::PathCode enum, and
 // the preprocessor is so broken that we can't store/restore the define for
 // the duration of this header file.
-#endif
+#endif // COIN_UNDEF_IN_PATH_HACK
 
 
 /*!
@@ -66,18 +67,17 @@ class SoActionP;
 
 class COIN_DLL_API SoAction {
 public:
+  static void initClass(void);
+  static void initClasses(void);
+
   enum AppliedCode { NODE = 0, PATH = 1, PATH_LIST = 2 };
   enum PathCode { NO_PATH = 0, IN_PATH = 1, BELOW_PATH = 2, OFF_PATH = 3 };
 
-  virtual ~SoAction();
-
-  static void initClass(void);
-  static void initClasses(void);
+  virtual ~SoAction(void);
 
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const = 0;
   virtual SbBool isOfType(SoType type) const;
-
 
   virtual void apply(SoNode * root);
   virtual void apply(SoPath * path);
@@ -118,7 +118,6 @@ public:
   void switchToPathTraversal(SoPath * path);
   void switchToNodeTraversal(SoNode * node);
 
-
 protected:
   SoAction(void);
 
@@ -150,8 +149,13 @@ private:
   SoTempPath currentpath;
   PathCode currentpathcode;
 
-  SoActionP * pimpl;
-};
+private:
+  SbPimplPtr<SoActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoAction(const SoAction & rhs);
+  SoAction & operator = (const SoAction & rhs);
+}; // SoAction
 
 // inline methods
 

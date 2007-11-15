@@ -27,18 +27,19 @@
 #include <Inventor/actions/SoSimplifyAction.h>
 
 class SoSimplifier;
-class SoReorganizeActionP;
 class SoSeparator;
+class SoReorganizeActionP;
 
 class COIN_DLL_API SoReorganizeAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
   SO_ACTION_HEADER(SoReorganizeAction);
 
-public:
-  SoReorganizeAction (SoSimplifier * simplifier = NULL);
-  virtual ~SoReorganizeAction();
+public: 
   static void initClass(void);
+
+  SoReorganizeAction(SoSimplifier * simplifier = NULL);
+  virtual ~SoReorganizeAction(void);
 
   SoSeparator * getSimplifiedSceneGraph(void) const;
   void generateNormals(SbBool onoff);
@@ -60,11 +61,15 @@ public:
   static void startReport(const char * msg);
   static void finishReport(void);
 
- protected:
+protected:
   virtual void beginTraversal(SoNode * node);
 
- private:
-  SoReorganizeActionP * pimpl;
-};
+private:
+  SbPimplPtr<SoReorganizeActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoReorganizeAction(const SoReorganizeAction & rhs);
+  SoReorganizeAction & operator = (const SoReorganizeAction & rhs);
+}; // SoReorganizeAction
 
 #endif // !COIN_SOREORGANIZEACTION_H

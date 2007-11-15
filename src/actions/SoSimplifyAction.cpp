@@ -31,6 +31,10 @@
 #include <Inventor/actions/SoSimplifyAction.h>
 #include <coindefs.h> // COIN_STUB()
 
+class SoSimplifyActionP {
+public:
+};
+
 SO_ACTION_SOURCE(SoSimplifyAction);
 
 // Overridden from parent class.

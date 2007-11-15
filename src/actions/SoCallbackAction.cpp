@@ -354,8 +354,7 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoCullElement);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Default constructor. Will set the viewport to a standard
@@ -374,8 +373,8 @@ SoCallbackAction::SoCallbackAction(void)
 SoCallbackAction::SoCallbackAction(const SbViewportRegion & vp)
 {
   this->commonConstructor();
-  THIS->viewport = vp;
-  THIS->viewportset = TRUE;
+  PRIVATE(this)->viewport = vp;
+  PRIVATE(this)->viewportset = TRUE;
 }
 
 void
@@ -383,10 +382,9 @@ SoCallbackAction::commonConstructor(void)
 {
   SO_ACTION_CONSTRUCTOR(SoCallbackAction);
 
-  THIS = new SoCallbackActionP;
-  THIS->pretailcallback = NULL;
-  THIS->posttailcallback = NULL;
-  THIS->viewportset = FALSE;
+  PRIVATE(this)->pretailcallback = NULL;
+  PRIVATE(this)->posttailcallback = NULL;
+  PRIVATE(this)->viewportset = FALSE;
 }
 
 /*!
@@ -399,8 +397,8 @@ SoCallbackAction::commonConstructor(void)
 void
 SoCallbackAction::setViewportRegion(const SbViewportRegion & vp)
 {
-  THIS->viewport = vp;
-  THIS->viewportset = TRUE;
+  PRIVATE(this)->viewport = vp;
+  PRIVATE(this)->viewportset = TRUE;
 }
 
 static void
@@ -415,19 +413,18 @@ delete_list_elements(SbList<SoCallbackData *> & cl)
 */
 SoCallbackAction::~SoCallbackAction()
 {
-  delete_list_elements(THIS->precallback);
-  delete_list_elements(THIS->postcallback);
-  delete_list_elements(THIS->trianglecallback);
-  delete_list_elements(THIS->linecallback);
-  delete_list_elements(THIS->pointcallback);
+  delete_list_elements(PRIVATE(this)->precallback);
+  delete_list_elements(PRIVATE(this)->postcallback);
+  delete_list_elements(PRIVATE(this)->trianglecallback);
+  delete_list_elements(PRIVATE(this)->linecallback);
+  delete_list_elements(PRIVATE(this)->pointcallback);
 
-  if (THIS->pretailcallback) {
-    THIS->pretailcallback->deleteAll();
+  if (PRIVATE(this)->pretailcallback) {
+    PRIVATE(this)->pretailcallback->deleteAll();
   }
-  if (THIS->posttailcallback) {
-    THIS->posttailcallback->deleteAll();
+  if (PRIVATE(this)->posttailcallback) {
+    PRIVATE(this)->posttailcallback->deleteAll();
   }
-  delete THIS;
 }
 
 //
@@ -466,7 +463,7 @@ void
 SoCallbackAction::addPreCallback(const SoType type, SoCallbackActionCB * cb,
                                  void * userdata)
 {
-  set_callback_data(THIS->precallback, type, (void *)cb, userdata);
+  set_callback_data(PRIVATE(this)->precallback, type, (void *)cb, userdata);
 }
 
 /*!
@@ -477,7 +474,7 @@ void
 SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
                                   void * userdata)
 {
-  set_callback_data(THIS->postcallback, type, (void *) cb, userdata);
+  set_callback_data(PRIVATE(this)->postcallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -487,10 +484,10 @@ SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
 void
 SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 {
-  if (THIS->pretailcallback == NULL)
-    THIS->pretailcallback = new SoCallbackData((void *)cb, userdata);
+  if (PRIVATE(this)->pretailcallback == NULL)
+    PRIVATE(this)->pretailcallback = new SoCallbackData((void *)cb, userdata);
   else
-    THIS->pretailcallback->append(new SoCallbackData((void *)cb, userdata));
+    PRIVATE(this)->pretailcallback->append(new SoCallbackData((void *)cb, userdata));
 }
 
 /*!
@@ -500,10 +497,10 @@ SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 void
 SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb, void * userdata)
 {
-  if (THIS->posttailcallback == NULL)
-    THIS->posttailcallback = new SoCallbackData((void *)cb, userdata);
+  if (PRIVATE(this)->posttailcallback == NULL)
+    PRIVATE(this)->posttailcallback = new SoCallbackData((void *)cb, userdata);
   else
-    THIS->posttailcallback->append(new SoCallbackData((void *)cb, userdata));
+    PRIVATE(this)->posttailcallback->append(new SoCallbackData((void *)cb, userdata));
 }
 
 /*!
@@ -515,7 +512,7 @@ void
 SoCallbackAction::addTriangleCallback(const SoType type, SoTriangleCB * cb,
                                       void * userdata)
 {
-  set_callback_data(THIS->trianglecallback, type, (void *) cb, userdata);
+  set_callback_data(PRIVATE(this)->trianglecallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -527,7 +524,7 @@ void
 SoCallbackAction::addLineSegmentCallback(const SoType type, SoLineSegmentCB * cb,
                                          void * userdata)
 {
-  set_callback_data(THIS->linecallback, type, (void *) cb, userdata);
+  set_callback_data(PRIVATE(this)->linecallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -539,7 +536,7 @@ void
 SoCallbackAction::addPointCallback(const SoType type, SoPointCB * cb,
                                    void * userdata)
 {
-  set_callback_data(THIS->pointcallback, type, (void *) cb, userdata);
+  set_callback_data(PRIVATE(this)->pointcallback, type, (void *) cb, userdata);
 }
 
 /************************************************************************************/
@@ -1037,7 +1034,7 @@ SoCallbackAction::getSwitch(void) const
 SoCallbackAction::Response
 SoCallbackAction::getCurrentResponse(void) const
 {
-  return THIS->response;
+  return PRIVATE(this)->response;
 }
 
 /*!
@@ -1049,22 +1046,22 @@ void
 SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 {
   // reset response if previous node was pruned
-  if (THIS->response == PRUNE) THIS->response = CONTINUE;
+  if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
   int idx = (int) node->getTypeId().getData();
 
-  if (idx < THIS->precallback.getLength() && THIS->precallback[idx] != NULL) {
-    THIS->response = THIS->precallback[idx]->doNodeCallbacks(this, node);
-    if (THIS->response == SoCallbackAction::ABORT) {
+  if (idx < PRIVATE(this)->precallback.getLength() && PRIVATE(this)->precallback[idx] != NULL) {
+    PRIVATE(this)->response = PRIVATE(this)->precallback[idx]->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && THIS->pretailcallback != NULL) {
-    THIS->response = THIS->pretailcallback->doNodeCallbacks(this, node);
-    if (THIS->response == SoCallbackAction::ABORT) {
+      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->pretailcallback != NULL) {
+    PRIVATE(this)->response = PRIVATE(this)->pretailcallback->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
@@ -1082,21 +1079,21 @@ void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
   // reset response if previous node was pruned
-  if (THIS->response == PRUNE) THIS->response = CONTINUE;
+  if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
   int idx = (int) node->getTypeId().getData();
-  if (idx < THIS->postcallback.getLength() && THIS->postcallback[idx] != NULL) {
-    THIS->response = (Response) THIS->postcallback[idx]->doNodeCallbacks(this, node);
-    if (THIS->response == SoCallbackAction::ABORT) {
+  if (idx < PRIVATE(this)->postcallback.getLength() && PRIVATE(this)->postcallback[idx] != NULL) {
+    PRIVATE(this)->response = (Response) PRIVATE(this)->postcallback[idx]->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && THIS->posttailcallback) {
-    THIS->response = THIS->posttailcallback->doNodeCallbacks(this, node);
-    if (THIS->response == SoCallbackAction::ABORT) {
+      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->posttailcallback) {
+    PRIVATE(this)->response = PRIVATE(this)->posttailcallback->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
@@ -1117,8 +1114,8 @@ SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
                                           const SoPrimitiveVertex * const v3)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < THIS->trianglecallback.getLength() && THIS->trianglecallback[idx] != NULL)
-    THIS->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
+  if (idx < PRIVATE(this)->trianglecallback.getLength() && PRIVATE(this)->trianglecallback[idx] != NULL)
+    PRIVATE(this)->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
 }
 
 /*!
@@ -1132,8 +1129,8 @@ SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
                                              const SoPrimitiveVertex * const v2)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < THIS->linecallback.getLength() && THIS->linecallback[idx] != NULL)
-    THIS->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
+  if (idx < PRIVATE(this)->linecallback.getLength() && PRIVATE(this)->linecallback[idx] != NULL)
+    PRIVATE(this)->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
 }
 
 /*!
@@ -1146,8 +1143,8 @@ SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
                                        const SoPrimitiveVertex * const v)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < THIS->pointcallback.getLength() && THIS->pointcallback[idx] != NULL)
-    THIS->pointcallback[idx]->doPointCallbacks(this, v);
+  if (idx < PRIVATE(this)->pointcallback.getLength() && PRIVATE(this)->pointcallback[idx] != NULL)
+    PRIVATE(this)->pointcallback[idx]->doPointCallbacks(this, v);
 }
 
 /*!
@@ -1161,11 +1158,11 @@ SbBool
 SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < THIS->trianglecallback.getLength() && THIS->trianglecallback[idx])
+  if (idx < PRIVATE(this)->trianglecallback.getLength() && PRIVATE(this)->trianglecallback[idx])
     return TRUE;
-  if (idx < THIS->linecallback.getLength() && THIS->linecallback[idx])
+  if (idx < PRIVATE(this)->linecallback.getLength() && PRIVATE(this)->linecallback[idx])
     return TRUE;
-  if (idx < THIS->pointcallback.getLength() && THIS->pointcallback[idx])
+  if (idx < PRIVATE(this)->pointcallback.getLength() && PRIVATE(this)->pointcallback[idx])
     return TRUE;
   return FALSE;
 }
@@ -1177,7 +1174,7 @@ SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
 SoNode *
 SoCallbackAction::getCurPathTail(void)
 {
-  return THIS->currentnode;
+  return PRIVATE(this)->currentnode;
 }
 
 /*!
@@ -1187,7 +1184,7 @@ SoCallbackAction::getCurPathTail(void)
 void
 SoCallbackAction::setCurrentNode(SoNode * const node)
 {
-  THIS->currentnode = node;
+  PRIVATE(this)->currentnode = node;
 }
 
 // Documented in superclass. Overridden from parent class to
@@ -1195,13 +1192,13 @@ SoCallbackAction::setCurrentNode(SoNode * const node)
 void
 SoCallbackAction::beginTraversal(SoNode * node)
 {
-  THIS->response = SoCallbackAction::CONTINUE;
+  PRIVATE(this)->response = SoCallbackAction::CONTINUE;
   // we set the viewport region element here. This element is not enabled
   // for SoCallbackAction in Inventor, bu we think it should be.
   // It makes it possible to calculate screen space stuff in
   // the callback action callbacks.
-  if (THIS->viewportset) {
-    SoViewportRegionElement::set(this->getState(), THIS->viewport);
+  if (PRIVATE(this)->viewportset) {
+    SoViewportRegionElement::set(this->getState(), PRIVATE(this)->viewport);
   }
   this->traverse(node);
 }

@@ -26,8 +26,10 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/SbViewportRegion.h>
 
+class SoPickActionP;
 
 class COIN_DLL_API SoPickAction : public SoAction {
   typedef SoAction inherited;
@@ -41,11 +43,11 @@ public:
   const SbViewportRegion & getViewportRegion(void);
 
   void enableCulling(const SbBool flag);
-  SbBool isCullingEnabled() const;
+  SbBool isCullingEnabled(void) const;
 
 protected:
   SoPickAction(const SbViewportRegion & viewportregion);
-  virtual ~SoPickAction();
+  virtual ~SoPickAction(void);
 
   virtual void beginTraversal(SoNode * node);
 
@@ -53,6 +55,13 @@ protected:
 
 private:
   SbBool cullingenabled;
-};
+
+private:
+  SbLazyPimplPtr<SoPickActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoPickAction(const SoPickAction & rhs);
+  SoPickAction & operator = (const SoPickAction & rhs);
+}; // SoPickAction
 
 #endif // !COIN_SOPICKACTION_H

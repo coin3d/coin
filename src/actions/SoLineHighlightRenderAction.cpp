@@ -72,16 +72,15 @@
 
 // *************************************************************************
 
-#define PRIVATE(p) (this->pimpl)
-#define PUBLIC(p) (this->owner)
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->owner)
 
 class SoLineHighlightRenderActionP {
 public:
-  SoLineHighlightRenderActionP(SoLineHighlightRenderAction * o) 
-    : colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
+  SoLineHighlightRenderActionP(void)
+    : owner(NULL),
+      colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
   {
-    this->owner = o;
-
     PUBLIC(this)->hlVisible = TRUE;
     this->color = SbColor(1.0f, 0.0f, 0.0f);
     this->linepattern = 0xffff;
@@ -107,7 +106,6 @@ public:
   SoTempPath * postprocpath;
   SbStorage colorpacker_storage;
 
-private:
   SoLineHighlightRenderAction * owner;
 
 private:
@@ -142,8 +140,8 @@ SoLineHighlightRenderAction::initClass(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
+  PRIVATE(this)->owner = this;
   SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
-  PRIVATE(this) = new SoLineHighlightRenderActionP(this);
 }
 
 /*!
@@ -152,8 +150,8 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion & viewportregion)
   : inherited(viewportregion)
 {
+  PRIVATE(this)->owner = this;
   SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
-  PRIVATE(this) = new SoLineHighlightRenderActionP(this);
 }
 
 /*!
@@ -161,7 +159,6 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion 
 */
 SoLineHighlightRenderAction::~SoLineHighlightRenderAction()
 {
-  delete PRIVATE(this);
 }
 
 // Documented in superclass. Overridden to add highlighting after the

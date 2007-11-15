@@ -26,11 +26,13 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 
+class SoGetMatrixActionP;
 
 class COIN_DLL_API SoGetMatrixAction : public SoAction {
   typedef SoAction inherited;
@@ -38,10 +40,10 @@ class COIN_DLL_API SoGetMatrixAction : public SoAction {
   SO_ACTION_HEADER(SoGetMatrixAction);
 
 public:
-  SoGetMatrixAction(const SbViewportRegion & region);
-  virtual ~SoGetMatrixAction();
-
   static void initClass(void);
+
+  SoGetMatrixAction(const SbViewportRegion & region);
+  virtual ~SoGetMatrixAction(void);
 
   void setViewportRegion(const SbViewportRegion & region);
   const SbViewportRegion & getViewportRegion(void) const;
@@ -58,6 +60,13 @@ private:
   SbMatrix matrix, invmatrix;
   SbMatrix texmatrix, invtexmatrix;
   SbViewportRegion viewportregion;
-};
+
+private:
+  SbLazyPimplPtr<SoGetMatrixActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoGetMatrixAction(const SoGetMatrixAction & rhs);
+  SoGetMatrixAction & operator = (const SoGetMatrixAction & rhs);
+}; // SoGetMatrixAction
 
 #endif // !COIN_SOGETMATRIXACTION_H

@@ -155,12 +155,9 @@
 
 class SoRayPickActionP {
 public:
-  SoRayPickActionP(SoRayPickAction * o) {
-    this->owner = o;
-  }
+  SoRayPickActionP(void) : owner(NULL) { }
 
   // Hidden private methods.
-
 
   SbBool isBetweenPlanesWS(const SbVec3d & intersection,
                            const SoClipPlaneElement * planes) const;
@@ -213,11 +210,9 @@ public:
     OSVOLUME_DIRTY =    0x0100  // did we calculate osvolume?
   };
 
-private:
   SoRayPickAction * owner;
 };
 
-#undef PRIVATE
 #define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
@@ -249,7 +244,7 @@ SoRayPickAction::initClass(void)
 SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
   : inherited(viewportregion)
 {
-  PRIVATE(this) = new SoRayPickActionP(this);
+  PRIVATE(this)->owner = this;
   PRIVATE(this)->radiusinpixels = 5.0f;
   PRIVATE(this)->flags = 0;
   PRIVATE(this)->objectspacevalid = TRUE;
@@ -263,7 +258,6 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
 SoRayPickAction::~SoRayPickAction(void)
 {
   PRIVATE(this)->cleanupPickedPoints();
-  delete PRIVATE(this);
 }
 
 /*!
@@ -435,7 +429,9 @@ SoRayPickAction::getPickedPointList(void) const
         pparray[j] = pptmp;
       }
     }
-    PRIVATE(this)->setFlag(SoRayPickActionP::PPLIST_IS_SORTED);
+    SoRayPickActionP * thisp =
+      const_cast<SoRayPickActionP *>(&PRIVATE(this).get());
+    thisp->setFlag(SoRayPickActionP::PPLIST_IS_SORTED);
   }
 
   return PRIVATE(this)->pickedpointlist;
@@ -1097,3 +1093,6 @@ SoRayPickActionP::calcMatrices(SoState * state)
     this->objectspacevalid = TRUE;
   }
 }
+
+#undef PRIVATE
+

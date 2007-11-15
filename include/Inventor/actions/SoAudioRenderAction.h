@@ -26,6 +26,9 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
+class SoAudioRenderActionP;
 
 class COIN_DLL_API SoAudioRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -33,9 +36,10 @@ class COIN_DLL_API SoAudioRenderAction : public SoAction {
   SO_ACTION_HEADER(SoAudioRenderAction);
 
 public:
-  static void initClass();
-  SoAudioRenderAction();
-  virtual ~SoAudioRenderAction();
+  static void initClass(void);
+
+  SoAudioRenderAction(void);
+  virtual ~SoAudioRenderAction(void);
 
   static void callDoAction(SoAction *action, SoNode *node);
   static void callAudioRender(SoAction *action, SoNode *node);
@@ -44,7 +48,11 @@ protected:
   virtual void beginTraversal(SoNode *node);
 
 private:
-  class SoAudioRenderActionP *pimpl;
-};
+  SbLazyPimplPtr<SoAudioRenderActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoAudioRenderAction(const SoAudioRenderAction & rhs);
+  SoAudioRenderAction & operator = (const SoAudioRenderAction & rhs);
+}; // SoAudioRenderAction
 
 #endif // !COIN_SOAUDIORENDERACTION_H

@@ -26,7 +26,9 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 
+class SoWriteActionP;
 
 class COIN_DLL_API SoWriteAction : public SoAction {
   typedef SoAction inherited;
@@ -36,7 +38,7 @@ class COIN_DLL_API SoWriteAction : public SoAction {
 public:
   SoWriteAction(void);
   SoWriteAction(SoOutput * out);
-  virtual ~SoWriteAction();
+  virtual ~SoWriteAction(void);
 
   static void initClass(void);
 
@@ -55,6 +57,13 @@ private:
   SoOutput * outobj;
   SbBool localoutputalloc;
   SbBool continuing;
-};
+
+private:
+  SbLazyPimplPtr<SoWriteActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoWriteAction(const SoWriteAction & rhs);
+  SoWriteAction & operator = (const SoWriteAction & rhs);
+}; // SoWriteAction
 
 #endif // !COIN_SOWRITEACTION_H

@@ -281,8 +281,8 @@
 
 class SoReorganizeActionP {
  public:
-  SoReorganizeActionP(SoReorganizeAction * masterin) 
-    : master(masterin),
+  SoReorganizeActionP(void)
+    : master(NULL),
       gennormals(TRUE),
       gentexcoords(TRUE),
       gentristrips(FALSE),
@@ -378,7 +378,7 @@ SoReorganizeAction::initClass(void)
 
 SoReorganizeAction::SoReorganizeAction(SoSimplifier * simplifier)
 {
-  PRIVATE(this) = new SoReorganizeActionP(this);
+  PRIVATE(this)->master = this;
   SO_ACTION_CONSTRUCTOR(SoReorganizeAction);
 }
 
@@ -388,7 +388,6 @@ SoReorganizeAction::SoReorganizeAction(SoSimplifier * simplifier)
 
 SoReorganizeAction::~SoReorganizeAction(void)
 {
-  delete PRIVATE(this);
 }
 
 SoSeparator * 

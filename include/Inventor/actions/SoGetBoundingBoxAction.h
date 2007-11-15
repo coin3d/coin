@@ -26,10 +26,12 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbXfBox3f.h>
 
+class SoGetBoundingBoxActionP;
 
 class COIN_DLL_API SoGetBoundingBoxAction : public SoAction {
   typedef SoAction inherited;
@@ -37,10 +39,10 @@ class COIN_DLL_API SoGetBoundingBoxAction : public SoAction {
   SO_ACTION_HEADER(SoGetBoundingBoxAction);
 
 public:
-  SoGetBoundingBoxAction(const SbViewportRegion & vp);
-  virtual ~SoGetBoundingBoxAction();
-
   static void initClass(void);
+
+  SoGetBoundingBoxAction(const SbViewportRegion & vp);
+  virtual ~SoGetBoundingBoxAction(void);
 
   enum ResetType { TRANSFORM = 0x1, BBOX = 0x2, ALL = TRANSFORM | BBOX };
 
@@ -85,6 +87,12 @@ private:
   ResetType resettype;
   const SoPath * resetpath;
   unsigned int flags;
-};
+
+private:
+  SbLazyPimplPtr<SoGetBoundingBoxActionP> pimpl;
+
+  SoGetBoundingBoxAction(const SoGetBoundingBoxAction & rhs);
+  SoGetBoundingBoxAction & operator = (const SoGetBoundingBoxAction & rhs);
+}; // SoGetBoundingBoxAction
 
 #endif // !COIN_SOGETBOUNDINGBOXACTION_H

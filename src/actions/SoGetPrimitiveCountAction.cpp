@@ -49,6 +49,10 @@
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 
+class SoGetPrimitiveCountActionP {
+public:
+};
+
 SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
 
 

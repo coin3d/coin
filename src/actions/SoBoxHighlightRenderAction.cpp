@@ -67,8 +67,7 @@
 
 class SoBoxHighlightRenderActionP {
 public:
-  SoBoxHighlightRenderActionP(SoBoxHighlightRenderAction * master)
-    : master(master) { }
+  SoBoxHighlightRenderActionP(void) : master(NULL) { }
 
   SoBoxHighlightRenderAction * master;
   SoSearchAction * searchaction;
@@ -86,9 +85,9 @@ public:
 };
 
 #undef PRIVATE
-#define PRIVATE(p) ((p)->pimpl)
+#define PRIVATE(obj) ((obj)->pimpl)
 #undef PUBLIC
-#define PUBLIC(p) ((p)->master)
+#define PUBLIC(obj) ((obj)->master)
 
 // used to initialize the internal storage class with variables
 void
@@ -217,7 +216,7 @@ SoBoxHighlightRenderAction::init(void)
 {
   SO_ACTION_CONSTRUCTOR(SoBoxHighlightRenderAction);
 
-  PRIVATE(this) = new SoBoxHighlightRenderActionP(this);
+  PRIVATE(this)->master = this;
 
   // Initialize local variables
   PRIVATE(this)->initBoxGraph();
@@ -248,7 +247,6 @@ SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
   delete PRIVATE(this)->searchaction;
   delete PRIVATE(this)->camerasearch;
   delete PRIVATE(this)->bboxaction;
-  delete PRIVATE(this);
 }
 
 // Documented in superclass. Overridden to add highlighting after the

@@ -333,8 +333,7 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Default constructor, does all necessary toplevel initialization.
@@ -345,11 +344,10 @@ SoAction::SoAction(void)
     currentpath(8),
     currentpathcode(NO_PATH)
 {
-  THIS = new SoActionP;
-  THIS->appliedcode = NODE;
-  THIS->applieddata.node = NULL;
-  THIS->terminated = FALSE;
-  THIS->prevenabledelementscounter = 0;
+  PRIVATE(this)->appliedcode = NODE;
+  PRIVATE(this)->applieddata.node = NULL;
+  PRIVATE(this)->terminated = FALSE;
+  PRIVATE(this)->prevenabledelementscounter = 0;
   
   this->currentpath.ref(); // to avoid having a zero refcount instance
 }
@@ -359,12 +357,11 @@ SoAction::SoAction(void)
 */
 SoAction::~SoAction(void)
 {
-  int n = THIS->pathcodearray.getLength();
-  for (int i = 0; i < n; i++) delete THIS->pathcodearray[i];
+  int n = PRIVATE(this)->pathcodearray.getLength();
+  for (int i = 0; i < n; i++) delete PRIVATE(this)->pathcodearray[i];
   delete this->state;
   
   this->currentpath.unrefNoDelete(); // to match the ref() in the constructor
-  delete THIS;
 }
 
 // *************************************************************************
@@ -462,8 +459,8 @@ SoAction::apply(SoNode * root)
 {
   SoDB::readlock();
   // need to store these in case action is re-applied
-  AppliedCode storedcode = THIS->appliedcode;
-  SoActionP::AppliedData storeddata = THIS->applieddata;
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
 
   // This is a pretty good indicator on whether or not we remembered
@@ -474,15 +471,15 @@ SoAction::apply(SoNode * root)
 
   // if a new element has been enabled, we need to recreate the state
   if (this->state && 
-      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
   }
-  THIS->terminated = FALSE;
+  PRIVATE(this)->terminated = FALSE;
 
   this->currentpathcode = SoAction::NO_PATH;
-  THIS->applieddata.node = root;
-  THIS->appliedcode = SoAction::NODE;
+  PRIVATE(this)->applieddata.node = root;
+  PRIVATE(this)->appliedcode = SoAction::NODE;
 
   if (root) {
 #if COIN_DEBUG
@@ -528,11 +525,11 @@ SoAction::apply(SoNode * root)
     (void) this->getState();
     this->beginTraversal(root);
     this->endTraversal(root);
-    THIS->applieddata.node = NULL;
+    PRIVATE(this)->applieddata.node = NULL;
     root->unrefNoDelete();
   }
-  THIS->appliedcode = storedcode;
-  THIS->applieddata = storeddata;
+  PRIVATE(this)->appliedcode = storedcode;
+  PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
   SoDB::readunlock();
 }
@@ -554,8 +551,8 @@ SoAction::apply(SoPath * path)
 {
   SoDB::readlock();
   // need to store these in case action in reapplied
-  AppliedCode storedcode = THIS->appliedcode;
-  SoActionP::AppliedData storeddata = THIS->applieddata;
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
 
   // This is a pretty good indicator on whether or not we remembered
@@ -566,12 +563,12 @@ SoAction::apply(SoPath * path)
 
   // if a new element has been enabled, we need to recreate the state
   if (this->state && 
-      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
   }
 
-  THIS->terminated = FALSE;
+  PRIVATE(this)->terminated = FALSE;
 
 #if COIN_DEBUG
   if (path->getRefCount() == 0) {
@@ -585,8 +582,8 @@ SoAction::apply(SoPath * path)
 
   this->currentpathcode =
     path->getFullLength() > 1 ? SoAction::IN_PATH : SoAction::BELOW_PATH;
-  THIS->applieddata.path = path;
-  THIS->appliedcode = SoAction::PATH;
+  PRIVATE(this)->applieddata.path = path;
+  PRIVATE(this)->appliedcode = SoAction::PATH;
 
   // make sure state is created before traversing
   (void) this->getState();
@@ -599,8 +596,8 @@ SoAction::apply(SoPath * path)
   }
 
   path->unrefNoDelete();
-  THIS->appliedcode = storedcode;
-  THIS->applieddata = storeddata;
+  PRIVATE(this)->appliedcode = storedcode;
+  PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
   SoDB::readunlock();
 }
@@ -630,39 +627,39 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   if (pathlist.getLength() == 0) return;
 
   // need to store these in case action in reapplied
-  AppliedCode storedcode = THIS->appliedcode;
-  SoActionP::AppliedData storeddata = THIS->applieddata;
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
 
   // if a new element has been enabled, we need to recreate the state
   if (this->state && 
-      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
   }
 
-  THIS->terminated = FALSE;
+  PRIVATE(this)->terminated = FALSE;
 
   // make sure state is created before traversing
   (void) this->getState();
 
-  THIS->applieddata.pathlistdata.origpathlist = &pathlist;
-  THIS->applieddata.pathlistdata.pathlist = &pathlist;
-  THIS->applieddata.pathlistdata.compactlist = NULL;
-  THIS->appliedcode = PATH_LIST;
+  PRIVATE(this)->applieddata.pathlistdata.origpathlist = &pathlist;
+  PRIVATE(this)->applieddata.pathlistdata.pathlist = &pathlist;
+  PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
+  PRIVATE(this)->appliedcode = PATH_LIST;
   this->currentpathcode = pathlist[0]->getFullLength() > 1 ?
     SoAction::IN_PATH : SoAction::BELOW_PATH;
 
   if (obeysrules) {
     // GoGoGo
     if (this->shouldCompactPathList()) {
-      THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(pathlist);
+      PRIVATE(this)->applieddata.pathlistdata.compactlist = new SoCompactPathList(pathlist);
     }
     this->currentpath.setHead(pathlist[0]->getHead());
     this->beginTraversal(pathlist[0]->getHead());
     this->endTraversal(pathlist[0]->getHead());
-    delete THIS->applieddata.pathlistdata.compactlist;
-    THIS->applieddata.pathlistdata.compactlist = NULL;
+    delete PRIVATE(this)->applieddata.pathlistdata.compactlist;
+    PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
   }
   else {
     // make copy of path list and make sure it obeys rules
@@ -676,17 +673,17 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
     // if all head nodes are the same we can traverse in one go
     if (sortedlist[0]->getHead() == sortedlist[num-1]->getHead()) {
       this->currentpath.setHead(sortedlist[0]->getHead());
-      THIS->applieddata.pathlistdata.pathlist = &sortedlist;
+      PRIVATE(this)->applieddata.pathlistdata.pathlist = &sortedlist;
       if (this->shouldCompactPathList()) {
-        THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(sortedlist);
+        PRIVATE(this)->applieddata.pathlistdata.compactlist = new SoCompactPathList(sortedlist);
       }
       else {
-        THIS->applieddata.pathlistdata.compactlist = NULL;
+        PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
       }
       this->beginTraversal(sortedlist[0]->getHead());
       this->endTraversal(sortedlist[0]->getHead());
-      delete THIS->applieddata.pathlistdata.compactlist;
-      THIS->applieddata.pathlistdata.compactlist = NULL;
+      delete PRIVATE(this)->applieddata.pathlistdata.compactlist;
+      PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
     }
     else {
       // make one pass per head node. sortedlist is sorted on
@@ -702,27 +699,27 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
           templist.append(sortedlist[i]);
           i++;
         }
-        THIS->applieddata.pathlistdata.pathlist = &templist;
-        THIS->appliedcode = PATH_LIST;
+        PRIVATE(this)->applieddata.pathlistdata.pathlist = &templist;
+        PRIVATE(this)->appliedcode = PATH_LIST;
         this->currentpathcode = templist[0]->getFullLength() > 1 ?
           SoAction::IN_PATH : SoAction::BELOW_PATH;
         this->currentpath.setHead(templist[0]->getHead());
 
         if (this->shouldCompactPathList()) {
-          THIS->applieddata.pathlistdata.compactlist = new SoCompactPathList(templist);
+          PRIVATE(this)->applieddata.pathlistdata.compactlist = new SoCompactPathList(templist);
         }
         else {
-          THIS->applieddata.pathlistdata.compactlist = NULL;
+          PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
         }
         this->beginTraversal(templist[0]->getHead());
-        delete THIS->applieddata.pathlistdata.compactlist;
-        THIS->applieddata.pathlistdata.compactlist = NULL;
+        delete PRIVATE(this)->applieddata.pathlistdata.compactlist;
+        PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
         templist.truncate(0);
       }
     }
   }
-  THIS->appliedcode = storedcode;
-  THIS->applieddata = storeddata;
+  PRIVATE(this)->appliedcode = storedcode;
+  PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
   SoDB::readunlock();
 }
@@ -789,7 +786,7 @@ SoAction::nullAction(SoAction *, SoNode *)
 SoAction::AppliedCode
 SoAction::getWhatAppliedTo(void) const
 {
-  return THIS->appliedcode;
+  return PRIVATE(this)->appliedcode;
 }
 
 /*!
@@ -801,7 +798,7 @@ SoAction::getWhatAppliedTo(void) const
 SoNode *
 SoAction::getNodeAppliedTo(void) const
 {
-  return THIS->appliedcode == SoAction::NODE ? THIS->applieddata.node : NULL;
+  return PRIVATE(this)->appliedcode == SoAction::NODE ? PRIVATE(this)->applieddata.node : NULL;
 }
 
 /*!
@@ -815,7 +812,7 @@ SoAction::getNodeAppliedTo(void) const
 SoPath *
 SoAction::getPathAppliedTo(void) const
 {
-  return THIS->appliedcode == SoAction::PATH ? THIS->applieddata.path : NULL;
+  return PRIVATE(this)->appliedcode == SoAction::PATH ? PRIVATE(this)->applieddata.path : NULL;
 }
 
 /*!
@@ -835,8 +832,8 @@ SoAction::getPathAppliedTo(void) const
 const SoPathList *
 SoAction::getPathListAppliedTo(void) const
 {
-  return THIS->appliedcode == SoAction::PATH_LIST ?
-    THIS->applieddata.pathlistdata.pathlist : NULL;
+  return PRIVATE(this)->appliedcode == SoAction::PATH_LIST ?
+    PRIVATE(this)->applieddata.pathlistdata.pathlist : NULL;
 }
 
 /*!
@@ -850,8 +847,8 @@ SoAction::getPathListAppliedTo(void) const
 const SoPathList *
 SoAction::getOriginalPathListAppliedTo(void) const
 {
-  return THIS->appliedcode == SoAction::PATH_LIST ?
-    THIS->applieddata.pathlistdata.origpathlist : NULL;
+  return PRIVATE(this)->appliedcode == SoAction::PATH_LIST ?
+    PRIVATE(this)->applieddata.pathlistdata.origpathlist : NULL;
 }
 
 /*!
@@ -911,16 +908,16 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
 
   if (this->currentpathcode == IN_PATH) {
     if (this->getWhatAppliedTo() == PATH) {
-      assert(curlen <= THIS->applieddata.path->getFullLength());
+      assert(curlen <= PRIVATE(this)->applieddata.path->getFullLength());
       if (this->currentpath.getIndex(curlen-1) !=
-          THIS->applieddata.path->getIndex(curlen-1)) {
+          PRIVATE(this)->applieddata.path->getIndex(curlen-1)) {
 #ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"off path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(), curlen);
 #endif // DEBUG_PATH_TRAVERSAL
         this->currentpathcode = OFF_PATH;
       }
-      else if (curlen == THIS->applieddata.path->getFullLength()) {
+      else if (curlen == PRIVATE(this)->applieddata.path->getFullLength()) {
         this->currentpathcode = BELOW_PATH;
 #ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"below path at: %d (%s), depth: %d\n",
@@ -929,9 +926,9 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       }
     }
     else {
-      if (THIS->applieddata.pathlistdata.compactlist) {
-        SbBool inpath = THIS->applieddata.pathlistdata.compactlist->push(childindex);
-        assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
+      if (PRIVATE(this)->applieddata.pathlistdata.compactlist) {
+        SbBool inpath = PRIVATE(this)->applieddata.pathlistdata.compactlist->push(childindex);
+        assert(PRIVATE(this)->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
 
         if (!inpath) {
           this->currentpathcode = OFF_PATH;
@@ -939,7 +936,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
         else {
           int	numchildren;
           const int * dummy;
-          THIS->applieddata.pathlistdata.compactlist->getChildren(numchildren, dummy);
+          PRIVATE(this)->applieddata.pathlistdata.compactlist->getChildren(numchildren, dummy);
           this->currentpathcode = numchildren == 0 ? BELOW_PATH : IN_PATH;
         }
       }
@@ -950,7 +947,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
         // contains current path.  This is a lame and slow way to do it,
         // but SoCompactPathList will always be used. This is just backup
         // code in case some action actually disables compact path list.
-        const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
+        const SoPathList * pl = PRIVATE(this)->applieddata.pathlistdata.pathlist;
         int i, n = pl->getLength();
         int len = -1;
         
@@ -996,10 +993,10 @@ SoAction::popCurPath(const PathCode prevpathcode)
   this->currentpathcode = prevpathcode;
 
   // If we're traversing a path list, let it know where we are
-  if ((THIS->appliedcode == PATH_LIST) && (prevpathcode == IN_PATH)) {
-    if (THIS->applieddata.pathlistdata.compactlist) {
-      THIS->applieddata.pathlistdata.compactlist->pop();
-      assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
+  if ((PRIVATE(this)->appliedcode == PATH_LIST) && (prevpathcode == IN_PATH)) {
+    if (PRIVATE(this)->applieddata.pathlistdata.compactlist) {
+      PRIVATE(this)->applieddata.pathlistdata.compactlist->pop();
+      assert(PRIVATE(this)->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
     }
   }
 }
@@ -1016,7 +1013,7 @@ SoAction::popCurPath(const PathCode prevpathcode)
 SbBool
 SoAction::hasTerminated(void) const
 {
-  return THIS->terminated;
+  return PRIVATE(this)->terminated;
 }
 
 /*!
@@ -1028,9 +1025,10 @@ SoAction::getState(void) const
 {
   if (this->state == NULL) {
     // cast away constness to set state
-    ((SoAction*)this)->state =
+    ((SoAction *)this)->state =
       new SoState((SoAction*)this, this->getEnabledElements().getElements());
-    THIS->prevenabledelementscounter = this->getEnabledElements().getCounter();
+    SoActionP * pimpl = const_cast<SoActionP *>(&PRIVATE(this).get());
+    pimpl->prevenabledelementscounter = this->getEnabledElements().getCounter();
   }
   return this->state;
 }
@@ -1062,22 +1060,22 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 {
   int curlen = this->currentpath.getFullLength();
 
-  while (THIS->pathcodearray.getLength() < curlen) {
-    THIS->pathcodearray.append(new SbList<int>);
+  while (PRIVATE(this)->pathcodearray.getLength() < curlen) {
+    PRIVATE(this)->pathcodearray.append(new SbList<int>);
   }
 
-  SbList <int> * myarray = THIS->pathcodearray[curlen-1];
+  SbList <int> * myarray = PRIVATE(this)->pathcodearray[curlen-1];
   myarray->truncate(0);
 
   if (this->getWhatAppliedTo() == PATH_LIST) {
-    if (THIS->applieddata.pathlistdata.compactlist) {
-      assert(THIS->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
-      THIS->applieddata.pathlistdata.compactlist->getChildren(numindices, indices);
+    if (PRIVATE(this)->applieddata.pathlistdata.compactlist) {
+      assert(PRIVATE(this)->applieddata.pathlistdata.compactlist->getDepth() == this->currentpath.getLength());
+      PRIVATE(this)->applieddata.pathlistdata.compactlist->getChildren(numindices, indices);
     }
     else {
       // this might be very slow if the list contains a lot of
       // paths. See comment in pushCurPath(int, SoNode*) about this.
-      const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
+      const SoPathList * pl = PRIVATE(this)->applieddata.pathlistdata.pathlist;
       int n = pl->getLength();
       int previdx = -1;
       myarray->truncate(0);
@@ -1098,7 +1096,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
   }
   else {
     numindices = 1;
-    myarray->append(THIS->applieddata.path->getIndex(curlen));
+    myarray->append(PRIVATE(this)->applieddata.path->getIndex(curlen));
     indices = myarray->getArrayPtr();
   }
 }
@@ -1228,7 +1226,7 @@ SoAction::endTraversal(SoNode * node)
 void
 SoAction::setTerminated(const SbBool flag)
 {
-  THIS->terminated = flag;
+  PRIVATE(this)->terminated = flag;
 }
 
 /*!
@@ -1248,23 +1246,23 @@ void
 SoAction::switchToPathTraversal(SoPath * path)
 {
   // Store current state.
-  SoActionP::AppliedData storeddata = THIS->applieddata;
-  AppliedCode storedcode = THIS->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
   PathCode storedpathcode = this->currentpathcode;
   SoTempPath storedpath = this->currentpath;
 
   // Start path traversal. Don't use beginTraversal() (the user might
   // have overridden it).
-  THIS->appliedcode = SoAction::PATH;
-  THIS->applieddata.path = path;
+  PRIVATE(this)->appliedcode = SoAction::PATH;
+  PRIVATE(this)->applieddata.path = path;
   this->currentpathcode = SoAction::IN_PATH;
   this->traverse(path->getNode(0));
 
   // Restore previous state.
   this->currentpath = storedpath;
   this->currentpathcode = storedpathcode;
-  THIS->applieddata = storeddata;
-  THIS->appliedcode = storedcode;
+  PRIVATE(this)->applieddata = storeddata;
+  PRIVATE(this)->appliedcode = storedcode;
 }
 
 /*!
@@ -1275,13 +1273,13 @@ void
 SoAction::switchToNodeTraversal(SoNode * node)
 {
   // Store current state.
-  SoActionP::AppliedData storeddata = THIS->applieddata;
-  AppliedCode storedcode = THIS->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
   PathCode storedpathcode = this->currentpathcode;
   SoTempPath storedpath = this->currentpath;
 
-  THIS->appliedcode = SoAction::NODE;
-  THIS->applieddata.node = node;
+  PRIVATE(this)->appliedcode = SoAction::NODE;
+  PRIVATE(this)->applieddata.node = node;
   this->currentpathcode = SoAction::NO_PATH;
   this->currentpath.truncate(0);
 
@@ -1290,6 +1288,6 @@ SoAction::switchToNodeTraversal(SoNode * node)
   // Restore previous state.
   this->currentpath = storedpath;
   this->currentpathcode = storedpathcode;
-  THIS->applieddata = storeddata;
-  THIS->appliedcode = storedcode;
+  PRIVATE(this)->applieddata = storeddata;
+  PRIVATE(this)->appliedcode = storedcode;
 }

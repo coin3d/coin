@@ -26,8 +26,11 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoPathList.h>
+
+class SoSearchActionP;
 
 class COIN_DLL_API SoSearchAction : public SoAction {
   typedef SoAction inherited;
@@ -35,10 +38,10 @@ class COIN_DLL_API SoSearchAction : public SoAction {
   SO_ACTION_HEADER(SoSearchAction);
 
 public:
-  SoSearchAction(void);
-  virtual ~SoSearchAction();
-
   static void initClass(void);
+
+  SoSearchAction(void);
+  virtual ~SoSearchAction(void);
 
   enum LookFor { NODE = 1, TYPE = 2, NAME = 4 };
   enum Interest { FIRST, LAST, ALL };
@@ -79,6 +82,13 @@ private:
   SbName name;
   SoPath * path;
   SoPathList paths;
-};
+
+private:
+  SbLazyPimplPtr<SoSearchActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoSearchAction(const SoSearchAction & rhs);
+  SoSearchAction & operator = (const SoSearchAction & rhs);
+}; // SoSearchAction
 
 #endif // !COIN_SOSEARCHACTION_H

@@ -35,11 +35,11 @@ class COIN_DLL_API SoBoxHighlightRenderAction : public SoGLRenderAction {
   SO_ACTION_HEADER(SoBoxHighlightRenderAction);
 
 public:
+  static void initClass(void);
+
   SoBoxHighlightRenderAction(void);
   SoBoxHighlightRenderAction(const SbViewportRegion & viewportregion);
-  virtual ~SoBoxHighlightRenderAction();
-
-  static void initClass(void);
+  virtual ~SoBoxHighlightRenderAction(void);
 
   virtual void apply(SoNode * node);
   virtual void apply(SoPath * path);
@@ -54,7 +54,6 @@ public:
   float getLineWidth(void) const;
 
 protected:
-
   SbBool hlVisible;
 
   // Some protected members are missing compared to OIV here.
@@ -68,7 +67,12 @@ private:
   void init(void);
   void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
 
-  SoBoxHighlightRenderActionP * pimpl;
-};
+private:
+  SbPimplPtr<SoBoxHighlightRenderActionP> pimpl;
+
+  // NOT IMPLEMENTED:
+  SoBoxHighlightRenderAction(const SoBoxHighlightRenderAction & rhs);
+  SoBoxHighlightRenderAction & operator = (const SoBoxHighlightRenderAction & rhs);
+}; // SoBoxHighlightRenderAction
 
 #endif // !COIN_SOBOXHIGHLIGHTRENDERACTION_H

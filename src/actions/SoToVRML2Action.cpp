@@ -285,9 +285,9 @@ SbBool SoToVRML2Action::doReuseGeometryNodes(void) const { return FALSE; }
 
 class SoToVRML2ActionP {
 public:
-  SoToVRML2ActionP(SoToVRML2Action * masterptr)
+  SoToVRML2ActionP(void)
+    : master(NULL)
   {
-    this->master = masterptr;
     this->nodefuse = FALSE; // for optimizing bad scene graphs
     this->reuseAppearanceNodes = FALSE;
     this->reusePropertyNodes = FALSE;
@@ -441,10 +441,6 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-
-#undef PRIVATE
-#undef PUBLIC
-#undef THISP
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 #define THISP(p) ((SoToVRML2ActionP*)p)
@@ -474,16 +470,16 @@ SoToVRML2Action::SoToVRML2Action(void)
 {
   SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
 
-  PRIVATE(this) = new SoToVRML2ActionP(this);
+  PRIVATE(this)->master = this;
 
 #define ADD_PRE_CB(_node_, _cb_) \
-  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::_cb_, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::_cb_, &PRIVATE(this).get())
 #define ADD_POST_CB(_node_, _cb_) \
-  PRIVATE(this)->cbaction.addPostCallback(_node_::getClassTypeId(), SoToVRML2ActionP::_cb_, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPostCallback(_node_::getClassTypeId(), SoToVRML2ActionP::_cb_, &PRIVATE(this).get())
 #define ADD_UNSUPPORTED(_node_) \
-  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::unsupported_cb, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::unsupported_cb, &PRIVATE(this).get())
 #define ADD_TRIANGLE_CB(_node_) \
-  PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, PRIVATE(this))
+  PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, &PRIVATE(this).get())
 #define ADD_SHAPE_CB(_node_, _cb_) \
   ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
   add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
@@ -558,9 +554,9 @@ SoToVRML2Action::SoToVRML2Action(void)
   for (i = 0; i < shapes.getLength(); i++) {
     SoType type = shapes[i];
     if (type.canCreateInstance() && (shapehandledlist.find(type) < 0)) {
-      PRIVATE(this)->cbaction.addPreCallback(type, SoToVRML2ActionP::sotoifs_cb, PRIVATE(this));
-      PRIVATE(this)->cbaction.addTriangleCallback(type, SoToVRML2ActionP::triangle_cb, PRIVATE(this));
-      PRIVATE(this)->cbaction.addPostCallback(type, SoToVRML2ActionP::post_primitives_cb, PRIVATE(this));
+      PRIVATE(this)->cbaction.addPreCallback(type, SoToVRML2ActionP::sotoifs_cb, &PRIVATE(this).get());
+      PRIVATE(this)->cbaction.addTriangleCallback(type, SoToVRML2ActionP::triangle_cb, &PRIVATE(this).get());
+      PRIVATE(this)->cbaction.addPostCallback(type, SoToVRML2ActionP::post_primitives_cb, &PRIVATE(this).get());
     }
   }
 
@@ -582,8 +578,6 @@ SoToVRML2Action::~SoToVRML2Action(void)
   if (PRIVATE(this)->vrml2root) {
     PRIVATE(this)->vrml2root->unref();
   }
-
-  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -2089,6 +2083,8 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 #undef NEW_NODE
 #undef DEFAULT_VIEWPORT_WIDTH
 #undef DEFAULT_VIEWPORT_HEIGHT
+
+#undef PRIVATE
 
 #endif // HAVE_VRML97
 

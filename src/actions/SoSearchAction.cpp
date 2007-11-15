@@ -98,6 +98,10 @@
   in Coin.)
 */
 
+class SoSearchActionP {
+public:
+};
+
 SO_ACTION_SOURCE(SoSearchAction);
 
 SbBool SoSearchAction::duringSearchAll = FALSE;

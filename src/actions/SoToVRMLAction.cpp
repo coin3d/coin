@@ -102,9 +102,9 @@ SO_ACTION_SOURCE(SoToVRMLAction);
 
 class SoToVRMLActionP {
 public:
-  SoToVRMLActionP(SoToVRMLAction * masterptr)
+  SoToVRMLActionP(void)
+    : master(NULL)
   {
-    this->master = masterptr;
     this->expandsofile = FALSE;
     this->urlname = "";
     this->writetexcoords = FALSE;
@@ -209,11 +209,9 @@ public:
 
 
 
-#undef PRIVATE
-#define PRIVATE(p) (p->pimpl)
-#undef PUBLIC
-#define PUBLIC(p) (p->master)
-#undef THISP
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->master)
+
 #define THISP(p) ((SoToVRMLActionP*)p)
 
 // *************************************************************************
@@ -232,14 +230,14 @@ SoToVRMLAction::initClass(void)
 
 SoToVRMLAction::SoToVRMLAction(void)
 {
-  PRIVATE(this) = new SoToVRMLActionP(this);
+  PRIVATE(this)->master = this;
 
 #define ADD_PRE_CB(_node_, _cb_) \
-  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRMLActionP::_cb_, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRMLActionP::_cb_, &PRIVATE(this).get())
 #define ADD_POST_CB(_node_, _cb_) \
-  PRIVATE(this)->cbaction.addPostCallback(_node_::getClassTypeId(), SoToVRMLActionP::_cb_, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPostCallback(_node_::getClassTypeId(), SoToVRMLActionP::_cb_, &PRIVATE(this).get())
 #define ADD_UNSUPPORTED(_node_) \
-  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRMLActionP::unsupported_cb, PRIVATE(this))
+  PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRMLActionP::unsupported_cb, &PRIVATE(this).get())
 
 #ifdef HAVE_VRML97
   ADD_PRE_CB(SoVRMLShape, vrmlshape_cb);
@@ -300,9 +298,9 @@ SoToVRMLAction::SoToVRMLAction(void)
   ADD_PRE_CB(SoVRMLElevationGrid, vrmlelevation_cb);
   ADD_POST_CB(SoVRMLElevationGrid, post_primitives_cb);
   PRIVATE(this)->cbaction.addTriangleCallback(SoVRMLElevationGrid::getClassTypeId(),
-                                              SoToVRMLActionP::triangle_cb, PRIVATE(this));
+                                              SoToVRMLActionP::triangle_cb, &PRIVATE(this).get());
   PRIVATE(this)->cbaction.addTriangleCallback(SoVRMLExtrusion::getClassTypeId(),
-                                              SoToVRMLActionP::triangle_cb, PRIVATE(this));
+                                              SoToVRMLActionP::triangle_cb, &PRIVATE(this).get());
 #endif // HAVE_VRML97
 
 #undef ADD_PRE_CB
@@ -322,8 +320,6 @@ SoToVRMLAction::~SoToVRMLAction(void)
   if (PRIVATE(this)->vrmlroot) {
     PRIVATE(this)->vrmlroot->unref();
   }
-
-  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -1148,4 +1144,7 @@ SoToVRMLActionP::vrmlextrusion_cb(void * closure, SoCallbackAction * action, con
 }
 
 #undef NEW_NODE
+#undef PRIVATE
+#undef PUBLIC
+#undef THISP
 #endif // HAVE_VRML97

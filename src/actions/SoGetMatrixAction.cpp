@@ -85,7 +85,9 @@
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
-
+class SoGetMatrixActionP {
+public:
+};
 
 SO_ACTION_SOURCE(SoGetMatrixAction);
 
