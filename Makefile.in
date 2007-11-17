@@ -218,6 +218,7 @@ build_alias = @build_alias@
 build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
+cmp_avail = @cmp_avail@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@

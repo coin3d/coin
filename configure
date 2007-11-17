@@ -466,7 +466,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all src/extensions/superglu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_10_3FF_TRUE MACOSX_10_3FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_JAVASCRIPT HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS LIBEXT HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE MACOSX_DEPLOYMENT_TARGET COIN_HACKING_LIBDIRS MACOSX_USE_DYNAMIC_LOOKUP_TRUE MACOSX_USE_DYNAMIC_LOOKUP_FALSE coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS COIN_TESTSUITE_EXTRA_CPPFLAGS COIN_TESTSUITE_EXTRA_LDFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION ac_unique_file sim_ac_relative_src_dir sim_ac_relative_src_dir_p CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_10_3FF_TRUE MACOSX_10_3FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_10_2FF MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS BUILD_JAVA_WRAPPER_TRUE BUILD_JAVA_WRAPPER_FALSE HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_JAVASCRIPT HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_perl_exe sim_ac_doxygen_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS cmp_avail LIBEXT HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE MACOSX_DEPLOYMENT_TARGET COIN_HACKING_LIBDIRS MACOSX_USE_DYNAMIC_LOOKUP_TRUE MACOSX_USE_DYNAMIC_LOOKUP_FALSE coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS COIN_TESTSUITE_EXTRA_CPPFLAGS COIN_TESTSUITE_EXTRA_LDFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS COIN_LIB_DSP_DEFS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -27198,10 +27198,159 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
     *wrapmsvc* )
       if $sim_ac_simian; then
         if $sim_ac_source_release; then :; else
-          :
           # break build on warnings, except for in official source code releases
-          #SIM_AC_CC_COMPILER_OPTION([/WX], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"])
-          #SIM_AC_CXX_COMPILER_OPTION([/WX], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"])
+
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CC accepts /WX" >&5
+echo $ECHO_N "checking whether $CC accepts /WX... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /WX"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"
+else
+  :
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+
+
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+echo "$as_me:$LINENO: checking whether $CXX accepts /WX" >&5
+echo $ECHO_N "checking whether $CXX accepts /WX... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS /WX"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_ac_accept_result=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
+if test $sim_ac_accept_result = yes; then
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"
+else
+  :
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
         fi
       fi
 
@@ -36001,6 +36150,51 @@ echo "$as_me: WARNING: Could not figure out library suffix! (Has there been a ch
 fi
 
 
+# **************************************************************************
+# Cygwin has not got diffutils installed by defaults. Check if cmd is
+# available.
+# Extract the first word of "cmp", so it can be a program name with args.
+set dummy cmp; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_cmp_avail+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$cmp_avail"; then
+  ac_cv_prog_cmp_avail="$cmp_avail" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_cmp_avail="Yes"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+cmp_avail=$ac_cv_prog_cmp_avail
+if test -n "$cmp_avail"; then
+  echo "$as_me:$LINENO: result: $cmp_avail" >&5
+echo "${ECHO_T}$cmp_avail" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+if test x$cmp_avail = "x" ; then
+    { { echo "$as_me:$LINENO: error: cmp must be available to complete the configure process." >&5
+echo "$as_me: error: cmp must be available to complete the configure process." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+
 
 cat >>confdefs.h <<_ACEOF
 #define DYNAMIC_LIBRARY_EXTENSION "$sim_ac_shlibext"
@@ -37963,6 +38157,7 @@ s,@X_CFLAGS@,$X_CFLAGS,;t t
 s,@X_PRE_LIBS@,$X_PRE_LIBS,;t t
 s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
+s,@cmp_avail@,$cmp_avail,;t t
 s,@LIBEXT@,$LIBEXT,;t t
 s,@HACKING_COMPACT_BUILD_TRUE@,$HACKING_COMPACT_BUILD_TRUE,;t t
 s,@HACKING_COMPACT_BUILD_FALSE@,$HACKING_COMPACT_BUILD_FALSE,;t t
