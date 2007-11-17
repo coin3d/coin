@@ -1751,6 +1751,15 @@ SIM_AC_CHECK_OPENGL(
 # the configure script aswell.
 SIM_AC_DYNLIB_EXT
 
+# **************************************************************************
+# Cygwin has not got diffutils installed by defaults. Check if cmd is
+# available.
+AC_CHECK_PROG(cmp_avail,[cmp],[Yes])
+if test x$cmp_avail = "x" ; then
+    AC_MSG_ERROR([cmp must be available to complete the configure process.])
+fi
+
+
 AC_DEFINE_UNQUOTED([DYNAMIC_LIBRARY_EXTENSION], ["$sim_ac_shlibext"],
                    [define this to the dynamic library extension suffix on this system])
 
