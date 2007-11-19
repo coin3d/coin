@@ -1752,7 +1752,7 @@ SIM_AC_CHECK_OPENGL(
 SIM_AC_DYNLIB_EXT
 
 # **************************************************************************
-# Cygwin has not got diffutils installed by default. Check if cmd is
+# Cygwin has not got diffutils installed by default. Check if cmp is
 # available.
 AC_CHECK_PROG(cmp_avail,[cmp],[Yes])
 if test x$cmp_avail = "x" ; then
