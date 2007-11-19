@@ -286,7 +286,7 @@ SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 
 /*!
   Set a new viewport region with this method, if it has changed from
-  the oned passed in with the constructor.
+  the one passed in with the constructor.
 */
 void
 SoGetBoundingBoxAction::setViewportRegion(const SbViewportRegion & newregion)
