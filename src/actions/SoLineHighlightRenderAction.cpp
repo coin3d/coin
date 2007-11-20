@@ -167,26 +167,27 @@ void
 SoLineHighlightRenderAction::apply(SoNode * node)
 {
   SoGLRenderAction::apply(node);
-
+  
   if (this->hlVisible) {
     if (PRIVATE(this)->searchaction == NULL) {
       PRIVATE(this)->searchaction = new SoSearchAction;
-      PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
-      PRIVATE(this)->searchaction->setInterest(SoSearchAction::ALL);
     }
+    // Coin, and SGI Inventor, only supports one Selection node in a
+    // graph, so just search for the first one to avoid that the whole
+    // scene graph is searched
+    PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
+    PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
     PRIVATE(this)->searchaction->apply(node);
-    const SoPathList & pathlist = PRIVATE(this)->searchaction->getPaths();
-    if ( pathlist.getLength() > 0 ) {
-      int i;
-      for ( i = 0; i < pathlist.getLength(); i++ ) {
-        SoPath * path = pathlist[i];
-        assert(path);
-        SoSelection * selection = (SoSelection *) path->getTail();
-        assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
-        if ( selection->getNumSelected() > 0 )
-          PRIVATE(this)->drawBoxes(path, selection->getList());
+    SoPath * path = PRIVATE(this)->searchaction->getPath();
+    if (path) {
+      SoSelection * selection = (SoSelection *) path->getTail();
+      assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
+      if (selection->getNumSelected() > 0) {
+        PRIVATE(this)->drawBoxes(path, selection->getList());
       }
     }
+    // reset action to clear path
+    PRIVATE(this)->searchaction->reset();
   }
 }
 
