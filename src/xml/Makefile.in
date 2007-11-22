@@ -270,18 +270,23 @@ target_vendor = @target_vendor@
 SUBDIRS = expat
 
 RegularSources = \
-        parser.c \
-	document.cpp \
-	element.cpp \
+        document.cpp \
+        element.cpp \
+        attribute.cpp \
         entity.cpp \
         utils.cpp \
         path.cpp
 
 LinkHackSources = \
-	all-xml-cpp.cpp
+        all-xml-cpp.cpp
 
 PublicHeaders = 
-PrivateHeaders = 
+PrivateHeaders = \
+        utils.h \
+        documentp.h \
+        elementp.h \
+        attributep.h
+
 ObsoletedHeaders = 
 
 
@@ -345,58 +350,54 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 xml_lst_AR = $(AR) cru
 xml_lst_LIBADD =
-am__xml_lst_SOURCES_DIST = parser.c document.cpp element.cpp entity.cpp \
-	utils.cpp path.cpp all-xml-cpp.cpp
+am__xml_lst_SOURCES_DIST = document.cpp element.cpp attribute.cpp \
+	entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
 am__objects_1 = all-xml-cpp.$(OBJEXT)
-am__objects_2 = parser.$(OBJEXT) document.$(OBJEXT) element.$(OBJEXT) \
+am__objects_2 = document.$(OBJEXT) element.$(OBJEXT) attribute.$(OBJEXT) \
 	entity.$(OBJEXT) utils.$(OBJEXT) path.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_xml_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_xml_lst_SOURCES_DIST = all-xml-cpp.cpp parser.c document.cpp \
-	element.cpp entity.cpp utils.cpp path.cpp
+am__EXTRA_xml_lst_SOURCES_DIST = utils.h documentp.h elementp.h \
+	attributep.h all-xml-cpp.cpp document.cpp element.cpp \
+	attribute.cpp entity.cpp utils.cpp path.cpp
 xml_lst_OBJECTS = $(am_xml_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libxml_la_LDFLAGS =
 libxml_la_LIBADD =
-am__libxml_la_SOURCES_DIST = parser.c document.cpp element.cpp \
+am__libxml_la_SOURCES_DIST = document.cpp element.cpp attribute.cpp \
 	entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
 am__objects_6 = all-xml-cpp.lo
-am__objects_7 = parser.lo document.lo element.lo entity.lo utils.lo \
+am__objects_7 = document.lo element.lo attribute.lo entity.lo utils.lo \
 	path.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libxml_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libxml_la_SOURCES_DIST = all-xml-cpp.cpp parser.c document.cpp \
-	element.cpp entity.cpp utils.cpp path.cpp
+am__EXTRA_libxml_la_SOURCES_DIST = utils.h documentp.h elementp.h \
+	attributep.h all-xml-cpp.cpp document.cpp element.cpp \
+	attribute.cpp entity.cpp utils.cpp path.cpp
 libxml_la_OBJECTS = $(am_libxml_la_OBJECTS)
 libxml@SUFFIX@LINKHACK_la_LDFLAGS =
 libxml@SUFFIX@LINKHACK_la_LIBADD =
-am__libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = parser.c document.cpp \
-	element.cpp entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
+am__libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = document.cpp element.cpp \
+	attribute.cpp entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
 am_libxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = all-xml-cpp.cpp \
-	parser.c document.cpp element.cpp entity.cpp utils.cpp path.cpp
+am__EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = utils.h documentp.h \
+	elementp.h attributep.h all-xml-cpp.cpp document.cpp \
+	element.cpp attribute.cpp entity.cpp utils.cpp path.cpp
 libxml@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libxml@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-xml-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Po ./$(DEPDIR)/document.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/document.Po ./$(DEPDIR)/element.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/element.Po ./$(DEPDIR)/entity.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/entity.Po ./$(DEPDIR)/parser.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/parser.Po ./$(DEPDIR)/path.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/path.Po ./$(DEPDIR)/utils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/utils.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+@AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/attribute.Plo ./$(DEPDIR)/attribute.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/document.Plo ./$(DEPDIR)/document.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/element.Plo ./$(DEPDIR)/element.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/entity.Plo ./$(DEPDIR)/entity.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/path.Plo ./$(DEPDIR)/path.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/utils.Plo ./$(DEPDIR)/utils.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -404,6 +405,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__xml_lst_SOURCES_DIST) \
 	$(am__EXTRA_xml_lst_SOURCES_DIST) $(am__libxml_la_SOURCES_DIST) \
@@ -425,7 +433,7 @@ SOURCES = $(xml_lst_SOURCES) $(EXTRA_xml_lst_SOURCES) $(libxml_la_SOURCES) $(EXT
 all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/xml/Makefile
@@ -484,14 +492,14 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attribute.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attribute.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/document.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/document.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/element.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/element.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/entity.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/entity.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parser.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/path.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/path.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Plo@am__quote@
@@ -499,39 +507,6 @@ distclean-compile:
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
-
-.c.lo:
-@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \

@@ -1,3 +1,6 @@
+#ifndef COIN_XMLATTRIBUTEP_H
+#define COIN_XMLATTRIBUTEP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,51 +24,13 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/XML/entity.h>
+#ifndef COIN_INTERNAL
+#error This is an internal header file.
+#endif // !COIN_INTERNAL
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/C/XML/types.h>
 
-#include <stdlib.h>
-#include <assert.h>
+size_t cc_xml_attr_calculate_size(const cc_xml_attr * attr);
+size_t cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t bufsize);
 
-// *************************************************************************
-
-struct cc_xml_ent {
-  const char * name;
-  const char * value;
-};
-
-// *************************************************************************
-
-cc_xml_ent * 
-cc_xml_ent_new(void)
-{
-  cc_xml_ent * ent = new cc_xml_ent;
-  ent->name = NULL;
-  ent->value = NULL;
-  return ent;
-}
-
-void
-cc_xml_ent_delete(cc_xml_ent * ent)
-{
-  delete ent;
-}
-
-const char *
-cc_xml_ent_get_name(cc_xml_ent * ent)
-{
-  assert(ent);
-  return ent->name;
-}
-
-const char *
-cc_xml_ent_get_value(cc_xml_ent * ent)
-{
-  assert(ent);
-  return ent->value;
-}
-
-// *************************************************************************
+#endif // !COIN_XMLATTRIBUTEP_H

@@ -1,18 +1,27 @@
 /**************************************************************************\
  *
- *  This file is part of the SIM Scenery library.
- *  Copyright (C) 2000-2007 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
- *  This software is proprietary to and embodies the confidential 
- *  technology of Systems in Motion.  Possession, use, or copying of this
- *  software and media is authorized only pursuant to a valid written
- *  license from Systems in Motion or an authorized sublicensor. 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  For more information, contact SIM <http://www.sim.no/> by means of:
- *  Mail: Systems in Motion AS, Bygdøy allé 5, N-0257 Oslo, Norway;
- *  Email: <sales@sim.no>; Voice: +47 23 27 25 10; Fax: +47 23 27 25 11.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
+
+#include <Inventor/C/XML/path.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -24,9 +33,8 @@
 #include <assert.h>
 
 #include <Inventor/C/base/string.h>
-#include <Inventor/C/XML/path.h>
-#include <Inventor/C/XML/utils.h>
 #include <Inventor/C/XML/element.h>
+#include "utils.h"
 
 /* ********************************************************************** */
 
@@ -44,11 +52,10 @@ struct path_node {
 };
 
 static
-struct path_node *
+path_node *
 path_node_new(const char * element, int idx)
 {
-  struct path_node * node;
-  node = (struct path_node *) malloc(sizeof(struct path_node));
+  path_node * node = new path_node;
   node->element = cc_xml_strdup(element);
   node->idx = idx;
   node->next = NULL;
@@ -56,38 +63,38 @@ path_node_new(const char * element, int idx)
 }
 
 static
-struct path_node *
-path_node_clone(struct path_node * node)
+path_node *
+path_node_clone(path_node * node)
 {
   return path_node_new(node->element, node->idx);
 }
 
 static
-struct path_node *
-path_node_delete(struct path_node * node)
+path_node *
+path_node_delete(path_node * node)
 {
-  struct path_node * next;
+  path_node * next;
   next = node->next;
-  free(node->element);
-  free(node);
+  delete node->element;
+  delete node;
   return next;
 }
 
 static
 void
-path_node_delete_chain(struct path_node * head)
+path_node_delete_chain(path_node * head)
 {
   while ( head != NULL ) {
-    struct path_node * prev = head;
+    path_node * prev = head;
     head = head->next;
-    free(prev->element);
-    free(prev);
+    delete prev->element;
+    delete prev;
   }
 }
 
 static
 int
-path_node_match_p(struct path_node * node, const cc_xml_elt * elt)
+path_node_match_p(path_node * node, const cc_xml_elt * elt)
 {
   if ( strcmp(node->element, cc_xml_elt_get_type(elt)) != 0 ) return FALSE;
   if ( node->idx != -1 ) {
@@ -104,7 +111,7 @@ path_node_match_p(struct path_node * node, const cc_xml_elt * elt)
 cc_xml_path *
 cc_xml_path_new(void)
 {
-  cc_xml_path * path = (cc_xml_path *) malloc(sizeof(struct cc_xml_path));
+  cc_xml_path * path = new cc_xml_path;
   path->head = NULL;
   assert(path);
   return path;
@@ -115,7 +122,7 @@ cc_xml_path_delete_x(cc_xml_path * path)
 {
   assert(path);
   path_node_delete_chain(path->head);
-  free(path);
+  delete path;
 } // cc_xml_path_delete_x()
 
 void
@@ -140,9 +147,9 @@ cc_xml_path_set_x_va(cc_xml_path * path, va_list args)
     } else {
       int idx = atoi(ptr + 1);
       assert(idx >= -1);
-      char * string = cc_xml_strndup(arg, static_cast<int>(ptr - arg));
-      cc_xml_path_prepend_x(path, string, idx);
-      free(string);
+      char * str = cc_xml_strndup(arg, static_cast<int>(ptr - arg));
+      cc_xml_path_prepend_x(path, str, idx);
+      delete [] str;
     }
   }
   cc_xml_path_reverse_x(path);

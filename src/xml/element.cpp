@@ -1,18 +1,28 @@
 /**************************************************************************\
  *
- *  This file is part of the SIM Scenery library.
- *  Copyright (C) 2000-2007 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
- *  This software is proprietary to and embodies the confidential 
- *  technology of Systems in Motion.  Possession, use, or copying of this
- *  software and media is authorized only pursuant to a valid written
- *  license from Systems in Motion or an authorized sublicensor. 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  For more information, contact SIM <http://www.sim.no/> by means of:
- *  Mail: Systems in Motion AS, Bygdøy allé 5, N-0257 Oslo, Norway;
- *  Email: <sales@sim.no>; Voice: +47 23 27 25 10; Fax: +47 23 27 25 11.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
+
+#include <Inventor/C/XML/element.h>
+#include "elementp.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -24,11 +34,13 @@
 #include <assert.h>
 
 #include <Inventor/C/base/string.h>
+#include <Inventor/lists/SbList.h>
 
 #include <Inventor/C/XML/document.h>
-#include <Inventor/C/XML/element.h>
+#include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/path.h>
-#include <Inventor/C/XML/utils.h>
+#include "attributep.h"
+#include "utils.h"
 
 // *************************************************************************
 
@@ -37,52 +49,194 @@ struct cc_xml_elt {
   char * data;
   char * cdata;
   cc_xml_elt * parent;
-  struct cc_xml_elt ** children;
+  SbList<cc_xml_attr *> attributes;
+  SbList<cc_xml_elt *> children;
 };
 
 // *************************************************************************
 
+/*!
+  Creates a new element with no type, no attributes, and no children elements.
+*/
+
 cc_xml_elt *
 cc_xml_elt_new(void)
 {
-  cc_xml_elt * elt = (cc_xml_elt *) malloc(sizeof(struct cc_xml_elt));
+  cc_xml_elt * elt = new cc_xml_elt;
   assert(elt);
   elt->type = NULL;
   elt->data = NULL;
   elt->cdata = NULL;
   elt->parent = NULL;
-  elt->children = NULL;
   return elt;
 }
+
+/*!
+  Creates a new element with the given type and attributes.
+  The \a attrs argument can be NULL.
+*/
+
+cc_xml_elt *
+cc_xml_elt_new_from_data(const char * type, cc_xml_attr ** attrs)
+{
+  cc_xml_elt * elt = cc_xml_elt_new();
+  cc_xml_elt_set_type_x(elt, type);
+  if (attrs) { cc_xml_elt_set_attributes_x(elt, attrs); }
+  return elt;
+}
+
+/*!
+  Returns a clone of the element, including child elements and attributes.
+  Only the parent connection is dropped.
+*/
+
+cc_xml_elt *
+cc_xml_elt_clone(const cc_xml_elt * elt)
+{
+  cc_xml_elt * clone = cc_xml_elt_new();
+  if (elt->type) {
+    cc_xml_elt_set_type_x(clone, elt->type);
+  }
+  if (elt->data) {
+    clone->data = cc_xml_strdup(elt->data);
+  }
+  if (elt->cdata) {
+    clone->cdata = cc_xml_strdup(elt->cdata);
+  }
+  if (elt->attributes.getLength() > 0) {
+    for (int i = 0; elt->children[i] != NULL; ++i) {
+      cc_xml_elt_set_attribute_x(clone, cc_xml_attr_clone(elt->attributes[i]));
+    }
+  }
+  if (elt->children.getLength() > 0) {
+    for (int i = 0; elt->children[i] != NULL; ++i) {
+      cc_xml_elt_add_child_x(clone, cc_xml_elt_clone(elt->children[i]));
+    }
+  }
+  return clone;
+}
+
+/*!
+  Frees the given \a elt element, including its attributes and children.
+*/
 
 void
 cc_xml_elt_delete_x(cc_xml_elt * elt)
 {
   assert(elt);
-  if ( elt->type ) free(elt->type);
-  if ( elt->data ) free(elt->data);
-  if ( elt->cdata ) free(elt->cdata);
-  if ( elt->children ) {
-    for ( int i = 0; elt->children[i] != NULL; i++ )
-      cc_xml_elt_delete_x(elt->children[i]);
-    free(elt->children);
+  if (elt->type) delete [] elt->type;
+  if (elt->data) delete [] elt->data;
+  if (elt->cdata) delete [] elt->cdata;
+  if (elt->attributes.getLength() > 0) {
+    const int num = elt->attributes.getLength();
+    for (int i = 0; i < num; ++i) {
+      cc_xml_attr_delete_x(elt->attributes[i]);
+    }
   }
-  free(elt);
+  if (elt->children.getLength() > 0) {
+    const int num = elt->children.getLength();
+    for (int i = 0; i < num; ++i) {
+      cc_xml_elt_delete_x(elt->children[i]);
+    }
+  }
+  delete elt;
 }
 
 // *************************************************************************
 
+/*!
+  Sets the element type identifier.  The old value will be freed, if any.
+  The \a type argument can be NULL to just clear the old value.
+*/
+
+void
+cc_xml_elt_set_type_x(cc_xml_elt * elt, const char * type)
+{
+  assert(elt);
+  if (elt->type) {
+    delete [] elt->type;
+    elt->type = NULL;
+  }
+  if (type) elt->type = cc_xml_strdup(type);
+}
+
+/*!
+  Returns the element type identifier if one is set, and NULL otherwise.
+*/
+
 const char *
 cc_xml_elt_get_type(const cc_xml_elt * elt)
 {
-  assert(elt);
   return elt->type;
+}
+
+// FIXME: document behaviour
+
+void
+cc_xml_elt_set_cdata_x(cc_xml_elt * elt, const char * cdata)
+{
+  assert(elt);
+  if ( strcmp(elt->type, COIN_XML_CDATA_TYPE) != 0 ) {
+    if ( cc_xml_elt_get_num_children(elt) == 0 ) {
+      // cdata child not existing yet
+      cc_xml_elt * child = cc_xml_elt_new();
+      cc_xml_elt_set_type_x(child, COIN_XML_CDATA_TYPE);
+      cc_xml_elt_add_child_x(elt, child);
+      elt = child;
+    } else if ( (cc_xml_elt_get_num_children(elt) == 1) &&
+         (strcmp(elt->children[0]->type, COIN_XML_CDATA_TYPE) == 0) ) {
+      // we really want to manipulate the cdata child, not this element
+      elt = elt->children[0];
+    } else {
+      // FIXME: warn that this doesn't make sense  20021119 larsa
+      // but we can run through anyways
+    }
+  }
+  if ( elt->cdata ) {
+    delete [] elt->cdata;
+    elt->cdata = NULL;
+  }
+  if ( cdata ) elt->cdata = cc_xml_strdup(cdata);
+  if ( elt->data ) {
+    delete [] elt->data;
+    elt->data = NULL;
+  }
+  // Update data to whitespace-stripped cdata
+  if( cdata) {
+    const char * startptr = elt->cdata;
+    const char * endptr = startptr + (strlen(startptr) - 1);
+    while ( *startptr == '\t' || *startptr == '\r' || *startptr == '\n' || *startptr == ' ' ) {
+      startptr++;
+    }
+    // FIXME: avoid whitespace-only cdata from parser, then uncomment assert's.
+    // assert(startptr <= endptr && "just whitespace from the front");
+    while ( endptr > startptr && (*endptr == '\t' || *endptr == '\r' || *endptr == '\n' || *endptr == ' ') ) {
+      endptr--;
+    }
+    //  assert(endptr > startptr && "makes no sense at all");
+    endptr++;
+    if( endptr > startptr) {
+      elt->data = cc_xml_strndup(startptr, static_cast<int>(endptr - startptr));
+    }
+  }
+}
+
+const char *
+cc_xml_elt_get_cdata(const cc_xml_elt * elt)
+{
+  assert(elt);
+  if (strcmp(elt->type, COIN_XML_CDATA_TYPE) != 0) {
+    if ((cc_xml_elt_get_num_children(elt) == 1) &&
+        (strcmp(elt->children[0]->type, COIN_XML_CDATA_TYPE) == 0)) {
+      return elt->children[0]->cdata;
+    }
+  }
+  return elt->cdata;
 }
 
 const char *
 cc_xml_elt_get_data(const cc_xml_elt * elt)
 {
-  assert(elt);
   if ( strcmp(elt->type, COIN_XML_CDATA_TYPE) != 0 ) {
     if ( (cc_xml_elt_get_num_children(elt) == 1) &&
          (strcmp(elt->children[0]->type, COIN_XML_CDATA_TYPE) == 0) ) {
@@ -92,18 +246,54 @@ cc_xml_elt_get_data(const cc_xml_elt * elt)
   return elt->data;
 }
 
-const char *
-cc_xml_elt_get_cdata(const cc_xml_elt * elt)
+// *************************************************************************
+
+void
+cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt)
 {
   assert(elt);
-  if ( strcmp(elt->type, COIN_XML_CDATA_TYPE) != 0 ) {
-    if ( (cc_xml_elt_get_num_children(elt) == 1) &&
-         (strcmp(elt->children[0]->type, COIN_XML_CDATA_TYPE) == 0) ) {
-      return elt->children[0]->cdata;
-    }
+  if (elt->attributes.getLength()) {
   }
-  return elt->cdata;
 }
+
+void
+cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr)
+{
+  cc_xml_attr * shadowed = cc_xml_elt_get_attribute(elt, cc_xml_attr_get_name(attr));
+  if (shadowed) {
+    cc_xml_attr_set_value_x(shadowed, cc_xml_attr_get_value(attr));
+    // FIXME: free attr, or replace shadowed by attr and free shadowed?
+  } else {
+    elt->attributes.append(attr);
+  }
+}
+
+void
+cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs)
+{
+  // FIXME: clear all and set, or just set the given attributes?
+}
+
+cc_xml_attr *
+cc_xml_elt_get_attribute(const cc_xml_elt * elt, const char * attrname)
+{
+  assert(elt);
+  const int num = elt->attributes.getLength();
+  for (int c = 0; c < num; ++c) {
+    if (strcmp(attrname, cc_xml_attr_get_name(elt->attributes[c])) == 0)
+      return elt->attributes[c];
+  }
+  return NULL;
+}
+
+const cc_xml_attr **
+cc_xml_elt_get_attributes(const cc_xml_elt * elt)
+{
+  assert(elt);
+  return const_cast<const cc_xml_attr **>(elt->attributes.getArrayPtr());
+}
+
+// *************************************************************************
 
 cc_xml_elt *
 cc_xml_elt_get_parent(const cc_xml_elt * elt)
@@ -116,62 +306,76 @@ int
 cc_xml_elt_get_num_children(const cc_xml_elt * elt)
 {
   assert(elt);
-  int count = 0;
-  if ( elt->children )
-    for ( ; elt->children[count] != NULL; count++ ) {}
-  return count;
+  return elt->children.getLength();
 }
+
+/*!
+  Returns the number of child elements of the given type.
+*/
 
 int
 cc_xml_elt_get_num_children_of_type(const cc_xml_elt * elt, const char * type)
 {
   assert(elt);
   int count = 0;
-  if ( elt->children ) {
-    int i;
-    for ( i = 0; elt->children[i] != NULL; i++ ) {
-      if ( strcmp(type, cc_xml_elt_get_type(elt->children[i])) == 0 )
-        count++;
-    }
+  const int numchildren = elt->children.getLength();
+  for (int i = 0; i < numchildren; ++i) {
+    if (strcmp(type, cc_xml_elt_get_type(elt->children[i])) == 0) ++count;
   }
   return count;
 }
 
+/*!
+  Returns the child element at index \a childidx.
+
+  The index has to be an existing index, invalid values are considered programming errors.
+*/
+
 cc_xml_elt *
-cc_xml_elt_get_child(const cc_xml_elt * elt, int child)
+cc_xml_elt_get_child(const cc_xml_elt * elt, int childidx)
 {
   assert(elt);
-  assert(child < cc_xml_elt_get_num_children(elt));
-  return elt->children[child];
+  assert(childidx >= 0);
+  assert(childidx < cc_xml_elt_get_num_children(elt));
+  return elt->children[childidx];
 }
+
+/*!
+  Returns the child index of the child element.
+
+  Giving a child element that is not a child is considered a programming error.
+*/
 
 int
 cc_xml_elt_get_child_index(const cc_xml_elt * elt, const cc_xml_elt * child)
 {
   assert(elt);
-  if ( elt->children ) {
-    int idx;
-    for ( idx = 0; elt->children[idx] != NULL; idx++ )
-      if ( elt->children[idx] == child ) return idx;
+  const int numchildren = elt->children.getLength();
+  for (int idx = 0; idx < numchildren; ++idx) {
+    if (elt->children[idx] == child) return idx;
   }
-  assert(0 && "no such child");
+  assert(!"no such child");
   return -1;
 }
+
+/*
+  Returns the child element's index when only counting elements of that given type.
+
+  Giving a child element that is not a child is considered a programming error.
+*/
 
 int
 cc_xml_elt_get_child_type_index(const cc_xml_elt * elt, const cc_xml_elt * child)
 {
   assert(elt);
-  if ( elt->children ) {
-    int idx = -1;
-    const char * type = cc_xml_elt_get_type(child);
-    int i;
-    for ( i = 0; elt->children[i] != NULL; i++ ) {
-      if ( strcmp(cc_xml_elt_get_type(elt->children[i]), type) == 0 ) idx++;
-      if ( elt->children[i] == child ) return idx;
-    }
+  const int numchildren = elt->children.getLength();
+  int idx = -1;
+  const char * type = cc_xml_elt_get_type(child);
+  for (int i = 0; i < numchildren; ++i) {
+    if (strcmp(cc_xml_elt_get_type(elt->children[i]), type) == 0) ++idx;
+    if (elt->children[i] == child) return idx;
   }
-  assert(0 && "no such child");
+  assert(!"no such child");
   return -1;
 }
 
@@ -232,67 +436,6 @@ cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, const char * type, int idx)
 // *************************************************************************
 
 void
-cc_xml_elt_set_type_x(cc_xml_elt * elt, const char * type)
-{
-  assert(elt);
-  if ( elt->type ) {
-    free(elt->type);
-    elt->type = NULL;
-  }
-  if ( type )
-    elt->type = cc_xml_strdup(type);
-}
-
-void
-cc_xml_elt_set_cdata_x(cc_xml_elt * elt, const char * cdata)
-{
-  assert(elt);
-  if ( strcmp(elt->type, COIN_XML_CDATA_TYPE) != 0 ) {
-    if ( cc_xml_elt_get_num_children(elt) == 0 ) {
-      // cdata child not existing yet
-      cc_xml_elt * child = cc_xml_elt_new();
-      cc_xml_elt_set_type_x(child, COIN_XML_CDATA_TYPE);
-      cc_xml_elt_add_child_x(elt, child);
-      elt = child;
-    } else if ( (cc_xml_elt_get_num_children(elt) == 1) &&
-         (strcmp(elt->children[0]->type, COIN_XML_CDATA_TYPE) == 0) ) {
-      // we really want to manipulate the cdata child, not this element
-      elt = elt->children[0];
-    } else {
-      // FIXME: warn that this doesn't make sense  20021119 larsa
-      // but we can run through anyways
-    }
-  }
-  if ( elt->cdata ) {
-    free(elt->cdata);
-    elt->cdata = NULL;
-  }
-  if ( cdata ) elt->cdata = cc_xml_strdup(cdata);
-  if ( elt->data ) {
-    free(elt->data);
-    elt->data = NULL;
-  }
-  // Update data to whitespace-stripped cdata
-  if( cdata) {
-    const char * startptr = elt->cdata;
-    const char * endptr = startptr + (strlen(startptr) - 1);
-    while ( *startptr == '\t' || *startptr == '\r' || *startptr == '\n' || *startptr == ' ' ) {
-      startptr++;
-    }
-    // FIXME: avoid whitespace-only cdata from parser, then uncomment assert's.
-    // assert(startptr <= endptr && "just whitespace from the front");
-    while ( endptr > startptr && (*endptr == '\t' || *endptr == '\r' || *endptr == '\n' || *endptr == ' ') ) {
-      endptr--;
-    }
-    //  assert(endptr > startptr && "makes no sense at all");
-    endptr++;
-    if( endptr > startptr) {
-      elt->data = cc_xml_strndup(startptr, static_cast<int>(endptr - startptr));
-    }
-  }
-}
-
-void
 cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent)
 {
   assert(elt);
@@ -302,97 +445,63 @@ cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent)
 void
 cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child)
 {
-  assert(elt && child && child->parent == NULL);
-  if ( elt->children == NULL ) {
-    elt->children = (cc_xml_elt **) malloc(sizeof(cc_xml_elt *)*8);
-    int i;
-    for ( i = 0; i < 8; i++ ) elt->children[i] = NULL;
+  assert(elt);
+  assert(child);
+  if (child->parent != NULL) {
+    // FIXME: ERROR - element already a child of another element
+    return;
   }
+  
   int numchildren = cc_xml_elt_get_num_children(elt);
-  if ( (numchildren + 1) % 8 == 0 ) { // expand array
-    cc_xml_elt ** array = (cc_xml_elt **) malloc(sizeof(cc_xml_elt *)*(numchildren+1+8));
-    assert(array != NULL);
-    int i;
-    for ( i = 0; i < numchildren; i++ ) array[i] = elt->children[i];
-    for ( i = numchildren; i < (numchildren+1+8); i++ ) array[i] = NULL;
-    free(elt->children);
-    elt->children = array;
-  }
-  elt->children[numchildren] = child;
+  elt->children.append(child);
   child->parent = elt;
 }
+
+/*!  This function will not free the child being removed.  Giving a
+  nonexistent child to this function is a programming error and will
+  result in an assert.
+*/
 
 void
 cc_xml_elt_remove_child_x(cc_xml_elt * elt, cc_xml_elt * child)
 {
   assert(elt);
-  const int numchildren = cc_xml_elt_get_num_children(elt);
-  for ( int i = 0; i < numchildren; i++ ) {
-    if ( elt->children[i] == child ) {
+  assert(child);
+  const int numchildren = elt->children.getLength();
+  for (int i = 0; i < numchildren; ++i) {
+    if (elt->children[i] == child) {
+      elt->children.remove(i);
       child->parent = NULL;
-      for ( int j = i + 1; j <= numchildren; j++ )
-        elt->children[j-1] = elt->children[j];
       return;
     }
   }
-  assert(0);
+  assert(!"no such child");
 }
 
 void
 cc_xml_elt_insert_child_x(cc_xml_elt * elt, cc_xml_elt * child, int idx)
 {
-  assert(elt && child && child->parent == NULL);
-  int i;
-  if ( elt->children == NULL ) {
-    elt->children = (cc_xml_elt **) malloc(sizeof(cc_xml_elt *)*8);
-    for ( i = 0; i < 8; i++ ) elt->children[i] = NULL;
+  assert(elt);
+  assert(child);
+  if (child->parent != NULL) {
+    // FIXME: error, child already a child of another element
+    return;
   }
-  int numchildren = cc_xml_elt_get_num_children(elt);
+  const int numchildren = elt->children.getLength();
   assert(idx >= 0 && idx <= numchildren);
-  if ( (numchildren + 1) % 8 == 0 ) { // expand array
-    cc_xml_elt ** array = (cc_xml_elt **) malloc(sizeof(cc_xml_elt *)*(numchildren+1+8));
-    assert(array != NULL);
-    for ( i = 0; i < numchildren; i++ ) array[i] = elt->children[i];
-    for ( i = numchildren; i < (numchildren+1+8); i++ ) array[i] = NULL;
-    free(elt->children);
-    elt->children = array;
-  }
-  for ( i = numchildren; i > idx; i-- )
-    elt->children[i] = elt->children[i-1];
-  elt->children[idx] = child;
+  elt->children.insert(child, idx);
   child->parent = elt;
 }
 
 int
 cc_xml_elt_replace_child_x(cc_xml_elt * elt, cc_xml_elt * oldchild, cc_xml_elt * newchild)
 {
+  assert(elt);
   int idx = cc_xml_elt_get_child_index(elt, oldchild);
   if ( idx == -1 ) return FALSE;
   cc_xml_elt_remove_child_x(elt, oldchild);
   cc_xml_elt_insert_child_x(elt, newchild, idx);
   return TRUE;
-}
-
-cc_xml_elt *
-cc_xml_elt_clone(const cc_xml_elt * elt)
-{
-  cc_xml_elt * clone = cc_xml_elt_new();
-  if ( elt->type ) {
-    cc_xml_elt_set_type_x(clone, elt->type);
-  }
-  if ( elt->data ) {
-    clone->data = cc_xml_strdup(elt->data);
-  }
-  if ( elt->cdata ) {
-    clone->cdata = cc_xml_strdup(elt->cdata);
-  }
-  if ( elt->children ) {
-    int i;
-    for ( i = 0; elt->children[i] != NULL; i++ ) {
-      cc_xml_elt_add_child_x(clone, cc_xml_elt_clone(elt->children[i]));
-    }
-  }
-  return clone;
 }
 
 // *************************************************************************
@@ -751,7 +860,7 @@ cont2:
        (endptr == (startptr + strlen(startptr))) ) return;
   char * substr = cc_xml_strndup(startptr, static_cast<int>(endptr - startptr));
   cc_xml_elt_set_cdata_x(elt, substr);
-  free(substr);
+  delete [] substr;
 }
 
 // *************************************************************************
@@ -930,5 +1039,60 @@ cont:
   }
   return current;
 } // cc_xml_elt_create_x()
+
+// *************************************************************************
+
+size_t
+cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincrement)
+{
+  assert(elt);
+  assert(indent >= 0);
+  size_t bytes = 0;
+
+  if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
+    // this is a leaf element character data container
+    if (elt->cdata) {
+      bytes += strlen(elt->cdata);
+    }
+  } else {
+    const int typelen = strlen(elt->type);
+
+    bytes += indent;
+    bytes += 1; // <
+    bytes += typelen;
+
+    int c;
+    const int numattributes = elt->attributes.getLength();
+    for (c = 0; c < numattributes; ++c) {
+      bytes += 1; // ' '
+      bytes += cc_xml_attr_calculate_size(elt->attributes[c]);
+    }
+
+    bytes += 2; // >\n
+
+    const int numchildren = elt->children.getLength();
+    for (c = 0; c < numchildren; ++c) {
+      bytes += cc_xml_elt_calculate_size(elt->children[c], indent + indentincrement, indentincrement);
+    }
+
+    bytes += indent;
+    bytes += 2; // </
+    bytes += typelen;
+    bytes += 2; // >\n
+  }
+  return bytes;
+}
+
+size_t
+cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize, int indent, int indentincrement)
+{
+  assert(elt);
+  const size_t assumed = cc_xml_elt_calculate_size(elt, indent, indentincrement);
+
+
+  size_t used = 0;
+
+  return used;
+}
 
 // *************************************************************************

@@ -3,17 +3,24 @@
 
 /**************************************************************************\
  *
- *  This file is part of the SIM Scenery library.
- *  Copyright (C) 2000-2007 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
- *  This software is proprietary to and embodies the confidential 
- *  technology of Systems in Motion.  Possession, use, or copying of this
- *  software and media is authorized only pursuant to a valid written
- *  license from Systems in Motion or an authorized sublicensor. 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  For more information, contact SIM <http://www.sim.no/> by means of:
- *  Mail: Systems in Motion AS, Bygdøy allé 5, N-0257 Oslo, Norway;
- *  Email: <sales@sim.no>; Voice: +47 23 27 25 10; Fax: +47 23 27 25 11.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
@@ -29,14 +36,20 @@ typedef  struct cc_xml_elt       cc_xml_elt;
 typedef  struct cc_xml_attr      cc_xml_attr;
 typedef  struct cc_xml_ent       cc_xml_ent;
 typedef  struct cc_xml_path      cc_xml_path;
-typedef  struct cc_xml_bin       cc_xml_bin;
-typedef  struct cc_xml_bin_atom  cc_xml_bin_atom;
 
 /* non-abbreviated aliases */
 typedef  cc_xml_doc              cc_xml_document;
 typedef  cc_xml_elt              cc_xml_element;
 typedef  cc_xml_attr             cc_xml_attribute;
 typedef  cc_xml_ent              cc_xml_entity;
+
+/* streaming parsing */
+enum cc_xml_filter_choice {
+  KEEP,
+  DISCARD
+};
+
+typedef cc_xml_filter_choice cc_xml_filter_cb(void * userdata, cc_xml_doc * doc, cc_xml_elt * elt, int pushing);
 
 /* ********************************************************************** */
 
@@ -49,17 +62,17 @@ class SbXmlAttribute;
 class SbXmlEntity;
 class SbXmlPath;
 
-SbXmlDocument *  cc_xml_wrap(cc_xml_doc * doc, int pass_ownership = FALSE);
-SbXmlElement *   cc_xml_wrap(cc_xml_elt * elt, int pass_ownership = FALSE);
-SbXmlAttribute * cc_xml_wrap(cc_xml_attr * attr, int pass_ownership = FALSE);
-SbXmlEntity *    cc_xml_wrap(cc_xml_ent * ent, int pass_ownership = FALSE);
-SbXmlPath *      cc_xml_wrap(cc_xml_path * path, int pass_ownership = FALSE);
+SbXmlDocument *  COIN_DLL_API cc_xml_wrap(cc_xml_doc * doc, int pass_ownership = FALSE);
+SbXmlElement *   COIN_DLL_API cc_xml_wrap(cc_xml_elt * elt, int pass_ownership = FALSE);
+SbXmlAttribute * COIN_DLL_API cc_xml_wrap(cc_xml_attr * attr, int pass_ownership = FALSE);
+SbXmlEntity *    COIN_DLL_API cc_xml_wrap(cc_xml_ent * ent, int pass_ownership = FALSE);
+SbXmlPath *      COIN_DLL_API cc_xml_wrap(cc_xml_path * path, int pass_ownership = FALSE);
 
-cc_xml_doc *     cc_xml_unwrap(SbXmlDocument * doc, int pass_ownership = FALSE);
-cc_xml_elt *     cc_xml_unwrap(SbXmlElement * elt, int pass_ownership = FALSE);
-cc_xml_attr *    cc_xml_unwrap(SbXmlAttribute * attr, int pass_ownership = FALSE);
-cc_xml_ent *     cc_xml_unwrap(SbXmlEntity * ent, int pass_ownership = FALSE);
-cc_xml_path *    cc_xml_unwrap(SbXmlPath * path, int pass_ownership = FALSE);
+cc_xml_doc *     COIN_DLL_API cc_xml_unwrap(SbXmlDocument * doc, int pass_ownership = FALSE);
+cc_xml_elt *     COIN_DLL_API cc_xml_unwrap(SbXmlElement * elt, int pass_ownership = FALSE);
+cc_xml_attr *    COIN_DLL_API cc_xml_unwrap(SbXmlAttribute * attr, int pass_ownership = FALSE);
+cc_xml_ent *     COIN_DLL_API cc_xml_unwrap(SbXmlEntity * ent, int pass_ownership = FALSE);
+cc_xml_path *    COIN_DLL_API cc_xml_unwrap(SbXmlPath * path, int pass_ownership = FALSE);
 #endif // 0
 
 #endif /* __cplusplus */

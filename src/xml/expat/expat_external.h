@@ -5,14 +5,14 @@
 #ifndef Expat_External_INCLUDED
 #define Expat_External_INCLUDED 1
 
-#ifndef XML_UNICODE
-#define XML_UNICODE 1
-#endif /* XML_UNICODE */
+//#ifndef XML_UNICODE
+//#define XML_UNICODE 1
+//#endif /* XML_UNICODE */
 
 /* External API definitions */
 
 #if defined(_MSC_EXTENSIONS) && !defined(__BEOS__) && !defined(__CYGWIN__)
-#define XML_USE_MSC_EXTENSIONS 1
+// #define XML_USE_MSC_EXTENSIONS 1
 #endif
 
 /* Expat tries very hard to make the API boundary very specifically

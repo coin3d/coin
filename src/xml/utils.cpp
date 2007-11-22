@@ -1,21 +1,29 @@
 /**************************************************************************\
  *
- *  This file is part of the SIM Scenery library.
- *  Copyright (C) 2000-2007 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
- *  This software is proprietary to and embodies the confidential 
- *  technology of Systems in Motion.  Possession, use, or copying of this
- *  software and media is authorized only pursuant to a valid written
- *  license from Systems in Motion or an authorized sublicensor. 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  For more information, contact SIM <http://www.sim.no/> by means of:
- *  Mail: Systems in Motion AS, Bygdøy allé 5, N-0257 Oslo, Norway;
- *  Email: <sales@sim.no>; Voice: +47 23 27 25 10; Fax: +47 23 27 25 11.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
+#include "utils.h"
+
 #include <Inventor/C/basic.h>
-#include <Inventor/C/XML/utils.h>
 #include <Inventor/C/XML/types.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +39,7 @@ cc_xml_load_file(const char * path)
   fseek(fd, 0, SEEK_END);
   const long bufsize = ftell(fd);
   fseek(fd, 0, SEEK_SET);
-  char * buffer = (char *) malloc(bufsize + 1);
+  char * buffer = new char [ bufsize + 1 ];
   long pos = 0, bytes;
   while ( pos != bufsize ) {
     bytes = fread(buffer + pos, 1, bufsize - pos, fd);
@@ -49,19 +57,19 @@ cc_xml_load_file(const char * path)
 // *************************************************************************
 
 char *
-cc_xml_strndup(const char * string, int len)
+cc_xml_strndup(const char * str, int len)
 {
-  char * buf = (char *) malloc(len + 1);
+  char * buf = new char [ len + 1 ];
   assert(buf != NULL);
-  memcpy(buf, string, len);
+  memcpy(buf, str, len);
   buf[len] = '\0';
   return buf;
 }
 
 char *
-cc_xml_strdup(const char * string)
+cc_xml_strdup(const char * str)
 {
-  return cc_xml_strndup(string, strlen(string));
+  return cc_xml_strndup(str, strlen(str));
 }
 
 // *************************************************************************

@@ -3,16 +3,20 @@
 SUBDIRS = expat
 
 RegularSources = \
-        parser.c \
-	document.cpp \
-	element.cpp \
+        document.cpp \
+        element.cpp \
+        attribute.cpp \
         entity.cpp \
         utils.cpp \
         path.cpp
 LinkHackSources = \
-	all-xml-cpp.cpp
+        all-xml-cpp.cpp
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = \
+        utils.h \
+        documentp.h \
+        elementp.h \
+        attributep.h
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(xml, xml)

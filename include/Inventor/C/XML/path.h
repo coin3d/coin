@@ -3,17 +3,24 @@
 
 /**************************************************************************\
  *
- *  This file is part of the SIM Scenery library.
- *  Copyright (C) 2000-2007 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
  *
- *  This software is proprietary to and embodies the confidential 
- *  technology of Systems in Motion.  Possession, use, or copying of this
- *  software and media is authorized only pursuant to a valid written
- *  license from Systems in Motion or an authorized sublicensor. 
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  For more information, contact SIM <http://www.sim.no/> by means of:
- *  Mail: Systems in Motion AS, Bygdøy allé 5, N-0257 Oslo, Norway;
- *  Email: <sales@sim.no>; Voice: +47 23 27 25 10; Fax: +47 23 27 25 11.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
@@ -27,26 +34,26 @@
 extern "C" {
 #endif /* __cplusplus */
 
-cc_xml_path * cc_xml_path_new(void);
-void          cc_xml_path_delete_x(cc_xml_path * path);
+COIN_DLL_API cc_xml_path * cc_xml_path_new(void);
+COIN_DLL_API void          cc_xml_path_delete_x(cc_xml_path * path);
 
-void          cc_xml_path_clear_x(cc_xml_path * path);
-void          cc_xml_path_set_x(cc_xml_path * path, ...); /* use 'v' in signature? */
-void          cc_xml_path_copy_x(cc_xml_path * path, cc_xml_path * path2);
-void          cc_xml_path_reverse_x(cc_xml_path * path);
+COIN_DLL_API void          cc_xml_path_clear_x(cc_xml_path * path);
+COIN_DLL_API void          cc_xml_path_set_x(cc_xml_path * path, ...); /* use 'v' in signature? */
+COIN_DLL_API void          cc_xml_path_copy_x(cc_xml_path * path, cc_xml_path * path2);
+COIN_DLL_API void          cc_xml_path_reverse_x(cc_xml_path * path);
 
-int           cc_xml_path_get_length(const cc_xml_path * path);
-const char *  cc_xml_path_get_type(const cc_xml_path * path, int idx);
-int           cc_xml_path_get_index(const cc_xml_path * path, int idx);
-int           cc_xml_path_match_p(const cc_xml_path * path, const cc_xml_elt * elt);
+COIN_DLL_API int           cc_xml_path_get_length(const cc_xml_path * path);
+COIN_DLL_API const char *  cc_xml_path_get_type(const cc_xml_path * path, int idx);
+COIN_DLL_API int           cc_xml_path_get_index(const cc_xml_path * path, int idx);
+COIN_DLL_API int           cc_xml_path_match_p(const cc_xml_path * path, const cc_xml_elt * elt);
 
-void          cc_xml_path_append_x(cc_xml_path * path, const char * elt, int idx);
-void          cc_xml_path_append_path_x(cc_xml_path * path, cc_xml_path * path2);
-void          cc_xml_path_prepend_x(cc_xml_path * path, const char * elt, int idx);
-void          cc_xml_path_prepend_path_x(cc_xml_path * path, cc_xml_path * path2);
-void          cc_xml_path_truncate_x(cc_xml_path * path, int length);
+COIN_DLL_API void          cc_xml_path_append_x(cc_xml_path * path, const char * elt, int idx);
+COIN_DLL_API void          cc_xml_path_append_path_x(cc_xml_path * path, cc_xml_path * path2);
+COIN_DLL_API void          cc_xml_path_prepend_x(cc_xml_path * path, const char * elt, int idx);
+COIN_DLL_API void          cc_xml_path_prepend_path_x(cc_xml_path * path, cc_xml_path * path2);
+COIN_DLL_API void          cc_xml_path_truncate_x(cc_xml_path * path, int length);
 
-void          cc_xml_path_dump(const cc_xml_path * path);
+COIN_DLL_API void          cc_xml_path_dump(const cc_xml_path * path);
 
 #ifdef __cplusplus
 } /* extern "C" */

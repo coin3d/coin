@@ -1,3 +1,6 @@
+#ifndef COIN_XMLDOCUMENTP_H
+#define COIN_XMLDOCUMENTP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,51 +24,8 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/XML/entity.h>
+#include <Inventor/C/XML/types.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+size_t cc_xml_doc_calculate_size(const cc_xml_doc * doc);
 
-#include <stdlib.h>
-#include <assert.h>
-
-// *************************************************************************
-
-struct cc_xml_ent {
-  const char * name;
-  const char * value;
-};
-
-// *************************************************************************
-
-cc_xml_ent * 
-cc_xml_ent_new(void)
-{
-  cc_xml_ent * ent = new cc_xml_ent;
-  ent->name = NULL;
-  ent->value = NULL;
-  return ent;
-}
-
-void
-cc_xml_ent_delete(cc_xml_ent * ent)
-{
-  delete ent;
-}
-
-const char *
-cc_xml_ent_get_name(cc_xml_ent * ent)
-{
-  assert(ent);
-  return ent->name;
-}
-
-const char *
-cc_xml_ent_get_value(cc_xml_ent * ent)
-{
-  assert(ent);
-  return ent->value;
-}
-
-// *************************************************************************
+#endif // !COIN_XMLDOCUMENTP_H

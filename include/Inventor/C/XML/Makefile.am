@@ -4,10 +4,8 @@ PublicHeaders = \
 	document.h \
 	element.h \
 	entity.h \
-	parser.h \
 	path.h \
 	types.h \
-	utils.h \
 	world.h
 PrivateHeaders =
 ObsoleteHeaders =
