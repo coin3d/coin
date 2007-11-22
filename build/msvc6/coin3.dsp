@@ -262,19 +262,6 @@ SOURCE=..\..\src\xml\expat\xmltok_ns.c
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\xml\parser.c
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\xml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\xml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\xml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\xml"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\xml\document.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
@@ -289,6 +276,19 @@ SOURCE=..\..\src\xml\document.cpp
 # Begin Source File
 
 SOURCE=..\..\src\xml\element.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\xml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\xml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\xml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\xml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\xml\attribute.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -11404,10 +11404,6 @@ SOURCE=..\..\include\Inventor\C\XML\entity.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\C\XML\parser.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\include\Inventor\C\XML\path.h
 # End Source File
 # Begin Source File
@@ -11416,7 +11412,7 @@ SOURCE=..\..\include\Inventor\C\XML\types.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\C\XML\utils.h
+SOURCE=..\..\include\Inventor\C\XML\parser.h
 # End Source File
 # Begin Source File
 
