@@ -1025,6 +1025,11 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoLocation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoCoordinate.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/parser.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/document.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/element.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/attribute.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/path.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
@@ -1568,7 +1573,11 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/geo/SoGeoLocation.cpp \
                          @path_tag@@coin_src_dir@/src/geo/SoGeoCoordinate.cpp \
                          @path_tag@@coin_src_dir@/src/foreignfiles/SoForeignFileKit.cpp \
-                         @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp
+                         @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp \
+                         @path_tag@@coin_src_dir@/src/xml/document.cpp \
+                         @path_tag@@coin_src_dir@/src/xml/element.cpp \
+                         @path_tag@@coin_src_dir@/src/xml/attribute.cpp \
+                         @path_tag@@coin_src_dir@/src/xml/path.cpp
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
