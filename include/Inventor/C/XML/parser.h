@@ -30,7 +30,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-// convenience functions
+/* convenience functions */
 COIN_DLL_API cc_xml_doc * cc_xml_read_file(const char * path);
 COIN_DLL_API cc_xml_doc * cc_xml_read_buffer(const char * buffer);
 
