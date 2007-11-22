@@ -96,11 +96,6 @@ COIN_DLL_API const cc_xml_elt * cc_xml_elt_find(const cc_xml_elt * root, const c
 COIN_DLL_API const cc_xml_elt * cc_xml_elt_find_next(const cc_xml_elt * root, cc_xml_elt * from, cc_xml_path * path);
 COIN_DLL_API cc_xml_elt * cc_xml_elt_create_x(cc_xml_elt * from, cc_xml_path * path);
 
-
-#ifdef COIN_INTERNAL
-COIN_DLL_API void         cc_xml_elt_dump_to_file(const cc_xml_elt * elt, int indent, FILE * fp);
-#endif // COIN_INTERNAL
-
 /* ********************************************************************** */
 
 #ifdef __cplusplus

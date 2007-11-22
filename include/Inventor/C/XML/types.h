@@ -73,7 +73,7 @@ cc_xml_elt *     COIN_DLL_API cc_xml_unwrap(SbXmlElement * elt, int pass_ownersh
 cc_xml_attr *    COIN_DLL_API cc_xml_unwrap(SbXmlAttribute * attr, int pass_ownership = FALSE);
 cc_xml_ent *     COIN_DLL_API cc_xml_unwrap(SbXmlEntity * ent, int pass_ownership = FALSE);
 cc_xml_path *    COIN_DLL_API cc_xml_unwrap(SbXmlPath * path, int pass_ownership = FALSE);
-#endif // 0
+#endif /* 0 */
 
 #endif /* __cplusplus */
 
