@@ -35,6 +35,7 @@
 
 #include <boost/scoped_array.hpp>
 
+#include <coindefs.h>
 #include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/path.h>
@@ -58,21 +59,21 @@
   Coin, we can not expose its API directly, or other projects also
   using Expat would get conflicts.  We therefore needed to expose the
   XML API with a unique API, hence the API you see here.  It is based
-  on a XML DOM API we used in a couple of other projects, but tweaked
-  to fit into Coin and be wrapped over Expat (which the original
-  implementation wasn't).
+  on a XML DOM API we use(d) in a couple of other projects, but it has
+  been tweaked to fit into Coin and to be wrapped over Expat (the
+  original implementation just used flex).
 
   The XML parser is both a streaming parser and a DOM parser.  Being a
-  streaming parser means that documentrs can be read in without having
+  streaming parser means that documents can be read in without having
   to be fully contained in memory.  When used as a DOM parser, the
   whole document is fully parsed in first, and then inspected by
   client code by traversing the DOM.  The two modes can actually be
-  mixed if ending up with a partial DOM sounds useful.
+  mixed arbitrarily if ending up with a partial DOM sounds useful.
 
   The XML parser has both a C API and a C++ API.  The C++ API is just
   a wrapper around the C API, and only serves as convenience if you
-  like to read/write C++ code (which is tighter) better than more
-  verbose C code.
+  prefer to read/write C++ code (which is tighter) over more verbose
+  C code.
 
   The C API naming convention may look a bit strange, unless you have
   written libraries to be wrapped for scheme/lisp-like languages
@@ -81,6 +82,10 @@
   functions are suffixed with "!", or "_x" for (eXclamation point),
   and predicates are suffixed with "?", or "_p" in C.
 
+  The simplest way to use the XML parser is to just call
+  cc_xml_read_file(filename) and then traverse the DOM model through
+  using cc_xml_doc_get_root(), cc_xml_elt_get_child(), and
+  cc_xml_elt_get_attr().
 
   \sa cc_xml_doc, cc_xml_elt, cc_xml_attr
 */
@@ -88,7 +93,8 @@
 /*!
   \var cc_xml_doc
 
-  This type is the container for an XML document structure.
+  This type is the container for an XML document structure, and also the
+  interface for configuring the parsing and writing code.
 */
 
 // #define DEV_DEBUG 1
@@ -98,7 +104,6 @@
 
 struct cc_xml_doc {
   XML_Parser parser;
-
 
   cc_xml_filter_cb * filtercb;
   void * filtercbdata;
@@ -191,6 +196,7 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_expat_character_data_handler_cb()\n");
 #endif // DEV_DEBUG
+
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
 
@@ -243,10 +249,6 @@ cc_xml_doc_create_parser_x(cc_xml_doc * doc)
   assert(doc && !doc->parser);
   doc->parser = XML_ParserCreate(NULL);
   assert(doc->parser);
-  if (XML_GetErrorCode(doc->parser) != 0) {
-    fprintf(stdout, "%s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
-  }
-
   XML_UseParserAsHandlerArg(doc->parser);
   XML_SetUserData(doc->parser, doc);
   XML_SetElementHandler(doc->parser,
@@ -275,6 +277,8 @@ cc_xml_doc_new(void)
   cc_xml_doc * doc = new cc_xml_doc;
   assert(doc);
   doc->parser = NULL;
+  doc->xmlversion = NULL;
+  doc->xmlencoding = NULL;
   doc->filtercb = NULL;
   doc->filtercbdata = NULL;
   doc->filename = NULL;
@@ -287,8 +291,10 @@ void
 cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
   assert(doc);
-  if (doc->filename) delete [] doc->filename;
   if (doc->parser) { cc_xml_doc_delete_parser_x(doc); }
+  if (doc->xmlversion) delete [] doc->xmlversion;
+  if (doc->xmlencoding) delete [] doc->xmlencoding;
+  if (doc->filename) delete [] doc->filename;
   if (doc->root) cc_xml_elt_delete_x(doc->root);
   delete doc;
 }
@@ -299,6 +305,9 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   Sets the filter callback for document parsing.  This makes it
   possible to use the parser as a streaming parser, by making the
   parser discard all elements it has read in.
+
+  Elements can only be discarded as they are popped - on push they will be
+  kept regardless of what the filter callback returns.
 */
 
 void
@@ -308,6 +317,9 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
   doc->filtercbdata = userdata;
 }
 
+/*!
+  Returns the set filter callback in the \a cb arg and \a userdata arg.
+*/
 
 void
 cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata)
@@ -318,6 +330,10 @@ cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *&
 
 // *************************************************************************
 
+/*!
+  Creates an cc_xml_doc and reads a file into it.
+  This is just a convenience function.
+*/
 cc_xml_doc *
 cc_xml_read_file(const char * path) // parser.h convenience function
 {
@@ -330,9 +346,21 @@ cc_xml_read_file(const char * path) // parser.h convenience function
   return doc;
 }
 
+/*!
+  Reads a file into the cc_xml_doc object.
+
+  Deletes any old XML DOM the doc contains.
+*/
+
 SbBool
 cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 {
+  assert(doc);
+  if (doc->root) {
+    cc_xml_elt_delete_x(doc->root);
+    doc->root = NULL;
+  }
+
   if (!doc->parser) {
     cc_xml_doc_create_parser_x(doc);
   }
@@ -356,7 +384,10 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
     int bytes = static_cast<int>(fread(buf, 1, 8192, fp));
     final = feof(fp);
   
-    XML_ParseBuffer(doc->parser, bytes, final);
+    XML_Status status = XML_ParseBuffer(doc->parser, bytes, final);
+    if (status != 0) {
+      fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
+    }
   }
 
   fclose(fp);
@@ -373,7 +404,7 @@ cc_xml_read_buffer(const char * buffer) // parser.h convenience function
   assert(doc);
   assert(buffer);
   size_t buflen = strlen(buffer);
-  if (!cc_xml_doc_read_buffer_x(doc, buflen, buffer)) {
+  if (!cc_xml_doc_read_buffer_x(doc, buffer, buflen)) {
     cc_xml_doc_delete_x(doc);
     return NULL;
   }
@@ -386,16 +417,13 @@ void cc_xml_doc_parse_buffer_partial_init_x(cc_xml_doc * doc);
 }
 
 SbBool
-cc_xml_doc_read_buffer_x(cc_xml_doc * doc, size_t buflen, const char * buffer)
+cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %d, %p)\n", doc, (int) buflen, buffer);
 #endif // DEV_DEBUG
   cc_xml_doc_parse_buffer_partial_init_x(doc);
-  if (!cc_xml_doc_parse_buffer_partial_x(doc, buflen, buffer)) {
-    return FALSE;
-  }
-  return cc_xml_doc_parse_buffer_partial_done_x(doc);
+  return cc_xml_doc_parse_buffer_partial_done_x(doc, buffer, buflen);
 }
 
 // xml_doc_parse_ vs xml_doc_read_
@@ -413,8 +441,9 @@ cc_xml_doc_parse_buffer_partial_init_x(cc_xml_doc * doc) // maybe expose and req
 }
 
 SbBool
-cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, size_t buflen, const char * buffer)
+cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
+  assert(doc);
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_x()\n");
 #endif // DEV_DEBUG
@@ -422,29 +451,37 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, size_t buflen, const char * 
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
 
-  XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
+  XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
   if (!ok) {
-    fprintf(stdout, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
+    fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
   }
 
   return TRUE;
 }
 
 SbBool
-cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc)
+cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_done_x()\n");
 #endif // DEV_DEBUG
-  XML_Status ok = XML_Parse(doc->parser, "", 0, TRUE);
+  assert(doc);
+  if (!doc->parser) {
+    cc_xml_doc_parse_buffer_partial_init_x(doc);
+  }
+  XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
   if (!ok) {
-    fprintf(stdout, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
+    fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
   }
   cc_xml_doc_delete_parser_x(doc);
   return TRUE;
 }
 
 // *************************************************************************
+
+/*!
+  Sets the filename attribute.  Frees old filename data if any.
+*/
 
 void
 cc_xml_doc_set_filename_x(cc_xml_doc * doc, const char * path)
@@ -457,6 +494,11 @@ cc_xml_doc_set_filename_x(cc_xml_doc * doc, const char * path)
   doc->filename = cc_xml_strdup(path);
 }
 
+/*!
+  Returns the filename attribute.  If nothing has been set, NULL is returned.
+  If document was read from memory, "<memory buffer>" was returned.
+*/
+
 const char *
 cc_xml_doc_get_filename(const cc_xml_doc * doc)
 {
@@ -464,12 +506,20 @@ cc_xml_doc_get_filename(const cc_xml_doc * doc)
   return doc->filename;
 }
 
+/*!
+  Sets the current pointer.  Not in use for anything at the moment, and might
+  get deprecated.
+*/
 void
 cc_xml_doc_set_current_x(cc_xml_doc * doc, cc_xml_elt * elt)
 {
   assert(doc);
   doc->current = elt;
 }
+
+/*!
+  Returns the current pointer.  Might get deprecated.
+*/
 
 cc_xml_elt *
 cc_xml_doc_get_current(const cc_xml_doc * doc)
@@ -478,12 +528,21 @@ cc_xml_doc_get_current(const cc_xml_doc * doc)
   return doc->current;
 }
 
+/*!
+  Sets the root element for the document.  Only useful when
+  constructing documents to be written.
+*/
+
 void
 cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root)
 {
   assert(doc);
   doc->root = root;
 }
+
+/*!
+  Returns the root element of the document.
+*/
 
 cc_xml_elt *
 cc_xml_doc_get_root(const cc_xml_doc * doc)
@@ -551,9 +610,51 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
   bytes = static_cast<int>(cc_xml_doc_calculate_size(doc));
   buffer = new char [ bytes + 1 ];
 
-  // buffer += 
+  size_t bytesleft = bytes;
+  char * hereptr = buffer;
+
+// macro to advance buffer pointer and decrement bytesleft count
+#define ADVANCE_NUM_BYTES(len)          \
+  do { const int length = (len);        \
+       hereptr += length;               \
+       bytesleft -= length; } while (0)
+
+// macro to copy in a string literal and advance pointers
+#define ADVANCE_STRING_LITERAL(str)                \
+  do { static const char strobj[] = str;           \
+       const int strlength = (sizeof(strobj) - 1); \
+       strncpy(hereptr, strobj, strlength);        \
+       ADVANCE_NUM_BYTES(strlength); } while (0)
+
+// macro to copy in a run-time string and advance pointers
+#define ADVANCE_STRING(str)                      \
+  do { const int strlength = strlen(str);        \
+       strncpy(hereptr, str, strlength);         \
+       ADVANCE_NUM_BYTES(strlength); } while (0)
+
+  // duplicate block, see cc_xml_doc_calculate_size()
+  ADVANCE_STRING_LITERAL("<?xml version=\"");
+  if (doc->xmlversion) {
+    ADVANCE_STRING(doc->xmlversion);
+  } else {
+    ADVANCE_STRING_LITERAL("1.0");
+  }
+  ADVANCE_STRING_LITERAL("\" encoding=\"");
+  if (doc->xmlencoding) {
+    ADVANCE_STRING(doc->xmlencoding);
+  } else {
+    ADVANCE_STRING_LITERAL("UTF-8");
+  }
+  ADVANCE_STRING_LITERAL("\"?>\n");
+
+#undef ADVANCE_STRING
+#undef ADVANCE_STRING_LITERAL
+#undef ADVANCE_NUM_BYTES
+
   if (doc->root)
-    cc_xml_elt_write_to_buffer(doc->root, buffer, bytes, 0, 2);
+    cc_xml_elt_write_to_buffer(doc->root, hereptr, bytesleft, 0, 2);
+
+  buffer[bytes] = '\0';
 
   return TRUE;
 }
@@ -601,6 +702,10 @@ cc_xml_doc_write_to_file(cc_xml_doc * doc, const char * path)
 cc_xml_path *
 cc_xml_doc_diff(const cc_xml_doc * doc, const cc_xml_doc * other)
 {
+#ifdef DEV_DEBUG
+  COIN_STUB();
+#endif // DEV_DEBUG
+  // FIXME: implement
   return NULL;
 }
 
@@ -609,7 +714,33 @@ size_t
 cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 {
   size_t bytes = 0;
-  // FIXME: sum up XML header
+
+// macro to increment bytecount for string literal
+#define ADVANCE_STRING_LITERAL(str) \
+  do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
+
+// macro to increment bytecount for run-time string
+#define ADVANCE_STRING(str) \
+  do { bytes += strlen(str); } while (0)
+
+  // duplicate block, see cc_xml_doc_write_to_buffer()
+  ADVANCE_STRING_LITERAL("<?xml version=\"");
+  if (doc->xmlversion) {
+    ADVANCE_STRING(doc->xmlversion);
+  } else {
+    ADVANCE_STRING_LITERAL("1.0");
+  }
+  ADVANCE_STRING_LITERAL("\" encoding=\"");
+  if (doc->xmlencoding) {
+    ADVANCE_STRING(doc->xmlencoding);
+  } else {
+    ADVANCE_STRING_LITERAL("UTF-8");
+  }
+  ADVANCE_STRING_LITERAL("\"?>\n");
+
+#undef ADVANCE_STRING
+#undef ADVANCE_STRING_LITERAL
+
   if (doc->root) {
     bytes += cc_xml_elt_calculate_size(doc->root, 0, 2);
   }
@@ -633,6 +764,7 @@ BOOST_AUTO_TEST_CASE(bufread)
 "</test>\n";
   cc_xml_doc * doc1 = cc_xml_read_buffer(buffer);
   BOOST_CHECK_MESSAGE(doc1 != NULL, "cc_xml_doc_read_buffer() failed");
+  fprintf(stderr, "\ndoc parsed ok\n");
 
   boost::scoped_array<char> buffer2;
   size_t bytecount = 0;
@@ -641,6 +773,9 @@ BOOST_AUTO_TEST_CASE(bufread)
     cc_xml_doc_write_to_buffer(doc1, bufptr, bytecount);
     buffer2.reset(bufptr);
   }
+
+  fprintf(stderr, "OUTPUT:\n'%s'\n", buffer2.get());
+
   cc_xml_doc * doc2 = cc_xml_read_buffer(buffer2.get());
 
   cc_xml_path * diffpath = cc_xml_doc_diff(doc1, doc2);

@@ -42,10 +42,10 @@ COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter
 
 /* document io */
 COIN_DLL_API SbBool cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path);
-COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, size_t buflen, const char * buffer);
+COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
 
-COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, size_t buflen, const char * buffer);
-COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc);
+COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
+COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
 
 COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes);
 COIN_DLL_API SbBool cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path);
