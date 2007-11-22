@@ -148,7 +148,12 @@ cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elem
     cc_xml_elt_add_child_x(parent, elt);
   }
 
+  if ((doc->parsestack.getLength() == 0) && (doc->root == NULL)) {
+    cc_xml_doc_set_root_x(doc, elt);
+  }
+
   doc->parsestack.push(elt);
+
   if (doc->filtercb) {
     doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
   }
@@ -177,8 +182,17 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
     case DISCARD:
       {
         cc_xml_elt * parent = cc_xml_elt_get_parent(topelt);
-        cc_xml_elt_remove_child_x(parent, topelt);
-        cc_xml_elt_delete_x(topelt);
+        if (parent) {
+          cc_xml_elt_remove_child_x(parent, topelt);
+          cc_xml_elt_delete_x(topelt);
+        } else {
+          if (topelt == doc->root) {
+            cc_xml_doc_set_root_x(doc, NULL);
+            cc_xml_elt_delete_x(topelt);
+          } else {
+            assert(!"invalid case - investigate");
+          }
+        }
       }
       break;
     case KEEP:
@@ -211,25 +225,33 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
   cc_xml_elt_set_cdata_x(elt, buffer.get());
 
+  if (doc->parsestack.getLength() > 0) {
+    cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
+    cc_xml_elt_add_child_x(parent, elt);
+  }
+
   if (doc->filtercb) {
     doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
     cc_xml_filter_choice choice = doc->filtercb(doc->filtercbdata, doc, elt, FALSE);
     switch (choice) {
     case KEEP:
-      if (doc->parsestack.getLength() > 0) {
-        cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
-        cc_xml_elt_add_child_x(parent, elt);
-      }
       break;
     case DISCARD:
-      cc_xml_elt_delete_x(elt);
-      elt = NULL;
+      {
+        if (doc->parsestack.getLength() > 0) {
+          cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
+          cc_xml_elt_remove_child_x(parent, elt);
+          cc_xml_elt_delete_x(elt);
+          elt = NULL;
+        }
+      }
       break;
     default:
       assert(!"invalid filter choice returned from client code");
       break;
     }
   }
+
 }
 
 void
@@ -640,12 +662,13 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
   }
   ADVANCE_STRING_LITERAL("\"?>\n");
 
+  if (doc->root) {
+    ADVANCE_NUM_BYTES(cc_xml_elt_write_to_buffer(doc->root, hereptr, bytesleft, 0, 2));
+  }
+
 #undef ADVANCE_STRING
 #undef ADVANCE_STRING_LITERAL
 #undef ADVANCE_NUM_BYTES
-
-  if (doc->root)
-    cc_xml_elt_write_to_buffer(doc->root, hereptr, bytesleft, 0, 2);
 
   buffer[bytes] = '\0';
 
@@ -708,6 +731,10 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 {
   size_t bytes = 0;
 
+// macro to advance a given number of bytes
+#define ADVANCE_NUM_BYTES(num) \
+  do { bytes += (num); } while (0)
+
 // macro to increment bytecount for string literal
 #define ADVANCE_STRING_LITERAL(str) \
   do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
@@ -731,12 +758,14 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
   }
   ADVANCE_STRING_LITERAL("\"?>\n");
 
+  if (doc->root) {
+    ADVANCE_NUM_BYTES(cc_xml_elt_calculate_size(doc->root, 0, 2));
+  }
+
 #undef ADVANCE_STRING
 #undef ADVANCE_STRING_LITERAL
+#undef ADVANCE_NUM_BYTES
 
-  if (doc->root) {
-    bytes += cc_xml_elt_calculate_size(doc->root, 0, 2);
-  }
   return bytes;
 }
 
