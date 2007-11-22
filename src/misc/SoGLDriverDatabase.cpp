@@ -48,49 +48,49 @@ class SoGLDriverDatabaseP {
     // define some reserved feature names for features that cannot be
     // tested directly as a single OpenGL extension test.
     this->featuremap.put(SbName("COIN_multidraw_vertex_arrays").getString(),
-                         cc_glglue_has_multidraw_vertex_arrays);
+                         &cc_glglue_has_multidraw_vertex_arrays);
     this->featuremap.put(SbName("COIN_polygon_offset").getString(),
-                         cc_glglue_has_polygon_offset);
+                         &cc_glglue_has_polygon_offset);
     this->featuremap.put(SbName("COIN_texture_objects").getString(),
-                         cc_glglue_has_texture_objects);
+                         &cc_glglue_has_texture_objects);
     this->featuremap.put(SbName("COIN_3d_textures").getString(),
-                         cc_glglue_has_3d_textures);
+                         &cc_glglue_has_3d_textures);
     this->featuremap.put(SbName("COIN_multitexture").getString(),
-                         cc_glglue_has_multitexture);
+                         &cc_glglue_has_multitexture);
     this->featuremap.put(SbName("COIN_texsubimage").getString(),
-                         cc_glglue_has_texsubimage);
+                         &cc_glglue_has_texsubimage);
     this->featuremap.put(SbName("COIN_2d_proxy_textures").getString(),
-                         cc_glglue_has_2d_proxy_textures);
+                         &cc_glglue_has_2d_proxy_textures);
     this->featuremap.put(SbName("COIN_texture_edge_clamp").getString(),
-                         cc_glglue_has_texture_edge_clamp);
+                         &cc_glglue_has_texture_edge_clamp);
     this->featuremap.put(SbName("COIN_texture_compression").getString(),
-                         cc_glue_has_texture_compression);
+                         &cc_glue_has_texture_compression);
     this->featuremap.put(SbName("COIN_color_tables").getString(),
-                         cc_glglue_has_color_tables);
+                         &cc_glglue_has_color_tables);
     this->featuremap.put(SbName("COIN_color_subtables").getString(),
-                         cc_glglue_has_color_subtables);
+                         &cc_glglue_has_color_subtables);
     this->featuremap.put(SbName("COIN_paletted_textures").getString(),
-                         cc_glglue_has_paletted_textures);
+                         &cc_glglue_has_paletted_textures);
     this->featuremap.put(SbName("COIN_blend_equation").getString(),
-                         cc_glglue_has_blendequation);
+                         &cc_glglue_has_blendequation);
     this->featuremap.put(SbName("COIN_vertex_array").getString(),
-                         cc_glglue_has_vertex_array);
+                         &cc_glglue_has_vertex_array);
     this->featuremap.put(SbName("COIN_nv_vertex_array_range").getString(),
-                         cc_glglue_has_nv_vertex_array_range);
+                         &cc_glglue_has_nv_vertex_array_range);
     this->featuremap.put(SbName("COIN_vertex_buffer_object").getString(),
-                         cc_glglue_has_vertex_buffer_object);
+                         &cc_glglue_has_vertex_buffer_object);
     this->featuremap.put(SbName("COIN_arb_fragment_program").getString(),
-                         cc_glglue_has_arb_fragment_program);
+                         &cc_glglue_has_arb_fragment_program);
     this->featuremap.put(SbName("COIN_arb_vertex_program").getString(),
-                         cc_glglue_has_arb_vertex_program);
+                         &cc_glglue_has_arb_vertex_program);
     this->featuremap.put(SbName("COIN_occlusion_query").getString(),
-                         cc_glglue_has_occlusion_query);
+                         &cc_glglue_has_occlusion_query);
     this->featuremap.put(SbName("COIN_framebuffer_object").getString(),
-                         cc_glglue_has_framebuffer_objects);
+                         &cc_glglue_has_framebuffer_objects);
     this->featuremap.put(SbName("COIN_anisotropic_filtering").getString(),
-                         cc_glglue_can_do_anisotropic_filtering);
+                         &cc_glglue_can_do_anisotropic_filtering);
     this->featuremap.put(SbName("COIN_sorted_layers_blend").getString(),
-                         cc_glglue_can_do_sortedlayersblend);
+                         &cc_glglue_can_do_sortedlayersblend);
   }
   
   class SoGLDriver {
