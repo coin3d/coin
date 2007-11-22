@@ -97,7 +97,7 @@
   interface for configuring the parsing and writing code.
 */
 
-// #define DEV_DEBUG 1
+#define DEV_DEBUG 1
 
 // *************************************************************************
 // this is a document / to prove that I was here
@@ -373,21 +373,17 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
   }
 
   // read in file in 8K chunks, buffers kept by expat
-  void * buf = XML_GetBuffer(doc->parser, 8192);
-  if (!buf) {
-  }
 
   SbBool error = FALSE;
   SbBool final = FALSE;
 
   while (!final && !error) {
+    void * buf = XML_GetBuffer(doc->parser, 8192);
+    assert(buf);
     int bytes = static_cast<int>(fread(buf, 1, 8192, fp));
     final = feof(fp);
-  
     XML_Status status = XML_ParseBuffer(doc->parser, bytes, final);
-    if (status != 0) {
-      fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
-    }
+    if (status != 0) { cc_xml_doc_handle_parse_error(doc); }
   }
 
   fclose(fp);
@@ -452,9 +448,7 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
   }
 
   XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
-  if (!ok) {
-    fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
-  }
+  if (!ok) { cc_xml_doc_handle_parse_error(doc); }
 
   return TRUE;
 }
@@ -470,9 +464,8 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
   XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
-  if (!ok) {
-    fprintf(stderr, "parse error: %s\n", XML_ErrorString(XML_GetErrorCode(doc->parser)));
-  }
+  if (!ok) { cc_xml_doc_handle_parse_error(doc); }
+
   cc_xml_doc_delete_parser_x(doc);
   return TRUE;
 }
@@ -746,6 +739,29 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
   }
   return bytes;
 }
+
+/*
+  Internal function for centralizing the error message generation.
+*/
+
+void
+cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
+{
+  assert(doc);
+
+  assert(doc->parser);
+
+  const int line = XML_GetCurrentLineNumber(doc->parser);
+  const int column = XML_GetCurrentColumnNumber(doc->parser);
+  const long byte = XML_GetCurrentByteIndex(doc->parser);
+
+  const char * errormsg = XML_ErrorString(XML_GetErrorCode(doc->parser));
+
+  SbString errorstr;
+  errorstr.sprintf("XML parse error, line %d, column %d: %s\n", line, column, errormsg);
+  fprintf(stderr, "%s", errorstr.getString());
+}
+
 
 // *************************************************************************
 

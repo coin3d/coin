@@ -27,5 +27,6 @@
 #include <Inventor/C/XML/types.h>
 
 size_t cc_xml_doc_calculate_size(const cc_xml_doc * doc);
+void cc_xml_doc_handle_parse_error(const cc_xml_doc * doc);
 
 #endif // !COIN_XMLDOCUMENTP_H
