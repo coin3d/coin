@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{3D072756-1D97-4293-ACE1-4A7C1F691DBE}"
+	ProjectGUID="{4E92D89C-44C3-4DE8-8A3A-2DF7C5EFD2C9}"
 	>
 	<Platforms>
 		<Platform
@@ -757,6 +757,56 @@
 				Filter="c;cpp;ic;icc;h"
 				>
 				<File
+					RelativePath="..\..\src\xml\attribute.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\xml/"
+							ProgramDataBaseFileName="StaticDebug\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\xml/"
+							ProgramDataBaseFileName="Release\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\xml/"
+							ProgramDataBaseFileName="StaticRelease\xml/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\xml/"
+							ProgramDataBaseFileName="Debug\xml/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\xml\document.cpp"
 					>
 					<FileConfiguration
@@ -858,56 +908,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\xml\entity.cpp"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\xml/"
-							ProgramDataBaseFileName="StaticDebug\xml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Release\xml/"
-							ProgramDataBaseFileName="Release\xml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\xml/"
-							ProgramDataBaseFileName="StaticRelease\xml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Debug\xml/"
-							ProgramDataBaseFileName="Debug\xml/"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\xml\parser.c"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -43233,10 +43233,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\C\XML\types.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\XML\utils.h"
 					>
 				</File>
 				<File

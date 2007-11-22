@@ -6,10 +6,9 @@ copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\attribute.h %COINDIR%\include\Inv
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\document.h %COINDIR%\include\Inventor\C\XML\document.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\element.h %COINDIR%\include\Inventor\C\XML\element.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\entity.h %COINDIR%\include\Inventor\C\XML\entity.h >nul:
-copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\parser.h %COINDIR%\include\Inventor\C\XML\parser.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\path.h %COINDIR%\include\Inventor\C\XML\path.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\types.h %COINDIR%\include\Inventor\C\XML\types.h >nul:
-copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\utils.h %COINDIR%\include\Inventor\C\XML\utils.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\parser.h %COINDIR%\include\Inventor\C\XML\parser.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\XML\world.h %COINDIR%\include\Inventor\C\XML\world.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\base\hash.h %COINDIR%\include\Inventor\C\base\hash.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\base\heap.h %COINDIR%\include\Inventor\C\base\heap.h >nul:

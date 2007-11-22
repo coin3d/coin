@@ -6,10 +6,9 @@ del %COINDIR%\include\Inventor\C\XML\attribute.h
 del %COINDIR%\include\Inventor\C\XML\document.h
 del %COINDIR%\include\Inventor\C\XML\element.h
 del %COINDIR%\include\Inventor\C\XML\entity.h
-del %COINDIR%\include\Inventor\C\XML\parser.h
 del %COINDIR%\include\Inventor\C\XML\path.h
 del %COINDIR%\include\Inventor\C\XML\types.h
-del %COINDIR%\include\Inventor\C\XML\utils.h
+del %COINDIR%\include\Inventor\C\XML\parser.h
 del %COINDIR%\include\Inventor\C\XML\world.h
 del %COINDIR%\include\Inventor\C\base\hash.h
 del %COINDIR%\include\Inventor\C\base\heap.h
