@@ -6,6 +6,7 @@ PublicHeaders = \
 	entity.h \
 	path.h \
 	types.h \
+	parser.h \
 	world.h
 PrivateHeaders =
 ObsoleteHeaders =

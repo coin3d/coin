@@ -24,10 +24,6 @@
  *
 \**************************************************************************/
 
-//#ifndef COIN_INTERNAL
-//#error this header file is not public
-//#endif // !COIN_INTERNAL
-
 #include <Inventor/C/XML/types.h>
 
 #ifdef __cplusplus
