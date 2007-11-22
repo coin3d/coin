@@ -5,7 +5,6 @@ includedir=@includedir@
 
 Name: Coin
 Description: a high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
-URL: http://www.coin3d.org
 Version: @COIN_VERSION@
 Requires:
 Conflicts:
