@@ -47,6 +47,8 @@
 #include "utils.h"
 #include "elementp.h"
 
+// #define DEV_DEBUG 1
+
 /*!
   \page xmlparsing XML Parsing with Coin
 
@@ -88,20 +90,23 @@
   using cc_xml_doc_get_root(), cc_xml_elt_get_child(), and
   cc_xml_elt_get_attr().
 
-  \sa cc_xml_doc, cc_xml_elt, cc_xml_attr
+  \sa XML, cc_xml_doc, cc_xml_elt, cc_xml_attr
 */
 
 /*!
-  \var cc_xml_doc
-
-  This type is the container for an XML document structure, and also the
-  interface for configuring the parsing and writing code.
+  \defgroup XML XML related functions and objects
 */
 
-// #define DEV_DEBUG 1
-
 // *************************************************************************
-// this is a document / to prove that I was here
+
+/*!
+  \typedef struct cc_xml_doc cc_xml_doc
+
+  This type is an opaque container object type for an XML document structure,
+  and also the interface for configuring the parsing and writing code.
+
+  \ingroup XML
+*/
 
 struct cc_xml_doc {
   XML_Parser parser;
@@ -294,6 +299,15 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
 
 // *************************************************************************
 
+/*!
+  \fn cc_xml_doc * cc_xml_doc_new(void)
+
+  Creates a new cc_xml_doc object that is totally blank.
+
+  \ingroup XML
+  \relates cc_xml_doc
+*/
+
 cc_xml_doc *
 cc_xml_doc_new(void)
 {
@@ -310,6 +324,15 @@ cc_xml_doc_new(void)
   return doc;
 }
 
+/*!
+  \fn void cc_xml_doc_delete_x(cc_xml_doc * doc)
+
+  Frees up a cc_xml_doc object and all its resources.
+
+  \ingroup XML
+  \relates cc_xml_doc
+*/
+
 void
 cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
@@ -325,12 +348,17 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
 /* *************************************************************************
 
 /*!
+  \fn void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userdata)
+
   Sets the filter callback for document parsing.  This makes it
   possible to use the parser as a streaming parser, by making the
   parser discard all elements it has read in.
 
   Elements can only be discarded as they are popped - on push they will be
   kept regardless of what the filter callback returns.
+
+  \ingroup XML
+  \relates cc_xml_doc
 */
 
 void
@@ -341,7 +369,12 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 }
 
 /*!
+  \fn void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata)
+
   Returns the set filter callback in the \a cb arg and \a userdata arg.
+
+  \ingroup XML
+  \relates cc_xml_doc
 */
 
 void
