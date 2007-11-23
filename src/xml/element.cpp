@@ -1083,17 +1083,26 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
       ADVANCE_NUM_BYTES(cc_xml_attr_calculate_size(elt->attributes[c]));
     }
 
-    ADVANCE_STRING_LITERAL(">\n");
-
     const int numchildren = elt->children.getLength();
-    for (c = 0; c < numchildren; ++c) {
-      ADVANCE_NUM_BYTES(cc_xml_elt_calculate_size(elt->children[c], indent + indentincrement, indentincrement));
+    if (numchildren == 0) { // close element directly
+      ADVANCE_STRING_LITERAL("/>\n");
+    } else if ((numchildren == 1) &&
+               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
+      ADVANCE_STRING_LITERAL(">");
+      ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
+      ADVANCE_STRING_LITERAL("</");
+      ADVANCE_STRING(elt->type);
+      ADVANCE_STRING_LITERAL(">\n");
+    } else {
+      ADVANCE_STRING_LITERAL(">\n");
+      for (c = 0; c < numchildren; ++c) {
+        ADVANCE_NUM_BYTES(cc_xml_elt_calculate_size(elt->children[c], indent + indentincrement, indentincrement));
+      }
+      ADVANCE_NUM_SPACES(indent);
+      ADVANCE_STRING_LITERAL("</");
+      ADVANCE_STRING(elt->type);
+      ADVANCE_STRING_LITERAL(">\n");
     }
-
-    ADVANCE_NUM_SPACES(indent);
-    ADVANCE_STRING_LITERAL("</");
-    ADVANCE_STRING(elt->type);
-    ADVANCE_STRING_LITERAL(">\n");
   }
 
 #undef ADVANCE_NUM_BYTES
@@ -1143,10 +1152,8 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
        memset(hereptr, ' ', strlength);          \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
-
-
-
-  // duplicate block - see cc_xml_elt_calculate_size()
+  // ***********************************************************************
+  // almost duplicate block - see cc_xml_elt_calculate_size()
   if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
     // this is a leaf element character data container
     ADVANCE_STRING(elt->cdata);
@@ -1162,17 +1169,26 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
       ADVANCE_NUM_BYTES(cc_xml_attr_write_to_buffer(elt->attributes[c], hereptr, bytesleft));
     }
 
-    ADVANCE_STRING_LITERAL(">\n");
-
     const int numchildren = elt->children.getLength();
-    for (c = 0; c < numchildren; ++c) {
-      ADVANCE_NUM_BYTES(cc_xml_elt_write_to_buffer(elt->children[c], hereptr, bytesleft, indent + indentincrement, indentincrement));
+    if (numchildren == 0) { // close element directly
+      ADVANCE_STRING_LITERAL("/>\n");
+    } else if ((numchildren == 1) &&
+               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
+      ADVANCE_STRING_LITERAL(">");
+      ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
+      ADVANCE_STRING_LITERAL("</");
+      ADVANCE_STRING(elt->type);
+      ADVANCE_STRING_LITERAL(">\n");
+    } else {
+      ADVANCE_STRING_LITERAL(">\n");
+      for (c = 0; c < numchildren; ++c) {
+        ADVANCE_NUM_BYTES(cc_xml_elt_write_to_buffer(elt->children[c], hereptr, bytesleft, indent + indentincrement, indentincrement));
+      }
+      ADVANCE_NUM_SPACES(indent);
+      ADVANCE_STRING_LITERAL("</");
+      ADVANCE_STRING(elt->type);
+      ADVANCE_STRING_LITERAL(">\n");
     }
-
-    ADVANCE_NUM_SPACES(indent);
-    ADVANCE_STRING_LITERAL("</");
-    ADVANCE_STRING(elt->type);
-    ADVANCE_STRING_LITERAL(">\n");
   }
 
 #undef ADVANCE_NUM_BYTES

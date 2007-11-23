@@ -210,6 +210,24 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
   }
 }
 
+SbBool
+cc_xml_is_all_whitespace_p(const char * strptr)
+{
+  while (*strptr) {
+    switch (*strptr) {
+    case ' ':
+    case '\t':
+    case '\n':
+    case '\r':
+      break;
+    default:
+      return FALSE;
+    }
+    ++strptr;
+  }
+  return TRUE;
+}
+
 void
 cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cdata, int len)
 {
@@ -230,6 +248,10 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   buffer[len] = '\0';
   cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
   cc_xml_elt_set_cdata_x(elt, buffer.get());
+
+  if (cc_xml_is_all_whitespace_p(buffer.get())) {
+    return;
+  }
 
   if (doc->parsestack.getLength() > 0) {
     cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
@@ -258,6 +280,9 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
     }
   }
 
+#ifdef DEV_DEBUG
+  fprintf(stdout, "\nCDATA: '%s'\n", buffer.get());
+#endif // DEV_DEBUG
 }
 
 void
@@ -811,7 +836,6 @@ void
 cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
 {
   assert(doc);
-
   assert(doc->parser);
 
   const int line = XML_GetCurrentLineNumber(doc->parser);
@@ -825,6 +849,24 @@ cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
   fprintf(stderr, "%s", errorstr.getString());
 }
 
+/*
+*/
+
+void
+cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
+{
+  assert(doc);
+  assert(doc->parser);
+  assert(message);
+
+  const int line = XML_GetCurrentLineNumber(doc->parser);
+  const int column = XML_GetCurrentColumnNumber(doc->parser);
+  const long byte = XML_GetCurrentByteIndex(doc->parser);
+
+  SbString errorstr;
+  errorstr.sprintf("XML parse warning, line %d, column %d: %s\n", line, column, message);
+  fprintf(stderr, "%s", errorstr.getString());
+}
 
 // *************************************************************************
 
@@ -837,14 +879,14 @@ cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
 BOOST_AUTO_TEST_CASE(bufread)
 {
   const char * buffer =
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
 "<test value=\"one\" compact=\"\">\n"
 "  <b>hei</b>\n"
 "</test>\n";
   cc_xml_doc * doc1 = cc_xml_read_buffer(buffer);
   BOOST_CHECK_MESSAGE(doc1 != NULL, "cc_xml_doc_read_buffer() failed");
-  fprintf(stderr, "\ndoc parsed ok\n");
 
+  fprintf(stdout, "\ndocument read in ok\n");
   boost::scoped_array<char> buffer2;
   size_t bytecount = 0;
   {
