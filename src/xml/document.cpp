@@ -41,6 +41,7 @@
 #include <Inventor/C/XML/path.h>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/SbString.h>
 
 #include "expat/expat.h"
 #include "utils.h"
