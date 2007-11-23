@@ -1025,6 +1025,12 @@ INPUT                  = .\include\Inventor\C\basic.h \
                          ..\..\include\Inventor\nodes\SoGeoLocation.h \
                          ..\..\include\Inventor\nodes\SoGeoCoordinate.h \
                          ..\..\include\SoDebug.h \
+                         ..\..\include\Inventor\C\XML\types.h \
+                         ..\..\include\Inventor\C\XML\parser.h \
+                         ..\..\include\Inventor\C\XML\document.h \
+                         ..\..\include\Inventor\C\XML\element.h \
+                         ..\..\include\Inventor\C\XML\attribute.h \
+                         ..\..\include\Inventor\C\XML\path.h \
                          ..\..\src\actions\SoAction.cpp \
                          ..\..\src\actions\SoAudioRenderAction.cpp \
                          ..\..\src\actions\SoBoxHighlightRenderAction.cpp \
@@ -1568,7 +1574,11 @@ INPUT                  = .\include\Inventor\C\basic.h \
                          ..\..\src\geo\SoGeoLocation.cpp \
                          ..\..\src\geo\SoGeoCoordinate.cpp \
                          ..\..\src\foreignfiles\SoForeignFileKit.cpp \
-                         ..\..\src\foreignfiles\SoSTLFileKit.cpp
+                         ..\..\src\foreignfiles\SoSTLFileKit.cpp \
+                         ..\..\src\xml\document.cpp \
+                         ..\..\src\xml\element.cpp \
+                         ..\..\src\xml\attribute.cpp \
+                         ..\..\src\xml\path.cpp
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

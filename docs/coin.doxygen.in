@@ -1025,6 +1025,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoLocation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoCoordinate.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/types.h \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/parser.h \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/document.h \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/element.h \
