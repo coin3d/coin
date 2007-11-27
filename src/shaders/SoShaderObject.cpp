@@ -111,6 +111,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SbHash.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "SoGLARBShaderObject.h"
 #include "SoGLCgShaderObject.h"
@@ -561,12 +562,10 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
     // return SoVertexShader::isSupported(sourceType);
 
     if (sourceType == SoShaderObject::ARB_PROGRAM) {
-      return cc_glglue_has_arb_vertex_program(glue);
+      return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
     }
     else if (sourceType == SoShaderObject::GLSL_PROGRAM) {
-      // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
-      // handegar)
-      return cc_glglue_has_arb_shader_objects(glue);
+      return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
     }
     // FIXME: Add support for detecting missing Cg support
     // (20050427 handegar)
@@ -578,12 +577,10 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
     // return SoFragmentShader::isSupported(sourceType);
 
     if (sourceType == SoShaderObject::ARB_PROGRAM) {
-      return cc_glglue_has_arb_fragment_program(glue);
+      return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_FRAGMENT_PROGRAM);
     }
     else if (sourceType == SoShaderObject::GLSL_PROGRAM) {
-      // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
-      // handegar)
-      return cc_glglue_has_arb_shader_objects(glue);
+      return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
     }
     // FIXME: Add support for detecting missing Cg support (20050427
     // handegar)
@@ -593,7 +590,9 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
   else {
     assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
     if (sourceType == SoShaderObject::GLSL_PROGRAM) {
-      return cc_glglue_glext_supported(glue, "GL_EXT_geometry_shader4") && cc_glglue_has_arb_shader_objects(glue);
+      return 
+        SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4") && 
+        SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
     }
     return FALSE;
   }

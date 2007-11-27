@@ -40,6 +40,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "../../misc/SoVBO.h"
 #include <assert.h>
 
@@ -246,7 +247,7 @@ SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
   // context since we don't want this call to create a cache dependecy
   // on SoGLCacheContextElement. 
   return 
-    cc_glglue_has_vertex_buffer_object(glue) &&
+    SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&
     SoVBO::shouldCreateVBO(state, glue->contextid, numdata);
 }
 

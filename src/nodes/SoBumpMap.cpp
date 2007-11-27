@@ -95,6 +95,7 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/C/glue/gl.h>
 
 
@@ -321,12 +322,12 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-
-  if (cc_glglue_can_do_bumpmapping(glue)) {
+  
+  if (SoGLDriverDatabase::isSupported(glue, SO_GL_BUMPMAPPING)) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes = this->image.getValue(size, nc);
-
+    
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
         if (nc < 3) {

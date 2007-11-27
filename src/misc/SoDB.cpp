@@ -355,6 +355,7 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "SoVBO.h"
 
 #include <coindefs.h> // COIN_STUB()
@@ -536,7 +537,8 @@ SoDB::init(void)
 
   SoProto::initClass();
   SoProtoInstance::initClass();
-
+  
+  SoGLDriverDatabase::init();
   SoGLImage::initClass();
   SoGLBigImage::initClass();
 

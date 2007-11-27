@@ -46,8 +46,39 @@ public:
   static SbBool isSlow(const cc_glglue * context, const SbName & feature);
   static SbBool isFast(const cc_glglue * context, const SbName & feature);
 
+public:
+  static void init(void);
+
 private:
   static SoGLDriverDatabaseP * pimpl(void);
 };
 
-#endif // SOGLDRIVERDATABASE_H
+/**************************************************************************/
+
+// OpenGL features that can't be checked with a single GL_ARB/EXT extension test
+#define SO_GL_MULTIDRAW_ELEMENTS    "COIN_multidraw_elements"
+#define SO_GL_POLYGON_OFFSET        "COIN_polygon_offset"
+#define SO_GL_TEXTURE_OBJECT        "COIN_texture_object"
+#define SO_GL_3D_TEXTURES           "COIN_3d_textures"
+#define SO_GL_MULTITEXTURE          "COIN_multitexture"
+#define SO_GL_TEXSUBIMAGE           "COIN_texsubimage"
+#define SO_GL_2D_PROXY_TEXTURES     "COIN_2d_proxy_textures"
+#define SO_GL_TEXTURE_EDGE_CLAMP    "COIN_texture_edge_clamp"
+#define SO_GL_TEXTURE_COMPRESSION   "COIN_texture_compression"
+#define SO_GL_COLOR_TABLES          "COIN_color_tables"
+#define SO_GL_COLOR_SUBTABLES       "COIN_color_subtables"
+#define SO_GL_PALETTED_TEXTURES     "COIN_paletted_textures"
+#define SO_GL_BLEND_EQUATION        "COIN_blend_equation"
+#define SO_GL_VERTEX_ARRAY          "COIN_vertex_array"
+#define SO_GL_NV_VERTEX_ARRAY_RANGE "COIN_nv_vertex_array_range"
+#define SO_GL_VERTEX_BUFFER_OBJECT  "COIN_vertex_buffer_object"
+#define SO_GL_ARB_FRAGMENT_PROGRAM  "COIN_arb_fragment_program"
+#define SO_GL_ARB_VERTEX_PROGRAM    "COIN_arb_vertex_program"
+#define SO_GL_ARB_SHADER_OBJECT     "COIN_arb_shader_object"
+#define SO_GL_OCCLUSION_QUERY       "COIN_occlusion_query"
+#define SO_GL_FRAMEBUFFER_OBJECT    "COIN_framebuffer_object"
+#define SO_GL_ANISOTROPIC_FILTERING "COIN_anisotropic_filtering"
+#define SO_GL_SORTED_LAYERS_BLEND   "COIN_sorted_layers_blend"
+#define SO_GL_BUMPMAPPING           "COIN_bumpmapping"
+
+#endif // SOGLDATABASE_H

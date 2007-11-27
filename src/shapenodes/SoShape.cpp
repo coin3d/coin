@@ -86,6 +86,7 @@
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoLight.h>
@@ -810,7 +811,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (((shapestyleflags & SoShapeStyleElement::VERTEXARRAY) ||
        soshape_use_gl_vertex_arrays) && 
       ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0) &&
-      cc_glglue_has_vertex_array(glue) &&
+      SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY) &&
       (PRIVATE(this)->rendercnt >= SoShapeP::VERTEXARRAY_WAITCNT) &&
       !SoCacheElement::anyOpen(state)) {
     // Only create cache for built in Coin shapes, as it is often

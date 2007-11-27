@@ -115,6 +115,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 
 // *************************************************************************
@@ -1112,7 +1113,7 @@ void
 SoExtSelection::draw(SoGLRenderAction *action)
 {
   const cc_glglue * glw = cc_glglue_instance(action->getCacheContext());
-  pimpl->has3DTextures = cc_glglue_has_3d_textures(glw);
+  pimpl->has3DTextures = SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES);
 
   SbViewportRegion vp = SoViewportRegionElement::get(action->getState());
   SbVec2s vpo = vp.getViewportOriginPixels();

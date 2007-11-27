@@ -48,6 +48,7 @@
 
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -101,12 +102,10 @@ SoFragmentShader::isSupported(SourceType sourceType)
   const cc_glglue * glue = cc_glglue_instance_from_context_ptr(ptr);
 
   if (sourceType == ARB_PROGRAM) {
-    return cc_glglue_has_arb_fragment_program(glue);
+    return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_FRAGMENT_PROGRAM);
   }
   else if (sourceType == GLSL_PROGRAM) {
-    // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
-    // handegar)
-    return cc_glglue_has_arb_shader_objects(glue);
+    return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
   }
   // FIXME: Add support for detecting missing Cg support (20050427
   // handegar)

@@ -81,6 +81,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <assert.h>
 #include <string.h>
 
@@ -262,9 +263,9 @@ SoTexture3::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  const cc_glglue * glue = cc_glglue_instance((uint32_t) SoGLCacheContextElement::get(state)); 
+  const cc_glglue * glue = cc_glglue_instance((uint32_t) SoGLCacheContextElement::get(state));
   
-  if (!cc_glglue_has_3d_textures(glue)) {
+  if (!SoGLDriverDatabase::isSupported(glue, SO_GL_3D_TEXTURES)) {
     static SbBool first = TRUE;
     if (first) {
       SoDebugError::postWarning("SoTexture3::GLRender",
@@ -359,7 +360,7 @@ SoTexture3::doAction(SoAction *action)
   }
   // if a filename has been set, but the file has not been loaded, supply
   // a dummy texture image to make sure texture coordinates are generated.
-  else if (this->images.isDefault() && 
+  else if (this->images.isDefault() &&
            this->filenames.getNum()>0 &&
            this->filenames[0].getLength()) {
     static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff,
@@ -455,25 +456,25 @@ SoTexture3::loadFilenames(SoInput * in)
         unsigned char *imgbytes = tmpimage.getValue(size, nc);
         if (size[2]==0) size[2]=1;
         if (this->images.isDefault()) { // First time => allocate memory
-          volumeSize.setValue(size[0], 
-                              size[1], 
+          volumeSize.setValue(size[0],
+                              size[1],
                               size[2]*numImages);
           volumenc = nc;
           this->images.setValue(volumeSize, nc, NULL);
         }
         else { // Verify size & components
-          if (size[0] != volumeSize[0] || 
-              size[1] != volumeSize[1] || 
+          if (size[0] != volumeSize[0] ||
+              size[1] != volumeSize[1] ||
               //FIXME: always 1 or what? (kintel 20020110)
               size[2] != (volumeSize[2]/numImages) ||
               nc != volumenc) {
             sizeError = TRUE;
             retval = FALSE;
-            
+
             SbString errstr;
             errstr.sprintf("Texture file #%d (%s) has wrong size:"
                            "Expected (%d,%d,%d,%d) got (%d,%d,%d,%d)\n",
-                           n, filename.getString(), 
+                           n, filename.getString(),
                            volumeSize[0],volumeSize[1],volumeSize[2],
                            volumenc,
                            size[0],size[1],size[2],nc);
@@ -483,10 +484,10 @@ SoTexture3::loadFilenames(SoInput * in)
           }
         }
         if (!sizeError) {
-          // disable notification on images while setting data from the 
+          // disable notification on images while setting data from the
           // filenames as a notify will cause a filenames.setDefault(TRUE).
           SbBool oldnotify = this->images.enableNotify(FALSE);
-          unsigned char *volbytes = this->images.startEditing(volumeSize, 
+          unsigned char *volbytes = this->images.startEditing(volumeSize,
                                                               volumenc);
           memcpy(volbytes+int(size[0])*int(size[1])*int(size[2])*nc*n,
                  imgbytes, int(size[0])*int(size[1])*int(size[2])*nc);

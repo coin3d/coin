@@ -105,7 +105,7 @@
 
 /*!
   \var SoSFEnum SoGeometryShader::outputType
-  
+
   The type of geometry generated from the shader. Default value is TRIANGLE_FAN_OUT.
 */
 
@@ -125,6 +125,7 @@
 #include "SoGLShaderProgram.h"
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -177,8 +178,8 @@ SoGeometryShader::GLRender(SoGLRenderAction * action)
     SoState * state = action->getState();
     const uint32_t cachecontext = SoGLCacheContextElement::get(state);
     const cc_glglue * glue = cc_glglue_instance(cachecontext);
-
-    if (!cc_glglue_glext_supported(glue, "GL_EXT_geometry_shader4")) {
+    
+    if (!SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4")) {
       static int first = 1;
       if (first) {
         first = 0;
@@ -254,9 +255,7 @@ SoGeometryShader::isSupported(SourceType sourceType)
     return FALSE;
   }
   else if (sourceType == GLSL_PROGRAM) {
-    // FIXME: Maybe we should check for OpenGL 2.0 aswell? (20050428
-    // handegar)
-    return cc_glglue_has_arb_shader_objects(glue);
+    return SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
   }
   // AFAIK Cg has no support for geometry shaders (yet).
   // pederb, 20070410

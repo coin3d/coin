@@ -206,6 +206,7 @@
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLCubeMapImage.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -440,7 +441,7 @@ fast_mipmap(SoState * state, int width, int height, int nc,
   unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
 
   if (useglsubimage) {
-    if (cc_glglue_has_texsubimage(glw)) {
+    if (SoGLDriverDatabase::isSupported(glw, SO_GL_TEXSUBIMAGE)) {
       cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
                                 width, height, format,
                                 GL_UNSIGNED_BYTE, data);
@@ -457,7 +458,7 @@ fast_mipmap(SoState * state, int width, int height, int nc,
     if (height > 1) height >>= 1;
     src = mipmap_buffer;
     if (useglsubimage) {
-      if (cc_glglue_has_texsubimage(glw)) {
+      if (SoGLDriverDatabase::isSupported(glw, SO_GL_TEXSUBIMAGE)) {
         cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
                                   width, height, format,
                                   GL_UNSIGNED_BYTE, (void*) src);
@@ -487,14 +488,14 @@ fast_mipmap(SoState * state, int width, int height, int depth,
 
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
-    if (cc_glglue_has_3d_textures(glw)) {
+    if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
       cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
                                 width, height, depth, format,
                                 GL_UNSIGNED_BYTE, data);
     }
   }
   else {
-    if (cc_glglue_has_3d_textures(glw)) {
+    if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
       cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat,
                              width, height, depth, 0, format,
                              GL_UNSIGNED_BYTE, data);
@@ -508,14 +509,14 @@ fast_mipmap(SoState * state, int width, int height, int depth,
     if (depth > 1) depth >>= 1;
     src = mipmap_buffer;
     if (useglsubimage) {
-      if (cc_glglue_has_3d_textures(glw)) {
+      if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
         cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
                                   width, height, depth, format,
                                   GL_UNSIGNED_BYTE, (void*) src);
       }
     }
     else {
-      if (cc_glglue_has_3d_textures(glw)) {
+      if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
         cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, internalFormat,
                                width, height, depth, 0, format,
                                GL_UNSIGNED_BYTE, (void *) src);
@@ -1050,8 +1051,8 @@ SoGLImage::setData(const SbImage *image,
 
     SbBool is3D = (size[2]==0)?FALSE:TRUE;
     SbBool usesubimage = COIN_TEX2_USE_GLTEXSUBIMAGE &&
-      (is3D && cc_glglue_has_3d_textures(glw)) ||
-      (!is3D && cc_glglue_has_texsubimage(glw));
+      (is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) ||
+      (!is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_TEXSUBIMAGE));
 
     if (!usesubimage) copyok=FALSE;
     if (PRIVATE(this)->flags & RECTANGLE) copyok = FALSE;
@@ -1065,8 +1066,8 @@ SoGLImage::setData(const SbImage *image,
 
       SbBool compress =
         (PRIVATE(this)->flags & COMPRESSED) &&
-        cc_glue_has_texture_compression(glw);
-
+        SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_COMPRESSION);
+      
       if (dl->isMipMapTextureObject()) {
         if (is3D)
           fast_mipmap(createinstate, size[0], size[1], size[2], nc, bytes,
@@ -1438,7 +1439,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   while (!sizeok) {
     SbBool compressed =
       (this->flags & SoGLImage::COMPRESSED) ? TRUE : FALSE &&
-      cc_glue_has_texture_compression(glw);
+      SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_COMPRESSION);
 
     if (this->flags & SoGLImage::RECTANGLE) {
       // FIXME: add support for rectangular textures in glglue proxy test
@@ -1699,12 +1700,12 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
   if (COIN_ENABLE_CONFORMANT_GL_CLAMP) {
     if (wrap == SoGLImage::CLAMP_TO_EDGE) {
       const cc_glglue * glw = sogl_glue_instance(state);
-      if (cc_glglue_has_texture_edge_clamp(glw)) return (GLenum) GL_CLAMP_TO_EDGE;
+      if (SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_EDGE_CLAMP)) return (GLenum) GL_CLAMP_TO_EDGE;
     }
     return (GLenum) GL_CLAMP;
   }
   const cc_glglue * glw = sogl_glue_instance(state);
-  if (cc_glglue_has_texture_edge_clamp(glw)) return (GLenum) GL_CLAMP_TO_EDGE;
+  if (SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_EDGE_CLAMP)) return (GLenum) GL_CLAMP_TO_EDGE;
   return (GLenum) GL_CLAMP;
 }
 
@@ -1726,7 +1727,7 @@ SoGLImageP::reallyBindPBuffer(SoState * state)
 #if 0
   // disabled, we probably need to allocate space for the mipmaps in
   // the pbuffer pederb, 2003-11-27
-  if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "GL_SGIS_generate_mipmap")) {
+  if (this->shouldCreateMipmap() && SoGLDriverDatabase::isSupported(glue, "GL_SGIS_generate_mipmap")) {
     glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     // glHint(GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
     mipmap = TRUE;
@@ -1752,7 +1753,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
   SbBool compress =
     (this->flags & SoGLImage::COMPRESSED) &&
-    cc_glue_has_texture_compression(glw);
+    SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_COMPRESSION);
   GLint internalFormat =
     coin_glglue_get_internal_texture_format(numComponents, compress);
   GLenum dataFormat = coin_glglue_get_texture_format(numComponents);
@@ -1770,9 +1771,9 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
 
     this->applyFilter(mipmap);
-
+    
     if (!mipmap) {
-      if (cc_glglue_has_3d_textures(glw)) {
+      if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
         cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat, w, h, d,
                                border, dataFormat, GL_UNSIGNED_BYTE, texture);
       }
@@ -1806,21 +1807,21 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
     if (mipmap && (this->flags & SoGLImage::RECTANGLE)) {
       mipmapimage = FALSE;
-      if (cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
+      if (SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
         glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       }
       else mipmapfilter = FALSE;
     }
 
     else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP &&
-             cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
+             SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       mipmapimage = FALSE;
     }
-
+    
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
-        cc_glglue_can_do_anisotropic_filtering(glw)) {
+        SoGLDriverDatabase::isSupported(glw, SO_GL_ANISOTROPIC_FILTERING)) {
       glTexParameterf(target, GL_TEXTURE_MAX_ANISOTROPY_EXT,
                       cc_glglue_get_max_anisotropy(glw));
     }

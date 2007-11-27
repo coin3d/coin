@@ -393,6 +393,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -487,14 +488,14 @@ SoTextureCombine::GLRender(SoGLRenderAction * action)
   SbBool supported = cc_glglue_glversion_matches_at_least(glue, 1, 3, 0);
 
   if (!supported) {
-    supported = cc_glglue_glext_supported(glue, "GL_ARB_texture_env_combine");
+    supported = SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_env_combine");
     if (supported && (alphaop == DOT3_RGB || alphaop == DOT3_RGBA ||
                       rgbaop == DOT3_RGB || rgbaop == DOT3_RGBA)) {
       supported =
-        cc_glglue_glext_supported(glue, "GL_ARB_texture_env_dot3");
+        SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_env_dot3");
     }
   }
-
+  
   if (supported) {
     SoTextureCombine::doAction((SoAction*)action);
   }

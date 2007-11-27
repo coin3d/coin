@@ -27,7 +27,7 @@
 
   It wraps the buffer handling, taking care of multi-context handling
   and allocation/deallocation of buffers. FIXME: more doc.
-  
+
 */
 
 #include "SoVBO.h"
@@ -42,6 +42,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include "SoVertexArrayIndexer.h"
 #include "../share/gl/CoinGLPerformance.h"
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -94,7 +95,7 @@ static void vbo_atexit_cleanup(void)
   vbo_enabled = -1;
 }
 
-void 
+void
 SoVBO::init(void)
 {
   coin_glglue_add_instance_created_callback(context_created, NULL);
@@ -178,11 +179,11 @@ SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 }
 
 /*!
-  Sets the buffer data. \a dataid is a unique id used to identify 
+  Sets the buffer data. \a dataid is a unique id used to identify
   the buffer data. In Coin it's possible to use the node id
   (SoNode::getNodeId()) to test if a buffer is valid for a node.
 */
-void 
+void
 SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
@@ -195,7 +196,7 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
     char * ptr = (char*) this->data;
     delete[] ptr;
   }
-  
+
   this->data = data;
   this->datasize = size;
   this->dataid = dataid;
@@ -203,11 +204,11 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 }
 
 /*!
-  Returns the buffer data id. 
-  
+  Returns the buffer data id.
+
   \sa setBufferData()
 */
-uint32_t 
+uint32_t
 SoVBO::getBufferDataId(void) const
 {
   return this->dataid;
@@ -216,7 +217,7 @@ SoVBO::getBufferDataId(void) const
 /*!
   Returns the data pointer and size.
 */
-void 
+void
 SoVBO::getBufferData(const GLvoid *& data, intptr_t & size)
 {
   data = this->data;
@@ -227,7 +228,7 @@ SoVBO::getBufferData(const GLvoid *& data, intptr_t & size)
 /*!
   Binds the buffer for the context \a contextid.
 */
-void 
+void
 SoVBO::bindBuffer(uint32_t contextid)
 {
   if ((this->data == NULL) ||
@@ -258,7 +259,7 @@ SoVBO::bindBuffer(uint32_t contextid)
 //
 // Callback from SbHash
 //
-void 
+void
 SoVBO::vbo_schedule(const uint32_t & key,
                     const GLuint & value,
                     void * closure)
@@ -270,7 +271,7 @@ SoVBO::vbo_schedule(const uint32_t & key,
 //
 // Callback from SoGLCacheContextElement
 //
-void 
+void
 SoVBO::vbo_delete(void * closure, uint32_t contextid)
 {
   const cc_glglue * glue = cc_glglue_instance((int) contextid);
@@ -281,7 +282,7 @@ SoVBO::vbo_delete(void * closure, uint32_t contextid)
 //
 // Callback from SoContextHandler
 //
-void 
+void
 SoVBO::context_destruction_cb(uint32_t context, void * userdata)
 {
   GLuint buffer;
@@ -289,7 +290,7 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
 
   if (thisp->vbohash.get(context, buffer)) {
     const cc_glglue * glue = cc_glglue_instance((int) context);
-    cc_glglue_glDeleteBuffers(glue, 1, &buffer);    
+    cc_glglue_glDeleteBuffers(glue, 1, &buffer);
     thisp->vbohash.remove(context);
   }
 }
@@ -299,7 +300,7 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
   Sets the global limits on the number of vertex data in a node before
   vertex buffer objects are considered to be used for rendering.
 */
-void 
+void
 SoVBO::setVertexCountLimits(const int minlimit, const int maxlimit)
 {
   vbo_vertex_count_min_limit = minlimit;
@@ -311,7 +312,7 @@ SoVBO::setVertexCountLimits(const int minlimit, const int maxlimit)
 
   \sa setVertexCountLimits()
  */
-int 
+int
 SoVBO::getVertexCountMinLimit(void)
 {
   return vbo_vertex_count_min_limit;
@@ -322,40 +323,40 @@ SoVBO::getVertexCountMinLimit(void)
 
   \sa setVertexCountLimits()
  */
-int 
+int
 SoVBO::getVertexCountMaxLimit(void)
 {
   return vbo_vertex_count_max_limit;
 }
 
-SbBool 
+SbBool
 SoVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int numdata)
 {
   if (!vbo_enabled || !vbo_render_as_vertex_arrays) return FALSE;
   int minv = SoVBO::getVertexCountMinLimit();
   int maxv = SoVBO::getVertexCountMaxLimit();
-  return 
-    (numdata >= minv) && 
+  return
+    (numdata >= minv) &&
     (numdata <= maxv) &&
     SoVBO::isVBOFast(contextid) &&
     !(SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP);
 
 }
 
-SbBool 
+SbBool
 SoVBO::shouldRenderAsVertexArrays(SoState * state,
 				  const uint32_t contextid,
                                   const int numdata)
 {
   // FIXME: consider also using results from the performance tests
-  
+
   // don't render as vertex arrays if there are very few elements to
   // be rendered. The VA setup overhead would make it slower than just
   // doing plain immediate mode rendering.
   return (numdata >= 50) && vbo_render_as_vertex_arrays;
 }
 
-SbBool 
+SbBool
 SoVBO::isVBOFast(const uint32_t contextid)
 {
   SbBool result = TRUE;
@@ -367,7 +368,7 @@ SoVBO::isVBOFast(const uint32_t contextid)
 //
 // callback from glglue (when a new glglue instance is created)
 //
-void 
+void
 SoVBO::context_created(const uint32_t contextid, void * closure)
 {
   SoVBO::testGLPerformance(contextid);
@@ -387,7 +388,7 @@ typedef struct {
 #define PERF_NUM_LOOP 4
 
 // rendering loop used to test vertex array and VBO rendering speed
-static void 
+static void
 vbo_performance_test(const cc_glglue * glue,
                      const vbo_performance_test_data * data,
                      const SbBool do_vbo)
@@ -408,7 +409,7 @@ vbo_performance_test(const cc_glglue * glue,
 }
 
 // callback to test VBO rendering speed
-static void 
+static void
 vbo_performance_test_vbo(const cc_glglue * glue, void * closure)
 {
   vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
@@ -416,7 +417,7 @@ vbo_performance_test_vbo(const cc_glglue * glue, void * closure)
 }
 
 // callback to test vertex array rendering speed
-static void 
+static void
 vbo_performance_test_va(const cc_glglue * glue, void * closure)
 {
   vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
@@ -424,11 +425,11 @@ vbo_performance_test_va(const cc_glglue * glue, void * closure)
 }
 
 // callback to test immediate mode rendering speed
-static void 
+static void
 vbo_performance_test_immediate(const cc_glglue * glue, void * closure)
 {
   vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
-  
+
   int x, y;
   int size = data->size;
   SbVec3f * vertexarray = data->vertexarray;
@@ -441,14 +442,14 @@ vbo_performance_test_immediate(const cc_glglue * glue, void * closure)
         glVertex3fv((const GLfloat*) &vertexarray[IDX(x,y)]);
         glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y)]);
         glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y+1)]);
-        
+
         glVertex3fv((const GLfloat*)&vertexarray[IDX(x,y)]);
         glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y+1)]);
         glVertex3fv((const GLfloat*)&vertexarray[IDX(x,y+1)]);
       }
     }
     glEnd();
-#undef IDX    
+#undef IDX
   }
 }
 
@@ -457,20 +458,20 @@ vbo_performance_test_immediate(const cc_glglue * glue, void * closure)
 //
 // test OpenGL performance for a context.
 //
-void 
+void
 SoVBO::testGLPerformance(const uint32_t contextid)
 {
   SbBool isfast = FALSE;
   // did we alreay test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
-  
+
 #if 1 // disabled for now. Our test seems to be buggy
   vbo_isfast_hash->put(contextid, TRUE);
   return;
 #else // disabled
   const cc_glglue * glue = cc_glglue_instance(contextid);
-  if (cc_glglue_has_vertex_buffer_object(glue)) {
+  if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_BUFFER_OBJECT)) {
     // create a regular grid with 128x128 points to test the
     // performance. This size was chosen since it's fairly quick to
     // render on most gfx cards (important to avoid that the
@@ -481,10 +482,10 @@ SoVBO::testGLPerformance(const uint32_t contextid)
     SoVertexArrayIndexer * idx = new SoVertexArrayIndexer;
 
     int x, y;
-    
+
     for (y = 0; y < size; y++) {
       for (x = 0; x < size; x++) {
-        vertexarray[y*size+x].setValue(float(x-half)/float(size)*0.1f, 
+        vertexarray[y*size+x].setValue(float(x-half)/float(size)*0.1f,
                                        float(y-half)/float(size)*0.1f, 4.0f);
       }
     }
@@ -502,7 +503,7 @@ SoVBO::testGLPerformance(const uint32_t contextid)
     vbo_performance_test_data data;
     data.vbo = vbo;
     data.vertexarray = vertexarray;
-    data.indexer = idx;    
+    data.indexer = idx;
     data.contextid = contextid;
     data.size = size;
     // bind buffer first to create VBO

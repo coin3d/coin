@@ -95,6 +95,7 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "../misc/SoVBO.h"
 
 #if COIN_DEBUG
@@ -243,7 +244,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SbBool dova = 
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
-    cc_glglue_has_vertex_array(glue);
+    SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY);
   
   if (dova && (mbind == PER_VERTEX)) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);

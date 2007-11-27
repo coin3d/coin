@@ -43,6 +43,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -109,7 +110,7 @@ static void soglcachecontext_cleanup(void)
 // Used both as a callback from SoContextHandler and called directly
 // from inside this class every time ::set() is called.
 //
-void 
+void
 SoGLCacheContextElement::cleanupContext(uint32_t contextid, void * userdata)
 {
   int context = (int) contextid;
@@ -232,9 +233,9 @@ SoGLCacheContextElement::set(SoState * state, int context,
   }
 
   if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
-  
+
   // really delete GL resources scheduled for destruction
-  SoGLCacheContextElement::cleanupContext((uint32_t) context, NULL);  
+  SoGLCacheContextElement::cleanupContext((uint32_t) context, NULL);
 }
 
 /*!
@@ -294,7 +295,7 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   assert(extid >= 0 && extid < extsupportlist->getLength());
 
   so_glext_info * info = (*extsupportlist)[extid];
-  
+
   int currcontext = SoGLCacheContextElement::get(state);
   int n = info->context.getLength();
   for (int i = 0; i < n; i++) {
@@ -304,10 +305,10 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
     }
   }
   const cc_glglue * w = sogl_glue_instance(state);
-  SbBool supported = cc_glglue_glext_supported(w, info->extname.getString());
+  SbBool supported = SoGLDriverDatabase::isSupported(w, info->extname.getString());
   info->context.append(currcontext);
   info->supported.append(supported);
-
+  
   CC_MUTEX_UNLOCK(glcache_mutex);
 
   return supported;
@@ -355,26 +356,26 @@ SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 
   \since Coin 3.0
  */
-void 
+void
 SoGLCacheContextElement::incNumShapes(SoState * state)
 {
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
-  
+
   elem->numshapes++;
 }
 
 /*!
   Returns the number of shapes in an open cache.
-  
+
   \since Coin 3.0
 */
-int 
+int
 SoGLCacheContextElement::getNumShapes(SoState * state)
 {
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
-  
+
   return elem->numshapes;
 }
 
@@ -383,26 +384,26 @@ SoGLCacheContextElement::getNumShapes(SoState * state)
 
   \since Coin 3.0
  */
-void 
+void
 SoGLCacheContextElement::incNumSeparators(SoState * state)
 {
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
-  
+
   elem->numseparators++;
 }
 
 /*!
   Returns the number of separators in an open cache.
-  
+
   \since Coin 3.0
 */
-int 
+int
 SoGLCacheContextElement::getNumSeparators(SoState * state)
 {
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
-  
+
   return elem->numseparators;
 }
 
@@ -415,7 +416,7 @@ SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
 
-  elem->autocachebits = bits;  
+  elem->autocachebits = bits;
 }
 
 // Private function which "unwinds" the real value of the "rendering"

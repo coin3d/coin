@@ -34,6 +34,7 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -113,7 +114,7 @@ SoGLPolygonOffsetElement::setElt(float factor, float units,
     this->active = on;
     this->style = styles;
     this->offsetfactor = factor;
-    this->offsetunits = units; 
+    this->offsetunits = units;
     this->updategl();
   }
 }
@@ -125,7 +126,7 @@ void
 SoGLPolygonOffsetElement::updategl(void)
 {
   const cc_glglue * w = sogl_glue_instance(this->state);
-  if (!cc_glglue_has_polygon_offset(w)) {
+  if (!SoGLDriverDatabase::isSupported(w, SO_GL_POLYGON_OFFSET)) {
     static SbBool first = TRUE;
     if (first) {
       SoDebugError::postWarning("SoGLPolygonOffsetElement::updategl",

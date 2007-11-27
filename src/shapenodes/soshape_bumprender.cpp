@@ -48,6 +48,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
@@ -596,7 +597,7 @@ soshape_bumprender::renderBump(SoState * state,
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
-  SbBool use_vertex_program = lastenabled <= 1 && cc_glglue_has_arb_vertex_program(glue);
+  SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
   if (use_vertex_program) {
@@ -728,7 +729,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
-  SbBool use_vertex_program = lastenabled <= 1 && cc_glglue_has_arb_vertex_program(glue);
+  SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
   if (use_vertex_program) {

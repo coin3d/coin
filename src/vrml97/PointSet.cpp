@@ -96,6 +96,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "../misc/SoVBO.h"
 
 #if COIN_DEBUG
@@ -175,7 +176,7 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
   // no point setting up OpenGL for vertex arrays for fewer than 20 points
   SbBool dova = 
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
-    cc_glglue_has_vertex_array(glue);
+    SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY);
   
   if (dova && matpervertex) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);

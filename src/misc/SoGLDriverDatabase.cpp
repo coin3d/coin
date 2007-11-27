@@ -24,14 +24,14 @@
 /*!
   \class SoGLDriverDatabase SoGLDriverDatabase.h Inventor/misc/SoGLDriverDatabase.h
   \brief The SoGLDriverDatabase class is used for looking up broken/slow features in OpenGL drivers.
-  
+
   Coin will maintain a database of drivers where we have found
   problems with certain features, even if the OpenGL driver claims to
   support it. This is an effort to avoid application or operating
   system crashes when Coin attempts to use a specific feature. Using
   this database we can either disable this feature, or find another
   way to handle it for broken drivers.
-  
+
 */
 
 #include <Inventor/misc/SoGLDriverDatabase.h>
@@ -41,65 +41,81 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbits.h>
 #include <string.h>
 
 class SoGLDriverDatabaseP {
+
+  static SbBool multidraw_elements_wrapper(const cc_glglue * glue) {
+    // FIXME: I'm not able to make glMultiDrawElement work under OS
+    // X. It just crashes inside GL when I try to use it. Investigate
+    // why this happens. For now we just avoid using
+    // glMultiDrawElements() under OS X.  pederb, 2005-02-14
+    SbBool ismac = (coin_runtime_os() == COIN_OS_X);
+    if (!ismac) return cc_glglue_has_multidraw_vertex_arrays(glue); 
+    return FALSE;
+  }
+  
   void initFunctions(void) {
     // define some reserved feature names for features that cannot be
     // tested directly as a single OpenGL extension test.
-    this->featuremap.put(SbName("COIN_multidraw_vertex_arrays").getString(),
-                         &cc_glglue_has_multidraw_vertex_arrays);
-    this->featuremap.put(SbName("COIN_polygon_offset").getString(),
+    this->featuremap.put(SbName(SO_GL_MULTIDRAW_ELEMENTS).getString(),
+                         &multidraw_elements_wrapper);
+    this->featuremap.put(SbName(SO_GL_POLYGON_OFFSET).getString(),
                          &cc_glglue_has_polygon_offset);
-    this->featuremap.put(SbName("COIN_texture_objects").getString(),
+    this->featuremap.put(SbName(SO_GL_TEXTURE_OBJECT).getString(),
                          &cc_glglue_has_texture_objects);
-    this->featuremap.put(SbName("COIN_3d_textures").getString(),
+    this->featuremap.put(SbName(SO_GL_3D_TEXTURES).getString(),
                          &cc_glglue_has_3d_textures);
-    this->featuremap.put(SbName("COIN_multitexture").getString(),
+    this->featuremap.put(SbName(SO_GL_MULTITEXTURE).getString(),
                          &cc_glglue_has_multitexture);
-    this->featuremap.put(SbName("COIN_texsubimage").getString(),
+    this->featuremap.put(SbName(SO_GL_TEXSUBIMAGE).getString(),
                          &cc_glglue_has_texsubimage);
-    this->featuremap.put(SbName("COIN_2d_proxy_textures").getString(),
+    this->featuremap.put(SbName(SO_GL_2D_PROXY_TEXTURES).getString(),
                          &cc_glglue_has_2d_proxy_textures);
-    this->featuremap.put(SbName("COIN_texture_edge_clamp").getString(),
+    this->featuremap.put(SbName(SO_GL_TEXTURE_EDGE_CLAMP).getString(),
                          &cc_glglue_has_texture_edge_clamp);
-    this->featuremap.put(SbName("COIN_texture_compression").getString(),
+    this->featuremap.put(SbName(SO_GL_TEXTURE_COMPRESSION).getString(),
                          &cc_glue_has_texture_compression);
-    this->featuremap.put(SbName("COIN_color_tables").getString(),
+    this->featuremap.put(SbName(SO_GL_COLOR_TABLES).getString(),
                          &cc_glglue_has_color_tables);
-    this->featuremap.put(SbName("COIN_color_subtables").getString(),
+    this->featuremap.put(SbName(SO_GL_COLOR_SUBTABLES).getString(),
                          &cc_glglue_has_color_subtables);
-    this->featuremap.put(SbName("COIN_paletted_textures").getString(),
+    this->featuremap.put(SbName(SO_GL_PALETTED_TEXTURES).getString(),
                          &cc_glglue_has_paletted_textures);
-    this->featuremap.put(SbName("COIN_blend_equation").getString(),
+    this->featuremap.put(SbName(SO_GL_BLEND_EQUATION).getString(),
                          &cc_glglue_has_blendequation);
-    this->featuremap.put(SbName("COIN_vertex_array").getString(),
+    this->featuremap.put(SbName(SO_GL_VERTEX_ARRAY).getString(),
                          &cc_glglue_has_vertex_array);
-    this->featuremap.put(SbName("COIN_nv_vertex_array_range").getString(),
+    this->featuremap.put(SbName(SO_GL_NV_VERTEX_ARRAY_RANGE).getString(),
                          &cc_glglue_has_nv_vertex_array_range);
-    this->featuremap.put(SbName("COIN_vertex_buffer_object").getString(),
+    this->featuremap.put(SbName(SO_GL_VERTEX_BUFFER_OBJECT).getString(),
                          &cc_glglue_has_vertex_buffer_object);
-    this->featuremap.put(SbName("COIN_arb_fragment_program").getString(),
+    this->featuremap.put(SbName(SO_GL_ARB_FRAGMENT_PROGRAM).getString(),
                          &cc_glglue_has_arb_fragment_program);
-    this->featuremap.put(SbName("COIN_arb_vertex_program").getString(),
+    this->featuremap.put(SbName(SO_GL_ARB_VERTEX_PROGRAM).getString(),
                          &cc_glglue_has_arb_vertex_program);
-    this->featuremap.put(SbName("COIN_occlusion_query").getString(),
+    this->featuremap.put(SbName(SO_GL_ARB_SHADER_OBJECT).getString(),
+                         &cc_glglue_has_arb_shader_objects);
+    this->featuremap.put(SbName(SO_GL_OCCLUSION_QUERY).getString(),
                          &cc_glglue_has_occlusion_query);
-    this->featuremap.put(SbName("COIN_framebuffer_object").getString(),
+    this->featuremap.put(SbName(SO_GL_FRAMEBUFFER_OBJECT).getString(),
                          &cc_glglue_has_framebuffer_objects);
-    this->featuremap.put(SbName("COIN_anisotropic_filtering").getString(),
+    this->featuremap.put(SbName(SO_GL_ANISOTROPIC_FILTERING).getString(),
                          &cc_glglue_can_do_anisotropic_filtering);
-    this->featuremap.put(SbName("COIN_sorted_layers_blend").getString(),
+    this->featuremap.put(SbName(SO_GL_SORTED_LAYERS_BLEND).getString(),
                          &cc_glglue_can_do_sortedlayersblend);
+    this->featuremap.put(SbName(SO_GL_BUMPMAPPING).getString(),
+                         &cc_glglue_can_do_bumpmapping);
   }
-  
+
   class SoGLDriver {
   public:
     typedef struct {
       int maxmajor, maxminor, maxmicro;
       int minmajor, minminor, minmicro;
     } versionrange;
-    
+
     SbList <SbName> platform;
     SbList <SbName> vendor;
     SbList <SbName> renderer;
@@ -125,7 +141,7 @@ class SoGLDriverDatabaseP {
       return (this->contextid == v.contextid) && (this->feature == v.feature);
     }
   };
-  
+
 public:
   SoGLDriverDatabaseP() {
     this->initFunctions();
@@ -183,7 +199,7 @@ public:
       }
       this->slowcache.put(f, slow);
     }
-    return slow;    
+    return slow;
   }
   SbBool isFast(const cc_glglue * context, const SbName & feature) {
     if (!this->isSupported(context, feature)) {
@@ -209,7 +225,7 @@ public:
   }
 
 private:
-  
+
   SoGLDriver * findGLDriver(const cc_glglue * context) {
     int major, minor, micro;
     SbName platform("");
@@ -225,9 +241,9 @@ private:
     return NULL;
   }
   SbList <SoGLDriver*> driverlist;
-  SbHash <SbBool, FeatureID> brokencache; 
-  SbHash <SbBool, FeatureID> slowcache; 
-  SbHash <SbBool, FeatureID> fastcache; 
+  SbHash <SbBool, FeatureID> brokencache;
+  SbHash <SbBool, FeatureID> slowcache;
+  SbHash <SbBool, FeatureID> fastcache;
 
   typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
   SbHash <glglue_feature_test_f *, const char *> featuremap;
@@ -243,7 +259,7 @@ private:
   \a context.
 
  */
-SbBool 
+SbBool
 SoGLDriverDatabase::isSupported(const cc_glglue * context, const SbName & feature)
 {
   return pimpl()->isSupported(context, feature);
@@ -252,7 +268,7 @@ SoGLDriverDatabase::isSupported(const cc_glglue * context, const SbName & featur
 /*!
   Checks the driver database to see if \a feature is tagged as broken.
 */
-SbBool 
+SbBool
 SoGLDriverDatabase::isBroken(const cc_glglue * context, const SbName & feature)
 {
   return pimpl()->isBroken(context, feature);
@@ -261,7 +277,7 @@ SoGLDriverDatabase::isBroken(const cc_glglue * context, const SbName & feature)
 /*!
   Checks the driver database to see if \a feature is tagged as being slow.
 */
-SbBool 
+SbBool
 SoGLDriverDatabase::isSlow(const cc_glglue * context, const SbName & feature)
 {
   return pimpl()->isSlow(context, feature);
@@ -270,7 +286,7 @@ SoGLDriverDatabase::isSlow(const cc_glglue * context, const SbName & feature)
 /*!
   Checks the driver database to see if \a feature is tagged as fast.
 */
-SbBool 
+SbBool
 SoGLDriverDatabase::isFast(const cc_glglue * context, const SbName & feature)
 {
   return pimpl()->isFast(context, feature);
@@ -284,7 +300,7 @@ static void sogldriverdatabase_atexit(void)
   pimpl_instance = NULL;
 }
 
-SoGLDriverDatabaseP * 
+SoGLDriverDatabaseP *
 SoGLDriverDatabase::pimpl(void)
 {
   if (pimpl_instance == NULL) {
@@ -294,3 +310,16 @@ SoGLDriverDatabase::pimpl(void)
   }
   return pimpl_instance;
 }
+
+/**************************************************************************/
+
+void
+SoGLDriverDatabase::init(void)
+{
+  // make sure the private static class is created to avoid race conditions
+  (void) pimpl();
+  
+  // FIXME: parse the xml database file(s) here
+}
+
+/**************************************************************************/

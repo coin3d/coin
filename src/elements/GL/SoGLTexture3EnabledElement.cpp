@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -118,7 +119,7 @@ SoGLTexture3EnabledElement::set(SoState * const state, const SbBool enabled)
 
 
 /*!
-  Return current state of this element. 
+  Return current state of this element.
 */
 SbBool
 SoGLTexture3EnabledElement::get(SoState * const state)
@@ -152,7 +153,8 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   const cc_glglue * glw = sogl_glue_instance(this->state);
-  if (cc_glglue_has_3d_textures(glw)) {
+  
+  if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
     if (this->data) glEnable(GL_TEXTURE_3D);
     else glDisable(GL_TEXTURE_3D);
   }

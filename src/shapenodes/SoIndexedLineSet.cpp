@@ -85,6 +85,7 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "../misc/SoVertexArrayIndexer.h"
 #include "../misc/SoVBO.h"
 
@@ -229,7 +230,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   if (!this->shouldGLRender(action)) return;
-  
+
   SbBool didpush = FALSE;
 
   if (this->vertexProperty.getValue()) {
@@ -301,18 +302,18 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
-  
+
   const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
 
-  SbBool dova = 
-    !drawPoints && 
+  SbBool dova =
+    !drawPoints &&
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     (!doTextures || (tindices == cindices)) &&
     ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
-    cc_glglue_has_vertex_array(sogl_glue_instance(state));
-  
+    SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
+
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   SoVBO * colorvbo = NULL;
 
@@ -340,7 +341,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
-      
+
       int i = 0;
       while (i < numindices) {
         int cnt = 0;
@@ -364,7 +365,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
       fprintf(stderr,"XXX: ILS create VertexArrayIndexer: %d\n", indexer->getNumVertices());
 #endif
     }
-    
+
     if (PRIVATE(this)->vaindexer) {
       PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
@@ -760,7 +761,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   }
 }
 
-void 
+void
 SoIndexedLineSet::notify(SoNotList * list)
 {
   SoField *f = list->getLastField();

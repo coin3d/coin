@@ -60,6 +60,7 @@
 #include "../misc/SoVBO.h"
 #include "../misc/SoVertexArrayIndexer.h"
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -287,7 +288,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
-  else if (cc_glglue_has_vertex_array(glue)) {
+  else if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->triangleindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
@@ -326,7 +327,7 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   const cc_glglue * glue = sogl_glue_instance(state);
   const uint32_t contextid = SoGLCacheContextElement::get(state);
 
-  if (cc_glglue_has_vertex_array(glue)) {
+  if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->lineindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
@@ -364,7 +365,7 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
   const cc_glglue * glue = sogl_glue_instance(state);
   const uint32_t contextid = SoGLCacheContextElement::get(state);
 
-  if (cc_glglue_has_vertex_array(glue)) {
+  if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->pointindexer->render(glue, FALSE, contextid);
     PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);

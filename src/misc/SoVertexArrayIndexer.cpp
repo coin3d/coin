@@ -24,7 +24,7 @@
 /*!
   \class SoVertexArrayIndexer
   \brief The SoVertexArrayIndexer class is used to simplify index handling for vertex array rendering.
-  
+
   FIXME: more doc. when/if this class is made public, pederb 20050111
 */
 
@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 /*!
   Constructor
@@ -58,7 +59,7 @@ SoVertexArrayIndexer::~SoVertexArrayIndexer()
 /*!
   Adds a line to be indexed.
 */
-void 
+void
 SoVertexArrayIndexer::addLine(const int32_t v0,
                               const int32_t v1)
 {
@@ -75,7 +76,7 @@ SoVertexArrayIndexer::addLine(const int32_t v0,
 /*!
   Adds a point to be indexed.
 */
-void 
+void
 SoVertexArrayIndexer::addPoint(const int32_t v0)
 {
   if (this->target == 0) this->target = GL_POINTS;
@@ -128,7 +129,7 @@ SoVertexArrayIndexer::addQuad(const int32_t v0,
 }
 
 /*!
-  Sets up indexer for new indices of type \a targetin. Use 
+  Sets up indexer for new indices of type \a targetin. Use
   targetVertex() to add indices, and finish the target by using
   endTarget().
 
@@ -149,7 +150,7 @@ SoVertexArrayIndexer::beginTarget(GLenum targetin)
 
 /*!
   Adds an index to the indexer.
-  
+
   \sa beginTarget()
   \sa endTarget()
 */
@@ -168,7 +169,7 @@ SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
 
 /*!
   Ends the current target.
-  
+
   \sa beginTarget()
   \sa targetVertex()
 */
@@ -219,18 +220,6 @@ SoVertexArrayIndexer::close(void)
 void
 SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
 {
-  // FIXME: I'm not able to make glMultiDrawElement work under OS
-  // X. It just crashes inside GL when I try to use it. Investigate
-  // why this happens. For now we just avoid using
-  // glMultiDrawElements() under OS X.  pederb, 2005-02-14
-  //
-  // FIXME: this work-around should really go into src/glue/gl.c, at
-  // the spot where we try to detect a (workable)
-  // glMultiDrawElements() -- given that the function really *is*
-  // dysfunctional on the Mac OpenGL drivers, and we're not just using
-  // it wrong below.  20061025 mortene.
-  SbBool ismac = (coin_runtime_os() == COIN_OS_X);
-
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
@@ -260,7 +249,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     }
     break;
   default:
-    if (cc_glglue_has_multidraw_vertex_arrays(glue) && !ismac) {
+    if (SoGLDriverDatabase::isSupported(glue, SO_GL_MULTIDRAW_ELEMENTS)) {
       cc_glglue_glMultiDrawElements(glue,
                                     this->target,
                                     (GLsizei*) this->countarray.getArrayPtr(),
@@ -420,7 +409,7 @@ void
 SoVertexArrayIndexer::sort_lines(void)
 {
   // sort lines based on vertex indices to get more hits in the
-  // GPU vertex cache. 
+  // GPU vertex cache.
   if (this->indexarray.getLength()) {
     qsort((void*) this->indexarray.getArrayPtr(),
           this->indexarray.getLength() / 2,
@@ -431,9 +420,9 @@ SoVertexArrayIndexer::sort_lines(void)
 }
 
 /*!
-  Returns the number of indices in the indexer. 
+  Returns the number of indices in the indexer.
 */
-int 
+int
 SoVertexArrayIndexer::getNumIndices(void) const
 {
   return this->indexarray.getLength();
@@ -443,7 +432,7 @@ SoVertexArrayIndexer::getNumIndices(void) const
 /*!
   Returns a pointer to the index array.
 */
-const GLint * 
+const GLint *
 SoVertexArrayIndexer::getIndices(void) const
 {
   return this->indexarray.getArrayPtr();
@@ -454,12 +443,10 @@ SoVertexArrayIndexer::getIndices(void) const
   these indices to change the rendering order. Calling this function
   will invalidate any VBO caches used by the indexer.
 */
-GLint * 
+GLint *
 SoVertexArrayIndexer::getWriteableIndices(void)
 {
   delete this->vbo;
   this->vbo = NULL;
   return (GLint*) this->indexarray.getArrayPtr();
 }
-
-

@@ -314,6 +314,7 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <math.h>
 #include "../shaders/SoShader.h"
 
@@ -1562,9 +1563,9 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   SbBool supported =
-    cc_glglue_has_framebuffer_objects(glue) &&
     cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
-    cc_glglue_glext_supported(glue, "GL_ARB_texture_float");
+    SoGLDriverDatabase::isSupported(glue, "COIN_framebuffer_object") &&
+    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float");
 
   if (!supported || !PUBLIC(this)->isActive.getValue()) {
     if (!supported && PUBLIC(this)->isActive.getValue()) {
@@ -1572,9 +1573,9 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
       if (first) {
         first = 0;
         SbString msg("Unable to render shadows.");
-        if (!cc_glglue_has_framebuffer_objects(glue)) msg += " Frame buffer objects not supported.";
+        if (!SoGLDriverDatabase::isSupported(glue, "COIN_framebuffer_object")) msg += " Frame buffer objects not supported.";
         if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) " OpenGL version < 2.0.";
-        if (!cc_glglue_glext_supported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
+        if (!SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
         SoDebugError::postWarning("SoShadowGroupP::GLRender",
                                   msg.getString());
       }

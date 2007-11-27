@@ -49,6 +49,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 class SoGLDisplayListP {
  public:
@@ -79,7 +80,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
   PRIVATE(this)->refcount = 0;
   PRIVATE(this)->mipmap = mipmaptexobj;
   PRIVATE(this)->texturetarget = 0;
- 
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList", "%p", this);
 #endif // debug
@@ -115,7 +116,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     //    Cube { }
     // }
     // -----8<----- [snip] ----------8<----- [snip] ----------8<------
-    
+
 
     // FIXME: should be more robust, and rather just disable the use
     // of GL displaylists (but still issuing an
@@ -143,7 +144,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
   if (PRIVATE(this)->type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
     const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
-    if (cc_glglue_has_texture_objects(glw)) {
+    if (SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_OBJECT)) {
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
       GLuint tmpindex;
@@ -262,7 +263,7 @@ SoGLDisplayList::close(SoState * state)
     assert(cc_glglue_has_texture_objects(glw));
     GLenum target = PRIVATE(this)->texturetarget;
     if (target == 0) {
-      // target is not set. Assume normal 2D texture. 
+      // target is not set. Assume normal 2D texture.
       target = GL_TEXTURE_2D;
     }
     // unbind current texture object
@@ -351,7 +352,7 @@ SoGLDisplayList::getContext(void) const
   Sets the texture object target
   \since 2005-02-17
 */
-void 
+void
 SoGLDisplayList::setTextureTarget(int target)
 {
   PRIVATE(this)->texturetarget = (GLenum) target;
@@ -361,7 +362,7 @@ SoGLDisplayList::setTextureTarget(int target)
   Returns the texture target
   \since 2005-02-17
 */
-int 
+int
 SoGLDisplayList::getTextureTarget(void) const
 {
   if (PRIVATE(this)->texturetarget)
@@ -384,11 +385,10 @@ SoGLDisplayList::bindTexture(SoState *state)
 
   GLenum target = PRIVATE(this)->texturetarget;
   if (target == 0) {
-    // target is not set. Assume normal 2D texture. 
+    // target is not set. Assume normal 2D texture.
     target = GL_TEXTURE_2D;
   }
   cc_glglue_glBindTexture(glw, target, (GLuint)PRIVATE(this)->firstindex);
 }
 
 #undef PRIVATE
-

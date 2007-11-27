@@ -234,6 +234,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
@@ -529,7 +530,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
     ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
-    cc_glglue_has_vertex_array(sogl_glue_instance(state));
+    SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
 
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   SoVBO * colorvbo = NULL;

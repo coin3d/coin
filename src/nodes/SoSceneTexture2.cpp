@@ -295,6 +295,7 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -679,8 +680,8 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
   // make sure we've finished rendering to this context
   glFlush();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-
-  SbBool candofbo = cc_glglue_has_framebuffer_objects(glue);
+  
+  SbBool candofbo = SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT);
   if (candofbo) {
     // can't render to a FBO if we have a delayed transparency type
     // involving path traversal in a second pass.
@@ -1132,8 +1133,8 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   GLenum wrapt = (GLenum) PUBLIC(this)->wrapT.getValue();
 
   SbBool clamptoborder_ok = 
-    cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
-    cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp");
+    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_border_clamp") ||
+    SoGLDriverDatabase::isSupported(glue, "GL_SGIS_texture_border_clamp");
   
   if (wraps == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wraps = GL_CLAMP;
   if (wrapt == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wrapt = GL_CLAMP;
@@ -1147,7 +1148,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
     cc_glglue_glGenerateMipmap(glue, GL_TEXTURE_2D);
   }
 
-  if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+  if (SoGLDriverDatabase::isSupported(glue, SO_GL_ANISOTROPIC_FILTERING)) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
                     cc_glglue_get_max_anisotropy(glue));
   }
@@ -1166,8 +1167,8 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                  GL_DEPTH_COMPONENT,
                  GL_UNSIGNED_BYTE, NULL);
     
-    if (cc_glglue_glext_supported(glue, "GL_ARB_texture_border_clamp") ||
-        cc_glglue_glext_supported(glue, "GL_SGIS_texture_border_clamp")) {
+    if (SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_border_clamp") ||
+        SoGLDriverDatabase::isSupported(glue, "GL_SGIS_texture_border_clamp")) {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
@@ -1180,7 +1181,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);	
     
-    if (cc_glglue_can_do_anisotropic_filtering(glue)) {
+    if (SoGLDriverDatabase::isSupported(glue, SO_GL_ANISOTROPIC_FILTERING)) {
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
                       cc_glglue_get_max_anisotropy(glue));
     }

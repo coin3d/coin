@@ -141,6 +141,7 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include "../misc/SoVertexArrayIndexer.h"
 #include "../misc/SoVBO.h"
 
@@ -320,7 +321,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool dova = 
     !drawPoints &&
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
-    cc_glglue_has_vertex_array(sogl_glue_instance(state));
+    SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
   
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   SoVBO * colorvbo = NULL;

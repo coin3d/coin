@@ -102,6 +102,7 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 // *************************************************************************
 
@@ -1568,12 +1569,12 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     
     const cc_glglue * w = sogl_glue_instance(state);
     // FIXME: What should we do when >8bits per channel becomes normal? (20031125 handegar)
-    if (cc_glglue_can_do_sortedlayersblend(w) && (depthbits >= 24) && (alphabits == 8)) {
+    if (SoGLDriverDatabase::isSupported(w, SO_GL_SORTED_LAYERS_BLEND) && (depthbits >= 24) && (alphabits == 8)) {
       doSortedLayersBlendRendering(state, node);
     }
     else {
       
-      if (!cc_glglue_can_do_sortedlayersblend(w))
+      if (!SoGLDriverDatabase::isSupported(w, SO_GL_SORTED_LAYERS_BLEND))
         SoDebugError::postWarning("renderSingle", "Sorted layers blend cannot be enabled "
                                   "due to missing OpenGL extensions. Rendering using "
                                   "SORTED_OBJECTS_BLEND instead.");
