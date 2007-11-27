@@ -24,8 +24,8 @@
 #include "SbUTMProjection.h"
 #include <stdio.h>
 
-SbUTMProjection::SbUTMProjection(int utmzone,
-                             const SbGeoEllipsoid & ellipsoid,
+SbUTMProjection::SbUTMProjection(const int utmzone,
+                                 const SbGeoEllipsoid & ellipsoid,
                                  double FE, double FN)
   : inherited(ellipsoid, FE, FN),
     forcedutmzone(utmzone)
