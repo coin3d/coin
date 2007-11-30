@@ -81,7 +81,6 @@ public:
     : owner(NULL),
       colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
   {
-    PUBLIC(this)->hlVisible = TRUE;
     this->color = SbColor(1.0f, 0.0f, 0.0f);
     this->linepattern = 0xffff;
     this->linewidth = 3.0f;
@@ -141,6 +140,10 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
   PRIVATE(this)->owner = this;
+  // need to set hlVisible here, and not in the pimpl constructor, since
+  // "owner" is not initialized when the pimpl constructor is called
+  this->hlVisible = TRUE;
+
   SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
 }
 
@@ -151,6 +154,9 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion 
   : inherited(viewportregion)
 {
   PRIVATE(this)->owner = this;
+  // need to set hlVisible here, and not in the pimpl constructor, since
+  // "owner" is not initialized when the pimpl constructor is called
+  this->hlVisible = TRUE;
   SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
 }
 
