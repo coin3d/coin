@@ -155,6 +155,31 @@ public:
   SbBool glimagevalid;
   SbImage convertedheightmap;
   SbBool didconvert;
+  int isgrayscale; // -1 = unknown, 0 = no, 1 = yes
+  
+  void testGrayscale(const unsigned char * srcptr, 
+		     const SbVec2s size,
+		     const int nc) 
+  {
+    // check if we have a cached value
+    if (this->isgrayscale >= 0) return;
+
+    if (nc < 3) {
+      this->isgrayscale = 1;
+    }
+    else {
+      const unsigned char * src = srcptr;
+      this->isgrayscale = 1;
+      const int n = size[0]*size[1];
+      for (int i = 0; i < n; i++) {
+	if ((src[0] != src[1]) || (src[0] != src[2])) {
+	  this->isgrayscale = 0;
+	  return;
+	}
+	src += nc;
+      }
+    }
+  }
 };
 
 #undef PRIVATE
@@ -244,6 +269,7 @@ SoBumpMap::SoBumpMap(void)
   PRIVATE(this)->glimage = new SoGLImage;
   PRIVATE(this)->glimagevalid = FALSE;
   PRIVATE(this)->didconvert = FALSE;
+  PRIVATE(this)->isgrayscale = -1;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBumpMap);
 
@@ -330,14 +356,16 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
     
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
-        if (nc < 3) {
-          if (!PRIVATE(this)->didconvert) {
+	PRIVATE(this)->testGrayscale(bytes, size, nc);
+	if (PRIVATE(this)->isgrayscale) {
+	  if (!PRIVATE(this)->didconvert) {
             convert_heightmap_to_normalmap(bytes, size, nc, PRIVATE(this)->convertedheightmap);
             PRIVATE(this)->didconvert = TRUE;
-          }
-          bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);
-        }
-        PRIVATE(this)->glimage->setData(bytes, size, nc,
+	  }
+	  bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);
+	}
+
+	PRIVATE(this)->glimage->setData(bytes, size, nc,
                                         bumpmap_translateWrap((Wrap)this->wrapS.getValue()),
                                         bumpmap_translateWrap((Wrap)this->wrapT.getValue()),
                                         1.0f); // max quality for bumpmaps
@@ -406,6 +434,7 @@ SoBumpMap::notify(SoNotList * l)
     this->filename.setDefault(TRUE);
     this->image.setDefault(FALSE);
     PRIVATE(this)->didconvert = FALSE;
+    PRIVATE(this)->isgrayscale = -1;
   }
   PRIVATE(this)->glimagevalid = FALSE;
   inherited::notify(l);
@@ -433,6 +462,7 @@ SoBumpMap::loadFilename(void)
       this->image.setValue(size, nc, bytes);
       this->image.enableNotify(oldnotify);
       PRIVATE(this)->didconvert = FALSE;
+      PRIVATE(this)->isgrayscale = -1;
       retval = TRUE;
     }
   }
