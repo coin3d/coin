@@ -312,10 +312,21 @@ SoMFNode::copyValue(int to, int from)
 SbBool
 SoMFNode::read1Value(SoInput * in, int index)
 {
+#if 0
+  // this was an attempt to fix reading of NULL keywords inside
+  // SoMFNode.  Unfortunately it introduced a much more serious bug
+  // (reading of USE keywords stopped working). I'm disabling this
+  // until we find a proper way to fix that bug.
   SoNode * node = SoBaseP::readNode(in);
   if (!node) return FALSE;
   this->set1Value(index, node);
   return TRUE;
+#else // buggy version
+  SoSFNode sfnode;
+  SbBool result = sfnode.readValue(in);
+  if (result) this->set1Value(index, sfnode.getValue());
+  return result;
+#endif // old version
 }
 
 // Export a single node.
@@ -599,12 +610,38 @@ SoMFNode::replaceNode(SoNode * oldnode, SoNode * newnode)
 
 #ifdef COIN_TEST_SUITE
 
+#include <Inventor/errors/SoReadError.h>
+
+// Do-nothing error handler for ignoring read errors while testing.
+static void
+readErrorHandler(const SoError * error, void * data)
+{
+}
+
 BOOST_AUTO_TEST_CASE(initialized)
 {
   SoMFNode field;
   BOOST_CHECK_MESSAGE(field.getTypeId() != SoType::badType(),
                       "missing class initialization");
   BOOST_CHECK_EQUAL(field.getNum(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(NULLreading)
+{
+  // FIXME: We are forced to restore the global state before terminating,
+  // or independent tests could fail. (sveinung 20071108)
+  SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
+  SoReadError::setHandlerCallback(readErrorHandler, NULL);
+
+  const char file[] = 
+    "[ DEF mycube Cube {} USE mycube ]";
+  SoInput in;
+  in.setBuffer(reinterpret_cast<void *> (const_cast<char *> (file)), sizeof(file));
+  SoMFNode field;
+  BOOST_CHECK_MESSAGE(field.read(&in, SbName("test")),
+                      "DEF/USE reading in SoMFNode is broken");
+
+  SoReadError::setHandlerCallback(prevErrorCB, NULL);
 }
 
 #endif // COIN_TEST_SUITE
