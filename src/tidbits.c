@@ -1222,7 +1222,7 @@ coin_atexit_cleanup(void)
     free((void*)data);
   }
 
-  // Close stdin/stdout/stderr if any of them have been opened
+  /* Close stdin/stdout/stderr if any of them have been opened */
   free_std_fds();
 
   cc_list_destruct(atexit_list);
@@ -1381,7 +1381,7 @@ static FILE * coin_stderr = NULL;
 void
 free_std_fds(void)
 {
-  // Close stdin/stdout/stderr
+  /* Close stdin/stdout/stderr */
   if (coin_stdin) { fclose(coin_stdin); coin_stdin = NULL; }
   if (coin_stdout) { fclose(coin_stdout); coin_stdout = NULL; }
   if (coin_stderr) { fclose(coin_stderr); coin_stderr = NULL; }
@@ -1841,9 +1841,9 @@ coin_debug_caching_level(void)
     else COIN_DEBUG_CACHING = 0;
   }
   return COIN_DEBUG_CACHING;
-#else // debug
+#else /* debug */
   return 0;
-#endif // !debug
+#endif /* !debug */
 }
 
 /**************************************************************************/
