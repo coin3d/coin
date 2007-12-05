@@ -8,6 +8,14 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+#include "../3ds/3dsLoader.h"
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
 SoTimerSensor * SoDBP::globaltimersensor = NULL;

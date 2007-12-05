@@ -379,10 +379,6 @@
 static SbRWMutex * sodb_globalmutex = NULL;
 #endif // COIN_THREADSAFE
 
-#ifdef HAVE_3DS_IMPORT_CAPABILITIES
-#include "../3ds/3dsLoader.h"
-#endif // HAVE_3DS_IMPORT_CAPABILITIES
-
 #include "CoinStaticObjectInDLL.h"
 #include "systemsanity.icc"
 #include "SoDBP.h"
