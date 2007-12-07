@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #ifndef COIN_INTERNAL
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
@@ -64,6 +68,9 @@ public:
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
   static void listWin32ProcessModules(void);
 
+#ifdef COIN_THREADSAFE
+  static class SbRWMutex * globalmutex;
+#endif // COIN_THREADSAFE
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;

@@ -16,6 +16,9 @@
 #include "../3ds/3dsLoader.h"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
+#ifdef COIN_THREADSAFE
+class SbRWMutex * SoDBP::globalmutex = NULL;
+#endif // COIN_THREADSAFE
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
 SoTimerSensor * SoDBP::globaltimersensor = NULL;
@@ -23,7 +26,6 @@ UInt32ToInt16Map * SoDBP::converters = NULL;
 SbBool SoDBP::isinitialized = FALSE;
 int SoDBP::notificationcounter = 0;
 SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
-
 
 // *************************************************************************
 // FIXME: this should be moved into a function in tidsbits.c. 20050509 mortene.
@@ -123,7 +125,7 @@ SoDBP::clean(void)
   delete SoDBP::headerlist;
   
 #ifdef COIN_THREADSAFE
-  delete sodb_globalmutex;
+  delete SoDBP::globalmutex;
 #endif // COIN_THREADSAFE
 }
 

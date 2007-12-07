@@ -376,7 +376,6 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #include <Inventor/C/threads/recmutexp.h>
-static SbRWMutex * sodb_globalmutex = NULL;
 #endif // COIN_THREADSAFE
 
 #include "CoinStaticObjectInDLL.h"
@@ -449,7 +448,7 @@ SoDB::init(void)
   // initialize thread system first
   cc_thread_init();
 #ifdef COIN_THREADSAFE
-  sodb_globalmutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
+  SoDBP::globalmutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
 
@@ -1630,7 +1629,7 @@ void
 SoDB::readlock(void) 
 { 
 #ifdef COIN_THREADSAFE
-  sodb_globalmutex->readLock(); 
+  SoDBP::globalmutex->readLock(); 
 #endif // COIN_THREADSAFE 
 }
 
@@ -1645,7 +1644,7 @@ void
 SoDB::readunlock(void)
 {
 #ifdef COIN_THREADSAFE
-  sodb_globalmutex->readUnlock();
+  SoDBP::globalmutex->readUnlock();
 #endif // COIN_THREADSAFE
 }
 
@@ -1666,7 +1665,7 @@ void
 SoDB::writelock(void)
 {
 #ifdef COIN_THREADSAFE
-  sodb_globalmutex->writeLock();
+  SoDBP::globalmutex->writeLock();
 #endif // COIN_THREADSAFE
 }
 
@@ -1681,7 +1680,7 @@ void
 SoDB::writeunlock(void)
 {
 #ifdef COIN_THREADSAFE
-  sodb_globalmutex->writeUnlock();
+  SoDBP::globalmutex->writeUnlock();
 #endif // COIN_THREADSAFE
 }
 
