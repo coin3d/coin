@@ -256,7 +256,7 @@ You are using the X11 version of the Qt toolkit, but requested SoQt
 to be built without X11 support. Please install Qt/Mac (if you don't
 want X11 support) or specify --enable-darwin-x11 to use X11.
 
-!mac-qt-but-x11-requested 
+!mac-qt-but-x11-requested
 You are using Qt/Mac but are trying to build
 the X11-based version of SoQt. Please either install Qt/X11 or don't
 specify --enable-darwin-x11.
