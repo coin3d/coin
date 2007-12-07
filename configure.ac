@@ -247,8 +247,7 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
-# Detect Mac OS X in general and Mac OS 10.2 "Jaguar" or 10.3
-# "Panther" in particular
+# Detect Mac OS X
 case $host_os in
 darwin6.* ) # Mac OS 10.2 "Jaguar"
   sim_ac_macosx=true
@@ -267,6 +266,12 @@ darwin8.* ) # Mac OS 10.4 "Tiger"
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_10_3ff=true
   sim_ac_macosx_name="Tiger"
+  ;;
+darwin9.* ) # Mac OS 10.5 "Leopard"
+  sim_ac_macosx=true
+  sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_10_3ff=true
+  sim_ac_macosx_name="Leopard"
   ;;
 darwin* ) # earlier Mac OS X versions 
   sim_ac_macosx=true
@@ -1819,7 +1824,7 @@ if test x"$enable_hacking" = x"yes"; then
     if test x"$sim_ac_macosx_10_3ff" = x"true"; then
       sim_ac_macosx_use_dynamic_lookup=true
       case ${MACOSX_DEPLOYMENT_TARGET} in
-      10.[[34]])
+      10.[[345]])
         ;;
       *)
         SIM_AC_CONFIGURATION_WARNING([Using MACOSX_DEPLOYMENT_TARGET=10.3 (required by --enable-hacking)])
