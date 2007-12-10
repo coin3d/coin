@@ -170,7 +170,10 @@ SoDBP::is3dsFile(SoInput * in)
 
 #if defined(HAVE_WINDLL_RUNTIME_BINDING) && defined(HAVE_TLHELP32_H)
 
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // WINAPI
+#endif // HAVE_WINDOWS_H
+
 #include <tlhelp32.h>
 
 typedef HANDLE (WINAPI * CreateToolhelp32Snapshot_t)(DWORD, DWORD);
