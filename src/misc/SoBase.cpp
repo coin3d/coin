@@ -244,8 +244,8 @@ SoBase::~SoBase()
   if (SoBaseP::auditordict) {
     SoAuditorList * l;
     if (SoBaseP::auditordict->get(this, l)) {
-      delete l;
       SoBaseP::auditordict->remove(this);
+      delete l;
     }
   }
   cc_rbptree_clean(&this->auditortree);
