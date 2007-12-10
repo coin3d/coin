@@ -37,7 +37,7 @@ SbBool coin_3ds_read_file(SoInput * in, SoSeparator *& root,
                           SbBool loadTextures = TRUE,
                           SbBool loadObjNames = FALSE,
                           SbBool indexedTriSet = FALSE,
-                          SbBool centerModel = TRUE,
-                          float modelSize = 10.f);
+                          SbBool centerModel = FALSE,
+                          float modelSize = 0.0f);
 
 #endif // !COIN_3DSLOADER_H
