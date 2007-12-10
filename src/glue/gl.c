@@ -2130,6 +2130,8 @@ cc_glglue_instance(int contextid)
   found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
 
   if (!found) {
+    GLenum glerr;
+
     /* Internal consistency checking.
 
        Make it possible to disabled this assert because GLX in Mesa
@@ -2167,6 +2169,25 @@ cc_glglue_instance(int contextid)
 
     ptr = gi;
     cc_dict_put(gldict, (uintptr_t)contextid, ptr);
+
+    /* 
+       Make sure all GL errors are cleared before we do our assert
+       test below. The OpenGL context might be set up by the user, and
+       it's better to print a warning than asserting here if the user
+       did something wrong while creating it.
+    */
+    glerr = glGetError();
+    while (glerr != GL_NO_ERROR) {
+      cc_debugerror_postwarning("cc_glglue_instance",
+                                "Error when setting up the GL context. This can happen if "
+                                "there is no current context, or if the context has been set "
+                                "up incorrectly.");
+      glerr = glGetError();
+      
+      /* We might get this error if there is no current context.
+         Break out and assert later in that case */
+      if (glerr == GL_INVALID_OPERATION) break;
+    }
 
     /* NB: if you are getting a crash here, it's because an attempt at
      * setting up a cc_glglue instance was made when there is no
