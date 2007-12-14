@@ -36,11 +36,12 @@
 
 #include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoSFFloat SoInterpolate::alpha

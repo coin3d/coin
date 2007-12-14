@@ -21,12 +21,13 @@
  *
 \**************************************************************************/
 
-#include "SoGLSLShaderProgram.h"
+#include "shaders/SoGLSLShaderProgram.h"
 
-#include "SoGLSLShaderObject.h"
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoContextHandler.h>
+
+#include "shaders/SoGLSLShaderObject.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

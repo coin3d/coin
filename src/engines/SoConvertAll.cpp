@@ -30,19 +30,20 @@
 
 // *************************************************************************
 
-#include <Inventor/engines/SoConvertAll.h>
+#include "engines/SoConvertAll.h"
 
 #include <assert.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/misc/SbHash.h>
+
+#include "tidbitsp.h"
+#include "engines/SoSubEngineP.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

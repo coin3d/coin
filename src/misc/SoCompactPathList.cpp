@@ -21,11 +21,13 @@
  *
 \**************************************************************************/
 
-#include <Inventor/misc/SoCompactPathList.h>
+#include "misc/SoCompactPathList.h"
+
+#include <assert.h>
+
 #include <Inventor/SoFullPath.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <assert.h>
 
 /*!
   \class SoCompactPathList Inventor/misc/SoCompactPathList.h

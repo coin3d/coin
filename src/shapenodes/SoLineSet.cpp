@@ -72,22 +72,20 @@
 */
 
 #include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -96,7 +94,9 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/details/SoLineDetail.h>
-#include <Inventor/misc/SoGL.h>
+
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoMFInt32 SoLineSet::numVertices

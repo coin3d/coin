@@ -117,7 +117,14 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoText3.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <string.h>
+#include <float.h> // FLT_MAX, FLT_MIN
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -143,17 +150,7 @@
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <string.h>
-
-#include <coindefs.h> // COIN_OBSOLETED()
-
-#include <float.h> // FLT_MAX, FLT_MIN
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
@@ -164,7 +161,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include "../fonts/glyph3d.h"
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "nodes/SoSubNodeP.h"
+#include "fonts/glyph3d.h"
+#include "caches/SoGlyphCache.h"
 
 // *************************************************************************
 

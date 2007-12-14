@@ -58,7 +58,9 @@
 
 #include <Inventor/elements/SoLazyElement.h>
 
-#include <Inventor/C/tidbitsp.h>
+#include <assert.h>
+#include <string.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
@@ -66,9 +68,8 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
-#include <string.h>
 
+#include "tidbitsp.h"
 
 static SbColor * lazy_defaultdiffuse = NULL;
 static float * lazy_defaulttransp = NULL;

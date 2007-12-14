@@ -31,11 +31,15 @@
 */
 
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
-#include "VectorizeActionP.h"
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/errors/SoDebugError.h>
+
 #include <stdio.h>
 #include <math.h> // for floor() and ceil()
+
+#include <Inventor/errors/SoDebugError.h>
+
+#include "hardcopy/VectorizeActionP.h"
+#include "tidbitsp.h"
+#include "actions/SoSubActionP.h"
 
 
 // *************************************************************************

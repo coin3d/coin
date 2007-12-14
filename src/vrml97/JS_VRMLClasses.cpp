@@ -25,9 +25,7 @@
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/misc/SoJavaScriptEngine.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/spidermonkey.h>
-
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -41,7 +39,6 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/fields/SoSFRotation.h>
-
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFString.h>
@@ -52,16 +49,16 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec3d.h>
 #include <Inventor/fields/SoMFRotation.h>
-
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSeparator.h>
-
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h> 
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+
+#include "misc/SbHash.h"
 
 // FIXME: toString() missing for all classes
 

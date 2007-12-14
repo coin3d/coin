@@ -35,11 +35,6 @@
 
 #include <stdlib.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -48,12 +43,17 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGLImage.h>
 
 #include <Inventor/elements/SoGLShaderProgramElement.h>
-#include "../../shaders/SoGLShaderProgram.h"
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+#include "glue/glp.h"
+#include "misc/SoGL.h" // GL wrapper.
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 

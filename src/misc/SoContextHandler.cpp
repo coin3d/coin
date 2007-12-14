@@ -50,13 +50,15 @@
 
 #include <Inventor/misc/SoContextHandler.h>
 
-#include <Inventor/C/tidbitsp.h>
+#include <stdlib.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/glue/glp.h>
-#include <stdlib.h>
+
+#include "misc/SbHash.h"
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

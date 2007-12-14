@@ -47,9 +47,11 @@
 // *************************************************************************
 
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

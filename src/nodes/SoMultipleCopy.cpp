@@ -49,7 +49,6 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoMultipleCopy.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -58,6 +57,8 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSwitch.h> // SO_SWITCH_ALL
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

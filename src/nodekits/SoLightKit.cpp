@@ -59,13 +59,14 @@
 */
 
 #include <Inventor/nodekits/SoLightKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 
+#include "nodekits/SoSubKitP.h"
 
 SO_KIT_SOURCE(SoLightKit);
 

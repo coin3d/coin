@@ -80,7 +80,7 @@
 */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <errno.h>
@@ -102,23 +102,23 @@
 
 #include <Inventor/SoInput.h>
 
-#include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/lists/SbStringList.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/threads/SbStorage.h>
-#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
 
-#include "SoInputP.h"
-#include "SoInput_FileInfo.h"
+#include "misc/SbHash.h"
+#include "tidbitsp.h"
+#include "glue/zlib.h"
+#include "coindefs.h" // COIN_STUB(), COIN_OBSOLETED()
+#include "io/SoInputP.h"
+#include "io/SoInput_FileInfo.h"
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.

@@ -114,6 +114,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>
 
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbName.h>
@@ -135,15 +136,15 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
 #include <Inventor/lists/SoPathList.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <float.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
+#include "actions/SoSubActionP.h"
+#include "misc/SbHash.h"
 
 // default values for cases where a viewport is needed
 #define DEFAULT_VIEWPORT_WIDTH 1024

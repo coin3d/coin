@@ -81,12 +81,14 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLTextureCoordinate.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 class SoVRMLTextureCoordinateP {
  public:

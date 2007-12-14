@@ -46,7 +46,8 @@
 #include <Inventor/nodes/SoAnnoText3Property.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

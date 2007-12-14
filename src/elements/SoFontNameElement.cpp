@@ -30,8 +30,10 @@
 */
 
 #include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/C/tidbitsp.h>
+
 #include <assert.h>
+
+#include "tidbitsp.h"
 
 
 SbName * SoFontNameElement::defaultfontname = NULL;

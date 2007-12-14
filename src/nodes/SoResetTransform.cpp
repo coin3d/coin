@@ -41,7 +41,6 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoResetTransform.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -49,6 +48,8 @@
 #include <Inventor/elements/SoGLModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

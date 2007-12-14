@@ -53,12 +53,14 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedShape.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedShape);
 

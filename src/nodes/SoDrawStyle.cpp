@@ -65,7 +65,7 @@
 // *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDrawStyleElement.h>
 #include <Inventor/elements/SoGLLinePatternElement.h>
@@ -73,6 +73,8 @@
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

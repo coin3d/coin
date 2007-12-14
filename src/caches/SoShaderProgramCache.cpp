@@ -32,8 +32,9 @@
 #include <Inventor/caches/SoShaderProgramCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbString.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

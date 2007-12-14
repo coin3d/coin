@@ -119,7 +119,8 @@
 // snippet. 20010920 mortene.
 
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSubActionP.h>
+
+#include <float.h>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -142,11 +143,12 @@
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbDPPlane.h>
 #include <Inventor/SbDPMatrix.h>
-#include <float.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "actions/SoSubActionP.h"
+
 
 
 // *************************************************************************

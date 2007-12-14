@@ -134,8 +134,10 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
+#include <stdlib.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -150,18 +152,19 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbits.h>
-#include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
+
+#include "misc/SoVBO.h"
+#include "nodes/SoSubNodeP.h"
+
 
 // *************************************************************************
 

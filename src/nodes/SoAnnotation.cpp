@@ -48,14 +48,15 @@
 // FIXME: consider adding a lazy GL depth buffer element. 200YMMDD pederb.
 
 #include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/elements/SoCacheElement.h>
 
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+#include "nodes/SoSubNodeP.h"
 
 
 SO_NODE_SOURCE(SoAnnotation);

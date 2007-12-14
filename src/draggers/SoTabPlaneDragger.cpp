@@ -41,10 +41,11 @@
   \sa SoTabBoxDragger
 */
 
-#include <string.h>
-
 #include <Inventor/draggers/SoTabPlaneDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
+#include <string.h>
+#include <assert.h>
+
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -64,11 +65,11 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SbRotation.h>
-#include <coindefs.h> // COIN_STUB()
-#include <assert.h>
 
 #include <data/draggerDefaults/tabPlaneDragger.h>
 
+#include "coindefs.h" // COIN_STUB()
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoTabPlaneDragger::translation

@@ -41,7 +41,8 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/SbViewportRegion.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 SO_ENGINE_SOURCE(SoComputeBoundingBox);
 

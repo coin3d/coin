@@ -44,10 +44,11 @@
 #include <Inventor/SbVec3i32.h>
 
 #include <Inventor/SbPlane.h>
-#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "tidbitsp.h" // coin_debug_normalize()
 
 /*!
   \fn SbVec3f::SbVec3f(void)

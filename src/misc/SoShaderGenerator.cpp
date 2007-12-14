@@ -28,10 +28,12 @@
   Currently only GLSL scripts are supported.
 */
 
-#include <Inventor/misc/SoShaderGenerator.h>
+#include "misc/SoShaderGenerator.h"
+
 #include <Inventor/SbName.h>
 #include <Inventor/errors/SoDebugError.h>
-#include "../shaders/SoShader.h"
+
+#include "shaders/SoShader.h"
 
 /*!
   Constructor.

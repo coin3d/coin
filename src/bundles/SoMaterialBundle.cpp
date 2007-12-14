@@ -40,8 +40,9 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGL.h>
+
+#include "glue/glp.h"
+#include "misc/SoGL.h"
 
 #define FLAG_COLORONLY  0x01
 #define FLAG_NVIDIA_BUG 0x02

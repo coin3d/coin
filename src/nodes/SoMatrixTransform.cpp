@@ -46,11 +46,12 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

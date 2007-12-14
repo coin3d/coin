@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include "error.cpp"
+#include "debugerror.cpp"
 #include "SoDebugError.cpp"
 #include "SoError.cpp"
 #include "SoMemoryError.cpp"

@@ -32,8 +32,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -42,6 +41,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "coindefs.h" // COIN_OBSOLETED()
 
 /*!
   \var SoMFInt32 SoIndexedShape::coordIndex

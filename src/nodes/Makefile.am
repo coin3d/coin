@@ -113,6 +113,8 @@ LinkHackSources = \
 
 PublicHeaders =
 PrivateHeaders = \
+        SoSubNodeP.h \
+        SoUnknownNode.h \
 	SoSoundElementHelper.h
 ObsoleteHeaders =
 
@@ -156,7 +158,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

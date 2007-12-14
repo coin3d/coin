@@ -40,13 +40,14 @@
 
 #include <assert.h>
 
-#include <Inventor/C/tidbitsp.h>
-#include "../base/SbGLUTessellator.h"
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
+
+#include "tidbitsp.h"
+#include "base/SbGLUTessellator.h"
 
 // *************************************************************************
 

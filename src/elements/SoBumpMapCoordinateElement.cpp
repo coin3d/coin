@@ -30,10 +30,13 @@
 */
 
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
+
+#include <assert.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
+
+#include "tidbitsp.h"
 
 /*!
   \fn SoBumpMapCoordinateElement::numcoords

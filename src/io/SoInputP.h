@@ -30,7 +30,7 @@
 
 // *************************************************************************
 
-#include <Inventor/misc/SbHash.h>
+#include "misc/SbHash.h"
 
 class SoInput;
 class SoInput_FileInfo;

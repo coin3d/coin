@@ -31,9 +31,10 @@
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 #include <stdlib.h>
+
+#include "tidbitsp.h"
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.

@@ -36,10 +36,13 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedLine.h>
+
+#include <stddef.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <stddef.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedLine);
 

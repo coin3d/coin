@@ -99,19 +99,17 @@
 */
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
-#include <Inventor/actions/SoGLRenderAction.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#include <Inventor/misc/SoState.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/system/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
@@ -120,12 +118,13 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
-#include <Inventor/misc/SoGL.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
 
 /*!
   \var SoMFInt32 SoTriangleStripSet::numVertices

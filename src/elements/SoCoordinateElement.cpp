@@ -30,11 +30,14 @@
 */
 
 #include <Inventor/elements/SoCoordinateElement.h>
+
+#include <assert.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
+
+#include "tidbitsp.h"
 
 // static variables
 SbVec3f * SoCoordinateElement::initialdefaultcoords = NULL;

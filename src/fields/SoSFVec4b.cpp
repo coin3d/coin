@@ -41,9 +41,9 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoSubFieldP.h>
 
-#include "shared.h"
+#include "fields/SoSubFieldP.h"
+#include "fields/shared.h"
 
 // *************************************************************************
 

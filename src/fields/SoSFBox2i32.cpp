@@ -37,11 +37,12 @@
 
 #include <Inventor/fields/SoSFBox2i32.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
+
+#include "fields/SoSubFieldP.h"
 
 // *************************************************************************
 

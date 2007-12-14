@@ -139,12 +139,13 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

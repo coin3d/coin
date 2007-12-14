@@ -74,7 +74,6 @@
 
 #include <string.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoDB.h>
@@ -92,12 +91,14 @@
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include "../io/SoWriterefCounter.h"
+
+#include "threads/threadsutilp.h"
+#include "io/SoWriterefCounter.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

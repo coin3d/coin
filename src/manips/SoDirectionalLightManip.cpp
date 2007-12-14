@@ -39,7 +39,7 @@
 // doc?). Usage code example. 20011023 mortene.
 
 #include <Inventor/manips/SoDirectionalLightManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -57,6 +57,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "nodes/SoSubNodeP.h"
 
 class SoDirectionalLightManipP {
 public:

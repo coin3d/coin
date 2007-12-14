@@ -56,17 +56,15 @@
 */
 
 #include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/misc/SoState.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/system/gl.h>
-
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -79,7 +77,6 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -87,6 +84,9 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
 
 /*!
   \var SoMFInt32 SoFaceSet::numVertices

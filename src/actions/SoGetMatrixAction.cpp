@@ -80,10 +80,13 @@
 
 
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSubActionP.h>
+
+#include <assert.h>
+
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+
+#include "actions/SoSubActionP.h"
 
 class SoGetMatrixActionP {
 public:

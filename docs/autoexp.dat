@@ -29,4 +29,6 @@ SbRotation=SbRotation(<quat.vec[0],g>, <quat.vec[1],g>, <quat.vec[2],g>, <quat.v
 SoBase=refs=<objdata.referencecount,d>
 SoGroup=kids=<children->numitems,d> refs=<objdata.referencecount,d>
 SoSwitch=which=<whichChild.value,d> kids=<children->nunitems,d> refs=<objdata.referencecount,d>
+SoPrimitiveVertex=point=(<point[0],g>, <point[1],g>, <point[2],g>)
+
 

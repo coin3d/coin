@@ -52,10 +52,7 @@
   \sa SoMultipleCopy
 */
 
-
-
 #include <Inventor/nodes/SoArray.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/nodes/SoSwitch.h> // SO_SWITCH_ALL
 #include <Inventor/actions/SoCallbackAction.h>
@@ -65,6 +62,8 @@
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \enum SoArray::Origin

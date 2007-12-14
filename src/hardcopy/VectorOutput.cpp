@@ -22,8 +22,10 @@
 \**************************************************************************/
 
 #include <Inventor/annex/HardCopy/SoVectorOutput.h>
+
 #include <Inventor/SbBasic.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

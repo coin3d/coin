@@ -30,10 +30,11 @@
 
 // *************************************************************************
 
-#include "SoGLShaderParameter.h"
+#include "shaders/SoGLShaderParameter.h"
 
-#include <Inventor/C/glue/cg.h>
 #include <Inventor/SbString.h>
+
+#include "glue/cg.h"
 
 class SoGLCgShaderObject;
 

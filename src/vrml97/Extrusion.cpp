@@ -315,13 +315,13 @@
   The spine points.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
+
 #include <float.h>
 #include <math.h>
 #include <string.h>
 
-#include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -335,7 +335,6 @@
 #include <Inventor/SbTesselator.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -346,11 +345,13 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
-
-#include "../src/misc/SoVBO.h"
-#include "../src/misc/SoVertexArrayIndexer.h"
 #include <Inventor/caches/SoVBOCache.h>
-#include <Inventor/misc/SbHash.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoGL.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

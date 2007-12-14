@@ -46,13 +46,15 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoPendulum.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

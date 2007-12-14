@@ -42,18 +42,20 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateObject.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFVec3f SoTextureCoordinateObject::factorS

@@ -39,10 +39,12 @@
 
 // *************************************************************************
 
-#include <Inventor/fields/SoGlobalField.h>
+#include "fields/SoGlobalField.h"
+
+#include <assert.h>
+#include <string.h>
 
 #include <Inventor/SoDB.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -51,8 +53,8 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
-#include <assert.h>
-#include <string.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

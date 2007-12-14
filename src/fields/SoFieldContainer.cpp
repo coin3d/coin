@@ -38,17 +38,15 @@
 
 // *************************************************************************
 
+#include <Inventor/fields/SoFieldContainer.h>
+
 #include <string.h>
 #include <assert.h>
 
-#include <Inventor/fields/SoFieldContainer.h>
-
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -59,8 +57,11 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/threads/SbStorage.h>
-#include "../io/SoWriterefCounter.h"
-#include <coindefs.h> // COIN_STUB()
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
+#include "io/SoWriterefCounter.h"
+#include "coindefs.h" // COIN_STUB()
 
 // *************************************************************************
 

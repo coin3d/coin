@@ -21,18 +21,19 @@
  *
 \**************************************************************************/
 
-#include "SoWriterefCounter.h"
+#include "io/SoWriterefCounter.h"
 
 #include <assert.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/nodes/SoNode.h>
+
+#include "tidbitsp.h"
+#include "threads/threadsutilp.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

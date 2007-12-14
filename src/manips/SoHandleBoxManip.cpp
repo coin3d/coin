@@ -35,9 +35,11 @@
 // FIXME: more class documentation? 20010909 mortene.
 
 #include <Inventor/manips/SoHandleBoxManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
+
+#include "nodes/SoSubNodeP.h"
 
 class SoHandleBoxManipP {
 public:

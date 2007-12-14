@@ -45,7 +45,11 @@
 // book on NURBS. 20011220 mortene.
 
 #include <Inventor/nodes/SoIndexedNurbsCurve.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -57,20 +61,16 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/GLUWrapper.h>
 
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "glue/GLUWrapper.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
 
 /*!
   \var SoSFInt32 SoIndexedNurbsCurve::numControlPoints

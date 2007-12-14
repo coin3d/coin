@@ -47,7 +47,11 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoLocateHighlight.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SoFullPath.h>
@@ -57,15 +61,13 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/C/tidbitsp.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

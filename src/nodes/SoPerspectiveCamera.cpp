@@ -50,9 +50,10 @@
 
 #include <assert.h>
 
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -175,23 +175,22 @@
   The attenuiation vector. Default value is (1, 0, 0).
 */
 
+#include <Inventor/VRMLnodes/SoVRMLSpotLight.h>
+
 #include <math.h>
 
-#include <Inventor/VRMLnodes/SoVRMLSpotLight.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
-
+#include <Inventor/system/gl.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/system/gl.h>
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLSpotLight);
 

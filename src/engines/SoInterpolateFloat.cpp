@@ -28,7 +28,8 @@
 */
 
 #include <Inventor/engines/SoInterpolateFloat.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMFFloat SoInterpolateFloat::input0

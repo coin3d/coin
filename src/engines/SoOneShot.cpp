@@ -32,11 +32,12 @@
 #include <Inventor/SoDB.h>
 
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoSFTime SoOneShot::timeIn

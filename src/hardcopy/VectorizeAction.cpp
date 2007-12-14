@@ -167,9 +167,11 @@
 // *************************************************************************
 
 #include <Inventor/annex/HardCopy/SoVectorizeAction.h>
-#include "VectorizeActionP.h"
 
 #include <Inventor/SbViewportRegion.h>
+
+#include "hardcopy/VectorizeActionP.h"
+#include "actions/SoSubActionP.h"
 
 // *************************************************************************
 

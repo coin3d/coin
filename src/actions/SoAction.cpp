@@ -202,12 +202,13 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoCompactPathList.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <coindefs.h> // COIN_OBSOLETED
+
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_OBSOLETED
+#include "misc/SoCompactPathList.h"
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL

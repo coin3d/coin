@@ -31,7 +31,8 @@
 
 */
 
-#include <Inventor/elements/SoTextureScaleQualityElement.h>
+#include "elements/SoTextureScaleQualityElement.h"
+
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoTextureScaleQualityElement);

@@ -86,7 +86,8 @@
 
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

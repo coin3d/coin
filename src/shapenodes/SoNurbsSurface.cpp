@@ -85,32 +85,29 @@
 */
 
 #include <Inventor/nodes/SoNurbsSurface.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_OBSOLETED()
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoPickStyleElement.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
-
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/nodes/SoCallback.h>
-
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/GLUWrapper.h>
 
-
+#include "glue/GLUWrapper.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "coindefs.h" // COIN_OBSOLETED()
 
 /*!
   \var SoSFInt32 SoNurbsSurface::numUControlPoints

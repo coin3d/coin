@@ -42,10 +42,10 @@
   \sa SoScale2UniformDragger
 */
 
+#include <Inventor/draggers/SoScaleUniformDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoScaleUniformDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 
@@ -54,6 +54,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/scaleUniformDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoScaleUniformDragger::scaleFactor

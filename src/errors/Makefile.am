@@ -2,14 +2,13 @@
 ## 19990904 mortene.
 
 RegularSources = \
-	error.c \
-	debugerror.c \
+	error.cpp \
+	debugerror.cpp \
 	SoDebugError.cpp \
 	SoError.cpp \
 	SoMemoryError.cpp \
 	SoReadError.cpp
 LinkHackSources = \
-	all-errors-c.c \
 	all-errors-cpp.cpp
 PublicHeaders =
 PrivateHeaders =
@@ -55,7 +54,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

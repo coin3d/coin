@@ -64,7 +64,7 @@
 
 
 #include <Inventor/nodekits/SoAppearanceKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -73,7 +73,7 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoFont.h>
 
-
+#include "nodekits/SoSubKitP.h"
 
 SO_KIT_SOURCE(SoAppearanceKit);
 

@@ -55,15 +55,11 @@
 // *************************************************************************
 
 #include <Inventor/misc/SoBase.h>
-#include "SoBaseP.h"
 
 #include <assert.h>
 #include <string.h>
 
-#include "../upgraders/SoUpgrader.h"
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -76,12 +72,17 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/fields/SoGlobalField.h>
-#include <Inventor/misc/SbHash.h>
-#include "../io/SoInputP.h"
-#include "../io/SoWriterefCounter.h"
+
+#include "misc/SoBaseP.h"
+#include "nodes/SoUnknownNode.h"
+#include "fields/SoGlobalField.h"
+#include "misc/SbHash.h"
+#include "upgraders/SoUpgrader.h"
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
+#include "io/SoInputP.h"
+#include "io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

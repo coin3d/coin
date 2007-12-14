@@ -70,8 +70,10 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/engines/SoSubNodeEngineP.h>
+
+#include "engines/SoSubNodeEngineP.h"
 
 SO_NODEENGINE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 

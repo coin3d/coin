@@ -49,18 +49,18 @@
 
 // *************************************************************************
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <Inventor/misc/SoAudioDevice.h>
 
-#include <Inventor/C/glue/openal_wrapper.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "AudioTools.h"
+#include "tidbitsp.h"
+#include "misc/AudioTools.h"
+#include "glue/openal_wrapper.h"
 
 // *************************************************************************
 

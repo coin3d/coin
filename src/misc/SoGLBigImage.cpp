@@ -54,29 +54,31 @@
 
 // *************************************************************************
 
+#include <Inventor/misc/SoGLBigImage.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/threads/storage.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

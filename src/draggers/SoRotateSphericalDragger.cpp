@@ -41,16 +41,18 @@
   scenegraph, as usual.
 */
 
+#include <Inventor/draggers/SoRotateSphericalDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoRotateSphericalDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/rotateSphericalDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoRotateSphericalDragger::rotation

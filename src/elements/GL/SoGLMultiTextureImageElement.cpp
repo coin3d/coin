@@ -31,28 +31,29 @@
 
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 
+#include <stdlib.h>
+
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/tidbits.h>
-#include <stdlib.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
-#include <Inventor/elements/SoGLShaderProgramElement.h>
-#include "../../shaders/SoGLShaderProgram.h"
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#include "shaders/SoGLShaderProgram.h"
+#include "misc/SoGL.h" // GL wrapper.
 
 // *************************************************************************
 

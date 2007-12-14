@@ -46,12 +46,13 @@
 
 #include <Inventor/fields/SoSFBitMask.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+
+#include "fields/SoSubFieldP.h"
 
 // *************************************************************************
 

@@ -33,8 +33,10 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLSensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLSensor);
 

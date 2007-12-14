@@ -21,15 +21,16 @@
  *
 \**************************************************************************/
 
-#include "CoinOffscreenGLCanvas.h"
+#include "misc/CoinOffscreenGLCanvas.h"
 
 #include <limits.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

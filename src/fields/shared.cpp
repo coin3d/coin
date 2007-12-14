@@ -37,7 +37,6 @@
 
 #include "shared.h"
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbPlane.h>
@@ -76,6 +75,8 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/nodes/SoNode.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

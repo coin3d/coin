@@ -114,11 +114,11 @@
   Always display bounding box.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLInline.h>
+
 #include <stdlib.h>
 
-#include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SoInput.h>
@@ -133,9 +133,10 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/C/tidbitsp.h>
-
 #include <Inventor/system/gl.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
 
 class SoVRMLInlineP {
 public:

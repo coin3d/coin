@@ -115,7 +115,7 @@
 
 
 #include <Inventor/manips/SoClipPlaneManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoJackDragger.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -139,6 +139,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "nodes/SoSubNodeP.h"
 
 class SoClipPlaneManipP {
 public:

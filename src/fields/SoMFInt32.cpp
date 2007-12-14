@@ -40,11 +40,12 @@
 
 #include <assert.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "fields/SoSubFieldP.h"
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFInt32, int32_t, int32_t);

@@ -2,9 +2,7 @@
 
 SUBDIRS = Inventor
 
-noinst_HEADERS = \
-	coindefs.h \
-	unconfig.h
+EXTRA_DIST = boost.README
 
 if BUILD_LIBRARY
 if ! MAC_FRAMEWORK

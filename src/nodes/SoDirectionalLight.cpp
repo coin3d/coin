@@ -82,7 +82,7 @@
 #include <Inventor/nodes/SoDirectionalLight.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/SbColor4f.h>
@@ -94,8 +94,9 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

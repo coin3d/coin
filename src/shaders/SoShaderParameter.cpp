@@ -46,13 +46,12 @@
 
 #include <assert.h>
 
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SbHash.h>
-
-#include <Inventor/C/glue/cg.h>
-#include "SoGLShaderObject.h"
-#include "SoGLShaderParameter.h"
-#include "SoGLCgShaderParameter.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SbHash.h"
+#include "glue/cg.h"
+#include "shaders/SoGLShaderObject.h"
+#include "shaders/SoGLShaderParameter.h"
+#include "shaders/SoGLCgShaderParameter.h"
 
 /* **************************************************************************
  * *** SoShaderParameter ***

@@ -103,10 +103,11 @@
 #include <Inventor/engines/SoTimeCounter.h>
 
 #include <Inventor/SoDB.h>
-#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <coindefs.h>
+
+#include "engines/SoSubEngineP.h"
+#include "coindefs.h"
 
 // *************************************************************************
 

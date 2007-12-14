@@ -21,10 +21,7 @@
  *
 \**************************************************************************/
 
-#include "SoInput_Reader.h"
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/glue/zlib.h>
-#include <Inventor/C/glue/bzip2.h>
+#include "io/SoInput_Reader.h"
 
 #include <string.h>
 #include <assert.h>
@@ -44,7 +41,11 @@
 #include <sys/stat.h>
 #endif
 
-#include "gzmemio.h"
+#include <Inventor/errors/SoDebugError.h>
+
+#include "io/gzmemio.h"
+#include "glue/zlib.h"
+#include "glue/bzip2.h"
 
 // We don't want to include bzlib.h, so we just define the constants
 // we use here

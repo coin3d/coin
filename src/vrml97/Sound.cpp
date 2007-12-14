@@ -212,9 +212,10 @@
   always applied. Default value is TRUE.  
 */
 
+#include <Inventor/VRMLnodes/SoVRMLSound.h>
+
 #include <stddef.h>
 
-#include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
@@ -225,16 +226,12 @@
 #include <Inventor/elements/SoListenerGainElement.h>
 #include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbTime.h>
-
-#include "../misc/AudioTools.h"
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbCondVar.h>
 #include <Inventor/threads/SbMutex.h>
@@ -242,7 +239,9 @@
 #include <Inventor/C/threads/thread.h>
 #endif // HAVE_THREADS
 
-#include <Inventor/C/glue/openal_wrapper.h>
+#include "misc/AudioTools.h"
+#include "glue/openal_wrapper.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

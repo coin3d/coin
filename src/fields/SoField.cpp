@@ -97,37 +97,39 @@
   \sa SoFieldContainer, SoFieldData
 */
 
+#include <Inventor/fields/SoField.h>
+
 #include <assert.h>
 #include <string.h>
 
 #include <Inventor/fields/SoFields.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/fields/SoGlobalField.h>
-#include "../io/SoWriterefCounter.h"
-#include <coindefs.h> // COIN_STUB()
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
+#include "engines/SoConvertAll.h"
+#include "fields/SoGlobalField.h"
+#include "tidbitsp.h"
+#include "threads/threadsutilp.h"
+#include "io/SoWriterefCounter.h"
+#include "misc/SbHash.h"
+#include "coindefs.h" // COIN_STUB()
 
 #ifdef COIN_THREADSAFE
-#include <Inventor/C/threads/recmutexp.h>
+#include "Inventor/C/threads/recmutexp.h"
 #define SOFIELD_RECLOCK (void) cc_recmutex_internal_field_lock()
 #define SOFIELD_RECUNLOCK (void) cc_recmutex_internal_field_unlock()
 

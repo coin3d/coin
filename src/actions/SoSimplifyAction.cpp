@@ -27,9 +27,12 @@
   action classes.
 */
 
-#include <Inventor/SbName.h>
 #include <Inventor/actions/SoSimplifyAction.h>
-#include <coindefs.h> // COIN_STUB()
+
+#include <Inventor/SbName.h>
+
+#include "coindefs.h" // COIN_STUB()
+#include "actions/SoSubActionP.h"
 
 class SoSimplifyActionP {
 public:

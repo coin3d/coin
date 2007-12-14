@@ -57,10 +57,12 @@
 // 20010809 mortene.
 
 #include <Inventor/nodes/SoColorIndex.h>
+
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoMFInt32 SoColorIndex::index

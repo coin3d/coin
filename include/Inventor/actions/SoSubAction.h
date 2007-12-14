@@ -28,9 +28,6 @@
 // Added to be Inventor compliant.
 #include <Inventor/SbString.h>
 #include <Inventor/actions/SoAction.h>
-#else // !COIN_INTERNAL
-#include <Inventor/SbName.h>
-#include <Inventor/actions/SoSubActionP.h>
 #endif // COIN_INTERNAL
 
 // *************************************************************************

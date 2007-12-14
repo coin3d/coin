@@ -32,11 +32,12 @@
  */
 
 
+#include <Inventor/actions/SoAudioRenderAction.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
@@ -58,6 +59,8 @@
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #endif // HAVE_VRML97
+
+#include "actions/SoSubActionP.h"
 
 class SoAudioRenderActionP
 {

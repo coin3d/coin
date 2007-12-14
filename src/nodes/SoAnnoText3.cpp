@@ -47,7 +47,8 @@
 #include <Inventor/nodes/SoAnnoText3.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

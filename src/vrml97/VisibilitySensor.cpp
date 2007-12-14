@@ -124,13 +124,15 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLVisibilitySensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/fields/SoSFTime.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLVisibilitySensor);
 

@@ -1,40 +1,37 @@
 if BUILD_WITH_THREADS
 RegularSources = \
-	common.c \
-	thread.c \
-	mutex.c \
-	rwmutex.c \
-	storage.c \
-	condvar.c \
-	worker.c \
-	wpool.c \
-	recmutex.c \
-	sched.c \
-	sync.c \
-	fifo.c \
-	barrier.c \
-	threads-dummy.cpp
+	common.cpp \
+	thread.cpp \
+	mutex.cpp \
+	rwmutex.cpp \
+	storage.cpp \
+	condvar.cpp \
+	worker.cpp \
+	wpool.cpp \
+	recmutex.cpp \
+	sched.cpp \
+	sync.cpp \
+	fifo.cpp \
+	barrier.cpp
 else
 RegularSources = \
-	common.c \
-	storage.c \
-	threads-dummy.cpp
+	common.cpp \
+	storage.cpp
 endif
 
 LinkHackSources = \
-	all-threads-c.c \
-	threads-dummy.cpp
+	all-threads-cpp.cpp
 
 PublicHeaders =
 
 PrivateHeaders = \
-	condvar_pthread.ic \
-	condvar_win32.ic \
-	mutex_pthread.ic \
-	mutex_win32cs.ic \
-	mutex_win32mutex.ic \
-	thread_pthread.ic \
-	thread_win32.ic \
+	condvar_pthread.icc \
+	condvar_win32.icc \
+	mutex_pthread.icc \
+	mutex_win32cs.icc \
+	mutex_win32mutex.icc \
+	thread_pthread.icc \
+	thread_win32.icc \
 	wrappers.cpp
 
 ObsoleteHeaders =
@@ -91,7 +88,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

@@ -133,9 +133,10 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/dl.h>
-#include <Inventor/misc/SbHash.h>
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
 
 #include "cppmangle.icc"
 

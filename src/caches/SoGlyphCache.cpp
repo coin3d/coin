@@ -28,14 +28,17 @@
   \internal
 */
 
-#include <Inventor/caches/SoGlyphCache.h>
+#include "caches/SoGlyphCache.h"
+
+#include <assert.h>
+
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
+
+#include "tidbitsp.h"
 
 class SoGlyphCacheP {
 public:

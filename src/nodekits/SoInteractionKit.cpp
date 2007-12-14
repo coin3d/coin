@@ -64,8 +64,9 @@
 
 #include <Inventor/nodekits/SoInteractionKit.h>
 
+#include <stdlib.h>
+
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -74,13 +75,14 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_OBSOLETED()
-#include <stdlib.h>
+
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \enum SoInteractionKit::CacheEnabled

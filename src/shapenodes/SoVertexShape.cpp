@@ -33,7 +33,11 @@
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -44,13 +48,11 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty

@@ -29,9 +29,11 @@
   \sa SoShapeHints
 */
 
-#include "SoShapeHintsV10.h"
-#include <Inventor/nodes/SoSubNodeP.h>
+#include "upgraders/SoShapeHintsV10.h"
+
 #include <Inventor/nodes/SoShapeHints.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -21,13 +21,14 @@
  *
 \**************************************************************************/
 
-#include "SoGLCgShaderObject.h"
+#include "shaders/SoGLCgShaderObject.h"
 
 #include <assert.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include "SoGLCgShaderParameter.h"
-#include <Inventor/C/glue/cg.h>
+
+#include "shaders/SoGLCgShaderParameter.h"
+#include "glue/cg.h"
 
 // *************************************************************************
 

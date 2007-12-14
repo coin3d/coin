@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "soshape_primdata.h"
+#include "shapenodes/soshape_primdata.h"
 
 #include <string.h>
 
@@ -34,7 +34,8 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include "../base/SbGLUTessellator.h"
+
+#include "base/SbGLUTessellator.h"
 
 // *************************************************************************
 

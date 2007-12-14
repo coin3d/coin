@@ -46,7 +46,8 @@
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFRotation.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 // *************************************************************************
 

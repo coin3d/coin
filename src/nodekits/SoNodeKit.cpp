@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/nodekits/SoNodeKit.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
@@ -42,8 +43,9 @@
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
-#include <Inventor/C/tidbitsp.h>
 #include <ForeignFiles/SoForeignFileKit.h>
+
+#include "tidbitsp.h"
 
 static SbBool nodekit_isinitialized = FALSE;
 

@@ -36,25 +36,27 @@
 // and for different contexts. The API should stay the same though.
 // 20001026 mortene (original comment by pederb).
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/SbImage.h>
 
 #include <string.h>
 #include <stdlib.h>
 
-#include <Inventor/SbImage.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h> // for SoInput::searchForFile()
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/glue/simage_wrapper.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "glue/simage_wrapper.h"
 
 class SbImageP {
 public:

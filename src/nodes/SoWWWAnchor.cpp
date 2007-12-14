@@ -65,12 +65,14 @@
 
 
 #include <Inventor/nodes/SoWWWAnchor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/C/tidbitsp.h>
-#include <coindefs.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "coindefs.h"
+#include "tidbitsp.h"
 
 
 /*!

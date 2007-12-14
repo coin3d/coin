@@ -1,22 +1,20 @@
 RegularSources = \
-	cg.c \
-	spidermonkey.c \
-	dl.c \
-	gl.c \
-	gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c \
-	simage_wrapper.c \
-	openal_wrapper.c \
-	win32api.c \
-	zlib.c \
-	bzip2.c \
-	freetype.c \
-	glue-dummy.cpp \
-	normalization_cubemap.c
+	cg.cpp \
+	spidermonkey.cpp \
+	dl.cpp \
+	gl.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_glx.cpp \
+	GLUWrapper.cpp \
+	simage_wrapper.cpp \
+	openal_wrapper.cpp \
+	win32api.cpp \
+	zlib.cpp \
+	bzip2.cpp \
+	freetype.cpp \
+	normalization_cubemap.cpp
 
 LinkHackSources = \
-	all-glue-c.c \
-	glue-dummy.cpp
+	all-glue-cpp.cpp
 
 PublicHeaders =
 PrivateHeaders =
@@ -62,7 +60,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

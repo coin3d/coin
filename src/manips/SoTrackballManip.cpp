@@ -82,9 +82,11 @@
 */
 
 #include <Inventor/manips/SoTrackballManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
+
+#include "nodes/SoSubNodeP.h"
 
 class SoTrackballManipP {
 public:

@@ -57,7 +57,6 @@
 */
 
 #include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
@@ -71,10 +70,12 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGenerate.h"
+#include "misc/SoPick.h"
 
 /*!
   \var SoSFFloat SoCube::width

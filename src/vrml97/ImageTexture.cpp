@@ -176,8 +176,6 @@
 
 #include <assert.h>
 
-#include <Inventor/C/glue/simage_wrapper.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -192,23 +190,25 @@
 #include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/C/threads/sched.h>
-
 // FIXME: should be able to include file without
 // #ifdef-wrapper. 20051202 mortene.
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
+#include "glue/simage_wrapper.h"
+#include "elements/SoTextureScalePolicyElement.h"
 
 // *************************************************************************
 

@@ -173,15 +173,15 @@
 
 // *************************************************************************
 
+#include <Inventor/nodes/SoTexture2.h>
+
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -190,7 +190,6 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -205,11 +204,15 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/tidbitsp.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "tidbitsp.h"
+#include "elements/SoTextureScalePolicyElement.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

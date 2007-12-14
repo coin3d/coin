@@ -40,7 +40,10 @@
 */
 
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -49,15 +52,12 @@
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
+
+#include "misc/SoVBO.h"
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoMFColor SoBaseColor::rgb

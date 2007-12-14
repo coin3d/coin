@@ -31,10 +31,11 @@
 #include <Inventor/SbVec4s.h>
 #include <Inventor/SbVec4i32.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "tidbitsp.h" // coin_debug_normalize()
 
 /*!
   \class SbVec4f SbLinear.h Inventor/SbLinear.h

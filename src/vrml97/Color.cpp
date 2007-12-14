@@ -27,10 +27,6 @@
 
 #ifdef HAVE_VRML97
 
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
-
 /*!
   \class SoVRMLColor SoVRMLColor.h Inventor/VRMLnodes/SoVRMLColor.h
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
@@ -67,7 +63,6 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLColor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -75,7 +70,12 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 class SoVRMLColorP {
  public:

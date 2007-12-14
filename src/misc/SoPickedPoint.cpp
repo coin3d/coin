@@ -35,13 +35,16 @@
 */
 
 #include <Inventor/SoPickedPoint.h>
+
+#include <assert.h>
+
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
+
+#include "tidbitsp.h"
 
 
 //

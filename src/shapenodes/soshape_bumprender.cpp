@@ -21,10 +21,13 @@
  *
 \**************************************************************************/
 
+#include "shapenodes/soshape_bumprender.h"
 
 #include <assert.h>
 
-#include "soshape_bumprender.h"
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbMatrix.h>
@@ -47,20 +50,16 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSpotLight.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 // For coin_apply_normalization_cube_map().
-#include <Inventor/C/glue/glp.h>
+#include "glue/glp.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

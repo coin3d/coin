@@ -177,8 +177,9 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <assert.h>
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
@@ -191,10 +192,12 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include "../io/SoWriterefCounter.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "glue/glp.h"
+#include "io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

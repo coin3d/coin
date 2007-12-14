@@ -50,7 +50,6 @@
 */
 
 #include <Inventor/nodes/SoCoordinate4.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -59,7 +58,9 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 /*!
   \var SoMFVec4f SoCoordinate4::point

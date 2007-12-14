@@ -174,11 +174,13 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLCylinderSensor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbCylinder.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLCylinderSensor);
 

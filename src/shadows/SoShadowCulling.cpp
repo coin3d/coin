@@ -40,14 +40,17 @@
 // *************************************************************************
 
 #include <Inventor/annex/FXViz/nodes/SoShadowCulling.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <stdio.h>
+
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
-#include "../shaders/SoGLShaderProgram.h"
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <stdio.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 

@@ -62,8 +62,9 @@
   \NODEKIT_POST_TABLE
 */
 
+#include <Inventor/nodekits/SoSeparatorKit.h>
+
 #include <Inventor/nodekits/SoShapeKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoPickStyle.h>
@@ -72,6 +73,8 @@
 #include <Inventor/nodes/SoTexture2Transform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+
+#include "nodekits/SoSubKitP.h"
 
 #ifndef DOXYGEN_SKIP_THIS
 

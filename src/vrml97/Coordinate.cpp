@@ -52,13 +52,15 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/actions/SoAction.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 SO_NODE_SOURCE(SoVRMLCoordinate);
 

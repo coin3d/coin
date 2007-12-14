@@ -53,12 +53,13 @@
 
 #include <Inventor/fields/SoSFEnum.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "fields/SoSubFieldP.h"
 
 // *************************************************************************
 

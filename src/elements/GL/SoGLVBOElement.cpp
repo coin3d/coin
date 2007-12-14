@@ -34,15 +34,18 @@
 */
 
 #include <Inventor/elements/SoGLVBOElement.h>
+
+#include <assert.h>
+
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include "../../misc/SoVBO.h"
-#include <assert.h>
+
+#include "misc/SoGL.h"
+#include "glue/glp.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoVBO.h"
 
 #define PRIVATE(obj) obj->pimpl
 

@@ -51,10 +51,12 @@
 */
 
 #include <Inventor/engines/SoSelectOne.h>
+
+#include <string.h>
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
@@ -63,7 +65,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <string.h>
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMField * SoSelectOne::input

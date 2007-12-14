@@ -51,7 +51,6 @@
 */
 
 #include <Inventor/engines/SoConcatenate.h>
-#include <Inventor/engines/SoSubEngineP.h>
 
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
@@ -63,6 +62,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMField * SoConcatenate::input[10]

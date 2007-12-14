@@ -38,14 +38,15 @@
 
 // *************************************************************************
 
-#include <float.h> // FLT_EPSILON
-
 #include <Inventor/caches/SoNormalCache.h>
+
+#include <float.h> // FLT_EPSILON
 
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

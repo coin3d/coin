@@ -42,20 +42,22 @@
  */
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <assert.h>
+
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
 
 static SoTypeList * sonodekitlistpart_deflist = NULL;
 

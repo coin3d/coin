@@ -72,7 +72,12 @@
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -90,17 +95,12 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
-#include <assert.h>
-
-
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
 
 SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 

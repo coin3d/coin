@@ -36,17 +36,18 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
+#include "threads/threadsutilp.h"
 
 // *************************************************************************
 

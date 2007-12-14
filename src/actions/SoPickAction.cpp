@@ -45,7 +45,6 @@
 */
 
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
@@ -55,6 +54,8 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
+
+#include "actions/SoSubActionP.h"
 
 /*!
   \var SbViewportRegion SoPickAction::vpRegion

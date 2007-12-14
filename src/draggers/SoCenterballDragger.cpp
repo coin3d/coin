@@ -89,10 +89,10 @@
   \endverbatim
 */
 
+#include <Inventor/draggers/SoCenterballDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -106,6 +106,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/centerballDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoCenterballDragger::rotation

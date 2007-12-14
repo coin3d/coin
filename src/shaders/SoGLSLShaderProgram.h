@@ -31,8 +31,9 @@
 // *************************************************************************
 
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/C/glue/glp.h>
+
+#include "misc/SbHash.h"
+#include "glue/glp.h"
 
 class SoGLSLShaderObject;
 class SoState;

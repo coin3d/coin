@@ -207,9 +207,6 @@
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
 
-#include "../misc/SoVBO.h"
-#include "../misc/SoVertexArrayIndexer.h"
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -230,15 +227,17 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
+
+#include "misc/SoVBO.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "glue/glp.h"
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

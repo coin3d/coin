@@ -31,7 +31,6 @@
 */
 
 #include <Inventor/nodes/SoProfile.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -40,6 +39,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/elements/SoProfileElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \enum SoProfile::Profile

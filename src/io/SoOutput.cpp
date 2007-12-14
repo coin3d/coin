@@ -62,8 +62,10 @@
 
 // *************************************************************************
 
+#include <Inventor/SoOutput.h>
+
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
@@ -73,24 +75,21 @@
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
 
-#include <Inventor/SoOutput.h>
-
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/zlib.h>
-#include <Inventor/C/glue/bzip2.h>
 
-#include "SoOutput_Writer.h"
-#include "SoWriterefCounter.h"
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
+#include "glue/zlib.h"
+#include "glue/bzip2.h"
+#include "io/SoOutput_Writer.h"
+#include "io/SoWriterefCounter.h"
 
 // *************************************************************************
 

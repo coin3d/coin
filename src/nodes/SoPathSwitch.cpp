@@ -37,7 +37,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoPathSwitch.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -46,6 +46,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

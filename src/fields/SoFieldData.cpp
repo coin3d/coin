@@ -58,7 +58,7 @@
 #include <Inventor/fields/SoFieldData.h>
 
 #include <ctype.h>
-#include <coindefs.h> // COIN_STUB()
+
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -68,8 +68,10 @@
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include "../io/SoInputP.h"
+
+#include "threads/threadsutilp.h"
+#include "io/SoInputP.h"
+#include "coindefs.h" // COIN_STUB()
 
 // *************************************************************************
 

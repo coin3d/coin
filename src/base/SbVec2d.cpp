@@ -43,10 +43,11 @@
 #include <Inventor/SbVec2b.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2i32.h>
-#include <Inventor/C/tidbitsp.h> // coin_debug_normalize()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "tidbitsp.h" // coin_debug_normalize()
 
 // *************************************************************************
 

@@ -61,6 +61,8 @@
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/threads/SbStorage.h>
 
+#include "actions/SoSubActionP.h"
+
 // *************************************************************************
 
 /*!

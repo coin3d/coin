@@ -1,17 +1,17 @@
 RegularSources = \
-	fontlib_wrapper.c \
-	win32.c \
-	freetype.c \
-	fontspec.c \
-	glyph.c \
-	glyph2d.c \
-	glyph3d.c \
-	default3dfont.c \
-	default2dfont.c \
-	common.c
+	fontlib_wrapper.cpp \
+	win32.cpp \
+	freetype.cpp \
+	fontspec.cpp \
+	glyph.cpp \
+	glyph2d.cpp \
+	glyph3d.cpp \
+	default3dfont.cpp \
+	default2dfont.cpp \
+	common.cpp
 
 LinkHackSources = \
-	all-fonts-c.c
+	all-fonts-cpp.cpp
 
 PublicHeaders = 
 
@@ -24,11 +24,11 @@ PrivateHeaders = \
 	glyph2d.h \
 	glyph3d.h \
 	defaultfonts.h \
-	builtin2dfonts.ic \
-	font13.ic \
-	font17.ic \
-	font25.ic \
-	font33.ic \
+	builtin2dfonts.icc \
+	font13.icc \
+	font17.icc \
+	font25.icc \
+	font33.icc \
 	common.h
 
 ObsoleteHeaders =
@@ -78,7 +78,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

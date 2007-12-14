@@ -65,10 +65,9 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLPointSet.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -89,20 +88,20 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include "../misc/SoVBO.h"
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoVBO.h"
 
 static SbBool
 is_material_per_vertex(SoVRMLPointSet * ps, SoState * state)

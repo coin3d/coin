@@ -46,10 +46,8 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SoChildList.h>
-#include <coindefs.h> // COIN_OBSOLETED()
 
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -63,8 +61,11 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
-#include "../io/SoWriterefCounter.h"
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "io/SoWriterefCounter.h"
 
 // *************************************************************************
 

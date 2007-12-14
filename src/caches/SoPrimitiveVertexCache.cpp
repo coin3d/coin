@@ -36,7 +36,6 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -53,14 +52,16 @@
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/SbPlane.h>
-#include "../misc/SoVBO.h"
-#include "../misc/SoVertexArrayIndexer.h"
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
+#include "misc/SoGL.h"
+#include "misc/SoVBO.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

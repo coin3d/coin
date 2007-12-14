@@ -30,22 +30,25 @@
 
 */
 
-#include "SoVBO.h"
+#include "misc/SoVBO.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include "SoVertexArrayIndexer.h"
-#include "../share/gl/CoinGLPerformance.h"
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+
+#include "misc/SoVertexArrayIndexer.h"
+#include "threads/threadsutilp.h"
+#include "glue/glp.h"
+#include "tidbitsp.h"
+#include "share/gl/CoinGLPerformance.h"
+#include "misc/SoGLDriverDatabase.h"
 
 static int vbo_vertex_count_min_limit = -1;
 static int vbo_vertex_count_max_limit = -1;

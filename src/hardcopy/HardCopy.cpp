@@ -114,11 +114,13 @@
 // *************************************************************************
 
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
+
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizeCGMAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizeHPGLAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizeGDIAction.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

@@ -150,27 +150,28 @@
   This eventOut is sent when the sound starts/stops playing.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+
 #include <string.h>
 #include <stdio.h> // for EOF
 
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #include <Inventor/threads/SbThreadAutoLock.h>
 #endif
 
-#include <Inventor/C/glue/simage_wrapper.h>
+#include "nodes/SoSubNodeP.h"
+#include "glue/simage_wrapper.h"
+#include "tidbitsp.h"
 
 #define DEBUG_AUDIO 0
 

@@ -36,15 +36,15 @@
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
+
+#include "glue/glp.h"
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

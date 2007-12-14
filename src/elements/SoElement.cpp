@@ -264,6 +264,8 @@
 
 // *************************************************************************
 
+#include <Inventor/elements/SoElement.h>
+
 #include <stdlib.h>
 #include <assert.h>
 
@@ -281,11 +283,12 @@
 
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
-#include <Inventor/elements/SoTextureScalePolicyElement.h> // internal element
-#include <Inventor/elements/SoTextureScaleQualityElement.h> // internal  element
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "elements/SoTextureScalePolicyElement.h" // internal element
+#include "elements/SoTextureScaleQualityElement.h" // internal  element
+#include "tidbitsp.h"
 
 // *************************************************************************
 

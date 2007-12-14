@@ -37,9 +37,9 @@
   \sa SoEvent
 */
 
-#include <Inventor/SbViewportRegion.h>
 #include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoSubActionP.h>
+
+#include <Inventor/SbViewportRegion.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -50,6 +50,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/misc/SoState.h>
 
+#include "actions/SoSubActionP.h"
 
 // *************************************************************************
 

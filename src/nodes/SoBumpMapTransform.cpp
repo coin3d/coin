@@ -47,12 +47,14 @@
 */
 
 #include <Inventor/nodes/SoBumpMapTransform.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFVec2f SoBumpMapTransform::translation

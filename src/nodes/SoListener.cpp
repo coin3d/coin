@@ -53,12 +53,12 @@
   \sa SoVRMLSound
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <Inventor/nodes/SoListener.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -67,6 +67,8 @@
 #include <Inventor/elements/SoListenerOrientationElement.h>
 #include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFVec3f SoListener::position

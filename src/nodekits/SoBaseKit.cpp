@@ -509,7 +509,12 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
+#include <stdlib.h>
+#include <limits.h>
+#include <ctype.h>
+#include <string.h>
+
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCallback.h>
@@ -528,14 +533,12 @@
 #include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/lists/SoNodeList.h>
 #include <Inventor/errors/SoReadError.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <ctype.h>
-#include <string.h>
 #include <Inventor/C/tidbits.h> // coin_isspace()
-#include <coindefs.h> // COIN_OBSOLETED()
-#include "../io/SoWriterefCounter.h"
 #include <Inventor/errors/SoDebugError.h>
+
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "io/SoWriterefCounter.h"
+#include "nodekits/SoSubKitP.h"
 
 class SoBaseKitP {
 public:

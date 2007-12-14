@@ -63,10 +63,13 @@
 */
 
 #include <Inventor/nodes/SoFrustumCamera.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <math.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbSphere.h>
-#include <math.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoFrustumCamera);
 

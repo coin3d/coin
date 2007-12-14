@@ -69,10 +69,10 @@
   \sa SoTransformerManip
 */
 
+#include <Inventor/draggers/SoTransformerDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -94,7 +94,8 @@
 
 #include <data/draggerDefaults/transformerDragger.h>
 
-#include <coindefs.h> // COIN_STUB() & COIN_OBSOLETED()
+#include "coindefs.h" // COIN_STUB() & COIN_OBSOLETED()
+#include "nodekits/SoSubKitP.h"
 
 // FIXME, bugs or missing features (pederb, 20000224):
 // o some feedback is missing (mostly crosshair)

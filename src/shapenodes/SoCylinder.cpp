@@ -81,11 +81,12 @@
 */
 
 #include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <math.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
 #include <Inventor/SbCylinder.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
@@ -99,11 +100,12 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
-#include <math.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGenerate.h"
+#include "misc/SoPick.h"
 
 #define CYL_SIDE_NUMTRIS 40.0f
 

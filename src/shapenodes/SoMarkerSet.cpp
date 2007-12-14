@@ -57,9 +57,15 @@
 // FIXME: change standard markers to use GL_UNPACK_ALIGNMENT 1, instead of 4, as it is now... skei 200009005
 
 #include <Inventor/nodes/SoMarkerSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/misc/SoState.h>
 
+#include <math.h>
+#include <string.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -76,21 +82,14 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <Inventor/C/tidbitsp.h>
-#include <math.h>
-#include <string.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/system/gl.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <coindefs.h> // COIN_OBSOLETED
+#include "coindefs.h" // COIN_OBSOLETED
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \enum SoMarkerSet::MarkerType

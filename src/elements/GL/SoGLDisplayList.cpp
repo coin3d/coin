@@ -42,14 +42,15 @@
 #include <assert.h>
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "glue/glp.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
 
 class SoGLDisplayListP {
  public:

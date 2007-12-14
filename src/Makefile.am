@@ -37,7 +37,7 @@ SUBDIRS = \
 	3ds collision hardcopy shadows geo threads mpeg shaders \
 	$(VRML97DIR) foreignfiles .
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # **************************************************************************
 
@@ -78,9 +78,8 @@ endif
 # Source code files for local build & dist.
 
 RegularSources = \
-	tidbits.c \
-	share/gl/CoinGLPerformance.cpp \
-	coin-dummy.cpp
+	tidbits.cpp \
+	share/gl/CoinGLPerformance.cpp
 
 PrivateHeaders = \
 	share/gl/CoinGLPerformance.h

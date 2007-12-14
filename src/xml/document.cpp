@@ -100,7 +100,8 @@
 // *************************************************************************
 
 /*!
-  \typedef struct cc_xml_doc cc_xml_doc
+  \var typedef struct cc_xml_doc cc_xml_doc
+  \brief opaque container object type for XML documents
 
   This type is an opaque container object type for an XML document structure,
   and also the interface for configuring the parsing and writing code.

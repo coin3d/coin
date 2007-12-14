@@ -49,7 +49,6 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoPackedColor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -57,7 +56,9 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/C/tidbits.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 
 // *************************************************************************

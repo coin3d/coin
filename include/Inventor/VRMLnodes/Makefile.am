@@ -74,8 +74,7 @@ PublicHeaders = \
 	SoVRMLViewpoint.h \
 	SoVRMLVisibilitySensor.h \
 	SoVRMLWorldInfo.h
-PrivateHeaders = \
-	SoVRMLSubInterpolatorP.h
+PrivateHeaders =
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(VRMLnodes, VRMLnodes)

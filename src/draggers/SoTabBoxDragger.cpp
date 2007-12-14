@@ -45,10 +45,10 @@
   SoTabPlaneDragger instances set up as the sides of a box.
 */
 
+#include <Inventor/draggers/SoTabBoxDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoTabBoxDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -56,6 +56,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/tabBoxDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoTabBoxDragger::translation

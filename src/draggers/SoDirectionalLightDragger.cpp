@@ -48,10 +48,10 @@
   \sa SoDirectionalLightManip
 */
 
+#include <Inventor/draggers/SoDirectionalLightDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoDirectionalLightDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -60,6 +60,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/directionalLightDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoDirectionalLightDragger::rotation

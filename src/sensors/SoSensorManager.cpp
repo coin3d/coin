@@ -73,30 +73,32 @@
 // *************************************************************************
 
 #include <Inventor/sensors/SoSensorManager.h>
-#include <Inventor/sensors/SoDelayQueueSensor.h>
-#include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/sensors/SoAlarmSensor.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/misc/SbHash.h>
-#include <coindefs.h> // COIN_STUB()
-#include <Inventor/errors/SoDebugError.h>
+
+#include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
-
-#include <assert.h>
 
 // FIXME: find fd_set definition properly through something configure
 // based.  19991214 mortene.  (Note: fd_set is in time.h under AIX?)
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
+
+#include <Inventor/sensors/SoDelayQueueSensor.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/sensors/SoAlarmSensor.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbTime.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
+#include "misc/SbHash.h"
+#include "coindefs.h" // COIN_STUB()
 
 // *************************************************************************
 

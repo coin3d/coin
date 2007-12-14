@@ -31,12 +31,14 @@
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 
-#include <Inventor/C/tidbits.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <assert.h>
 #include <stdlib.h>
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
 
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 

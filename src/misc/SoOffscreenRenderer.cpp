@@ -220,8 +220,10 @@
 
 // *************************************************************************
 
+#include <Inventor/SoOffscreenRenderer.h>
+
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
@@ -230,13 +232,10 @@
 #include <limits.h> // SHRT_MAX
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoCullElement.h>
@@ -253,9 +252,11 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbTime.h>
-#include <coindefs.h> // COIN_STUB()
+
+#include "glue/simage_wrapper.h"
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_STUB()
 
 // *************************************************************************
 

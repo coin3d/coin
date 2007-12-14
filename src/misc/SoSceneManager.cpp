@@ -43,11 +43,10 @@
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -67,7 +66,8 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/SoEventManager.h>
 
-#include "SoSceneManagerP.h"
+#include "tidbitsp.h"
+#include "misc/SoSceneManagerP.h"
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)

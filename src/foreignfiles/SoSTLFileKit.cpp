@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include <ForeignFiles/SoSTLFileKit.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -36,13 +38,11 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoInfo.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SoPrimitiveVertex.h>
 
 #include "steel.h"
-
-#include <ForeignFiles/SoSTLFileKit.h>
+#include "nodekits/SoSubKitP.h"
 
 
 #if 0

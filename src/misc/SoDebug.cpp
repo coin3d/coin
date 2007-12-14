@@ -21,19 +21,22 @@
  *
 \**************************************************************************/
 
+#include <SoDebug.h>
+
 #include <stdarg.h>
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <SoDebug.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/SbName.h>
+
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

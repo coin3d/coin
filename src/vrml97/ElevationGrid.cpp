@@ -259,10 +259,10 @@
   Specifies whether normals should be applied per vertex. Default value is TRUE.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
+
 #include <float.h>
 
-#include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -283,6 +283,8 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

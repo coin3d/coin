@@ -62,12 +62,12 @@
   When TRUE, normals are applied per vertex. Default value is TRUE.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
+
 #include <stddef.h>
 
-#include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -75,10 +75,11 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/errors/SoDebugError.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -98,13 +98,14 @@
 */
 
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/errors/SoDebugError.h>
-#include "../io/SoWriterefCounter.h"
+
+#include "actions/SoSubActionP.h"
+#include "io/SoWriterefCounter.h"
 
 class SoWriteActionP {
 public:

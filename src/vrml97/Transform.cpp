@@ -175,12 +175,14 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLTransform.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLTransform);
 

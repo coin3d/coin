@@ -31,10 +31,12 @@
 
 #include <Inventor/misc/SoNormalGenerator.h>
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/tidbitsp.h>
-#include <coindefs.h> // COIN_OBSOLETED()
 #include <stdio.h>
+
+#include <Inventor/errors/SoDebugError.h>
+
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_OBSOLETED()
 
 /*!
   Constructor with \a isccw indicating if polygons are specified

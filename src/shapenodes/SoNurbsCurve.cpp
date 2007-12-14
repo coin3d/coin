@@ -86,7 +86,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -101,11 +100,13 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+
+#include "glue/GLUWrapper.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "coindefs.h" // COIN_OBSOLETED()
 
 // *************************************************************************
 

@@ -163,7 +163,6 @@
 #include <float.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -176,11 +175,12 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SbRotation.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
 
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

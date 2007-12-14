@@ -237,13 +237,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
+
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

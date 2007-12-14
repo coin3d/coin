@@ -27,25 +27,27 @@
   \ingroup caches
 */
 
+#include <Inventor/caches/SoGLCacheList.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
+
+#include "tidbitsp.h"
+#include "glue/glp.h"
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

@@ -64,7 +64,9 @@
 */
 
 #include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <assert.h>
+#include <math.h>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
@@ -78,18 +80,16 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
-
-#include <assert.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoPick.h"
+#include "misc/SoGenerate.h"
 
 /*!
   \enum SoCone::Part

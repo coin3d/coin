@@ -115,7 +115,6 @@
 
 #include <Inventor/VRMLnodes/SoVRMLLOD.h>
 
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -127,12 +126,13 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
 
-#include "../nodes/SoSoundElementHelper.h"
+#include "glue/glp.h"
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
+#include "nodes/SoSoundElementHelper.h"
 
 // *************************************************************************
 

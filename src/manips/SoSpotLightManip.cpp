@@ -62,7 +62,7 @@
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/draggers/SoSpotLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -80,6 +80,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "nodes/SoSubNodeP.h"
 
 class SoSpotLightManipP {
 public:

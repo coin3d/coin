@@ -38,6 +38,7 @@
  */
 
 #include <Inventor/SoInteraction.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/manips/SoCenterballManip.h>
@@ -55,7 +56,8 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 static SbBool interaction_isinitialized = FALSE;
 

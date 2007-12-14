@@ -50,16 +50,15 @@
 // FIXME: Should include an URL-link to the default geometry-file?
 // Plus a small usage example.  20010909 mortene.
 
-#include <string.h>
-
 #include <Inventor/draggers/SoDragPointDragger.h>
+
+#include <string.h>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -67,6 +66,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/dragPointDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoDragPointDragger::translation

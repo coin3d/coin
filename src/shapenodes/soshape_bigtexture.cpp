@@ -21,7 +21,14 @@
  *
 \**************************************************************************/
 
-#include "soshape_bigtexture.h"
+#include "shapenodes/soshape_bigtexture.h"
+
+#include <stdlib.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SbClip.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -35,11 +42,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/C/tidbits.h>
-#include <stdlib.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 #include <Inventor/system/gl.h>
 
 soshape_bigtexture::soshape_bigtexture(void)

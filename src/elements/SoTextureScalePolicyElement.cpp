@@ -30,8 +30,7 @@
   installed, and the API for this element might change without notice.  
 */
 
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
-
+#include "elements/SoTextureScalePolicyElement.h"
 
 #include <assert.h>
 

@@ -173,15 +173,17 @@
   Children bounding box size hint. Default value is (-1, -1, -1).
 */
 
+#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
+
 #include <stdlib.h>
 
-#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // static members
 SoVRMLAnchorCB * SoVRMLAnchor::fetchurlcb;

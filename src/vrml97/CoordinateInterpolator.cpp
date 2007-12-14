@@ -53,9 +53,11 @@
 
 */
 #include <Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/engines/SoSubNodeEngineP.h>
 #include <Inventor/lists/SbList.h>
+
+#include "engines/SoSubNodeEngineP.h"
 
 #ifndef DOXYGEN_SKIP_THIS
 

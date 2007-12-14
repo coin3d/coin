@@ -159,7 +159,8 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
-#include "SbTri3f.h"
+#include "actions/SoSubActionP.h"
+#include "collision/SbTri3f.h"
 
 // *************************************************************************
 

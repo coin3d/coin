@@ -33,18 +33,19 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

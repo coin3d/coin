@@ -47,17 +47,19 @@
   transformation node in your scenegraph, as usual.
 */
 
-#include <string.h>
-
 #include <Inventor/draggers/SoRotateDiscDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
+#include <string.h>
+#include <math.h>
+
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <math.h>
 
 #include <data/draggerDefaults/rotateDiscDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoRotateDiscDragger::rotation

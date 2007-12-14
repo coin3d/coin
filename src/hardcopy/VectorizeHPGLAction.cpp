@@ -35,7 +35,9 @@
 #include <Inventor/annex/HardCopy/SoVectorizeHPGLAction.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include "VectorizeActionP.h"
+
+#include "hardcopy/VectorizeActionP.h"
+#include "actions/SoSubActionP.h"
 
 // *************************************************************************
 

@@ -173,30 +173,31 @@
 #include <Inventor/nodes/SoNode.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
 #include <stdlib.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
+#include "nodes/SoUnknownNode.h"
+#include "threads/threadsutilp.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

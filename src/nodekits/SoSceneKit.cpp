@@ -57,17 +57,18 @@
 */
 
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include  "nodekits/SoSubKitP.h"
 
 SO_KIT_SOURCE(SoSceneKit);
 

@@ -30,7 +30,8 @@
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFRotation.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 SO_ENGINE_SOURCE(SoComposeRotationFromTo);
 

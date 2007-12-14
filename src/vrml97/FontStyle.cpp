@@ -249,8 +249,10 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLFontStyle);
 

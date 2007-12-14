@@ -26,17 +26,17 @@
 
 // *************************************************************************
 
+#include "misc/SoGL.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -58,13 +58,15 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/threads/SbStorage.h>
+
+#include "glue/GLUWrapper.h"
+#include "tidbitsp.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

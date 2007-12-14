@@ -53,7 +53,6 @@
 // pederb, 2005-02-28
 
 #include <Inventor/nodes/SoTextureUnit.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -66,6 +65,8 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFInt32 SoTextureUnit::unit

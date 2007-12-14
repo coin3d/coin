@@ -90,19 +90,18 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLPointLight.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
 #include <Inventor/system/gl.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLPointLight);
 

@@ -44,10 +44,11 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

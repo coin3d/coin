@@ -109,12 +109,13 @@
 
 #include <stdlib.h> // free()
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "fields/SoSubFieldP.h"
 
 // *************************************************************************
 

@@ -21,9 +21,7 @@
  *
 \**************************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/navigation/SoNavigationSystem.h>
 
 #include <assert.h>
 #include <stdio.h>
@@ -48,11 +46,14 @@
 #include <Inventor/navigation/SoYawMode.h>
 #include <Inventor/navigation/SoCenterMode.h>
 #include <Inventor/navigation/SoOrthoCenterMode.h>
-#include <Inventor/navigation/SoNavigationSystem.h>
 
-#include <Inventor/misc/SbHash.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
-#include "SoEvent.h"
+#include "misc/SbHash.h"
+
+#include "navigation/SoEvent.h"
 
 // *************************************************************************
 

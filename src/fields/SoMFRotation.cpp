@@ -36,10 +36,10 @@
 
 #include <Inventor/fields/SoMFRotation.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "shared.h"
+#include "fields/SoSubFieldP.h"
+#include "fields/shared.h"
 
 // *************************************************************************
 

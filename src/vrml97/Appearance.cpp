@@ -78,10 +78,10 @@
   Can contain an SoVRMLTextureTransform node. Is NULL by default.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLAppearance.h>
+
 #include <stddef.h>
 
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/VRMLnodes/SoVRMLMaterial.h>
@@ -96,6 +96,8 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

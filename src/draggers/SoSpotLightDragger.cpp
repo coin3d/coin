@@ -50,10 +50,11 @@
   \sa SoDirectionalLightDragger, SoPointLightDragger
 */
 
+#include <Inventor/draggers/SoSpotLightDragger.h>
+
+#include <math.h>
 #include <string.h>
 
-#include <Inventor/draggers/SoSpotLightDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -64,10 +65,10 @@
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
-#include <math.h>
 
 #include <data/draggerDefaults/spotLightDragger.h>
 
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoSpotLightDragger::rotation

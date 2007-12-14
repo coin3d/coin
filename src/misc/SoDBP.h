@@ -34,7 +34,8 @@
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SbString.h>
-#include <Inventor/misc/SbHash.h>
+
+#include "misc/SbHash.h"
 
 class SoSensor;
 

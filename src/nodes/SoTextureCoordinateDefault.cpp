@@ -40,10 +40,11 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

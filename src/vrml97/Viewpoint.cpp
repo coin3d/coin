@@ -292,9 +292,12 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLViewpoint.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <math.h>
+
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLViewpoint);
 

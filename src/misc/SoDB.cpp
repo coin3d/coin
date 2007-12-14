@@ -316,23 +316,22 @@
   any of the other Coin classes.
 */
 
+#include <Inventor/SoDB.h>
+
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include <stdarg.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
 
-#include <Inventor/SoDB.h>
-
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
@@ -342,9 +341,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoProto.h>
@@ -355,13 +352,10 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include "SoVBO.h"
 
-#include <coindefs.h> // COIN_STUB()
+#include "shaders/SoShader.h"
+#include "geo/SoGeo.h"
 
-#include "../shaders/SoShader.h"
-#include "../geo/SoGeo.h"
 #include <Inventor/navigation/SoNavigation.h>
 
 #ifdef HAVE_VRML97
@@ -370,17 +364,26 @@
 #endif // HAVE_VRML97
 
 #ifdef HAVE_THREADS
-#include <Inventor/C/threads/threadp.h>
+#include "threads/threadp.h"
 #endif // HAVE_THREADS
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
-#include <Inventor/C/threads/recmutexp.h>
+#include "threads/recmutexp.h"
 #endif // COIN_THREADSAFE
 
-#include "CoinStaticObjectInDLL.h"
-#include "systemsanity.icc"
-#include "SoDBP.h"
+#include "fields/SoGlobalField.h"
+#include "misc/SoGLDriverDatabase.h"
+
+#include "misc/CoinStaticObjectInDLL.h"
+#include "misc/SoDBP.h"
+
+#include "coindefs.h" // COIN_STUB()
+#include "tidbitsp.h"
+#include "misc/SoVBO.h"
+#include "misc/SbHash.h"
+
+#include "misc/systemsanity.icc"
 
 static SbString * coin_versionstring = NULL;
 

@@ -43,10 +43,10 @@
   \sa SoTranslate1Dragger, SoDragPointDragger
 */
 
+#include <Inventor/draggers/SoTranslate2Dragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoTranslate2Dragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
@@ -54,6 +54,8 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 
 #include <data/draggerDefaults/translate2Dragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 #define CONSTRAINT_OFF  0
 #define CONSTRAINT_WAIT 1

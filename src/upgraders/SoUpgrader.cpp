@@ -33,21 +33,20 @@
 
 // *************************************************************************
 
-#include "SoUpgrader.h"
+#include "upgraders/SoUpgrader.h"
 
 #include <stddef.h> // for NULL
 #include <assert.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SbHash.h>
 
-#include "../io/SoInputP.h"
-
-#include "SoPackedColorV20.h"
-#include "SoShapeHintsV10.h"
+#include "tidbitsp.h"
+#include "io/SoInputP.h"
+#include "misc/SbHash.h"
+#include "upgraders/SoPackedColorV20.h"
+#include "upgraders/SoShapeHintsV10.h"
 
 // *************************************************************************
 

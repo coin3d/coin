@@ -110,17 +110,19 @@
   An eventOut that is sent when the node is bound/unbound.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLFog.h>
+
 #include <string.h>
 
-#include <Inventor/VRMLnodes/SoVRMLFog.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoLightAttenuationElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+
+#include "nodes/SoSubNodeP.h"
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)

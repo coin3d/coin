@@ -84,7 +84,6 @@
 // its values on the stack. ????-??-?? pederb.
 
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -101,7 +100,9 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 /*!
   \enum SoVertexProperty::Binding

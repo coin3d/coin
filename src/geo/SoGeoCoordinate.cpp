@@ -42,7 +42,6 @@
 #include <Inventor/nodes/SoGeoCoordinate.h>
 
 #include <Inventor/nodes/SoGeoOrigin.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -50,11 +49,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 
-#include "SoGeo.h"
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include "nodes/SoSubNodeP.h"
+#include "geo/SoGeo.h"
 
 // *************************************************************************
 

@@ -57,7 +57,6 @@
 */
 
 #include <Inventor/nodes/SoComplexity.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -70,6 +69,8 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \enum SoComplexity::Type

@@ -60,21 +60,25 @@
 // FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <stdlib.h>
+#include <float.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/C/tidbitsp.h>
-#include <stdlib.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-#include <float.h>
+
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

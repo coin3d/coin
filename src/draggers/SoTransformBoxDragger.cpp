@@ -51,10 +51,10 @@
   \sa SoTransformBoxManip
 */
 
+#include <Inventor/draggers/SoTransformBoxDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoTransformBoxDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/draggers/SoScaleUniformDragger.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -66,6 +66,8 @@
 #include <Inventor/errors/SoDebugError.h>
 
 #include <data/draggerDefaults/transformBoxDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoTransformBoxDragger::rotation

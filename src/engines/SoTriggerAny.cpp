@@ -32,7 +32,8 @@
 
 #include <Inventor/engines/SoTriggerAny.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoSFTrigger SoTriggerAny::input0

@@ -1,20 +1,21 @@
-#include "SoDBP.h"
+#include "misc/SoDBP.h"
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
-#include "../3ds/3dsLoader.h"
+#include "3ds/3dsLoader.h"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
+
+#include "fields/SoGlobalField.h"
 
 #ifdef COIN_THREADSAFE
 class SbRWMutex * SoDBP::globalmutex = NULL;

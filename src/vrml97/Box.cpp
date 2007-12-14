@@ -77,20 +77,20 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLBox.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGenerate.h"
+#include "misc/SoPick.h"
 
 SO_NODE_SOURCE(SoVRMLBox);
 

@@ -73,7 +73,7 @@ Separator {
 
 
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -81,6 +81,8 @@ Separator {
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoGLModelMatrixElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 

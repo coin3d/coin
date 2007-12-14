@@ -43,6 +43,10 @@
   \sa SoMouseButtonEvent, SoSpaceballButtonEvent
   \sa SoEventCallback, SoHandleEventAction */
 
+#include <Inventor/events/SoEvent.h>
+
+#include <assert.h>
+
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoSpaceballButtonEvent.h>
@@ -50,8 +54,8 @@
 #include <Inventor/events/SoMotion3Event.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbName.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
+
+#include "tidbitsp.h"
 
 SO_EVENT_SOURCE(SoEvent);
 

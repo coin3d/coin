@@ -42,12 +42,14 @@
 */
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #include <Inventor/SbName.h>
-#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
+
+#include "actions/SoSubActionP.h"
 
 class SoGetPrimitiveCountActionP {
 public:

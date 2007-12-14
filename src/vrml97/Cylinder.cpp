@@ -106,9 +106,10 @@
   Enable/disable the cylinder bottom. Default value is TRUE.
 */
 
-
 #include <Inventor/VRMLnodes/SoVRMLCylinder.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <math.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -118,12 +119,13 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <math.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGenerate.h"
+#include "misc/SoPick.h"
 
 #define CYL_SIDE_NUMTRIS 40.0f
 

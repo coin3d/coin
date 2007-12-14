@@ -113,14 +113,17 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLTextureTransform.h>
+
+#include <math.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
-#include <math.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLTextureTransform);
 

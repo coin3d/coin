@@ -56,10 +56,10 @@
   \sa SoTrackballManip
 */
 
+#include <Inventor/draggers/SoTrackballDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoTrackballDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -82,6 +82,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFRotation SoTrackballDragger::rotation

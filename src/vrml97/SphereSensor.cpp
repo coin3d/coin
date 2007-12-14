@@ -130,9 +130,11 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLSphereSensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLSphereSensor);
 

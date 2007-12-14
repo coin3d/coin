@@ -34,10 +34,13 @@
 // implementation a bit. 20020119 mortene.
 
 #include <Inventor/SoNodeKitPath.h>
+
+#include <stdlib.h>
+
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/C/tidbitsp.h>
-#include <stdlib.h>
+
+#include "tidbitsp.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

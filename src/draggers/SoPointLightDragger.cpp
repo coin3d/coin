@@ -44,15 +44,17 @@
   \sa SoPointLightManip
 */
 
+#include <Inventor/draggers/SoPointLightDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoPointLightDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/pointLightDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoPointLightDragger::translation

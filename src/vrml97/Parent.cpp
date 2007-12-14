@@ -33,8 +33,8 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -42,11 +42,12 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoInfo.h>
-#include <Inventor/C/tidbitsp.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

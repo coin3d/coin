@@ -169,7 +169,13 @@
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/misc/SoState.h>
@@ -177,15 +183,9 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -203,22 +203,21 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/lists/SbList.h>
-#include <assert.h>
-
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/threads/threadsutilp.h>
-
-#include "../misc/SoVertexArrayIndexer.h"
-#include "../misc/SoVBO.h"
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
+#include "threads/threadsutilp.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoVBO.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // for concavestatus
 #define STATUS_UNKNOWN 0

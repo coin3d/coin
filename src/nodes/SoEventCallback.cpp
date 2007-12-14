@@ -69,7 +69,8 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

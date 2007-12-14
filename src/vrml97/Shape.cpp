@@ -99,15 +99,14 @@
   Bounding box caching strategy. Default value is AUTO.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+
 #include <stddef.h>
 
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 #include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
@@ -123,15 +122,16 @@
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/caches/SoGLCacheList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-
 #include <Inventor/system/gl.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

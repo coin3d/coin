@@ -52,8 +52,10 @@
 #include <Inventor/nodes/SoBaseColor.h>
 #include <assert.h>
 
+#include "actions/SoSubActionP.h"
+
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 /*!

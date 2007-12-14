@@ -72,8 +72,10 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLColorInterpolator.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/engines/SoSubNodeEngineP.h>
+
+#include "engines/SoSubNodeEngineP.h"
 
 SO_NODEENGINE_SOURCE(SoVRMLColorInterpolator);
 

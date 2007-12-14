@@ -51,7 +51,10 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoSpotLight.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
@@ -62,11 +65,9 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/errors/SoDebugError.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -21,20 +21,21 @@
  *
 \**************************************************************************/
 
-#include "AudioTools.h"
+#include "misc/AudioTools.h"
 
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/SbString.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/openal_wrapper.h>
+
+#include "tidbitsp.h"
+#include "glue/openal_wrapper.h"
 
 // *************************************************************************
 

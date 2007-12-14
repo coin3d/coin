@@ -68,25 +68,24 @@
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/system/gl.h>
 #include <Inventor/C/tidbits.h> // coin_getenv()
-#include <Inventor/C/glue/glp.h>
+#include <Inventor/threads/SbStorage.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
-
-#include <Inventor/system/gl.h>
-#include <coindefs.h> // COIN_OBSOLETED()
-#include <Inventor/threads/SbStorage.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "nodes/SoSubNodeP.h"
+#include "glue/glp.h"
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

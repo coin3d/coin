@@ -65,10 +65,10 @@
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/nodes/SoShaderObject.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 
-#include "SoGLShaderProgram.h"
+#include "nodes/SoSubNodeP.h"
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 

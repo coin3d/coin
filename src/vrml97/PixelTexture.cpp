@@ -80,12 +80,12 @@
   The image data.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLPixelTexture.h>
+
 #include <assert.h>
 #include <stddef.h>
 
-#include <Inventor/VRMLnodes/SoVRMLPixelTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -95,17 +95,18 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
+#include "elements/SoTextureScalePolicyElement.h"
 
 // *************************************************************************
 

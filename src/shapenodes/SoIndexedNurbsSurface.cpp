@@ -49,7 +49,11 @@
 // FIXME: more class doc. Usage example! 20011220 mortene.
 
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -57,20 +61,16 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/GLUWrapper.h>
 
-#include <coindefs.h> // COIN_OBSOLETED()
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "glue/GLUWrapper.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
 
 /*!
   \var SoSFInt32 SoIndexedNurbsSurface::numUControlPoints

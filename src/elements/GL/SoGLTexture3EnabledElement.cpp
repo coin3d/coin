@@ -36,13 +36,12 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
-
-#include <Inventor/misc/SoGL.h> // GL wrapper.
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoGL.h" // GL wrapper.
 
 
 SO_ELEMENT_SOURCE(SoGLTexture3EnabledElement);

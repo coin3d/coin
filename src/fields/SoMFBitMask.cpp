@@ -36,12 +36,13 @@
 #include <Inventor/fields/SoMFBitMask.h>
 
 #include <assert.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
 #include <Inventor/fields/SoSFBitMask.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "fields/SoSubFieldP.h"
 
 SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);
 

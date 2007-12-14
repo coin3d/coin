@@ -52,8 +52,6 @@
 
 #include <Inventor/fields/SoSFEngine.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
-
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -65,6 +63,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "fields/SoSubFieldP.h"
 
 // Can't use SO_SFIELD_SOURCE() because we need to modify setValue()
 // to ref and unref the passed engine.

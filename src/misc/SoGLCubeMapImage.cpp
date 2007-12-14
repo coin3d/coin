@@ -32,34 +32,35 @@
 
 // *************************************************************************
 
+#include <Inventor/misc/SoGLCubeMapImage.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/threads/storage.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLCubeMapImage.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/misc/SoContextHandler.h>
-
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
+#include "glue/glp.h"
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

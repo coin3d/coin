@@ -218,8 +218,8 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLTouchSensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -227,6 +227,8 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/SbMatrix.h>
+
+#include "nodes/SoSubNodeP.h"
 
 //
 // returns the current time. First tries the realTime field, then

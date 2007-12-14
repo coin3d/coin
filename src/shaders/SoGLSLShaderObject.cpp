@@ -21,13 +21,15 @@
  *
 \**************************************************************************/
 
-#include "SoGLSLShaderObject.h"
+#include "shaders/SoGLSLShaderObject.h"
+
+#include <assert.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/system/gl.h>
-#include "SoGLSLShaderParameter.h"
-#include <assert.h>
+
+#include "glue/glp.h"
+#include "shaders/SoGLSLShaderParameter.h"
 
 static int32_t soglshaderobject_idcounter = 1;
 

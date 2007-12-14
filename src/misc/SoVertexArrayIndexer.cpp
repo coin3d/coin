@@ -28,14 +28,17 @@
   FIXME: more doc. when/if this class is made public, pederb 20050111
 */
 
-#include "SoVertexArrayIndexer.h"
-#include "SoVBO.h"
+#include "misc/SoVertexArrayIndexer.h"
+
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
+
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "tidbitsp.h"
+#include "misc/SoVBO.h"
+#include "misc/SoGLDriverDatabase.h"
 
 /*!
   Constructor

@@ -157,9 +157,11 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLPlaneSensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLPlaneSensor);
 

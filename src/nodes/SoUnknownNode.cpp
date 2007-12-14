@@ -30,7 +30,8 @@
 // think both the copyContents() and addToCopyDict() methods needs to
 // be overridden.  20000404 mortene.
 
-#include <Inventor/nodes/SoUnknownNode.h>
+#include "nodes/SoUnknownNode.h"
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -44,8 +45,9 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/C/tidbits.h>
-#include "../io/SoWriterefCounter.h"
-#include "../io/SoInputP.h"
+
+#include "io/SoWriterefCounter.h"
+#include "io/SoInputP.h"
 
 // *************************************************************************
 

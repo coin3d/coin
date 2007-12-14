@@ -30,10 +30,12 @@
 
 // *************************************************************************
 
-#include <Inventor/SbString.h>
-#include <Inventor/C/glue/glp.h>
 #include <stddef.h> // NULL
-#include "SoGLShaderParameter.h"
+
+#include <Inventor/SbString.h>
+
+#include "glue/glp.h"
+#include "shaders/SoGLShaderParameter.h"
 
 // *************************************************************************
 

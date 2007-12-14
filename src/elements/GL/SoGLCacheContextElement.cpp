@@ -34,16 +34,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/misc/SoContextHandler.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

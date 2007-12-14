@@ -29,7 +29,8 @@
 
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMFVec3f SoTransformVec3f::vector

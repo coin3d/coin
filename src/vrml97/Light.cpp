@@ -53,8 +53,10 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLLight.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLLight);
 

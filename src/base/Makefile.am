@@ -1,14 +1,14 @@
 RegularSources = \
-	dict.c \
-	hash.c \
-	heap.c \
-        list.c \
-	memalloc.c \
-	rbptree.c \
-	time.c \
-	string.c \
+	dict.cpp \
+	hash.cpp \
+	heap.cpp \
+        list.cpp \
+	memalloc.cpp \
+	rbptree.cpp \
+	time.cpp \
+	string.cpp \
 	dynarray.cpp \
-	namemap.c \
+	namemap.cpp \
 	SbBSPTree.cpp \
 	SbBox2s.cpp \
 	SbBox2i32.cpp \
@@ -71,12 +71,14 @@ RegularSources = \
 	SbXfBox3d.cpp
 
 LinkHackSources = \
-	all-base-c.c \
 	all-base-cpp.cpp
 
 PublicHeaders =
 
 PrivateHeaders = \
+	dictp.h \
+	hashp.h \
+	heapp.h \
 	SbGLUTessellator.h
 
 ObsoleteHeaders =
@@ -121,7 +123,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 if MAC_FRAMEWORK

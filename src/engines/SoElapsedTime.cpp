@@ -55,9 +55,10 @@
 #include <Inventor/engines/SoElapsedTime.h>
 
 #include <Inventor/SoDB.h>
-#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+
+#include "engines/SoSubEngineP.h"
 
 // *************************************************************************
 

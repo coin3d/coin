@@ -51,7 +51,8 @@
 */
 
 #include <Inventor/engines/SoGate.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include <assert.h>
 
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
@@ -60,12 +61,11 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <assert.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMField * SoGate::input

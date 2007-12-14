@@ -63,9 +63,12 @@
 
 // *************************************************************************
 
-#include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoTexture3.h>
+
+#include <assert.h>
+#include <string.h>
+
+#include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
@@ -73,7 +76,6 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -81,9 +83,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <assert.h>
-#include <string.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "elements/SoTextureScalePolicyElement.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

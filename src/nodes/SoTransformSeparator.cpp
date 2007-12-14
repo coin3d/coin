@@ -44,7 +44,6 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTransformSeparator.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -55,6 +54,8 @@
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoChildList.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

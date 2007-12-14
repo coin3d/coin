@@ -147,7 +147,6 @@
 
 #include <stdlib.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -162,16 +161,18 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

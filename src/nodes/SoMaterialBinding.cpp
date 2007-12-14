@@ -84,12 +84,14 @@
 // *************************************************************************
 
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

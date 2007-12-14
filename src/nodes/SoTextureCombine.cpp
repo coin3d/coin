@@ -383,7 +383,6 @@
 
 
 #include <Inventor/nodes/SoTextureCombine.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -393,7 +392,9 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

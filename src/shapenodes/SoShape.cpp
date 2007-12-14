@@ -37,11 +37,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbClip.h>
 #include <Inventor/SbPlane.h>
@@ -85,32 +86,16 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoLight.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/threads/SbStorage.h>
-#include "../misc/SoVBO.h"
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-
-#include <coindefs.h> // COIN_OBSOLETED()
-
-// SoShape.cpp grew too big, so I had to move some code into new
-// files. pederb, 2001-07-18
-#include "soshape_primdata.h"
-#include "soshape_trianglesort.h"
-#include "soshape_bigtexture.h"
-#include "soshape_bumprender.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/system/gl.h>
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
@@ -118,11 +103,25 @@
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
 #endif // HAVE_VRML97
 
-#include <Inventor/system/gl.h>
-
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "glue/glp.h"
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
+#include "misc/SoVBO.h"
+#include "coindefs.h" // COIN_OBSOLETED()
+
+// SoShape.cpp grew too big, so I had to move some code into new
+// files. pederb, 2001-07-18
+#include "soshape_primdata.h"
+#include "soshape_trianglesort.h"
+#include "soshape_bigtexture.h"
+#include "soshape_bumprender.h"
 
 /*!
   \enum SoShape::TriangleShape

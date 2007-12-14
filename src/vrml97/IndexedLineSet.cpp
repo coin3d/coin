@@ -103,25 +103,19 @@
 
 */
 
+#include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
+
 #include <assert.h>
 
-#include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -140,14 +134,16 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/SbColor4f.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include "../misc/SoVertexArrayIndexer.h"
-#include "../misc/SoVBO.h"
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGL.h"
+#include "glue/glp.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoVBO.h"
 
 class SoVRMLIndexedLineSetP {
  public:

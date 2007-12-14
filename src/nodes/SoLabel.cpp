@@ -43,7 +43,8 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoLabel.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

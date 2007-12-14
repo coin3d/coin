@@ -21,7 +21,10 @@
  *
 \**************************************************************************/
 
-#include <Inventor/misc/SoPick.h>
+#include "misc/SoPick.h"
+
+#include <math.h>
+
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoConeDetail.h>
@@ -33,7 +36,6 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbCylinder.h>
 #include <Inventor/SbSphere.h>
-#include <math.h>
 
 //
 // this was actually much easier than I first though since the Cone

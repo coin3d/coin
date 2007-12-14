@@ -70,7 +70,6 @@
 */
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
@@ -84,6 +83,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "actions/SoSubActionP.h"
 
 // FIXME: kristian investigated the assumed bug-cases listed below,
 // and found that it is fundamentally impossible making a perfect fit

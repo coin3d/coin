@@ -166,7 +166,11 @@
   \endcode
 */
 
-#include "SoShader.h"
+#include "shaders/SoShader.h"
+
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderObject.h>
@@ -175,13 +179,11 @@
 #include <Inventor/nodes/SoGeometryShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
-#include <Inventor/C/glue/cg.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
+
+#include "glue/cg.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

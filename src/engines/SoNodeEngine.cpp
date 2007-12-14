@@ -50,15 +50,14 @@
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbName.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
-
+#include "coindefs.h" // COIN_STUB()
 #ifdef COIN_THREADSAFE
-#include <Inventor/C/threads/recmutexp.h>
+#include "threads/recmutexp.h"
 #endif // COIN_THREADSAFE
 
 // *************************************************************************

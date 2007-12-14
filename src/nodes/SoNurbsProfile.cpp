@@ -140,20 +140,21 @@
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/glue/GLUWrapper.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "glue/GLUWrapper.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

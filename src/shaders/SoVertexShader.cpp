@@ -46,9 +46,9 @@
 
 #include <Inventor/nodes/SoVertexShader.h>
 
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+#include "nodes/SoSubNodeP.h"
+#include "glue/glp.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

@@ -189,11 +189,9 @@
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
 
+#include <Inventor/nodes/SoFont.h>
 
 #include <string.h>
-
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -204,6 +202,8 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

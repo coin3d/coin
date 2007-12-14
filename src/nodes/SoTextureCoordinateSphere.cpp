@@ -58,8 +58,9 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -39,10 +39,12 @@
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
+
+#include <Inventor/SbName.h>
+
+#include "tidbitsp.h"
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

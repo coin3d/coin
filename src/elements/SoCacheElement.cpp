@@ -34,18 +34,19 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbTypedStorage.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

@@ -259,7 +259,6 @@
 #include <Inventor/misc/SoNotification.h>
 
 #include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -269,7 +268,6 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -295,7 +293,6 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -304,6 +301,10 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "elements/SoTextureScalePolicyElement.h"
 
 
 // *************************************************************************

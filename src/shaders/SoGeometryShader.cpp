@@ -118,14 +118,16 @@
 */
 
 #include <Inventor/nodes/SoGeometryShader.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include "SoGLShaderProgram.h"
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "shaders/SoGLShaderProgram.h"
+#include "nodes/SoSubNodeP.h"
+#include "glue/glp.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

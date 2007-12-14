@@ -90,7 +90,6 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoLOD.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -99,7 +98,8 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
-#include "SoSoundElementHelper.h"
+#include "nodes/SoSubNodeP.h"
+#include "nodes/SoSoundElementHelper.h"
 
 // *************************************************************************
 

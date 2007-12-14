@@ -61,9 +61,10 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h>
+
+#include "coindefs.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

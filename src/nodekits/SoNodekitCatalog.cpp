@@ -33,15 +33,16 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/lists/SoTypeList.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <assert.h>
 
+#include <assert.h>
+#include <stdio.h> // fprintf()
+
+#include <Inventor/lists/SoTypeList.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif
+#endif // COIN_DEBUG
 
-#include <stdio.h> // fprintf()
+#include "threads/threadsutilp.h"
 
 // Private container class.
 class CatalogItem {

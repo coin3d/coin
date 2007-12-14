@@ -31,11 +31,12 @@
 */
 
 #include <Inventor/nodes/SoNonIndexedShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!  
   \var SoSFInt32 SoNonIndexedShape::startIndex 

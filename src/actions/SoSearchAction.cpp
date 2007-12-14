@@ -63,8 +63,9 @@
 
 #include <Inventor/actions/SoSearchAction.h>
 
-#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/nodes/SoNode.h>
+
+#include "actions/SoSubActionP.h"
 
 // *************************************************************************
 

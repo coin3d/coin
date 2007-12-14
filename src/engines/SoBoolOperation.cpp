@@ -131,11 +131,12 @@
 
 #include <Inventor/engines/SoBoolOperation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/SoSubEngineP.h"
 
 SO_ENGINE_SOURCE(SoBoolOperation);
 

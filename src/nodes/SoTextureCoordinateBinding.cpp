@@ -40,9 +40,11 @@
 // *************************************************************************
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

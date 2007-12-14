@@ -63,14 +63,10 @@
 #include <string.h>
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
@@ -95,14 +91,19 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
+
+#include "actions/SoSubActionP.h"
+#include "tidbitsp.h"
+#include "glue/glp.h"
+#include "glue/simage_wrapper.h"
+#include "misc/SoGL.h"
+#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

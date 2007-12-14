@@ -149,7 +149,6 @@
 #include <assert.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -159,8 +158,10 @@
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/misc/SoJavaScriptEngine.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

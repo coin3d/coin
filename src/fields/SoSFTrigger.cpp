@@ -39,8 +39,7 @@
 
 #include <Inventor/fields/SoSFTrigger.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
-
+#include "fields/SoSubFieldP.h"
 
 SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
 // The following code is the internals of the

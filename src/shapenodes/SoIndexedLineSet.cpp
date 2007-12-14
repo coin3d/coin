@@ -50,23 +50,21 @@
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/misc/SoGL.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -79,19 +77,19 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
-
-#include <assert.h>
-
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include "../misc/SoVertexArrayIndexer.h"
-#include "../misc/SoVBO.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif
+#endif // COIN_DEBUG
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoGL.h"
+#include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoVBO.h"
 
 
 SO_NODE_SOURCE(SoIndexedLineSet);

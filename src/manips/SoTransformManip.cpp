@@ -51,8 +51,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

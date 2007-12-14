@@ -172,7 +172,6 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLProximitySensor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAction.h>
@@ -182,6 +181,8 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/misc/SoState.h>
+
+#include "nodes/SoSubNodeP.h"
 
 SO_NODE_SOURCE(SoVRMLProximitySensor);
 

@@ -36,7 +36,6 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/lists/SbList.h>
 
 #ifdef HAVE_CONFIG_H
@@ -52,7 +51,8 @@
 #include <Inventor/C/threads/condvar.h>
 #endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 
-#include "SoInput_Reader.h"
+#include "tidbitsp.h"
+#include "io/SoInput_Reader.h"
 
 class SoProto;
 class SoInput;

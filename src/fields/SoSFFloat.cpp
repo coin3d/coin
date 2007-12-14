@@ -36,13 +36,13 @@
 
 #include <Inventor/fields/SoSFFloat.h>
 
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoSubFieldP.h>
 
-#include "shared.h"
+#include "tidbitsp.h"
+#include "fields/SoSubFieldP.h"
+#include "fields/shared.h"
 
 // *************************************************************************
 

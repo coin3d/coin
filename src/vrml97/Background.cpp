@@ -186,11 +186,12 @@
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/tidbits.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

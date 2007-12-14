@@ -28,7 +28,8 @@
 */
 
 #include <Inventor/engines/SoInterpolateVec3f.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMFVec3f SoInterpolateVec3f::input0

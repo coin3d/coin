@@ -42,10 +42,10 @@
   \sa SoScale1Dragger, SoScaleUniformDragger, SoScale2UniformDragger
 */
 
+#include <Inventor/draggers/SoScale2Dragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoScale2Dragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
@@ -54,6 +54,7 @@
 
 #include <data/draggerDefaults/scale2Dragger.h>
 
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoScale2Dragger::scaleFactor

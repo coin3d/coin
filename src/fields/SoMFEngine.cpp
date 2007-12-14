@@ -49,7 +49,6 @@
 
 #include <Inventor/fields/SoMFEngine.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFEngine.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -59,6 +58,8 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "fields/SoSubFieldP.h"
 
 // These are the macros from SO_MFIELD_SOURCE_MALLOC we're
 // using. What's missing is the SO_MFIELD_VALUE_SOURCE macro, which we

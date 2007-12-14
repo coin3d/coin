@@ -155,6 +155,9 @@
 
 #include <Inventor/nodes/SoQuadMesh.h>
 
+#include <math.h> // ilogb
+#include <float.h> // _logb
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -174,12 +177,11 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
-#include <math.h> // ilogb
-#include <float.h> // _logb
+
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn

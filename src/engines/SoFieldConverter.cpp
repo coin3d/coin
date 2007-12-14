@@ -51,18 +51,19 @@
 
 #include <Inventor/engines/SoFieldConverter.h>
 
+#include <assert.h>
+
 #include <Inventor/fields/SoField.h>
 #include <Inventor/engines/SoOutputData.h>
-#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <assert.h>
-#include <Inventor/engines/SoSubEngineP.h>
-#include <coindefs.h> // COIN_OBSOLETED
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/SoConvertAll.h"
+#include "engines/SoSubEngineP.h"
+#include "coindefs.h" // COIN_OBSOLETED
 
 /*!
   \fn SoField * SoFieldConverter::getInput(SoType type)

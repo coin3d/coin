@@ -21,8 +21,8 @@
  *
 \**************************************************************************/
 
+#include "misc/SoGenerate.h"
 
-#include <Inventor/misc/SoGenerate.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/details/SoCylinderDetail.h>

@@ -106,16 +106,16 @@
 #include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/glp.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "misc/SoGL.h"
+#include "nodes/SoSubNodeP.h"
+#include "glue/glp.h"
 
 // *************************************************************************
 

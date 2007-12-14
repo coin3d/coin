@@ -54,7 +54,6 @@
 
 #include <Inventor/SoPath.h>
 
-#include "../io/SoWriterefCounter.h"
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -63,8 +62,10 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/C/tidbitsp.h>
-#include <coindefs.h> // COIN_STUB()
+
+#include "io/SoWriterefCounter.h"
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_STUB()
 
 // *************************************************************************
 

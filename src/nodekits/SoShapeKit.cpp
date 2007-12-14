@@ -93,7 +93,7 @@
 */
 
 #include <Inventor/nodekits/SoShapeKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormalBinding.h>
@@ -110,6 +110,8 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoProfile.h>
+
+#include "nodekits/SoSubKitP.h"
 
 
 SO_KIT_SOURCE(SoShapeKit);

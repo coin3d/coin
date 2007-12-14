@@ -113,16 +113,6 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLMaterial.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/errors/SoDebugError.h>
 
 #include <stdlib.h>
 
@@ -130,9 +120,19 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
 
 #ifndef DOXYGEN_SKIP_THIS
 

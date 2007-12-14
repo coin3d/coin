@@ -29,8 +29,9 @@
 #endif /* !COIN_INTERNAL */
 
 #include <Inventor/system/gl.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/gl.h>
+
+#include "misc/SbHash.h"
 
 class SoState;
 

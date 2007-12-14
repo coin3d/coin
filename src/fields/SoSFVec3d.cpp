@@ -36,13 +36,13 @@
 
 #include <Inventor/fields/SoSFVec3d.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "shared.h"
+#include "fields/SoSubFieldP.h"
+#include "fields/shared.h"
 
 // *************************************************************************
 

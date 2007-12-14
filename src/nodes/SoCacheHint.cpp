@@ -59,15 +59,15 @@
 
 */
 
-
 #include <Inventor/nodes/SoCacheHint.h>
+
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoCacheHintElement.h>
 
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

@@ -49,9 +49,9 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoGeoSeparator.h>
+
 #include <Inventor/nodes/SoGeoOrigin.h>
 #include <Inventor/elements/SoGeoElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -61,11 +61,8 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "SoGeo.h"
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include "nodes/SoSubNodeP.h"
+#include "geo/SoGeo.h"
 
 // *************************************************************************
 

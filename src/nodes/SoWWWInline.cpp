@@ -73,12 +73,16 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoWWWInline.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/C/tidbitsp.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <Inventor/SbColor.h>
-
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -94,15 +98,11 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/threads/SbStorage.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <Inventor/system/gl.h>
+
+#include "tidbitsp.h"
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

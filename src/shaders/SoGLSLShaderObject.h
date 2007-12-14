@@ -30,9 +30,9 @@
 
 // *************************************************************************
 
-#include <Inventor/C/glue/glp.h>
+#include "shaders/SoGLShaderObject.h"
 
-#include "SoGLShaderObject.h"
+#include "glue/glp.h"
 
 class SbName;
 class SoState;

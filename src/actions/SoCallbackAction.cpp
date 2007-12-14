@@ -128,7 +128,6 @@
 */
 
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/SoPath.h>
 #include <Inventor/elements/SoComplexityElement.h>
@@ -168,6 +167,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbViewportRegion.h>
+
+#include "actions/SoSubActionP.h"
 
 #ifndef DOXYGEN_SKIP_THIS
 

@@ -107,16 +107,16 @@
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/nodes/SoGeometryShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/lists/SbStringList.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include "SoGLARBShaderObject.h"
-#include "SoGLCgShaderObject.h"
-#include "SoGLSLShaderObject.h"
-#include "SoGLShaderProgram.h"
+#include "nodes/SoSubNodeP.h"
+#include "misc/SbHash.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "shaders/SoGLARBShaderObject.h"
+#include "shaders/SoGLCgShaderObject.h"
+#include "shaders/SoGLSLShaderObject.h"
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 

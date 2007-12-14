@@ -40,9 +40,11 @@
 */
 
 #include <Inventor/manips/SoTabBoxManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTabBoxDragger.h>
+
+#include "nodes/SoSubNodeP.h"
 
 class SoTabBoxManipP {
 public:

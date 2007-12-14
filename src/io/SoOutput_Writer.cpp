@@ -21,16 +21,13 @@
  *
 \**************************************************************************/
 
-#include "SoOutput_Writer.h"
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbName.h>
-#include <Inventor/C/glue/zlib.h>
-#include <Inventor/C/glue/bzip2.h>
+#include "io/SoOutput_Writer.h"
+
 #include <string.h>
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #ifdef HAVE_UNISTD_H
@@ -40,6 +37,12 @@
 #ifdef HAVE_IO_H
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbName.h>
+
+#include "glue/zlib.h"
+#include "glue/bzip2.h"
 
 // We don't want to include bzlib.h, so we just define the constants
 // we use here

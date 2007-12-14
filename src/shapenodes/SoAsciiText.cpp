@@ -127,7 +127,14 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <string.h>
+#include <float.h> // FLT_MIN
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -144,20 +151,15 @@
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/caches/SoGlyphCache.h>
-#include <string.h>
-#include <float.h> // FLT_MIN
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
-#include "../fonts/glyph3d.h"
+#include "caches/SoGlyphCache.h"
+#include "fonts/glyph3d.h"
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

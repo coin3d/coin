@@ -21,21 +21,22 @@
  *
 \**************************************************************************/
 
+#include <ForeignFiles/SoForeignFileKit.h>
+
 #include <assert.h>
 #include <stdlib.h>
 
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/C/tidbits.h>
 
-#include <ForeignFiles/SoForeignFileKit.h>
-
 #include <ForeignFiles/SoSTLFileKit.h>
+
+#include "nodekits/SoSubKitP.h"
+#include "misc/SbHash.h"
 
 /*!
   \page foreignfilesupport Foreign File Format Support

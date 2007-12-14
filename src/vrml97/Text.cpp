@@ -109,20 +109,18 @@
   Maximum object space extent of longest string.
 */
 
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+
 #include <float.h> // FLT_MIN
 #include <stddef.h>
 #include <string.h>
 
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-
-#include "../fonts/glyph3d.h"
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
@@ -135,13 +133,16 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/system/gl.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
+#include "caches/SoGlyphCache.h"
+#include "fonts/glyph3d.h"
+
 
 // *************************************************************************
 

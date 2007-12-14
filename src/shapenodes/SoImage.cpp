@@ -136,7 +136,10 @@
 */
 
 #include <Inventor/nodes/SoImage.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/SbImage.h>
 #include <Inventor/SbPlane.h>
@@ -156,15 +159,12 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-
-#include <Inventor/C/glue/simage_wrapper.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/system/gl.h>
-#include <Inventor/C/glue/GLUWrapper.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "glue/GLUWrapper.h"
+#include "glue/simage_wrapper.h"
+
 
 /*!
   \enum SoImage::VertAlignment

@@ -106,7 +106,8 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 

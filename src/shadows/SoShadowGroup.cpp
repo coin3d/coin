@@ -261,7 +261,9 @@
 // *************************************************************************
 
 #include <FXViz/nodes/SoShadowGroup.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <math.h>
+
 #include <Inventor/nodes/SoSpotLight.h>
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
@@ -307,16 +309,17 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/misc/SoShaderGenerator.h>
 #include <Inventor/caches/SoShaderProgramCache.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <math.h>
-#include "../shaders/SoShader.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "shaders/SoShader.h"
+#include "glue/glp.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoShaderGenerator.h"
 
 // *************************************************************************
 

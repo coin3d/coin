@@ -54,10 +54,11 @@
   
 #include <Inventor/misc/SoGlyph.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbVec2f.h>
@@ -65,12 +66,12 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include "../fonts/common.h"
-#include "../fonts/fontlib_wrapper.h"
-#include "../fonts/defaultfonts.h"
+#include "tidbitsp.h"
+#include "threads/threadsutilp.h"
+#include "fonts/common.h"
+#include "fonts/fontlib_wrapper.h"
+#include "fonts/defaultfonts.h"
 
 class SoGlyphP {
 public:

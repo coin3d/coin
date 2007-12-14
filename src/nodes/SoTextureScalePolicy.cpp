@@ -95,10 +95,12 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureScalePolicy.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoTextureScaleQualityElement.h>
-#include <Inventor/elements/SoTextureScalePolicyElement.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "elements/SoTextureScaleQualityElement.h"
+#include "elements/SoTextureScalePolicyElement.h"
 
 /*!
   \enum SoTextureScalePolicy::Policy

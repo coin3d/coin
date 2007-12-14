@@ -239,8 +239,12 @@
 
 */
 
-#include <Inventor/SbName.h>
 #include <Inventor/actions/SoReorganizeAction.h>
+
+#include <string.h>
+#include <assert.h>
+
+#include <Inventor/SbName.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoVertexShape.h>
@@ -274,10 +278,9 @@
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/SbColor4f.h>
-#include <string.h>
-#include <assert.h>
 
-#include <coindefs.h> // COIN_STUB()
+#include "coindefs.h" // COIN_STUB()
+#include "actions/SoSubActionP.h"
 
 class SoReorganizeActionP {
  public:

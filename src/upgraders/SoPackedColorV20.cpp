@@ -29,9 +29,11 @@
   \sa SoPackedColor
 */
 
-#include "SoPackedColorV20.h"
-#include <Inventor/nodes/SoSubNodeP.h>
+#include "upgraders/SoPackedColorV20.h"
+
 #include <Inventor/nodes/SoPackedColor.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoMFUInt32 SoPackedColorV20::rgba

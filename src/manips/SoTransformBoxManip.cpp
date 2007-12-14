@@ -62,9 +62,11 @@ Separator {
 */
 
 #include <Inventor/manips/SoTransformBoxManip.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTransformBoxDragger.h>
+
+#include "nodes/SoSubNodeP.h"
 
 class SoTransformBoxManipP {
 public:

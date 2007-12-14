@@ -101,13 +101,15 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoClipPlane.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

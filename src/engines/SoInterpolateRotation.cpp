@@ -28,8 +28,9 @@
 */
 
 #include <Inventor/engines/SoInterpolateRotation.h>
-#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/SbVec3f.h>
+
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMFRotation SoInterpolateRotation::input0

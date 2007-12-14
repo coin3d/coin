@@ -104,11 +104,12 @@
 
 #include <Inventor/fields/SoSFImage3.h>
 
-#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
+
+#include "fields/SoSubFieldP.h"
 
 // *************************************************************************
 

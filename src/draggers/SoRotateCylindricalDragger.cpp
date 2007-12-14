@@ -40,16 +40,18 @@
   transformation node in your scenegraph, as usual.
 */
 
+#include <Inventor/draggers/SoRotateCylindricalDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoRotateCylindricalDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 class SoRotateCylindricalDraggerP {
 public:

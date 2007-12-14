@@ -195,14 +195,17 @@
 */
 
 #include <Inventor/engines/SoCalculator.h>
-#include <Inventor/lists/SoEngineOutputList.h>
-#include "evaluator.h"
+
 #include <assert.h>
-#include <Inventor/engines/SoSubEngineP.h>
+
+#include <Inventor/lists/SoEngineOutputList.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include "engines/evaluator.h"
+#include "engines/SoSubEngineP.h"
 
 /*!
   \var SoMFFloat SoCalculator::a

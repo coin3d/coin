@@ -45,12 +45,13 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoEnvironment.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
 #include <Inventor/elements/SoLightAttenuationElement.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 

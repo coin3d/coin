@@ -21,7 +21,15 @@
  *
 \**************************************************************************/
 
-#include "soshape_trianglesort.h"
+#include "shapenodes/soshape_trianglesort.h"
+
+#include <stdlib.h>
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -32,15 +40,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/C/tidbits.h>
-#include <stdlib.h>
-#include <assert.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <Inventor/system/gl.h>
-
 
 soshape_trianglesort::soshape_trianglesort(void)
 {

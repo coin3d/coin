@@ -181,16 +181,11 @@
 #include <string.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <Inventor/C/glue/simage_wrapper.h>
-#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -198,19 +193,25 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoTextureScaleQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLCubeMapImage.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "tidbitsp.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/SoGL.h"
+#include "elements/SoTextureScaleQualityElement.h"
+#include "glue/GLUWrapper.h"
+#include "glue/glp.h"
+#include "glue/simage_wrapper.h"
+#include "threads/threadsutilp.h"
 
 // *************************************************************************
 

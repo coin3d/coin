@@ -39,12 +39,13 @@
   \since TGS Inventor 2.5
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/actions/SoToVRMLAction.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/SbName.h>
-#include <Inventor/actions/SoToVRMLAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/SoDB.h>
@@ -63,14 +64,18 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/lists/SoNodeList.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRMLNodes.h>
 #include <Inventor/VRMLnodes/SoVRML.h>
 #endif // HAVE_VRML97
+
+#include "actions/SoSubActionP.h"
+
 
 // FIXME: currently only VRML2-nodes to VRML1-nodes is
 // supported. Inventor/Coin specific nodes must also be supported

@@ -72,11 +72,10 @@
 
 */
 
-#include <stddef.h>
-
 #include <Inventor/VRMLnodes/SoVRMLSwitch.h>
 
-#include "../nodes/SoSoundElementHelper.h"
+#include <stddef.h>
+
 #include <Inventor/SoOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
@@ -94,11 +93,12 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
+
+#include "nodes/SoSubNodeP.h"
+#include "nodes/SoSoundElementHelper.h"
 
 // *************************************************************************
 

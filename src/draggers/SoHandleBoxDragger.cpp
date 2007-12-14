@@ -44,10 +44,10 @@
 // FIXME: Should include an URL-link to the default geometry-file?
 // Plus a small usage example.  20011113 mortene.
 
+#include <Inventor/draggers/SoHandleBoxDragger.h>
+
 #include <string.h>
 
-#include <Inventor/draggers/SoHandleBoxDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -60,6 +60,8 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 
 #include <data/draggerDefaults/handleBoxDragger.h>
+
+#include "nodekits/SoSubKitP.h"
 
 /*!
   \var SoSFVec3f SoHandleBoxDragger::scaleFactor

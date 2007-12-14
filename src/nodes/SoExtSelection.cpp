@@ -112,11 +112,12 @@
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+
+#include "misc/SoGLDriverDatabase.h"
+#include "nodes/SoSubNodeP.h"
+#include "coindefs.h" // COIN_OBSOLETED()
 
 // *************************************************************************
 

@@ -43,8 +43,8 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -53,6 +53,8 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbMatrix.h>
+
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \var SoSFVec3f SoVRMLDragSensor::trackPoint_changed

@@ -43,9 +43,10 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoDB.h>
-#include "AudioTools.h"
 
-#include "SoRenderManagerP.h"
+#include "tidbitsp.h"
+#include "misc/AudioTools.h"
+#include "misc/SoRenderManagerP.h"
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)

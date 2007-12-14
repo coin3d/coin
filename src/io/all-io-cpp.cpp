@@ -30,3 +30,5 @@
 #include "SoTranReceiver.cpp"
 #include "SoTranSender.cpp"
 #include "SoWriteRefCounter.cpp"
+#include "gzmemio.cpp"
+

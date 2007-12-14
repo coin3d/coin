@@ -49,11 +49,12 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoType.h>
-#include <Inventor/C/threads/threadsutilp.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <coindefs.h> // COIN_STUB()
+#include "threads/threadsutilp.h"
+#include "coindefs.h" // COIN_STUB()
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 

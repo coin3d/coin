@@ -32,12 +32,13 @@
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "misc/SoGL.h"
 
 // *************************************************************************
 

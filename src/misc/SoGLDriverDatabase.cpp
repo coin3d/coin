@@ -34,15 +34,18 @@
 
 */
 
-#include <Inventor/misc/SoGLDriverDatabase.h>
-#include <Inventor/misc/SbHash.h>
+#include "misc/SoGLDriverDatabase.h"
+
+#include <string.h>
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
-#include <string.h>
+
+#include "misc/SbHash.h"
+#include "glue/glp.h"
 
 class SoGLDriverDatabaseP {
 

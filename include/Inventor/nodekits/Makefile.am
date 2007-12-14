@@ -13,8 +13,8 @@ PublicHeaders = \
 	SoSeparatorKit.h \
 	SoShapeKit.h \
 	SoWrapperKit.h
-PrivateHeaders = \
-	SoSubKitP.h
+
+PrivateHeaders =
 
 ObsoleteHeaders =
 

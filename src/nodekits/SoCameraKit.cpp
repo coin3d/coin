@@ -55,11 +55,12 @@
 */
 
 #include <Inventor/nodekits/SoCameraKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
+#include "nodekits/SoSubKitP.h"
 
 SO_KIT_SOURCE(SoCameraKit);
 

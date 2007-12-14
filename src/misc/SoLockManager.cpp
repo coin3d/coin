@@ -39,9 +39,12 @@
 
 
 #include <Inventor/lock/SoLockMgr.h>
-#include <Inventor/SbString.h>
-#include <Inventor/C/tidbitsp.h>
+
 #include <string.h>
+
+#include <Inventor/SbString.h>
+
+#include "tidbitsp.h"
 
 class SoLockManager_pimpl {
 public:

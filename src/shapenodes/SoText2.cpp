@@ -87,14 +87,14 @@
   \sa SoFont, SoFontStyle, SoText3, SoAsciiText
 */
 
+#include <Inventor/nodes/SoText2.h>
+
 #include <limits.h>
 #include <string.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
-#include <Inventor/nodes/SoText2.h>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbLine.h>
@@ -119,9 +119,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
@@ -130,6 +128,9 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+#include "nodes/SoSubNodeP.h"
+#include "caches/SoGlyphCache.h"
 
 // The "lean and mean" define is a workaround for a Cygwin bug: when
 // windows.h is included _after_ one of the X11 or GLX headers above
@@ -151,7 +152,7 @@
 // the "#define WIN32_LEAN_AND_MEAN" hack. 20030625 mortene.
 
 
-#include "../fonts/glyph2d.h"
+#include "fonts/glyph2d.h"
 
 /*!
   \enum SoText2::Justification

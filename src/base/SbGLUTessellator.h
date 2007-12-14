@@ -31,8 +31,9 @@
 // *************************************************************************
 
 #include <Inventor/SbVec3f.h>
-#include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
+
+#include "glue/GLUWrapper.h"
 
 // *************************************************************************
 

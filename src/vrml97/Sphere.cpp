@@ -66,11 +66,9 @@
   Sphere radius. Default value is 1.0.
 */
 
-
 #include <Inventor/VRMLnodes/SoVRMLSphere.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
@@ -78,12 +76,14 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/misc/SoGenerate.h>
-#include <Inventor/misc/SoPick.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGenerate.h"
+#include "misc/SoPick.h"
+#include "misc/SoGL.h"
 
 #define SPHERE_NUM_SLICES 30.0f
 #define SPHERE_NUM_STACKS 30.0f

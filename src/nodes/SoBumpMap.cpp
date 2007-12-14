@@ -73,16 +73,15 @@
   \since Coin 2.2
 */
 
+#include <Inventor/nodes/SoBumpMap.h>
+
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/nodes/SoBumpMap.h>
-#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -95,9 +94,11 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/C/glue/gl.h>
 
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoGLDriverDatabase.h"
 
 /*!
   \enum SoBumpMap::Wrap

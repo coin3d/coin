@@ -29,8 +29,9 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/misc/SbHash.h>
 #include <Inventor/C/glue/gl.h>
+
+#include "misc/SbHash.h"
 
 // *************************************************************************
 

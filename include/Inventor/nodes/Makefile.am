@@ -141,9 +141,7 @@ PublicHeaders = \
 	SoVertexShader.h \
         SoViewerNavigationMode.h
 
-PrivateHeaders = \
-	SoSubNodeP.h \
-	SoUnknownNode.h
+PrivateHeaders =
 
 ObsoleteHeaders =
 

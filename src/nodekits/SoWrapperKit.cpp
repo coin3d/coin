@@ -68,10 +68,11 @@
 */
 
 #include <Inventor/nodekits/SoWrapperKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 
+#include "nodekits/SoSubKitP.h"
 
 SO_KIT_SOURCE(SoWrapperKit);
 

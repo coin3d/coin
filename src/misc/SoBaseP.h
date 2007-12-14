@@ -24,7 +24,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/misc/SbHash.h>
+#include "misc/SbHash.h"
 
 class SoBase;
 class SoNode;

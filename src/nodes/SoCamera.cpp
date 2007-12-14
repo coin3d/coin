@@ -103,7 +103,9 @@
 */
 
 #include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
+#include <float.h> // for FLT_EPSILON
+
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -134,14 +136,13 @@
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
-#include "../elements/GL/SoResetMatrixElement.h"
-#include <float.h> // for FLT_EPSILON
-
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "elements/GL/SoResetMatrixElement.h"
+#include "nodes/SoSubNodeP.h"
 
 /*!
   \enum SoCamera::ViewportMapping

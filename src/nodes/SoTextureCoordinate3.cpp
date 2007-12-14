@@ -56,7 +56,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinate3.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -66,7 +66,9 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/C/glue/gl.h>
-#include "../misc/SoVBO.h"
+
+#include "nodes/SoSubNodeP.h"
+#include "misc/SoVBO.h"
 
 // *************************************************************************
 

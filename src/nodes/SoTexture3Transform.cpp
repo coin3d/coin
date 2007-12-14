@@ -54,7 +54,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTexture3Transform.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -64,6 +64,8 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/C/glue/gl.h>
+
+#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 
