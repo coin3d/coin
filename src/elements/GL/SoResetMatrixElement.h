@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLVIEWINGMATRIXELEMENT_H
-#define COIN_SOGLVIEWINGMATRIXELEMENT_H
+#ifndef COIN_SORESETMATRIXELEMENT_H
+#define COIN_SORESETMATRIXELEMENT_H
 
 /**************************************************************************\
  *
@@ -24,35 +24,32 @@
  *
 \**************************************************************************/
 
+// private helper element to avoid caching problems with SoResetTransform
+
 #include <Inventor/elements/SoViewingMatrixElement.h>
 
-class COIN_DLL_API SoGLViewingMatrixElement : public SoViewingMatrixElement {
-  typedef SoViewingMatrixElement inherited;
+class SoResetMatrixElement : public SoElement {
+  typedef SoElement inherited;
+  
+  SO_ELEMENT_HEADER(SoResetMatrixElement);
 
-  SO_ELEMENT_HEADER(SoGLViewingMatrixElement);
 public:
   static void initClass(void);
 protected:
-  virtual ~SoGLViewingMatrixElement();
+  virtual ~SoResetMatrixElement();
 
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  static uint32_t getNodeId(SoState * const state);
-  static SbMatrix getResetMatrix(SoState * state);
+  static void set(SoState * const state, const SbMatrix & m);
+  static const SbMatrix  & get(SoState * state);
 
 protected:
   virtual void setElt(const SbMatrix & matrix);
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
 private:
-  SoState * state;
-  SbMatrix modelmatrix;
-  SbBool mmidentity;
-  void updategl(void);
+  SbMatrix matrix;
 };
 
-#endif // !COIN_SOGLVIEWINGMATRIXELEMENT_H
+#endif // COIN_SORESETMATRIXELEMENT_H

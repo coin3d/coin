@@ -32,11 +32,13 @@ RegularSources = \
 	SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp \
 	SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLDisplayList.cpp \
+	SoResetMatrixElement.cpp
 LinkHackSources = \
 	all-glelements-cpp.cpp
 PublicHeaders =
 PrivateHeaders =
+	SoResetMatrixElement.h
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(glelements, elements)

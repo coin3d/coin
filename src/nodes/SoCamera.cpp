@@ -134,8 +134,8 @@
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
+#include "../elements/GL/SoResetMatrixElement.h"
 #include <float.h> // for FLT_EPSILON
-
 
 
 #if COIN_DEBUG
