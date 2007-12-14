@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureCoordinateCache include/Inventor/SoTextureCoordinateCache.h
+  \class SoTextureCoordinateCache SoTextureCoordinateCache.h Inventor/caches/SoTextureCoordinateCache.h
   The SoTextureCoordinateClass is used to cache generated texture coordinates.
 */
 

@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoConvexDataCache include/Inventor/caches/SoConvexDataCache.h
+  \class SoConvexDataCache Inventor/caches/SoConvexDataCache.h
   \brief The SoConvexDataCache class is used to cache convexified polygons.
   \ingroup caches
 

@@ -546,6 +546,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoWriteAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoReorganizeAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/collision/SoIntersectionDetectionAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoBoundingBoxCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoConvexDataCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLCacheList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLRenderCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoNormalCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoTextureCoordinateCache.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoCylinderDetail.h \
@@ -1090,6 +1097,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/base/SbViewVolume.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewportRegion.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbXfBox3f.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoBoundingBoxCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoConvexDataCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoGLCacheList.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoGLRenderCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoNormalCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoTextureCoordinateCache.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoConeDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoCubeDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoCylinderDetail.cpp \

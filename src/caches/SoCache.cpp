@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoCache include/Inventor/caches/SoCache.h
+  \class SoCache Inventor/caches/SoCache.h
   \brief The SoCache class is the superclass for all internal cache classes.
   \ingroup caches
 

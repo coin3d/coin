@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoNormalCache SoNormalCache.h include/Inventor/caches/SoNormalCache.h
+  \class SoNormalCache SoNormalCache.h Inventor/caches/SoNormalCache.h
   \brief The SoNormalCache class is used to hold cached normals.
   \ingroup caches
 
