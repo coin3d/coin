@@ -346,6 +346,7 @@ LinkHackSources = \
 PublicHeaders = 
 
 PrivateHeaders = \
+	SoVRMLSubInterpolatorP.h \
 	JS_VRMLClasses.h
 
 
@@ -378,7 +379,7 @@ DISTCLEANFILES = \
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libvrml97@SUFFIX@LINKHACK.la
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libvrml97.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 @MAC_FRAMEWORK_TRUE@libvrml97incdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/VRMLnodes
@@ -404,9 +405,8 @@ EXTRA_vrml97_lst_SOURCES = \
 subdir = src/vrml97
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/include/discard.h \
-	$(top_builddir)/include/config.h \
-	$(top_builddir)/include/setup.h
+CONFIG_HEADER = $(top_builddir)/src/discard.h \
+	$(top_builddir)/src/config.h $(top_builddir)/src/setup.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
@@ -463,16 +463,16 @@ am__objects_2 = Anchor.$(OBJEXT) Appearance.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_vrml97_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_vrml97_lst_SOURCES_DIST = JS_VRMLClasses.h all-vrml97-cpp.cpp \
-	Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
-	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
-	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
-	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
-	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
-	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
-	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
-	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
-	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_vrml97_lst_SOURCES_DIST = SoVRMLSubInterpolatorP.h \
+	JS_VRMLClasses.h all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp \
+	AudioClip.cpp Background.cpp Billboard.cpp Box.cpp \
+	Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
+	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
+	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
+	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
+	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
+	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
+	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -530,16 +530,16 @@ am__objects_7 = Anchor.lo Appearance.lo AudioClip.lo Background.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libvrml97_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97_la_SOURCES_DIST = JS_VRMLClasses.h \
-	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
-	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
-	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
-	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
-	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
-	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
-	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
-	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
-	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_libvrml97_la_SOURCES_DIST = SoVRMLSubInterpolatorP.h \
+	JS_VRMLClasses.h all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp \
+	AudioClip.cpp Background.cpp Billboard.cpp Box.cpp \
+	Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
+	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
+	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
+	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
+	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
+	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
+	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -574,9 +574,10 @@ am__libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = Anchor.cpp \
 	VisibilitySensor.cpp WorldInfo.cpp JS_VRMLClasses.cpp \
 	all-vrml97-cpp.cpp
 am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = JS_VRMLClasses.h \
-	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
-	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+	SoVRMLSubInterpolatorP.h JS_VRMLClasses.h all-vrml97-cpp.cpp \
+	Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
+	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \

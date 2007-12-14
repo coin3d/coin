@@ -37053,7 +37053,7 @@ fi
 
 # **************************************************************************
 
-                              ac_config_headers="$ac_config_headers include/discard.h include/config.h include/setup.h"
+                              ac_config_headers="$ac_config_headers src/discard.h src/config.h src/setup.h"
 
 
 
@@ -37066,12 +37066,12 @@ stripCRs=`echo -e "s/\\r//g"`
 sed \
   -e '/^\/\* for setup.h \*\//, /^$/ d' \
   -e "$stripCRs" \
-  <$srcdir/include/discard.h.in \
+  <$srcdir/src/discard.h.in \
   >$sim_ac_tmpfile1
 
 sed \
   -e "$stripCRs" \
-  <$srcdir/include/config.h.in \
+  <$srcdir/src/config.h.in \
   >$sim_ac_tmpfile2
 
 if cmp -s $sim_ac_tmpfile1 $sim_ac_tmpfile2; then
@@ -37909,9 +37909,9 @@ do
   "testsuite/Makefile" ) CONFIG_FILES="$CONFIG_FILES testsuite/Makefile" ;;
   "cfg/gendsp.pl" ) CONFIG_FILES="$CONFIG_FILES cfg/gendsp.pl" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
-  "include/discard.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/discard.h" ;;
-  "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
-  "include/setup.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/setup.h" ;;
+  "src/discard.h" ) CONFIG_HEADERS="$CONFIG_HEADERS src/discard.h" ;;
+  "src/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS src/config.h" ;;
+  "src/setup.h" ) CONFIG_HEADERS="$CONFIG_HEADERS src/setup.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;

@@ -12251,12 +12251,12 @@ stripCRs=`echo -e "s/\\r//g"`
 sed \
   -e '/^\/\* for setup.h \*\//, /^$/ d' \
   -e "$stripCRs" \
-  <$srcdir/include/discard.h.in \
+  <$srcdir/src/discard.h.in \
   >$sim_ac_tmpfile1
 
 sed \
   -e "$stripCRs" \
-  <$srcdir/include/config.h.in \
+  <$srcdir/src/config.h.in \
   >$sim_ac_tmpfile2
 
 if cmp -s $sim_ac_tmpfile1 $sim_ac_tmpfile2; then

@@ -276,12 +276,11 @@ RegularSources = \
 	SoTranSender.cpp \
 	SoTranReceiver.cpp \
 	SoWriterefCounter.cpp \
-	gzmemio.c
+	gzmemio.cpp
 
 
 LinkHackSources = \
-	all-io-cpp.cpp \
-	all-io-c.c
+	all-io-cpp.cpp
 
 
 PublicHeaders = 
@@ -324,7 +323,7 @@ DISTCLEANFILES = \
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libio@SUFFIX@LINKHACK.la
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libio.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 @MAC_FRAMEWORK_TRUE@libioincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/io
@@ -350,9 +349,8 @@ EXTRA_io_lst_SOURCES = \
 subdir = src/io
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/include/discard.h \
-	$(top_builddir)/include/config.h \
-	$(top_builddir)/include/setup.h
+CONFIG_HEADER = $(top_builddir)/src/discard.h \
+	$(top_builddir)/src/config.h $(top_builddir)/src/setup.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
@@ -361,8 +359,8 @@ io_lst_LIBADD =
 am__io_lst_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoWriterefCounter.cpp gzmemio.c all-io-cpp.cpp all-io-c.c
-am__objects_1 = all-io-cpp.$(OBJEXT) all-io-c.$(OBJEXT)
+	SoWriterefCounter.cpp gzmemio.cpp all-io-cpp.cpp
+am__objects_1 = all-io-cpp.$(OBJEXT)
 am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
 	SoInput_Reader.$(OBJEXT) SoOutput.$(OBJEXT) \
 	SoOutput_Writer.$(OBJEXT) SoByteStream.$(OBJEXT) \
@@ -373,10 +371,10 @@ am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
 am_io_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_io_lst_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
 	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h gzmemio.h \
-	all-io-cpp.cpp all-io-c.c SoInput.cpp SoInput_FileInfo.cpp \
+	all-io-cpp.cpp SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoWriterefCounter.cpp gzmemio.c
+	SoWriterefCounter.cpp gzmemio.cpp
 io_lst_OBJECTS = $(am_io_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -385,8 +383,8 @@ libio_la_LIBADD =
 am__libio_la_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoWriterefCounter.cpp gzmemio.c all-io-cpp.cpp all-io-c.c
-am__objects_6 = all-io-cpp.lo all-io-c.lo
+	SoWriterefCounter.cpp gzmemio.cpp all-io-cpp.cpp
+am__objects_6 = all-io-cpp.lo
 am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
 	SoOutput.lo SoOutput_Writer.lo SoByteStream.lo SoTranSender.lo \
 	SoTranReceiver.lo SoWriterefCounter.lo gzmemio.lo
@@ -395,25 +393,25 @@ am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
 am_libio_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio_la_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
 	SoOutput_Writer.h SoWriterefCounter.h SoInputP.h gzmemio.h \
-	all-io-cpp.cpp all-io-c.c SoInput.cpp SoInput_FileInfo.cpp \
+	all-io-cpp.cpp SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoWriterefCounter.cpp gzmemio.c
+	SoWriterefCounter.cpp gzmemio.cpp
 libio_la_OBJECTS = $(am_libio_la_OBJECTS)
 libio@SUFFIX@LINKHACK_la_LDFLAGS =
 libio@SUFFIX@LINKHACK_la_LIBADD =
 am__libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput.cpp \
 	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
-	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c \
-	all-io-cpp.cpp all-io-c.c
+	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.cpp \
+	all-io-cpp.cpp
 am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput_FileInfo.h \
 	SoInput_Reader.h SoOutput_Writer.h SoWriterefCounter.h \
-	SoInputP.h gzmemio.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
+	SoInputP.h gzmemio.h all-io-cpp.cpp SoInput.cpp \
 	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
-	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c
+	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.cpp
 libio@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libio@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -434,17 +432,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-io-c.Plo ./$(DEPDIR)/all-io-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Po ./$(DEPDIR)/gzmemio.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gzmemio.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -452,6 +442,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__io_lst_SOURCES_DIST) \
 	$(am__EXTRA_io_lst_SOURCES_DIST) $(am__libio_la_SOURCES_DIST) \
@@ -466,7 +463,7 @@ SOURCES = $(io_lst_SOURCES) $(EXTRA_io_lst_SOURCES) $(libio_la_SOURCES) $(EXTRA_
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/io/Makefile
@@ -541,8 +538,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Plo@am__quote@
@@ -550,39 +545,6 @@ distclean-compile:
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
-
-.c.lo:
-@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \

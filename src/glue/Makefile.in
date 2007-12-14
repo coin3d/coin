@@ -267,25 +267,23 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 RegularSources = \
-	cg.c \
-	spidermonkey.c \
-	dl.c \
-	gl.c \
-	gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c \
-	simage_wrapper.c \
-	openal_wrapper.c \
-	win32api.c \
-	zlib.c \
-	bzip2.c \
-	freetype.c \
-	glue-dummy.cpp \
-	normalization_cubemap.c
+	cg.cpp \
+	spidermonkey.cpp \
+	dl.cpp \
+	gl.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_glx.cpp \
+	GLUWrapper.cpp \
+	simage_wrapper.cpp \
+	openal_wrapper.cpp \
+	win32api.cpp \
+	zlib.cpp \
+	bzip2.cpp \
+	freetype.cpp \
+	normalization_cubemap.cpp
 
 
 LinkHackSources = \
-	all-glue-c.c \
-	glue-dummy.cpp
+	all-glue-cpp.cpp
 
 
 PublicHeaders = 
@@ -319,7 +317,7 @@ DISTCLEANFILES = \
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libglue@SUFFIX@LINKHACK.la
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libglue.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 # header installation
 @MAC_FRAMEWORK_TRUE@libglueincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/glue
@@ -345,73 +343,78 @@ EXTRA_glue_lst_SOURCES = \
 subdir = src/glue
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/include/discard.h \
-	$(top_builddir)/include/config.h \
-	$(top_builddir)/include/setup.h
+CONFIG_HEADER = $(top_builddir)/src/discard.h \
+	$(top_builddir)/src/config.h $(top_builddir)/src/setup.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
 glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
-am__glue_lst_SOURCES_DIST = cg.c spidermonkey.c dl.c gl.c gl_wgl.c \
-	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
-	glue-dummy.cpp normalization_cubemap.c all-glue-c.c
-am__objects_1 = all-glue-c.$(OBJEXT) glue-dummy.$(OBJEXT)
+am__glue_lst_SOURCES_DIST = cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_glx.cpp GLUWrapper.cpp \
+	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
+	bzip2.cpp freetype.cpp normalization_cubemap.cpp \
+	all-glue-cpp.cpp
+am__objects_1 = all-glue-cpp.$(OBJEXT)
 am__objects_2 = cg.$(OBJEXT) spidermonkey.$(OBJEXT) dl.$(OBJEXT) \
 	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) \
 	GLUWrapper.$(OBJEXT) simage_wrapper.$(OBJEXT) \
 	openal_wrapper.$(OBJEXT) win32api.$(OBJEXT) zlib.$(OBJEXT) \
-	bzip2.$(OBJEXT) freetype.$(OBJEXT) glue-dummy.$(OBJEXT) \
+	bzip2.$(OBJEXT) freetype.$(OBJEXT) \
 	normalization_cubemap.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_glue_lst_SOURCES_DIST = all-glue-c.c glue-dummy.cpp cg.c \
-	spidermonkey.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
-	zlib.c bzip2.c freetype.c normalization_cubemap.c
+am__EXTRA_glue_lst_SOURCES_DIST = all-glue-cpp.cpp cg.cpp \
+	spidermonkey.cpp dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp gl_glx.cpp \
+	GLUWrapper.cpp simage_wrapper.cpp openal_wrapper.cpp \
+	win32api.cpp zlib.cpp bzip2.cpp freetype.cpp \
+	normalization_cubemap.cpp
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libglue_la_LDFLAGS =
 libglue_la_LIBADD =
-am__libglue_la_SOURCES_DIST = cg.c spidermonkey.c dl.c gl.c gl_wgl.c \
-	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
-	glue-dummy.cpp normalization_cubemap.c all-glue-c.c
-am__objects_6 = all-glue-c.lo glue-dummy.lo
+am__libglue_la_SOURCES_DIST = cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_glx.cpp GLUWrapper.cpp \
+	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
+	bzip2.cpp freetype.cpp normalization_cubemap.cpp \
+	all-glue-cpp.cpp
+am__objects_6 = all-glue-cpp.lo
 am__objects_7 = cg.lo spidermonkey.lo dl.lo gl.lo gl_wgl.lo gl_agl.lo \
 	gl_glx.lo GLUWrapper.lo simage_wrapper.lo openal_wrapper.lo \
-	win32api.lo zlib.lo bzip2.lo freetype.lo glue-dummy.lo \
+	win32api.lo zlib.lo bzip2.lo freetype.lo \
 	normalization_cubemap.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglue_la_SOURCES_DIST = all-glue-c.c glue-dummy.cpp cg.c \
-	spidermonkey.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
-	zlib.c bzip2.c freetype.c normalization_cubemap.c
+am__EXTRA_libglue_la_SOURCES_DIST = all-glue-cpp.cpp cg.cpp \
+	spidermonkey.cpp dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp gl_glx.cpp \
+	GLUWrapper.cpp simage_wrapper.cpp openal_wrapper.cpp \
+	win32api.cpp zlib.cpp bzip2.cpp freetype.cpp \
+	normalization_cubemap.cpp
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
-am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = cg.c spidermonkey.c dl.c \
-	gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
-	glue-dummy.cpp normalization_cubemap.c all-glue-c.c
+am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = cg.cpp spidermonkey.cpp \
+	dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp gl_glx.cpp GLUWrapper.cpp \
+	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
+	bzip2.cpp freetype.cpp normalization_cubemap.cpp \
+	all-glue-cpp.cpp
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = all-glue-c.c \
-	glue-dummy.cpp cg.c spidermonkey.c dl.c gl.c gl_wgl.c gl_agl.c \
-	gl_glx.c GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	win32api.c zlib.c bzip2.c freetype.c normalization_cubemap.c
+am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = all-glue-cpp.cpp \
+	cg.cpp spidermonkey.cpp dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp \
+	gl_glx.cpp GLUWrapper.cpp simage_wrapper.cpp openal_wrapper.cpp \
+	win32api.cpp zlib.cpp bzip2.cpp freetype.cpp \
+	normalization_cubemap.cpp
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglue@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/GLUWrapper.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/GLUWrapper.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Po ./$(DEPDIR)/bzip2.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-cpp.Po ./$(DEPDIR)/bzip2.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/bzip2.Po ./$(DEPDIR)/cg.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/cg.Po ./$(DEPDIR)/dl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/dl.Po ./$(DEPDIR)/freetype.Plo \
@@ -419,8 +422,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/gl.Po ./$(DEPDIR)/gl_agl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_agl.Po ./$(DEPDIR)/gl_glx.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_glx.Po ./$(DEPDIR)/gl_wgl.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/gl_wgl.Po ./$(DEPDIR)/glue-dummy.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/glue-dummy.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gl_wgl.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/normalization_cubemap.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/normalization_cubemap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/openal_wrapper.Plo \
@@ -431,13 +433,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/spidermonkey.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/win32api.Plo ./$(DEPDIR)/win32api.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/zlib.Plo ./$(DEPDIR)/zlib.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -460,7 +455,7 @@ SOURCES = $(glue_lst_SOURCES) $(EXTRA_glue_lst_SOURCES) $(libglue_la_SOURCES) $(
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/glue/Makefile
@@ -519,8 +514,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GLUWrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GLUWrapper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cg.Plo@am__quote@
@@ -537,8 +532,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_glx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_wgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_wgl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glue-dummy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glue-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/normalization_cubemap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/normalization_cubemap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/openal_wrapper.Plo@am__quote@
@@ -554,39 +547,6 @@ distclean-compile:
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
-
-.c.lo:
-@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
