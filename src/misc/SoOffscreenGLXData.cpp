@@ -28,8 +28,10 @@
 #ifdef HAVE_GLX
 
 #include "SoOffscreenGLXData.h"
-#include <Inventor/C/tidbitsp.h>
+
 #include <Inventor/errors/SoDebugError.h>
+
+#include "tidbitsp.h"
 
 // *************************************************************************
 
