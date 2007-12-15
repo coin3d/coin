@@ -274,52 +274,7 @@
 			Name="Source Files"
 			Filter="c;cpp;ic;icc;h">
 			<File
-				RelativePath="..\..\src\coin-dummy.cpp">
-				<FileConfiguration
-					Name="LIB (Debug)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						ObjectFile="StaticDebug/"
-						ProgramDataBaseFileName="StaticDebug/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL (Release)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile="Release/"
-						ProgramDataBaseFileName="Release/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="LIB (Release)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						ObjectFile="StaticRelease/"
-						ProgramDataBaseFileName="StaticRelease/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL (Debug)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						ObjectFile="Debug/"
-						ProgramDataBaseFileName="Debug/"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\tidbits.c">
+				RelativePath="..\..\src\tidbits.cpp">
 				<FileConfiguration
 					Name="LIB (Debug)|Win32">
 					<Tool
@@ -1684,7 +1639,7 @@
 				Name="base sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\base\dict.c">
+					RelativePath="..\..\src\base\dict.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1774,7 +1729,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\hash.c">
+					RelativePath="..\..\src\base\hash.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1819,7 +1774,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\heap.c">
+					RelativePath="..\..\src\base\heap.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1864,7 +1819,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\list.c">
+					RelativePath="..\..\src\base\list.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1909,7 +1864,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\memalloc.c">
+					RelativePath="..\..\src\base\memalloc.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1954,7 +1909,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\namemap.c">
+					RelativePath="..\..\src\base\namemap.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -1999,7 +1954,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\rbptree.c">
+					RelativePath="..\..\src\base\rbptree.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -4744,7 +4699,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\string.c">
+					RelativePath="..\..\src\base\string.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -4789,7 +4744,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\base\time.c">
+					RelativePath="..\..\src\base\time.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -8275,6 +8230,51 @@
 				</File>
 				<File
 					RelativePath="..\..\src\elements\GL\SoGLViewportRegionElement.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\elements\GL\SoResetMatrixElement.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -13776,7 +13776,7 @@
 				Name="errors sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\errors\debugerror.c">
+					RelativePath="..\..\src\errors\debugerror.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -13821,7 +13821,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\errors\error.c">
+					RelativePath="..\..\src\errors\error.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18603,7 +18603,7 @@
 				Name="fonts sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\fonts\common.c">
+					RelativePath="..\..\src\fonts\common.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18648,7 +18648,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\default2dfont.c">
+					RelativePath="..\..\src\fonts\default2dfont.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18693,7 +18693,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\default3dfont.c">
+					RelativePath="..\..\src\fonts\default3dfont.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18738,7 +18738,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\fontlib_wrapper.c">
+					RelativePath="..\..\src\fonts\fontlib_wrapper.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18783,7 +18783,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\fontspec.c">
+					RelativePath="..\..\src\fonts\fontspec.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18828,7 +18828,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\freetype.c">
+					RelativePath="..\..\src\fonts\freetype.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18873,7 +18873,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\glyph.c">
+					RelativePath="..\..\src\fonts\glyph.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18918,7 +18918,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\glyph2d.c">
+					RelativePath="..\..\src\fonts\glyph2d.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -18963,7 +18963,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\glyph3d.c">
+					RelativePath="..\..\src\fonts\glyph3d.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19008,7 +19008,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\win32.c">
+					RelativePath="..\..\src\fonts\win32.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19057,7 +19057,7 @@
 				Name="glue sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\glue\bzip2.c">
+					RelativePath="..\..\src\glue\bzip2.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19102,7 +19102,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\cg.c">
+					RelativePath="..\..\src\glue\cg.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19147,7 +19147,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\dl.c">
+					RelativePath="..\..\src\glue\dl.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19192,7 +19192,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\freetype.c">
+					RelativePath="..\..\src\glue\freetype.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19237,7 +19237,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\gl.c">
+					RelativePath="..\..\src\glue\gl.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19282,7 +19282,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\gl_agl.c">
+					RelativePath="..\..\src\glue\gl_agl.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19327,7 +19327,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\gl_glx.c">
+					RelativePath="..\..\src\glue\gl_glx.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19372,7 +19372,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\gl_wgl.c">
+					RelativePath="..\..\src\glue\gl_wgl.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19417,7 +19417,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\glue-dummy.cpp">
+					RelativePath="..\..\src\glue\GLUWrapper.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19462,7 +19462,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\GLUWrapper.c">
+					RelativePath="..\..\src\glue\normalization_cubemap.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19507,7 +19507,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\normalization_cubemap.c">
+					RelativePath="..\..\src\glue\openal_wrapper.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19552,7 +19552,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\openal_wrapper.c">
+					RelativePath="..\..\src\glue\simage_wrapper.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19597,7 +19597,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\simage_wrapper.c">
+					RelativePath="..\..\src\glue\spidermonkey.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19642,7 +19642,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\spidermonkey.c">
+					RelativePath="..\..\src\glue\win32api.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19687,52 +19687,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\glue\win32api.c">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\glue/"
-							ProgramDataBaseFileName="StaticDebug\glue/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\glue/"
-							ProgramDataBaseFileName="Release\glue/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\glue/"
-							ProgramDataBaseFileName="StaticRelease\glue/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\glue/"
-							ProgramDataBaseFileName="Debug\glue/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\glue\zlib.c">
+					RelativePath="..\..\src\glue\zlib.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -19781,7 +19736,7 @@
 				Name="io sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\io\gzmemio.c">
+					RelativePath="..\..\src\io\gzmemio.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -33885,7 +33840,7 @@
 				Name="threads sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\threads\barrier.c">
+					RelativePath="..\..\src\threads\barrier.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -33930,7 +33885,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\common.c">
+					RelativePath="..\..\src\threads\common.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -33975,7 +33930,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\condvar.c">
+					RelativePath="..\..\src\threads\condvar.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34020,7 +33975,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\fifo.c">
+					RelativePath="..\..\src\threads\fifo.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34065,7 +34020,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\mutex.c">
+					RelativePath="..\..\src\threads\mutex.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34110,7 +34065,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\recmutex.c">
+					RelativePath="..\..\src\threads\recmutex.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34155,7 +34110,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\rwmutex.c">
+					RelativePath="..\..\src\threads\rwmutex.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34200,7 +34155,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\sched.c">
+					RelativePath="..\..\src\threads\sched.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34245,7 +34200,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\storage.c">
+					RelativePath="..\..\src\threads\storage.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34290,7 +34245,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\sync.c">
+					RelativePath="..\..\src\threads\sync.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34335,7 +34290,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\thread.c">
+					RelativePath="..\..\src\threads\thread.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34380,7 +34335,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\threads-dummy.cpp">
+					RelativePath="..\..\src\threads\worker.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -34425,52 +34380,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\worker.c">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\threads/"
-							ProgramDataBaseFileName="StaticDebug\threads/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\threads/"
-							ProgramDataBaseFileName="Release\threads/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\threads/"
-							ProgramDataBaseFileName="StaticRelease\threads/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\threads/"
-							ProgramDataBaseFileName="Debug\threads/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\threads\wpool.c">
+					RelativePath="..\..\src\threads\wpool.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -42198,10 +42108,10 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="base headers"
+				Name="src local includes"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\..\include\Inventor\C\base\dictp.h">
+					RelativePath="..\..\src\coindefs.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -42228,7 +42138,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\include\Inventor\C\base\hashp.h">
+					RelativePath="src\config.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -42255,7 +42165,61 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\include\Inventor\C\base\heapp.h">
+					RelativePath="src\setup.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\tidbitsp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\unconfig.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -42283,1354 +42247,10 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="glue headers"
+				Name="actions local includes"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\..\include\Inventor\C\glue\bzip2.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\cg.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\dlp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\freetype.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\gl_agl.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\gl_glx.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\gl_wgl.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\glp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\GLUWrapper.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\openal_wrapper.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\simage_wrapper.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\win32api.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\glue\zlib.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="threads headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\barrierp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\condvarp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\fifop.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\mutexp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\recmutexp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\rwmutexp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\schedp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\storagep.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\syncp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\threadp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\threadsutilp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\workerp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\C\threads\wpoolp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="C headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\C\tidbitsp.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="VRMLnodes headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\VRMLnodes\SoVRMLSubInterpolatorP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="actions headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\actions\SoSubActionP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="caches headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\caches\SoGlyphCache.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="elements headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\elements\SoTextureScalePolicyElement.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\elements\SoTextureScaleQualityElement.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="engines headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\engines\SoConvertAll.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\engines\SoSubEngineP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\engines\SoSubNodeEngineP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="fields headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\fields\SoGlobalField.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\fields\SoSubFieldP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="misc headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\misc\SbHash.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoCompactPathList.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoGenerate.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoGL.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoGLDriverDatabase.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoPick.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\misc\SoShaderGenerator.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="nodekits headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\nodekits\SoSubKitP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="nodes headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\Inventor\nodes\SoSubNodeP.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\nodes\SoUnknownNode.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="root headers"
-				Filter="h;ic;icc">
-				<File
-					RelativePath="..\..\include\coindefs.h">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\unconfig.h">
+					RelativePath="..\..\src\actions\SoSubActionP.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43661,7 +42281,177 @@
 				Name="base local includes"
 				Filter="h;ic;icc">
 				<File
+					RelativePath="..\..\src\base\dictp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\base\hashp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\base\heapp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\base\SbGLUTessellator.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="caches local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\caches\SoGlyphCache.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="elements local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\elements\SoTextureScalePolicyElement.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\elements\SoTextureScaleQualityElement.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43745,12 +42535,151 @@
 							Name="VCCustomBuildTool"/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath="..\..\src\engines\SoConvertAll.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\engines\SoSubEngineP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\engines\SoSubNodeEngineP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="fields local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\fields\SoGlobalField.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\fields\SoSubFieldP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 			<Filter
 				Name="fonts local includes"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\..\src\fonts\builtin2dfonts.ic">
+					RelativePath="..\..\src\fonts\builtin2dfonts.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43831,7 +42760,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\font13.ic">
+					RelativePath="..\..\src\fonts\font13.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43858,7 +42787,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\font17.ic">
+					RelativePath="..\..\src\fonts\font17.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43885,7 +42814,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\font25.ic">
+					RelativePath="..\..\src\fonts\font25.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -43912,7 +42841,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\fonts\font33.ic">
+					RelativePath="..\..\src\fonts\font33.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -44102,6 +43031,361 @@
 				</File>
 				<File
 					RelativePath="..\..\src\fonts\win32.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="glue local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\glue\bzip2.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\cg.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\dlp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\freetype.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\gl_agl.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\gl_glx.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\gl_wgl.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\glp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\GLUWrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\openal_wrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\simage_wrapper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\win32api.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\glue\zlib.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -44379,6 +43663,33 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\misc\SbHash.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\misc\SoBaseP.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -44406,7 +43717,115 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\misc\SoCompactPathList.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\misc\SoDBP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGenerate.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGL.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoGLDriverDatabase.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -44730,6 +44149,60 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\misc\SoPick.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\misc\SoShaderGenerator.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\misc\SoVBO.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -44843,10 +44316,95 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="nodekits local includes"
+				Filter="h;ic;icc">
+				<File
+					RelativePath="..\..\src\nodekits\SoSubKitP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
 				Name="nodes local includes"
 				Filter="h;ic;icc">
 				<File
 					RelativePath="..\..\src\nodes\SoSoundElementHelper.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\nodes\SoSubNodeP.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\nodes\SoUnknownNode.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45317,7 +44875,7 @@
 				Name="threads local includes"
 				Filter="h;ic;icc">
 				<File
-					RelativePath="..\..\src\threads\condvar_pthread.ic">
+					RelativePath="..\..\src\threads\barrierp.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45344,7 +44902,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\condvar_win32.ic">
+					RelativePath="..\..\src\threads\condvar_pthread.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45371,7 +44929,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\mutex_pthread.ic">
+					RelativePath="..\..\src\threads\condvar_win32.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45398,7 +44956,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\mutex_win32cs.ic">
+					RelativePath="..\..\src\threads\condvarp.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45425,7 +44983,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\mutex_win32mutex.ic">
+					RelativePath="..\..\src\threads\fifop.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45452,7 +45010,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\thread_pthread.ic">
+					RelativePath="..\..\src\threads\mutex_pthread.icc">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45479,7 +45037,358 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\threads\thread_win32.ic">
+					RelativePath="..\..\src\threads\mutex_win32cs.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\mutex_win32mutex.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\mutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\recmutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\rwmutexp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\schedp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\storagep.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\syncp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\thread_pthread.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\thread_win32.icc">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\threadp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\threadsutilp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\workerp.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\threads\wpoolp.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">
@@ -45596,6 +45505,33 @@
 				Filter="h;ic;icc">
 				<File
 					RelativePath="..\..\src\vrml97\JS_VRMLClasses.h">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\vrml97\SoVRMLSubInterpolatorP.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">

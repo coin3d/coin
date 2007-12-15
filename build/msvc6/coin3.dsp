@@ -580,7 +580,7 @@ SOURCE=..\..\src\actions\SoAudioRenderAction.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\base\dict.c
+SOURCE=..\..\src\base\dict.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -593,7 +593,7 @@ SOURCE=..\..\src\base\dict.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\hash.c
+SOURCE=..\..\src\base\hash.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -606,7 +606,7 @@ SOURCE=..\..\src\base\hash.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\heap.c
+SOURCE=..\..\src\base\heap.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -619,7 +619,7 @@ SOURCE=..\..\src\base\heap.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\list.c
+SOURCE=..\..\src\base\list.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -632,7 +632,7 @@ SOURCE=..\..\src\base\list.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\memalloc.c
+SOURCE=..\..\src\base\memalloc.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -645,7 +645,7 @@ SOURCE=..\..\src\base\memalloc.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\rbptree.c
+SOURCE=..\..\src\base\rbptree.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -658,7 +658,7 @@ SOURCE=..\..\src\base\rbptree.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\time.c
+SOURCE=..\..\src\base\time.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -671,7 +671,7 @@ SOURCE=..\..\src\base\time.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\string.c
+SOURCE=..\..\src\base\string.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -697,7 +697,7 @@ SOURCE=..\..\src\base\dynarray.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\base\namemap.c
+SOURCE=..\..\src\base\namemap.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -2504,6 +2504,19 @@ SOURCE=..\..\src\elements\GL\SoGLDisplayList.cpp
 # PROP Intermediate_Dir "StaticDebug\elements\GL"
 !ENDIF
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\elements\GL\SoResetMatrixElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements\GL"
+!ENDIF
+# End Source File
 # End Group
 # Begin Group "elements sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
@@ -4088,7 +4101,7 @@ SOURCE=..\..\src\engines\evaluator_tab.c
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\errors\error.c
+SOURCE=..\..\src\errors\error.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -4101,7 +4114,7 @@ SOURCE=..\..\src\errors\error.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\errors\debugerror.c
+SOURCE=..\..\src\errors\debugerror.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5488,7 +5501,7 @@ SOURCE=..\..\src\fields\shared.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\fonts\fontlib_wrapper.c
+SOURCE=..\..\src\fonts\fontlib_wrapper.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5501,7 +5514,7 @@ SOURCE=..\..\src\fonts\fontlib_wrapper.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\win32.c
+SOURCE=..\..\src\fonts\win32.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5514,7 +5527,7 @@ SOURCE=..\..\src\fonts\win32.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\freetype.c
+SOURCE=..\..\src\fonts\freetype.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5527,7 +5540,7 @@ SOURCE=..\..\src\fonts\freetype.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\fontspec.c
+SOURCE=..\..\src\fonts\fontspec.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5540,7 +5553,7 @@ SOURCE=..\..\src\fonts\fontspec.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\glyph.c
+SOURCE=..\..\src\fonts\glyph.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5553,7 +5566,7 @@ SOURCE=..\..\src\fonts\glyph.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\glyph2d.c
+SOURCE=..\..\src\fonts\glyph2d.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5566,7 +5579,7 @@ SOURCE=..\..\src\fonts\glyph2d.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\glyph3d.c
+SOURCE=..\..\src\fonts\glyph3d.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5579,7 +5592,7 @@ SOURCE=..\..\src\fonts\glyph3d.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\default3dfont.c
+SOURCE=..\..\src\fonts\default3dfont.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5592,7 +5605,7 @@ SOURCE=..\..\src\fonts\default3dfont.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\default2dfont.c
+SOURCE=..\..\src\fonts\default2dfont.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5605,7 +5618,7 @@ SOURCE=..\..\src\fonts\default2dfont.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\common.c
+SOURCE=..\..\src\fonts\common.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5621,7 +5634,7 @@ SOURCE=..\..\src\fonts\common.c
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\glue\cg.c
+SOURCE=..\..\src\glue\cg.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5634,7 +5647,7 @@ SOURCE=..\..\src\glue\cg.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\spidermonkey.c
+SOURCE=..\..\src\glue\spidermonkey.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5647,7 +5660,7 @@ SOURCE=..\..\src\glue\spidermonkey.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\dl.c
+SOURCE=..\..\src\glue\dl.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5660,7 +5673,7 @@ SOURCE=..\..\src\glue\dl.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\gl.c
+SOURCE=..\..\src\glue\gl.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5673,7 +5686,7 @@ SOURCE=..\..\src\glue\gl.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\gl_wgl.c
+SOURCE=..\..\src\glue\gl_wgl.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5686,7 +5699,7 @@ SOURCE=..\..\src\glue\gl_wgl.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\gl_agl.c
+SOURCE=..\..\src\glue\gl_agl.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5699,7 +5712,7 @@ SOURCE=..\..\src\glue\gl_agl.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\gl_glx.c
+SOURCE=..\..\src\glue\gl_glx.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5712,7 +5725,7 @@ SOURCE=..\..\src\glue\gl_glx.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\GLUWrapper.c
+SOURCE=..\..\src\glue\GLUWrapper.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5725,7 +5738,7 @@ SOURCE=..\..\src\glue\GLUWrapper.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\simage_wrapper.c
+SOURCE=..\..\src\glue\simage_wrapper.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5738,7 +5751,7 @@ SOURCE=..\..\src\glue\simage_wrapper.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\openal_wrapper.c
+SOURCE=..\..\src\glue\openal_wrapper.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5751,7 +5764,7 @@ SOURCE=..\..\src\glue\openal_wrapper.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\win32api.c
+SOURCE=..\..\src\glue\win32api.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5764,7 +5777,7 @@ SOURCE=..\..\src\glue\win32api.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\zlib.c
+SOURCE=..\..\src\glue\zlib.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5777,7 +5790,7 @@ SOURCE=..\..\src\glue\zlib.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\bzip2.c
+SOURCE=..\..\src\glue\bzip2.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5790,7 +5803,7 @@ SOURCE=..\..\src\glue\bzip2.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\freetype.c
+SOURCE=..\..\src\glue\freetype.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5803,20 +5816,7 @@ SOURCE=..\..\src\glue\freetype.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\glue\glue-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\glue"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\glue"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\glue\normalization_cubemap.c
+SOURCE=..\..\src\glue\normalization_cubemap.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -5949,7 +5949,7 @@ SOURCE=..\..\src\io\SoWriterefCounter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\io\gzmemio.c
+SOURCE=..\..\src\io\gzmemio.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9936,7 +9936,7 @@ SOURCE=..\..\src\geo\SbUTMProjection.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=..\..\src\threads\common.c
+SOURCE=..\..\src\threads\common.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9949,7 +9949,7 @@ SOURCE=..\..\src\threads\common.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\thread.c
+SOURCE=..\..\src\threads\thread.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9962,7 +9962,7 @@ SOURCE=..\..\src\threads\thread.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\mutex.c
+SOURCE=..\..\src\threads\mutex.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9975,7 +9975,7 @@ SOURCE=..\..\src\threads\mutex.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\rwmutex.c
+SOURCE=..\..\src\threads\rwmutex.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9988,7 +9988,7 @@ SOURCE=..\..\src\threads\rwmutex.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\storage.c
+SOURCE=..\..\src\threads\storage.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10001,7 +10001,7 @@ SOURCE=..\..\src\threads\storage.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\condvar.c
+SOURCE=..\..\src\threads\condvar.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10014,7 +10014,7 @@ SOURCE=..\..\src\threads\condvar.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\worker.c
+SOURCE=..\..\src\threads\worker.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10027,7 +10027,7 @@ SOURCE=..\..\src\threads\worker.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\wpool.c
+SOURCE=..\..\src\threads\wpool.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10040,7 +10040,7 @@ SOURCE=..\..\src\threads\wpool.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\recmutex.c
+SOURCE=..\..\src\threads\recmutex.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10053,7 +10053,7 @@ SOURCE=..\..\src\threads\recmutex.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\sched.c
+SOURCE=..\..\src\threads\sched.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10066,7 +10066,7 @@ SOURCE=..\..\src\threads\sched.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\sync.c
+SOURCE=..\..\src\threads\sync.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10079,7 +10079,7 @@ SOURCE=..\..\src\threads\sync.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\fifo.c
+SOURCE=..\..\src\threads\fifo.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10092,20 +10092,7 @@ SOURCE=..\..\src\threads\fifo.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\barrier.c
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\threads"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\threads"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\threads\threads-dummy.cpp
+SOURCE=..\..\src\threads\barrier.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -11340,7 +11327,7 @@ SOURCE=..\..\src\foreignfiles\steel.c
 # End Group
 # Begin Source File
 
-SOURCE=..\..\src\tidbits.c
+SOURCE=..\..\src\tidbits.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -11367,19 +11354,6 @@ SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
 !ENDIF
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=..\..\src\coin-dummy.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug"
-!ENDIF
-# End Source File
 # End Group
 # Begin Group "Public Headers"
 
@@ -14964,370 +14938,28 @@ SOURCE=.\include\setup.h
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
-# Begin Group "base headers"
+# Begin Group "src local includes"
 
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\C\base\dictp.h
+SOURCE=.\src\config.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\C\base\hashp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\base\heapp.h
+SOURCE=.\src\setup.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
-# Begin Group "glue headers"
+# Begin Group "actions local includes"
 
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\C\glue\GLUWrapper.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\bzip2.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\cg.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\dlp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\freetype.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\gl_agl.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\gl_glx.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\gl_wgl.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\glp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\openal_wrapper.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\simage_wrapper.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\win32api.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\glue\zlib.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "threads headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\barrierp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\condvarp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\fifop.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\mutexp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\recmutexp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\rwmutexp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\schedp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\storagep.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\syncp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\threadp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\threadsutilp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\workerp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\threads\wpoolp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "C headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\tidbitsp.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "VRMLnodes headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\VRMLnodes\SoVRMLSubInterpolatorP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "actions headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\actions\SoSubActionP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "caches headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\caches\SoGlyphCache.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "elements headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\elements\SoTextureScalePolicyElement.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\elements\SoTextureScaleQualityElement.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "engines headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\engines\SoConvertAll.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\engines\SoSubEngineP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\engines\SoSubNodeEngineP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "fields headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\fields\SoGlobalField.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\fields\SoSubFieldP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "misc headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SbHash.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoCompactPathList.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoGL.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoGLDriverDatabase.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoGenerate.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoPick.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\misc\SoShaderGenerator.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "nodekits headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodekits\SoSubKitP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "nodes headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoSubNodeP.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoUnknownNode.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "root headers"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\include\coindefs.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\unconfig.h
+SOURCE=..\..\src\actions\SoSubActionP.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15341,10 +14973,82 @@ SOURCE=..\..\src\base\SbGLUTessellator.h
 
 # PROP Exclude_From_Build 1
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\dictp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\hashp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\heapp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "caches local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\caches\SoGlyphCache.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "src local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\coindefs.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "elements local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\elements\SoTextureScalePolicyElement.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\elements\SoTextureScaleQualityElement.h
+
+# PROP Exclude_From_Build 1
+# End Source File
 # End Group
 # Begin Group "engines local includes"
 
 # PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\engines\SoConvertAll.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\engines\SoSubEngineP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\engines\SoSubNodeEngineP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\src\engines\evaluator.h
@@ -15358,12 +15062,28 @@ SOURCE=..\..\src\engines\so_eval.ic
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
+# Begin Group "fields local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoGlobalField.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\fields\SoSubFieldP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
 # Begin Group "fonts local includes"
 
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
-SOURCE=..\..\src\fonts\builtin2dfonts.ic
+SOURCE=..\..\src\fonts\builtin2dfonts.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15381,25 +15101,25 @@ SOURCE=..\..\src\fonts\defaultfonts.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\font13.ic
+SOURCE=..\..\src\fonts\font13.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\font17.ic
+SOURCE=..\..\src\fonts\font17.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\font25.ic
+SOURCE=..\..\src\fonts\font25.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\fonts\font33.ic
+SOURCE=..\..\src\fonts\font33.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15442,6 +15162,88 @@ SOURCE=..\..\src\fonts\glyph3d.h
 # Begin Source File
 
 SOURCE=..\..\src\fonts\win32.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "glue local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\glue\GLUWrapper.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\bzip2.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\cg.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\dlp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\freetype.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\gl_agl.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\gl_glx.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\gl_wgl.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\glp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\openal_wrapper.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\simage_wrapper.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\win32api.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\zlib.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15503,13 +15305,37 @@ SOURCE=..\..\src\misc\CoinStaticObjectInDLL.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\SbHash.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\misc\SoBaseP.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\SoCompactPathList.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\misc\SoDBP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoGL.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoGLDriverDatabase.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15563,6 +15389,12 @@ SOURCE=..\..\src\misc\SoGLqmeshpreciselightingTemplate.icc
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\misc\SoGenerate.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\misc\SoOffscreenAGLData.h
 
 # PROP Exclude_From_Build 1
@@ -15576,6 +15408,18 @@ SOURCE=..\..\src\misc\SoOffscreenGLXData.h
 # Begin Source File
 
 SOURCE=..\..\src\misc\SoOffscreenWGLData.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoPick.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\SoShaderGenerator.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15614,12 +15458,34 @@ SOURCE=..\..\src\navigation\SoEvent.h
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
+# Begin Group "nodekits local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\nodekits\SoSubKitP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
 # Begin Group "nodes local includes"
 
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoSoundElementHelper.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoSubNodeP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoUnknownNode.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15733,43 +15599,137 @@ SOURCE=..\..\src\shapenodes\soshape_trianglesort.h
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
-SOURCE=..\..\src\threads\condvar_pthread.ic
+SOURCE=..\..\src\threads\barrierp.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\condvar_win32.ic
+SOURCE=..\..\src\threads\condvar_pthread.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\mutex_pthread.ic
+SOURCE=..\..\src\threads\condvar_win32.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\mutex_win32cs.ic
+SOURCE=..\..\src\threads\condvarp.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\mutex_win32mutex.ic
+SOURCE=..\..\src\threads\fifop.h
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\thread_pthread.ic
+SOURCE=..\..\src\threads\mutex_pthread.icc
 
 # PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\threads\thread_win32.ic
+SOURCE=..\..\src\threads\mutex_win32cs.icc
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\mutex_win32mutex.icc
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\mutexp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\recmutexp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\rwmutexp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\schedp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\storagep.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\syncp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\thread_pthread.icc
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\thread_win32.icc
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\threadp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\threadsutilp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\workerp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\threads\wpoolp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "src local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\tidbitsp.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\unconfig.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15802,6 +15762,12 @@ SOURCE=..\..\src\upgraders\SoUpgrader.h
 # Begin Source File
 
 SOURCE=..\..\src\vrml97\JS_VRMLClasses.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\vrml97\SoVRMLSubInterpolatorP.h
 
 # PROP Exclude_From_Build 1
 # End Source File

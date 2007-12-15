@@ -546,6 +546,13 @@ INPUT                  = .\include\Inventor\C\basic.h \
                          ..\..\include\Inventor\actions\SoWriteAction.h \
                          ..\..\include\Inventor\actions\SoReorganizeAction.h \
                          ..\..\include\Inventor\collision\SoIntersectionDetectionAction.h \
+                         ..\..\include\Inventor\caches\SoCache.h \
+                         ..\..\include\Inventor\caches\SoBoundingBoxCache.h \
+                         ..\..\include\Inventor\caches\SoConvexDataCache.h \
+                         ..\..\include\Inventor\caches\SoGLCacheList.h \
+                         ..\..\include\Inventor\caches\SoGLRenderCache.h \
+                         ..\..\include\Inventor\caches\SoNormalCache.h \
+                         ..\..\include\Inventor\caches\SoTextureCoordinateCache.h \
                          ..\..\include\Inventor\details\SoConeDetail.h \
                          ..\..\include\Inventor\details\SoCubeDetail.h \
                          ..\..\include\Inventor\details\SoCylinderDetail.h \
@@ -1090,6 +1097,13 @@ INPUT                  = .\include\Inventor\C\basic.h \
                          ..\..\src\base\SbViewVolume.cpp \
                          ..\..\src\base\SbViewportRegion.cpp \
                          ..\..\src\base\SbXfBox3f.cpp \
+                         ..\..\src\caches\SoCache.cpp \
+                         ..\..\src\caches\SoBoundingBoxCache.cpp \
+                         ..\..\src\caches\SoConvexDataCache.cpp \
+                         ..\..\src\caches\SoGLCacheList.cpp \
+                         ..\..\src\caches\SoGLRenderCache.cpp \
+                         ..\..\src\caches\SoNormalCache.cpp \
+                         ..\..\src\caches\SoTextureCoordinateCache.cpp \
                          ..\..\src\details\SoConeDetail.cpp \
                          ..\..\src\details\SoCubeDetail.cpp \
                          ..\..\src\details\SoCylinderDetail.cpp \
