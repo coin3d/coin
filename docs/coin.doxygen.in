@@ -1504,13 +1504,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowGroup.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowStyle.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowCulling.cpp \
-                         @path_tag@@coin_src_dir@/src/threads/barrier.c \
-                         @path_tag@@coin_src_dir@/src/threads/condvar.c \
-                         @path_tag@@coin_src_dir@/src/threads/fifo.c \
-                         @path_tag@@coin_src_dir@/src/threads/mutex.c \
-                         @path_tag@@coin_src_dir@/src/threads/rwmutex.c \
-                         @path_tag@@coin_src_dir@/src/threads/storage.c \
-                         @path_tag@@coin_src_dir@/src/threads/thread.c \
+                         @path_tag@@coin_src_dir@/src/threads/barrier.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/condvar.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/fifo.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/mutex.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/rwmutex.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/storage.cpp \
+                         @path_tag@@coin_src_dir@/src/threads/thread.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Anchor.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Appearance.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/AudioClip.cpp \
