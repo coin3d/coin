@@ -441,7 +441,7 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
                                      bold ? TRUE : FALSE, italic ? TRUE : FALSE);
       if (wfont2) {
         cc_flww32_get_font_name(wfont2, realname);
-        if (cc_string_length(realname) == baselen &&
+        if (((int) cc_string_length(realname) == baselen) &&
             !coin_strncasecmp(cc_string_get_text(realname), 
                               cc_string_get_text(basename), 
                               baselen)) {
