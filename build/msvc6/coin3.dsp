@@ -11354,6 +11354,7 @@ SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
 !ENDIF
 # End Source File
 # End Group
+# End Group
 # Begin Group "Public Headers"
 
 # PROP Default_Filter "h;ic;icc"
