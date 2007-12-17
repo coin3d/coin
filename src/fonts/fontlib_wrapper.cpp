@@ -36,11 +36,11 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/string.h>
-#include <Inventor/C/base/dict.h>
 #include <Inventor/C/errors/debugerror.h>
 
+#include "base/dict.h"
+#include "base/dynarray.h"
 #include "fonts/freetype.h"
 #include "fonts/win32.h"
 #include "fonts/defaultfonts.h"

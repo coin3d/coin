@@ -47,7 +47,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include "SoResetMatrixElement.h"
+#include "elements/GL/SoResetMatrixElement.h"
 
 SO_ELEMENT_SOURCE(SoGLViewingMatrixElement);
 

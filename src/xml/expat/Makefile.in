@@ -278,7 +278,23 @@ LinkHackSources = \
 	all-expat-c.c
 
 PublicHeaders = 
-PrivateHeaders = 
+PrivateHeaders = \
+        amigaconfig.h\
+        ascii.h \
+        asciitab.h \
+        expat.h \
+        expat_external.h \
+        iasciitab.h \
+        internal.h \
+        latin1tab.h \
+        macconfig.h \
+        nametab.h \
+        utf8tab.h \
+        winconfig.h \
+        xmlrole.h \
+        xmltok.h \
+        xmltok_impl.h
+
 ObsoletedHeaders = 
 
 
@@ -349,8 +365,11 @@ am__objects_2 = xmlparse.$(OBJEXT) xmlrole.$(OBJEXT) xmltok.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_expat_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_expat_lst_SOURCES_DIST = all-expat-c.c xmlparse.c xmlrole.c \
-	xmltok.c xmltok_impl.c xmltok_ns.c
+am__EXTRA_expat_lst_SOURCES_DIST = amigaconfig.h ascii.h asciitab.h \
+	expat.h expat_external.h iasciitab.h internal.h latin1tab.h \
+	macconfig.h nametab.h utf8tab.h winconfig.h xmlrole.h xmltok.h \
+	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c \
+	xmltok_impl.c xmltok_ns.c
 expat_lst_OBJECTS = $(am_expat_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -364,15 +383,21 @@ am__objects_7 = xmlparse.lo xmlrole.lo xmltok.lo xmltok_impl.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libexpat_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libexpat_la_SOURCES_DIST = all-expat-c.c xmlparse.c xmlrole.c \
-	xmltok.c xmltok_impl.c xmltok_ns.c
+am__EXTRA_libexpat_la_SOURCES_DIST = amigaconfig.h ascii.h asciitab.h \
+	expat.h expat_external.h iasciitab.h internal.h latin1tab.h \
+	macconfig.h nametab.h utf8tab.h winconfig.h xmlrole.h xmltok.h \
+	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c \
+	xmltok_impl.c xmltok_ns.c
 libexpat_la_OBJECTS = $(am_libexpat_la_OBJECTS)
 libexpat@SUFFIX@LINKHACK_la_LDFLAGS =
 libexpat@SUFFIX@LINKHACK_la_LIBADD =
 am__libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = xmlparse.c xmlrole.c \
 	xmltok.c xmltok_impl.c xmltok_ns.c all-expat-c.c
 am_libexpat@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = all-expat-c.c \
+am__EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = amigaconfig.h \
+	ascii.h asciitab.h expat.h expat_external.h iasciitab.h \
+	internal.h latin1tab.h macconfig.h nametab.h utf8tab.h \
+	winconfig.h xmlrole.h xmltok.h xmltok_impl.h all-expat-c.c \
 	xmlparse.c xmlrole.c xmltok.c xmltok_impl.c xmltok_ns.c
 libexpat@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libexpat@SUFFIX@LINKHACK_la_OBJECTS)

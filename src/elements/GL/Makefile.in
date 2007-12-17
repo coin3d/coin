@@ -305,7 +305,9 @@ LinkHackSources = \
 	all-glelements-cpp.cpp
 
 PublicHeaders = 
-PrivateHeaders = 
+PrivateHeaders = \
+	SoResetMatrixElement.h
+
 ObsoletedHeaders = 
 
 
@@ -414,13 +416,13 @@ am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glelements_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_glelements_lst_SOURCES_DIST = all-glelements-cpp.cpp \
-	SoGLCacheContextElement.cpp SoGLClipPlaneElement.cpp \
-	SoGLColorIndexElement.cpp SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
+am__EXTRA_glelements_lst_SOURCES_DIST = SoResetMatrixElement.h \
+	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
+	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
+	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
+	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
+	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -478,13 +480,13 @@ am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglelements_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglelements_la_SOURCES_DIST = all-glelements-cpp.cpp \
-	SoGLCacheContextElement.cpp SoGLClipPlaneElement.cpp \
-	SoGLColorIndexElement.cpp SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
+am__EXTRA_libglelements_la_SOURCES_DIST = SoResetMatrixElement.h \
+	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
+	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
+	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
+	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
+	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -522,12 +524,13 @@ am__libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-glelements-cpp.cpp
 am_libglelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
-	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
+	SoResetMatrixElement.h all-glelements-cpp.cpp \
+	SoGLCacheContextElement.cpp SoGLClipPlaneElement.cpp \
+	SoGLColorIndexElement.cpp SoGLCoordinateElement.cpp \
+	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -617,6 +620,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__glelements_lst_SOURCES_DIST) \
 	$(am__EXTRA_glelements_lst_SOURCES_DIST) \
@@ -990,7 +1000,6 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libglelementsincHEADERS
 
-	SoResetMatrixElement.h
 
 # this rule causes a make warning, so we remove it when it is not in use
 glelements.lst: Makefile $(glelements_lst_OBJECTS)

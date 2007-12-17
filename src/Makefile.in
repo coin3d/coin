@@ -271,11 +271,22 @@ CLEANFILES = \
 	coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
 	coin@COIN_MAJOR_VERSION@@SUFFIX@.exp
 
-@BUILD_VRML97_FALSE@VRML97DIR = 
 
 
 # **************************************************************************
 # Extensions which might be present.
+noinst_HEADERS = \
+        unconfig.h \
+        tidbitsp.h \
+        coindefs.h
+
+
+EXTRADIST = \
+        update-config.sh \
+        Make-Common.tpl
+
+@BUILD_VRML97_FALSE@VRML97DIR = 
+
 @BUILD_VRML97_TRUE@VRML97DIR = vrml97
 @BUILD_VRML97_FALSE@VRML97LIBADD = 
 @BUILD_VRML97_TRUE@VRML97LIBADD = $(VRML97DIR)/libvrml97.la
@@ -722,14 +733,16 @@ DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 	$(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 	$(libCoin@SUFFIX@_la_SOURCES) \
 	$(EXTRA_libCoin@SUFFIX@_la_SOURCES)
+HEADERS = $(noinst_HEADERS)
+
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	ps-recursive install-info-recursive uninstall-info-recursive \
 	all-recursive install-data-recursive install-exec-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
-DIST_COMMON = Makefile.am Makefile.in config.h.in discard.h.in \
-	setup.h.in
+DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in config.h.in \
+	discard.h.in setup.h.in
 DIST_SUBDIRS = extensions xml actions base bundles caches details \
 	draggers elements engines errors events fields fonts glue io \
 	manips misc lists nodekits navigation nodes shapenodes \
@@ -1113,7 +1126,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) discard.h config.h setup.h
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS) discard.h \
+		config.h setup.h
 installdirs: installdirs-recursive
 installdirs-am:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdir)

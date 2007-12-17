@@ -58,9 +58,10 @@
 
 #include <Inventor/SbName.h>
 
-#include <Inventor/C/base/namemap.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbString.h>
+
+#include "base/namemap.h"
 
 // *************************************************************************
 

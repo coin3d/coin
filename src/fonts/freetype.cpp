@@ -137,12 +137,12 @@ static int flwft_calctessellatorsteps(float complexity);
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
-#include <Inventor/C/base/dict.h>
-#include <Inventor/C/base/dynarray.h>
-#include <Inventor/C/base/namemap.h>
 #include <Inventor/C/base/list.h>
 
-#include "common.h"
+#include "base/dict.h"
+#include "base/dynarray.h"
+#include "base/namemap.h"
+#include "fonts/common.h"
 
 /* ************************************************************************* */
 

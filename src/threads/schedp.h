@@ -30,11 +30,11 @@
 
 #include <Inventor/C/threads/common.h>
 #include <Inventor/C/base/heap.h>
-#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/memalloc.h>
 
+#include "base/dict.h"
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif /* HAVE_CONFIG_H */
 
 #ifdef __cplusplus

@@ -118,9 +118,7 @@ PublicHeaders = \
 	SoSoundElement.h \
 	SoGLShaderProgramElement.h
 
-PrivateHeaders = \
-	SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h
+PrivateHeaders =
 
 ObsoletedHeaders =
 

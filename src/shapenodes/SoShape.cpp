@@ -56,7 +56,6 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoBumpMapElement.h>
@@ -108,6 +107,7 @@
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
+#include "caches/SoPrimitiveVertexCache.h"
 #include "misc/SoGL.h"
 #include "misc/SoGLDriverDatabase.h"
 #include "glue/glp.h"

@@ -268,7 +268,11 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 
 PublicHeaders = 
-PrivateHeaders = 
+
+PrivateHeaders = \
+	SoSubActionP.h
+
+
 ObsoleteHeaders = 
 
 LinkHackSources = \
@@ -378,14 +382,15 @@ am__objects_2 = SoAction.$(OBJEXT) SoBoxHighlightRenderAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_actions_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_actions_lst_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
-	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
-	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
-	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
-	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
-	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
-	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
+am__EXTRA_actions_lst_SOURCES_DIST = SoSubActionP.h all-actions-cpp.cpp \
+	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+	SoCallbackAction.cpp SoGLRenderAction.cpp \
+	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
+	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
+	SoLineHighlightRenderAction.cpp SoPickAction.cpp \
+	SoRayPickAction.cpp SoReorganizeAction.cpp SoSearchAction.cpp \
+	SoSimplifyAction.cpp SoToVRMLAction.cpp SoToVRML2Action.cpp \
+	SoWriteAction.cpp SoAudioRenderAction.cpp
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -412,14 +417,15 @@ am__objects_7 = SoAction.lo SoBoxHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libactions_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions_la_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
-	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
-	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
-	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
-	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
-	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
-	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
+am__EXTRA_libactions_la_SOURCES_DIST = SoSubActionP.h \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
+	SoCallbackAction.cpp SoGLRenderAction.cpp \
+	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
+	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
+	SoLineHighlightRenderAction.cpp SoPickAction.cpp \
+	SoRayPickAction.cpp SoReorganizeAction.cpp SoSearchAction.cpp \
+	SoSimplifyAction.cpp SoToVRMLAction.cpp SoToVRML2Action.cpp \
+	SoWriteAction.cpp SoAudioRenderAction.cpp
 libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
 libactions@SUFFIX@LINKHACK_la_LDFLAGS =
 libactions@SUFFIX@LINKHACK_la_LIBADD =
@@ -433,7 +439,7 @@ am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp \
 	all-actions-cpp.cpp
 am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubActionP.h \
 	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
@@ -490,6 +496,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__actions_lst_SOURCES_DIST) \
 	$(am__EXTRA_actions_lst_SOURCES_DIST) \

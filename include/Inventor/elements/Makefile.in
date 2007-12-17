@@ -384,10 +384,7 @@ PublicHeaders = \
 	SoGLShaderProgramElement.h
 
 
-PrivateHeaders = \
-	SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h
-
+PrivateHeaders = 
 
 ObsoletedHeaders = 
 

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{212F1F46-1F18-4D2B-BAF5-66FFEA84CF3B}"
+	ProjectGUID="{80079E92-07EA-4848-BA18-49A665036AE3}"
 	>
 	<Platforms>
 		<Platform
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="2"
@@ -120,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -210,7 +210,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_INTERNAL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -289,7 +289,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,include,..\..\include,..\..\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -47465,160 +47465,83 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="[setup] headers"
-				Filter="h;ic;icc"
-				>
-				<File
-					RelativePath="include\config-debug.h"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="include\config-release.h"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="include\config.h"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="include\setup.h"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
 				Name="src local includes"
 				Filter="h;ic;icc"
 				>
 				<File
 					RelativePath="..\..\src\coindefs.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\config-debug.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\config-release.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

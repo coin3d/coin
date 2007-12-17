@@ -293,6 +293,19 @@ LinkHackSources = \
 PublicHeaders = 
 
 PrivateHeaders = \
+	barrierp.h \
+	condvarp.h \
+	fifop.h \
+	mutexp.h \
+	recmutexp.h \
+	rwmutexp.h \
+	schedp.h \
+	storagep.h \
+	syncp.h \
+	threadp.h \
+	threadsutilp.h \
+	workerp.h \
+	wpoolp.h \
 	condvar_pthread.icc \
 	condvar_win32.icc \
 	mutex_pthread.icc \
@@ -391,7 +404,9 @@ am__objects_1 = all-threads-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_threads_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_threads_lst_SOURCES_DIST = condvar_pthread.icc \
+am__EXTRA_threads_lst_SOURCES_DIST = barrierp.h condvarp.h fifop.h \
+	mutexp.h recmutexp.h rwmutexp.h schedp.h storagep.h syncp.h \
+	threadp.h threadsutilp.h workerp.h wpoolp.h condvar_pthread.icc \
 	condvar_win32.icc mutex_pthread.icc mutex_win32cs.icc \
 	mutex_win32mutex.icc thread_pthread.icc thread_win32.icc \
 	wrappers.cpp all-threads-cpp.cpp common.cpp storage.cpp \
@@ -415,7 +430,9 @@ am__objects_7 = all-threads-cpp.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libthreads_la_OBJECTS = $(am__objects_9)
-am__EXTRA_libthreads_la_SOURCES_DIST = condvar_pthread.icc \
+am__EXTRA_libthreads_la_SOURCES_DIST = barrierp.h condvarp.h fifop.h \
+	mutexp.h recmutexp.h rwmutexp.h schedp.h storagep.h syncp.h \
+	threadp.h threadsutilp.h workerp.h wpoolp.h condvar_pthread.icc \
 	condvar_win32.icc mutex_pthread.icc mutex_win32cs.icc \
 	mutex_win32mutex.icc thread_pthread.icc thread_win32.icc \
 	wrappers.cpp all-threads-cpp.cpp common.cpp storage.cpp \
@@ -429,7 +446,9 @@ am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.cpp storage.cpp \
 	wpool.cpp recmutex.cpp sched.cpp sync.cpp fifo.cpp barrier.cpp \
 	all-threads-cpp.cpp
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
-am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = barrierp.h \
+	condvarp.h fifop.h mutexp.h recmutexp.h rwmutexp.h schedp.h \
+	storagep.h syncp.h threadp.h threadsutilp.h workerp.h wpoolp.h \
 	condvar_pthread.icc condvar_win32.icc mutex_pthread.icc \
 	mutex_win32cs.icc mutex_win32mutex.icc thread_pthread.icc \
 	thread_win32.icc wrappers.cpp all-threads-cpp.cpp common.cpp \
@@ -463,6 +482,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__threads_lst_SOURCES_DIST) \
 	$(am__EXTRA_threads_lst_SOURCES_DIST) \

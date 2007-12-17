@@ -30,12 +30,11 @@
 
 /* ********************************************************************** */
 
+#include <Inventor/C/basic.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <Inventor/C/basic.h>
-
 
   struct cc_font_bitmap {
     int bearingX; /* left side of bitmap relative to pen */

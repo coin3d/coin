@@ -274,12 +274,7 @@ PublicHeaders = \
 	list.h \
 	math-undefs.h
 
-PrivateHeaders = \
-	dict.h \
-	dictp.h \
-	hashp.h \
-	heapp.h
-
+PrivateHeaders = 
 ObsoleteHeaders = 
 
 

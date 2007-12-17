@@ -13,10 +13,18 @@ RegularSources = \
 	SoGlyphCache.cpp \
 	SoShaderProgramCache.cpp \
 	SoVBOCache.cpp
+
 LinkHackSources = \
 	all-caches-cpp.cpp
+
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = \
+	SoPrimitiveVertexCache.h \
+	SoGlyphCache.h \
+	SoShaderProgramCache.h \
+	SoVBOCache.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(caches, caches)

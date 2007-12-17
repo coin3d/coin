@@ -74,7 +74,6 @@ EXTRA_DIST = \
 	README.VRML97 \
 	README.WIN32 \
 	RELNOTES \
-	bootstrap \
 	coin.cfg.in \
 	Coin.pc.in \
 	Info.plist.in \
@@ -92,6 +91,8 @@ EXTRA_DIST = \
 	cfg/errors.txt \
 	cfg/gendsp.pl.in \
 	cfg/ltconfig \
+	cfg/wrapmsvc.exe \
+	cfg/csubst.exe \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
@@ -135,13 +136,6 @@ EXTRA_DIST = \
 	packaging/macosx/inst-README-gcc4.txt.in \
 	packaging/macosx/background.tiff \
 	packaging/redhat/coin.spec.in \
-	packaging/windows/Makefile.in \
-	packaging/windows/bfheader.nsi.in \
-	packaging/windows/coin-sdk.html.in \
-	packaging/windows/footer.nsi.in \
-	packaging/windows/heading.nsi.in \
-	packaging/windows/middle.nsi.in \
-	packaging/windows/post.nsi.in \
 	examples/bindings/glutiv.cpp \
 	build/misc/generate.sh \
 	build/misc/build-docs.bat \
@@ -182,10 +176,10 @@ EXTRA_DIST = \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl-headers.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
-	build/msvc6/include/config.h \
-	build/msvc6/include/config-debug.h \
-	build/msvc6/include/config-release.h \
-	build/msvc6/include/setup.h \
+	build/msvc6/src/config.h \
+	build/msvc6/src/config-debug.h \
+	build/msvc6/src/config-release.h \
+	build/msvc6/src/setup.h \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc7/data/draggerDefaults/dragPointDragger.h \
@@ -217,10 +211,10 @@ EXTRA_DIST = \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl-headers.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
-	build/msvc7/include/config.h \
-	build/msvc7/include/config-debug.h \
-	build/msvc7/include/config-release.h \
-	build/msvc7/include/setup.h \
+	build/msvc7/src/config.h \
+	build/msvc7/src/config-debug.h \
+	build/msvc7/src/config-release.h \
+	build/msvc7/src/setup.h \
 	build/msvc8/data/draggerDefaults/centerballDragger.h \
 	build/msvc8/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc8/data/draggerDefaults/dragPointDragger.h \
@@ -252,10 +246,10 @@ EXTRA_DIST = \
 	build/msvc8/include/Inventor/C/basic.h \
 	build/msvc8/include/Inventor/system/gl-headers.h \
 	build/msvc8/include/Inventor/system/inttypes.h \
-	build/msvc8/include/config.h \
-	build/msvc8/include/config-debug.h \
-	build/msvc8/include/config-release.h \
-	build/msvc8/include/setup.h \
+	build/msvc8/src/config.h \
+	build/msvc8/src/config-debug.h \
+	build/msvc8/src/config-release.h \
+	build/msvc8/src/setup.h \
 	testsuite/Makefile.in \
 	testsuite/StandardTests.cpp \
 	testsuite/TestSuiteInit.cpp \
@@ -267,6 +261,7 @@ EXTRA_DIST = \
 	testsuite/makemakefile.sh \
 	testsuite/README \
 	include/boost/Makefile.inc \
+	include/boost.README \
 	$(BOOST_HEADER_FILES)
 
 # FIXME: These files should really be added instead of the ones

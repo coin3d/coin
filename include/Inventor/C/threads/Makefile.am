@@ -13,20 +13,7 @@ PublicHeaders = \
 	sync.h \
 	fifo.h \
 	barrier.h
-PrivateHeaders = \
-	barrierp.h \
-	condvarp.h \
-	fifop.h \
-	mutexp.h \
-	recmutexp.h \
-	rwmutexp.h \
-	schedp.h \
-	storagep.h \
-	syncp.h \
-	threadp.h \
-	threadsutilp.h \
-	workerp.h \
-	wpoolp.h
+PrivateHeaders =
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(cthreads, C/threads)

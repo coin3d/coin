@@ -24,14 +24,8 @@ PublicHeaders = \
 	SoAudioDevice.h \
 	SoScriptEngine.h \
 	SoJavaScriptEngine.h
-PrivateHeaders = \
-	SbHash.h \
-	SoGL.h \
-	SoGLDriverDatabase.h \
-	SoGenerate.h \
-	SoPick.h \
-	SoShaderGenerator.h \
-	SoCompactPathList.h
+
+PrivateHeaders =
 
 ObsoleteHeaders =
 

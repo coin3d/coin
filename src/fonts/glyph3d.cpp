@@ -34,10 +34,10 @@
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/list.h>
-#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/string.h>
 
 #include "tidbitsp.h"
+#include "base/dict.h"
 #include "threads/threadsutilp.h"
 #include "fonts/fontlib_wrapper.h"
 #include "fonts/glyph.h"

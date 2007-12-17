@@ -87,10 +87,16 @@ RegularSources = \
 	SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp \
 	SoSoundElement.cpp
+
 LinkHackSources = \
 	all-elements-cpp.cpp
+
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = \
+	SoTextureScalePolicyElement.h \
+	SoTextureScaleQualityElement.h
+
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(elements, elements)

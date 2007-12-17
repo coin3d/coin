@@ -26,9 +26,9 @@
 #include <stddef.h>
 
 #include <Inventor/C/threads/mutex.h>
-#include <Inventor/C/base/dict.h>
 
 #include "tidbitsp.h"
+#include "base/dict.h"
 #include "threads/syncp.h"
 #include "threads/mutexp.h"
 

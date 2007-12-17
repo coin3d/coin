@@ -27,8 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <Inventor/C/base/dict.h>
-
+#include "base/dict.h"
 #include "base/heapp.h"
 
 /* ********************************************************************** */

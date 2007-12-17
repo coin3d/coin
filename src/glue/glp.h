@@ -35,7 +35,7 @@
 /* ********************************************************************** */
 
 #include <Inventor/system/gl.h>
-#include <Inventor/C/base/dict.h>
+#include "base/dict.h"
 #include <Inventor/C/base/string.h>
 
 /* ********************************************************************** */

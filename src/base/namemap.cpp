@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/namemap.h>
+#include "base/namemap.h"
 
 #include <stdlib.h>
 #include <assert.h>

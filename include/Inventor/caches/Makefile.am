@@ -8,11 +8,7 @@ PublicHeaders = \
 	SoNormalCache.h \
 	SoTextureCoordinateCache.h
 
-PrivateHeaders = \
-	SoPrimitiveVertexCache.h \
-	SoGlyphCache.h \
-	SoShaderProgramCache.h \
-	SoVBOCache.h
+PrivateHeaders =
 
 ObsoleteHeaders =
 

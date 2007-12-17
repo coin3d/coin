@@ -10,7 +10,22 @@ RegularSources = \
 LinkHackSources = \
 	all-expat-c.c
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = \
+        amigaconfig.h\
+        ascii.h \
+        asciitab.h \
+        expat.h \
+        expat_external.h \
+        iasciitab.h \
+        internal.h \
+        latin1tab.h \
+        macconfig.h \
+        nametab.h \
+        utf8tab.h \
+        winconfig.h \
+        xmlrole.h \
+        xmltok.h \
+        xmltok_impl.h
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(expat, expat)

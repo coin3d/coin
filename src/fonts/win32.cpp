@@ -103,10 +103,10 @@ static int flww32_calcfontsize(float complexity);
 #include <wingdi.h>
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/base/dict.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 
+#include "base/dict.h"
 #include "glue/win32api.h"
 #include "fonts/common.h"
 

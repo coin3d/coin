@@ -43,16 +43,16 @@
 
 /* ********************************************************************** */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/list.h>
 #include "fontspec.h"
 
 #include "common.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
   void cc_flw_ref_font(int fontid);
   void cc_flw_unref_font(int fontid);

@@ -309,7 +309,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/caches/SoShaderProgramCache.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbMatrix.h>
@@ -320,6 +319,7 @@
 #include "glue/glp.h"
 #include "misc/SoGLDriverDatabase.h"
 #include "misc/SoShaderGenerator.h"
+#include "caches/SoShaderProgramCache.h"
 
 // *************************************************************************
 

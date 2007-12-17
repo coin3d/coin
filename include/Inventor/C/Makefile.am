@@ -20,7 +20,6 @@ PublicHeaders = \
 	basic.h \
 	tidbits.h
 PrivateHeaders = \
-	tidbitsp.h \
 	basic.h.in
 ObsoleteHeaders =
 

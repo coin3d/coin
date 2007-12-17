@@ -22,8 +22,7 @@ PublicHeaders = \
 	SoToVRML2Action.h \
 	SoWriteAction.h \
 	SoAudioRenderAction.h
-PrivateHeaders = \
-	SoSubActionP.h
+PrivateHeaders =
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(actions, actions)

@@ -1,6 +1,9 @@
 
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = \
+	SoSubActionP.h
+
 ObsoleteHeaders =
 
 LinkHackSources = \

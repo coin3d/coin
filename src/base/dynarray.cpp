@@ -37,7 +37,8 @@
 // UPDATE 20030915 mortene: this had actually been implemented in C
 // already as cc_list...
 
-#include <Inventor/C/base/dynarray.h>
+#include "base/dynarray.h"
+
 #include <Inventor/lists/SbPList.h>
 
 struct cc_dynarray {

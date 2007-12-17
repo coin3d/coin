@@ -98,9 +98,8 @@ PublicHeaders = \
 	SoSFVec4f.h \
 	SoSFVec4d.h \
 	SoSField.h
-PrivateHeaders = \
-	SoSubFieldP.h \
-	SoGlobalField.h
+
+PrivateHeaders =
 
 ObsoleteHeaders =
 

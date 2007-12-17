@@ -8,6 +8,15 @@ CLEANFILES = \
 # **************************************************************************
 # Extensions which might be present.
 
+noinst_HEADERS = \
+        unconfig.h \
+        tidbitsp.h \
+        coindefs.h
+
+EXTRADIST = \
+        update-config.sh \
+        Make-Common.tpl
+
 if BUILD_VRML97
 VRML97DIR = vrml97
 VRML97LIBADD = $(VRML97DIR)/libvrml97.la

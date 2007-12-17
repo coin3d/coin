@@ -268,7 +268,6 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbViewportRegion.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoTexture3EnabledElement.h>
@@ -280,6 +279,7 @@
 #include <Inventor/SbColor4f.h>
 
 #include "coindefs.h" // COIN_STUB()
+#include "caches/SoPrimitiveVertexCache.h"
 #include "actions/SoSubActionP.h"
 
 class SoReorganizeActionP {

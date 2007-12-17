@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/dict.h>
+#include "base/dict.h"
 
 #include <assert.h>
 #include <stdio.h>

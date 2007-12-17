@@ -39,10 +39,8 @@ PublicHeaders = \
 	SoTimeCounter.h \
 	SoTransformVec3f.h \
 	SoTriggerAny.h
-PrivateHeaders = \
-	SoSubEngineP.h \
-	SoConvertAll.h \
-	SoSubNodeEngineP.h
+
+PrivateHeaders =
 
 ObsoleteHeaders =
 

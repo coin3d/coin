@@ -208,14 +208,14 @@
 
 #include <Inventor/C/glue/gl.h>
 
-#include <Inventor/C/base/dict.h>
-#include <Inventor/C/base/namemap.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/base/list.h>
 
 #include "tidbitsp.h"
+#include "base/dict.h"
+#include "base/namemap.h"
 #include "glue/glp.h"
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"

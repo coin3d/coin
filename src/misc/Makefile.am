@@ -52,6 +52,13 @@ LinkHackSources = \
 	all-misc-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
+	SbHash.h \
+	SoGL.h \
+	SoGLDriverDatabase.h \
+	SoGenerate.h \
+	SoPick.h \
+	SoShaderGenerator.h \
+	SoCompactPathList.h \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \

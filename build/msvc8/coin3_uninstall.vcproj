@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3_uninstall"
-	ProjectGUID="{697854ED-EF55-40A4-A8EB-AE119C5D3BF0}"
+	ProjectGUID="{C04EE909-5CA2-4B2E-A246-D6A542AAE582}"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>

@@ -17,7 +17,22 @@ LinkHackSources = \
 	all-glue-cpp.cpp
 
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = \
+	GLUWrapper.h \
+	bzip2.h \
+	cg.h \
+	dlp.h \
+	freetype.h \
+	gl_agl.h \
+	gl_glx.h \
+	gl_wgl.h \
+	glp.h \
+	openal_wrapper.h \
+	simage_wrapper.h \
+	win32api.h \
+	zlib.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)

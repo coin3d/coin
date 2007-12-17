@@ -31,9 +31,9 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/base/dict.h>
 #include <Inventor/C/base/string.h>
 
+#include "base/dict.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 

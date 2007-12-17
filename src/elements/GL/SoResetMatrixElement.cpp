@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "SoResetMatrixElement.h"
+#include "elements/GL/SoResetMatrixElement.h"
 
 SO_ELEMENT_SOURCE(SoResetMatrixElement);
 

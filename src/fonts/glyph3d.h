@@ -30,11 +30,11 @@
 
 /* ********************************************************************** */
 
+#include "fontspec.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "fontspec.h"
 
   typedef struct cc_glyph3d cc_glyph3d;
 

@@ -40,15 +40,15 @@ if $proper; then
   ../../configure --with-msvcrt=mtd --with-suffix=d \
     --enable-3ds-import \
     --enable-debug --enable-symbols || exit 1;
-  mv include/config.h include/config-debug.h;
+  mv src/config.h src/config-debug.h;
 
   ../../configure --enable-msvcdsp --with-msvcrt=mt \
     --enable-3ds-import \
     --disable-debug --disable-symbols --enable-optimization \
     || exit 1;
-  mv include/config.h include/config-release.h;
+  mv src/config.h src/config-release.h;
 
-  cp ../misc/config-wrapper.h include/config.h;
+  cp ../misc/config-wrapper.h src/config.h;
 else
   ./config.status --file=cfg/gendsp.pl;
 fi
@@ -73,7 +73,7 @@ if $proper; then
     -e "s/$source_pwd/..\\\\../g" \
     -e 's/$/\r/g' \
     <install-headers.bat >new.bat
-
+  rm -f install-headers.bat
   mv -f new.bat ../misc/install-headers.bat
 
   sed \
@@ -83,7 +83,7 @@ if $proper; then
     -e "s/$source_pwd/..\\\\../g" \
     -e 's/$/\r/g' \
     <uninstall-headers.bat >new.bat
-
+  rm -f uninstall-headers.bat
   mv -f new.bat ../misc/uninstall-headers.bat
 fi
 

@@ -354,11 +354,18 @@ RegularSources = \
 	SoListenerDopplerElement.cpp \
 	SoSoundElement.cpp
 
+
 LinkHackSources = \
 	all-elements-cpp.cpp
 
+
 PublicHeaders = 
-PrivateHeaders = 
+
+PrivateHeaders = \
+	SoTextureScalePolicyElement.h \
+	SoTextureScaleQualityElement.h
+
+
 ObsoletedHeaders = 
 
 
@@ -525,7 +532,8 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_elements_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_elements_lst_SOURCES_DIST = all-elements-cpp.cpp \
+am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
+	SoTextureScaleQualityElement.h all-elements-cpp.cpp \
 	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
 	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
@@ -662,7 +670,8 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libelements_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libelements_la_SOURCES_DIST = all-elements-cpp.cpp \
+am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
+	SoTextureScaleQualityElement.h all-elements-cpp.cpp \
 	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
 	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
@@ -756,6 +765,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-elements-cpp.cpp
 am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+	SoTextureScalePolicyElement.h SoTextureScaleQualityElement.h \
 	all-elements-cpp.cpp SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
@@ -977,6 +987,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__elements_lst_SOURCES_DIST) \
 	$(am__EXTRA_elements_lst_SOURCES_DIST) \

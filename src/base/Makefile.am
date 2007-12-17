@@ -76,9 +76,12 @@ LinkHackSources = \
 PublicHeaders =
 
 PrivateHeaders = \
+        dict.h \
 	dictp.h \
+        dynarray.h \
 	hashp.h \
 	heapp.h \
+        namemap.h \
 	SbGLUTessellator.h
 
 ObsoleteHeaders =

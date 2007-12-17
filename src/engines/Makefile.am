@@ -45,6 +45,9 @@ LinkHackSources = \
 	all-engines-c.c
 PublicHeaders =
 PrivateHeaders = \
+	SoSubEngineP.h \
+	SoConvertAll.h \
+	SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
 ObsoleteHeaders =

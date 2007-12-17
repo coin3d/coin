@@ -28,7 +28,7 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
-#include <Inventor/C/base/dict.h>
+#include "base/dict.h"
 
 #ifdef __cplusplus
 extern "C" {

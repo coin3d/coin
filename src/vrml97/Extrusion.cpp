@@ -345,13 +345,13 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
-#include <Inventor/caches/SoVBOCache.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
 #include "misc/SoGL.h"
 #include "misc/SbHash.h"
+#include "caches/SoVBOCache.h"
 
 // *************************************************************************
 

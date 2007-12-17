@@ -313,6 +313,9 @@ LinkHackSources = \
 
 PublicHeaders = 
 PrivateHeaders = \
+	SoSubEngineP.h \
+	SoConvertAll.h \
+	SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
 
@@ -433,9 +436,10 @@ am__objects_2 = SoBoolOperation.$(OBJEXT) SoCalculator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_engines_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_engines_lst_SOURCES_DIST = evaluator.h so_eval.ic \
-	all-engines-cpp.cpp all-engines-c.c SoBoolOperation.cpp \
-	SoCalculator.cpp SoComposeMatrix.cpp SoComposeRotation.cpp \
+am__EXTRA_engines_lst_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
+	SoSubNodeEngineP.h evaluator.h so_eval.ic all-engines-cpp.cpp \
+	all-engines-c.c SoBoolOperation.cpp SoCalculator.cpp \
+	SoComposeMatrix.cpp SoComposeRotation.cpp \
 	SoComposeRotationFromTo.cpp SoComposeVec2f.cpp \
 	SoComposeVec3f.cpp SoComposeVec4f.cpp SoComputeBoundingBox.cpp \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
@@ -487,9 +491,10 @@ am__objects_7 = SoBoolOperation.lo SoCalculator.lo SoComposeMatrix.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libengines_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libengines_la_SOURCES_DIST = evaluator.h so_eval.ic \
-	all-engines-cpp.cpp all-engines-c.c SoBoolOperation.cpp \
-	SoCalculator.cpp SoComposeMatrix.cpp SoComposeRotation.cpp \
+am__EXTRA_libengines_la_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
+	SoSubNodeEngineP.h evaluator.h so_eval.ic all-engines-cpp.cpp \
+	all-engines-c.c SoBoolOperation.cpp SoCalculator.cpp \
+	SoComposeMatrix.cpp SoComposeRotation.cpp \
 	SoComposeRotationFromTo.cpp SoComposeVec2f.cpp \
 	SoComposeVec3f.cpp SoComposeVec4f.cpp SoComputeBoundingBox.cpp \
 	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
@@ -522,13 +527,14 @@ am__libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoolOperation.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
 	evaluator.c evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
 am_libengines@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = evaluator.h \
-	so_eval.ic all-engines-cpp.cpp all-engines-c.c \
-	SoBoolOperation.cpp SoCalculator.cpp SoComposeMatrix.cpp \
-	SoComposeRotation.cpp SoComposeRotationFromTo.cpp \
-	SoComposeVec2f.cpp SoComposeVec3f.cpp SoComposeVec4f.cpp \
-	SoComputeBoundingBox.cpp SoConcatenate.cpp SoConvertAll.cpp \
-	SoCounter.cpp SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
+am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubEngineP.h \
+	SoConvertAll.h SoSubNodeEngineP.h evaluator.h so_eval.ic \
+	all-engines-cpp.cpp all-engines-c.c SoBoolOperation.cpp \
+	SoCalculator.cpp SoComposeMatrix.cpp SoComposeRotation.cpp \
+	SoComposeRotationFromTo.cpp SoComposeVec2f.cpp \
+	SoComposeVec3f.cpp SoComposeVec4f.cpp SoComputeBoundingBox.cpp \
+	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
+	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
 	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \

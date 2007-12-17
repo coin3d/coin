@@ -37,7 +37,7 @@ RegularSources = \
 LinkHackSources = \
 	all-glelements-cpp.cpp
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = \
 	SoResetMatrixElement.h
 ObsoletedHeaders =
 

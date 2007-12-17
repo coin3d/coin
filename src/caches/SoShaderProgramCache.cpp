@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-#include <Inventor/caches/SoShaderProgramCache.h>
+#include "caches/SoShaderProgramCache.h"
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbString.h>

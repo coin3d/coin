@@ -102,7 +102,10 @@ LinkHackSources = \
 
 PublicHeaders =
 
-PrivateHeaders = shared.h
+PrivateHeaders = \
+	SoSubFieldP.h \
+	SoGlobalField.h \
+        shared.h
 
 ObsolateHeaders =
 

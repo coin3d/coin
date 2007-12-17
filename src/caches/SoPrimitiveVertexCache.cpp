@@ -28,7 +28,7 @@
 
 // *************************************************************************
 
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
+#include "caches/SoPrimitiveVertexCache.h"
 
 #include <stddef.h>
 #include <stdlib.h>

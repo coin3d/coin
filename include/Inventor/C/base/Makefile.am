@@ -8,11 +8,7 @@ PublicHeaders = \
 	string.h \
 	list.h \
 	math-undefs.h
-PrivateHeaders = \
-	dict.h \
-	dictp.h \
-	hashp.h \
-	heapp.h
+PrivateHeaders =
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(cbase, C/base)

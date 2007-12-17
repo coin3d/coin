@@ -31,7 +31,6 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
@@ -60,6 +59,7 @@
 #include "glue/glp.h"
 #include "misc/SoGL.h"
 #include "misc/SoGLDriverDatabase.h"
+#include "caches/SoPrimitiveVertexCache.h"
 
 // *************************************************************************
 

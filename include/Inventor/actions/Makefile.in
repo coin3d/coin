@@ -286,9 +286,7 @@ PublicHeaders = \
 	SoWriteAction.h \
 	SoAudioRenderAction.h
 
-PrivateHeaders = \
-	SoSubActionP.h
-
+PrivateHeaders = 
 ObsoleteHeaders = 
 
 
