@@ -54,6 +54,7 @@ static int vbo_vertex_count_min_limit = -1;
 static int vbo_vertex_count_max_limit = -1;
 static int vbo_render_as_vertex_arrays = -1;
 static int vbo_enabled = -1;
+static int vbo_debug = -1;
 
 static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
 
@@ -147,6 +148,15 @@ SoVBO::init(void)
     }
     else {
       vbo_enabled = 1;
+    }
+  }
+  if (vbo_debug < 0) {
+    const char * env = coin_getenv("COIN_DEBUG_VBO");
+    if (env) {
+      vbo_debug = atoi(env);
+    }
+    else {
+      vbo_debug = 0;
     }
   }
 }
@@ -257,6 +267,21 @@ SoVBO::bindBuffer(uint32_t contextid)
     // buffer already exists, bind it
     cc_glglue_glBindBuffer(glue, this->target, buffer);
   }
+
+#if COIN_DEBUG
+  if (vbo_debug) {
+    if (this->target == GL_ELEMENT_ARRAY_BUFFER) {
+      SoDebugError::postInfo("SoVBO::bindBuffer",
+                             "Rendering using VBO. Index array size: %d",
+                             this->datasize / sizeof(int32_t));
+    }
+    else {
+      SoDebugError::postInfo("SoVBO::bindBuffer",
+                             "Setting up buffer for rendering. Datasize: %d",
+                             this->datasize);      
+    }
+  }
+#endif // COIN_DEBUG
 }
 
 //
