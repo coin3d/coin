@@ -129,7 +129,7 @@
 #include "coindefs.h" // COIN_STUB()
 
 #ifdef COIN_THREADSAFE
-#include "Inventor/C/threads/recmutexp.h"
+#include "threads/recmutexp.h"
 #define SOFIELD_RECLOCK (void) cc_recmutex_internal_field_lock()
 #define SOFIELD_RECUNLOCK (void) cc_recmutex_internal_field_unlock()
 

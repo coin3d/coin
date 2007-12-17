@@ -43,7 +43,7 @@
 #endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
-#include <Inventor/C/threads/recmutexp.h>
+#include "threads/recmutexp.h"
 // we need this lock to avoid that auditors are added/removed by one
 // thread while another thread is notifying
 #define NOTIFY_LOCK (void) cc_recmutex_internal_notify_lock()
@@ -180,7 +180,7 @@ SoAuditorList::notify(SoNotList * l)
     // to ignore notification? (In SoFieldContainer::notify() -- based
     // on SoNotList::getTimeStamp()?) 20000304 mortene.
     SbPList notified(num);
-    
+
     for (int i = 0; i < num; i++) {
       void * auditor = this->getObject(i);
       if (notified.find(auditor) == -1) {
@@ -191,7 +191,7 @@ SoAuditorList::notify(SoNotList * l)
         notified.append(auditor);
       }
     }
-    
+
     // FIXME: it should be possible for the application programmer to
     // do this (it is for instance useful and tempting to do it upon
     // changes in engines). pederb, 2001-11-06
@@ -203,7 +203,7 @@ SoAuditorList::notify(SoNotList * l)
 //
 // Private method used to propagate 'l' to the 'auditor' of type 'type'
 //
-void 
+void
 SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 {
   l->setLastType(type);
@@ -216,7 +216,7 @@ SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Typ
       obj->notify(l);
     }
     break;
-    
+
   case SoNotRec::SENSOR:
     {
       SoDataSensor * obj = (SoDataSensor *)auditor;
@@ -229,7 +229,7 @@ SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Typ
       obj->notify(l);
     }
     break;
-    
+
   case SoNotRec::FIELD:
   case SoNotRec::ENGINE:
     {
@@ -243,7 +243,7 @@ SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Typ
       ((SoField *)auditor)->notify(l);
     }
     break;
-    
+
   default:
     assert(0 && "Unknown auditor type");
   }

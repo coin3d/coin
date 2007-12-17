@@ -147,7 +147,7 @@ extern "C" {
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/C/threads/mutex.h>
-#include <Inventor/C/threads/mutexp.h>
+#include "threads/mutexp.h"
 static cc_mutex * atexit_list_monitor = NULL;
 #endif /* COIN_THREADSAFE */
 
