@@ -24,10 +24,6 @@ cleanproject ${project}_docs
 
 rm -f install-headers.bat uninstall-headers.bat;
 
-if $proper; then
-  rm -rf src;
-fi
-
 build_pwd=`pwd`;
 build="`cygpath -w $build_pwd | sed -e 's/\\\\/\\\\\\\\/g'`";
 build_pwd="`pwd | sed -e 's/\\//\\\\\\\\/g'`\\\\";
