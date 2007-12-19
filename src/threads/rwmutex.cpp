@@ -259,7 +259,7 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
   \class SbRWMutex Inventor/threads/SbRWMutex.h
   \ingroup threads
 
-  The SbRWMutex is a mutex that i sused to grant both read and write access
+  The SbRWMutex is a mutex that is used to grant both read and write access
   to the data it protects.  Multiple threads can have read locks on the data
   at once, but only one write-lock can be given out and not while a thread
   has a read lock on the data.
