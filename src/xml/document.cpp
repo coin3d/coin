@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2008 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -371,7 +371,7 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   delete doc;
 }
 
-/* *************************************************************************
+// *************************************************************************
 
 /*!
   \fn void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userdata)
