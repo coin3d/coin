@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2008 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -348,7 +348,7 @@ SoNodeKitListPart::getNumChildren(void) const
 }
 
 /*!
-  Remove child at position \a index.
+  \copydoc SoGroup::removeChild(int index)
 */
 void
 SoNodeKitListPart::removeChild(int index)
@@ -357,7 +357,7 @@ SoNodeKitListPart::removeChild(int index)
 }
 
 /*!
-  Remove \a child from list of children.
+  \copydoc SoGroup::removeChild(SoNode * child)
 */
 void
 SoNodeKitListPart::removeChild(SoNode * child)
@@ -459,7 +459,7 @@ SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   int numacc = 0;
-  
+
   for (int i = 0; i <= last; i++) {
     children->traverse(action, i, i);
     if (action->isCenterSet()) {
@@ -479,7 +479,7 @@ SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 {
   int numindices;
   const int * indices;
-  
+
   switch (action->getPathCode(numindices, indices)) {
   case SoAction::IN_PATH:
     this->children->traverseInPath(action, numindices, indices);

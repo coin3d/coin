@@ -114,9 +114,9 @@ struct cc_xml_doc {
 
   cc_xml_filter_cb * filtercb;
   void * filtercbdata;
-  
+
   // document type
-  
+
   char * xmlversion;
   char * xmlencoding;
 

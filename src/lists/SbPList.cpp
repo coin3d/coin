@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2007 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2008 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@
 
 /*!
   \fn void SbPList::set(const int index, void * item)
-  
+
   Index operator to set element at \a index. Does \e not expand array
   bounds if \a index is outside the list.
 */
@@ -132,7 +132,7 @@
   Default constructor.
 */
 SbPList::SbPList(const int sizehint)
-  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) 
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer)
 {
   if (sizehint > DEFAULTSIZE) this->grow(sizehint);
 }
@@ -141,7 +141,7 @@ SbPList::SbPList(const int sizehint)
   Copy constructor.
 */
 SbPList::SbPList(const SbPList & l)
-  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) 
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer)
 {
   this->copy(l);
 }
@@ -157,8 +157,8 @@ SbPList::~SbPList()
 /*!
   Make this list a copy of \a l.
 */
-void 
-SbPList::copy(const SbPList & l) 
+void
+SbPList::copy(const SbPList & l)
 {
   if (this == &l) return;
   const int n = l.numitems;
@@ -169,8 +169,8 @@ SbPList::copy(const SbPList & l)
 /*!
   Assignment operator
 */
-SbPList & 
-SbPList::operator=(const SbPList & l) 
+SbPList &
+SbPList::operator=(const SbPList & l)
 {
   this->copy(l);
   return *this;
@@ -185,8 +185,8 @@ SbPList::operator=(const SbPList & l)
   usage for the unlikely event that you should throw around huge
   SbList objects within your application.
 */
-void 
-SbPList::fit(void) 
+void
+SbPList::fit(void)
 {
   const int items = this->numitems;
 
@@ -197,7 +197,7 @@ SbPList::fit(void)
     if (newitembuffer != this->itembuffer) {
       for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
     }
-    
+
     if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
     this->itembuffer = newitembuffer;
     this->itembuffersize = items > DEFAULTSIZE ? items : DEFAULTSIZE;
@@ -208,8 +208,8 @@ SbPList::fit(void)
   Return index of first occurrence of \a item in the list, or -1 if \a
   item is not present.
 */
-int 
-SbPList::find(void * item) const 
+int
+SbPList::find(void * item) const
 {
   for (int i = 0; i < this->numitems; i++)
     if (this->itembuffer[i] == item) return i;
@@ -222,13 +222,13 @@ SbPList::find(void * item) const
   \a insertbefore should not be larger than the current number of
   items in the list.
 */
-void 
+void
 SbPList::insert(void * item, const int insertbefore) {
 #ifdef COIN_EXTRA_DEBUG
   assert(insertbefore >= 0 && insertbefore <= this->numitems);
 #endif // COIN_EXTRA_DEBUG
   if (this->numitems == this->itembuffersize) this->grow();
-  
+
   for (int i = this->numitems; i > insertbefore; i--)
     this->itembuffer[i] = this->itembuffer[i-1];
   this->itembuffer[insertbefore] = item;
@@ -239,7 +239,7 @@ SbPList::insert(void * item, const int insertbefore) {
   Removes an \a item from the list. If there are several items with
   the same value, removes the \a item with the lowest index.
 */
-void 
+void
 SbPList::removeItem(void * item)
 {
   int idx = this->find(item);
@@ -255,8 +255,8 @@ SbPList::removeItem(void * item)
   Remove the item at \a index, moving all subsequent items downwards
   one place in the list.
 */
-void 
-SbPList::remove(const int index) 
+void
+SbPList::remove(const int index)
 {
 #ifdef COIN_EXTRA_DEBUG
   assert(index >= 0 && index < this->numitems);
@@ -268,10 +268,10 @@ SbPList::remove(const int index)
 
 /*!
   Equality operator. Returns \c TRUE if this list and \a l are
-  identical, containing the exact same set of elements.
+  identical, containing the exact same ordered set of elements.
 */
-int 
-SbPList::operator==(const SbPList & l) const 
+int
+SbPList::operator==(const SbPList & l) const
 {
   if (this == &l) return TRUE;
   if (this->numitems != l.numitems) return FALSE;
@@ -291,14 +291,14 @@ SbPList::expandlist(const int size) const
 }
 
 // grow allocated array, not number of items
-void 
-SbPList::grow(const int size) 
+void
+SbPList::grow(const int size)
 {
   // Default behavior is to double array size.
   if (size == -1) this->itembuffersize <<= 1;
   else if (size <= this->itembuffersize) return;
   else { this->itembuffersize = size; }
-  
+
   void ** newbuffer = new void*[this->itembuffersize];
   const int n = this->numitems;
   for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
