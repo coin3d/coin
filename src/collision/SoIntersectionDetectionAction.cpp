@@ -1157,7 +1157,11 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
   // This may be just a temporary hack -- see the FIXME at the
   // same place.
   SbMatrix m;
-  m.setScale(1.01f);
+  m.setTransform(SbVec3f(0, 0, 0), // translation
+                 SbRotation::identity(), // rotation
+                 SbVec3f(1.01f, 1.01f, 1.01f), // scalefactor
+                 SbRotation::identity(), // scaleorientation
+                 SbVec3f(b.getCenter())); // center
   b.transform(m);
 
   SbOctTree shapetree(b, funcs);
