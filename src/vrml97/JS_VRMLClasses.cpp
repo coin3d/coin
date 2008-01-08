@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 #include "JS_VRMLClasses.h"
 
 #include <Inventor/actions/SoWriteAction.h>
@@ -2089,3 +2095,6 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     MFVec3dHandler::field2jsval,
     MFVec3dHandler::jsval2field);
 }
+
+#ifdef HAVE_VRML97
+
