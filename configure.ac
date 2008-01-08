@@ -424,9 +424,35 @@ else
 fi
 AC_SUBST(HAVE_JAVASCRIPT)
 
+# *******************************************************************
+# Query enabling the scene profiling functionality
+
+sim_ac_enable_scene_profiling=true
+
+AC_ARG_ENABLE(
+  [scene-profiling],
+  AC_HELP_STRING([--disable-scene-profiling], [disable scene profiling support]), [
+  case $enableval in
+    yes | true) sim_ac_enable_scene_profiling=true ;;
+    no | false) sim_ac_enable_scene_profiling=false ;;
+    *) ;;
+  esac])
+
+HAVE_SCENE_PROFILING=1
+
+if $sim_ac_enable_scene_profiling; then
+  AC_DEFINE([HAVE_SCENE_PROFILING],, [for setup.h])
+  SCENEPROFILINGMAKEFILE=src/profiling/Makefile
+  SIM_AC_CONFIGURATION_SETTING([Scene profiling support], [Yes])
+else
+  HAVE_SCENE_PROFILING=0
+  SCENEPROFILINGMAKEFILE=
+  SIM_AC_CONFIGURATION_SETTING([Scene profiling support], [No (enable with --enable-scene-profiling)])
+fi
+AC_SUBST(HAVE_SCENE_PROFILING)
 
 # *******************************************************************
-# Search for the vrml97 extension
+# Query enabling the vrml97 extension
 
 sim_ac_enable_vrml97=true
 
@@ -451,8 +477,6 @@ else
   SIM_AC_CONFIGURATION_SETTING([VRML97 support], [No  (enable with --enable-vrml97)])
 fi
 AC_SUBST(HAVE_VRML97)
-
-AM_CONDITIONAL([BUILD_VRML97], [$sim_ac_enable_vrml97])
 
 # *******************************************************************
 # Search for the "local GLU" extension
@@ -1841,7 +1865,7 @@ if test x"$enable_hacking" = x"yes"; then
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits navigation nodes shapenodes projectors \
     sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
-    mpeg 3ds:format3ds; \
+    mpeg xml xml/expat:expat profiler 3ds:format3ds; \
   do
     case $dir in
     *:* )
@@ -2187,6 +2211,11 @@ AC_CONFIG_FILES([
         include/Inventor/annex/FXViz/Makefile
         include/Inventor/annex/FXViz/elements/Makefile
         include/Inventor/annex/FXViz/nodes/Makefile
+        include/Inventor/annex/Profiler/Makefile
+        include/Inventor/annex/Profiler/elements/Makefile
+        include/Inventor/annex/Profiler/engines/Makefile
+        include/Inventor/annex/Profiler/nodes/Makefile
+        include/Inventor/annex/Profiler/nodekits/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         data/shaders/Makefile
@@ -2235,6 +2264,7 @@ AC_CONFIG_FILES([
         src/foreignfiles/Makefile
         src/xml/Makefile
         src/xml/expat/Makefile
+        src/profiler/Makefile
         testsuite/Makefile
         cfg/gendsp.pl
 ])
