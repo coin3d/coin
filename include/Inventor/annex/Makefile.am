@@ -1,2 +1,2 @@
 
-SUBDIRS = HardCopy ForeignFiles FXViz
+SUBDIRS = HardCopy ForeignFiles FXViz Profiler
