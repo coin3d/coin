@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,12 +26,6 @@
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_VRML97
 
 #include "JS_VRMLClasses.h"
 
@@ -2096,5 +2096,4 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     MFVec3dHandler::jsval2field);
 }
 
-#ifdef HAVE_VRML97
-
+#endif // HAVE_VRML97
