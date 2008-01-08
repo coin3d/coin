@@ -276,6 +276,9 @@
 /* Define to use Win32 QueryPerformanceCounter() */
 #undef HAVE_QUERYPERFORMANCECOUNTER
 
+/* for setup.h */
+#undef HAVE_SCENE_PROFILING
+
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
 

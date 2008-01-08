@@ -68,10 +68,30 @@
  * is as equal as possible, making it easier to port fixes and
  * enchancements.
  *
- * Default is to have this define set
+ * Default is to have this define set.
+ * If VRML97 is disabled, JavaScript support is also disabled.
  */
 
 #undef COIN_HAVE_JAVASCRIPT
+
+/***************************************************************************
+ * HAVE_SCENE_PROFILING
+ *
+ * Scene profiling lets you see timing statistics in your Open Inventor
+ * canvases to get a better overview of where the performance bottlenecks
+ * are. This can be enabled without writing a single line of code.
+ *
+ * The scene profiling module contains some texture data that for now
+ * adds a significant chunk to the Coin library size, so we felt it was best
+ * to make application developers be able to disable this if binary size is
+ * important to their project.  The size-argument is hopefully just a
+ * temporary one, but we might make it possible to disable this feature
+ * anyway after that problem has been fixed.
+ *
+ * Default is to have this define set.
+ */
+
+#undef HAVE_SCENE_PROFILING
 
 /***************************************************************************
  * The end.
