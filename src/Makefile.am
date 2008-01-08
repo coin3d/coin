@@ -17,16 +17,6 @@ EXTRADIST = \
         update-config.sh \
         Make-Common.tpl
 
-if BUILD_VRML97
-VRML97DIR = vrml97
-VRML97LIBADD = $(VRML97DIR)/libvrml97.la
-VRML97LSTADD = $(VRML97DIR)/vrml97.lst
-else
-VRML97DIR =
-VRML97LIBADD =
-VRML97LSTADD =
-endif
-
 if BUILD_WITH_SUPERGLU
 SUPERGLUDIR = extensions/superglu
 SUPERGLULIBADD = $(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
@@ -43,8 +33,8 @@ SUBDIRS = \
 	extensions xml actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders \
-	$(VRML97DIR) foreignfiles .
+	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
+	vrml97 foreignfiles .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
 
@@ -79,8 +69,8 @@ libCoin@SUFFIX@_la_LIBADD = \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
-	xml/libxml.la xml/expat/libexpat.la \
-	$(VRML97LIBADD) $(SUPERGLULIBADD)
+	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
+	vrml97/vrml97.la $(SUPERGLULIBADD)
 endif
 
 # **************************************************************************
@@ -114,8 +104,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
 	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
-	xml/xml.lst xml/expat/expat.lst \
-	$(VRML97LSTADD) $(SUPERGLULSTADD)
+	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
+	vrml97/vrml97.lst $(SUPERGLULSTADD)
 
 # **************************************************************************
 # Installation information.
@@ -197,8 +187,9 @@ install-symlinks:
 	@for dir in \
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
-	    nodes navigation shapenodes projectors sensors upgraders 3ds collision \
-	    hardcopy threads mpeg shaders shadows geo xml $(VRML97DIR) foreignfiles ; do \
+	    nodes navigation shapenodes projectors sensors upgraders 3ds \
+	    collision hardcopy threads mpeg shaders shadows geo xml vrml97 \
+	    foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 
 
