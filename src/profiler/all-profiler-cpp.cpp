@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 #include "SoProfiler.cpp"
 #include "SoProfilerElement.cpp"
 #include "SoProfilerStatsElement.cpp"
@@ -30,3 +36,5 @@
 #include "SoNodeVisualize.cpp"
 #include "SoProfilerTopKit.cpp"
 #include "SoProfilerVisualizeKit.cpp"
+
+#endif // HAVE_SCENE_PROFILING

@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -48,7 +54,7 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 
 // texture maps with node type symbols
-#include "inventormaps.cpp"
+#include "inventormaps.icc"
 
 // *************************************************************************
 
@@ -690,3 +696,5 @@ SoNodeVisualize::getChildGeometry() {
   assert(childgeometry);
   return childgeometry;
 }
+
+#endif // HAVE_SCENE_PROFILING

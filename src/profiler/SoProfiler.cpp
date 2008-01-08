@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -128,3 +134,5 @@ SoProfiler::isEnabled(void)
 {
   return profiler_enabled;
 }
+
+#endif // HAVE_SCENE_PROFILING

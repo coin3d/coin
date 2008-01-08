@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -192,4 +198,4 @@ SbProfilingData::setHasGLCache(SoNode * node, SbBool hascache)
   }
 }
 
-
+#endif // HAVE_SCENE_PROFILING

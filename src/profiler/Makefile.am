@@ -21,7 +21,8 @@ PublicHeaders =
 PrivateHeaders = \
         SbProfilingData.h \
         SoProfilerElement.h \
-        SoProfilerStatsElement.h
+        SoProfilerStatsElement.h \
+        inventormaps.icc
 
 ObsoletedHeaders =
 

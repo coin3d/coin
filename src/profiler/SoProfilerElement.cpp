@@ -1,3 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -266,3 +272,5 @@ SoProfilerElement::getAccumulatedRenderCount(uint16_t nodetypekey) const
 }
 
 // *************************************************************************
+
+#endif // HAVE_SCENE_PROFILING

@@ -1,6 +1,12 @@
 #ifndef COIN_SOPROFILERSTATSELEMENT_H
 #define COIN_SOPROFILERSTATSELEMENT_H
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_SCENE_PROFILING
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -60,5 +66,6 @@ private:
   SbPimplPtr<SoProfilerStatsElementP> pimpl;
 };
 
+#endif // HAVE_SCENE_PROFILING
 
 #endif //!COIN_SOPROFILERSTATSELEMENT_H
