@@ -40,8 +40,8 @@ public:
   virtual SbBool matches(const SoElement * element) const;
 
 protected:
-  void init(SoState * state);
-  void push(SoState * state);
+  virtual void init(SoState * state);
+  virtual void push(SoState * state);
 
   void clearNodeIds(void);
   void addNodeId(const SoNode * const node);
