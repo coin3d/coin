@@ -37,6 +37,7 @@
 // For Open Inventor compatibility.
 #include <Inventor/nodes/SoScale.h>
 #endif // !COIN_INTERNAL
+/*! \file SoDragger.h */
 
 class SbRotation;
 class SbVec2f;
@@ -48,6 +49,7 @@ class SoEvent;
 class SoPickedPoint;
 class SoDraggerP;
 
+/*! Callback definition for draggers */
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
 
 class COIN_DLL_API SoDragger : public SoInteractionKit {
