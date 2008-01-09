@@ -198,6 +198,11 @@
 #include "nodes/SoUnknownNode.h"
 #include "threads/threadsutilp.h"
 #include "glue/glp.h"
+#include "misc/SoDBP.h" // for global envvar COIN_PROFILER
+
+#ifdef HAVE_SCENE_PROFILING
+#include "profiler/SoProfilerElement.h"
+#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -273,6 +278,22 @@
   \var SoNode::NodeType SoNode::EXTENSION
   Node is a client code extension.
 */
+
+// *************************************************************************
+
+// Note: just static data here, as there's no Cheshire Cat pattern (ie
+// pimpl-ptr) implemented for SoNode. (The class should be as slim as
+// possible.)
+
+class SoNodeP {
+public:
+  typedef void GLRenderFunc(SoNode *, SoGLRenderAction *);
+  static GLRenderFunc * glrenderfunc;
+  static void GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action);
+  static void GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action);
+};
+
+SoNodeP::GLRenderFunc * SoNodeP::glrenderfunc = NULL;
 
 // *************************************************************************
 
@@ -523,6 +544,14 @@ SoNode::initClass(void)
   // actions must be initialized before we can use
   // SO_ACTION_ADD_METHOD
   init_action_methods();
+
+  // for the built-in Coin profiler. set up the functionptr to use, so
+  // we don't have any overhead when profiling is off:
+  SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPaths;
+#ifdef HAVE_SCENE_PROFILING
+  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
+  if (e && (atoi(e) > 0)) { SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPathsProfiler; }
+#endif // HAVE_SCENE_PROFILING
 }
 
 /*!
@@ -867,6 +896,8 @@ SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
 }
 
+// *************************************************************************
+
 /*!
   This is a static "helper" method registered with the action, and
   used for calling the SoNode::GLRender() virtual method which does
@@ -934,7 +965,7 @@ SoNode::GLRender(SoGLRenderAction * action)
 void
 SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  this->GLRender(action);
+  (*SoNodeP::glrenderfunc)(this, action);
 }
 
 // Note that this documentation will also be used for all subclasses
@@ -946,7 +977,7 @@ SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoNode::GLRenderInPath(SoGLRenderAction * action)
 {
-  this->GLRender(action);
+  (*SoNodeP::glrenderfunc)(this, action);
 }
 
 // Note that this documentation will also be used for all subclasses
@@ -958,8 +989,50 @@ SoNode::GLRenderInPath(SoGLRenderAction * action)
 void
 SoNode::GLRenderOffPath(SoGLRenderAction * action)
 {
-  this->GLRender(action);
+  (*SoNodeP::glrenderfunc)(this, action);
 }
+
+void
+SoNodeP::GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action)
+{
+  thisp->GLRender(action);
+}
+
+void
+SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
+{
+#ifdef HAVE_SCENE_PROFILING
+  // FIXME: note that this does (probably) not catch all GLRender()
+  // invocations, as some nodes will override the above methods
+  // (GLRender*Path()) which invoke this function, and if so they will
+  // fall outside the profile data collection.  -mortene.
+
+  SoState * s = action->getState();
+  SoProfilerElement * e = SoProfilerElement::get(s);
+  const SbTime start = SbTime::getTimeOfDay();
+
+  thisp->GLRender(action);
+
+  if (e) {
+    static int synchronuousgl = -1;
+    if (synchronuousgl == -1) {
+      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
+      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
+    }
+
+    if (synchronuousgl) { glFinish(); }
+    const SbTime end = SbTime::getTimeOfDay();
+
+    SoNode * parent = NULL;
+    const SoPath * p = action->getCurPath();
+    if (p->getLength() > 1) { parent = p->getNodeFromTail(1); }
+
+    e->setTimingProfile(thisp, end - start, parent);
+  }
+#endif // HAVE_SCENE_PROFILING
+}
+
+// *************************************************************************
 
 /*!
   This is a static "helper" method registered with the action, and

@@ -27,6 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class SoState;
 class SoSeparatorP;
@@ -80,8 +81,15 @@ protected:
 private:
   void commonConstructor(void);
   SbBool cullTestNoPush(SoState * state);
-  SoSeparatorP * pimpl;
+
   static int numrendercaches;
+
+  SbPimplPtr<SoSeparatorP> pimpl;
+
+  // NOT IMPLEMENTED
+  SoSeparator(const SoSeparator & rhs);
+  SoSeparator & operator = (const SoSeparator & rhs);
+
 };
 
 #endif // !COIN_SOSEPARATOR_H

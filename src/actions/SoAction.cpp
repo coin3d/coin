@@ -196,19 +196,36 @@
 
 #include <Inventor/actions/SoAction.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <assert.h>
 #include <stdlib.h>
 
 #include <Inventor/actions/SoActions.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #include "tidbitsp.h"
 #include "coindefs.h" // COIN_OBSOLETED
+#include "actions/SoActionP.h"
+#include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 #include "misc/SoCompactPathList.h"
+
+#ifdef HAVE_SCENE_PROFILING
+#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include "profiler/SoProfilerElement.h"
+#include "profiler/SoProfilerStatsElement.h"
+#endif // HAVE_SCENE_PROFILING
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL
@@ -308,32 +325,6 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
 
 // *************************************************************************
 
-
-#ifndef DOXYGEN_SKIP_THIS
-
-// Not all private class members are stored in this pimpl. This is
-// done because we need to have some of the access function inlined to
-// achieve better traversal speed. pederb, 2002-07-02
-class SoActionP {
-public:
-  SoAction::AppliedCode appliedcode;
-  int returnindex;
-  union AppliedData {
-    SoNode * node;
-    SoPath * path;
-    struct {
-      const SoPathList * pathlist;
-      const SoPathList * origpathlist;
-      SoCompactPathList * compactlist;
-    } pathlistdata;
-  } applieddata;
-  SbBool terminated;
-  SbList <SbList<int> *> pathcodearray;
-  int prevenabledelementscounter;
-};
-
-#endif // DOXYGEN_SKIP_THIS
-
 #define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
@@ -383,6 +374,21 @@ SoAction::initClass(void)
   // Override element is used everywhere.
   SoAction::enabledElements->enable(SoOverrideElement::getClassTypeId(),
                                     SoOverrideElement::getClassStackIndex());
+
+#ifdef HAVE_SCENE_PROFILING
+  // Profiler element may also be used from within all types of action
+  // traversals.
+  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
+  if (e && (atoi(e) > 0)) {
+    SoAction::enabledElements->enable(SoProfilerElement::getClassTypeId(),
+                                      SoProfilerElement::getClassStackIndex());
+    // FIXME: it would be cleaner to enable this from the
+    // SoProfilerStats node itself (its initClass() function).
+    // -mortene.
+    SoAction::enabledElements->enable(SoProfilerStatsElement::getClassTypeId(),
+                                      SoProfilerStatsElement::getClassStackIndex());
+  }
+#endif // HAVE_SCENE_PROFILING
 
   SoAction::initClasses();
   coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, CC_ATEXIT_NORMAL);
@@ -522,10 +528,41 @@ SoAction::apply(SoNode * root)
     // So the graph is not deallocated during traversal.
     root->ref();
     this->currentpath.setHead(root);
+
     // make sure state is created before traversing
     (void) this->getState();
+
+#ifdef HAVE_SCENE_PROFILING
+    // send events to overlay graph first
+    if (SoProfiler::isActive() &&
+        SoProfiler::overlayActive() &&
+        this->isOfType(SoHandleEventAction::getClassTypeId())) {
+      this->beginTraversal(SoActionP::getProfilerOverlay());
+      this->endTraversal(SoActionP::getProfilerOverlay());
+    }
+
+    // start profiling
+    if (SoProfiler::isActive() && 
+        state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
+      SoProfilerElement * elt = SoProfilerElement::get(state);
+      assert(elt);
+      elt->clear();
+      elt->startTraversalClock();
+    }
+#endif // HAVE_SCENE_PROFILING
+
     this->beginTraversal(root);
     this->endTraversal(root);
+
+#ifdef HAVE_SCENE_PROFILING
+    if (SoProfiler::isActive() && 
+        SoProfiler::overlayActive() && 
+        !this->isOfType(SoGLRenderAction::getClassTypeId())) {
+      // update profiler stats node with the profiling data from the traversal
+      this->traverse(SoActionP::getProfilerStatsNode());
+    }
+#endif // HAVE_SCENE_PROFILING
+
     PRIVATE(this)->applieddata.node = NULL;
     root->unrefNoDelete();
   }
@@ -885,10 +922,40 @@ void
 SoAction::traverse(SoNode * const node)
 {
   SoType t = node->getTypeId();
+
   int idx = SoNode::getActionMethodIndex(t);
   SoActionMethod func = (*this->traversalMethods)[idx];
 
+#ifdef HAVE_SCENE_PROFILING
+  if (SoProfiler::isActive()) {
+    SoProfilerElement * e = NULL;
+    SbTime start = SbTime::zero();
+
+    SoState * state = this->getState();
+    if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
+      e = SoProfilerElement::get(state);
+      start = SbTime::getTimeOfDay();
+    }
+
+    func(this, node);
+
+    if (e != NULL) {
+      const SbTime end = SbTime::getTimeOfDay();
+
+      SoNode * parent = NULL;
+      const SoPath * p = this->getCurPath();
+      if (p->getLength() > 1) { parent = p->getNodeFromTail(1); }
+
+      if (parent) {
+        e->setTimingProfile(node, end - start, parent);
+      }
+    }
+  } else {
+    func(this, node);
+  }
+#else // !HAVE_SCENE_PROFILING
   func(this, node);
+#endif // !HAVE_SCENE_PROFILING
 }
 
 /*!
@@ -1292,3 +1359,40 @@ SoAction::switchToNodeTraversal(SoNode * node)
   PRIVATE(this)->applieddata = storeddata;
   PRIVATE(this)->appliedcode = storedcode;
 }
+
+// *************************************************************************
+
+#ifdef HAVE_SCENE_PROFILING
+SoProfilerStats *
+SoActionP::getProfilerStatsNode(void)
+{
+  static SoProfilerStats * pstats = NULL;
+  if (!pstats) { 
+    pstats = new SoProfilerStats; 
+    pstats->ref();
+  }
+  return pstats;
+}
+
+SoProfilerOverlayKit *
+SoActionP::getProfilerOverlay(void)
+{
+  if (!SoProfiler::isActive() || !SoProfiler::overlayActive())
+    return NULL;
+
+  static SoProfilerOverlayKit * kit = NULL;
+  if (kit == NULL) {
+    kit = new SoProfilerTopKit;
+    kit->ref();
+    kit->setPart("profilingStats", 
+                 SoActionP::getProfilerStatsNode());
+    
+    SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
+    viskit->stats.setValue(SoActionP::getProfilerStatsNode());
+    kit->addOverlayGeometry(viskit);
+  }
+  return kit;
+}
+#endif // HAVE_SCENE_PROFILING
+
+// *************************************************************************

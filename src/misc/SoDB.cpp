@@ -203,8 +203,107 @@
 
 */
 
+/* *********************************************************************** */
+
+/*!
+  \class SoDB SoDB.h Inventor/SoDB.h
+  \brief The SoDB class keeps track of internal global data.
+  \ingroup general
+
+  This class collects various methods for initializing, setting and
+  accessing common global data from the Coin library.
+
+  All methods on SoDB are static.
+
+  Make sure you call SoDB::init() (either directly or indirectly
+  through the init() method of the GUI glue library) before you use
+  any of the other Coin classes.
+*/
+
+#include <Inventor/SoDB.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <stdarg.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h> // fd_set (?)
+#endif // HAVE_UNISTD_H
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/elements/SoElement.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/annex/HardCopy/SoHardCopy.h>
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
+#include <Inventor/navigation/SoNavigation.h>
+
+#include "SoVBO.h"
+#include "coindefs.h" // COIN_STUB()
+#include "shaders/SoShader.h"
+#include "geo/SoGeo.h"
+#include "tidbitsp.h"
+#include "fields/SoGlobalField.h"
+#include "misc/SoGLDriverDatabase.h"
+#include "misc/CoinStaticObjectInDLL.h"
+#include "misc/systemsanity.icc"
+#include "misc/SoDBP.h"
+#include "misc/SbHash.h"
+
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRML.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
+#endif // HAVE_VRML97
+
+#ifdef HAVE_THREADS
+#include "threads/threadp.h"
+#endif // HAVE_THREADS
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#include "threads/recmutexp.h"
+
+static SbRWMutex * sodb_globalmutex = NULL;
+#endif // COIN_THREADSAFE
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+#include "3ds/3dsLoader.h"
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
+#ifdef HAVE_SCENE_PROFILING
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include "profiler/SoProfilerElement.h"
+#include "profiler/SoProfilerStatsElement.h"
+#endif // HAVE_SCENE_PROFILING
+
+// *************************************************************************
+
 /*
   FIXME: document all variables. pederb, 2004-03-22
+
+  UPDATE: a good way to do this, imho, would be to set them up as
+  SoDBP::EnvVars members, as is done for a few already, and document
+  them one-by-one through Doxygen.  20071106 mortene.
 
   \page environment_variables Environment variables
 
@@ -298,92 +397,22 @@
   SO_DRAGGER_DIR
 */
 
-
-/* *********************************************************************** */
-
-/*!
-  \class SoDB SoDB.h Inventor/SoDB.h
-  \brief The SoDB class keeps track of internal global data.
-  \ingroup general
-
-  This class collects various methods for initializing, setting and
-  accessing common global data from the Coin library.
-
-  All methods on SoDB are static.
-
-  Make sure you call SoDB::init() (either directly or indirectly
-  through the init() method of the GUI glue library) before you use
-  any of the other Coin classes.
-*/
-
-#include <Inventor/SoDB.h>
-
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <stdarg.h>
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h> // fd_set (?)
-#endif // HAVE_UNISTD_H
-
-#include <Inventor/C/tidbits.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/actions/SoAction.h>
-#include <Inventor/details/SoDetail.h>
-#include <Inventor/elements/SoElement.h>
-#include <Inventor/engines/SoEngine.h>
-#include <Inventor/engines/SoNodeEngine.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/events/SoEvent.h>
-#include <Inventor/fields/SoSFTime.h>
-#include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/annex/HardCopy/SoHardCopy.h>
-#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
-
-#include "shaders/SoShader.h"
-#include "geo/SoGeo.h"
-
-#include <Inventor/navigation/SoNavigation.h>
-
-#ifdef HAVE_VRML97
-#include <Inventor/VRMLnodes/SoVRML.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
-#endif // HAVE_VRML97
-
-#ifdef HAVE_THREADS
-#include "threads/threadp.h"
-#endif // HAVE_THREADS
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbRWMutex.h>
-#include "threads/recmutexp.h"
-#endif // COIN_THREADSAFE
-
-#include "fields/SoGlobalField.h"
-#include "misc/SoGLDriverDatabase.h"
-
-#include "misc/CoinStaticObjectInDLL.h"
-#include "misc/SoDBP.h"
-
-#include "coindefs.h" // COIN_STUB()
-#include "tidbitsp.h"
-#include "misc/SoVBO.h"
-#include "misc/SbHash.h"
-
-#include "misc/systemsanity.icc"
+// *************************************************************************
+  
+// Coin-global envvars:
+  
+#ifdef HAVE_SCENE_PROFILING
+/* turns on the live profiling feature in Coin */
+const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
+/* SoGLRenderAction will render an overlay scenegraph with misc
+   profiler stats if this is on */
+const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
+/* when profiling, use glFinish() to force OpenGL out of asynchronous
+   mode, where applicable */
+const char * SoDBP::EnvVars::COIN_PROFILER_SYNCGL = "COIN_PROFILER_SYNCGL";
+#endif // HAVE_SCENE_PROFILING
+  
+// *************************************************************************
 
 static SbString * coin_versionstring = NULL;
 
@@ -524,8 +553,19 @@ SoDB::init(void)
   SoFieldContainer::initClass();
   SoGlobalField::initClass(); // depends on SoFieldContainer init
   SoField::initClass();
+
   // Elements must be initialized before actions.
   SoElement::initClass();
+
+#ifdef HAVE_SCENE_PROFILING
+  // The profiler-elements must also be initialized before actions, of
+  // course. (Note that at least the first one *must* be initialized
+  // even if COIN_PROFILER is not set, as we use its classStackIndex
+  // when checking if its present on the state stack.)
+  SoProfilerElement::initClass();
+  SoProfilerStatsElement::initClass();
+#endif // HAVE_SCENE_PROFILING
+
   // Actions must be initialized before nodes (because of SO_ENABLE)
   SoAction::initClass();
   SoNode::initClass();
@@ -553,8 +593,6 @@ SoDB::init(void)
 #ifdef HAVE_VRML97
   so_vrml_init();
 #endif // HAVE_VRML97
-
-  const char * env;
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
@@ -654,10 +692,16 @@ SoDB::init(void)
   // Note that this is done late in the init()-process, to make sure
   // all Coin-features used in SoDB::listWin32ProcessModules() have
   // been initialized.
-  env = coin_getenv("COIN_DEBUG_LISTMODULES");
+  const char * env = coin_getenv("COIN_DEBUG_LISTMODULES");
   if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
 
   SoDBP::isinitialized = TRUE;
+
+#ifdef HAVE_SCENE_PROFILING
+  env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
+  const SbBool do_profiling = (env && (atoi(env) > 0)) ? TRUE : FALSE;
+  if (do_profiling) { SoProfiler::init(); }
+#endif // HAVE_SCENE_PROFILING
 
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get

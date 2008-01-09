@@ -178,6 +178,10 @@
 
 #include <Inventor/nodes/SoGroup.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <assert.h>
 
 #include <Inventor/SoInput.h>
@@ -193,17 +197,17 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/system/gl.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
 #include "glue/glp.h"
 #include "io/SoWriterefCounter.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <Inventor/system/gl.h>
+#ifdef HAVE_SCENE_PROFILING
+#include "misc/SoDBP.h" // for global envvar COIN_PROFILER
+#include "profiler/SoProfilerElement.h"
+#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -213,8 +217,25 @@
 */
 
 // *************************************************************************
+// Note: just static data here, as there's no Cheshire Cat pattern (ie
+// pimpl-ptr) implemented for SoNode. (The class should be as slim as
+// possible.)
+
+class SoGroupP {
+public:
+  typedef void GLRenderFunc(SoGroup *, SoNode *, SoGLRenderAction *);
+  static GLRenderFunc * glrenderfunc;
+  static void childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * action);
+  static void childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action);
+};
+
+SoGroupP::GLRenderFunc * SoGroupP::glrenderfunc = NULL;
+
+// *************************************************************************
 
 SO_NODE_SOURCE(SoGroup);
+
+// *************************************************************************
 
 /*!
   Default constructor.
@@ -457,8 +478,17 @@ void
 SoGroup::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoGroup, SO_FROM_INVENTOR_1);
+
+  // for the built-in Coin profiler. set up the functionptr to use, so
+  // we don't have any overhead when profiling is off:
+  SoGroupP::glrenderfunc = SoGroupP::childGLRender;
+#ifdef HAVE_SCENE_PROFILING
+  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
+  if (e && (atoi(e) > 0)) { SoGroupP::glrenderfunc = SoGroupP::childGLRenderProfiler; }
+#endif // HAVE_SCENE_PROFILING
 }
 
+// *************************************************************************
 
 // Doc from superclass.
 void
@@ -473,6 +503,8 @@ SoGroup::doAction(SoAction * action)
     this->getChildren()->traverse(action); // traverse all children
   }
 }
+
+// *************************************************************************
 
 // Doc from superclass.
 void
@@ -511,6 +543,42 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     action->setCenter(acccenter / float(numcenters), FALSE);
 }
 
+// *************************************************************************
+
+void
+SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+{
+  child->GLRender(action);
+}
+
+// FIXME: this is work-in-progress, but work is freezed atm, as i'm
+// trying to find a less intrusive way of collecting the hierarchical
+// profiling information.  -mortene.
+void
+SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+{
+#ifdef HAVE_SCENE_PROFILING
+  SoState * s = action->getState();
+  SoProfilerElement * e = SoProfilerElement::get(s);
+  const SbTime start = SbTime::getTimeOfDay();
+
+  child->GLRender(action);
+
+  if (e) {
+    static int synchronuousgl = -1;
+    if (synchronuousgl == -1) {
+      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
+      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
+    }
+
+    if (synchronuousgl) { glFinish(); }
+    const SbTime end = SbTime::getTimeOfDay();
+
+    e->setTimingProfile(child, end - start, thisp);
+  }
+#endif // HAVE_SCENE_PROFILING
+}
+
 // Doc from superclass.
 void
 SoGroup::GLRender(SoGLRenderAction * action)
@@ -531,7 +599,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
       if (action->getCurPathCode() != SoAction::OFF_PATH ||
           child->affectsState()) {
         if (!action->abortNow()) {
-          child->GLRender(action);
+          (*SoGroupP::glrenderfunc)(this, child, action);
         }
         else {
           SoCacheElement::invalidate(state);
@@ -555,7 +623,9 @@ SoGroup::GLRender(SoGLRenderAction * action)
         SoCacheElement::invalidate(state);
         break;
       }
-      childarray[i]->GLRender(action);
+
+      (*SoGroupP::glrenderfunc)(this, childarray[i], action);
+
 #if COIN_DEBUG
       // The GL error test is default disabled for this optimized
       // path.  If you get a GL error reporting an error in the
@@ -568,7 +638,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
         cc_string_construct(&str);
         const unsigned int errs = coin_catch_gl_errors(&str);
         if (errs > 0) {
-          SoDebugError::post("SoGroup::GLRenderBelowPath",
+          SoDebugError::post("SoGroup::GLRender",
                              "glGetError()s => '%s', nodetype: '%s'",
                              cc_string_get_text(&str),
                              (*this->getChildren())[i]->getTypeId().getName().getString());
@@ -581,6 +651,8 @@ SoGroup::GLRender(SoGLRenderAction * action)
     action->popCurPath();
   }
 }
+
+// *************************************************************************
 
 // Doc from superclass.
 void

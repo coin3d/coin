@@ -56,7 +56,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif // HAVE_CONFIG_H
 
 #include <stdlib.h>
@@ -66,7 +66,9 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/SoFullPath.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
@@ -91,19 +93,30 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
 
+#include "actions/SoActionP.h"
 #include "actions/SoSubActionP.h"
 #include "tidbitsp.h"
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
 #include "misc/SoGL.h"
 #include "misc/SoGLDriverDatabase.h"
+
+#ifdef HAVE_SCENE_PROFILING
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -510,12 +523,15 @@ public:
   SbVec2f updateorigin, updatesize;
   SbBool needglinit;
   SbBool isrendering;
+  SbBool isrenderingoverlay;
   SoCallbackList precblist;
 
   enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
   int rendering;
   SbBool isDirectRendering(const SoState * state) const;
   int sortedlayersblendpasses;
+
+  SoNode * cachedprofilingsg;
 
   GLuint depthtextureid;
   GLuint hilotextureid;
@@ -555,6 +571,7 @@ public:
 
   // For transparent paths that need to be sorted
   void addSortTransPath(SoPath * path);
+
 };
 
 // *************************************************************************
@@ -640,6 +657,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->delayedpathrender = FALSE;
   PRIVATE(this)->transparencyrender = FALSE;
   PRIVATE(this)->isrendering = FALSE;
+  PRIVATE(this)->isrenderingoverlay = FALSE;
   PRIVATE(this)->passupdate = FALSE;
   PRIVATE(this)->bboxaction = new SoGetBoundingBoxAction(viewportregion);
   PRIVATE(this)->updateorigin.setValue(0.0f, 0.0f);
@@ -655,6 +673,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->sortedlayersblendinitialized = FALSE;
   PRIVATE(this)->sortedlayersblendcounter = 0;
   PRIVATE(this)->usenvidiaregistercombiners = FALSE;
+  PRIVATE(this)->cachedprofilingsg = NULL;
 
   PRIVATE(this)->sortedobjectstrategy = BBOX_CENTER;
   PRIVATE(this)->sortedobjectcb = NULL;
@@ -933,8 +952,42 @@ SoGLRenderAction::getSortedLayersNumPasses() const
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
+#ifdef HAVE_SCENE_PROFILING
+  if (PRIVATE(this)->cachedprofilingsg == NULL) {
+    if (node->isOfType(SoGroup::getClassTypeId()) &&
+        ((SoGroup *)node)->getNumChildren() > 0) {
+      PRIVATE(this)->cachedprofilingsg = node;
+      
+      SoNode * kit = SoActionP::getProfilerOverlay();
+      if (kit) {
+        SoSearchAction sa;
+        sa.setType(SoProfilerVisualizeKit::getClassTypeId());
+        sa.setSearchingAll(TRUE);
+        sa.setInterest(SoSearchAction::ALL);
+        SbBool oldchildsearch = SoBaseKit::isSearchingChildren();
+        SoBaseKit::setSearchingChildren(TRUE);
+        sa.apply(kit);
+        SoBaseKit::setSearchingChildren(oldchildsearch);
+        SoPathList plist = sa.getPaths();
+        for (int i = 0, n = plist.getLength(); i < n; ++i) {
+          SoFullPath * path = (SoFullPath *)plist[i];
+          SoNode * tail = path->getTail();
+          if ((tail != NULL) &&
+              (tail->isOfType(SoProfilerVisualizeKit::getClassTypeId()))) {
+            SoProfilerVisualizeKit * viskit = (SoProfilerVisualizeKit *)tail;
+            viskit->root.setValue(node);
+          }
+        }
+      }
+    }
+  }
+#endif // HAVE_SCENE_PROFILING
+
   if (PRIVATE(this)->isrendering) {
-    inherited::beginTraversal(node);
+    if (PRIVATE(this)->isrenderingoverlay)
+      this->traverse(node);
+    else 
+      inherited::beginTraversal(node);
     return;
   }
 
@@ -1505,6 +1558,24 @@ SoGLRenderActionP::render(SoNode * node)
   } else {
     this->renderSingle(node);
   }
+
+#ifdef HAVE_SCENE_PROFILING
+  if (SoProfiler::isActive() && SoProfiler::overlayActive()) {
+    if (node == this->cachedprofilingsg) {
+      this->isrenderingoverlay = TRUE;
+      this->renderSingle(SoActionP::getProfilerOverlay());
+      this->isrenderingoverlay = FALSE;
+    } else {
+      static SbBool first = TRUE;
+      if (first) { 
+        SoDebugError::postWarning("SoGLRenderAcionP::render",
+                                  "Profiling overlay is only enabled for the first "
+                                  "scene graph in the viewer.");
+        first = FALSE;
+      }
+    }
+  }
+#endif // HAVE_SCENE_PROFILING
 
   state->pop();
   this->isrendering = FALSE;

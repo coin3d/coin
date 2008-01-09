@@ -50,6 +50,10 @@
 
 #include <Inventor/nodes/SoSeparator.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <stdlib.h> // strtol(), rand()
 #include <limits.h> // LONG_MIN, LONG_MAX
 
@@ -74,10 +78,6 @@
 #include <Inventor/C/tidbits.h> // coin_getenv()
 #include <Inventor/threads/SbStorage.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
@@ -86,6 +86,12 @@
 #include "nodes/SoSubNodeP.h"
 #include "glue/glp.h"
 #include "misc/SoGL.h"
+#include "misc/SoDBP.h"
+
+#ifdef HAVE_SCENE_PROFILING
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include "profiler/SoProfilerElement.h"
+#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -292,10 +298,13 @@ public:
       new SbStorage(sizeof(soseparator_storage),
                     soseparator_storage_construct,
                     soseparator_storage_destruct);
+    this->pub = NULL;
   }
   ~SoSeparatorP() {
     delete this->glcachestorage;
   }
+
+  SoSeparator * pub;
 
   SoBoundingBoxCache * bboxcache;
   uint32_t bboxcache_usecount;
@@ -314,7 +323,6 @@ public:
 
   enum { YES, NO, MAYBE } hassoundchild;
 
-public:
   SoGLCacheList * getGLCacheList(SbBool createifnull);
 
   void invalidateGLCaches(void) {
@@ -331,7 +339,17 @@ public:
     this->mutex.unlock();
 #endif // COIN_THREADSAFE
   }
+
+  typedef void GLRenderFunc(SoSeparator *, SoGLRenderAction *);
+  static GLRenderFunc * glrenderfunc;
+  static void GLRender(SoSeparator * thisp, SoGLRenderAction * action);
+  static void GLRenderProfiler(SoSeparator * thisp, SoGLRenderAction * action);
+
+  static SbBool doCull(SoSeparatorP * thisp, SoState * state,
+                       SbBool (* cullfunc)(SoState *, const SbBox3f &, const SbBool));
 };
+
+SoSeparatorP::GLRenderFunc * SoSeparatorP::glrenderfunc = NULL;
 
 SoGLCacheList *
 SoSeparatorP::getGLCacheList(SbBool createifnull)
@@ -347,6 +365,7 @@ SoSeparatorP::getGLCacheList(SbBool createifnull)
 // *************************************************************************
 
 #define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->pub)
 
 SO_NODE_SOURCE(SoSeparator);
 
@@ -376,7 +395,7 @@ SoSeparator::SoSeparator(const int nchildren)
 void
 SoSeparator::commonConstructor(void)
 {
-  PRIVATE(this) = new SoSeparatorP;
+  PRIVATE(this)->pub = this;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSeparator);
 
@@ -436,8 +455,9 @@ SoSeparator::commonConstructor(void)
 */
 SoSeparator::~SoSeparator()
 {
-  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
-  delete PRIVATE(this);
+  if (PRIVATE(this)->bboxcache) {
+    PRIVATE(this)->bboxcache->unref();
+  }
 }
 
 // Doc from superclass.
@@ -449,6 +469,14 @@ SoSeparator::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
   SoSeparator::numrendercaches = 2;
+
+  // for the built-in Coin profiler. set up the functionptr to use, so
+  // we don't have any overhead when profiling is off:
+  SoSeparatorP::glrenderfunc = SoSeparatorP::GLRender;
+#ifdef HAVE_SCENE_PROFILING
+  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
+  if (e && (atoi(e) > 0)) { SoSeparatorP::glrenderfunc = SoSeparatorP::GLRenderProfiler; }
+#endif // HAVE_SCENE_PROFILING
 }
 
 // Doc from superclass.
@@ -586,22 +614,59 @@ SoSeparator::callback(SoCallbackAction * action)
   state->pop();
 }
 
-// Doc from superclass.
+// *************************************************************************
+
 void
-SoSeparator::GLRender(SoGLRenderAction * action)
+SoSeparatorP::GLRender(SoSeparator * thisp, SoGLRenderAction * action)
 {
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
-    this->GLRenderBelowPath(action);
+    thisp->GLRenderBelowPath(action);
     break;
   case SoAction::OFF_PATH:
     // do nothing. Separator will reset state.
     break;
   case SoAction::IN_PATH:
-    this->GLRenderInPath(action);
+    thisp->GLRenderInPath(action);
     break;
   }
+}
+
+void
+SoSeparatorP::GLRenderProfiler(SoSeparator * thisp, SoGLRenderAction * action)
+{
+#ifdef HAVE_SCENE_PROFILING
+  SoState * s = action->getState();
+  SoProfilerElement * e = SoProfilerElement::get(s);
+  const SbTime start = SbTime::getTimeOfDay();
+
+  SoSeparatorP::GLRender(thisp, action);
+
+  if (e) {
+    static int synchronuousgl = -1;
+    if (synchronuousgl == -1) {
+      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
+      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
+    }
+
+    if (synchronuousgl) { glFinish(); }
+    const SbTime end = SbTime::getTimeOfDay();
+
+    SoNode * parent = NULL;
+    const SoPath * p = action->getCurPath();
+    if (p->getLength() > 1) { parent = p->getNodeFromTail(1); }
+
+    e->setTimingProfile(thisp, end - start, parent);
+  }
+#endif // HAVE_SCENE_PROFILING
+}
+
+// Doc from superclass.
+void
+SoSeparator::GLRender(SoGLRenderAction * action)
+{
+  (*SoSeparatorP::glrenderfunc)(this, action);
 }
 
 /*!
@@ -645,8 +710,17 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
                              "%p executed GL cache", this);
 #endif // debug
       state->pop();
+
+#ifdef HAVE_SCENE_PROFILING
+      if (SoProfiler::isActive()) {
+        SoProfilerElement * e = SoProfilerElement::get(state);
+        if (e) { e->setHasGLCache(this); }
+      }
+#endif // HAVE_SCENE_PROFILING
+
       return;
     }
+
     if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
@@ -656,7 +730,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     }
   }
 
-  if (createcache) createcache->open(action, this->renderCaching.getValue() == AUTO);
+  if (createcache) {
+    createcache->open(action, this->renderCaching.getValue() == AUTO);
+  }
 
   SbBool outsidefrustum =
     (createcache || state->isCacheOpen() || didcull) ?
@@ -923,6 +999,40 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
   return inherited::readInstance(in, flags);
 }
 
+// *************************************************************************
+
+SbBool
+SoSeparatorP::doCull(SoSeparatorP * thisp, SoState * state,
+                     SbBool (* cullfunc)(SoState *, const SbBox3f &, const SbBool))
+{
+  if (PUBLIC(thisp)->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
+  if (SoCullElement::completelyInside(state)) return FALSE;
+
+  SbBool outside = FALSE;
+  if (thisp->bboxcache &&
+      thisp->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = thisp->bboxcache->getProjectedBox();
+    if (!bbox.isEmpty()) {
+      outside = (*cullfunc)(state, bbox, TRUE);
+    }
+  }
+
+#ifdef HAVE_SCENE_PROFILING
+#if 0 
+// temporarily disabled as SoProfilerElement::setWasCulled
+// was removed in a refactor. The method should probably
+// exist however, so when implemented this code can be enabled
+// again. -frodein
+  if (outside && SoProfiler::isActive()) {
+    SoProfilerElement * e = SoProfilerElement::get(state);
+    if (e) { e->setWasCulled(thisp); }
+  }
+#endif
+#endif // HAVE_SCENE_PROFILING
+
+  return outside;
+}
+
 /*!
   Internal method which do view frustum culling. For now, view frustum
   culling is performed if the renderCulling field is \c AUTO or \c ON,
@@ -934,18 +1044,7 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
 SbBool
 SoSeparator::cullTest(SoState * state)
 {
-  if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (SoCullElement::completelyInside(state)) return FALSE;
-
-  SbBool outside = FALSE;
-  if (PRIVATE(this)->bboxcache &&
-      PRIVATE(this)->bboxcache->isValid(state)) {
-    const SbBox3f & bbox = PRIVATE(this)->bboxcache->getProjectedBox();
-    if (!bbox.isEmpty()) {
-      outside = SoCullElement::cullBox(state, bbox);
-    }
-  }
-  return outside;
+  return SoSeparatorP::doCull(&PRIVATE(this).get(), state, SoCullElement::cullBox);
 }
 
 //
@@ -956,18 +1055,10 @@ SoSeparator::cullTest(SoState * state)
 SbBool
 SoSeparator::cullTestNoPush(SoState * state)
 {
-  if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (SoCullElement::completelyInside(state)) return FALSE;
-
-  SbBool outside = FALSE;
-  if (PRIVATE(this)->bboxcache &&
-      PRIVATE(this)->bboxcache->isValid(state)) {
-    const SbBox3f & bbox = PRIVATE(this)->bboxcache->getProjectedBox();
-    if (!bbox.isEmpty()) {
-      outside = SoCullElement::cullTest(state, bbox);
-    }
-  }
-  return outside;
+  return SoSeparatorP::doCull(&PRIVATE(this).get(), state, SoCullElement::cullTest);
 }
 
+// *************************************************************************
+
 #undef PRIVATE
+#undef PUBLIC
