@@ -2,6 +2,7 @@
 PublicHeaders =
 
 PrivateHeaders = \
+	SoActionP.h \
 	SoSubActionP.h
 
 ObsoleteHeaders =
