@@ -57,8 +57,6 @@ BUILD_LIBRARY_FALSE = @BUILD_LIBRARY_FALSE@
 BUILD_LIBRARY_TRUE = @BUILD_LIBRARY_TRUE@
 BUILD_MANPAGES_FALSE = @BUILD_MANPAGES_FALSE@
 BUILD_MANPAGES_TRUE = @BUILD_MANPAGES_TRUE@
-BUILD_VRML97_FALSE = @BUILD_VRML97_FALSE@
-BUILD_VRML97_TRUE = @BUILD_VRML97_TRUE@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 BUILD_WITH_MSVC_FALSE = @BUILD_WITH_MSVC_FALSE@
 BUILD_WITH_MSVC_TRUE = @BUILD_WITH_MSVC_TRUE@
@@ -124,6 +122,7 @@ HAVE_FONTCONFIG_TRUE = @HAVE_FONTCONFIG_TRUE@
 HAVE_FREETYPE_FALSE = @HAVE_FREETYPE_FALSE@
 HAVE_FREETYPE_TRUE = @HAVE_FREETYPE_TRUE@
 HAVE_JAVASCRIPT = @HAVE_JAVASCRIPT@
+HAVE_SCENE_PROFILING = @HAVE_SCENE_PROFILING@
 HAVE_SOUND = @HAVE_SOUND@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE@
@@ -290,7 +289,8 @@ PublicHeaders =
 PrivateHeaders = \
         SbProfilingData.h \
         SoProfilerElement.h \
-        SoProfilerStatsElement.h
+        SoProfilerStatsElement.h \
+        inventormaps.icc
 
 
 ObsoletedHeaders = 
@@ -372,7 +372,7 @@ am__objects_2 = SoProfiler.$(OBJEXT) SoProfilerElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_profiler_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_profiler_lst_SOURCES_DIST = SbProfilingData.h \
-	SoProfilerElement.h SoProfilerStatsElement.h \
+	SoProfilerElement.h SoProfilerStatsElement.h inventormaps.icc \
 	all-profiler-cpp.cpp SoProfiler.cpp SoProfilerElement.cpp \
 	SoProfilerOverlayKit.cpp SoProfilerStats.cpp \
 	SoProfilerTopEngine.cpp SoScrollingGraphKit.cpp \
@@ -401,7 +401,7 @@ am__objects_7 = SoProfiler.lo SoProfilerElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libprofiler_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libprofiler_la_SOURCES_DIST = SbProfilingData.h \
-	SoProfilerElement.h SoProfilerStatsElement.h \
+	SoProfilerElement.h SoProfilerStatsElement.h inventormaps.icc \
 	all-profiler-cpp.cpp SoProfiler.cpp SoProfilerElement.cpp \
 	SoProfilerOverlayKit.cpp SoProfilerStats.cpp \
 	SoProfilerTopEngine.cpp SoScrollingGraphKit.cpp \
@@ -421,12 +421,12 @@ am__libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = SoProfiler.cpp \
 am_libprofiler@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SbProfilingData.h SoProfilerElement.h SoProfilerStatsElement.h \
-	all-profiler-cpp.cpp SoProfiler.cpp SoProfilerElement.cpp \
-	SoProfilerOverlayKit.cpp SoProfilerStats.cpp \
-	SoProfilerTopEngine.cpp SoScrollingGraphKit.cpp \
-	SoNodeVisualize.cpp SoProfilerTopKit.cpp \
-	SoProfilerStatsElement.cpp SoProfilerVisualizeKit.cpp \
-	SbProfilingData.cpp
+	inventormaps.icc all-profiler-cpp.cpp SoProfiler.cpp \
+	SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
+	SoProfilerStats.cpp SoProfilerTopEngine.cpp \
+	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
+	SoProfilerTopKit.cpp SoProfilerStatsElement.cpp \
+	SoProfilerVisualizeKit.cpp SbProfilingData.cpp
 libprofiler@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libprofiler@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

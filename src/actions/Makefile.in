@@ -57,8 +57,6 @@ BUILD_LIBRARY_FALSE = @BUILD_LIBRARY_FALSE@
 BUILD_LIBRARY_TRUE = @BUILD_LIBRARY_TRUE@
 BUILD_MANPAGES_FALSE = @BUILD_MANPAGES_FALSE@
 BUILD_MANPAGES_TRUE = @BUILD_MANPAGES_TRUE@
-BUILD_VRML97_FALSE = @BUILD_VRML97_FALSE@
-BUILD_VRML97_TRUE = @BUILD_VRML97_TRUE@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 BUILD_WITH_MSVC_FALSE = @BUILD_WITH_MSVC_FALSE@
 BUILD_WITH_MSVC_TRUE = @BUILD_WITH_MSVC_TRUE@
@@ -124,6 +122,7 @@ HAVE_FONTCONFIG_TRUE = @HAVE_FONTCONFIG_TRUE@
 HAVE_FREETYPE_FALSE = @HAVE_FREETYPE_FALSE@
 HAVE_FREETYPE_TRUE = @HAVE_FREETYPE_TRUE@
 HAVE_JAVASCRIPT = @HAVE_JAVASCRIPT@
+HAVE_SCENE_PROFILING = @HAVE_SCENE_PROFILING@
 HAVE_SOUND = @HAVE_SOUND@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE@
@@ -270,6 +269,7 @@ target_vendor = @target_vendor@
 PublicHeaders = 
 
 PrivateHeaders = \
+	SoActionP.h \
 	SoSubActionP.h
 
 
@@ -382,8 +382,8 @@ am__objects_2 = SoAction.$(OBJEXT) SoBoxHighlightRenderAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_actions_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_actions_lst_SOURCES_DIST = SoSubActionP.h all-actions-cpp.cpp \
-	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+am__EXTRA_actions_lst_SOURCES_DIST = SoActionP.h SoSubActionP.h \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
@@ -417,7 +417,7 @@ am__objects_7 = SoAction.lo SoBoxHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libactions_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions_la_SOURCES_DIST = SoSubActionP.h \
+am__EXTRA_libactions_la_SOURCES_DIST = SoActionP.h SoSubActionP.h \
 	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
@@ -439,15 +439,15 @@ am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp \
 	all-actions-cpp.cpp
 am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubActionP.h \
-	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
-	SoCallbackAction.cpp SoGLRenderAction.cpp \
-	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
-	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
-	SoLineHighlightRenderAction.cpp SoPickAction.cpp \
-	SoRayPickAction.cpp SoReorganizeAction.cpp SoSearchAction.cpp \
-	SoSimplifyAction.cpp SoToVRMLAction.cpp SoToVRML2Action.cpp \
-	SoWriteAction.cpp SoAudioRenderAction.cpp
+am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoActionP.h \
+	SoSubActionP.h all-actions-cpp.cpp SoAction.cpp \
+	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
+	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
+	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
+	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
+	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
+	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
