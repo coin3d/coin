@@ -36,6 +36,7 @@
 
 #ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>
+#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #endif // HAVE_SCENE_PROFILING
 
 class SoActionP {
