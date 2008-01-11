@@ -107,9 +107,6 @@ struct TypeTimings {
 class SoProfilerStatsP {
 public:
   SoProfilerStatsP(void) : master(NULL) {
-    SoDebugError::postWarning("SoProfilerStatsP::SoProfilerStatsP",
-                              "",
-                              "");
   }
   ~SoProfilerStatsP(void) { }
 
