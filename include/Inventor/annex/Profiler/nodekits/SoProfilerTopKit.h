@@ -57,7 +57,7 @@ protected:
   
 private:
   SbPimplPtr<SoProfilerTopKitP> pimpl;
-  friend SoProfilerTopKitP;
+  friend class SoProfilerTopKitP;
 
   SoProfilerTopKit(const SoProfilerTopKit & rhs);
   SoProfilerTopKit & operator = (const SoProfilerTopKit & rhs);
