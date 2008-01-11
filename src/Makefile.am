@@ -70,7 +70,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
 	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
-	vrml97/vrml97.la $(SUPERGLULIBADD)
+	vrml97/libvrml97.la $(SUPERGLULIBADD)
 endif
 
 # **************************************************************************
