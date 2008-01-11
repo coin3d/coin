@@ -3,23 +3,24 @@ GLRender profiling, pr nodetype
 
 * shrink the inventormaps.cpp file to a more sensible size
 
-* GLRender profile into SoVRMLShape og SoVRMLParent (frodein)
+* GLRender profile into SoVRMLShape og SoVRMLParent
 
-* Test GLRender profiling into SoBaseKit kit nodes (frodein)
+* Test GLRender profiling into SoBaseKit kit nodes
 
   => works, but the SoBaseKit-derived node will get accumulated time
-     from its children. (mortene)
+     from its children.
 
 * bug: SoSeparator nodes (and more rare; SoGroup nodes) sometimes
   comes out with large negative timing values. i believe i know why it
   happens; we don't catch the GLRenderBelow/In/OffPath() stuff in
-  SoSeparator. (mortene)
+  SoSeparator.
 
+* User-settable flag (envvar?) for triggering continous redrawing
 
 Scenegraph visualizer
 =====================
 
-* (optional) annotation of nodes with their type and name. (mortene)
+* (optional) annotation of nodes with their type and name.
 
 
 Clean-up
@@ -28,7 +29,6 @@ Clean-up
 * collect common profiling code from SoNode, SoGroup and SoSeparator's
   GLRender*() methods, as the start and stop timing code is almost
   identical -- plus, it'd make it easier to straighten out the bugs.
-  (mortene)
 
 
 Ideas for profiling targets
@@ -44,34 +44,28 @@ Ideas for profiling targets
 
 * time full action traversals. display as a "scrolling bar-chart",
   color-coded according to action-type.
-  (frodein, larsa)
 
 * SoGroup children traversal timings (all actions), visualize as a
   color-coded, annotated scenegraph, with nodes that can be expanded
-  and contracted. (mortene)
+  and contracted.
 
   (mortene working on the data gathering, rolvs is working on the
   visualization part)
 
   => data gathering done
 
-* memory usage in sub-graphs, same visualization as previous
-  item. wish by thammer.
+* memory usage in sub-graphs, same visualization as previous item.
 
   one idea how to do this: check child nodes' list of fields,
   calculate size based on getNum() and what we know about the types
   (SoMFFloat is eg getNum() * 4 bytes, SoMFVec3f is getNum() * 3 *
   4).
 
-  (mortene)
-
 * memory usage for internal caches:
         - VBOs
         - textures
         - GL displaylists
         - ...more? snoop around, plus ask pederb
-
- (mortene)
 
 * Notifications and field connections
   
@@ -83,8 +77,6 @@ Ideas for profiling targets
   possible to identify parts of the scene graph that generates lots 
   of notifications.
 
-  (frodein)
-
 * a wish from some Simian, i don't remember who: include an option to
   show a profile of which SoSeparator nodes caches its children /
   subtrees. (i believe this would primarily be useful to quickly
@@ -95,4 +87,4 @@ Ideas for profiling targets
      and the instrumentation in SoSeparator is done.
 
   => UPDATE: now shown in the NodeVisualizer, probably still needs
-     some debugging & other work. (mortene)
+     some debugging & other work.
