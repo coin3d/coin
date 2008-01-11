@@ -64,13 +64,22 @@ public:
    
   void setTimingProfile(SoNode * node, SbTime t, SoNode * parent = NULL);
 
+  // for categorizing by user-specified names
+  void pushProfilingName(const SbName & name);
+  void popProfilingName(const SbName & name);
+
   void setHasGLCache(SoNode * node, SbBool hascache = TRUE);
 
   // FIXME: returning an SbList may be bad, ask around.  -mortene.
-  const SbList<int16_t> & accumulatedRenderTimeKeys(void) const;
-  SbTime getAccumulatedRenderTime(uint16_t nodetypekey) const;
-  SbTime getMaxRenderTime(uint16_t nodetypekey) const;
-  uint32_t getAccumulatedRenderCount(uint16_t nodetypekey) const;
+  const SbList<int16_t> & accumulatedRenderTimeForTypeKeys(void) const;
+  SbTime getAccumulatedRenderTimeForType(uint16_t nodetypekey) const;
+  SbTime getMaxRenderTimeForType(uint16_t nodetypekey) const;
+  uint32_t getAccumulatedRenderCountForType(uint16_t nodetypekey) const;
+
+  const SbList<const char *> & accumulatedRenderTimeForNameKeys(void) const;
+  SbTime getAccumulatedRenderTimeForName(const char * nodename) const;
+  SbTime getMaxRenderTimeForName(const char * nodename) const;
+  uint32_t getAccumulatedRenderCountForName(const char * nodename) const;
 
   SbTime timeSinceTraversalStart();
   void startTraversalClock();
@@ -89,6 +98,7 @@ private:
   SbTime start_time;
 
   void accumulateRenderTime(SoType parenttype, SoType childtype, SbTime t);
+  void accumulateRenderTime(const char * name, SbTime t);
 
   struct NodetypeAccumulations {
     SbTime rendertime;
@@ -96,13 +106,22 @@ private:
     uint32_t count;
   };
 
-  // FIXME: SbHash is not exposed (SbHash.h not installed), so if this
-  // is to be made into a public part of the Coin API, this can not
-  // reside here.  -mortene.
-  SbHash<struct NodetypeAccumulations, int16_t> typeaccum_map;
+  struct NodenameAccumulations {
+    const char * name;
+    SbTime rendertime;
+    SbTime rendertimemax; // largest in accumulation set
+    uint32_t count;
+
+  };
+
   SbTime grandtotal;
 
-};
+  SbHash<struct NodetypeAccumulations, int16_t> typeaccum_map;
+
+  SbHash<struct NodenameAccumulations, const char *> nameaccum_map;
+  SbList<const char *> namestack;
+
+}; // SoProfilerElement
 
 #endif // HAVE_SCENE_PROFILING
 

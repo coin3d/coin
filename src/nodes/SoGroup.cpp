@@ -558,13 +558,17 @@ void
 SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
 {
 #ifdef HAVE_SCENE_PROFILING
-  SoState * s = action->getState();
-  SoProfilerElement * e = SoProfilerElement::get(s);
-  const SbTime start = SbTime::getTimeOfDay();
+  SoState * state = action->getState();
+  SoProfilerElement * profilerelt = SoProfilerElement::get(state);
+  const SbTime start(SbTime::getTimeOfDay());
+
+  if (profilerelt) {
+    profilerelt->pushProfilingName(thisp->getName());
+  }
 
   child->GLRender(action);
 
-  if (e) {
+  if (profilerelt) {
     static int synchronuousgl = -1;
     if (synchronuousgl == -1) {
       const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
@@ -574,8 +578,11 @@ SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderActio
     if (synchronuousgl) { glFinish(); }
     const SbTime end = SbTime::getTimeOfDay();
 
-    e->setTimingProfile(child, end - start, thisp);
+    profilerelt->setTimingProfile(child, end - start, thisp);
+
+    profilerelt->popProfilingName(thisp->getName());
   }
+
 #endif // HAVE_SCENE_PROFILING
 }
 

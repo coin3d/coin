@@ -51,6 +51,10 @@
 #include "profiler/SoProfilerElement.h"
 #include "profiler/SbProfilingData.h"
 
+// decide whether to expose profiling stats by node type or by
+// user-specified node names
+#define BY_TYPE 1
+
 // *************************************************************************
 
 /*!
@@ -91,15 +95,14 @@
 
 // *************************************************************************
 
-namespace {
-  struct TypeTimings {
-    SbTime total;
-    SbTime max;
-    uint32_t count;
-  };
-};
-
 #define PUBLIC(obj) ((obj)->master)
+
+namespace {
+struct TypeTimings {
+  SbTime max, total;
+  int32_t count;
+};
+}
 
 class SoProfilerStatsP {
 public:
@@ -119,6 +122,7 @@ public:
 
   std::map<int16_t, SbProfilingData *> action_map;
   std::map<int16_t, TypeTimings> type_timings;
+  std::map<const char *, TypeTimings> name_timings;
 
   SoProfilerStats * master;
 
@@ -205,32 +209,58 @@ SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e,
 void
 SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
 {
-  SbList<int16_t> keys = e->accumulatedRenderTimeKeys();
+#if BY_TYPE
+  SbList<int16_t> keys = e->accumulatedRenderTimeForTypeKeys();
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
     int16_t k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
       TypeTimings & timings = it->second;
-      it->second.total += e->getAccumulatedRenderTime(k);
-      it->second.max += e->getMaxRenderTime(k);
-      it->second.count += e->getAccumulatedRenderCount(k);
+      it->second.total += e->getAccumulatedRenderTimeForType(k);
+      it->second.max += e->getMaxRenderTimeForType(k);
+      it->second.count += e->getAccumulatedRenderCountForType(k);
 
     } else {
       TypeTimings timings;
-      timings.total = e->getAccumulatedRenderTime(k);
-      timings.max = e->getMaxRenderTime(k);
-      timings.count = e->getAccumulatedRenderCount(k);
+      timings.total = e->getAccumulatedRenderTimeForType(k);
+      timings.max = e->getMaxRenderTimeForType(k);
+      timings.count = e->getAccumulatedRenderCountForType(k);
       std::pair<int16_t, TypeTimings> entry(k, timings);
       this->type_timings.insert(entry);
     }
   }
+#else
+  SbList<const char *> keys = e->accumulatedRenderTimeForNameKeys();
+  int keyCount = keys.getLength();
+  for (int i = 0; i < keyCount; ++i) {
+    const char * k = keys[i];
+    std::map<const char *, TypeTimings>::iterator it = this->name_timings.find(k);
+    if (it != this->name_timings.end()) {
+      TypeTimings & timings = it->second;
+      it->second.total += e->getAccumulatedRenderTimeForName(k);
+      it->second.max += e->getMaxRenderTimeForName(k);
+      it->second.count += e->getAccumulatedRenderCountForName(k);
+    } else {
+      TypeTimings timings;
+      timings.total = e->getAccumulatedRenderTimeForName(k);
+      timings.max = e->getMaxRenderTimeForName(k);
+      timings.count = e->getAccumulatedRenderCountForName(k);
+      std::pair<const char *, TypeTimings> entry(k, timings);
+      this->name_timings.insert(entry);
+    }
+  }
+#endif
 } // updateNodeTypeTimingMaps
 
 void
 SoProfilerStatsP::updateNodeTypeTimingFields()
 {
-  int keyCount = this->type_timings.size();
+#if BY_TYPE
+  int keyCount = (int) this->type_timings.size();
+#else
+  int keyCount = (int) this->name_timings.size();
+#endif
 
   PUBLIC(this)->renderedNodeType.setNum(keyCount);
   SbName * typeNameArr = PUBLIC(this)->renderedNodeType.startEditing();
@@ -244,11 +274,18 @@ SoProfilerStatsP::updateNodeTypeTimingFields()
   PUBLIC(this)->renderedNodeTypeCount.setNum(keyCount);
   uint32_t * nodeTypeCountArr = PUBLIC(this)->renderedNodeTypeCount.startEditing();
 
-  std::map<int16_t, TypeTimings>::iterator it, end;
   int index = 0;
+#if BY_TYPE
+  std::map<int16_t, TypeTimings>::iterator it, end;
   for (it = this->type_timings.begin(), end = this->type_timings.end();
        it != end; ++it, ++index) {
     typeNameArr[index] = SoType::fromKey(it->first).getName();
+#else
+  std::map<const char *, TypeTimings>::iterator it, end;
+  for (it = this->name_timings.begin(), end = this->name_timings.end();
+       it != end; ++it, ++index) {
+    typeNameArr[index] = SbName(it->first);
+#endif
     renderingTimePerNodeTypeArr[index] = it->second.total;
     renderingTimeMaxPerNodeTypeArr[index] = it->second.max;
     nodeTypeCountArr[index] = it->second.count;

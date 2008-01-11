@@ -129,6 +129,8 @@ SoProfilerElement::clear(void)
   this->grandtotal = SbTime::zero();
 
   this->typeaccum_map.clear();
+  this->nameaccum_map.clear();
+  this->namestack.truncate(0);
 
   this->data.clear();
 
@@ -193,14 +195,67 @@ SoProfilerElement::accumulateRenderTime(SoType parenttype, SoType childtype,
 }
 
 void
+SoProfilerElement::accumulateRenderTime(const char * name, SbTime t)
+{
+  struct NodenameAccumulations acc;
+  SbBool first = ! this->nameaccum_map.get(name, acc);
+
+  if (first) {
+    acc.name = name;
+    acc.rendertime = t;
+    acc.rendertimemax = t;
+    acc.count = 1;
+  }
+  else {
+    acc.rendertime += t;
+    if (t.getValue() > acc.rendertimemax.getValue()) { acc.rendertimemax = t; }
+    ++acc.count;
+  }
+
+  this->nameaccum_map.put(name, acc);
+
+}
+
+void
 SoProfilerElement::setTimingProfile(SoNode * node, SbTime t, SoNode * parent)
 {
   this->accumulateRenderTime(parent ? parent->getTypeId() : SoType::badType(),
                              node->getTypeId(), t);
-  
+
   if (parent != NULL) {
     this->data.setChildTiming(parent, node, t);
   }
+
+  if (this->namestack.getLength() > 0) {
+    this->accumulateRenderTime(this->namestack[this->namestack.getLength()-1], t);
+  }
+}
+
+/*!
+  Sets the name of the current subscenegraph.
+  Empty name (nonnamed nodes) is allowed.
+*/
+
+void
+SoProfilerElement::pushProfilingName(const SbName & name)
+{
+  static const SbName empty("");
+  if (name == empty) return;
+  this->namestack.push(name.getString());
+}
+
+/*!
+  Restores the name of the current subscenegraph to what it was before.
+  Empty name (nonnamed nodes) is allowed.
+*/
+
+void
+SoProfilerElement::popProfilingName(const SbName & name)
+{
+  static const SbName empty("");
+  if (name == empty) return;
+  assert(this->namestack.getLength() > 0);
+  this->namestack.pop();
 }
 
 // *************************************************************************
@@ -232,7 +287,7 @@ SoProfilerElement::getProfilingData() const
 // *************************************************************************
 
 const SbList<int16_t> &
-SoProfilerElement::accumulatedRenderTimeKeys(void) const
+SoProfilerElement::accumulatedRenderTimeForTypeKeys(void) const
 {
   // FIXME: ugly as hell to have a static list here. there are
   // mt-safety issues, for instance. actually straightforward to fix,
@@ -245,7 +300,7 @@ SoProfilerElement::accumulatedRenderTimeKeys(void) const
 }
 
 SbTime
-SoProfilerElement::getAccumulatedRenderTime(uint16_t nodetypekey) const
+SoProfilerElement::getAccumulatedRenderTimeForType(uint16_t nodetypekey) const
 {
   struct NodetypeAccumulations acc;
   const SbBool present = this->typeaccum_map.get(nodetypekey, acc);
@@ -254,7 +309,7 @@ SoProfilerElement::getAccumulatedRenderTime(uint16_t nodetypekey) const
 }
 
 SbTime
-SoProfilerElement::getMaxRenderTime(uint16_t nodetypekey) const
+SoProfilerElement::getMaxRenderTimeForType(uint16_t nodetypekey) const
 {
   struct NodetypeAccumulations acc;
   const SbBool present = this->typeaccum_map.get(nodetypekey, acc);
@@ -263,10 +318,51 @@ SoProfilerElement::getMaxRenderTime(uint16_t nodetypekey) const
 }
 
 uint32_t
-SoProfilerElement::getAccumulatedRenderCount(uint16_t nodetypekey) const
+SoProfilerElement::getAccumulatedRenderCountForType(uint16_t nodetypekey) const
 {
   struct NodetypeAccumulations acc;
   const SbBool present = this->typeaccum_map.get(nodetypekey, acc);
+  assert(present);
+  return acc.count;
+}
+
+// *************************************************************************
+const SbList<const char *> &
+SoProfilerElement::accumulatedRenderTimeForNameKeys(void) const
+{
+  // FIXME: ugly as hell to have a static list here. there are
+  // mt-safety issues, for instance. actually straightforward to fix,
+  // methinks: just pass in the list as an input argument.  -mortene.
+  static SbList<const char *> l;
+
+  l.truncate(0);
+  this->nameaccum_map.makeKeyList(l);
+  return l;
+}
+
+SbTime
+SoProfilerElement::getAccumulatedRenderTimeForName(const char * nodename) const
+{
+  struct NodenameAccumulations acc;
+  const SbBool present = this->nameaccum_map.get(nodename, acc);
+  assert(present);
+  return acc.rendertime;
+}
+
+SbTime
+SoProfilerElement::getMaxRenderTimeForName(const char * nodename) const
+{
+  struct NodenameAccumulations acc;
+  const SbBool present = this->nameaccum_map.get(nodename, acc);
+  assert(present);
+  return acc.rendertimemax;
+}
+
+uint32_t
+SoProfilerElement::getAccumulatedRenderCountForName(const char * nodename) const
+{
+  struct NodenameAccumulations acc;
+  const SbBool present = this->nameaccum_map.get(nodename, acc);
   assert(present);
   return acc.count;
 }

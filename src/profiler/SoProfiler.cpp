@@ -30,12 +30,27 @@
 /*!
   \page profiling Profiling support in Coin
 
+  Sorry about the state of this documentation - it is still in its infancy.
+
   <h>Enabling profiling in Coin</h>
+
   To enable profiling in Coin, set the environment variable COIN_PROFILER
   to any positive value. When profiling is enabled, Coin will gather
-  profiling data during every scene graph traversal. 
+  profiling data during every scene graph traversal.  Amongst the profiling
+  data gathered, you have traversal timings, whether nodes are cached,
+  and whether nodes are culled.
+
+  <h>Enabling the default profiling display</h>
+
+  To get some profiling data shown on the screen, you also need to set the
+  COIN_PROFILER_OVERLAY environment variable to something other than 0.
+  This will give you the default profiling graphics, which shows a top-list
+  of node timings categorized by node types, a scrolling graph of action
+  traversal timings, and a scene graph navigator for closer scene graph
+  inspection.
 
   <h>Read the profiling data</h>
+
   The SoProfilerStats node can be used to fetch the profiling data in the
   scene graph. If it is positioned anywhere in the scene graph, the
   fields of the node will be updated every time SoGLRenderedAction is 
@@ -48,8 +63,6 @@
   <h>Using SoProfilerTopKit</a>
   
   <h>Creating a custom profiler overlay</h>
-
-  <h>Enabling the default profiling display</h>
 
   \since Coin 3.0
 */
@@ -68,6 +81,7 @@
 #include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+
 #include "misc/SoDBP.h"
 
 // *************************************************************************
@@ -94,7 +108,6 @@ SoProfiler::init(void)
   SoScrollingGraphKit::initClass();
   SoNodeVisualize::initClass();
 
-  
   profiler_active = TRUE;
   profiler_enabled = TRUE;
 
@@ -106,11 +119,20 @@ SoProfiler::init(void)
   initialized = TRUE;
 }
 
+/*!
+  Returns whether profiling is active or not.
+*/
+
 SbBool
 SoProfiler::isActive(void)
 {
   return profiler_enabled && profiler_active;
 }
+
+/*!
+  Returns whether profiling is shown in an overlay fashion on the GL canvas
+  or not.
+*/
 
 SbBool
 SoProfiler::overlayActive(void)
@@ -128,6 +150,10 @@ SoProfiler::enable(SbBool enable)
   }
   profiler_enabled = enable;
 }
+
+/*!
+  Returns whether profiling is enabled or not.
+*/
 
 SbBool
 SoProfiler::isEnabled(void)

@@ -1007,13 +1007,17 @@ SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
   // (GLRender*Path()) which invoke this function, and if so they will
   // fall outside the profile data collection.  -mortene.
 
-  SoState * s = action->getState();
-  SoProfilerElement * e = SoProfilerElement::get(s);
+  SoState * state = action->getState();
+  SoProfilerElement * profilerelt = SoProfilerElement::get(state);
   const SbTime start = SbTime::getTimeOfDay();
+
+  if (profilerelt) {
+    profilerelt->pushProfilingName(thisp->getName());
+  }    
 
   thisp->GLRender(action);
 
-  if (e) {
+  if (profilerelt) {
     static int synchronuousgl = -1;
     if (synchronuousgl == -1) {
       const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
@@ -1024,10 +1028,12 @@ SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
     const SbTime end = SbTime::getTimeOfDay();
 
     SoNode * parent = NULL;
-    const SoPath * p = action->getCurPath();
-    if (p->getLength() > 1) { parent = p->getNodeFromTail(1); }
+    const SoPath * path = action->getCurPath();
+    if (path->getLength() > 1) { parent = path->getNodeFromTail(1); }
 
-    e->setTimingProfile(thisp, end - start, parent);
+    profilerelt->setTimingProfile(thisp, end - start, parent);
+
+    profilerelt->popProfilingName(thisp->getName());
   }
 #endif // HAVE_SCENE_PROFILING
 }

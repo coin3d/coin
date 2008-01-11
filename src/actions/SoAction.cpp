@@ -928,27 +928,24 @@ SoAction::traverse(SoNode * const node)
 
 #ifdef HAVE_SCENE_PROFILING
   if (SoProfiler::isActive()) {
-    SoProfilerElement * e = NULL;
-    SbTime start = SbTime::zero();
+    SoProfilerElement * profilerelt = NULL;
+    SbTime start(SbTime::zero());
 
     SoState * state = this->getState();
     if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
-      e = SoProfilerElement::get(state);
+      profilerelt = SoProfilerElement::get(state);
       start = SbTime::getTimeOfDay();
     }
 
     func(this, node);
 
-    if (e != NULL) {
-      const SbTime end = SbTime::getTimeOfDay();
+    if (profilerelt != NULL) {
+      const SbTime end(SbTime::getTimeOfDay());
 
-      SoNode * parent = NULL;
-      const SoPath * p = this->getCurPath();
-      if (p->getLength() > 1) { parent = p->getNodeFromTail(1); }
+      const SoPath * path = this->getCurPath();
+      SoNode * parent = path->getLength() > 1 ? path->getNodeFromTail(1) : NULL;
 
-      if (parent) {
-        e->setTimingProfile(node, end - start, parent);
-      }
+      profilerelt->setTimingProfile(node, end - start, parent);
     }
   } else {
     func(this, node);
