@@ -34,9 +34,6 @@ Clean-up
 Ideas for profiling targets
 ===========================
 
-* mode to profile just DEF-named nodes to be able to have completely
-  application-specific profiling of scene graph traversals
-
 * track and show information about view frustum culling. should be
   easy to track, as i believe this info can be had from a single spot,
   or at least just a few spots, in the Coin source code

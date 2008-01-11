@@ -241,6 +241,10 @@ SoProfilerElement::pushProfilingName(const SbName & name)
 {
   static const SbName empty("");
   if (name == empty) return;
+
+  // FIXME: detect and ignore implicit (writeaction-) names here (and
+  // for pop()).
+
   this->namestack.push(name.getString());
 }
 
