@@ -59,7 +59,7 @@ public:
   static SbBool isBaseNameStartChar(const char c);
   static SbBool isBaseNameChar(const char c);
 
-  static SbName empty(void);
+  static const SbName & empty(void);
 
 private:
   const char * permaaddress;

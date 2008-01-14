@@ -346,7 +346,7 @@ namespace {
   \since Coin 20080114
 */
 
-SbName
+const SbName &
 SbName::empty(void) // static
 {
   if (emptyname == NULL) {
