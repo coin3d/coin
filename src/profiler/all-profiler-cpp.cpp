@@ -29,7 +29,6 @@
 
 #include "SoProfiler.cpp"
 #include "SoProfilerElement.cpp"
-#include "SoProfilerStatsElement.cpp"
 #include "SoProfilerOverlayKit.cpp"
 #include "SoProfilerTopEngine.cpp"
 #include "SoProfilerStats.cpp"

@@ -224,7 +224,6 @@
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoProfilerElement.h"
-#include "profiler/SoProfilerStatsElement.h"
 #include "profiler/SoNodeProfiling.h"
 #endif // HAVE_SCENE_PROFILING
 
@@ -383,11 +382,6 @@ SoAction::initClass(void)
   if (e && (atoi(e) > 0)) {
     SoAction::enabledElements->enable(SoProfilerElement::getClassTypeId(),
                                       SoProfilerElement::getClassStackIndex());
-    // FIXME: it would be cleaner to enable this from the
-    // SoProfilerStats node itself (its initClass() function).
-    // -mortene.
-    SoAction::enabledElements->enable(SoProfilerStatsElement::getClassTypeId(),
-                                      SoProfilerStatsElement::getClassStackIndex());
   }
 #endif // HAVE_SCENE_PROFILING
 

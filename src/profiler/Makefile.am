@@ -9,7 +9,6 @@ RegularSources = \
 	SoScrollingGraphKit.cpp \
         SoNodeVisualize.cpp \
         SoProfilerTopKit.cpp \
-        SoProfilerStatsElement.cpp \
         SoProfilerVisualizeKit.cpp \
         SbProfilingData.cpp
 
@@ -21,7 +20,7 @@ PublicHeaders =
 PrivateHeaders = \
         SbProfilingData.h \
         SoProfilerElement.h \
-        SoProfilerStatsElement.h \
+        SoNodeProfiling.h \
         inventormaps.icc
 
 ObsoletedHeaders =

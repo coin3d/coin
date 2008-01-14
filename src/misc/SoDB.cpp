@@ -293,7 +293,6 @@ static SbRWMutex * sodb_globalmutex = NULL;
 #ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoProfilerElement.h"
-#include "profiler/SoProfilerStatsElement.h"
 #endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
@@ -563,7 +562,6 @@ SoDB::init(void)
   // even if COIN_PROFILER is not set, as we use its classStackIndex
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
-  SoProfilerStatsElement::initClass();
 #endif // HAVE_SCENE_PROFILING
 
   // Actions must be initialized before nodes (because of SO_ENABLE)
