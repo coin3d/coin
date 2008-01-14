@@ -61,6 +61,7 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbString.h>
 
+#include "tidbitsp.h"
 #include "base/namemap.h"
 
 // *************************************************************************
@@ -324,4 +325,33 @@ operator!=(const SbName & lhs, const SbName & rhs)
 SbName::operator const char * (void) const
 {
   return this->permaaddress;
+}
+
+
+/* anonymous namespace for management of the empty SbName instance */
+namespace {
+  SbName * emptyname = NULL;
+
+  void SbName_atexit(void) {
+    if (emptyname != NULL) {
+      delete emptyname;
+      emptyname = NULL;
+    }
+  }
+}
+
+/*!
+  Returns an empty-string SbName instance.
+
+  \since Coin 20080114
+*/
+
+SbName
+SbName::empty(void) // static
+{
+  if (emptyname == NULL) {
+    emptyname = new SbName("");
+    coin_atexit(SbName_atexit, CC_ATEXIT_SBNAME);
+  }
+  return *emptyname;
 }
