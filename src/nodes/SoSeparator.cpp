@@ -88,10 +88,8 @@
 #include "misc/SoGL.h"
 #include "misc/SoDBP.h"
 
-#ifdef HAVE_SCENE_PROFILING
+#include "profiler/SoNodeProfiling.h"
 #include <Inventor/annex/Profiler/SoProfiler.h>
-#include "profiler/SoProfilerElement.h"
-#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -636,36 +634,15 @@ SoSeparatorP::GLRender(SoSeparator * thisp, SoGLRenderAction * action)
 void
 SoSeparatorP::GLRenderProfiler(SoSeparator * thisp, SoGLRenderAction * action)
 {
-#ifdef HAVE_SCENE_PROFILING
-  SoState * state = action->getState();
-  SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-  const SbTime start(SbTime::getTimeOfDay());
-
-  if (profilerelt) {
-    profilerelt->pushProfilingName(thisp->getName());
-  }
-
+  const SoPath * path = action->getCurPath();
+  SoNode * parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
+  assert(parent != thisp);
+  //assert(parent == NULL ||
+  //       static_cast<SoGroup *>(parent)->findChild(thisp) != -1);
+  SoNodeProfiling profiling;
+  profiling.preTraversal(action, parent, thisp);
   SoSeparatorP::GLRender(thisp, action);
-
-  if (profilerelt) {
-    static int synchronuousgl = -1;
-    if (synchronuousgl == -1) {
-      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
-      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
-    }
-
-    if (synchronuousgl) { glFinish(); }
-    const SbTime end = SbTime::getTimeOfDay();
-
-    SoNode * parent = NULL;
-    const SoPath * path = action->getCurPath();
-    if (path->getLength() > 1) { parent = path->getNodeFromTail(1); }
-
-    profilerelt->setTimingProfile(thisp, end - start, parent);
-
-    profilerelt->popProfilingName(thisp->getName());
-  }
-#endif // HAVE_SCENE_PROFILING
+  profiling.postTraversal(action, parent, thisp);
 }
 
 // Doc from superclass.

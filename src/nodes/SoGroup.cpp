@@ -204,10 +204,7 @@
 #include "glue/glp.h"
 #include "io/SoWriterefCounter.h"
 
-#ifdef HAVE_SCENE_PROFILING
-#include "misc/SoDBP.h" // for global envvar COIN_PROFILER
-#include "profiler/SoProfilerElement.h"
-#endif // HAVE_SCENE_PROFILING
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -557,33 +554,12 @@ SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * acti
 void
 SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
 {
-#ifdef HAVE_SCENE_PROFILING
-  SoState * state = action->getState();
-  SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-  const SbTime start(SbTime::getTimeOfDay());
+  // assert(!thisp || static_cast<SoGroup *>(thisp)->findChild(child) != -1);
 
-  if (profilerelt) {
-    profilerelt->pushProfilingName(thisp->getName());
-  }
-
+  SoNodeProfiling profiling;
+  profiling.preTraversal(action, thisp, child);
   child->GLRender(action);
-
-  if (profilerelt) {
-    static int synchronuousgl = -1;
-    if (synchronuousgl == -1) {
-      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
-      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
-    }
-
-    if (synchronuousgl) { glFinish(); }
-    const SbTime end = SbTime::getTimeOfDay();
-
-    profilerelt->setTimingProfile(child, end - start, thisp);
-
-    profilerelt->popProfilingName(thisp->getName());
-  }
-
-#endif // HAVE_SCENE_PROFILING
+  profiling.postTraversal(action, thisp, child);
 }
 
 // Doc from superclass.

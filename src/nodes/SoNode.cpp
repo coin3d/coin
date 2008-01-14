@@ -200,9 +200,7 @@
 #include "glue/glp.h"
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 
-#ifdef HAVE_SCENE_PROFILING
-#include "profiler/SoProfilerElement.h"
-#endif // HAVE_SCENE_PROFILING
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -1001,41 +999,19 @@ SoNodeP::GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action)
 void
 SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
 {
-#ifdef HAVE_SCENE_PROFILING
   // FIXME: note that this does (probably) not catch all GLRender()
   // invocations, as some nodes will override the above methods
   // (GLRender*Path()) which invoke this function, and if so they will
   // fall outside the profile data collection.  -mortene.
 
-  SoState * state = action->getState();
-  SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-  const SbTime start = SbTime::getTimeOfDay();
+  const SoPath * path = action->getCurPath();
+  SoNode * parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
 
-  if (profilerelt) {
-    profilerelt->pushProfilingName(thisp->getName());
-  }    
-
+  //assert(!parent || static_cast<SoGroup *>(parent)->findChild(thisp) != -1);
+  SoNodeProfiling profiling;
+  profiling.preTraversal(action, parent, thisp);
   thisp->GLRender(action);
-
-  if (profilerelt) {
-    static int synchronuousgl = -1;
-    if (synchronuousgl == -1) {
-      const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
-      synchronuousgl = (env && (atoi(env) > 0)) ? 1 : 0;
-    }
-
-    if (synchronuousgl) { glFinish(); }
-    const SbTime end = SbTime::getTimeOfDay();
-
-    SoNode * parent = NULL;
-    const SoPath * path = action->getCurPath();
-    if (path->getLength() > 1) { parent = path->getNodeFromTail(1); }
-
-    profilerelt->setTimingProfile(thisp, end - start, parent);
-
-    profilerelt->popProfilingName(thisp->getName());
-  }
-#endif // HAVE_SCENE_PROFILING
+  profiling.postTraversal(action, parent, thisp);
 }
 
 // *************************************************************************

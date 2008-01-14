@@ -225,6 +225,7 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoProfilerElement.h"
 #include "profiler/SoProfilerStatsElement.h"
+#include "profiler/SoNodeProfiling.h"
 #endif // HAVE_SCENE_PROFILING
 
 // define this to debug path traversal
@@ -537,8 +538,12 @@ SoAction::apply(SoNode * root)
     if (SoProfiler::isActive() &&
         SoProfiler::overlayActive() &&
         this->isOfType(SoHandleEventAction::getClassTypeId())) {
-      this->beginTraversal(SoActionP::getProfilerOverlay());
-      this->endTraversal(SoActionP::getProfilerOverlay());
+      SoNode * profileroverlay = SoActionP::getProfilerOverlay();
+      this->beginTraversal(profileroverlay);
+      //if (static_cast<SoHandleEventAction *>(this)->isHandled()) {
+      //  root->touch();
+      //}
+      this->endTraversal(profileroverlay);
     }
 
     // start profiling
@@ -926,33 +931,17 @@ SoAction::traverse(SoNode * const node)
   int idx = SoNode::getActionMethodIndex(t);
   SoActionMethod func = (*this->traversalMethods)[idx];
 
-#ifdef HAVE_SCENE_PROFILING
-  if (SoProfiler::isActive()) {
-    SoProfilerElement * profilerelt = NULL;
-    SbTime start(SbTime::zero());
+  const SoPath * path = this->getCurPath();
 
-    SoState * state = this->getState();
-    if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
-      profilerelt = SoProfilerElement::get(state);
-      start = SbTime::getTimeOfDay();
-    }
-
-    func(this, node);
-
-    if (profilerelt != NULL) {
-      const SbTime end(SbTime::getTimeOfDay());
-
-      const SoPath * path = this->getCurPath();
-      SoNode * parent = path->getLength() > 1 ? path->getNodeFromTail(1) : NULL;
-
-      profilerelt->setTimingProfile(node, end - start, parent);
-    }
-  } else {
-    func(this, node);
+  SoNode * parent = (path->getLength() > 0) ? path->getNodeFromTail(0) : NULL;
+  if (parent == node) {
+    parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
   }
-#else // !HAVE_SCENE_PROFILING
+
+  SoNodeProfiling profiling;
+  profiling.preTraversal(this, parent, node);
   func(this, node);
-#endif // !HAVE_SCENE_PROFILING
+  profiling.postTraversal(this, parent, node);
 }
 
 /*!

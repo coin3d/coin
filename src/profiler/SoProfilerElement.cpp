@@ -65,8 +65,7 @@ SoProfilerElement::get(SoState * state)
 {
   assert(state);
   if (!state->isElementEnabled(SoProfilerElement::classStackIndex)) {
-    SoAction * action = state->getAction();
-    assert(FALSE && "SoProfilerElement not enabled");
+    assert(!"SoProfilerElement not enabled");
   }
 
   SoElement * e = state->getElementNoPush(SoProfilerElement::classStackIndex);
