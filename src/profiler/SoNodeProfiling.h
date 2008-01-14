@@ -26,13 +26,6 @@ public:
   {
     if (!this->isActive(action)) return;
 
-    SoState * state = action->getState();
-    SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-
-    assert(profilerelt);
-
-    profilerelt->pushProfilingName(child->getName());
-
     pretime = SbTime::getTimeOfDay();
   }
 
@@ -40,24 +33,22 @@ public:
   {
     if (!this->isActive(action)) return;
 
-    SoState * state = action->getState();
-    SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-
-    assert(profilerelt);
-
     static int synchronousgl = -1;
     if (synchronousgl == -1) {
       const char * env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER_SYNCGL);
       synchronousgl = (env && (atoi(env) > 0)) ? 1 : 0;
     }
 
-    if (synchronousgl) glFinish();
+    if (synchronousgl && action->isOfType(SoGLRenderAction::getClassTypeId()))
+      glFinish();
 
     const SbTime posttime(SbTime::getTimeOfDay());
 
-    profilerelt->setTimingProfile(child, posttime - pretime, parent);
+    SoState * state = action->getState();
+    SoProfilerElement * profilerelt = SoProfilerElement::get(state);
+    assert(profilerelt);
 
-    profilerelt->popProfilingName(child->getName());
+    profilerelt->setTimingProfile(child, posttime - pretime, parent);
   }
 
   bool isActive(SoAction * action)
