@@ -148,6 +148,14 @@ copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h %COIN
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h %COINDIR%\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h %COINDIR%\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodekits\SoNodeVisualize.h %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoNodeVisualize.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerOverlayKit.h %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerOverlayKit.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerTopKit.h %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerTopKit.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodekits\SoScrollingGraphKit.h %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoScrollingGraphKit.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerVisualizeKit.h %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerVisualizeKit.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h %COINDIR%\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\SoProfiler.h %COINDIR%\include\Inventor\annex\Profiler\SoProfiler.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoBundle.h %COINDIR%\include\Inventor\bundles\SoBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoMaterialBundle.h %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoNormalBundle.h %COINDIR%\include\Inventor\bundles\SoNormalBundle.h >nul:

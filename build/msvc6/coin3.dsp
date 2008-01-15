@@ -10396,6 +10396,139 @@ SOURCE=..\..\src\shaders\SoVertexShader.cpp
 !ENDIF
 # End Source File
 # End Group
+# Begin Group "profiler sources"
+# PROP Default_Filter "c;cpp;ic;icc;h"
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfiler.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerOverlayKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerStats.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerTopEngine.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoScrollingGraphKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoNodeVisualize.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerTopKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerVisualizeKit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SbProfilingData.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# End Group
 # Begin Group "vrml97 sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
@@ -11979,6 +12112,50 @@ SOURCE=..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h
+# End Source File
+# End Group
+# Begin Group "Profiler\nodes headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h
+# End Source File
+# End Group
+# Begin Group "Profiler\nodekits headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoNodeVisualize.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerOverlayKit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerTopKit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoScrollingGraphKit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerVisualizeKit.h
+# End Source File
+# End Group
+# Begin Group "Profiler\engines headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h
+# End Source File
+# End Group
+# Begin Group "Profiler headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\SoProfiler.h
 # End Source File
 # End Group
 # Begin Group "Inventor\bundles headers"
@@ -14943,6 +15120,12 @@ SOURCE=.\src\setup.h
 # PROP Default_Filter "h;ic;icc"
 # Begin Source File
 
+SOURCE=..\..\src\actions\SoActionP.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\actions\SoSubActionP.h
 
 # PROP Exclude_From_Build 1
@@ -14954,6 +15137,12 @@ SOURCE=..\..\src\actions\SoSubActionP.h
 # Begin Source File
 
 SOURCE=..\..\src\base\SbGLUTessellator.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\dict.h
 
 # PROP Exclude_From_Build 1
 # End Source File
@@ -15470,6 +15659,28 @@ SOURCE=..\..\src\nodes\SoSubNodeP.h
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoUnknownNode.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "profiler local includes"
+
+# PROP Default_Filter "h;ic;icc"
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SbProfilingData.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\SoProfilerElement.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\profiler\inventormaps.icc
 
 # PROP Exclude_From_Build 1
 # End Source File

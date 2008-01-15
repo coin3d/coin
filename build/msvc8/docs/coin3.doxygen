@@ -1504,13 +1504,13 @@ INPUT                  = .\include\Inventor\C\basic.h \
                          ..\..\src\shadows\SoShadowGroup.cpp \
                          ..\..\src\shadows\SoShadowStyle.cpp \
                          ..\..\src\shadows\SoShadowCulling.cpp \
-                         ..\..\src\threads\barrier.c \
-                         ..\..\src\threads\condvar.c \
-                         ..\..\src\threads\fifo.c \
-                         ..\..\src\threads\mutex.c \
-                         ..\..\src\threads\rwmutex.c \
-                         ..\..\src\threads\storage.c \
-                         ..\..\src\threads\thread.c \
+                         ..\..\src\threads\barrier.cpp \
+                         ..\..\src\threads\condvar.cpp \
+                         ..\..\src\threads\fifo.cpp \
+                         ..\..\src\threads\mutex.cpp \
+                         ..\..\src\threads\rwmutex.cpp \
+                         ..\..\src\threads\storage.cpp \
+                         ..\..\src\threads\thread.cpp \
                          ..\..\src\vrml97\Anchor.cpp \
                          ..\..\src\vrml97\Appearance.cpp \
                          ..\..\src\vrml97\AudioClip.cpp \

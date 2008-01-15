@@ -148,6 +148,14 @@ del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h
 del %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h
 del %COINDIR%\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoNodeVisualize.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerOverlayKit.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerTopKit.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoScrollingGraphKit.h
+del %COINDIR%\include\Inventor\annex\Profiler\nodekits\SoProfilerVisualizeKit.h
+del %COINDIR%\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h
+del %COINDIR%\include\Inventor\annex\Profiler\SoProfiler.h
 del %COINDIR%\include\Inventor\bundles\SoBundle.h
 del %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h
 del %COINDIR%\include\Inventor\bundles\SoNormalBundle.h
