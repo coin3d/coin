@@ -16,6 +16,9 @@
 DISTCLEANFILES = \
 	ii_files/*.ii
 
+CLEANFILES = \
+	vc*.pdb
+
 if HACKING_COMPACT_BUILD
 BuildSources = $(LinkHackSources)
 ExtraSources = $(RegularSources)

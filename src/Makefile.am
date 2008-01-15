@@ -3,7 +3,9 @@
 CLEANFILES = \
 	coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb \
 	coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
-	coin@COIN_MAJOR_VERSION@@SUFFIX@.exp
+	coin@COIN_MAJOR_VERSION@@SUFFIX@.exp \
+	vc*.pdb
+
 
 # **************************************************************************
 # Extensions which might be present.

@@ -14,7 +14,7 @@ BUILT_SOURCES = \
 DISTCLEANFILES = \
 	gl-headers.h \
 	inttypes.h \
-	stamp-h3
+	stamp-h*
 
 gl-headers.h: $(srcdir)/gl-headers.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl-headers.h )

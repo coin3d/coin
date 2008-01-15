@@ -11,7 +11,8 @@ BUILT_SOURCES = \
 	basic.h
 
 DISTCLEANFILES = \
-	basic.h
+	basic.h \
+	stamp-h*
 
 basic.h: $(srcdir)/basic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
