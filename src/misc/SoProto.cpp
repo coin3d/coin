@@ -583,7 +583,7 @@ SbBool
 SoProto::writeURLs(SoOutput * out)
 {
   // We use this code to write the URLs to get nicer indentation. Just
-  // calling PRIVATE(this)->externurl->write(out, SbName("")) would also have
+  // calling PRIVATE(this)->externurl->write(out, SbName::empty()) would also have
   // produced a valid VRML file.
 
   const int n = PRIVATE(this)->externurl->getNum();
@@ -638,7 +638,7 @@ SoProto::findISReference(const SoFieldContainer * container,
     if (PRIVATE(this)->isnodelist[i] == container &&
         PRIVATE(this)->isfieldlist[i] == fieldname) return PRIVATE(this)->isnamelist[i];
   }
-  return SbName("");
+  return SbName::empty();
 }
 
 

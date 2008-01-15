@@ -112,7 +112,7 @@ SoGlobalField::~SoGlobalField()
 void *
 SoGlobalField::createInstance(void)
 {
-  return new SoGlobalField(SbName(""), NULL);
+  return new SoGlobalField(SbName::empty(), NULL);
 }
 
 // Do common initializations.

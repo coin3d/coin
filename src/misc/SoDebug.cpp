@@ -195,7 +195,7 @@ void
 SoDebug::printName(SoBase * base)
 {
   SbName name = base->getName();
-  if (name.getString() != NULL && name != SbName("")) {
+  if (name != SbName::empty()) {
     puts(name.getString());
   } else {
     puts(" not named ");

@@ -749,7 +749,7 @@ SbName
 SoNavigationSystem::getCurrentModeName(void) const
 {
   SoNavigationMode * mode = PRIVATE(this)->state->getMode();
-  if (!mode) return SbName("");
+  if (!mode) return SbName::empty();
   return mode->getModeName();
 }
 

@@ -164,7 +164,7 @@ SbName
 SoProtoInstance::getProtoName(void) const
 {
   if (THIS->protodef) return THIS->protodef->getProtoName();
-  return SbName("");
+  return SbName::empty();
 }
 
 // Doc in parent

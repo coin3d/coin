@@ -547,7 +547,7 @@ SoGlyph::getGlyph(SoState * state,
   SbName state_name = SoFontNameElement::get(state);
   float state_size = SoFontSizeElement::get(state);
   
-  if (state_name == SbName("")) {
+  if (state_name == SbName::empty()) {
     state_name = SbName("defaultFont");
     state_size = 10.0;
   } 

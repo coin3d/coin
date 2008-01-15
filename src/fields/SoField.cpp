@@ -783,8 +783,8 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
       // (a common bug in VRML files created by 3ds max).
 #if COIN_DEBUG
       SoFieldContainer * fc = master->getContainer();
-      SbName fcname = fc ? fc->getName() : SbName("");
-      if (fcname != SbName("")) {
+      SbName fcname = fc ? fc->getName() : SbName::empty();
+      if (fcname != SbName::empty()) {
         SbName fieldname;
         (void) fc->getFieldName(master, fieldname);
         SoDebugError::postWarning("SoField::connectFrom",

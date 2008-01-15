@@ -87,7 +87,7 @@
 static SoNode * tovrml_new_node(SoNode * newnode, const SoNode * oldnode)
 {
   const SbName name = oldnode->getName();
-  if (name != SbName("")) newnode->setName(name);
+  if (name != SbName::empty()) newnode->setName(name);
   return newnode;
 }
 
@@ -464,7 +464,7 @@ SoNode *
 SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoType & type)
 {
   SoNodeList mylist;
-  if (name == SbName("")) return NULL;
+  if (name == SbName::empty()) return NULL;
 
   mylist.truncate(0);
   int num = SoNode::getByName(name, mylist);

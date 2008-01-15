@@ -351,7 +351,7 @@ SoSearchAction::reset(void)
   this->chkderived = TRUE;
   this->node = NULL;
   this->type = SoType::badType();
-  this->name = SbName("");
+  this->name = SbName::empty();
   if (this->path) this->path->unref();
   this->path = NULL;
   this->paths.truncate(0);

@@ -161,7 +161,7 @@ SO_ACTION_SOURCE(SoToVRML2Action);
 static SoNode * tovrml2_new_node(SoNode * newnode, const SoNode * oldnode)
 {
   const SbName name = oldnode->getName();
-  if (name != SbName("")) newnode->setName(name);
+  if (name != SbName::empty()) newnode->setName(name);
   return newnode;
 }
 

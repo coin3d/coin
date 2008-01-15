@@ -677,7 +677,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     SoField * f = this->getField(object, i);
     // Test if field has a PROTO IS reference
     SbName pname = proto ? 
-      proto->findISReference(object, this->getFieldName(i)) : SbName("");
+      proto->findISReference(object, this->getFieldName(i)) : SbName::empty();
     if (pname.getLength()) {
       out->indent();
       out->write(this->getFieldName(i).getString());
