@@ -71,6 +71,7 @@ public:
     SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *) ptr;
     cc_memalloc_deallocate(entry->memhandler, ptr);
   }
+  SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
   
   Key key;
   Type obj;
@@ -142,9 +143,7 @@ public:
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
-    entry = new (this->memhandler) SbHashEntry<Type, Key>;
-    entry->key = key;
-    entry->obj = obj;
+    entry = new (this->memhandler) SbHashEntry<Type, Key>(key, obj);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
