@@ -115,8 +115,8 @@ public:
   void clear(void)
   {
     unsigned int i;
-    for ( i = 0; i < this->size; i++ ) {
-      while ( this->buckets[i] ) {
+    for (i = 0; i < this->size; i++) {
+      while (this->buckets[i]) {
         SbHashEntry<Type, Key> * entry = this->buckets[i];
         this->buckets[i] = entry->next;
         delete entry;
@@ -130,8 +130,8 @@ public:
   {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i];
-    while ( entry ) {
-      if ( entry->key == key ) {
+    while (entry) {
+      if (entry->key == key) {
         /* Replace the old value */
         entry->obj = obj;
         return FALSE;
@@ -148,7 +148,7 @@ public:
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if ( this->elements++ >= this->threshold ) { 
+    if (this->elements++ >= this->threshold) { 
       this->resize((unsigned int) coin_geq_prime_number(this->size + 1)); 
     }
     return TRUE;
@@ -159,8 +159,8 @@ public:
     SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
-    while ( entry ) {
-      if ( entry->key == key ) {
+    while (entry) {
+      if (entry->key == key) {
         obj = entry->obj;
         return TRUE;
       }
@@ -173,11 +173,11 @@ public:
   {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i], * next, * prev = NULL;
-    while ( entry ) {
+    while (entry) {
       next = entry->next;
-      if ( entry->key == key ) {
+      if (entry->key == key) {
         this->elements--;
-        if ( prev == NULL) {
+        if (prev == NULL) {
           this->buckets[i] = next;
         }
         else {
@@ -196,9 +196,9 @@ public:
   {
     unsigned int i;
     SbHashEntry<Type, Key> * elem;
-    for ( i = 0; i < this->size; i++ ) {
+    for (i = 0; i < this->size; i++) {
       elem = this->buckets[i];
-      while ( elem ) {
+      while (elem) {
         func(elem->key, elem->obj, closure);
         elem = elem->next;
       }
@@ -239,9 +239,9 @@ protected:
 
     /* Transfer all mappings */
     unsigned int i;
-    for ( i = 0; i < oldsize; i++ ) {
+    for (i = 0; i < oldsize; i++) {
       SbHashEntry<Type, Key> * entry = oldbuckets[i];
-      while ( entry ) {
+      while (entry) {
         this->put(entry->key, entry->obj);
         SbHashEntry<Type, Key> * preventry = entry;
         entry = entry->next;
@@ -254,7 +254,7 @@ protected:
 private:
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
-    if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
+    if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
     unsigned int s = coin_geq_prime_number(sizearg);
     this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Type, Key>));
     this->size = s;
@@ -270,16 +270,16 @@ private:
   {
     unsigned int i;
     buckets_used = 0, chain_length_max = 0;
-    for ( i = 0; i < this->size; i++ ) {
-      if ( this->buckets[i] ) {
+    for (i = 0; i < this->size; i++) {
+      if (this->buckets[i]) {
         unsigned int chain_l = 0;
         SbHashEntry<Type, Key> * entry = this->buckets[i];
         buckets_used++;
-        while ( entry ) {
+        while (entry) {
           chain_l++;
           entry = entry->next;
         }
-        if ( chain_l > chain_length_max ) { chain_length_max = chain_l; }
+        if (chain_l > chain_length_max) { chain_length_max = chain_l; }
       }
     }
     buckets = this->size;
