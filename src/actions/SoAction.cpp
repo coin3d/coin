@@ -932,10 +932,14 @@ SoAction::traverse(SoNode * const node)
     parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
   }
 
+#ifdef HAVE_SCENE_PROFILING
   SoNodeProfiling profiling;
   profiling.preTraversal(this, parent, node);
   func(this, node);
   profiling.postTraversal(this, parent, node);
+#else // !HAVE_SCENE_PROFILING
+  func(this, node);
+#endif // !HAVE_SCENE_PROFILING
 }
 
 /*!
