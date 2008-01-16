@@ -218,13 +218,12 @@
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 #include "misc/SoCompactPathList.h"
 
-#ifdef HAVE_SCENE_PROFILING
-#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
-#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
-#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
-#include <Inventor/annex/Profiler/SoProfiler.h>
-#include "profiler/SoProfilerElement.h"
 #include "profiler/SoNodeProfiling.h"
+#ifdef HAVE_SCENE_PROFILING
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#include "profiler/SoProfilerElement.h"
 #endif // HAVE_SCENE_PROFILING
 
 // define this to debug path traversal
@@ -932,14 +931,10 @@ SoAction::traverse(SoNode * const node)
     parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
   }
 
-#ifdef HAVE_SCENE_PROFILING
   SoNodeProfiling profiling;
   profiling.preTraversal(this, parent, node);
   func(this, node);
   profiling.postTraversal(this, parent, node);
-#else // !HAVE_SCENE_PROFILING
-  func(this, node);
-#endif // !HAVE_SCENE_PROFILING
 }
 
 /*!
