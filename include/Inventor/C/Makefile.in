@@ -272,7 +272,8 @@ BUILT_SOURCES = \
 
 
 DISTCLEANFILES = \
-	basic.h
+	basic.h \
+	stamp-h*
 
 
 PublicHeaders = \

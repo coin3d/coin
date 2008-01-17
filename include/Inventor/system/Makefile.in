@@ -281,7 +281,7 @@ BUILT_SOURCES = \
 DISTCLEANFILES = \
 	gl-headers.h \
 	inttypes.h \
-	stamp-h3
+	stamp-h*
 
 
 

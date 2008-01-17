@@ -9113,8 +9113,12 @@ if test x"$enable_exceptions" = x"no"; then
     fi
   fi
 else
-  if test x"$GXX" != x"yes"; then
-    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+  if $BUILD_WITH_MSVC; then
+    SIM_AC_CXX_COMPILER_OPTION([/EHsc], [CXXFLAGS="$CXXFLAGS /EHsc"])
+  else
+    if test x"$GXX" != x"yes"; then
+      AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+    fi
   fi
 fi
 ])
