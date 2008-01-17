@@ -165,8 +165,12 @@ SoScrollingGraphKit::SoScrollingGraphKit(void)
   SO_KIT_ADD_FIELD(position, (SbVec3f(4.0f, 4.0f, 0.0f)));
   SO_KIT_ADD_FIELD(size, (SbVec3f(256.0f, 100.0f, 0.0f)));
 
-  SO_KIT_ADD_FIELD(addKeys, (SbName("")));
+  SO_KIT_ADD_FIELD(addKeys, (SbName::empty()));
+  this->addKeys.setNum(0);
+  this->addKeys.setDefault(TRUE);
   SO_KIT_ADD_FIELD(addValues, (0.0f));
+  this->addValues.setNum(0);
+  this->addValues.setDefault(TRUE);
 
   PRIVATE(this)->addValuesSensor.reset(new SoFieldSensor);
   PRIVATE(this)->addValuesSensor->setFunction(SoScrollingGraphKit::addValuesCB);
@@ -252,6 +256,7 @@ SoScrollingGraphKitP::addDatum(Datum * newDatum)
 Graph *
 SoScrollingGraphKitP::getGraph(const SbName & key)
 {
+  assert(key != SbName::empty());
   Graph * graph = NULL;
   if (!this->graphs.get(key.getString(), graph)) {
     graph = new Graph;
