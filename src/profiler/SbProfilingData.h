@@ -37,38 +37,89 @@
 #include <map>
 
 #include <Inventor/SbTime.h>
+#include <Inventor/SoType.h>
+#include <Inventor/lists/SbList.h>
 
 class SoNode;
 
 class SbProfilingData {
 public:
+  typedef void * NodeKey; // void * because it's not to be dereferenced
+  typedef int16_t NodeTypeKey;
+  typedef const char * NodeNameKey;
+
   SbProfilingData();
+  ~SbProfilingData();
 
   SbProfilingData & operator+=(const SbProfilingData &);
 
-  ~SbProfilingData();
-  void clear();
+  void clear(void);
 
-  SbTime getChildTiming(SoNode *, SoNode *) const;
-  void setChildTiming(SoNode *, SoNode *, const SbTime &);
-  SbBool hasGLCache(SoNode *) const;
-  void setHasGLCache(SoNode *, SbBool);
+  SbTime getChildTiming(SoNode * parent, SoNode * child) const;
+  void setChildTiming(SoNode * parent, SoNode * child, const SbTime & time);
+
+  SbBool hasGLCache(SoNode * nodeptr) const;
+  void setHasGLCache(SoNode * nodeptr, SbBool cached);
+
+  void accumulateTraversalTime(SoType parenttype, SoType childtype, SbTime t);
+
+  void getTraversalStatsForTypesKeyList(SbList<NodeTypeKey> & keys_out) const;
+  void getTraversalStatsForType(NodeTypeKey type,
+                                SbTime & total, SbTime & max, uint32_t & count) const;
+
+  void getTraversalStatsForNamesKeyList(SbList<NodeNameKey> & keys_out) const;
+  void getTraversalStatsForName(NodeNameKey name,
+                                SbTime & total, SbTime & max, uint32_t & count) const;
 
 private:
-  SbProfilingData(const SbProfilingData &) {}; // disabled
-  SbProfilingData & operator=(const SbProfilingData &) {}; // disabled
+  SbProfilingData(const SbProfilingData & rhs) {}; // disabled
+  SbProfilingData & operator = (const SbProfilingData &rhs) {}; // disabled
 
-  typedef std::map<SoNode *, SbTime> ChildTimingMap;
-  
+  // ***********************************************************************
+  // semi-hierarchical map on node instances
+
+  struct ChildProfile {
+    SbTime traversaltime;
+  };
+
+  typedef std::map<NodeKey, ChildProfile> ChildTimingMap;
+
   struct NodeProfile {
     ChildTimingMap child_map;
     SbBool has_glcache;
   };
-  
-  typedef std::map<SoNode *, NodeProfile *> NodeProfileMap;
-   
+
+  typedef std::map<NodeKey, NodeProfile *> NodeProfileMap;
+
   NodeProfileMap profile_map;
-};
+
+  // ***********************************************************************
+  // map by type
+
+  struct NodeTypeProfile {
+    SbTime traversaltimetotal;
+    SbTime traversaltimemax; // largest in accumulation
+    uint32_t count;
+  };
+
+  typedef std::map<NodeTypeKey, NodeTypeProfile *> TypeProfileMap;
+
+  TypeProfileMap typeaccum_map;
+
+  // ***********************************************************************
+  // map by name
+
+  struct NodeNameProfile {
+    SbTime traversaltimetotal;
+    SbTime traversaltimemax; // largest in accumulation
+    uint32_t count;
+  };
+
+  typedef std::map<NodeNameKey, NodeNameProfile *> NameProfileMap;
+
+  NameProfileMap nameaccum_map;
+
+}; // SbProfilingData
 
 #endif // HAVE_SCENE_PROFILING
 

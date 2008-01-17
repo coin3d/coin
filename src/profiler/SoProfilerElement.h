@@ -64,62 +64,23 @@ public:
    
   void setTimingProfile(SoNode * node, SbTime t, SoNode * parent = NULL);
 
-  // for categorizing by user-specified names
-  void pushProfilingName(const SbName & name);
-  void popProfilingName(const SbName & name);
-
   void setHasGLCache(SoNode * node, SbBool hascache = TRUE);
 
-  // FIXME: returning an SbList may be bad, ask around.  -mortene.
-  const SbList<int16_t> & accumulatedRenderTimeForTypeKeys(void) const;
-  SbTime getAccumulatedRenderTimeForType(uint16_t nodetypekey) const;
-  SbTime getMaxRenderTimeForType(uint16_t nodetypekey) const;
-  uint32_t getAccumulatedRenderCountForType(uint16_t nodetypekey) const;
+  SbTime timeSinceTraversalStart(void);
+  void startTraversalClock(void);
 
-  const SbList<const char *> & accumulatedRenderTimeForNameKeys(void) const;
-  SbTime getAccumulatedRenderTimeForName(const char * nodename) const;
-  SbTime getMaxRenderTimeForName(const char * nodename) const;
-  uint32_t getAccumulatedRenderCountForName(const char * nodename) const;
-
-  SbTime timeSinceTraversalStart();
-  void startTraversalClock();
-
-  const SbProfilingData & getProfilingData() const;
+  const SbProfilingData & getProfilingData(void) const;
 
 protected:
   virtual ~SoProfilerElement(void);
 
-  virtual void push(SoState *);
-  virtual void pop(SoState *, const SoElement *);
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * elt);
 
 private:
   SbProfilingData data;
 
-  SbTime start_time;
-
-  void accumulateRenderTime(SoType parenttype, SoType childtype, SbTime t);
-  void accumulateRenderTime(const char * name, SbTime t);
-
-  struct NodetypeAccumulations {
-    SbTime rendertime;
-    SbTime rendertimemax; // largest in accumulation
-    uint32_t count;
-  };
-
-  struct NodenameAccumulations {
-    const char * name;
-    SbTime rendertime;
-    SbTime rendertimemax; // largest in accumulation set
-    uint32_t count;
-
-  };
-
-  SbTime grandtotal;
-
-  SbHash<struct NodetypeAccumulations, int16_t> typeaccum_map;
-
-  SbHash<struct NodenameAccumulations, const char *> nameaccum_map;
-  SbList<const char *> namestack;
+  SbTime traversal_start_time;
 
 }; // SoProfilerElement
 

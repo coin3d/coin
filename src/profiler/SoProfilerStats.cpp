@@ -206,44 +206,59 @@ SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e,
 void
 SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
 {
+  const SbProfilingData & data = e->getProfilingData();
 #if BY_TYPE
-  SbList<int16_t> keys = e->accumulatedRenderTimeForTypeKeys();
+  SbList<SbProfilingData::NodeTypeKey> keys;
+  data.getTraversalStatsForTypesKeyList(keys);
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
-    int16_t k = keys[i];
+    SbProfilingData::NodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
       TypeTimings & timings = it->second;
-      it->second.total += e->getAccumulatedRenderTimeForType(k);
-      it->second.max += e->getMaxRenderTimeForType(k);
-      it->second.count += e->getAccumulatedRenderCountForType(k);
+      SbTime totaltime, maxtime;
+      uint32_t count;
+      data.getTraversalStatsForType(k, totaltime, maxtime, count);
+      it->second.total += totaltime;
+      it->second.max += maxtime;
+      it->second.count += count;
 
     } else {
       TypeTimings timings;
-      timings.total = e->getAccumulatedRenderTimeForType(k);
-      timings.max = e->getMaxRenderTimeForType(k);
-      timings.count = e->getAccumulatedRenderCountForType(k);
+      SbTime totaltime, maxtime;
+      uint32_t count;
+      data.getTraversalStatsForType(k, totaltime, maxtime, count);
+      timings.total = totaltime;
+      timings.max = maxtime;
+      timings.count = count;
       std::pair<int16_t, TypeTimings> entry(k, timings);
       this->type_timings.insert(entry);
     }
   }
 #else
-  SbList<const char *> keys = e->accumulatedRenderTimeForNameKeys();
+  SbList<SbProfilingData::NodeNameKey> keys;
+  data.getTraversalStatsForNamesKeyList(keys);
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
-    const char * k = keys[i];
+    SbProfilingData::NodeNameKey k = keys[i];
     std::map<const char *, TypeTimings>::iterator it = this->name_timings.find(k);
     if (it != this->name_timings.end()) {
       TypeTimings & timings = it->second;
-      it->second.total += e->getAccumulatedRenderTimeForName(k);
-      it->second.max += e->getMaxRenderTimeForName(k);
-      it->second.count += e->getAccumulatedRenderCountForName(k);
+      SbTime totaltime, maxtime;
+      uint32_t count;
+      data.getTraversalStatsForName(k, totaltime, maxtime, count);
+      it->second.total += totaltime;
+      it->second.max += maxtime;
+      it->second.count += count;
     } else {
       TypeTimings timings;
-      timings.total = e->getAccumulatedRenderTimeForName(k);
-      timings.max = e->getMaxRenderTimeForName(k);
-      timings.count = e->getAccumulatedRenderCountForName(k);
-      std::pair<const char *, TypeTimings> entry(k, timings);
+      SbTime totaltime, maxtime;
+      uint32_t count;
+      data.getTraversalStatsForName(k, totaltime, maxtime, count);
+      timings.total = totaltime;
+      timings.max = maxtime;
+      timings.count = count;
+      std::pair<SbProfilingData::NodeNameKey, TypeTimings> entry(k, timings);
       this->name_timings.insert(entry);
     }
   }
