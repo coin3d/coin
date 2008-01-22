@@ -194,7 +194,7 @@ echo mkdir %COINDIR%\include\Inventor\threads
 mkdir threads
 :threadsexists
 
-if exist tools\*.* goto toolssexists
+if exist tools\*.* goto toolsexists
 echo mkdir %COINDIR%\include\Inventor\tools
 mkdir tools
 :toolsexists
