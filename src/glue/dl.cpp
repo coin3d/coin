@@ -182,7 +182,7 @@ cc_dirname(const char *path) {
 #ifdef HAVE_LIBGEN_H
 
   /* Mac OS 10.2 and later have dirname() */
-  // Must copy the string since dirname takes a const parameter
+  // Must copy the string since dirname takes a non-const parameter
   // since Mac OS X 10.5.
   static char pathcopy[MAXPATHLEN];
   strcpy(pathcopy, path);
