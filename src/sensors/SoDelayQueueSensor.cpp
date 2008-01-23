@@ -102,6 +102,9 @@ SoDelayQueueSensor::~SoDelayQueueSensor(void)
   sensors should be used with care, since they might lead to bad
   performance if you do some processing in the sensor callback.
 
+  This setting does not affect SoDataSensor delete-callback
+  invocations, which always are immediate.
+
   \sa getPriority(), getDefaultPriority()
 */
 void
