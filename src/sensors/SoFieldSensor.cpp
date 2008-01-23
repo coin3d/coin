@@ -28,6 +28,9 @@
 
   Attach a field to a sensor of this type to put it under
   surveillance, so you can act upon changes to the field.
+
+  An SoFieldSensor can also act for delete-callback purposes alone and
+  does not need a regular notification-based callback.
 */
 
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -70,6 +73,9 @@ SoFieldSensor::~SoFieldSensor(void)
   time. When this method is invoked multiple times, each subsequent
   call will replace the field the sensor is monitoring with the new \a
   field.
+
+  When the given field is deleted, the sensor will automatically be
+  detached.
 
   \sa detach()
  */

@@ -32,6 +32,9 @@
   Any modification to the node's fields will trigger the sensor, as
   will changes to node's children (if any), including if nodes are
   added or removed as children below the node in the subgraph.
+
+  An SoNodeSensor can also act for delete-callback purposes alone and
+  does not need a regular notification-based callback.
 */
 
 #include <Inventor/sensors/SoNodeSensor.h>
@@ -74,6 +77,9 @@ SoNodeSensor::~SoNodeSensor(void)
   Attaching a node sensor to a node will \e not increase the node's
   reference count (and conversely, detach()'ing the node sensor will
   not decrease the reference count, either).
+
+  When the attached node is deleted, the sensor will be automatically
+  detached().
 
   \sa detach()
 */

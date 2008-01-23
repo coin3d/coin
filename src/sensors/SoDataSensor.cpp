@@ -90,7 +90,10 @@ SoDataSensor::~SoDataSensor(void)
 /*!
   If an object monitored by a data sensor is deleted, the given
   callback function will be called with the given userdata.
- */
+
+  The sensor priority setting does not affect the delete callback.
+  It will be called immediately, before the object is deleted.
+*/
 void
 SoDataSensor::setDeleteCallback(SoSensorCB * function, void * data)
 {

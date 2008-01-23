@@ -32,6 +32,11 @@
 
   You can also use this sensor to detect when some node in the path
   is changed.
+
+  An SoPathSensor can also act for delete-callback purposes alone and
+  does not need a regular notification-based callback.  The delete
+  callback will be invoked for when the SoPath instance is deleted,
+  not for anything you would be monitoring in a path.
 */
 
 /*!
@@ -118,6 +123,9 @@ SoPathSensor::~SoPathSensor(void)
 /*!
   Attach sensor to a path. Whenever the path changes, the sensor will
   be triggered and call the callback function.
+
+  When the SoPath instance is deleted, the sensor will automatically
+  be detached.
 
   \sa detach()
  */
