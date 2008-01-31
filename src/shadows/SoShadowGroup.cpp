@@ -767,6 +767,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       this->searchaction.reset();
     }
     int maxunits = cc_glglue_max_texture_units(glue);
+
     int maxlights = maxunits - this->numtexunitsinscene;
     SbList <SoTempPath*> & pl = this->spotlightpaths;
     
@@ -1347,7 +1348,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     gen.setVersion("#version 110");
     break;
   case SoEnvironmentElement::SMOKE:
-    gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n");
+    gen.addMainStatement("float fogfrag =  gl_FogFragCoord;");
+    gen.addMainStatement("float fogdens =  gl_Fog.density;");
+    gen.addMainStatement("float fog = exp(-fogdens * fogdens * fogfrag * fogfrag);\n");
     gen.setVersion("#version 110");
     break;
   }
@@ -1567,7 +1570,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 
   SbBool supported =
     cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
-    SoGLDriverDatabase::isSupported(glue, "COIN_framebuffer_object") &&
+    SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&
     SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float");
 
   if (!supported || !PUBLIC(this)->isActive.getValue()) {
@@ -1576,7 +1579,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
       if (first) {
         first = 0;
         SbString msg("Unable to render shadows.");
-        if (!SoGLDriverDatabase::isSupported(glue, "COIN_framebuffer_object")) msg += " Frame buffer objects not supported.";
+        if (!SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT)) msg += " Frame buffer objects not supported.";
         if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) " OpenGL version < 2.0.";
         if (!SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
         SoDebugError::postWarning("SoShadowGroupP::GLRender",
