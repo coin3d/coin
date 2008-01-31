@@ -154,7 +154,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 # **************************************************************************
 
 if MAC_FRAMEWORK
-install-data-local:
+install-data-local: install-exec-am
 	cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current && ln -sf Libraries/libCoin.dylib $(MAC_FRAMEWORK_NAME) && cd -; \
 	cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework && ln -sf Versions/Current/$(MAC_FRAMEWORK_NAME) $(MAC_FRAMEWORK_NAME) && install_name_tool -id $(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/$(MAC_FRAMEWORK_NAME) $(MAC_FRAMEWORK_NAME) && cd -;
 else
