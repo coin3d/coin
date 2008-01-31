@@ -151,11 +151,11 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   SbString str;
   
-  for (int i = 0; i < MAX_UNITS; i++) {
+  for (int i = 1; i < MAX_UNITS; i++) {
     const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
     // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
     // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
-    const GLUnitData & thisud = PRIVATE(prev)->unitdata[i];
+    const GLUnitData & thisud = PRIVATE(this)->unitdata[i];
     
     if (thisud.glimage != prevud.glimage) this->updateGL(i);
 
