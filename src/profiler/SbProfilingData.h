@@ -73,7 +73,7 @@ public:
 
 private:
   SbProfilingData(const SbProfilingData & rhs) {}; // disabled
-  SbProfilingData & operator = (const SbProfilingData &rhs) {}; // disabled
+  SbProfilingData & operator = (const SbProfilingData &rhs) { return *this; }; // disabled
 
   // ***********************************************************************
   // semi-hierarchical map on node instances
