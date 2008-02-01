@@ -805,6 +805,16 @@ SbViewVolume::intersect(const SbBox3f & box) const
 }
 
 /*!
+  Returns the double precision version of this view volume.
+*/
+const SbDPViewVolume & 
+SbViewVolume::getDPViewVolume(void) const
+{
+  return this->dpvv;
+}
+
+
+/*!
   Returns TRUE if all eight corner points in \a bmin, \a bmax is
   outside \a p.
 */
