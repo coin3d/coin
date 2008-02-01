@@ -90,14 +90,15 @@ public:
   void getViewVolumePlanes(SbPlane planes[6]) const;
   void transform(const SbMatrix &matrix);
   SbVec3f getViewUp(void) const;
-  
+
   SbBool intersect(const SbVec3f & p) const;
   SbBool intersect(const SbVec3f & p0, const SbVec3f & p1,
                    SbVec3f & closestpoint) const;
   SbBool intersect(const SbBox3f & box) const;
-  
+
   SbBool outsideTest(const SbPlane & p,
                      const SbVec3f & bmin, const SbVec3f & bmax) const;
+  const SbDPViewVolume & getDPViewVolume(void) const;
 
 public:
   // Warning! It's extremely bad design to keep these data members
@@ -116,7 +117,7 @@ public:
   SbVec3f ulf;
 
 private:
-  
+
   SbDPViewVolume dpvv;
 };
 

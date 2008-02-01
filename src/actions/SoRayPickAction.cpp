@@ -140,6 +140,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec2d.h>
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbDPPlane.h>
 #include <Inventor/SbDPMatrix.h>
@@ -491,13 +492,15 @@ SoRayPickAction::computeWorldSpaceRay(void)
     }
 #endif // COIN_DEBUG
 
-    SbLine templine;
-    vv.projectPointToLine(PRIVATE(this)->normvppoint, templine);
-    PRIVATE(this)->raystart.setValue(templine.getPosition());
-    PRIVATE(this)->raydirection.setValue(templine.getDirection());
+    SbDPLine templine;
+    SbVec2d tmppt;
+    tmppt.setValue(PRIVATE(this)->normvppoint);
+    vv.getDPViewVolume().projectPointToLine(tmppt, templine);
+    PRIVATE(this)->raystart = templine.getPosition();
+    PRIVATE(this)->raydirection = templine.getDirection();
     
     PRIVATE(this)->raynear = 0.0;
-    PRIVATE(this)->rayfar = vv.getDepth();
+    PRIVATE(this)->rayfar = vv.getDPViewVolume().getDepth();
 
     SbVec2s vpsize = vp.getViewportSizePixels();
     PRIVATE(this)->rayradiusstart = (double(vv.getHeight()) / double(vpsize[1]))*
