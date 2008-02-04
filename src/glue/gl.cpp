@@ -1786,8 +1786,11 @@ glglue_resolve_symbols(cc_glglue * w)
      Disable features based on known driver bugs  here.
      FIXME: move the driver workarounds to some other module. pederb, 2007-07-04
   */
-  if (w->vendor_is_nvidia && w->has_fbo) {
-    w->has_fbo = !glglue_has_nvidia_framebuffer_object_bug(w->version.major, w->version.minor, w->version.release);
+
+  if (coin_runtime_os() == COIN_MSWINDOWS) {
+    if (w->vendor_is_nvidia && w->has_fbo) {
+      w->has_fbo = !glglue_has_nvidia_framebuffer_object_bug(w->version.major, w->version.minor, w->version.release);
+    }
   }
 
   /*
