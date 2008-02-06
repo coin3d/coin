@@ -1210,10 +1210,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   gen.addDeclaration("varying vec3 fragmentNormal;", FALSE);
   gen.addDeclaration("varying vec3 perVertexColor;", FALSE);
 
-  if (perpixelspot && numspots) {
-    gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
-  }
-
   const SoNodeList & lights = SoLightElement::getLights(state);
 
   if (numspots) {
@@ -1238,6 +1234,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                        "mydiffuse.a *= texcolor.a;\n");
   
   if (perpixelspot) {
+    SbBool spotlight = FALSE;
     for (i = 0; i < numspots; i++) {
       SbString str;
       SbString spotname("SpotLight");
@@ -1247,7 +1244,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         dirspot = TRUE;
         spotname = "DirSpotLight";
         insidetest = "&& coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0)";
-    }
+      }
+      else {
+        spotlight = TRUE;
+      }
       str.sprintf("diffuse = vec4(0.0); specular = vec4(0);"
                   "dist = %s(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
                   "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
@@ -1283,6 +1283,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         else if (l->isOfType(SoSpotLight::getClassTypeId())) {
           str.sprintf("SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
           gen.addMainStatement(str);
+          spotlight = TRUE;
         }
         else if (l->isOfType(SoPointLight::getClassTypeId())) {
           str.sprintf("PointLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
@@ -1303,6 +1304,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                            "diffuse.rgb * mydiffuse.rgb;\n");
       gen.addMainStatement("scolor += specular.rgb * gl_FrontMaterial.specular.rgb;\n");
     }
+    if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
 
   else {
