@@ -131,16 +131,14 @@ SoShadowStyle::GLRender(SoGLRenderAction * action)
                             (int) this->style.getValue());
 
   if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWS) {
-    SoGLShaderProgram * program = SoGLShaderProgramElement::get(state);
-
+    
     if (this->style.getValue() & SHADOWED) {
-      program->enable(state);
+      SoGLShaderProgramElement::enable(state, this, TRUE);
     }
     else {
-      program->disable(state);
+      SoGLShaderProgramElement::enable(state, this, FALSE);
     }
   }
-
 }
 
 

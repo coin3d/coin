@@ -50,6 +50,25 @@ SoGLShaderProgramElement::init(SoState *state)
 {
   inherited::init(state);
   this->shaderProgram = NULL;
+  this->enabled = FALSE;
+}
+
+void 
+SoGLShaderProgramElement::enable(SoState * const state, SoNode * const node, 
+                                 const SbBool onoff)
+{
+  SoGLShaderProgramElement* element =
+    (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, node);
+  element->enabled = onoff;
+
+  if (element->shaderProgram) {
+    if (onoff) {
+      if (!element->shaderProgram->isEnabled()) element->shaderProgram->enable(state);
+    }
+    else {
+      if (element->shaderProgram->isEnabled()) element->shaderProgram->disable(state);
+    }
+  }
 }
 
 void
@@ -58,9 +77,11 @@ SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
 {
   SoGLShaderProgramElement* element =
     (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, node);
+
   if (program != element->shaderProgram) {
     if (element->shaderProgram) element->shaderProgram->disable(state);
     element->shaderProgram = program;
+    element->enabled = FALSE;
     // don't enable new program here. The node will call enable()
     // after setting up all the objects
   }
@@ -80,6 +101,7 @@ SoGLShaderProgramElement::push(SoState * state)
   SoGLShaderProgramElement * prev = (SoGLShaderProgramElement *) getNextInStack();
   assert(prev);
   this->shaderProgram = prev->shaderProgram;
+  this->enabled = prev->enabled;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -90,12 +112,23 @@ SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
 {
   SoGLShaderProgramElement * elem = (SoGLShaderProgramElement *)prevTopElement;
   if (this->shaderProgram != elem->shaderProgram) {
-    if (elem->shaderProgram) elem->shaderProgram->disable(state);
-    if (this->shaderProgram) this->shaderProgram->enable(state);
+    if (elem->shaderProgram) {
+      elem->shaderProgram->disable(state);
+      elem->enabled = FALSE;
+    }
+    if (this->shaderProgram) {
+      if (this->enabled) this->shaderProgram->enable(state);
+    }
+  }
+  else if (this->shaderProgram) {
+    if (this->enabled != elem->enabled) {
+      if (this->enabled) this->shaderProgram->enable(state);
+      else this->shaderProgram->disable(state);
+    }
   }
 }
 
-SbBool 
+SbBool
 SoGLShaderProgramElement::matches(const SoElement * element) const
 {
   SoGLShaderProgramElement * elem = (SoGLShaderProgramElement*) element;
@@ -104,19 +137,20 @@ SoGLShaderProgramElement::matches(const SoElement * element) const
     // just use elem->objectid to avoid allocating a new SbList
     elem->objectids.truncate(0);
     elem->shaderProgram->getShaderObjectIds(elem->objectids);
-    return this->objectids == elem->objectids;    
-  } 
+    return (this->enabled == elem->enabled) && (this->objectids == elem->objectids);
+  }
   // no shader program, return TRUE if cache had no shader objects
-  return this->objectids.getLength() == 0;
+  return (this->enabled == elem->enabled) && (this->objectids.getLength() == 0);
 }
 
-SoElement * 
+SoElement *
 SoGLShaderProgramElement::copyMatchInfo(void) const
 {
   assert(getTypeId().canCreateInstance());
   SoGLShaderProgramElement * element =
     (SoGLShaderProgramElement *)(getTypeId().createInstance());
-  
+  element->enabled = this->enabled;
+
   if (this->shaderProgram) this->shaderProgram->getShaderObjectIds(element->objectids);
   return element;
 }

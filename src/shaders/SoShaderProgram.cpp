@@ -219,8 +219,11 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
       ((SoShaderObject *)node)->GLRender(action);
     }
   }
+
+  // enable shader after all shader objects have been loaded
+  SoGLShaderProgramElement::enable(state, PUBLIC(this), TRUE);
+
   // update parameters after all shader objects have been added and enabled
-  this->glShaderProgram.enable(state);
 
   for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
