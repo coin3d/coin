@@ -2144,6 +2144,7 @@ INCLUDE_FILE_PATTERNS  = *.h \
 
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \
                          HAVE_CONFIG_H= \
+                         HAVE_VRML97= \
                          COIN_DLL_API=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
