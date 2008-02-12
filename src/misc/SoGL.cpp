@@ -2476,13 +2476,13 @@ namespace { namespace SoGL { namespace FaceSet {
     PER_VERTEX_INDEXED = 4
   };
 
-  template < enum AttributeBinding MaterialBindingVal,
-	     enum AttributeBinding NormalBindingVal,
+  template < enum AttributeBinding NormalBindingVal,
+             enum AttributeBinding MaterialBindingVal,
 	     bool TexturingEnabledVal >
   struct TypeTraits {
     enum {
-      MaterialBinding = MaterialBindingVal,
       NormalBinding = NormalBindingVal,
+      MaterialBinding = MaterialBindingVal,
       TexturingEnabled = TexturingEnabledVal
     };
   };
