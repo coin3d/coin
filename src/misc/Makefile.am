@@ -62,7 +62,6 @@ PrivateHeaders = \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \
-	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
 	SoGLTristripTemplate.icc \
 	SoGLindexedLineSetTemplate.icc \
