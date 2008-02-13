@@ -1077,7 +1077,12 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
 
     SbVec3f tmp1, tmp2;
     tmp1.setValue(start);
+
+    // scale direction with depth to avoid that line gets no direction
+    // when we convert it to single precision below.
+    dir *= this->rayfar;
     tmp2.setValue(dir);
+
     this->osline_sp = SbLine(tmp1, tmp1 + tmp2);
   }
 }
