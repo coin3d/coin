@@ -2476,30 +2476,18 @@ namespace { namespace SoGL { namespace FaceSet {
     PER_VERTEX_INDEXED = 4
   };
 
-  template < enum AttributeBinding NormalBindingVal,
-             enum AttributeBinding MaterialBindingVal,
-	     bool TexturingEnabledVal >
-  struct TypeTraits {
-    enum {
-      NormalBinding = NormalBindingVal,
-      MaterialBinding = MaterialBindingVal,
-      TexturingEnabled = TexturingEnabledVal
-    };
-  };
-
-  template <class TypeTraits>
-  struct GLRender {
-    typedef TypeTraits Traits;
-
-    static void Func(const SoGLCoordinateElement * const vertexlist,
-		     const int32_t *vertexindices,
-		     int numindices,
-		     const SbVec3f *normals,
-		     const int32_t *normalindices,
-		     SoMaterialBundle *materials,
-		     const int32_t *matindices,
-		     const SoTextureCoordinateBundle * const texcoords,
-		     const int32_t *texindices)
+  template < int NormalBinding,
+             int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * const vertexlist,
+		       const int32_t *vertexindices,
+		       int numindices,
+		       const SbVec3f *normals,
+		       const int32_t *normalindices,
+		       SoMaterialBundle *materials,
+		       const int32_t *matindices,
+		       const SoTextureCoordinateBundle * const texcoords,
+		       const int32_t *texindices)
     {
       int texidx = 0;
     
@@ -2529,11 +2517,11 @@ namespace { namespace SoGL { namespace FaceSet {
 
       SbVec3f dummynormal(0,0,1);
       const SbVec3f * currnormal = &dummynormal;
-      if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)Traits::NormalBinding == PER_FACE ||
-	  (AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED ||
-	  (AttributeBinding)Traits::NormalBinding == PER_FACE_INDEXED ||
-	  Traits::TexturingEnabled == true) {
+      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	  (AttributeBinding)NormalBinding == PER_FACE ||
+	  (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	  (AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
+	  TexturingEnabled == TRUE) {
 	if (normals) currnormal = normals;
       }
 
@@ -2603,25 +2591,25 @@ namespace { namespace SoGL { namespace FaceSet {
 	else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
 
 	/* vertex 1 *********************************************************/
-	if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX ||
-	    (AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+	    (AttributeBinding)MaterialBinding == PER_FACE) {
 	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+		   (AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	  materials->send(*matindices++, TRUE);
 	}
 
-	if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX ||
-	    (AttributeBinding)Traits::NormalBinding == PER_FACE) {
+	if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	    (AttributeBinding)NormalBinding == PER_FACE) {
 	  currnormal = normals++;
 	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)Traits::NormalBinding == PER_FACE_INDEXED) {
+	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+		   (AttributeBinding)NormalBinding == PER_FACE_INDEXED) {
 	  currnormal = &normals[*normalindices++];
 	  glNormal3fv((const GLfloat*)currnormal);
 	}
 
-	if (Traits::TexturingEnabled == true) {
+	if (TexturingEnabled == TRUE) {
 	  texcoords->send(texindices ? *texindices++ : texidx++,
 			  vertexlist->get3(v1),
 			  *currnormal);
@@ -2630,28 +2618,28 @@ namespace { namespace SoGL { namespace FaceSet {
 	SEND_VERTEX(v1);
 
 	/* vertex 2 *********************************************************/
-	if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX) {
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	  materials->send(*matindices++, TRUE);
 	}
 
 	// nvidia color-per-face-bug workaround
-	if ((AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	  materials->send(matnr-1, TRUE);
-	} else if ((AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	} else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	  materials->send(matindices[-1], TRUE);
 	}
 
-	if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX) {
+	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	  currnormal = normals++;
 	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 	  currnormal = &normals[*normalindices++];
 	  glNormal3fv((const GLfloat*)currnormal);
 	}
 
-	if (Traits::TexturingEnabled == true) {
+	if (TexturingEnabled == TRUE) {
 	  texcoords->send(texindices ? *texindices++ : texidx++,
 			  vertexlist->get3(v2),
 			  *currnormal);
@@ -2660,28 +2648,28 @@ namespace { namespace SoGL { namespace FaceSet {
 	SEND_VERTEX(v2);
 
 	/* vertex 3 *********************************************************/
-	if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX) {
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	  materials->send(*matindices++, TRUE);
 	}
 
 	// nvidia color-per-face-bug workaround
-	if ((AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	  materials->send(matnr-1, TRUE);
-	} else if ((AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	} else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	  materials->send(matindices[-1], TRUE);
 	}
 
-	if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX) {
+	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	  currnormal = normals++;
 	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 	  currnormal = &normals[*normalindices++];
 	  glNormal3fv((const GLfloat*)currnormal);
 	}
 
-	if (Traits::TexturingEnabled == true) {
+	if (TexturingEnabled == TRUE) {
 	  texcoords->send(texindices ? *texindices++ : texidx++,
 			  vertexlist->get3(v3),
 			  *currnormal);
@@ -2691,28 +2679,28 @@ namespace { namespace SoGL { namespace FaceSet {
 
 	if (mode != GL_TRIANGLES) {
 	  /* vertex 4 (quad or polygon)**************************************/
-	  if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX) {
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	    materials->send(matnr++, TRUE);
-	  } else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	    materials->send(*matindices++, TRUE);
 	  }
 
 	  // nvidia color-per-face-bug workaround
-	  if ((AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	    materials->send(matnr-1, TRUE);
-	  } else if ((AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	  } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	    materials->send(matindices[-1], TRUE);
 	  }
 
-	  if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX) {
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	    currnormal = normals++;
 	    glNormal3fv((const GLfloat*)currnormal);
-	  } else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 	    currnormal = &normals[*normalindices++];
 	    glNormal3fv((const GLfloat*)currnormal);
 	  }
 
-	  if (Traits::TexturingEnabled == true) {
+	  if (TexturingEnabled == TRUE) {
 	    texcoords->send(texindices ? *texindices++ : texidx++,
 			    vertexlist->get3(v4),
 			    *currnormal);
@@ -2722,28 +2710,28 @@ namespace { namespace SoGL { namespace FaceSet {
 
 	  if (mode == GL_POLYGON) {
 	    /* vertex 5 (polygon) ********************************************/
-	    if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX) {
+	    if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	      materials->send(matnr++, TRUE);
-	    } else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	    } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	      materials->send(*matindices++, TRUE);
 	    }
 
 	    // nvidia color-per-face-bug workaround
-	    if ((AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	    if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	      materials->send(matnr-1, TRUE);
-	    } else if ((AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	    } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	      materials->send(matindices[-1], TRUE);
 	    }
 
-	    if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX) {
+	    if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	      currnormal = normals++;
 	      glNormal3fv((const GLfloat*)currnormal);
-	    } else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	    } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 	      currnormal = &normals[*normalindices++];
 	      glNormal3fv((const GLfloat*)currnormal);
 	    }
 
-	    if (Traits::TexturingEnabled == true) {
+	    if (TexturingEnabled == TRUE) {
 	      texcoords->send(texindices ? *texindices++ : texidx++,
 			      vertexlist->get3(v5),
 			      *currnormal);
@@ -2767,28 +2755,28 @@ namespace { namespace SoGL { namespace FaceSet {
 	      }
 
 	      /* vertex 6-n (polygon) *****************************************/
-	      if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX) {
+	      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 		materials->send(matnr++, TRUE);
-	      } else if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 		materials->send(*matindices++, TRUE);
 	      }
 
 	      // nvidia color-per-face-bug workaround
-	      if ((AttributeBinding)Traits::MaterialBinding == PER_FACE) {
+	      if ((AttributeBinding)MaterialBinding == PER_FACE) {
 		materials->send(matnr-1, TRUE);
-	      } else if ((AttributeBinding)Traits::MaterialBinding == PER_FACE_INDEXED) {
+	      } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 		materials->send(matindices[-1], TRUE);
 	      }
 
-	      if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 		currnormal = normals++;
 		glNormal3fv((const GLfloat*)currnormal);
-	      } else if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 		currnormal = &normals[*normalindices++];
 		glNormal3fv((const GLfloat*)currnormal);
 	      }
 
-	      if (Traits::TexturingEnabled == true) {
+	      if (TexturingEnabled == TRUE) {
 		texcoords->send(texindices ? *texindices++ : texidx++,
 				vertexlist->get3(v1),
 				*currnormal);
@@ -2802,31 +2790,30 @@ namespace { namespace SoGL { namespace FaceSet {
 	  }
 	}
 
-	if ((AttributeBinding)Traits::MaterialBinding == PER_VERTEX_INDEXED) {
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	  matindices++;
 	}
-	if ((AttributeBinding)Traits::NormalBinding == PER_VERTEX_INDEXED) {
+	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
 	  normalindices++;
 	}
-	if (Traits::TexturingEnabled == true) {
+	if (TexturingEnabled == TRUE) {
 	  if (texindices) texindices++;
 	}
       }
       // check if triangle or quad
       if (mode != GL_POLYGON) glEnd();
     }
-  };
 
 } } } // close namespace
 
 #define SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
-  SoGL::FaceSet::GLRender< SoGL::FaceSet::TypeTraits<normalbinding, materialbinding, texturing> >::Func args
+  SoGL::FaceSet::GLRender<normalbinding, materialbinding, texturing> args
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
   if (texturing) { \
-    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, true, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
   } else { \
-    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, false, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
   }
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
@@ -2852,7 +2839,7 @@ namespace { namespace SoGL { namespace FaceSet {
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
   switch (normalbinding) { \
-  case SoGL::FaceSet::OVERALL:						\
+  case SoGL::FaceSet::OVERALL: \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::OVERALL, materialbinding, texturing, args); \
     break; \
   case SoGL::FaceSet::PER_FACE: \
