@@ -853,909 +853,352 @@ sogl_render_cube(const float width,
 
 #if !defined(NO_LINESET_RENDER)
 
-typedef void sogl_render_ils_func ( const SoGLCoordinateElement * /*const*/ coords,
-                                    const int32_t *indices,
-                                    int num_vertexindices,
-                                    const SbVec3f *normals,
-                                    const int32_t *normindices,
-                                    SoMaterialBundle *const materials,
-                                    const int32_t *matindices,
-                                    const SoTextureCoordinateBundle * const texcoords,
-                                    const int32_t *texindices,
-                                    const int drawAsPoints);
-
-
-#define OVERALL             0
-#define PER_SEGMENT         1
-#define PER_SEGMENT_INDEXED 2
-#define PER_LINE            3
-#define PER_LINE_INDEXED    4
-#define PER_VERTEX          5
-#define PER_VERTEX_INDEXED  6
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m0_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m1_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m2_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m3_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m4_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m5_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ils_m6_n0_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m0_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m1_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m2_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m3_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m4_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m5_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ils_m6_n1_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m0_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m1_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m2_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m3_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m4_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m5_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m6_n2_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m0_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m1_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m2_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m3_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m4_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m5_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ils_m6_n3_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m0_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m1_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m2_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m3_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m4_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m5_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m6_n4_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m0_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m1_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m2_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m3_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m4_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m5_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ils_m6_n5_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m0_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m1_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m2_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m3_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m4_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m5_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ils_m6_n6_t0
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m0_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m1_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m2_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m3_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m4_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m5_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ils_m6_n0_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m0_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m1_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m2_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m3_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m4_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m5_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ils_m6_n1_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m0_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m1_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m2_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m3_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m4_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m5_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_SEGMENT_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m6_n2_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m0_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m1_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m2_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m3_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m4_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m5_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ils_m6_n3_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m0_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m1_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m2_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m3_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m4_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m5_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_LINE_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m6_n4_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m0_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m1_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m2_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m3_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m4_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m5_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ils_m6_n5_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m0_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m1_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m2_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m3_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m4_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m5_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES TRUE
-static void sogl_ils_m6_n6_t1
-#include "SoGLindexedLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
+namespace { namespace SoGL { namespace IndexedLineSet {
+
+  enum AttributeBinding {
+    OVERALL = 0,
+    PER_SEGMENT = 1,
+    PER_SEGMENT_INDEXED = 2,
+    PER_LINE = 3,
+    PER_LINE_INDEXED = 4,
+    PER_VERTEX = 5,
+    PER_VERTEX_INDEXED = 6
+  };
+
+  template < int NormalBinding,
+	     int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * coords,
+		       const int32_t *indices,
+		       int num_vertexindices,
+		       const SbVec3f *normals,
+		       const int32_t *normindices,
+		       SoMaterialBundle *const materials,
+		       const int32_t *matindices,
+		       const SoTextureCoordinateBundle * const texcoords,
+		       const int32_t *texindices,
+		       const int drawAsPoints)
+  {
+    const SbVec3f * coords3d = NULL;
+    const SbVec4f * coords4d = NULL;
+    const SbBool is3d = coords->is3D();
+    if (is3d) {
+      coords3d = coords->getArrayPtr3();
+    }
+    else {
+      coords4d = coords->getArrayPtr4();
+    }
+    int numcoords = coords->getNum();
+
+    // This is the same code as in SoGLCoordinateElement::send().
+    // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+    else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+
+    if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+      if (matindices == NULL) matindices = indices;
+    }
+    if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+      if (normindices == NULL) normindices = indices;
+    }
+
+    int matnr = 0;
+    int texidx = 0;
+    int32_t i;
+    const int32_t *end = indices + num_vertexindices;
+
+    SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+    const SbVec3f *currnormal = &dummynormal;
+    if (normals) currnormal = normals;
+    if ((AttributeBinding)MaterialBinding == OVERALL) {
+      glNormal3fv((const GLfloat*)currnormal);
+    }
+
+    if ((AttributeBinding)MaterialBinding == PER_SEGMENT ||
+	(AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_SEGMENT ||
+	(AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
+      int previ;
+
+      if (drawAsPoints)
+	glBegin(GL_POINTS);
+      else
+	glBegin(GL_LINES);
+
+      while (indices < end) {
+	previ = *indices++;
+
+	// Variable used for counting errors and make sure not a bunch of
+	// errormessages flood the screen.
+	static uint32_t current_errors = 0;
+
+	// This test is for robustness upon buggy data sets
+	if (previ < 0 || previ >= numcoords) {
+	  if (current_errors < 1) {
+	    SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+				      "index: %d (Should be within [0, %d]). Aborting "
+				      "rendering. This message will be shown once, but "
+				      "there might be more errors", previ, numcoords - 1);
+	  }
+	  
+	  current_errors++;
+	  glEnd();
+	  return;
+	}
+
+	if ((AttributeBinding)MaterialBinding == PER_LINE ||
+	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
+	  materials->send(matnr++, TRUE);
+	} else if ((AttributeBinding)MaterialBinding == PER_LINE_INDEXED ||
+		   (AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	  materials->send(*matindices++, TRUE);
+	}
+
+	if ((AttributeBinding)NormalBinding == PER_LINE ||
+	    (AttributeBinding)NormalBinding == PER_VERTEX) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat*) currnormal);
+	} else if ((AttributeBinding)NormalBinding == PER_LINE_INDEXED ||
+		   (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	  currnormal = &normals[*normindices++];
+	  glNormal3fv((const GLfloat*) currnormal);
+	}
+	if (TexturingEnabled == TRUE) {
+	  texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
+	}
+	i = (indices < end) ? *indices++ : -1;
+	while (i >= 0) {
+	  // For robustness upon buggy data sets
+	  if (i >= numcoords) {
+	    if (current_errors < 1) {
+	      SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+					"index: %d (Should be within [0, %d]). Aborting "
+					"rendering. This message will be shown once, but "
+					"there might be more errors", i, numcoords - 1);
+	    }
+	    current_errors++;
+	    break;
+	  }
+
+	  if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
+	    materials->send(matnr++, TRUE);
+	  } else if ((AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED) {
+	    materials->send(*matindices++, TRUE);
+	  }
+
+	  if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat*) currnormal);
+	  } else if ((AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
+	    currnormal = &normals[*normindices++];
+	    glNormal3fv((const GLfloat*)currnormal);
+	  }
+	  SEND_VERTEX(previ);
+
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    materials->send(matnr++, TRUE);
+	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	    materials->send(*matindices++, TRUE);
+	  }
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat*)currnormal);
+	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	    currnormal = &normals[*normindices++];
+	    glNormal3fv((const GLfloat*)currnormal);
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+	  }
+	  SEND_VERTEX(i);
+	  previ = i;
+	  i = indices < end ? *indices++ : -1;
+	}
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	  matindices++;
+	}
+	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	  normindices++;
+	}
+	if (TexturingEnabled == TRUE) {
+	  if (texindices) texindices++;
+	}
+      }
+      glEnd();
+
+    } else { // no per_segment binding code below
+
+      if (drawAsPoints)
+	glBegin(GL_POINTS);
+
+      while (indices < end) {
+	if (!drawAsPoints)
+	  glBegin(GL_LINE_STRIP);
+
+	i = *indices++;
+
+	// Variable used for counting errors and make sure not a bunch of
+	// errormessages flood the screen.
+	static uint32_t current_errors = 0;
+
+	// This test is for robustness upon buggy data sets
+	if (i < 0 || i >= numcoords) {
+	  if (current_errors < 1) {
+	    SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+				      "index: %d (Should be within [0, %d]). Aborting "
+				      "rendering. This message will be shown once, but "
+				      "there might be more errors", i, numcoords - 1);
+	  }
+	  
+	  current_errors++;
+	  glEnd();
+	  return;
+	}
+
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+	    (AttributeBinding)MaterialBinding == PER_LINE_INDEXED) {
+	  materials->send(*matindices++, TRUE);
+	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+		   (AttributeBinding)MaterialBinding == PER_LINE) {
+	  materials->send(matnr++, TRUE);
+	}
+
+	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	    (AttributeBinding)NormalBinding == PER_LINE_INDEXED) {
+	  currnormal = &normals[*normindices++];
+	  glNormal3fv((const GLfloat*) currnormal);
+	} else if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+		   (AttributeBinding)NormalBinding == PER_LINE) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat*) currnormal);
+	}
+	if (TexturingEnabled == TRUE) {
+	  texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+	}
+
+	SEND_VERTEX(i);
+	i = indices < end ? *indices++ : -1;
+	while (i >= 0) {
+	  // For robustness upon buggy data sets
+	  if (i >= numcoords) {
+	    if (current_errors < 1) {
+	      SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+					"index: %d (Should be within [0, %d]). Aborting "
+					"rendering. This message will be shown once, but "
+					"there might be more errors", i, numcoords - 1);
+	    }
+	    current_errors++;
+	    break;
+	  }
+
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    materials->send(matnr++, TRUE);
+	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	    materials->send(*matindices++, TRUE);
+	  }
+
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat*) currnormal);
+	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	    currnormal = &normals[*normindices++];
+	    glNormal3fv((const GLfloat*) currnormal);
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+	  }
+
+	  SEND_VERTEX(i);
+	  i = indices < end ? *indices++ : -1;
+	}
+	if (!drawAsPoints)
+	  glEnd(); // end of line strip
+
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	  matindices++;
+	}
+	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	  normindices++;
+	}
+	if (TexturingEnabled == TRUE) {
+	  if (texindices) texindices++;
+	}
+      }
+      if (drawAsPoints)
+	glEnd();
+    }
+  }
+
+} } } // namespace
+
+#define SOGL_INDEXEDLINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
+  SoGL::IndexedLineSet::GLRender<normalbinding, materialbinding, texturing> args
+
+#define SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
+  if (texturing) { \
+    SOGL_INDEXEDLINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
+  } else { \
+    SOGL_INDEXEDLINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
+  }
+
+#define SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
+  switch (materialbinding) { \
+  case SoGL::IndexedLineSet::OVERALL: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::OVERALL, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_SEGMENT: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_SEGMENT, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_SEGMENT_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_SEGMENT_INDEXED, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_LINE: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_LINE, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_LINE_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_LINE_INDEXED, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_VERTEX, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::IndexedLineSet::PER_VERTEX_INDEXED, texturing, args); \
+    break; \
+  default: \
+    assert(!"invalid material binding argument"); \
+  }
+
+#define SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+  switch (normalbinding) { \
+  case SoGL::IndexedLineSet::OVERALL: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::OVERALL, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_SEGMENT: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_SEGMENT, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_SEGMENT_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_SEGMENT_INDEXED, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_LINE: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_LINE, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_LINE_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_LINE_INDEXED, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_VERTEX, materialbinding, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX_INDEXED: \
+    SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2(SoGL::IndexedLineSet::PER_VERTEX_INDEXED, materialbinding, texturing, args); \
+    break; \
+  default: \
+    assert(!"invalid normal binding argument"); \
+  }
+
+#define SOGL_INDEXEDLINESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
+  SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
+  
 void
 sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int32_t *cindices,
@@ -1771,137 +1214,24 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int texture,
                     const int drawAsPoints)
 {
-  static sogl_render_ils_func *ils_render_funcs[ 127 ];
-  static int first = 1;
-  if (first) {
-    ils_render_funcs[  0] = sogl_ils_m0_n0_t0;
-    ils_render_funcs[  1] = sogl_ils_m0_n0_t1;
-    ils_render_funcs[  2] = sogl_ils_m0_n1_t0;
-    ils_render_funcs[  3] = sogl_ils_m0_n1_t1;
-    ils_render_funcs[  4] = sogl_ils_m0_n2_t0;
-    ils_render_funcs[  5] = sogl_ils_m0_n2_t1;
-    ils_render_funcs[  6] = sogl_ils_m0_n3_t0;
-    ils_render_funcs[  7] = sogl_ils_m0_n3_t1;
-    ils_render_funcs[  8] = sogl_ils_m0_n4_t0;
-    ils_render_funcs[  9] = sogl_ils_m0_n4_t1;
-    ils_render_funcs[ 10] = sogl_ils_m0_n5_t0;
-    ils_render_funcs[ 11] = sogl_ils_m0_n5_t1;
-    ils_render_funcs[ 12] = sogl_ils_m0_n6_t0;
-    ils_render_funcs[ 13] = sogl_ils_m0_n6_t1;
 
-    ils_render_funcs[ 16] = sogl_ils_m1_n0_t0;
-    ils_render_funcs[ 17] = sogl_ils_m1_n0_t1;
-    ils_render_funcs[ 18] = sogl_ils_m1_n1_t0;
-    ils_render_funcs[ 19] = sogl_ils_m1_n1_t1;
-    ils_render_funcs[ 20] = sogl_ils_m1_n2_t0;
-    ils_render_funcs[ 21] = sogl_ils_m1_n2_t1;
-    ils_render_funcs[ 22] = sogl_ils_m1_n3_t0;
-    ils_render_funcs[ 23] = sogl_ils_m1_n3_t1;
-    ils_render_funcs[ 24] = sogl_ils_m1_n4_t0;
-    ils_render_funcs[ 25] = sogl_ils_m1_n4_t1;
-    ils_render_funcs[ 26] = sogl_ils_m1_n5_t0;
-    ils_render_funcs[ 27] = sogl_ils_m1_n5_t1;
-    ils_render_funcs[ 28] = sogl_ils_m1_n6_t0;
-    ils_render_funcs[ 29] = sogl_ils_m1_n6_t1;
-
-    ils_render_funcs[ 32] = sogl_ils_m2_n0_t0;
-    ils_render_funcs[ 33] = sogl_ils_m2_n0_t1;
-    ils_render_funcs[ 34] = sogl_ils_m2_n1_t0;
-    ils_render_funcs[ 35] = sogl_ils_m2_n1_t1;
-    ils_render_funcs[ 36] = sogl_ils_m2_n2_t0;
-    ils_render_funcs[ 37] = sogl_ils_m2_n2_t1;
-    ils_render_funcs[ 38] = sogl_ils_m2_n3_t0;
-    ils_render_funcs[ 39] = sogl_ils_m2_n3_t1;
-    ils_render_funcs[ 40] = sogl_ils_m2_n4_t0;
-    ils_render_funcs[ 41] = sogl_ils_m2_n4_t1;
-    ils_render_funcs[ 42] = sogl_ils_m2_n5_t0;
-    ils_render_funcs[ 43] = sogl_ils_m2_n5_t1;
-    ils_render_funcs[ 44] = sogl_ils_m2_n6_t0;
-    ils_render_funcs[ 45] = sogl_ils_m2_n6_t1;
-
-    ils_render_funcs[ 48] = sogl_ils_m3_n0_t0;
-    ils_render_funcs[ 49] = sogl_ils_m3_n0_t1;
-    ils_render_funcs[ 50] = sogl_ils_m3_n1_t0;
-    ils_render_funcs[ 51] = sogl_ils_m3_n1_t1;
-    ils_render_funcs[ 52] = sogl_ils_m3_n2_t0;
-    ils_render_funcs[ 53] = sogl_ils_m3_n2_t1;
-    ils_render_funcs[ 54] = sogl_ils_m3_n3_t0;
-    ils_render_funcs[ 55] = sogl_ils_m3_n3_t1;
-    ils_render_funcs[ 56] = sogl_ils_m3_n4_t0;
-    ils_render_funcs[ 57] = sogl_ils_m3_n4_t1;
-    ils_render_funcs[ 58] = sogl_ils_m3_n5_t0;
-    ils_render_funcs[ 59] = sogl_ils_m3_n5_t1;
-    ils_render_funcs[ 60] = sogl_ils_m3_n6_t0;
-    ils_render_funcs[ 61] = sogl_ils_m3_n6_t1;
-
-    ils_render_funcs[ 64] = sogl_ils_m4_n0_t0;
-    ils_render_funcs[ 65] = sogl_ils_m4_n0_t1;
-    ils_render_funcs[ 66] = sogl_ils_m4_n1_t0;
-    ils_render_funcs[ 67] = sogl_ils_m4_n1_t1;
-    ils_render_funcs[ 68] = sogl_ils_m4_n2_t0;
-    ils_render_funcs[ 69] = sogl_ils_m4_n2_t1;
-    ils_render_funcs[ 70] = sogl_ils_m4_n3_t0;
-    ils_render_funcs[ 71] = sogl_ils_m4_n3_t1;
-    ils_render_funcs[ 72] = sogl_ils_m4_n4_t0;
-    ils_render_funcs[ 73] = sogl_ils_m4_n4_t1;
-    ils_render_funcs[ 74] = sogl_ils_m4_n5_t0;
-    ils_render_funcs[ 75] = sogl_ils_m4_n5_t1;
-    ils_render_funcs[ 76] = sogl_ils_m4_n6_t0;
-    ils_render_funcs[ 77] = sogl_ils_m4_n6_t1;
-
-    ils_render_funcs[ 80] = sogl_ils_m5_n0_t0;
-    ils_render_funcs[ 81] = sogl_ils_m5_n0_t1;
-    ils_render_funcs[ 82] = sogl_ils_m5_n1_t0;
-    ils_render_funcs[ 83] = sogl_ils_m5_n1_t1;
-    ils_render_funcs[ 84] = sogl_ils_m5_n2_t0;
-    ils_render_funcs[ 85] = sogl_ils_m5_n2_t1;
-    ils_render_funcs[ 86] = sogl_ils_m5_n3_t0;
-    ils_render_funcs[ 87] = sogl_ils_m5_n3_t1;
-    ils_render_funcs[ 88] = sogl_ils_m5_n4_t0;
-    ils_render_funcs[ 89] = sogl_ils_m5_n4_t1;
-    ils_render_funcs[ 90] = sogl_ils_m5_n5_t0;
-    ils_render_funcs[ 91] = sogl_ils_m5_n5_t1;
-    ils_render_funcs[ 92] = sogl_ils_m5_n6_t0;
-    ils_render_funcs[ 93] = sogl_ils_m5_n6_t1;
-
-    ils_render_funcs[ 96] = sogl_ils_m6_n0_t0;
-    ils_render_funcs[ 97] = sogl_ils_m6_n0_t1;
-    ils_render_funcs[ 98] = sogl_ils_m6_n1_t0;
-    ils_render_funcs[ 99] = sogl_ils_m6_n1_t1;
-    ils_render_funcs[100] = sogl_ils_m6_n2_t0;
-    ils_render_funcs[101] = sogl_ils_m6_n2_t1;
-    ils_render_funcs[102] = sogl_ils_m6_n3_t0;
-    ils_render_funcs[103] = sogl_ils_m6_n3_t1;
-    ils_render_funcs[104] = sogl_ils_m6_n4_t0;
-    ils_render_funcs[105] = sogl_ils_m6_n4_t1;
-    ils_render_funcs[106] = sogl_ils_m6_n5_t0;
-    ils_render_funcs[107] = sogl_ils_m6_n5_t1;
-    ils_render_funcs[108] = sogl_ils_m6_n6_t0;
-    ils_render_funcs[109] = sogl_ils_m6_n6_t1;
-    first = 0;
-  }
-
-  ils_render_funcs[ (mbind << 4) | (nbind << 1) | texture ](
-    coords,
-    cindices,
-    numindices,
-    normals,
-    nindices,
-    mb,
-    mindices,
-    tb,
-    tindices,
-    drawAsPoints);
+  SOGL_INDEXEDLINESET_GLRENDER(nbind, mbind, texture, (coords,
+						       cindices,
+						       numindices,
+						       normals,
+						       nindices,
+						       mb,
+						       mindices,
+						       tb,
+						       tindices,
+						       drawAsPoints));
 }
 
-
-#undef OVERALL
-#undef PER_SEGMENT
-#undef PER_SEGMENT_INDEXED
-#undef PER_LINE
-#undef PER_LINE_INDEXED
-#undef PER_VERTEX
-#undef PER_VERTEX_INDEXED
+#undef SOGL_INDEXEDLINESET_GLRENDER_CALL_FUNC
+#undef SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG1
+#undef SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG2
+#undef SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG3
+#undef SOGL_INDEXEDLINESET_GLRENDER
 
 #endif // !NO_LINESET_RENDER
 
@@ -2488,149 +1818,215 @@ namespace { namespace SoGL { namespace FaceSet {
 		       const int32_t *matindices,
 		       const SoTextureCoordinateBundle * const texcoords,
 		       const int32_t *texindices)
-    {
-      int texidx = 0;
+  {
+
+    // just in case someone forgot
+    if (matindices == NULL) matindices = vertexindices;
+    if (normalindices == NULL) normalindices = vertexindices;
+
+    int texidx = 0;
     
-      const SbVec3f * coords3d = NULL;
-      const SbVec4f * coords4d = NULL;
-      const SbBool is3d = vertexlist->is3D();
-      if (is3d) {
-	coords3d = vertexlist->getArrayPtr3();
+    const SbVec3f * coords3d = NULL;
+    const SbVec4f * coords4d = NULL;
+    const SbBool is3d = vertexlist->is3D();
+    if (is3d) {
+      coords3d = vertexlist->getArrayPtr3();
+    }
+    else {
+      coords4d = vertexlist->getArrayPtr4();
+    }
+
+    // This is the same code as in SoGLCoordinateElement::send().
+    // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_)                                           \
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_));	     \
+    else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+
+    int mode = GL_POLYGON; // ...to save a test
+    int newmode;
+    const int32_t *viptr = vertexindices;
+    const int32_t *vistartptr = vertexindices;
+    const int32_t *viendptr = viptr + numindices;
+    int32_t v1, v2, v3, v4, v5 = 0; // v5 init unnecessary, but kills a compiler warning.
+    int numverts = vertexlist->getNum();
+
+    SbVec3f dummynormal(0,0,1);
+    const SbVec3f * currnormal = &dummynormal;
+    if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	(AttributeBinding)NormalBinding == PER_FACE ||
+	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
+	TexturingEnabled == TRUE) {
+      if (normals) currnormal = normals;
+    }
+
+    int matnr = 0;
+
+    while (viptr + 2 < viendptr) {
+      v1 = *viptr++;
+      v2 = *viptr++;
+      v3 = *viptr++;
+
+      // Variable used for counting errors and make sure not a
+      // bunch of errormessages flood the screen.
+      static uint32_t current_errors = 0;
+
+      // This test is for robustness upon buggy data sets
+      if (v1 < 0 || v2 < 0 || v3 < 0 ||
+	  v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+	
+	if (current_errors < 1) {
+	  SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+				    "Ignoring (offset: %d, [%d %d %d]). Should be within "
+				    " [0, %d] This message will only be shown once, but "
+				    "more errors might be present",
+				    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+	}
+	current_errors++;
+	break;
+      }
+      v4 = viptr < viendptr ? *viptr++ : -1;
+      if (v4  < 0) newmode = GL_TRIANGLES;
+      // This test for numverts is for robustness upon buggy data sets
+      else if (v4 >= numverts) {
+	newmode = GL_TRIANGLES;
+	
+	if (current_errors < 1) {
+	  SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+				    "(offset: %d, [%d %d %d %d]). Should be within "
+				    " [0, %d] This message will only be shown once, but "
+				    "more errors might be present",
+				    viptr - vistartptr - 4, v1, v2, v3, v4, numverts - 1);
+	}
+	current_errors++;
       }
       else {
-	coords4d = vertexlist->getArrayPtr4();
-      }
-
-      // This is the same code as in SoGLCoordinateElement::send().
-      // It is inlined here for speed (~15% speed increase).
-#define SEND_VERTEX(_idx_)                                           \
-      if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_));    \
-      else glVertex4fv((const GLfloat*) (coords4d + _idx_));
-
-      int mode = GL_POLYGON; // ...to save a test
-      int newmode;
-      const int32_t *viptr = vertexindices;
-      const int32_t *vistartptr = vertexindices;
-      const int32_t *viendptr = viptr + numindices;
-      int32_t v1, v2, v3, v4, v5 = 0; // v5 init unnecessary, but kills a compiler warning.
-      int numverts = vertexlist->getNum();
-
-      SbVec3f dummynormal(0,0,1);
-      const SbVec3f * currnormal = &dummynormal;
-      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)NormalBinding == PER_FACE ||
-	  (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	  (AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
-	  TexturingEnabled == TRUE) {
-	if (normals) currnormal = normals;
-      }
-
-      int matnr = 0;
-
-      while (viptr + 2 < viendptr) {
-	v1 = *viptr++;
-	v2 = *viptr++;
-	v3 = *viptr++;
-
-	// Variable used for counting errors and make sure not a
-	// bunch of errormessages flood the screen.
-	static uint32_t current_errors = 0;
-
-	// This test is for robustness upon buggy data sets
-	if (v1 < 0 || v2 < 0 || v3 < 0 ||
-	    v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-
-	  if (current_errors < 1) {
-	    SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-				      "Ignoring (offset: %d, [%d %d %d]). Should be within "
-				      " [0, %d] This message will only be shown once, but "
-				      "more errors might be present",
-				      viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
-	  }
-	  current_errors++;
-	  break;
-	}
-	v4 = viptr < viendptr ? *viptr++ : -1;
-	if (v4  < 0) newmode = GL_TRIANGLES;
+	v5 = viptr < viendptr ? *viptr++ : -1;
+	if (v5 < 0) newmode = GL_QUADS;
 	// This test for numverts is for robustness upon buggy data sets
-	else if (v4 >= numverts) {
-	  newmode = GL_TRIANGLES;
-
+	else if (v5 >= numverts) {
+	  newmode = GL_QUADS;
+	  
 	  if (current_errors < 1) {
 	    SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-				      "(offset: %d, [%d %d %d %d]). Should be within "
+				      "(offset: %d, [%d %d %d %d %d]). Should be within "
 				      " [0, %d] This message will only be shown once, but "
 				      "more errors might be present",
-				      viptr - vistartptr - 4, v1, v2, v3, v4, numverts - 1);
+				      viptr - vistartptr - 5, v1, v2, v3, v4, v5, numverts - 1);
 	  }
 	  current_errors++;
 	}
-	else {
-	  v5 = viptr < viendptr ? *viptr++ : -1;
-	  if (v5 < 0) newmode = GL_QUADS;
-	  // This test for numverts is for robustness upon buggy data sets
-	  else if (v5 >= numverts) {
-	    newmode = GL_QUADS;
+	else newmode = GL_POLYGON;
+      }
+      if (newmode != mode) {
+	if (mode != GL_POLYGON) glEnd();
+	mode = newmode;
+	glBegin((GLenum) mode);
+      }
+      else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
+      
+      /* vertex 1 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+	  (AttributeBinding)MaterialBinding == PER_FACE) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
+      
+      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	  (AttributeBinding)NormalBinding == PER_FACE) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)NormalBinding == PER_FACE_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
+      
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v1),
+			*currnormal);
+      }
 
-	    if (current_errors < 1) {
-	      SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-					"(offset: %d, [%d %d %d %d %d]). Should be within "
-					" [0, %d] This message will only be shown once, but "
-					"more errors might be present",
-					viptr - vistartptr - 5, v1, v2, v3, v4, v5, numverts - 1);
-	    }
-	    current_errors++;
-	  }
-	  else newmode = GL_POLYGON;
-	}
-	if (newmode != mode) {
-	  if (mode != GL_POLYGON) glEnd();
-	  mode = newmode;
-	  glBegin((GLenum) mode);
-	}
-	else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
+      SEND_VERTEX(v1);
+      
+      /* vertex 2 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
 
-	/* vertex 1 *********************************************************/
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-	    (AttributeBinding)MaterialBinding == PER_FACE) {
-	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	}
+      // nvidia color-per-face-bug workaround
+      if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	materials->send(matnr-1, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+	materials->send(matindices[-1], TRUE);
+      }
 
-	if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	    (AttributeBinding)NormalBinding == PER_FACE) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)NormalBinding == PER_FACE_INDEXED) {
-	  currnormal = &normals[*normalindices++];
-	  glNormal3fv((const GLfloat*)currnormal);
-	}
+      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
 
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++,
-			  vertexlist->get3(v1),
-			  *currnormal);
-	}
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v2),
+			*currnormal);
+      }
 
-	SEND_VERTEX(v1);
+      SEND_VERTEX(v2);
 
-	/* vertex 2 *********************************************************/
+      /* vertex 3 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
+
+      // nvidia color-per-face-bug workaround
+      if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	materials->send(matnr-1, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+	materials->send(matindices[-1], TRUE);
+      }
+      
+      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
+      
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v3),
+			*currnormal);
+      }
+
+      SEND_VERTEX(v3);
+
+      if (mode != GL_TRIANGLES) {
+	/* vertex 4 (quad or polygon)**************************************/
 	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	  materials->send(matnr++, TRUE);
 	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	  materials->send(*matindices++, TRUE);
 	}
-
+	
 	// nvidia color-per-face-bug workaround
 	if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	  materials->send(matnr-1, TRUE);
 	} else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	  materials->send(matindices[-1], TRUE);
 	}
-
+	
 	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	  currnormal = normals++;
 	  glNormal3fv((const GLfloat*)currnormal);
@@ -2638,60 +2034,30 @@ namespace { namespace SoGL { namespace FaceSet {
 	  currnormal = &normals[*normalindices++];
 	  glNormal3fv((const GLfloat*)currnormal);
 	}
-
+	
 	if (TexturingEnabled == TRUE) {
 	  texcoords->send(texindices ? *texindices++ : texidx++,
-			  vertexlist->get3(v2),
+			  vertexlist->get3(v4),
 			  *currnormal);
 	}
+	
+	SEND_VERTEX(v4);
 
-	SEND_VERTEX(v2);
-
-	/* vertex 3 *********************************************************/
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	}
-
-	// nvidia color-per-face-bug workaround
-	if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	  materials->send(matnr-1, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	  materials->send(matindices[-1], TRUE);
-	}
-
-	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  currnormal = &normals[*normalindices++];
-	  glNormal3fv((const GLfloat*)currnormal);
-	}
-
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++,
-			  vertexlist->get3(v3),
-			  *currnormal);
-	}
-
-	SEND_VERTEX(v3);
-
-	if (mode != GL_TRIANGLES) {
-	  /* vertex 4 (quad or polygon)**************************************/
+	if (mode == GL_POLYGON) {
+	  /* vertex 5 (polygon) ********************************************/
 	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	    materials->send(matnr++, TRUE);
 	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
 	    materials->send(*matindices++, TRUE);
 	  }
-
+	  
 	  // nvidia color-per-face-bug workaround
 	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
 	    materials->send(matnr-1, TRUE);
 	  } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
 	    materials->send(matindices[-1], TRUE);
 	  }
-
+	  
 	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
 	    currnormal = normals++;
 	    glNormal3fv((const GLfloat*)currnormal);
@@ -2702,14 +2068,28 @@ namespace { namespace SoGL { namespace FaceSet {
 
 	  if (TexturingEnabled == TRUE) {
 	    texcoords->send(texindices ? *texindices++ : texidx++,
-			    vertexlist->get3(v4),
+			    vertexlist->get3(v5),
 			    *currnormal);
 	  }
 
-	  SEND_VERTEX(v4);
+	  SEND_VERTEX(v5);
 
-	  if (mode == GL_POLYGON) {
-	    /* vertex 5 (polygon) ********************************************/
+	  v1 = viptr < viendptr ? *viptr++ : -1;
+	  while (v1 >= 0) {
+	    // For robustness upon buggy data sets
+	    if (v1 >= numverts) {
+	      if (current_errors < 1) {
+		SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+					  "(offset: %d, [... %d]). Should be within "
+					  "[0, %d] This message will only be shown once, but "
+					  "more errors might be present",
+					  viptr - vistartptr - 1, v1, numverts - 1);
+	      }
+	      current_errors++;
+	      break;
+	    }
+
+	    /* vertex 6-n (polygon) *****************************************/
 	    if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
 	      materials->send(matnr++, TRUE);
 	    } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
@@ -2733,78 +2113,33 @@ namespace { namespace SoGL { namespace FaceSet {
 
 	    if (TexturingEnabled == TRUE) {
 	      texcoords->send(texindices ? *texindices++ : texidx++,
-			      vertexlist->get3(v5),
+			      vertexlist->get3(v1),
 			      *currnormal);
 	    }
-
-	    SEND_VERTEX(v5);
-
+	    
+	    SEND_VERTEX(v1);
+	    
 	    v1 = viptr < viendptr ? *viptr++ : -1;
-	    while (v1 >= 0) {
-	      // For robustness upon buggy data sets
-	      if (v1 >= numverts) {
-		if (current_errors < 1) {
-		  SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-					    "(offset: %d, [... %d]). Should be within "
-					    "[0, %d] This message will only be shown once, but "
-					    "more errors might be present",
-					    viptr - vistartptr - 1, v1, numverts - 1);
-		}
-		current_errors++;
-		break;
-	      }
-
-	      /* vertex 6-n (polygon) *****************************************/
-	      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-		materials->send(matnr++, TRUE);
-	      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-		materials->send(*matindices++, TRUE);
-	      }
-
-	      // nvidia color-per-face-bug workaround
-	      if ((AttributeBinding)MaterialBinding == PER_FACE) {
-		materials->send(matnr-1, TRUE);
-	      } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-		materials->send(matindices[-1], TRUE);
-	      }
-
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		currnormal = normals++;
-		glNormal3fv((const GLfloat*)currnormal);
-	      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-		currnormal = &normals[*normalindices++];
-		glNormal3fv((const GLfloat*)currnormal);
-	      }
-
-	      if (TexturingEnabled == TRUE) {
-		texcoords->send(texindices ? *texindices++ : texidx++,
-				vertexlist->get3(v1),
-				*currnormal);
-	      }
-
-	      SEND_VERTEX(v1);
-
-	      v1 = viptr < viendptr ? *viptr++ : -1;
-	    }
-	    glEnd(); /* draw polygon */
 	  }
-	}
-
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  matindices++;
-	}
-	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  normalindices++;
-	}
-	if (TexturingEnabled == TRUE) {
-	  if (texindices) texindices++;
+	  glEnd(); /* draw polygon */
 	}
       }
-      // check if triangle or quad
-      if (mode != GL_POLYGON) glEnd();
-    }
 
-} } } // close namespace
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	matindices++;
+      }
+      if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	normalindices++;
+      }
+      if (TexturingEnabled == TRUE) {
+	if (texindices) texindices++;
+      }
+    }
+    // check if triangle or quad
+    if (mode != GL_POLYGON) glEnd();
+  }
+
+} } } // namespace
 
 #define SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
   SoGL::FaceSet::GLRender<normalbinding, materialbinding, texturing> args
@@ -2876,11 +2211,6 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
                     const int mbind,
                     const int texture)
 {
-  // just in case someone forgot
-  if (matindices == NULL) matindices = vertexindices;
-  if (normindices == NULL) normindices = vertexindices;
-
-  // invoke the template specialization call for the given parameters
   SOGL_FACESET_GLRENDER(nbind, mbind, texture, (vertexlist,
 						vertexindices,
 						num_vertexindices,
@@ -2902,879 +2232,337 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
 
 // **************************************************************************
 
-typedef void sogl_render_faceset_func(const SoGLCoordinateElement * const coords,
-                                      const int32_t *vertexindices,
-                                      int num_vertexindices,
-                                      const SbVec3f *normals,
-                                      const int32_t *normindices,
-                                      SoMaterialBundle *materials,
-                                      const int32_t *matindices,
-                                      const SoTextureCoordinateBundle * const texcoords,
-                                      const int32_t *texindices);
+//typedef void sogl_render_faceset_func(const SoGLCoordinateElement * const coords,
+//                                      const int32_t *vertexindices,
+//                                      int num_vertexindices,
+//                                      const SbVec3f *normals,
+//                                      const int32_t *normindices,
+//                                      SoMaterialBundle *materials,
+//                                      const int32_t *matindices,
+//                                      const SoTextureCoordinateBundle * const texcoords,
+//                                      const int32_t *texindices);
 
 #if !defined(NO_TRISTRIPSET_RENDER)
 
-
-#define OVERALL              0
-#define PER_STRIP            1
-#define PER_STRIP_INDEXED    2
-#define PER_TRIANGLE         3
-#define PER_TRIANGLE_INDEXED 4
-#define PER_VERTEX           5
-#define PER_VERTEX_INDEXED   6
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ts_n0_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_ts_n1_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n2_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_TRIANGLE
-#define TEXTURES FALSE
-static void sogl_ts_n3_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n4_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ts_n5_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m0
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m1
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m2
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m3
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m4
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m5
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-#define TEXTURES FALSE
-static void sogl_ts_n6_m6
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-/* textures */
-#undef TEXTURES
-#define TEXTURES TRUE
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-static void sogl_ts_n0_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING OVERALL
-static void sogl_ts_n0_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING OVERALL
-static void sogl_ts_n0_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING OVERALL
-static void sogl_ts_n0_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING OVERALL
-static void sogl_ts_n0_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-static void sogl_ts_n0_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING OVERALL
-static void sogl_ts_n0_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_STRIP
-static void sogl_ts_n1_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_STRIP_INDEXED
-static void sogl_ts_n2_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_TRIANGLE
-static void sogl_ts_n3_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_TRIANGLE_INDEXED
-static void sogl_ts_n4_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX
-static void sogl_ts_n5_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-
-
-
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m0_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m1_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_STRIP_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m2_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m3_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_TRIANGLE_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m4_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m5_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-#define MBINDING PER_VERTEX_INDEXED
-#define NBINDING PER_VERTEX_INDEXED
-static void sogl_ts_n6_m6_tex
-#include "SoGLTristripTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-
-
-#undef TEXTURES
-
-
-static sogl_render_faceset_func *render_ts_funcs[110];
-
-
+namespace { namespace SoGL { namespace TriStripSet {
+
+  enum AttributeBinding {
+    OVERALL = 0,
+    PER_STRIP = 1,
+    PER_STRIP_INDEXED = 2,
+    PER_TRIANGLE = 3,
+    PER_TRIANGLE_INDEXED = 4,
+    PER_VERTEX = 5,
+    PER_VERTEX_INDEXED = 6
+  };
+
+  template < int NormalBinding,
+	     int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * const vertexlist,
+		       const int32_t *vertexindices,			 
+		       int numindices,				 
+		       const SbVec3f *normals,			 
+		       const int32_t *normalindices,
+		       SoMaterialBundle *materials,
+		       const int32_t *matindices,
+		       const SoTextureCoordinateBundle * const texcoords,
+		       const int32_t *texindices)
+  {
+
+    // just in case someone forgot...
+    if (matindices == NULL) matindices = vertexindices;
+    if (normalindices == NULL) normalindices = vertexindices;
+
+    int texidx = 0;
+    const int32_t *viptr = vertexindices;
+    const int32_t *vistartptr = vertexindices;
+    const int32_t *viendptr = viptr + numindices;
+    int32_t v1, v2, v3;
+    int numverts = vertexlist->getNum();
+
+    const SbVec3f * coords3d = NULL;
+    const SbVec4f * coords4d = NULL;
+    const SbBool is3d = vertexlist->is3D();
+    if (is3d) {
+      coords3d = vertexlist->getArrayPtr3();
+    }
+    else {
+      coords4d = vertexlist->getArrayPtr4();
+    }
+
+    // This is the same code as in SoGLCoordinateElement::send().
+    // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+    else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+
+    if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	(AttributeBinding)NormalBinding == PER_TRIANGLE ||
+	(AttributeBinding)NormalBinding == PER_STRIP ||
+	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
+      assert(normals && "Aborting rendering of tristrip; got NULL normals");
+    }
+
+    SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+    const SbVec3f *currnormal = &dummynormal;
+
+    if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	(AttributeBinding)NormalBinding == PER_TRIANGLE ||
+	(AttributeBinding)NormalBinding == PER_STRIP ||
+	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_STRIP_INDEXED ||
+	TexturingEnabled == TRUE) {
+      if (normals) currnormal = normals;
+    }
+
+    int matnr = 0;
+
+    while (viptr + 2 < viendptr) {
+      v1 = *viptr++;
+      v2 = *viptr++;
+      v3 = *viptr++;
+
+      // This should be here to prevent illegal polygons from being rendered
+      if (v1 < 0 || v2 < 0 || v3 < 0 ||
+	  v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+	 
+	static uint32_t current_errors = 0;
+	if (current_errors < 1) {
+	  SoDebugError::postWarning("[tristrip]::GLRender", "Erroneous polygon detected. "
+				    "Ignoring (offset: %d, [%d %d %d]). Should be within "
+				    " [0, %d] This message will only be shown once, but "
+				    "more errors may be present",
+				    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+	}
+
+	current_errors++;
+	break;
+      }
+
+      glBegin(GL_TRIANGLE_STRIP);
+
+      /* vertex 1 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+	  (AttributeBinding)MaterialBinding == PER_STRIP) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
+      
+      // needed for nvidia color-per-face-bug workaround
+      if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+	materials->send(matnr, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+	materials->send(*matindices, TRUE);
+      }
+      // end of nvidia workaround
+
+      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	  (AttributeBinding)NormalBinding == PER_STRIP) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v1),
+			*currnormal);
+      }
+      SEND_VERTEX(v1);
+    
+      /* vertex 2 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
+
+      // needed for nvidia color-per-face-bug workaround
+      if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+	materials->send(matnr, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+	materials->send(*matindices, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+	materials->send(matnr-1, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+	materials->send(matindices[-1], TRUE);
+      }
+      // end of nvidia workaround
+
+      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v2),
+			*currnormal);
+      }
+      SEND_VERTEX(v2);
+
+      /* vertex 3 *********************************************************/
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+	  (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+	materials->send(matnr++, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+	materials->send(*matindices++, TRUE);
+      }
+
+      // needed for nvidia color-per-face-bug workaround
+      if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+	materials->send(matnr-1, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+	materials->send(matindices[-1], TRUE);
+      }
+      // end of nvidia workaround
+
+      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	  (AttributeBinding)NormalBinding == PER_TRIANGLE) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat*)currnormal);
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+		 (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
+	currnormal = &normals[*normalindices++];
+	glNormal3fv((const GLfloat*)currnormal);
+      }
+      if (TexturingEnabled == TRUE) {
+	texcoords->send(texindices ? *texindices++ : texidx++,
+			vertexlist->get3(v3),
+			*currnormal);
+      }
+      SEND_VERTEX(v3);
+      
+      v1 = viptr < viendptr ? *viptr++ : -1;
+      while (v1 >= 0) {
+	if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+	    (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+	  materials->send(matnr++, TRUE);
+	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+		   (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+	  materials->send(*matindices++, TRUE);
+	}
+	
+	// needed for nvidia color-per-face-bug workaround
+	if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+	  materials->send(matnr-1, TRUE);
+	} else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+	  materials->send(matindices[-1], TRUE);
+	}
+	// end of nvidia workaround
+
+	if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	    (AttributeBinding)NormalBinding == PER_TRIANGLE) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat*)currnormal);
+	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+		   (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
+	  currnormal = &normals[*normalindices++];
+	  glNormal3fv((const GLfloat*)currnormal);
+	}
+	if (TexturingEnabled == TRUE) {
+	  texcoords->send(texindices ? *texindices++ : texidx++,
+			  vertexlist->get3(v1),
+			  *currnormal);
+	}
+
+	SEND_VERTEX(v1);
+	v1 = viptr < viendptr ? *viptr++ : -1;
+      }
+      glEnd(); // end of tristrip
+
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+	matindices++;
+      }
+      if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+	normalindices++;
+      }
+      if (TexturingEnabled == TRUE) {
+	if (texindices) texindices++;
+      }
+    }
+  }
+
+} } } // namespace
+
+#define SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
+  SoGL::TriStripSet::GLRender<normalbinding, materialbinding, texturing> args
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
+  if (texturing) { \
+    SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
+  } else { \
+    SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
+  switch (materialbinding) { \
+  case SoGL::TriStripSet::OVERALL: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::OVERALL, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_STRIP: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_STRIP, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_STRIP_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_STRIP_INDEXED, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_TRIANGLE: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_TRIANGLE, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_TRIANGLE_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_TRIANGLE_INDEXED, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_VERTEX, texturing, args); \
+    break; \
+  case SoGL::IndexedLineSet::PER_VERTEX_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::TriStripSet::PER_VERTEX_INDEXED, texturing, args); \
+    break; \
+  default: \
+    assert(!"invalid material binding argument"); \
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+  switch (normalbinding) { \
+  case SoGL::TriStripSet::OVERALL: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::OVERALL, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_STRIP: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_STRIP, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_STRIP_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_STRIP_INDEXED, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_TRIANGLE: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_TRIANGLE, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_TRIANGLE_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_TRIANGLE_INDEXED, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_VERTEX: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_VERTEX, materialbinding, texturing, args); \
+    break; \
+  case SoGL::TriStripSet::PER_VERTEX_INDEXED: \
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(SoGL::TriStripSet::PER_VERTEX_INDEXED, materialbinding, texturing, args); \
+    break; \
+  default: \
+    assert(!"invalid normal binding argument"); \
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER(normalbinding, materialbinding, texturing, args) \
+  SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
+  
 void
 sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
@@ -3789,140 +2577,22 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
                      const int mbind,
                      const int texture)
 {
-  static int first = 1;
-  if (first) {
-    render_ts_funcs[0] = sogl_ts_n0_m0;
-    render_ts_funcs[1] = sogl_ts_n0_m0_tex;
-    render_ts_funcs[2] = sogl_ts_n0_m1;
-    render_ts_funcs[3] = sogl_ts_n0_m1_tex;
-    render_ts_funcs[4] = sogl_ts_n0_m2;
-    render_ts_funcs[5] = sogl_ts_n0_m2_tex;
-    render_ts_funcs[6] = sogl_ts_n0_m3;
-    render_ts_funcs[7] = sogl_ts_n0_m3_tex;
-    render_ts_funcs[8] = sogl_ts_n0_m4;
-    render_ts_funcs[9] = sogl_ts_n0_m4_tex;
-    render_ts_funcs[10] = sogl_ts_n0_m5;
-    render_ts_funcs[11] = sogl_ts_n0_m5_tex;
-    render_ts_funcs[12] = sogl_ts_n0_m6;
-    render_ts_funcs[13] = sogl_ts_n0_m6_tex;
-
-    render_ts_funcs[16] = sogl_ts_n1_m0;
-    render_ts_funcs[17] = sogl_ts_n1_m0_tex;
-    render_ts_funcs[18] = sogl_ts_n1_m1;
-    render_ts_funcs[19] = sogl_ts_n1_m1_tex;
-    render_ts_funcs[20] = sogl_ts_n1_m2;
-    render_ts_funcs[21] = sogl_ts_n1_m2_tex;
-    render_ts_funcs[22] = sogl_ts_n1_m3;
-    render_ts_funcs[23] = sogl_ts_n1_m3_tex;
-    render_ts_funcs[24] = sogl_ts_n1_m4;
-    render_ts_funcs[25] = sogl_ts_n1_m4_tex;
-    render_ts_funcs[26] = sogl_ts_n1_m5;
-    render_ts_funcs[27] = sogl_ts_n1_m5_tex;
-    render_ts_funcs[28] = sogl_ts_n1_m6;
-    render_ts_funcs[29] = sogl_ts_n1_m6_tex;
-
-    render_ts_funcs[32] = sogl_ts_n2_m0;
-    render_ts_funcs[33] = sogl_ts_n2_m0_tex;
-    render_ts_funcs[34] = sogl_ts_n2_m1;
-    render_ts_funcs[35] = sogl_ts_n2_m1_tex;
-    render_ts_funcs[36] = sogl_ts_n2_m2;
-    render_ts_funcs[37] = sogl_ts_n2_m2_tex;
-    render_ts_funcs[38] = sogl_ts_n2_m3;
-    render_ts_funcs[39] = sogl_ts_n2_m3_tex;
-    render_ts_funcs[40] = sogl_ts_n2_m4;
-    render_ts_funcs[41] = sogl_ts_n2_m4_tex;
-    render_ts_funcs[42] = sogl_ts_n2_m5;
-    render_ts_funcs[43] = sogl_ts_n2_m5_tex;
-    render_ts_funcs[44] = sogl_ts_n2_m6;
-    render_ts_funcs[45] = sogl_ts_n2_m6_tex;
-
-    render_ts_funcs[48] = sogl_ts_n3_m0;
-    render_ts_funcs[49] = sogl_ts_n3_m0_tex;
-    render_ts_funcs[50] = sogl_ts_n3_m1;
-    render_ts_funcs[51] = sogl_ts_n3_m1_tex;
-    render_ts_funcs[52] = sogl_ts_n3_m2;
-    render_ts_funcs[53] = sogl_ts_n3_m2_tex;
-    render_ts_funcs[54] = sogl_ts_n3_m3;
-    render_ts_funcs[55] = sogl_ts_n3_m3_tex;
-    render_ts_funcs[56] = sogl_ts_n3_m4;
-    render_ts_funcs[57] = sogl_ts_n3_m4_tex;
-    render_ts_funcs[57] = sogl_ts_n3_m5;
-    render_ts_funcs[58] = sogl_ts_n3_m5_tex;
-    render_ts_funcs[59] = sogl_ts_n3_m6;
-    render_ts_funcs[60] = sogl_ts_n3_m6_tex;
-
-    render_ts_funcs[64] = sogl_ts_n4_m0;
-    render_ts_funcs[65] = sogl_ts_n4_m0_tex;
-    render_ts_funcs[66] = sogl_ts_n4_m1;
-    render_ts_funcs[67] = sogl_ts_n4_m1_tex;
-    render_ts_funcs[68] = sogl_ts_n4_m2;
-    render_ts_funcs[69] = sogl_ts_n4_m2_tex;
-    render_ts_funcs[70] = sogl_ts_n4_m3;
-    render_ts_funcs[71] = sogl_ts_n4_m3_tex;
-    render_ts_funcs[72] = sogl_ts_n4_m4;
-    render_ts_funcs[73] = sogl_ts_n4_m4_tex;
-    render_ts_funcs[74] = sogl_ts_n4_m5;
-    render_ts_funcs[75] = sogl_ts_n4_m5_tex;
-    render_ts_funcs[76] = sogl_ts_n4_m6;
-    render_ts_funcs[77] = sogl_ts_n4_m6_tex;
-
-    render_ts_funcs[80] = sogl_ts_n5_m0;
-    render_ts_funcs[81] = sogl_ts_n5_m0_tex;
-    render_ts_funcs[82] = sogl_ts_n5_m1;
-    render_ts_funcs[83] = sogl_ts_n5_m1_tex;
-    render_ts_funcs[84] = sogl_ts_n5_m2;
-    render_ts_funcs[85] = sogl_ts_n5_m2_tex;
-    render_ts_funcs[86] = sogl_ts_n5_m3;
-    render_ts_funcs[87] = sogl_ts_n5_m3_tex;
-    render_ts_funcs[88] = sogl_ts_n5_m4;
-    render_ts_funcs[89] = sogl_ts_n5_m4_tex;
-    render_ts_funcs[90] = sogl_ts_n5_m5;
-    render_ts_funcs[91] = sogl_ts_n5_m5_tex;
-    render_ts_funcs[92] = sogl_ts_n5_m6;
-    render_ts_funcs[93] = sogl_ts_n5_m6_tex;
-
-    render_ts_funcs[96] = sogl_ts_n6_m0;
-    render_ts_funcs[97] = sogl_ts_n6_m0_tex;
-    render_ts_funcs[98] = sogl_ts_n6_m1;
-    render_ts_funcs[99] = sogl_ts_n6_m1_tex;
-    render_ts_funcs[100] = sogl_ts_n6_m2;
-    render_ts_funcs[101] = sogl_ts_n6_m2_tex;
-    render_ts_funcs[102] = sogl_ts_n6_m3;
-    render_ts_funcs[103] = sogl_ts_n6_m3_tex;
-    render_ts_funcs[104] = sogl_ts_n6_m4;
-    render_ts_funcs[105] = sogl_ts_n6_m4_tex;
-    render_ts_funcs[106] = sogl_ts_n6_m5;
-    render_ts_funcs[107] = sogl_ts_n6_m5_tex;
-    render_ts_funcs[108] = sogl_ts_n6_m6;
-    render_ts_funcs[109] = sogl_ts_n6_m6_tex;
-    first = 0;
-  }
-
-  int idx = (nbind << 4) | (mbind << 1) | texture;
-
-  // just in case someone forgot...
-  if (matindices == NULL) matindices = vertexindices;
-  if (normindices == NULL) normindices = vertexindices;
-
-  render_ts_funcs[idx](vertexlist,
-                       vertexindices,
-                       num_vertexindices,
-                       normals,
-                       normindices,
-                       materials,
-                       matindices,
-                       texcoords,
-                       texindices);
+  SOGL_TRISTRIPSET_GLRENDER(nbind, mbind, texture, (vertexlist,
+						    vertexindices,
+						    num_vertexindices,
+						    normals,
+						    normindices,
+						    materials,
+						    matindices,
+						    texcoords,
+						    texindices));
 }
 
-#undef OVERALL
-#undef PER_STRIP
-#undef PER_STRIP_INDEXED
-#undef PER_TRIANGLE
-#undef PER_TRIANGLE_INDEXED
-#undef PER_VERTEX
-#undef PER_VERTEX_INDEXED
-
+#undef SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3
+#undef SOGL_TRISTRIPSET_GLRENDER
 
 #endif // !NO_TRISTRIPSET_RENDER
 
