@@ -719,6 +719,7 @@ SoGLImage::SoGLImage(void)
 {
   PRIVATE(this) = new SoGLImageP;
   SoContextHandler::addContextDestructionCallback(SoGLImageP::contextCleanup, PRIVATE(this));
+  PRIVATE(this)->isregistered = FALSE;
   PRIVATE(this)->init(); // init members to default values
   PRIVATE(this)->owner = this;
 
@@ -892,7 +893,6 @@ SoGLImage::setGLDisplayList(SoGLDisplayList * dl,
                             const float quality)
 {
   if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
-
   PRIVATE(this)->unrefDLists(state);
   dl->ref();
   PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
@@ -944,7 +944,6 @@ SoGLImage::setPBuffer(SoState * state,
 
     if (PRIVATE(this)->pbuffer && !PRIVATE(this)->isregistered &&
         !(this->getFlags() & INVINCIBLE)) {
-      PRIVATE(this)->isregistered = TRUE;
       SoGLImage::registerImage(this);
     }
   }
@@ -1116,7 +1115,6 @@ SoGLImage::setData(const SbImage *image,
   }
 
   if (PRIVATE(this)->image && !PRIVATE(this)->isregistered && !(this->getFlags() & INVINCIBLE)) {
-    PRIVATE(this)->isregistered = TRUE;
     SoGLImage::registerImage(this);
   }
 }
@@ -1362,7 +1360,7 @@ SoGLImage::unrefOldDL(SoState *state, const uint32_t maxage)
 void
 SoGLImageP::init(void)
 {
-  this->isregistered = FALSE;
+  assert(this->isregistered == FALSE);
   this->image = NULL;
   this->pbuffer = NULL;
   this->glsize.setValue(0,0,0);
@@ -2136,6 +2134,7 @@ SoGLImage::registerImage(SoGLImage *image)
   }
   assert(glimage_reglist->find(image) < 0);
   glimage_reglist->append(image);
+  PRIVATE(image)->isregistered = TRUE;
   UNLOCK_GLIMAGE;
 }
 
@@ -2151,6 +2150,7 @@ SoGLImage::unregisterImage(SoGLImage *image)
   if (idx >= 0) {
     glimage_reglist->removeFast(idx);
   }
+  PRIVATE(image)->isregistered = FALSE;
   UNLOCK_GLIMAGE;
 }
 
