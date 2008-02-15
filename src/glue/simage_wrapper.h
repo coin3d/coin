@@ -80,7 +80,7 @@ extern "C" {
   typedef const char * (*simage_get_saver_fullname_t)(void * handle);
   typedef const char * (*simage_get_saver_description_t)(void * handle);
 
-  /* This define is set up in the simage_wrapper.c file, according to
+  /* This define is set up in the simage_wrapper.cpp file, according to
      whether or not we link static at compile-time or dynamic at
      run-time to the simage library. */
 #if !defined(SIMAGEWRAPPER_ASSUME_SIMAGE)
