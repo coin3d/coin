@@ -331,10 +331,7 @@ PrivateHeaders = \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \
-	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
-	SoGLTristripTemplate.icc \
-	SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
@@ -457,9 +454,7 @@ am__objects_2 = SoBase.$(OBJEXT) SoBaseP.$(OBJEXT) SoChildList.$(OBJEXT) \
 am_misc_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoGL.h SoGLDriverDatabase.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
-	SoDBP.h SoBaseP.h AudioTools.h SoGLFaceSetTemplate.icc \
-	SoGLLineSetTemplate.icc SoGLTristripTemplate.icc \
-	SoGLindexedLineSetTemplate.icc \
+	SoDBP.h SoBaseP.h AudioTools.h SoGLLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
@@ -524,9 +519,7 @@ am__objects_7 = SoBase.lo SoBaseP.lo SoChildList.lo SoCompactPathList.lo \
 am_libmisc_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoGL.h SoGLDriverDatabase.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
-	SoDBP.h SoBaseP.h AudioTools.h SoGLFaceSetTemplate.icc \
-	SoGLLineSetTemplate.icc SoGLTristripTemplate.icc \
-	SoGLindexedLineSetTemplate.icc \
+	SoDBP.h SoBaseP.h AudioTools.h SoGLLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
@@ -572,9 +565,7 @@ am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h SoGL.h \
 	SoGLDriverDatabase.h SoGenerate.h SoPick.h SoShaderGenerator.h \
 	SoCompactPathList.h SoDBP.h SoBaseP.h AudioTools.h \
-	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
-	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
-	SoGLnonindexedFaceSetTemplate.icc \
+	SoGLLineSetTemplate.icc SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
 	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
