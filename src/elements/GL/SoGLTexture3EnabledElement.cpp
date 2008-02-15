@@ -80,7 +80,6 @@ SoGLTexture3EnabledElement::init(SoState * stateptr)
 {
   inherited::init(stateptr);
   this->state = stateptr;
-  this->updategl();
 }
 
 // Documented in superclass. Overridden to track GL state.

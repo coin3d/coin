@@ -55,7 +55,6 @@ void
 SoGLDrawStyleElement::init(SoState * state)
 {
   inherited::init(state);
-  this->updategl();
 }
 
 // doc in superclass

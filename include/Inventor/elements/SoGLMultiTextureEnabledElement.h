@@ -48,7 +48,8 @@ public:
 private:
   void updategl(const int unit);
   void updategl(const int unit, const Mode oldvalue, const Mode newvalue);
-  const cc_glglue * glue;
+  
+  uint32_t cachecontext;
 };
 
 #endif // !COIN_SOGLMULTITEXTUREENABLEDELEMENT_H

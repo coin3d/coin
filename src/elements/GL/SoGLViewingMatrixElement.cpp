@@ -30,7 +30,7 @@
   matrix. The camera coordinate system is built from the field values
   in the current SoCamera (currently either SoPerspectiveCamera or
   SoOrthographicCamera) and any transformations prior to the camera in
-  the scene graph.  
+  the scene graph.
 */
 
 #include <Inventor/elements/SoGLViewingMatrixElement.h>

@@ -67,11 +67,7 @@ SoGLMultiTextureEnabledElement::init(SoState * state)
 
   SoAction * action = state->getAction();
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()));
-
-  // fetch cache context from action since SoGLCacheContextElement
-  // might not be initialized yet.
-  SoGLRenderAction * glaction = (SoGLRenderAction*) action;
-  this->glue = cc_glglue_instance(glaction->getCacheContext());
+  this->cachecontext = ((SoGLRenderAction*)action)->getCacheContext();
 }
 
 // Documented in superclass. Overridden to track GL state.
@@ -80,7 +76,8 @@ SoGLMultiTextureEnabledElement::push(SoState * state)
 {
   SoGLMultiTextureEnabledElement * prev = (SoGLMultiTextureEnabledElement*) this->getNextInStack();
 
-  this->glue = prev->glue;
+  this->cachecontext = prev->cachecontext;
+
   // copy state from previous element
   inherited::push(state);
   // capture previous element since we might or might not change the
@@ -121,16 +118,18 @@ SoGLMultiTextureEnabledElement::setElt(const int unit, const SbBool value)
 void
 SoGLMultiTextureEnabledElement::updategl(const int unit)
 {
-  cc_glglue_glActiveTexture(this->glue, (GLenum) (int(GL_TEXTURE0) + unit));
+  const cc_glglue * glue = cc_glglue_instance(this->cachecontext);
+  cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
   if (this->isEnabled(unit)) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
-  cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
+  cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
 }
 
 void 
 SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, const Mode oldvalue)
 {
-  cc_glglue_glActiveTexture(this->glue, (GLenum) (int(GL_TEXTURE0) + unit));
+  const cc_glglue * glue = cc_glglue_instance(this->cachecontext);
+  cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
 
   switch (oldvalue) {
   case DISABLED:
@@ -170,7 +169,7 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
     assert(0 && "should not happen");
     break;
   }
-  cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
+  cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
 
 }
 

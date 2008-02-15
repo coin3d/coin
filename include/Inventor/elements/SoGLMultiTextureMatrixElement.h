@@ -48,7 +48,7 @@ public:
 
 private:
   void updategl(const int unit) const;
-  const cc_glglue * glue;
+  uint32_t cachecontext;
 };
 
 #endif // !COIN_SOGLMULTITEXTUREMATRIXELEMENT_H

@@ -64,7 +64,7 @@ class SoGLMultiTextureImageElementP {
 public:
   SoGLMultiTextureImageElement::GLUnitData unitdata[MAX_UNITS];
   SoState * state;
-  const cc_glglue * glue;
+  uint32_t cachecontext;
 };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLMultiTextureImageElement);
@@ -83,7 +83,7 @@ SoGLMultiTextureImageElement::initClass(void)
 SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 {
   PRIVATE(this) = new SoGLMultiTextureImageElementP;
-  
+
   this->setTypeId(SoGLMultiTextureImageElement::classTypeId);
   this->setStackIndex(SoGLMultiTextureImageElement::classStackIndex);
 }
@@ -105,11 +105,12 @@ SoGLMultiTextureImageElement::init(SoState * state)
 
   SoAction * action = state->getAction();
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()));
+  
   // fetch cache context from action since SoGLCacheContextElement
   // might not be initialized yet.
   SoGLRenderAction * glaction = (SoGLRenderAction*) action;
-  PRIVATE(this)->glue = cc_glglue_instance(glaction->getCacheContext());
-
+  PRIVATE(this)->cachecontext = glaction->getCacheContext();
+  
   for (int i = 0; i < MAX_UNITS; i++) {
     GLUnitData & ud = PRIVATE(this)->unitdata[i];
     ud.glimage = NULL;
@@ -126,7 +127,7 @@ SoGLMultiTextureImageElement::push(SoState * state)
   SoGLMultiTextureImageElement * prev = (SoGLMultiTextureImageElement*)
     this->getNextInStack();
   PRIVATE(this)->state = state;
-  PRIVATE(this)->glue = PRIVATE(prev)->glue;
+  PRIVATE(this)->cachecontext = PRIVATE(prev)->cachecontext;
   
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
@@ -147,20 +148,20 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
   SoGLMultiTextureImageElement * prev = (SoGLMultiTextureImageElement*)
     prevTopElement;
-  
+
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   SbString str;
-  
+
   for (int i = 1; i < MAX_UNITS; i++) {
     const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
     // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
     // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
+
     const GLUnitData & thisud = PRIVATE(this)->unitdata[i];
-    
     if (thisud.glimage != prevud.glimage) this->updateGL(i);
 
     str.sprintf("coin_texunit%d_model", i);
-    if (prog) prog->updateCoinParameter(state, SbName(str.getString()), 
+    if (prog) prog->updateCoinParameter(state, SbName(str.getString()),
                                         thisud.glimage != NULL ? this->getUnitData(i).model : 0);
   }
 }
@@ -180,7 +181,7 @@ multi_translateWrap(const SoGLImage::Wrap wrap)
 void
 SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                   const int unit,
-                                  SoGLImage * image, 
+                                  SoGLImage * image,
                                   const SoTextureImageElement::Model model,
                                   const SbColor & blendColor)
 {
@@ -225,26 +226,26 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
   }
 }
 
-void 
+void
 SoGLMultiTextureImageElement::restore(SoState * state, const int unit)
 {
   SoGLMultiTextureImageElement * elem = (SoGLMultiTextureImageElement*)
     state->getConstElement(classStackIndex);
-  
+
   elem->updateGL(unit);
 }
 
 SoGLImage *
-SoGLMultiTextureImageElement::get(SoState * state, 
+SoGLMultiTextureImageElement::get(SoState * state,
                                   const int unit,
                                   SoTextureImageElement::Model & model,
                                   SbColor & blendcolor)
 {
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
     state->getConstElement(classStackIndex);
-  
+
   const UnitData & ud = elem->getUnitData(unit);
-  
+
   model = ud.model;
   blendcolor = ud.blendColor;
   return PRIVATE(elem)->unitdata[unit].glimage;
@@ -264,21 +265,22 @@ SoGLMultiTextureImageElement::hasTransparency(const int unit) const
   return FALSE;
 }
 
-void 
+void
 SoGLMultiTextureImageElement::updateGL(const int unit)
 {
   assert(unit >= 0 && unit< MAX_UNITS);
   const GLUnitData & glud = PRIVATE(this)->unitdata[unit];
-  if (glud.glimage) { 
-    cc_glglue_glActiveTexture(PRIVATE(this)->glue, (GLenum) (int(GL_TEXTURE0) + unit));
-    
+  if (glud.glimage) {
+    const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->cachecontext);
+    cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
+
     const UnitData & ud = this->getUnitData(unit);
     SoState * state = PRIVATE(this)->state;
     SoGLDisplayList * dl = glud.glimage->getGLDisplayList(state);
 
     // tag image (for GLImage LRU cache).
     SoGLImage::tagImage(state, glud.glimage);
-    
+
     if (SoTextureCombineElement::isDefault(state, unit)) {
       switch (ud.model) {
       case SoTextureImageElement::DECAL:
@@ -305,15 +307,11 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
         break;
       }
     }
-    else { 
+    else {
       SoTextureCombineElement::apply(state, unit);
     }
-    
+
     dl->call(state);
-    cc_glglue_glActiveTexture(PRIVATE(this)->glue, (GLenum) GL_TEXTURE0);
+    cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
   }
 }
-
-
-
-

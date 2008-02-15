@@ -67,7 +67,6 @@ void
 SoGLLinePatternElement::init(SoState * state)
 {
   inherited::init(state);
-  this->updategl();
 }
 
 //! FIXME: write doc.

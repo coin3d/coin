@@ -65,7 +65,6 @@ void
 SoGLEnvironmentElement::init(SoState * state)
 {
   inherited::init(state);
-  this->updategl(state);
 }
 
 void

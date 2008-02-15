@@ -73,7 +73,7 @@ SoGLMultiTextureMatrixElement::init(SoState * state)
   // fetch cache context from action since SoGLCacheContextElement
   // might not be initialized yet.
   SoGLRenderAction * glaction = (SoGLRenderAction*) action;
-  this->glue = cc_glglue_instance(glaction->getCacheContext());
+  this->cachecontext = glaction->getCacheContext();
 }
 
 void
@@ -83,7 +83,7 @@ SoGLMultiTextureMatrixElement::push(SoState * state)
   SoGLMultiTextureMatrixElement * prev = (SoGLMultiTextureMatrixElement*)
     this->getNextInStack();
 
-  this->glue = prev->glue;
+  this->cachecontext = prev->cachecontext;
 }
 
 // doc from parent
@@ -114,7 +114,7 @@ SoGLMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
   this->updategl(unit);
 }
 
-void 
+void
 SoGLMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -127,13 +127,14 @@ SoGLMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
 void
 SoGLMultiTextureMatrixElement::updategl(const int unit) const
 {
-  cc_glglue_glActiveTexture(this->glue, (GLenum) (int(GL_TEXTURE0) + unit));
+  const cc_glglue * glue = cc_glglue_instance(this->cachecontext);
+  cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
 
   glMatrixMode(GL_TEXTURE);
   glLoadMatrixf(this->getUnitData(unit).textureMatrix[0]);
   glMatrixMode(GL_MODELVIEW);
 
-  cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
+  cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
 }
 
 #undef MAX_UNITS

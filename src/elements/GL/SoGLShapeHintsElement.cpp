@@ -92,8 +92,7 @@ SoGLShapeHintsElement::~SoGLShapeHintsElement(void)
 void
 SoGLShapeHintsElement::init(SoState * stateptr)
 {
-  inherited::init(stateptr);  
-  glCullFace(GL_BACK);
+  inherited::init(stateptr);
   this->state = stateptr;
 }
 

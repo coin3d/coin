@@ -124,7 +124,6 @@ void
 SoGLTextureEnabledElement::init(SoState * state)
 {
   inherited::init(state);
-  this->updategl(DISABLED, TEXTURE2D);
 }
 
 // Documented in superclass. Overridden to track GL state.
