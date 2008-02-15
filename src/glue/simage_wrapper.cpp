@@ -28,8 +28,6 @@
  *     failure of loading the simage library.
  */
 
-#include "glue/simage_wrapper.h"
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #else /* No config.h? Hmm. Assume the simage library is available for linking. */
@@ -44,13 +42,14 @@
 #ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE
 #include <simage.h>
-#endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
+#endif /* HAVE_LIBSIMAGE */
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
 
+#include "glue/simage_wrapper.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 
