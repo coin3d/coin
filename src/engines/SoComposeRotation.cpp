@@ -53,11 +53,11 @@
 
 /*!
   \var SoMFVec3f SoComposeRotation::axis
-  Set of axis vectors for the output rotations.
+  Set of axis vectors for the output rotations. Default value is (0.0f, 0.0f, 1.0f).
 */
 /*!
   \var SoMFFloat SoComposeRotation::angle
-  Set of scalar rotation values for the output rotations.
+  Set of scalar rotation values for the output rotations. Default value is 0.0.
 */
 /*!
   \var SoEngineOutput SoComposeRotation::rotation
@@ -76,7 +76,7 @@ SoComposeRotation::SoComposeRotation()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotation);
 
-  SO_ENGINE_ADD_INPUT(axis,(0.0f,0.0f,0.0f));
+  SO_ENGINE_ADD_INPUT(axis,(0.0f,0.0f,1.0f));
   SO_ENGINE_ADD_INPUT(angle,(0.0f));
 
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
