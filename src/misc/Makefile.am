@@ -62,11 +62,6 @@ PrivateHeaders = \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \
-	SoGLLineSetTemplate.icc \
-	SoGLnonindexedFaceSetTemplate.icc \
-	SoGLnonindexedTristripSetTemplate.icc \
-	SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \

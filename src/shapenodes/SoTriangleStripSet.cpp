@@ -239,360 +239,194 @@ SoTriangleStripSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-typedef void sogl_render_ni_tristripset_func( const SoGLCoordinateElement * coords,
-    const SbVec3f *normals,
-    SoMaterialBundle * mb,
-    const SoTextureCoordinateBundle * tb,
-    int nbind,
-    int mbind,
-    int doTextures,
-    int32_t idx,
-    const int32_t *ptr,
-    const int32_t *end,
-    SbBool needNormals);
+namespace { namespace SoGL { namespace TriStripSet {
 
-static sogl_render_ni_tristripset_func *sotristripset_ni_render_funcs[ 32 ];
+  enum AttributeBinding {
+    OVERALL = 0,
+    PER_STRIP = 1,
+    PER_FACE = 2,
+    PER_VERTEX = 3
+  };
 
-#define OVERALL       0
-#define PER_STRIP     1
-#define PER_FACE      2
-#define PER_VERTEX    3
+  template < int NormalBinding,
+	     int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * coords,
+		       const SbVec3f *normals,
+		       SoMaterialBundle * mb,
+		       const SoTextureCoordinateBundle * tb,
+		       int nbind,
+		       int mbind,
+		       int doTextures,
+		       int32_t idx,
+		       const int32_t *ptr,
+		       const int32_t *end,
+		       SbBool needNormals)
+  {
+    const SbVec3f * coords3d = NULL;
+    const SbVec4f * coords4d = NULL;
+    const SbBool is3d = coords->is3D();
+    if (is3d) {
+      coords3d = coords->getArrayPtr3();
+    }
+    else {
+      coords4d = coords->getArrayPtr4();
+    }
 
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_nits_m0_n0_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    // This is the same code as in SoGLCoordinateElement::send().
+    // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_)					\
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+    else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
-#define MBINDING PER_STRIP
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_nits_m1_n0_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    int matnr = 0;
+    int texnr = 0;
+    int n;
 
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_nits_m2_n0_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+    const SbVec3f * currnormal = &dummynormal;
+    if (normals) currnormal = normals;
+    if ((AttributeBinding)NormalBinding == OVERALL) {
+      if (needNormals) glNormal3fv((const GLfloat *)currnormal);
+    }
 
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_nits_m3_n0_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    while (ptr < end) {
+      n = *ptr++ - 2;
+      assert(n > 0);
+      
+      glBegin(GL_TRIANGLE_STRIP);
 
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_nits_m0_n1_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	  (AttributeBinding)NormalBinding == PER_STRIP) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat *)currnormal);
+      }
+      if ((AttributeBinding)MaterialBinding == PER_STRIP ||
+	  (AttributeBinding)MaterialBinding == PER_VERTEX) {
+	mb->send(matnr++, TRUE);
+      }
 
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_nits_m1_n1_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      // workaround for nvidia color-per-face-bug
+      if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	mb->send(matnr, TRUE);
+      }
+      // end of nvidia workaround
 
-#define MBINDING PER_FACE
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_nits_m2_n1_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      if (TexturingEnabled == TRUE) {
+	tb->send(texnr++, coords->get3(idx), *currnormal);
+      }
+      SEND_VERTEX(idx);
+      idx++;
+    
+      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	currnormal = normals++;
+	glNormal3fv((const GLfloat *)currnormal);
+      }
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	mb->send(matnr++, TRUE);
+      }
 
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP
-#define TEXTURES FALSE
-static void sogl_nits_m3_n1_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      // workaround for nvidia color-per-face-bug
+      if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	mb->send(matnr, TRUE);
+      } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+	mb->send(matnr-1, TRUE);
+      }
+      // end of nvidia workaround
 
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_nits_m0_n2_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      if (TexturingEnabled == TRUE) {
+	tb->send(texnr++, coords->get3(idx), *currnormal);
+      }
+      SEND_VERTEX(idx);
+      idx++;
 
-#define MBINDING PER_STRIP
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_nits_m1_n2_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      while (n--) {
+	if ((AttributeBinding)NormalBinding == PER_FACE ||
+	    (AttributeBinding)NormalBinding == PER_VERTEX) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+	if ((AttributeBinding)MaterialBinding == PER_FACE ||
+	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
+	  mb->send(matnr++, TRUE);
+	}
 
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_nits_m2_n2_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+	// workaround for nvidia color-per-face-bug
+	if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+	  mb->send(matnr-1, TRUE);    
+	}
+	// end of nvidia workaround
 
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_nits_m3_n2_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+	if (TexturingEnabled == TRUE) {
+	  tb->send(texnr++, coords->get3(idx), *currnormal);
+	}
+	SEND_VERTEX(idx);
+	idx++;
+      }
+      glEnd();
+    }
+#undef SEND_VERTEX
+  }
 
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_nits_m0_n3_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_nits_m1_n3_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_nits_m2_n3_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_nits_m3_n3_t0
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_nits_m0_n0_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_nits_m1_n0_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_nits_m2_n0_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_nits_m3_n0_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_STRIP
-#define TEXTURES TRUE
-static void sogl_nits_m0_n1_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_STRIP
-#define TEXTURES TRUE
-static void sogl_nits_m1_n1_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_STRIP
-#define TEXTURES TRUE
-static void sogl_nits_m2_n1_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_STRIP
-#define TEXTURES TRUE
-static void sogl_nits_m3_n1_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_nits_m0_n2_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_nits_m1_n2_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_nits_m2_n2_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_nits_m3_n2_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_nits_m0_n3_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_STRIP
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_nits_m1_n3_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_nits_m2_n3_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_nits_m3_n3_t1
-#include "../misc/SoGLnonindexedTristripSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#undef OVERALL
-#undef PER_STRIP
-#undef PER_FACE
-#undef PER_VERTEX
+} } } // namespace
 
 // doc from parent
 void
 SoTriangleStripSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTriangleStripSet, SO_FROM_INVENTOR_1);
-
-  sotristripset_ni_render_funcs[ 0] = sogl_nits_m0_n0_t0;
-  sotristripset_ni_render_funcs[ 1] = sogl_nits_m0_n0_t1;
-  sotristripset_ni_render_funcs[ 2] = sogl_nits_m0_n1_t0;
-  sotristripset_ni_render_funcs[ 3] = sogl_nits_m0_n1_t1;
-  sotristripset_ni_render_funcs[ 4] = sogl_nits_m0_n2_t0;
-  sotristripset_ni_render_funcs[ 5] = sogl_nits_m0_n2_t1;
-  sotristripset_ni_render_funcs[ 6] = sogl_nits_m0_n3_t0;
-  sotristripset_ni_render_funcs[ 7] = sogl_nits_m0_n3_t1;
-
-  sotristripset_ni_render_funcs[ 8] = sogl_nits_m1_n0_t0;
-  sotristripset_ni_render_funcs[ 9] = sogl_nits_m1_n0_t1;
-  sotristripset_ni_render_funcs[10] = sogl_nits_m1_n1_t0;
-  sotristripset_ni_render_funcs[11] = sogl_nits_m1_n1_t1;
-  sotristripset_ni_render_funcs[12] = sogl_nits_m1_n2_t0;
-  sotristripset_ni_render_funcs[13] = sogl_nits_m1_n2_t1;
-  sotristripset_ni_render_funcs[14] = sogl_nits_m1_n3_t0;
-  sotristripset_ni_render_funcs[15] = sogl_nits_m1_n3_t1;
-  
-  sotristripset_ni_render_funcs[16] = sogl_nits_m2_n0_t0;
-  sotristripset_ni_render_funcs[17] = sogl_nits_m2_n0_t1;
-  sotristripset_ni_render_funcs[18] = sogl_nits_m2_n1_t0;
-  sotristripset_ni_render_funcs[19] = sogl_nits_m2_n1_t1;
-  sotristripset_ni_render_funcs[20] = sogl_nits_m2_n2_t0;
-  sotristripset_ni_render_funcs[21] = sogl_nits_m2_n2_t1;
-  sotristripset_ni_render_funcs[22] = sogl_nits_m2_n3_t0;
-  sotristripset_ni_render_funcs[23] = sogl_nits_m2_n3_t1;
-  
-  sotristripset_ni_render_funcs[24] = sogl_nits_m3_n0_t0;
-  sotristripset_ni_render_funcs[25] = sogl_nits_m3_n0_t1;
-  sotristripset_ni_render_funcs[26] = sogl_nits_m3_n1_t0;
-  sotristripset_ni_render_funcs[27] = sogl_nits_m3_n1_t1;
-  sotristripset_ni_render_funcs[28] = sogl_nits_m3_n2_t0;
-  sotristripset_ni_render_funcs[29] = sogl_nits_m3_n2_t1;
-  sotristripset_ni_render_funcs[30] = sogl_nits_m3_n3_t0;
-  sotristripset_ni_render_funcs[31] = sogl_nits_m3_n3_t1;
 }
+
+#define SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
+  SoGL::TriStripSet::GLRender<normalbinding, materialbinding, texturing> args
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
+  if (texturing) {							\
+    SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
+  } else {								\
+    SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
+  switch (materialbinding) {						\
+  case SoGL::TriStripSet::OVERALL:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, OVERALL, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_STRIP:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_STRIP, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_FACE:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_FACE, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_VERTEX:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_VERTEX, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid tristripset normal binding");			\
+    break;								\
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+  switch (normalbinding) {						\
+  case SoGL::TriStripSet::OVERALL:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(OVERALL, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_STRIP:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_STRIP, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_FACE:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_FACE, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::TriStripSet::PER_VERTEX:					\
+    SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_VERTEX, materialbinding, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid tristripset normal binding");			\
+    break;								\
+  }
+
+#define SOGL_TRISTRIPSET_GLRENDER(normalbinding, materialbinding, texturing, args) \
+  SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
 
 // doc from parent
 void
@@ -659,18 +493,17 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   mb.sendFirst(); // make sure we have the correct material
   
-  sotristripset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
-    ( coords,
-      normals,
-      &mb,
-      &tb,
-      nbind,
-      mbind,
-      doTextures,
-      idx,
-      ptr,
-      end,
-      needNormals);
+  SOGL_TRISTRIPSET_GLRENDER(nbind, mbind, doTextures, (coords,
+						       normals,
+						       &mb,
+						       &tb,
+						       nbind,
+						       mbind,
+						       doTextures,
+						       idx,
+						       ptr,
+						       end,
+						       needNormals));
   
   if (nc) {
     this->readUnlockNormalCache();
@@ -684,6 +517,12 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   sogl_autocache_update(state, numv ? 
                         (this->numVertices[0]-2)*numv : 0);
 }
+
+#undef SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2
+#undef SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3
+#undef SOGL_TRISTRIPSET_GLRENDER
 
 // doc from parent
 SbBool

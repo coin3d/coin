@@ -212,362 +212,211 @@ SoLineSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-typedef void sogl_render_lineset_func( const SoGLCoordinateElement * coords,
-    const SbVec3f *normals,
-    SoMaterialBundle * mb,
-    const SoTextureCoordinateBundle * tb,
-    int nbind,
-    int mbind,
-    int doTextures,
-    int32_t idx,
-    const int32_t *ptr,
-    const int32_t *end,
-    SbBool needNormals,
-    SbBool drawPoints);
+namespace { namespace SoGL { namespace LineSet {
 
-static sogl_render_lineset_func *lineset_render_funcs[ 32 ];
+  enum AttributeBinding {
+    OVERALL = 0,
+    PER_LINE = 1,
+    PER_SEGMENT = 2,
+    PER_VERTEX = 3
+  };
 
-#define OVERALL     0
-#define PER_LINE    1
-#define PER_SEGMENT 2
-#define PER_VERTEX  3
+  template < int NormalBinding,
+	     int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * coords,
+		       const SbVec3f *normals,
+		       SoMaterialBundle * mb,
+		       const SoTextureCoordinateBundle * tb,
+		       int32_t idx,
+		       const int32_t *ptr,
+		       const int32_t *end,
+		       SbBool needNormals,
+		       SbBool drawPoints)
+  {
+    const SbVec3f * coords3d = NULL;
+    const SbVec4f * coords4d = NULL;
+    const SbBool is3d = coords->is3D();
+    if (is3d) {
+      coords3d = coords->getArrayPtr3();
+    }
+    else {
+      coords4d = coords->getArrayPtr4();
+    }
 
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ls_m0_n0_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    // This is the same code as in SoGLCoordinateElement::send().
+    // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_)					\
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+    else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
-#define MBINDING PER_LINE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ls_m1_n0_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+    const SbVec3f * currnormal = &dummynormal;
+    if (normals) currnormal = normals;
+    if ((AttributeBinding)NormalBinding == OVERALL) {
+      if (needNormals)
+	glNormal3fv((const GLfloat *)currnormal);
+    }
 
-#define MBINDING PER_SEGMENT
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ls_m2_n0_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    int matnr = 0;
+    int texnr = 0;
 
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_ls_m3_n0_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    if ((AttributeBinding)NormalBinding == PER_SEGMENT ||
+	(AttributeBinding)MaterialBinding == PER_SEGMENT) {
 
-#define MBINDING OVERALL
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ls_m0_n1_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      if (drawPoints) glBegin(GL_POINTS);
+      else glBegin(GL_LINES);
 
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ls_m1_n1_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      while (ptr < end) {
+	int n = *ptr++;
+	if (n < 2) {
+	  idx += n;
+	  continue;
+	}
+	if ((AttributeBinding)MaterialBinding == PER_LINE ||
+	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
+	  mb->send(matnr++, TRUE);
+	}
+	if ((AttributeBinding)NormalBinding == PER_LINE ||
+	    (AttributeBinding)NormalBinding == PER_VERTEX) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat*)currnormal);
+	}
+	if (TexturingEnabled == TRUE) {
+	  tb->send(texnr++, coords->get3(idx), *currnormal);
+	}
 
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ls_m2_n1_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+	while (--n) {
+	  if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
+	    mb->send(matnr++, TRUE);
+	  }
+	  if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat*)currnormal);
+	  }
+	  SEND_VERTEX(idx);
+	  idx++;
 
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE
-#define TEXTURES FALSE
-static void sogl_ls_m3_n1_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    mb->send(matnr++, TRUE);
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    tb->send(texnr++, coords->get3(idx), *currnormal);
+	  }
+	  SEND_VERTEX(idx);
+	}
+	idx++;
+      }
+      glEnd();
 
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ls_m0_n2_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+    } else { // NBINDING==PER_SEGMENT || MBINDING==PER_SEGMENT
 
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ls_m1_n2_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+      if (drawPoints) glBegin(GL_POINTS);
+      while (ptr < end) {
+	int n = *ptr++;
+	if (n < 2) {
+	  idx += n; // FIXME: is this correct?
+	  continue;
+	}
+	n -= 2;
+	if (!drawPoints) glBegin(GL_LINE_STRIP);
 
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ls_m2_n2_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
+	if ((AttributeBinding)NormalBinding != OVERALL) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+	if ((AttributeBinding)MaterialBinding != OVERALL) {
+	  mb->send(matnr++, TRUE);
+	}
+	if (TexturingEnabled == TRUE) {
+	  tb->send(texnr++, coords->get3(idx), *currnormal);
+	}
+	SEND_VERTEX(idx);
+	idx++;
+	do {
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    mb->send(matnr++, TRUE);
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    tb->send(texnr++, coords->get3(idx), *currnormal);
+	  }
+	  SEND_VERTEX(idx);
+	  idx++;
+	} while (n--);
+	if (!drawPoints) glEnd();
+      }
+    }
+    if (drawPoints) glEnd();
+#undef SEND_VERTEX
+  }
 
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT
-#define TEXTURES FALSE
-static void sogl_ls_m3_n2_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ls_m0_n3_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ls_m1_n3_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ls_m2_n3_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_ls_m3_n3_t0
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ls_m0_n0_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ls_m1_n0_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ls_m2_n0_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_ls_m3_n0_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ls_m0_n1_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ls_m1_n1_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ls_m2_n1_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_LINE
-#define TEXTURES TRUE
-static void sogl_ls_m3_n1_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ls_m0_n2_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ls_m1_n2_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ls_m2_n2_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_SEGMENT
-#define TEXTURES TRUE
-static void sogl_ls_m3_n2_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ls_m0_n3_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_LINE
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ls_m1_n3_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_SEGMENT
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ls_m2_n3_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_ls_m3_n3_t1
-#include "../misc/SoGLLineSetTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-
-#undef OVERALL
-#undef PER_LINE
-#undef PER_SEGMENT
-#undef PER_VERTEX
+} } } // namespace
 
 // doc from parent
 void
 SoLineSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLineSet, SO_FROM_INVENTOR_1);
-
-  lineset_render_funcs[ 0] = sogl_ls_m0_n0_t0;
-  lineset_render_funcs[ 1] = sogl_ls_m0_n0_t1;
-  lineset_render_funcs[ 2] = sogl_ls_m0_n1_t0;
-  lineset_render_funcs[ 3] = sogl_ls_m0_n1_t1;
-  lineset_render_funcs[ 4] = sogl_ls_m0_n2_t0;
-  lineset_render_funcs[ 5] = sogl_ls_m0_n2_t1;
-  lineset_render_funcs[ 6] = sogl_ls_m0_n3_t0;
-  lineset_render_funcs[ 7] = sogl_ls_m0_n3_t1;
-  
-  lineset_render_funcs[ 8] = sogl_ls_m1_n0_t0;
-  lineset_render_funcs[ 9] = sogl_ls_m1_n0_t1;
-  lineset_render_funcs[10] = sogl_ls_m1_n1_t0;
-  lineset_render_funcs[11] = sogl_ls_m1_n1_t1;
-  lineset_render_funcs[12] = sogl_ls_m1_n2_t0;
-  lineset_render_funcs[13] = sogl_ls_m1_n2_t1;
-  lineset_render_funcs[14] = sogl_ls_m1_n3_t0;
-  lineset_render_funcs[15] = sogl_ls_m1_n3_t1;
-
-  lineset_render_funcs[16] = sogl_ls_m2_n0_t0;
-  lineset_render_funcs[17] = sogl_ls_m2_n0_t1;
-  lineset_render_funcs[18] = sogl_ls_m2_n1_t0;
-  lineset_render_funcs[19] = sogl_ls_m2_n1_t1;
-  lineset_render_funcs[20] = sogl_ls_m2_n2_t0;
-  lineset_render_funcs[21] = sogl_ls_m2_n2_t1;
-  lineset_render_funcs[22] = sogl_ls_m2_n3_t0;
-  lineset_render_funcs[23] = sogl_ls_m2_n3_t1;
-
-  lineset_render_funcs[24] = sogl_ls_m3_n0_t0;
-  lineset_render_funcs[25] = sogl_ls_m3_n0_t1;
-  lineset_render_funcs[26] = sogl_ls_m3_n1_t0;
-  lineset_render_funcs[27] = sogl_ls_m3_n1_t1;
-  lineset_render_funcs[28] = sogl_ls_m3_n2_t0;
-  lineset_render_funcs[29] = sogl_ls_m3_n2_t1;
-  lineset_render_funcs[30] = sogl_ls_m3_n3_t0;
-  lineset_render_funcs[31] = sogl_ls_m3_n3_t1;
 }
+
+#define SOGL_LINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
+  SoGL::LineSet::GLRender<normalbinding, materialbinding, texturing> args
+
+#define SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
+  if (texturing) {							\
+    SOGL_LINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
+  } else {								\
+    SOGL_LINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
+  }
+
+#define SOGL_LINESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
+  switch (materialbinding) {						\
+  case SoGL::LineSet::OVERALL:						\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::OVERALL, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_LINE:						\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_LINE, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_SEGMENT:					\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_SEGMENT, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_VERTEX:					\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_VERTEX, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid materialbinding argument");			\
+    break;								\
+  }
+
+#define SOGL_LINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+  switch (normalbinding) {						\
+  case SoGL::LineSet::OVERALL:						\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::OVERALL, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_LINE:						\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_LINE, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_SEGMENT:					\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_SEGMENT, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::LineSet::PER_VERTEX:					\
+    SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_VERTEX, materialbinding, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid normalbinding argument");				\
+    break;								\
+  }
+
+#define SOGL_LINESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
+  SOGL_LINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
 
 // doc from parent
 void
@@ -634,19 +483,15 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
-  lineset_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
-    ( coords,
-      normals,
-      &mb,
-      &tb,
-      nbind,
-      mbind,
-      doTextures,
-      idx,
-      ptr,
-      end,
-      needNormals,
-      drawPoints);
+  SOGL_LINESET_GLRENDER(nbind, mbind, doTextures, (coords,
+						   normals,
+						   &mb,
+						   &tb,
+						   idx,
+						   ptr,
+						   end,
+						   needNormals,
+						   drawPoints));
 
   if (didpush)
     state->pop();
@@ -656,6 +501,12 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   sogl_autocache_update(state, numv ? 
                         (this->numVertices[0]-1)*numv : 0);
 }
+
+#undef SOGL_LINESET_GLRENDER_CALL_FUNC
+#undef SOGL_LINESET_GLRENDER_RESOLVE_ARG3
+#undef SOGL_LINESET_GLRENDER_RESOLVE_ARG2
+#undef SOGL_LINESET_GLRENDER_RESOLVE_ARG1
+#undef SOGL_LINESET_GLRENDER
 
 // Documented in superclass.
 SbBool

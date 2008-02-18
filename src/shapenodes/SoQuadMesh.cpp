@@ -336,686 +336,438 @@ static SbBool qmeshNormalize(SbVec3f & v, float toLength2)
   return FALSE;
 }
 
-
-typedef void sogl_render_qmesh_func( const SoGLCoordinateElement * coords,
-    const SbVec3f *normals,
-    SoMaterialBundle * mb,
-    const SoTextureCoordinateBundle * tb,
-    SbBool needNormals,
-    int rowsize,
-    int colsize,
-    int start );
-
-static sogl_render_qmesh_func *soquadmesh_ni_render_funcs[ 64 ];
-
-#define OVERALL       0
-#define PER_ROW       1
-#define PER_FACE      2
-#define PER_VERTEX    3
+namespace { namespace SoGL { namespace QuadMesh {
 
 #define IDX(r,c) ((r)*rowsize+(c))
 
-// -----
-
-// n0
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n0_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n0_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n0_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n0_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n1
-
-#define MBINDING OVERALL
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n1_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n1_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n1_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n1_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n2
-
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n2_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n2_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n2_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n2_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n3
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n3_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n3_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n3_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n3_t0
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// og de samme, med tekstur
-
-// -----
-
-// n0
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n0_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n0_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n0_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n0_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n1
-
-#define MBINDING OVERALL
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n1_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n1_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n1_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n1_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n2
-
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n2_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n2_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n2_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n2_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n3
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n3_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n3_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n3_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n3_t1
-#include "../misc/SoGLqmeshTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// once again for rendering with more precise lighting by placing an
-// extra vertice in the middle of the quad, and thereby splitting it
-// to 2 triangles
-
-// n0, t0, precise lighting
-
-#define COORDS D3
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n0_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n0_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n0_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n0_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n1, t0, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n1_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n1_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n1_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_ROW
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n1_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n2, t0, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n2_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n2_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n2_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n2_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n3, t0, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m0_n3_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m1_n3_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m2_n3_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES FALSE
-static void sogl_qmesh_m3_n3_t0_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// og de samme, med tekstur
-
-// -----
-
-// n0, t1, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n0_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n0_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n0_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING OVERALL
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n0_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n1, t1, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n1_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n1_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n1_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_ROW
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n1_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n2, t1, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n2_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n2_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n2_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_FACE
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n2_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-// n3, t1, precise lighting
-
-#define MBINDING OVERALL
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m0_n3_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_ROW
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m1_n3_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_FACE
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m2_n3_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-#define MBINDING PER_VERTEX
-#define NBINDING PER_VERTEX
-#define TEXTURES TRUE
-static void sogl_qmesh_m3_n3_t1_pl
-#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
-#undef MBINDING
-#undef NBINDING
-#undef TEXTURES
-
-// -----
-
-#undef COORDS
+  enum AttributeBinding {
+    OVERALL = 0,
+    PER_ROW = 1,
+    PER_FACE = 2,
+    PER_VERTEX = 3
+  };
+
+  template < int NormalBinding,
+	     int MaterialBinding,
+	     int TexturingEnabled >
+  static void GLRender(const SoGLCoordinateElement * coords,
+		       const SbVec3f *normals,
+		       SoMaterialBundle * mb,
+		       const SoTextureCoordinateBundle * tb,
+		       SbBool needNormals,
+		       int rowsize,
+		       int colsize,
+		       int start,
+		       SbBool preciseLighting)
+  {
+    assert(rowsize >= 0 && colsize >= 0 && start >= 0);
+    assert(coords->getNum() - start >= rowsize * colsize);
+
+    const SbBool is3d = coords->is3D();
+    const SbVec3f * coords3d = is3d ? coords->getArrayPtr3() : NULL;
+    const SbVec4f * coords4d = is3d ? NULL : coords->getArrayPtr4();
+
+    if (preciseLighting == FALSE) {
+
+      // This is the same code as in SoGLCoordinateElement::send().
+      // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+      if (is3d) glVertex3fv((const GLfloat*) (coords3d + (_idx_)));	\
+      else glVertex4fv((const GLfloat*) (coords4d + (_idx_)));
+
+      int midx = 0;
+
+      SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+      const SbVec3f * currnormal = &dummynormal;
+      if (normals) currnormal = normals;
+
+      if ((AttributeBinding)NormalBinding == OVERALL) {
+	if (needNormals) {
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+      }
+
+      int curridx; // for optimization only
+
+      for (int i = 0; i < colsize-1; i++) {
+	int j = 0;
+	glBegin(GL_QUAD_STRIP);
+	if ((AttributeBinding)NormalBinding == PER_ROW) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+	if ((AttributeBinding)MaterialBinding == PER_ROW) {
+	  mb->send(midx++,TRUE);
+	}
+	
+	for (j = 0; j < rowsize; j++) {
+	  curridx = IDX(i,j);
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = &normals[curridx];
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)NormalBinding == PER_FACE) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    mb->send(curridx, TRUE);
+	  }
+
+	  if (TexturingEnabled == TRUE) {
+	    tb->send(curridx, coords->get3(start + curridx),
+		     *currnormal);
+	  }
+	  SEND_VERTEX(start + curridx);
+	  curridx = IDX(i+1,j);
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    currnormal = &normals[curridx];
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    mb->send(curridx, TRUE);
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    tb->send(curridx, coords->get3(start + curridx), *currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	    // FIXME: optimize by moving first 2 vertices in row outside loop
+	    if (j > 0) mb->send(midx++, TRUE);
+	  }
+	  SEND_VERTEX(start + curridx);
+	}
+	glEnd(); // end of strip/row
+      }
+#undef SEND_VERTEX
+
+    } else { // PreciseLighting == TRUE
+
+      // Alternative code for rendering with more precise lighting by
+      // placing an extra vertice in the middle of the quad, and
+      // thereby splitting it to 2 triangles
+
+      // Developed and contributed by PC John (Jan Peciva).
+
+      int midx = 0;
+      SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+      const SbVec3f * currnormal = &dummynormal;
+      if (normals) currnormal = normals;
+
+      if ((AttributeBinding)NormalBinding == OVERALL) {
+	if (needNormals) {
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+      }
+
+      const SbVec3f *c1d3 = NULL,*c2d3 = NULL,*c3d3 = NULL,*c4d3 = NULL;
+      SbVec3f ccd3;
+      const SbVec4f *c1d4 = NULL,*c2d4 = NULL,*c3d4 = NULL,*c4d4 = NULL;
+      SbVec4f ccd4;
+      SbVec4f sum234d4,sum134d4,sum124d4,sum123d4;
+      SbVec4f vec1d4,vec2d4,vec3d4,vec4d4;
+      float s1,s2,s3,s4;
+      float w1,w2,w3,w4;
+      const SbVec3f *n1,*n2,*n3,*n4;
+      SbVec3f nc;
+      const SbVec4f *t1,*t2, * t3 = NULL, * t4 = NULL;
+      SbVec4f tc;
+
+      int curridx1 = 0;
+      int curridx2 = rowsize;
+      for (int i = 0; i < colsize-1; i++) {
+	int j = 0;
+	if ((AttributeBinding)NormalBinding == PER_ROW) {
+	  currnormal = normals++;
+	  glNormal3fv((const GLfloat *)currnormal);
+	}
+	if ((AttributeBinding)MaterialBinding == PER_ROW) {
+	  mb->send(midx++, TRUE);
+	}
+
+	if (is3d) {
+	  c3d3 = &coords3d[start+curridx1];
+	  c4d3 = &coords3d[start+curridx2];
+	} else {
+	  c3d4 = &coords4d[start+curridx1];
+	  c4d4 = &coords4d[start+curridx2];
+	}
+	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	  n3 = &normals[curridx1];
+	  n4 = &normals[curridx2];
+	}
+	curridx1++;
+	curridx2++;
+
+	for (j = 1; j < rowsize; j++) {
+	  if (is3d) {
+	    c1d3 = c3d3;
+	    c2d3 = c4d3;
+	    c3d3 = &coords3d[start+curridx1];
+	    c4d3 = &coords3d[start+curridx2];
+	    ccd3 = ((*c1d3)+(*c2d3)+(*c3d3)+(*c4d3)) * 0.25f;
+	  } else {
+	    c1d4 = c3d4;
+	    c2d4 = c4d4;
+	    c3d4 = &coords4d[start+curridx1];
+	    c4d4 = &coords4d[start+curridx2];
+	    assert(!"4d coordinates handling unimplemented yet");
+	  }
+
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	      TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      s1 = ((*c1d3) - ccd3).sqrLength();
+	      s2 = ((*c2d3) - ccd3).sqrLength();
+	      s3 = ((*c3d3) - ccd3).sqrLength();
+	      s4 = ((*c4d3) - ccd3).sqrLength();
+	    } else {
+	      // FIXME: 4D coordinates are not currently implemented
+	      // for HQ rendering - following code is never used
+	      //sum234d4 = qmeshAddVec4f(c2, sum34d4);
+	      //vec1d4 = qmeshAddSpec4f(c1, sum234d4);
+	      //sum134d4 = qmeshAddVec4f(c1, sum34d4);
+	      //vec2d4 = qmeshAddSpec4f(c2, sum134d4);
+	      //sum124d4 = qmeshAddVec4f(c4, sum12d4);
+	      //vec3d4 = qmeshAddSpec4f(c3, sum124d4);
+	      //sum123d4 = qmeshAddVec4f(c3, sum12d4);
+	      //vec4d4 = qmeshAddSpec4f(c4, sum123d4);
+	      //s1 = qmeshSqrLen(vec1d4);
+	      //s2 = qmeshSqrLen(vec2d4);
+	      //s3 = qmeshSqrLen(vec3d4);
+	      //s4 = qmeshSqrLen(vec4d4);
+	    }
+
+	    if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+	        TexturingEnabled == TRUE) {
+	      w1 = qmeshGetWeight(s1/s4) * 0.5f;
+	      w2 = qmeshGetWeight(s2/s3) * 0.5f;
+	      w3 = 0.5f - w2;
+	      w4 = 0.5f - w1;
+	    }
+	  }
+
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    n1 = n3;
+	    n2 = n4;
+	    n3 = &normals[curridx1];
+	    n4 = &normals[curridx2];
+	    nc = ((*n1)*w1 + (*n2)*w2 + (*n3)*w3 + (*n4)*w4);
+	    if (!qmeshNormalize(nc, n1->sqrLength() + n2->sqrLength() +
+				n3->sqrLength() + n4->sqrLength())) {
+	      if (is3d) {
+		SbPlane p1(*c1d3,*c2d3,*c4d3);
+		SbPlane p2(*c1d3,*c4d3,*c3d3);
+		SbVec3f n = p1.getNormal() + p2.getNormal();
+		SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+					     n3->sqrLength() + n4->sqrLength());
+#if COIN_DEBUG
+		if ( !quadok )
+		  SoDebugError::postWarning("SoQuadMesh::GLRender",
+					    "Can not compute normal because of "
+					    "wrong quad coordinates.");
+#endif // COIN_DEBUG
+	      } else {
+		// FIXME
+	      }
+	    }
+	  }
+
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(FALSE && "yet unimplemented");
+	  }
+
+	  if (TexturingEnabled == TRUE) {
+	    t1 = t3;
+	    t2 = t4;
+	    if (!tb->isFunction()) {
+	      t3 = &((SoTextureCoordinateBundle*)tb)->get(curridx1);
+	      t4 = &((SoTextureCoordinateBundle*)tb)->get(curridx2);
+	    } else {
+	      assert(FALSE && "unimplemented");
+	    }
+	    tc = ((*t1)*w1 + (*t2)*w2 + (*t3)*w3 + (*t4)*w4);
+	  }
+
+	  glBegin(GL_TRIANGLE_FAN);
+
+	  if ((AttributeBinding)NormalBinding == PER_FACE) {
+	    currnormal = normals++;
+	    glNormal3fv((const GLfloat *)currnormal);
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
+	    mb->send(curridx1, TRUE);
+	  }
+
+	  // CENTER vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(nc.getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(FALSE && "unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    // tb->send(?curridx?, cc, nc) was replaced by
+	    // glTexCoord for center vertex
+	    glTexCoord4fv((const GLfloat*)&tc);
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)&ccd3);
+	  } else {
+	    glVertex4fv((const GLfloat*)&ccd4);
+	  }
+
+	  // FIRST vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(n1->getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(FALSE && "unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		tb->send(curridx1-1, *c1d3, *n1);
+	      } else {
+		tb->send(curridx1-1, *c1d3, *currnormal);
+	      }
+	    } else {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		//tb->send(curridx1-1, *c1d4, *n1);
+	      } else {
+		//tb->send(curridx1-1, *c1d4, *currnormal);
+	      }
+	    }
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)c1d3);
+	  } else {
+	    glVertex4fv((const GLfloat*)c1d4);
+	  }
+
+	  // SECOND vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(n2->getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(!"unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		tb->send(curridx2-1, *c2d3, *n2);
+	      } else {
+		tb->send(curridx2-1, *c2d3, *currnormal);
+	      }
+	    } else {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		//tb->send(curridx2-1, *c2d4, *n2);
+	      } else {
+		//tb->send(curridx2-1, *c2d4, *currnormal);
+	      }
+	    }
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)c2d3);
+	  } else {
+	    glVertex4fv((const GLfloat*)c2d4);
+	  }
+
+	  // FOURTH vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(n4->getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(FALSE && "unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		tb->send(curridx2, *c4d3, *n4);
+	      } else {
+		tb->send(curridx2, *c4d3, *currnormal);
+	      }
+	    } else {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		//tb->send(curridx2, *c4d4, *n4);
+	      } else {
+		//tb->send(curridx2, *c4d4, *currnormal);
+	      }
+	    }
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)c4d3);
+	  } else {
+	    glVertex4fv((const GLfloat*)c4d4);
+	  }
+
+	  // THIRD vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(n3->getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(!"unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		tb->send(curridx1, *c3d3, *n3);
+	      } else {
+		tb->send(curridx1, *c3d3, *currnormal);
+	      }
+	    } else {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		//tb->send(curridx1, *c3d4, *n3);
+	      } else {
+		//tb->send(curridx1, *c3d4, *currnormal);
+	      }
+	    }
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)c3d3);
+	  } else {
+	    glVertex4fv((const GLfloat*)c3d4);
+	  }
+
+	  // again FIRST vertex
+	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+	    glNormal3fv(n1->getValue());
+	  }
+	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+	    assert(!"unimplemented");
+	  }
+	  if (TexturingEnabled == TRUE) {
+	    if (is3d) {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		tb->send(curridx1-1, *c1d3, *n1);
+	      } else {
+		tb->send(curridx1-1, *c1d3, *currnormal);
+	      }
+	    } else {
+	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+		//tb->send(curridx1-1, *c1d4, *n1);
+	      } else {
+		//tb->send(curridx1-1, *c1d4, *currnormal);
+	      }
+	    }
+	  }
+	  if (is3d) {
+	    glVertex3fv((const GLfloat*)c1d3);
+	  } else {
+	    glVertex4fv((const GLfloat*)c1d4);
+	  }
+
+	  glEnd();
+	  
+	  curridx1++;
+	  curridx2++;
+	}
+      }
+    }
+  }
 
 #undef IDX
 
-#undef OVERALL
-#undef PER_ROW
-#undef PER_FACE
-#undef PER_VERTEX
-
+} } } // namespace
 
 // Documented in superclass.
 void
@@ -1023,83 +775,62 @@ SoQuadMesh::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh, SO_FROM_INVENTOR_1);
 
-  soquadmesh_ni_render_funcs[ 0] = sogl_qmesh_m0_n0_t0;
-  soquadmesh_ni_render_funcs[ 1] = sogl_qmesh_m0_n0_t1;
-  soquadmesh_ni_render_funcs[ 2] = sogl_qmesh_m0_n1_t0;
-  soquadmesh_ni_render_funcs[ 3] = sogl_qmesh_m0_n1_t1;
-  soquadmesh_ni_render_funcs[ 4] = sogl_qmesh_m0_n2_t0;
-  soquadmesh_ni_render_funcs[ 5] = sogl_qmesh_m0_n2_t1;
-  soquadmesh_ni_render_funcs[ 6] = sogl_qmesh_m0_n3_t0;
-  soquadmesh_ni_render_funcs[ 7] = sogl_qmesh_m0_n3_t1;
-
-  soquadmesh_ni_render_funcs[ 8] = sogl_qmesh_m1_n0_t0;
-  soquadmesh_ni_render_funcs[ 9] = sogl_qmesh_m1_n0_t1;
-  soquadmesh_ni_render_funcs[10] = sogl_qmesh_m1_n1_t0;
-  soquadmesh_ni_render_funcs[11] = sogl_qmesh_m1_n1_t1;
-  soquadmesh_ni_render_funcs[12] = sogl_qmesh_m1_n2_t0;
-  soquadmesh_ni_render_funcs[13] = sogl_qmesh_m1_n2_t1;
-  soquadmesh_ni_render_funcs[14] = sogl_qmesh_m1_n3_t0;
-  soquadmesh_ni_render_funcs[15] = sogl_qmesh_m1_n3_t1;
-
-  soquadmesh_ni_render_funcs[16] = sogl_qmesh_m2_n0_t0;
-  soquadmesh_ni_render_funcs[17] = sogl_qmesh_m2_n0_t1;
-  soquadmesh_ni_render_funcs[18] = sogl_qmesh_m2_n1_t0;
-  soquadmesh_ni_render_funcs[19] = sogl_qmesh_m2_n1_t1;
-  soquadmesh_ni_render_funcs[20] = sogl_qmesh_m2_n2_t0;
-  soquadmesh_ni_render_funcs[21] = sogl_qmesh_m2_n2_t1;
-  soquadmesh_ni_render_funcs[22] = sogl_qmesh_m2_n3_t0;
-  soquadmesh_ni_render_funcs[23] = sogl_qmesh_m2_n3_t1;
-
-  soquadmesh_ni_render_funcs[24] = sogl_qmesh_m3_n0_t0;
-  soquadmesh_ni_render_funcs[25] = sogl_qmesh_m3_n0_t1;
-  soquadmesh_ni_render_funcs[26] = sogl_qmesh_m3_n1_t0;
-  soquadmesh_ni_render_funcs[27] = sogl_qmesh_m3_n1_t1;
-  soquadmesh_ni_render_funcs[28] = sogl_qmesh_m3_n2_t0;
-  soquadmesh_ni_render_funcs[29] = sogl_qmesh_m3_n2_t1;
-  soquadmesh_ni_render_funcs[30] = sogl_qmesh_m3_n3_t0;
-  soquadmesh_ni_render_funcs[31] = sogl_qmesh_m3_n3_t1;
-
-  soquadmesh_ni_render_funcs[32] = sogl_qmesh_m0_n0_t0_pl;
-  soquadmesh_ni_render_funcs[33] = sogl_qmesh_m0_n0_t1_pl;
-  soquadmesh_ni_render_funcs[34] = sogl_qmesh_m0_n1_t0_pl;
-  soquadmesh_ni_render_funcs[35] = sogl_qmesh_m0_n1_t1_pl;
-  soquadmesh_ni_render_funcs[36] = sogl_qmesh_m0_n2_t0_pl;
-  soquadmesh_ni_render_funcs[37] = sogl_qmesh_m0_n2_t1_pl;
-  soquadmesh_ni_render_funcs[38] = sogl_qmesh_m0_n3_t0_pl;
-  soquadmesh_ni_render_funcs[39] = sogl_qmesh_m0_n3_t1_pl;
-
-  soquadmesh_ni_render_funcs[40] = sogl_qmesh_m1_n0_t0_pl;
-  soquadmesh_ni_render_funcs[41] = sogl_qmesh_m1_n0_t1_pl;
-  soquadmesh_ni_render_funcs[42] = sogl_qmesh_m1_n1_t0_pl;
-  soquadmesh_ni_render_funcs[43] = sogl_qmesh_m1_n1_t1_pl;
-  soquadmesh_ni_render_funcs[44] = sogl_qmesh_m1_n2_t0_pl;
-  soquadmesh_ni_render_funcs[45] = sogl_qmesh_m1_n2_t1_pl;
-  soquadmesh_ni_render_funcs[46] = sogl_qmesh_m1_n3_t0_pl;
-  soquadmesh_ni_render_funcs[47] = sogl_qmesh_m1_n3_t1_pl;
-
-  soquadmesh_ni_render_funcs[48] = sogl_qmesh_m2_n0_t0_pl;
-  soquadmesh_ni_render_funcs[49] = sogl_qmesh_m2_n0_t1_pl;
-  soquadmesh_ni_render_funcs[50] = sogl_qmesh_m2_n1_t0_pl;
-  soquadmesh_ni_render_funcs[51] = sogl_qmesh_m2_n1_t1_pl;
-  soquadmesh_ni_render_funcs[52] = sogl_qmesh_m2_n2_t0_pl;
-  soquadmesh_ni_render_funcs[53] = sogl_qmesh_m2_n2_t1_pl;
-  soquadmesh_ni_render_funcs[54] = sogl_qmesh_m2_n3_t0_pl;
-  soquadmesh_ni_render_funcs[55] = sogl_qmesh_m2_n3_t1_pl;
-
-  soquadmesh_ni_render_funcs[56] = sogl_qmesh_m3_n0_t0_pl;
-  soquadmesh_ni_render_funcs[57] = sogl_qmesh_m3_n0_t1_pl;
-  soquadmesh_ni_render_funcs[58] = sogl_qmesh_m3_n1_t0_pl;
-  soquadmesh_ni_render_funcs[59] = sogl_qmesh_m3_n1_t1_pl;
-  soquadmesh_ni_render_funcs[60] = sogl_qmesh_m3_n2_t0_pl;
-  soquadmesh_ni_render_funcs[61] = sogl_qmesh_m3_n2_t1_pl;
-  soquadmesh_ni_render_funcs[62] = sogl_qmesh_m3_n3_t0_pl;
-  soquadmesh_ni_render_funcs[63] = sogl_qmesh_m3_n3_t1_pl;
-
   for (int pc = 0; pc < QUADMESH_WEIGHTS_NR; pc++)
     precompWeights[pc] = precalculateWeight(pc);
 }
 
 // -----
+
+#define SOGL_QUADMESH_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
+  SoGL::QuadMesh::GLRender<normalbinding, materialbinding, texturing> args
+
+#define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
+  if (texturing) {							\
+    SOGL_QUADMESH_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
+  } else {								\
+    SOGL_QUADMESH_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
+  }
+
+#define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
+  switch (materialbinding) {						\
+  case SoGL::QuadMesh::OVERALL:						\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::OVERALL, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_ROW:						\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_ROW, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_FACE:					\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_FACE, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_VERTEX:					\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_VERTEX, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid materialbinding argument");			\
+    break;								\
+  }
+
+#define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+  switch (normalbinding) {						\
+  case SoGL::QuadMesh::OVERALL:						\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::OVERALL, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_ROW:						\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_ROW, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_FACE:					\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_FACE, materialbinding, texturing, args); \
+    break;								\
+  case SoGL::QuadMesh::PER_VERTEX:					\
+    SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_VERTEX, materialbinding, texturing, args); \
+    break;								\
+  default:								\
+    assert(!"invalid normalbinding argument");				\
+    break;								\
+  }
+
+#define SOGL_QUADMESH_GLRENDER(normalbinding, materialbinding, texturing, args) \
+  SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
 
 // Documented in superclass.
 void
@@ -1215,16 +946,15 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     goto glrender_done;
   }
 
-  soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures +
-                              (pl ? 32 : 0)]
-    (coords,
-     normals,
-     &mb,
-     &tb,
-     needNormals,
-     rowsize,
-     colsize,
-     start);
+  SOGL_QUADMESH_GLRENDER(nbind, mbind, doTextures, (coords,
+						    normals,
+						    &mb,
+						    &tb,
+						    needNormals,
+						    rowsize,
+						    colsize,
+						    start,
+						    pl));
 
  glrender_done:
 
@@ -1234,6 +964,12 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   if (didpush) state->pop();
 }
+
+#undef SOGL_QUADMESH_GLRENDER_CALL_FUNC
+#undef SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3
+#undef SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2
+#undef SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1
+#undef SOGL_QUADMESH_GLRENDER
 
 // Documented in superclass.
 SbBool
