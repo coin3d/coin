@@ -331,11 +331,6 @@ PrivateHeaders = \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \
-	SoGLLineSetTemplate.icc \
-	SoGLnonindexedFaceSetTemplate.icc \
-	SoGLnonindexedTristripSetTemplate.icc \
-	SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc \
 	CoinOffscreenGLCanvas.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \
@@ -454,11 +449,8 @@ am__objects_2 = SoBase.$(OBJEXT) SoBaseP.$(OBJEXT) SoChildList.$(OBJEXT) \
 am_misc_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoGL.h SoGLDriverDatabase.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
-	SoDBP.h SoBaseP.h AudioTools.h SoGLLineSetTemplate.icc \
-	SoGLnonindexedFaceSetTemplate.icc \
-	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoDBP.h SoBaseP.h AudioTools.h CoinOffscreenGLCanvas.h SoVBO.h \
+	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
@@ -519,11 +511,8 @@ am__objects_7 = SoBase.lo SoBaseP.lo SoChildList.lo SoCompactPathList.lo \
 am_libmisc_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoGL.h SoGLDriverDatabase.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
-	SoDBP.h SoBaseP.h AudioTools.h SoGLLineSetTemplate.icc \
-	SoGLnonindexedFaceSetTemplate.icc \
-	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
+	SoDBP.h SoBaseP.h AudioTools.h CoinOffscreenGLCanvas.h SoVBO.h \
+	SoVertexArrayIndexer.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
@@ -565,11 +554,8 @@ am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h SoGL.h \
 	SoGLDriverDatabase.h SoGenerate.h SoPick.h SoShaderGenerator.h \
 	SoCompactPathList.h SoDBP.h SoBaseP.h AudioTools.h \
-	SoGLLineSetTemplate.icc SoGLnonindexedFaceSetTemplate.icc \
-	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc CoinOffscreenGLCanvas.h \
-	SoVBO.h SoVertexArrayIndexer.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
+	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h SoSceneManagerP.h SoRenderManagerP.h \
 	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
 	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
