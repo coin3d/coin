@@ -420,6 +420,8 @@ SoGroup::addChild(SoNode * node)
 /*!
   Insert a \a child node at position \a newchildindex.
 
+  \a newchildindex must be <= this->getNumChildren()
+
   Please note that this method is not virtual in the original SGI
   Inventor API.  
 */
