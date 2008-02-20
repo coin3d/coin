@@ -233,12 +233,10 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
       SoTextureQualityElement::get(state) > 0.0f && 
       size != SbVec2s(0,0) && 
       nc >= 3) {
-    SoVRMLMaterial * mat = (SoVRMLMaterial*) this->material.getValue();
-    uint32_t alpha = 0xff;
-    if (mat) {
-      alpha = (uint32_t) ((1.0f - mat->transparency.getValue()) * 255.0f);
-      if (alpha > 255) alpha = 255;
-    }
+
+    float t = SoLazyElement::getTransparency(state, 0);
+    uint32_t alpha = (uint32_t) ((1.0f - t) * 255.0f);
+    
     // lock just in case two threads get here at the same time
     PRIVATE(this)->lock();
     PRIVATE(this)->fakecolor = 0xffffff00 | alpha;
