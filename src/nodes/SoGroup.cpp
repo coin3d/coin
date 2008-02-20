@@ -772,6 +772,8 @@ SoGroup::removeAllChildren(void)
   Dereferences the child previously at \a index, and increases the
   reference count of \a newChild by 1.
 
+  \a index must be < this->getNumChildren()
+
   Please note that this method is not virtual in the original SGI
   Inventor API.  
 */
