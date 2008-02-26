@@ -736,7 +736,7 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 }
 
 SbBool
-cc_xml_doc_write_to_file(cc_xml_doc * doc, const char * path)
+cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
 {
   assert(doc);
   assert(path);;

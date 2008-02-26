@@ -399,9 +399,9 @@ cc_xml_elt *
 cc_xml_elt_get_child_of_type(const cc_xml_elt * elt, const char * type, int idx)
 {
   assert(elt);
-  if ( elt->children == NULL ) return NULL;
+  if ( !elt->children.getLength() ) return NULL;
   int i;
-  for ( i = 0; elt->children[i] != NULL; i++ ) {
+  for ( i = 0; i < elt->children.getLength(); i++ ) {
     if ( strcmp(elt->children[i]->type, type) == 0 ) {
       if ( idx == 0 ) return elt->children[i];
       idx -= 1;
@@ -414,9 +414,9 @@ cc_xml_elt *
 cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, const char * type, int idx)
 {
   assert(elt);
-  if ( elt->children != NULL ) {
+  if ( elt->children.getLength() ) {
     int i;
-    for ( i = 0; elt->children[i] != NULL; i++ ) {
+    for ( i = 0; i < elt->children.getLength(); i++ ) {
       if ( strcmp(elt->children[i]->type, type) == 0 ) {
         if ( idx == 0 ) return elt->children[i];
         idx -= 1;
@@ -451,7 +451,7 @@ cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child)
     // FIXME: ERROR - element already a child of another element
     return;
   }
-  
+
   int numchildren = cc_xml_elt_get_num_children(elt);
   elt->children.append(child);
   child->parent = elt;
@@ -916,7 +916,7 @@ cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
     // Check if we can find a child that is not cdata..
     for (int i = 0; i < cc_xml_elt_get_num_children(here); ++i) {
       if (strcmp(COIN_XML_CDATA_TYPE, here->children[i]->type) != 0) {
-        return cc_xml_elt_get_child(here, 1);
+        return cc_xml_elt_get_child(here, i);
       }
     }
   }
@@ -930,7 +930,7 @@ cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
     if (idx == (cc_xml_elt_get_num_children(parent) - 1)) {
       here = parent;
       // if we're back to root, simply quit..
-      if (here == root) return NULL; 
+      if (here == root) return NULL;
     } else {
       // there is more children than 'here' left, find someone thats not "cdata".
       do {
@@ -986,9 +986,9 @@ cc_xml_elt_create_x(cc_xml_elt * from, cc_xml_path * path)
     int lastpos = -1, lastidx = -1;
     type = cc_xml_path_get_type(path, i);
     idx = cc_xml_path_get_index(path, i);
-    if ( current->children != NULL ) {
+    if ( current->children.getLength() ) {
       int child;
-      for ( child = 0; current->children[child] != NULL; child++ ) {
+      for ( child = 0; i < current->children.getLength(); child++ ) {
         if ( strcmp(type, cc_xml_elt_get_type(current->children[child])) == 0 ) {
           lastpos = child;
           lastidx += 1;
