@@ -910,25 +910,27 @@ cc_xml_elt *
 cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
 {
   assert(root && here);
-  // Revised sigurdts version (ignores any "cdata" element)..
-  if( cc_xml_elt_get_num_children(here) > 0) {
-      // Check if we can find a child that is not cdata..
-      for(int i = 0; i < cc_xml_elt_get_num_children(here); ++i) {
-        if(strcmp(COIN_XML_CDATA_TYPE, here->children[i]->type) != 0)
-            return cc_xml_elt_get_child(here, 1);
-      };
+
+  // first traverse into children - but ignore any "cdata" element...
+  if (cc_xml_elt_get_num_children(here) > 0) {
+    // Check if we can find a child that is not cdata..
+    for (int i = 0; i < cc_xml_elt_get_num_children(here); ++i) {
+      if (strcmp(COIN_XML_CDATA_TYPE, here->children[i]->type) != 0) {
+        return cc_xml_elt_get_child(here, 1);
+      }
+    }
   }
 
   // if we're here then 'here' has no children (except possibly cdata).
   do {
     cc_xml_elt * parent = cc_xml_elt_get_parent(here);
-    if(parent == NULL) break;   // break if we're NULL...
+    if (parent == NULL) return NULL; // here is the root
     int idx = cc_xml_elt_get_child_index(parent, here);
-    // If 'here' was the last child then set here as parent..
-    if ( idx == (cc_xml_elt_get_num_children(parent) - 1) ) {
+    // if 'here' was the last child then set here as parent..
+    if (idx == (cc_xml_elt_get_num_children(parent) - 1)) {
       here = parent;
       // if we're back to root, simply quit..
-      if ( here == root ) break; 
+      if (here == root) return NULL; 
     } else {
       // there is more children than 'here' left, find someone thats not "cdata".
       do {
@@ -936,27 +938,13 @@ cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
           here = cc_xml_elt_get_child(parent, idx);
 
           // return this element if it's not a "cdata" element.
-          if( strcmp(COIN_XML_CDATA_TYPE, here->type) != 0 ) 
-            return here;
+          if (strcmp(COIN_XML_CDATA_TYPE, here->type) != 0) return here;
 
-      }while(idx != cc_xml_elt_get_num_children(parent) - 1);
-    };
-  } while ( TRUE );
+      } while (idx != (cc_xml_elt_get_num_children(parent) - 1));
+    }
+  } while (TRUE);
 
   return NULL;
-
- /* if ( cc_xml_elt_get_num_children(here) > 0 )
-    return cc_xml_elt_get_child(here, 0); // Is this correct????
-  do {
-    cc_xml_elt * parent = cc_xml_elt_get_parent(here);
-    if ( (parent == NULL) || (parent == root) ) break;
-    int idx = cc_xml_elt_get_child_index(parent, here);
-    if ( idx == (cc_xml_elt_get_num_children(parent) - 1) )
-      here = parent;
-    else
-      return cc_xml_elt_get_child(parent, idx + 1);
-  } while ( TRUE );
-  return NULL;*/
 } // cc_xml_elt_get_traversal_next()
 
 // *************************************************************************
