@@ -465,7 +465,7 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
     int bytes = static_cast<int>(fread(buf, 1, 8192, fp));
     final = feof(fp);
     XML_Status status = XML_ParseBuffer(doc->parser, bytes, final);
-    if (status != 0) { cc_xml_doc_handle_parse_error(doc); }
+    if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
   }
 
   fclose(fp);
@@ -529,8 +529,8 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
 
-  XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
-  if (!ok) { cc_xml_doc_handle_parse_error(doc); }
+  XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
+  if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
 
   return TRUE;
 }
@@ -545,8 +545,8 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
   if (!doc->parser) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
-  XML_Status ok = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
-  if (!ok) { cc_xml_doc_handle_parse_error(doc); }
+  XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
+  if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
 
   cc_xml_doc_delete_parser_x(doc);
   return TRUE;
