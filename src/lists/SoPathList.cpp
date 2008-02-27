@@ -180,8 +180,8 @@ SoPathList::uniquify(void)
     SoFullPath * p = array[i];
     int j = i+1;
     // if fork is at tail of current path, remove next path. We might
-    // have more than one path that go through the tail of this path's
-    // tail, so do this test in a while loop
+    // have more than one path that go through this path's tail, so do
+    // the test in a while loop
     while ((j < this->getLength()) && (p->findFork(array[j]) == p->getLength()-1)) {
       this->remove(j);
       // get array pointer again even though it shouldn't change, but
