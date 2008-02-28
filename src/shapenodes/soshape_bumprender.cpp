@@ -34,6 +34,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
@@ -503,7 +504,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tptr = this->tangentlist.getArrayPtr();
-
+  
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
                             (GLvoid*) cache->getVertexArray());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
@@ -643,6 +644,12 @@ soshape_bumprender::renderBump(SoState * state,
 
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tsptr = this->tangentlist.getArrayPtr();
+
+  if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
+    SoCacheElement::invalidate(state);
+    SoGLCacheContextElement::shouldAutoCache(state, 
+                                             SoGLCacheContextElement::DONT_AUTO_CACHE);
+  }
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
                             (GLvoid*) cache->getVertexArray());

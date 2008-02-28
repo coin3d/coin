@@ -349,6 +349,7 @@
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
+#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoGL.h"
 #include "misc/SbHash.h"
 #include "caches/SoVBOCache.h"
@@ -554,6 +555,11 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
   if (vbo) {
+    if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
+      SoCacheElement::invalidate(state);
+      SoGLCacheContextElement::shouldAutoCache(state, 
+                                               SoGLCacheContextElement::DONT_AUTO_CACHE);
+    }
     int i;
     int lastenabled = -1;
     const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);

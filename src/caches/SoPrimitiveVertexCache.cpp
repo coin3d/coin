@@ -45,6 +45,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoCacheHintElement.h>
@@ -285,6 +286,12 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     SoGLVBOElement::shouldCreateVBO(state, PRIVATE(this)->vertexlist.getLength());
 
   if (renderasvbo) {
+    if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
+      SoCacheElement::invalidate(state);
+      SoGLCacheContextElement::shouldAutoCache(state, 
+                                               SoGLCacheContextElement::DONT_AUTO_CACHE);
+    }
+
     PRIVATE(this)->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
