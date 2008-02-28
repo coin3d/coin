@@ -55,10 +55,10 @@ class SoGLDriverDatabaseP {
     // why this happens. For now we just avoid using
     // glMultiDrawElements() under OS X.  pederb, 2005-02-14
     SbBool ismac = (coin_runtime_os() == COIN_OS_X);
-    if (!ismac) return cc_glglue_has_multidraw_vertex_arrays(glue); 
+    if (!ismac) return cc_glglue_has_multidraw_vertex_arrays(glue);
     return FALSE;
   }
-  
+
   void initFunctions(void) {
     // define some reserved feature names for features that cannot be
     // tested directly as a single OpenGL extension test.
@@ -110,6 +110,8 @@ class SoGLDriverDatabaseP {
                          (glglue_feature_test_f *) &cc_glglue_can_do_sortedlayersblend);
     this->featuremap.put(SbName(SO_GL_BUMPMAPPING).getString(),
                          (glglue_feature_test_f *) &cc_glglue_can_do_bumpmapping);
+    this->featuremap.put(SbName(SO_GL_VBO_IN_DISPLAYLIST).getString(),
+                         (glglue_feature_test_f *) &coin_glglue_vbo_in_displaylist_supported);
   }
 
   class SoGLDriver {
@@ -321,7 +323,7 @@ SoGLDriverDatabase::init(void)
 {
   // make sure the private static class is created to avoid race conditions
   (void) pimpl();
-  
+
   // FIXME: parse the xml database file(s) here
 }
 

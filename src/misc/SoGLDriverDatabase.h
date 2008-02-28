@@ -80,5 +80,6 @@ private:
 #define SO_GL_ANISOTROPIC_FILTERING "COIN_anisotropic_filtering"
 #define SO_GL_SORTED_LAYERS_BLEND   "COIN_sorted_layers_blend"
 #define SO_GL_BUMPMAPPING           "COIN_bumpmapping"
+#define SO_GL_VBO_IN_DISPLAYLIST    "COIN_vbo_in_displaylist"
 
 #endif // SOGLDATABASE_H
