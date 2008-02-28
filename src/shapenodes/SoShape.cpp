@@ -1799,7 +1799,7 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
   const cc_glglue * glue = sogl_glue_instance(state);
 
   if (vbo) {
-    if (!coin_glglue_vbo_in_displaylist_supported(glue)) {
+    if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
       SoCacheElement::invalidate(state);
       SoGLCacheContextElement::shouldAutoCache(state, 
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
