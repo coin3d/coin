@@ -117,6 +117,7 @@ class SoSFBox3i32;
 class SoSFBox3f;
 class SoSFBox3d;
 class SoSFColor;
+class SoSFColorRGBA;
 class SoSFEngine;
 class SoSFEnum;
 class SoSFImage3;
@@ -162,6 +163,7 @@ class SoSFVec4d;
 class SoMFBitMask;
 class SoMFBool;
 class SoMFColor;
+class SoMFColorRGBA;
 class SoMFDouble;
 class SoMFEngine;
 class SoMFEnum;
@@ -864,7 +866,7 @@ struct SbTypeInfo<SoSFColor> {
 template<>
 struct SbTypeInfo<SoSFColorRGBA> {
   typedef SoSFColorRGBA Type;
-  typedef SbColorRGBA DataType;
+  typedef SbColor4f DataType;
 };
 
 template<>
@@ -891,16 +893,16 @@ struct SbTypeInfo<SoSFFloat> {
   typedef float DataType;
 };
 
-template<>
-struct SbTypeInfo<SoSFImage3> {
-  typedef SoSFImage3 Type;
-  typedef SoImage3 DataType;
-};
+//template<>
+//struct SbTypeInfo<SoSFImage3> {
+//  typedef SoSFImage3 Type;
+//  typedef SoImage3 DataType;
+//};
 
 template<>
 struct SbTypeInfo<SoSFImage> {
   typedef SoSFImage Type;
-  typedef SbImage DataType;
+//  typedef SbImage DataType;
 };
 
 template<>
@@ -1110,7 +1112,7 @@ struct SbTypeInfo<SoMFColor> {
 template<>
 struct SbTypeInfo<SoMFColorRGBA> {
   typedef SoMFColorRGBA Type;
-  typedef SbColorRGBA DataType;
+  typedef SbColor4f DataType;
 };
 
 template<>
