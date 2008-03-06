@@ -78,7 +78,6 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 
-#include "profiler/SoProfilerOneGraphKit.h"
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/annex/Profiler/nodekits/SoNodeVisualize.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>
@@ -307,7 +306,6 @@ SoProfiler::init(void)
   SoProfilerTopKit::initClass();
   SoProfilerStats::initClass();
   SoProfilerTopEngine::initClass();
-  SoProfilerOneGraphKit::initClass();
   SoScrollingGraphKit::initClass();
   SoNodeVisualize::initClass();
 
