@@ -31,7 +31,6 @@ class SoFieldData;
 class SoFieldList;
 class SoOutput;
 
-
 class COIN_DLL_API SoFieldContainer : public SoBase {
   typedef SoBase inherited;
 
@@ -85,12 +84,14 @@ public:
                                      const SbBool copyconnections);
   static void copyDone(void);
 
+  virtual void getFieldsMemorySize(size_t & managed, size_t & unmanaged) const;
+
   void setUserData(void * userdata) const;
   void * getUserData(void) const;
 
 protected:
   SoFieldContainer(void);
-  ~SoFieldContainer();
+  virtual ~SoFieldContainer();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   SbBool isBuiltIn;
@@ -98,6 +99,7 @@ protected:
 private:
   static SoType classTypeId;
   SbBool donotify;
-};
+
+}; // SoFieldContainer
 
 #endif // !COIN_SOFIELDCONTAINER_H

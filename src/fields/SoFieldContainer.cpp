@@ -51,12 +51,24 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
+#include <Inventor/fields/SoMField.h>
+#include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSFImage.h>
+#include <Inventor/fields/SoSFImage3.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/threads/SbStorage.h>
+
+#include <Inventor/SbTypeInfo.h>
+#include <Inventor/SbColor.h>
+#include <Inventor/SbColor4f.h>
+#include <Inventor/SbTime.h>
+#undef COIN_INTERNAL
+#include <Inventor/SbLinear.h>
+#include <Inventor/SbVec.h>
+#define COIN_INTERNAL
 
 #include "tidbitsp.h"
 #include "misc/SbHash.h"
@@ -974,6 +986,205 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
   }
   return TRUE;
 }
+
+/*!
+  Returns the data array sizes of the SoFieldData-registered multi-fields.
+  The \a managed argument returns the size of the fields that Coin manages the
+  memory for, and the \a unmanaged argument returns the size of the data in
+  the multi-fields controlled by the application through
+  SoMField::setValuesPointer() which Coin will not delete.
+
+  Data that is kept in the object memory chunk (that is included when you
+  do sizeof(object)) is not included in these values - only the memory that
+  is managed in addtional memory chunks from the object chunk is returned.
+
+  Extension field types that are not known to the plain Coin library are
+  not accounted for.  This function is therefore virtual, so such extension
+  field types can be added to the numbers for extension nodes.
+
+  This method is used for memory profiling purposes.
+
+  \since 2008-03-06
+*/
+void
+SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) const
+{
+  managed = 0;
+  unmanaged = 0;
+
+  SoFieldList fields;
+  int numfields = this->getAllFields(fields);
+  for (int c = 0; c < numfields; ++c) {
+    const SoField * field = fields[c];
+
+    if (field->getTypeId().isDerivedFrom(SoSField::getClassTypeId())) {
+      // a couple of single-fields have "external"/allocated data as
+      // well as the multi-fields
+
+      SoSField * sfield = static_cast<const SoSField *>(field);
+      SoType sftype = sfield->getTypeId();
+
+      if (sfield->getTypeId().isDerivedFrom(SoSFImage::getClassTypeId())) {
+	SoSFImage * imgfield = static_cast<SoSFImage *>(sfield);
+	SbVec2s size(0, 0);
+	int nc = 0;
+	imgfield->getValue(size, nc);
+	managed += size[0] * size[1] * nc;	
+      } else if (sfield->getTypeId().isDerivedFrom(SoSFImage3::getClassTypeId())) {
+	SoSFImage3 * img3field = static_cast<SoSFImage3 *>(sfield);
+	SbVec3s size(0, 0, 0);
+	int nc = 0;
+	img3field->getValue(size, nc);
+	managed += size[0] * size[1] * size[2] * nc;	
+      } else {
+	// memory size estimation probably not needed
+      }
+    }
+    else if (field->getTypeId().isDerivedFrom(SoMField::getClassTypeId())) {
+      SoMField * mfield = static_cast<const SoMField *>(field);
+      SoType mftype = mfield->getTypeId();
+      int numelements = mfield->getNum();
+      size_t elementsize = 0;
+
+#define SBNAMESTRING(arg) \
+    static const SbName SO__CONCAT(arg, _string)(SO__QUOTE(arg))
+
+      SBNAMESTRING(SoMFBitMask);
+      SBNAMESTRING(SoMFBool);
+      SBNAMESTRING(SoMFColor);
+      SBNAMESTRING(SoMFColorRGBA);
+      SBNAMESTRING(SoMFDouble);
+      SBNAMESTRING(SoMFEngine);
+      SBNAMESTRING(SoMFEnum);
+      SBNAMESTRING(SoMFFloat);
+      SBNAMESTRING(SoMFInt32);
+      SBNAMESTRING(SoMFMatrix);
+      SBNAMESTRING(SoMFName);
+      SBNAMESTRING(SoMFNode);
+      SBNAMESTRING(SoMFPlane);
+      SBNAMESTRING(SoMFRotation);
+      SBNAMESTRING(SoMFShort);
+      SBNAMESTRING(SoMFString);
+      SBNAMESTRING(SoMFTime);
+      SBNAMESTRING(SoMFUInt32);
+      SBNAMESTRING(SoMFUShort);
+      SBNAMESTRING(SoMFVec2b);
+      SBNAMESTRING(SoMFVec2d);
+      SBNAMESTRING(SoMFVec2f);
+      SBNAMESTRING(SoMFVec2i32);
+      SBNAMESTRING(SoMFVec2s);
+      SBNAMESTRING(SoMFVec3b);
+      SBNAMESTRING(SoMFVec3d);
+      SBNAMESTRING(SoMFVec3f);
+      SBNAMESTRING(SoMFVec3i32);
+      SBNAMESTRING(SoMFVec3s);
+      SBNAMESTRING(SoMFVec4b);
+      SBNAMESTRING(SoMFVec4d);
+      SBNAMESTRING(SoMFVec4f);
+      SBNAMESTRING(SoMFVec4i32);
+      SBNAMESTRING(SoMFVec4s);
+      SBNAMESTRING(SoMFVec4ub);
+      SBNAMESTRING(SoMFVec4ui32);
+      SBNAMESTRING(SoMFVec4us);
+
+      // TODO: stuff these values into an std::map<> instead of this ifelse...
+      const char * mftypekey = mftype.getName().getString();
+      if (mftypekey == SoMFBitMask_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFBitMask>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFBool_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFBool>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFColor_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFColor>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFColorRGBA_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFColorRGBA>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFDouble_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFDouble>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFEngine_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFEngine>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFEnum_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFEnum>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFFloat_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFFloat>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFInt32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFInt32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFMatrix_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFMatrix>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFName_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFName>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFNode_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFNode>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFPlane_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFPlane>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFRotation_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFRotation>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFShort_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFShort>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFString_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFString>::DataType[2]) / 2;
+	// FIXME: should we add strlen(str[i]) to memory size? would
+	// potentially take some time to compute. 20080302 larsa
+	//for (int c = 0; c < numelements; ++c) {
+	//  add strlen(string[c]) + 1 to memory size?
+	//}
+      } else if (mftypekey == SoMFTime_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFTime>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFUInt32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFUInt32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFUShort_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFUShort>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec2b_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec2b>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec2d_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec2d>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec2f_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec2f>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec2i32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec2i32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec2s_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec2s>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec3b_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec3b>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec3d_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec3d>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec3f_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec3f>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec3i32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec3i32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec3s_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec3s>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4b_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4b>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4d_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4d>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4f_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4f>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4i32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4i32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4s_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4s>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4ub_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4ub>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4ui32_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4ui32>::DataType[2]) / 2;
+      } else if (mftypekey == SoMFVec4us_string.getString()) {
+	elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
+      } else {
+	// unsupported field type
+	elementsize = 0;
+      }
+
+#undef SBNAMESTRING
+
+      if (mfield->isDeleteValuesEnabled()) {
+	// assume this is a self-managed multi-fields
+	managed += elementsize * numelements;
+      } else {
+	// assume setValuesPointer() has been used
+	unmanaged += elementsize * numelements;
+      }
+    }
+  }
+} // getMFieldsDataSize()
 
 /*!
   Set a generic user data pointer for this field container.
