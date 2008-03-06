@@ -1,9 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_SCENE_PROFILING
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -34,7 +28,7 @@
 
 // *************************************************************************
 
-#include "profiler/SoProfilerElement.h"
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 
 #include <assert.h>
 
@@ -61,7 +55,7 @@ SoProfilerElement::get(SoState * state)
 {
   assert(state);
   if (!state->isElementEnabled(SoProfilerElement::classStackIndex)) {
-    assert(!"SoProfilerElement not enabled");
+    return NULL;
   }
 
   SoElement * elt = state->getElementNoPush(SoProfilerElement::classStackIndex);
@@ -70,7 +64,6 @@ SoProfilerElement::get(SoState * state)
 
 SoProfilerElement::~SoProfilerElement(void)
 {
-  this->clear(); // must dealloc nodemap entries
 }
 
 // *************************************************************************
@@ -102,8 +95,10 @@ SoProfilerElement::pop(SoState *, const SoElement *)
 SbBool
 SoProfilerElement::matches(const SoElement * element) const
 {
-  // FIXME: implement properly.  -mortene.
-  // (just compare the data)
+  if (element == this) return TRUE;
+  const SoProfilerElement * pelement =
+    static_cast<const SoProfilerElement *>(element);
+  if (pelement->getProfilingData() == this->getProfilingData()) return TRUE;
   return FALSE;
 }
 
@@ -112,21 +107,13 @@ SoProfilerElement::copyMatchInfo(void) const
 {
   SoProfilerElement * elem =
     static_cast<SoProfilerElement *>(this->getTypeId().createInstance());
-  // FIXME: copy data
+  elem->getProfilingData() = this->getProfilingData();
   return elem;
 }
 
 // *************************************************************************
 
-void
-SoProfilerElement::clear(void)
-{
-  this->data.clear();
-  this->traversal_start_time = SbTime::zero();
-}
-
-// *************************************************************************
-
+/*
 void
 SoProfilerElement::setTimingProfile(SoNode * node, SbTime t, SoNode * parent)
 {
@@ -137,9 +124,11 @@ SoProfilerElement::setTimingProfile(SoNode * node, SbTime t, SoNode * parent)
   if (parent == NULL) return;
   this->data.setChildTiming(parent, node, t);
 }
+*/
 
 // *************************************************************************
 
+/*
 void
 SoProfilerElement::setHasGLCache(SoNode * node, SbBool hascache)
 {
@@ -149,21 +138,28 @@ SoProfilerElement::setHasGLCache(SoNode * node, SbBool hascache)
 void
 SoProfilerElement::startTraversalClock()
 {
-  this->traversal_start_time = SbTime::getTimeOfDay();
+  this->data.setActionStartTime(SbTime::getTimeOfDay());
 }
 
 SbTime 
 SoProfilerElement::timeSinceTraversalStart()
 {
-  return SbTime::getTimeOfDay() - this->traversal_start_time;
+  if (this->data.getActionStartTime() == SbTime::zero())
+    return SbTime::zero();
+  return SbTime::getTimeOfDay() - this->data.getActionStartTime();
 }
+*/
 
 const SbProfilingData &
-SoProfilerElement::getProfilingData() const
+SoProfilerElement::getProfilingData(void) const
+{
+  return this->data;
+}
+
+SbProfilingData &
+SoProfilerElement::getProfilingData(void)
 {
   return this->data;
 }
 
 // *************************************************************************
-
-#endif // HAVE_SCENE_PROFILING

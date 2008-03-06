@@ -1,12 +1,6 @@
 #ifndef COIN_SOPROFILERELEMENT_H
 #define COIN_SOPROFILERELEMENT_H
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_SCENE_PROFILING
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -30,23 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif // COIN_INTERNAL
-
-#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/SoType.h>
-
-#include "misc/SbHash.h"
-#include "profiler/SbProfilingData.h"
+#include <Inventor/annex/Profiler/SbProfilingData.h>
 
 // *************************************************************************
-
-class SoState;
 
 class SoProfilerElement : public SoElement {
   typedef SoElement inherited;
@@ -60,30 +43,18 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
-  void clear(void);
-   
-  void setTimingProfile(SoNode * node, SbTime t, SoNode * parent = NULL);
-
-  void setHasGLCache(SoNode * node, SbBool hascache = TRUE);
-
-  SbTime timeSinceTraversalStart(void);
-  void startTraversalClock(void);
-
+  SbProfilingData & getProfilingData(void);
   const SbProfilingData & getProfilingData(void) const;
 
 protected:
   virtual ~SoProfilerElement(void);
 
+  SbProfilingData data;
+
+private:
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * elt);
 
-private:
-  SbProfilingData data;
-
-  SbTime traversal_start_time;
-
 }; // SoProfilerElement
-
-#endif // HAVE_SCENE_PROFILING
 
 #endif // !COIN_SOPROFILERELEMENT_H
