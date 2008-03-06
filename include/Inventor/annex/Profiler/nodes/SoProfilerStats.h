@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/tools/SbPimplPtr.h>
 
+class SbProfilingData;
 class SoSeparator;
 
 class COIN_DLL_API SoProfilerStats : public SoNode {
@@ -79,6 +80,8 @@ public:
   virtual void pick(SoPickAction * action);
   virtual void search(SoSearchAction * action);
   virtual void write(SoWriteAction * action);
+
+  const SbProfilingData & getProfilingData(SoType actiontype) const;
 
 protected:
   virtual ~SoProfilerStats();

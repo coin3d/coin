@@ -396,56 +396,6 @@ SoProfilerStats::~SoProfilerStats()
 
 // *************************************************************************
 
-/*!
-  \brief 
- */
-/*
-SbTime
-SoProfilerStats::getProfilingTime(SoType action, SoNode * parent, 
-                                  SoNode * child)
-{
-  std::map<int16_t, SbProfilingData *>::iterator it =
-    PRIVATE(this)->action_map.find(action.getKey());
-  if (it != PRIVATE(this)->action_map.end()) {
-    return it->second->getChildTiming(parent, child);
-  }
-  return SbTime::zero();;
-} // getProfilingTime
-*/
-/*
-SbTime
-SoProfilerStats::getTotalProfilingTime(SoNode * parent,
-                                       SoNode * child)
-{
-  SbTime total(SbTime::zero());
-
-  std::map<int16_t, SbProfilingData *>::iterator it, end;
-  for (it = PRIVATE(this)->action_map.begin(),
-         end = PRIVATE(this)->action_map.end();
-       it != end; ++it) {
-    total += it->second->getChildTiming(parent, child);
-  }
-  return total;
-}
-*/
-/*!
-  \brief TODO
-*/
-/*
-SbBool
-SoProfilerStats::hasGLCache(SoSeparator * sep) 
-{
-  int16_t key = SoGLRenderAction::getClassTypeId().getKey();
-  std::map<int16_t, SbProfilingData *>::iterator it =
-    PRIVATE(this)->action_map.find(key);
-  if (it != PRIVATE(this)->action_map.end()) {
-    return it->second->hasGLCache(sep);
-  }
-  return FALSE;
-}
-*/
-// *************************************************************************
-
 // Doc from superclass.
 void
 SoProfilerStats::GLRender(SoGLRenderAction * action)
@@ -533,6 +483,19 @@ SoProfilerStats::notify(SoNotList *l)
   // and it doesn't expose any state relevant for any other nodes that
   // do "real work" in the scenegraph anyway, so this is the correct
   // thing to do.
+}
+
+const SbProfilingData &
+SoProfilerStats::getProfilingData(SoType actiontype) const
+{
+  std::map<int16_t, SbProfilingData *>::const_iterator it = 
+    PRIVATE(this)->action_map.find(actiontype.getKey());
+  if (it != PRIVATE(this)->action_map.end()) {
+    return (*((*it).second));
+  }
+
+  static SbProfilingData nodata;
+  return nodata;
 }
 
 // *************************************************************************
