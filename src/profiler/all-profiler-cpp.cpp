@@ -25,15 +25,18 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
+#include "SoProfiler.cpp"
+#include "SbProfilingData.cpp"
+#include "SoProfilerElement.cpp"
+
 #ifdef HAVE_SCENE_PROFILING
 
-#include "SoProfiler.cpp"
-#include "SoProfilerElement.cpp"
 #include "SoProfilerOverlayKit.cpp"
 #include "SoProfilerTopEngine.cpp"
 #include "SoProfilerStats.cpp"
 #include "SoNodeVisualize.cpp"
 #include "SoProfilerTopKit.cpp"
 #include "SoProfilerVisualizeKit.cpp"
+#include "SoScrollingGraphKit.cpp"
 
 #endif // HAVE_SCENE_PROFILING
