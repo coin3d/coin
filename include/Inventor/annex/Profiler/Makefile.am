@@ -2,7 +2,8 @@
 SUBDIRS = nodes elements nodekits engines
 
 PublicHeaders = \
-	SoProfiler.h 
+        SbProfilingData.h \
+        SoProfiler.h
 PrivateHeaders =
 ObsoleteHeaders =
 

@@ -1,5 +1,6 @@
 
-PublicHeaders =
+PublicHeaders = \
+        SoProfilerElement.h
 PrivateHeaders =
 ObsoleteHeaders =
 
