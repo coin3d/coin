@@ -270,8 +270,8 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     this->glimage ? this->glimage->getFlags() & SoGLImage::COMPRESSED : FALSE;
 
   
-  GLenum internalformat = coin_glglue_get_internal_texture_format(bytespertexel, compress);
-  GLenum format = coin_glglue_get_texture_format(bytespertexel);
+  GLenum internalformat = coin_glglue_get_internal_texture_format(glw, bytespertexel, compress);
+  GLenum format = coin_glglue_get_texture_format(glw, bytespertexel);
 
   return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
                                            internalformat, format, GL_UNSIGNED_BYTE, TRUE);
