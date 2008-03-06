@@ -31,7 +31,7 @@ public:
   static void init(void);
 
   static SbBool isActive(void);
-  static SbBool overlayActive(void);
+  static SbBool isOverlayActive(void);
 
   static void enable(SbBool enable = TRUE);
   static SbBool isEnabled(void);

@@ -63,11 +63,8 @@ typedef SbHash<int16_t, uint32_t> UInt32ToInt16Map;
 class SoDBP {
 public:
   struct EnvVars {
-#ifdef HAVE_SCENE_PROFILING
     static const char * COIN_PROFILER;
     static const char * COIN_PROFILER_OVERLAY;
-    static const char * COIN_PROFILER_SYNCGL;
-#endif // HAVE_SCENE_PROFILING
   };
 
   static void variableArgsSanityCheck(void);

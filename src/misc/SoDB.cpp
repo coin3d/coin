@@ -117,6 +117,7 @@
 /*! \defgroup sound 3D sound support */
 /*! \defgroup threads Portable thread-handling abstractions  */
 /*! \defgroup VRMLnodes VRML97 classes */
+/*! \defgroup envvars Environment Variables */
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
@@ -292,7 +293,8 @@ static SbRWMutex * sodb_globalmutex = NULL;
 
 #ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/SoProfiler.h>
-#include "profiler/SoProfilerElement.h"
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include "profiler/SoProfilerP.h"
 #endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
@@ -399,18 +401,35 @@ static SbRWMutex * sodb_globalmutex = NULL;
 // *************************************************************************
   
 // Coin-global envvars:
-  
-#ifdef HAVE_SCENE_PROFILING
-/* turns on the live profiling feature in Coin */
+
+/*!
+  \var COIN_PROFILER
+
+  Setting the environment variable "COIN_PROFILER" to 1 turns on the
+  live scene graph (primarily) profiling feature in Coin.
+
+  \ingroup envvars
+*/
 const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
-/* SoGLRenderAction will render an overlay scenegraph with misc
-   profiler stats if this is on */
+
+/*!
+  \var COIN_PROFILER_OVERLAY
+
+  The SoGLRenderAction will render an overlay scenegraph with misc
+  profiler statistics if this environment variable is used.
+
+  This variable can be set to 1 just to get the default display up, or it can
+  be set to a parameter list to better control the system.
+
+  - autoredraw[=secs]
+    - set how long to wait after a renderpass to schedule a new redraw.
+
+  - toplist=type,
+
+  \ingroup envvars
+*/
 const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
-/* when profiling, use glFinish() to force OpenGL out of asynchronous
-   mode, where applicable */
-const char * SoDBP::EnvVars::COIN_PROFILER_SYNCGL = "COIN_PROFILER_SYNCGL";
-#endif // HAVE_SCENE_PROFILING
-  
+
 // *************************************************************************
 
 static SbString * coin_versionstring = NULL;
@@ -696,9 +715,13 @@ SoDB::init(void)
   SoDBP::isinitialized = TRUE;
 
 #ifdef HAVE_SCENE_PROFILING
-  env = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
-  const SbBool do_profiling = (env && (atoi(env) > 0)) ? TRUE : FALSE;
-  if (do_profiling) { SoProfiler::init(); }
+  // NOTE: SoDBP::isinitialized must be set to TRUE before this block,
+  // or you will get a "mysterious" crash on a mutex in
+  // CoinStaticObjectInDLL.cpp.  Logically, it 
+  SoProfilerP::parseCoinProfilerVariable();
+  if (SoProfiler::isEnabled()) {
+    SoProfiler::init();
+  }
 #endif // HAVE_SCENE_PROFILING
 
   // Debugging for memory leaks will be easier if we can clean up the
