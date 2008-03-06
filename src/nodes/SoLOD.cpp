@@ -208,7 +208,7 @@ SoLOD::doAction(SoAction *action)
     this->children->traverseInPath(action, numindices, indices);
   }
   else {
-    int idx = this->whichToTraverse(action);;
+    int idx = this->whichToTraverse(action);
     if (idx >= 0) {
       this->children->traverse(action, idx);
       PRIVATE(this)->enableTraversingOfInactiveChildren();
