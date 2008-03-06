@@ -418,13 +418,16 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     const unsigned long CRITICAL = 10;
 
     SoNode * parent = this->parent->node;
-    unsigned long msec = stats->getTotalProfilingTime(parent, this->node).getMsecValue();
+    // FIXME: larsa
+    unsigned long msec = 0; // stats->getTotalProfilingTime(parent, this->node).getMsecValue();
     msec = SbMax<unsigned long>(CRITICAL, msec);
     green = 1.0f - (float)msec / (float)CRITICAL;
   }
                
   if(this->node->isOfType(SoSeparator::getClassTypeId()) && 
-     stats->hasGLCache((SoSeparator *)this->node)) {
+     0 // FIXME: larsa
+     //stats->hasGLCache((SoSeparator *)this->node)
+     ) {
     // FIXME All children are cached. Make them inherit material
     color = SbVec3f(0.0f, green, 1.0f);
     transparency = 0.0f;
