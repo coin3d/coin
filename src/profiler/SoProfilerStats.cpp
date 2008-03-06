@@ -31,6 +31,8 @@
 
 #include <map>
 
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include <Inventor/annex/Profiler/SbProfilingData.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -48,8 +50,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "profiler/SoProfilerElement.h"
-#include "profiler/SbProfilingData.h"
+#include "misc/SbHash.h"
 
 // decide whether to expose profiling stats by node type or by
 // user-specified node names
@@ -155,8 +156,7 @@ SoProfilerStatsP::doAction(SoAction * action)
   if (it != this->action_map.end()) {
     (*((*it).second)) += e->getProfilingData();
   } else {
-    SbProfilingData * data = new SbProfilingData;
-    (*data) += e->getProfilingData();
+    SbProfilingData * data = new SbProfilingData(e->getProfilingData());
     std::pair<int16_t, SbProfilingData *> entry(action->getTypeId().getKey(), data);
     this->action_map.insert(entry);
   }
@@ -182,9 +182,7 @@ SoProfilerStatsP::clearProfilingData(void)
     delete (*it).second;
   }
   this->action_map.clear();
-
   this->action_timings.clear();
-
   this->type_timings.clear();
 } // clearActionMap
 
@@ -196,9 +194,9 @@ SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e,
   SbTime time = SbTime::zero();
   SbBool found = this->action_timings.get(type, time);
   if (found)
-    time += e->timeSinceTraversalStart();
+    time += e->getProfilingData().getActionDuration();
   else
-    time = e->timeSinceTraversalStart();
+    time = e->getProfilingData().getActionDuration();
   
   this->action_timings.put(type, time);
 } // updateActionTimingMaps
@@ -208,17 +206,17 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
 {
   const SbProfilingData & data = e->getProfilingData();
 #if BY_TYPE
-  SbList<SbProfilingData::NodeTypeKey> keys;
-  data.getTraversalStatsForTypesKeyList(keys);
+  SbList<SbProfilingNodeTypeKey> keys;
+  data.getStatsForTypesKeyList(keys);
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
-    SbProfilingData::NodeTypeKey k = keys[i];
+    SbProfilingNodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
       TypeTimings & timings = it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
-      data.getTraversalStatsForType(k, totaltime, maxtime, count);
+      data.getStatsForType(k, totaltime, maxtime, count);
       it->second.total += totaltime;
       it->second.max += maxtime;
       it->second.count += count;
@@ -227,7 +225,7 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
       TypeTimings timings;
       SbTime totaltime, maxtime;
       uint32_t count;
-      data.getTraversalStatsForType(k, totaltime, maxtime, count);
+      data.getStatsForType(k, totaltime, maxtime, count);
       timings.total = totaltime;
       timings.max = maxtime;
       timings.count = count;
@@ -237,16 +235,16 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
   }
 #else
   SbList<SbProfilingData::NodeNameKey> keys;
-  data.getTraversalStatsForNamesKeyList(keys);
+  data.getStatsForNamesKeyList(keys);
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
-    SbProfilingData::NodeNameKey k = keys[i];
+    SbProfilingNodeNameKey k = keys[i];
     std::map<const char *, TypeTimings>::iterator it = this->name_timings.find(k);
     if (it != this->name_timings.end()) {
       TypeTimings & timings = it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
-      data.getTraversalStatsForName(k, totaltime, maxtime, count);
+      data.getStatsForName(k, totaltime, maxtime, count);
       it->second.total += totaltime;
       it->second.max += maxtime;
       it->second.count += count;
@@ -254,11 +252,11 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
       TypeTimings timings;
       SbTime totaltime, maxtime;
       uint32_t count;
-      data.getTraversalStatsForName(k, totaltime, maxtime, count);
+      data.getStatsForName(k, totaltime, maxtime, count);
       timings.total = totaltime;
       timings.max = maxtime;
       timings.count = count;
-      std::pair<SbProfilingData::NodeNameKey, TypeTimings> entry(k, timings);
+      std::pair<SbProfilingNodeNameKey, TypeTimings> entry(k, timings);
       this->name_timings.insert(entry);
     }
   }
@@ -401,6 +399,7 @@ SoProfilerStats::~SoProfilerStats()
 /*!
   \brief 
  */
+/*
 SbTime
 SoProfilerStats::getProfilingTime(SoType action, SoNode * parent, 
                                   SoNode * child)
@@ -412,7 +411,8 @@ SoProfilerStats::getProfilingTime(SoType action, SoNode * parent,
   }
   return SbTime::zero();;
 } // getProfilingTime
-
+*/
+/*
 SbTime
 SoProfilerStats::getTotalProfilingTime(SoNode * parent,
                                        SoNode * child)
@@ -427,10 +427,11 @@ SoProfilerStats::getTotalProfilingTime(SoNode * parent,
   }
   return total;
 }
-
+*/
 /*!
   \brief TODO
 */
+/*
 SbBool
 SoProfilerStats::hasGLCache(SoSeparator * sep) 
 {
@@ -442,7 +443,7 @@ SoProfilerStats::hasGLCache(SoSeparator * sep)
   }
   return FALSE;
 }
-
+*/
 // *************************************************************************
 
 // Doc from superclass.

@@ -54,9 +54,6 @@ public:
   SoMFNode separatorsCullRoots;
 
   SoSFTrigger profilingUpdate;
-  SbTime getProfilingTime(SoType action, SoNode * parent, SoNode * child);
-  SbTime getTotalProfilingTime(SoNode * parent, SoNode * child);
-  SbBool hasGLCache(SoSeparator * sep);
 
   // FIXME: below are suggestions for fields exposing future profiling
   // functionality.  -mortene.
