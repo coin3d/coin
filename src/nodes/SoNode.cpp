@@ -200,9 +200,6 @@
 #include "glue/glp.h"
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 
-#include <Inventor/annex/Profiler/SoProfiler.h>
-#include "profiler/SoNodeProfiling.h"
-
 // *************************************************************************
 
 /*!
@@ -277,22 +274,6 @@
   \var SoNode::NodeType SoNode::EXTENSION
   Node is a client code extension.
 */
-
-// *************************************************************************
-
-// Note: just static data here, as there's no Cheshire Cat pattern (ie
-// pimpl-ptr) implemented for SoNode. (The class should be as slim as
-// possible.)
-
-class SoNodeP {
-public:
-  typedef void GLRenderFunc(SoNode *, SoGLRenderAction *);
-  static GLRenderFunc * glrenderfunc;
-  static void GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action);
-  static void GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action);
-};
-
-SoNodeP::GLRenderFunc * SoNodeP::glrenderfunc = NULL;
 
 // *************************************************************************
 
@@ -543,13 +524,6 @@ SoNode::initClass(void)
   // actions must be initialized before we can use
   // SO_ACTION_ADD_METHOD
   init_action_methods();
-
-  // for the built-in Coin profiler. set up the functionptr to use, so
-  // we don't have any overhead when profiling is off:
-  SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPaths;
-  if (SoProfiler::isEnabled()) {
-    SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPathsProfiler;
-  }
 }
 
 /*!
@@ -963,7 +937,7 @@ SoNode::GLRender(SoGLRenderAction * action)
 void
 SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  (*SoNodeP::glrenderfunc)(this, action);
+  this->GLRender(action);
 }
 
 // Note that this documentation will also be used for all subclasses
@@ -975,7 +949,7 @@ SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoNode::GLRenderInPath(SoGLRenderAction * action)
 {
-  (*SoNodeP::glrenderfunc)(this, action);
+  this->GLRender(action);
 }
 
 // Note that this documentation will also be used for all subclasses
@@ -987,19 +961,7 @@ SoNode::GLRenderInPath(SoGLRenderAction * action)
 void
 SoNode::GLRenderOffPath(SoGLRenderAction * action)
 {
-  (*SoNodeP::glrenderfunc)(this, action);
-}
-
-void
-SoNodeP::GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action)
-{
-  thisp->GLRender(action);
-}
-
-void
-SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
-{
-  thisp->GLRender(action);
+  this->GLRender(action);
 }
 
 // *************************************************************************
