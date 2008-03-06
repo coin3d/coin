@@ -4770,10 +4770,11 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
   Convert from num components to internal texture format for use
   in glTexImage*D's internalFormat parameter.
 */
-GLint coin_glglue_get_internal_texture_format(int numcomponents,
+GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw,
+                                              int numcomponents,
                                               SbBool compress)
 {
-  GLint format;
+  GLenum format;
   if (compress) {
     switch (numcomponents) {
     case 1:
@@ -4792,7 +4793,22 @@ GLint coin_glglue_get_internal_texture_format(int numcomponents,
     }
   }
   else {
-    format = coin_glglue_get_texture_format(numcomponents);
+    SbBool usenewenums = glglue_allow_newer_opengl(glw) && cc_glglue_glversion_matches_at_least(glw,1,1,0);
+    switch (numcomponents) {
+    case 1:
+      format = usenewenums ? GL_LUMINANCE8 : GL_LUMINANCE;
+      break;
+    case 2:
+      format = usenewenums ? GL_LUMINANCE8_ALPHA8 : GL_LUMINANCE_ALPHA;
+      break;
+    case 3:
+      format = usenewenums ? GL_RGB8 : GL_RGB;
+      break;
+    case 4:
+    default:
+      format = usenewenums ? GL_RGBA8 : GL_RGBA;
+      break;
+    }
   }
   return format;
 }
@@ -4801,7 +4817,7 @@ GLint coin_glglue_get_internal_texture_format(int numcomponents,
   Convert from num components to client texture format for use
   in glTexImage*D's format parameter.
 */
-GLenum coin_glglue_get_texture_format(int numcomponents)
+GLenum coin_glglue_get_texture_format(const cc_glglue * glw, int numcomponents)
 {
   GLenum format;
   switch (numcomponents) {

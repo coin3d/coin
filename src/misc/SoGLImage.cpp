@@ -432,8 +432,8 @@ fast_mipmap(SoState * state, int width, int height, int nc,
             SbBool compress)
 {
   const cc_glglue * glw = sogl_glue_instance(state);
-  GLint internalFormat = coin_glglue_get_internal_texture_format(nc, compress);
-  GLenum format = coin_glglue_get_texture_format(nc);
+  GLint internalFormat = coin_glglue_get_internal_texture_format(glw, nc, compress);
+  GLenum format = coin_glglue_get_texture_format(glw, nc);
   int levels = compute_log(width);
   int level = compute_log(height);
   if (level > levels) levels = level;
@@ -480,8 +480,8 @@ fast_mipmap(SoState * state, int width, int height, int depth,
             SbBool compress)
 {
   const cc_glglue * glw = sogl_glue_instance(state);
-  GLint internalFormat = coin_glglue_get_internal_texture_format(nc, compress);
-  GLenum format = coin_glglue_get_texture_format(nc);
+  GLint internalFormat = coin_glglue_get_internal_texture_format(glw, nc, compress);
+  GLenum format = coin_glglue_get_texture_format(glw, nc);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
@@ -1077,7 +1077,7 @@ SoGLImage::setData(const SbImage *image,
                       TRUE, compress);
       }
       else {
-        GLenum format = coin_glglue_get_texture_format(nc);
+        GLenum format = coin_glglue_get_texture_format(glw, nc);
         if (is3D) {
           cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
                                     size[0], size[1], size[2],
@@ -1445,8 +1445,8 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       sizeok = (newx <= maxrectsize) && (newy <= maxrectsize);
     }
     else {
-      GLenum internalformat = coin_glglue_get_internal_texture_format(numcomponents, compressed);
-      GLenum format = coin_glglue_get_texture_format(numcomponents);
+      GLenum internalformat = coin_glglue_get_internal_texture_format(glw, numcomponents, compressed);
+      GLenum format = coin_glglue_get_texture_format(glw, numcomponents);
 
       sizeok = coin_glglue_is_texture_size_legal(glw, newx, newy, newz,
                                                  internalformat,
@@ -1547,7 +1547,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
           glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
           // FIXME: ignoring the error code. Silly. 20000929 mortene.
-          (void)GLUWrapper()->gluScaleImage(coin_glglue_get_texture_format(numcomponents),
+          (void)GLUWrapper()->gluScaleImage(coin_glglue_get_texture_format(glw, numcomponents),
                                             xsize, ysize,
                                             GL_UNSIGNED_BYTE, (void*) bytes,
                                             newx, newy, GL_UNSIGNED_BYTE,
@@ -1754,8 +1754,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     (this->flags & SoGLImage::COMPRESSED) &&
     SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_COMPRESSION);
   GLint internalFormat =
-    coin_glglue_get_internal_texture_format(numComponents, compress);
-  GLenum dataFormat = coin_glglue_get_texture_format(numComponents);
+    coin_glglue_get_internal_texture_format(glw, numComponents, compress);
+  GLenum dataFormat = coin_glglue_get_texture_format(glw, numComponents);
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 

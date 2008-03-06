@@ -897,10 +897,11 @@ SbBool coin_glglue_is_texture_size_legal(const cc_glglue * glw,
                                          GLenum type,
                                          SbBool mipmap);
 
-GLint coin_glglue_get_internal_texture_format(int numcomponents,
+GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw, 
+                                              int numcomponents,
                                               SbBool compress);
 
-GLenum coin_glglue_get_texture_format(int numcomponents);
+GLenum coin_glglue_get_texture_format(const cc_glglue * glw, int numcomponents);
 SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);
 
 /* context creation callback */
