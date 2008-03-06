@@ -200,6 +200,7 @@
 #include "glue/glp.h"
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 
+#include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
@@ -546,10 +547,9 @@ SoNode::initClass(void)
   // for the built-in Coin profiler. set up the functionptr to use, so
   // we don't have any overhead when profiling is off:
   SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPaths;
-#ifdef HAVE_SCENE_PROFILING
-  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
-  if (e && (atoi(e) > 0)) { SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPathsProfiler; }
-#endif // HAVE_SCENE_PROFILING
+  if (SoProfiler::isEnabled()) {
+    SoNodeP::glrenderfunc = SoNodeP::GLRenderAllPathsProfiler;
+  }
 }
 
 /*!
@@ -999,19 +999,7 @@ SoNodeP::GLRenderAllPaths(SoNode * thisp, SoGLRenderAction * action)
 void
 SoNodeP::GLRenderAllPathsProfiler(SoNode * thisp, SoGLRenderAction * action)
 {
-  // FIXME: note that this does (probably) not catch all GLRender()
-  // invocations, as some nodes will override the above methods
-  // (GLRender*Path()) which invoke this function, and if so they will
-  // fall outside the profile data collection.  -mortene.
-
-  const SoPath * path = action->getCurPath();
-  SoNode * parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
-
-  //assert(!parent || static_cast<SoGroup *>(parent)->findChild(thisp) != -1);
-  SoNodeProfiling profiling;
-  profiling.preTraversal(action, parent, thisp);
   thisp->GLRender(action);
-  profiling.postTraversal(action, parent, thisp);
 }
 
 // *************************************************************************

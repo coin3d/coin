@@ -88,8 +88,8 @@
 #include "misc/SoGL.h"
 #include "misc/SoDBP.h"
 
-#include "profiler/SoNodeProfiling.h"
 #include <Inventor/annex/Profiler/SoProfiler.h>
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -338,16 +338,9 @@ public:
 #endif // COIN_THREADSAFE
   }
 
-  typedef void GLRenderFunc(SoSeparator *, SoGLRenderAction *);
-  static GLRenderFunc * glrenderfunc;
-  static void GLRender(SoSeparator * thisp, SoGLRenderAction * action);
-  static void GLRenderProfiler(SoSeparator * thisp, SoGLRenderAction * action);
-
   static SbBool doCull(SoSeparatorP * thisp, SoState * state,
                        SbBool (* cullfunc)(SoState *, const SbBox3f &, const SbBool));
 };
-
-SoSeparatorP::GLRenderFunc * SoSeparatorP::glrenderfunc = NULL;
 
 SoGLCacheList *
 SoSeparatorP::getGLCacheList(SbBool createifnull)
@@ -467,14 +460,6 @@ SoSeparator::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
   SoSeparator::numrendercaches = 2;
-
-  // for the built-in Coin profiler. set up the functionptr to use, so
-  // we don't have any overhead when profiling is off:
-  SoSeparatorP::glrenderfunc = SoSeparatorP::GLRender;
-#ifdef HAVE_SCENE_PROFILING
-  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
-  if (e && (atoi(e) > 0)) { SoSeparatorP::glrenderfunc = SoSeparatorP::GLRenderProfiler; }
-#endif // HAVE_SCENE_PROFILING
 }
 
 // Doc from superclass.
@@ -614,42 +599,22 @@ SoSeparator::callback(SoCallbackAction * action)
 
 // *************************************************************************
 
+// Doc from superclass.
 void
-SoSeparatorP::GLRender(SoSeparator * thisp, SoGLRenderAction * action)
+SoSeparator::GLRender(SoGLRenderAction * action)
 {
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
-    thisp->GLRenderBelowPath(action);
+    this->GLRenderBelowPath(action);
     break;
   case SoAction::OFF_PATH:
     // do nothing. Separator will reset state.
     break;
   case SoAction::IN_PATH:
-    thisp->GLRenderInPath(action);
+    this->GLRenderInPath(action);
     break;
   }
-}
-
-void
-SoSeparatorP::GLRenderProfiler(SoSeparator * thisp, SoGLRenderAction * action)
-{
-  const SoPath * path = action->getCurPath();
-  SoNode * parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
-  assert(parent != thisp);
-  //assert(parent == NULL ||
-  //       static_cast<SoGroup *>(parent)->findChild(thisp) != -1);
-  SoNodeProfiling profiling;
-  profiling.preTraversal(action, parent, thisp);
-  SoSeparatorP::GLRender(thisp, action);
-  profiling.postTraversal(action, parent, thisp);
-}
-
-// Doc from superclass.
-void
-SoSeparator::GLRender(SoGLRenderAction * action)
-{
-  (*SoSeparatorP::glrenderfunc)(this, action);
 }
 
 /*!
@@ -697,7 +662,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 #ifdef HAVE_SCENE_PROFILING
       if (SoProfiler::isActive()) {
         SoProfilerElement * e = SoProfilerElement::get(state);
-        if (e) { e->setHasGLCache(this); }
+        if (e) {
+	  e->getProfilingData().setNodeFlag(action->getCurPath(), SbProfilingData::GL_CACHED_FLAG, TRUE);
+	}
       }
 #endif // HAVE_SCENE_PROFILING
 
@@ -731,7 +698,13 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
         SoCacheElement::invalidate(state);
         break;
       }
-      childarray[i]->GLRenderBelowPath(action);
+
+      {
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
+	childarray[i]->GLRenderBelowPath(action); // traversal call
+	profiling.postTraversal(action);
+      }
 
 #if COIN_DEBUG
       // The GL error test is default disabled for this optimized
@@ -782,7 +755,10 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
-            offpath->GLRenderOffPath(action);
+	    SoNodeProfiling profiling;
+	    profiling.preTraversal(action);
+            offpath->GLRenderOffPath(action); // traversal call
+	    profiling.postTraversal(action);
           }
           else {
             SoCacheElement::invalidate(state);
@@ -793,7 +769,10 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
-        inpath->GLRenderInPath(action);
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
+        inpath->GLRenderInPath(action); // traversal call
+	profiling.postTraversal(action);
       }
       else {
         SoCacheElement::invalidate(state);

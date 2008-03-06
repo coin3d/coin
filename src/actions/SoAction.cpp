@@ -218,12 +218,12 @@
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 #include "misc/SoCompactPathList.h"
 
+#include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoNodeProfiling.h"
 #ifdef HAVE_SCENE_PROFILING
-#include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
-#include "profiler/SoProfilerElement.h"
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #endif // HAVE_SCENE_PROFILING
 
 // define this to debug path traversal
@@ -377,8 +377,7 @@ SoAction::initClass(void)
 #ifdef HAVE_SCENE_PROFILING
   // Profiler element may also be used from within all types of action
   // traversals.
-  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
-  if (e && (atoi(e) > 0)) {
+  if (SoProfiler::isEnabled()) {
     SoAction::enabledElements->enable(SoProfilerElement::getClassTypeId(),
                                       SoProfilerElement::getClassStackIndex());
   }
@@ -529,14 +528,27 @@ SoAction::apply(SoNode * root)
 #ifdef HAVE_SCENE_PROFILING
     // send events to overlay graph first
     if (SoProfiler::isActive() &&
-        SoProfiler::overlayActive() &&
-        this->isOfType(SoHandleEventAction::getClassTypeId())) {
+        SoProfiler::isOverlayActive() &&
+        this->isOfType(SoHandleEventAction::getClassTypeId()))
+    {
+      // FIXME: also check that the scene graph view is actually enabled, or
+      // else this is of no point - sending events to the overlay scene
+      // graph.
+
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
+      SoProfiler::enable(FALSE);
       this->beginTraversal(profileroverlay);
+      this->endTraversal(profileroverlay);
+      SoProfiler::enable(TRUE);
+
+      // FIXME: if there was a hit on the overlay scene graph view and
+      // the scene graph view is modified, then we should schedule a
+      // redraw.  However, the isHandled() flag isn't affected by that
+      // change for now, so there's no way to detect it.
       //if (static_cast<SoHandleEventAction *>(this)->isHandled()) {
       //  root->touch();
       //}
-      this->endTraversal(profileroverlay);
+
     }
 
     // start profiling
@@ -544,8 +556,10 @@ SoAction::apply(SoNode * root)
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
       assert(elt);
-      elt->clear();
-      elt->startTraversalClock();
+      SbProfilingData & data = elt->getProfilingData();
+      data.reset();
+      data.setActionType(this->getTypeId());
+      data.setActionStartTime(SbTime::getTimeOfDay());
     }
 #endif // HAVE_SCENE_PROFILING
 
@@ -554,10 +568,21 @@ SoAction::apply(SoNode * root)
 
 #ifdef HAVE_SCENE_PROFILING
     if (SoProfiler::isActive() && 
-        SoProfiler::overlayActive() && 
-        !this->isOfType(SoGLRenderAction::getClassTypeId())) {
+        state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
+      SoProfilerElement * elt = SoProfilerElement::get(state);
+      assert(elt);
+      SbProfilingData & data = elt->getProfilingData();
+      data.setActionStopTime(SbTime::getTimeOfDay());
+    }
+
+    if (SoProfiler::isActive() && 
+        SoProfiler::isOverlayActive() &&
+	!this->isOfType(SoGLRenderAction::getClassTypeId())) {
       // update profiler stats node with the profiling data from the traversal
-      this->traverse(SoActionP::getProfilerStatsNode());
+      SoNode * profilerstats = SoActionP::getProfilerStatsNode();
+      SoProfiler::enable(FALSE);
+      this->traverse(profilerstats);
+      SoProfiler::enable(TRUE);
     }
 #endif // HAVE_SCENE_PROFILING
 
@@ -924,17 +949,10 @@ SoAction::traverse(SoNode * const node)
   int idx = SoNode::getActionMethodIndex(t);
   SoActionMethod func = (*this->traversalMethods)[idx];
 
-  const SoPath * path = this->getCurPath();
-
-  SoNode * parent = (path->getLength() > 0) ? path->getNodeFromTail(0) : NULL;
-  if (parent == node) {
-    parent = (path->getLength() > 1) ? path->getNodeFromTail(1) : NULL;
-  }
-
   SoNodeProfiling profiling;
-  profiling.preTraversal(this, parent, node);
+  profiling.preTraversal(this);
   func(this, node);
-  profiling.postTraversal(this, parent, node);
+  profiling.postTraversal(this);
 }
 
 /*!
@@ -1346,8 +1364,8 @@ SoProfilerStats *
 SoActionP::getProfilerStatsNode(void)
 {
   static SoProfilerStats * pstats = NULL;
-  if (!pstats) { 
-    pstats = new SoProfilerStats; 
+  if (!pstats) {
+    pstats = new SoProfilerStats;
     pstats->ref();
   }
   return pstats;
@@ -1356,16 +1374,16 @@ SoActionP::getProfilerStatsNode(void)
 SoProfilerOverlayKit *
 SoActionP::getProfilerOverlay(void)
 {
-  if (!SoProfiler::isActive() || !SoProfiler::overlayActive())
+  if (!SoProfiler::isActive() || !SoProfiler::isOverlayActive())
     return NULL;
 
   static SoProfilerOverlayKit * kit = NULL;
   if (kit == NULL) {
     kit = new SoProfilerTopKit;
     kit->ref();
-    kit->setPart("profilingStats", 
+    kit->setPart("profilingStats",
                  SoActionP::getProfilerStatsNode());
-    
+
     SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
     viskit->stats.setValue(SoActionP::getProfilerStatsNode());
     kit->addOverlayGeometry(viskit);

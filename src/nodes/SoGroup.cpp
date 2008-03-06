@@ -204,6 +204,7 @@
 #include "glue/glp.h"
 #include "io/SoWriterefCounter.h"
 
+#include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
@@ -481,10 +482,9 @@ SoGroup::initClass(void)
   // for the built-in Coin profiler. set up the functionptr to use, so
   // we don't have any overhead when profiling is off:
   SoGroupP::glrenderfunc = SoGroupP::childGLRender;
-#ifdef HAVE_SCENE_PROFILING
-  const char * e = coin_getenv(SoDBP::EnvVars::COIN_PROFILER);
-  if (e && (atoi(e) > 0)) { SoGroupP::glrenderfunc = SoGroupP::childGLRenderProfiler; }
-#endif // HAVE_SCENE_PROFILING
+  if (SoProfiler::isEnabled()) {
+    SoGroupP::glrenderfunc = SoGroupP::childGLRenderProfiler;
+  }
 }
 
 // *************************************************************************
@@ -550,18 +550,15 @@ SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * acti
   child->GLRender(action);
 }
 
-// FIXME: this is work-in-progress, but work is freezed atm, as i'm
-// trying to find a less intrusive way of collecting the hierarchical
-// profiling information.  -mortene.
+// This function is called for each child to traverse, and
+// action->getCurPath() is already updated at this point.
 void
 SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
 {
-  // assert(!thisp || static_cast<SoGroup *>(thisp)->findChild(child) != -1);
-
   SoNodeProfiling profiling;
-  profiling.preTraversal(action, thisp, child);
+  profiling.preTraversal(action);
   child->GLRender(action);
-  profiling.postTraversal(action, thisp, child);
+  profiling.postTraversal(action);
 }
 
 // Doc from superclass.

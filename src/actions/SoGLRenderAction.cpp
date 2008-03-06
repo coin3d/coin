@@ -62,6 +62,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbColor.h>
@@ -100,6 +102,8 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/sensors/SoAlarmSensor.h>
+#include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
 
@@ -116,6 +120,7 @@
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#include "profiler/SoProfilerP.h"
 #endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
@@ -572,6 +577,10 @@ public:
   // For transparent paths that need to be sorted
   void addSortTransPath(SoPath * path);
 
+  boost::scoped_ptr<SoAlarmSensor> redrawSensor;
+  static void redrawSensorCB(void * userdata, SoSensor * sensor);
+  boost::scoped_ptr<SoNodeSensor> deleteSensor;
+  static void deleteNodeCB(void * userdata, SoSensor * sensor);
 };
 
 // *************************************************************************
@@ -579,6 +588,7 @@ public:
 SO_ACTION_SOURCE(SoGLRenderAction);
 
 static int COIN_GLBBOX = 0;
+
 // *************************************************************************
 
 // Override from parent class.
@@ -1046,8 +1056,62 @@ void
 SoGLRenderAction::endTraversal(SoNode * node)
 {
   inherited::endTraversal(node);
+#ifdef HAVE_SCENE_PROFILING
+  if (SoProfilerP::shouldContinuousRender()) {
+    float delay = SoProfilerP::getContinuousRenderDelay();
+    if (delay == 0.0f) {
+      node->touch();
+    } else {
+      if (PRIVATE(this)->redrawSensor.get() == NULL) {
+        PRIVATE(this)->redrawSensor.reset(new SoAlarmSensor);
+      }
+      if (PRIVATE(this)->redrawSensor->isScheduled()) {
+        PRIVATE(this)->redrawSensor->unschedule();
+      }
+      PRIVATE(this)->redrawSensor->setFunction(SoGLRenderActionP::redrawSensorCB);
+      PRIVATE(this)->redrawSensor->setData(node);
+      PRIVATE(this)->redrawSensor->setTimeFromNow(SbTime((double) delay));
+      PRIVATE(this)->redrawSensor->schedule();
+      if (PRIVATE(this)->deleteSensor.get() == NULL) {
+        PRIVATE(this)->deleteSensor.reset(new SoNodeSensor);
+      }
+      PRIVATE(this)->deleteSensor->setDeleteCallback(SoGLRenderActionP::deleteNodeCB, this);
+      PRIVATE(this)->deleteSensor->attach(node);
+
+    }
+  }
+#endif // HAVE_SCENE_PROFILING
 }
 
+/*
+  Trigger a delayed redraw of a scene. The request is soming from the
+  scene graph profiling subsystem.
+*/
+void
+SoGLRenderActionP::redrawSensorCB(void * userdata, SoSensor * sensor)
+{
+  // FIXME: the node needs to be referenced to avoid touching a deleted node here.
+  // or use a delete-callback at least to abort the sensor.
+  assert(userdata);
+  SoNode * node = static_cast<SoNode *>(userdata);
+  node->touch();
+}
+
+/*
+  We need this hack because the SoAlarmSensor is not attached to
+  the node (but has stored its pointer as userdata) and won't be
+  disabled automatically when the node in question is deleted.
+*/
+void
+SoGLRenderActionP::deleteNodeCB(void * userdata, SoSensor * sensor)
+{
+  assert(userdata);
+  SoGLRenderAction * thisp = static_cast<SoGLRenderAction *>(userdata);
+  if (PRIVATE(thisp)->redrawSensor.get() != NULL) {
+    PRIVATE(thisp)->redrawSensor->unschedule();
+    PRIVATE(thisp)->redrawSensor->setData(NULL);
+  }
+}
 
 /*!
   Used by shape nodes or others which need to know whether or not they
@@ -1560,10 +1624,13 @@ SoGLRenderActionP::render(SoNode * node)
   }
 
 #ifdef HAVE_SCENE_PROFILING
-  if (SoProfiler::isActive() && SoProfiler::overlayActive()) {
+  if (SoProfiler::isActive() && SoProfiler::isOverlayActive()) {
     if (node == this->cachedprofilingsg) {
       this->isrenderingoverlay = TRUE;
-      this->renderSingle(SoActionP::getProfilerOverlay());
+      SoNode * profileroverlay = SoActionP::getProfilerOverlay();
+      SoProfiler::enable(FALSE);
+      this->renderSingle(profileroverlay);
+      SoProfiler::enable(TRUE);
       this->isrenderingoverlay = FALSE;
     } else {
       static SbBool first = TRUE;
