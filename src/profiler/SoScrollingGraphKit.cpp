@@ -44,6 +44,7 @@
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -60,6 +61,8 @@ public:
   SbName key;
   int index;
   SbColor color;
+  float baseval;
+  float basetarget;
 };
 
 class Datum {
@@ -76,7 +79,10 @@ public:
 
 class SoScrollingGraphKitP {
 public:
-  SoScrollingGraphKitP(void) : kit(NULL), first(NULL), last(NULL) { }
+  SoScrollingGraphKitP(void) : kit(NULL), first(NULL), last(NULL) {
+    this->cachedmaxvalue = 0.0f;
+    this->cachedrealmaxvalue = 0.0f;
+  }
   ~SoScrollingGraphKitP(void) {
     SbList<const char *> keys;
     this->graphs.makeKeyList(keys);
@@ -101,7 +107,6 @@ public:
   Graph * getGraph(int idx);
   void addDatum(Datum * newDatum);
 
-  void generateLineChart(void);
   void generateStackedBarsChart(void);
 
   SbHash<Graph *, const char *> graphs;
@@ -109,6 +114,9 @@ public:
   SoScrollingGraphKit * kit;
   Datum * first;
   Datum * last;
+
+  float cachedmaxvalue;
+  float cachedrealmaxvalue;
 }; // SoScrollingGraphKitP
 
 // *************************************************************************
@@ -192,13 +200,14 @@ SoScrollingGraphKit::addValuesCB(void * closure, SoSensor * sensor)
   PRIVATE(kit)->pullStatistics();
   switch (kit->graphicsType.getValue()) {
   case SoScrollingGraphKit::LINES:
-    PRIVATE(kit)->generateLineChart();
-    break;
+    //PRIVATE(kit)->generateLineChart();
+    //break;
   case SoScrollingGraphKit::STACKED_BARS:
     PRIVATE(kit)->generateStackedBarsChart();
     break;
   default:
-    PRIVATE(kit)->generateLineChart();
+    //PRIVATE(kit)->generateLineChart();
+    PRIVATE(kit)->generateStackedBarsChart();
     break;
   }
 }
@@ -263,6 +272,7 @@ SoScrollingGraphKitP::getGraph(const SbName & key)
     graph->key = key;
     graph->index = this->graphs.getNumElements();
     graph->color = this->kit->colors[graph->index % this->kit->colors.getNum()];
+    graph->baseval = graph->basetarget = 0.0f;
     this->graphs.put(key.getString(), graph);
 
     printf("Adding graph #%d for '%s', color #%02x%02x%02x\n",
@@ -287,112 +297,34 @@ SoScrollingGraphKitP::getGraph(int idx)
   return NULL;
 }
 
-void
-SoScrollingGraphKitP::generateLineChart(void)
+
+#define LINEUP 1
+#define SMOOTH_DECAY 1
+
+template <class Type>
+Type *
+new_node(const char * buffer)
 {
-  const int numgraphs = this->graphs.getNumElements();
-
-  boost::scoped_array<SoBaseColor *> colors(new SoBaseColor * [numgraphs]);
-  boost::scoped_array<SoCoordinate3 *> coords(new SoCoordinate3 * [numgraphs]);
-  boost::scoped_array<SoLineSet *> lines(new SoLineSet * [numgraphs]);
-
-  SoScale * scale = NULL;
-  SoTranslation * translation = NULL;
-
-  if (this->chart->getNumChildren() != (numgraphs * 3 + 2) ||
-      !(this->chart->getChild(2+2)->isOfType(SoLineSet::getClassTypeId()))) {
-    this->chart->removeAllChildren();
-
-    this->chart->addChild(translation = new SoTranslation);
-    this->chart->addChild(scale = new SoScale);
-
-    translation->translation.setValue(-1.0f, -0.99f, 0.0f);
-    scale->scaleFactor.setValue(2.0f, 0.5f, 1.0f);
-
-    for (int c = 0; c < numgraphs; ++c) {
-      this->chart->addChild(colors[c] = new SoBaseColor);
-      this->chart->addChild(coords[c] = new SoCoordinate3);
-      this->chart->addChild(lines[c] = new SoLineSet);
-    }
-  } else {
-    //scale = (SoScale *) this->chart->getChild(1);
-    //assert(scale && scale->isOfType(SoScale::getClassTypeId()));
-    //translation = (SoTranslation *) this->chart->getChild(0);
-    //assert(translation && translation->isOfType(SoTranslation::getClassTypeId()));
-    for (int c = 0; c < numgraphs; ++c) {
-      colors[c] = static_cast<SoBaseColor *>(this->chart->getChild(2 + c * 3 + 0));
-      assert(colors[c]->isOfType(SoBaseColor::getClassTypeId()));
-      coords[c] = static_cast<SoCoordinate3 *>(this->chart->getChild(2 + c * 3 + 1));
-      assert(coords[c]->isOfType(SoCoordinate3::getClassTypeId()));
-      lines[c] = static_cast<SoLineSet *>(this->chart->getChild(2 + c * 3 + 2));
-      assert(lines[c]->isOfType(SoLineSet::getClassTypeId()));
-    }
+  Type * node = new Type;
+  if (!node->set(buffer)) {
+    assert(!"node field arguments error");
+    node->ref();
+    node->unref();
+    return NULL;
   }
-
-  int numdata = 0;
-  SbTime end(SbTime::zero());
-  Datum * datum = this->first;
-  float maxvalue = 0.0f;
-  while (datum) {
-    ++numdata;
-    float sum = 0.0f;
-    for (int j = 0; j < datum->datum.getLength(); ++j) {
-      sum += datum->datum[j];
-    }
-    if (sum > maxvalue) maxvalue = sum;
-    end = datum->when;
-    datum = datum->next;
-  }
-  // printf("values: %d, maxvalue: %f\n", numdata, maxvalue);
-
-  // printf("num data values: %d\n", numdata);
-  const float seconds = (float) this->kit->seconds.getValue().getValue();
-
-  for (int graphidx = 0; graphidx < numgraphs; ++graphidx) {
-    Graph * graph = this->getGraph(graphidx);
-
-    colors[graphidx]->rgb = graph->color;
-
-    coords[graphidx]->point.setNum(numdata);
-    SbVec3f * coordarray = coords[graphidx]->point.startEditing();
-
-    datum = this->first;
-    int idx = 0;
-    while (datum) {
-      const int numvalues = datum->datum.getLength();
-
-      float value = 0.0f;
-      for (int j = 0; j <= graph->index && j < numvalues; ++j) {
-        value += datum->datum[j];
-      }
-
-      const float xpos = 1.0f - ((float)((end - datum->when).getValue()) / seconds);
-      const float ypos = (maxvalue > 0.0f) ? (value / maxvalue) : value;
-
-      //printf("coord %d: %f %f\n", idx, xpos, ypos);
-      coordarray[idx] = SbVec3f(xpos, ypos, 0.0f);
-
-      ++idx;
-      datum = datum->next;
-    }
-    coords[graphidx]->point.finishEditing();
-    
-    lines[graphidx]->numVertices.setNum(1);
-    lines[graphidx]->numVertices.set1Value(0, numdata);
-  }
-
-  // graph space is now between 0-1 in both directions
-
+  return node;
 }
 
-
-
-
-
-
-
-
-
+inline
+float
+decayvalue(float current, float target, float decay = 0.95f)
+{
+#if SMOOTH_DECAY
+  return (current * decay) + (target * (1.0f - decay));
+#else
+  return target;
+#endif
+}
 
 
 
@@ -400,42 +332,52 @@ void
 SoScrollingGraphKitP::generateStackedBarsChart(void)
 {
   const int numgraphs = this->graphs.getNumElements();
-  if (numgraphs == 0)
-    return ;
+  if (numgraphs == 0) return;
 
   boost::scoped_array<SoBaseColor *> colors(new SoBaseColor * [numgraphs]);
   boost::scoped_array<SoCoordinate3 *> coords(new SoCoordinate3 * [numgraphs]);
   boost::scoped_array<SoLineSet *> lines(new SoLineSet * [numgraphs]);
+  boost::scoped_array<SoTranslation *> texttrans(new SoTranslation * [numgraphs]);
+  boost::scoped_array<SoText2 *> textnodes(new SoText2 * [numgraphs]);
 
-  SoScale * scale = NULL;
-  SoTranslation * translation = NULL;
-
-  if (this->chart->getNumChildren() != (numgraphs * 3 + 2) ||
+  if (this->chart->getNumChildren() != (numgraphs * 4 + 3) ||
       !(this->chart->getChild(2+2)->isOfType(SoLineSet::getClassTypeId()))) {
     this->chart->removeAllChildren();
 
-    this->chart->addChild(translation = new SoTranslation);
-    this->chart->addChild(scale = new SoScale);
-
-    translation->translation.setValue(-1.0f, -0.99f, 0.0f);
-    scale->scaleFactor.setValue(2.0f, 0.5f, 1.0f);
+    this->chart->addChild(new_node<SoTranslation>("translation -1 -0.99 0"));
+    this->chart->addChild(new_node<SoScale>("scaleFactor 2 0.5 1"));
 
     for (int c = 0; c < numgraphs; ++c) {
       this->chart->addChild(colors[c] = new SoBaseColor);
+      { // the text for the graph name
+        SoSeparator * sep = new SoSeparator;
+        sep->addChild(texttrans[c] = new SoTranslation);
+        sep->addChild(textnodes[c] = new SoText2);
+        this->chart->addChild(sep);
+      }
       this->chart->addChild(coords[c] = new SoCoordinate3);
       this->chart->addChild(lines[c] = new SoLineSet);
     }
+    {
+      SoSeparator * sep = new SoSeparator;
+      sep->addChild(new_node<SoBaseColor>("rgb 1 1 1"));
+      sep->addChild(new SoTranslation);
+      sep->addChild(new SoText2);
+      this->chart->addChild(sep);
+    }
   } else {
-    //scale = (SoScale *) this->chart->getChild(1);
-    //assert(scale && scale->isOfType(SoScale::getClassTypeId()));
-    //translation = (SoTranslation *) this->chart->getChild(0);
-    //assert(translation && translation->isOfType(SoTranslation::getClassTypeId()));
     for (int c = 0; c < numgraphs; ++c) {
-      colors[c] = static_cast<SoBaseColor *>(this->chart->getChild(2 + c * 3 + 0));
+      colors[c] = static_cast<SoBaseColor *>(this->chart->getChild(2 + c * 4 + 0));
       assert(colors[c]->isOfType(SoBaseColor::getClassTypeId()));
-      coords[c] = static_cast<SoCoordinate3 *>(this->chart->getChild(2 + c * 3 + 1));
+      { // the text for the graph name
+        SoSeparator * sep = static_cast<SoSeparator *>(this->chart->getChild(2 + c * 4 + 1));
+        assert(sep->isOfType(SoSeparator::getClassTypeId()));
+        texttrans[c] = static_cast<SoTranslation *>(sep->getChild(0));
+        textnodes[c] = static_cast<SoText2 *>(sep->getChild(1));
+      }
+      coords[c] = static_cast<SoCoordinate3 *>(this->chart->getChild(2 + c * 4 + 2));
       assert(coords[c]->isOfType(SoCoordinate3::getClassTypeId()));
-      lines[c] = static_cast<SoLineSet *>(this->chart->getChild(2 + c * 3 + 2));
+      lines[c] = static_cast<SoLineSet *>(this->chart->getChild(2 + c * 4 + 3));
       assert(lines[c]->isOfType(SoLineSet::getClassTypeId()));
     }
   }
@@ -444,6 +386,33 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
   SbTime end(SbTime::zero());
   Datum * datum = this->first;
   float maxvalue = 0.0f;
+#if LINEUP
+  SbList<float> maxvalues;
+  {
+    while (datum) {
+      ++numdata;
+      while (maxvalues.getLength() < datum->datum.getLength()) {
+        maxvalues.append(0.0f);
+      }
+      for (int j = 0; j < datum->datum.getLength(); ++j) {
+        float val = datum->datum[j];
+        if (val > maxvalues[j]) { maxvalues[j] = val; }
+      }
+      end = datum->when;
+      datum = datum->next;
+    }
+    for (int j = 0; j < maxvalues.getLength(); ++j) {
+      Graph * graph = this->getGraph(j);
+      if (j == 0) {
+        graph->basetarget = 0.0f;
+      } else {
+        graph->basetarget = maxvalue; // maxvalues[j-1];
+      }
+      maxvalue += maxvalues[j];
+      graph->baseval = decayvalue(graph->baseval, graph->basetarget);
+    }
+  }
+#else
   while (datum) {
     ++numdata;
     float sum = 0.0f;
@@ -454,6 +423,11 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
     end = datum->when;
     datum = datum->next;
   }
+#endif
+
+  this->cachedrealmaxvalue = maxvalue;
+  this->cachedmaxvalue = decayvalue(this->cachedmaxvalue, this->cachedrealmaxvalue);
+
   // printf("values: %d, maxvalue: %f\n", numdata, maxvalue);
 
   // printf("num data values: %d\n", numdata);
@@ -469,18 +443,25 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
 
     datum = this->first;
     int idx = 0;
+    float maxypos = 0.0f, maxprevypos = 0.0f;
     while (datum) {
       const int numvalues = datum->datum.getLength();
 
       float value = 0.0f, prev = 0.0f;
+#if LINEUP
+      // prev = (graph->index == 0) ? 0.0f : maxvalues[graph->index - 1];
+      prev = graph->baseval;
+      value = prev + datum->datum[graph->index];
+#else
       for (int j = 0; j <= graph->index && j < numvalues; ++j) {
         prev = value;
         value += datum->datum[j];
       }
+#endif
 
       const float xpos = 1.0f - ((float)((end - datum->when).getValue()) / seconds);
-      const float ypos = (maxvalue > 0.0f) ? (value / maxvalue) : value;
-      const float prevypos = (maxvalue > 0.0f) ? (prev / maxvalue) : prev;
+      const float ypos = (this->cachedrealmaxvalue > 0.0f) ? (value / this->cachedrealmaxvalue) : value;
+      const float prevypos = (this->cachedrealmaxvalue > 0.0f) ? (prev / this->cachedrealmaxvalue) : prev;
 
       //printf("coord %d: %f %f\n", idx, xpos, ypos);
       coordarray[idx*2] = SbVec3f(xpos, prevypos, 0.0f);
@@ -488,19 +469,41 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
 
       ++idx;
       datum = datum->next;
+
+      if (maxypos < ypos) maxypos = ypos;
+      if (maxprevypos < prevypos) maxprevypos = prevypos;
     }
     coords[graphidx]->point.finishEditing();
-    
+
     lines[graphidx]->numVertices.setNum(idx);
     int32_t * countarray = lines[graphidx]->numVertices.startEditing();
     for (int j = 0; j < idx; ++j) {
       countarray[j] = 2;
     }
     lines[graphidx]->numVertices.finishEditing();
-  }
 
+    textnodes[graphidx]->string.setValue(graph->key.getString());
+    texttrans[graphidx]->translation.setValue(SbVec3f(0.0f, (maxypos + graph->baseval * 2.0f) * 0.5f, 0.0f));
+  }
+  
+ 
   // graph space is now between 0-1 in both directions
 
+  {
+    SoSeparator * sep = static_cast<SoSeparator *>(this->chart->getChild(numgraphs * 4 + 2));
+    assert(sep && sep->isOfType(SoSeparator::getClassTypeId()));
+    assert(sep->getNumChildren() == 3);
+    SoTranslation * trans = static_cast<SoTranslation *>(sep->getChild(1));
+    assert(trans && trans->isOfType(SoTranslation::getClassTypeId()));
+    trans->translation.setValue(0.98f, 1.0f, 0.0f);
+    SoText2 * text = static_cast<SoText2 *>(sep->getChild(2));
+    assert(text && text->isOfType(SoText2::getClassTypeId()));
+
+    SbString content;
+    content.sprintf("%6.0f ms _", this->cachedmaxvalue * 1000.0f);
+    text->justification.setValue(SoText2::RIGHT);
+    text->string.setValue(content.getString());
+  }
 }
 
 // *************************************************************************
