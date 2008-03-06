@@ -1,9 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_SCENE_PROFILING
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -27,332 +21,1090 @@
  *
 \**************************************************************************/
 
-#include "profiler/SbProfilingData.h"
+#include <Inventor/annex/Profiler/SbProfilingData.h>
 
-/*!
-  Constructor
-*/
+#include <vector>
+#include <map>
+#include <algorithm> // std::reverse
 
-SbProfilingData::SbProfilingData()
+#include <Inventor/SbName.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/errors/SoDebugError.h>
+
+// *************************************************************************
+
+// SbNodeProfilingData - internal structure containing profiling data
+// for one node.
+struct SbNodeProfilingData {
+  SbProfilingNodeKey node;
+  SbProfilingNodeNameKey nodename;
+  SbProfilingNodeTypeKey nodetype;
+  int16_t parentidx;
+  int16_t childidx;
+
+  SbTime traversaltime;
+  size_t memorysize;
+  size_t texturesize;
+  int traversalcount;
+
+  struct {
+    int glcached : 1;
+    int culled : 1;
+  } flags;
+
+  inline SbNodeProfilingData(void);
+  inline int operator == (const SbNodeProfilingData & rhs) const;
+  inline int operator != (const SbNodeProfilingData & rhs) const;
+
+}; // SbNodeProfilingData
+
+struct SbTypeProfilingData {
+  SbTime totaltime;
+  SbTime maximumtime;
+  int count;
+
+  inline SbTypeProfilingData(void);
+
+}; // SbTypeProfilingData
+
+struct SbNameProfilingData {
+  SbTime totaltime;
+  SbTime maximumtime;
+  int count;
+
+  inline SbNameProfilingData(void);
+
+}; // SbNameProfilingData
+
+// inlined methods
+
+SbNodeProfilingData::SbNodeProfilingData(void)
+: node(NULL), /* nodename(NULL), */ nodetype(0),
+  parentidx(-1), childidx(0),
+  traversaltime(0.0), memorysize(0), texturesize(0), traversalcount(0)
+{
+  this->flags.glcached = 0;
+  this->flags.culled = 0;
+}
+
+int
+SbNodeProfilingData::operator == (const SbNodeProfilingData & rhs) const {
+  return (memcmp(this, &rhs, sizeof(SbNodeProfilingData)) == 0);
+}
+
+int
+SbNodeProfilingData::operator != (const SbNodeProfilingData & rhs) const {
+  return (memcmp(this, &rhs, sizeof(SbNodeProfilingData)) != 0);
+}
+
+SbTypeProfilingData::SbTypeProfilingData(void)
+: totaltime(0.0), maximumtime(0.0), count(0) 
 {
 }
 
-/*!
-  \brief Add profiling data from another data set.
+SbNameProfilingData::SbNameProfilingData(void)
+: totaltime(0.0), maximumtime(0.0), count(0) 
+{
+}
 
-  Add the data from \a rhs by applying the following rules:
-  For each NodeProfile in \a rhs:
-    If we allready have data for the NodeProfile:
-      Update the has_glcache field from \a rhs as it's considered to 
-      be the most recent.
-      For each child timing in the NodeProfile in \a rhs:
-         If we allready have timing data for the child:
-           Accumulate the time
-         Otherwise:
-           Copy the child timing from \a rhs
-    Otherwise:
-      Copy the NodeProfile from \a rhs.
- */
+// *************************************************************************
+
+class SbProfilingDataP {
+public:
+
+  std::vector<SbNodeProfilingData> nodeData;
+  int lastPathIndex;
+
+  std::map<SbProfilingNodeTypeKey, SbTypeProfilingData> nodeTypeData;
+  std::map<SbProfilingNodeNameKey, SbNameProfilingData> nodeNameData;
+
+}; // SbProfilingDataP
+
+#define PRIVATE(obj) ((obj)->pimpl)
+
+/*!
+  \var SbNodeProfilingData
+  \brief Data structure for gathering scene graph traversal profiling information for one node.
+
+  \ingroup profiling
+*/
+
+/*!
+  \class SbProfilingData Profiling/SbProfilingData.h
+  \brief Data structure for gathering scene graph traversal profiling information.
+
+  \ingroup profiling
+*/
+
+/*!
+  Constructor.
+*/
+SbProfilingData::SbProfilingData(void)
+{
+  this->constructorInit();
+}
+
+/*!
+  Copy constructor.
+*/
+SbProfilingData::SbProfilingData(const SbProfilingData & rhs)
+{
+  this->constructorInit();
+  this->operator = (rhs);
+}
+
+/*!
+  Desctructor.
+*/
+SbProfilingData::~SbProfilingData(void)
+{
+  this->reset();
+}
+
+/*!
+  Common initialization code for the constructors.
+*/
+void
+SbProfilingData::constructorInit(void)
+{
+  // NB: if resource allocation is added, rewrite reset() to not call here
+  this->actionType = SoType::badType();
+  this->actionStartTime = SbTime::zero();
+  this->actionStopTime = SbTime::zero();
+  PRIVATE(this)->lastPathIndex = -1;
+}
+
+/*!
+  Remove all stored data.
+*/
+void 
+SbProfilingData::reset(void)
+{
+  this->constructorInit();
+  PRIVATE(this)->nodeData.clear();
+  PRIVATE(this)->nodeTypeData.clear();
+  PRIVATE(this)->nodeNameData.clear();
+}
+
+/*!
+  Assignment operator.
+*/
+SbProfilingData &
+SbProfilingData::operator = (const SbProfilingData & rhs)
+{
+  this->actionType = rhs.actionType;
+  this->actionStartTime = rhs.actionStartTime;
+  this->actionStopTime = rhs.actionStopTime;
+  PRIVATE(this)->lastPathIndex = -1;
+  PRIVATE(this)->nodeData = PRIVATE(&rhs)->nodeData;
+  PRIVATE(this)->nodeTypeData = PRIVATE(&rhs)->nodeTypeData;
+  PRIVATE(this)->nodeNameData = PRIVATE(&rhs)->nodeNameData;
+  assert(PRIVATE(this)->nodeData.size() == PRIVATE(&rhs)->nodeData.size());
+  return *this;
+}
+
+// search dst for the given path in src, and if nonexistent create it
+static void
+findPath(const std::vector<SbNodeProfilingData> & src, std::vector<SbNodeProfilingData> & dst, int srcentryidx, int & matchidx, int & parentidx)
+{
+  matchidx = -1;
+  parentidx = -1;
+
+  // By going from 0 and outwards, the source-vector parent node
+  // will always already exist in the target-vector, which should
+  // help a lot.
+  const int numdestentries = dst.size();
+
+  // FIXME: optimize this part
+  
+  bool match = false;
+  for (int i = 0; i < numdestentries && !match; ++i) {
+    if (dst[i].node == src[srcentryidx].node &&
+	dst[i].childidx == src[srcentryidx].childidx) {
+      // we have a potential match
+      int dstidx = dst[i].parentidx, srcidx = src[srcentryidx].parentidx;
+      while ((srcidx != -1) &&
+	     (dstidx != -1) &&
+	     (src[srcidx].node == dst[dstidx].node) &&
+	     (src[srcidx].childidx == dst[dstidx].childidx)) {
+	srcidx = src[srcidx].parentidx;
+	dstidx = dst[dstidx].parentidx;
+      }
+      if (srcidx == -1 && dstidx == -1) { // match!
+	match = true;
+	matchidx = i;
+      }
+    }
+  }
+  
+  if (match) {
+    parentidx = dst[matchidx].parentidx;
+  } else {
+    matchidx = -1;
+
+    // search for parent instead
+    srcentryidx = src[srcentryidx].parentidx;
+    if (srcentryidx == -1) { // root doesn't have parent
+      parentidx = -1;
+      return;
+    }
+
+    for (int i = 0; i < numdestentries && !match; ++i) {
+      if (dst[i].node == src[srcentryidx].node &&
+	  dst[i].childidx == src[srcentryidx].childidx) {
+	// we have a potential match
+	int dstidx = dst[i].parentidx, srcidx = src[srcentryidx].parentidx;
+	while ((srcidx != -1) &&
+	       (dstidx != -1) &&
+	       (src[srcidx].node == dst[dstidx].node) &&
+	       (src[srcidx].childidx == dst[dstidx].childidx)) {
+	  srcidx = src[srcidx].parentidx;
+	  dstidx = dst[dstidx].parentidx;
+	}
+	if (srcidx == -1 && dstidx == -1) { // match!
+	  match = true;
+	  parentidx = i;
+	}
+      }
+    }
+  }
+}
+
+/*!
+  Add profiling data from another data set.
+*/
 SbProfilingData &
 SbProfilingData::operator += (const SbProfilingData & rhs)
 {
   assert(this != &rhs);
 
-  NodeProfileMap::const_iterator it, end;
-  for (it = rhs.profile_map.begin(), end = rhs.profile_map.end();
-       it != end; ++it) {
-    NodeProfileMap::iterator thisit = this->profile_map.find(it->first);
-    if (thisit != this->profile_map.end()) {
-      // merge NodeProfiles
-      thisit->second->has_glcache = it->second->has_glcache;
-      
-      ChildTimingMap::const_iterator rhs_child_it, rhs_child_end;
-      for (rhs_child_it = it->second->child_map.begin(),
-             rhs_child_end = it->second->child_map.end();
-           rhs_child_it != rhs_child_end; ++rhs_child_it) {
-        ChildTimingMap::iterator this_child_it = 
-          thisit->second->child_map.find(rhs_child_it->first);
-        if (this_child_it != thisit->second->child_map.end()) {
-          // accumulate child timings
-          this_child_it->second.traversaltime += rhs_child_it->second.traversaltime;
-        } else {
-          // copy child timings
-          std::pair<NodeKey, ChildProfile> entry(rhs_child_it->first,
-                                                 rhs_child_it->second);
-          thisit->second->child_map.insert(entry);
-        }
+  if (PRIVATE(this)->nodeData.size() == 0) {
+    return this->operator = (rhs);
+  }
+
+  if (rhs.actionType == SoType::badType()) {
+    // nada - assume same as this
+  } else if (this->actionType == SoType::badType()) {
+    this->actionType = rhs.actionType;
+  } else if (this->actionType != rhs.actionType) {
+    this->actionType = SoType::badType();
+  }
+
+  if (this->actionStartTime == SbTime::zero()) {
+    this->actionStartTime = rhs.actionStartTime;
+    this->actionStopTime = rhs.actionStopTime;
+  } else {
+    this->actionStopTime += rhs.getActionDuration();
+  }
+
+  const std::vector<SbNodeProfilingData> & src = PRIVATE(&rhs)->nodeData;
+  std::vector<SbNodeProfilingData> & dst = PRIVATE(this)->nodeData;
+
+  const int numsrcentries = src.size();
+  for (int c = 0; c < numsrcentries; ++c) {
+    int matchidx = -1, parentidx = -1;
+    findPath(src, dst, c, matchidx, parentidx);
+    if (matchidx == -1) {
+      SbNodeProfilingData data;
+      data.node = src[c].node;
+      data.childidx = src[c].childidx;
+      data.parentidx = parentidx;
+      data.nodetype = src[c].nodetype;
+      data.nodename = src[c].nodename;
+      dst.push_back(data);
+      matchidx = dst.size() - 1;
+    }
+    // acumulate data (something about this really doesn't make sense)
+    dst[matchidx].traversaltime += src[c].traversaltime;
+    dst[matchidx].memorysize += src[c].memorysize;
+    dst[matchidx].texturesize += src[c].texturesize;
+    dst[matchidx].traversalcount += src[c].traversalcount;
+
+    // also for type
+    std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::iterator typeit =
+      PRIVATE(this)->nodeTypeData.find(src[c].nodetype);
+    if (typeit != PRIVATE(this)->nodeTypeData.end()) {
+      typeit->second.totaltime += src[c].traversaltime;
+      if (src[c].traversaltime > typeit->second.maximumtime) {
+	typeit->second.maximumtime = src[c].traversaltime;
       }
+      typeit->second.count += 1;
     } else {
-      // copy rhs NodeProfile
-      NodeProfile * profile = new NodeProfile(*(it->second));
-      std::pair<NodeKey, NodeProfile *> entry(it->first, profile);
-      this->profile_map.insert(entry);
+      PRIVATE(this)->nodeTypeData.insert(*typeit);
+    }
+
+    // and for name
+    SbProfilingNodeNameKey namekey, noname = SbName::empty().getString();
+    int namesearchidx = c;
+    do {
+      namekey = src[namesearchidx].nodename;
+      namesearchidx = src[namesearchidx].parentidx;
+    } while (namekey == noname && namesearchidx != -1);
+    if (namekey != noname) {
+      std::map<SbProfilingNodeNameKey, SbNameProfilingData>::iterator nameit =
+	PRIVATE(this)->nodeNameData.find(namekey);
+      if (nameit != PRIVATE(this)->nodeNameData.end()) {
+	nameit->second.totaltime += src[c].traversaltime;
+	//if (src[c].traversaltime > nameit->second.maximumtime) {
+	//  nameit->second.maximumtime = src[c].traversaltime;
+	//}
+	if (namesearchidx == src[c].parentidx) { // name set directly on c
+	  nameit->second.count += 1;
+	}
+      } else {
+	PRIVATE(this)->nodeNameData.insert(*nameit);
+      }
     }
   }
 
-  // FIXME: add for other maps as well
+  assert(PRIVATE(this)->nodeData.size() >= PRIVATE(&rhs)->nodeData.size());
 
   return *this;
 }
 
 /*!
-  \brief Desctructor.
+  Register which type of action we are recording statistics for.
 */
-SbProfilingData::~SbProfilingData()
+
+void
+SbProfilingData::setActionType(SoType actiontype)
 {
-  this->clear();
+  this->actionType = actiontype;
 }
 
 /*!
-  \brief Remove all stored data.
+  Return the action type set for this SbProfilingData.
 */
-void 
-SbProfilingData::clear()
+
+SoType
+SbProfilingData::getActionType(void) const
 {
-  {
-    NodeProfileMap::iterator it, end;
-    for (it = this->profile_map.begin(), end = this->profile_map.end();
-         it != end; ++it) {
-      it->second->child_map.clear();
-      delete it->second;
-      it->second = NULL;
-    }
-    this->profile_map.clear();
-  }
-
-  {
-    TypeProfileMap::iterator it, end;
-    for (it = this->typeaccum_map.begin(), end = this->typeaccum_map.end();
-         it != end; ++it) {
-      delete it->second;
-      it->second = NULL;
-    }
-    this->typeaccum_map.clear();
-  }
-
-  {
-    NameProfileMap::iterator it, end;
-    for (it = this->nameaccum_map.begin(), end = this->nameaccum_map.end();
-         it != end; ++it) {
-      delete it->second;
-      it->second = NULL;
-    }
-    this->nameaccum_map.clear();
-  }
+  return this->actionType;
 }
 
 /*!
-  \brief Get time spent traversing a child node of \a parent.
-  
-  If the action traversed \a parent several times, because the node appears at 
-  different places in the scene graph, the returned time is the accumulated
-  time.
+  Set traversal start time.
+*/
 
-  The function will return SbTime::zero() if there's not any recorded timing data
-  for the parent and child pair.
- */
+void
+SbProfilingData::setActionStartTime(SbTime starttime)
+{
+  this->actionStartTime = starttime;
+}
+
+/*!
+  Return the action start time.
+*/
+
 SbTime
-SbProfilingData::getChildTiming(SoNode * parent, SoNode * child) const
+SbProfilingData::getActionStartTime(void) const
 {
-  NodeProfileMap::const_iterator it = this->profile_map.find((NodeKey) parent);
-  if (it != this->profile_map.end()) {
-    ChildTimingMap::iterator child_it = it->second->child_map.find((NodeKey) child);
-    if (child_it != it->second->child_map.end())
-      return child_it->second.traversaltime;
-  }
-  return SbTime::zero();
+  return this->actionStartTime;
 }
 
 /*!
-  \brief Store time spent traversing a child node of \a parent.
+  Set traversal stop time.
+*/
+
+void
+SbProfilingData::setActionStopTime(SbTime stoptime)
+{
+  this->actionStopTime = stoptime;
+}
+
+/*!
+  Return the action stop time.
+*/
+
+SbTime
+SbProfilingData::getActionStopTime(void) const
+{
+  return this->actionStopTime;
+}
+
+/*!
+  Return the time the action has spent on the traversal that was profiled.
+*/
+
+SbTime
+SbProfilingData::getActionDuration(void) const
+{
+  if ((this->actionStopTime == SbTime::zero()) &&
+      (this->actionStartTime != SbTime::zero())) {
+    // action still running... (?)
+    return SbTime::getTimeOfDay() - this->actionStartTime;
+  }
+  return (this->actionStopTime - this->actionStartTime);
+}
+
+// *************************************************************************
+
+/*
+ * Check if the path matches the given index in the nodedata vector.
+ */
+
+SbBool
+SbProfilingData::isPathMatch(const SoFullPath * fullpath, int pathlen, int idx)
+{
+  assert(pathlen > 0 && pathlen <= fullpath->getLength());
+  while (pathlen > 0 && idx != -1) {
+    SbProfilingNodeKey node =
+      static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen-1));
+    int childidx = fullpath->getIndex(pathlen-1);
+    if (PRIVATE(this)->nodeData[idx].node != node) return FALSE;
+    if (PRIVATE(this)->nodeData[idx].childidx != childidx) return FALSE;
+    idx = PRIVATE(this)->nodeData[idx].parentidx;
+    --pathlen;
+  }
+  if (pathlen == 0 && idx == -1) return TRUE;
+  return FALSE;
+}
+
+// *************************************************************************
+
+/*!
+  Return the index of the tail node in the path.
+  If node is not registered, add it and return that index.
+*/
+
+int
+SbProfilingData::getIndex(const SoPath * path, SbBool create)
+{
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  if (create) {
+    return this->getIndexCreate(fullpath, fullpath->getLength());
+  } else {
+    return this->getIndexNoCreate(fullpath, fullpath->getLength());
+  }
+}
+
+/*!
+  Return the index of the parent of the node entry at index \a idx.
+  If entry is a root entry, -1 is returned.
+*/
+
+int
+SbProfilingData::getParentIndex(int idx) const
+{
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+  return PRIVATE(this)->nodeData[idx].parentidx;
+}
+
+/*
+ * Return the index of the tail node in the path ("tail" node at pathlen
+ * position). If node is not registered, add it and return that index.
+ */
+
+int
+SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int pathlen)
+{
+
+  std::vector<int> lastentrypathindexes;
+  int idx = PRIVATE(this)->nodeData.size() - 1;
+  while (idx != -1) {
+    lastentrypathindexes.push_back(idx);
+    idx = PRIVATE(this)->nodeData[idx].parentidx;
+  }
+  std::reverse(lastentrypathindexes.begin(), lastentrypathindexes.end());
+
+  int samelength = 0;
+  if (lastentrypathindexes.size() > 0) {
+    const int pathlength =
+      SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
+    while (samelength < pathlength) {
+      if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
+	   static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+	  (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
+	   fullpath->getIndex(samelength))) {
+	break;
+      }
+      ++samelength;
+    }
+  }
+
+  if (samelength == 0) {
+    // FIXME: need to check for the possibility of multiple roots
+    // this is rooted in a new root - add it
+
+    SbNodeProfilingData data;
+    SoNode * rootnode = fullpath->getNode(0);
+    assert(rootnode != NULL);
+    data.node = static_cast<SbProfilingNodeKey>(rootnode);
+    data.nodetype = static_cast<SbProfilingNodeTypeKey>(rootnode->getTypeId().getKey());
+    data.nodename = static_cast<SbProfilingNodeNameKey>(rootnode->getName().getString());
+    PRIVATE(this)->nodeData.push_back(data);
+
+    ++samelength;
+    lastentrypathindexes.clear();
+    lastentrypathindexes.push_back(PRIVATE(this)->nodeData.size() - 1);
+  }
+
+  int pos = samelength;
+  idx = lastentrypathindexes[pos-1];
+  ++pos;
+  while (pos <= fullpath->getLength()) {
+    idx = this->getIndexForwardCreate(fullpath, pos, idx);
+    ++pos;
+  }
+
+  return idx;
+}
+
+/*
+ * This function looks for an existing path, and will not create the
+ * entries if they do not exist.
+ */
+
+int
+SbProfilingData::getIndexNoCreate(const SoPath * path, int pathlen) const
+{
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+
+  std::vector<int> lastentrypathindexes;
+  int idx = PRIVATE(this)->nodeData.size() - 1;
+  while (idx != -1) {
+
+    lastentrypathindexes.push_back(idx);
+    idx = PRIVATE(this)->nodeData[idx].parentidx;
+
+  }
+
+  std::reverse(lastentrypathindexes.begin(), lastentrypathindexes.end());
+
+  int samelength = 0;
+  if (lastentrypathindexes.size() > 0) {
+    const int pathlength =
+      SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
+    while (samelength < pathlength) {
+      if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
+	   static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+	  (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
+	   fullpath->getIndex(samelength))) {
+	break;
+      }
+      ++samelength;	 
+    }
+  }
+
+  if (samelength == 0) {
+    // FIXME: get
+    return -1;
+  }
+
+  int pos = samelength;
+  idx = lastentrypathindexes[pos-1];
+  ++pos;
+  while (pos < fullpath->getLength() && idx != -1) {
+    idx = this->getIndexForwardNoCreate(fullpath, pos, idx);
+    ++pos;
+  }
+
+  return idx;
+}
+
+// *************************************************************************
+
+/*
+ * This function is used when you have a partial path leading up to
+ * the parent of the tail ("tail" at pathlen). Then you can take some
+ * shortcuts and make some assumptions that saves some time. This
+ * function is intended used only as a subfunction of the getIndex()
+ * function for reverse-finding/building the missing data-structure
+ * from the given path.
+ */
+
+int
+SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen, int parentidx)
+{
+  assert(parentidx != -1); // illegal usage
+  assert(parentidx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+  assert(pathlen > 1);
+
+  SbProfilingNodeKey parent =
+    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
+  int pidx = fullpath->getIndex(pathlen - 2);
+  SoNode * tailnode = fullpath->getNode(pathlen - 1);
+  SbProfilingNodeKey tail = static_cast<SbProfilingNodeKey>(tailnode);
+  int tidx = fullpath->getIndex(pathlen - 1);
+
+  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
+  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+
+  const int nodedatacount = PRIVATE(this)->nodeData.size();
+  for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
+    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+	(PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
+      return idx;
+    }
+  }
+
+  // entry not found - add entry and return new index
+  SbNodeProfilingData data;
+  data.node = tail;
+  data.nodetype = static_cast<SbProfilingNodeTypeKey>(tailnode->getTypeId().getKey());
+  data.nodename = static_cast<SbProfilingNodeNameKey>(tailnode->getName().getString());
+  data.parentidx = parentidx;
+  data.childidx = tidx;
+  PRIVATE(this)->nodeData.push_back(data);
+
+  return PRIVATE(this)->nodeData.size() - 1;
+}
+
+/*
+ *
+ */
+
+int
+SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathlen, int parentidx) const
+{
+  assert(parentidx != -1); // illegal usage
+  assert(pathlen > 1);
+
+  SbProfilingNodeKey parent =
+    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
+  int pidx = fullpath->getIndex(pathlen - 2);
+  SbProfilingNodeKey tail =
+    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 1));
+  int tidx = fullpath->getIndex(pathlen - 1);
+
+  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
+  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+
+  const int nodedatacount = PRIVATE(this)->nodeData.size();
+  for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
+    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+	(PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
+      return idx;
+    }
+  }
+  return -1;
+}
+
+// *************************************************************************
+
+/*!
+  This function calls the index-version of setNodeTiming after having
+  fetched the index.
+*/
+void
+SbProfilingData::setNodeTiming(const SoPath * path, SbTime timing)
+{
+  assert(path);
+  assert(path->getLength() > 0);
+  assert(timing.getValue() >= 0.0);
+
+  const int idx = this->getIndex(path);
+  this->setNodeTiming(idx, timing);
+}
+
+/*!
+  This method sets the timing for a node, as if it was new data to
+  be registered. This means that counters of various types are
+  implicitly incremented and similar things.  To avoid those
+  sideeffects, use offsetNodeTiming, which leaves all the counters
+  alone.
+
+  \sa offsetNodeTiming
  */
 void
-SbProfilingData::setChildTiming(SoNode * parent, SoNode * child, 
-                                const SbTime & time)
+SbProfilingData::setNodeTiming(int idx, SbTime timing)
 {
-  NodeProfileMap::iterator it = this->profile_map.find((NodeKey) parent);
-  if (it != this->profile_map.end()) {
-    // update the timing data for the existing NodeProfile
-    ChildTimingMap::iterator child_it = it->second->child_map.find((NodeKey) child);
-    if (child_it != it->second->child_map.end()) {
-      // accumulate time in the existing child entry
-      child_it->second.traversaltime += time;
-    } else {
-      // create new child entry
-      ChildProfile profile;
-      profile.traversaltime = time;
-      std::pair<NodeKey, ChildProfile> entry(child, profile);
-      it->second->child_map.insert(entry);
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+  assert(timing.getValue() >= 0.0);
+
+  // 1) set for path (node)
+  //SoDebugError::postInfo("SbProfilingData::setNodeTiming", "setting timing for node %p to %g", PRIVATE(this)->nodeData[idx].node, timing.getValue());
+  PRIVATE(this)->nodeData[idx].traversaltime = timing;
+  PRIVATE(this)->nodeData[idx].traversalcount = 1;
+
+  // 2) set for type
+  SbProfilingNodeKey tailnode = PRIVATE(this)->nodeData[idx].node;
+  SbProfilingNodeTypeKey typekey = PRIVATE(this)->nodeData[idx].nodetype;
+  std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::iterator typeit =
+    PRIVATE(this)->nodeTypeData.find(typekey);
+  if (typeit != PRIVATE(this)->nodeTypeData.end()) {
+    (*typeit).second.totaltime += timing;
+    (*typeit).second.count += 1;
+    if ((*typeit).second.maximumtime < timing) {
+      (*typeit).second.maximumtime = timing;
     }
   } else {
-    // create new NodeProfile and add the timing data for the child
-    ChildProfile cprofile;
-    cprofile.traversaltime = time;
-    std::pair<NodeKey, ChildProfile> child_entry(child, cprofile);
-    NodeProfile * profile = new NodeProfile;
-    profile->child_map.insert(child_entry);
-    profile->has_glcache = FALSE;
-    std::pair<NodeKey, NodeProfile *> profile_entry(parent, profile);
-    this->profile_map.insert(profile_entry);
+    SbTypeProfilingData data;
+    data.totaltime = timing;
+    data.maximumtime = timing;
+    data.count = 1;
+    PRIVATE(this)->nodeTypeData.insert(std::pair<SbProfilingNodeTypeKey, SbTypeProfilingData>(typekey, data));
+  }
+
+  // 3) set for name
+
+  // should we include timings at all named nodes up through the path
+  // all the way to the root?
+  const bool inclusive = false;
+
+  int parentidx = idx;
+  while (parentidx != -1) {
+    SbProfilingNodeNameKey namekey =
+      PRIVATE(this)->nodeData[parentidx].nodename;
+    if (namekey != SbName::empty().getString()) {
+      std::map<SbProfilingNodeNameKey, SbNameProfilingData>::iterator nameit =
+	PRIVATE(this)->nodeNameData.find(namekey);
+      if (nameit != PRIVATE(this)->nodeNameData.end()) {
+	(*nameit).second.totaltime += timing;
+	if (idx == parentidx) { // entry at named node level
+	  // DISABLED: we won't know the "unit" time for this aggregate
+	  // time-sum so we can't give maximum unit time. we'll need to
+	  // store total-time from preTraversal() to figure it
+	  // out i think. 20080304 larsa
+	  //if ((*nameit).second.maximumtime < timing) {
+	  //  (*nameit).second.maximumtime = timing;
+	  //}
+	  (*nameit).second.count += 1;
+	}
+      } else {
+	SbNameProfilingData data;
+	data.totaltime = timing;
+	//data.maximumtime = timing;
+	if (idx == parentidx) {
+	  data.count += 1;
+	}
+	PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
+      }
+      if (!inclusive) break;
+    }
+    parentidx = PRIVATE(this)->nodeData[parentidx].parentidx;
   }
 }
 
 /*!
-  \brief Check if the node had GL chache in last render.
- */
-SbBool
-SbProfilingData::hasGLCache(SoNode * node) const
+  This function will adjust node timings without touching traversal counters.
+*/
+void
+SbProfilingData::preOffsetNodeTiming(int idx, SbTime timing)
 {
-  NodeProfileMap::const_iterator it = this->profile_map.find(node);
-  if (it != this->profile_map.end())
-    return it->second->has_glcache;
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+  // 1) adjust for path (node)
+  PRIVATE(this)->nodeData[idx].traversaltime += timing;
+
+#if 0
+  // 2) adjust for type
+  SbProfilingNodeKey tailnode = PRIVATE(this)->nodeData[idx].node;
+  SbProfilingNodeTypeKey typekey = PRIVATE(this)->nodeData[idx].nodetype;
+  std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::iterator typeit =
+    PRIVATE(this)->nodeTypeData.find(typekey);
+  if (typeit != PRIVATE(this)->nodeTypeData.end()) {
+    (*typeit).second.totaltime += timing;
+  } else {
+    SbTypeProfilingData data;
+    data.totaltime = timing;
+    PRIVATE(this)->nodeTypeData.insert(std::pair<SbProfilingNodeTypeKey, SbTypeProfilingData>(typekey, data));
+  }
+
+  // 3) adjust for name
+
+  // should we include timings at all named nodes up through the path
+  // all the way to the root?
+  const bool inclusive = false;
+
+  int parentidx = idx;
+  while (parentidx != -1) {
+    SbProfilingNodeNameKey namekey =
+      PRIVATE(this)->nodeData[parentidx].nodename;
+    if (namekey != SbName::empty().getString()) {
+      std::map<SbProfilingNodeNameKey, SbNameProfilingData>::iterator nameit =
+	PRIVATE(this)->nodeNameData.find(namekey);
+      if (nameit != PRIVATE(this)->nodeNameData.end()) {
+	(*nameit).second.totaltime += timing;
+	if (idx == parentidx) { // entry at named node level
+	  // DISABLED: we won't know the "unit" time for this aggregate
+	  // time-sum so we can't give maximum unit time. we'll need to
+	  // store total-time from preTraversal() to figure it
+	  // out i think. 20080304 larsa
+	  //if ((*nameit).second.maximumtime < timing) {
+	  //  (*nameit).second.maximumtime = timing;
+	  //}
+	}
+      } else {
+	SbNameProfilingData data;
+	data.totaltime = timing;
+	PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
+      }
+      if (!inclusive) break;
+    }
+    parentidx = PRIVATE(this)->nodeData[parentidx].parentidx;
+  }
+#endif
+}
+
+/*!
+  Returns the timing for a node.
+*/
+SbTime
+SbProfilingData::getNodeTiming(const SoPath * path, unsigned int flags) const
+{
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  return this->getNodeTiming(idx, flags);
+}
+
+/*!
+*/
+
+SbTime
+SbProfilingData::getNodeTiming(int idx, unsigned int flags) const
+{
+  if (idx == -1) return SbTime::zero();
+  SbTime sum = PRIVATE(this)->nodeData[idx].traversaltime;
+  if ((flags & INCLUDE_CHILDREN) != 0) {
+    // FIXME: find all children of the node ad add to the sum
+  }
+  return sum;
+}
+
+/*!
+*/
+
+void
+SbProfilingData::setNodeFootprint(const SoPath * path, FootprintType footprinttype, size_t footprint)
+{
+  assert(path);
+  assert(static_cast<const SoFullPath *>(path)->getLength() > 0);
+
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  const int idx = this->getIndexCreate(fullpath, fullpath->getLength());
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+
+  this->setNodeFootprint(idx, footprinttype, footprint);
+}
+
+/*!
+*/
+
+void
+SbProfilingData::setNodeFootprint(int idx, FootprintType footprinttype, size_t footprint)
+{
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+
+  switch (footprinttype) {
+  case MEMORY_SIZE:
+    PRIVATE(this)->nodeData[idx].memorysize = footprint;
+    break;
+  case VIDEO_MEMORY_SIZE:
+    PRIVATE(this)->nodeData[idx].texturesize = footprint;
+    break;
+  default:
+    break;
+  }
+}
+
+/*!
+*/
+
+size_t
+SbProfilingData::getNodeFootprint(const SoPath * path, FootprintType footprinttype, unsigned int flags) const
+{
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  const int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  if (idx == -1) return 0;
+
+  return this->getNodeFootprint(idx, footprinttype, flags);
+}
+
+/*!
+*/
+
+size_t
+SbProfilingData::getNodeFootprint(int idx, FootprintType footprinttype, unsigned int flags) const
+{
+  assert(idx >= 0);
+  size_t footprint = 0;
+  switch (footprinttype) {
+  case MEMORY_SIZE:
+    footprint = PRIVATE(this)->nodeData[idx].memorysize;
+    break;
+  case VIDEO_MEMORY_SIZE:
+    footprint = PRIVATE(this)->nodeData[idx].texturesize;
+    break;
+  default:
+    break;
+  }
+  if ((flags & INCLUDE_CHILDREN) != 0) {
+    // FIXME: add children data to footprint
+  }
+  return footprint;
+}
+
+/*!
+*/
+
+void
+SbProfilingData::setNodeFlag(const SoPath * path, NodeFlag flag, SbBool on)
+{
+  assert(path);
+  assert(static_cast<const SoFullPath *>(path)->getLength() > 0);
+
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  const int idx = this->getIndexCreate(fullpath, fullpath->getLength());
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+  this->setNodeFlag(idx, flag, on);
+}
+
+/*!
+*/
+
+void
+SbProfilingData::setNodeFlag(int idx, NodeFlag flag, SbBool on)
+{
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+
+  switch (flag) {
+  case GL_CACHED_FLAG:
+    PRIVATE(this)->nodeData[idx].flags.glcached = on ? 1 : 0;
+    break;
+  case CULLED_FLAG:
+    PRIVATE(this)->nodeData[idx].flags.culled = on ? 1 : 0;
+    break;
+  default:
+    break;
+  }
+}
+
+/*!
+*/
+
+SbBool
+SbProfilingData::getNodeFlag(const SoPath * path, NodeFlag flag) const
+{
+  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
+  const int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  if (idx == -1) return 0;
+  return this->getNodeFlag(idx, flag);
+}
+
+/*!
+*/
+
+SbBool
+SbProfilingData::getNodeFlag(int idx, NodeFlag flag) const
+{
+  assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
+
+  switch (flag) {
+  case GL_CACHED_FLAG:
+    return PRIVATE(this)->nodeData[idx].flags.glcached ? TRUE : FALSE;
+    break;
+  case CULLED_FLAG:
+    return PRIVATE(this)->nodeData[idx].flags.culled ? TRUE : FALSE;
+    break;
+  default:
+    break;
+  }
   return FALSE;
 }
 
 /*!
-  \brief Store flag that tells if the node had GL cache in last render.
 */
-void
-SbProfilingData::setHasGLCache(SoNode * node, SbBool hascache)
+
+size_t
+SbProfilingData::getProfilingDataSize(void) const
 {
-  NodeProfileMap::iterator it = this->profile_map.find(node);
-  if (it != this->profile_map.end()) {
-    // just update the existing profile
-    it->second->has_glcache = hascache;
-  } else {
-    // create new profile and add it to the map
-    NodeProfile * profile = new NodeProfile;
-    profile->has_glcache = hascache;
-    std::pair<SoNode *, NodeProfile *> entry(node, profile);
-    this->profile_map.insert(entry);
-  }
+  size_t nodestatsize =
+    PRIVATE(this)->nodeData.capacity() * sizeof(SbNodeProfilingData);
+  return nodestatsize;
 }
 
+/*!
+*/
 
 void
-SbProfilingData::accumulateTraversalTime(SoType parenttype, SoType childtype,
-                                         SbTime t)
-{
-  assert(childtype != SoType::badType());
-
-  // (note: the input arg 'parenttype' will be SoType::badType() for
-  // the root node)
-
-  /*
-  {
-    struct NodenameAccumulations acc;
-
-    SbBool first = ! this->nameaccum_map.get(nodename.getString(), acc);
-    if (first) {
-      acc.name = nodename.getString();
-      acc.rendertime = t;
-      acc.rendertimemax = t;
-      acc.count = 1;
-    }
-    else {
-      acc.rendertime += t;
-      if (t.getValue() > acc.rendertimemax.getValue()) {
-        acc.rendertimemax = t;
-      }
-      ++acc.count;
-    }
-
-    this->nameaccum_map.put(nodename.getString(), acc);
-  }
-
-  */
-
-  NodeTypeKey typekey = childtype.getKey();
-  TypeProfileMap::iterator it = this->typeaccum_map.find(typekey);
-
-  SbBool first = (it == this->typeaccum_map.end());
-  if (first) {
-    NodeTypeProfile * acc = new NodeTypeProfile;
-    acc->traversaltimetotal = t;
-    acc->traversaltimemax = t;
-    acc->count = 1;
-    std::pair<NodeTypeKey, NodeTypeProfile *> entry(typekey, acc);
-    this->typeaccum_map.insert(entry);
-  } else {
-    NodeTypeProfile * acc = it->second;
-    acc->traversaltimetotal += t;
-    if (t.getValue() > acc->traversaltimemax.getValue()) {
-      acc->traversaltimemax = t;
-    }
-    ++acc->count;
-  }
-
-  // subtract from type of parent node, because SoGroup, SoSwitch, etc
-  // includes timing from their child nodes:
-  if (parenttype != SoType::badType()) {
-    typekey = parenttype.getKey();
-    it = this->typeaccum_map.find(typekey);
-
-    first = (it == this->typeaccum_map.end());
-    if (first) {
-      NodeTypeProfile * acc = new NodeTypeProfile;
-      acc->traversaltimetotal = -t;
-      acc->traversaltimemax = SbTime::zero();
-      acc->count = 0;
-      std::pair<NodeTypeKey, NodeTypeProfile *> entry(typekey, acc);
-      this->typeaccum_map.insert(entry);
-    }
-    else {
-      NodeTypeProfile * acc = it->second;
-      acc->traversaltimetotal -= t;
-      // FIXME: traversaltimemax will be wrong, i presume.  -mortene.
-    }
-  }
-}
-
-
-
-void
-SbProfilingData::getTraversalStatsForTypesKeyList(SbList<NodeTypeKey> & keys_out) const
+SbProfilingData::getStatsForTypesKeyList(SbList<SbProfilingNodeTypeKey> & keys_out) const
 {
   keys_out.truncate(0);
-  for (TypeProfileMap::const_iterator it = this->typeaccum_map.begin();
-       it != this->typeaccum_map.end(); it++) {
+  std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::const_iterator it =
+    PRIVATE(this)->nodeTypeData.begin();
+  while (it != PRIVATE(this)->nodeTypeData.end()) {
     keys_out.append(it->first);
+    ++it;
   }
 }
 
+/*!
+*/
+
 void
-SbProfilingData::getTraversalStatsForType(NodeTypeKey type,
-                                          SbTime & totaltime, SbTime & maxtime, uint32_t & count) const
+SbProfilingData::getStatsForType(SbProfilingNodeTypeKey type,
+				 SbTime & totaltime, SbTime & maxtime,
+				 uint32_t & count) const
 {
-  TypeProfileMap::const_iterator it = this->typeaccum_map.find(type);
-  assert(it != this->typeaccum_map.end());
-  NodeTypeProfile * acc = it->second;
-  totaltime = acc->traversaltimetotal;
-  maxtime = acc->traversaltimemax;
-  count = acc->count;
+  std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::const_iterator it =
+    PRIVATE(this)->nodeTypeData.find(type);
+  assert(it != PRIVATE(this)->nodeTypeData.end());
+  totaltime = it->second.totaltime;
+  maxtime = it->second.maximumtime;
+  count = it->second.count;
 }
 
 // *************************************************************************
 
+/*!
+*/
+
 void
-SbProfilingData::getTraversalStatsForNamesKeyList(SbList<NodeNameKey> & keys_out) const
+SbProfilingData::getStatsForNamesKeyList(SbList<SbProfilingNodeNameKey> & keys_out) const
 {
   keys_out.truncate(0);
-  for (NameProfileMap::const_iterator it = this->nameaccum_map.begin();
-       it != this->nameaccum_map.end(); it++) {
+  std::map<SbProfilingNodeNameKey, SbNameProfilingData>::const_iterator it =
+    PRIVATE(this)->nodeNameData.begin();
+  while (it != PRIVATE(this)->nodeNameData.end()) {
     keys_out.append(it->first);
+    ++it;
   }
 }
 
+/*!
+*/
+
 void
-SbProfilingData::getTraversalStatsForName(NodeNameKey name,
-                                          SbTime & totaltime, SbTime & maxtime, uint32_t & count) const
+SbProfilingData::getStatsForName(SbProfilingNodeNameKey name,
+				 SbTime & totaltime, SbTime & maxtime,
+				 uint32_t & count) const
 {
-  NameProfileMap::const_iterator it = this->nameaccum_map.find(name);
-  assert(it != this->nameaccum_map.end());
-  NodeNameProfile * acc = it->second;
-  totaltime = acc->traversaltimetotal;
-  maxtime = acc->traversaltimemax;
-  count = acc->count;
+  std::map<SbProfilingNodeNameKey, SbNameProfilingData>::const_iterator it =
+    PRIVATE(this)->nodeNameData.find(name);
+  assert(it != PRIVATE(this)->nodeNameData.end());
+  totaltime = it->second.totaltime;
+  maxtime = it->second.maximumtime;
+  count = it->second.count;
 }
 
 // *************************************************************************
 
-#endif // HAVE_SCENE_PROFILING
+int
+SbProfilingData::operator == (const SbProfilingData & rhs) const
+{
+  if (this->actionType != rhs.actionType) return FALSE;
+  if (this->actionStartTime != rhs.actionStopTime) return FALSE;
+  if (this->actionStartTime != rhs.actionStopTime) return FALSE;
+  if (PRIVATE(this)->nodeData.size() != PRIVATE(&rhs)->nodeData.size())
+    return FALSE;
+
+  for (int c = PRIVATE(this)->nodeData.size() - 1; c >= 0; --c) {
+    if (PRIVATE(this)->nodeData[c] != PRIVATE(&rhs)->nodeData[c])
+      return FALSE;
+  }
+
+  // NOTE: the type and name info maps are not checked, because they
+  // are just aggregates of the nodedata records and would be equal if
+  // the node data is.
+
+  return TRUE;
+}
+
+int
+SbProfilingData::operator != (const SbProfilingData & rhs) const
+{
+  return !((*this) == rhs);
+}
+
+// *************************************************************************
