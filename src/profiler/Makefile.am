@@ -6,7 +6,7 @@ RegularSources = \
         SoProfilerOverlayKit.cpp \
         SoProfilerStats.cpp \
         SoProfilerTopEngine.cpp \
-	SoScrollingGraphKit.cpp \
+        SoScrollingGraphKit.cpp \
         SoNodeVisualize.cpp \
         SoProfilerTopKit.cpp \
         SoProfilerVisualizeKit.cpp \
@@ -18,8 +18,7 @@ LinkHackSources = \
 PublicHeaders =
 
 PrivateHeaders = \
-        SbProfilingData.h \
-        SoProfilerElement.h \
+        SoProfilerP.h \
         SoNodeProfiling.h \
         inventormaps.icc
 

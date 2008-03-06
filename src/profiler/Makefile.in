@@ -272,7 +272,7 @@ RegularSources = \
         SoProfilerOverlayKit.cpp \
         SoProfilerStats.cpp \
         SoProfilerTopEngine.cpp \
-	SoScrollingGraphKit.cpp \
+        SoScrollingGraphKit.cpp \
         SoNodeVisualize.cpp \
         SoProfilerTopKit.cpp \
         SoProfilerVisualizeKit.cpp \
@@ -286,8 +286,7 @@ LinkHackSources = \
 PublicHeaders = 
 
 PrivateHeaders = \
-        SbProfilingData.h \
-        SoProfilerElement.h \
+        SoProfilerP.h \
         SoNodeProfiling.h \
         inventormaps.icc
 
@@ -369,13 +368,13 @@ am__objects_2 = SoProfiler.$(OBJEXT) SoProfilerElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_profiler_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_profiler_lst_SOURCES_DIST = SbProfilingData.h \
-	SoProfilerElement.h SoNodeProfiling.h inventormaps.icc \
-	all-profiler-cpp.cpp SoProfiler.cpp SoProfilerElement.cpp \
-	SoProfilerOverlayKit.cpp SoProfilerStats.cpp \
-	SoProfilerTopEngine.cpp SoScrollingGraphKit.cpp \
-	SoNodeVisualize.cpp SoProfilerTopKit.cpp \
-	SoProfilerVisualizeKit.cpp SbProfilingData.cpp
+am__EXTRA_profiler_lst_SOURCES_DIST = SoProfilerP.h SoNodeProfiling.h \
+	inventormaps.icc all-profiler-cpp.cpp SoProfiler.cpp \
+	SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
+	SoProfilerStats.cpp SoProfilerTopEngine.cpp \
+	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
+	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
+	SbProfilingData.cpp
 profiler_lst_OBJECTS = $(am_profiler_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -396,13 +395,13 @@ am__objects_7 = SoProfiler.lo SoProfilerElement.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libprofiler_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libprofiler_la_SOURCES_DIST = SbProfilingData.h \
-	SoProfilerElement.h SoNodeProfiling.h inventormaps.icc \
-	all-profiler-cpp.cpp SoProfiler.cpp SoProfilerElement.cpp \
-	SoProfilerOverlayKit.cpp SoProfilerStats.cpp \
-	SoProfilerTopEngine.cpp SoScrollingGraphKit.cpp \
-	SoNodeVisualize.cpp SoProfilerTopKit.cpp \
-	SoProfilerVisualizeKit.cpp SbProfilingData.cpp
+am__EXTRA_libprofiler_la_SOURCES_DIST = SoProfilerP.h SoNodeProfiling.h \
+	inventormaps.icc all-profiler-cpp.cpp SoProfiler.cpp \
+	SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
+	SoProfilerStats.cpp SoProfilerTopEngine.cpp \
+	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
+	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
+	SbProfilingData.cpp
 libprofiler_la_OBJECTS = $(am_libprofiler_la_OBJECTS)
 libprofiler@SUFFIX@LINKHACK_la_LDFLAGS =
 libprofiler@SUFFIX@LINKHACK_la_LIBADD =
@@ -413,10 +412,9 @@ am__libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = SoProfiler.cpp \
 	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
 	SbProfilingData.cpp all-profiler-cpp.cpp
 am_libprofiler@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SbProfilingData.h SoProfilerElement.h SoNodeProfiling.h \
-	inventormaps.icc all-profiler-cpp.cpp SoProfiler.cpp \
-	SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
+am__EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = SoProfilerP.h \
+	SoNodeProfiling.h inventormaps.icc all-profiler-cpp.cpp \
+	SoProfiler.cpp SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
 	SoProfilerStats.cpp SoProfilerTopEngine.cpp \
 	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
 	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
