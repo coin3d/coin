@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class SoMaterialP;
 
@@ -57,8 +58,13 @@ protected:
   virtual void notify(SoNotList * list);
 
 private:
-  SoMaterialP * pimpl;
   int getMaterialType(void);
-};
+
+  SbPimplPtr<SoMaterialP> pimpl;
+
+  SoMaterial(const SoMaterial &rhs); // N/A
+  SoMaterial & operator = (const SoMaterial & rhs); // N/A
+
+}; // SoMaterial
 
 #endif // !COIN_SOMATERIAL_H
