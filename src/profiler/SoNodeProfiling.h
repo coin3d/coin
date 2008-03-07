@@ -5,7 +5,7 @@
 #ifdef HAVE_SCENE_PROFILING
 
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/system/GL.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 
