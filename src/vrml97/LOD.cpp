@@ -133,6 +133,7 @@
 #include "misc/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 #include "nodes/SoSoundElementHelper.h"
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -413,7 +414,10 @@ SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
     SoNode * child = (SoNode*) this->getChildren()->get(idx);
     action->pushCurPath(idx, child);
     if (!action->abortNow()) {
+      SoNodeProfiling profiling;
+      profiling.preTraversal(action);
       child->GLRenderBelowPath(action);
+      profiling.postTraversal(action);
 #if COIN_DEBUG
       // The GL error test is default disabled for this optimized
       // path.  If you get a GL error reporting an error in the
@@ -453,10 +457,13 @@ SoVRMLLOD::GLRenderInPath(SoGLRenderAction * action)
   if (pathcode == SoAction::IN_PATH) {
     for (int i = 0; (i < numindices) && !action->hasTerminated(); i++) {
       int idx = indices[i];
-      SoNode * node = this->getChild(idx);
-      action->pushCurPath(idx, node);
+      SoNode * child = this->getChild(idx);
+      action->pushCurPath(idx, child);
       if (!action->abortNow()) {
-        node->GLRenderInPath(action);
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
+        child->GLRenderInPath(action);
+	profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
     }
@@ -473,11 +480,14 @@ SoVRMLLOD::GLRenderOffPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);;
   if (idx >= 0) {
-    SoNode * node = this->getChild(idx);
-    if (node->affectsState()) {
-      action->pushCurPath(idx, node);
+    SoNode * child = this->getChild(idx);
+    if (child->affectsState()) {
+      action->pushCurPath(idx, child);
       if (!action->abortNow()) {
-        node->GLRenderOffPath(action);
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
+        child->GLRenderOffPath(action);
+	profiling.postTraversal(action);
       }
       action->popCurPath();
     }

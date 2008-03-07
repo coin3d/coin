@@ -148,6 +148,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 
 #include "nodes/SoSubNodeP.h"
+#include "profiler/SoNodeProfiling.h"
 
 SO_NODE_SOURCE(SoVRMLCollision);
 
@@ -214,7 +215,10 @@ SoVRMLCollision::GLRender(SoGLRenderAction * action)
       if (action->getCurPathCode() != SoAction::OFF_PATH ||
           child->affectsState()) {
         if (!action->abortNow()) {
+	  SoNodeProfiling profiling;
+	  profiling.preTraversal(action);
           child->GLRender(action);
+	  profiling.postTraversal(action);
         }
         else {
           SoCacheElement::invalidate(state);
@@ -233,7 +237,10 @@ SoVRMLCollision::GLRender(SoGLRenderAction * action)
         SoCacheElement::invalidate(state);
         break;
       }
+      SoNodeProfiling profiling;
+      profiling.preTraversal(action);
       childarray[i]->GLRender(action);
+      profiling.postTraversal(action);
     }
     action->popCurPath();
   }

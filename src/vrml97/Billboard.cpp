@@ -181,6 +181,7 @@
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
 #include "glue/glp.h"
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -316,7 +317,10 @@ SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
       // only cache if we do a full traversal
       break;
     }
+    SoNodeProfiling profiling;
+    profiling.preTraversal(action);
     childarray[i]->GLRenderBelowPath(action);
+    profiling.postTraversal(action);
 
 #if COIN_DEBUG
     // The GL error test is default disabled for this optimized
@@ -366,7 +370,10 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
+	    SoNodeProfiling profiling;
+	    profiling.preTraversal(action);
             offpath->GLRenderOffPath(action);
+	    profiling.postTraversal(action);
           }
           action->popCurPath(pathcode);
         }
@@ -374,7 +381,10 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
         inpath->GLRenderInPath(action);
+	profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
       childidx++;

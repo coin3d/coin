@@ -100,6 +100,7 @@
 
 #include "nodes/SoSubNodeP.h"
 #include "nodes/SoSoundElementHelper.h"
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -265,7 +266,10 @@ SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
     SoNode * child = (SoNode*) this->children->get(idx);
     action->pushCurPath(idx, child);
     if (!action->abortNow()) {
+      SoNodeProfiling profiling;
+      profiling.preTraversal(action);
       child->GLRenderBelowPath(action);
+      profiling.postTraversal(action);
     }
     action->popCurPath();
   }
@@ -288,7 +292,10 @@ SoLOD::GLRenderInPath(SoGLRenderAction * action)
       SoNode * node = this->getChild(idx);
       action->pushCurPath(idx, node);
       if (!action->abortNow()) {
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
         node->GLRenderInPath(action);
+	profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
     }
@@ -309,7 +316,10 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
     if (node->affectsState()) {
       action->pushCurPath(idx, node);
       if (!action->abortNow()) {
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
         node->GLRenderOffPath(action);
+	profiling.postTraversal(action);
       }
       action->popCurPath();
     }

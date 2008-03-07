@@ -163,7 +163,10 @@ SoShaderProgram::search(SoSearchAction * action)
     for (int i=0; i<num; i++) {
       SoNode * node = this->shaderObject[i];
       action->pushCurPath(i, node);
+      SoNodeProfiling profiling;
+      profiling.preTraversal(action);
       node->search(action);
+      profiling.postTraversal(action);
       action->popCurPath();
       if (action->isFound()) return;
     }

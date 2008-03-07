@@ -116,6 +116,7 @@
 #include "misc/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 #include "glue/glp.h"
+#include "profiler/SoNodeProfiling.h"
 
 // *************************************************************************
 
@@ -579,7 +580,10 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
         SoCacheElement::invalidate(state);
         break;
       }
+      SoNodeProfiling profiling;
+      profiling.preTraversal(action);
       childarray[i]->GLRenderBelowPath(action);
+      profiling.postTraversal(action);
 
 #if COIN_DEBUG
       // The GL error test is default disabled for this optimized
@@ -630,7 +634,10 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
+	    SoNodeProfiling profiling;
+	    profiling.preTraversal(action);
             offpath->GLRenderOffPath(action);
+	    profiling.postTraversal(action);
           }
           else {
             SoCacheElement::invalidate(state);
@@ -641,7 +648,10 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
+	SoNodeProfiling profiling;
+	profiling.preTraversal(action);
         inpath->GLRenderInPath(action);
+	profiling.postTraversal(action);
       }
       else {
         SoCacheElement::invalidate(state);
