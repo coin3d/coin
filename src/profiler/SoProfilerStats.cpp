@@ -183,7 +183,11 @@ SoProfilerStatsP::clearProfilingData(void)
   }
   this->action_map.clear();
   this->action_timings.clear();
+#if BY_TYPE
   this->type_timings.clear();
+#else
+  this->name_timings.clear();
+#endif
 } // clearActionMap
 
 void
@@ -234,7 +238,7 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
     }
   }
 #else
-  SbList<SbProfilingData::NodeNameKey> keys;
+  SbList<SbProfilingNodeNameKey> keys;
   data.getStatsForNamesKeyList(keys);
   int keyCount = keys.getLength();
   for (int i = 0; i < keyCount; ++i) {
