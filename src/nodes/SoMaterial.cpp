@@ -154,6 +154,10 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include <Inventor/annex/Profiler/SbProfilingData.h>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -164,7 +168,6 @@
 
 #include "misc/SoVBO.h"
 #include "nodes/SoSubNodeP.h"
-
 
 // *************************************************************************
 
@@ -296,8 +299,7 @@ private:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoMaterial);
 
@@ -306,8 +308,6 @@ SO_NODE_SOURCE(SoMaterial);
 */
 SoMaterial::SoMaterial(void)
 {
-  THIS = new SoMaterialP;
-
   SO_NODE_INTERNAL_CONSTRUCTOR(SoMaterial);
 
   SO_NODE_ADD_FIELD(ambientColor, (0.2f, 0.2f, 0.2f));
@@ -317,8 +317,8 @@ SoMaterial::SoMaterial(void)
   SO_NODE_ADD_FIELD(shininess, (0.2f));
   SO_NODE_ADD_FIELD(transparency, (0.0f));
   
-  THIS->materialtype = TYPE_NORMAL;
-  THIS->transparencyflag = FALSE; // we know it's not transparent
+  PRIVATE(this)->materialtype = TYPE_NORMAL;
+  PRIVATE(this)->transparencyflag = FALSE; // we know it's not transparent
 }
 
 /*!
@@ -326,7 +326,6 @@ SoMaterial::SoMaterial(void)
 */
 SoMaterial::~SoMaterial()
 {
-  delete THIS;
 }
 
 // Doc from superclass.
@@ -367,6 +366,23 @@ SoMaterial::doAction(SoAction * action)
   SbBool istransparent = FALSE;
 
   SoState * state = action->getState();
+
+  if (SoProfiler::isActive()) {
+    // register the SoColorPacker memory usage
+    if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
+      const SoColorPacker * packer = PRIVATE(this)->getColorPacker();
+      if (packer) {
+	SoProfilerElement * profilerelt = SoProfilerElement::get(state);
+	assert(profilerelt);
+	SbProfilingData & data = profilerelt->getProfilingData();
+	int entry = data.getIndex(action->getCurPath(), TRUE);
+	assert(entry != -1);
+	size_t mem = data.getNodeFootprint(entry, SbProfilingData::MEMORY_SIZE);
+	data.setNodeFootprint(entry, SbProfilingData::MEMORY_SIZE,
+			      mem + packer->getSize() * sizeof(uint32_t));
+      }
+    }
+  }
 
   uint32_t bitmask = 0;
   uint32_t flags = SoOverrideElement::getFlags(state);
@@ -423,7 +439,7 @@ SoMaterial::doAction(SoAction * action)
     }
     // if we don't know if material is transparent, run through all
     // values and test
-    if (THIS->transparencyflag < 0) {
+    if (PRIVATE(this)->transparencyflag < 0) {
       int i, n = this->transparency.getNum();
       const float * p = this->transparency.getValues(0);
       for (i = 0; i < n; i++) {
@@ -433,9 +449,9 @@ SoMaterial::doAction(SoAction * action)
         }
       }
       // we now know whether material is transparent or not
-      THIS->transparencyflag = (int) istransparent;
+      PRIVATE(this)->transparencyflag = (int) istransparent;
     }
-    istransparent = (SbBool) THIS->transparencyflag;
+    istransparent = (SbBool) PRIVATE(this)->transparencyflag;
   }
 #undef TEST_OVERRIDE
 
@@ -475,7 +491,7 @@ SoMaterial::doAction(SoAction * action)
 
     const int numtransp = this->transparency.getNum();
     SoLazyElement::setMaterials(state, this, bitmask, 
-                                THIS->getColorPacker(),
+                                PRIVATE(this)->getColorPacker(),
                                 diffuseptr, numdiffuse, 
                                 this->transparency.getValues(0), numtransp,
                                 bitmask & SoLazyElement::AMBIENT_MASK ? 
@@ -492,18 +508,18 @@ SoMaterial::doAction(SoAction * action)
       SbBool setvbo = FALSE;
       if (SoGLVBOElement::shouldCreateVBO(state, numdiffuse)) {
         setvbo = TRUE;
-        if (THIS->vbo == NULL) {
-          THIS->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+        if (PRIVATE(this)->vbo == NULL) {
+          PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
         }
       }
-      else if (THIS->vbo) {
-        THIS->vbo->setBufferData(NULL, 0, 0);
+      else if (PRIVATE(this)->vbo) {
+        PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
       }
       // don't fill in any data in the VBO. Data will be filled in
       // using the ColorPacker right before the VBO is used
       SoBase::staticDataUnlock();
       if (setvbo) {
-        SoGLVBOElement::setColorVBO(state, THIS->vbo);
+        SoGLVBOElement::setColorVBO(state, PRIVATE(this)->vbo);
       }
     }
   }
@@ -520,9 +536,9 @@ void
 SoMaterial::notify(SoNotList *list)
 {
   SoField * f = list->getLastField();
-  if (f) THIS->materialtype = TYPE_UNKNOWN;
+  if (f) PRIVATE(this)->materialtype = TYPE_UNKNOWN;
   if (f == &this->transparency) {
-    THIS->transparencyflag = -1; // unknown
+    PRIVATE(this)->transparencyflag = -1; // unknown
   }
   inherited::notify(list);
 }
@@ -536,25 +552,25 @@ SoMaterial::getMaterialType(void)
 {
   if (this->getNodeType() != SoNode::VRML1) return TYPE_NORMAL;
   else {
-    if (THIS->materialtype == TYPE_UNKNOWN) {
+    if (PRIVATE(this)->materialtype == TYPE_UNKNOWN) {
       if (!this->diffuseColor.isIgnored() && this->diffuseColor.getNum() == 0 &&
           !this->ambientColor.isIgnored() && this->ambientColor.getNum() == 0 &&
           !this->specularColor.isIgnored() && this->specularColor.getNum() == 0 &&
           !this->emissiveColor.isIgnored() && this->emissiveColor.getNum()) {
-        THIS->materialtype = TYPE_VRML1_ONLYEMISSIVE;
+        PRIVATE(this)->materialtype = TYPE_VRML1_ONLYEMISSIVE;
       }
       else if (this->emissiveColor.getNum() > this->diffuseColor.getNum()) {
-        THIS->materialtype = TYPE_VRML1_ONLYEMISSIVE;          
+        PRIVATE(this)->materialtype = TYPE_VRML1_ONLYEMISSIVE;          
       }
       else {
-        THIS->materialtype = TYPE_NORMAL;
+        PRIVATE(this)->materialtype = TYPE_NORMAL;
       }
     }
-    return THIS->materialtype;
+    return PRIVATE(this)->materialtype;
   }
 }
 
-#undef THIS
+#undef PRIVATE
 #undef TYPE_UNKNOWN
 #undef TYPE_NORMAL
 #undef TYPE_ONLYEMISSIVE
