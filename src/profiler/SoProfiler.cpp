@@ -93,38 +93,132 @@
 
 namespace {
 
-namespace profiler {
-  static SbBool initialized = FALSE;
+  namespace profiler {
+    static SbBool initialized = FALSE;
 
-  static SbBool enabled = FALSE;
-  static SbBool active = FALSE;
-  static SbBool syncgl = FALSE;
-
-  namespace overlay {
+    static SbBool enabled = FALSE;
     static SbBool active = FALSE;
-    static float redraw_rate = -1.0f;
+    static SbBool syncgl = FALSE;
+
+    namespace overlay {
+      static SbBool active = FALSE;
+      static float redraw_rate = -1.0f;
+    };
+
   };
 
-};
-
-void
-tokenize(const std::string & input, const std::string & delimiters, std::vector<std::string> & tokens, int count = -1)
-{
-  std::string::size_type last_pos = 0, pos = 0;
-  while (TRUE) {
-    --count;
-    pos = input.find_first_of(delimiters, last_pos);
-    if ((pos == std::string::npos) || (count == 0)) {
-      tokens.push_back(input.substr(last_pos));
-      break;
-    } else {
-      tokens.push_back(input.substr(last_pos, pos - last_pos));
-      last_pos = pos + 1;
+  void
+  tokenize(const std::string & input, const std::string & delimiters, std::vector<std::string> & tokens, int count = -1)
+  {
+    std::string::size_type last_pos = 0, pos = 0;
+    while (TRUE) {
+      --count;
+      pos = input.find_first_of(delimiters, last_pos);
+      if ((pos == std::string::npos) || (count == 0)) {
+        tokens.push_back(input.substr(last_pos));
+        break;
+      } else {
+        tokens.push_back(input.substr(last_pos, pos - last_pos));
+        last_pos = pos + 1;
+      }
     }
   }
-}
 
 } // namespace
+
+
+/*!
+  Initializes the Coin scene graph profiling subsystem.
+*/
+
+void
+SoProfiler::init(void)
+{
+#ifdef HAVE_SCENE_PROFILING
+
+  if (profiler::initialized) return;
+
+  SoNodeKit::init();
+  SoProfilerOverlayKit::initClass();
+  SoProfilerVisualizeKit::initClass();
+  SoProfilerTopKit::initClass();
+  SoProfilerStats::initClass();
+  SoProfilerTopEngine::initClass();
+  SoScrollingGraphKit::initClass();
+  SoNodeVisualize::initClass();
+
+  profiler::active = TRUE;
+  profiler::enabled = TRUE;
+
+  SoProfilerP::parseCoinProfilerOverlayVariable();
+
+  profiler::initialized = TRUE;
+#endif // HAVE_SCENE_PROFILING
+}
+
+/*!
+  Returns whether profiling is active or not.
+*/
+
+SbBool
+SoProfiler::isActive(void)
+{
+  return profiler::enabled && profiler::active;
+}
+
+/*!
+  Returns whether profiling is shown in an overlay fashion on the GL canvas
+  or not.
+*/
+
+SbBool
+SoProfiler::isOverlayActive(void)
+{
+  return profiler::enabled && profiler::overlay::active;
+}
+
+void
+SoProfiler::enable(SbBool enable)
+{
+#ifdef HAVE_SCENE_PROFILING
+  if (!profiler::initialized) {
+    assert(!"SoProfiler module not initialized");
+    SoDebugError::post("SoProfiler::enable", "module not initialized");
+    return;
+  }
+  profiler::enabled = enable;
+#endif // HAVE_SCENE_PROFILING
+}
+
+/*!
+  Returns whether profiling is enabled or not.
+*/
+
+SbBool
+SoProfiler::isEnabled(void)
+{
+  return profiler::enabled;
+}
+
+#ifdef HAVE_SCENE_PROFILING
+
+SbBool
+SoProfilerP::shouldContinuousRender(void)
+{
+  return profiler::overlay::redraw_rate != -1.0f;
+}
+
+float
+SoProfilerP::getContinuousRenderDelay(void)
+{
+  return profiler::overlay::redraw_rate;
+}
+
+SbBool
+SoProfilerP::shouldSyncGL(void)
+{
+  return profiler::syncgl;
+}
 
 void 
 SoProfilerP::parseCoinProfilerVariable(void)
@@ -287,99 +381,6 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
   else {
     // env variable is empty - don't activate overlay parts
   }
-}
-
-/*!
-  Initializes the Coin scene graph profiling subsystem.
-*/
-
-void
-SoProfiler::init(void)
-{
-#ifdef HAVE_SCENE_PROFILING
-
-  if (profiler::initialized) return;
-
-  SoNodeKit::init();
-  SoProfilerOverlayKit::initClass();
-  SoProfilerVisualizeKit::initClass();
-  SoProfilerTopKit::initClass();
-  SoProfilerStats::initClass();
-  SoProfilerTopEngine::initClass();
-  SoScrollingGraphKit::initClass();
-  SoNodeVisualize::initClass();
-
-  profiler::active = TRUE;
-  profiler::enabled = TRUE;
-
-  SoProfilerP::parseCoinProfilerOverlayVariable();
-
-  profiler::initialized = TRUE;
-#endif // HAVE_SCENE_PROFILING
-}
-
-/*!
-  Returns whether profiling is active or not.
-*/
-
-SbBool
-SoProfiler::isActive(void)
-{
-  return profiler::enabled && profiler::active;
-}
-
-/*!
-  Returns whether profiling is shown in an overlay fashion on the GL canvas
-  or not.
-*/
-
-SbBool
-SoProfiler::isOverlayActive(void)
-{
-  return profiler::enabled && profiler::overlay::active;
-}
-
-void
-SoProfiler::enable(SbBool enable)
-{
-#ifdef HAVE_SCENE_PROFILING
-  if (!profiler::initialized) {
-    assert(!"SoProfiler module not initialized");
-    SoDebugError::post("SoProfiler::enable", "module not initialized");
-    return;
-  }
-  profiler::enabled = enable;
-#endif // HAVE_SCENE_PROFILING
-}
-
-/*!
-  Returns whether profiling is enabled or not.
-*/
-
-SbBool
-SoProfiler::isEnabled(void)
-{
-  return profiler::enabled;
-}
-
-#ifdef HAVE_SCENE_PROFILING
-
-SbBool
-SoProfilerP::shouldContinuousRender(void)
-{
-  return profiler::overlay::redraw_rate != -1.0f;
-}
-
-float
-SoProfilerP::getContinuousRenderDelay(void)
-{
-  return profiler::overlay::redraw_rate;
-}
-
-SbBool
-SoProfilerP::shouldSyncGL(void)
-{
-  return profiler::syncgl;
 }
 
 #endif // HAVE_SCENE_PROFILING

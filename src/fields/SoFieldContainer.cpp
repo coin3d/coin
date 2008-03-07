@@ -1021,17 +1021,17 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       // a couple of single-fields have "external"/allocated data as
       // well as the multi-fields
 
-      SoSField * sfield = static_cast<const SoSField *>(field);
+      const SoSField * sfield = static_cast<const SoSField *>(field);
       SoType sftype = sfield->getTypeId();
 
       if (sfield->getTypeId().isDerivedFrom(SoSFImage::getClassTypeId())) {
-	SoSFImage * imgfield = static_cast<SoSFImage *>(sfield);
+	const SoSFImage * imgfield = static_cast<const SoSFImage *>(sfield);
 	SbVec2s size(0, 0);
 	int nc = 0;
 	imgfield->getValue(size, nc);
 	managed += size[0] * size[1] * nc;	
       } else if (sfield->getTypeId().isDerivedFrom(SoSFImage3::getClassTypeId())) {
-	SoSFImage3 * img3field = static_cast<SoSFImage3 *>(sfield);
+	const SoSFImage3 * img3field = static_cast<const SoSFImage3 *>(sfield);
 	SbVec3s size(0, 0, 0);
 	int nc = 0;
 	img3field->getValue(size, nc);
@@ -1041,7 +1041,7 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       }
     }
     else if (field->getTypeId().isDerivedFrom(SoMField::getClassTypeId())) {
-      SoMField * mfield = static_cast<const SoMField *>(field);
+      const SoMField * mfield = static_cast<const SoMField *>(field);
       SoType mftype = mfield->getTypeId();
       int numelements = mfield->getNum();
       size_t elementsize = 0;

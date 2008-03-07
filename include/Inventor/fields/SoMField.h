@@ -50,7 +50,7 @@ public:
   static void initClass(void);
 
   virtual void enableDeleteValues(void);
-  virtual SbBool isDeleteValuesEnabled(void);
+  virtual SbBool isDeleteValuesEnabled(void) const;
 
 protected:
   SoMField(void);

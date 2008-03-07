@@ -713,7 +713,7 @@ SoMField::enableDeleteValues(void)
   \since TGS Inventor 3.0
 */
 SbBool
-SoMField::isDeleteValuesEnabled(void)
+SoMField::isDeleteValuesEnabled(void) const
 {
   return !this->userDataIsUsed;
 }
