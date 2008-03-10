@@ -1227,8 +1227,7 @@ glglue_resolve_symbols(cc_glglue * w)
       /* Enable users to override this workaround by setting COIN_VBO=1 */
       const char * env = coin_getenv("COIN_VBO");
       if (!env || (atoi(env) > 0)) {
-	if (strstr(w->vendorstr, "Tungsten") || /* Tungsten Graphics develops Linux drivers for Intel */
-	    strstr(w->vendorstr, "Intel")) {
+	if (w->vendor_is_intel) {
 	  w->glBindBuffer = NULL;
 	}
       }
@@ -2206,7 +2205,10 @@ cc_glglue_instance(int contextid)
     gi->vendorstr = (const char *)glGetString(GL_VENDOR);
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
     gi->vendor_is_nvidia = strcmp((const char*)gi->vendorstr, "NVIDIA Corporation") == 0;
-
+    gi->vendor_is_intel = 
+      strstr((const char *)gi->vendorstr, "Tungsten") || 
+      strstr((const char *)gi->vendorstr, "Intel");
+    
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
     gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;
     if (gi->nvidia_color_per_face_bug) {
@@ -2651,6 +2653,10 @@ SbBool
 cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
 {
   if (!glglue_allow_newer_opengl(w)) return FALSE;
+
+  // Our Proxy code seems to not be compatible with Intel drivers
+  // FIXME: should be handled by SoGLDriverDatabase
+  if (w->vendor_is_intel) return FALSE;
 
   /* FIXME: there are differences between the 1.1 proxy mechanisms and
      the GL_EXT_texture proxy extension; the 1.1 support considers
