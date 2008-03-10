@@ -1,4 +1,4 @@
-#! /usr/bin/perl -p -i.bak
+#!/usr/bin/env perl -p -i.bak
 
 sub cygpath {
   $path=`CYGWIN= cygpath -w "$_[0]"`;
