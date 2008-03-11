@@ -1126,7 +1126,7 @@ SoConvertAll::SoConvertAll(const SoType from, const SoType to)
 
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
   convert_func * ptr;
-  if (!convertfunc_dict->get(val, ptr)) assert(FALSE);
+  if (!convertfunc_dict->get(val, ptr)) { assert(FALSE); }
   this->convertvalue = ptr;
 }
 
