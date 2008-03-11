@@ -76,7 +76,7 @@ public:
   const SbViewVolume & getViewVolume(void);
   const SbLine & getLine(void);
   SbBool isBetweenPlanes(const SbVec3f & intersection) const;
-  SoPickedPoint * addIntersection(const SbVec3f & objectspacepoint);
+  SoPickedPoint * addIntersection(const SbVec3f & objectspacepoint, SbBool frontpick = TRUE);
 
   void reset(void);
 

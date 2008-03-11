@@ -42,8 +42,7 @@ public:
     UNPICKABLE,
     SHAPE_ON_TOP,
     BOUNDING_BOX_ON_TOP,
-    SHAPE_FRONTFACES,
-    SHAPE_BACKFACES
+    SHAPE_FRONTFACES
   };
 
   virtual void init(SoState * state);

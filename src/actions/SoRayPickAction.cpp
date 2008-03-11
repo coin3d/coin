@@ -962,7 +962,7 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection_in) const
   \COININTERNAL
  */
 SoPickedPoint *
-SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in)
+SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in, SbBool frontpick)
 {
   SbVec3d objectspacepoint;
   objectspacepoint.setValue(objectspacepoint_in);

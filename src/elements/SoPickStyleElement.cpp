@@ -67,7 +67,7 @@ SoPickStyleElement::set(SoState * const state,
                         SoNode * const node,
                         const int32_t style)
 {
-  assert(style >= SHAPE && style <= SHAPE_BACKFACES);
+  assert(style >= SHAPE && style <= SHAPE_FRONTFACES);
   SoInt32Element::set(classStackIndex, state, node, style);
 }
 

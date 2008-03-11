@@ -101,14 +101,9 @@
   from the list. Note that this logic is relative to the ray, not the
   view, in case the ray and the view direction are not aligned.
 
-  \since 2008-03-11
-*/
-/*!
-  \var SoPickStyle::Style SoPickStyle::SHAPE_BACKFACES
-
-  Do exact picks, like SHAPE, but cull all the frontface intersections
-  from the list. Note that this logic is relative to the ray, not the
-  view, in case the ray and the view direction are not aligned.
+  The behaviour of this setting will also depend on the SoShapeStyle
+  vertexOrdering setting, which can be used to flip frontfaces to
+  become backfaces and vice versa.
 
   \since 2008-03-11
 */
@@ -139,7 +134,6 @@ SoPickStyle::SoPickStyle(void)
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_ON_TOP);
   SO_NODE_DEFINE_ENUM_VALUE(Style, BOUNDING_BOX_ON_TOP);
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_FRONTFACES);
-  SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_BACKFACES);
   SO_NODE_SET_SF_ENUM_TYPE(style, Style);
 }
 
