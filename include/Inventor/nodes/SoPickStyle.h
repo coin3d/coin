@@ -40,7 +40,11 @@ public:
   enum Style {
     SHAPE = SoPickStyleElement::SHAPE,
     BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX,
-    UNPICKABLE = SoPickStyleElement::UNPICKABLE
+    UNPICKABLE = SoPickStyleElement::UNPICKABLE,
+    SHAPE_ON_TOP = SoPickStyleElement::SHAPE_ON_TOP,
+    BOUNDING_BOX_ON_TOP = SoPickStyleElement::BOUNDING_BOX_ON_TOP,
+    SHAPE_FRONTFACES = SoPickStyleElement::SHAPE_FRONTFACES,
+    SHAPE_BACKFACES = SoPickStyleElement::SHAPE_BACKFACES
   };
 
   SoSFEnum style;

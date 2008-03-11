@@ -39,7 +39,11 @@ public:
   enum Style {
     SHAPE,
     BOUNDING_BOX,
-    UNPICKABLE
+    UNPICKABLE,
+    SHAPE_ON_TOP,
+    BOUNDING_BOX_ON_TOP,
+    SHAPE_FRONTFACES,
+    SHAPE_BACKFACES
   };
 
   virtual void init(SoState * state);

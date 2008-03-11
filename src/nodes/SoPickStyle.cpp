@@ -77,7 +77,41 @@
   The geometry following this node in the scene will not be available
   for picking.
 */
+/*!
+  \var SoPickStyle::Style SoPickStyle::SHAPE_ON_TOP
 
+  Do exact picks, like SHAPE, but sort the shape to the front of the
+  list of picked points so it appears to be the frontmost item.
+
+  \since 2008-03-11
+*/
+/*!
+  \var SoPickStyle::Style SoPickStyle::BOUNDING_BOX_ON_TOP
+
+  Do picks against the enclosing bounding box of the object, like
+  BOUNDING_BOX, but sort the shape to the front of the list of picked
+  points so it appears to be the frontmost item.
+
+  \since 2008-03-11
+*/
+/*!
+  \var SoPickStyle::Style SoPickStyle::SHAPE_FRONTFACES
+
+  Do exact picks, like SHAPE, but cull all the backface intersections
+  from the list. Note that this logic is relative to the ray, not the
+  view, in case the ray and the view direction are not aligned.
+
+  \since 2008-03-11
+*/
+/*!
+  \var SoPickStyle::Style SoPickStyle::SHAPE_BACKFACES
+
+  Do exact picks, like SHAPE, but cull all the frontface intersections
+  from the list. Note that this logic is relative to the ray, not the
+  view, in case the ray and the view direction are not aligned.
+
+  \since 2008-03-11
+*/
 
 /*!
   \var SoSFEnum SoPickStyle::style
@@ -102,6 +136,10 @@ SoPickStyle::SoPickStyle(void)
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE);
   SO_NODE_DEFINE_ENUM_VALUE(Style, BOUNDING_BOX);
   SO_NODE_DEFINE_ENUM_VALUE(Style, UNPICKABLE);
+  SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_ON_TOP);
+  SO_NODE_DEFINE_ENUM_VALUE(Style, BOUNDING_BOX_ON_TOP);
+  SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_FRONTFACES);
+  SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE_BACKFACES);
   SO_NODE_SET_SF_ENUM_TYPE(style, Style);
 }
 
