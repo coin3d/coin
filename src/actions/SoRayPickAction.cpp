@@ -129,6 +129,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -170,6 +171,7 @@ public:
   SbBool isFlagSet(const unsigned int flag) const;
   void calcObjectSpaceData(SoState * ownerstate);
   void calcMatrices(SoState * ownerstate);
+  void setPickStyleFlags(SoState * ownerstate);
 
   // Hidden private variables.
 
@@ -199,18 +201,20 @@ public:
   SbList <double> ppdistance;
 
   unsigned int flags;
-  SbBool objectspacevalid;
+  SbBool objectspacevalid; // FIXME: why not a flag?
 
   enum {
-    WS_RAY_SET =        0x0001, // ray set by setRay()
-    WS_RAY_COMPUTED =   0x0002, // ray computed in computeWorldSpaceRay()
-    PICK_ALL =          0x0004, // return all picked objects, or just closest
-    NORM_POINT =        0x0008, // is normalized vppoint calculated
-    CLIP_NEAR =         0x0010, // clip ray at near plane?
-    CLIP_FAR =          0x0020, // clip ray at far plane?
-    EXTRA_MATRIX =      0x0040, // is extra matrix supplied in setObjectSpace()
-    PPLIST_IS_SORTED =  0x0080, // did we sort pickedpointslist ?
-    OSVOLUME_DIRTY =    0x0100  // did we calculate osvolume?
+    WS_RAY_SET =         0x0001, // ray set by setRay()
+    WS_RAY_COMPUTED =    0x0002, // ray computed in computeWorldSpaceRay()
+    PICK_ALL =           0x0004, // return all picked objects, or just closest
+    NORM_POINT =         0x0008, // is normalized vppoint calculated
+    CLIP_NEAR =          0x0010, // clip ray at near plane?
+    CLIP_FAR =           0x0020, // clip ray at far plane?
+    EXTRA_MATRIX =       0x0040, // is extra matrix supplied in setObjectSpace()
+    PPLIST_IS_SORTED =   0x0080, // did we sort pickedpointslist ?
+    OSVOLUME_DIRTY =     0x0100, // did we calculate osvolume?
+    PUSH_PICK_TO_FRONT = 0x0200, // should pick go in front?
+    CULL_BACKFACES =     0x0400  // should backface picks be ignored?
   };
 
   SoRayPickAction * owner;
@@ -556,6 +560,7 @@ SoRayPickAction::setObjectSpace(void)
 {
   PRIVATE(this)->clearFlag(SoRayPickActionP::EXTRA_MATRIX);
   PRIVATE(this)->calcObjectSpaceData(this->state);
+  PRIVATE(this)->setPickStyleFlags(this->state);
 }
 
 /*!
@@ -567,6 +572,7 @@ SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
   PRIVATE(this)->setFlag(SoRayPickActionP::EXTRA_MATRIX);
   PRIVATE(this)->extramatrix = SbDPMatrix(matrix);
   PRIVATE(this)->calcObjectSpaceData(this->state);
+  PRIVATE(this)->setPickStyleFlags(this->state);
 }
 
 /*!
@@ -960,15 +966,19 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection_in) const
 
 /*!
   \COININTERNAL
- */
+*/
 SoPickedPoint *
 SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in, SbBool frontpick)
 {
+  if (PRIVATE(this)->isFlagSet(SoRayPickActionP::CULL_BACKFACES) && !frontpick)
+    return NULL;
+
   SbVec3d objectspacepoint;
   objectspacepoint.setValue(objectspacepoint_in);
   SbVec3d worldpoint;
   PRIVATE(this)->obj2world.multVecMatrix(objectspacepoint, worldpoint);
-  double dist = PRIVATE(this)->nearplane.getDistance(worldpoint);
+  double dist = PRIVATE(this)->isFlagSet(SoRayPickActionP::PUSH_PICK_TO_FRONT) ?
+    0.0 : PRIVATE(this)->nearplane.getDistance(worldpoint);
 
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PICK_ALL) && PRIVATE(this)->pickedpointlist.getLength()) {
     // got to test if new candidate is closer than old one
@@ -1101,6 +1111,28 @@ SoRayPickActionP::calcMatrices(SoState * state)
   if (SbAbs(det) > VALID_LIMIT) {
     this->world2obj = this->obj2world.inverse();
     this->objectspacevalid = TRUE;
+  }
+}
+
+void
+SoRayPickActionP::setPickStyleFlags(SoState * state)
+{
+  assert(state->isElementEnabled(SoPickStyleElement::getClassStackIndex()));
+
+  SoPickStyleElement::Style style = SoPickStyleElement::get(state);
+  // assert(style != SoPickStyleElement::UNPICKABLE); // could we get here?
+
+  if (style == SoPickStyleElement::SHAPE_FRONTFACES) {
+    this->setFlag(CULL_BACKFACES);
+  } else {
+    this->clearFlag(CULL_BACKFACES);
+  }
+
+  if ((style == SoPickStyleElement::SHAPE_ON_TOP) ||
+      (style == SoPickStyleElement::BOUNDING_BOX_ON_TOP)) {
+    this->setFlag(PUSH_PICK_TO_FRONT);
+  } else {
+    this->clearFlag(PUSH_PICK_TO_FRONT);
   }
 }
 
