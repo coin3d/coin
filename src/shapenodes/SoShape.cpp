@@ -77,6 +77,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -922,8 +923,11 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
 {
   switch (SoPickStyleElement::get(action->getState())) {
   case SoPickStyleElement::SHAPE:
+  case SoPickStyleElement::SHAPE_ON_TOP:
+  case SoPickStyleElement::SHAPE_FRONTFACES:
     return TRUE;
   case SoPickStyleElement::BOUNDING_BOX:
+  case SoPickStyleElement::BOUNDING_BOX_ON_TOP:
     this->rayPickBoundingBox(action);
     return FALSE;
   case SoPickStyleElement::UNPICKABLE:
@@ -1089,7 +1093,11 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
                       intersection, barycentric, front)) {
 
       if (ra->isBetweenPlanes(intersection)) {
-        SoPickedPoint * pp = ra->addIntersection(intersection);
+        if (SoShapeHintsElement::getVertexOrdering(ra->getState()) ==
+            SoShapeHintsElement::CLOCKWISE) {
+          front = !front;
+        }
+        SoPickedPoint * pp = ra->addIntersection(intersection, front);
         if (pp) {
           pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);
           // calculate normal at picked point
