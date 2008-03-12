@@ -81,7 +81,9 @@
   \var SoPickStyle::Style SoPickStyle::SHAPE_ON_TOP
 
   Do exact picks, like SHAPE, but sort the shape to the front of the
-  list of picked points so it appears to be the frontmost item.
+  list of picked points so it appears to be the frontmost item. This
+  does not affect the SoPickedPoint pick coordinate though, just the
+  sorting by depth done on the picked point list.
 
   \since 2008-03-11
 */
@@ -90,7 +92,9 @@
 
   Do picks against the enclosing bounding box of the object, like
   BOUNDING_BOX, but sort the shape to the front of the list of picked
-  points so it appears to be the frontmost item.
+  points so it appears to be the frontmost item. This does not affect
+  the SoPickedPoint pick coordinate though, just the sorting by depth
+  done on the picked point list.
 
   \since 2008-03-11
 */
