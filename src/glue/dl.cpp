@@ -250,7 +250,7 @@
 
   And last but definitely not least, Coin uses \b simage...
 
-  \subpage simage The simage library
+  \section simage The simage library
 
   Coin uses a library called \b simage, which is a 1st part library
   since we have written it ourselves.  Simage is a thin wrapper
