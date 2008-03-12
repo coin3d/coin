@@ -148,6 +148,156 @@
 
 /* ********************************************************************** */
 
+/*!
+  \page libraries Coin use of 3rd party libraries.
+
+  Coin may use a wide variety of 3rd party libraries, directly and
+  indirectly, depending on how the Coin build was configured.  This
+  document tries to summarize the situation.  Some of the libraries
+  that are a standard part of an operating system are ignored here.
+
+  This document expects that the reader is familiar with library build
+  processes and has knowledge of various concepts such as
+  "configure-time", "linktime", and "runtime" related to library
+  builds and behaviour.
+
+  First of all, Coin requires \b OpenGL. Depending on the OpenGL
+  version, features in Coin are turned on and off. If a feature Coin
+  is supposed to suport does not seem to produce any result, make sure
+  to check that the underlying OpenGL version does support that
+  feature. OpenGL is linked into Coin both at linktime and runtime.
+  Features added to OpenGL later than the oldest version of OpenGL we
+  support in Coin are always tried linked up at runtime, and failure
+  to do so will disable features in Coin or cause alternate
+  implementations of features to be used instead.
+
+  OpenGL is accompanied with a set of auxiliary libraries we also use.
+  These are libraries like \b GLext, \b GLU (for NURBS tessellation
+  and texture mipmaping amongst others), \b CgGL (for shaders that use
+  Cg (we recommend using GLSL instead BTW)).  Of these libraries, CgGL
+  is loaded at runtime if needed, while the others are linked with
+  Coin at linktime.
+
+  Some platforms have GLU libraries that don't behave properly in
+  certain respects, and some Coin users have particular needs wrt
+  Coin's use of GLU. For these users, we (at Kongsberg SIM) have
+  created a fork og GLU that we have named \b SuperGLU that we have
+  tweaked in certain ways.  This library can be checked out into the
+  Coin source code directory, which will be detected at configure-time
+  and linked statically into Coin and used instead of the GLU
+  libraries on the host system.
+
+  In addition to these libraries, Coin will use \b AGL on Mac OS X, \b
+  WGL on MS Windows, and \b GLX on X Windows Systems for offscreen
+  rendering purposes.
+
+  We now move on to libraries that are not related to OpenGL.
+
+  Coin uses \b libz (aka \b zlib) and \b libbzip2 to read and/or write
+  files compressed with either of those compression techniques.  Both
+  libraries can ble linked with Coin at linktime or loaded at runtime,
+  and this is controlled at configure-time.  They can also be disabled
+  if compressed file input/output is not wanted.  The libz library is
+  likely pulled in as a dependency in other libraries as well, especially
+  graphics libraries.
+
+  For font support, Coin uses \b Fontconfig or \b FreeType in addition
+  to native platform APIs for font reading.  Freetype can be loaded at
+  runtime instead of linked at linktime if desired, but FreeType is
+  only used if Fontconfig is not found at configure-time anyway,
+  unless the library builder overrides this behaviour.
+
+  For JavaScript support in VRML97, Coin uses \b SpiderMonkey.
+  SpiderMonkey can also be loaded at runtime instead of linked at
+  linktime.
+
+  For sound support in VRML97, Coin uses \b OpenAL. OpenAL is loaded
+  at runtime or linked at linktime. Some versions of the OpenAL
+  library delivered with installers from Creative on MS Windows have
+  been known to crash/freeze Coin-applications when loaded.
+
+  For threading support, Coin uses POSIX threads (\b pthread library)
+  or the native Win32 API on MS Windows. You can use pthread on MS
+  Windows as well instead of the native threads by setting this at
+  configure-time.
+
+  We now come to a special class of libraries that has been directly
+  integrated into the Coin source code, thereby not requiring the
+  libraries to be installed on the system beforehand for Coin to build
+  or run.
+
+  Coin makes use of certain utilities like smart-pointers from \b
+  Boost. The boost headers can be found under \c include/ in the Coin
+  source code directory. No boost types are exposed in the Coin API,
+  nor will they ever be. They are completely hidden, vewed from the
+  outside of Coin. All boost types used in Coin are completely inlined
+  in the boost headers and therefore do not require a link library to
+  pull their implementation from at runtime.
+
+  For XML reading, Coin uses the \b expat library, which has also been
+  integrated directly into Coin, so also here there are no extra
+  linktime or runtime dependencies to other libraries. The expat API
+  is not exposed in the Coin API, it is hidden, but Coin provides its
+  own XML DOM API that is a wrapper over the expat engine.
+
+  The last thing to mention here is hardly a library, but we mention
+  it anyway. Coin uses \b flex and \b bison to generate some parsers
+  (one for the STL 3D model file format, and another one for parsing
+  the calculator language in the SoCalculator engine). This is code
+  that has been generated by 3rd party parser generators and
+  integrated into Coin. The generated code is distributed with the
+  source code, so neither flex nor bison is needed to build Coin.
+
+  And last but definitely not least, Coin uses \b simage...
+
+  \subpage simage The simage library
+
+  Coin uses a library called \b simage, which is a 1st part library
+  since we have written it ourselves.  Simage is a thin wrapper
+  library over a huge set of graphics and audio libraries, to provide
+  Coin with a unified API for loading images (textures), audio, and
+  animations, regardless of which image file format it is stored as.
+  The simage library can in other words pull in another set of 3rd
+  party libraries. All 3rd party libraries to simage are optional.
+  Simage is loaded at runtime or (if specified) linked at linktime
+  with Coin.
+
+  Simage can use QImage from \b Qt to add support for the file formats
+  Qt supports.
+
+  Simage can use \b GDI+ (gdiplus) under MS Windows to add support for
+  the file formats supported by GDI+.
+
+  Simage can use \b QuickTime under Mac OS X to add support for the file
+  formats QuickTime supports.
+
+  Simage can use \b libungif or \b giflib for GIF file support.
+
+  Simage can use \b libjpeg for JPEG file support.
+
+  Simage can use \b libpng for PNG file support.  This will also require that
+  \b zlib is used.
+
+  Simage can use \b libtiff for TIFF file support.
+
+  Simage can use \b JASPER support for JPEG 2000 file support.
+
+  Simage can use \b mpeg2enc for MPEG2 encoding.
+
+  Simage can use \b vfw (Video for Windows) for AVI video encoding.
+
+  Simage can use \b libogg, \b libvorbis and \b libvorbisfile for Ogg
+  Vorbis support.  This is for VRML97 sound support in Coin.
+
+  Simage can use \b libsndfile for VRML97 sound support in Coin.
+
+  Simage can use \b libguile for a Guile (Scheme) binding for the
+  Simage library API.
+
+*/
+
+/* ********************************************************************** */
+
 static cc_libhandle glsymbols_handle = NULL;
 static SbBool attempted_glsymbols = FALSE;
 

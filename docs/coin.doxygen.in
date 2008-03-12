@@ -1287,6 +1287,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4d.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSField.cpp \
+                         @path_tag@@coin_src_dir@/src/glue/dl.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoInput.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoOutput.cpp \
                          @path_tag@@coin_src_dir@/src/lists/SbIntList.cpp \
