@@ -106,8 +106,9 @@
   view, in case the ray and the view direction are not aligned.
 
   The behaviour of this setting will also depend on the SoShapeStyle
-  vertexOrdering setting, which can be used to flip frontfaces to
-  become backfaces and vice versa.
+  vertexOrdering and shapeType setting, which are used to flip
+  frontfaces to become backfaces and vice versa and to turn backface
+  culling on and off.
 
   \since 2008-03-11
 */
