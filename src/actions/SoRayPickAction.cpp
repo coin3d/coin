@@ -130,6 +130,7 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -1118,11 +1119,18 @@ void
 SoRayPickActionP::setPickStyleFlags(SoState * state)
 {
   assert(state->isElementEnabled(SoPickStyleElement::getClassStackIndex()));
+  assert(state->isElementEnabled(SoShapeHintsElement::getClassStackIndex()));
 
   SoPickStyleElement::Style style = SoPickStyleElement::get(state);
+  SoShapeHintsElement::ShapeType type = SoShapeHintsElement::getShapeType(state);
+  SoShapeHintsElement::VertexOrdering ordering = SoShapeHintsElement::getVertexOrdering(state);
+
   // assert(style != SoPickStyleElement::UNPICKABLE); // could we get here?
 
-  if (style == SoPickStyleElement::SHAPE_FRONTFACES) {
+  if (style == SoPickStyleElement::SHAPE_FRONTFACES &&
+      type == SoShapeHintsElement::SOLID &&
+      (ordering == SoShapeHintsElement::COUNTERCLOCKWISE ||
+       ordering == SoShapeHintsElement::CLOCKWISE)) {
     this->setFlag(CULL_BACKFACES);
   } else {
     this->clearFlag(CULL_BACKFACES);
