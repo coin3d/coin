@@ -791,6 +791,20 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 }
 
 /*!
+  Returns the abort callback settings.
+
+  \sa setAbortCallback
+  \since 2008-03-13
+*/
+void
+SoGLRenderAction::getAbortCallback(SoGLRenderAbortCB * & func_out,
+                                   void * & userdata_out) const
+{
+  func_out = PRIVATE(this)->abortcallback;
+  userdata_out = PRIVATE(this)->abortcallbackdata;
+}
+
+/*!
   Sets the transparency rendering method for transparent objects in
   the scene graph.
 

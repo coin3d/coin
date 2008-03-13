@@ -77,6 +77,7 @@ public:
   void setUpdateArea(const SbVec2f & origin, const SbVec2f & size);
   void getUpdateArea(SbVec2f & origin, SbVec2f & size) const;
   void setAbortCallback(SoGLRenderAbortCB * const func, void * const userdata);
+  void getAbortCallback(SoGLRenderAbortCB * & func_out, void * & userdata_out) const;
   void setTransparencyType(const TransparencyType type);
   TransparencyType getTransparencyType(void) const;
   void setSmoothing(const SbBool smooth);
