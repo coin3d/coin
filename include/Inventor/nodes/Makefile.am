@@ -21,6 +21,7 @@ PublicHeaders = \
 	SoCoordinate4.h \
 	SoCube.h \
 	SoCylinder.h \
+        SoDepthBuffer.h \
 	SoDirectionalLight.h \
 	SoDrawStyle.h \
 	SoEnvironment.h \

@@ -6,6 +6,7 @@ RegularSources = \
 	SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
+        SoGLDepthBufferElement.cpp \
 	SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \

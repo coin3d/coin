@@ -271,6 +271,7 @@ RegularSources = \
 	SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
+        SoGLDepthBufferElement.cpp \
 	SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \
@@ -371,10 +372,11 @@ glelements_lst_AR = $(AR) cru
 glelements_lst_LIBADD =
 am__glelements_lst_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDepthBufferElement.cpp \
+	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -391,7 +393,8 @@ am__glelements_lst_SOURCES_DIST = SoGLCacheContextElement.cpp \
 am__objects_1 = all-glelements-cpp.$(OBJEXT)
 am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLClipPlaneElement.$(OBJEXT) SoGLColorIndexElement.$(OBJEXT) \
-	SoGLCoordinateElement.$(OBJEXT) SoGLDrawStyleElement.$(OBJEXT) \
+	SoGLCoordinateElement.$(OBJEXT) \
+	SoGLDepthBufferElement.$(OBJEXT) SoGLDrawStyleElement.$(OBJEXT) \
 	SoGLEnvironmentElement.$(OBJEXT) SoGLLazyElement.$(OBJEXT) \
 	SoGLLightIdElement.$(OBJEXT) SoGLLinePatternElement.$(OBJEXT) \
 	SoGLLineWidthElement.$(OBJEXT) SoGLModelMatrixElement.$(OBJEXT) \
@@ -418,10 +421,11 @@ am_glelements_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_glelements_lst_SOURCES_DIST = SoResetMatrixElement.h \
 	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDepthBufferElement.cpp \
+	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -441,10 +445,11 @@ libglelements_la_LDFLAGS =
 libglelements_la_LIBADD =
 am__libglelements_la_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDepthBufferElement.cpp \
+	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -461,10 +466,11 @@ am__libglelements_la_SOURCES_DIST = SoGLCacheContextElement.cpp \
 am__objects_6 = all-glelements-cpp.lo
 am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 	SoGLColorIndexElement.lo SoGLCoordinateElement.lo \
-	SoGLDrawStyleElement.lo SoGLEnvironmentElement.lo \
-	SoGLLazyElement.lo SoGLLightIdElement.lo \
-	SoGLLinePatternElement.lo SoGLLineWidthElement.lo \
-	SoGLModelMatrixElement.lo SoGLMultiTextureCoordinateElement.lo \
+	SoGLDepthBufferElement.lo SoGLDrawStyleElement.lo \
+	SoGLEnvironmentElement.lo SoGLLazyElement.lo \
+	SoGLLightIdElement.lo SoGLLinePatternElement.lo \
+	SoGLLineWidthElement.lo SoGLModelMatrixElement.lo \
+	SoGLMultiTextureCoordinateElement.lo \
 	SoGLMultiTextureEnabledElement.lo \
 	SoGLMultiTextureMatrixElement.lo \
 	SoGLMultiTextureImageElement.lo SoGLNormalElement.lo \
@@ -482,10 +488,11 @@ am_libglelements_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglelements_la_SOURCES_DIST = SoResetMatrixElement.h \
 	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
+	SoGLCoordinateElement.cpp SoGLDepthBufferElement.cpp \
+	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -504,10 +511,10 @@ libglelements@SUFFIX@LINKHACK_la_LIBADD =
 am__libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLCacheContextElement.cpp SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
+	SoGLDepthBufferElement.cpp SoGLDrawStyleElement.cpp \
+	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
+	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
+	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -526,10 +533,10 @@ am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoResetMatrixElement.h all-glelements-cpp.cpp \
 	SoGLCacheContextElement.cpp SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
+	SoGLDepthBufferElement.cpp SoGLDrawStyleElement.cpp \
+	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
+	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
+	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
 	SoGLMultiTextureMatrixElement.cpp \
@@ -554,6 +561,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLColorIndexElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLCoordinateElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLCoordinateElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLDepthBufferElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLDepthBufferElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDisplayList.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDisplayList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDrawStyleElement.Plo \
@@ -706,6 +715,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLColorIndexElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCoordinateElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDepthBufferElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDepthBufferElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDisplayList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDisplayList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDrawStyleElement.Plo@am__quote@

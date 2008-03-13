@@ -116,7 +116,9 @@ PublicHeaders = \
 	SoListenerGainElement.h \
 	SoListenerDopplerElement.h \
 	SoSoundElement.h \
-	SoGLShaderProgramElement.h
+	SoGLShaderProgramElement.h \
+	SoDepthBufferElement.h \
+	SoGLDepthBufferElement.h
 
 PrivateHeaders =
 

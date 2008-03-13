@@ -289,6 +289,7 @@ RegularSources = \
 	SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
+        SoDepthBufferElement.cpp \
 	SoDiffuseColorElement.cpp \
 	SoDrawStyleElement.cpp \
 	SoElement.cpp \
@@ -438,14 +439,15 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -486,15 +488,15 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoCoordinateElement.$(OBJEXT) SoCreaseAngleElement.$(OBJEXT) \
 	SoCullElement.$(OBJEXT) SoDecimationPercentageElement.$(OBJEXT) \
 	SoDecimationTypeElement.$(OBJEXT) \
-	SoDiffuseColorElement.$(OBJEXT) SoDrawStyleElement.$(OBJEXT) \
-	SoElement.$(OBJEXT) SoEmissiveColorElement.$(OBJEXT) \
-	SoEnvironmentElement.$(OBJEXT) SoFloatElement.$(OBJEXT) \
-	SoFocalDistanceElement.$(OBJEXT) SoFontNameElement.$(OBJEXT) \
-	SoFontSizeElement.$(OBJEXT) SoInt32Element.$(OBJEXT) \
-	SoLazyElement.$(OBJEXT) SoLightAttenuationElement.$(OBJEXT) \
-	SoLightElement.$(OBJEXT) SoLightModelElement.$(OBJEXT) \
-	SoLinePatternElement.$(OBJEXT) SoLineWidthElement.$(OBJEXT) \
-	SoLocalBBoxMatrixElement.$(OBJEXT) \
+	SoDepthBufferElement.$(OBJEXT) SoDiffuseColorElement.$(OBJEXT) \
+	SoDrawStyleElement.$(OBJEXT) SoElement.$(OBJEXT) \
+	SoEmissiveColorElement.$(OBJEXT) SoEnvironmentElement.$(OBJEXT) \
+	SoFloatElement.$(OBJEXT) SoFocalDistanceElement.$(OBJEXT) \
+	SoFontNameElement.$(OBJEXT) SoFontSizeElement.$(OBJEXT) \
+	SoInt32Element.$(OBJEXT) SoLazyElement.$(OBJEXT) \
+	SoLightAttenuationElement.$(OBJEXT) SoLightElement.$(OBJEXT) \
+	SoLightModelElement.$(OBJEXT) SoLinePatternElement.$(OBJEXT) \
+	SoLineWidthElement.$(OBJEXT) SoLocalBBoxMatrixElement.$(OBJEXT) \
 	SoMaterialBindingElement.$(OBJEXT) \
 	SoMultiTextureCoordinateElement.$(OBJEXT) \
 	SoMultiTextureEnabledElement.$(OBJEXT) \
@@ -544,14 +546,15 @@ am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -592,14 +595,15 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -636,11 +640,12 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoComplexityElement.lo SoComplexityTypeElement.lo \
 	SoCoordinateElement.lo SoCreaseAngleElement.lo SoCullElement.lo \
 	SoDecimationPercentageElement.lo SoDecimationTypeElement.lo \
-	SoDiffuseColorElement.lo SoDrawStyleElement.lo SoElement.lo \
-	SoEmissiveColorElement.lo SoEnvironmentElement.lo \
-	SoFloatElement.lo SoFocalDistanceElement.lo \
-	SoFontNameElement.lo SoFontSizeElement.lo SoInt32Element.lo \
-	SoLazyElement.lo SoLightAttenuationElement.lo SoLightElement.lo \
+	SoDepthBufferElement.lo SoDiffuseColorElement.lo \
+	SoDrawStyleElement.lo SoElement.lo SoEmissiveColorElement.lo \
+	SoEnvironmentElement.lo SoFloatElement.lo \
+	SoFocalDistanceElement.lo SoFontNameElement.lo \
+	SoFontSizeElement.lo SoInt32Element.lo SoLazyElement.lo \
+	SoLightAttenuationElement.lo SoLightElement.lo \
 	SoLightModelElement.lo SoLinePatternElement.lo \
 	SoLineWidthElement.lo SoLocalBBoxMatrixElement.lo \
 	SoMaterialBindingElement.lo SoMultiTextureCoordinateElement.lo \
@@ -682,14 +687,15 @@ am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -729,14 +735,15 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -776,14 +783,15 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoComplexityTypeElement.cpp SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp SoDecimationTypeElement.cpp \
-	SoDiffuseColorElement.cpp SoDrawStyleElement.cpp SoElement.cpp \
-	SoEmissiveColorElement.cpp SoEnvironmentElement.cpp \
-	SoFloatElement.cpp SoFocalDistanceElement.cpp \
-	SoFontNameElement.cpp SoFontSizeElement.cpp SoInt32Element.cpp \
-	SoLazyElement.cpp SoLightAttenuationElement.cpp \
-	SoLightElement.cpp SoLightModelElement.cpp \
-	SoLinePatternElement.cpp SoLineWidthElement.cpp \
-	SoLocalBBoxMatrixElement.cpp SoMaterialBindingElement.cpp \
+	SoDepthBufferElement.cpp SoDiffuseColorElement.cpp \
+	SoDrawStyleElement.cpp SoElement.cpp SoEmissiveColorElement.cpp \
+	SoEnvironmentElement.cpp SoFloatElement.cpp \
+	SoFocalDistanceElement.cpp SoFontNameElement.cpp \
+	SoFontSizeElement.cpp SoInt32Element.cpp SoLazyElement.cpp \
+	SoLightAttenuationElement.cpp SoLightElement.cpp \
+	SoLightModelElement.cpp SoLinePatternElement.cpp \
+	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
+	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -852,6 +860,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoDecimationPercentageElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDecimationTypeElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDecimationTypeElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoDepthBufferElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoDepthBufferElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDiffuseColorElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDiffuseColorElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDrawStyleElement.Plo \
@@ -1112,6 +1122,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDecimationPercentageElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDecimationTypeElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDecimationTypeElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDepthBufferElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDepthBufferElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDiffuseColorElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDiffuseColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDrawStyleElement.Plo@am__quote@

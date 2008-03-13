@@ -21,6 +21,7 @@ RegularSources = \
 	SoComplexity.cpp \
 	SoCoordinate3.cpp \
 	SoCoordinate4.cpp \
+	SoDepthBuffer.cpp \
 	SoDirectionalLight.cpp \
 	SoDrawStyle.cpp \
 	SoEnvironment.cpp \

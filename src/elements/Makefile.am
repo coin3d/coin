@@ -24,6 +24,7 @@ RegularSources = \
 	SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
+        SoDepthBufferElement.cpp \
 	SoDiffuseColorElement.cpp \
 	SoDrawStyleElement.cpp \
 	SoElement.cpp \

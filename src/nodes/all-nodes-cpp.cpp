@@ -40,6 +40,7 @@
 #include "SoComplexity.cpp"
 #include "SoCoordinate3.cpp"
 #include "SoCoordinate4.cpp"
+#include "SoDepthBuffer.cpp"
 #include "SoDirectionalLight.cpp"
 #include "SoDrawStyle.cpp"
 #include "SoEnvironment.cpp"

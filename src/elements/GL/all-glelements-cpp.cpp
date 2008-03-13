@@ -25,6 +25,7 @@
 #include "SoGLClipPlaneElement.cpp"
 #include "SoGLColorIndexElement.cpp"
 #include "SoGLCoordinateElement.cpp"
+#include "SoGLDepthBufferElement.cpp"
 #include "SoGLDisplayList.cpp"
 #include "SoGLDrawStyleElement.cpp"
 #include "SoGLEnvironmentElement.cpp"

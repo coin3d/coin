@@ -157,5 +157,6 @@
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include <Inventor/nodes/SoSceneTextureCubeMap.h>
 #include <Inventor/nodes/SoCacheHint.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 
 #endif // !COIN_SONODES_H

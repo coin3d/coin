@@ -477,6 +477,10 @@ SoElement::initElements(void)
   SoCacheHintElement::initClass();
 
   SoGLVBOElement::initClass();
+
+  SoDepthBufferElement::initClass();
+  SoGLDepthBufferElement::initClass();
+
 }
 
 // Note: the following documentation for initClass() will also be
