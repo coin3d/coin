@@ -80,8 +80,8 @@
 class SoLineHighlightRenderActionP {
 public:
   SoLineHighlightRenderActionP(void)
-    : owner(NULL),
-      colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker)
+    : colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker),
+      owner(NULL)
   {
     this->color = SbColor(1.0f, 0.0f, 0.0f);
     this->linepattern = 0xffff;
