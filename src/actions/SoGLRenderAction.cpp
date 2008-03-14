@@ -569,7 +569,6 @@ public:
   void setupFragmentProgram();
   void renderSortedLayersFP(const SoState * state);
 
-public:
   void setupBlending(SoState * state, const SoGLRenderAction::TransparencyType newtype);
   void render(SoNode * node);
   void renderMulti(SoNode * node);
@@ -578,10 +577,15 @@ public:
   // For transparent paths that need to be sorted
   void addSortTransPath(SoPath * path);
 
+  void addTransPath(SoPath * path);
+  void doPathSort(void);
+
+  // For profiling mode auto-redraw functionality
   boost::scoped_ptr<SoAlarmSensor> redrawSensor;
   static void redrawSensorCB(void * userdata, SoSensor * sensor);
   boost::scoped_ptr<SoNodeSensor> deleteSensor;
   static void deleteNodeCB(void * userdata, SoSensor * sensor);
+
 };
 
 // *************************************************************************
@@ -1088,7 +1092,7 @@ SoGLRenderAction::endTraversal(SoNode * node)
       if (PRIVATE(this)->deleteSensor.get() == NULL) {
         PRIVATE(this)->deleteSensor.reset(new SoNodeSensor);
       }
-      PRIVATE(this)->deleteSensor->setDeleteCallback(SoGLRenderActionP::deleteNodeCB, this);
+      PRIVATE(this)->deleteSensor->setDeleteCallback(SoGLRenderActionP::deleteNodeCB, &(PRIVATE(this).get()));
       PRIVATE(this)->deleteSensor->attach(node);
 
     }
@@ -1119,10 +1123,10 @@ void
 SoGLRenderActionP::deleteNodeCB(void * userdata, SoSensor * sensor)
 {
   assert(userdata);
-  SoGLRenderAction * thisp = static_cast<SoGLRenderAction *>(userdata);
-  if (PRIVATE(thisp)->redrawSensor.get() != NULL) {
-    PRIVATE(thisp)->redrawSensor->unschedule();
-    PRIVATE(thisp)->redrawSensor->setData(NULL);
+  SoGLRenderActionP * thisp = static_cast<SoGLRenderActionP *>(userdata);
+  if (thisp->redrawSensor.get() != NULL) {
+    thisp->redrawSensor->unschedule();
+    thisp->redrawSensor->setData(NULL);
   }
 }
 
@@ -1200,7 +1204,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     return FALSE;
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
-    this->addTransPath(this->getCurPath()->copy());
+    PRIVATE(this)->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
     if (thestate->isCacheOpen()) {
       SoCacheElement::invalidate(thestate);
@@ -1357,9 +1361,9 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 // all transparent paths that need sorting have been rendered, so no
 // need to calculate distances. Just add to list.
 void
-SoGLRenderAction::addTransPath(SoPath * path)
+SoGLRenderActionP::addTransPath(SoPath * path)
 {
-  PRIVATE(this)->transpobjpaths.append(path);
+  this->transpobjpaths.append(path);
 }
 
 // Documented in superclass. Overridden to reinitialize GL state on
@@ -1373,13 +1377,13 @@ SoGLRenderAction::invalidateState(void)
 
 // Sort paths with transparent objects before rendering.
 void
-SoGLRenderAction::doPathSort(void)
+SoGLRenderActionP::doPathSort(void)
 {
   // need to cast to SbPList to avoid ref/unref problems
-  SbPList * plist = (SbPList *)&PRIVATE(this)->sorttranspobjpaths;
-  float * darray = (float *)PRIVATE(this)->sorttranspobjdistances.getArrayPtr();
+  SbPList * plist = (SbPList *)&this->sorttranspobjpaths;
+  float * darray = (float *)this->sorttranspobjdistances.getArrayPtr();
 
-  int i, j, distance, n = PRIVATE(this)->sorttranspobjdistances.getLength();
+  int i, j, distance, n = this->sorttranspobjdistances.getLength();
   void * ptmp;
   float dtmp;
 
@@ -1471,8 +1475,6 @@ SoGLRenderAction::setSortedObjectOrderStrategy(const SortedObjectOrderStrategy s
   PRIVATE(this)->sortedobjectclosure = closure;
 }
 
-#undef THIS
-
 // *************************************************************************
 // methods in SoGLRenderActionP
 
@@ -1491,7 +1493,8 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
                                                              this->action));
     return;
   }
-
+ 
+  SoState * state = action->getState();
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
   SbBox3f bbox;
@@ -1503,7 +1506,7 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
     const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
     SbVec3f center;
     
-    if (bboxcache && bboxcache->isValid(action->state)) {
+    if (bboxcache && bboxcache->isValid(state)) {
       if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
       center = bboxcache->getProjectedBox().getCenter();
       bbox = bboxcache->getProjectedBox();
@@ -1511,21 +1514,21 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
     else {
       tailshape->computeBBox(action, bbox, center);
     }
-    SoModelMatrixElement::get(action->state).multVecMatrix(center, center);
-    dist = -SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+    SoModelMatrixElement::get(state).multVecMatrix(center, center);
+    dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
   }
   else {
-    this->bboxaction->setViewportRegion(SoViewportRegionElement::get(action->state));
+    this->bboxaction->setViewportRegion(SoViewportRegionElement::get(state));
     this->bboxaction->apply(path);
     SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
     bbox = this->bboxaction->getBoundingBox();
-    bbox.transform(SoModelMatrixElement::get(action->state).inverse());
-    dist = -SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+    bbox.transform(SoModelMatrixElement::get(state).inverse());
+    dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
   }
   if ((this->sortedobjectstrategy == SoGLRenderAction::BBOX_CLOSEST_CORNER) ||
       (this->sortedobjectstrategy == SoGLRenderAction::BBOX_FARTHEST_CORNER)) {
-    const SbMatrix & m = SoModelMatrixElement::get(action->state);
-    const SbPlane & plane = SoViewVolumeElement::get(action->state).getPlane(0.0f);
+    const SbMatrix & m = SoModelMatrixElement::get(state);
+    const SbPlane & plane = SoViewVolumeElement::get(state).getPlane(0.0f);
     SbVec3f bmin, bmax;
     bmin = bbox.getMin();
     bmax = bbox.getMax();
@@ -1759,7 +1762,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 
     // All paths in the sorttranspobjpaths should be sorted
     // back-to-front and rendered
-    this->action->doPathSort();
+    this->doPathSort();
     int i;
     for (i = 0; i < this->sorttranspobjpaths.getLength(); i++) {
       this->action->apply(this->sorttranspobjpaths[i]);

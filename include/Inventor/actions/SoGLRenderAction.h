@@ -106,27 +106,23 @@ public:
   void removePreRenderCallback(SoGLPreRenderCB * func, void * userdata);
  
   void setSortedLayersNumPasses(int num);
-  int getSortedLayersNumPasses() const;
+  int getSortedLayersNumPasses(void) const;
 
   void setSortedObjectOrderStrategy(const SortedObjectOrderStrategy strategy,
                                     SoGLSortedObjectOrderCB * cb = NULL,
                                     void * closure = NULL);
 
 protected:
+  friend class SoGLRenderActionP; // calls beginTraversal
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
 
 private:
-  void addTransPath(SoPath * path);
-  void doPathSort(void);
-
-private:
   SbPimplPtr<SoGLRenderActionP> pimpl;
-  friend class SoGLRenderActionP;
 
   SoGLRenderAction(const SoGLRenderAction & rhs);
   SoGLRenderAction & operator = (const SoGLRenderAction & rhs);
+
 }; // SoGLRenderAction
 
 #endif // !COIN_SOGLRENDERACTION_H
-
