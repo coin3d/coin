@@ -63,6 +63,7 @@
 #include <string.h>
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/scoped_array.hpp>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
@@ -524,7 +525,7 @@ public:
   SoPathList sorttranspobjpaths;
   SbList<float> sorttranspobjdistances;
 
-  SoGetBoundingBoxAction * bboxaction;
+  boost::scoped_ptr<SoGetBoundingBoxAction> bboxaction;
   SbVec2f updateorigin, updatesize;
   SbBool needglinit;
   SbBool isrendering;
@@ -540,7 +541,7 @@ public:
 
   GLuint depthtextureid;
   GLuint hilotextureid;
-  GLuint * rgbatextureids;
+  boost::scoped_array<GLuint> rgbatextureids;
   GLuint sortedlayersblendprogramid;
   unsigned short viewportheight;
   unsigned short viewportwidth;
@@ -669,7 +670,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->isrendering = FALSE;
   PRIVATE(this)->isrenderingoverlay = FALSE;
   PRIVATE(this)->passupdate = FALSE;
-  PRIVATE(this)->bboxaction = new SoGetBoundingBoxAction(viewportregion);
+  PRIVATE(this)->bboxaction.reset(new SoGetBoundingBoxAction(viewportregion));
   PRIVATE(this)->updateorigin.setValue(0.0f, 0.0f);
   PRIVATE(this)->updatesize.setValue(1.0f, 1.0f);
   PRIVATE(this)->rendering = SoGLRenderActionP::RENDERING_UNSET;
@@ -677,7 +678,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->cachecontext = 0;
   PRIVATE(this)->needglinit = TRUE;
   PRIVATE(this)->sortedlayersblendpasses = 4; 
-  PRIVATE(this)->rgbatextureids = NULL;
   PRIVATE(this)->viewportheight = 0;
   PRIVATE(this)->viewportwidth = 0;
   PRIVATE(this)->sortedlayersblendinitialized = FALSE;
@@ -691,11 +691,10 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 }
 
 /*!
-  Destructor, frees up all internal resources for action instance.
+  Destructor.
 */
 SoGLRenderAction::~SoGLRenderAction()
 {
-  delete PRIVATE(this)->bboxaction;
 }
 
 /*!
@@ -1492,7 +1491,7 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
                                                              this->action));
     return;
   }
-  
+
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
   SbBox3f bbox;
@@ -1500,7 +1499,7 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
   // or SoShape::computeBBox. This is the common case, and quite a lot
   // faster than using an SoGetBoundingBoxAction.
   if (tail->isOfType(SoShape::getClassTypeId())) { // common case
-    SoShape * tailshape = (SoShape*) tail;
+    SoShape * tailshape = (SoShape *) tail;
     const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
     SbVec3f center;
     
@@ -1993,7 +1992,7 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
   if (envusenvidiarc && (atoi(envusenvidiarc) > 0))
     this->usenvidiaregistercombiners = TRUE;
 
-  this->rgbatextureids = new GLuint[this->sortedlayersblendpasses];
+  this->rgbatextureids.reset(new GLuint[this->sortedlayersblendpasses]);
 
   const cc_glglue * glue = sogl_glue_instance(state);  
   if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
@@ -2225,13 +2224,13 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
        (canvassize[0] != this->viewportwidth)) || 
       !this->sortedlayersblendinitialized) {
         
-    const cc_glglue *glue = sogl_glue_instance(state);
+    const cc_glglue * glue = sogl_glue_instance(state);
 
 
     if (this->sortedlayersblendinitialized) {      
       // Remove the old textures to make room for new ones if size has changed.
       glDeleteTextures(1, &this->depthtextureid);
-      glDeleteTextures(this->sortedlayersblendpasses, this->rgbatextureids);
+      glDeleteTextures(this->sortedlayersblendpasses, this->rgbatextureids.get());
     }
     
     // Depth texture setup
@@ -2281,7 +2280,7 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     //
     // FIXME: the texture ids must be bound to the current rendering
     // context, and deallocated when it is destructed. 20040718 mortene.
-    glGenTextures(this->sortedlayersblendpasses, this->rgbatextureids);
+    glGenTextures(this->sortedlayersblendpasses, this->rgbatextureids.get());
     for (int i=0;i<sortedlayersblendpasses;++i) {
       glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);  
       glCopyTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, 0, 0, canvassize[0], canvassize[1], 0);
