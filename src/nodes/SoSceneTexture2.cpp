@@ -794,6 +794,10 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   
   SoModelMatrixElement::set(state, PUBLIC(this), SbMatrix::identity());
 
+  // store current framebuffer
+  GLint oldfb;
+  glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &oldfb );
+
   // set up framebuffer for rendering
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
   this->checkFramebufferStatus(glue, TRUE);
@@ -828,8 +832,9 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, 0);
   }
   
-  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);	
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, (GLuint)oldfb);	
   this->checkFramebufferStatus(glue, TRUE);
+
 
   // restore old clear color
   glClearColor(oldclearcolor[0], oldclearcolor[1], oldclearcolor[2], oldclearcolor[3]);
@@ -1097,6 +1102,10 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   assert(this->fbo_frameBuffer == GL_INVALID_VALUE);
   assert(this->fbo_depthBuffer == GL_INVALID_VALUE);
 
+  // store old framebuffer
+  GLint oldfb;
+  glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &oldfb );
+
   cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
   cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
@@ -1213,7 +1222,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                                       this->fbo_depthBuffer);
   
   SbBool ret = this->checkFramebufferStatus(glue, warn);
-  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, 0);
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, (GLint)oldfb);
 
   // just testing
   if (type == SoSceneTexture2::RGBA32F) {
