@@ -1224,11 +1224,6 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   SbBool ret = this->checkFramebufferStatus(glue, warn);
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, (GLint)oldfb);
 
-  // just testing
-  if (type == SoSceneTexture2::RGBA32F) {
-    return FALSE;
-  }
-
   return ret;
 }
 
