@@ -530,9 +530,12 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
   }
 
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
-  if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
+  if (status != XML_STATUS_OK) {
+    cc_xml_doc_handle_parse_error(doc);
+    // FIXME: should delete_parser() be invoked here?
+  }
 
-  return TRUE;
+  return (status == XML_STATUS_OK);
 }
 
 SbBool
@@ -546,10 +549,13 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
-  if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
+
+  if (status != XML_STATUS_OK) {
+    cc_xml_doc_handle_parse_error(doc);
+  }
 
   cc_xml_doc_delete_parser_x(doc);
-  return TRUE;
+  return (status == XML_STATUS_OK);
 }
 
 // *************************************************************************
