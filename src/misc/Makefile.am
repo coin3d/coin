@@ -54,7 +54,6 @@ PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
 	SoGL.h \
-	SoGLDriverDatabase.h \
 	SoGenerate.h \
 	SoPick.h \
 	SoShaderGenerator.h \

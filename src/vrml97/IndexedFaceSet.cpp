@@ -228,6 +228,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
@@ -237,7 +238,6 @@
 #include "glue/glp.h"
 #include "misc/SoGL.h"
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

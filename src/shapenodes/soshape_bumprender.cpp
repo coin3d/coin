@@ -52,6 +52,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSpotLight.h>
@@ -59,7 +60,6 @@
 // For coin_apply_normalization_cube_map().
 #include "glue/glp.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "caches/SoPrimitiveVertexCache.h"
 
 // *************************************************************************

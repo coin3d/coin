@@ -205,6 +205,7 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
@@ -217,7 +218,6 @@
 #include "misc/SoVertexArrayIndexer.h"
 #include "misc/SoVBO.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // for concavestatus
 #define STATUS_UNKNOWN 0

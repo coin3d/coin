@@ -40,9 +40,9 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 

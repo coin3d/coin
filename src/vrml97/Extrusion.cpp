@@ -336,6 +336,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -349,7 +350,6 @@
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoGL.h"
 #include "misc/SbHash.h"
 #include "caches/SoVBOCache.h"

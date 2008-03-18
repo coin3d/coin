@@ -293,6 +293,7 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -303,7 +304,6 @@
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "elements/SoTextureScalePolicyElement.h"
 
 

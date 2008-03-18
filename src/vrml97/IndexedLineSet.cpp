@@ -111,6 +111,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -141,7 +142,6 @@
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
 #include "glue/glp.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoVertexArrayIndexer.h"
 #include "misc/SoVBO.h"
 

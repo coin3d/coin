@@ -258,6 +258,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/navigation/SoNavigation.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "SoVBO.h"
 #include "coindefs.h" // COIN_STUB()
@@ -265,7 +266,6 @@
 #include "geo/SoGeo.h"
 #include "tidbitsp.h"
 #include "fields/SoGlobalField.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/CoinStaticObjectInDLL.h"
 #include "misc/systemsanity.icc"
 #include "misc/SoDBP.h"

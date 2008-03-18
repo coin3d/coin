@@ -101,6 +101,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
@@ -112,7 +113,6 @@
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SbHash.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "shaders/SoGLARBShaderObject.h"
 #include "shaders/SoGLCgShaderObject.h"
 #include "shaders/SoGLSLShaderObject.h"

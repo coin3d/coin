@@ -45,10 +45,10 @@
 */
 
 #include <Inventor/nodes/SoFragmentShader.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "glue/glp.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

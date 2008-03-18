@@ -114,8 +114,8 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include "misc/SoGLDriverDatabase.h"
 #include "nodes/SoSubNodeP.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 

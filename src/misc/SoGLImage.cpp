@@ -199,13 +199,13 @@
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLCubeMapImage.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
 #include "tidbitsp.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoGL.h"
 #include "elements/SoTextureScaleQualityElement.h"
 #include "glue/GLUWrapper.h"

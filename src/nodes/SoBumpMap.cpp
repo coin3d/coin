@@ -95,10 +95,10 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGLDriverDatabase.h"
 
 /*!
   \enum SoBumpMap::Wrap

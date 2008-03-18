@@ -23,7 +23,8 @@ PublicHeaders = \
 	SoGlyph.h \
 	SoAudioDevice.h \
 	SoScriptEngine.h \
-	SoJavaScriptEngine.h
+	SoJavaScriptEngine.h \
+	SoGLDriverDatabase.h
 
 PrivateHeaders =
 

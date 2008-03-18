@@ -392,9 +392,9 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

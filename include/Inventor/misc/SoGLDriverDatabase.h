@@ -24,14 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif /* !COIN_INTERNAL */
-
-// FIXME: consider if this should be part of the public Coin API. It
-// will be useful for appliction/library programmers that make
-// extension nodes with OpenGL code.
-
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/lists/SbList.h>
 
@@ -39,12 +31,20 @@ class SoGLDriver;
 class SoGLDriverDatabaseP;
 class SbName;
 
-class SoGLDriverDatabase {
+class COIN_DLL_API SoGLDriverDatabase {
 public:
   static SbBool isSupported(const cc_glglue * context, const SbName & feature);
   static SbBool isBroken(const cc_glglue * context, const SbName & feature);
   static SbBool isSlow(const cc_glglue * context, const SbName & feature);
   static SbBool isFast(const cc_glglue * context, const SbName & feature);
+
+  static void loadFromBuffer(const char * buffer);
+  static void loadFromFile(const SbName & filename);
+
+  static void addBuffer(const char * buffer);
+  static void addFile(const SbName & filename);
+
+  static void addFeature(const SbName & feature, const SbName & comment);
 
 public:
   static void init(void);

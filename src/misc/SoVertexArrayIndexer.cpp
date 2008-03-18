@@ -35,10 +35,10 @@
 #include <stdio.h>
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "tidbitsp.h"
 #include "misc/SoVBO.h"
-#include "misc/SoGLDriverDatabase.h"
 
 /*!
   Constructor

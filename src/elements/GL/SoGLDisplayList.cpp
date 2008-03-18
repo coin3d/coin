@@ -47,10 +47,10 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "glue/glp.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 
 class SoGLDisplayListP {
  public:

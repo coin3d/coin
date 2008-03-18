@@ -36,9 +36,9 @@
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 

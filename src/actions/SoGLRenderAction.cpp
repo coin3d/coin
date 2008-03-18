@@ -98,6 +98,7 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -114,7 +115,6 @@
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 
 #ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/SoProfiler.h>

@@ -80,13 +80,13 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoGL.h"
 #include "misc/SoVertexArrayIndexer.h"
 #include "misc/SoVBO.h"

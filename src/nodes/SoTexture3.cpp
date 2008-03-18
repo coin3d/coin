@@ -78,6 +78,7 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -86,7 +87,6 @@
 
 #include "nodes/SoSubNodeP.h"
 #include "elements/SoTextureScalePolicyElement.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

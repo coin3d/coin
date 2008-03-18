@@ -526,6 +526,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoGlyph.h %COINDIR%\include\Invent
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoAudioDevice.h %COINDIR%\include\Inventor\misc\SoAudioDevice.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoScriptEngine.h %COINDIR%\include\Inventor\misc\SoScriptEngine.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoJavaScriptEngine.h %COINDIR%\include\Inventor\misc\SoJavaScriptEngine.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\misc\SoGLDriverDatabase.h %COINDIR%\include\Inventor\misc\SoGLDriverDatabase.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\navigation\SoCenterMode.h %COINDIR%\include\Inventor\navigation\SoCenterMode.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\navigation\SoIdleMode.h %COINDIR%\include\Inventor\navigation\SoIdleMode.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\navigation\SoNavigationControl.h %COINDIR%\include\Inventor\navigation\SoNavigationControl.h >nul:

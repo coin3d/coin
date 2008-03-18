@@ -88,6 +88,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -110,7 +111,6 @@
 #include "nodes/SoSubNodeP.h"
 #include "caches/SoPrimitiveVertexCache.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "glue/glp.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"

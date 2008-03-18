@@ -69,6 +69,7 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/SoPrimitiveVertex.h>
 
@@ -100,7 +101,6 @@
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoVBO.h"
 
 static SbBool

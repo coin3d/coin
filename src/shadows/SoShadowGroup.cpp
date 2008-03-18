@@ -300,6 +300,7 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -317,7 +318,6 @@
 #include "nodes/SoSubNodeP.h"
 #include "shaders/SoShader.h"
 #include "glue/glp.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoShaderGenerator.h"
 #include "caches/SoShaderProgramCache.h"
 

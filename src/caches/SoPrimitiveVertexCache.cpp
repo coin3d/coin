@@ -56,13 +56,13 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "tidbitsp.h"
 #include "misc/SbHash.h"
 #include "misc/SoGL.h"
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
-#include "misc/SoGLDriverDatabase.h"
 
 // *************************************************************************
 

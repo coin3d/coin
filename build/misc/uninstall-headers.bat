@@ -526,6 +526,7 @@ del %COINDIR%\include\Inventor\misc\SoGlyph.h
 del %COINDIR%\include\Inventor\misc\SoAudioDevice.h
 del %COINDIR%\include\Inventor\misc\SoScriptEngine.h
 del %COINDIR%\include\Inventor\misc\SoJavaScriptEngine.h
+del %COINDIR%\include\Inventor\misc\SoGLDriverDatabase.h
 del %COINDIR%\include\Inventor\navigation\SoCenterMode.h
 del %COINDIR%\include\Inventor\navigation\SoIdleMode.h
 del %COINDIR%\include\Inventor\navigation\SoNavigationControl.h

@@ -92,13 +92,13 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoVBO.h"
 
 /*!

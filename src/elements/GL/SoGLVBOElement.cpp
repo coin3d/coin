@@ -41,10 +41,10 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "misc/SoGL.h"
 #include "glue/glp.h"
-#include "misc/SoGLDriverDatabase.h"
 #include "misc/SoVBO.h"
 
 #define PRIVATE(obj) obj->pimpl
