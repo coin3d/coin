@@ -133,6 +133,8 @@ class SoGLDriverDatabaseP {
     SbList <SbName> slow;
     SbList <SbName> fast;
     SbList <SbName> disabled;
+
+    uint32_t contextid; 
   };
 
   class FeatureID {
@@ -154,6 +156,16 @@ class SoGLDriverDatabaseP {
 public:
   SoGLDriverDatabaseP() {
     this->initFunctions();
+    this->database = NULL;
+  }
+
+  ~SoGLDriverDatabaseP() {
+    if(database != NULL)
+      cc_xml_doc_delete_x(database);
+
+    for(int i = 0; i < driverlist.getLength(); i++) {
+      delete driverlist[i];
+    }
   }
 
   SbBool isSupported(const cc_glglue * context, const SbName & feature) {
@@ -247,17 +259,48 @@ public:
     }
     return fast;
   }
-  void loadDefaultDatabase() {
+
+  SbBool loadFromFile(const SbName & filename) {
+    if(database != NULL)
+      cc_xml_doc_delete_x(database);
+
     database = cc_xml_doc_new();
 
-    SbBool result = cc_xml_doc_read_file_x(database, "driverdatabase.xml");
+    SbBool result = cc_xml_doc_read_file_x(database, filename);
 
     if(!result) {
-#if COIN_DEBUG
-      SoDebugError::postInfo("SoGLDriverDatabaseP::loadDefaultDatabase", "Could not read default driver database!");
-#endif
       cc_xml_doc_delete_x(database);
       database = NULL;
+    }
+
+    return result;
+  }
+
+  SbBool loadFromBuffer(const char * buffer) {
+    if(database != NULL)
+      cc_xml_doc_delete_x(database);
+
+    database = cc_xml_doc_new();
+
+    SbBool result = cc_xml_doc_read_buffer_x(database, buffer, strlen(buffer));
+
+    if(!result) {
+       cc_xml_doc_delete_x(database);
+       database = NULL;
+     }
+
+    return result;
+  }
+
+  void loadDefaultDatabase() {
+    if(database == NULL) {
+      SbBool result = loadFromFile("driverdatabase.xml");      
+
+      if(!result) {
+#if COIN_DEBUG
+        SoDebugError::postInfo("SoGLDriverDatabaseP::loadDefaultDatabase", "Could not read default driver database!");
+#endif
+      }
     }
   }
   
@@ -301,7 +344,6 @@ private:
         SoDebugError::postInfo("SoGLDriverDatabaseP::addFeature", "Feature %s has unknown commment.", featurename);
 #endif
       }
-
     }
   }
 
@@ -461,9 +503,7 @@ private:
   }
 
   SoGLDriver * findGLDriver(const cc_glglue * context) {
-    int major, minor, micro;
-
-    //FIXME: Expand with versioning etc.
+    //FIXME: Expand platform search with versioning etc.
     //20080318, oyshole
 
     SbName platformstring("undefined");
@@ -486,34 +526,44 @@ private:
     SbName renderer(context->rendererstr);
     SbName versionstring(context->versionstr);
 
-    major = context->version.major;
-    minor = context->version.minor;
-    micro = context->version.release;
+    SoGLDriver * driver = NULL;
 
-    SoGLDriver * driver = new SoGLDriver;
-    driverlist.append(driver);
+    for(int i = 0; i < driverlist.getLength(); i++) {
+      if(driverlist[i]->contextid == context->contextid) {
+        driver = driverlist[i];
+        break;
+      }
+    }
+
+    if(!driver) {
+      driver = new SoGLDriver();
+      driver->contextid = context->contextid;
+
+      driverlist.append(driver);
     
-    if(database) {
-      cc_xml_element * root = cc_xml_doc_get_root(database);
+      if(database) {
+        cc_xml_element * root = cc_xml_doc_get_root(database);
 
-      if(root) {
-        addFeatures(context, root, driver);        
-        const cc_xml_element * platform = findPlatform(root, platformstring);
+        if(root) {
+          addFeatures(context, root, driver);        
+          const cc_xml_element * platform = findPlatform(root, platformstring);
 
-        if(platform) {
-          addFeatures(context, platform, driver);
-          const cc_xml_element * vendor = findVendor(platform, vendorstring);
+          if(platform) {
+            addFeatures(context, platform, driver);
+            const cc_xml_element * vendor = findVendor(platform, vendorstring);
 
-          if(vendor) {                 
-            addFeatures(context, vendor, driver);
-            const cc_xml_element * driver = findDriver(vendor, context);
+            if(vendor) {                 
+              addFeatures(context, vendor, driver);
+              const cc_xml_element * driver = findDriver(vendor, context);
 
-            //FIXME: Implement driver matching
-            //oyshole, 20080314
+              //FIXME: Implement driver matching
+              //oyshole, 20080314
+            }
           }
         }
       }
     }
+
     return driver;
   }
 
@@ -573,13 +623,13 @@ SoGLDriverDatabase::isFast(const cc_glglue * context, const SbName & feature)
 void
 SoGLDriverDatabase::loadFromBuffer(const char * buffer)
 {
-  //FIXME: Implement
+  pimpl()->loadFromBuffer(buffer);
 }
 
 void
 SoGLDriverDatabase::loadFromFile(const SbName & filename)
 {
-  //FIXME: Implement
+  pimpl()->loadFromFile(filename);
 }
 
 void
@@ -614,7 +664,6 @@ SoGLDriverDatabase::pimpl(void)
   if (pimpl_instance == NULL) {
     pimpl_instance = new SoGLDriverDatabaseP;
     cc_coin_atexit((coin_atexit_f*) sogldriverdatabase_atexit);
-
   }
   return pimpl_instance;
 }
