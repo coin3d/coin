@@ -172,7 +172,7 @@ public:
                            "Unknown feature '%s'.", feature.getString());
       }
     }
-    return (!this->isBroken(context, feature) || !this->isDisabled(context, feature));
+    return !(this->isBroken(context, feature) || this->isDisabled(context, feature));
   }
   SbBool isBroken(const cc_glglue * context, const SbName & feature) {
     FeatureID f;
@@ -253,7 +253,9 @@ public:
     SbBool result = cc_xml_doc_read_file_x(database, "driverdatabase.xml");
 
     if(!result) {
+#if COIN_DEBUG
       SoDebugError::postInfo("SoGLDriverDatabaseP::loadDefaultDatabase", "Could not read default driver database!");
+#endif
       cc_xml_doc_delete_x(database);
       database = NULL;
     }
@@ -272,21 +274,21 @@ private:
       SbName featurename = cc_xml_elt_get_cdata(name);     
       SbName commentstr = cc_xml_elt_get_cdata(comment);
 
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is %s!", featurename, commentstr);
+#endif
+
       if(strcmp("disabled", commentstr) == 0) {
         driver->disabled.append(featurename);
-        SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is disabled!", featurename);
       }
       else if(strcmp("broken", commentstr) == 0) {
         driver->broken.append(featurename);
-        SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is broken!", featurename);
       }
       else if(strcmp("slow", commentstr) == 0) {
         driver->slow.append(featurename);
-        SoDebugError::postInfo("SoGLDriverDatabaseP::addFeature", "Feature %s is slow.", featurename);
       }
       else if(strcmp("fast", commentstr) == 0) {
         driver->fast.append(featurename);
-        SoDebugError::postInfo("SoGLDriverDatabaseP::addFeature", "Feature %s is fast.", featurename);
       }
       else if(strcmp("enabled", commentstr) == 0) {
         // Do nothing, let extension/feature tests decide
@@ -295,8 +297,11 @@ private:
         // Do nothing, let extension/feature tests decide
       }
       else {
+#if COIN_DEBUG
         SoDebugError::postInfo("SoGLDriverDatabaseP::addFeature", "Feature %s has unknown commment.", featurename);
+#endif
       }
+
     }
   }
 
@@ -314,13 +319,16 @@ private:
         
         SbName namestr;
 
-        if(!name)
+        if(!name) {
+#if COIN_DEBUG
           SoDebugError::postWarning("SoGLDriverDatabaseP::findPlatform", "Missing name in platform element!");
+#endif
+          namestr = "undefined";
+        }
         else 
           namestr = cc_xml_elt_get_cdata(name);
 
         if(strcmp(namestr, platformstring) == 0) {
-          //SoDebugError::postInfo("SoGLDriverDatabaseP::findGLDriver", "Platform matched to %s.", platformstring);
           return platform;
         }
         else {
@@ -328,7 +336,6 @@ private:
 
           for(unsigned int j = 0; j < numaliases; j++) {
             if(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(platform, "alias", j)), platformstring) == 0) {
-              SoDebugError::postInfo("SoGLDriverDatabaseP::findGLDriver", "Platform matched to alias %s.", platformstring);
               return platform;
             }
           }      
@@ -352,13 +359,16 @@ private:
         
         SbName namestr;
 
-        if(!name)
-          SoDebugError::postWarning("SoGLDriverDatabaseP::findVendor", "Missing name in vendor element!");
+        if(!name) {
+#if COIN_DEBUG
+          SoDebugError::postWarning("SoGLDriverDatabaseP::findPlatform", "Missing name in vendor element!");
+#endif
+          namestr = "undefined";
+        }
         else 
           namestr = cc_xml_elt_get_cdata(name);
 
         if(strcmp(namestr, vendorstring) == 0) { 
-          //SoDebugError::postInfo("SoGLDriverDatabaseP::findGLDriver", "Vendor matched to %s.", vendorstring);
           return vendor;
         }
         else {
@@ -366,7 +376,6 @@ private:
 
           for(unsigned int j = 0; j < numaliases; j++) {
             if(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(vendor, "alias", j)), vendorstring) == 0) {
-              SoDebugError::postInfo("SoGLDriverDatabaseP::findGLDriver", "Vendor matched to alias %s.", vendorstring);
               return vendor;
             }
           }
@@ -384,7 +393,9 @@ private:
       cc_xml_element * versionrange = cc_xml_elt_get_child_of_type(driver, "versionrange", 0);
 
       if(!versionrange) {
+#if COIN_DEBUG
         SoDebugError::postWarning("SoGLDriverDatabaseP::findDriver", "Missing versioninfo in driver element!");
+#endif
       }
       else {
         cc_xml_element * minversionelement = cc_xml_elt_get_child_of_type(versionrange, "minversion", 0);
@@ -452,16 +463,24 @@ private:
   SoGLDriver * findGLDriver(const cc_glglue * context) {
     int major, minor, micro;
 
-    //FIXME: Detect platform in some better fashion, expand with versioning etc.
-    //20080314, oyshole
+    //FIXME: Expand with versioning etc.
+    //20080318, oyshole
 
-#ifdef _WIN32
-    SbName platformstring("Win32");
-#elif defined __APPLE__
-    SbName platformstring("Apple");
-#else
-    SbName platformstring("Linux");
-#endif
+    SbName platformstring("undefined");
+
+    switch(coin_runtime_os()) {
+      case COIN_OS_X:
+        platformstring = "Apple";
+        break;
+      case COIN_MSWINDOWS:
+        platformstring = "Win32";
+        break;
+      case COIN_UNIX:
+        platformstring = "Unix";
+        break;
+      default:
+        break;
+    };
 
     SbName vendorstring(context->vendorstr);
     SbName renderer(context->rendererstr);
@@ -471,11 +490,8 @@ private:
     minor = context->version.minor;
     micro = context->version.release;
 
-    //FIXME: Who takes responsibility of this object?
-    //Maybe store the driver relative to the context to
-    //avoid unnecessary lookuops.
-    //oyshole, 20080314
     SoGLDriver * driver = new SoGLDriver;
+    driverlist.append(driver);
     
     if(database) {
       cc_xml_element * root = cc_xml_doc_get_root(database);
