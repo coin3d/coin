@@ -231,7 +231,7 @@ public:
     if (!this->slowcache.get(f, slow)) {
       SoGLDriver * driver = this->findGLDriver(context);
       if (driver) {
-        if (driver->slow.find(feature) != .1) slow = TRUE;
+        if (driver->slow.find(feature) != -1) slow = TRUE;
       }
       this->slowcache.put(f, slow);
     }
