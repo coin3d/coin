@@ -519,6 +519,9 @@ COIN_DLL_API void cc_glglue_glGetVertexAttribiv(const cc_glglue * glue, GLuint i
 COIN_DLL_API void cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue, GLuint index, GLenum pname, 
                                                       GLvoid **pointer);
 
+/* ARB_vertex_shader */
+COIN_DLL_API SbBool cc_glglue_has_arb_vertex_shader(const cc_glglue * glue);
+
 /* ARB_occlusion_query */
 COIN_DLL_API SbBool cc_glglue_has_occlusion_query(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glGenQueries(const cc_glglue * glue, 
