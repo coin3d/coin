@@ -101,6 +101,8 @@ class SoGLDriverDatabaseP {
                          (glglue_feature_test_f *) &cc_glglue_has_arb_fragment_program);
     this->featuremap.put(SbName(SO_GL_ARB_VERTEX_PROGRAM).getString(),
                          (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_program);
+    this->featuremap.put(SbName(SO_GL_ARB_VERTEX_SHADER).getString(),
+                         (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_shader);
     this->featuremap.put(SbName(SO_GL_ARB_SHADER_OBJECT).getString(),
                          (glglue_feature_test_f *) &cc_glglue_has_arb_shader_objects);
     this->featuremap.put(SbName(SO_GL_OCCLUSION_QUERY).getString(),
