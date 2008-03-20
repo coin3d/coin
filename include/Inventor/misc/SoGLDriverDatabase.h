@@ -74,6 +74,7 @@ private:
 #define SO_GL_VERTEX_BUFFER_OBJECT  "COIN_vertex_buffer_object"
 #define SO_GL_ARB_FRAGMENT_PROGRAM  "COIN_arb_fragment_program"
 #define SO_GL_ARB_VERTEX_PROGRAM    "COIN_arb_vertex_program"
+#define SO_GL_ARB_VERTEX_SHADER     "COIN_arb_vertex_shader"
 #define SO_GL_ARB_SHADER_OBJECT     "COIN_arb_shader_object"
 #define SO_GL_OCCLUSION_QUERY       "COIN_occlusion_query"
 #define SO_GL_FRAMEBUFFER_OBJECT    "COIN_framebuffer_object"
