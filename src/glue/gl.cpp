@@ -740,6 +740,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_fragment_program 1
 #define GL_ARB_vertex_program 1
 #define GL_ARB_shader_objects 1
+#define GL_ARB_vertex_shader 1
 #define GL_ARB_occlusion_query 1
 
 #else /* static binding */
@@ -1552,6 +1553,41 @@ glglue_resolve_symbols(cc_glglue * w)
 #undef BIND_FUNCTION_WITH_WARN
   }
 #endif /* GL_ARB_vertex_program */
+
+
+#ifdef GL_ARB_vertex_shader
+
+  w->glBindAttribLocationARB = NULL;
+  w->glGetActiveAttribARB = NULL;
+  w->glGetAttribLocationARB = NULL;
+
+  if (cc_glglue_glext_supported(w, "GL_ARB_vertex_shader")) {
+
+#define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
+   w->_func_ = (_type_)PROC(_func_); \
+   do { \
+     if (!w->_func_) { \
+       w->has_arb_vertex_shader = FALSE; \
+       if (COIN_DEBUG || coin_glglue_debug()) { \
+         static SbBool error_reported = FALSE; \
+         if (!error_reported) { \
+           cc_debugerror_postwarning("glglue_init", \
+                                     "GL_ARB_vertex_shader found, but %s " \
+                                     "function missing.", SO__QUOTE(_func_)); \
+           error_reported = TRUE; \
+         } \
+       } \
+     } \
+   } while (0)
+
+    w->has_arb_vertex_shader = TRUE;
+    BIND_FUNCTION_WITH_WARN(glBindAttribLocationARB, COIN_PFNGLBINDATTRIBLOCATIONARBPROC);
+    BIND_FUNCTION_WITH_WARN(glGetActiveAttribARB, COIN_PFNGLGETACTIVEATTRIBARBPROC);
+    BIND_FUNCTION_WITH_WARN(glGetAttribLocationARB, COINP_PFNGLGETATTRIBLOCATIONARBPROC);
+
+#undef BIND_FUNCTION_WITH_WARN
+  }
+#endif /* GL_ARB_vertex_shader */
 
 
   w->glGetUniformLocationARB = NULL;
@@ -3783,6 +3819,14 @@ cc_glglue_has_arb_vertex_program(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_arb_vertex_program;
+}
+
+/* ARB_vertex_shaders functions */
+SbBool
+cc_glglue_has_arb_vertex_shader(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_arb_vertex_shader;
 }
 
 void

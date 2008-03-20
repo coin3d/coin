@@ -451,8 +451,6 @@ typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBIVARBPROC)(GLuint index, GLenu
 typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index, GLenum pname, 
                                                                    GLvoid **pointer);
 
-/* Typedefs for shader objects -- GL_ARB_shader_objects */
-
 /* FIXME: according to the GL_ARB_shader_objects doc, these types must
    be at least 8 bits wide and 32 bits wide, respectively. Apart from
    that, there does not seem to be any other limitations on them, so
@@ -464,6 +462,13 @@ typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index,
 typedef char COIN_GLchar;
 typedef unsigned long COIN_GLhandle;
 
+/* Typedefs for GL_ARB_vertex_shader */
+typedef void (APIENTRY * COIN_PFNGLBINDATTRIBLOCATIONARBPROC)(COIN_GLhandle programobj, GLuint index, COIN_GLchar * name);
+typedef void (APIENTRY * COIN_PFNGLGETACTIVEATTRIBARBPROC)(COIN_GLhandle programobj, const COIN_GLchar * name);
+typedef int (APIENTRY * COINP_PFNGLGETATTRIBLOCATIONARBPROC)(COIN_GLhandle programobj, GLuint index, const COIN_GLchar * name);
+
+
+/* Typedefs for shader objects -- GL_ARB_shader_objects */
 typedef void (APIENTRY * COIN_PFNGLPROGRAMPARAMETERIEXT)(COIN_GLhandle, GLenum, GLenum);
 
 typedef int (APIENTRY * COIN_PFNGLGETUNIFORMLOCATIONARBPROC)(COIN_GLhandle,
@@ -734,6 +739,11 @@ struct cc_glglue {
   COIN_PFNGLGETVERTEXATTRIBIVARBPROC glGetVertexAttribivARB;
   COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC glGetVertexAttribPointervARB;
 
+  /* vertex shader */
+  COIN_PFNGLBINDATTRIBLOCATIONARBPROC glBindAttribLocationARB;
+  COIN_PFNGLGETACTIVEATTRIBARBPROC glGetActiveAttribARB;
+  COINP_PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
+
   /* shader objects */
   COIN_PFNGLPROGRAMPARAMETERIEXT glProgramParameteriEXT;
   COIN_PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
@@ -828,6 +838,7 @@ struct cc_glglue {
   SbBool has_arb_fragment_program;
   SbBool has_arb_vertex_program;
   SbBool has_arb_shader_objects;
+  SbBool has_arb_vertex_shader;
   SbBool has_texture_env_combine;
   SbBool has_fbo;
 
