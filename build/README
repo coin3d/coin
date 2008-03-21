@@ -14,6 +14,9 @@ msvc8/
 
 	Directory for building Coin with Visual Studio 8.
 
+Xcode/
+        Directory for building Coin with Xcode (experimental).
+
 coin.spec.in
 
         Template processed by configure script to generate an RPM
