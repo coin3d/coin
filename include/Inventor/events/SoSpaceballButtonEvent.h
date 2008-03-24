@@ -39,26 +39,27 @@ class COIN_DLL_API SoSpaceballButtonEvent : public SoButtonEvent {
   SO_EVENT_HEADER();
 
 public:
+  static void initClass(void);
+
+  SoSpaceballButtonEvent(void);
+  virtual ~SoSpaceballButtonEvent();
+
   enum Button {
     ANY, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5, BUTTON6, BUTTON7,
     BUTTON8, PICK
   };
 
-  SoSpaceballButtonEvent(void);
-  virtual ~SoSpaceballButtonEvent();
+  void setButton(Button button);
+  Button getButton(void) const;
 
-  void setButton(SoSpaceballButtonEvent::Button button);
-  SoSpaceballButtonEvent::Button getButton(void) const;
+  static SbBool isButtonPressEvent(const SoEvent * e, Button whichButton);
+  static SbBool isButtonReleaseEvent(const SoEvent * e, Button whichButton);
 
-  static SbBool isButtonPressEvent(const SoEvent * e,
-                                   SoSpaceballButtonEvent::Button whichButton);
-  static SbBool isButtonReleaseEvent(const SoEvent * e,
-                                     SoSpaceballButtonEvent::Button whichButton);
-
-  static void initClass(void);
+  static SbBool enumToString(Button enumval, SbString & stringrep);
 
 private:
   Button button;
-};
+
+}; // SoSpaceballButtonEvent
 
 #endif // !COIN_SOSPACEBALLBUTTONEVENT_H

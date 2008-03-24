@@ -43,10 +43,14 @@
 
 class COIN_DLL_API SoKeyboardEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
-
   SO_EVENT_HEADER();
 
 public:
+  static void initClass(void);
+
+  SoKeyboardEvent(void);
+  virtual ~SoKeyboardEvent();
+
   enum Key {
     ANY = 0,
     UNDEFINED = 1,
@@ -90,28 +94,23 @@ public:
     BRACKETRIGHT = 0x005d, GRAVE = 0x0060
   };
 
-  SoKeyboardEvent(void);
-  virtual ~SoKeyboardEvent();
-
-  void setKey(SoKeyboardEvent::Key key);
-  SoKeyboardEvent::Key getKey(void) const;
+  void setKey(Key key);
+  Key getKey(void) const;
 
   void setPrintableCharacter(const char c);
   char getPrintableCharacter(void) const;
 
-  static SbBool isKeyPressEvent(const SoEvent * e,
-                                SoKeyboardEvent::Key whichKey);
-  static SbBool isKeyReleaseEvent(const SoEvent * e,
-                                  SoKeyboardEvent::Key whichKey);
+  static SbBool isKeyPressEvent(const SoEvent * e, Key whichKey);
+  static SbBool isKeyReleaseEvent(const SoEvent * e, Key whichKey);
 
-  static void initClass(void);
+  static SbBool enumToString(Key enumval, SbString & stringrep);
 
 private:
   Key key;
   char printable;
   char isprintableset;
-};
 
+}; // SoKeyboardEvent
 
 // Avoid problem with Microsoft Win32 API headers (see above). Define
 // DELETE back to its value in the MSVC header file.

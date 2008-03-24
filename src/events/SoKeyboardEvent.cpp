@@ -340,3 +340,239 @@ SoKeyboardEvent::getPrintableCharacter(void) const
   if (dict->get(this->getKey(), value)) { return value; }
   return '.';
 }
+
+/*!
+  Converts from an enum value of type SoKeyboardEvent::State to a
+  string containing the enum symbol.
+
+  \since 2008-03-22
+*/
+// Should we add stringToEnum as well perhaps?
+SbBool
+SoKeyboardEvent::enumToString(Key enumval, SbString & stringrep)
+{
+  if (enumval >= SoKeyboardEvent::A && enumval <= SoKeyboardEvent::Z) {
+    stringrep.sprintf("%c", 'A' + (enumval - SoKeyboardEvent::A));
+    return TRUE;
+  }
+  if (enumval >= SoKeyboardEvent::F1 && enumval <= SoKeyboardEvent::F12) {
+    stringrep.sprintf("F%d", 1 + (enumval - SoKeyboardEvent::F1));
+    return TRUE;
+  }
+
+  switch (enumval) {
+  case SoKeyboardEvent::ANY:
+    stringrep = "ANY";
+    break;
+  case SoKeyboardEvent::UNDEFINED:
+    stringrep = "UNDEFINED";
+    break;
+  case SoKeyboardEvent::LEFT_SHIFT:
+    stringrep = "LEFT_SHIFT";
+    break;
+  case SoKeyboardEvent::RIGHT_SHIFT:
+    stringrep = "RIGHT_SHIFT";
+    break;
+  case SoKeyboardEvent::LEFT_CONTROL:
+    stringrep = "LEFT_CONTROL";
+    break;
+  case SoKeyboardEvent::RIGHT_CONTROL:
+    stringrep = "RIGHT_CONTROL";
+    break;
+  case SoKeyboardEvent::LEFT_ALT:
+    stringrep = "RIGHT_ALT";
+    break;
+  case SoKeyboardEvent::NUMBER_0:
+    stringrep = "NUMBER_0";
+    break;
+  case SoKeyboardEvent::NUMBER_1:
+    stringrep = "NUMBER_1";
+    break;
+  case SoKeyboardEvent::NUMBER_2:
+    stringrep = "NUMBER_2";
+    break;
+  case SoKeyboardEvent::NUMBER_3:
+    stringrep = "NUMBER_3";
+    break;
+  case SoKeyboardEvent::NUMBER_4:
+    stringrep = "NUMBER_4";
+    break;
+  case SoKeyboardEvent::NUMBER_5:
+    stringrep = "NUMBER_5";
+    break;
+  case SoKeyboardEvent::NUMBER_6:
+    stringrep = "NUMBER_6";
+    break;
+  case SoKeyboardEvent::NUMBER_7:
+    stringrep = "NUMBER_7";
+    break;
+  case SoKeyboardEvent::NUMBER_8:
+    stringrep = "NUMBER_8";
+    break;
+  case SoKeyboardEvent::NUMBER_9:
+    stringrep = "NUMBER_9";
+    break;
+  case SoKeyboardEvent::HOME:
+    stringrep = "HOME";
+    break;
+  case SoKeyboardEvent::LEFT_ARROW:
+    stringrep = "LEFT_ARROW";
+    break;
+  case SoKeyboardEvent::UP_ARROW:
+    stringrep = "UP_ARROW";
+    break;
+  case SoKeyboardEvent::RIGHT_ARROW:
+    stringrep = "RIGHT_ARROW";
+    break;
+  case SoKeyboardEvent::DOWN_ARROW:
+    stringrep = "DOWN_ARROW";
+    break;
+  case SoKeyboardEvent::PAGE_UP: // aka PRIOR
+    stringrep = "PAGE_UP";
+    break;
+  case SoKeyboardEvent::PAGE_DOWN: // aka NEXT
+    stringrep = "PAGE_DOWN";
+    break;
+  case SoKeyboardEvent::END:
+    stringrep = "END";
+    break;
+  case SoKeyboardEvent::PAD_ENTER: // aka PAD_SPACE
+    stringrep = "PAD_ENTER";
+    break;
+  case SoKeyboardEvent::PAD_F1:
+    stringrep = "PAD_F1";
+    break;
+  case SoKeyboardEvent::PAD_F2:
+    stringrep = "PAD_F2";
+    break;
+  case SoKeyboardEvent::PAD_F3:
+    stringrep = "PAD_F3";
+    break;
+  case SoKeyboardEvent::PAD_F4:
+    stringrep = "PAD_F4";
+    break;
+  case SoKeyboardEvent::PAD_0: // aka PAD_INSERT
+    stringrep = "PAD_0";
+    break;
+  case SoKeyboardEvent::PAD_1:
+    stringrep = "PAD_1";
+    break;
+  case SoKeyboardEvent::PAD_2:
+    stringrep = "PAD_2";
+    break;
+  case SoKeyboardEvent::PAD_3:
+    stringrep = "PAD_3";
+    break;
+  case SoKeyboardEvent::PAD_4:
+    stringrep = "PAD_4";
+    break;
+  case SoKeyboardEvent::PAD_5:
+    stringrep = "PAD_5";
+    break;
+  case SoKeyboardEvent::PAD_6:
+    stringrep = "PAD_6";
+    break;
+  case SoKeyboardEvent::PAD_7:
+    stringrep = "PAD_7";
+    break;
+  case SoKeyboardEvent::PAD_8:
+    stringrep = "PAD_8";
+    break;
+  case SoKeyboardEvent::PAD_9:
+    stringrep = "PAD_9";
+    break;
+  case SoKeyboardEvent::PAD_ADD:
+    stringrep = "PAD_ADD";
+    break;
+  case SoKeyboardEvent::PAD_SUBTRACT:
+    stringrep = "PAD_SUBTRACT";
+    break;
+  case SoKeyboardEvent::PAD_MULTIPLY:
+    stringrep = "PAD_MULTIPLY";
+    break;
+  case SoKeyboardEvent::PAD_DIVIDE:
+    stringrep = "PAD_DIVIDE";
+    break;
+  case SoKeyboardEvent::PAD_TAB:
+    stringrep = "PAD_TAB";
+    break;
+  case SoKeyboardEvent::PAD_DELETE: // aka PAD_PERIOD
+    stringrep = "PAD_DELETE";
+    break;
+  case SoKeyboardEvent::BACKSPACE:
+    stringrep = "BACKSPACE";
+    break;
+  case SoKeyboardEvent::TAB:
+    stringrep = "TAB";
+    break;
+  case SoKeyboardEvent::RETURN: // aka ENTER
+    stringrep = "RETURN";
+    break;
+  case SoKeyboardEvent::PAUSE:
+    stringrep = "PAUSE";
+    break;
+  case SoKeyboardEvent::SCROLL_LOCK:
+    stringrep = "SCROLL_LOCK";
+    break;
+  case SoKeyboardEvent::ESCAPE:
+    stringrep = "ESCAPE";
+    break;
+  case SoKeyboardEvent::KEY_DELETE:
+    stringrep = "DELETE";
+    break;
+  case SoKeyboardEvent::PRINT:
+    stringrep = "PRINT";
+    break;
+  case SoKeyboardEvent::INSERT:
+    stringrep = "INSERT";
+    break;
+  case SoKeyboardEvent::NUM_LOCK:
+    stringrep = "NUM_LOCK";
+    break;
+  case SoKeyboardEvent::CAPS_LOCK:
+    stringrep = "CAPS_LOCK";
+    break;
+  case SoKeyboardEvent::SHIFT_LOCK:
+    stringrep = "SHIFT_LOCK";
+    break;
+  case SoKeyboardEvent::SPACE:
+    stringrep = "SPACE";
+    break;
+  case SoKeyboardEvent::APOSTROPHE:
+    stringrep = "APOSTROPHE";
+    break;
+  case SoKeyboardEvent::COMMA:
+    stringrep = "COMMA";
+    break;
+  case SoKeyboardEvent::MINUS:
+    stringrep = "MINUS";
+    break;
+  case SoKeyboardEvent::PERIOD:
+    stringrep = "PERIOD";
+    break;
+  case SoKeyboardEvent::SLASH:
+    stringrep = "SLASH";
+    break;
+  case SoKeyboardEvent::SEMICOLON:
+    stringrep = "SEMICOLON";
+    break;
+  case SoKeyboardEvent::EQUAL:
+    stringrep = "EQUAL";
+    break;
+  case SoKeyboardEvent::BRACKETLEFT:
+    stringrep = "BRACKETLEFT";
+    break;
+  case SoKeyboardEvent::BACKSLASH:
+    stringrep = "BACKSLASH";
+    break;
+  case SoKeyboardEvent::BRACKETRIGHT:
+    stringrep = "BRACKETRIGHT";
+    break;
+  case SoKeyboardEvent::GRAVE:
+    stringrep = "GRAVE";
+    break;
+  default:
+    return FALSE;
+  }
+  return TRUE;
+}

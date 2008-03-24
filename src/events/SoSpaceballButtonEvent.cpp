@@ -139,3 +139,51 @@ SoSpaceballButtonEvent::isButtonReleaseEvent(const SoEvent * e,
            ((SoSpaceballButtonEvent *)e)->getButton() == whichButton) &&
           ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }
+
+
+/*!
+  Converts from an enum value of type SoMouseButtonEvent::Button to a
+  string containing the enum symbol.
+
+  \since 2008-03-22
+*/
+// Should we add stringToEnum as well perhaps?
+SbBool
+SoSpaceballButtonEvent::enumToString(Button enumval, SbString & stringrep)
+{
+  switch (enumval) {
+  case SoSpaceballButtonEvent::ANY:
+    stringrep = "ANY";
+    break;
+  case SoSpaceballButtonEvent::BUTTON1:
+    stringrep = "BUTTON1";
+    break;
+  case SoSpaceballButtonEvent::BUTTON2:
+    stringrep = "BUTTON2";
+    break;
+  case SoSpaceballButtonEvent::BUTTON3:
+    stringrep = "BUTTON3";
+    break;
+  case SoSpaceballButtonEvent::BUTTON4:
+    stringrep = "BUTTON4";
+    break;
+  case SoSpaceballButtonEvent::BUTTON5:
+    stringrep = "BUTTON5";
+    break;
+  case SoSpaceballButtonEvent::BUTTON6:
+    stringrep = "BUTTON6";
+    break;
+  case SoSpaceballButtonEvent::BUTTON7:
+    stringrep = "BUTTON7";
+    break;
+  case SoSpaceballButtonEvent::BUTTON8:
+    stringrep = "BUTTON8";
+    break;
+  case SoSpaceballButtonEvent::PICK:
+    stringrep = "PICK";
+    break;
+  default:
+    return FALSE;
+  }
+  return TRUE;
+}

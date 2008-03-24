@@ -174,3 +174,38 @@ SoMouseButtonEvent::isButtonReleaseEvent(const SoEvent * e,
   }
   return FALSE;
 }
+
+/*!
+  Converts from an enum value of type SoMouseButtonEvent::Button to a
+  string containing the enum symbol.
+
+  \since 2008-03-22
+*/
+// Should we add stringToEnum as well perhaps?
+SbBool
+SoMouseButtonEvent::enumToString(Button enumval, SbString & stringrep)
+{
+  switch (enumval) {
+  case SoMouseButtonEvent::ANY:
+    stringrep = "ANY";
+    break;
+  case SoMouseButtonEvent::BUTTON1:
+    stringrep = "BUTTON1";
+    break;
+  case SoMouseButtonEvent::BUTTON2:
+    stringrep = "BUTTON2";
+    break;
+  case SoMouseButtonEvent::BUTTON3:
+    stringrep = "BUTTON3";
+    break;
+  case SoMouseButtonEvent::BUTTON4:
+    stringrep = "BUTTON4";
+    break;
+  case SoMouseButtonEvent::BUTTON5:
+    stringrep = "BUTTON5";
+    break;
+  default:
+    return FALSE;
+  }
+  return TRUE;
+}

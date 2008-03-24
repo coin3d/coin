@@ -38,25 +38,26 @@ class COIN_DLL_API SoMouseButtonEvent : public SoButtonEvent {
   SO_EVENT_HEADER();
 
 public:
-  enum Button {
-    ANY, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5
-  };
+  static void initClass(void);
 
   SoMouseButtonEvent(void);
   virtual ~SoMouseButtonEvent();
 
-  void setButton(SoMouseButtonEvent::Button button);
-  SoMouseButtonEvent::Button getButton(void) const;
+  enum Button {
+    ANY, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5
+  };
 
-  static SbBool isButtonPressEvent(const SoEvent * e,
-                                   SoMouseButtonEvent::Button whichButton);
-  static SbBool isButtonReleaseEvent(const SoEvent * e,
-                                     SoMouseButtonEvent::Button whichButton);
+  void setButton(Button button);
+  Button getButton(void) const;
 
-  static void initClass(void);
+  static SbBool isButtonPressEvent(const SoEvent * e, Button whichButton);
+  static SbBool isButtonReleaseEvent(const SoEvent * e, Button whichButton);
+
+  static SbBool enumToString(Button enumval, SbString & stringrep);
 
 private:
   Button button;
-};
+
+}; // SoMouseButtonEvent
 
 #endif // !COIN_SOMOUSEBUTTONEVENT_H

@@ -107,3 +107,29 @@ SoButtonEvent::getState(void) const
 {
   return this->buttonstate;
 }
+
+/*!
+  Converts from an enum value of type SoButtonEvent::State to a
+  string containing the enum symbol.
+
+  \since 2008-03-22
+*/
+// Should we add stringToEnum as well perhaps?
+SbBool
+SoButtonEvent::enumToString(State enumval, SbString & stringrep)
+{
+  switch (enumval) {
+  case SoButtonEvent::UP:
+    stringrep = "UP";
+    break;
+  case SoButtonEvent::DOWN:
+    stringrep = "DOWN";
+    break;
+  case SoButtonEvent::UNKNOWN:
+    stringrep = "UNKNOWN";
+    break;
+  default:
+    return FALSE;
+  }
+  return TRUE;
+}

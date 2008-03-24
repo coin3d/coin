@@ -34,6 +34,8 @@ class COIN_DLL_API SoMotion3Event : public SoEvent {
   SO_EVENT_HEADER();
 
 public:
+  static void initClass(void);
+
   SoMotion3Event(void);
   virtual ~SoMotion3Event();
 
@@ -42,8 +44,6 @@ public:
 
   void setRotation(const SbRotation & r);
   const SbRotation & getRotation(void) const;
-
-  static void initClass(void);
 
 private:
   SbVec3f translation;

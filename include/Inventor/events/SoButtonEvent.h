@@ -26,26 +26,31 @@
 
 #include <Inventor/events/SoSubEvent.h>
 
+class SbString;
+
 class COIN_DLL_API SoButtonEvent : public SoEvent {
   typedef SoEvent inherited;
 
   SO_EVENT_HEADER();
 
 public:
-  enum State {
-    UP, DOWN, UNKNOWN
-  };
+  static void initClass(void);
 
   SoButtonEvent(void);
   virtual ~SoButtonEvent();
 
-  void setState(SoButtonEvent::State state);
-  SoButtonEvent::State getState(void) const;
+  enum State {
+    UP, DOWN, UNKNOWN
+  };
 
-  static void initClass(void);
+  void setState(State state);
+  State getState(void) const;
+
+  static SbBool enumToString(State enumval, SbString & stringrep);
 
 private:
   State buttonstate;
-};
+
+}; // SoButtonEvent
 
 #endif // !COIN_SOBUTTONEVENT_H
