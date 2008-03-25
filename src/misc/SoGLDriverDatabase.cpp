@@ -108,6 +108,7 @@ public:
   SbBool loadFromFile(const SbName & filename);
   SbBool loadFromBuffer(const char * buffer);
 
+  static const int databaseloaderversion = 1;
 private:
   void addFeatures(const cc_glglue * context, const cc_xml_element * element, SoGLDriver * driver);
 
@@ -116,6 +117,7 @@ private:
   cc_xml_element * findDriver(const cc_xml_elt * vendor, const cc_glglue * context);
   SoGLDriver * findGLDriver(const cc_glglue * context);  
 
+  SbBool checkDocumentVersion(cc_xml_doc * document);
   SbBool addDocument(const cc_xml_doc * document);
 
   SbBool mergeFeatures(cc_xml_elt * destination, const cc_xml_elt * source);
@@ -581,7 +583,7 @@ SoGLDriverDatabaseP::loadFromFile(const SbName & filename)
 
   SbBool result = cc_xml_doc_read_file_x(database, filename);
 
-  if(!result) {
+  if(!result || !checkDocumentVersion(database)) {
     cc_xml_doc_delete_x(database);
     database = NULL;
   }
@@ -601,7 +603,7 @@ SoGLDriverDatabaseP::loadFromBuffer(const char * buffer)
 
   SbBool result = cc_xml_doc_read_buffer_x(database, buffer, strlen(buffer));
 
-  if(!result) {
+  if(!result || !checkDocumentVersion(database)) {
     cc_xml_doc_delete_x(database);
     database = NULL;
   }
@@ -806,6 +808,48 @@ SoGLDriverDatabaseP::getDatabaseRoot()
 }
 
 /*
+  Check if the version of the XML document is current. This returns TRUE 
+  if the database is assumed safe for loading, FALSE if not.
+*/
+SbBool
+SoGLDriverDatabaseP::checkDocumentVersion(cc_xml_doc * document)
+{
+  if(!document)
+    return FALSE;
+
+  cc_xml_element * root = cc_xml_doc_get_root(document);
+
+  if(!root)
+    return FALSE;
+
+  cc_xml_element * version = cc_xml_elt_get_child_of_type(root, "version", 0);
+
+  if(!version) {
+    // FIXME: Should issue warning, but SoDebugError is not initialized yet.
+    // SoDebugError::postWarning("SoDriverDatabaseP::checkDocumentVersion",
+    // "Version element not found, this might indicate old or corrupted data "
+    // "which could lead to errors!");
+    // 20080325, oyshole
+    return TRUE;
+  }
+  
+  const char * versionstring = cc_xml_elt_get_cdata(version);
+  int versionnumber = atoi(versionstring);
+
+  // FIXME: Implement handling of versions properly instead of just warning
+  // 20080325, oyshole
+
+  if(versionnumber != databaseloaderversion) { // Current version is 1
+    // FIXME: Should issue warning, but SoDebugError is not initialized yet.
+    // SoDebugError::postWarning("SoDriverDatabaseP::checkDocumentVersion",
+    // "The version number of the XML data being imported does not correspond"
+    // "to the current loader version. This could lead to errors!");
+    // 20080325, oyshole
+  }
+  return TRUE;
+}
+
+/*
   Add a XML document \a document to the current database.
 */
 SbBool
@@ -849,9 +893,9 @@ SoGLDriverDatabaseP::addBuffer(const char * buffer)
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_buffer_x(doc, buffer, strlen(buffer));
 
-  if(!result) {
+  if(!result || !checkDocumentVersion(doc)) {
     cc_xml_doc_delete_x(doc);
-    return result;
+    return FALSE;
   }
 
   result = addDocument(doc);
@@ -868,9 +912,9 @@ SoGLDriverDatabaseP::addFile(const SbName & filename)
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_file_x(doc, filename);
 
-  if(!result) {
+  if(!result || !checkDocumentVersion(doc)) {
     cc_xml_doc_delete_x(doc);
-    return result;
+    return FALSE;
   }
 
   result = addDocument(doc);
