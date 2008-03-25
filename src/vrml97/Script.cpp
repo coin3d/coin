@@ -615,7 +615,7 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
   // avoid triggering the eval cb while reading the file.
   PRIVATE(this)->isreading = TRUE;
 
-  SbName name("");
+  SbName name(SbName::empty());
   SbBool ok;
 
   ok = in->read(name, TRUE);
