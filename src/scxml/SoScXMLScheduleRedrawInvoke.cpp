@@ -38,14 +38,6 @@ SoScXMLScheduleRedrawInvoke::initClass(void)
                           SCXML_COIN_NS, "sim.coin3d.coin", "ScheduleRedraw");
 }
 
-SoScXMLScheduleRedrawInvoke::SoScXMLScheduleRedrawInvoke(void)
-{
-}
-
-SoScXMLScheduleRedrawInvoke::~SoScXMLScheduleRedrawInvoke(void)
-{
-}
-
 void
 SoScXMLScheduleRedrawInvoke::invoke(const ScXMLStateMachine * statemachine) const
 {
