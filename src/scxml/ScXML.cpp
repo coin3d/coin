@@ -454,7 +454,7 @@ ScXMLP::readScXMLState(ScXMLObject * container, cc_xml_elt * elt, const char * x
   SoType statetype = ScXMLP::getClassType(xmlns, "state");
   assert(statetype.canCreateInstance());
   ScXMLState * state = static_cast<ScXMLState *>(statetype.createInstance());
-  assert(state->isOfType(ScXMLState::getClassTypeId()));
+  assert(state && state->isOfType(ScXMLState::getClassTypeId()));
   state->setIsParallel(isparallel);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
@@ -638,7 +638,7 @@ ScXMLP::readScXMLTransition(ScXMLObject * container, cc_xml_elt * elt, const cha
   SoType transitiontype = ScXMLP::getClassType(xmlns, "transition");
   assert(transitiontype.canCreateInstance());
   ScXMLTransition * transition = static_cast<ScXMLTransition *>(transitiontype.createInstance());
-  assert(transition->isOfType(ScXMLTransition::getClassTypeId()));
+  assert(transition && transition->isOfType(ScXMLTransition::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -695,7 +695,7 @@ ScXMLP::readScXMLInitial(ScXMLObject * container, cc_xml_elt * elt, const char *
   SoType initialtype = ScXMLP::getClassType(xmlns, "initial");
   assert(initialtype.canCreateInstance());
   ScXMLInitial * initial = static_cast<ScXMLInitial *>(initialtype.createInstance());
-  assert(initial->isOfType(ScXMLInitial::getClassTypeId()));
+  assert(initial && initial->isOfType(ScXMLInitial::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -753,7 +753,7 @@ ScXMLP::readScXMLFinal(ScXMLObject * container, cc_xml_elt * elt, const char * x
   SoType finaltype = ScXMLP::getClassType(xmlns, "final");
   assert(finaltype.canCreateInstance());
   ScXMLFinal * final = static_cast<ScXMLFinal *>(finaltype.createInstance());
-  assert(final->isOfType(ScXMLFinal::getClassTypeId()));
+  assert(final && final->isOfType(ScXMLFinal::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -795,7 +795,7 @@ ScXMLP::readScXMLHistory(ScXMLObject * container, cc_xml_elt * elt, const char *
   SoType historytype = ScXMLP::getClassType(xmlns, "history");
   assert(historytype.canCreateInstance());
   ScXMLHistory * history = static_cast<ScXMLHistory *>(historytype.createInstance());
-  assert(history->isOfType(ScXMLHistory::getClassTypeId()));
+  assert(history && history->isOfType(ScXMLHistory::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -853,7 +853,7 @@ ScXMLP::readScXMLOnEntry(ScXMLObject * container, cc_xml_elt * elt, const char *
   SoType onentrytype = ScXMLP::getClassType(xmlns, "onentry");
   assert(onentrytype.canCreateInstance());
   ScXMLOnEntry * onentry = static_cast<ScXMLOnEntry *>(onentrytype.createInstance());
-  assert(onentry->isOfType(ScXMLOnEntry::getClassTypeId()));
+  assert(onentry && onentry->isOfType(ScXMLOnEntry::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -907,7 +907,7 @@ ScXMLP::readScXMLOnExit(ScXMLObject * container, cc_xml_elt * elt, const char * 
   SoType onexittype = ScXMLP::getClassType(xmlns, "onexit");
   assert(onexittype.canCreateInstance());
   ScXMLOnExit * onexit = static_cast<ScXMLOnExit *>(onexittype.createInstance());
-  assert(onexit->isOfType(ScXMLOnEntry::getClassTypeId()));
+  assert(onexit && onexit->isOfType(ScXMLOnExit::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
@@ -961,7 +961,7 @@ ScXMLP::readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * 
   SoType anchortype = ScXMLP::getClassType(xmlns, "anchor");
   assert(anchortype.canCreateInstance());
   ScXMLAnchor * anchor = static_cast<ScXMLAnchor *>(anchortype.createInstance());
-  assert(anchor->isOfType(ScXMLAnchor::getClassTypeId()));
+  assert(anchor && anchor->isOfType(ScXMLAnchor::getClassTypeId()));
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
   for (c = 0; attrs[c] != NULL; ++c) {
