@@ -10,30 +10,8 @@
 		8D07F2BE0486CC7A007CD1D0 /* Inventor_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32BAE0B70371A74B00C91783 /* Inventor_Prefix.pch */; };
 		8D07F2C00486CC7A007CD1D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8D07F2C40486CC7A007CD1D0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB77AAFE841565C02AAC07 /* Carbon.framework */; };
-		E099894E0D9425F40054FBE6 /* actions in Resources */ = {isa = PBXBuildFile; fileRef = E09988D80D9425F40054FBE6 /* actions */; };
-		E099894F0D9425F40054FBE6 /* annex in Resources */ = {isa = PBXBuildFile; fileRef = E09988D90D9425F40054FBE6 /* annex */; };
-		E09989500D9425F40054FBE6 /* bundles in Resources */ = {isa = PBXBuildFile; fileRef = E09988DA0D9425F40054FBE6 /* bundles */; };
-		E09989510D9425F40054FBE6 /* C in Resources */ = {isa = PBXBuildFile; fileRef = E09988DB0D9425F40054FBE6 /* C */; };
-		E09989520D9425F40054FBE6 /* caches in Resources */ = {isa = PBXBuildFile; fileRef = E09988DC0D9425F40054FBE6 /* caches */; };
-		E09989530D9425F40054FBE6 /* collision in Resources */ = {isa = PBXBuildFile; fileRef = E09988DD0D9425F40054FBE6 /* collision */; };
-		E09989540D9425F40054FBE6 /* details in Resources */ = {isa = PBXBuildFile; fileRef = E09988DE0D9425F40054FBE6 /* details */; };
-		E09989550D9425F40054FBE6 /* draggers in Resources */ = {isa = PBXBuildFile; fileRef = E09988DF0D9425F40054FBE6 /* draggers */; };
-		E09989560D9425F40054FBE6 /* elements in Resources */ = {isa = PBXBuildFile; fileRef = E09988E00D9425F40054FBE6 /* elements */; };
-		E09989570D9425F40054FBE6 /* engines in Resources */ = {isa = PBXBuildFile; fileRef = E09988E10D9425F40054FBE6 /* engines */; };
-		E09989580D9425F40054FBE6 /* errors in Resources */ = {isa = PBXBuildFile; fileRef = E09988E20D9425F40054FBE6 /* errors */; };
-		E09989590D9425F40054FBE6 /* events in Resources */ = {isa = PBXBuildFile; fileRef = E09988E30D9425F40054FBE6 /* events */; };
-		E099895A0D9425F40054FBE6 /* fields in Resources */ = {isa = PBXBuildFile; fileRef = E09988E40D9425F40054FBE6 /* fields */; };
-		E099895B0D9425F40054FBE6 /* lists in Resources */ = {isa = PBXBuildFile; fileRef = E09988E50D9425F40054FBE6 /* lists */; };
-		E099895C0D9425F40054FBE6 /* lock in Resources */ = {isa = PBXBuildFile; fileRef = E09988E60D9425F40054FBE6 /* lock */; };
-		E09989600D9425F40054FBE6 /* manips in Resources */ = {isa = PBXBuildFile; fileRef = E09988EA0D9425F40054FBE6 /* manips */; };
-		E09989610D9425F40054FBE6 /* misc in Resources */ = {isa = PBXBuildFile; fileRef = E09988EB0D9425F40054FBE6 /* misc */; };
-		E09989620D9425F40054FBE6 /* MPEG in Resources */ = {isa = PBXBuildFile; fileRef = E09988EC0D9425F40054FBE6 /* MPEG */; };
-		E09989630D9425F40054FBE6 /* navigation in Resources */ = {isa = PBXBuildFile; fileRef = E09988ED0D9425F40054FBE6 /* navigation */; };
-		E09989640D9425F40054FBE6 /* nodekits in Resources */ = {isa = PBXBuildFile; fileRef = E09988EE0D9425F40054FBE6 /* nodekits */; };
-		E09989650D9425F40054FBE6 /* nodes in Resources */ = {isa = PBXBuildFile; fileRef = E09988EF0D9425F40054FBE6 /* nodes */; };
 		E09989660D9425F40054FBE6 /* non_winsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F00D9425F40054FBE6 /* non_winsys.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989670D9425F40054FBE6 /* oivwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F10D9425F40054FBE6 /* oivwin32.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E09989680D9425F40054FBE6 /* projectors in Resources */ = {isa = PBXBuildFile; fileRef = E09988F20D9425F40054FBE6 /* projectors */; };
 		E09989690D9425F40054FBE6 /* Sb.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F30D9425F40054FBE6 /* Sb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E099896A0D9425F40054FBE6 /* SbBasic.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F40D9425F40054FBE6 /* SbBasic.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E099896B0D9425F40054FBE6 /* SbBox.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F50D9425F40054FBE6 /* SbBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -102,7 +80,6 @@
 		E09989AA0D9425F40054FBE6 /* SbViewVolume.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989340D9425F40054FBE6 /* SbViewVolume.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989AB0D9425F40054FBE6 /* SbXfBox3d.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989350D9425F40054FBE6 /* SbXfBox3d.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989AC0D9425F40054FBE6 /* SbXfBox3f.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989360D9425F40054FBE6 /* SbXfBox3f.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E09989AD0D9425F40054FBE6 /* sensors in Resources */ = {isa = PBXBuildFile; fileRef = E09989370D9425F40054FBE6 /* sensors */; };
 		E09989AE0D9425F40054FBE6 /* So.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989380D9425F40054FBE6 /* So.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989AF0D9425F40054FBE6 /* SoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989390D9425F40054FBE6 /* SoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989B00D9425F40054FBE6 /* SoEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E099893A0D9425F40054FBE6 /* SoEventManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -119,11 +96,6 @@
 		E09989BB0D9425F40054FBE6 /* SoRenderManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989450D9425F40054FBE6 /* SoRenderManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989BC0D9425F40054FBE6 /* SoSceneManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989460D9425F40054FBE6 /* SoSceneManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989BD0D9425F40054FBE6 /* SoType.h in Headers */ = {isa = PBXBuildFile; fileRef = E09989470D9425F40054FBE6 /* SoType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E09989BE0D9425F40054FBE6 /* system in Resources */ = {isa = PBXBuildFile; fileRef = E09989480D9425F40054FBE6 /* system */; };
-		E09989C00D9425F40054FBE6 /* threads in Resources */ = {isa = PBXBuildFile; fileRef = E099894A0D9425F40054FBE6 /* threads */; };
-		E09989C10D9425F40054FBE6 /* tools in Resources */ = {isa = PBXBuildFile; fileRef = E099894B0D9425F40054FBE6 /* tools */; };
-		E09989C20D9425F40054FBE6 /* VRMLnodes in Resources */ = {isa = PBXBuildFile; fileRef = E099894C0D9425F40054FBE6 /* VRMLnodes */; };
-		E09989C30D9425F40054FBE6 /* XML in Resources */ = {isa = PBXBuildFile; fileRef = E099894D0D9425F40054FBE6 /* XML */; };
 		E09989C50D94264C0054FBE6 /* errors in Copy Inventor headers */ = {isa = PBXBuildFile; fileRef = E09988E20D9425F40054FBE6 /* errors */; };
 		E09989C60D94264C0054FBE6 /* projectors in Copy Inventor headers */ = {isa = PBXBuildFile; fileRef = E09988F20D9425F40054FBE6 /* projectors */; };
 		E09989C70D94264C0054FBE6 /* sensors in Copy Inventor headers */ = {isa = PBXBuildFile; fileRef = E09989370D9425F40054FBE6 /* sensors */; };
@@ -162,7 +134,6 @@
 		E0998A490D942D5A0054FBE6 /* directionalLightDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A290D942D5A0054FBE6 /* directionalLightDragger.h */; };
 		E0998A4A0D942D5A0054FBE6 /* dragPointDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A2A0D942D5A0054FBE6 /* dragPointDragger.h */; };
 		E0998A4B0D942D5A0054FBE6 /* handleBoxDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A2B0D942D5A0054FBE6 /* handleBoxDragger.h */; };
-		E0998A4C0D942D5A0054FBE6 /* iv2h.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0998A2C0D942D5A0054FBE6 /* iv2h.sh */; };
 		E0998A4D0D942D5A0054FBE6 /* jackDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A2D0D942D5A0054FBE6 /* jackDragger.h */; };
 		E0998A4E0D942D5A0054FBE6 /* pointLightDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A2E0D942D5A0054FBE6 /* pointLightDragger.h */; };
 		E0998A4F0D942D5A0054FBE6 /* rotateCylindricalDragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A2F0D942D5A0054FBE6 /* rotateCylindricalDragger.h */; };
@@ -182,10 +153,8 @@
 		E0998A5D0D942D5A0054FBE6 /* translate2Dragger.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A3D0D942D5A0054FBE6 /* translate2Dragger.h */; };
 		E0998A5E0D942D5A0054FBE6 /* DirectionalLight.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A400D942D5A0054FBE6 /* DirectionalLight.h */; };
 		E0998A5F0D942D5A0054FBE6 /* DirSpotLight.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A410D942D5A0054FBE6 /* DirSpotLight.h */; };
-		E0998A600D942D5A0054FBE6 /* glsl2h.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0998A420D942D5A0054FBE6 /* glsl2h.sh */; };
 		E0998A610D942D5A0054FBE6 /* PointLight.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A430D942D5A0054FBE6 /* PointLight.h */; };
 		E0998A620D942D5A0054FBE6 /* SpotLight.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A440D942D5A0054FBE6 /* SpotLight.h */; };
-		E0998A630D942D5A0054FBE6 /* glsl2h.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0998A460D942D5A0054FBE6 /* glsl2h.sh */; };
 		E0998A640D942D5A0054FBE6 /* VsmLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A470D942D5A0054FBE6 /* VsmLookup.h */; };
 		E0998A680D942D680054FBE6 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A660D942D680054FBE6 /* config.h */; };
 		E0998A690D942D680054FBE6 /* setup.h in Headers */ = {isa = PBXBuildFile; fileRef = E0998A670D942D680054FBE6 /* setup.h */; };
@@ -7270,6 +7239,7 @@
 				8D07F2C10486CC7A007CD1D0 /* Sources */,
 				8D07F2C30486CC7A007CD1D0 /* Frameworks */,
 				8D07F2C50486CC7A007CD1D0 /* Rez */,
+				E097A6AF0D99358800B7D86A /* Post-install */,
 			);
 			buildRules = (
 			);
@@ -7306,37 +7276,6 @@
 			files = (
 				8D07F2C00486CC7A007CD1D0 /* InfoPlist.strings in Resources */,
 				E0FC4DD90D92D50900EF3BB3 /* 2d-font.xpm in Resources */,
-				E099894E0D9425F40054FBE6 /* actions in Resources */,
-				E099894F0D9425F40054FBE6 /* annex in Resources */,
-				E09989500D9425F40054FBE6 /* bundles in Resources */,
-				E09989510D9425F40054FBE6 /* C in Resources */,
-				E09989520D9425F40054FBE6 /* caches in Resources */,
-				E09989530D9425F40054FBE6 /* collision in Resources */,
-				E09989540D9425F40054FBE6 /* details in Resources */,
-				E09989550D9425F40054FBE6 /* draggers in Resources */,
-				E09989560D9425F40054FBE6 /* elements in Resources */,
-				E09989570D9425F40054FBE6 /* engines in Resources */,
-				E09989580D9425F40054FBE6 /* errors in Resources */,
-				E09989590D9425F40054FBE6 /* events in Resources */,
-				E099895A0D9425F40054FBE6 /* fields in Resources */,
-				E099895B0D9425F40054FBE6 /* lists in Resources */,
-				E099895C0D9425F40054FBE6 /* lock in Resources */,
-				E09989600D9425F40054FBE6 /* manips in Resources */,
-				E09989610D9425F40054FBE6 /* misc in Resources */,
-				E09989620D9425F40054FBE6 /* MPEG in Resources */,
-				E09989630D9425F40054FBE6 /* navigation in Resources */,
-				E09989640D9425F40054FBE6 /* nodekits in Resources */,
-				E09989650D9425F40054FBE6 /* nodes in Resources */,
-				E09989680D9425F40054FBE6 /* projectors in Resources */,
-				E09989AD0D9425F40054FBE6 /* sensors in Resources */,
-				E09989BE0D9425F40054FBE6 /* system in Resources */,
-				E09989C00D9425F40054FBE6 /* threads in Resources */,
-				E09989C10D9425F40054FBE6 /* tools in Resources */,
-				E09989C20D9425F40054FBE6 /* VRMLnodes in Resources */,
-				E09989C30D9425F40054FBE6 /* XML in Resources */,
-				E0998A4C0D942D5A0054FBE6 /* iv2h.sh in Resources */,
-				E0998A600D942D5A0054FBE6 /* glsl2h.sh in Resources */,
-				E0998A630D942D5A0054FBE6 /* glsl2h.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7351,6 +7290,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E097A6AF0D99358800B7D86A /* Post-install */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Post-install";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ln -sfh /Library/Frameworks/SoQt.framework/Headers /Library/Frameworks/Inventor.framework/Headers/Qt\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D07F2C10486CC7A007CD1D0 /* Sources */ = {
@@ -8245,8 +8201,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				DYLIB_COMPATIBILITY_VERSION = 61;
+				DYLIB_CURRENT_VERSION = 61;
 				FRAMEWORK_VERSION = C;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -8263,7 +8221,7 @@
 					../../src,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = (
@@ -8287,9 +8245,12 @@
 					ppc,
 					i386,
 				);
+				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				DYLIB_COMPATIBILITY_VERSION = 61;
+				DYLIB_CURRENT_VERSION = 61;
 				FRAMEWORK_VERSION = C;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -8303,7 +8264,7 @@
 					../../src,
 				);
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = (
