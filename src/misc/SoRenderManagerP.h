@@ -28,6 +28,8 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <vector>
+
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
@@ -109,6 +111,12 @@ public:
   SoOneShotSensor * redrawshot;
 
   SbPList * superimpositions;
+
+  void invokePreRenderCallbacks(void);
+  void invokePostRenderCallbacks(void);
+  typedef std::pair<SoRenderManagerRenderCB *, void *> RenderCBTouple;
+  std::vector<RenderCBTouple> preRenderCallbacks;
+  std::vector<RenderCBTouple> postRenderCallbacks;
 
   // "private" data
   static SbBool touchtimer;

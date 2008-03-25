@@ -23,6 +23,8 @@
 
 #include <Inventor/SoRenderManager.h>
 
+#include <algorithm>
+
 #include <Inventor/system/gl.h>
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -360,6 +362,8 @@ SoRenderManager::render(SoGLRenderAction * action,
                         const SbBool clearwindow,
                         const SbBool clearzbuffer)
 {
+  PRIVATE(this)->invokePreRenderCallbacks();
+
   (this->getStereoMode() == SoRenderManager::MONO) ?
     this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
     this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
@@ -370,6 +374,8 @@ SoRenderManager::render(SoGLRenderAction * action,
       s->render();
     }
   }
+
+  PRIVATE(this)->invokePostRenderCallbacks();
 }
 
 void
@@ -1318,6 +1324,64 @@ SoRenderManager::isRealTimeUpdateEnabled(void)
   return SoRenderManagerP::touchtimer;
 }
 
+
+void
+SoRenderManager::addPreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
+{
+  PRIVATE(this)->preRenderCallbacks.push_back(SoRenderManagerP::RenderCBTouple(cb, data));
+}
+
+void
+SoRenderManager::removePreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
+{
+  std::vector<SoRenderManagerP::RenderCBTouple>::iterator findit =
+    find(PRIVATE(this)->preRenderCallbacks.begin(),
+         PRIVATE(this)->preRenderCallbacks.end(),
+         SoRenderManagerP::RenderCBTouple(cb, data));
+  if (findit != PRIVATE(this)->preRenderCallbacks.end()) {
+    PRIVATE(this)->preRenderCallbacks.erase(findit);
+  }
+}
+
+void
+SoRenderManagerP::invokePreRenderCallbacks(void)
+{
+  std::vector<RenderCBTouple>::const_iterator cbit =
+    this->preRenderCallbacks.begin();
+  while (cbit != this->preRenderCallbacks.end()) {
+    cbit->first(cbit->second, PUBLIC(this));
+    ++cbit;
+  }
+}
+
+void
+SoRenderManager::addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
+{
+  PRIVATE(this)->postRenderCallbacks.push_back(SoRenderManagerP::RenderCBTouple(cb, data));
+}
+
+void
+SoRenderManager::removePostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
+{
+  std::vector<SoRenderManagerP::RenderCBTouple>::iterator findit =
+    find(PRIVATE(this)->postRenderCallbacks.begin(),
+         PRIVATE(this)->postRenderCallbacks.end(),
+         SoRenderManagerP::RenderCBTouple(cb, data));
+  if (findit != PRIVATE(this)->postRenderCallbacks.end()) {
+    PRIVATE(this)->postRenderCallbacks.erase(findit);
+  }
+}
+
+void
+SoRenderManagerP::invokePostRenderCallbacks(void)
+{
+  std::vector<RenderCBTouple>::const_iterator cbit =
+    this->postRenderCallbacks.begin();
+  while (cbit != this->postRenderCallbacks.end()) {
+    cbit->first(cbit->second, PUBLIC(this));
+    ++cbit;
+  }
+}
 
 #undef PRIVATE
 #undef PUBLIC

@@ -178,6 +178,12 @@ public:
   static SbBool isRealTimeUpdateEnabled(void);
   static uint32_t getDefaultRedrawPriority(void);
 
+  void addPreRenderCallback(SoRenderManagerRenderCB * cb, void * data);
+  void removePreRenderCallback(SoRenderManagerRenderCB * cb, void * data);
+
+  void addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data);
+  void removePostRenderCallback(SoRenderManagerRenderCB * cb, void * data);
+
 protected:
   int isActive(void) const;
   void redraw(void);
