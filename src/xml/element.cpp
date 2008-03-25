@@ -103,15 +103,12 @@ cc_xml_elt_clone(const cc_xml_elt * elt)
   if (elt->cdata) {
     clone->cdata = cc_xml_strdup(elt->cdata);
   }
-  if (elt->attributes.getLength() > 0) {
-    for (int i = 0; elt->children[i] != NULL; ++i) {
-      cc_xml_elt_set_attribute_x(clone, cc_xml_attr_clone(elt->attributes[i]));
-    }
+  int i = 0;
+  for (i = 0; i < elt->attributes.getLength(); ++i) {
+    cc_xml_elt_set_attribute_x(clone, cc_xml_attr_clone(elt->attributes[i]));
   }
-  if (elt->children.getLength() > 0) {
-    for (int i = 0; elt->children[i] != NULL; ++i) {
-      cc_xml_elt_add_child_x(clone, cc_xml_elt_clone(elt->children[i]));
-    }
+  for (i = 0; i < elt->children.getLength(); ++i) {
+    cc_xml_elt_add_child_x(clone, cc_xml_elt_clone(elt->children[i]));
   }
   return clone;
 }
