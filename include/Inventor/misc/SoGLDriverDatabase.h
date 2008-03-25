@@ -38,6 +38,8 @@ public:
   static SbBool isSlow(const cc_glglue * context, const SbName & feature);
   static SbBool isFast(const cc_glglue * context, const SbName & feature);
 
+  static SbName getComment(const cc_glglue * context, const SbName & feature);
+
   static void loadFromBuffer(const char * buffer);
   static void loadFromFile(const SbName & filename);
 

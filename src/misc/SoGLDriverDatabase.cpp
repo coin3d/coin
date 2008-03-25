@@ -68,6 +68,8 @@ class SoGLDriverDatabaseP {
     SbList <SbName> fast;
     SbList <SbName> disabled;
 
+    SbHash <const char *, const char *> features;
+
     uint32_t contextid; 
   };
 
@@ -99,6 +101,8 @@ public:
   SbBool isDisabled(const cc_glglue * context, const SbName & feature);
   SbBool isSlow(const cc_glglue * context, const SbName & feature);
   SbBool isFast(const cc_glglue * context, const SbName & feature);
+
+  SbName getComment(const cc_glglue * context, const SbName & feature);
   
   SbBool addBuffer(const char * buffer);
   SbBool addFile(const SbName & filename);
@@ -338,6 +342,24 @@ SoGLDriverDatabaseP::isFast(const cc_glglue * context, const SbName & feature)
     this->fastcache.put(f, fast);
   }
   return fast;
+}
+
+/*
+  Get the comment for \a feature in \a context, returns "undefined" if the
+  feature has no entry. Provides extensibility to the database.
+*/
+SbName
+SoGLDriverDatabaseP::getComment(const cc_glglue * context, const SbName & feature)
+{
+  const char * comment;
+
+  SoGLDriver * driver = this->findGLDriver(context);
+
+  if (driver) {
+    if(!driver->features.get(feature, comment))
+      return SbName("undefined");
+  }
+  return SbName(comment);
 }
 
 /*
@@ -975,6 +997,8 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
     if(name && comment) {
       featurename = cc_xml_elt_get_cdata(name);     
       commentstr = cc_xml_elt_get_cdata(comment);
+
+      driver->features.put(featurename, commentstr);
     }
 
   #if COIN_DEBUG
@@ -1049,6 +1073,16 @@ SbBool
 SoGLDriverDatabase::isFast(const cc_glglue * context, const SbName & feature)
 {
   return pimpl()->isFast(context, feature);
+}
+
+/*!
+  Get the comment for \a feature in \a context, returns "undefined" if the
+  feature has no entry. Provides extensibility to the database.
+*/
+SbName
+SoGLDriverDatabase::getComment(const cc_glglue * context, const SbName & feature)
+{
+  return pimpl()->getComment(context, feature);
 }
 
 /*!
