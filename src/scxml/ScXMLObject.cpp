@@ -24,6 +24,7 @@
 #include <Inventor/scxml/ScXMLObject.h>
 
 #include <string.h>
+#include <assert.h>
 
 #include <Inventor/SbName.h>
 #include <Inventor/scxml/ScXML.h>

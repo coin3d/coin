@@ -23,6 +23,7 @@
 
 #include <Inventor/scxml/ScXMLTransition.h>
 
+#include <assert.h>
 #include <string.h>
 #include <algorithm>
 

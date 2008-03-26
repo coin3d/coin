@@ -23,6 +23,8 @@
 
 #include "scxml/SoScXMLDebugInfoInvoke.h"
 
+#include <assert.h>
+
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/scxml/ScXML.h>
