@@ -29,7 +29,7 @@
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLTransition.h>
 
-#include "scxml/ScxMLCommonP.h"
+#include "scxml/ScXMLCommonP.h"
 
 SCXML_OBJECT_SOURCE(ScXMLInitial);
 
