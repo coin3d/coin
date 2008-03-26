@@ -1335,7 +1335,7 @@ void
 SoRenderManager::removePreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
   std::vector<SoRenderManagerP::RenderCBTouple>::iterator findit =
-    find(PRIVATE(this)->preRenderCallbacks.begin(),
+    std::find(PRIVATE(this)->preRenderCallbacks.begin(),
          PRIVATE(this)->preRenderCallbacks.end(),
          SoRenderManagerP::RenderCBTouple(cb, data));
   if (findit != PRIVATE(this)->preRenderCallbacks.end()) {
@@ -1364,7 +1364,7 @@ void
 SoRenderManager::removePostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
   std::vector<SoRenderManagerP::RenderCBTouple>::iterator findit =
-    find(PRIVATE(this)->postRenderCallbacks.begin(),
+    std::find(PRIVATE(this)->postRenderCallbacks.begin(),
          PRIVATE(this)->postRenderCallbacks.end(),
          SoRenderManagerP::RenderCBTouple(cb, data));
   if (findit != PRIVATE(this)->postRenderCallbacks.end()) {
