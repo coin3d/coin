@@ -23,6 +23,8 @@
 
 #include <Inventor/scxml/ScXMLFinal.h>
 
+#include <assert.h>
+
 #include <Inventor/scxml/ScXML.h>
 
 SCXML_OBJECT_SOURCE(ScXMLFinal);

@@ -23,6 +23,7 @@
 
 #include <Inventor/scxml/ScXMLInvoke.h>
 
+#include <assert.h>
 #include <string.h>
 
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLInvoke);

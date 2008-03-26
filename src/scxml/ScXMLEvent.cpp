@@ -23,6 +23,7 @@
 
 #include <Inventor/scxml/ScXMLEvent.h>
 
+#include <assert.h>
 #include <string.h>
 
 #include <Inventor/scxml/ScXML.h>
