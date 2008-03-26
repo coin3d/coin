@@ -91,7 +91,7 @@ void
 ScXMLTransition::setEventXMLAttr(const char * eventstr)
 {
   if (this->event && this->event != this->getAttribute("event")) {
-    delete [] this->event;
+    delete [] const_cast<char *>(this->event);
   }
   this->event = NULL;
   this->eventkey = SbName::empty();
@@ -128,7 +128,7 @@ void
 ScXMLTransition::setCondXMLAttr(const char * condstr)
 {
   if (this->cond && this->cond != this->getAttribute("cond")) {
-    delete [] this->cond;
+    delete [] const_cast<char *>(this->cond);
   }
   this->cond = NULL;
   if (condstr) {
@@ -144,7 +144,7 @@ void
 ScXMLTransition::setTargetXMLAttr(const char * targetstr)
 {
   if (this->target && this->target != this->getAttribute("target")) {
-    delete [] this->target;
+    delete [] const_cast<char *>(this->target);
   }
   this->target = NULL;
   if (targetstr) {
@@ -160,7 +160,7 @@ void
 ScXMLTransition::setAnchorXMLAttr(const char * anchorstr)
 {
   if (this->anchor && this->anchor != this->getAttribute("anchor")) {
-    delete [] this->anchor;
+    delete [] const_cast<char *>(this->anchor);
   }
   this->anchor = NULL;
   if (anchorstr) {

@@ -178,7 +178,7 @@ void
 ScXMLState::setSrcXMLAttr(const char * srcstr)
 {
   if (this->src && this->src != this->getAttribute("src")) {
-    delete [] this->src;
+    delete [] const_cast<char *>(this->src);
   }
   this->src = NULL;
   if (srcstr) {
@@ -194,7 +194,7 @@ void
 ScXMLState::setTaskXMLAttr(const char * taskstr)
 {
   if (this->task && this->task != this->getAttribute("task")) {
-    delete [] this->task;
+    delete [] const_cast<char *>(this->task);
   }
   this->task = NULL;
   if (taskstr) {

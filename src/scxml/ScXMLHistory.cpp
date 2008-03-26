@@ -64,7 +64,7 @@ void
 ScXMLHistory::setTypeXMLAttr(const char * typestr)
 {
   if (this->type && this->type != this->getAttribute("type")) {
-    delete [] this->type;
+    delete [] const_cast<char *>(this->type);
   }
   this->type = NULL;
   if (typestr) {

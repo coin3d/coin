@@ -101,7 +101,7 @@ void
 ScXMLDocument::setXMLNSXMLAttr(const char * xmlnsstr)
 {
   if (this->xmlns && this->xmlns != this->getAttribute("xmlns")) {
-    delete [] this->xmlns;
+    delete [] const_cast<char *>(this->xmlns);
   }
   this->xmlns = NULL;
   if (xmlnsstr) {
@@ -117,7 +117,7 @@ void
 ScXMLDocument::setVersionXMLAttr(const char * versionstr)
 {
   if (this->version && this->version != this->getAttribute("version")) {
-    delete [] this->version;
+    delete [] const_cast<char *>(this->version);
   }
   this->version = NULL;
   if (versionstr) {
@@ -134,7 +134,7 @@ ScXMLDocument::setInitialStateXMLAttr(const char * initialstatestr)
 {
   if (this->initialstate &&
       (this->initialstate != this->getAttribute("initialstate"))) {
-    delete [] this->initialstate;
+    delete [] const_cast<char *>(this->initialstate);
   }
   this->initialstate = NULL;
   if (initialstatestr) {

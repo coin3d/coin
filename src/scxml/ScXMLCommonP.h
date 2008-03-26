@@ -62,7 +62,7 @@ void                                                                    \
 classname::SO__CONCAT(remove,singular)(const objtype * obj)             \
 {                                                                       \
   std::vector<const objtype *>::iterator it =                           \
-    find(this->objlist.begin(), this->objlist.end(), obj);              \
+    std::find(this->objlist.begin(), this->objlist.end(), obj);         \
   assert(it != this->objlist.end());                                    \
   this->objlist.erase(it);                                              \
 }                                                                       \

@@ -48,7 +48,7 @@ void
 ScXMLStateBase::setIdXMLAttr(const char * idstr)
 {
   if (this->id && this->id != this->getAttribute("id")) {
-    delete [] this->id;
+    delete [] const_cast<char *>(this->id);
   }
   this->id = NULL;
   if (idstr) {

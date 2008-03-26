@@ -55,7 +55,7 @@ void
 ScXMLAnchor::setTypeXMLAttr(const char * typestr)
 {
   if (this->type && this->type != this->getAttribute("type")) {
-    delete [] this->type;
+    delete [] const_cast<char *>(this->type);
   }
   this->type = NULL;
   if (typestr) {
@@ -69,7 +69,7 @@ void
 ScXMLAnchor::setSnapshotXMLAttr(const char * snapshotstr)
 {
   if (this->snapshot && this->snapshot != this->getAttribute("snapshot")) {
-    delete [] this->snapshot;
+    delete [] const_cast<char *>(this->snapshot);
   }
   this->snapshot = NULL;
   if (snapshotstr) {

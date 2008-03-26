@@ -51,7 +51,7 @@ ScXMLInvoke::setTargetTypeXMLAttr(const char * targettypestr)
 {
   if (this->targettype &&
       this->targettype != this->getAttribute("targettype")) {
-    delete [] this->targettype;
+    delete [] const_cast<char *>(this->targettype);
   }
   this->targettype = NULL;
   if (targettypestr) {
@@ -67,7 +67,7 @@ void
 ScXMLInvoke::setSrcXMLAttr(const char * srcstr)
 {
   if (this->src && this->src != this->getAttribute("src")) {
-    delete [] this->src;
+    delete [] const_cast<char *>(this->src);
   }
   this->src = NULL;
   if (srcstr) {
@@ -83,7 +83,7 @@ void
 ScXMLInvoke::setSrcExprXMLAttr(const char * srcexprstr)
 {
   if (this->srcexpr && this->srcexpr != this->getAttribute("srcexpr")) {
-    delete [] this->srcexpr;
+    delete [] const_cast<char *>(this->srcexpr);
   }
   this->srcexpr = NULL;
   if (srcexprstr) {

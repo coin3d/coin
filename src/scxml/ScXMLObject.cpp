@@ -51,7 +51,8 @@ ScXMLObject::~ScXMLObject(void)
   {
     AttrDict::iterator it = this->attributedict.begin();
     while (it != this->attributedict.end()) {
-      delete [] it->second;
+      char * str = const_cast<char *>(it->second);
+      delete [] str;
       ++it;
     }
     this->attributedict.clear();
@@ -85,7 +86,8 @@ ScXMLObject::setAttribute(const char * attribute, const char * value)
       this->attributedict.insert(AttrEntry(attrname.getString(), valuedup));
     }
   } else {
-    delete [] it->second;
+    char * str = const_cast<char *>(it->second);
+    delete [] str;
     if (!value) {
       this->attributedict.erase(it);
     } else {

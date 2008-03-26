@@ -289,7 +289,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
                       
   ScXMLStateMachineP::TransitionList transitions;
   if (PRIVATE(this)->activestatelist.size() == 0) {
-    if (PRIVATE(this)->initializer == NULL) {
+    if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransition);
       PRIVATE(this)->initializer->setTargetXMLAttr(this->description->getAttribute("initialstate"));
     }
@@ -383,7 +383,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       targetstate = PRIVATE(this)->getObjectByIdentifier(targetid); // restore
 
       //SoDebugError::postInfo("process", "reversing downward path");
-      reverse(path.begin(), path.end());
+      std::reverse(path.begin(), path.end());
 
       std::vector<const ScXMLObject *>::iterator pathit = path.begin();
       while (pathit != path.end()) {
@@ -399,8 +399,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     std::vector<const ScXMLObject *>::iterator it = sourcestates.begin();
     while (it != sourcestates.end()) {
       std::vector<const ScXMLObject *>::iterator findit =
-        find(PRIVATE(this)->activestatelist.begin(),
-             PRIVATE(this)->activestatelist.end(), *it);
+        std::find(PRIVATE(this)->activestatelist.begin(),
+                  PRIVATE(this)->activestatelist.end(), *it);
       if (findit != PRIVATE(this)->activestatelist.end()) {
         //SoDebugError::post("process", "erasing old activestate");
         PRIVATE(this)->activestatelist.erase(findit);
@@ -412,7 +412,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     }
 
     // add targetstate to active states
-    if (find(PRIVATE(this)->activestatelist.begin(), PRIVATE(this)->activestatelist.end(), targetstate) == PRIVATE(this)->activestatelist.end()) {
+    if (std::find(PRIVATE(this)->activestatelist.begin(), PRIVATE(this)->activestatelist.end(), targetstate) == PRIVATE(this)->activestatelist.end()) {
       newstateslist.push_back(targetstate);
     }
 
@@ -604,9 +604,9 @@ void
 ScXMLStateMachine::removeDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * userdata)
 {
   ScXMLStateMachineP::DeleteCallbackList::iterator it =
-    find(PRIVATE(this)->deletecallbacklist.begin(),
-         PRIVATE(this)->deletecallbacklist.end(),
-         ScXMLStateMachineP::DeleteCBInfo(cb, userdata));
+    std::find(PRIVATE(this)->deletecallbacklist.begin(),
+              PRIVATE(this)->deletecallbacklist.end(),
+              ScXMLStateMachineP::DeleteCBInfo(cb, userdata));
   if (it != PRIVATE(this)->deletecallbacklist.end()) {
     PRIVATE(this)->deletecallbacklist.erase(it);
   }
@@ -750,7 +750,7 @@ ScXMLStateMachineP::findTransitions(TransitionList & transitions, const ScXMLObj
     if (history->getTransition() && history->getTransition()->isEventMatch(event)) {
       StateTransition transition(stateobj, history->getTransition());
       TransitionList::iterator findit = 
-        find(transitions.begin(), transitions.end(), transition);
+        std::find(transitions.begin(), transitions.end(), transition);
       if (findit == transitions.end()) {
         transitions.push_back(transition);
       }
@@ -761,7 +761,7 @@ ScXMLStateMachineP::findTransitions(TransitionList & transitions, const ScXMLObj
     if (initial->getTransition() && initial->getTransition()->isEventMatch(event)) {
       StateTransition transition(stateobj, initial->getTransition());
       TransitionList::iterator findit = 
-        find(transitions.begin(), transitions.end(), transition);
+        std::find(transitions.begin(), transitions.end(), transition);
       if (findit == transitions.end()) {
         transitions.push_back(transition);
       }
@@ -773,7 +773,7 @@ ScXMLStateMachineP::findTransitions(TransitionList & transitions, const ScXMLObj
       if (state->getTransition(j)->isEventMatch(event)) {
         StateTransition transition(stateobj, state->getTransition(j));
         TransitionList::iterator findit = 
-          find(transitions.begin(), transitions.end(), transition);
+          std::find(transitions.begin(), transitions.end(), transition);
         if (findit == transitions.end()) {
           transitions.push_back(transition);
         }
