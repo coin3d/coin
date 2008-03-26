@@ -1,4 +1,12 @@
 RegularSources = \
+        SoScXMLNavigation.cpp \
+        SoScXMLNavigationInvoke.cpp \
+        SoScXMLPanUtils.cpp \
+        SoScXMLRotateUtils.cpp \
+        SoScXMLSeekUtils.cpp \
+        SoScXMLSpinUtils.cpp \
+        SoScXMLZoomUtils.cpp \
+        \
         SoCenterMode.cpp \
         SoIdleMode.cpp \
         SoNavigationControl.cpp \
@@ -18,8 +26,20 @@ RegularSources = \
         SoNavigation.cpp
 
 LinkHackSources = all-navigation-cpp.cpp
+
 PublicHeaders =
-PrivateHeaders = SoEvent.h
+
+PrivateHeaders = \
+        SoScXMLNavigation.h \
+        SoScXMLNavigationInvoke.h \
+        SoScXMLPanUtils.h \
+        SoScXMLRotateUtils.h \
+        SoScXMLSeekUtils.h \
+        SoScXMLSpinUtils.h \
+        SoScXMLZoomUtils.h \
+        \
+        SoEvent.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(navigation, navigation)
