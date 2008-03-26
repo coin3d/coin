@@ -60,7 +60,7 @@ public:
   boost::intrusive_ptr<SoCamera> cameraclone;
   boost::scoped_ptr<SbSphereSheetProjector> projector;
 
-  struct {
+  struct log {
     SbVec2f posn;
     SbTime time;
   } mouselog[3];
