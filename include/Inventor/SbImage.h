@@ -32,6 +32,7 @@
 class SbImage;
 
 typedef SbBool SbImageScheduleReadCB(const SbString &, SbImage *, void *);
+typedef SbBool SbImageReadImageCB(const SbString &, SbImage *, void *);
 
 class COIN_DLL_API SbImage {
 public:
@@ -63,6 +64,9 @@ public:
     return ! operator == (image);
   }
   SbImage & operator=(const SbImage & image);
+
+  static void addReadImageCB(SbImageReadImageCB * cb, void * closure);
+  static void removeReadImageCB(SbImageReadImageCB * cb, void * closure);
 
   static SbString searchForFile(const SbString & basename,
                                 const SbString * const * dirlist,

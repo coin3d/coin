@@ -46,7 +46,9 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h> // for SoInput::searchForFile()
 #include <Inventor/lists/SbStringList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbits.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -60,6 +62,11 @@
 
 class SbImageP {
 public:
+  typedef struct {
+    SbImageReadImageCB * cb;
+    void * closure;
+  } ReadImageCBData;
+
   enum DataType {
     INTERNAL_DATA,
     SIMAGE_DATA,
@@ -106,6 +113,8 @@ public:
   SbImageScheduleReadCB * schedulecb;
   void * scheduleclosure;
 
+  static SbList <ReadImageCBData> * readimagecallbacks;
+
 #ifdef COIN_THREADSAFE
   SbRWMutex rwmutex;
   void readLock(void) {
@@ -132,7 +141,14 @@ public:
   void writeLock(void) { }
   void writeUnlock(void) { }
 #endif // ! COIN_THREADSAFE
+
+  static void cleanup_callbacks(void) {
+    delete SbImageP::readimagecallbacks;
+    SbImageP::readimagecallbacks = NULL;
+  }
 };
+
+SbList <SbImageP::ReadImageCBData> * SbImageP::readimagecallbacks = NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -407,13 +423,7 @@ SbImage::readFile(const SbString & filename,
                   const SbString * const * searchdirectories,
                   const int numdirectories)
 {
-  // simage is the only provider of import capabilities.
-  if (!simage_wrapper()->available) {
-    SoDebugError::postWarning("SbImage::readFile",
-                              "The simage library is not available, "
-                              "can not import any images from disk.");
-    return FALSE;
-  }
+  // FIXME: Add 3D image support when that is added to simage (kintel 20011118)
 
   if (filename.getLength() == 0) {
     // This is really an internal error, should perhaps assert. <mortene>.
@@ -422,7 +432,6 @@ SbImage::readFile(const SbString & filename,
     return FALSE;
   }
 
-  // FIXME: Add 3D image support when that is added to simage (kintel 20011118)
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
   if (finalname.getLength() == 0) {
@@ -430,6 +439,27 @@ SbImage::readFile(const SbString & filename,
                        "couldn't find '%s'.", filename.getString());
     return FALSE;
   }
+
+  // use callback to load the image if it's set
+  if (SbImageP::readimagecallbacks) {
+    for (int i = 0; i < SbImageP::readimagecallbacks->getLength(); i++) {
+      SbImageP::ReadImageCBData cbdata = (*SbImageP::readimagecallbacks)[i];
+      if (cbdata.cb(finalname, this, cbdata.closure)) return TRUE;
+    }
+    if (!simage_wrapper()->available) {
+      return FALSE;
+    }
+  }
+  
+  // try simage
+  if (!simage_wrapper()->available) {
+    SoDebugError::postWarning("SbImage::readFile",
+                              "The simage library is not available, "
+                              "can not import any images from disk.");
+    return FALSE;
+  }
+
+
 
   assert(simage_wrapper()->simage_read_image);
   int w, h, nc;
@@ -596,6 +626,51 @@ SbVec3s
 SbImage::getSize(void) const
 {
   return PRIVATE(this)->size;
+}
+
+/*!
+  Add a callback which will be called whenever Coin wants to read an
+  image file.  The callback should return TRUE if it was able to
+  successfully read and set the image data, and FALSE otherwise.
+
+  The callback(s) will be called before attempting to use simage to
+  load images.
+  
+  \sa removeReadImageCB()
+  \since Coin 3.0
+*/
+void 
+SbImage::addReadImageCB(SbImageReadImageCB * cb, void * closure)
+{
+  if (!SbImageP::readimagecallbacks) {
+    SbImageP::readimagecallbacks = new SbList <SbImageP::ReadImageCBData>;
+    cc_coin_atexit((coin_atexit_f*) SbImageP::cleanup_callbacks);
+  }
+  SbImageP::ReadImageCBData data;
+  data.cb = cb;
+  data.closure = closure;
+  
+  SbImageP::readimagecallbacks->append(data);
+}
+
+/*!
+  Remove a read image callback added with addReadImageCB().
+
+  \sa addReadImageCB()
+  \since Coin 3.0
+*/
+void 
+SbImage::removeReadImageCB(SbImageReadImageCB * cb, void * closure)
+{
+  if (SbImageP::readimagecallbacks) {
+    for (int i = 0; i < SbImageP::readimagecallbacks->getLength(); i++) {
+      SbImageP::ReadImageCBData data = (*SbImageP::readimagecallbacks)[i];
+      if (data.cb == cb && data.closure == closure) {
+        SbImageP::readimagecallbacks->remove(i);
+        return;
+      }
+    }
+  }
 }
 
 #undef PRIVATE
