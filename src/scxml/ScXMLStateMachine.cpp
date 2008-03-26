@@ -265,6 +265,10 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   assert(PRIVATE(this)->isprocessingqueue);
   this->setCurrentEvent(event);
 
+  // FIXME: make sure a transition to self will execute exitState(),
+  // invokables in transition, and then enterState() again...I don't
+  // think that is handled currently.
+
   if (0) {
     if (event) SoDebugError::postInfo("process", "event: %s",
                                       event->getIdentifier().getString());
@@ -816,8 +820,12 @@ ScXMLStateMachineP::enterState(const ScXMLObject * object)
     assert(container);
     const char * id = container->getAttribute("id");
     if (!id || strlen(id) == 0) {
-      SoDebugError::post("ScXMLStateMachineP::enterState",
-                         "<final> container has no id - can't post done-event");
+      if (container->isOfType(ScXMLDocument::getClassTypeId())) {
+        // what to post here?
+      } else {
+        SoDebugError::post("ScXMLStateMachineP::enterState",
+                           "<final> container has no id - can't post done-event");
+      }
       return;
     }
     SbString eventstr;
