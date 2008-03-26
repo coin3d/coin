@@ -257,6 +257,8 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
+#include <Inventor/scxml/ScXML.h>
+#include "navigation/SoScXMLNavigation.h"
 #include <Inventor/navigation/SoNavigation.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
@@ -582,6 +584,9 @@ SoDB::init(void)
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
 #endif // HAVE_SCENE_PROFILING
+
+  ScXML::initClasses();
+  SoScXMLNavigation::initClasses();
 
   // Actions must be initialized before nodes (because of SO_ENABLE)
   SoAction::initClass();
