@@ -1,3 +1,6 @@
+#ifndef COIN_SOSCXMLNAVIGATIONINVOKE_H
+#define COIN_SOSCXMLNAVIGATIONINVOKE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,28 +24,32 @@
  *
 \**************************************************************************/
 
-#include "SoScXMLNavigation.cpp"
-#include "SoScXMLNavigationInvoke.cpp"
-#include "SoScXMLPanUtils.cpp"
-#include "SoScXMLRotateUtils.cpp"
-#include "SoScXMLSeekUtils.cpp"
-#include "SoScXMLSpinUtils.cpp"
-#include "SoScXMLZoomUtils.cpp"
+class SoCamera;
+class SbRotation;
+class SbVec2f;
+class SbPlane;
 
-// old system - might not be possible to obsolete this for now
-#include "SoCenterMode.cpp"
-#include "SoIdleMode.cpp"
-#include "SoNavigationControl.cpp"
-#include "SoNavigationMode.cpp"
-#include "SoNavigationState.cpp"
-#include "SoNavigationSystem.cpp"
-#include "SoNavigationVehicle.cpp"
-#include "SoOrthoCenterMode.cpp"
-#include "SoPanMode.cpp"
-#include "SoPickMode.cpp"
-#include "SoPitchMode.cpp"
-#include "SoRollMode.cpp"
-#include "SoRotateMode.cpp"
-#include "SoYawMode.cpp"
-#include "SoZoomMode.cpp"
-#include "SoNavigation.cpp"
+#include <Inventor/scxml/ScXMLInvoke.h>
+
+class SoScXMLNavigationInvoke : public ScXMLInvoke {
+  typedef ScXMLInvoke inherited;
+  SCXML_OBJECT_ABSTRACT_HEADER(SoScXMLNavigationInvoke);
+public:
+  static void initClass(void);
+
+protected:
+  static void reorientCamera(SoCamera * camera,
+                             const SbRotation & rot);
+
+  static void panCamera(SoCamera * camera,
+                        float vpaspect,
+                        const SbPlane & panplane,
+                        const SbVec2f & previous,
+                        const SbVec2f & current);
+
+  static void zoom(SoCamera * camera,
+                   float diffvalue);
+  
+}; // SoScXMLNavigationInvoke
+
+#endif // !COIN_SOSCXMLNAVIGATIONINVOKE_H

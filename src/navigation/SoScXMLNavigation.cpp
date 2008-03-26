@@ -21,28 +21,41 @@
  *
 \**************************************************************************/
 
-#include "SoScXMLNavigation.cpp"
-#include "SoScXMLNavigationInvoke.cpp"
-#include "SoScXMLPanUtils.cpp"
-#include "SoScXMLRotateUtils.cpp"
-#include "SoScXMLSeekUtils.cpp"
-#include "SoScXMLSpinUtils.cpp"
-#include "SoScXMLZoomUtils.cpp"
+#include "navigation/SoScXMLNavigation.h"
 
-// old system - might not be possible to obsolete this for now
-#include "SoCenterMode.cpp"
-#include "SoIdleMode.cpp"
-#include "SoNavigationControl.cpp"
-#include "SoNavigationMode.cpp"
-#include "SoNavigationState.cpp"
-#include "SoNavigationSystem.cpp"
-#include "SoNavigationVehicle.cpp"
-#include "SoOrthoCenterMode.cpp"
-#include "SoPanMode.cpp"
-#include "SoPickMode.cpp"
-#include "SoPitchMode.cpp"
-#include "SoRollMode.cpp"
-#include "SoRotateMode.cpp"
-#include "SoYawMode.cpp"
-#include "SoZoomMode.cpp"
-#include "SoNavigation.cpp"
+#include "navigation/SoScXMLRotateUtils.h"
+#include "navigation/SoScXMLPanUtils.h"
+#include "navigation/SoScXMLZoomUtils.h"
+#include "navigation/SoScXMLSpinUtils.h"
+#include "navigation/SoScXMLSeekUtils.h"
+
+void
+SoScXMLNavigation::initClasses(void)
+{
+  SoScXMLNavigationInvoke::initClass();
+
+  SoScXMLRotateInvoke::initClass();
+  SoScXMLSetRotate::initClass();
+  SoScXMLUpdateRotate::initClass();
+  SoScXMLEndRotate::initClass();
+
+  SoScXMLSpinInvoke::initClass();
+  SoScXMLSetSpin::initClass();
+  SoScXMLUpdateSpin::initClass();
+  SoScXMLEndSpin::initClass();
+
+  SoScXMLPanInvoke::initClass();
+  SoScXMLSetPan::initClass();
+  SoScXMLUpdatePan::initClass();
+  SoScXMLEndPan::initClass();
+  
+  SoScXMLZoomInvoke::initClass();
+  SoScXMLSetZoom::initClass();
+  SoScXMLUpdateZoom::initClass();
+  SoScXMLEndZoom::initClass();
+  
+  SoScXMLSeekInvoke::initClass();
+  SoScXMLSetSeek::initClass();
+  SoScXMLUpdateSeek::initClass();
+  SoScXMLEndSeek::initClass();
+}
