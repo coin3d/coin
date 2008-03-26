@@ -149,7 +149,7 @@ SoTextureCombineElement::get(SoState * const state,
                              float & alphascale)
 {
   SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
@@ -171,7 +171,7 @@ SoTextureCombineElement::isDefault(SoState * const state,
                                    const int unit)
 {
   SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   
   assert(unit >= 0 && unit < MAX_UNITS);
   
@@ -257,7 +257,7 @@ void
 SoTextureCombineElement::apply(SoState * state, const int unit)
 {
   SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];

@@ -194,7 +194,7 @@ SoGLTextureImageElement::get(SoState * state, Model & model,
                              SbColor & blendcolor)
 {
   const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   
   model = elem->model;
   blendcolor = elem->blendColor;

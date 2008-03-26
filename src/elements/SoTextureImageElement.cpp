@@ -249,7 +249,7 @@ SoTextureImageElement::get(SoState * const state,
                            SbColor &blendColor)
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   wrapS = elem->wrapS;
   wrapT = elem->wrapT;
@@ -277,7 +277,7 @@ SoTextureImageElement::get(SoState * const state,
                            SbColor &blendColor)
 {
   SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   wrapS = elem->wrapS;
   wrapT = elem->wrapT;
@@ -330,7 +330,7 @@ SbBool
 SoTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   return elem->hasTransparency();
 }
@@ -420,7 +420,7 @@ const SbColor &
 SoTextureImageElement::getBlendColor(SoState * const state)
 {
   SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   return elem->blendColor;
 }
 
@@ -430,7 +430,7 @@ SoTextureImageElement::getImage(SoState * const state,
                                 int &numComponents)
 {
   SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   if (elem->getTypeId().isDerivedFrom(SoGLTextureImageElement::getClassTypeId())) {
     Model dummy1;
@@ -460,7 +460,7 @@ SoTextureImageElement::getImage(SoState * const state,
                                 int &numComponents)
 {
   SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   if (elem->getTypeId().isDerivedFrom(SoGLTextureImageElement::getClassTypeId())) {
     Model dummy1;
@@ -483,7 +483,7 @@ SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapS(SoState * const state)
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   return elem->wrapT;
 }
 
@@ -491,7 +491,7 @@ SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapT(SoState * const state)
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   return elem->wrapS;
 }
 
@@ -504,7 +504,7 @@ SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapR(SoState * const state)
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   return elem->wrapR;
 }
 
@@ -512,6 +512,6 @@ SoTextureImageElement::Model
 SoTextureImageElement::getModel(SoState * const state)
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   return elem->model;
 }

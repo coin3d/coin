@@ -178,7 +178,7 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SbColor &blendColor)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
@@ -209,7 +209,7 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SbColor &blendColor)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
@@ -233,7 +233,7 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      int & numComponents)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
@@ -267,7 +267,7 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      int & numComponents)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
@@ -298,7 +298,7 @@ SbBool
 SoMultiTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   for (int i = 0; i < MAX_UNITS; i++) {
     if (elem->hasTransparency(i)) return TRUE;
@@ -448,7 +448,7 @@ const SbColor &
 SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].blendColor;
 }
@@ -460,7 +460,7 @@ SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapT;
 }
@@ -472,7 +472,7 @@ SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapS;
 }
@@ -484,7 +484,7 @@ SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapR;
 }
@@ -496,7 +496,7 @@ SoTextureImageElement::Model
 SoMultiTextureImageElement::getModel(SoState * const state, const int unit)
 {
   SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].model;
 }

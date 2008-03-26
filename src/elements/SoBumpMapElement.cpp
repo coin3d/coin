@@ -98,7 +98,7 @@ SoGLImage *
 SoBumpMapElement::get(SoState * const state)
 {
   SoBumpMapElement * elem = (SoBumpMapElement *)
-    state->getConstElement(classStackIndex);
+    getConstElement(state, classStackIndex);
 
   return elem->image;
 }
