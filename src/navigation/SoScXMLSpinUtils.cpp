@@ -23,6 +23,8 @@
 
 #include "navigation/SoScXMLSpinUtils.h"
 
+#include <assert.h>
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLEvent.h>

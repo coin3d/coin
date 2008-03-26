@@ -23,6 +23,7 @@
 
 #include "navigation/SoScXMLPanUtils.h"
 
+#include <assert.h>
 //#include <boost/intrusive_ptr.hpp>
 
 #include <Inventor/SbPlane.h>

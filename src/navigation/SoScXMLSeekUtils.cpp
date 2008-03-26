@@ -23,6 +23,8 @@
 
 #include "navigation/SoScXMLSeekUtils.h"
 
+#include <assert.h>
+
 #include <Inventor/SbTime.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbViewportRegion.h>

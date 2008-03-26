@@ -23,6 +23,8 @@
 
 #include "navigation/SoScXMLZoomUtils.h"
 
+#include <assert.h>
+
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/errors/SoDebugError.h>
