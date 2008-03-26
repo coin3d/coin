@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Examiner Navigation Mode
+Camera navigation SCXML state machine for Coin 3.0.
+-->
+
+<scxml xmlns="http://www.coin3d.org/scxml/coin/1.0" initialstate="idle">
+
+  <state id="idle" task="true"> <!-- ** IDLE MODE ************************ -->
+
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate">
+      <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
+    </transition>
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.S" target="seeking"/>
+
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_SHIFT" target="pan_shift_wait"/>
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON2" target="pan_move">
+      <invoke targettype="sim.coin3d.coin" src="SetPan"/>
+    </transition>
+    
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_CONTROL" target="zoom_ctrl_wait"/>
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3" target="zoom_move">
+      <invoke targettype="sim.coin3d.coin" src="SetZoom"/>
+    </transition>
+
+    <!--transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.Q" target="exit"/-->
+
+    <transition event="sim.coin3d.coin.navigation.SetSpin" target="spinning">
+      <invoke targettype="sim.coin3d.coin" src="SetSpin"/>
+    </transition>
+  </state>
+
+
+  <state id="rotate" task="true"> <!-- ** ROTATE MODE ******************** -->
+    <onexit>
+      <invoke targettype="sim.coin3d.coin" src="EndRotate"/>
+    </onexit>
+
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="idle"/>
+    <transition event="sim.coin3d.coin.SoLocation2Event">
+      <invoke targettype="sim.coin3d.coin" src="UpdateRotate"/>
+    </transition>
+  </state>
+
+
+  <state id="spinning" task="true"> <!-- ** SPIN MODE ******************** -->
+    <onentry>
+      <invoke targettype="sim.coin3d.coin" src="ScheduleRedraw"/>
+    </onentry>
+    <onexit>
+      <invoke targettype="sim.coin3d.coin" src="EndSpin"/>
+    </onexit>
+
+    <transition event="sim.coin3d.coin.GLRender.PRE_RENDER">
+      <invoke targettype="sim.coin3d.coin" src="UpdateSpin"/>
+    </transition>
+    <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+      <invoke targettype="sim.coin3d.coin" src="ScheduleRedraw" srcexpr="0.0"/>
+    </transition>
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.ESCAPE" target="idle"/>
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate">
+      <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
+    </transition>
+  </state>
+
+
+  <state id="panning" task="true"> <!-- ** PAN MODE ********************** -->
+    <state id="pan_shift_wait">
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_SHIFT" target="idle"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="pan_shift_move">
+        <invoke targettype="sim.coin3d.coin" src="SetPan"/>
+      </transition>
+    </state>
+    <state id="pan_shift_move">
+      <transition event="sim.coin3d.coin.SoLocation2Event">
+        <invoke targettype="sim.coin3d.coin" src="UpdatePan"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="pan_shift_wait">
+        <invoke targettype="sim.coin3d.coin" src="EndPan"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_SHIFT" target="rotate">
+        <invoke targettype="sim.coin3d.coin" src="EndPan"/>
+        <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
+      </transition>
+    </state>
+    <state id="pan_move">
+      <transition event="sim.coin3d.coin.SoLocation2Event">
+        <invoke targettype="sim.coin3d.coin" src="UpdatePan"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON2" target="idle">
+        <invoke targettype="sim.coin3d.coin" src="EndPan"/>
+      </transition>
+    </state>
+  </state>
+
+
+  <state id="zooming" task="true"> <!-- ** ZOOM MODE ********************* -->
+    <state id="zoom_ctrl_wait">
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="idle"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="zoom_ctrl_move">
+        <invoke targettype="sim.coin3d.coin" src="SetZoom"/>
+      </transition>
+    </state>
+    <state id="zoom_ctrl_move">
+      <transition event="sim.coin3d.coin.SoLocation2Event">
+        <invoke targettype="sim.coin3d.coin" src="UpdateZoom"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="zoom_ctrl_wait">
+        <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="rotate">
+        <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
+        <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
+      </transition>
+    </state>
+    <state id="zoom_move">
+      <transition event="sim.coin3d.coin.SoLocation2Event">
+        <invoke targettype="sim.coin3d.coin" src="UpdateZoom"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON3" target="idle">
+        <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
+      </transition>
+    </state>
+  </state>
+
+
+  <state id="seeking" task="true"> <!-- ** SEEK MODE ********************* -->
+    <initial id="seeking_initial"><transition target="seek_wait"/></initial>
+    <transition event="seeking.done" target="idle"/>
+    <state id="seek_wait">
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.S" target="idle"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="seek">
+        <invoke targettype="sim.coin3d.coin" src="SetSeek"/>
+      </transition>
+    </state>
+    <state id="seek">
+      <onentry>
+        <invoke targettype="sim.coin3d.coin" src="ScheduleRedraw"/>
+      </onentry>
+
+      <transition event="sim.coin3d.coin.GLRender.PRE_RENDER">
+        <invoke targettype="sim.coin3d.coin" src="UpdateSeek"/>
+      </transition>
+      <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+        <invoke targettype="sim.coin3d.coin" src="ScheduleRedraw"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="seek">
+        <invoke targettype="sim.coin3d.coin" src="EndSeek"/>
+        <invoke targettype="sim.coin3d.coin" src="SetSeek"/>
+      </transition>
+      <transition event="sim.coin3d.coin.navigation.seekend" target="seek_done">
+        <invoke targettype="sim.coin3d.coin" src="EndSeek"/>
+      </transition>
+    </state>
+    <final id="seek_done"/>
+  </state>
+
+
+  <final id="exit"/> <!-- the buck can stop here -->
+</scxml>
