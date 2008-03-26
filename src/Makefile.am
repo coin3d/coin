@@ -36,7 +36,7 @@ SUBDIRS = \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
-	vrml97 foreignfiles .
+	vrml97 foreignfiles scxml .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
 
@@ -72,7 +72,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
 	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
-	vrml97/libvrml97.la $(SUPERGLULIBADD)
+	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
 endif
 
 # **************************************************************************
@@ -107,7 +107,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
 	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
-	vrml97/vrml97.lst $(SUPERGLULSTADD)
+	vrml97/vrml97.lst scxml/scxml.lst $(SUPERGLULSTADD)
 
 # **************************************************************************
 # Installation information.

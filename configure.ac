@@ -1865,7 +1865,7 @@ if test x"$enable_hacking" = x"yes"; then
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits navigation nodes shapenodes projectors \
     sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
-    mpeg xml xml/expat:expat profiler 3ds:format3ds; \
+    mpeg xml xml/expat:expat profiler 3ds:format3ds scxml; \
   do
     case $dir in
     *:* )
@@ -2205,6 +2205,7 @@ AC_CONFIG_FILES([
         include/Inventor/system/Makefile
         include/Inventor/threads/Makefile
         include/Inventor/tools/Makefile
+        include/Inventor/scxml/Makefile
         include/Inventor/annex/Makefile
         include/Inventor/annex/HardCopy/Makefile
         include/Inventor/annex/ForeignFiles/Makefile
@@ -2265,6 +2266,7 @@ AC_CONFIG_FILES([
         src/xml/Makefile
         src/xml/expat/Makefile
         src/profiler/Makefile
+        src/scxml/Makefile
         testsuite/Makefile
         cfg/gendsp.pl
 ])
