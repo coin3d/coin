@@ -112,7 +112,7 @@ public:
   SbBool loadFromFile(const SbName & filename);
   SbBool loadFromBuffer(const char * buffer);
 
-  static const int databaseloaderversion = 1;
+  static const int databaseloaderversion;
 private:
   void addFeatures(const cc_glglue * context, const cc_xml_element * element, SoGLDriver * driver);
 
@@ -144,6 +144,10 @@ private:
   typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
   SbHash <glglue_feature_test_f *, const char *> featuremap;
 };
+
+// static variables
+const int SoGLDriverDatabaseP::databaseloaderversion = 1;
+
 
 SoGLDriverDatabaseP::SoGLDriverDatabaseP() 
 {
