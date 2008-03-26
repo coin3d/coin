@@ -7304,7 +7304,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ln -sfh /Library/Frameworks/SoQt.framework/Headers /Library/Frameworks/Inventor.framework/Headers/Qt\n";
+			shellScript = "ln -sfh /Library/Frameworks/SoQt.framework/Headers /Library/Frameworks/Inventor.framework/Headers/Qt\n\ncd $INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nmkdir include\nln -sfh ../../Headers include/Inventor\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
