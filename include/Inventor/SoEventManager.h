@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class SoCamera;
 class SbVec2s;
@@ -33,6 +34,8 @@ class SoNode;
 class SbViewportRegion;
 class SoNavigationSystem;
 class SoHandleEventAction;
+class SoScXMLStateMachine;
+class SoEventManagerP;
 
 class COIN_DLL_API SoEventManager {
  public:
@@ -55,12 +58,17 @@ class COIN_DLL_API SoEventManager {
   virtual SoHandleEventAction * getHandleEventAction(void) const;
 
   virtual SbBool processEvent(const SoEvent * const event);
-  
+
   void setNavigationState(NavigationState state);
-  void setNavigationSystem(SoNavigationSystem * system);
-  
-  NavigationState getNavigationState(void) const;
   SoNavigationSystem * getNavigationSystem(void) const;
+
+  int getNumSoScXMLStateMachines(void) const;
+  SoScXMLStateMachine * getSoScXMLStateMachine(int idx) const;
+  void addSoScXMLStateMachine(SoScXMLStateMachine * sm);
+  void removeSoScXMLStateMachine(SoScXMLStateMachine * sm);
+
+  void setNavigationSystem(SoNavigationSystem * system);
+  NavigationState getNavigationState(void) const;
   
   void setSize(const SbVec2s & newsize);
   void setOrigin(const SbVec2s & newOrigin);
@@ -70,7 +78,8 @@ protected:
   virtual SbBool actuallyProcessEvent(const SoEvent * const event);
 
 private:
-  class SoEventManagerP * pimpl;
+  SbPimplPtr<SoEventManagerP> pimpl;
+
 };
 
 #endif // !COIN_SOEVENTMANAGER_H

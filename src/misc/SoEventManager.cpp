@@ -22,6 +22,10 @@
 \**************************************************************************/
 
 #include <Inventor/SoEventManager.h>
+
+#include <vector>
+#include <algorithm>
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoNode.h>
@@ -32,9 +36,12 @@
 #include <Inventor/navigation/SoNavigationSystem.h>
 #include <Inventor/misc/SoState.h>
 
+#include <Inventor/scxml/ScXML.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
+
 class SoEventManagerP {
 public:
-  SoEventManagerP(void) {}
+  SoEventManagerP(void) { }
   ~SoEventManagerP() {}
   SoNavigationSystem * searchForNavigationMode(SoNode * root, 
                                                SoNavigationSystem * defsys);
@@ -46,6 +53,8 @@ public:
   SbBool deletehandleeventaction;
   SoCamera * camera;
   SoNode * scene;
+
+  std::vector<SoScXMLStateMachine *> statemachines;
 };
 
 #define PRIVATE(p) (p->pimpl)
@@ -53,7 +62,6 @@ public:
 
 SoEventManager::SoEventManager(void)
 {
-  PRIVATE(this) = new SoEventManagerP;
   PRIVATE(this)->navigationsystem = SoNavigationSystem::createByName(SO_EXAMINER_SYSTEM);
   PRIVATE(this)->navigationstate = SoEventManager::NO_NAVIGATION;
   PRIVATE(this)->handleeventaction = new SoHandleEventAction(SbViewportRegion(400, 400));
@@ -63,13 +71,33 @@ SoEventManager::SoEventManager(void)
   PRIVATE(this)->camera = NULL;
   PRIVATE(this)->scene = NULL;
 
+#if 0
+  ScXMLStateMachine * sm = ScXML::readFile("coin:scxml/navigation/examiner.xml");
+  if (sm && sm->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+    sm->initialize();
+    this->addSoScXMLStateMachine(static_cast<SoScXMLStateMachine *>(sm));
+  } else {
+    SoDebugError::post("SoEventManager",
+                       "failed to created default camera contrl state machine");
+  }
+#endif
 }
 
 SoEventManager::~SoEventManager()
 {
-  delete PRIVATE(this)->navigationsystem;
-  if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
-  delete PRIVATE(this);
+  if (PRIVATE(this)->navigationsystem) {
+    delete PRIVATE(this)->navigationsystem;
+    PRIVATE(this)->navigationsystem = NULL;
+  }
+  if (PRIVATE(this)->deletehandleeventaction) {
+    delete PRIVATE(this)->handleeventaction;
+    PRIVATE(this)->handleeventaction = NULL;
+  }
+  for (int c = this->getNumSoScXMLStateMachines() - 1; c >= 0; --c) {
+    SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(c);
+    this->removeSoScXMLStateMachine(sm);
+    delete sm;
+  }
 }
 
 /*!
@@ -112,11 +140,11 @@ SoEventManager::setNavigationSystem(SoNavigationSystem * system)
     PRIVATE(this)->navigationsystem->setSceneGraph(NULL);
   }
 
-  if (system) {
-    PRIVATE(this)->navigationsystem = system;
-  } else {
-    PRIVATE(this)->navigationsystem = SoNavigationSystem::getByName(SO_IDLER_SYSTEM);
+  if (!system) {
+    PRIVATE(this)->navigationsystem = NULL; // SoNavigationSystem::getByName(SO_IDLER_SYSTEM);
+    return;
   }
+  PRIVATE(this)->navigationsystem = system;
   PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
   PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
   PRIVATE(this)->navigationsystem->setViewport(PRIVATE(this)->handleeventaction->getViewportRegion());
@@ -165,9 +193,16 @@ SoEventManager::setSceneGraph(SoNode * const sceneroot)
   
   if (oldroot) oldroot->unref();
   
-  assert(PRIVATE(this)->navigationsystem);
-  PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
-  PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
+  if (PRIVATE(this)->navigationsystem) {
+    PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
+    PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
+  }
+
+  for (int c = 0; c < this->getNumSoScXMLStateMachines(); ++c) {
+    SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(c);
+    sm->setSceneGraphRoot(PRIVATE(this)->scene);
+    sm->setActiveCamera(PRIVATE(this)->camera);
+  }
 }
 
 /*!
@@ -191,7 +226,14 @@ SoEventManager::setCamera(SoCamera * camera)
   PRIVATE(this)->camera = camera;
   if (camera) camera->ref();
 
-  PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
+  if (PRIVATE(this)->navigationsystem) {
+    PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
+  }
+
+  for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
+    SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
+    sm->setActiveCamera(PRIVATE(this)->camera);
+  }
 }
 
 /*!
@@ -241,22 +283,46 @@ SoEventManager::setViewportRegion(const SbViewportRegion & newregion)
 SbBool 
 SoEventManager::processEvent(const SoEvent * const event)
 {
-  const SbViewportRegion & vp = PRIVATE(this)->handleeventaction->getViewportRegion();
-  assert(PRIVATE(this)->navigationsystem);
-  PRIVATE(this)->navigationsystem->setViewport(vp);
-  
+  const SbViewportRegion & vp =
+    PRIVATE(this)->handleeventaction->getViewportRegion();
+
+  SbBool status = FALSE;
+
   switch (PRIVATE(this)->navigationstate) { 
   case SoEventManager::NO_NAVIGATION:
-    return this->actuallyProcessEvent(event);
+    status = this->actuallyProcessEvent(event);
+    break;
   case SoEventManager::JUST_NAVIGATION:
-    return PRIVATE(this)->navigationsystem->processEvent(event);
+    if (PRIVATE(this)->navigationsystem) {
+      PRIVATE(this)->navigationsystem->setViewport(vp); 
+      if (PRIVATE(this)->navigationsystem->processEvent(event))
+        status = TRUE;
+    }
+    for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
+      SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
+      sm->setViewportRegion(vp);
+      if (sm->processSoEvent(event))
+        status = TRUE;
+    }
+    break;
   case SoEventManager::MIXED_NAVIGATION:
-    if (this->actuallyProcessEvent(event))
-      return TRUE;
-    if (PRIVATE(this)->navigationsystem->processEvent(event))
-      return TRUE;
+    if (this->actuallyProcessEvent(event)) {
+      status = TRUE;
+      break;
+    }
+    if (PRIVATE(this)->navigationsystem) {
+      PRIVATE(this)->navigationsystem->setViewport(vp);
+      if (PRIVATE(this)->navigationsystem->processEvent(event))
+        status = TRUE;
+    }
+    for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
+      SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
+      sm->setViewportRegion(vp);
+      if (sm->processSoEvent(event))
+        status = TRUE;
+    }
   }
-  return FALSE;
+  return status;
 }
 
 SbBool 
@@ -325,7 +391,7 @@ SoEventManagerP::searchForNavigationMode(SoNode * root,
   this->searchaction->apply(root);
   SoPath * path = this->searchaction->getPath();
   
-  if (!path) return defsys;
+  if (!path) return NULL;
   
   path->ref();
   this->searchaction->reset();
@@ -335,7 +401,7 @@ SoEventManagerP::searchForNavigationMode(SoNode * root,
   path->unref();
   path = this->searchaction->getPath();
 
-  if (!path) return defsys;
+  if (!path) return NULL;
 
   path->ref();
   SoViewerNavigationMode * mode = (SoViewerNavigationMode *) path->getTail();
@@ -343,9 +409,40 @@ SoEventManagerP::searchForNavigationMode(SoNode * root,
   SbString modestring = mode->mode.getValue();
   path->unref();
 
-  if (modestring.getLength() == 0) return defsys;
+  if (modestring.getLength() == 0) return NULL;
 
   return SoNavigationSystem::createByName(modestring.getString());
+}
+
+int
+SoEventManager::getNumSoScXMLStateMachines(void) const
+{
+  return static_cast<int>(PRIVATE(this)->statemachines.size());
+}
+
+SoScXMLStateMachine *
+SoEventManager::getSoScXMLStateMachine(int idx) const
+{
+  assert(idx >= 0 &&
+         idx < static_cast<int>(PRIVATE(this)->statemachines.size()));
+  return PRIVATE(this)->statemachines.at(idx);
+}
+
+void
+SoEventManager::addSoScXMLStateMachine(SoScXMLStateMachine * sm)
+{
+  PRIVATE(this)->statemachines.push_back(sm);
+}
+
+void
+SoEventManager::removeSoScXMLStateMachine(SoScXMLStateMachine * sm)
+{
+  std::vector<SoScXMLStateMachine *>::iterator findit =
+    std::find(PRIVATE(this)->statemachines.begin(),
+              PRIVATE(this)->statemachines.end(), sm);
+  if (findit != PRIVATE(this)->statemachines.end()) {
+    PRIVATE(this)->statemachines.erase(findit);
+  }
 }
 
 #undef PRIVATE
