@@ -464,8 +464,8 @@ typedef unsigned long COIN_GLhandle;
 
 /* Typedefs for GL_ARB_vertex_shader */
 typedef void (APIENTRY * COIN_PFNGLBINDATTRIBLOCATIONARBPROC)(COIN_GLhandle programobj, GLuint index, COIN_GLchar * name);
-typedef void (APIENTRY * COIN_PFNGLGETACTIVEATTRIBARBPROC)(COIN_GLhandle programobj, const COIN_GLchar * name);
-typedef int (APIENTRY * COINP_PFNGLGETATTRIBLOCATIONARBPROC)(COIN_GLhandle programobj, GLuint index, const COIN_GLchar * name);
+typedef int (APIENTRY * COIN_PFNGLGETATTRIBLOCATIONARBPROC)(COIN_GLhandle programobj, const COIN_GLchar * name);
+typedef void (APIENTRY * COIN_PFNGLGETACTIVEATTRIBARBPROC)(COIN_GLhandle programobj, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, COIN_GLchar * name);
 
 
 /* Typedefs for shader objects -- GL_ARB_shader_objects */
@@ -742,7 +742,7 @@ struct cc_glglue {
   /* vertex shader */
   COIN_PFNGLBINDATTRIBLOCATIONARBPROC glBindAttribLocationARB;
   COIN_PFNGLGETACTIVEATTRIBARBPROC glGetActiveAttribARB;
-  COINP_PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
+  COIN_PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
 
   /* shader objects */
   COIN_PFNGLPROGRAMPARAMETERIEXT glProgramParameteriEXT;
