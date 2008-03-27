@@ -10,6 +10,53 @@
 		8D07F2BE0486CC7A007CD1D0 /* Inventor_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32BAE0B70371A74B00C91783 /* Inventor_Prefix.pch */; };
 		8D07F2C00486CC7A007CD1D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8D07F2C40486CC7A007CD1D0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB77AAFE841565C02AAC07 /* Carbon.framework */; };
+		E011F1960D9AB717001D1675 /* ScXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1780D9AB716001D1675 /* ScXML.cpp */; };
+		E011F1970D9AB717001D1675 /* ScXMLAnchor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1790D9AB716001D1675 /* ScXMLAnchor.cpp */; };
+		E011F1980D9AB717001D1675 /* ScXMLCommonP.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F17A0D9AB716001D1675 /* ScXMLCommonP.h */; };
+		E011F1990D9AB717001D1675 /* ScXMLDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F17B0D9AB716001D1675 /* ScXMLDocument.cpp */; };
+		E011F19A0D9AB717001D1675 /* ScXMLEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F17C0D9AB716001D1675 /* ScXMLEvent.cpp */; };
+		E011F19B0D9AB717001D1675 /* ScXMLFallbackInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F17D0D9AB716001D1675 /* ScXMLFallbackInvoke.cpp */; };
+		E011F19C0D9AB717001D1675 /* ScXMLFallbackInvoke.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F17E0D9AB716001D1675 /* ScXMLFallbackInvoke.h */; };
+		E011F19D0D9AB717001D1675 /* ScXMLFinal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F17F0D9AB716001D1675 /* ScXMLFinal.cpp */; };
+		E011F19E0D9AB717001D1675 /* ScXMLHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1800D9AB716001D1675 /* ScXMLHistory.cpp */; };
+		E011F19F0D9AB717001D1675 /* ScXMLInitial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1810D9AB716001D1675 /* ScXMLInitial.cpp */; };
+		E011F1A00D9AB717001D1675 /* ScXMLInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1820D9AB716001D1675 /* ScXMLInvoke.cpp */; };
+		E011F1A10D9AB717001D1675 /* ScXMLObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1830D9AB716001D1675 /* ScXMLObject.cpp */; };
+		E011F1A20D9AB717001D1675 /* ScXMLOnEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1840D9AB716001D1675 /* ScXMLOnEntry.cpp */; };
+		E011F1A30D9AB717001D1675 /* ScXMLOnExit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1850D9AB716001D1675 /* ScXMLOnExit.cpp */; };
+		E011F1A40D9AB717001D1675 /* ScXMLP.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1860D9AB716001D1675 /* ScXMLP.h */; };
+		E011F1A50D9AB717001D1675 /* ScXMLState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1870D9AB716001D1675 /* ScXMLState.cpp */; };
+		E011F1A60D9AB717001D1675 /* ScXMLStateBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1880D9AB716001D1675 /* ScXMLStateBase.cpp */; };
+		E011F1A70D9AB717001D1675 /* ScXMLStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1890D9AB716001D1675 /* ScXMLStateMachine.cpp */; };
+		E011F1A80D9AB717001D1675 /* ScXMLTransition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F18A0D9AB716001D1675 /* ScXMLTransition.cpp */; };
+		E011F1A90D9AB717001D1675 /* SoScXMLDebugInfoInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F18B0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.cpp */; };
+		E011F1AA0D9AB717001D1675 /* SoScXMLDebugInfoInvoke.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F18C0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.h */; };
+		E011F1AB0D9AB717001D1675 /* SoScXMLEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F18D0D9AB716001D1675 /* SoScXMLEvent.cpp */; };
+		E011F1AC0D9AB717001D1675 /* SoScXMLScheduleRedrawInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F18E0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.cpp */; };
+		E011F1AD0D9AB717001D1675 /* SoScXMLScheduleRedrawInvoke.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F18F0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.h */; };
+		E011F1AE0D9AB717001D1675 /* SoScXMLScheduleTimerEventInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1900D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.cpp */; };
+		E011F1AF0D9AB717001D1675 /* SoScXMLScheduleTimerEventInvoke.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1910D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.h */; };
+		E011F1B00D9AB717001D1675 /* SoScXMLStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1920D9AB716001D1675 /* SoScXMLStateMachine.cpp */; };
+		E011F1C00D9AB769001D1675 /* SoScXMLNavigation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1B20D9AB769001D1675 /* SoScXMLNavigation.cpp */; };
+		E011F1C10D9AB769001D1675 /* SoScXMLNavigation.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1B30D9AB769001D1675 /* SoScXMLNavigation.h */; };
+		E011F1C20D9AB769001D1675 /* SoScXMLNavigationInvoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1B40D9AB769001D1675 /* SoScXMLNavigationInvoke.cpp */; };
+		E011F1C30D9AB769001D1675 /* SoScXMLNavigationInvoke.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1B50D9AB769001D1675 /* SoScXMLNavigationInvoke.h */; };
+		E011F1C40D9AB769001D1675 /* SoScXMLPanUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1B60D9AB769001D1675 /* SoScXMLPanUtils.cpp */; };
+		E011F1C50D9AB769001D1675 /* SoScXMLPanUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1B70D9AB769001D1675 /* SoScXMLPanUtils.h */; };
+		E011F1C60D9AB769001D1675 /* SoScXMLRotateUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1B80D9AB769001D1675 /* SoScXMLRotateUtils.cpp */; };
+		E011F1C70D9AB769001D1675 /* SoScXMLRotateUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1B90D9AB769001D1675 /* SoScXMLRotateUtils.h */; };
+		E011F1C80D9AB769001D1675 /* SoScXMLSeekUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1BA0D9AB769001D1675 /* SoScXMLSeekUtils.cpp */; };
+		E011F1C90D9AB769001D1675 /* SoScXMLSeekUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1BB0D9AB769001D1675 /* SoScXMLSeekUtils.h */; };
+		E011F1CA0D9AB769001D1675 /* SoScXMLSpinUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1BC0D9AB769001D1675 /* SoScXMLSpinUtils.cpp */; };
+		E011F1CB0D9AB769001D1675 /* SoScXMLSpinUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1BD0D9AB769001D1675 /* SoScXMLSpinUtils.h */; };
+		E011F1CC0D9AB769001D1675 /* SoScXMLZoomUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1BE0D9AB769001D1675 /* SoScXMLZoomUtils.cpp */; };
+		E011F1CD0D9AB769001D1675 /* SoScXMLZoomUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F1BF0D9AB769001D1675 /* SoScXMLZoomUtils.h */; };
+		E011F1EC0D9AB82F001D1675 /* scxml in Copy Inventor headers */ = {isa = PBXBuildFile; fileRef = E011F1D50D9AB7FE001D1675 /* scxml */; };
+		E011F1FF0D9BE986001D1675 /* CoinResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F1FE0D9BE986001D1675 /* CoinResources.cpp */; };
+		E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */; };
+		E011F20E0D9BED09001D1675 /* CoinResources.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20D0D9BED09001D1675 /* CoinResources.h */; };
+		E011F2100D9BED2C001D1675 /* SoScXMLViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */; };
+		E011F2120D9BEDA2001D1675 /* types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F2110D9BEDA2001D1675 /* types.cpp */; };
 		E09989660D9425F40054FBE6 /* non_winsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F00D9425F40054FBE6 /* non_winsys.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989670D9425F40054FBE6 /* oivwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F10D9425F40054FBE6 /* oivwin32.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989690D9425F40054FBE6 /* Sb.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F30D9425F40054FBE6 /* Sb.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -787,7 +834,6 @@
 		E0FC4ECA0D92D50900EF3BB3 /* SoVertexArrayIndexer.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC49F60D92D50400EF3BB3 /* SoVertexArrayIndexer.h */; };
 		E0FC4ECF0D92D50900EF3BB3 /* SoMPEGFrameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC49FC0D92D50400EF3BB3 /* SoMPEGFrameRenderer.cpp */; };
 		E0FC4ED00D92D50900EF3BB3 /* SoMPEGRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC49FD0D92D50400EF3BB3 /* SoMPEGRenderer.cpp */; };
-		E0FC4ED20D92D50900EF3BB3 /* extra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A000D92D50400EF3BB3 /* extra.cpp */; };
 		E0FC4ED50D92D50900EF3BB3 /* SoCenterMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A030D92D50400EF3BB3 /* SoCenterMode.cpp */; };
 		E0FC4ED60D92D50900EF3BB3 /* SoEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A040D92D50400EF3BB3 /* SoEvent.cpp */; };
 		E0FC4ED70D92D50900EF3BB3 /* SoEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC4A050D92D50400EF3BB3 /* SoEvent.h */; };
@@ -1185,6 +1231,7 @@
 			dstPath = ./Headers;
 			dstSubfolderSpec = 1;
 			files = (
+				E011F1EC0D9AB82F001D1675 /* scxml in Copy Inventor headers */,
 				E09989C50D94264C0054FBE6 /* errors in Copy Inventor headers */,
 				E09989C60D94264C0054FBE6 /* projectors in Copy Inventor headers */,
 				E09989C70D94264C0054FBE6 /* sensors in Copy Inventor headers */,
@@ -1248,6 +1295,53 @@
 		32BAE0B70371A74B00C91783 /* Inventor_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Inventor_Prefix.pch; sourceTree = "<group>"; };
 		8D07F2C70486CC7A007CD1D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D07F2C80486CC7A007CD1D0 /* Inventor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Inventor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E011F1780D9AB716001D1675 /* ScXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXML.cpp; sourceTree = "<group>"; };
+		E011F1790D9AB716001D1675 /* ScXMLAnchor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLAnchor.cpp; sourceTree = "<group>"; };
+		E011F17A0D9AB716001D1675 /* ScXMLCommonP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScXMLCommonP.h; sourceTree = "<group>"; };
+		E011F17B0D9AB716001D1675 /* ScXMLDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLDocument.cpp; sourceTree = "<group>"; };
+		E011F17C0D9AB716001D1675 /* ScXMLEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLEvent.cpp; sourceTree = "<group>"; };
+		E011F17D0D9AB716001D1675 /* ScXMLFallbackInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLFallbackInvoke.cpp; sourceTree = "<group>"; };
+		E011F17E0D9AB716001D1675 /* ScXMLFallbackInvoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScXMLFallbackInvoke.h; sourceTree = "<group>"; };
+		E011F17F0D9AB716001D1675 /* ScXMLFinal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLFinal.cpp; sourceTree = "<group>"; };
+		E011F1800D9AB716001D1675 /* ScXMLHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLHistory.cpp; sourceTree = "<group>"; };
+		E011F1810D9AB716001D1675 /* ScXMLInitial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLInitial.cpp; sourceTree = "<group>"; };
+		E011F1820D9AB716001D1675 /* ScXMLInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLInvoke.cpp; sourceTree = "<group>"; };
+		E011F1830D9AB716001D1675 /* ScXMLObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLObject.cpp; sourceTree = "<group>"; };
+		E011F1840D9AB716001D1675 /* ScXMLOnEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLOnEntry.cpp; sourceTree = "<group>"; };
+		E011F1850D9AB716001D1675 /* ScXMLOnExit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLOnExit.cpp; sourceTree = "<group>"; };
+		E011F1860D9AB716001D1675 /* ScXMLP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScXMLP.h; sourceTree = "<group>"; };
+		E011F1870D9AB716001D1675 /* ScXMLState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLState.cpp; sourceTree = "<group>"; };
+		E011F1880D9AB716001D1675 /* ScXMLStateBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLStateBase.cpp; sourceTree = "<group>"; };
+		E011F1890D9AB716001D1675 /* ScXMLStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLStateMachine.cpp; sourceTree = "<group>"; };
+		E011F18A0D9AB716001D1675 /* ScXMLTransition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScXMLTransition.cpp; sourceTree = "<group>"; };
+		E011F18B0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLDebugInfoInvoke.cpp; sourceTree = "<group>"; };
+		E011F18C0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLDebugInfoInvoke.h; sourceTree = "<group>"; };
+		E011F18D0D9AB716001D1675 /* SoScXMLEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLEvent.cpp; sourceTree = "<group>"; };
+		E011F18E0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLScheduleRedrawInvoke.cpp; sourceTree = "<group>"; };
+		E011F18F0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLScheduleRedrawInvoke.h; sourceTree = "<group>"; };
+		E011F1900D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLScheduleTimerEventInvoke.cpp; sourceTree = "<group>"; };
+		E011F1910D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLScheduleTimerEventInvoke.h; sourceTree = "<group>"; };
+		E011F1920D9AB716001D1675 /* SoScXMLStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLStateMachine.cpp; sourceTree = "<group>"; };
+		E011F1B20D9AB769001D1675 /* SoScXMLNavigation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLNavigation.cpp; sourceTree = "<group>"; };
+		E011F1B30D9AB769001D1675 /* SoScXMLNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLNavigation.h; sourceTree = "<group>"; };
+		E011F1B40D9AB769001D1675 /* SoScXMLNavigationInvoke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLNavigationInvoke.cpp; sourceTree = "<group>"; };
+		E011F1B50D9AB769001D1675 /* SoScXMLNavigationInvoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLNavigationInvoke.h; sourceTree = "<group>"; };
+		E011F1B60D9AB769001D1675 /* SoScXMLPanUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLPanUtils.cpp; sourceTree = "<group>"; };
+		E011F1B70D9AB769001D1675 /* SoScXMLPanUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLPanUtils.h; sourceTree = "<group>"; };
+		E011F1B80D9AB769001D1675 /* SoScXMLRotateUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLRotateUtils.cpp; sourceTree = "<group>"; };
+		E011F1B90D9AB769001D1675 /* SoScXMLRotateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLRotateUtils.h; sourceTree = "<group>"; };
+		E011F1BA0D9AB769001D1675 /* SoScXMLSeekUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLSeekUtils.cpp; sourceTree = "<group>"; };
+		E011F1BB0D9AB769001D1675 /* SoScXMLSeekUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLSeekUtils.h; sourceTree = "<group>"; };
+		E011F1BC0D9AB769001D1675 /* SoScXMLSpinUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLSpinUtils.cpp; sourceTree = "<group>"; };
+		E011F1BD0D9AB769001D1675 /* SoScXMLSpinUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLSpinUtils.h; sourceTree = "<group>"; };
+		E011F1BE0D9AB769001D1675 /* SoScXMLZoomUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoScXMLZoomUtils.cpp; sourceTree = "<group>"; };
+		E011F1BF0D9AB769001D1675 /* SoScXMLZoomUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLZoomUtils.h; sourceTree = "<group>"; };
+		E011F1D50D9AB7FE001D1675 /* scxml */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scxml; path = ../../include/Inventor/scxml; sourceTree = SOURCE_ROOT; };
+		E011F1FE0D9BE986001D1675 /* CoinResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoinResources.cpp; sourceTree = "<group>"; };
+		E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoScXMLViewUtils.cpp; path = ../../src/navigation/SoScXMLViewUtils.cpp; sourceTree = SOURCE_ROOT; };
+		E011F20D0D9BED09001D1675 /* CoinResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinResources.h; sourceTree = "<group>"; };
+		E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLViewUtils.h; sourceTree = "<group>"; };
+		E011F2110D9BEDA2001D1675 /* types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = types.cpp; sourceTree = "<group>"; };
 		E09988D80D9425F40054FBE6 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = actions; path = /Users/kintel/code/checkout/Coin/include/Inventor/actions; sourceTree = "<absolute>"; };
 		E09988D90D9425F40054FBE6 /* annex */ = {isa = PBXFileReference; lastKnownFileType = folder; name = annex; path = /Users/kintel/code/checkout/Coin/include/Inventor/annex; sourceTree = "<absolute>"; };
 		E09988DA0D9425F40054FBE6 /* bundles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bundles; path = /Users/kintel/code/checkout/Coin/include/Inventor/bundles; sourceTree = "<absolute>"; };
@@ -3047,7 +3141,6 @@
 		E0FC49F70D92D50400EF3BB3 /* systemsanity.icc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemsanity.icc; path = ../Users/kintel/code/checkout/Coin/src/misc/systemsanity.icc; sourceTree = DEVELOPER_DIR; };
 		E0FC49FC0D92D50400EF3BB3 /* SoMPEGFrameRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoMPEGFrameRenderer.cpp; path = ../Users/kintel/code/checkout/Coin/src/mpeg/SoMPEGFrameRenderer.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC49FD0D92D50400EF3BB3 /* SoMPEGRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoMPEGRenderer.cpp; path = ../Users/kintel/code/checkout/Coin/src/mpeg/SoMPEGRenderer.cpp; sourceTree = DEVELOPER_DIR; };
-		E0FC4A000D92D50400EF3BB3 /* extra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = extra.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/extra.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A030D92D50400EF3BB3 /* SoCenterMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoCenterMode.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoCenterMode.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A040D92D50400EF3BB3 /* SoEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoEvent.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoEvent.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A050D92D50400EF3BB3 /* SoEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoEvent.h; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoEvent.h; sourceTree = DEVELOPER_DIR; };
@@ -3512,9 +3605,45 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		E011F1740D9AB716001D1675 /* scxml */ = {
+			isa = PBXGroup;
+			children = (
+				E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */,
+				E011F1780D9AB716001D1675 /* ScXML.cpp */,
+				E011F1790D9AB716001D1675 /* ScXMLAnchor.cpp */,
+				E011F17A0D9AB716001D1675 /* ScXMLCommonP.h */,
+				E011F17B0D9AB716001D1675 /* ScXMLDocument.cpp */,
+				E011F17C0D9AB716001D1675 /* ScXMLEvent.cpp */,
+				E011F17D0D9AB716001D1675 /* ScXMLFallbackInvoke.cpp */,
+				E011F17E0D9AB716001D1675 /* ScXMLFallbackInvoke.h */,
+				E011F17F0D9AB716001D1675 /* ScXMLFinal.cpp */,
+				E011F1800D9AB716001D1675 /* ScXMLHistory.cpp */,
+				E011F1810D9AB716001D1675 /* ScXMLInitial.cpp */,
+				E011F1820D9AB716001D1675 /* ScXMLInvoke.cpp */,
+				E011F1830D9AB716001D1675 /* ScXMLObject.cpp */,
+				E011F1840D9AB716001D1675 /* ScXMLOnEntry.cpp */,
+				E011F1850D9AB716001D1675 /* ScXMLOnExit.cpp */,
+				E011F1860D9AB716001D1675 /* ScXMLP.h */,
+				E011F1870D9AB716001D1675 /* ScXMLState.cpp */,
+				E011F1880D9AB716001D1675 /* ScXMLStateBase.cpp */,
+				E011F1890D9AB716001D1675 /* ScXMLStateMachine.cpp */,
+				E011F18A0D9AB716001D1675 /* ScXMLTransition.cpp */,
+				E011F18B0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.cpp */,
+				E011F18C0D9AB716001D1675 /* SoScXMLDebugInfoInvoke.h */,
+				E011F18D0D9AB716001D1675 /* SoScXMLEvent.cpp */,
+				E011F18E0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.cpp */,
+				E011F18F0D9AB716001D1675 /* SoScXMLScheduleRedrawInvoke.h */,
+				E011F1900D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.cpp */,
+				E011F1910D9AB716001D1675 /* SoScXMLScheduleTimerEventInvoke.h */,
+				E011F1920D9AB716001D1675 /* SoScXMLStateMachine.cpp */,
+			);
+			path = scxml;
+			sourceTree = "<group>";
+		};
 		E09989C40D9425FB0054FBE6 /* Public headers */ = {
 			isa = PBXGroup;
 			children = (
+				E011F1D50D9AB7FE001D1675 /* scxml */,
 				E09988D80D9425F40054FBE6 /* actions */,
 				E09988D90D9425F40054FBE6 /* annex */,
 				E09988DA0D9425F40054FBE6 /* bundles */,
@@ -5472,6 +5601,7 @@
 		E0FC46F10D92D50100EF3BB3 /* Coin src */ = {
 			isa = PBXGroup;
 			children = (
+				E011F1740D9AB716001D1675 /* scxml */,
 				E0FC46F20D92D50100EF3BB3 /* 3ds */,
 				E0FC46FA0D92D50100EF3BB3 /* actions */,
 				E0FC47160D92D50100EF3BB3 /* base */,
@@ -6297,6 +6427,8 @@
 		E0FC49AD0D92D50400EF3BB3 /* misc */ = {
 			isa = PBXGroup;
 			children = (
+				E011F20D0D9BED09001D1675 /* CoinResources.h */,
+				E011F1FE0D9BE986001D1675 /* CoinResources.cpp */,
 				E0FC49AF0D92D50400EF3BB3 /* AudioTools.cpp */,
 				E0FC49B00D92D50400EF3BB3 /* AudioTools.h */,
 				E0FC49B10D92D50400EF3BB3 /* CoinOffscreenGLCanvas.cpp */,
@@ -6392,7 +6524,21 @@
 		E0FC49FE0D92D50400EF3BB3 /* navigation */ = {
 			isa = PBXGroup;
 			children = (
-				E0FC4A000D92D50400EF3BB3 /* extra.cpp */,
+				E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */,
+				E011F1B20D9AB769001D1675 /* SoScXMLNavigation.cpp */,
+				E011F1B30D9AB769001D1675 /* SoScXMLNavigation.h */,
+				E011F1B40D9AB769001D1675 /* SoScXMLNavigationInvoke.cpp */,
+				E011F1B50D9AB769001D1675 /* SoScXMLNavigationInvoke.h */,
+				E011F1B60D9AB769001D1675 /* SoScXMLPanUtils.cpp */,
+				E011F1B70D9AB769001D1675 /* SoScXMLPanUtils.h */,
+				E011F1B80D9AB769001D1675 /* SoScXMLRotateUtils.cpp */,
+				E011F1B90D9AB769001D1675 /* SoScXMLRotateUtils.h */,
+				E011F1BA0D9AB769001D1675 /* SoScXMLSeekUtils.cpp */,
+				E011F1BB0D9AB769001D1675 /* SoScXMLSeekUtils.h */,
+				E011F1BC0D9AB769001D1675 /* SoScXMLSpinUtils.cpp */,
+				E011F1BD0D9AB769001D1675 /* SoScXMLSpinUtils.h */,
+				E011F1BE0D9AB769001D1675 /* SoScXMLZoomUtils.cpp */,
+				E011F1BF0D9AB769001D1675 /* SoScXMLZoomUtils.h */,
 				E0FC4A030D92D50400EF3BB3 /* SoCenterMode.cpp */,
 				E0FC4A040D92D50400EF3BB3 /* SoEvent.cpp */,
 				E0FC4A050D92D50400EF3BB3 /* SoEvent.h */,
@@ -6903,6 +7049,7 @@
 		E0FC4BB90D92D50600EF3BB3 /* xml */ = {
 			isa = PBXGroup;
 			children = (
+				E011F2110D9BEDA2001D1675 /* types.cpp */,
 				E0FC4BBB0D92D50600EF3BB3 /* attribute.cpp */,
 				E0FC4BBC0D92D50600EF3BB3 /* attributep.h */,
 				E0FC4BBD0D92D50600EF3BB3 /* document.cpp */,
@@ -7221,6 +7368,21 @@
 				E0998A640D942D5A0054FBE6 /* VsmLookup.h in Headers */,
 				E0998A680D942D680054FBE6 /* config.h in Headers */,
 				E0998A690D942D680054FBE6 /* setup.h in Headers */,
+				E011F1980D9AB717001D1675 /* ScXMLCommonP.h in Headers */,
+				E011F19C0D9AB717001D1675 /* ScXMLFallbackInvoke.h in Headers */,
+				E011F1A40D9AB717001D1675 /* ScXMLP.h in Headers */,
+				E011F1AA0D9AB717001D1675 /* SoScXMLDebugInfoInvoke.h in Headers */,
+				E011F1AD0D9AB717001D1675 /* SoScXMLScheduleRedrawInvoke.h in Headers */,
+				E011F1AF0D9AB717001D1675 /* SoScXMLScheduleTimerEventInvoke.h in Headers */,
+				E011F1C10D9AB769001D1675 /* SoScXMLNavigation.h in Headers */,
+				E011F1C30D9AB769001D1675 /* SoScXMLNavigationInvoke.h in Headers */,
+				E011F1C50D9AB769001D1675 /* SoScXMLPanUtils.h in Headers */,
+				E011F1C70D9AB769001D1675 /* SoScXMLRotateUtils.h in Headers */,
+				E011F1C90D9AB769001D1675 /* SoScXMLSeekUtils.h in Headers */,
+				E011F1CB0D9AB769001D1675 /* SoScXMLSpinUtils.h in Headers */,
+				E011F1CD0D9AB769001D1675 /* SoScXMLZoomUtils.h in Headers */,
+				E011F20E0D9BED09001D1675 /* CoinResources.h in Headers */,
+				E011F2100D9BED2C001D1675 /* SoScXMLViewUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7304,7 +7466,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ln -sfh /Library/Frameworks/SoQt.framework/Headers /Library/Frameworks/Inventor.framework/Headers/Qt\n\ncd $INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nmkdir include\nln -sfh ../../Headers include/Inventor\n";
+			shellScript = "cd $INSTALL_DIR/$PUBLIC_HEADERS_FOLDER_PATH\nln -sfh ../../../../SoQt.framework/Headers Qt\n\ncd $INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nmkdir include\nln -sfh ../../Headers include/Inventor\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -7856,7 +8018,6 @@
 				E0FC4EC90D92D50900EF3BB3 /* SoVertexArrayIndexer.cpp in Sources */,
 				E0FC4ECF0D92D50900EF3BB3 /* SoMPEGFrameRenderer.cpp in Sources */,
 				E0FC4ED00D92D50900EF3BB3 /* SoMPEGRenderer.cpp in Sources */,
-				E0FC4ED20D92D50900EF3BB3 /* extra.cpp in Sources */,
 				E0FC4ED50D92D50900EF3BB3 /* SoCenterMode.cpp in Sources */,
 				E0FC4ED60D92D50900EF3BB3 /* SoEvent.cpp in Sources */,
 				E0FC4ED80D92D50900EF3BB3 /* SoIdleMode.cpp in Sources */,
@@ -8179,6 +8340,37 @@
 				E0FC509A0D92D50900EF3BB3 /* xmltok_ns.c in Sources */,
 				E0FC509D0D92D50900EF3BB3 /* path.cpp in Sources */,
 				E0FC509F0D92D50900EF3BB3 /* utils.cpp in Sources */,
+				E011F1960D9AB717001D1675 /* ScXML.cpp in Sources */,
+				E011F1970D9AB717001D1675 /* ScXMLAnchor.cpp in Sources */,
+				E011F1990D9AB717001D1675 /* ScXMLDocument.cpp in Sources */,
+				E011F19A0D9AB717001D1675 /* ScXMLEvent.cpp in Sources */,
+				E011F19B0D9AB717001D1675 /* ScXMLFallbackInvoke.cpp in Sources */,
+				E011F19D0D9AB717001D1675 /* ScXMLFinal.cpp in Sources */,
+				E011F19E0D9AB717001D1675 /* ScXMLHistory.cpp in Sources */,
+				E011F19F0D9AB717001D1675 /* ScXMLInitial.cpp in Sources */,
+				E011F1A00D9AB717001D1675 /* ScXMLInvoke.cpp in Sources */,
+				E011F1A10D9AB717001D1675 /* ScXMLObject.cpp in Sources */,
+				E011F1A20D9AB717001D1675 /* ScXMLOnEntry.cpp in Sources */,
+				E011F1A30D9AB717001D1675 /* ScXMLOnExit.cpp in Sources */,
+				E011F1A50D9AB717001D1675 /* ScXMLState.cpp in Sources */,
+				E011F1A60D9AB717001D1675 /* ScXMLStateBase.cpp in Sources */,
+				E011F1A70D9AB717001D1675 /* ScXMLStateMachine.cpp in Sources */,
+				E011F1A80D9AB717001D1675 /* ScXMLTransition.cpp in Sources */,
+				E011F1A90D9AB717001D1675 /* SoScXMLDebugInfoInvoke.cpp in Sources */,
+				E011F1AB0D9AB717001D1675 /* SoScXMLEvent.cpp in Sources */,
+				E011F1AC0D9AB717001D1675 /* SoScXMLScheduleRedrawInvoke.cpp in Sources */,
+				E011F1AE0D9AB717001D1675 /* SoScXMLScheduleTimerEventInvoke.cpp in Sources */,
+				E011F1B00D9AB717001D1675 /* SoScXMLStateMachine.cpp in Sources */,
+				E011F1C00D9AB769001D1675 /* SoScXMLNavigation.cpp in Sources */,
+				E011F1C20D9AB769001D1675 /* SoScXMLNavigationInvoke.cpp in Sources */,
+				E011F1C40D9AB769001D1675 /* SoScXMLPanUtils.cpp in Sources */,
+				E011F1C60D9AB769001D1675 /* SoScXMLRotateUtils.cpp in Sources */,
+				E011F1C80D9AB769001D1675 /* SoScXMLSeekUtils.cpp in Sources */,
+				E011F1CA0D9AB769001D1675 /* SoScXMLSpinUtils.cpp in Sources */,
+				E011F1CC0D9AB769001D1675 /* SoScXMLZoomUtils.cpp in Sources */,
+				E011F1FF0D9BE986001D1675 /* CoinResources.cpp in Sources */,
+				E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */,
+				E011F2120D9BEDA2001D1675 /* types.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8201,14 +8393,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				DYLIB_COMPATIBILITY_VERSION = 61;
 				DYLIB_CURRENT_VERSION = 61;
 				FRAMEWORK_VERSION = C;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Inventor_Prefix.pch;
@@ -8221,6 +8412,7 @@
 					../../src,
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -8230,10 +8422,10 @@
 					"-DCOIN_INTERNAL",
 					"-DHAVE_CONFIG_H",
 				);
+				OTHER_LDFLAGS = "-headerpad_max_install_names";
 				PRODUCT_NAME = Inventor;
 				USE_HEADERMAP = NO;
 				WRAPPER_EXTENSION = framework;
-				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};
@@ -8241,18 +8433,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				DYLIB_COMPATIBILITY_VERSION = 61;
 				DYLIB_CURRENT_VERSION = 61;
 				FRAMEWORK_VERSION = C;
-				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Inventor_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
@@ -8264,6 +8450,7 @@
 					../../src,
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -8273,6 +8460,7 @@
 					"-DCOIN_INTERNAL",
 					"-DHAVE_CONFIG_H",
 				);
+				OTHER_LDFLAGS = "-headerpad_max_install_names";
 				PRODUCT_NAME = Inventor;
 				USE_HEADERMAP = NO;
 				WRAPPER_EXTENSION = framework;
