@@ -155,6 +155,11 @@ ScXML::readFile(const char * filename)
 
   ScXMLStateMachine * statemachine = ScXMLP::readXMLData(doc);
   cc_xml_doc_delete_x(doc);
+
+  if (statemachine) {
+    statemachine->setName(filename);
+  }
+
   return statemachine;
 }
 
