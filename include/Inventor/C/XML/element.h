@@ -51,6 +51,7 @@ COIN_DLL_API void cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * att
 COIN_DLL_API void cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs);
 
 COIN_DLL_API cc_xml_attr * cc_xml_elt_get_attribute(const cc_xml_elt * elt, const char * attrname);
+COIN_DLL_API int cc_xml_elt_get_num_attributes(const cc_xml_elt * elt);
 COIN_DLL_API const cc_xml_attr ** cc_xml_elt_get_attributes(const cc_xml_elt * elt);
 
 COIN_DLL_API int             cc_xml_elt_get_num_children(const cc_xml_elt * elt);

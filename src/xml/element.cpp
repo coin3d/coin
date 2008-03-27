@@ -268,7 +268,9 @@ cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr)
 void
 cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs)
 {
-  // FIXME: clear all and set, or just set the given attributes?
+  for (int c = 0; attrs[c] != NULL; ++c) {
+    cc_xml_elt_set_attribute_x(elt, attrs[c]);
+  }
 }
 
 cc_xml_attr *
@@ -281,6 +283,12 @@ cc_xml_elt_get_attribute(const cc_xml_elt * elt, const char * attrname)
       return elt->attributes[c];
   }
   return NULL;
+}
+
+int
+cc_xml_elt_get_num_attributes(const cc_xml_elt * elt)
+{
+  return elt->attributes.getLength();
 }
 
 const cc_xml_attr **
