@@ -2222,6 +2222,8 @@ AC_CONFIG_FILES([
         data/shaders/Makefile
         data/shaders/lights/Makefile
         data/shaders/vsm/Makefile
+        data/scxml/Makefile
+        data/scxml/navigation/Makefile
         man/Makefile
         man/man1/Makefile
         man/man3/Makefile
