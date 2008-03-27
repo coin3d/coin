@@ -48,6 +48,8 @@
 #include <Inventor/scxml/SoScXMLEvent.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
 
+#include "misc/CoinResources.h"
+
 #include "scxml/ScXMLP.h"
 #include "scxml/ScXMLFallbackInvoke.h"
 
@@ -137,6 +139,14 @@ ScXML::initClasses(void)
 ScXMLStateMachine *
 ScXML::readFile(const char * filename)
 {
+  if (strncmp(filename, "coin:", 5) == 0) { // is a "resource"
+    const char * buffer = NULL;
+    size_t buffersize = 0;
+    if (CoinResources::get(filename, buffer, buffersize)) {
+      return ScXML::readBuffer(buffer);
+    }
+  }
+
   cc_xml_doc * doc = cc_xml_doc_new();
   if (!cc_xml_doc_read_file_x(doc, filename)) {
     cc_xml_doc_delete_x(doc);
@@ -365,9 +375,10 @@ ScXMLP::readScXMLDocument(ScXMLObject * container, cc_xml_elt * elt, const char 
 
   // handle XML attributes
   assert(document && document->isOfType(ScXMLDocument::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs && attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     document->setAttribute(attrname, attrvalue);
@@ -456,9 +467,10 @@ ScXMLP::readScXMLState(ScXMLObject * container, cc_xml_elt * elt, const char * x
   ScXMLState * state = static_cast<ScXMLState *>(statetype.createInstance());
   assert(state && state->isOfType(ScXMLState::getClassTypeId()));
   state->setIsParallel(isparallel);
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     state->setAttribute(attrname, attrvalue);
@@ -639,9 +651,10 @@ ScXMLP::readScXMLTransition(ScXMLObject * container, cc_xml_elt * elt, const cha
   assert(transitiontype.canCreateInstance());
   ScXMLTransition * transition = static_cast<ScXMLTransition *>(transitiontype.createInstance());
   assert(transition && transition->isOfType(ScXMLTransition::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     transition->setAttribute(attrname, attrvalue);
@@ -696,9 +709,10 @@ ScXMLP::readScXMLInitial(ScXMLObject * container, cc_xml_elt * elt, const char *
   assert(initialtype.canCreateInstance());
   ScXMLInitial * initial = static_cast<ScXMLInitial *>(initialtype.createInstance());
   assert(initial && initial->isOfType(ScXMLInitial::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     initial->setAttribute(attrname, attrvalue);
@@ -754,9 +768,10 @@ ScXMLP::readScXMLFinal(ScXMLObject * container, cc_xml_elt * elt, const char * x
   assert(finaltype.canCreateInstance());
   ScXMLFinal * final = static_cast<ScXMLFinal *>(finaltype.createInstance());
   assert(final && final->isOfType(ScXMLFinal::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     final->setAttribute(attrname, attrvalue);
@@ -796,9 +811,10 @@ ScXMLP::readScXMLHistory(ScXMLObject * container, cc_xml_elt * elt, const char *
   assert(historytype.canCreateInstance());
   ScXMLHistory * history = static_cast<ScXMLHistory *>(historytype.createInstance());
   assert(history && history->isOfType(ScXMLHistory::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     history->setAttribute(attrname, attrvalue);
@@ -854,9 +870,10 @@ ScXMLP::readScXMLOnEntry(ScXMLObject * container, cc_xml_elt * elt, const char *
   assert(onentrytype.canCreateInstance());
   ScXMLOnEntry * onentry = static_cast<ScXMLOnEntry *>(onentrytype.createInstance());
   assert(onentry && onentry->isOfType(ScXMLOnEntry::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     onentry->setAttribute(attrname, attrvalue);
@@ -908,9 +925,10 @@ ScXMLP::readScXMLOnExit(ScXMLObject * container, cc_xml_elt * elt, const char * 
   assert(onexittype.canCreateInstance());
   ScXMLOnExit * onexit = static_cast<ScXMLOnExit *>(onexittype.createInstance());
   assert(onexit && onexit->isOfType(ScXMLOnExit::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     onexit->setAttribute(attrname, attrvalue);
@@ -962,9 +980,10 @@ ScXMLP::readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * 
   assert(anchortype.canCreateInstance());
   ScXMLAnchor * anchor = static_cast<ScXMLAnchor *>(anchortype.createInstance());
   assert(anchor && anchor->isOfType(ScXMLAnchor::getClassTypeId()));
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
   const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
   int c;
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     anchor->setAttribute(attrname, attrvalue);
@@ -997,11 +1016,12 @@ ScXMLP::readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * 
 ScXMLObject *
 ScXMLP::readScXMLInvoke(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns)
 {
-  const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
-  int c;
   const char * targettype = "";
   const char * source = "";
-  for (c = 0; attrs[c] != NULL; ++c) {
+  const int numattrs = cc_xml_elt_get_num_attributes(elt);
+  const cc_xml_attr ** attrs = cc_xml_elt_get_attributes(elt);
+  int c;
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     if (strcmp(attrname, "targettype") == 0) {
       targettype = cc_xml_attr_get_value(attrs[c]);
@@ -1016,7 +1036,7 @@ ScXMLP::readScXMLInvoke(ScXMLObject * container, cc_xml_elt * elt, const char * 
   ScXMLInvoke * invoke = static_cast<ScXMLInvoke *>(invoketype.createInstance());
   assert(invoke && invoke->isOfType(ScXMLInvoke::getClassTypeId()));
 
-  for (c = 0; attrs[c] != NULL; ++c) {
+  for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
     invoke->setAttribute(attrname, attrvalue);
