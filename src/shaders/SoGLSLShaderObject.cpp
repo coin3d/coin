@@ -24,11 +24,12 @@
 #include "shaders/SoGLSLShaderObject.h"
 
 #include <assert.h>
-
+#include <stdio.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 
 #include "glue/glp.h"
+#include "misc/SoGL.h"
 #include "shaders/SoGLSLShaderParameter.h"
 
 static int32_t soglshaderobject_idcounter = 1;
@@ -99,7 +100,7 @@ SoGLSLShaderObject::load(const char* srcStr)
   this->glctx->glShaderSourceARB(this->shaderHandle, 1, (const COIN_GLchar **)&srcStr, NULL);
   this->glctx->glCompileShaderARB(this->shaderHandle);
 
-  if (SoGLSLShaderObject::didOpenGLErrorOccur(this->getShaderType())) {
+  if (SoGLSLShaderObject::didOpenGLErrorOccur("SoGLSLShaderObject::load()")) {
     this->shaderHandle = 0;
     return;
   }
@@ -187,30 +188,29 @@ SoGLSLShaderObject::printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int 
 }
 
 SbBool
-SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
+SoGLSLShaderObject::didOpenGLErrorOccur(const SbString & source)
 {
-  // FIXME: improve on this function -- catching up on gl errors
-  // should perhaps better be part of the cc_glglue
-  // interface. 20050124 mortene.
-
-  GLenum glErr;
   SbBool retCode = FALSE;
+  SbBool glerror_debug = sogl_glerror_debugging();
 
-  glErr = glGetError();
+  // only do a glFlush if COIN_GLERROR_DEBUGGING is set since it can
+  // degrade performance a lot. If glFlush is not executed here, gl
+  // errors from the shaders might not get caught until after the
+  // geometry is rendered, which makes debugging really confusing.
+  if (glerror_debug) {
+    glFlush();
+  } 
+
+  GLenum glErr = glGetError();
   while (glErr != GL_NO_ERROR) {
-    SbString s("GLSL");
-    switch (objType) {
-    case 0: s += "vertexShader "; break;
-    case 1: s += "fragmentShader "; break;
-    case 2: s += "geometryShader "; break;
-    default: ;// do nothing
-    }
-    SoDebugError::post("SoGLSLShaderObject::didOpenGLErrorOccur",
-                       "%s error: '%s'",
-                       s.getString(),
-                       coin_glerror_string(glErr));
+    SoDebugError::post(source.getString(), "error: '%s' %s", 
+                       coin_glerror_string(glErr),
+                       glerror_debug ? "":
+                       "(set envvar COIN_GLERROR_DEBUGGING=1 "
+                       "and re-run to get more information)");
+    
     retCode = TRUE;
-    glErr = glGetError(); // FIXME: what is this for? 20050124 mortene.
+    glErr = glGetError();
   }
   return retCode;
 }

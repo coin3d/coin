@@ -27,6 +27,7 @@
 #include <Inventor/misc/SoContextHandler.h>
 
 #include "shaders/SoGLSLShaderObject.h"
+#include <Inventor/errors/SoDebugError.h>
 #include "glue/glp.h"
 
 // *************************************************************************
@@ -100,7 +101,12 @@ SoGLSLShaderProgram::enable(const cc_glglue * g)
   this->ensureLinking(g);
 
   if (this->isExecutable) {
-    g->glUseProgramObjectARB(this->getProgramHandle(g, TRUE));
+    COIN_GLhandle programhandle = this->getProgramHandle(g, TRUE);
+    g->glUseProgramObjectARB(programhandle);
+
+    if (SoGLSLShaderObject::didOpenGLErrorOccur("SoGLSLShaderProgram::enable")) {
+      SoGLSLShaderObject::printInfoLog(g, programhandle, 0);
+    }
   }
 }
 
@@ -150,7 +156,7 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
 
   if (cnt > 0) {
     int i;
-    GLint didLink;
+    GLint didLink = 0;
 
     for (i = 0; i < cnt; i++) {
       this->shaderObjects[i]->attach(programHandle);
@@ -165,7 +171,7 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
 
     g->glLinkProgramARB(programHandle);
 
-    if (SoGLSLShaderObject::didOpenGLErrorOccur(0)) {
+    if (SoGLSLShaderObject::didOpenGLErrorOccur("SoGLSLShaderProgram::ensureLinking")) {
       SoGLSLShaderObject::printInfoLog(g, programHandle, 0);
     }
     g->glGetObjectParameterivARB(programHandle,

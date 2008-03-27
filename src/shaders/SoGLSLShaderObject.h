@@ -57,8 +57,8 @@ public:
   void detach(void);
   SbBool isAttached(void) const;
 
-  // objType 0: program 1: vertexShader 2: fragmentShader
-  static SbBool didOpenGLErrorOccur(int objType);
+  // source should be the name of the calling function
+  static SbBool didOpenGLErrorOccur(const SbString & source);
   static void printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int objType);
 
   virtual void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value);
