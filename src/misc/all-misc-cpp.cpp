@@ -61,4 +61,4 @@
 #include "SoVertexArrayIndexer.cpp"
 #include "SoVBO.cpp"
 #include "SoShaderGenerator.cpp"
-
+#include "CoinResources.cpp"

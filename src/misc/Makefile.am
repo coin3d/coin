@@ -46,7 +46,8 @@ RegularSources = \
 	CoinStaticObjectInDLL.cpp \
 	CoinOffscreenGLCanvas.cpp \
 	SoDebug.cpp \
-	SoJavaScriptEngine.cpp
+	SoJavaScriptEngine.cpp \
+        CoinResources.cpp
 
 LinkHackSources = \
 	all-misc-cpp.cpp
@@ -71,7 +72,8 @@ PrivateHeaders = \
         SoSceneManagerP.h \
         SoRenderManagerP.h \
 	cppmangle.icc \
-	systemsanity.icc
+	systemsanity.icc \
+        CoinResources.h
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
