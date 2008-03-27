@@ -80,6 +80,8 @@ protected:
 private:
   SbPimplPtr<SoEventManagerP> pimpl;
 
+  SoEventManager(const SoEventManager & rhs); // N/A
+  SoEventManager & operator = (const SoEventManager & rhs); // N/A
 };
 
 #endif // !COIN_SOEVENTMANAGER_H
