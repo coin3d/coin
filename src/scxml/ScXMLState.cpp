@@ -27,6 +27,7 @@
 #include <string.h>
 #include <algorithm>
 
+#include <Inventor/C/tidbits.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLOnExit.h>
 #include <Inventor/scxml/ScXMLOnEntry.h>
@@ -200,7 +201,8 @@ ScXMLState::setTaskXMLAttr(const char * taskstr)
     strcpy(buffer, taskstr);
     this->task = buffer;
     // acceptable truth-true values for boolean argument:
-    if (strcasecmp(this->task, "true") == 0) {
+    if (strlen(this->task) == 4 &&
+        coin_strncasecmp(this->task, "true", 4) == 0) {
       this->istask = TRUE;
     }
     else if (strcmp(this->task, "1") == 0) {
