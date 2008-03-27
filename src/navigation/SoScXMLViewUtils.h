@@ -1,3 +1,6 @@
+#ifndef COIN_SOSCXMLVIEWUTILS_H
+#define COIN_SOSCXMLVIEWUTILS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,29 +24,21 @@
  *
 \**************************************************************************/
 
-#include "SoScXMLNavigation.cpp"
-#include "SoScXMLNavigationInvoke.cpp"
-#include "SoScXMLPanUtils.cpp"
-#include "SoScXMLRotateUtils.cpp"
-#include "SoScXMLSeekUtils.cpp"
-#include "SoScXMLSpinUtils.cpp"
-#include "SoScXMLZoomUtils.cpp"
-#include "SoScXMLViewUtils.cpp"
+#include "navigation/SoScXMLNavigationInvoke.h"
 
-// old system - might not be possible to obsolete this for now
-#include "SoCenterMode.cpp"
-#include "SoIdleMode.cpp"
-#include "SoNavigationControl.cpp"
-#include "SoNavigationMode.cpp"
-#include "SoNavigationState.cpp"
-#include "SoNavigationSystem.cpp"
-#include "SoNavigationVehicle.cpp"
-#include "SoOrthoCenterMode.cpp"
-#include "SoPanMode.cpp"
-#include "SoPickMode.cpp"
-#include "SoPitchMode.cpp"
-#include "SoRollMode.cpp"
-#include "SoRotateMode.cpp"
-#include "SoYawMode.cpp"
-#include "SoZoomMode.cpp"
-#include "SoNavigation.cpp"
+// *************************************************************************
+
+class SoScXMLViewAll : public SoScXMLNavigationInvoke {
+  typedef SoScXMLNavigationInvoke inherited;
+  SCXML_OBJECT_HEADER(SoScXMLViewAll);
+
+public:
+  static void initClass(void);
+
+  void invoke(const ScXMLStateMachine * statemachine) const;
+
+}; // SoScXMLViewAll
+
+// *************************************************************************
+
+#endif // !COIN_SOSCXMLVIEWUTILS_H

@@ -21,29 +21,37 @@
  *
 \**************************************************************************/
 
-#include "SoScXMLNavigation.cpp"
-#include "SoScXMLNavigationInvoke.cpp"
-#include "SoScXMLPanUtils.cpp"
-#include "SoScXMLRotateUtils.cpp"
-#include "SoScXMLSeekUtils.cpp"
-#include "SoScXMLSpinUtils.cpp"
-#include "SoScXMLZoomUtils.cpp"
-#include "SoScXMLViewUtils.cpp"
+#include "navigation/SoScXMLViewUtils.h"
 
-// old system - might not be possible to obsolete this for now
-#include "SoCenterMode.cpp"
-#include "SoIdleMode.cpp"
-#include "SoNavigationControl.cpp"
-#include "SoNavigationMode.cpp"
-#include "SoNavigationState.cpp"
-#include "SoNavigationSystem.cpp"
-#include "SoNavigationVehicle.cpp"
-#include "SoOrthoCenterMode.cpp"
-#include "SoPanMode.cpp"
-#include "SoPickMode.cpp"
-#include "SoPitchMode.cpp"
-#include "SoRollMode.cpp"
-#include "SoRotateMode.cpp"
-#include "SoYawMode.cpp"
-#include "SoZoomMode.cpp"
-#include "SoNavigation.cpp"
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
+#include <Inventor/scxml/ScXML.h>
+
+SCXML_OBJECT_SOURCE(SoScXMLViewAll);
+
+void
+SoScXMLViewAll::initClass(void)
+{
+  SCXML_INVOKE_INIT_CLASS(SoScXMLViewAll, SoScXMLNavigationInvoke,
+                          SCXML_COIN_NS, "sim.coin3d.coin", "ViewAll");
+}
+
+void
+SoScXMLViewAll::invoke(const ScXMLStateMachine * statemachinearg) const
+{
+  assert(statemachinearg);
+  if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+    return;
+  }
+
+  const SoScXMLStateMachine * statemachine =
+    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+
+  const SbViewportRegion & viewport = statemachine->getViewportRegion();
+  SoCamera * camera = statemachine->getActiveCamera();
+  if (!camera) return;
+  SoNode * scenegraph = statemachine->getSceneGraphRoot();
+  if (!scenegraph) return;
+  camera->viewAll(scenegraph, viewport);
+}

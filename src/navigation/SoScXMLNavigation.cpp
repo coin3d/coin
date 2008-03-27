@@ -28,6 +28,7 @@
 #include "navigation/SoScXMLZoomUtils.h"
 #include "navigation/SoScXMLSpinUtils.h"
 #include "navigation/SoScXMLSeekUtils.h"
+#include "navigation/SoScXMLViewUtils.h"
 
 #include "navigation/examiner-xml.cpp"
 
@@ -62,6 +63,8 @@ SoScXMLNavigation::initClasses(void)
   SoScXMLSetSeek::initClass();
   SoScXMLUpdateSeek::initClass();
   SoScXMLEndSeek::initClass();
+
+  SoScXMLViewAll::initClass();
 
   CoinResources::set("coin:scxml/navigation/examiner.xml",
                      reinterpret_cast<const char *>(&(examiner_xml[0])),

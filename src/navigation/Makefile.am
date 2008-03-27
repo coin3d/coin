@@ -6,6 +6,7 @@ RegularSources = \
         SoScXMLSeekUtils.cpp \
         SoScXMLSpinUtils.cpp \
         SoScXMLZoomUtils.cpp \
+        SoScXMLViewUtils.cpp \
         \
         SoCenterMode.cpp \
         SoIdleMode.cpp \
@@ -37,6 +38,7 @@ PrivateHeaders = \
         SoScXMLSeekUtils.h \
         SoScXMLSpinUtils.h \
         SoScXMLZoomUtils.h \
+        SoScXMLViewUtils.h \
         \
         SoEvent.h
 
