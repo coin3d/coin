@@ -288,6 +288,7 @@ SoEventManager::processEvent(const SoEvent * const event)
 
   SbBool status = FALSE;
 
+  int i = 0;
   switch (PRIVATE(this)->navigationstate) { 
   case SoEventManager::NO_NAVIGATION:
     status = this->actuallyProcessEvent(event);
@@ -298,7 +299,7 @@ SoEventManager::processEvent(const SoEvent * const event)
       if (PRIVATE(this)->navigationsystem->processEvent(event))
         status = TRUE;
     }
-    for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
+    for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
       sm->setViewportRegion(vp);
       if (sm->processSoEvent(event))
@@ -315,7 +316,7 @@ SoEventManager::processEvent(const SoEvent * const event)
       if (PRIVATE(this)->navigationsystem->processEvent(event))
         status = TRUE;
     }
-    for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
+    for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
       sm->setViewportRegion(vp);
       if (sm->processSoEvent(event))
