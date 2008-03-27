@@ -662,6 +662,8 @@ SoNode::initClasses(void)
   SoTextureCoordinateNormalMap::initClass();
   SoTextureCoordinateReflectionMap::initClass();
   SoTextureCoordinateObject::initClass();
+
+  SoDepthBuffer::initClass();
 }
 
 /*!
