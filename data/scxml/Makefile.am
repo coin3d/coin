@@ -1,3 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = draggerDefaults shaders scxml
+SUBDIRS = navigation
+
+EXTRA_DIST = xml2cpp.pl
+
