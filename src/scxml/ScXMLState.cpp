@@ -57,7 +57,7 @@ ScXMLState::initClass(void)
 // *************************************************************************
 
 ScXMLState::ScXMLState(void)
-  : parallel(FALSE),
+  : isparallel(FALSE), istask(FALSE),
     src(NULL), task(NULL),
     onentryptr(NULL), onexitptr(NULL), initialptr(NULL), invokeptr(NULL)
 {
@@ -146,15 +146,15 @@ ScXMLState::~ScXMLState(void)
 // *************************************************************************
 
 void
-ScXMLState::setIsParallel(SbBool isparallel)
+ScXMLState::setIsParallel(SbBool isparallelarg)
 {
-  this->parallel = isparallel;
+  this->isparallel = isparallelarg;
 }
 
 SbBool
 ScXMLState::isParallel(void) const
 {
-  return this->parallel;
+  return this->isparallel;
 }
 
 // *************************************************************************
@@ -165,11 +165,8 @@ ScXMLState::handleXMLAttributes(void)
   if (!inherited::handleXMLAttributes()) return FALSE;
 
   this->src = this->getAttribute("src");
-  this->task = this->getAttribute("task");
-
-  if (this->task) {
-    // FIXME: verify booleanness of task value
-  }
+  this->task = NULL;
+  this->setTaskXMLAttr(this->getAttribute("task"));
 
   return TRUE;
 }
@@ -197,10 +194,18 @@ ScXMLState::setTaskXMLAttr(const char * taskstr)
     delete [] const_cast<char *>(this->task);
   }
   this->task = NULL;
+  this->istask = FALSE;
   if (taskstr) {
     char * buffer = new char [ strlen(taskstr) + 1 ];
     strcpy(buffer, taskstr);
     this->task = buffer;
+    // acceptable truth-true values for boolean argument:
+    if (strcasecmp(this->task, "true") == 0) {
+      this->istask = TRUE;
+    }
+    else if (strcmp(this->task, "1") == 0) {
+      this->istask = TRUE;
+    }
   }
 }
 
@@ -240,6 +245,10 @@ ScXMLState::invoke(const ScXMLStateMachine * statemachine)
 
 // *************************************************************************
 
+/*!
+  Returns TRUE if this is an "atomic state", which means that it has no
+  sub-states but contains executable content.
+*/
 SbBool
 ScXMLState::isAtomicState(void) const
 {
@@ -248,3 +257,15 @@ ScXMLState::isAtomicState(void) const
           (this->invokeptr != NULL));
 }
 
+/*!
+  Returns TRUE if this state was tagged as a "task".  "Tasks" will cause
+  state change callbacks to be invoked in the ScXMLStateMachine as they
+  are entered and exited, but other states will not.
+
+  \sa ScXMLStateMachine::addStateChangeCallback
+*/
+SbBool
+ScXMLState::isTask(void) const
+{
+  return this->istask;
+}

@@ -63,7 +63,7 @@ public:
 
   virtual SbBool handleXMLAttributes(void);
 
-  //
+  // children...
   virtual void setOnEntry(const ScXMLOnEntry * onentry);
   virtual const ScXMLOnEntry * getOnEntry(void) const;
 
@@ -109,7 +109,7 @@ public:
   virtual void removeAnchor(const ScXMLAnchor * anchor);
   virtual void clearAllAnchors(void);
 
-  // datamodel
+  // no datamodel support yet
 
   virtual void setInvoke(const ScXMLInvoke * invoke);
   virtual const ScXMLInvoke * getInvoke(void) const;
@@ -117,9 +117,11 @@ public:
   virtual void invoke(const ScXMLStateMachine * statemachine);
 
   SbBool isAtomicState(void) const;
+  SbBool isTask(void) const;
 
 protected:
-  SbBool parallel;
+  SbBool isparallel;
+  SbBool istask;
 
   const char * src;
   const char * task;
