@@ -57,6 +57,8 @@ class ScXMLStateMachineP {
 public:
   ScXMLStateMachineP(void)
     : pub(NULL),
+      active(FALSE), finished(FALSE),
+      name(SbName::empty()), description(NULL),
       currentevent(NULL),
       isprocessingqueue(FALSE),
       initializer(NULL)
@@ -65,11 +67,23 @@ public:
 
   ScXMLStateMachine * pub;
 
+  SbBool active;
+  SbBool finished;
+
+  SbName name;
+  ScXMLDocument * description;
+
+  // delete callbacks:
   typedef std::pair<ScXMLStateMachineDeleteCB *, void *> DeleteCBInfo;
   typedef std::vector<DeleteCBInfo> DeleteCallbackList;
   DeleteCallbackList deletecallbacklist;
+  void invokeDeleteCallbacks(void);
 
-  void invokeDeleteCallbacks(const ScXMLStateMachine * statemachine);
+  // state change callbacks:
+  typedef std::pair<ScXMLStateChangeCB *, void *> StateChangeCBInfo;
+  typedef std::vector<StateChangeCBInfo> StateChangeCallbackList;
+  StateChangeCallbackList statechangecallbacklist;
+  void invokeStateChangeCallbacks(const char * identifier, SbBool enterstate);
 
   const ScXMLEvent * currentevent;
 
@@ -82,16 +96,16 @@ public:
   void queueInternalEvent(const SbName & eventid);
 
 
-  // name->object map
-
   boost::scoped_ptr<ScXMLTransition> initializer;
 
   std::vector<const ScXMLObject *> activestatelist;
 
-  std::map<const char *, const ScXMLObject *> identifiermap;
+  // name->object map
+  typedef std::map<const char *, const ScXMLObject *> IdentifierMap;
+  IdentifierMap identifiermap;
 
   void fillIdentifierMap(const ScXMLObject * object);
-  const ScXMLObject * getObjectByIdentifier(SbName identifier);
+  const ScXMLObject * getObjectByIdentifier(SbName identifier) const;
 
   typedef std::pair<const ScXMLObject *, const ScXMLTransition *> StateTransition;
   typedef std::vector<StateTransition> TransitionList;
@@ -117,19 +131,17 @@ ScXMLStateMachine::initClass(void)
 }
 
 ScXMLStateMachine::ScXMLStateMachine(void)
-  : name(SbName::empty()), description(NULL),
-    active(FALSE), finished(FALSE)
 {
   PRIVATE(this)->pub = this;
 }
 
 ScXMLStateMachine::~ScXMLStateMachine(void)
 {
-  PRIVATE(this)->invokeDeleteCallbacks(this);
+  PRIVATE(this)->invokeDeleteCallbacks();
 
-  if (this->description) {
-    delete this->description;
-    this->description = NULL;
+  if (PRIVATE(this)->description) {
+    delete PRIVATE(this)->description;
+    PRIVATE(this)->description = NULL;
   }
 }
 
@@ -138,16 +150,31 @@ ScXMLStateMachine::~ScXMLStateMachine(void)
 void
 ScXMLStateMachine::setName(const SbName & nameobj)
 {
-  this->name = nameobj;
+  PRIVATE(this)->name = nameobj;
+}
+
+const SbName &
+ScXMLStateMachine::getName(void) const
+{
+  return PRIVATE(this)->name;
 }
 
 void
 ScXMLStateMachine::setDescription(ScXMLDocument * document)
 {
-  this->description = document;
-
+  PRIVATE(this)->description = document;
+  PRIVATE(this)->initializer.reset(NULL);
+  PRIVATE(this)->active = FALSE;
+  PRIVATE(this)->finished = FALSE;
+  PRIVATE(this)->activestatelist.clear();
   PRIVATE(this)->identifiermap.clear();
-  PRIVATE(this)->fillIdentifierMap(this->description);
+  PRIVATE(this)->fillIdentifierMap(PRIVATE(this)->description);
+}
+
+const ScXMLDocument *
+ScXMLStateMachine::getDescription(void) const
+{
+  return PRIVATE(this)->description;
 }
 
 // *************************************************************************
@@ -158,9 +185,9 @@ ScXMLStateMachine::setDescription(ScXMLDocument * document)
 void
 ScXMLStateMachine::initialize(void)
 {
-  assert(!this->active);
-  this->active = TRUE;
-  this->finished = FALSE;
+  assert(!PRIVATE(this)->active);
+  PRIVATE(this)->active = TRUE;
+  PRIVATE(this)->finished = FALSE;
   PRIVATE(this)->activestatelist.clear();
   PRIVATE(this)->isprocessingqueue = TRUE;
   this->processOneEvent(NULL); // process the initialstate initializer
@@ -291,7 +318,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransition);
-      PRIVATE(this)->initializer->setTargetXMLAttr(this->description->getAttribute("initialstate"));
+      PRIVATE(this)->initializer->setTargetXMLAttr(PRIVATE(this)->description->getAttribute("initialstate"));
     }
     transitions.push_back(ScXMLStateMachineP::StateTransition(NULL, PRIVATE(this)->initializer.get()));
   } else {
@@ -523,7 +550,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 SbBool
 ScXMLStateMachine::isActive(void) const
 {
-  return this->active;
+  return PRIVATE(this)->active;
 }
 
 /*!
@@ -532,7 +559,7 @@ ScXMLStateMachine::isActive(void) const
 SbBool
 ScXMLStateMachine::isFinished(void) const
 {
-  return this->finished;
+  return PRIVATE(this)->finished;
 }
 
 // *************************************************************************
@@ -584,6 +611,16 @@ ScXMLStateMachine::getActiveState(int idx) const
   return PRIVATE(this)->activestatelist.at(idx);
 }
 
+/*!
+  Returns the state machine state object with the given identifier, or NULL
+  if no object is found that has the given identifier.
+*/
+const ScXMLObject *
+ScXMLStateMachine::getState(const char * identifier) const
+{
+  return PRIVATE(this)->getObjectByIdentifier(identifier);
+}
+
 // *************************************************************************
 
 /*!
@@ -612,12 +649,71 @@ ScXMLStateMachine::removeDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * u
   }
 }
 
+/*
+  Invoke all the delete callbacks.
+*/
+
 void
-ScXMLStateMachineP::invokeDeleteCallbacks(const ScXMLStateMachine * statemachine)
+ScXMLStateMachineP::invokeDeleteCallbacks(void)
 {
-  DeleteCallbackList::iterator it = this->deletecallbacklist.begin();
+  DeleteCallbackList::const_iterator it = this->deletecallbacklist.begin();
   while (it != this->deletecallbacklist.end()) {
-    (it->first)(it->second, statemachine);
+    (it->first)(it->second, PUBLIC(this));
+    ++it;
+  }
+}
+
+// *************************************************************************
+
+/*!
+  \var ScXMLStateChangeCB
+
+  This callback type is for notifying listeners on when the state machine
+  enters and exits states that are tagged as "tasks" for logging purposes.
+  This is what the Boolean "task" attribute in the state element sets up.
+
+  The \a success argument is currently unsupported (will always be TRUE),
+  but has been preemptively added to avoid a signature change later.
+
+  \sa addStateChangeCallback
+*/
+
+/*!
+  Registers a callback to be called when the state machine object is being
+  deleted.
+*/
+void
+ScXMLStateMachine::addStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
+{
+  PRIVATE(this)->statechangecallbacklist.push_back(ScXMLStateMachineP::StateChangeCBInfo(callback, userdata));
+}
+
+/*!
+  Unregisters a callback to be called when the state machine object is being
+  deleted.
+*/
+void
+ScXMLStateMachine::removeStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
+{
+  ScXMLStateMachineP::StateChangeCallbackList::iterator findit =
+    std::find(PRIVATE(this)->statechangecallbacklist.begin(),
+              PRIVATE(this)->statechangecallbacklist.end(),
+              ScXMLStateMachineP::StateChangeCBInfo(callback, userdata));
+  if (findit != PRIVATE(this)->statechangecallbacklist.end()) {
+    PRIVATE(this)->statechangecallbacklist.erase(findit);
+  }
+}
+
+/*
+  Invoke all the state change callbacks.
+*/
+void
+ScXMLStateMachineP::invokeStateChangeCallbacks(const char * identifier, SbBool enterstate)
+{
+  StateChangeCallbackList::const_iterator it =
+    this->statechangecallbacklist.begin();
+  while (it != this->statechangecallbacklist.end()) {
+    (it->first)(it->second, PUBLIC(this), identifier, enterstate, TRUE);
     ++it;
   }
 }
@@ -730,9 +826,9 @@ ScXMLStateMachineP::fillIdentifierMap(const ScXMLObject * object)
 }
 
 const ScXMLObject *
-ScXMLStateMachineP::getObjectByIdentifier(SbName identifier)
+ScXMLStateMachineP::getObjectByIdentifier(SbName identifier) const
 {
-  std::map<const char *, const ScXMLObject *>::iterator it =
+  std::map<const char *, const ScXMLObject *>::const_iterator it =
     this->identifiermap.find(identifier.getString());
   if (it != this->identifiermap.end()) {
     return it->second;
@@ -782,21 +878,18 @@ ScXMLStateMachineP::findTransitions(TransitionList & transitions, const ScXMLObj
   }
 }
 
+// *************************************************************************
+
 void
 ScXMLStateMachineP::exitState(const ScXMLObject * object)
 {
   assert(object);
-  if (object->isOfType(ScXMLFinal::getClassTypeId())) {
-    const ScXMLFinal * final = static_cast<const ScXMLFinal *>(object);
-    //const char * id = final->getIdXMLAttr();
-    //SoDebugError::postInfo("ScXMLStateMachineP::exitState",
-    //                       "exiting <final> %s", id);
-  }
-  else if (object->isOfType(ScXMLState::getClassTypeId())) {
+  if (object->isOfType(ScXMLState::getClassTypeId())) {
     const ScXMLState * state = static_cast<const ScXMLState *>(object);
-    //const char * id = state->getIdXMLAttr();
-    //SoDebugError::postInfo("ScXMLStateMachineP::exitState",
-    //                       "exiting <state> %s", id);
+    const char * id = state->getIdXMLAttr();
+    if (state->isTask()) {
+      this->invokeStateChangeCallbacks(id, FALSE);
+    }
     const ScXMLOnExit * onexit = state->getOnExit();
     if (onexit) {
       const_cast<ScXMLOnExit *>(onexit)->invoke(PUBLIC(this));
@@ -808,20 +901,19 @@ void
 ScXMLStateMachineP::enterState(const ScXMLObject * object)
 {
   assert(object);
+
   if (object->isOfType(ScXMLFinal::getClassTypeId())) {
-    // Post event "ParentID.done" to the state machine
+    // When entering a <final>, ParentID.done should be posted
     const ScXMLFinal * final = static_cast<const ScXMLFinal *>(object);
-    //{
-    //  const char * id = final->getIdXMLAttr();
-    //  SoDebugError::postInfo("ScXMLStateMachineP::enterState",
-    //                         "entering <final> %s", id);
-    //}
     const ScXMLObject * container = final->getContainer();
     assert(container);
     const char * id = container->getAttribute("id");
     if (!id || strlen(id) == 0) {
       if (container->isOfType(ScXMLDocument::getClassTypeId())) {
-        // what to post here?
+        // there is not ParentID to post a ParentID.done event in
+        // this case. study SCXML state to see what to do?
+        this->finished = TRUE;
+        this->active = FALSE;
       } else {
         SoDebugError::post("ScXMLStateMachineP::enterState",
                            "<final> container has no id - can't post done-event");
@@ -834,9 +926,10 @@ ScXMLStateMachineP::enterState(const ScXMLObject * object)
   }
   else if (object->isOfType(ScXMLState::getClassTypeId())) {
     const ScXMLState * state = static_cast<const ScXMLState *>(object);
-    //const char * id = state->getIdXMLAttr();
-    //SoDebugError::postInfo("ScXMLStateMachineP::enterState",
-    //                       "entering <state> %s", id);
+    const char * id = state->getIdXMLAttr();
+    if (state->isTask()) {
+      this->invokeStateChangeCallbacks(id, TRUE);
+    }
     const ScXMLOnEntry * onentry = state->getOnEntry();
     if (onentry) {
       const_cast<ScXMLOnEntry *>(onentry)->invoke(PUBLIC(this));

@@ -35,7 +35,13 @@ class ScXMLStateBase;
 class ScXMLStateMachine;
 class ScXMLStateMachineP;
 
-typedef void ScXMLStateMachineDeleteCB(void * data, const ScXMLStateMachine * sm);
+typedef void ScXMLStateMachineDeleteCB(void * userdata,
+                                       ScXMLStateMachine * statemachine);
+typedef void ScXMLStateChangeCB(void * userdata,
+                                ScXMLStateMachine * statemachine,
+                                const char * stateidentifier,
+                                SbBool enterstate,
+                                SbBool success);
 
 class COIN_DLL_API ScXMLStateMachine : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -48,10 +54,10 @@ public:
   virtual ~ScXMLStateMachine(void);
 
   virtual void setName(const SbName & name);
-  const SbName & getName(void) const { return this->name; }
+  const SbName & getName(void) const;
 
   virtual void setDescription(ScXMLDocument * document);
-  const ScXMLDocument * getDescription(void) const { return this->description; }
+  const ScXMLDocument * getDescription(void) const;
 
   virtual void initialize(void);
 
@@ -62,28 +68,26 @@ public:
   virtual SbBool isActive(void) const;
   virtual SbBool isFinished(void) const;
 
-
-
   virtual const ScXMLEvent * getCurrentEvent(void) const;
 
   virtual int getNumActiveStates(void) const;
   virtual const ScXMLObject * getActiveState(int idx) const;
 
-  virtual void addDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * userdata);
-  virtual void removeDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * userdata);
+  virtual const ScXMLObject * getState(const char * identifier) const;
 
+  virtual void addDeleteCallback(ScXMLStateMachineDeleteCB * callback,
+                                 void * userdata);
+  virtual void removeDeleteCallback(ScXMLStateMachineDeleteCB * callback,
+                                    void * userdata);
+
+  virtual void addStateChangeCallback(ScXMLStateChangeCB * callback,
+                                      void * userdata);
+  virtual void removeStateChangeCallback(ScXMLStateChangeCB * callback,
+                                         void * userdata);
 protected:
   virtual SbBool processOneEvent(const ScXMLEvent * event);
 
   virtual void setCurrentEvent(const ScXMLEvent * event);
-
-protected:
-  SbName name;
-
-  ScXMLDocument * description;
-
-  SbBool active;
-  SbBool finished;
 
 private:
   ScXMLStateMachine(const ScXMLStateMachine & rhs); // N/A
