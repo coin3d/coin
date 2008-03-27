@@ -314,6 +314,7 @@ PrivateHeaders = \
 ObsoleteHeaders = 
 
 
+# BEGIN TEMPLATE Make-Common(navigation, navigation)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -910,6 +911,11 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libnavigationincHEADERS
 
+
+update-builtin-resources: $(srcdir)/examiner-xml.cpp
+
+$(srcdir)/examiner-xml.cpp: $(top_srcdir)/data/scxml/navigation/examiner.xml
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ examiner_xml
 
 # this rule causes a make warning, so we remove it when it is not in use
 navigation.lst: Makefile $(navigation_lst_OBJECTS)

@@ -44,7 +44,12 @@ PrivateHeaders = \
 
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(navigation, navigation)
+update-builtin-resources: $(srcdir)/examiner-xml.cpp
+
+$(srcdir)/examiner-xml.cpp: $(top_srcdir)/data/scxml/navigation/examiner.xml
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ examiner_xml
+
+# BEGIN TEMPLATE Make-Common(navigation, navigation)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
