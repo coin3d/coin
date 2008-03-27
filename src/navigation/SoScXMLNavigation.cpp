@@ -29,6 +29,10 @@
 #include "navigation/SoScXMLSpinUtils.h"
 #include "navigation/SoScXMLSeekUtils.h"
 
+#include "navigation/examiner-xml.cpp"
+
+#include "misc/CoinResources.h"
+
 void
 SoScXMLNavigation::initClasses(void)
 {
@@ -58,4 +62,9 @@ SoScXMLNavigation::initClasses(void)
   SoScXMLSetSeek::initClass();
   SoScXMLUpdateSeek::initClass();
   SoScXMLEndSeek::initClass();
+
+  CoinResources::set("coin:scxml/navigation/examiner.xml",
+                     reinterpret_cast<const char *>(&(examiner_xml[0])),
+                     sizeof(examiner_xml));
 }
+
