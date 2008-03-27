@@ -381,7 +381,7 @@ SoVBO::shouldRenderAsVertexArrays(SoState * state,
   // don't render as vertex arrays if there are very few elements to
   // be rendered. The VA setup overhead would make it slower than just
   // doing plain immediate mode rendering.
-  return (numdata >= 50) && vbo_render_as_vertex_arrays;
+  return (numdata >= vbo_vertex_count_min_limit) && vbo_render_as_vertex_arrays;
 }
 
 SbBool
