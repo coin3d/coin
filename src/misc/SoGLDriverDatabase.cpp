@@ -355,7 +355,7 @@ SoGLDriverDatabaseP::isFast(const cc_glglue * context, const SbName & feature)
 SbName
 SoGLDriverDatabaseP::getComment(const cc_glglue * context, const SbName & feature)
 {
-  const char * comment;
+  const char * comment = NULL;
 
   SoGLDriver * driver = this->findGLDriver(context);
 
@@ -1006,7 +1006,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
     }
 
   #if COIN_DEBUG
-    SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is %s!", featurename, commentstr);
+    SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is %s!", featurename.getString(), commentstr.getString());
   #endif
 
     if(strcmp("disabled", commentstr) == 0) {
@@ -1031,7 +1031,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
 #if COIN_DEBUG
     SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature",
       "Feature %s has unknown or no commment.",
-      featurename);
+      featurename.getString());
 #endif
     }
   }
