@@ -722,7 +722,9 @@ SoDB::init(void)
 #ifdef HAVE_SCENE_PROFILING
   // NOTE: SoDBP::isinitialized must be set to TRUE before this block,
   // or you will get a "mysterious" crash on a mutex in
-  // CoinStaticObjectInDLL.cpp.  Logically, it 
+  // CoinStaticObjectInDLL.cpp.  Logically, it should not be flagged
+  // before after initialization is done, but subsystems invoked from
+  // these methods needs to know that Coin is already initialized.
   SoProfilerP::parseCoinProfilerVariable();
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
