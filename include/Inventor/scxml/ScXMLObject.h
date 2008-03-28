@@ -61,9 +61,13 @@ protected:
 private:
   ScXMLObject * containerptr;
 
-  typedef std::map<const char *, char *> AttrDict;
-  typedef std::pair<const char *, char *> AttrEntry;
-  AttrDict attributedict;
+  typedef std::map<const char *, char *> AttributeMap;
+  typedef std::pair<const char *, char *> AttributeEntry;
+  AttributeMap attributemap;
+
+private:
+  ScXMLObject(const ScXMLObject & rhs); // N/A
+  ScXMLObject & operator = (const ScXMLObject & rhs); // N/A
 
 }; // ScXMLObject
 

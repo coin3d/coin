@@ -45,6 +45,10 @@ protected:
   double relativetimeval;
   SbName timereventname;
 
+private:
+  SoScXMLScheduleTimerEventInvoke(const SoScXMLScheduleTimerEventInvoke & rhs); // N/A
+  SoScXMLScheduleTimerEventInvoke & operator = (const SoScXMLScheduleTimerEventInvoke & rhs); // N/A
+
 }; // SoScXMLScheduleTimerEventInvoke
 
 #endif // !COIN_SOSCXMLSCHEDULETIMEREVENTINVOKE_H

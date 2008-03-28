@@ -26,6 +26,12 @@
 #include <assert.h>
 #include <string.h>
 
+// *************************************************************************
+
+class ScXMLInvokeP {
+public:
+};
+
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLInvoke);
 
 void

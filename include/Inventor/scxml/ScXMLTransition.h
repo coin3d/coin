@@ -28,9 +28,12 @@
 
 #include <vector>
 
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
 class ScXMLEvent;
 class ScXMLInvoke;
 class ScXMLStateMachine;
+class ScXMLTransitionP;
 
 class COIN_DLL_API ScXMLTransition : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -85,6 +88,12 @@ protected:
   SbName targetkey;
 
   std::vector<ScXMLInvoke *> invokelist;
+
+private:
+  ScXMLTransition(const ScXMLTransition & rhs); // N/A
+  ScXMLTransition & operator = (const ScXMLTransition & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLTransitionP> pimpl;
 
 }; // ScXMLTransition
 

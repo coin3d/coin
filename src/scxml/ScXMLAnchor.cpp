@@ -27,12 +27,18 @@
 
 #include <Inventor/scxml/ScXML.h>
 
-SCXML_OBJECT_SOURCE(ScXMLAnchor);
+// *************************************************************************
 
 /*!
   \class ScXMLAnchor Inventor/scxml/ScXMLAnchor.h
   \brief not implemented
 */
+
+class ScXMLAnchorP {
+public:
+};
+
+SCXML_OBJECT_SOURCE(ScXMLAnchor);
 
 void
 ScXMLAnchor::initClass(void)

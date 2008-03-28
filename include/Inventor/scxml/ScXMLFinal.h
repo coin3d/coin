@@ -36,7 +36,9 @@ public:
   ScXMLFinal(void);
   virtual ~ScXMLFinal(void);
 
-protected:
+private:
+  ScXMLFinal(const ScXMLFinal & rhs); // N/A
+  ScXMLFinal & operator = (const ScXMLFinal & rhs); // N/A
 
 }; // ScXMLFinal
 

@@ -40,6 +40,10 @@ public:
 protected:
   SbBool messaged;
 
+private:
+  ScXMLFallbackInvoke(ScXMLFallbackInvoke & rhs); // N/A
+  ScXMLFallbackInvoke & operator = (ScXMLFallbackInvoke & rhs); // N/A
+
 }; // ScXMLFallbackInvoke
 
 #endif // !COIN_SCXMLFALLBACKINVOKE_H

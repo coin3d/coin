@@ -33,6 +33,12 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
+class ScXMLTransitionP {
+public:
+};
+
 SCXML_OBJECT_SOURCE(ScXMLTransition);
 
 void

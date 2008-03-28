@@ -28,6 +28,8 @@
 
 #include <vector>
 
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
 class ScXMLOnEntry;
 class ScXMLOnExit;
 class ScXMLTransition;
@@ -39,6 +41,7 @@ class ScXMLHistory;
 class ScXMLAnchor;
 class ScXMLEvent;
 class ScXMLStateMachine;
+class ScXMLStateP;
 
 class COIN_DLL_API ScXMLState : public ScXMLStateBase {
   typedef ScXMLStateBase inherited;
@@ -137,6 +140,12 @@ protected:
   std::vector<ScXMLAnchor *> anchorlist;
   // datamodel
   ScXMLInvoke * invokeptr;
+
+private:
+  ScXMLState(const ScXMLState & rhs); // N/A
+  ScXMLState & operator = (const ScXMLState & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLStateP> pimpl;
 
 }; // ScXMLState
 

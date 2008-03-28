@@ -29,6 +29,7 @@
 class COIN_DLL_API ScXMLEvent : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLEvent);
+
 public:
   static void initClass(void);
 
@@ -40,6 +41,10 @@ public:
 
 protected:
   SbName identifier;
+
+private:
+  ScXMLEvent(const ScXMLEvent & rhs); // N/A
+  ScXMLEvent & operator = (const ScXMLEvent & rhs); // N/A
 
 }; // ScXMLEvent
 

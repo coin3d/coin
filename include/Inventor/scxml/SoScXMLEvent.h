@@ -46,6 +46,9 @@ public:
 private:
   const SoEvent * soeventptr;
 
+  SoScXMLEvent(const SoScXMLEvent & rhs); // N/A
+  SoScXMLEvent & operator = (const SoScXMLEvent & rhs); // N/A
+
 }; // SoScXMLEvent
 
 #endif // !COIN_SOSCXMLEVENT_H

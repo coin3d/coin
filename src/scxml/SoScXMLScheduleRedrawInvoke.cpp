@@ -29,6 +29,8 @@
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
 
+// *************************************************************************
+
 SCXML_OBJECT_SOURCE(SoScXMLScheduleRedrawInvoke);
 
 void
@@ -36,6 +38,10 @@ SoScXMLScheduleRedrawInvoke::initClass(void)
 {
   SCXML_INVOKE_INIT_CLASS(SoScXMLScheduleRedrawInvoke, ScXMLInvoke,
                           SCXML_COIN_NS, "sim.coin3d.coin", "ScheduleRedraw");
+}
+
+SoScXMLScheduleRedrawInvoke::SoScXMLScheduleRedrawInvoke(void)
+{
 }
 
 void

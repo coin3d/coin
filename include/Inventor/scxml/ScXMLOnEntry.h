@@ -55,6 +55,10 @@ public:
 protected:
   std::vector<ScXMLInvoke *> invokelist;
 
+private:
+  ScXMLOnEntry(const ScXMLOnEntry & rhs); // N/A
+  ScXMLOnEntry & operator = (const ScXMLOnEntry & rhs); // N/A
+
 }; // ScXMLOnEntry
 
 #endif // !COIN_SCXMLONENTRY_H

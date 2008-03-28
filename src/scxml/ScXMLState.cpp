@@ -40,12 +40,18 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
 /*!
-  \class ScXMLState scxml/ScXMLState.h
-  \brief base class for state engine states.
+  \class ScXMLState ScXMLState.h scxml/ScXMLState.h
+  \brief state engine states.
 
   \ingroup scxml
 */
+
+class ScXMLStateP {
+public:
+};
 
 SCXML_OBJECT_SOURCE(ScXMLState);
 

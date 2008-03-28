@@ -28,8 +28,11 @@
 
 #include <vector>
 
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
 class ScXMLState;
 class ScXMLFinal;
+class ScXMLDocumentP;
 
 class COIN_DLL_API ScXMLDocument : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -88,6 +91,12 @@ protected:
   std::vector<ScXMLState *> parallellist;
   std::vector<ScXMLFinal *> finallist;
   // datamodel
+
+private:
+  ScXMLDocument(const ScXMLDocument & rhs); // N/A
+  ScXMLDocument & operator = (const ScXMLDocument & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLDocumentP> pimpl;
 
 }; // ScXMLDocument
 

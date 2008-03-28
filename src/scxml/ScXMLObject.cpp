@@ -49,13 +49,12 @@ ScXMLObject::ScXMLObject(void)
 ScXMLObject::~ScXMLObject(void)
 {
   {
-    AttrDict::iterator it = this->attributedict.begin();
-    while (it != this->attributedict.end()) {
-      char * str = it->second;
-      delete [] str;
+    AttributeMap::iterator it = this->attributemap.begin();
+    while (it != this->attributemap.end()) {
+      delete [] it->second;
       ++it;
     }
-    this->attributedict.clear();
+    this->attributemap.clear();
   }
 }
 
@@ -78,18 +77,18 @@ ScXMLObject::setAttribute(const char * attribute, const char * value)
 {
   assert(attribute);
   const SbName attrname(attribute); // uniqify on string pointer
-  AttrDict::iterator it = this->attributedict.find(attrname.getString());
-  if (it == this->attributedict.end()) {
+  AttributeMap::iterator it = this->attributemap.find(attrname.getString());
+  if (it == this->attributemap.end()) {
     if (value) {
       char * valuedup = new char [ strlen(value) + 1 ];
       strcpy(valuedup, value);
-      this->attributedict.insert(AttrEntry(attrname.getString(), valuedup));
+      this->attributemap.insert(AttributeEntry(attrname.getString(), valuedup));
     }
   } else {
     delete [] it->second;
     it->second = NULL;
     if (!value) {
-      this->attributedict.erase(it);
+      this->attributemap.erase(it);
     } else {
       it->second = new char [ strlen(value) + 1 ];
       strcpy(it->second, value);
@@ -105,8 +104,8 @@ const char *
 ScXMLObject::getAttribute(const char * attribute) const
 {
   const SbName attrname(attribute);
-  AttrDict::const_iterator it = this->attributedict.find(attrname.getString());
-  if (it != this->attributedict.end()) {
+  AttributeMap::const_iterator it = this->attributemap.find(attrname.getString());
+  if (it != this->attributemap.end()) {
     return it->second;
   }
   return NULL;

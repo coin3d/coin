@@ -32,6 +32,12 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
+class ScXMLDocumentP {
+public:
+};
+
 SCXML_OBJECT_SOURCE(ScXMLDocument);
 
 void

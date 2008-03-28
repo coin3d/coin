@@ -31,6 +31,8 @@
 #include <Inventor/scxml/ScXMLStateMachine.h>
 #include <Inventor/scxml/ScXMLEvent.h>
 
+// *************************************************************************
+
 SCXML_OBJECT_SOURCE(SoScXMLDebugInfoInvoke);
 
 void
@@ -38,6 +40,10 @@ SoScXMLDebugInfoInvoke::initClass(void)
 {
   SCXML_INVOKE_INIT_CLASS(SoScXMLDebugInfoInvoke, ScXMLInvoke, SCXML_COIN_NS,
                           "sim.coin3d.coin", "DebugInfo");
+}
+
+SoScXMLDebugInfoInvoke::SoScXMLDebugInfoInvoke(void)
+{
 }
 
 void

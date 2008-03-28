@@ -26,8 +26,11 @@
 
 #include <Inventor/scxml/ScXMLObject.h>
 
+#include <Inventor/tools/SbLazyPimplPtr.h>
+
 class ScXMLEvent;
 class ScXMLStateMachine;
+class ScXMLInvokeP;
 
 class COIN_DLL_API ScXMLInvoke : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -51,13 +54,19 @@ public:
 
   virtual SbBool handleXMLAttributes(void);
 
-  // 
+  // executable content
   virtual void invoke(ScXMLStateMachine * statemachine) = 0;
 
 protected:
   char * targettype;
   char * src;
   char * srcexpr;
+
+private:
+  ScXMLInvoke(const ScXMLInvoke & rhs); // N/A
+  ScXMLInvoke & operator = (const ScXMLInvoke & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLInvokeP> pimpl;
 
 }; // ScXMLInvoke
 

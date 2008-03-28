@@ -55,6 +55,10 @@ public:
 protected:
   std::vector<ScXMLInvoke *> invokelist;
 
+private:
+  ScXMLOnExit(const ScXMLOnExit & rhs); // N/A
+  ScXMLOnExit & operator = (const ScXMLOnExit & rhs); // N/A
+
 }; // ScXMLOnExit
 
 #endif // !COIN_SCXMLONEXIT_H

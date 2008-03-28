@@ -45,6 +45,10 @@ public:
 protected:
   char * id;
 
+private:
+  ScXMLStateBase(const ScXMLStateBase & rhs); // N/A
+  ScXMLStateBase & operator = (const ScXMLStateBase & rhs); // N/A
+
 }; // ScXMLStateBase
 
 #endif // !COIN_SCXMLSTATEBASE_H

@@ -47,6 +47,10 @@ public:
 protected:
   ScXMLTransition * transitionptr;
 
+private:
+  ScXMLInitial(const ScXMLInitial & rhs); // N/A
+  ScXMLInitial & operator = (const ScXMLInitial & rhs); // N/A
+
 }; // ScXMLInitial
 
 #endif // !COIN_SCXMLINITIAL_H
