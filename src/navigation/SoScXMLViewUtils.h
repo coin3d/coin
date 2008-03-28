@@ -35,7 +35,7 @@ class SoScXMLViewAll : public SoScXMLNavigationInvoke {
 public:
   static void initClass(void);
 
-  void invoke(const ScXMLStateMachine * statemachine) const;
+  void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLViewAll
 

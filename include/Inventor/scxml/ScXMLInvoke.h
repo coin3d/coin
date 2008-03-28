@@ -52,12 +52,12 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
   // 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const = 0;
+  virtual void invoke(ScXMLStateMachine * statemachine) = 0;
 
 protected:
-  const char * targettype;
-  const char * src;
-  const char * srcexpr;
+  char * targettype;
+  char * src;
+  char * srcexpr;
 
 }; // ScXMLInvoke
 

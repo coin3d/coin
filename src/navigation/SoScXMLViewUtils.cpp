@@ -38,15 +38,15 @@ SoScXMLViewAll::initClass(void)
 }
 
 void
-SoScXMLViewAll::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLViewAll::invoke(ScXMLStateMachine * statemachinearg)
 {
   assert(statemachinearg);
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   const SbViewportRegion & viewport = statemachine->getViewportRegion();
   SoCamera * camera = statemachine->getActiveCamera();

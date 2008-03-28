@@ -34,6 +34,8 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/fields/SoSFVec3d.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
+#include <Inventor/scxml/SoScXMLEvent.h>
 
 SCXML_OBJECT_ABSTRACT_SOURCE(SoScXMLNavigationInvoke);
 
@@ -182,4 +184,57 @@ SoScXMLNavigationInvoke::zoom(SoCamera * camera, float diffvalue)
       camera->focalDistance = newfocaldist;
     }
   }
+}
+
+
+SoScXMLStateMachine *
+SoScXMLNavigationInvoke::castToSo(ScXMLStateMachine * statemachine) const
+{
+  if (!statemachine) {
+    SbString id;
+    id.sprintf("%s::invoke", this->getTypeId().getName().getString());
+    SoDebugError::post(id.getString(),
+                       "Statemachine argument was NULL.");
+    return NULL;
+  }
+  if (!statemachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+    SbString id;
+    id.sprintf("%s::invoke", this->getTypeId().getName().getString());
+    SoDebugError::post(id.getString(),
+                       "SoScXMLNavigationInvoke-derived objects require "
+                       "SoScXMLStateMachine-derived state machines.");
+    return NULL;
+  }
+  return static_cast<SoScXMLStateMachine *>(statemachine);
+}
+
+const SoEvent *
+SoScXMLNavigationInvoke::getSoEvent(SoScXMLStateMachine * statemachine) const
+{
+  const ScXMLEvent * ev = statemachine->getCurrentEvent();
+  if (!ev) {
+    SbString id;
+    id.sprintf("%s::invoke", this->getTypeId().getName().getString());
+    SoDebugError::post(id.getString(),
+                       "SoScXMLStateMachine has no current event.");
+    return NULL;
+  }
+  if (!ev->isOfType(SoScXMLEvent::getClassTypeId())) {
+    SbString id;
+    id.sprintf("%s::invoke", this->getTypeId().getName().getString());
+    SoDebugError::post(id.getString(),
+                       "SoScXMLStateMachine current event is not "
+                       "of SoScXMLStateMachine type.");
+    return NULL;
+  }
+  const SoEvent * soev = static_cast<const SoScXMLEvent *>(ev)->getSoEvent();
+  if (!soev) {
+    SbString id;
+    id.sprintf("%s::invoke", this->getTypeId().getName().getString());
+    SoDebugError::post(id.getString(),
+                       "SoScXMLStateMachine current event does not carry "
+                       "an SoEvent-derived event.");
+    return NULL;
+  }
+  return soev;
 }

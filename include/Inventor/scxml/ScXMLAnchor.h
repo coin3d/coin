@@ -45,8 +45,8 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
 protected:
-  const char * type;
-  const char * snapshot;
+  char * type;
+  char * snapshot;
 
 }; // ScXMLAnchor
 

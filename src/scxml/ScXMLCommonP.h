@@ -26,12 +26,12 @@
 
 #define SCXML_SINGLE_OBJECT_API_IMPL(classname, objtype, pointer, singular) \
 void                                                                    \
-classname::SO__CONCAT(set,singular)(const objtype * obj)                \
+classname::SO__CONCAT(set,singular)(objtype * obj)                      \
 {                                                                       \
   this->pointer = obj;                                                  \
 }                                                                       \
                                                                         \
-const objtype *                                                         \
+objtype *                                                               \
 classname::SO__CONCAT(get,singular)(void) const                         \
 {                                                                       \
   return this->pointer;                                                 \
@@ -45,7 +45,7 @@ classname::SO__CONCAT(getNum,plural)(void) const                        \
   return static_cast<int>(this->objlist.size());                        \
 }                                                                       \
                                                                         \
-const objtype *                                                         \
+objtype *                                                               \
 classname::SO__CONCAT(get,singular)(int idx) const                      \
 {                                                                       \
   assert(idx >= 0 && idx < static_cast<int>(this->objlist.size()));     \
@@ -53,15 +53,15 @@ classname::SO__CONCAT(get,singular)(int idx) const                      \
 }                                                                       \
                                                                         \
 void                                                                    \
-classname::SO__CONCAT(add,singular)(const objtype * obj)                \
+classname::SO__CONCAT(add,singular)(objtype * obj)                      \
 {                                                                       \
   this->objlist.push_back(obj);                                         \
 }                                                                       \
                                                                         \
 void                                                                    \
-classname::SO__CONCAT(remove,singular)(const objtype * obj)             \
+classname::SO__CONCAT(remove,singular)(objtype * obj)                   \
 {                                                                       \
-  std::vector<const objtype *>::iterator it =                           \
+  std::vector<objtype *>::iterator it =                                 \
     std::find(this->objlist.begin(), this->objlist.end(), obj);         \
   assert(it != this->objlist.end());                                    \
   this->objlist.erase(it);                                              \

@@ -64,7 +64,7 @@ class SoScXMLSetRotate : public SoScXMLRotateInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
 
@@ -79,7 +79,7 @@ class SoScXMLUpdateRotate : public SoScXMLRotateInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
 
@@ -100,7 +100,7 @@ public:
 
   virtual SbBool handleXMLAttributes(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
   SbBool sendspinstart;

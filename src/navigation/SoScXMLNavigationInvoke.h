@@ -28,6 +28,8 @@ class SoCamera;
 class SbRotation;
 class SbVec2f;
 class SbPlane;
+class SoScXMLStateMachine;
+class SoEvent;
 
 #include <Inventor/scxml/ScXMLInvoke.h>
 
@@ -49,6 +51,9 @@ protected:
 
   static void zoom(SoCamera * camera,
                    float diffvalue);
+
+  SoScXMLStateMachine * castToSo(ScXMLStateMachine * sm) const;
+  const SoEvent * getSoEvent(SoScXMLStateMachine * sm) const;
   
 }; // SoScXMLNavigationInvoke
 

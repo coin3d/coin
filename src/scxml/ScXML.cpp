@@ -60,27 +60,71 @@
 // *************************************************************************
 
 /*
+  \page scxml ScXML
+
   The ScXML part of Coin is a basic, non-conformant, partial
   implementation of State Chart XML, based on the W3C Working Draft 21
-  February 2007 of SCXML <http://www.w3.org/TR/scxml/>.
+  February 2007 of SCXML <http://www.w3.org/TR/scxml/>.  Read that
+  document for understanding how SCXML documents should be constructed.
 
   Coin uses it for its navigation system, to be able to remove
-  hardcoded logic for user navigation and externalize it in XML files.
-  It will hopefully prove to be a useful addition to Coin and have
-  broader use as this subsystem matures and proves itself worthy. The
-  dragger user interaction logic would probably be one area where
-  ScXML could be employed later.
+  hardcoded logic for user navigation and externalize it into XML
+  files.  It is hoped that this technology will prove to be a useful
+  addition to Coin and get broader use as this subsystem matures.  The
+  dragger and manipulator user interaction logic is likely one area
+  where ScXML might be employed later. For now though, the ScXML
+  system is not employed in any pre-established Coin usage patterns,
+  and you will need to employ new features to touch base with it.
+
+
 
   The Coin type system makes it possible to override the default types
   to have the state chart description instantiated using customized
-  objects, which is the core point of this implementation.  The design
-  choice made in that regard was to use the 'xmlns' (XML Namespace)
-  attribute to prioritize which classtypes to instantiate objects
-  from.
+  objects, which is one of the core points of this implementation.
 
-  At the moment, the Coin ScXML module only supports "Executable
-  Content" through the <invoke> mechanism, using the ScXMLInvoke class
-  interface.
+  The
+  design choice made in that regard was to both use the type overriding
+  system in Coin, and also to use the 'xmlns' (XML Namespace) attribute
+  make invokable types available and to prioritize which classtypes to
+  instantiate objects from.
+
+  Partially Supported Items:
+
+  - At the moment, the Coin ScXML module only supports "Executable
+    Content" through the <invoke> element, using the ScXMLInvoke class
+    interface and having the Executable Content written in C++.
+
+  Unsupported Items:
+
+  - The <parallel> element is not supported as intended with parallel
+    states.  Coin will just treat it as an ordinary <state> element for
+    now.
+
+  - The <datamodel>-related part of the specification is not supported.
+
+  - The condition attribute in the <transition> element is not supported,
+    so the only condition you can set is on the event type in the event
+    attribute.
+
+  - The target attribute in the <transition> element can only identify
+    a single state currently, not multiple as you would have to when
+    having support for <parallel> elements (which we don't have).
+
+  - There are no mechanisms for inter-statemachine event passing yet.
+
+  For learning more about this, take a look at
+  $COINDIR/scxml/navigation/examiner.xml (or in the Coin source
+  directory, data/scxml/navigation/examiner.xml) for an example of how
+  an SCXML system for camera navigation in Coin looks, and look at the
+  ScXML* files in src/navigation/ for the C++ counterparts to the same
+  SCXML navigation system.
+
+  With support for <datamodel>, <transition>-conditions, and inline
+  executable content in the XML file in some scripting language, the C++
+  parts could probably have been greatly simplified, if not more or less
+  eliminated.
+
+  \since Coin 3.0
 */
 
 // *************************************************************************

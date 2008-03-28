@@ -64,13 +64,12 @@ void
 ScXMLHistory::setTypeXMLAttr(const char * typestr)
 {
   if (this->type && this->type != this->getAttribute("type")) {
-    delete [] const_cast<char *>(this->type);
+    delete [] this->type;
   }
   this->type = NULL;
   if (typestr) {
-    char * buffer = new char [ strlen(typestr) + 1 ];
-    strcpy(buffer, typestr);
-    this->type = buffer;
+    this->type = new char [ strlen(typestr) + 1 ];
+    strcpy(this->type, typestr);
   }
 }
 
@@ -79,10 +78,11 @@ ScXMLHistory::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->type = this->getAttribute("type");
+  this->type = const_cast<char *>(this->getAttribute("type"));
 
   if (this->type) {
-    if ((strcmp(this->type, "deep") != 0) && (strcmp(this->type, "shallow") != 0)) {
+    if ((strcmp(this->type, "deep") != 0) &&
+        (strcmp(this->type, "shallow") != 0)) {
       return FALSE;
     }
   }

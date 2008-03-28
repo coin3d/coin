@@ -46,7 +46,7 @@ ScXMLOnExit::ScXMLOnExit(void)
 ScXMLOnExit::~ScXMLOnExit(void)
 {
   {
-    std::vector<const ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
+    std::vector<ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
     while (invokeit != this->invokelist.end()) {
       delete *invokeit;
       ++invokeit;
@@ -63,7 +63,7 @@ SCXML_LIST_OBJECT_API_IMPL(ScXMLOnExit, ScXMLInvoke, invokelist, Invoke, Invokes
 void
 ScXMLOnExit::invoke(ScXMLStateMachine * statemachine)
 {
-  std::vector<const ScXMLInvoke *>::iterator it = this->invokelist.begin();
+  std::vector<ScXMLInvoke *>::const_iterator it = this->invokelist.begin();
   while (it != this->invokelist.end()) {
     (*it)->invoke(statemachine);
     ++it;

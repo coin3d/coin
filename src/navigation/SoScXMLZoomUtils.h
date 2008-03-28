@@ -64,7 +64,7 @@ class SoScXMLSetZoom : public SoScXMLZoomInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLSetZoom
 
@@ -77,7 +77,7 @@ class SoScXMLUpdateZoom : public SoScXMLZoomInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLUpdateZoom
 
@@ -90,7 +90,7 @@ class SoScXMLEndZoom : public SoScXMLZoomInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLEndZoom
 

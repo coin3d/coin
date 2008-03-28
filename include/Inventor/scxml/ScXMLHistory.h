@@ -44,13 +44,13 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
   // transition
-  virtual void setTransition(const ScXMLTransition * transition);
-  virtual const ScXMLTransition * getTransition(void) const;
+  virtual void setTransition(ScXMLTransition * transition);
+  virtual ScXMLTransition * getTransition(void) const;
 
 protected:
-  const char * type;
+  char * type;
 
-  const ScXMLTransition * transitionptr;
+  ScXMLTransition * transitionptr;
 
 }; // ScXMLHistory
 

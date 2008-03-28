@@ -46,8 +46,8 @@ public:
 
   virtual SbBool handleXMLAttributes(void);
 
-  virtual void setContainer(const ScXMLObject * container);
-  const ScXMLObject * getContainer(void) const { return this->containerptr; }
+  virtual void setContainer(ScXMLObject * container);
+  ScXMLObject * getContainer(void) const { return this->containerptr; }
 
   SbBool isContainedIn(const ScXMLObject * object) const;
 
@@ -59,10 +59,10 @@ protected:
                                       const char * source, SoType type);
 
 private:
-  const ScXMLObject * containerptr;
+  ScXMLObject * containerptr;
 
-  typedef std::map<const char *, const char *> AttrDict;
-  typedef std::pair<const char *, const char *> AttrEntry;
+  typedef std::map<const char *, char *> AttrDict;
+  typedef std::pair<const char *, char *> AttrEntry;
   AttrDict attributedict;
 
 }; // ScXMLObject

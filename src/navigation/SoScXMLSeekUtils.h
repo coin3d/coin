@@ -75,7 +75,7 @@ public:
   SoScXMLSetSeek(void);
   virtual ~SoScXMLSetSeek(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
   SoSearchAction * searchaction;
@@ -99,7 +99,7 @@ class SoScXMLUpdateSeek : public SoScXMLSeekInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLUpdateSeek
 
@@ -112,7 +112,7 @@ class SoScXMLEndSeek : public SoScXMLSeekInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLEndSeek
 

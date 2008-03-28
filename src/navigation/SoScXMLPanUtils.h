@@ -64,7 +64,7 @@ class SoScXMLSetPan : public SoScXMLPanInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLSetPan
 
@@ -77,7 +77,7 @@ class SoScXMLUpdatePan : public SoScXMLPanInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLUpdatePan
 
@@ -90,7 +90,7 @@ class SoScXMLEndPan : public SoScXMLPanInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLEndPan
 

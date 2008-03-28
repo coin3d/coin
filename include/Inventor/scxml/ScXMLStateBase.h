@@ -43,7 +43,7 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
 protected:
-  const char * id;
+  char * id;
 
 }; // ScXMLStateBase
 

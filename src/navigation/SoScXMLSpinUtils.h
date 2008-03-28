@@ -82,7 +82,7 @@ class SoScXMLSetSpin : public SoScXMLSpinInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLSetSpin
 
@@ -95,7 +95,7 @@ class SoScXMLUpdateSpin : public SoScXMLSpinInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLUpdateSpin
 
@@ -108,7 +108,7 @@ class SoScXMLEndSpin : public SoScXMLSpinInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLEndSpin
 

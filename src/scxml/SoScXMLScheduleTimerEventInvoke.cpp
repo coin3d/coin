@@ -36,22 +36,26 @@
 
 class SoScXMLScheduleTimerEventInvokeP {
 public:
-  typedef std::map<const SoSensor *, const char *> SensorNameMap;
-  typedef std::map<const SoSensor *, ScXMLStateMachine *> SensorMachineMap;
+  typedef std::map<SoSensor *, const char *> SensorNameMap;
+  typedef std::pair<SoSensor *, const char *> SensorNameMapEntry;
 
-  typedef std::pair<const char *, const ScXMLStateMachine *> ReverseKey;
-  typedef std::map<ReverseKey, const SoSensor *> ReverseMap;
+  typedef std::map<SoSensor *, ScXMLStateMachine *> SensorMachineMap;
+  typedef std::pair<SoSensor *, ScXMLStateMachine *> SensorMachineMapEntry;
+
+  typedef std::pair<const char *, ScXMLStateMachine *> ReverseKey;
+  typedef std::map<ReverseKey, SoSensor *> ReverseMap;
+  typedef std::pair<ReverseKey, SoSensor *> ReverseMapEntry;
 
   static SensorNameMap sensornamemap;
   static SensorMachineMap sensormachinemap;
   static ReverseMap reversemap;
 
-  static void registerSensorMapping(const SoSensor * sensor, SbName name, ScXMLStateMachine * statemachine);
+  static void registerSensorMapping(SoSensor * sensor, SbName name, ScXMLStateMachine * statemachine);
 
-  static SoAlarmSensor * getSensor(SbName sensorname, const ScXMLStateMachine * statemachine);
+  static SoAlarmSensor * getSensor(SbName sensorname, ScXMLStateMachine * statemachine);
 
-  static ScXMLStateMachine * getStateMachine(const SoSensor * sensor);
-  static SbName getName(const SoSensor * sensor);
+  static ScXMLStateMachine * getStateMachine(SoSensor * sensor);
+  static SbName getName(SoSensor * sensor);
 
   static void stateMachineDeleteCB(void * userdata, const ScXMLStateMachine * statemachine);
   static void timerSensorCB(void * userdata, SoSensor * sensor);
@@ -101,10 +105,10 @@ SoScXMLScheduleTimerEventInvoke::handleXMLAttributes(void)
     return FALSE;
   }
 
-  // srcexpr format: "delaysecs:eventname"
+  // srcexpr format: "delaysecs:eventshortname"
 
-  relativetimeval = atof(this->srcexpr);
-  if (relativetimeval <= 0.0) {
+  this->relativetimeval = atof(this->srcexpr);
+  if (this->relativetimeval < 0.0) {
     SoDebugError::postWarning("ScXML::Invoke",
                               "ScheduleTimerSensor problem: "
                               "'srcexpr' time value less than or equal zero. "
@@ -132,33 +136,34 @@ SoScXMLScheduleTimerEventInvoke::handleXMLAttributes(void)
 }
 
 void
-SoScXMLScheduleTimerEventInvoke::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLScheduleTimerEventInvoke::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!this->initialized) return;
 
   SoAlarmSensor * sensor =
-    SoScXMLScheduleTimerEventInvokeP::getSensor(this->timereventname, statemachine);
+    SoScXMLScheduleTimerEventInvokeP::getSensor(this->timereventname, statemachinearg);
 
   if (!sensor) {
     // need to create a new one
-    sensor = new SoAlarmSensor(SoScXMLScheduleTimerEventInvokeP::timerSensorCB, const_cast<SoScXMLScheduleTimerEventInvoke *>(this));
+    sensor = new SoAlarmSensor(SoScXMLScheduleTimerEventInvokeP::timerSensorCB, this);
 
-    SoScXMLScheduleTimerEventInvokeP::registerSensorMapping(sensor, this->timereventname, const_cast<ScXMLStateMachine *>(statemachine));
-
+    SoScXMLScheduleTimerEventInvokeP::registerSensorMapping(sensor, this->timereventname, statemachinearg);
   }
 
   if (sensor->isScheduled()) {
     sensor->unschedule();
   }
 
-  sensor->setTimeFromNow(this->relativetimeval);
-  sensor->schedule();
+  if (this->relativetimeval > 0.0) {
+    sensor->setTimeFromNow(this->relativetimeval);
+    sensor->schedule();
+  }
 }
 
 // *************************************************************************
 
 ScXMLStateMachine *
-SoScXMLScheduleTimerEventInvokeP::getStateMachine(const SoSensor * sensor)
+SoScXMLScheduleTimerEventInvokeP::getStateMachine(SoSensor * sensor)
 {
   SensorMachineMap::iterator machineit = sensormachinemap.find(sensor);
   if (machineit != sensormachinemap.end()) {
@@ -168,7 +173,7 @@ SoScXMLScheduleTimerEventInvokeP::getStateMachine(const SoSensor * sensor)
 }
 
 SbName
-SoScXMLScheduleTimerEventInvokeP::getName(const SoSensor * sensor)
+SoScXMLScheduleTimerEventInvokeP::getName(SoSensor * sensor)
 {
   SensorNameMap::iterator nameit = sensornamemap.find(sensor);
   if (nameit != sensornamemap.end()) {
@@ -199,7 +204,7 @@ SoScXMLScheduleTimerEventInvokeP::stateMachineDeleteCB(void * userdata, const Sc
   SensorMachineMap::iterator machineit = sensormachinemap.begin();
   while (machineit != sensormachinemap.end()) {
     if (machineit->second == statemachine) {
-      const SoSensor * sensor = machineit->first;
+      SoSensor * sensor = machineit->first;
 
       // iterator becomes invalid after the erase() call
       SensorMachineMap::iterator storedit = machineit;
@@ -221,27 +226,26 @@ SoScXMLScheduleTimerEventInvokeP::stateMachineDeleteCB(void * userdata, const Sc
 }
 
 void
-SoScXMLScheduleTimerEventInvokeP::registerSensorMapping(const SoSensor * sensor, SbName name, ScXMLStateMachine * statemachine)
+SoScXMLScheduleTimerEventInvokeP::registerSensorMapping(SoSensor * sensor, SbName name, ScXMLStateMachine * statemachine)
 {
   // add to sensornamemap
-  sensornamemap.insert(std::pair<const SoSensor *, const char *>(sensor, name.getString()));
+  sensornamemap.insert(SensorNameMapEntry(sensor, name.getString()));
 
   // add to sensormachinemap
-  sensormachinemap.insert(std::pair<const SoSensor *, ScXMLStateMachine *>(sensor, statemachine));
+  sensormachinemap.insert(SensorMachineMapEntry(sensor, statemachine));
 
   ReverseKey reversekey(name.getString(), statemachine);
-  reversemap.insert(std::pair<ReverseKey, const SoSensor *>(reversekey, sensor));
+  reversemap.insert(ReverseMapEntry(reversekey, sensor));
 }
 
 SoAlarmSensor *
-SoScXMLScheduleTimerEventInvokeP::getSensor(SbName sensorname, const ScXMLStateMachine * statemachine)
+SoScXMLScheduleTimerEventInvokeP::getSensor(SbName sensorname, ScXMLStateMachine * statemachine)
 {
   ReverseKey key(sensorname.getString(), statemachine);
 
   ReverseMap::iterator it = reversemap.find(key);
   if (it != reversemap.end()) {
-    const SoAlarmSensor * sensor = static_cast<const SoAlarmSensor *>(it->second);
-    return const_cast<SoAlarmSensor *>(sensor);
+    return static_cast<SoAlarmSensor *>(it->second);
   }
 
   return NULL;

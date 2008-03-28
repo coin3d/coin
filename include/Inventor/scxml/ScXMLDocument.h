@@ -58,35 +58,35 @@ public:
 
   // state storage
   virtual int getNumStates(void) const;
-  virtual const ScXMLState * getState(int idx) const;
-  virtual void addState(const ScXMLState * state);
-  virtual void removeState(const ScXMLState * state);
+  virtual ScXMLState * getState(int idx) const;
+  virtual void addState(ScXMLState * state);
+  virtual void removeState(ScXMLState * state);
   virtual void clearAllStates(void);
 
   // parallel storage
   virtual int getNumParallels(void) const;
-  virtual const ScXMLState * getParallel(int idx) const;
-  virtual void addParallel(const ScXMLState * state);
-  virtual void removeParallel(const ScXMLState * state);
+  virtual ScXMLState * getParallel(int idx) const;
+  virtual void addParallel(ScXMLState * state);
+  virtual void removeParallel(ScXMLState * state);
   virtual void clearAllParallels(void);
 
   // final storage
   virtual int getNumFinals(void) const;
-  virtual const ScXMLFinal * getFinal(int idx) const;
-  virtual void addFinal(const ScXMLFinal * state);
-  virtual void removeFinal(const ScXMLFinal * state);
+  virtual ScXMLFinal * getFinal(int idx) const;
+  virtual void addFinal(ScXMLFinal * state);
+  virtual void removeFinal(ScXMLFinal * state);
   virtual void clearAllFinals(void);
 
 protected:
   SbBool referenced;
 
-  const char * xmlns;
-  const char * version;
-  const char * initialstate;
+  char * xmlns;
+  char * version;
+  char * initialstate;
 
-  std::vector<const ScXMLState *> statelist;
-  std::vector<const ScXMLState *> parallellist;
-  std::vector<const ScXMLFinal *> finallist;
+  std::vector<ScXMLState *> statelist;
+  std::vector<ScXMLState *> parallellist;
+  std::vector<ScXMLFinal *> finallist;
   // datamodel
 
 }; // ScXMLDocument

@@ -64,57 +64,57 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
   // children...
-  virtual void setOnEntry(const ScXMLOnEntry * onentry);
-  virtual const ScXMLOnEntry * getOnEntry(void) const;
+  virtual void setOnEntry(ScXMLOnEntry * onentry);
+  virtual ScXMLOnEntry * getOnEntry(void) const;
 
-  virtual void setOnExit(const ScXMLOnExit * onexit);
-  virtual const ScXMLOnExit * getOnExit(void) const;
+  virtual void setOnExit(ScXMLOnExit * onexit);
+  virtual ScXMLOnExit * getOnExit(void) const;
 
   virtual int getNumTransitions(void) const;
-  virtual const ScXMLTransition * getTransition(int idx) const;
-  virtual void addTransition(const ScXMLTransition * transition);
-  virtual void removeTransition(const ScXMLTransition * transition);
+  virtual ScXMLTransition * getTransition(int idx) const;
+  virtual void addTransition(ScXMLTransition * transition);
+  virtual void removeTransition(ScXMLTransition * transition);
   virtual void clearAllTransitions(void);
 
-  virtual void setInitial(const ScXMLInitial * initial);
-  virtual const ScXMLInitial * getInitial(void) const;
+  virtual void setInitial(ScXMLInitial * initial);
+  virtual ScXMLInitial * getInitial(void) const;
 
   virtual int getNumStates(void) const;
-  virtual const ScXMLState * getState(int idx) const;
-  virtual void addState(const ScXMLState * state);
-  virtual void removeState(const ScXMLState * state);
+  virtual ScXMLState * getState(int idx) const;
+  virtual void addState(ScXMLState * state);
+  virtual void removeState(ScXMLState * state);
   virtual void clearAllStates(void);
 
   virtual int getNumParallels(void) const;
-  virtual const ScXMLState * getParallel(int idx) const;
-  virtual void addParallel(const ScXMLState * state);
-  virtual void removeParallel(const ScXMLState * state);
+  virtual ScXMLState * getParallel(int idx) const;
+  virtual void addParallel(ScXMLState * state);
+  virtual void removeParallel(ScXMLState * state);
   virtual void clearAllParallels(void);
 
   virtual int getNumFinals(void) const;
-  virtual const ScXMLFinal * getFinal(int idx) const;
-  virtual void addFinal(const ScXMLFinal * state);
-  virtual void removeFinal(const ScXMLFinal * state);
+  virtual ScXMLFinal * getFinal(int idx) const;
+  virtual void addFinal(ScXMLFinal * state);
+  virtual void removeFinal(ScXMLFinal * state);
   virtual void clearAllFinals(void);
 
   virtual int getNumHistories(void) const;
-  virtual const ScXMLHistory * getHistory(int idx) const;
-  virtual void addHistory(const ScXMLHistory * history);
-  virtual void removeHistory(const ScXMLHistory * history);
+  virtual ScXMLHistory * getHistory(int idx) const;
+  virtual void addHistory(ScXMLHistory * history);
+  virtual void removeHistory(ScXMLHistory * history);
   virtual void clearAllHistories(void);
 
   virtual int getNumAnchors(void) const;
-  virtual const ScXMLAnchor * getAnchor(int idx) const;
-  virtual void addAnchor(const ScXMLAnchor * anchor);
-  virtual void removeAnchor(const ScXMLAnchor * anchor);
+  virtual ScXMLAnchor * getAnchor(int idx) const;
+  virtual void addAnchor(ScXMLAnchor * anchor);
+  virtual void removeAnchor(ScXMLAnchor * anchor);
   virtual void clearAllAnchors(void);
 
   // no datamodel support yet
 
-  virtual void setInvoke(const ScXMLInvoke * invoke);
-  virtual const ScXMLInvoke * getInvoke(void) const;
+  virtual void setInvoke(ScXMLInvoke * invoke);
+  virtual ScXMLInvoke * getInvoke(void) const;
 
-  virtual void invoke(const ScXMLStateMachine * statemachine);
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
   SbBool isAtomicState(void) const;
   SbBool isTask(void) const;
@@ -123,20 +123,20 @@ protected:
   SbBool isparallel;
   SbBool istask;
 
-  const char * src;
-  const char * task;
+  char * src;
+  char * task;
 
-  const ScXMLOnEntry * onentryptr;
-  const ScXMLOnExit * onexitptr;
-  std::vector<const ScXMLTransition *> transitionlist;
-  const ScXMLInitial * initialptr;
-  std::vector<const ScXMLState *> statelist;
-  std::vector<const ScXMLState *> parallellist;
-  std::vector<const ScXMLFinal *> finallist;
-  std::vector<const ScXMLHistory *> historylist;
-  std::vector<const ScXMLAnchor *> anchorlist;
+  ScXMLOnEntry * onentryptr;
+  ScXMLOnExit * onexitptr;
+  std::vector<ScXMLTransition *> transitionlist;
+  ScXMLInitial * initialptr;
+  std::vector<ScXMLState *> statelist;
+  std::vector<ScXMLState *> parallellist;
+  std::vector<ScXMLFinal *> finallist;
+  std::vector<ScXMLHistory *> historylist;
+  std::vector<ScXMLAnchor *> anchorlist;
   // datamodel
-  const ScXMLInvoke * invokeptr;
+  ScXMLInvoke * invokeptr;
 
 }; // ScXMLState
 

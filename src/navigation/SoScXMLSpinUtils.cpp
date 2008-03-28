@@ -86,7 +86,7 @@ SoScXMLSetSpin::initClass(void)
 }
 
 void
-SoScXMLSetSpin::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLSetSpin::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetSpin",
@@ -94,8 +94,8 @@ SoScXMLSetSpin::invoke(const ScXMLStateMachine * statemachinearg) const
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   SpinData * data = SoScXMLSpinInvoke::getSpinData(statemachine);
   assert(data);
@@ -116,15 +116,15 @@ SoScXMLUpdateSpin::initClass(void)
 }
 
 void
-SoScXMLUpdateSpin::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLUpdateSpin::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetSpin", "No support for non-SoScXMLStateMachine objects");
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   SpinData * data = SoScXMLSpinInvoke::getSpinData(statemachine);
   assert(data);
@@ -152,15 +152,15 @@ SoScXMLEndSpin::initClass(void)
 }
 
 void
-SoScXMLEndSpin::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLEndSpin::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetSpin", "No support for non-SoScXMLStateMachine objects");
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   SpinData * data = SoScXMLSpinInvoke::getSpinData(statemachine);
   assert(data);

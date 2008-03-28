@@ -66,25 +66,25 @@ public:
 
   // executable content
   virtual int getNumInvokes(void) const;
-  virtual const ScXMLInvoke * getInvoke(int idx) const;
-  virtual void addInvoke(const ScXMLInvoke * invoke);
-  virtual void removeInvoke(const ScXMLInvoke * invoke);
+  virtual ScXMLInvoke * getInvoke(int idx) const;
+  virtual void addInvoke(ScXMLInvoke * invoke);
+  virtual void removeInvoke(ScXMLInvoke * invoke);
   virtual void clearAllInvokes(void);
 
   // invoke
-  virtual void invoke(const ScXMLStateMachine * statemachine);
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
-  const char * event;
-  const char * cond;
-  const char * target;
-  const char * anchor;
+  char * event;
+  char * cond;
+  char * target;
+  char * anchor;
 
   SbBool needprefixmatching;
   SbName eventkey;
   SbName targetkey;
 
-  std::vector<const ScXMLInvoke *> invokelist;
+  std::vector<ScXMLInvoke *> invokelist;
 
 }; // ScXMLTransition
 

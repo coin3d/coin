@@ -33,10 +33,7 @@ class COIN_DLL_API SoScXMLDebugInfoInvoke : public ScXMLInvoke {
 public:
   static void initClass(void);
 
-  SoScXMLDebugInfoInvoke(void);
-  virtual ~SoScXMLDebugInfoInvoke(void);
-
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLDebugInfoInvoke
 

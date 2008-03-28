@@ -80,7 +80,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLTransition *>::iterator transitionit = this->transitionlist.begin();
+    std::vector<ScXMLTransition *>::iterator transitionit = this->transitionlist.begin();
     while (transitionit != this->transitionlist.end()) {
       delete *transitionit;
       ++transitionit;
@@ -94,7 +94,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLState *>::iterator stateit = this->statelist.begin();
+    std::vector<ScXMLState *>::iterator stateit = this->statelist.begin();
     while (stateit != this->statelist.end()) {
       delete *stateit;
       ++stateit;
@@ -103,7 +103,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLState *>::iterator parallelit = this->parallellist.begin();
+    std::vector<ScXMLState *>::iterator parallelit = this->parallellist.begin();
     while (parallelit != this->parallellist.end()) {
       delete *parallelit;
       ++parallelit;
@@ -112,7 +112,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLFinal *>::iterator finalit = this->finallist.begin();
+    std::vector<ScXMLFinal *>::iterator finalit = this->finallist.begin();
     while (finalit != this->finallist.end()) {
       delete *finalit;
       ++finalit;
@@ -121,7 +121,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLHistory *>::iterator historyit = this->historylist.begin();
+    std::vector<ScXMLHistory *>::iterator historyit = this->historylist.begin();
     while (historyit != this->historylist.end()) {
       delete *historyit;
       ++historyit;
@@ -130,7 +130,7 @@ ScXMLState::~ScXMLState(void)
   }
 
   {
-    std::vector<const ScXMLAnchor *>::iterator anchorit = this->anchorlist.begin();
+    std::vector<ScXMLAnchor *>::iterator anchorit = this->anchorlist.begin();
     while (anchorit != this->anchorlist.end()) {
       delete *anchorit;
       ++anchorit;
@@ -160,29 +160,16 @@ ScXMLState::isParallel(void) const
 
 // *************************************************************************
 
-SbBool
-ScXMLState::handleXMLAttributes(void)
-{
-  if (!inherited::handleXMLAttributes()) return FALSE;
-
-  this->src = this->getAttribute("src");
-  this->task = NULL;
-  this->setTaskXMLAttr(this->getAttribute("task"));
-
-  return TRUE;
-}
-
 void
 ScXMLState::setSrcXMLAttr(const char * srcstr)
 {
   if (this->src && this->src != this->getAttribute("src")) {
-    delete [] const_cast<char *>(this->src);
+    delete [] this->src;
   }
   this->src = NULL;
   if (srcstr) {
-    char * buffer = new char [ strlen(srcstr) + 1 ];
-    strcpy(buffer, srcstr);
-    this->src = buffer;
+    this->src = new char [ strlen(srcstr) + 1 ];
+    strcpy(this->src, srcstr);
   }
 }
 
@@ -192,14 +179,13 @@ void
 ScXMLState::setTaskXMLAttr(const char * taskstr)
 {
   if (this->task && this->task != this->getAttribute("task")) {
-    delete [] const_cast<char *>(this->task);
+    delete [] this->task;
   }
   this->task = NULL;
   this->istask = FALSE;
   if (taskstr) {
-    char * buffer = new char [ strlen(taskstr) + 1 ];
-    strcpy(buffer, taskstr);
-    this->task = buffer;
+    this->task = new char [ strlen(taskstr) + 1 ];
+    strcpy(this->task, taskstr);
     // acceptable truth-true values for boolean argument:
     if (strlen(this->task) == 4 &&
         coin_strncasecmp(this->task, "true", 4) == 0) {
@@ -212,6 +198,18 @@ ScXMLState::setTaskXMLAttr(const char * taskstr)
 }
 
 // const char * ScXMLState::getTaskXMLAttr(void) const
+
+SbBool
+ScXMLState::handleXMLAttributes(void)
+{
+  if (!inherited::handleXMLAttributes()) return FALSE;
+
+  this->src = const_cast<char *>(this->getAttribute("src"));
+  this->task = NULL;
+  this->setTaskXMLAttr(this->getAttribute("task"));
+
+  return TRUE;
+}
 
 // *************************************************************************
 
@@ -238,7 +236,7 @@ SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLAnchor, anchorlist, Anchor, Anchors)
 SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInvoke, invokeptr, Invoke);
 
 void
-ScXMLState::invoke(const ScXMLStateMachine * statemachine)
+ScXMLState::invoke(ScXMLStateMachine * statemachine)
 {
   if (this->invokeptr) {
     this->invokeptr->invoke(statemachine);

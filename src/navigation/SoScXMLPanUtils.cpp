@@ -97,32 +97,24 @@ SoScXMLSetPan::initClass(void)
 }
 
 void
-SoScXMLSetPan::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLSetPan::invoke(ScXMLStateMachine * statemachinearg)
 {
-  if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoDebugError::post("SetPan",
-                       "No support for non-SoScXMLStateMachine objects");
-    return;
-  }
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
-
+  SoScXMLStateMachine * statemachine = this->castToSo(statemachinearg);
+  if (!statemachine) return;
+  
   PanData * data = SoScXMLPanInvoke::getPanData(statemachine);
   assert(data);
 
   // get mouse position
-  const ScXMLEvent * ev = statemachine->getCurrentEvent();
-  if (!ev || !ev->isOfType(SoScXMLEvent::getClassTypeId())) {
-    SoDebugError::post("SetPan", "Need SoEvent but statemachine has none.");
-    return;
-  }
-  const SoEvent * soev = static_cast<const SoScXMLEvent *>(ev)->getSoEvent();
-  if (!soev || !soev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+  const SoEvent * ev = this->getSoEvent(statemachine);
+  if (!ev) return;
+
+  if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
     SoDebugError::post("SetPan", "Need SoMouseButtonEvent.");
     return;
   }
   const SoMouseButtonEvent * mbevent =
-    static_cast<const SoMouseButtonEvent *>(soev);
+    static_cast<const SoMouseButtonEvent *>(ev);
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
   data->lastpos = mbevent->getNormalizedPosition(vp);
@@ -151,7 +143,7 @@ SoScXMLUpdatePan::initClass(void)
 }
 
 void
-SoScXMLUpdatePan::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLUpdatePan::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("UpdatePan",
@@ -204,7 +196,7 @@ SoScXMLEndPan::initClass(void)
 }
 
 void
-SoScXMLEndPan::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLEndPan::invoke(ScXMLStateMachine * statemachine)
 {
   SoScXMLPanInvoke::freePanData(statemachine);
 }

@@ -51,7 +51,7 @@ ScXMLObject::~ScXMLObject(void)
   {
     AttrDict::iterator it = this->attributedict.begin();
     while (it != this->attributedict.end()) {
-      char * str = const_cast<char *>(it->second);
+      char * str = it->second;
       delete [] str;
       ++it;
     }
@@ -86,14 +86,13 @@ ScXMLObject::setAttribute(const char * attribute, const char * value)
       this->attributedict.insert(AttrEntry(attrname.getString(), valuedup));
     }
   } else {
-    char * str = const_cast<char *>(it->second);
-    delete [] str;
+    delete [] it->second;
+    it->second = NULL;
     if (!value) {
       this->attributedict.erase(it);
     } else {
-      char * buf = new char [ strlen(value) + 1 ];
-      strcpy(buf, value);
-      it->second = buf;
+      it->second = new char [ strlen(value) + 1 ];
+      strcpy(it->second, value);
     }
   }
 }
@@ -132,7 +131,7 @@ ScXMLObject::handleXMLAttributes(void)
   Set the pointer to the parent ScXML object.
 */
 void
-ScXMLObject::setContainer(const ScXMLObject * container)
+ScXMLObject::setContainer(ScXMLObject * container)
 {
   this->containerptr = container;
 }

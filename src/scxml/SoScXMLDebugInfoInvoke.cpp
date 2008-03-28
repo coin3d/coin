@@ -40,23 +40,14 @@ SoScXMLDebugInfoInvoke::initClass(void)
                           "sim.coin3d.coin", "DebugInfo");
 }
 
-
-SoScXMLDebugInfoInvoke::SoScXMLDebugInfoInvoke(void)
-{
-}
-
-SoScXMLDebugInfoInvoke::~SoScXMLDebugInfoInvoke(void)
-{
-}
-
 void
-SoScXMLDebugInfoInvoke::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLDebugInfoInvoke::invoke(ScXMLStateMachine * statemachinearg)
 {
-  assert(statemachine);
+  assert(statemachinearg);
   if (this->srcexpr) {
     SoDebugError::postInfo("ScXML::DebugInfo", "%s", this->srcexpr);
   } else {
-    const ScXMLEvent * curevent = statemachine->getCurrentEvent();
+    const ScXMLEvent * curevent = statemachinearg->getCurrentEvent();
     if (curevent) {
       SoDebugError::postInfo("ScXML::DebugInfo", "<no info> <%s>",
                              curevent->getIdentifier().getString());

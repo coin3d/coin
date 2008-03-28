@@ -55,13 +55,12 @@ void
 ScXMLAnchor::setTypeXMLAttr(const char * typestr)
 {
   if (this->type && this->type != this->getAttribute("type")) {
-    delete [] const_cast<char *>(this->type);
+    delete [] this->type;
   }
   this->type = NULL;
   if (typestr) {
-    char * buffer = new char [ strlen(typestr) + 1 ];
-    strcpy(buffer, typestr);
-    this->type = buffer;
+    this->type = new char [ strlen(typestr) + 1 ];
+    strcpy(this->type, typestr);
   }
 }
 
@@ -69,21 +68,20 @@ void
 ScXMLAnchor::setSnapshotXMLAttr(const char * snapshotstr)
 {
   if (this->snapshot && this->snapshot != this->getAttribute("snapshot")) {
-    delete [] const_cast<char *>(this->snapshot);
+    delete [] this->snapshot;
   }
   this->snapshot = NULL;
   if (snapshotstr) {
-    char * buffer = new char [ strlen(snapshotstr) + 1 ];
-    strcpy(buffer, snapshotstr);
-    this->snapshot = buffer;
+    this->snapshot = new char [ strlen(snapshotstr) + 1 ];
+    strcpy(this->snapshot, snapshotstr);
   }
 }
 
 SbBool
 ScXMLAnchor::handleXMLAttributes(void)
 {
-  this->type = this->getAttribute("type");
-  this->snapshot = this->getAttribute("snapshot");
+  this->type = const_cast<char *>(this->getAttribute("type"));
+  this->snapshot = const_cast<char *>(this->getAttribute("snapshot"));
 
   if (!this->type) {
     return FALSE;

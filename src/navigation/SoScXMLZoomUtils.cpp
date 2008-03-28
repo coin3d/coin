@@ -93,7 +93,7 @@ SoScXMLSetZoom::initClass(void)
 }
 
 void
-SoScXMLSetZoom::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLSetZoom::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetZoom",
@@ -101,8 +101,8 @@ SoScXMLSetZoom::invoke(const ScXMLStateMachine * statemachinearg) const
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   ZoomData * data = SoScXMLZoomInvoke::getZoomData(statemachine);
   assert(data);
@@ -156,7 +156,7 @@ SoScXMLUpdateZoom::initClass(void)
 }
 
 void
-SoScXMLUpdateZoom::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetZoom",
@@ -164,8 +164,8 @@ SoScXMLUpdateZoom::invoke(const ScXMLStateMachine * statemachinearg) const
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   ZoomData * data = SoScXMLZoomInvoke::getZoomData(statemachine);
   assert(data);
@@ -210,7 +210,7 @@ SoScXMLEndZoom::initClass(void)
 }
 
 void
-SoScXMLEndZoom::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLEndZoom::invoke(ScXMLStateMachine * statemachine)
 {
   SoScXMLZoomInvoke::freeZoomData(statemachine);
 }

@@ -43,12 +43,8 @@ ScXMLFallbackInvoke::ScXMLFallbackInvoke(void)
 {
 }
 
-ScXMLFallbackInvoke::~ScXMLFallbackInvoke(void)
-{
-}
-
 void
-ScXMLFallbackInvoke::invoke(const ScXMLStateMachine * statemachine) const
+ScXMLFallbackInvoke::invoke(ScXMLStateMachine * statemachine)
 {
 #ifndef NDEBUG
   if (!this->messaged) {

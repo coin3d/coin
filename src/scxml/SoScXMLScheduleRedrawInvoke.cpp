@@ -39,12 +39,19 @@ SoScXMLScheduleRedrawInvoke::initClass(void)
 }
 
 void
-SoScXMLScheduleRedrawInvoke::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLScheduleRedrawInvoke::invoke(ScXMLStateMachine * statemachinearg)
 {
-  if (statemachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    const SoScXMLStateMachine * sostatemachine =
-      static_cast<const SoScXMLStateMachine *>(statemachine);
-    SoNode * rootnode = sostatemachine->getSceneGraphRoot();
-    rootnode->touch();
+  assert(statemachinearg);
+  if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+    return;
   }
+
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
+  SoNode * rootnode = statemachine->getSceneGraphRoot();
+  if (!rootnode) {
+    return;
+  }
+
+  rootnode->touch();
 }

@@ -51,13 +51,12 @@ ScXMLInvoke::setTargetTypeXMLAttr(const char * targettypestr)
 {
   if (this->targettype &&
       this->targettype != this->getAttribute("targettype")) {
-    delete [] const_cast<char *>(this->targettype);
+    delete [] this->targettype;
   }
   this->targettype = NULL;
   if (targettypestr) {
-    char * buffer = new char [ strlen(targettypestr) + 1 ];
-    strcpy(buffer, targettypestr);
-    this->targettype = buffer;
+    this->targettype = new char [ strlen(targettypestr) + 1 ];
+    strcpy(this->targettype, targettypestr);
   }
 }
 
@@ -67,13 +66,12 @@ void
 ScXMLInvoke::setSrcXMLAttr(const char * srcstr)
 {
   if (this->src && this->src != this->getAttribute("src")) {
-    delete [] const_cast<char *>(this->src);
+    delete [] this->src;
   }
   this->src = NULL;
   if (srcstr) {
-    char * buffer = new char [ strlen(srcstr) + 1 ];
-    strcpy(buffer, srcstr);
-    this->src = buffer;
+    this->src = new char [ strlen(srcstr) + 1 ];
+    strcpy(this->src, srcstr);
   }
 }
 
@@ -83,13 +81,12 @@ void
 ScXMLInvoke::setSrcExprXMLAttr(const char * srcexprstr)
 {
   if (this->srcexpr && this->srcexpr != this->getAttribute("srcexpr")) {
-    delete [] const_cast<char *>(this->srcexpr);
+    delete [] this->srcexpr;
   }
   this->srcexpr = NULL;
   if (srcexprstr) {
-    char * buffer = new char [ strlen(srcexprstr) + 1 ];
-    strcpy(buffer, srcexprstr);
-    this->srcexpr = buffer;
+    this->srcexpr = new char [ strlen(srcexprstr) + 1 ];
+    strcpy(this->srcexpr, srcexprstr);
   }
 }
 
@@ -100,9 +97,9 @@ ScXMLInvoke::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->targettype = this->getAttribute("targettype");
-  this->src = this->getAttribute("src");
-  this->srcexpr = this->getAttribute("srcexpr");
+  this->targettype = const_cast<char *>(this->getAttribute("targettype"));
+  this->src = const_cast<char *>(this->getAttribute("src"));
+  this->srcexpr = const_cast<char *>(this->getAttribute("srcexpr"));
 
   if (!this->targettype) { return FALSE; }
 

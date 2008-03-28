@@ -33,7 +33,7 @@ class COIN_DLL_API SoScXMLScheduleRedrawInvoke : public ScXMLInvoke {
 public:
   static void initClass(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 }; // SoScXMLScheduleRedrawInvoke
 

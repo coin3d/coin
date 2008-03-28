@@ -38,7 +38,7 @@ public:
 
   virtual SbBool handleXMLAttributes(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
   SbBool initialized;

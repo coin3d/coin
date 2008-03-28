@@ -58,7 +58,7 @@ ScXMLTransition::~ScXMLTransition(void)
   this->setAnchorXMLAttr(NULL);
 
   {
-    std::vector<const ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
+    std::vector<ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
     while (invokeit != this->invokelist.end()) {
       delete *invokeit;
       ++invokeit;
@@ -75,9 +75,9 @@ ScXMLTransition::handleXMLAttributes(void)
   if (!inherited::handleXMLAttributes()) return FALSE;
 
   this->setEventXMLAttr(this->getAttribute("event"));
-  this->cond = this->getAttribute("cond");
-  this->target = this->getAttribute("target");
-  this->anchor = this->getAttribute("anchor");
+  this->cond = const_cast<char *>(this->getAttribute("cond"));
+  this->target = const_cast<char *>(this->getAttribute("target"));
+  this->anchor = const_cast<char *>(this->getAttribute("anchor"));
 
   if (this->target && this->anchor) {
     // only one of 'target' and 'anchor' may be specified
@@ -91,7 +91,7 @@ void
 ScXMLTransition::setEventXMLAttr(const char * eventstr)
 {
   if (this->event && this->event != this->getAttribute("event")) {
-    delete [] const_cast<char *>(this->event);
+    delete [] this->event;
   }
   this->event = NULL;
   this->eventkey = SbName::empty();
@@ -108,15 +108,13 @@ ScXMLTransition::setEventXMLAttr(const char * eventstr)
       this->needprefixmatching = TRUE;
       // we'll chop off the pattern matching key and use the boolean
       const int len = strlen(eventstr) - 1;
-      char * buffer = new char [ len ];
-      strncpy(buffer, eventstr, len - 1);
-      buffer[ len - 1 ] = '\0';
-      this->event = buffer;
+      this->event = new char [ len ];
+      strncpy(this->event, eventstr, len - 1);
+      this->event[ len - 1 ] = '\0';
       this->eventkey = this->event;
     } else {
-      char * buffer = new char [ strlen(eventstr) + 1 ];
-      strcpy(buffer, eventstr);
-      this->event = buffer;
+      this->event = new char [ strlen(eventstr) + 1 ];
+      strcpy(this->event, eventstr);
       this->eventkey = this->event;
     }
   }
@@ -128,13 +126,12 @@ void
 ScXMLTransition::setCondXMLAttr(const char * condstr)
 {
   if (this->cond && this->cond != this->getAttribute("cond")) {
-    delete [] const_cast<char *>(this->cond);
+    delete [] this->cond;
   }
   this->cond = NULL;
   if (condstr) {
-    char * buffer = new char [ strlen(condstr) + 1 ];
-    strcpy(buffer, condstr);
-    this->cond = buffer;
+    this->cond = new char [ strlen(condstr) + 1 ];
+    strcpy(this->cond, condstr);
   }
 }
 
@@ -144,13 +141,12 @@ void
 ScXMLTransition::setTargetXMLAttr(const char * targetstr)
 {
   if (this->target && this->target != this->getAttribute("target")) {
-    delete [] const_cast<char *>(this->target);
+    delete [] this->target;
   }
   this->target = NULL;
   if (targetstr) {
-    char * buffer = new char [ strlen(targetstr) + 1 ];
-    strcpy(buffer, targetstr);
-    this->target = buffer;
+    this->target = new char [ strlen(targetstr) + 1 ];
+    strcpy(this->target, targetstr);
   }
 }
 
@@ -160,13 +156,12 @@ void
 ScXMLTransition::setAnchorXMLAttr(const char * anchorstr)
 {
   if (this->anchor && this->anchor != this->getAttribute("anchor")) {
-    delete [] const_cast<char *>(this->anchor);
+    delete [] this->anchor;
   }
   this->anchor = NULL;
   if (anchorstr) {
-    char * buffer = new char [ strlen(anchorstr) + 1 ];
-    strcpy(buffer, anchorstr);
-    this->anchor = buffer;
+    this->anchor = new char [ strlen(anchorstr) + 1 ];
+    strcpy(this->anchor, anchorstr);
   }
 }
 
@@ -243,9 +238,9 @@ ScXMLTransition::isEventMatch(const ScXMLEvent * eventobj) const
 SCXML_LIST_OBJECT_API_IMPL(ScXMLTransition, ScXMLInvoke, invokelist, Invoke, Invokes);
 
 void
-ScXMLTransition::invoke(const ScXMLStateMachine * statemachine)
+ScXMLTransition::invoke(ScXMLStateMachine * statemachine)
 {
-  std::vector<const ScXMLInvoke *>::iterator it = this->invokelist.begin();
+  std::vector<ScXMLInvoke *>::const_iterator it = this->invokelist.begin();
   while (it != this->invokelist.end()) {
     (*it)->invoke(statemachine);
     ++it;

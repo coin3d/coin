@@ -127,7 +127,7 @@ SoScXMLSetRotate::initClass(void)
 }
 
 void
-SoScXMLSetRotate::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLSetRotate::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetRotate",
@@ -203,7 +203,7 @@ SoScXMLUpdateRotate::initClass(void)
 }
 
 void
-SoScXMLUpdateRotate::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLUpdateRotate::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetRotate",
@@ -290,7 +290,7 @@ SoScXMLEndRotate::handleXMLAttributes(void)
 }
 
 void
-SoScXMLEndRotate::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLEndRotate::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetRotate",

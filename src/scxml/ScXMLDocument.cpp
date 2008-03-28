@@ -53,7 +53,7 @@ ScXMLDocument::~ScXMLDocument(void)
   this->setInitialStateXMLAttr(NULL);
 
   {
-    std::vector<const ScXMLState *>::iterator stateit = this->statelist.begin();
+    std::vector<ScXMLState *>::iterator stateit = this->statelist.begin();
     while (stateit != this->statelist.end()) {
       delete *stateit;
       ++stateit;
@@ -62,7 +62,7 @@ ScXMLDocument::~ScXMLDocument(void)
   }
 
   {
-    std::vector<const ScXMLState *>::iterator parallelit = this->parallellist.begin();
+    std::vector<ScXMLState *>::iterator parallelit = this->parallellist.begin();
     while (parallelit != this->parallellist.end()) {
       delete *parallelit;
       ++parallelit;
@@ -71,7 +71,7 @@ ScXMLDocument::~ScXMLDocument(void)
   }
 
   {
-    std::vector<const ScXMLFinal *>::iterator finalit = this->finallist.begin();
+    std::vector<ScXMLFinal *>::iterator finalit = this->finallist.begin();
     while (finalit != this->finallist.end()) {
       delete *finalit;
       ++finalit;
@@ -101,13 +101,12 @@ void
 ScXMLDocument::setXMLNSXMLAttr(const char * xmlnsstr)
 {
   if (this->xmlns && this->xmlns != this->getAttribute("xmlns")) {
-    delete [] const_cast<char *>(this->xmlns);
+    delete [] this->xmlns;
   }
   this->xmlns = NULL;
   if (xmlnsstr) {
-    char * buffer = new char [ strlen(xmlnsstr) + 1 ];
-    strcpy(buffer, xmlnsstr);
-    this->xmlns = buffer;
+    this->xmlns = new char [ strlen(xmlnsstr) + 1 ];
+    strcpy(this->xmlns, xmlnsstr);
   }
 }
 
@@ -117,13 +116,12 @@ void
 ScXMLDocument::setVersionXMLAttr(const char * versionstr)
 {
   if (this->version && this->version != this->getAttribute("version")) {
-    delete [] const_cast<char *>(this->version);
+    delete [] this->version;
   }
   this->version = NULL;
   if (versionstr) {
-    char * buffer = new char [ strlen(versionstr) + 1 ];
-    strcpy(buffer, versionstr);
-    this->version = buffer;
+    this->version = new char [ strlen(versionstr) + 1 ];
+    strcpy(this->version, versionstr);
   }
 }
 
@@ -134,13 +132,12 @@ ScXMLDocument::setInitialStateXMLAttr(const char * initialstatestr)
 {
   if (this->initialstate &&
       (this->initialstate != this->getAttribute("initialstate"))) {
-    delete [] const_cast<char *>(this->initialstate);
+    delete [] this->initialstate;
   }
   this->initialstate = NULL;
   if (initialstatestr) {
-    char * buffer = new char [ strlen(initialstatestr) + 1 ];
-    strcpy(buffer, initialstatestr);
-    this->initialstate = buffer;
+    this->initialstate = new char [ strlen(initialstatestr) + 1 ];
+    strcpy(this->initialstate, initialstatestr);
   }
 }
 
@@ -151,9 +148,9 @@ ScXMLDocument::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->xmlns = this->getAttribute("xmlns");
-  this->version = this->getAttribute("version");
-  this->initialstate = this->getAttribute("initialstate");
+  this->xmlns = const_cast<char *>(this->getAttribute("xmlns"));
+  this->version = const_cast<char *>(this->getAttribute("version"));
+  this->initialstate = const_cast<char *>(this->getAttribute("initialstate"));
 
   if (!this->referenced && this->initialstate == NULL) {
     // requirement for root document, but not for referenced documents

@@ -41,11 +41,11 @@ public:
   virtual ~ScXMLInitial(void);
 
   // transition
-  virtual void setTransition(const ScXMLTransition * transition);
-  virtual const ScXMLTransition * getTransition(void) const;
+  virtual void setTransition(ScXMLTransition * transition);
+  virtual ScXMLTransition * getTransition(void) const;
 
 protected:
-  const ScXMLTransition * transitionptr;
+  ScXMLTransition * transitionptr;
 
 }; // ScXMLInitial
 

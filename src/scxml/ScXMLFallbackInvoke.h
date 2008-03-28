@@ -34,12 +34,11 @@ public:
   static void initClass(void);
 
   ScXMLFallbackInvoke(void);
-  virtual ~ScXMLFallbackInvoke(void);
 
-  virtual void invoke(const ScXMLStateMachine * statemachine) const;
+  virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:
-  mutable SbBool messaged;
+  SbBool messaged;
 
 }; // ScXMLFallbackInvoke
 

@@ -126,7 +126,7 @@ SoScXMLSetSeek::~SoScXMLSetSeek(void)
 }
 
 void
-SoScXMLSetSeek::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLSetSeek::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetSeek",
@@ -134,8 +134,8 @@ SoScXMLSetSeek::invoke(const ScXMLStateMachine * statemachinearg) const
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   SeekData * data = SoScXMLSeekInvoke::getSeekData(statemachine);
   assert(data);
@@ -176,8 +176,7 @@ SoScXMLSetSeek::invoke(const ScXMLStateMachine * statemachinearg) const
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
   if (!this->raypickaction) {
-    const_cast<SoScXMLSetSeek *>(this)->raypickaction =
-      new SoRayPickAction(vp);
+    this->raypickaction = new SoRayPickAction(vp);
   } else {
     this->raypickaction->setViewportRegion(vp);
   }
@@ -192,13 +191,12 @@ SoScXMLSetSeek::invoke(const ScXMLStateMachine * statemachinearg) const
   SoPickedPoint * picked = this->raypickaction->getPickedPoint();
   if (!picked) {
     static const SbName eventid("sim.coin3d.coin.navigation.seekmiss");
-    const_cast<SoScXMLStateMachine *>(statemachine)->queueEvent(eventid);
+    statemachine->queueEvent(eventid);
     return;
   }
 
   if (!this->getmatrixaction) {
-    const_cast<SoScXMLSetSeek *>(this)->getmatrixaction =
-      new SoGetMatrixAction(vp);
+    this->getmatrixaction = new SoGetMatrixAction(vp);
   }
 
   SbVec3f hitpoint = picked->getPoint();
@@ -212,9 +210,8 @@ SoScXMLSetSeek::invoke(const ScXMLStateMachine * statemachinearg) const
   // move point to the camera coordinate system, consider
   // transformations before camera in the scene graph
   SbMatrix cameramatrix, camerainverse;
-  const_cast<SoScXMLSetSeek *>(this)->
-    getCameraCoordinateSystem(camera, sceneroot,
-                              cameramatrix, camerainverse);
+  this->getCameraCoordinateSystem(camera, sceneroot,
+                                  cameramatrix, camerainverse);
   camerainverse.multVecMatrix(hitpoint, hitpoint);
   
   float fd = 25;
@@ -274,7 +271,7 @@ SoScXMLUpdateSeek::initClass(void)
 }
 
 void
-SoScXMLUpdateSeek::invoke(const ScXMLStateMachine * statemachinearg) const
+SoScXMLUpdateSeek::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
     SoDebugError::post("SetZoom",
@@ -282,8 +279,8 @@ SoScXMLUpdateSeek::invoke(const ScXMLStateMachine * statemachinearg) const
     return;
   }
 
-  const SoScXMLStateMachine * statemachine =
-    static_cast<const SoScXMLStateMachine *>(statemachinearg);
+  SoScXMLStateMachine * statemachine =
+    static_cast<SoScXMLStateMachine *>(statemachinearg);
 
   SeekData * data = SoScXMLSeekInvoke::getSeekData(statemachine);
   assert(data);
@@ -310,7 +307,7 @@ SoScXMLUpdateSeek::invoke(const ScXMLStateMachine * statemachinearg) const
 
   if (end) {
     static const SbName eventid("sim.coin3d.coin.navigation.seekend");
-    const_cast<SoScXMLStateMachine *>(statemachine)->queueEvent(eventid);
+    statemachine->queueEvent(eventid);
   }
 }
 
@@ -326,7 +323,7 @@ SoScXMLEndSeek::initClass(void)
 }
 
 void
-SoScXMLEndSeek::invoke(const ScXMLStateMachine * statemachine) const
+SoScXMLEndSeek::invoke(ScXMLStateMachine * statemachine)
 {
   SeekData * data = SoScXMLSeekInvoke::getSeekData(statemachine);
   assert(data);

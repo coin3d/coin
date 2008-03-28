@@ -44,16 +44,16 @@ public:
 
   // executable content
   virtual int getNumInvokes(void) const;
-  virtual const ScXMLInvoke * getInvoke(int idx) const;
-  virtual void addInvoke(const ScXMLInvoke * invoke);
-  virtual void removeInvoke(const ScXMLInvoke * invoke);
+  virtual ScXMLInvoke * getInvoke(int idx) const;
+  virtual void addInvoke(ScXMLInvoke * invoke);
+  virtual void removeInvoke(ScXMLInvoke * invoke);
   virtual void clearAllInvokes(void);
 
   // invoke
   virtual void invoke(ScXMLStateMachine * statemachine);
   
 protected:
-  std::vector<const ScXMLInvoke *> invokelist;
+  std::vector<ScXMLInvoke *> invokelist;
 
 }; // ScXMLOnExit
 
