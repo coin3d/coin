@@ -108,9 +108,6 @@ CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
     // try loading file from COINDIR/...
     do {
       static const char * coindirenv = coin_getenv("COINDIR");
-      if (coindirenv == NULL) {
-        coindirenv = coin_getenv("OIV_HOME");
-      }
       if (coindirenv != NULL) {
         SbString filename;
         filename.sprintf("%s/share/Coin/%s", coindirenv, resloc + 5);
