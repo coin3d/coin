@@ -24,6 +24,12 @@
  *
 \**************************************************************************/
 
+// IMPORTANT NOTE: This class is part of a development DEAD END in
+// Coin that WILL BE DEPRECATED and removed in a future version.
+// It is only included because of 3rd party dependencies created towards
+// the development branch of Coin before the Coin 3.0 release.
+// Use ScXML-based navigation instead.  It's the way of the future.
+
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec3d.h>
