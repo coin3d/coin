@@ -118,6 +118,7 @@
 /*! \defgroup threads Portable thread-handling abstractions  */
 /*! \defgroup VRMLnodes VRML97 classes */
 /*! \defgroup envvars Environment Variables */
+/*! \defgroup scxml State Chart XML subsystem */
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
