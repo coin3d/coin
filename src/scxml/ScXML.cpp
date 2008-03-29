@@ -72,23 +72,25 @@
   files.  It is hoped that this technology will prove to be a useful
   addition to Coin and get broader use as this subsystem matures.  The
   dragger and manipulator user interaction logic is likely one area
-  where ScXML might be employed later. Attaching state machines parts
-  of the  scene graph could be another interesting idea for the future.
-  For now though, the ScXML system is not employed in any pre-established
+  where ScXML might be employed later. Attaching state machines to
+  interactive parts of the scene graph could be another interesting
+  idea for the future.
+
+  For now, the ScXML system is not employed in any pre-established
   Coin usage patterns, and you will need to employ new features to touch
-  base with it.
-
-
+  base with it. The most obvious are where ScXML will be used is if
+  you use Quarter 1.0 over Coin 3.0, as you manipulate the camera
+  movements around the 3D models through mouse and keyboard interaction.
 
   The Coin type system makes it possible to override the default types
   to have the state chart description instantiated using customized
-  objects, which is one of the core points of this implementation.
-
-  The
-  design choice made in that regard was to both use the type overriding
-  system in Coin, and also to use the 'xmlns' (XML Namespace) attribute
-  make invokable types available and to prioritize which classtypes to
-  instantiate objects from.
+  objects. A design choice made in that regard was to both use the 
+  type overriding system in Coin, and also to use the 'xmlns'
+  (XML Namespace) attribute to make ScXML types available and to
+  prioritize which classtypes to instantiate objects from.  The xmlns
+  attribute is currently only checked at the document level, but the
+  plan is to let any state have this attribute, and to simulate
+  static scoping rules for namespace prioritization.
 
   Partially Supported Items:
 
@@ -112,6 +114,9 @@
     a single state currently, not multiple as you would have to when
     having support for <parallel> elements (which we don't have).
 
+  - Elements like <history> and <anchor> are just implemented as dummy
+    states for now.
+
   - There are no mechanisms for inter-statemachine event passing yet.
 
   For learning more about this, take a look at
@@ -124,7 +129,7 @@
   With support for <datamodel>, <transition>-conditions, and inline
   executable content in the XML file in some scripting language, the C++
   parts could probably have been greatly simplified, if not more or less
-  eliminated.
+  eliminated.  This will hopefully evolve for future versions of Coin.
 
   \since Coin 3.0
   \ingroup scxml
