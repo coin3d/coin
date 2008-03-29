@@ -281,7 +281,6 @@ RegularSources = \
         SoNavigationMode.cpp \
         SoNavigationState.cpp \
         SoNavigationSystem.cpp \
-        SoNavigationVehicle.cpp \
         SoOrthoCenterMode.cpp \
         SoPanMode.cpp \
         SoPickMode.cpp \
@@ -380,10 +379,9 @@ am__navigation_lst_SOURCES_DIST = SoScXMLNavigation.cpp \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
 	all-navigation-cpp.cpp
 am__objects_1 = all-navigation-cpp.$(OBJEXT)
 am__objects_2 = SoScXMLNavigation.$(OBJEXT) \
@@ -393,11 +391,10 @@ am__objects_2 = SoScXMLNavigation.$(OBJEXT) \
 	SoScXMLViewUtils.$(OBJEXT) SoCenterMode.$(OBJEXT) \
 	SoIdleMode.$(OBJEXT) SoNavigationControl.$(OBJEXT) \
 	SoNavigationMode.$(OBJEXT) SoNavigationState.$(OBJEXT) \
-	SoNavigationSystem.$(OBJEXT) SoNavigationVehicle.$(OBJEXT) \
-	SoOrthoCenterMode.$(OBJEXT) SoPanMode.$(OBJEXT) \
-	SoPickMode.$(OBJEXT) SoPitchMode.$(OBJEXT) SoRollMode.$(OBJEXT) \
-	SoRotateMode.$(OBJEXT) SoYawMode.$(OBJEXT) SoZoomMode.$(OBJEXT) \
-	SoEvent.$(OBJEXT) SoNavigation.$(OBJEXT)
+	SoNavigationSystem.$(OBJEXT) SoOrthoCenterMode.$(OBJEXT) \
+	SoPanMode.$(OBJEXT) SoPickMode.$(OBJEXT) SoPitchMode.$(OBJEXT) \
+	SoRollMode.$(OBJEXT) SoRotateMode.$(OBJEXT) SoYawMode.$(OBJEXT) \
+	SoZoomMode.$(OBJEXT) SoEvent.$(OBJEXT) SoNavigation.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_navigation_lst_OBJECTS = $(am__objects_3)
@@ -411,10 +408,9 @@ am__EXTRA_navigation_lst_SOURCES_DIST = SoScXMLNavigation.h \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
 navigation_lst_OBJECTS = $(am_navigation_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -426,10 +422,9 @@ am__libnavigation_la_SOURCES_DIST = SoScXMLNavigation.cpp \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
 	all-navigation-cpp.cpp
 am__objects_6 = all-navigation-cpp.lo
 am__objects_7 = SoScXMLNavigation.lo SoScXMLNavigationInvoke.lo \
@@ -437,9 +432,9 @@ am__objects_7 = SoScXMLNavigation.lo SoScXMLNavigationInvoke.lo \
 	SoScXMLSpinUtils.lo SoScXMLZoomUtils.lo SoScXMLViewUtils.lo \
 	SoCenterMode.lo SoIdleMode.lo SoNavigationControl.lo \
 	SoNavigationMode.lo SoNavigationState.lo SoNavigationSystem.lo \
-	SoNavigationVehicle.lo SoOrthoCenterMode.lo SoPanMode.lo \
-	SoPickMode.lo SoPitchMode.lo SoRollMode.lo SoRotateMode.lo \
-	SoYawMode.lo SoZoomMode.lo SoEvent.lo SoNavigation.lo
+	SoOrthoCenterMode.lo SoPanMode.lo SoPickMode.lo SoPitchMode.lo \
+	SoRollMode.lo SoRotateMode.lo SoYawMode.lo SoZoomMode.lo \
+	SoEvent.lo SoNavigation.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libnavigation_la_OBJECTS = $(am__objects_8)
@@ -453,10 +448,9 @@ am__EXTRA_libnavigation_la_SOURCES_DIST = SoScXMLNavigation.h \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
 libnavigation_la_OBJECTS = $(am_libnavigation_la_OBJECTS)
 libnavigation@SUFFIX@LINKHACK_la_LDFLAGS =
 libnavigation@SUFFIX@LINKHACK_la_LIBADD =
@@ -466,10 +460,9 @@ am__libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp \
 	all-navigation-cpp.cpp
 am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
@@ -482,10 +475,9 @@ am__EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
 	SoCenterMode.cpp SoIdleMode.cpp SoNavigationControl.cpp \
 	SoNavigationMode.cpp SoNavigationState.cpp \
-	SoNavigationSystem.cpp SoNavigationVehicle.cpp \
-	SoOrthoCenterMode.cpp SoPanMode.cpp SoPickMode.cpp \
-	SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp SoYawMode.cpp \
-	SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
+	SoNavigationSystem.cpp SoOrthoCenterMode.cpp SoPanMode.cpp \
+	SoPickMode.cpp SoPitchMode.cpp SoRollMode.cpp SoRotateMode.cpp \
+	SoYawMode.cpp SoZoomMode.cpp SoEvent.cpp SoNavigation.cpp
 libnavigation@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -504,8 +496,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoNavigationState.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNavigationSystem.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNavigationSystem.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNavigationVehicle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNavigationVehicle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOrthoCenterMode.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOrthoCenterMode.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPanMode.Plo ./$(DEPDIR)/SoPanMode.Po \
@@ -640,8 +630,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNavigationState.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNavigationSystem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNavigationSystem.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNavigationVehicle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNavigationVehicle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOrthoCenterMode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOrthoCenterMode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPanMode.Plo@am__quote@

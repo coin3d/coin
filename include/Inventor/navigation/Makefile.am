@@ -5,7 +5,6 @@ PublicHeaders = \
         SoNavigationMode.h \
         SoNavigationState.h \
         SoNavigationSystem.h \
-        SoNavigationVehicle.h \
         SoOrthoCenterMode.h \
         SoPanMode.h \
         SoPickMode.h \

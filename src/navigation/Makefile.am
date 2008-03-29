@@ -14,7 +14,6 @@ RegularSources = \
         SoNavigationMode.cpp \
         SoNavigationState.cpp \
         SoNavigationSystem.cpp \
-        SoNavigationVehicle.cpp \
         SoOrthoCenterMode.cpp \
         SoPanMode.cpp \
         SoPickMode.cpp \

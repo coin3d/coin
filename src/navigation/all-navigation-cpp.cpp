@@ -37,7 +37,6 @@
 #include "SoNavigationMode.cpp"
 #include "SoNavigationState.cpp"
 #include "SoNavigationSystem.cpp"
-#include "SoNavigationVehicle.cpp"
 #include "SoOrthoCenterMode.cpp"
 #include "SoPanMode.cpp"
 #include "SoPickMode.cpp"
