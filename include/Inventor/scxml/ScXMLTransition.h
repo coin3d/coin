@@ -75,6 +75,7 @@ public:
   virtual void clearAllInvokes(void);
 
   // invoke
+  virtual SbBool evaluateCondition(ScXMLStateMachine * statemachine);
   virtual void invoke(ScXMLStateMachine * statemachine);
 
 protected:

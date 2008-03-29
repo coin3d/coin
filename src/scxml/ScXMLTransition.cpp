@@ -35,6 +35,14 @@
 
 // *************************************************************************
 
+/*!
+  \class ScXMLTransition ScXMLTransition.h Inventor/scxml/ScXMLTransition.h
+  \brief Implementation of the <transition> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 class ScXMLTransitionP {
 public:
 };
@@ -242,6 +250,17 @@ ScXMLTransition::isEventMatch(const ScXMLEvent * eventobj) const
 // executable content
 
 SCXML_LIST_OBJECT_API_IMPL(ScXMLTransition, ScXMLInvoke, invokelist, Invoke, Invokes);
+
+/*!
+  This function is not implemented currently, but will always return TRUE.
+  It can be overridden of course if someone wants to implement it in a
+  derived class.
+*/
+SbBool
+ScXMLTransition::evaluateCondition(ScXMLTransition * statemachine)
+{
+  return TRUE;
+}
 
 void
 ScXMLTransition::invoke(ScXMLStateMachine * statemachine)
