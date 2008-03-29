@@ -22,8 +22,6 @@ Camera navigation SCXML state machine for Coin 3.0.
       <invoke targettype="sim.coin3d.coin" src="SetZoom"/>
     </transition>
 
-    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.Q" target="exit"/>
-
     <transition event="sim.coin3d.coin.navigation.ViewAll">
       <invoke targettype="sim.coin3d.coin" src="ViewAll"/>
     </transition>
