@@ -27,6 +27,16 @@
 
 #include <Inventor/scxml/ScXML.h>
 
+// *************************************************************************
+
+/*!
+  \class ScXMLFinal ScXMLFinal.h Inventor/scxml/ScXMLFinal.h
+  \brief Implementation of the <final> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(ScXMLFinal);
 
 void

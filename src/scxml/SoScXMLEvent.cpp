@@ -29,6 +29,20 @@
 #include <Inventor/events/SoEvents.h>
 #include <Inventor/scxml/ScXML.h>
 
+// *************************************************************************
+
+/*!
+  \class SoScXMLEvent SoScXMLEvent.h Inventor/scxml/SoScXMLEvent.h
+  \brief Adds an SoEvent holder to the ScXMLEvent base.
+
+  This class is part of integrating the Coin types with the SCXML
+  subsystem.  SoScXMLEvent objects are ScXMLEvents that wraps/passes
+  an SoEvent to the SCXML state machine.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(SoScXMLEvent);
 
 void

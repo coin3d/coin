@@ -28,6 +28,14 @@
 
 // *************************************************************************
 
+/*!
+  \class ScXMLInvoke ScXMLInvoke.h Inventor/scxml/ScXMLInvoke.h
+  \brief Implementation of the <invoke> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 class ScXMLInvokeP {
 public:
 };

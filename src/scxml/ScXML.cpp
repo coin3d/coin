@@ -72,9 +72,11 @@
   files.  It is hoped that this technology will prove to be a useful
   addition to Coin and get broader use as this subsystem matures.  The
   dragger and manipulator user interaction logic is likely one area
-  where ScXML might be employed later. For now though, the ScXML
-  system is not employed in any pre-established Coin usage patterns,
-  and you will need to employ new features to touch base with it.
+  where ScXML might be employed later. Attaching state machines parts
+  of the  scene graph could be another interesting idea for the future.
+  For now though, the ScXML system is not employed in any pre-established
+  Coin usage patterns, and you will need to employ new features to touch
+  base with it.
 
 
 

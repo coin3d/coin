@@ -31,6 +31,16 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
+/*!
+  \class ScXMLOnExit ScXMLOnExit.h Inventor/scxml/ScXMLOnExit.h
+  \brief Implementation of the <onexit> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(ScXMLOnExit);
 
 void

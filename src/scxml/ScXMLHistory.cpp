@@ -31,9 +31,16 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
 /*!
-  \class ScXMLHistory Inventor/scxml/ScXMLHistory.h
-  \brief not implemented...
+  \class ScXMLHistory ScXMLHistory.h Inventor/scxml/ScXMLHistory.h
+  \brief Implementation of the <history> SCXML element.
+
+  The <history> element is not supported, other than as a dummy state.
+  
+  \since Coin 3.0
+  \ingroup scxml
 */
 
 SCXML_OBJECT_SOURCE(ScXMLHistory);

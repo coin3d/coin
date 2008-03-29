@@ -30,8 +30,13 @@
 // *************************************************************************
 
 /*!
-  \class ScXMLAnchor Inventor/scxml/ScXMLAnchor.h
-  \brief not implemented
+  \class ScXMLAnchor ScXMLAnchor.h Inventor/scxml/ScXMLAnchor.h
+  \brief Implementation of the <anchor> SCXML element.
+
+  The <anchor> element is not supported yet other than as a dummy state.
+
+  \since Coin 3.0
+  \ingroup scxml
 */
 
 class ScXMLAnchorP {

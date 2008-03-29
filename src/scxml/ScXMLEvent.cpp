@@ -28,6 +28,16 @@
 
 #include <Inventor/scxml/ScXML.h>
 
+// *************************************************************************
+
+/*!
+  \class ScXMLEvent ScXMLEvent.h Inventor/scxml/ScXMLEvent.h
+  \brief Base class for events sent to SCXML state machines.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(ScXMLEvent);
 
 void

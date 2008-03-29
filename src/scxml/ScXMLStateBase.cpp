@@ -26,6 +26,16 @@
 #include <assert.h>
 #include <string.h>
 
+// *************************************************************************
+
+/*!
+  \class ScXMLStateBase ScXMLStateBase.h Inventor/scxml/ScXMLStateBase.h
+  \brief Base class that handles the id parameter.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLStateBase);
 
 void

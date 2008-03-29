@@ -926,6 +926,23 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereProjector.h \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSectionProjector.h \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSheetProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXML.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLAnchor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLDocument.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLFinal.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLHistory.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLInitial.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLInvoke.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLObject.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLOnEntry.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLOnExit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLState.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLStateBase.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLStateMachine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLTransition.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLStateMachine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoAlarmSensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDataSensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDelayQueueSensor.h \
@@ -1484,6 +1501,22 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/projectors/SbSphereProjector.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbSphereSectionProjector.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbSphereSheetProjector.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXML.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLAnchor.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLDocument.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLEvent.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLFinal.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLHistory.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLInitial.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLObject.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLOnEntry.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLOnExit.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLState.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLStateBase.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLStateMachine.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/ScXMLTransition.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/SoScXMLEvent.cpp \
+                         @path_tag@@coin_src_dir@/src/scxml/SoScXMLStateMachine.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoAlarmSensor.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoDataSensor.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoDelayQueueSensor.cpp \

@@ -32,6 +32,20 @@
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLEvent.h>
 
+// *************************************************************************
+
+/*!
+  \class SoScXMLStateMachine SoScXMLStateMachine.h Inventor/scxml/SoScXMLStateMachine.h
+  \brief Integration level for using Coin events with SCXML-based state machines.
+
+  This class is part of integrating the Coin types with the SCXML
+  subsystem.  SoScXMLStateMachines adds convenience for using SCXML
+  state machines together with Coin events.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 class SoScXMLStateMachineP {
 public:
   SoScXMLStateMachineP(void)

@@ -31,6 +31,16 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
+/*!
+  \class ScXMLOnEntry ScXMLOnEntry.h Inventor/scxml/ScXMLOnEntry.h
+  \brief Implementation of the <onentry> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(ScXMLOnEntry);
 
 void

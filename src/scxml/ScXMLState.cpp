@@ -43,9 +43,10 @@
 // *************************************************************************
 
 /*!
-  \class ScXMLState ScXMLState.h scxml/ScXMLState.h
-  \brief state engine states.
+  \class ScXMLState ScXMLState.h Inventor/scxml/ScXMLState.h
+  \brief Implementation of the <state> and <parallel> SCXML elements.
 
+  \since Coin 3.0
   \ingroup scxml
 */
 

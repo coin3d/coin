@@ -34,6 +34,14 @@
 
 // *************************************************************************
 
+/*!
+  \class ScXMLDocument ScXMLDocument.h Inventor/scxml/ScXMLDocument.h
+  \brief Implementation of the root <scxml> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 class ScXMLDocumentP {
 public:
 };

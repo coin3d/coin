@@ -31,6 +31,16 @@
 
 #include "scxml/ScXMLCommonP.h"
 
+// *************************************************************************
+
+/*!
+  \class ScXMLInitial ScXMLInitial.h Inventor/scxml/ScXMLInitial.h
+  \brief Implementation of the <initial> SCXML element.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_SOURCE(ScXMLInitial);
 
 void

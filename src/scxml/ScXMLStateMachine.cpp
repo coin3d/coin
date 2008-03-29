@@ -48,6 +48,14 @@
 
 // *************************************************************************
 
+/*!
+  \class ScXMLStateMachine ScXMLStateMachine.h Inventor/scxml/ScXMLStateMachine.h
+  \brief Manager for processing events and setting states in SCXML structures.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 struct EventInfo {
   const ScXMLEvent * eventptr;
   SbBool deallocate;

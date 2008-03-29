@@ -31,6 +31,16 @@
 
 #include "scxml/ScXMLP.h"
 
+// *************************************************************************
+
+/*!
+  \class ScXMLObject ScXMLObject.h Inventor/scxml/ScXMLObject.h
+  \brief Base class for all SCXML objects.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLObject);
 
 void
