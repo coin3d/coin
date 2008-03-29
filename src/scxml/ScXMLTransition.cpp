@@ -257,11 +257,14 @@ SCXML_LIST_OBJECT_API_IMPL(ScXMLTransition, ScXMLInvoke, invokelist, Invoke, Inv
   derived class.
 */
 SbBool
-ScXMLTransition::evaluateCondition(ScXMLTransition * statemachine)
+ScXMLTransition::evaluateCondition(ScXMLStateMachine * statemachine)
 {
   return TRUE;
 }
 
+/*!
+  Calls invoke on all the ScXMLInvoke children.
+*/
 void
 ScXMLTransition::invoke(ScXMLStateMachine * statemachine)
 {
