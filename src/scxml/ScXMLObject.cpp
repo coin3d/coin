@@ -122,7 +122,7 @@ ScXMLObject::getAttribute(const char * attribute) const
 }
 
 /*!
-  This method is caled when the file reader has set all the XML
+  This method is called when the file reader has set all the XML
   attributes on the object, and wants the object to handle them and
   report if the values were ok or if a read error should be produced.
 

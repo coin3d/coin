@@ -59,7 +59,7 @@
 
 // *************************************************************************
 
-/*
+/*!
   \page scxml ScXML
 
   The ScXML part of Coin is a basic, non-conformant, partial
@@ -127,6 +127,7 @@
   eliminated.
 
   \since Coin 3.0
+  \ingroup scxml
 */
 
 // *************************************************************************
@@ -137,6 +138,11 @@ ScXMLP::TargettypeDict ScXMLP::targettypes;
 SbBool ScXMLP::no_datamodel_warning = FALSE;
 
 // *************************************************************************
+
+/*!
+  \class ScXML ScXML.h Inventor/scxml/ScXML.h
+  \brief Namespace for static ScXML-related functions.
+*/
 
 /*!
   Initializes the basic ScXML classes.
