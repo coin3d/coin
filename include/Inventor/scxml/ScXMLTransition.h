@@ -60,8 +60,9 @@ public:
   virtual SbBool handleXMLAttributes(void);
 
   // predicates
-  virtual SbBool isConditionLess(void) const;
-  virtual SbBool isTargetLess(void) const;
+  SbBool isConditionLess(void) const;
+  SbBool isTargetLess(void) const;
+  SbBool isSelfReferencing(void) const;
 
   // check
   virtual SbBool isEventMatch(const ScXMLEvent * event) const;

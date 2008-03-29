@@ -300,10 +300,6 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   assert(PRIVATE(this)->isprocessingqueue);
   this->setCurrentEvent(event);
 
-  // FIXME: make sure a transition to self will execute exitState(),
-  // invokables in transition, and then enterState() again...I don't
-  // think that is handled currently.
-
   if (0) {
     if (event) SoDebugError::postInfo("process", "event: %s",
                                       event->getIdentifier().getString());
@@ -311,8 +307,6 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   }
 
   if (0) {
-    //SoDebugError::postInfo("process", "active states: %d",
-    //                       PRIVATE(this)->activestatelist.size());
     std::vector<ScXMLObject *>::iterator it =
       PRIVATE(this)->activestatelist.begin();
     while (it != PRIVATE(this)->activestatelist.end()) {
@@ -362,19 +356,17 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   {
     ScXMLStateMachineP::TransitionList::iterator transit = transitions.begin();
     while (transit != transitions.end()) {
-      if (!transit->second->isTargetLess()) {
+      if (transit->second->isSelfReferencing()) {
         ScXMLObject * containerobj = transit->second->getContainer();
         ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(transit->second->getTargetXMLAttr());
 
-        if (containerobj == targetobj) {
-          if (containerobj->isOfType(ScXMLState::getClassTypeId())) {
-            ScXMLState * state = static_cast<ScXMLState *>(containerobj);
-            PRIVATE(this)->exitState(state);
-            transit->second->invoke(this);
-            PRIVATE(this)->enterState(state);
-          } else {
-            transit->second->invoke(this);
-          }
+        if (containerobj->isOfType(ScXMLState::getClassTypeId())) {
+          ScXMLState * state = static_cast<ScXMLState *>(containerobj);
+          PRIVATE(this)->exitState(state);
+          transit->second->invoke(this);
+          PRIVATE(this)->enterState(state);
+        } else {
+          transit->second->invoke(this);
         }
       }
       ++transit;
@@ -386,7 +378,11 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   // handle those with other targets next
   ScXMLStateMachineP::TransitionList::iterator transit = transitions.begin();
   while (transit != transitions.end()) {
-    if (transit->second->isTargetLess()) { ++transit; continue; }
+    if (transit->second->isTargetLess() ||
+        transit->second->isSelfReferencing()) {
+      ++transit;
+      continue;
+    }
 
     const char * targetid = transit->second->getTargetXMLAttr();
     ScXMLObject * targetstate = PRIVATE(this)->getObjectByIdentifier(targetid);
@@ -397,16 +393,9 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       continue;
     }
 
-    ScXMLObject * sourcestate = transit->first;
-
-    if (targetstate == sourcestate) {
-      // this we have already performed higher up (transition to self)
-      ++transit;
-      continue;
-    }
-
     std::vector<ScXMLObject *> sourcestates;
 
+    ScXMLObject * sourcestate = transit->first;
     if (sourcestate != NULL) { // ignore sourcestate NULL (initializer)
       // find all activestate object contained within source state
       std::vector<ScXMLObject *>::iterator activeit =

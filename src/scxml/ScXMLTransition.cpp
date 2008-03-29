@@ -213,6 +213,26 @@ ScXMLTransition::isTargetLess(void) const
   return (this->target == NULL);
 }
 
+/*!
+  Returns whether this transition is referencing its container or not.
+
+  If TRUE, this means you should end up in the same state as you
+  started with when doing this transition.  Note however that as
+  opposed to a targetless transition, this transition should actually
+  exit the state and then reenter it again.  Executable content will
+  be invoked after exiting the state, before reentering.
+*/
+
+SbBool
+ScXMLTransition::isSelfReferencing(void) const
+{
+  if (this->target != NULL && this->getContainer()) {
+    const char * containerid = this->getContainer()->getAttribute("id");
+    if (strcmp(containerid, this->target) == 0) return TRUE;
+  }
+  return FALSE;
+}
+
 // *************************************************************************
 
 /*!
