@@ -85,6 +85,8 @@ SoEventManager::SoEventManager(void)
 
 SoEventManager::~SoEventManager()
 {
+  delete PRIVATE(this)->searchaction;
+
   if (PRIVATE(this)->navigationsystem) {
     delete PRIVATE(this)->navigationsystem;
     PRIVATE(this)->navigationsystem = NULL;
