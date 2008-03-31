@@ -809,6 +809,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCoordinate4.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCube.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCylinder.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDepthBuffer.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDirectionalLight.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDrawStyle.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEnvironment.h \
@@ -1389,6 +1390,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoCoordinate4.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoCube.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoCylinder.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoDepthBuffer.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDirectionalLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDrawStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEnvironment.cpp \
