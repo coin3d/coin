@@ -56,7 +56,6 @@
 		E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */; };
 		E011F20E0D9BED09001D1675 /* CoinResources.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20D0D9BED09001D1675 /* CoinResources.h */; };
 		E011F2100D9BED2C001D1675 /* SoScXMLViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */; };
-		E011F2120D9BEDA2001D1675 /* types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F2110D9BEDA2001D1675 /* types.cpp */; };
 		E09989660D9425F40054FBE6 /* non_winsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F00D9425F40054FBE6 /* non_winsys.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989670D9425F40054FBE6 /* oivwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F10D9425F40054FBE6 /* oivwin32.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989690D9425F40054FBE6 /* Sb.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F30D9425F40054FBE6 /* Sb.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -843,7 +842,6 @@
 		E0FC4EDB0D92D50900EF3BB3 /* SoNavigationMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A090D92D50400EF3BB3 /* SoNavigationMode.cpp */; };
 		E0FC4EDC0D92D50900EF3BB3 /* SoNavigationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0A0D92D50400EF3BB3 /* SoNavigationState.cpp */; };
 		E0FC4EDD0D92D50900EF3BB3 /* SoNavigationSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0B0D92D50400EF3BB3 /* SoNavigationSystem.cpp */; };
-		E0FC4EDE0D92D50900EF3BB3 /* SoNavigationVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0C0D92D50400EF3BB3 /* SoNavigationVehicle.cpp */; };
 		E0FC4EDF0D92D50900EF3BB3 /* SoOrthoCenterMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0D0D92D50400EF3BB3 /* SoOrthoCenterMode.cpp */; };
 		E0FC4EE00D92D50900EF3BB3 /* SoPanMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0E0D92D50400EF3BB3 /* SoPanMode.cpp */; };
 		E0FC4EE10D92D50900EF3BB3 /* SoPickMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A0F0D92D50400EF3BB3 /* SoPickMode.cpp */; };
@@ -1341,7 +1339,6 @@
 		E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoScXMLViewUtils.cpp; path = ../../src/navigation/SoScXMLViewUtils.cpp; sourceTree = SOURCE_ROOT; };
 		E011F20D0D9BED09001D1675 /* CoinResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinResources.h; sourceTree = "<group>"; };
 		E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLViewUtils.h; sourceTree = "<group>"; };
-		E011F2110D9BEDA2001D1675 /* types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = types.cpp; sourceTree = "<group>"; };
 		E09988D80D9425F40054FBE6 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = actions; path = /Users/kintel/code/checkout/Coin/include/Inventor/actions; sourceTree = "<absolute>"; };
 		E09988D90D9425F40054FBE6 /* annex */ = {isa = PBXFileReference; lastKnownFileType = folder; name = annex; path = /Users/kintel/code/checkout/Coin/include/Inventor/annex; sourceTree = "<absolute>"; };
 		E09988DA0D9425F40054FBE6 /* bundles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bundles; path = /Users/kintel/code/checkout/Coin/include/Inventor/bundles; sourceTree = "<absolute>"; };
@@ -3150,7 +3147,6 @@
 		E0FC4A090D92D50400EF3BB3 /* SoNavigationMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoNavigationMode.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoNavigationMode.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A0A0D92D50400EF3BB3 /* SoNavigationState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoNavigationState.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoNavigationState.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A0B0D92D50400EF3BB3 /* SoNavigationSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoNavigationSystem.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoNavigationSystem.cpp; sourceTree = DEVELOPER_DIR; };
-		E0FC4A0C0D92D50400EF3BB3 /* SoNavigationVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoNavigationVehicle.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoNavigationVehicle.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A0D0D92D50400EF3BB3 /* SoOrthoCenterMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoOrthoCenterMode.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoOrthoCenterMode.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A0E0D92D50400EF3BB3 /* SoPanMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoPanMode.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoPanMode.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A0F0D92D50400EF3BB3 /* SoPickMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoPickMode.cpp; path = ../Users/kintel/code/checkout/Coin/src/navigation/SoPickMode.cpp; sourceTree = DEVELOPER_DIR; };
@@ -6548,7 +6544,6 @@
 				E0FC4A090D92D50400EF3BB3 /* SoNavigationMode.cpp */,
 				E0FC4A0A0D92D50400EF3BB3 /* SoNavigationState.cpp */,
 				E0FC4A0B0D92D50400EF3BB3 /* SoNavigationSystem.cpp */,
-				E0FC4A0C0D92D50400EF3BB3 /* SoNavigationVehicle.cpp */,
 				E0FC4A0D0D92D50400EF3BB3 /* SoOrthoCenterMode.cpp */,
 				E0FC4A0E0D92D50400EF3BB3 /* SoPanMode.cpp */,
 				E0FC4A0F0D92D50400EF3BB3 /* SoPickMode.cpp */,
@@ -7049,7 +7044,6 @@
 		E0FC4BB90D92D50600EF3BB3 /* xml */ = {
 			isa = PBXGroup;
 			children = (
-				E011F2110D9BEDA2001D1675 /* types.cpp */,
 				E0FC4BBB0D92D50600EF3BB3 /* attribute.cpp */,
 				E0FC4BBC0D92D50600EF3BB3 /* attributep.h */,
 				E0FC4BBD0D92D50600EF3BB3 /* document.cpp */,
@@ -8026,7 +8020,6 @@
 				E0FC4EDB0D92D50900EF3BB3 /* SoNavigationMode.cpp in Sources */,
 				E0FC4EDC0D92D50900EF3BB3 /* SoNavigationState.cpp in Sources */,
 				E0FC4EDD0D92D50900EF3BB3 /* SoNavigationSystem.cpp in Sources */,
-				E0FC4EDE0D92D50900EF3BB3 /* SoNavigationVehicle.cpp in Sources */,
 				E0FC4EDF0D92D50900EF3BB3 /* SoOrthoCenterMode.cpp in Sources */,
 				E0FC4EE00D92D50900EF3BB3 /* SoPanMode.cpp in Sources */,
 				E0FC4EE10D92D50900EF3BB3 /* SoPickMode.cpp in Sources */,
@@ -8370,7 +8363,6 @@
 				E011F1CC0D9AB769001D1675 /* SoScXMLZoomUtils.cpp in Sources */,
 				E011F1FF0D9BE986001D1675 /* CoinResources.cpp in Sources */,
 				E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */,
-				E011F2120D9BEDA2001D1675 /* types.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
