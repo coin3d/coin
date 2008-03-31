@@ -200,7 +200,7 @@ SoTimeCounter::writeInstance(SoOutput * out)
 void
 SoTimeCounter::evaluate(void)
 {
-  if (!this->ispaused) {
+  if (!this->ispaused && (this->frequency.getValue() > 0.0f)) {
     // FIXME: the code calculating the output value is a
     // mess. 20000919 mortene.
 
@@ -289,7 +289,15 @@ SoTimeCounter::inputChanged(SoField * which)
     }
   }
   else if (which == &this->frequency) {
-    this->cyclelen = 1.0 / this->frequency.getValue();
+    float freq = this->frequency.getValue();
+    if (freq > 0.0f) {
+      this->cyclelen = 1.0f / freq;
+    }
+    else {
+      // if freq == 0.0 the engine is more or less disabled. Just set
+      // cyclelen to 1.0
+      this->cyclelen = 1.0f;
+    }
     this->calcDutySteps();
   }
   else if (which == &this->duty) {
@@ -360,7 +368,7 @@ SoTimeCounter::calcNumSteps(void)
 void
 SoTimeCounter::calcDutySteps(void)
 {
-  if (this->duty.getNum() == this->numsteps) {
+  if ((this->frequency.getValue() > 0.0f) && (this->duty.getNum() == this->numsteps)) {
     int i;
     double dutysum = 0.0;
     for (i = 0; i < this->numsteps; i++) {
@@ -409,7 +417,7 @@ SoTimeCounter::findOutputValue(double timeincycle) const
       val = minval + (short)(timeincycle / steptime) * stepval;
     }
     else {
-      val = maxval + (short)(timeincycle / steptime) * stepval;      
+      val = maxval + (short)(timeincycle / steptime) * stepval;
     }
     if (val > maxval) val = maxval;
     if (val < minval) val = minval;
