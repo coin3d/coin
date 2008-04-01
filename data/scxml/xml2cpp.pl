@@ -25,9 +25,10 @@ while ( !eof(XML) ) {
     } else {
       $text = $text . "?";
     }
-    if (($counter % $perline) == ($perline - 1)) {
+    if ((($counter % $perline) == ($perline - 1)) || ($char =~ m/[\n]/)) {
         printf(OUT " // '" . $text . "'\n");
         $text = "";
+        $counter = $perline - 1;
     }
     $counter++;
 }
