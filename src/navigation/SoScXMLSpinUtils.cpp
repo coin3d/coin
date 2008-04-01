@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLEvent.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>

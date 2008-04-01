@@ -32,6 +32,7 @@
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/fields/SoSFVec3d.h>
 #include <Inventor/events/SoMouseButtonEvent.h>

@@ -31,6 +31,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/fields/SoSFVec3d.h>

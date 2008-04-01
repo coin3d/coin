@@ -28,6 +28,7 @@
 
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
