@@ -27,6 +27,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SoType.h>
+#include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/tools/SbPimplPtr.h>
 
@@ -91,10 +92,18 @@ public:
   int getIndex(const SoPath * path, SbBool create = FALSE);
   int getParentIndex(int idx) const;
 
-  // FIXME: add function for getting a callback for each data entry
-  
+  SoType getNodeType(int idx) const;
+  SbName getNodeName(int idx) const;
 
-  // read out pre-classified data
+  int getLongestNameLength(void) const;
+  int getLongestTypeNameLength(void) const;
+
+  int getNumNodeEntries(void) const;
+
+  typedef void SbProfilingDataCB(void * userdata, const SbProfilingData & data, const SbList<SoNode *> & pointers, SbList<int> & childindices, int idx);
+  void reportAll(SbProfilingDataCB * callback, void * userdata) const;
+
+  // read out pre-categorized data
   void getStatsForTypesKeyList(SbList<SbProfilingNodeTypeKey> & keys_out) const;
   void getStatsForType(SbProfilingNodeTypeKey type,
 		       SbTime & total, SbTime & max, uint32_t & count) const;
@@ -111,6 +120,7 @@ public:
 
   int operator == (const SbProfilingData & rhs) const;
   int operator != (const SbProfilingData & rhs) const;
+
 
   // debug - return profiling data overhead
   size_t getProfilingDataSize(void) const;
