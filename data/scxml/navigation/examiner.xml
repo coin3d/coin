@@ -41,7 +41,7 @@ Camera navigation SCXML state machine for Coin 3.0.
     <transition event="sim.coin3d.coin.SoLocation2Event">
       <invoke targettype="sim.coin3d.coin" src="UpdateRotate"/>
     </transition>
-    <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle"/>
+    <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
   </state>
 
 
@@ -60,7 +60,7 @@ Camera navigation SCXML state machine for Coin 3.0.
       <invoke targettype="sim.coin3d.coin" src="ScheduleRedraw" srcexpr="0.0"/>
     </transition>
     <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.ESCAPE" target="idle"/>
-    <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle"/>
+    <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
     <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate">
       <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
     </transition>
@@ -79,7 +79,7 @@ Camera navigation SCXML state machine for Coin 3.0.
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="pan_shift_move">
         <invoke targettype="sim.coin3d.coin" src="SetPan"/>
       </transition>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle"/>
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
     </state>
     <state id="pan_shift_move">
       <transition event="sim.coin3d.coin.SoLocation2Event">
@@ -92,7 +92,7 @@ Camera navigation SCXML state machine for Coin 3.0.
         <invoke targettype="sim.coin3d.coin" src="EndPan"/>
         <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
       </transition>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle">
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndPan"/>
       </transition>
     </state>
@@ -103,7 +103,7 @@ Camera navigation SCXML state machine for Coin 3.0.
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON2" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndPan"/>
       </transition>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle">
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndPan"/>
       </transition>
     </state>
@@ -113,7 +113,7 @@ Camera navigation SCXML state machine for Coin 3.0.
   <state id="zoom" task="true"> <!-- ** ZOOM MODE ********************* -->
     <state id="zoom_ctrl_wait">
       <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="idle"/>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle"/>
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="zoom_ctrl_move">
         <invoke targettype="sim.coin3d.coin" src="SetZoom"/>
       </transition>
@@ -129,7 +129,7 @@ Camera navigation SCXML state machine for Coin 3.0.
         <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
         <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
       </transition>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle">
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
       </transition>
     </state>
@@ -140,7 +140,7 @@ Camera navigation SCXML state machine for Coin 3.0.
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON3" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
       </transition>
-      <transition event="sim.coin3d.coin.navigation.PopupMenuOpen" target="idle">
+      <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle">
         <invoke targettype="sim.coin3d.coin" src="EndZoom"/>
       </transition>
     </state>
