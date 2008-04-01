@@ -27,6 +27,7 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
 #include <Inventor/scxml/ScXML.h>
+#include <Inventor/errors/SoDebugError.h>
 
 SCXML_OBJECT_SOURCE(SoScXMLViewAll);
 
@@ -50,8 +51,22 @@ SoScXMLViewAll::invoke(ScXMLStateMachine * statemachinearg)
 
   const SbViewportRegion & viewport = statemachine->getViewportRegion();
   SoCamera * camera = statemachine->getActiveCamera();
-  if (!camera) return;
+  if (!camera) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoScXMLViewAll::invoke",
+                           "Camera not found");
+    
+#endif // COIN_DEBUG
+    return;
+  }
   SoNode * scenegraph = statemachine->getSceneGraphRoot();
-  if (!scenegraph) return;
+  if (!scenegraph) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoScXMLViewAll::invoke",
+                           "Scene graph not set");
+    
+#endif // COIN_DEBUG
+    return;
+  }
   camera->viewAll(scenegraph, viewport);
 }
