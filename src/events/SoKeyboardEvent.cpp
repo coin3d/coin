@@ -380,7 +380,7 @@ SoKeyboardEvent::enumToString(Key enumval, SbString & stringrep)
     stringrep = "RIGHT_CONTROL";
     break;
   case SoKeyboardEvent::LEFT_ALT:
-    stringrep = "RIGHT_ALT";
+    stringrep = "LEFT_ALT";
     break;
   case SoKeyboardEvent::NUMBER_0:
     stringrep = "NUMBER_0";
