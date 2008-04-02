@@ -108,6 +108,8 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include <Inventor/annex/Profiler/SoProfiler.h>
 
 #include "actions/SoActionP.h"
 #include "actions/SoSubActionP.h"
@@ -117,7 +119,6 @@
 #include "misc/SoGL.h"
 
 #ifdef HAVE_SCENE_PROFILING
-#include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
