@@ -371,6 +371,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
                                      SbProfilingReportSortCriteria * sort,
                                      SbProfilingReportPrintCriteria * print,
                                      int count,
+                                     SbBool addheader,
                                      ReportCB * reportcallback,
                                      void * userdata)
 {
@@ -404,15 +405,25 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    for (int c = 0; c < maxindexes; ++c) {
-      const int entryidx = indexarray[c];
-
+    int c = addheader ? -1 : 0;
+    for (; c < maxindexes; ++c) {
       SbString text;
-      for (int i = 0; i < print->numfunctions; ++i) {
-        SbString part;
-        print->functions[i](data, part, entryidx);
-        text += part;
-        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      int entryidx = -1;
+      if (c == -1) {
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, -1);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
+      } else {
+        entryidx = indexarray[c];
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, entryidx);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
       }
       CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
     }
@@ -439,17 +450,26 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    for (int c = 0; c < maxindexes; ++c) {
-      const SbProfilingNodeNameKey namekey = (*namekeys)[indexarray[c]];
-      int entryidx = namekeys->find(namekey);
-      assert(entryidx != -1);
-
+    int c = addheader ? -1 : 0;
+    for (; c < maxindexes; ++c) {
       SbString text;
-      for (int i = 0; i < print->numfunctions; ++i) {
-        SbString part;
-        print->functions[i](data, part, entryidx);
-        text += part;
-        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      int entryidx = -1;
+      if (c == -1) {
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, -1);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
+      } else {
+        const SbProfilingNodeNameKey namekey = (*namekeys)[indexarray[c]];
+        entryidx = namekeys->find(namekey);
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, entryidx);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
       }
       CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
     }
@@ -477,20 +497,26 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    for (int c = 0; c < maxindexes; ++c) {
-      //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "print1 (%d of %d)", c, maxindexes);
-      const SbProfilingNodeTypeKey typekey = (*typekeys)[indexarray[c]];
-      int entryidx = typekeys->find(typekey);
-      assert(entryidx != -1);
-
+    int c = addheader ? -1 : 0;
+    for (; c < maxindexes; ++c) {
       SbString text;
-      for (int i = 0; i < print->numfunctions; ++i) {
-        SbString part;
-        print->functions[i](data, part, entryidx);
-        //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "part %d gotten ('%s')", i, part.getString());
-        text += part;
-        //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "text: %s", text.getString());
-        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      int entryidx = -1;
+      if (c == -1) {
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, -1);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
+      } else {
+        const SbProfilingNodeTypeKey typekey = (*typekeys)[indexarray[c]];
+        entryidx = typekeys->find(typekey);
+        for (int i = 0; i < print->numfunctions; ++i) {
+          SbString part;
+          print->functions[i](data, part, entryidx);
+          text += part;
+          if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+        }
       }
       CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
     }
@@ -780,29 +806,47 @@ SoProfilingReportGeneratorP::printName(const SbProfilingData & data, SbString & 
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
-    SbName nodename(data.getNodeName(entryidx));
-    if (nodename == SbName::empty()) {
-      nodename = data.getNodeType(entryidx).getName();
+    if (entryidx == -1) {
+      SbString format;
+      format.sprintf("%%-%ds", SbMax(longestnamelength, longesttypenamelength));
+      string.sprintf(format.getString(), "NAME");
+    } else {
+      SbName nodename(data.getNodeName(entryidx));
+      if (nodename == SbName::empty()) {
+        nodename = data.getNodeType(entryidx).getName();
+      }
+      SbString format;
+      format.sprintf("%%-%ds", SbMax(longestnamelength, longesttypenamelength));
+      string.sprintf(format.getString(), nodename.getString());
     }
-    SbString format;
-    format.sprintf("%%-%ds", SbMax(longestnamelength, longesttypenamelength));
-    string.sprintf(format.getString(), nodename.getString());
     break;
   }
   case SoProfilingReportGenerator::NAMES:
   {
-    SbName name((*namekeys)[entryidx]);
-    SbString format;
-    format.sprintf("%%-%ds", longestnamelength);
-    string.sprintf(format.getString(), name.getString());
+    if (entryidx == -1) {
+      SbString format;
+      format.sprintf("%%-%ds", longestnamelength);
+      string.sprintf(format.getString(), "NAME");
+    } else {
+      SbName name((*namekeys)[entryidx]);
+      SbString format;
+      format.sprintf("%%-%ds", longestnamelength);
+      string.sprintf(format.getString(), name.getString());
+    }
     break;
   }
   case SoProfilingReportGenerator::TYPES:
   {
-    SoType nodetype = SoType::fromKey((*typekeys)[entryidx]);
-    SbString format;
-    format.sprintf("%%-%ds", longesttypenamelength);
-    string.sprintf(format.getString(), nodetype.getName().getString());
+    if (entryidx == -1) {
+      SbString format;
+      format.sprintf("%%-%ds", longesttypenamelength);
+      string.sprintf(format.getString(), "TYPE");
+    } else {
+      SoType nodetype = SoType::fromKey((*typekeys)[entryidx]);
+      SbString format;
+      format.sprintf("%%-%ds", longesttypenamelength);
+      string.sprintf(format.getString(), nodetype.getName().getString());
+    }
     break;
   }
   default:
@@ -816,6 +860,10 @@ SoProfilingReportGeneratorP::printType(const SbProfilingData & data, SbString & 
 {
   SbString format;
   format.sprintf("%%-%ds", longesttypenamelength);
+  if (entryidx == -1) {
+    string.sprintf(format.getString(), "TYPE");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -842,6 +890,10 @@ void
 SoProfilingReportGeneratorP::printCount(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%4d";
+  if (entryidx == -1) {
+    string.sprintf("%4s", "NUM");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -874,6 +926,10 @@ void
 SoProfilingReportGeneratorP::printTimeSecs(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%8.6fs";
+  if (entryidx == -1) {
+    string.sprintf("%9s", "TOTAL");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -907,6 +963,10 @@ void
 SoProfilingReportGeneratorP::printTimeSecsMax(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%8.6fs";
+  if (entryidx == -1) {
+    string.sprintf("%9s", "MAXIMUM");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -940,6 +1000,10 @@ void
 SoProfilingReportGeneratorP::printTimeSecsAvg(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%8.6fs";
+  if (entryidx == -1) {
+    string.sprintf("%9s", "AVERAGE");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -973,6 +1037,10 @@ void
 SoProfilingReportGeneratorP::printTimeMSecs(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%6.2fms";
+  if (entryidx == -1) {
+    string.sprintf("%8s", "TOTAL");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1006,6 +1074,10 @@ void
 SoProfilingReportGeneratorP::printTimeMSecsMax(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%6.2fms";
+  if (entryidx == -1) {
+    string.sprintf("%8s", "MAXIMUM");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1039,6 +1111,10 @@ void
 SoProfilingReportGeneratorP::printTimeMSecsAvg(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%6.2fms";
+  if (entryidx == -1) {
+    string.sprintf("%8s", "AVERAGE");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1072,6 +1148,10 @@ void
 SoProfilingReportGeneratorP::printTimePercent(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%5.1f%%";
+  if (entryidx == -1) {
+    string.sprintf("%6s", "TOTAL");
+    return;
+  }
   const SbTime duration = data.getActionDuration();
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
@@ -1106,6 +1186,10 @@ void
 SoProfilingReportGeneratorP::printTimePercentMax(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%5.1f%%";
+  if (entryidx == -1) {
+    string.sprintf("%6s", "MAX");
+    return;
+  }
   const SbTime duration = data.getActionDuration();
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
@@ -1140,6 +1224,10 @@ void
 SoProfilingReportGeneratorP::printTimePercentAvg(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%5.1f%%";
+  if (entryidx == -1) {
+    string.sprintf("%6s", "AVG");
+    return;
+  }
   const SbTime duration = data.getActionDuration();
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
@@ -1175,6 +1263,10 @@ void
 SoProfilingReportGeneratorP::printMemBytes(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%8ldB";
+  if (entryidx == -1) {
+    string.sprintf("%9s", "MEMORY");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1198,6 +1290,10 @@ void
 SoProfilingReportGeneratorP::printMemKilobytes(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%6.1fKB";
+  if (entryidx == -1) {
+    string.sprintf("%8s", "MEMORY");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1221,6 +1317,10 @@ void
 SoProfilingReportGeneratorP::printGfxMemBytes(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%8ldB";
+  if (entryidx == -1) {
+    string.sprintf("%9s", "GFX MEM");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1244,6 +1344,10 @@ void
 SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, SbString & string, int entryidx)
 {
   static const char formatstring[] = "%6.1fKB";
+  if (entryidx == -1) {
+    string.sprintf("%8s", "GFX MEM");
+    return;
+  }
   switch (sortcategory) {
   case SoProfilingReportGenerator::NODES:
   {
@@ -1271,7 +1375,7 @@ SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, 
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
-SoProfilingReportGenerator::stdoutCB(void * userdata, int entrynum, const char * text)
+SoProfilingReportGenerator::stdoutCB(void * userdata, int entryidx, const char * text)
 {
   fprintf(coin_get_stdout(), "%s\n", text);
   return CONTINUE;
@@ -1283,7 +1387,7 @@ SoProfilingReportGenerator::stdoutCB(void * userdata, int entrynum, const char *
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
-SoProfilingReportGenerator::stderrCB(void * userdata, int entrynum, const char * text)
+SoProfilingReportGenerator::stderrCB(void * userdata, int entryidx, const char * text)
 {
   fprintf(coin_get_stderr(), "%s\n", text);
   return CONTINUE;
