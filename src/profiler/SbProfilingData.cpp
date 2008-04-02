@@ -1191,6 +1191,7 @@ SbProfilingData::getStatsForName(SbProfilingNodeNameKey name,
     PRIVATE(this)->nodeNameData.find(name);
   assert(it != PRIVATE(this)->nodeNameData.end());
   totaltime = it->second.totaltime;
+  // FIXME: maximum time for when grouping into name is not yet supported
   maxtime = it->second.maximumtime;
   count = it->second.count;
 }
