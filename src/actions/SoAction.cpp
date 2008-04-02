@@ -575,8 +575,7 @@ SoAction::apply(SoNode * root)
       data.setActionStopTime(SbTime::getTimeOfDay());
     }
 
-    if (SoProfiler::isActive() && 
-        SoProfiler::isOverlayActive() &&
+    if (SoProfiler::isOverlayActive() &&
 	!this->isOfType(SoGLRenderAction::getClassTypeId())) {
       // update profiler stats node with the profiling data from the traversal
       SoNode * profilerstats = SoActionP::getProfilerStatsNode();
@@ -584,6 +583,18 @@ SoAction::apply(SoNode * root)
       this->traverse(profilerstats);
       SoProfiler::enable(TRUE);
     }
+
+    if (SoProfiler::isConsoleActive()) {
+      SoType profileactiontype = SoProfilerP::getActionType();
+      if (this->isOfType(SoProfilerP::getActionType())) {
+        SoProfilerElement * pelt = SoProfilerElement::get(state);
+        if (pelt != NULL) {
+          const SbProfilingData & pdata = pelt->getProfilingData();
+          SoProfilerP::dumpToConsole(pdata);
+        }
+      }
+    }
+
 #endif // HAVE_SCENE_PROFILING
 
     PRIVATE(this)->applieddata.node = NULL;
