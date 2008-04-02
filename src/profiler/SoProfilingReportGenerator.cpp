@@ -1,0 +1,1291 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+#include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
+
+#include <assert.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+
+#include <boost/scoped_array.hpp>
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/annex/Profiler/SbProfilingData.h>
+#include "tidbitsp.h"
+
+// *************************************************************************
+
+/*!
+  \class SoProfilingReportgenerator SoProfilingReportGenerator.h Profiler/tools/SoProfilingReportGenerator.h
+  \brief Convenience report generator functionality.
+
+  With this static class, you can with an SbProfilingData object
+  conveniently produce a profiling data report.
+
+  \since Coin 3.0
+  \ingroup profiling
+*/
+
+// *************************************************************************
+
+class SoProfilingReportGeneratorP {
+public:
+  static SbMutex * mutex;
+
+  typedef int SortFunction(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeMaxAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeMaxDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeAvgAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpTimeAvgDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpCountAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpCountDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpAlphanumericAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpAlphanumericDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpMemAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpMemDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpGfxMemAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+  static int cmpGfxMemDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2);
+
+  typedef void PrintFunction(const SbProfilingData & data, SbString & string, int idx);
+  static void printName(const SbProfilingData & data, SbString & string, int idx);
+  static void printType(const SbProfilingData & data, SbString & string, int idx);
+  static void printCount(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeSecs(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeSecsMax(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeSecsAvg(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeMSecs(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeMSecsMax(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimeMSecsAvg(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimePercent(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimePercentMax(const SbProfilingData & data, SbString & string, int idx);
+  static void printTimePercentAvg(const SbProfilingData & data, SbString & string, int idx);
+  static void printMemBytes(const SbProfilingData & data, SbString & string, int idx);
+  static void printMemKilobytes(const SbProfilingData & data, SbString & string, int idx);
+  static void printGfxMemBytes(const SbProfilingData & data, SbString & string, int idx);
+  static void printGfxMemKilobytes(const SbProfilingData & data, SbString & string, int idx);
+
+};
+
+SbMutex * SoProfilingReportGeneratorP::mutex = NULL;
+
+// *************************************************************************
+
+class SbProfilingReportSortCriteria {
+public:
+  SbProfilingReportSortCriteria(void)
+    : numfunctions(0), functions(NULL)
+  {
+  }
+
+  ~SbProfilingReportSortCriteria(void)
+  {
+    delete [] this->functions;
+  }
+
+  int numfunctions;
+  SoProfilingReportGeneratorP::SortFunction ** functions;
+};
+
+SbProfilingReportSortCriteria *
+SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
+{
+  SbProfilingReportSortCriteria * criteria = new SbProfilingReportSortCriteria;
+
+  SortOrder sortorder = order;
+  criteria->numfunctions = 0;
+  va_list args;
+  va_start(args, order);
+  while (static_cast<int>(sortorder) != static_cast<int>(TERMINATE_ARGLIST)) {
+    ++criteria->numfunctions;
+    sortorder = static_cast<SortOrder>(va_arg(args, int));
+  }
+  va_end(args);
+
+  criteria->functions =
+    new SoProfilingReportGeneratorP::SortFunction * [ criteria->numfunctions ];
+
+  sortorder = order;
+  int idx = 0;
+  va_start(args, order);
+  while (static_cast<int>(sortorder) != static_cast<int>(TERMINATE_ARGLIST)) {
+    switch (sortorder) {
+    case SoProfilingReportGenerator::TIME_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeAsc;
+      break;
+    case SoProfilingReportGenerator::TIME_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeDes;
+      break;
+    case SoProfilingReportGenerator::TIME_MAX_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeMaxAsc;
+      break;
+    case SoProfilingReportGenerator::TIME_MAX_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeMaxDes;
+      break;
+    case SoProfilingReportGenerator::TIME_AVG_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeAvgAsc;
+      break;
+    case SoProfilingReportGenerator::TIME_AVG_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeAvgDes;
+      break;
+    case SoProfilingReportGenerator::COUNT_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpCountAsc;
+      break;
+    case SoProfilingReportGenerator::COUNT_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpCountDes;
+      break;
+    case SoProfilingReportGenerator::ALPHANUMERIC_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpAlphanumericAsc;
+      break;
+    case SoProfilingReportGenerator::ALPHANUMERIC_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpAlphanumericDes;
+      break;
+    case SoProfilingReportGenerator::MEM_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpMemAsc;
+      break;
+    case SoProfilingReportGenerator::MEM_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpMemDes;
+      break;
+    case SoProfilingReportGenerator::GFX_MEM_ASC:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpGfxMemAsc;
+      break;
+    case SoProfilingReportGenerator::GFX_MEM_DES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::cmpGfxMemDes;
+      break;
+    default:
+      assert(!"not a supported sort order");
+      break;
+    }
+    sortorder = static_cast<SortOrder>(va_arg(args, int));
+    ++idx;
+  }
+  va_end(args);
+
+  return criteria;
+}
+
+void
+SoProfilingReportGenerator::freeCriteria(SbProfilingReportSortCriteria * criteria)
+{
+  assert(criteria);
+  delete criteria;
+}
+
+// *************************************************************************
+
+class SbProfilingReportPrintCriteria {
+public:
+  SbProfilingReportPrintCriteria(void)
+    : numfunctions(0), functions(NULL), needstringlengths(FALSE)
+  {
+  }
+  ~SbProfilingReportPrintCriteria(void) {
+    delete [] this->functions;
+  }
+
+  int numfunctions;
+  SoProfilingReportGeneratorP::PrintFunction ** functions;
+  SbBool needstringlengths;
+};
+
+SbProfilingReportPrintCriteria *
+SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
+{
+  SbProfilingReportPrintCriteria * criteria = new SbProfilingReportPrintCriteria;
+  Column column = col;
+  criteria->numfunctions = 0;
+  va_list args;
+  va_start(args, col);
+  while (static_cast<int>(column) != static_cast<int>(TERMINATE_ARGLIST)) {
+    ++criteria->numfunctions;
+    column = static_cast<Column>(va_arg(args, int));
+  }
+  va_end(args);
+
+  criteria->functions =
+    new SoProfilingReportGeneratorP::PrintFunction * [ criteria->numfunctions ];
+
+  column = col;
+  int idx = 0;
+  va_start(args, col);
+  while (static_cast<int>(column) != static_cast<int>(TERMINATE_ARGLIST)) {
+    switch (column) {
+    case SoProfilingReportGenerator::NAME:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printName;
+      criteria->needstringlengths = TRUE;
+      break;
+    case SoProfilingReportGenerator::TYPE:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printType;
+      criteria->needstringlengths = TRUE;
+      break;
+    case SoProfilingReportGenerator::COUNT:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printCount;
+      break;
+    case SoProfilingReportGenerator::TIME_SECS:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeSecs;
+      break;
+    case SoProfilingReportGenerator::TIME_SECS_MAX:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeSecsMax;
+      break;
+    case SoProfilingReportGenerator::TIME_SECS_AVG:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeSecsAvg;
+      break;
+    case SoProfilingReportGenerator::TIME_MSECS:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeMSecs;
+      break;
+    case SoProfilingReportGenerator::TIME_MSECS_MAX:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeMSecsMax;
+      break;
+    case SoProfilingReportGenerator::TIME_MSECS_AVG:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimeMSecsAvg;
+      break;
+    case SoProfilingReportGenerator::TIME_PERCENT:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimePercent;
+      break;
+    case SoProfilingReportGenerator::TIME_PERCENT_MAX:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimePercentMax;
+      break;
+    case SoProfilingReportGenerator::TIME_PERCENT_AVG:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printTimePercentAvg;
+      break;
+    case SoProfilingReportGenerator::MEM_BYTES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printMemBytes;
+      break;
+    case SoProfilingReportGenerator::MEM_KILOBYTES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printMemKilobytes;
+      break;
+    case SoProfilingReportGenerator::GFX_MEM_BYTES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printGfxMemBytes;
+      break;
+    case SoProfilingReportGenerator::GFX_MEM_KILOBYTES:
+      criteria->functions[idx] = SoProfilingReportGeneratorP::printGfxMemKilobytes;
+      break;
+    default:
+      assert(!"unsupported column/format id");
+      break;
+    }
+    column = static_cast<Column>(va_arg(args, int));
+    ++idx;
+  }
+  va_end(args);
+
+  return criteria;
+}
+
+void
+SoProfilingReportGenerator::freeCriteria(SbProfilingReportPrintCriteria * criteria)
+{
+  assert(criteria);
+  delete criteria;
+}
+
+// *************************************************************************
+
+static const SbProfilingData * profdata = NULL;
+static const int * arraystart = NULL;
+static const int * arrayend = NULL;
+static SoProfilingReportGenerator::DataCategorization sortcategory = SoProfilingReportGenerator::TYPES;
+static SbProfilingReportSortCriteria * sortingconfig = NULL;
+static SbList<SbProfilingNodeNameKey> * namekeys = NULL;
+static SbList<SbProfilingNodeTypeKey> * typekeys = NULL;
+static int longestnamelength = 0;
+static int longesttypenamelength = 0;
+
+int
+gencompare(const void * ptr1, const void * ptr2)
+{
+  if (ptr1 < arraystart || ptr1 > arrayend || ptr2 < arraystart || ptr2 > arrayend) {
+    assert("sorting not delayed for correct");
+    return 0;
+  }
+  assert(sortingconfig);
+
+  const int idx1 = (static_cast<const int *>(ptr1))[0];
+  const int idx2 = (static_cast<const int *>(ptr2))[0];
+
+  int result = 0, sorteridx = 0;
+  while (result == 0 && sorteridx < sortingconfig->numfunctions) {
+    result = sortingconfig->functions[sorteridx](*profdata, sortcategory, idx1, idx2);
+    ++sorteridx;
+  }
+  return result;
+}
+
+/*!
+  Allocate mutexes and other such infrastructure constructs needed
+  by the report generator.
+*/
+void
+SoProfilingReportGenerator::init(void)
+{
+  assert(SoProfilingReportGeneratorP::mutex == NULL);
+  SoProfilingReportGeneratorP::mutex = new SbMutex;
+}
+
+namespace {
+// class to make sure the mutex is always unlocked again when leaving scope
+class MutexLocker {
+  SbMutex * const mutex;
+public:
+  MutexLocker(SbMutex * m) : mutex(m) {
+    assert(mutex);
+    mutex->lock();
+  }
+  ~MutexLocker(void) {
+    mutex->unlock();
+  }
+};
+}
+
+#define OUTPUT_PADDING "  "
+/*!
+  Generate a sorted, formatted report, by calling a callback until the
+  number of entries are exhausted or the callback returns STOP.
+*/
+void
+SoProfilingReportGenerator::generate(const SbProfilingData & data,
+                                     DataCategorization categorization,
+                                     SbProfilingReportSortCriteria * sort,
+                                     SbProfilingReportPrintCriteria * print,
+                                     int count,
+                                     ReportCB * reportcallback,
+                                     void * userdata)
+{
+  assert(reportcallback);
+  assert(sort);
+  assert(print);
+
+  MutexLocker locker(SoProfilingReportGeneratorP::mutex); // lock mutex until scope is exited
+
+  profdata = &data;
+  sortingconfig = sort;
+
+  if (print->needstringlengths) {
+    longestnamelength = data.getLongestNameLength();
+    longesttypenamelength = data.getLongestTypeNameLength();
+  }
+
+  if (categorization == NODES) {
+    const int numindexes = data.getNumNodeEntries();
+    boost::scoped_array<int> indexarray;
+    indexarray.reset(new int [ numindexes ]);
+    for (int c = 0; c < numindexes; ++c) {
+      indexarray[c] = c;
+    }
+
+    sortcategory = NODES;
+    arraystart = &indexarray[0];
+    arrayend = &indexarray[numindexes-1];
+
+    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+
+    // output
+    const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
+    for (int c = 0; c < maxindexes; ++c) {
+      const int entryidx = indexarray[c];
+
+      SbString text;
+      for (int i = 0; i < print->numfunctions; ++i) {
+        SbString part;
+        print->functions[i](data, part, entryidx);
+        text += part;
+        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      }
+      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+    }
+  }
+  else if (categorization == NAMES) {
+    if (namekeys == NULL) {
+      namekeys = new SbList<SbProfilingNodeNameKey>;
+    }
+    namekeys->truncate(0);
+    data.getStatsForNamesKeyList(*namekeys);
+
+    const int numindexes = namekeys->getLength();
+    boost::scoped_array<int> indexarray;
+    indexarray.reset(new int [ numindexes ]);
+    for (int c = 0; c < numindexes; ++c) {
+      indexarray[c] = c;
+    }
+
+    sortcategory = NAMES;
+    arraystart = &indexarray[0];
+    arrayend = &indexarray[numindexes-1];
+
+    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+
+    // output
+    const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
+    for (int c = 0; c < maxindexes; ++c) {
+      const SbProfilingNodeNameKey namekey = (*namekeys)[indexarray[c]];
+      int entryidx = namekeys->find(namekey);
+      assert(entryidx != -1);
+
+      SbString text;
+      for (int i = 0; i < print->numfunctions; ++i) {
+        SbString part;
+        print->functions[i](data, part, entryidx);
+        text += part;
+        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      }
+      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+    }
+  }
+  else if (categorization == TYPES) {
+    if (typekeys == NULL) {
+      typekeys = new SbList<SbProfilingNodeTypeKey>;
+    }
+    typekeys->truncate(0);
+
+    data.getStatsForTypesKeyList(*typekeys);
+
+    const int numindexes = typekeys->getLength();
+    boost::scoped_array<int> indexarray;
+    indexarray.reset(new int [ numindexes ]);
+    for (int c = 0; c < numindexes; ++c) {
+      indexarray[c] = c;
+    }
+
+    sortcategory = TYPES;
+    arraystart = &indexarray[0];
+    arrayend = &indexarray[numindexes-1];
+
+    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+
+    // output
+    const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
+    for (int c = 0; c < maxindexes; ++c) {
+      //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "print1 (%d of %d)", c, maxindexes);
+      const SbProfilingNodeTypeKey typekey = (*typekeys)[indexarray[c]];
+      int entryidx = typekeys->find(typekey);
+      assert(entryidx != -1);
+
+      SbString text;
+      for (int i = 0; i < print->numfunctions; ++i) {
+        SbString part;
+        print->functions[i](data, part, entryidx);
+        //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "part %d gotten ('%s')", i, part.getString());
+        text += part;
+        //SoDebugError::postInfo("SoProfilingReportGenerator::generate", "text: %s", text.getString());
+        if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
+      }
+      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+    }
+  }
+  else {
+    assert(!"no such data categorization implemented");
+  }
+
+  profdata = NULL;
+  sortingconfig = NULL;
+  arraystart = NULL;
+  arrayend = NULL;
+}
+
+// *************************************************************************
+
+int
+SoProfilingReportGeneratorP::cmpTimeAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  double diff = 0.0;
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    const SbTime time1(data.getNodeTiming(idx1));
+    const SbTime time2(data.getNodeTiming(idx2));
+    diff = time1.getValue() - time2.getValue();
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForName((*namekeys)[idx1], total1, max1, count1);
+    data.getStatsForName((*namekeys)[idx2], total2, max2, count2);
+    diff = total1.getValue() - total2.getValue();
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForType((*typekeys)[idx1], total1, max1, count1);
+    data.getStatsForType((*typekeys)[idx2], total2, max2, count2);
+    diff = total1.getValue() - total2.getValue();
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+
+  if (diff < 0.0) return -1;
+  else if (diff > 0.0) return 1;
+  else return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpTimeDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpTimeAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpTimeMaxAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  double diff = 0.0;
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+    // no average or maximum when looking at single nodes
+    return SoProfilingReportGeneratorP::cmpTimeAsc(data, category, idx1, idx2);
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForName((*namekeys)[idx1], total1, max1, count1);
+    data.getStatsForName((*namekeys)[idx2], total2, max2, count2);
+    diff = max1.getValue() - max2.getValue();
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForType((*typekeys)[idx1], total1, max1, count1);
+    data.getStatsForType((*typekeys)[idx2], total2, max2, count2);
+    diff = max1.getValue() - max2.getValue();
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  if (diff < 0.0) return -1;
+  else if (diff > 0.0) return 1;
+  else return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpTimeMaxDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpTimeMaxAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpTimeAvgAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  double diff = 0.0;
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+    // no average or maximum when looking at single nodes
+    return SoProfilingReportGeneratorP::cmpTimeAsc(data, category, idx1, idx2);
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForName((*namekeys)[idx1], total1, max1, count1);
+    data.getStatsForName((*namekeys)[idx2], total2, max2, count2);
+    diff = (total1.getValue() / static_cast<float>(count1))
+      - (total2.getValue() / static_cast<float>(count2));
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForType((*typekeys)[idx1], total1, max1, count1);
+    data.getStatsForType((*typekeys)[idx2], total2, max2, count2);
+    diff = (total1.getValue() / static_cast<float>(count1))
+      - (total2.getValue() / static_cast<float>(count2));
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  if (diff < 0.0) return -1;
+  else if (diff > 0.0) return 1;
+  else return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpTimeAvgDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpTimeAvgAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpCountAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+    // count always 1
+    return 0;
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForName((*namekeys)[idx1], total1, max1, count1);
+    data.getStatsForName((*namekeys)[idx2], total2, max2, count2);
+    return static_cast<int>(count1 - count2);
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total1, max1, total2, max2;
+    uint32_t count1, count2;
+    data.getStatsForType((*typekeys)[idx1], total1, max1, count1);
+    data.getStatsForType((*typekeys)[idx2], total2, max2, count2);
+    return static_cast<int>(count1 - count2);
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpCountDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpCountAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpAlphanumericAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    // node name, fallback type name
+    SbName name1(data.getNodeName(idx1));
+    if (name1 == SbName::empty()) {
+      name1 = data.getNodeType(idx1).getName();
+    }
+    SbName name2(data.getNodeName(idx2));
+    if (name2 == SbName::empty()) {
+      name2 = data.getNodeType(idx2).getName();
+    }
+    return strcmp(name1.getString(), name2.getString());
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    // group name
+    return strcmp((*namekeys)[idx1], (*namekeys)[idx2]);
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    const SoType type1(SoType::fromKey((*typekeys)[idx1]));
+    const SoType type2(SoType::fromKey((*typekeys)[idx2]));
+    return strcmp(type1.getName().getString(), type2.getName().getString());
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpAlphanumericDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpAlphanumericAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpMemAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint1 = data.getNodeFootprint(idx1, SbProfilingData::MEMORY_SIZE);
+    size_t footprint2 = data.getNodeFootprint(idx2, SbProfilingData::MEMORY_SIZE);
+    return static_cast<int>(footprint1 - footprint2);
+  }
+  case SoProfilingReportGenerator::NAMES:
+    // not implemented
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    // not supported
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpMemDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpMemAsc(data, category, idx1, idx2);
+}
+
+int
+SoProfilingReportGeneratorP::cmpGfxMemAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  switch (category) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint1 = data.getNodeFootprint(idx1, SbProfilingData::VIDEO_MEMORY_SIZE);
+    size_t footprint2 = data.getNodeFootprint(idx2, SbProfilingData::VIDEO_MEMORY_SIZE);
+    return static_cast<int>(footprint1 - footprint2);
+  }
+  case SoProfilingReportGenerator::NAMES:
+    // not implemented
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    // no implemented
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+  return 0;
+}
+
+int
+SoProfilingReportGeneratorP::cmpGfxMemDes(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
+{
+  return -SoProfilingReportGeneratorP::cmpGfxMemAsc(data, category, idx1, idx2);
+}
+
+// *************************************************************************
+
+void
+SoProfilingReportGeneratorP::printName(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbName nodename(data.getNodeName(entryidx));
+    if (nodename == SbName::empty()) {
+      nodename = data.getNodeType(entryidx).getName();
+    }
+    SbString format;
+    format.sprintf("%%-%ds", SbMax(longestnamelength, longesttypenamelength));
+    string.sprintf(format.getString(), nodename.getString());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbName name((*namekeys)[entryidx]);
+    SbString format;
+    format.sprintf("%%-%ds", longestnamelength);
+    string.sprintf(format.getString(), name.getString());
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SoType nodetype = SoType::fromKey((*typekeys)[entryidx]);
+    SbString format;
+    format.sprintf("%%-%ds", longesttypenamelength);
+    string.sprintf(format.getString(), nodetype.getName().getString());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printType(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  SbString format;
+  format.sprintf("%%-%ds", longesttypenamelength);
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbName nodetype(data.getNodeType(entryidx).getName());
+    string.sprintf(format.getString(), nodetype.getString());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+    string.sprintf(format.getString(), "???");
+    break;
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbName nodetype(SoType::fromKey((*typekeys)[entryidx]).getName());
+    string.sprintf(format.getString(), nodetype.getString());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printCount(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%4d";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    string.sprintf(formatstring, 1);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, count);
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, count);
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeSecs(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%8.6fs";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, total.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, total.getValue());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeSecsMax(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%8.6fs";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, max.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, max.getValue());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeSecsAvg(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%8.6fs";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() / static_cast<double>(count)));
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() / static_cast<double>(count)));
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeMSecs(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%6.2fms";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue() * 1000.0);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, total.getValue() * 1000.0);
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, total.getValue() * 1000.0);
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeMSecsMax(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%6.2fms";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue() * 1000.0);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, max.getValue() * 1000.0);
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, max.getValue() * 1000.0);
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimeMSecsAvg(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%6.2fms";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue() * 1000.0);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() * 1000.0) / static_cast<double>(count));
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() * 1000.0) / static_cast<double>(count));
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimePercent(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%5.1f%%";
+  const SbTime duration = data.getActionDuration();
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, (timing.getValue() * 100.0) / duration.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() * 100.0) / duration.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (total.getValue() * 100.0) / duration.getValue());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimePercentMax(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%5.1f%%";
+  const SbTime duration = data.getActionDuration();
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue() * 100.0 / duration.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (max.getValue() * 100.0) / duration.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, (max.getValue() * 100.0) / duration.getValue());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printTimePercentAvg(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%5.1f%%";
+  const SbTime duration = data.getActionDuration();
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    SbTime timing = data.getNodeTiming(entryidx);
+    string.sprintf(formatstring, timing.getValue() * 100.0 / duration.getValue());
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForName((*namekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, ((total.getValue() / static_cast<double>(count)) * 100.0) / duration.getValue());
+    break;
+  }
+    break;
+  case SoProfilingReportGenerator::TYPES:
+  {
+    SbTime total, max;
+    uint32_t count;
+    data.getStatsForType((*typekeys)[entryidx], total, max, count);
+    string.sprintf(formatstring, ((total.getValue() / static_cast<double>(count)) * 100.0) / duration.getValue());
+    break;
+  }
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printMemBytes(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%8ldB";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint = data.getNodeFootprint(entryidx, SbProfilingData::MEMORY_SIZE);
+    string.sprintf(formatstring, footprint);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+    string.sprintf(formatstring, 0);
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    string.sprintf(formatstring, 0);
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printMemKilobytes(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%6.1fKB";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint = data.getNodeFootprint(entryidx, SbProfilingData::MEMORY_SIZE);
+    string.sprintf(formatstring, static_cast<double>(footprint) / 1024.0);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+    string.sprintf(formatstring, 0.0);
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    string.sprintf(formatstring, 0.0);
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printGfxMemBytes(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%8ldB";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint = data.getNodeFootprint(entryidx, SbProfilingData::VIDEO_MEMORY_SIZE);
+    string.sprintf(formatstring, footprint);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+    string.sprintf(formatstring, 0);
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    string.sprintf(formatstring, 0);
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+void
+SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, SbString & string, int entryidx)
+{
+  static const char formatstring[] = "%6.1fKB";
+  switch (sortcategory) {
+  case SoProfilingReportGenerator::NODES:
+  {
+    size_t footprint = data.getNodeFootprint(entryidx, SbProfilingData::VIDEO_MEMORY_SIZE);
+    string.sprintf(formatstring, static_cast<double>(footprint) / 1024.0);
+    break;
+  }
+  case SoProfilingReportGenerator::NAMES:
+    string.sprintf(formatstring, 0.0);
+    break;
+  case SoProfilingReportGenerator::TYPES:
+    string.sprintf(formatstring, 0.0);
+    break;
+  default:
+    assert(!"unsupported report categorization");
+    break;
+  }
+}
+
+// *************************************************************************
+
+/*!
+  Ready-made callback that can be used with generate() to print to stdout.
+
+  \sa generate
+*/
+SoProfilingReportGenerator::CallbackResponse
+SoProfilingReportGenerator::stdoutCB(void * userdata, int entrynum, const char * text)
+{
+  fprintf(coin_get_stdout(), "%s\n", text);
+  return CONTINUE;
+}
+
+/*!
+  Ready-made callback that can be used with generate() to print to stderr.
+
+  \sa generate
+*/
+SoProfilingReportGenerator::CallbackResponse
+SoProfilingReportGenerator::stderrCB(void * userdata, int entrynum, const char * text)
+{
+  fprintf(coin_get_stderr(), "%s\n", text);
+  return CONTINUE;
+}
+

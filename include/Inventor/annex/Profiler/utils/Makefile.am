@@ -1,13 +1,10 @@
 
-SUBDIRS = nodes elements nodekits engines utils
-
 PublicHeaders = \
-        SbProfilingData.h \
-        SoProfiler.h
+        SoProfilingReportGenerator.h
 PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Include-Common(profiler, annex/Profiler)
+##$ BEGIN TEMPLATE Make-Include-Common(profiler, annex/Profiler/utils)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -23,11 +20,11 @@ ObsoleteHeaders =
 EXTRA_DIST = $(PrivateHeaders)
 
 if MAC_FRAMEWORK
-libprofilerincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/annex/Profiler
+libprofilerincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/annex/Profiler/utils
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libprofilerincdir = $(includedir)/Inventor/annex/Profiler
+libprofilerincdir = $(includedir)/Inventor/annex/Profiler/utils
 endif
 libprofilerinc_HEADERS = $(PublicHeaders)
 

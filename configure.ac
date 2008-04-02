@@ -2217,6 +2217,7 @@ AC_CONFIG_FILES([
         include/Inventor/annex/Profiler/engines/Makefile
         include/Inventor/annex/Profiler/nodes/Makefile
         include/Inventor/annex/Profiler/nodekits/Makefile
+        include/Inventor/annex/Profiler/utils/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         data/shaders/Makefile
