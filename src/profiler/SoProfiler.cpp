@@ -75,7 +75,7 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoType.h>
-#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoActions.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
@@ -86,7 +86,9 @@
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
+#include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
 
+#include "tidbitsp.h"
 #include "misc/SoDBP.h"
 
 // *************************************************************************
@@ -98,11 +100,26 @@ namespace {
 
     static SbBool enabled = FALSE;
     static SbBool active = FALSE;
-    static SbBool syncgl = FALSE;
+
+    namespace rendering {
+      static SbBool syncgl = FALSE;
+      static float redraw_rate = -1.0f;
+    };
 
     namespace overlay {
       static SbBool active = FALSE;
-      static float redraw_rate = -1.0f;
+    };
+
+    namespace console {
+      static SbBool active = FALSE;
+      static SbBool clear = FALSE;
+      static SbBool header = FALSE;
+      static int lines = 20;
+      static SoProfilingReportGenerator::DataCategorization category =
+        SoProfilingReportGenerator::NODES;
+      static SoType actiontype = SoType::badType();
+      static SbBool onstdout = FALSE;
+      static SbBool onstderr = FALSE;
     };
 
   };
@@ -147,9 +164,12 @@ SoProfiler::init(void)
   SoScrollingGraphKit::initClass();
   SoNodeVisualize::initClass();
 
+  SoProfilingReportGenerator::init();
+
   profiler::active = TRUE;
   profiler::enabled = TRUE;
 
+  //SoProfilerP::setActionType(SoRayPickAction::getClassTypeId());
   SoProfilerP::parseCoinProfilerOverlayVariable();
 
   profiler::initialized = TRUE;
@@ -167,16 +187,27 @@ SoProfiler::isActive(void)
 }
 
 /*!
-  Returns whether profiling is shown in an overlay fashion on the GL canvas
-  or not.
+  Returns whether profiling info is shown in an overlay fashion on
+  the GL canvas or not.
 */
-
 SbBool
 SoProfiler::isOverlayActive(void)
 {
-  return profiler::enabled && profiler::overlay::active;
+  return SoProfiler::isActive() && profiler::overlay::active;
 }
 
+/*!
+  Returns whether profiling info is shown on the console or not.
+*/
+SbBool
+SoProfiler::isConsoleActive(void)
+{
+  return SoProfiler::isActive() && profiler::console::active;
+}
+
+/*!
+  Enable/disable the profiling subsystem at runtime.
+*/
 void
 SoProfiler::enable(SbBool enable)
 {
@@ -205,19 +236,66 @@ SoProfiler::isEnabled(void)
 SbBool
 SoProfilerP::shouldContinuousRender(void)
 {
-  return profiler::overlay::redraw_rate != -1.0f;
+  return profiler::rendering::redraw_rate != -1.0f;
 }
 
 float
 SoProfilerP::getContinuousRenderDelay(void)
 {
-  return profiler::overlay::redraw_rate;
+  return profiler::rendering::redraw_rate;
 }
 
 SbBool
 SoProfilerP::shouldSyncGL(void)
 {
-  return profiler::syncgl;
+  return profiler::rendering::syncgl;
+}
+
+SbBool
+SoProfilerP::shouldClearConsole(void)
+{
+  return profiler::console::clear;
+}
+
+SbBool
+SoProfilerP::shouldOutputHeaderOnConsole(void)
+{
+  return profiler::console::header;
+}
+
+void
+SoProfilerP::setActionType(SoType actiontype)
+{
+#define IF_ACTION(actionname)                                   \
+  if (actiontype.isDerivedFrom(actionname::getClassTypeId())) { \
+    SO_ENABLE(actionname, SoProfilerElement);                   \
+    profiler::console::actiontype = actiontype;                 \
+  }
+
+  IF_ACTION(SoGLRenderAction)
+  else IF_ACTION(SoPickAction)
+  else IF_ACTION(SoCallbackAction)
+  else IF_ACTION(SoGetBoundingBoxAction)
+  else IF_ACTION(SoGetMatrixAction)
+  else IF_ACTION(SoGetPrimitiveCountAction)
+  else IF_ACTION(SoHandleEventAction)
+  else IF_ACTION(SoToVRMLAction)
+  else IF_ACTION(SoAudioRenderAction)
+  else IF_ACTION(SoSimplifyAction)
+  else {
+    SoDebugError::postInfo("SoProfilerP::setActionType",
+                           "profiling action of type '%s' is not supported",
+                           actiontype.getName().getString());
+  }
+}
+
+SoType
+SoProfilerP::getActionType(void)
+{
+  if (profiler::console::actiontype == SoType::badType()) {
+    profiler::console::actiontype = SoGLRenderAction::getClassTypeId();
+  }
+  return profiler::console::actiontype;
 }
 
 void 
@@ -248,7 +326,7 @@ SoProfilerP::parseCoinProfilerVariable(void)
       }
       else if ((*it).compare("syncgl") == 0) {
         profiler::enabled = TRUE;
-        profiler::syncgl = TRUE;
+        profiler::rendering::syncgl = TRUE;
       }
       else {
         SoDebugError::postWarning("SoProfilerP::parseCoinProfilerVariable",
@@ -276,7 +354,9 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
     // SoDebugError::postInfo("SoProfiler::initialize", "new tokenized parsing");
     
     for (std::vector<std::string>::iterator it = parameters.begin(); it != parameters.end(); ++it) {
-      profiler::overlay::active = TRUE;
+      if (it == parameters.begin()) {
+        profiler::overlay::active = TRUE;
+      }
       
       std::vector<std::string> param, subargs;
       tokenize(*it, "=", param, 2);
@@ -289,16 +369,89 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
       if (param[0].compare("autoredraw") == 0) {
         if (param.size() == 1) {
           // no argument ->continuous redraws
-          profiler::overlay::redraw_rate = 0.0f;
+          profiler::rendering::redraw_rate = 0.0f;
         } else {
           // argument decides redraw-delay-rate
-          profiler::overlay::redraw_rate = static_cast<float>(atof(param[1].data()));
+          profiler::rendering::redraw_rate = static_cast<float>(atof(param[1].data()));
         }
-        if (profiler::overlay::redraw_rate < 0.0f) {
-          profiler::overlay::redraw_rate = -1.0f; // -1 exact means no redraws
+        if (profiler::rendering::redraw_rate < 0.0f) {
+          profiler::rendering::redraw_rate = -1.0f; // -1 exact means no redraws
         }
       }
       
+      else if (param[0].compare("stdout") == 0) {
+        profiler::overlay::active = FALSE;
+        profiler::console::active = TRUE;
+        profiler::console::onstdout = TRUE;
+      }
+
+      else if (param[0].compare("stderr") == 0) {
+        profiler::overlay::active = FALSE;
+        profiler::console::active = TRUE;
+        profiler::console::onstderr = TRUE;
+      }
+
+      else if (param[0].compare("clear") == 0 && profiler::console::active) {
+        profiler::console::clear = TRUE;
+      }
+
+      else if (param[0].compare("header") == 0 && profiler::console::active) {
+        profiler::console::header = TRUE;
+      }
+
+      else if (param[0].compare("lines") == 0) {
+        if (subargs.size() > 0) {
+          profiler::console::lines = atoi(subargs[0].data());
+          if (profiler::console::lines < 0 || profiler::console::lines > 512) {
+            SoDebugError::postWarning("SoProfiler",
+                                      "Number of lines out of range. Seting 20.",
+                                      profiler::console::lines);
+            profiler::console::lines = 20;
+          }
+        } else {
+          SoDebugError::postWarning("SoProfiler",
+                                    "'lines' takes a numeric argument.");
+        }
+      }
+
+      else if (param[0].compare("action") == 0) {
+        if (subargs.size() > 0) {
+          SoType actiontype = SoType::fromName(subargs[0].data());
+          if (actiontype.isDerivedFrom(SoAction::getClassTypeId())) {
+            SoProfilerP::setActionType(actiontype);
+          } else {
+            SoDebugError::postWarning("SoProfiler",
+                                      "Classname '%s' does not specify an action type.",
+                                      subargs[0].data());
+          }
+        } else {
+          SoDebugError::postWarning("SoProfiler",
+                                    "'action' takes a classname as argument.");
+        }
+      }
+
+      else if (param[0].compare("category") == 0) {
+        if (subargs.size() > 0) {
+          if (subargs[0].compare("nodes") == 0) {
+            profiler::console::category =
+              SoProfilingReportGenerator::NODES;
+          } else if (subargs[0].compare("types") == 0) {
+            profiler::console::category =
+              SoProfilingReportGenerator::TYPES;
+          } else if (subargs[0].compare("names") == 0) {
+            profiler::console::category =
+              SoProfilingReportGenerator::NAMES;
+          } else {
+            SoDebugError::postWarning("SoProfiler",
+                                      "'category' argument must be nodes, types, or names - was '%s'.",
+                                      subargs[0].data());
+          }
+        } else {
+          SoDebugError::postWarning("SoProfiler",
+                                    "'category' must have argument nodes, types, or names.");
+        }
+      }
+
       // configure if and how we should display toplists
       else if (param[0].compare("toplist") == 0) {
         enum TopListType { NODE_TYPE, NODE_NAME, ACTION_TYPE, INVALID } toplisttype = INVALID;
@@ -340,7 +493,11 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
               if (subarg.size() == 2) {
                 SoType actiontype = SoType::fromName(subarg[1].data());
                 if (actiontype.isDerivedFrom(SoAction::getClassTypeId())) {
+                  SoProfilerP::setActionType(actiontype);
                 } else {
+                  SoDebugError::postWarning("SoProfiler",
+                                            "classname '%s' does not specify an action type",
+                                            subarg[1].data());
                   // error - must specify action type
                 }
               } else {
@@ -367,7 +524,6 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
       else if (param[0].compare("sceneview") == 0) {
       }
 
-
       // fallthrough
       else {
         SoDebugError::postWarning("SoProfiler::initialize",
@@ -376,11 +532,62 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
       }
     }
 
-    profiler::overlay::active = TRUE;
+    // profiler::overlay::active = TRUE;
   }
   else {
     // env variable is empty - don't activate overlay parts
   }
+}
+
+/*
+  Default implementation for dumping on console instead of overlaying
+  statistics over the 3D graphics.
+*/
+void
+SoProfilerP::dumpToConsole(const SbProfilingData & data)
+{
+  SoProfilingReportGenerator::ReportCB * callback = NULL;
+  if (profiler::console::onstdout) {
+    callback = SoProfilingReportGenerator::stdoutCB;
+  }
+  else if (profiler::console::onstderr) {
+    callback = SoProfilingReportGenerator::stderrCB;
+  }
+  if (!callback) {
+    return;
+  }
+
+  if (SoProfilerP::shouldClearConsole()) {
+    // send ansi-console clear screen code
+    if (profiler::console::onstdout) {
+      fprintf(coin_get_stdout(), "\ec");
+    } else if (profiler::console::onstderr) {
+      fprintf(coin_get_stderr(), "\ec");
+    }
+  }
+
+  SoProfilingReportGenerator::DataCategorization category =
+    profiler::console::category;
+
+  // set up how to sort the toplist
+  SbProfilingReportSortCriteria * sortsettings =
+    SoProfilingReportGenerator::getDefaultReportSortCriteria(category);
+
+  // set up how to print the toplist
+  SbProfilingReportPrintCriteria * printsettings =
+    SoProfilingReportGenerator::getDefaultReportPrintCriteria(category);
+
+  SoProfilingReportGenerator::generate(data,
+                                       category,
+                                       sortsettings,
+                                       printsettings,
+                                       profiler::console::lines,
+                                       SoProfilerP::shouldOutputHeaderOnConsole(),
+                                       callback,
+                                       NULL);
+
+  SoProfilingReportGenerator::freeCriteria(sortsettings);
+  SoProfilingReportGenerator::freeCriteria(printsettings);
 }
 
 #endif // HAVE_SCENE_PROFILING

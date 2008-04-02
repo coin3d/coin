@@ -30,6 +30,10 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SoType.h>
+
+class SbProfilingData;
+
 class SoProfilerP {
 public:
   static SbBool shouldContinuousRender(void);
@@ -37,8 +41,16 @@ public:
 
   static SbBool shouldSyncGL(void);
 
+  static SbBool shouldClearConsole(void);
+  static SbBool shouldOutputHeaderOnConsole(void);
+
   static void parseCoinProfilerVariable(void);
   static void parseCoinProfilerOverlayVariable(void);
+
+  static void setActionType(SoType actiontype);
+  static SoType getActionType(void);
+
+  static void dumpToConsole(const SbProfilingData & data);
 };
 
 #endif // !COIN_SOPROFILERP_H
