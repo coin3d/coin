@@ -1047,136 +1047,136 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       size_t elementsize = 0;
 
 #define SBNAMESTRING(arg) \
-    static const SbName SO__CONCAT(arg, _string)(SO__QUOTE(arg))
+  static const SbName SO__CONCAT(arg, _string)(SO__QUOTE(arg))
 
-      SBNAMESTRING(SoMFBitMask);
-      SBNAMESTRING(SoMFBool);
-      SBNAMESTRING(SoMFColor);
-      SBNAMESTRING(SoMFColorRGBA);
-      SBNAMESTRING(SoMFDouble);
-      SBNAMESTRING(SoMFEngine);
-      SBNAMESTRING(SoMFEnum);
-      SBNAMESTRING(SoMFFloat);
-      SBNAMESTRING(SoMFInt32);
-      SBNAMESTRING(SoMFMatrix);
-      SBNAMESTRING(SoMFName);
-      SBNAMESTRING(SoMFNode);
-      SBNAMESTRING(SoMFPlane);
-      SBNAMESTRING(SoMFRotation);
-      SBNAMESTRING(SoMFShort);
-      SBNAMESTRING(SoMFString);
-      SBNAMESTRING(SoMFTime);
-      SBNAMESTRING(SoMFUInt32);
-      SBNAMESTRING(SoMFUShort);
-      SBNAMESTRING(SoMFVec2b);
-      SBNAMESTRING(SoMFVec2d);
-      SBNAMESTRING(SoMFVec2f);
-      SBNAMESTRING(SoMFVec2i32);
-      SBNAMESTRING(SoMFVec2s);
-      SBNAMESTRING(SoMFVec3b);
-      SBNAMESTRING(SoMFVec3d);
-      SBNAMESTRING(SoMFVec3f);
-      SBNAMESTRING(SoMFVec3i32);
-      SBNAMESTRING(SoMFVec3s);
-      SBNAMESTRING(SoMFVec4b);
-      SBNAMESTRING(SoMFVec4d);
-      SBNAMESTRING(SoMFVec4f);
-      SBNAMESTRING(SoMFVec4i32);
-      SBNAMESTRING(SoMFVec4s);
-      SBNAMESTRING(SoMFVec4ub);
-      SBNAMESTRING(SoMFVec4ui32);
-      SBNAMESTRING(SoMFVec4us);
+      SBNAMESTRING(MFBitMask);
+      SBNAMESTRING(MFBool);
+      SBNAMESTRING(MFColor);
+      SBNAMESTRING(MFColorRGBA);
+      SBNAMESTRING(MFDouble);
+      SBNAMESTRING(MFEngine);
+      SBNAMESTRING(MFEnum);
+      SBNAMESTRING(MFFloat);
+      SBNAMESTRING(MFInt32);
+      SBNAMESTRING(MFMatrix);
+      SBNAMESTRING(MFName);
+      SBNAMESTRING(MFNode);
+      SBNAMESTRING(MFPlane);
+      SBNAMESTRING(MFRotation);
+      SBNAMESTRING(MFShort);
+      SBNAMESTRING(MFString);
+      SBNAMESTRING(MFTime);
+      SBNAMESTRING(MFUInt32);
+      SBNAMESTRING(MFUShort);
+      SBNAMESTRING(MFVec2b);
+      SBNAMESTRING(MFVec2d);
+      SBNAMESTRING(MFVec2f);
+      SBNAMESTRING(MFVec2i32);
+      SBNAMESTRING(MFVec2s);
+      SBNAMESTRING(MFVec3b);
+      SBNAMESTRING(MFVec3d);
+      SBNAMESTRING(MFVec3f);
+      SBNAMESTRING(MFVec3i32);
+      SBNAMESTRING(MFVec3s);
+      SBNAMESTRING(MFVec4b);
+      SBNAMESTRING(MFVec4d);
+      SBNAMESTRING(MFVec4f);
+      SBNAMESTRING(MFVec4i32);
+      SBNAMESTRING(MFVec4s);
+      SBNAMESTRING(MFVec4ub);
+      SBNAMESTRING(MFVec4ui32);
+      SBNAMESTRING(MFVec4us);
 
       // TODO: stuff these values into an std::map<> instead of this ifelse...
       const char * mftypekey = mftype.getName().getString();
-      if (mftypekey == SoMFBitMask_string.getString()) {
+      if (mftypekey == MFBitMask_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFBitMask>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFBool_string.getString()) {
+      } else if (mftypekey == MFBool_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFBool>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFColor_string.getString()) {
+      } else if (mftypekey == MFColor_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFColor>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFColorRGBA_string.getString()) {
+      } else if (mftypekey == MFColorRGBA_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFColorRGBA>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFDouble_string.getString()) {
+      } else if (mftypekey == MFDouble_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFDouble>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFEngine_string.getString()) {
+      } else if (mftypekey == MFEngine_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFEngine>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFEnum_string.getString()) {
+      } else if (mftypekey == MFEnum_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFEnum>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFFloat_string.getString()) {
+      } else if (mftypekey == MFFloat_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFFloat>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFInt32_string.getString()) {
+      } else if (mftypekey == MFInt32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFInt32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFMatrix_string.getString()) {
+      } else if (mftypekey == MFMatrix_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFMatrix>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFName_string.getString()) {
+      } else if (mftypekey == MFName_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFName>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFNode_string.getString()) {
+      } else if (mftypekey == MFNode_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFNode>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFPlane_string.getString()) {
+      } else if (mftypekey == MFPlane_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFPlane>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFRotation_string.getString()) {
+      } else if (mftypekey == MFRotation_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFRotation>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFShort_string.getString()) {
+      } else if (mftypekey == MFShort_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFShort>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFString_string.getString()) {
+      } else if (mftypekey == MFString_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFString>::DataType[2]) / 2;
 	// FIXME: should we add strlen(str[i]) to memory size? would
 	// potentially take some time to compute. 20080302 larsa
 	//for (int c = 0; c < numelements; ++c) {
 	//  add strlen(string[c]) + 1 to memory size?
 	//}
-      } else if (mftypekey == SoMFTime_string.getString()) {
+      } else if (mftypekey == MFTime_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFTime>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFUInt32_string.getString()) {
+      } else if (mftypekey == MFUInt32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFUInt32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFUShort_string.getString()) {
+      } else if (mftypekey == MFUShort_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFUShort>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec2b_string.getString()) {
+      } else if (mftypekey == MFVec2b_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec2b>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec2d_string.getString()) {
+      } else if (mftypekey == MFVec2d_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec2d>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec2f_string.getString()) {
+      } else if (mftypekey == MFVec2f_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec2f>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec2i32_string.getString()) {
+      } else if (mftypekey == MFVec2i32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec2i32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec2s_string.getString()) {
+      } else if (mftypekey == MFVec2s_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec2s>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec3b_string.getString()) {
+      } else if (mftypekey == MFVec3b_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec3b>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec3d_string.getString()) {
+      } else if (mftypekey == MFVec3d_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec3d>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec3f_string.getString()) {
+      } else if (mftypekey == MFVec3f_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec3f>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec3i32_string.getString()) {
+      } else if (mftypekey == MFVec3i32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec3i32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec3s_string.getString()) {
+      } else if (mftypekey == MFVec3s_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec3s>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4b_string.getString()) {
+      } else if (mftypekey == MFVec4b_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4b>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4d_string.getString()) {
+      } else if (mftypekey == MFVec4d_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4d>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4f_string.getString()) {
+      } else if (mftypekey == MFVec4f_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4f>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4i32_string.getString()) {
+      } else if (mftypekey == MFVec4i32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4i32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4s_string.getString()) {
+      } else if (mftypekey == MFVec4s_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4s>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4ub_string.getString()) {
+      } else if (mftypekey == MFVec4ub_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4ub>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4ui32_string.getString()) {
+      } else if (mftypekey == MFVec4ui32_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4ui32>::DataType[2]) / 2;
-      } else if (mftypekey == SoMFVec4us_string.getString()) {
+      } else if (mftypekey == MFVec4us_string.getString()) {
 	elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
       } else {
 	// unsupported field type
-	elementsize = 0;
+	elementsize = -1;
       }
 
 #undef SBNAMESTRING
 
       if (mfield->isDeleteValuesEnabled()) {
-	// assume this is a self-managed multi-fields
+	// assume this is a self-managed multi-field
 	managed += elementsize * numelements;
       } else {
 	// assume setValuesPointer() has been used
