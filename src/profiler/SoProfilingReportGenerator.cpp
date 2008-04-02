@@ -110,6 +110,15 @@ public:
   SoProfilingReportGeneratorP::SortFunction ** functions;
 };
 
+/*!
+  Returns a sorting criteria setting object that will make generate()
+  sort the results based on the given argument list in that left-to-right
+  priority order.
+
+  Always end the argument list with TERMINATE_ARGLIST.
+
+  \sa freeCriteria
+*/
 SbProfilingReportSortCriteria *
 SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
 {
@@ -187,6 +196,27 @@ SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
   return criteria;
 }
 
+/*!
+  Returns a sensible default that can be used for a given profiling
+  data categorization.
+*/
+SbProfilingReportSortCriteria *
+SoProfilingReportGenerator::getDefaultReportSortCriteria(DataCategorization category)
+{
+  switch (category) {
+  case NODES:
+    return getReportSortCriteria(TIME_DES, TERMINATE_ARGLIST);
+  case TYPES:
+    return getReportSortCriteria(TIME_MAX_DES, TERMINATE_ARGLIST);
+  case NAMES:
+    return getReportSortCriteria(TIME_DES, TERMINATE_ARGLIST);
+  default:
+    assert(!"not a supported sort order");
+    break;
+  }
+  return NULL;
+}
+
 void
 SoProfilingReportGenerator::freeCriteria(SbProfilingReportSortCriteria * criteria)
 {
@@ -211,6 +241,16 @@ public:
   SbBool needstringlengths;
 };
 
+/*!
+  Returns a printing criteria setting object that will make generate()
+  send a formatted string as the text argument based on the given argument
+  list.  If you force TERMINATE_ARGLIST into the first argument, the
+  text string will be empty.
+
+  Always end the argument list with TERMINATE_ARGLIST.
+
+  \sa freeCriteria
+*/
 SbProfilingReportPrintCriteria *
 SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
 {
@@ -293,6 +333,27 @@ SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
   va_end(args);
 
   return criteria;
+}
+
+/*!
+  Returns a default printing criteria object that can be used sensibly with
+  the given profiling data categorization.
+*/
+SbProfilingReportPrintCriteria *
+SoProfilingReportGenerator::getDefaultReportPrintCriteria(DataCategorization category)
+{
+  switch (category) {
+  case TYPES:
+    return getReportPrintCriteria(TYPE, COUNT, TIME_PERCENT, TIME_MSECS, TIME_MSECS_MAX, TERMINATE_ARGLIST);
+  case NAMES:
+    return getReportPrintCriteria(NAME, TIME_PERCENT, TIME_MSECS, TERMINATE_ARGLIST);
+  case NODES:
+    return getReportPrintCriteria(NAME, TIME_PERCENT, TIME_MSECS, MEM_KILOBYTES, TERMINATE_ARGLIST);
+  default:
+    assert(!"unsupported category");
+    break;
+  }
+  return NULL;
 }
 
 void
@@ -532,6 +593,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 }
 
 // *************************************************************************
+// QSORT() HOOKS
 
 int
 SoProfilingReportGeneratorP::cmpTimeAsc(const SbProfilingData & data, SoProfilingReportGenerator::DataCategorization category, int idx1, int idx2)
@@ -799,6 +861,7 @@ SoProfilingReportGeneratorP::cmpGfxMemDes(const SbProfilingData & data, SoProfil
 }
 
 // *************************************************************************
+// PRETTY-PRINTING HOOKS
 
 void
 SoProfilingReportGeneratorP::printName(const SbProfilingData & data, SbString & string, int entryidx)

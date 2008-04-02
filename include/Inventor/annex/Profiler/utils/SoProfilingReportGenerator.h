@@ -84,7 +84,9 @@ public:
   };
 
   static SbProfilingReportSortCriteria * getReportSortCriteria(SortOrder order, ...);
+  static SbProfilingReportSortCriteria * getDefaultReportSortCriteria(DataCategorization category);
   static SbProfilingReportPrintCriteria * getReportPrintCriteria(Column col, ...);
+  static SbProfilingReportPrintCriteria * getDefaultReportPrintCriteria(DataCategorization category);
   static void freeCriteria(SbProfilingReportSortCriteria * criteria);
   static void freeCriteria(SbProfilingReportPrintCriteria * criteria);
 
