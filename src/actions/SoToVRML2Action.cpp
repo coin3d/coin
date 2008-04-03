@@ -946,8 +946,10 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const So
   do {
     grp = THISP(closure)->get_current_tail();
     THISP(closure)->vrml2path->pop();
-  } while (!grp->isOfType(SoVRMLGroup::getClassTypeId()));
-
+    // check for type == here, and don't use isOfType(), since we
+    // might have added SoVRMLTransform nodes inside this SoVRMLGroup
+  } while (!(grp->getTypeId() == SoVRMLGroup::getClassTypeId()));
+  
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
 }
