@@ -119,12 +119,10 @@
 #include "glue/simage_wrapper.h"
 #include "misc/SoGL.h"
 
-#ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include "profiler/SoProfilerP.h"
-#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -1007,7 +1005,6 @@ SoGLRenderAction::getSortedLayersNumPasses() const
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
-#ifdef HAVE_SCENE_PROFILING
   if (PRIVATE(this)->cachedprofilingsg == NULL) {
     if (node->isOfType(SoGroup::getClassTypeId()) &&
         ((SoGroup *)node)->getNumChildren() > 0) {
@@ -1036,7 +1033,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       }
     }
   }
-#endif // HAVE_SCENE_PROFILING
 
   if (PRIVATE(this)->isrendering) {
     if (PRIVATE(this)->isrenderingoverlay)
@@ -1101,7 +1097,6 @@ void
 SoGLRenderAction::endTraversal(SoNode * node)
 {
   inherited::endTraversal(node);
-#ifdef HAVE_SCENE_PROFILING
   if (SoProfilerP::shouldContinuousRender()) {
     float delay = SoProfilerP::getContinuousRenderDelay();
     if (delay == 0.0f) {
@@ -1125,7 +1120,6 @@ SoGLRenderAction::endTraversal(SoNode * node)
 
     }
   }
-#endif // HAVE_SCENE_PROFILING
 }
 
 /*
@@ -1686,8 +1680,7 @@ SoGLRenderActionP::render(SoNode * node)
     this->renderSingle(node);
   }
 
-#ifdef HAVE_SCENE_PROFILING
-  if (SoProfiler::isActive() && SoProfiler::isOverlayActive()) {
+  if (SoProfiler::isOverlayActive()) {
     if (node == this->cachedprofilingsg) {
       this->isrenderingoverlay = TRUE;
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
@@ -1705,7 +1698,6 @@ SoGLRenderActionP::render(SoNode * node)
       }
     }
   }
-#endif // HAVE_SCENE_PROFILING
 
   state->pop();
   this->isrendering = FALSE;

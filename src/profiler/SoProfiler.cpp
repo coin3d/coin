@@ -1,7 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -151,8 +147,6 @@ namespace {
 void
 SoProfiler::init(void)
 {
-#ifdef HAVE_SCENE_PROFILING
-
   if (profiler::initialized) return;
 
   SoNodeKit::init();
@@ -173,7 +167,6 @@ SoProfiler::init(void)
   SoProfilerP::parseCoinProfilerOverlayVariable();
 
   profiler::initialized = TRUE;
-#endif // HAVE_SCENE_PROFILING
 }
 
 /*!
@@ -211,14 +204,12 @@ SoProfiler::isConsoleActive(void)
 void
 SoProfiler::enable(SbBool enable)
 {
-#ifdef HAVE_SCENE_PROFILING
   if (!profiler::initialized) {
     assert(!"SoProfiler module not initialized");
     SoDebugError::post("SoProfiler::enable", "module not initialized");
     return;
   }
   profiler::enabled = enable;
-#endif // HAVE_SCENE_PROFILING
 }
 
 /*!
@@ -230,8 +221,6 @@ SoProfiler::isEnabled(void)
 {
   return profiler::enabled;
 }
-
-#ifdef HAVE_SCENE_PROFILING
 
 SbBool
 SoProfilerP::shouldContinuousRender(void)
@@ -590,4 +579,3 @@ SoProfilerP::dumpToConsole(const SbProfilingData & data)
   SoProfilingReportGenerator::freeCriteria(printsettings);
 }
 
-#endif // HAVE_SCENE_PROFILING

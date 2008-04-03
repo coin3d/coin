@@ -1,7 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -71,8 +67,6 @@ struct SoProfilerOverlayKitP
 
 SO_KIT_SOURCE(SoProfilerOverlayKit);
 
-#ifdef HAVE_SCENE_PROFILING
-
 // Doc in superclass.
 void
 SoProfilerOverlayKit::initClass(void)
@@ -141,15 +135,6 @@ SoProfilerOverlayKit::addOverlayGeometry(SoNode * node)
   assert(sep->isOfType(SoGroup::getClassTypeId()));
   static_cast<SoGroup *>(sep)->addChild(node);
 }
-
-#else // HAVE_SCENE_PROFILING
-
-SoProfilerOverlayKit::SoProfilerOverlayKit(void) { }
-SoProfilerOverlayKit::~SoProfilerOverlayKit(void) { }
-void SoProfilerOverlayKit::addOverlayGeometry(SoNode * node) { }
-void SoProfilerOverlayKit::initClass(void) { }
-
-#endif // HAVE_SCENE_PROFILING
 
 #undef PRIVATE
 

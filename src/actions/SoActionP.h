@@ -34,10 +34,8 @@
 
 #include "misc/SoCompactPathList.h"
 
-#ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
-#endif // HAVE_SCENE_PROFILING
 
 class SoActionP {
 public:
@@ -56,10 +54,8 @@ public:
   SbList <SbList<int> *> pathcodearray;
   int prevenabledelementscounter;
 
-#ifdef HAVE_SCENE_PROFILING
   static SoProfilerOverlayKit * getProfilerOverlay(void);
   static SoProfilerStats * getProfilerStatsNode(void);
-#endif // HAVE_SCENE_PROFILING
 }; // SoActionP
 
 #endif // !COIN_SOACTIONP_H

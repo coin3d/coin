@@ -220,11 +220,9 @@
 
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoNodeProfiling.h"
-#ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
-#endif // HAVE_SCENE_PROFILING
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL
@@ -374,14 +372,12 @@ SoAction::initClass(void)
   SoAction::enabledElements->enable(SoOverrideElement::getClassTypeId(),
                                     SoOverrideElement::getClassStackIndex());
 
-#ifdef HAVE_SCENE_PROFILING
   // Profiler element may also be used from within all types of action
   // traversals.
   if (SoProfiler::isEnabled()) {
     SoAction::enabledElements->enable(SoProfilerElement::getClassTypeId(),
                                       SoProfilerElement::getClassStackIndex());
   }
-#endif // HAVE_SCENE_PROFILING
 
   SoAction::initClasses();
   coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, CC_ATEXIT_NORMAL);
@@ -525,7 +521,6 @@ SoAction::apply(SoNode * root)
     // make sure state is created before traversing
     (void) this->getState();
 
-#ifdef HAVE_SCENE_PROFILING
     // send events to overlay graph first
     if (SoProfiler::isActive() &&
         SoProfiler::isOverlayActive() &&
@@ -561,12 +556,10 @@ SoAction::apply(SoNode * root)
       data.setActionType(this->getTypeId());
       data.setActionStartTime(SbTime::getTimeOfDay());
     }
-#endif // HAVE_SCENE_PROFILING
 
     this->beginTraversal(root);
     this->endTraversal(root);
 
-#ifdef HAVE_SCENE_PROFILING
     if (SoProfiler::isActive() && 
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
@@ -594,8 +587,6 @@ SoAction::apply(SoNode * root)
         }
       }
     }
-
-#endif // HAVE_SCENE_PROFILING
 
     PRIVATE(this)->applieddata.node = NULL;
     root->unrefNoDelete();
@@ -1370,7 +1361,6 @@ SoAction::switchToNodeTraversal(SoNode * node)
 
 // *************************************************************************
 
-#ifdef HAVE_SCENE_PROFILING
 SoProfilerStats *
 SoActionP::getProfilerStatsNode(void)
 {
@@ -1401,6 +1391,5 @@ SoActionP::getProfilerOverlay(void)
   }
   return kit;
 }
-#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************

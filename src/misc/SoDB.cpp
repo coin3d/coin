@@ -294,11 +294,9 @@ static SbRWMutex * sodb_globalmutex = NULL;
 #include "3ds/3dsLoader.h"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
-#ifdef HAVE_SCENE_PROFILING
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include "profiler/SoProfilerP.h"
-#endif // HAVE_SCENE_PROFILING
 
 // *************************************************************************
 
@@ -578,13 +576,11 @@ SoDB::init(void)
   // Elements must be initialized before actions.
   SoElement::initClass();
 
-#ifdef HAVE_SCENE_PROFILING
   // The profiler-elements must also be initialized before actions, of
   // course. (Note that at least the first one *must* be initialized
   // even if COIN_PROFILER is not set, as we use its classStackIndex
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
-#endif // HAVE_SCENE_PROFILING
 
   ScXML::initClasses();
   SoScXMLNavigation::initClasses();
@@ -720,7 +716,6 @@ SoDB::init(void)
 
   SoDBP::isinitialized = TRUE;
 
-#ifdef HAVE_SCENE_PROFILING
   // NOTE: SoDBP::isinitialized must be set to TRUE before this block,
   // or you will get a "mysterious" crash on a mutex in
   // CoinStaticObjectInDLL.cpp.  Logically, it should not be flagged
@@ -730,7 +725,6 @@ SoDB::init(void)
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
   }
-#endif // HAVE_SCENE_PROFILING
 
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get

@@ -1,8 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_SCENE_PROFILING
 
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/system/gl.h>
@@ -105,30 +100,4 @@ private:
   int entryindex;
 
 };
-
-#else // !HAVE_SCENE_PROFILING
-
-// The version for when no profiling is being done
-
-class SoNodeProfiling {
-public:
-  SoNodeProfiling(void)
-  {
-  }
-
-  void preTraversal(SoAction *)
-  {
-  }
-
-  void postTraversal(SoAction *)
-  {
-  }
-
-  static bool isActive(SoAction *)
-  {
-    return false;
-  }
-};
-
-#endif // !HAVE_SCENE_PROFILING
 
