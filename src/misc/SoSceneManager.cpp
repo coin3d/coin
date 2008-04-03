@@ -395,7 +395,7 @@ SoSceneManager::getViewportRegion(void) const
   Sets color of rendering canvas.
  */
 void
-SoSceneManager::setBackgroundColor(const SbColor & color)
+SoSceneManager::setBackgroundColor(const SbColor4f & color)
 {
   PRIVATE(this)->rendermanager->setBackgroundColor(color);
 }
@@ -404,7 +404,7 @@ SoSceneManager::setBackgroundColor(const SbColor & color)
   Returns color used for clearing the rendering area before rendering
   the scene.
  */
-const SbColor &
+const SbColor4f &
 SoSceneManager::getBackgroundColor(void) const
 {
   return PRIVATE(this)->rendermanager->getBackgroundColor();

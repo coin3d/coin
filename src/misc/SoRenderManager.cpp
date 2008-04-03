@@ -80,7 +80,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->nearplanevalue = 0.6f;
   PRIVATE(this)->stereooffset = 1.0f;
   PRIVATE(this)->isrgbmode = TRUE;
-  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
+  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f, 0.0f);
   PRIVATE(this)->backgroundindex = 0;
   PRIVATE(this)->overlaycolor = SbColor(1.0f, 0.0f, 0.0f);
   PRIVATE(this)->stereostencilmaskvp = SbViewportRegion(0, 0);
@@ -237,8 +237,8 @@ SoRenderManager::clearBuffers(SbBool color, SbBool depth)
   GLbitfield mask = 0;
   if (color) mask |= GL_COLOR_BUFFER_BIT;
   if (depth) mask |= GL_DEPTH_BUFFER_BIT;
-  const SbColor bgcol = PRIVATE(this)->backgroundcolor;
-  glClearColor(bgcol[0], bgcol[1], bgcol[2], 0.0f);
+  const SbColor4f bgcol = PRIVATE(this)->backgroundcolor;
+  glClearColor(bgcol[0], bgcol[1], bgcol[2], bgcol[3]);
   glClear(mask);
 }
 
@@ -381,8 +381,8 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   
   if (mask) {
     if (PRIVATE(this)->isrgbmode) {
-      SbColor bgcolor = PRIVATE(this)->backgroundcolor;
-      glClearColor(bgcolor[0], bgcolor[1], bgcolor[2], 0.0f);
+      const SbColor4f bgcol = PRIVATE(this)->backgroundcolor;
+      glClearColor(bgcol[0], bgcol[1], bgcol[2], bgcol[3]);
     }
     else {
       glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
@@ -897,7 +897,7 @@ SoRenderManager::getViewportRegion(void) const
   Sets color of rendering canvas.
  */
 void
-SoRenderManager::setBackgroundColor(const SbColor & color)
+SoRenderManager::setBackgroundColor(const SbColor4f & color)
 {
   PRIVATE(this)->backgroundcolor = color;
 }
@@ -906,7 +906,7 @@ SoRenderManager::setBackgroundColor(const SbColor & color)
   Returns color used for clearing the rendering area before rendering
   the scene.
  */
-const SbColor &
+const SbColor4f &
 SoRenderManager::getBackgroundColor(void) const
 {
   return PRIVATE(this)->backgroundcolor;

@@ -35,6 +35,7 @@
 #endif // COIN_THREADSAFE
 
 #include <Inventor/system/gl.h>
+#include <Inventor/SbColor4f.h>
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -86,7 +87,7 @@ public:
   SoColorPacker colorpacker;
   SbViewportRegion stereostencilmaskvp;
   GLubyte * stereostencilmask;
-  SbColor backgroundcolor;
+  SbColor4f backgroundcolor;
   int backgroundindex;
   SbBool texturesenabled;
   SbBool isrgbmode;

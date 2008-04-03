@@ -24,7 +24,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbColor.h>
+#include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec2s.h>
 
 class SbViewportRegion;
@@ -68,8 +68,11 @@ public:
   const SbVec2s & getOrigin(void) const;
   void setViewportRegion(const SbViewportRegion & newRegion);
   const SbViewportRegion & getViewportRegion(void) const;
-  void setBackgroundColor(const SbColor & color);
-  const SbColor & getBackgroundColor(void) const;
+  void setBackgroundColor(const SbColor & color) { 
+    this->setBackgroundColor(SbColor4f(color, 0.0f)); 
+  }
+  void setBackgroundColor(const SbColor4f & color);
+  const SbColor4f & getBackgroundColor(void) const;
   void setBackgroundIndex(const int index);
   int getBackgroundIndex(void) const;
   void setRGBMode(const SbBool onOrOff);
