@@ -425,33 +425,6 @@ fi
 AC_SUBST(HAVE_JAVASCRIPT)
 
 # *******************************************************************
-# Query enabling the scene profiling functionality
-
-sim_ac_enable_scene_profiling=true
-
-AC_ARG_ENABLE(
-  [scene-profiling],
-  AC_HELP_STRING([--disable-scene-profiling], [disable scene profiling support]), [
-  case $enableval in
-    yes | true) sim_ac_enable_scene_profiling=true ;;
-    no | false) sim_ac_enable_scene_profiling=false ;;
-    *) ;;
-  esac])
-
-HAVE_SCENE_PROFILING=1
-
-if $sim_ac_enable_scene_profiling; then
-  AC_DEFINE([HAVE_SCENE_PROFILING],, [for setup.h])
-  SCENEPROFILINGMAKEFILE=src/profiling/Makefile
-  SIM_AC_CONFIGURATION_SETTING([Scene profiling support], [Yes])
-else
-  HAVE_SCENE_PROFILING=0
-  SCENEPROFILINGMAKEFILE=
-  SIM_AC_CONFIGURATION_SETTING([Scene profiling support], [No (enable with --enable-scene-profiling)])
-fi
-AC_SUBST(HAVE_SCENE_PROFILING)
-
-# *******************************************************************
 # Query enabling the vrml97 extension
 
 sim_ac_enable_vrml97=true
