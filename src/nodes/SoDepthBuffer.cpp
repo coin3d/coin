@@ -149,7 +149,6 @@ void
 SoDepthBuffer::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-
   SbBool testenable = this->test.getValue();
   SbBool writeenable = this->write.getValue();
   SoDepthBufferElement::DepthWriteFunction function =
@@ -160,7 +159,9 @@ SoDepthBuffer::GLRender(SoGLRenderAction * action)
   if (this->test.isIgnored()) {
     testenable = SoDepthBufferElement::getTestEnable(state);
   }
-  if (this->write.isIgnored()) {
+  // if we're rendering transparent objects, let SoGLRenderAction decide if
+  // depth write should be enabled
+  if (this->write.isIgnored() || action->isRenderingTranspPaths()) {
     writeenable = SoDepthBufferElement::getWriteEnable(state);
   }
   if (this->function.isIgnored()) {

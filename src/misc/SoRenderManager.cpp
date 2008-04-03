@@ -261,15 +261,6 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
   
   // clear the viewport
   glClear(mask);
-
-  // We need to set the depth function here _after_ the glClear() call
-  // to work around what seems like an nVidia bug. If alpha testing is
-  // used without this call, the alpha test will always discard
-  // fragments. It basically seems like the alpha component is always
-  // 0.0 without this call. pederb, 2006-10-10
-
-  // GL_LEQUAL is the default depth function in SGI Inventor
-  glDepthFunc(GL_LEQUAL);
 }
 
 /*!

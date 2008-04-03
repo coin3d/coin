@@ -59,6 +59,11 @@ public:
     NONE, SORTED_LAYERS_BLEND
   };
 
+  enum TransparentDelayedObjectRenderType {
+    ONE_PASS,
+    NONSOLID_SEPARATE_BACKFACE_PASS
+  };
+
   enum AbortCode {
     CONTINUE, ABORT, PRUNE, DELAY
   };
@@ -69,7 +74,7 @@ public:
     BBOX_FARTHEST_CORNER,
     CUSTOM_CALLBACK
   };
-  
+
   typedef AbortCode SoGLRenderAbortCB(void * userdata);
 
   void setViewportRegion(const SbViewportRegion & newregion);
@@ -80,6 +85,8 @@ public:
   void getAbortCallback(SoGLRenderAbortCB * & func_out, void * & userdata_out) const;
   void setTransparencyType(const TransparencyType type);
   TransparencyType getTransparencyType(void) const;
+  void setTransparentDelayedObjectRenderType(TransparentDelayedObjectRenderType type);
+  TransparentDelayedObjectRenderType getTransparentDelayedObjectRenderType(void) const;
   void setSmoothing(const SbBool smooth);
   SbBool isSmoothing(void) const;
   void setNumPasses(const int num);
@@ -111,6 +118,12 @@ public:
   void setSortedObjectOrderStrategy(const SortedObjectOrderStrategy strategy,
                                     SoGLSortedObjectOrderCB * cb = NULL,
                                     void * closure = NULL);
+
+  void setDelayedObjDepthWrite(SbBool write);
+  SbBool getDelayedObjDepthWrite(void) const;
+
+  SbBool isRenderingTranspPaths(void) const;
+  SbBool isRenderingTranspBackfaces(void) const;
 
 protected:
   friend class SoGLRenderActionP; // calls beginTraversal

@@ -93,6 +93,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoWindowElement.h>
+#include <Inventor/elements/SoGLDepthBufferElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -501,6 +502,26 @@
   \since Coin 2.5
 */
 
+/*!
+  \enum SoGLRenderAction::TransparentDelayedObjectRenderType
+
+  Enumerates the render types of transparent objects.
+*/
+
+/*!
+  \var SoGLRenderAction::TransparentDelayedObjectRenderType SoGLRenderAction::ONE_PASS
+
+  Normal one pass rendering. This might cause artifacts for non-solid objects.
+*/
+
+/*!
+  \var SoGLRenderAction::TransparentDelayedObjectRenderType SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS
+
+  Non-solid objects are handled in an extra rendering pass. Backfacing
+  polygons are rendered in the first pass, and the front facing in the
+  second pass.  
+*/
+
 // *************************************************************************
 
 class SoGLRenderActionP {
@@ -525,12 +546,15 @@ public:
   SoPathList transpobjpaths;
   SoPathList sorttranspobjpaths;
   SbList<float> sorttranspobjdistances;
+  SoGLRenderAction::TransparentDelayedObjectRenderType transpdelayedrendertype;
+  SbBool renderingtranspbackfaces;
 
   boost::scoped_ptr<SoGetBoundingBoxAction> bboxaction;
   SbVec2f updateorigin, updatesize;
   SbBool needglinit;
   SbBool isrendering;
   SbBool isrenderingoverlay;
+  SbBool transpobjdepthwrite;
   SoCallbackList precblist;
 
   enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
@@ -689,6 +713,9 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->sortedlayersblendcounter = 0;
   PRIVATE(this)->usenvidiaregistercombiners = FALSE;
   PRIVATE(this)->cachedprofilingsg = NULL;
+  PRIVATE(this)->transpobjdepthwrite = FALSE;
+  PRIVATE(this)->transpdelayedrendertype = ONE_PASS;
+  PRIVATE(this)->renderingtranspbackfaces = FALSE;
 
   PRIVATE(this)->sortedobjectstrategy = BBOX_CENTER;
   PRIVATE(this)->sortedobjectcb = NULL;
@@ -1186,6 +1213,22 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   // for the transparency render pass(es) we should always render when
   // we get here.
   if (PRIVATE(this)->transparencyrender) {
+    if (PRIVATE(this)->transpdelayedrendertype == NONSOLID_SEPARATE_BACKFACE_PASS) {
+      if (this->isRenderingTranspBackfaces()) {
+        if (SoShapeHintsElement::getShapeType(this->state) == SoShapeHintsElement::SOLID) {
+          // just delay this until the next pass
+          return TRUE;
+        }
+        else { 
+          SoLazyElement::setBackfaceCulling(this->state, TRUE);
+        }
+      }
+      else {
+        if (SoShapeHintsElement::getShapeType(this->state) != SoShapeHintsElement::SOLID) {
+          SoLazyElement::setBackfaceCulling(this->state, TRUE);
+        }
+      }
+    }
     PRIVATE(this)->setupBlending(thestate, transptype);
     return FALSE;
   }
@@ -1599,6 +1642,9 @@ SoGLRenderActionP::render(SoNode * node)
   SoLazyElement::disableBlending(state);
   
   SoViewportRegionElement::set(state, this->viewport);
+  SoDepthBufferElement::set(state, TRUE, TRUE,
+                            SoDepthBufferElement::LEQUAL,
+                            SbVec2f(0.0f, 1.0f));
   SoLazyElement::setTransparencyType(state,
                                      (int32_t)this->transparencytype);
 
@@ -1756,24 +1802,68 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     this->transparencyrender = TRUE;
     // disable writing into the z-buffer when rendering transparent
     // objects
-    glDepthMask(GL_FALSE);
+
+    if (!this->transpobjdepthwrite) {
+      SoDepthBufferElement::set(state, TRUE, FALSE,
+                                SoDepthBufferElement::LEQUAL,
+                                SbVec2f(0.0f, 1.0f));
+    }
     SoGLCacheContextElement::set(state, this->cachecontext,
                                  TRUE, !this->isDirectRendering(state));
 
-
+    int numtransppasses = 1;
+    switch (this->transpdelayedrendertype) {
+    default:
+      break;
+    case SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS:
+      numtransppasses = 2;
+      break;
+    }
+    
     // All paths in the sorttranspobjpaths should be sorted
     // back-to-front and rendered
     this->doPathSort();
     int i;
     for (i = 0; i < this->sorttranspobjpaths.getLength(); i++) {
-      this->action->apply(this->sorttranspobjpaths[i]);
+      for (int pass = 0; pass < numtransppasses; pass++) {
+        if (numtransppasses == 2) {
+          switch (pass) {
+          case 0:
+            glCullFace(GL_FRONT);
+            this->renderingtranspbackfaces = TRUE;
+            break;
+          case 1:
+            glCullFace(GL_BACK);
+            this->renderingtranspbackfaces = FALSE;
+            break;
+          }
+        }
+        this->action->apply(this->sorttranspobjpaths[i]);
+      }
     }
 
-    // Render all transparent paths that should not be sorted
-    this->action->apply(this->transpobjpaths, TRUE);
-
-    // enable depth buffer writes again
-    glDepthMask(GL_TRUE);
+    for (int pass = 0; pass < numtransppasses; pass++) {
+      if (numtransppasses == 2) {
+        switch (pass) {
+        case 0:
+          glCullFace(GL_FRONT);
+          this->renderingtranspbackfaces = TRUE;
+          break;
+        case 1:
+          glCullFace(GL_BACK);
+          this->renderingtranspbackfaces = FALSE;
+          break;
+        }
+      }
+      // Render all transparent paths that should not be sorted
+      this->action->apply(this->transpobjpaths, TRUE);
+    }
+    // enable writing again. FIXME: consider if it's ok to push/pop state instead
+    if (!this->transpobjdepthwrite) {
+      SoDepthBufferElement::set(state, TRUE, TRUE,
+                                SoDepthBufferElement::LEQUAL,
+                                SbVec2f(0.0f, 1.0f));
+    }
     this->transparencyrender = FALSE;
   }
 
@@ -1812,6 +1902,77 @@ SoGLRenderActionP::setupBlending(SoState * state, const SoGLRenderAction::Transp
     assert(0 && "should not get here");
     break;
   }
+}
+
+/*!
+  Set whether depth buffer updates should be done when rendering
+  delayed or sorted transparent objects.
+
+  \since Coin 3.0
+*/
+void 
+SoGLRenderAction::setDelayedObjDepthWrite(SbBool write)
+{
+  PRIVATE(this)->transpobjdepthwrite = write;
+}
+
+/*!
+  Return whether depth buffer updates should be done when rendering
+  delayed or sorted transparent objects. Default is FALSE.
+  
+  \since Coin 3.0
+*/
+SbBool 
+SoGLRenderAction::getDelayedObjDepthWrite(void) const
+{
+  return PRIVATE(this)->transpobjdepthwrite;
+}
+
+/*!
+
+  Returns TRUE if the action is currently rendering delayed or sorted
+  transparent objects.
+
+  \since Coin 3.0
+*/
+SbBool 
+SoGLRenderAction::isRenderingTranspPaths(void) const
+{
+  return PRIVATE(this)->transparencyrender;
+}
+
+/*!
+  Returns TRUE if the action is currently rendering backfacing polygons
+  in NONSOLID_SEPARATE_BACKFACE_PASS mode.
+
+  \since Coin 3.0
+*/
+SbBool 
+SoGLRenderAction::isRenderingTranspBackfaces(void) const
+{
+  return PRIVATE(this)->renderingtranspbackfaces;
+}
+
+/*!
+  Sets the render type of delayed or sorted transparent objects. Default is ONE_PASS.
+
+  \since Coin 3.0
+*/
+void 
+SoGLRenderAction::setTransparentDelayedObjectRenderType(TransparentDelayedObjectRenderType type)
+{
+  PRIVATE(this)->transpdelayedrendertype = type;
+}
+
+/*!
+  Returns the render type of delayed or sorted transparent objects.
+
+  \since Coin 3.0
+ */
+SoGLRenderAction::TransparentDelayedObjectRenderType 
+SoGLRenderAction::getTransparentDelayedObjectRenderType(void) const
+{
+  return PRIVATE(this)->transpdelayedrendertype;
 }
 
 void 
@@ -2211,9 +2372,7 @@ SoGLRenderActionP::setupRegisterCombinersNV()
 
   }
 
-  glMatrixMode(GL_MODELVIEW);
-
- 
+  glMatrixMode(GL_MODELVIEW); 
 }
 
 void
