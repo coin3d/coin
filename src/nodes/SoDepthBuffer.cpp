@@ -102,6 +102,7 @@
   \var SoSFVec2f DepthBuffer::range
 
   The value range for the depth buffer data. Defaults to [0.0-1.0].
+  The range will be clamped to [0.0-1.0].
 */
 
 SO_NODE_SOURCE(SoDepthBuffer);
