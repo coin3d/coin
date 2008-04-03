@@ -311,6 +311,8 @@ PrivateHeaders = \
 
 ObsoleteHeaders = 
 
+EXTRA_DIST = examiner-xml.cpp
+
 
 # BEGIN TEMPLATE Make-Common(navigation, navigation)
 # **************************************************************************

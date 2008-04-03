@@ -2,7 +2,11 @@
 
 SUBDIRS = Inventor
 
-EXTRA_DIST = boost.README
+EXTRA_DIST = \
+	boost.README \
+	SoWinEnterScope.h \
+	SoWinLeaveScope.h \
+	SoDebug.h
 
 if BUILD_LIBRARY
 if ! MAC_FRAMEWORK

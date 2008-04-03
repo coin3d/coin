@@ -264,7 +264,12 @@ target_vendor = @target_vendor@
 
 SUBDIRS = Inventor
 
-EXTRA_DIST = boost.README
+EXTRA_DIST = \
+	boost.README \
+	SoWinEnterScope.h \
+	SoWinLeaveScope.h \
+	SoDebug.h
+
 
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@thisincdir = $(includedir)
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@thisinc_HEADERS = \

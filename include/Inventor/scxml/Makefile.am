@@ -15,6 +15,7 @@ PublicHeaders = \
         ScXMLEvent.h \
         ScXMLInvoke.h \
         ScXMLStateMachine.h \
+        ScXMLAnchor.h \
         SoScXMLEvent.h \
         SoScXMLStateMachine.h
 

@@ -45,6 +45,8 @@ ObsoleteHeaders =
 
 update-builtin-resources: $(srcdir)/examiner-xml.cpp
 
+EXTRA_DIST = examiner-xml.cpp
+
 $(srcdir)/examiner-xml.cpp: $(top_srcdir)/data/scxml/navigation/examiner.xml $(top_srcdir)/data/scxml/xml2cpp.pl
 	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ examiner_xml
 
