@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{A6C4767A-161D-4D36-BDEA-B4906A8FEE69}"
+	ProjectGUID="{9816AE05-1298-49DC-B2AC-868B6A1CA034}"
 	>
 	<Platforms>
 		<Platform
@@ -40477,6 +40477,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\profiler\SoProfilingReportGenerator.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\profiler/"
+							ProgramDataBaseFileName="StaticDebug\profiler/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\profiler/"
+							ProgramDataBaseFileName="Release\profiler/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\profiler/"
+							ProgramDataBaseFileName="StaticRelease\profiler/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\profiler/"
+							ProgramDataBaseFileName="Debug\profiler/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\profiler\SoScrollingGraphKit.cpp"
 					>
 					<FileConfiguration
@@ -45895,6 +45945,14 @@
 				>
 				<File
 					RelativePath="..\..\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Profiler\utils headers"
+				>
+				<File
+					RelativePath="..\..\include\Inventor\annex\Profiler\utils\SoProfilingReportGenerator.h"
 					>
 				</File>
 			</Filter>

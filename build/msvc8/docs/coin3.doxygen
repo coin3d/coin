@@ -502,7 +502,6 @@ INPUT                  = <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/build/msv
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec3i32.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec3f.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec3d.h \
-                         <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec3s.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec4b.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec4ub.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/SbVec4s.h \
@@ -809,6 +808,7 @@ INPUT                  = <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/build/msv
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoCoordinate4.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoCube.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoCylinder.h \
+                         <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoDepthBuffer.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoDirectionalLight.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoDrawStyle.h \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/include/Inventor/nodes/SoEnvironment.h \
@@ -1389,6 +1389,7 @@ INPUT                  = <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/build/msv
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/nodes/SoCoordinate4.cpp \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/shapenodes/SoCube.cpp \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/shapenodes/SoCylinder.cpp \
+                         <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/nodes/SoDepthBuffer.cpp \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/nodes/SoDirectionalLight.cpp \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/nodes/SoDrawStyle.cpp \
                          <PATH>/cygdrive/c/home/larsa/svn/clean/Coin-3/src/nodes/SoEnvironment.cpp \
