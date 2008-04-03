@@ -1,9 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_SCENE_PROFILING
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -53,8 +47,42 @@
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
+struct TextureImageData {
+  SbVec2s dims;
+  int numcomps;
+  const unsigned char * pixels;
+};
+
+static const unsigned char material_1_data[] = {
+  0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+};
+
 // texture maps with node type symbols
 #include "inventormaps.icc"
+
+static TextureImageData NodeKit = {
+  SbVec2s(125, 200), 1, NodeKit_data
+};
+
+static TextureImageData Switch = {
+  SbVec2s(125, 200), 1, Switch_data
+};
+
+static TextureImageData geometry_root = {
+  SbVec2s(125, 200), 1, geometry_root_data
+};
+
+static TextureImageData material_1 = {
+  SbVec2s(1, 8), 1, material_1_data
+};
+
+static TextureImageData shape = {
+  SbVec2s(125, 200), 1, shape_data
+};
+
+static TextureImageData top_transform = {
+  SbVec2s(125, 200), 1, top_transform_data
+};
 
 // *************************************************************************
 
@@ -75,20 +103,16 @@ namespace {
     {
       clear();
     }
-  
-    SoTexture2 * createTexture(const char ** buf)
+
+    SoTexture2 * createTexture(const TextureImageData * data)
     {
-      SoInput in;
-      in.setStringArray(buf);
-      SoSeparator * top = SoDB::readAll(&in);
-      assert(top && "Didn't get node");
-      SoNode * tex = (*top->getChildren())[0];
-      assert(tex->isOfType(SoTexture2::getClassTypeId()));
-      return (SoTexture2*)tex;
+      SoTexture2 * texnode = new SoTexture2;
+      texnode->image.setValue(data->dims, data->numcomps, data->pixels);
+      return texnode;
     }
 
     void clear() {
-      std::map<const char **, SoTexture2 *>::iterator it, end;
+      std::map<const TextureImageData *, SoTexture2 *>::iterator it, end;
       for (it = this->nodemap.begin(), end = this->nodemap.end();
            it != end; ++it) {
         it->second->unref();
@@ -97,15 +121,15 @@ namespace {
       this->nodemap.clear();
     }
 
-    SoTexture2 * operator[](const char ** buf) 
+    SoTexture2 * operator[](const TextureImageData & data) 
     {
-      std::map<const char **, SoTexture2 *>::iterator e;
-      e = this->nodemap.find(buf);
+      std::map<const TextureImageData *, SoTexture2 *>::iterator e;
+      e = this->nodemap.find(&data);
       if (e == this->nodemap.end()) {
         // not found, create
-        SoTexture2 * node = TextureDict::createTexture(buf);
+        SoTexture2 * node = TextureDict::createTexture(&data);
         node->ref();
-        this->nodemap[buf] = node;
+        this->nodemap[&data] = node;
         return node;
       } else {
         return e->second;
@@ -114,7 +138,7 @@ namespace {
     
 
   private:
-    std::map<const char **, SoTexture2 *> nodemap;
+    std::map<const TextureImageData *, SoTexture2 *> nodemap;
   };
 }
 
@@ -700,4 +724,3 @@ SoNodeVisualize::getChildGeometry() {
   return childgeometry;
 }
 
-#endif // HAVE_SCENE_PROFILING
