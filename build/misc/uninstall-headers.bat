@@ -760,6 +760,7 @@ del %COINDIR%\include\Inventor\scxml\ScXMLTransition.h
 del %COINDIR%\include\Inventor\scxml\ScXMLEvent.h
 del %COINDIR%\include\Inventor\scxml\ScXMLInvoke.h
 del %COINDIR%\include\Inventor\scxml\ScXMLStateMachine.h
+del %COINDIR%\include\Inventor\scxml\ScXMLAnchor.h
 del %COINDIR%\include\Inventor\scxml\SoScXMLEvent.h
 del %COINDIR%\include\Inventor\scxml\SoScXMLStateMachine.h
 del %COINDIR%\include\Inventor\Sb.h

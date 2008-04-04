@@ -760,6 +760,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLTransition.h %COINDIR%\inclu
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLEvent.h %COINDIR%\include\Inventor\scxml\ScXMLEvent.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLInvoke.h %COINDIR%\include\Inventor\scxml\ScXMLInvoke.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLStateMachine.h %COINDIR%\include\Inventor\scxml\ScXMLStateMachine.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLAnchor.h %COINDIR%\include\Inventor\scxml\ScXMLAnchor.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\SoScXMLEvent.h %COINDIR%\include\Inventor\scxml\SoScXMLEvent.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\SoScXMLStateMachine.h %COINDIR%\include\Inventor\scxml\SoScXMLStateMachine.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\Sb.h %COINDIR%\include\Inventor\Sb.h >nul:

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{9816AE05-1298-49DC-B2AC-868B6A1CA034}"
+	ProjectGUID="{C86AE370-1640-4B1A-89F4-052429E0AE75}"
 	>
 	<Platforms>
 		<Platform
@@ -48405,6 +48405,10 @@
 				>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXML.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLAnchor.h"
 					>
 				</File>
 				<File

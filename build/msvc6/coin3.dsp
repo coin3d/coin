@@ -2155,6 +2155,19 @@ SOURCE=..\..\src\elements\GL\SoGLCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\elements\GL\SoGLDepthBufferElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements\GL"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\elements\GL\SoGLDrawStyleElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
@@ -2770,6 +2783,19 @@ SOURCE=..\..\src\elements\SoDecimationPercentageElement.cpp
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoDecimationTypeElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\elements\SoDepthBufferElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -6759,6 +6785,19 @@ SOURCE=..\..\src\misc\SoJavaScriptEngine.cpp
 # PROP Intermediate_Dir "StaticDebug\misc"
 !ENDIF
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\misc\CoinResources.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\misc"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\misc"
+!ENDIF
+# End Source File
 # End Group
 # Begin Group "lists sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
@@ -7173,6 +7212,110 @@ SOURCE=..\..\src\nodekits\SoWrapperKit.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
+SOURCE=..\..\src\navigation\SoScXMLNavigation.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLNavigationInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLPanUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLRotateUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLSeekUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLSpinUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLZoomUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLViewUtils.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\navigation\SoCenterMode.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
@@ -7239,19 +7382,6 @@ SOURCE=..\..\src\navigation\SoNavigationState.cpp
 # Begin Source File
 
 SOURCE=..\..\src\navigation\SoNavigationSystem.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigationVehicle.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -7632,6 +7762,19 @@ SOURCE=..\..\src\nodes\SoCoordinate3.cpp
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoCoordinate4.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoDepthBuffer.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10452,6 +10595,19 @@ SOURCE=..\..\src\profiler\SoProfilerStats.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\profiler\SoProfilingReportGenerator.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\profiler"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\profiler"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\profiler\SoProfilerTopEngine.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
@@ -11458,6 +11614,282 @@ SOURCE=..\..\src\foreignfiles\steel.c
 !ENDIF
 # End Source File
 # End Group
+# Begin Group "scxml sources"
+# PROP Default_Filter "c;cpp;ic;icc;h"
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXML.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLObject.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLDocument.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLStateBase.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLState.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLOnEntry.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLOnExit.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLInitial.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLFinal.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLAnchor.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLHistory.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLTransition.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLEvent.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLFallbackInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLStateMachine.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\SoScXMLEvent.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\SoScXMLStateMachine.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=..\..\src\tidbits.cpp
@@ -12121,6 +12553,13 @@ SOURCE=..\..\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h
 SOURCE=..\..\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h
 # End Source File
 # End Group
+# Begin Group "Profiler\elements headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\elements\SoProfilerElement.h
+# End Source File
+# End Group
 # Begin Group "Profiler\nodekits headers"
 # Set Default_Filter "h"
 # Begin Source File
@@ -12151,8 +12590,19 @@ SOURCE=..\..\include\Inventor\annex\Profiler\nodekits\SoProfilerVisualizeKit.h
 SOURCE=..\..\include\Inventor\annex\Profiler\engines\SoProfilerTopEngine.h
 # End Source File
 # End Group
+# Begin Group "Profiler\utils headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\utils\SoProfilingReportGenerator.h
+# End Source File
+# End Group
 # Begin Group "Profiler headers"
 # Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\Profiler\SbProfilingData.h
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\Profiler\SoProfiler.h
@@ -12826,6 +13276,14 @@ SOURCE=..\..\include\Inventor\elements\SoSoundElement.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\elements\SoGLShaderProgramElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\elements\SoDepthBufferElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\elements\SoGLDepthBufferElement.h
 # End Source File
 # End Group
 # Begin Group "Inventor\engines headers"
@@ -13679,6 +14137,10 @@ SOURCE=..\..\include\Inventor\misc\SoScriptEngine.h
 
 SOURCE=..\..\include\Inventor\misc\SoJavaScriptEngine.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\misc\SoGLDriverDatabase.h
+# End Source File
 # End Group
 # Begin Group "Inventor\navigation headers"
 # Set Default_Filter "h"
@@ -13705,10 +14167,6 @@ SOURCE=..\..\include\Inventor\navigation\SoNavigationState.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\navigation\SoNavigationSystem.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationVehicle.h
 # End Source File
 # Begin Source File
 
@@ -13895,6 +14353,10 @@ SOURCE=..\..\include\Inventor\nodes\SoCube.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoCylinder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoDepthBuffer.h
 # End Source File
 # Begin Source File
 
@@ -14554,6 +15016,81 @@ SOURCE=..\..\include\Inventor\tools\SbLazyPimplPtr.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\tools\SbLazyPimplPtr.hpp
+# End Source File
+# End Group
+# Begin Group "Inventor\scxml headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXML.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLSubObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLDocument.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLStateBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLState.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLOnEntry.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLOnExit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLInitial.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLFinal.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLHistory.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLTransition.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLEvent.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLInvoke.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLStateMachine.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLAnchor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\SoScXMLEvent.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\SoScXMLStateMachine.h
 # End Source File
 # End Group
 # Begin Group "Inventor headers"
@@ -15508,60 +16045,6 @@ SOURCE=..\..\src\misc\SoGL.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc\SoGLDriverDatabase.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLFaceSetTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLLineSetTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLTristripTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLindexedLineSetTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLnonindexedFaceSetTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLnonindexedTristripSetTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLqmeshTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\misc\SoGLqmeshpreciselightingTemplate.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\misc\SoGenerate.h
 
 # PROP Exclude_From_Build 1
@@ -15666,18 +16149,6 @@ SOURCE=..\..\src\nodes\SoUnknownNode.h
 # Begin Group "profiler local includes"
 
 # PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\src\profiler\SbProfilingData.h
-
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\profiler\SoProfilerElement.h
-
-# PROP Exclude_From_Build 1
-# End Source File
 # Begin Source File
 
 SOURCE=..\..\src\profiler\inventormaps.icc
