@@ -62,9 +62,9 @@ Section 1. Extensions and Ports
 
 Q1.1:   Are there plans for making Coin multi-thread safe?
 
-A:      Coin will probably never be 100% thread safe, but in Coin 2.0 we've
-        added support for thread safe rendering. This means that you
-        can render a scene graph using many threads, at the same
+A:      Coin will probably never be 100% thread safe, but in Coin 2.0
+        we've added support for thread safe rendering. This means that
+        you can render a scene graph using many threads, at the same
         time. The application programmer is responsible for all thread
         synchronization though, but we've added many thread classes to
         make this easier for you (SbMutex, SbRWMutex, SbStorage,
@@ -127,19 +127,19 @@ A:      Yes.  We have now developed a system that uses the Autoconf/Automake
 
 Q1.6:   Is there a Coin port for Mac OS X/Darwin?
 
-A:      Yes, there is full support for Coin, SoQt and SoXt on Mac OS
-        X. You can also integrate Coin into Cocoa applications
+A:      Yes, there is full support for Coin, SoQt and SoXt on
+        Mac OS X. You can also integrate Coin into Cocoa applications
         directly by using the Sc21 framework. See
-        http://www.coin3d.org/mac/ for Mac-specific information,
-        build instructions, download links and tutorials.
+        http://www.coin3d.org/mac/ for Mac-specific information, build
+        instructions, download links and tutorials.
 
 
 Q1.7:   Is Coin compatible with .NET?
 
 A:      The Coin3D libraries are written in C and C++. The supported
         compilers in the Visual Studio family are VisualC++ v6, 
-        VisualC++ .NET and VisualC++.NET 2003. In-house, we mostly
-        use VC++ v6 and VC++.NET 2003.
+        VisualC++.NET 2003 and Visual C++ .NET 2005. In-house, we mostly
+        use VC++.NET 2005.
 
         Coin3D is currently not a .NET assembly or component, so if
         you'd like to use Coin3D from other languages in the
@@ -287,12 +287,12 @@ A:      See the documentation on SoGLRenderAction::TransparencyType, at
 Section 3. Other Hows and Whys
 ==============================
 
-Q3.1:   Why is the .so-version 20 for Coin 1.0 and 40 for Coin 2.0?
+Q3.1:   Why is the .so-version 40 for Coin 2.0 and 60 for Coin 3.0?
 
 A:      This was done to keep the artificial mapping we have constructed
         between the release version number and ABI interface version of Coin
         as simple as possible.  We have this mapping because we plan to
-        do parallell development of Coin 1.0 and Coin 2.0 at the same time
+        do parallell development of different Coin-versions at the same time
         because Coin 1.0 has special status as the Open Inventor 2.1
         compatibility release.
 
