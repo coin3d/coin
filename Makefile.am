@@ -93,6 +93,13 @@ EXTRA_DIST = \
 	cfg/ltconfig \
 	cfg/wrapmsvc.exe \
 	cfg/csubst.exe \
+	cfg/doxy4win.pl \
+	docs/coin.doxygen.in \
+	docs/oiki-launch.txt \
+	docs/doxygen/header.html \
+	docs/doxygen/footer.html \
+	docs/doxygen/stylesheet.css \
+	docs/doxygen/Coin_logo.png \    
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
