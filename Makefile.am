@@ -81,10 +81,11 @@ EXTRA_DIST = \
 	docs/ChangeLog.2001 \
 	docs/ChangeLog.2002 \
 	docs/ChangeLog.2003 \
-	docs/announcement-2_0_0.txt \
+	docs/HACKING \
 	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
+	docs/releases.dox \
 	cfg/errors.txt \
 	cfg/gendsp.pl.in \
 	cfg/ltconfig \
