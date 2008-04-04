@@ -896,7 +896,8 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_ARB_multitexture */
 
   if (w->glActiveTexture) {
-    if (!w->glMultiTexCoord2f ||
+    if (!w->glClientActiveTexture ||
+        !w->glMultiTexCoord2f ||
         !w->glMultiTexCoord2fv ||
         !w->glMultiTexCoord3fv ||
         !w->glMultiTexCoord4fv) {
@@ -906,7 +907,7 @@ glglue_resolve_symbols(cc_glglue * w)
                                   "glActiveTexture found, but one or more of the other "
                                   "multitexture functions were not found");
       }
-    }
+    }  
   }
   w->maxtextureunits = 1; /* when multitexturing is not available */
   if (w->glActiveTexture) {
@@ -3271,15 +3272,6 @@ cc_glglue_glArrayElement(const cc_glglue * glue, GLint i)
 
 SbBool
 cc_glglue_has_multidraw_vertex_arrays(const cc_glglue * glue)
-{
-  return glue->glMultiDrawArrays && glue->glMultiDrawElements;
-}
-
-// this function is named
-// incorrectly. glMultiDrawArrays/glMultiDrawElements has nothing to
-// do with multitexturing
-SbBool
-cc_glglue_has_multitexture_vertex_array(const cc_glglue * glue)
 {
   return glue->glMultiDrawArrays && glue->glMultiDrawElements;
 }

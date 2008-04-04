@@ -363,7 +363,6 @@ COIN_DLL_API void cc_glglue_glDrawRangeElements(const cc_glglue * glue,
                                                 GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid * indices);
 COIN_DLL_API void cc_glglue_glArrayElement(const cc_glglue * glue, GLint i);
 
-COIN_DLL_API SbBool cc_glglue_has_multitexture_vertex_array(const cc_glglue * glue);
 COIN_DLL_API int cc_glglue_max_texture_units(const cc_glglue * glue);
 COIN_DLL_API int cc_glglue_has_multidraw_vertex_arrays(const cc_glglue * glue);
 
