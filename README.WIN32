@@ -6,8 +6,8 @@ Microsoft Visual Studio
 =======================
 
 The source code archive for Coin comes with Microsoft Visual Studio files
-for building and installing the Coin library.  Both Visual Studio 6 and
-Visual Studio 7/7.1 are supported.
+for building and installing the Coin library.  Visual Studio 6,
+Visual Studio 7/7.1, and Visual Studio 8 are supported.
 
 At the last stage of the build, the Coin development kit is automatically
 installed into the directory the COINDIR environment variable points to.
@@ -27,8 +27,8 @@ in the directory "build/msvc6/".  Select the dsw file.
 For Microsoft Visual Studio 7, you will find the complete build file setup
 in the directory build/msvc7/.  Select the sln file.
 
-This setup was implemented in mid-december 2004, and will probably need some
-adjustments and corrections as more people start using it.
+For Microsoft Visual Studio 8, you will find the complete build file setup
+in the directory build/msvc8/.  Select the sln file.
 
 
 Other IDEs
@@ -49,19 +49,16 @@ with the Cygwin environment.
 Compilers
 =========
 
-In-house we more or less only use the Microsoft Visual C++ 6.0 compiler
-when building on Windows, and it is the one we primarily support.  All
-precompiled Coin SDKs are consequently built with this compiler.
+In-house we mostly use the Visual Studio 8 and Visual C++ 6 compilers
+when building on Windows.
 
 We have also had success reports from users about building Coin with the
 Intel compiler through using the Visual Studio project file setup for
 that.
 
-Supporting GCC (primarily the mingw fork) on Windows is in the works.
-It might, but probably doesn't, work out of the box yet.
-
-Borland C++ has for a long time been a wish to support, but we haven't
-gotten around to that yet.
+Building with GCC (primarily the mingw fork) on Windows is possible,
+but this setup is not something we maintain so it might not work out of
+the box at times.
 
 
 Environments
@@ -80,19 +77,13 @@ changed, but since we don't create them manually we can only apply
 changes to the Developer Studio files that can go into the auto-
 generation process.
 
-Be aware that the Developer Studio project files will not help you
-with installing the SDK in any sensible place.  It just takes care of
-building the Coin DLL.  To install the header files for instance, you
-should use Cygwin, run "configure" with --prefix pointing to the
-dir where you want the files ("include" will be appended to the path
-you give), and afterwards run "make install-data" to get the public
-header files installed.
 
 Cygwin
 ------
 
 Cygwin is a UNIX/POSIX-like environment from Cygnus.  See www.cygwin.com.
-We use this environment for building Coin.
+We often use this environment for building Coin, so it is usually up
+to date.
 
 
 
@@ -103,15 +94,9 @@ There are now two ways to build the Coin library with Microsoft Visual C++
 on MS Windows.
 
 
-
 You can use Cygwin and compile Coin with regular GNU makefiles,
 or you can use a Microsoft Visual Studio Project and Workspace file for
 building Coin from the IDE.
-
-
-
-
-[old Cygwin-specific information follows]
 
 
 
