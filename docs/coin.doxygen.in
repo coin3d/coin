@@ -1627,7 +1627,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/xml/document.cpp \
                          @path_tag@@coin_src_dir@/src/xml/element.cpp \
                          @path_tag@@coin_src_dir@/src/xml/attribute.cpp \
-                         @path_tag@@coin_src_dir@/src/xml/path.cpp
+                         @path_tag@@coin_src_dir@/src/xml/path.cpp \
+                         @path_tag@@coin_src_dir@/docs/releases.dox
+
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
