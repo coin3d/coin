@@ -292,7 +292,7 @@ Q3.1:   Why is the .so-version 40 for Coin 2.0 and 60 for Coin 3.0?
 A:      This was done to keep the artificial mapping we have constructed
         between the release version number and ABI interface version of Coin
         as simple as possible.  We have this mapping because we plan to
-        do parallell development of different Coin-versions at the same time
+        do parallel development of different Coin-versions at the same time
         because Coin 1.0 has special status as the Open Inventor 2.1
         compatibility release.
 
