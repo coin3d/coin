@@ -189,6 +189,9 @@ Camera navigation SCXML state machine for Coin 3.0.
         <transition event="sim.coin3d.coin.navigation.seekend" target="seek_done">
           <invoke targettype="sim.coin3d.coin" src="EndSeek"/>
         </transition>
+        <transition event="sim.coin3d.coin.navigation.seekmiss" target="seek_done">
+          <invoke targettype="sim.coin3d.coin" src="EndSeek"/>
+        </transition>
       </state>
       <final id="seek_done"/>
     </state>
