@@ -303,9 +303,11 @@ SoEventManager::processEvent(const SoEvent * const event)
     }
     for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
-      sm->setViewportRegion(vp);
-      if (sm->processSoEvent(event))
-        status = TRUE;
+      if (sm->isActive()) {
+        sm->setViewportRegion(vp);
+        if (sm->processSoEvent(event))
+          status = TRUE;
+      }
     }
     break;
   case SoEventManager::MIXED_NAVIGATION:
@@ -320,9 +322,11 @@ SoEventManager::processEvent(const SoEvent * const event)
     }
     for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
-      sm->setViewportRegion(vp);
-      if (sm->processSoEvent(event))
-        status = TRUE;
+      if (sm->isActive()) {
+        sm->setViewportRegion(vp);
+        if (sm->processSoEvent(event))
+          status = TRUE;
+      }
     }
   }
   return status;
