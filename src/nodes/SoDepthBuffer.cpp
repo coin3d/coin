@@ -24,6 +24,23 @@
 /*!
   \class SoDepthBuffer SoDepthBuffer.h
   \brief The SoDepthBuffer class is a node used to control the GL depth buffer.
+
+  With this node you can control properties related to the OpenGL depth buffer
+  in a variety of ways.
+
+  - you can enable and disable depth buffer testing during rendering,
+
+  - you can enable and disable writing to the depth buffer during rendering,
+
+  - you can set the function used for the depth buffer testing, and
+
+  - you can set the value range used in the depth buffer.
+
+  The value range setting is useful if you need to segment the 3D world into
+  different segments with different depth buffer resolutions to get a more
+  optimal depth buffer resolution distribution than what a single, uniform
+  depth buffer value range can give you.
+
   \ingroup nodes
   \since 2008-03-13
 */
@@ -41,65 +58,65 @@
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::NEVER
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::NEVER
   Never passes.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::ALWAYS
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::ALWAYS
   Always passes.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::LESS
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::LESS
   Passes if the incoming depth value is less than the stored depth value.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::LEQUAL
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::LEQUAL
   Passes if the incoming depth value is less than or equal to the stored depth value.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::EQUAL
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::EQUAL
   Passes if the incoming depth value is equal to the stored depth value.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::GEQUAL
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::GEQUAL
   Passes if the incoming depth value is greater than or equal to the stored depth value.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::GREATER
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::GREATER
   Passes if the incoming depth value is greater than the stored depth value.
 */
 
 /*!
-  \var DepthBuffer::DepthWriteFunction SoDepthBuffer::NOTEQUAL
+  \var SoDepthBuffer::DepthWriteFunction SoDepthBuffer::NOTEQUAL
   Passes if the incoming depth value is not equal to the stored depth value.
 */
 
 /*!
-  \var SoSFEnum DepthBuffer::function
+  \var SoSFEnum SoDepthBuffer::function
 
   Which depth function to use. Defaults to LESS.
 */
 
 /*!
-  \var SoSFBool DepthBuffer::test
+  \var SoSFBool SoDepthBuffer::test
 
   Enable depth buffer testing. Defaults to TRUE.
 */
 
 /*!
-  \var SoSFBool DepthBuffer::write
+  \var SoSFBool SoDepthBuffer::write
 
   Enable depth buffer writing. Defaults to TRUE.
 */
 
 /*!
-  \var SoSFVec2f DepthBuffer::range
+  \var SoSFVec2f SoDepthBuffer::range
 
   The value range for the depth buffer data. Defaults to [0.0-1.0].
   The range will be clamped to [0.0-1.0].
