@@ -65,7 +65,8 @@
   The ScXML part of Coin is a basic, non-conformant, partial
   implementation of State Chart XML, based on the W3C Working Draft 21
   February 2007 of SCXML <http://www.w3.org/TR/scxml/>.  Read that
-  document for understanding how SCXML documents should be constructed.
+  document for a basic understanding how SCXML documents should be
+  constructed.
 
   Coin uses it for its navigation system, to be able to remove
   hardcoded logic for user navigation and externalize it into XML
@@ -96,35 +97,46 @@
 
   - At the moment, the Coin ScXML module only supports "Executable
     Content" through the <invoke> element, using the ScXMLInvoke class
-    interface and having the Executable Content written in C++.
+    interface and having the Executable Content written in C++ in
+    subclasses of the ScXMLInvoke class.
 
   Unsupported Items:
 
+  - External document referencing through the <state>/<parallel> 'src'
+    attribute is not yet handled, but should be easy to implement so
+    it will likely be one of the first things that will be fixed.
+
   - The <parallel> element is not supported as intended with parallel
-    states.  Coin will just treat it as an ordinary <state> element for
-    now.
+    states.  Coin will just treat it as an ordinary <state> element
+    for now.  Parallel states is not high up on the priority list, so
+    expect this to be handled after a lot of other functionality is in
+    place.
 
   - The <datamodel>-related part of the specification is not supported.
 
   - The condition attribute in the <transition> element is not supported,
     so the only condition you can set is on the event type in the event
-    attribute.
+    attribute.  The ScXMLTransition class has a virtual method
+      SbBool evaluateCondition()
+    which is used in the state machine logic, and should be all that is
+    needed to overload to implement this in subclasses yourself.
 
-  - The target attribute in the <transition> element can only identify
+  - The 'target' attribute in the <transition> element can only identify
     a single state currently, not multiple as you would have to when
     having support for <parallel> elements (which we don't have).
 
-  - Elements like <history> and <anchor> are just implemented as dummy
-    states for now.
+  - The virtual state elements like <history> and <anchor> are just
+    implemented as dummy states for now and do not do anything in
+    relation to what they should actually do.
 
   - There are no mechanisms for inter-statemachine event passing yet.
 
-  For learning more about this, take a look at
-  $COINDIR/scxml/navigation/examiner.xml (or in the Coin source
-  directory, data/scxml/navigation/examiner.xml) for an example of how
-  an SCXML system for camera navigation in Coin looks, and look at the
-  ScXML* files in src/navigation/ for the C++ counterparts to the same
-  SCXML navigation system.
+  For learning more about how ScXML is implemented and used in Coin,
+  take a look at $COINDIR/scxml/navigation/examiner.xml (or in the
+  Coin source directory, data/scxml/navigation/examiner.xml) for an
+  example of how an SCXML system for camera navigation looks,
+  and look at the ScXML* source files in src/navigation/ for the C++
+  counterparts to the same SCXML navigation system.
 
   With support for <datamodel>, <transition>-conditions, and inline
   executable content in the XML file in some scripting language, the C++
