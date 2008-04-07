@@ -659,14 +659,12 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 #endif // debug
       state->pop();
 
-#ifdef HAVE_SCENE_PROFILING
       if (SoProfiler::isActive()) {
         SoProfilerElement * e = SoProfilerElement::get(state);
         if (e) {
 	  e->getProfilingData().setNodeFlag(action->getCurPath(), SbProfilingData::GL_CACHED_FLAG, TRUE);
 	}
       }
-#endif // HAVE_SCENE_PROFILING
 
       return;
     }
@@ -979,18 +977,17 @@ SoSeparatorP::doCull(SoSeparatorP * thisp, SoState * state,
     }
   }
 
-#ifdef HAVE_SCENE_PROFILING
-#if 0 
-// temporarily disabled as SoProfilerElement::setWasCulled
-// was removed in a refactor. The method should probably
-// exist however, so when implemented this code can be enabled
-// again. -frodein
+#if 0
+// temporarily disabled. setNodeFlag() needs current path, which is
+// unavailable here
   if (outside && SoProfiler::isActive()) {
-    SoProfilerElement * e = SoProfilerElement::get(state);
-    if (e) { e->setWasCulled(thisp); }
+    SoProfilerElement * elt = SoProfilerElement::get(state);
+    if (elt) {
+      // FIXME: need current path to set this flag. move outside cullTest()?
+      // elt->getProfilingData().setNodeFlag(PUBLIC(thisp)->getCurPath(), SbProfilingData::CULLED_FLAG, TRUE);
+    }
   }
 #endif
-#endif // HAVE_SCENE_PROFILING
 
   return outside;
 }
