@@ -48,6 +48,7 @@ public:
   SoSceneManager * publ;
   class SoRenderManager * rendermanager;
   class SoEventManager * eventmanager;
+  SbColor backgroundcolor;
 };
 
 #endif // COIN_SOSCENEMANAGERP_H

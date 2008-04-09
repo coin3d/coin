@@ -101,6 +101,8 @@ SoSceneManager::SoSceneManager(void)
 
   PRIVATE(this)->rendermanager = new SoRenderManager;
   PRIVATE(this)->eventmanager = new SoEventManager;
+
+  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
@@ -395,19 +397,21 @@ SoSceneManager::getViewportRegion(void) const
   Sets color of rendering canvas.
  */
 void
-SoSceneManager::setBackgroundColor(const SbColor4f & color)
+SoSceneManager::setBackgroundColor(const SbColor & color)
 {
-  PRIVATE(this)->rendermanager->setBackgroundColor(color);
+  PRIVATE(this)->rendermanager->setBackgroundColor(SbColor4f(color, 0.0));
 }
 
 /*!
   Returns color used for clearing the rendering area before rendering
   the scene.
  */
-const SbColor4f &
+const SbColor &
 SoSceneManager::getBackgroundColor(void) const
 {
-  return PRIVATE(this)->rendermanager->getBackgroundColor();
+  SbColor4f bgcolor = PRIVATE(this)->rendermanager->getBackgroundColor();
+  PRIVATE(this)->backgroundcolor = SbColor(bgcolor[0], bgcolor[1], bgcolor[2]);
+  return PRIVATE(this)->backgroundcolor;
 }
 
 /*!
