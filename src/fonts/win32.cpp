@@ -97,6 +97,7 @@ static int flww32_calcfontsize(float complexity);
 #include <math.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <ctype.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
