@@ -801,7 +801,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
-  ptr = GetProcAddress((HINSTANCE) handle->nativehnd, symbolname);
+  ptr = static_cast<void *>(GetProcAddress((HINSTANCE) handle->nativehnd, symbolname));
 
   if (cc_dl_debugging() && (ptr == NULL)) {
     cc_string funcstr;
