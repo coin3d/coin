@@ -36,27 +36,27 @@
 
   For an excellently written, detailed, tutorial-style introduction to
   the Open Inventor API used by the Coin library, we highly recommend
-  the book �The Inventor Mentor� (subtitle: �Programming
-  Object-Oriented 3D Graphics with Open Inventor�), ISBN
+  the book "The Inventor Mentor" (subtitle: "Programming
+  Object-Oriented 3D Graphics with Open Inventor"), ISBN
   0-201-62495-8. It walks the Coin application programmer through all
   the principles applied in the API, richly illustrated and with
   numerous, well documented code examples.
 
-  (The �Inventor Mentor� is getting a bit old, but don't let that put
-  you off. We heartily recommend this book as it covers all the basic
-  design principles, aswell as the major parts of the API, in an
-  excellent manner.)
+  ("The Inventor Mentor" is getting a bit old, but don't let that put
+  you off. We heartily recommend this book as it covers the fundamental
+  design principles in Open Inventor, as well as the majority of the
+  API, all in an excellent manner.)
 
   For overviews of various selected features of the Coin library, see
-  the "Related pages" document from the link in the upper right corner
-  of this page.
+  the "Modules" link to the left and the "Related Pages" link to the
+  right in the top menu on this page (and all others).
 
 
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
   <ul>
-  <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is for interfacing with Trolltech's cross-platform Qt toolkit
-      (UNIX, Windows, Mac OS X).</li>
+  <li><a href="http://doc.coin3d.org/Quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
+  <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
   <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
       platforms.</li>
   <li><a href="http://doc.coin3d.org/Sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
@@ -78,13 +78,6 @@
 // features in the mainpage doc above. It should have screenshots and
 // usage examples and all sorts of nice stuff for a good introduction
 // to Coin.
-//
-// Should at least cover these major new features of Coin v2.0:
-//
-//     - big-image
-//     - mp-rendering
-//     - VRML97
-//     - 3D sound
 //
 // 20030227 mortene.
 

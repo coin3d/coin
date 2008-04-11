@@ -25,7 +25,7 @@
 #include <Inventor/actions/SoAction.h>
 
 /*!
-  \page bundles
+  \page bundles The Bundle Classes
 
   The bundle classes are mostly internal to Coin.
 */

@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \page elements
+  \page elements The Element Classes
 
   Elements are mostly internal to Coin, unless you create new extension
   nodes over Coin. Then you will probably need to know about them.
