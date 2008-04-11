@@ -28,6 +28,8 @@
   \page bundles The Bundle Classes
 
   The bundle classes are mostly internal to Coin.
+
+  \ingroup bundles
 */
 
 /*!

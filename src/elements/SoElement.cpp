@@ -259,6 +259,8 @@
     return 1;
   }
   \endcode
+
+  \ingroup elements
 */
 
 /*!

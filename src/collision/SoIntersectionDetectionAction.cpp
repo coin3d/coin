@@ -109,6 +109,7 @@
 
   \sa SoIntersectionDetectionAction
 
+  \ingroup collision
   \since Coin 2.1
   \since TGS Inventor 2.4
 */

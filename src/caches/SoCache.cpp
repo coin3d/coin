@@ -25,6 +25,8 @@
   \page caches The Cache Classes
 
   The cache classes are mostly internal to Coin.
+
+  \ingroup caches
 */
 
 /*!

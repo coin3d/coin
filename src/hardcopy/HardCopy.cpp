@@ -99,6 +99,7 @@
   graph. To create several layers, the beginViewport() and
   endViewport() functions can be used.
 
+  \ingroup hardcopy
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */

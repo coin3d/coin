@@ -94,17 +94,31 @@
 /*! \defgroup events Event Classes */
 /*! \defgroup fields Field Classes */
 /*! \defgroup general General Classes */
-/*! \defgroup hardcopy Vectorized Printing Classes */
 /*! \defgroup manips Manipulator Classes */
 /*! \defgroup nodekits NodeKit Classes */
 /*! \defgroup nodes Node Classes */
 /*! \defgroup projectors Projector Classes */
 /*! \defgroup sensors Sensor Classes */
 /*! \defgroup sound 3D Sound Support Classes */
+
+/*!
+  \defgroup scxml State Chart XML Classes
+
+  This module is a basic implementation of State Chart XML.
+*/
+
 /*! \defgroup threads Portable Threads Abstraction Classes  */
-/*! \defgroup VRMLnodes VRML97 Classes */
-/*! \defgroup envvars Environment Variables */
-/*! \defgroup scxml State Chart XML Classes */
+
+/*!
+  \defgroup VRMLnodes VRML97 Classes
+
+  This is the set of items specified by VRML97, also known as VRML2.0.
+*/
+
+/*! \defgroup hardcopy Vectorized Printing Classes */
+/*!
+  \defgroup envvars Environment Variables
+*/
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
