@@ -25,6 +25,12 @@
 #include <Inventor/actions/SoAction.h>
 
 /*!
+  \page bundles
+
+  The bundle classes are mostly internal to Coin.
+*/
+
+/*!
   \class SoBundle include/Inventor/bundles/SoBundle.h
   \brief The SoBundle class is the superclass for all bundle classes.
   \ingroup bundles

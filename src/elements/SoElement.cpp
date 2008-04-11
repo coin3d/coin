@@ -1,4 +1,3 @@
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -23,9 +22,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoElement Inventor/elements/SoElement.h
-  \brief SoElement is the abstract base class for all elements.
-  \ingroup elements
+  \page elements
+
+  Elements are mostly internal to Coin, unless you create new extension
+  nodes over Coin. Then you will probably need to know about them.
 
   Elements are part of the design for scenegraph traversal in Coin.
 
@@ -259,7 +259,15 @@
     return 1;
   }
   \endcode
+*/
 
+/*!
+  \class SoElement Inventor/elements/SoElement.h
+  \brief SoElement is the abstract base class for all elements.
+
+  This is the base class for all the element classes in Coin.
+
+  \ingroup elements
 */
 
 // *************************************************************************

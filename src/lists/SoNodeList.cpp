@@ -24,7 +24,6 @@
 /*!
   \class SoNodeList SoNodeList.h Inventor/lists/SoNodeList.h
   \brief The SoNodeList class is a container for pointers to SoNode objects.
-  \ingroup nodes
 
   As this class inherits SoBaseList, referencing and dereferencing
   will default be done on the objects at append(), remove(), insert()

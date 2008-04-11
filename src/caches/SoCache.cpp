@@ -22,6 +22,12 @@
 \**************************************************************************/
 
 /*!
+  \page caches
+
+  The cache classes are mostly internal to Coin.
+*/
+
+/*!
   \class SoCache Inventor/caches/SoCache.h
   \brief The SoCache class is the superclass for all internal cache classes.
   \ingroup caches

@@ -88,37 +88,30 @@
 //
 // 20030227 mortene.
 
-/*! \defgroup actions Actions */
-/*! \defgroup base Base classes */
-/*! \defgroup bundles Bundles (mostly for internal use) */
-/*! \defgroup caches Cache storage (mostly for internal use) */
-/*! \defgroup collision Collision detections between scene geometry */
-/*! \defgroup details Detail classes */
-/*! \defgroup draggers Draggers */
-/*! \defgroup elements Elements (mostly for internal use)
-  See the class documentation of SoElement for a detailed description
-  of the purpose and design of the element classes.
-*/
-/*! \defgroup engines Engine classes */
-/*! \defgroup errors Error handling */
-/*! \defgroup events Event classes */
-/*! \defgroup fields Field classes */
-/*! \defgroup general General classes */
-/*!
-  \defgroup hardcopy Support for vectorized printing
-
-  See \ref hardcopy_overview for an overview of this functionality.
-*/
-/*! \defgroup manips Manipulators */
-/*! \defgroup nodekits Node Kits */
-/*! \defgroup nodes Nodes */
-/*! \defgroup projectors Projector classes (mostly for internal use) */
-/*! \defgroup sensors Sensor classes */
-/*! \defgroup sound 3D sound support */
-/*! \defgroup threads Portable thread-handling abstractions  */
-/*! \defgroup VRMLnodes VRML97 classes */
+/*! \defgroup actions Action Classes */
+/*! \defgroup base Base Classes */
+/*! \defgroup bundles Bundle Classes */
+/*! \defgroup caches Cache Classes */
+/*! \defgroup collision Collision Detection Classes */
+/*! \defgroup details Detail Classes */
+/*! \defgroup draggers Dragger Classes */
+/*! \defgroup elements Element Classes */
+/*! \defgroup engines Engine Classes */
+/*! \defgroup errors Error Handling Classes */
+/*! \defgroup events Event Classes */
+/*! \defgroup fields Field Classes */
+/*! \defgroup general General Classes */
+/*! \defgroup hardcopy Vectorized Printing Classes */
+/*! \defgroup manips Manipulator Classes */
+/*! \defgroup nodekits NodeKit Classes */
+/*! \defgroup nodes Node Classes */
+/*! \defgroup projectors Projector Classes */
+/*! \defgroup sensors Sensor Classes */
+/*! \defgroup sound 3D Sound Support Classes */
+/*! \defgroup threads Portable Threads Abstraction Classes  */
+/*! \defgroup VRMLnodes VRML97 Classes */
 /*! \defgroup envvars Environment Variables */
-/*! \defgroup scxml State Chart XML subsystem */
+/*! \defgroup scxml State Chart XML Classes */
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
