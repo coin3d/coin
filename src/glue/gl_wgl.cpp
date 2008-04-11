@@ -177,7 +177,7 @@ static SbBool attemptedextresolved = FALSE;
 void *
 coin_wgl_getprocaddress(const char * fname)
 {
-  void * ptr = static_cast<void *>(wglGetProcAddress(fname));
+  void * ptr = (void *) wglGetProcAddress(fname);
 
   /* wglGetProcAddress() seems to only be able to fetch
      function-addresses for *extension* functions, not "proper" OpenGL
