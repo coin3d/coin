@@ -276,7 +276,6 @@ RegularSources = \
 	SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp \
 	SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp \
 	SoCallback.cpp \
 	SoCacheHint.cpp \
 	SoCamera.cpp \
@@ -449,24 +448,23 @@ nodes_lst_LIBADD =
 am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
 	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
+	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
+	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
+	SoDepthBuffer.cpp SoDirectionalLight.cpp SoDrawStyle.cpp \
+	SoEnvironment.cpp SoEventCallback.cpp SoExtSelection.cpp \
+	SoFile.cpp SoFont.cpp SoFontStyle.cpp SoFrustumCamera.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -491,25 +489,24 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoAnnoText3Property.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoArray.$(OBJEXT) SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
 	SoBumpMap.$(OBJEXT) SoBumpMapCoordinate.$(OBJEXT) \
-	SoBumpMapTransform.$(OBJEXT) SoBumpMappingProperty.$(OBJEXT) \
-	SoCallback.$(OBJEXT) SoCacheHint.$(OBJEXT) SoCamera.$(OBJEXT) \
-	SoClipPlane.$(OBJEXT) SoColorIndex.$(OBJEXT) \
-	SoComplexity.$(OBJEXT) SoCoordinate3.$(OBJEXT) \
-	SoCoordinate4.$(OBJEXT) SoDepthBuffer.$(OBJEXT) \
-	SoDirectionalLight.$(OBJEXT) SoDrawStyle.$(OBJEXT) \
-	SoEnvironment.$(OBJEXT) SoEventCallback.$(OBJEXT) \
-	SoExtSelection.$(OBJEXT) SoFile.$(OBJEXT) SoFont.$(OBJEXT) \
-	SoFontStyle.$(OBJEXT) SoFrustumCamera.$(OBJEXT) \
-	SoGroup.$(OBJEXT) SoInfo.$(OBJEXT) SoLOD.$(OBJEXT) \
-	SoLabel.$(OBJEXT) SoLevelOfDetail.$(OBJEXT) SoLight.$(OBJEXT) \
-	SoLightModel.$(OBJEXT) SoLinearProfile.$(OBJEXT) \
-	SoListener.$(OBJEXT) SoLocateHighlight.$(OBJEXT) \
-	SoMaterial.$(OBJEXT) SoMaterialBinding.$(OBJEXT) \
-	SoMatrixTransform.$(OBJEXT) SoMultipleCopy.$(OBJEXT) \
-	SoNode.$(OBJEXT) SoNormal.$(OBJEXT) SoNormalBinding.$(OBJEXT) \
-	SoNurbsProfile.$(OBJEXT) SoOrthographicCamera.$(OBJEXT) \
-	SoPackedColor.$(OBJEXT) SoPathSwitch.$(OBJEXT) \
-	SoPattern.$(OBJEXT) SoPendulum.$(OBJEXT) \
+	SoBumpMapTransform.$(OBJEXT) SoCallback.$(OBJEXT) \
+	SoCacheHint.$(OBJEXT) SoCamera.$(OBJEXT) SoClipPlane.$(OBJEXT) \
+	SoColorIndex.$(OBJEXT) SoComplexity.$(OBJEXT) \
+	SoCoordinate3.$(OBJEXT) SoCoordinate4.$(OBJEXT) \
+	SoDepthBuffer.$(OBJEXT) SoDirectionalLight.$(OBJEXT) \
+	SoDrawStyle.$(OBJEXT) SoEnvironment.$(OBJEXT) \
+	SoEventCallback.$(OBJEXT) SoExtSelection.$(OBJEXT) \
+	SoFile.$(OBJEXT) SoFont.$(OBJEXT) SoFontStyle.$(OBJEXT) \
+	SoFrustumCamera.$(OBJEXT) SoGroup.$(OBJEXT) SoInfo.$(OBJEXT) \
+	SoLOD.$(OBJEXT) SoLabel.$(OBJEXT) SoLevelOfDetail.$(OBJEXT) \
+	SoLight.$(OBJEXT) SoLightModel.$(OBJEXT) \
+	SoLinearProfile.$(OBJEXT) SoListener.$(OBJEXT) \
+	SoLocateHighlight.$(OBJEXT) SoMaterial.$(OBJEXT) \
+	SoMaterialBinding.$(OBJEXT) SoMatrixTransform.$(OBJEXT) \
+	SoMultipleCopy.$(OBJEXT) SoNode.$(OBJEXT) SoNormal.$(OBJEXT) \
+	SoNormalBinding.$(OBJEXT) SoNurbsProfile.$(OBJEXT) \
+	SoOrthographicCamera.$(OBJEXT) SoPackedColor.$(OBJEXT) \
+	SoPathSwitch.$(OBJEXT) SoPattern.$(OBJEXT) SoPendulum.$(OBJEXT) \
 	SoPerspectiveCamera.$(OBJEXT) SoPickStyle.$(OBJEXT) \
 	SoPointLight.$(OBJEXT) SoPolygonOffset.$(OBJEXT) \
 	SoProfile.$(OBJEXT) SoProfileCoordinate2.$(OBJEXT) \
@@ -550,24 +547,23 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAnnoText3.cpp SoAnnoText3Property.cpp SoAntiSquish.cpp \
 	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
+	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
+	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
+	SoDepthBuffer.cpp SoDirectionalLight.cpp SoDrawStyle.cpp \
+	SoEnvironment.cpp SoEventCallback.cpp SoExtSelection.cpp \
+	SoFile.cpp SoFont.cpp SoFontStyle.cpp SoFrustumCamera.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -594,24 +590,23 @@ libnodes_la_LIBADD =
 am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
 	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
+	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
+	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
+	SoDepthBuffer.cpp SoDirectionalLight.cpp SoDrawStyle.cpp \
+	SoEnvironment.cpp SoEventCallback.cpp SoExtSelection.cpp \
+	SoFile.cpp SoFont.cpp SoFontStyle.cpp SoFrustumCamera.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -635,13 +630,13 @@ am__objects_6 = all-nodes-cpp.lo
 am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoAntiSquish.lo SoArray.lo SoBaseColor.lo SoBlinker.lo \
 	SoBumpMap.lo SoBumpMapCoordinate.lo SoBumpMapTransform.lo \
-	SoBumpMappingProperty.lo SoCallback.lo SoCacheHint.lo \
-	SoCamera.lo SoClipPlane.lo SoColorIndex.lo SoComplexity.lo \
-	SoCoordinate3.lo SoCoordinate4.lo SoDepthBuffer.lo \
-	SoDirectionalLight.lo SoDrawStyle.lo SoEnvironment.lo \
-	SoEventCallback.lo SoExtSelection.lo SoFile.lo SoFont.lo \
-	SoFontStyle.lo SoFrustumCamera.lo SoGroup.lo SoInfo.lo SoLOD.lo \
-	SoLabel.lo SoLevelOfDetail.lo SoLight.lo SoLightModel.lo \
+	SoCallback.lo SoCacheHint.lo SoCamera.lo SoClipPlane.lo \
+	SoColorIndex.lo SoComplexity.lo SoCoordinate3.lo \
+	SoCoordinate4.lo SoDepthBuffer.lo SoDirectionalLight.lo \
+	SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo \
+	SoExtSelection.lo SoFile.lo SoFont.lo SoFontStyle.lo \
+	SoFrustumCamera.lo SoGroup.lo SoInfo.lo SoLOD.lo SoLabel.lo \
+	SoLevelOfDetail.lo SoLight.lo SoLightModel.lo \
 	SoLinearProfile.lo SoListener.lo SoLocateHighlight.lo \
 	SoMaterial.lo SoMaterialBinding.lo SoMatrixTransform.lo \
 	SoMultipleCopy.lo SoNode.lo SoNormal.lo SoNormalBinding.lo \
@@ -676,24 +671,23 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAnnoText3.cpp SoAnnoText3Property.cpp SoAntiSquish.cpp \
 	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
+	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
+	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
+	SoDepthBuffer.cpp SoDirectionalLight.cpp SoDrawStyle.cpp \
+	SoEnvironment.cpp SoEventCallback.cpp SoExtSelection.cpp \
+	SoFile.cpp SoFont.cpp SoFontStyle.cpp SoFrustumCamera.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -718,24 +712,23 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoAnnoText3.cpp SoAnnoText3Property.cpp SoAntiSquish.cpp \
 	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
+	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
+	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
+	SoDepthBuffer.cpp SoDirectionalLight.cpp SoDrawStyle.cpp \
+	SoEnvironment.cpp SoEventCallback.cpp SoExtSelection.cpp \
+	SoFile.cpp SoFont.cpp SoFontStyle.cpp SoFrustumCamera.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -761,23 +754,22 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubNodeP.h \
 	SoAnnotation.cpp SoAnnoText3.cpp SoAnnoText3Property.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDepthBuffer.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp \
-	SoLOD.cpp SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp \
-	SoLightModel.cpp SoLinearProfile.cpp SoListener.cpp \
-	SoLocateHighlight.cpp SoMaterial.cpp SoMaterialBinding.cpp \
-	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
-	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
-	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPattern.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoCallback.cpp SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp \
+	SoColorIndex.cpp SoComplexity.cpp SoCoordinate3.cpp \
+	SoCoordinate4.cpp SoDepthBuffer.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoFrustumCamera.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp \
+	SoLabel.cpp SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
 	SoSceneTextureCubeMap.cpp SoSelection.cpp SoSeparator.cpp \
 	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture.cpp SoTexture2.cpp \
@@ -816,8 +808,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoBumpMapCoordinate.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBumpMapTransform.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBumpMapTransform.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingProperty.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingProperty.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCacheHint.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCacheHint.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCallback.Plo \
@@ -1099,8 +1089,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMapCoordinate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMapTransform.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMapTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingProperty.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingProperty.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCacheHint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCacheHint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallback.Plo@am__quote@
