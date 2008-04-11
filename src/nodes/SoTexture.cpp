@@ -23,6 +23,14 @@
 
 #include <Inventor/nodes/SoTexture.h>
 
+/*!
+  SoTexture SoTexture.h Inventor/nodes/SoTexture.h
+  \brief Common base class for texture nodes.
+
+  \ingroup nodes
+  \since Coin 3.0
+*/
+
 SO_NODE_ABSTRACT_SOURCE(SoTexture);
 
 void

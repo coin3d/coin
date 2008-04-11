@@ -62,6 +62,14 @@
 
 // *************************************************************************
 
+/*!
+  \class SoSceneTextureCubeMap SoSceneTextureCubeMap.h Inventor/nodes/SoSceneTextureCubeMap.h
+  \brief Renders a scene into a texture cube map.
+
+  \ingroup nodes
+  \since ????
+*/
+
 // FIXME: more detailed description on how the camera is to be set 20050429 martin
 // if scene does not contain a camera, a default camera is inserted into the
 // cachedScene (the original scene stays untouched!)

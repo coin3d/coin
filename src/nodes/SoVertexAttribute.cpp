@@ -55,6 +55,7 @@
   just a specialization of vertex attributes, so classifying them
   together makes in that way good sense.
 
+  \ingroup nodes
   \since 2008-03-15
 */
 
