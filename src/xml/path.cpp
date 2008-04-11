@@ -75,7 +75,7 @@ path_node_delete(path_node * node)
 {
   path_node * next;
   next = node->next;
-  delete node->element;
+  delete[] node->element;
   delete node;
   return next;
 }
@@ -87,7 +87,7 @@ path_node_delete_chain(path_node * head)
   while ( head != NULL ) {
     path_node * prev = head;
     head = head->next;
-    delete prev->element;
+    delete[] prev->element;
     delete prev;
   }
 }
