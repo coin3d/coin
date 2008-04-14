@@ -1662,8 +1662,12 @@ SoShape::startVertexArray(SoGLRenderAction * action,
   const cc_glglue * glue = sogl_glue_instance(state);
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   const uint32_t contextid = action->getCacheContext();
-  SoVBO * vertexvbo = vboelem->getVertexVBO();
+
   SbBool dovbo = TRUE;
+  if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
+    dovbo = FALSE;
+  }
+  SoVBO * vertexvbo = dovbo ? vboelem->getVertexVBO() : NULL;
   if (!vertexvbo) dovbo = FALSE;
   SbBool didbind = FALSE;
 
