@@ -21159,6 +21159,68 @@ done
 
 
 
+for ac_header in CoreFoundation/CFBundle.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  eval "$as_ac_Header=yes"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+eval "$as_ac_Header=no"
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+fi
+
+done
+
+
+
 # At least with MSVC++, these headers needs windows.h to have been included first.
 
 for ac_header in tlhelp32.h
@@ -37156,7 +37218,7 @@ rm $sim_ac_tmpfile1 $sim_ac_tmpfile2
 
 # **************************************************************************
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/XML/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/XML/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/navigation/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/tools/Makefile include/Inventor/scxml/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile include/Inventor/annex/FXViz/Makefile include/Inventor/annex/FXViz/elements/Makefile include/Inventor/annex/FXViz/nodes/Makefile include/Inventor/annex/Profiler/Makefile include/Inventor/annex/Profiler/elements/Makefile include/Inventor/annex/Profiler/engines/Makefile include/Inventor/annex/Profiler/nodes/Makefile include/Inventor/annex/Profiler/nodekits/Makefile include/Inventor/annex/Profiler/utils/Makefile data/Makefile data/draggerDefaults/Makefile data/shaders/Makefile data/shaders/lights/Makefile data/shaders/vsm/Makefile data/scxml/Makefile data/scxml/navigation/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/navigation/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/shadows/Makefile src/geo/Makefile src/foreignfiles/Makefile src/xml/Makefile src/xml/expat/Makefile src/profiler/Makefile src/scxml/Makefile testsuite/Makefile cfg/gendsp.pl"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/XML/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/MPEG/Makefile include/Inventor/VRMLnodes/Makefile include/Inventor/XML/Makefile include/Inventor/actions/Makefile include/Inventor/bundles/Makefile include/Inventor/caches/Makefile include/Inventor/collision/Makefile include/Inventor/details/Makefile include/Inventor/draggers/Makefile include/Inventor/elements/Makefile include/Inventor/engines/Makefile include/Inventor/errors/Makefile include/Inventor/events/Makefile include/Inventor/fields/Makefile include/Inventor/lists/Makefile include/Inventor/lock/Makefile include/Inventor/manips/Makefile include/Inventor/misc/Makefile include/Inventor/navigation/Makefile include/Inventor/nodekits/Makefile include/Inventor/nodes/Makefile include/Inventor/projectors/Makefile include/Inventor/sensors/Makefile include/Inventor/system/Makefile include/Inventor/threads/Makefile include/Inventor/tools/Makefile include/Inventor/scxml/Makefile include/Inventor/annex/Makefile include/Inventor/annex/HardCopy/Makefile include/Inventor/annex/ForeignFiles/Makefile include/Inventor/annex/FXViz/Makefile include/Inventor/annex/FXViz/elements/Makefile include/Inventor/annex/FXViz/nodes/Makefile include/Inventor/annex/Profiler/Makefile include/Inventor/annex/Profiler/elements/Makefile include/Inventor/annex/Profiler/engines/Makefile include/Inventor/annex/Profiler/nodes/Makefile include/Inventor/annex/Profiler/nodekits/Makefile include/Inventor/annex/Profiler/utils/Makefile data/Makefile data/draggerDefaults/Makefile data/shaders/Makefile data/shaders/lights/Makefile data/shaders/vsm/Makefile data/scxml/Makefile data/scxml/navigation/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/fonts/Makefile src/glue/Makefile src/io/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/navigation/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile src/mpeg/Makefile src/shaders/Makefile src/shadows/Makefile src/geo/Makefile src/foreignfiles/Makefile src/xml/Makefile src/xml/expat/Makefile src/profiler/Makefile src/scxml/Makefile src/doc/Makefile testsuite/Makefile cfg/gendsp.pl"
 
 
 cat >confcache <<\_ACEOF
@@ -37977,6 +38039,7 @@ do
   "src/xml/expat/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/xml/expat/Makefile" ;;
   "src/profiler/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/profiler/Makefile" ;;
   "src/scxml/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/scxml/Makefile" ;;
+  "src/doc/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/doc/Makefile" ;;
   "testsuite/Makefile" ) CONFIG_FILES="$CONFIG_FILES testsuite/Makefile" ;;
   "cfg/gendsp.pl" ) CONFIG_FILES="$CONFIG_FILES cfg/gendsp.pl" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;

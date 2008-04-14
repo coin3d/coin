@@ -1,0 +1,136 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+/*!
+  \mainpage
+
+  <a href="http://www.coin3d.org/">Coin</a> is an OpenGL based,
+  retained mode 3D graphics rendering library. It is implemented in
+  C++ and publicly released with the source code open for your
+  perusal. The application programmer's interface (API) is fully
+  compatible with SGI's Open Inventor, the \e de \e facto standard 3D
+  graphics API for complex visualization applications.
+
+  For an excellently written, detailed, tutorial-style introduction to
+  the Open Inventor API used by the Coin library, we highly recommend
+  the book \ref mentorbook.  It walks the Coin application programmer
+  through all the principles applied in the API, richly illustrated
+  and with numerous, well documented code examples.
+
+  For overviews of various selected features of the Coin library, see
+  the "Modules" link to the left and the "Related Pages" link to the
+  right in the top menu on all the pages in this documentation.
+
+  Kongsberg SIM is working on providing libraries for interfacing
+  Coin with a wide range of windowing systems and GUI toolkits.
+  <ul>
+  <li><a href="http://doc.coin3d.org/Quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
+  <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
+  <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
+      platforms.</li>
+  <li><a href="http://doc.coin3d.org/Sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
+  <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
+  </ul>
+
+  See <http://www.coin3d.org/> for more information about Coin and the
+  GUI toolkit libraries.
+
+  <b>IMPORTANT NOTE: the online documentation for the Coin library is
+  a continuous work-in-progress.</b> Although the large majority of
+  classes have been documented properly, there might still be some
+  poorly documented items. If you happen upon an undocumented or
+  poorly documented class and / or class method which you find hard to
+  understand, please give us a notice so we can rectify the situation.
+*/
+
+// FIXME: complete this to a first usable version -- it should evolve
+// into a whitepaper-like document to educate people about exactly
+// what Coin is and what features it has. As of now it is just a
+// placeholder for misc explanations etc we drop on coin-discuss or
+// other places.
+//
+// Note that the comment starts with "/*" instead of "/*!", so as not
+// to activate this doc for Doxygen yet, as this is a work in
+// progress.
+//
+// 20031105 mortene.
+/*
+  \page coin_technical_whitepaper Coin Technical Whitepaper
+
+  * larsa on Performer vs Inventor:
+
+    [...] both are scene-graph based.
+
+    The main difference is that Open Inventor is data-driven (and
+    event-based), while Performer is application-driven.  It basically
+    means that Open Inventor will know when the program has changed
+    something in the scene, and will redraw it for you, while for
+    application-driven libraries it is up to the application to decide
+    when to render the scene again, which usually ends up meaning
+    continuous redrawing if you're not smart about it.  Also, the
+    event-mechanism in Open Inventor makes it really easy to create
+    interactive 3D components like draggers and manipulators, one of
+    the major features that makes people choose to use Open Inventor.
+
+  * larsa [unpublished] on Application-domain problems:
+
+    [Someone once wrote the following]
+    : I have a scene graph and I want to walk inside the scene
+    : (like a city and I want to walk along the roads in the city). How can I put
+    : the camera in a way so that I can only see the scene in front of me and
+    : round me, just like the view you see when you walk around? Is there any
+    : sample code so that I can use?
+
+    Just thought I should explain why you haven't gotten any answers on this
+    one, since it might clear up other generic issues you or anyone else are 
+    wondering about.
+
+    The Open Inventor library doesn't really know a whole lot.  It doesn't know
+    what "up" is, it has no concept of what is a road, what is a wall, what is
+    on the inside of something and what is on the outside.  It basically has
+    coordinates and polygons and ways to render those.
+
+    On the other hand, Open Inventor is helpful when it comes to organizing your
+    models hierarchically or logically, making it easy for developers to know
+    what is a road and what are walls, if that's what the developer wants to
+    keep organized.  But to Open Inventor, it's still just coordinates and
+    triangles.  Knowing anything more than that falls into The Application Domain.
+
+    So what you have above is a problem relating to the application domain.
+    The solution will be application specific.  For there to have been a
+    "generic ready-made solution" for this, you would have to have a standardized
+    way of organizing 3D models that the ready-made solution could utilize.
+    But Open Inventor developers' needs are so diverse when it comes to what
+    their 3D models should represent, so creating the above standard would
+    be - if not impossible - certainly very suboptimal.
+
+    So it's like this:
+    - As the creator of the application, you are the holder of the knowledge
+      on what a road is and what to do with it.
+    - As the creator of the application, you have the power to control and
+      monitor what the camera is doing, and enforcing your application specific
+      rules on the camera movement.
+
+*/
+
+/* *********************************************************************** */

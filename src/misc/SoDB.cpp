@@ -21,105 +21,6 @@
  *
 \**************************************************************************/
 
-/* *********************************************************************** */
-/* Misc global Doxygen documentation stuff. ****************************** */
-
-/*!
-  \mainpage
-
-  <a href="http://www.coin3d.org">Coin</a> is an OpenGL based,
-  retained mode 3D graphics rendering library. It is implemented in
-  C++ and publicly released with the source code open for your
-  perusal. The application programmer's interface (API) is fully
-  compatible with SGI's Open Inventor, the \e de \e facto standard 3D
-  graphics API for complex visualization applications.
-
-  For an excellently written, detailed, tutorial-style introduction to
-  the Open Inventor API used by the Coin library, we highly recommend
-  the book "The Inventor Mentor" (subtitle: "Programming
-  Object-Oriented 3D Graphics with Open Inventor"), ISBN
-  0-201-62495-8. It walks the Coin application programmer through all
-  the principles applied in the API, richly illustrated and with
-  numerous, well documented code examples.
-
-  ("The Inventor Mentor" is getting a bit old, but don't let that put
-  you off. We heartily recommend this book as it covers the fundamental
-  design principles in Open Inventor, as well as the majority of the
-  API, all in an excellent manner.)
-
-  For overviews of various selected features of the Coin library, see
-  the "Modules" link to the left and the "Related Pages" link to the
-  right in the top menu on this page (and all others).
-
-
-  Systems in Motion is working on providing libraries for interfacing
-  Coin with a wide range of windowing systems and GUI toolkits.
-  <ul>
-  <li><a href="http://doc.coin3d.org/Quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
-  <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
-  <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
-      platforms.</li>
-  <li><a href="http://doc.coin3d.org/Sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
-  <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
-  </ul>
-
-  See <http://www.coin3d.org/> for more information about Coin and the
-  GUI toolkit libraries.
-
-  <b>IMPORTANT NOTE: the online documentation for the Coin library is
-  a continuous work-in-progress.</b> Although the large majority of
-  classes have been documented properly, there might still be some
-  poorly documented items. If you happen upon an undocumented or
-  poorly documented class and / or class method which you find hard to
-  understand, please give us a notice so we can rectify the situation.
-*/
-
-// FIXME: should really list, explain and link to detail-doc on major
-// features in the mainpage doc above. It should have screenshots and
-// usage examples and all sorts of nice stuff for a good introduction
-// to Coin.
-//
-// 20030227 mortene.
-
-/*! \defgroup actions Action Classes */
-/*! \defgroup base Base Classes */
-/*! \defgroup bundles Bundle Classes */
-/*! \defgroup caches Cache Classes */
-/*! \defgroup collision Collision Detection Classes */
-/*! \defgroup details Detail Classes */
-/*! \defgroup draggers Dragger Classes */
-/*! \defgroup elements Element Classes */
-/*! \defgroup engines Engine Classes */
-/*! \defgroup errors Error Handling Classes */
-/*! \defgroup events Event Classes */
-/*! \defgroup fields Field Classes */
-/*! \defgroup general General Classes */
-/*! \defgroup manips Manipulator Classes */
-/*! \defgroup nodekits NodeKit Classes */
-/*! \defgroup nodes Node Classes */
-/*! \defgroup projectors Projector Classes */
-/*! \defgroup sensors Sensor Classes */
-/*! \defgroup sound 3D Sound Support Classes */
-
-/*!
-  \defgroup scxml State Chart XML Classes
-
-  This module is a basic implementation of State Chart XML.
-*/
-
-/*! \defgroup threads Portable Threads Abstraction Classes  */
-
-/*!
-  \defgroup VRMLnodes VRML97 Classes
-
-  This is the set of items specified by VRML97, also known as VRML2.0.
-*/
-
-/*! \defgroup hardcopy Vectorized Printing Classes */
-/*!
-  \defgroup envvars Environment Variables
-*/
-
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
   \brief SbBool is a compiler portable boolean type.
@@ -132,78 +33,6 @@
   SbBool is not really a class, just a \c typedef.
 */
 
-
-/* *********************************************************************** */
-
-// FIXME: complete this to a first usable version -- it should evolve
-// into a whitepaper-like document to educate people about exactly
-// what Coin is and what features it has. As of now it is just a
-// placeholder for misc explanations etc we drop on coin-discuss or
-// other places.
-//
-// Note that the comment starts with "/*" instead of "/*!", so as not
-// to activate this doc for Doxygen yet, as this is a work in
-// progress.
-//
-// 20031105 mortene.
-/*
-  \page coin_technical_whitepaper Coin Technical Whitepaper
-
-  * larsa on Performer vs Inventor:
-
-    [...] both are scene-graph based.
-
-    The main difference is that Open Inventor is data-driven (and
-    event-based), while Performer is application-driven.  It basically
-    means that Open Inventor will know when the program has changed
-    something in the scene, and will redraw it for you, while for
-    application-driven libraries it is up to the application to decide
-    when to render the scene again, which usually ends up meaning
-    continuous redrawing if you're not smart about it.  Also, the
-    event-mechanism in Open Inventor makes it really easy to create
-    interactive 3D components like draggers and manipulators, one of
-    the major features that makes people choose to use Open Inventor.
-
-  * larsa [unpublished] on Application-domain problems:
-
-    [Someone once wrote the following]
-    : I have a scene graph and I want to walk inside the scene
-    : (like a city and I want to walk along the roads in the city). How can I put
-    : the camera in a way so that I can only see the scene in front of me and
-    : round me, just like the view you see when you walk around? Is there any
-    : sample code so that I can use?
-
-    Just thought I should explain why you haven't gotten any answers on this
-    one, since it might clear up other generic issues you or anyone else are 
-    wondering about.
-
-    The Open Inventor library doesn't really know a whole lot.  It doesn't know
-    what "up" is, it has no concept of what is a road, what is a wall, what is
-    on the inside of something and what is on the outside.  It basically has
-    coordinates and polygons and ways to render those.
-
-    On the other hand, Open Inventor is helpful when it comes to organizing your
-    models hierarchically or logically, making it easy for developers to know
-    what is a road and what are walls, if that's what the developer wants to
-    keep organized.  But to Open Inventor, it's still just coordinates and
-    triangles.  Knowing anything more than that falls into The Application Domain.
-
-    So what you have above is a problem relating to the application domain.
-    The solution will be application specific.  For there to have been a
-    "generic ready-made solution" for this, you would have to have a standardized
-    way of organizing 3D models that the ready-made solution could utilize.
-    But Open Inventor developers' needs are so diverse when it comes to what
-    their 3D models should represent, so creating the above standard would
-    be - if not impossible - certainly very suboptimal.
-
-    So it's like this:
-    - As the creator of the application, you are the holder of the knowledge
-      on what a road is and what to do with it.
-    - As the creator of the application, you have the power to control and
-      monitor what the camera is doing, and enforcing your application specific
-      rules on the camera movement.
-
-*/
 
 /* *********************************************************************** */
 
@@ -300,111 +129,10 @@ static SbRWMutex * sodb_globalmutex = NULL;
 
 // *************************************************************************
 
-/*
-  FIXME: document all variables. pederb, 2004-03-22
-
-  UPDATE: a good way to do this, imho, would be to set them up as
-  SoDBP::EnvVars members, as is done for a few already, and document
-  them one-by-one through Doxygen.  20071106 mortene.
-
-  \page environment_variables Environment variables
-
-  Debug related:
-
-  COIN_DEBUG_GLU_INFO 
-  COIN_DEBUG_FONTSUPPORT
-  COIN_DEBUG_3DS
-  COIN_DEBUG_AUDIO
-  COIN_DEBUG_BREAK
-  COIN_DEBUG_CACHING
-  COIN_DEBUG_DL
-  COIN_DEBUG_IMPORT
-  COIN_DEBUG_LISTMODULES
-  COIN_DEBUG_SOINPUT_FINDFILE
-  COIN_DEBUG_SOOFFSCREENRENDERER
-  COIN_DEBUG_WRITEREFS
-  COIN_RANDOMIZE_RENDER_CACHING
-
-  Font/Text rendering related:
-
-  COIN_FREETYPE2_LIBNAME
-  COIN_FORCE_FREETYPE_OFF
-  COIN_FORCE_WIN32FONTS_OFF
-  COIN_FONT_PATH
-
-  COIN_GLU_LIBNAME
-  COIN_AGLGLUE_NO_PBUFFERS
-  COIN_DEBUG_DL
-  COIN_SIMAGE_LIBNAME
-  COIN_GLXGLUE_NO_GLX13_PBUFFERS
-  COIN_GLXGLUE_NO_PBUFFERS
-  COIN_ZLIB_LIBNAME
-  COIN_BZIP2_LIBNAME
-  COIN_WGLGLUE_NO_PBUFFERS
-  COIN_DONT_MANGLE_OUTPUT_NAMES
-  COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
-  COIN_FORCE_TILED_OFFSCREENRENDERING
-  COIN_GLERROR_DEBUGGING
-  COIN_IDA_DEBUG
-  COIN_OFFSCREENRENDERER_MAX_TILESIZE
-  COIN_OFFSCREENRENDERER_TILEHEIGHT
-  COIN_OFFSCREENRENDERER_TILEWIDTH
-  COIN_OLDSTYLE_FORMATTING
-  COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
-  COIN_SOINPUT_SEARCH_GLOBAL_DICT
-  COIN_SOOFFSCREENRENDERER_TILEPREFIX
-  COIN_SORTED_LAYERS_USE_NVIDIA_RC
-
-  Sound related:
-
-  COIN_SOUND_BUFFER_LENGTH
-  COIN_SOUND_DISABLE
-  COIN_SOUND_DRIVER_NAME
-  COIN_SOUND_ENABLE
-  COIN_SOUND_INTRO_PAUSE
-  COIN_SOUND_NUM_BUFFERS
-  COIN_SOUND_THREAD_SLEEP_TIME
-  COIN_OPENAL_LIBNAME
-
-  Texture control related:
-
-  COIN_TEX2_LINEAR_LIMIT
-  COIN_TEX2_LINEAR_MIPMAP_LIMIT
-  COIN_TEX2_MIPMAP_LIMIT
-  COIN_TEX2_SCALEUP_LIMIT
-  COIN_TEX2_USE_GLTEXSUBIMAGE
-  COIN_MAXIMUM_TEXTURE2_SIZE
-  COIN_MAXIMUM_TEXTURE3_SIZE
-
-  Rendering (OpenGL) related:
-
-  COIN_USE_GL_VERTEX_ARRAYS
-  COIN_NORMALIZATION_CUBEMAP_SIZE
-  OIV_NUM_SORTED_LAYERS_PASSES
-  COIN_MAX_VBO_MEMORY
-  COIN_NUM_SORTED_LAYERS_PASSES
-  COIN_QUADMESH_PRECISE_LIGHTING
-  COIN_ENABLE_CONFORMANT_GL_CLAMP
-
-  IV_SEPARATOR_MAX_CACHES
-  COIN_AUTOCACHE_LOCAL_MAX
-  COIN_AUTOCACHE_LOCAL_MIN
-  COIN_AUTOCACHE_REMOTE_MAX
-  COIN_AUTOCACHE_REMOTE_MIN
-  COIN_AUTO_CACHING
-  COIN_ENABLE_VBO
-  
-  COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
-
-  SO_DRAGGER_DIR
-*/
-
-// *************************************************************************
-  
 // Coin-global envvars:
 
 /*!
-  \var COIN_PROFILER
+  \var const char * SoDBP::EnvVars::COIN_PROFILER
 
   Setting the environment variable "COIN_PROFILER" to 1 turns on the
   live scene graph (primarily) profiling feature in Coin.
@@ -414,7 +142,7 @@ static SbRWMutex * sodb_globalmutex = NULL;
 const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
 
 /*!
-  \var COIN_PROFILER_OVERLAY
+  \var const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY
 
   The SoGLRenderAction will render an overlay scenegraph with misc
   profiler statistics if this environment variable is used.

@@ -277,7 +277,7 @@ HIDE_UNDOC_CLASSES     = YES
 # If set to NO (the default) these declarations will be included in the 
 # documentation.
 
-HIDE_FRIEND_COMPOUNDS  = NO
+HIDE_FRIEND_COMPOUNDS  = YES
 
 # If the HIDE_IN_BODY_DOCS tag is set to YES, Doxygen will hide any 
 # documentation blocks found inside the body of a function. 
@@ -463,7 +463,11 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
+INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
+                         @path_tag@@coin_src_dir@/src/doc/modules.dox \
+                         @path_tag@@coin_src_dir@/src/doc/environment.dox \
+                         @path_tag@@coin_src_dir@/src/doc/books.dox \
+                         @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBSPTree.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox.h \
@@ -789,6 +793,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSeparatorKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSubNode.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAntiSquish.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoArray.h \
@@ -2148,7 +2153,7 @@ MACRO_EXPANSION        = YES
 # PREDEFINED and EXPAND_AS_PREDEFINED tags.
 
 EXPAND_ONLY_PREDEF     = NO
-
+N
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files 
 # in the INCLUDE_PATH (see below) will be search if a #include is found.
 

@@ -1,0 +1,264 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+// *************************************************************************
+
+/*!
+  \defgroup actions Action Classes
+
+  Actions are objects that traverse a scene graph to drive some
+  scene-related process, one example being OpenGL rendering, and
+  another being ray picking.
+
+  At the most basic level, most action management will be done for the
+  user behind the scenes in an SoSceneManager object, and the only
+  actions one might need to get acquainted with are SoSearchAction and
+  SoWriteAction.
+
+  For more advanced usage of Coin, one might want (or need) to take full
+  control over driving all the actions oneself, in which case one will
+  also need to know about the SoGLRenderAction, SoHandleEventAction,
+  SoGetBoundingBoxAction, and SoRayPickAction.
+
+  The remaining actions are mostly more special-purpose actions of
+  various kinds, except for the SoCallbackAction.
+
+  Before going to the step of implementing an extension action, one
+  should really take a good look at the SoCallbackAction class, which
+  is a general-purpose action that can be used as the framework for
+  implementing almost any traversal-based process, with callback-hooks
+  for all kinds of events that happen during traversal.  In most cases,
+  one can avoid the hassle of writing a new action, and just use
+  SoCallbackAction instead.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup base Base Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup bundles Bundle Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup caches Cache Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup collision Collision Detection Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup details Detail Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup draggers Dragger Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup elements Element Classes
+
+  The element classes in Coin are the containers of state information
+  during action traversals of scene graphs.  One element usually
+  corresponts to one item of information, or sometimes a group of
+  related information values.  The elements work like a stack that is
+  pushed and popped as the action traverses in and out of SoSeparator
+  nodes, and the action will always just inspect the top of the stack
+  when it needs to know a value.
+
+  Elements are internal implementation details of the workings of
+  nodes and actions, and is not something one needs to worry about
+  before writing ones own extension nodes.  Writing extension elements
+  is even more removed from plain Open Inventor usage, but is fully
+  possible for the experienced Open Inventor developer.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup engines Engine Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup errors Error Handling Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup events Event Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup fields Field Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup general Miscellaneous Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup manips Manipulator Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup nodekits NodeKit Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup nodes Node Classes
+
+  This is the set of nodes Coin implements using the original Open
+  Inventor pattern.
+
+  A subset of these nodes constitute the VRML1 format, and a bigger
+  subset constitutes the Inventor format.  The rest of the nodes are
+  extensions that are not part of any standardized format.
+
+  For VRML97 nodes, see the page \ref VRMLnodes.
+*/
+
+/*!
+  \def SO_NODE_INIT_CLASS(classname, parent, parentname)
+
+  This macro is used in the initClass-function in a node class. It creates
+  a new SoType object for the class, and registers the node by name so
+  file reading will be able to create a node of this type and fill it with
+  its field values.
+
+  \ingroup nodes
+*/
+
+/*!
+  \def SO_NODE_CONSTRUCTOR(classname)
+
+  Place this in the node constructor.
+
+  \ingroup nodes
+*/
+
+/*!
+  \def SO_NODE_ADD_FIELD(field, default)
+
+  This registers a field for a node, and sets its value to the default.
+
+  \ingroup nodes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup projectors Projector Classes
+
+  The projector classes are used to convert between screenspace (2D)
+  locations and locations in worldspace (3D).  They are mostly used in
+  relation to user interaction with the mouse in the viewport.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup sensors Sensor Classes
+
+  Sensors are objects that monitor other objects for changes and invoke
+  callbacks when changes occur.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup sound 3D Sound Support Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup scxml State Chart XML Classes
+
+  This module is a basic implementation of State Chart XML.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup threads Portable Threads Abstraction Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup VRMLnodes VRML97 Classes
+
+  This is the set of items specified by VRML97, also known as VRML2.0.
+  You can find out more about VRML97 in \ref vrml2refbook.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup hardcopy Vectorized Printing Classes
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup envvars Miscellaneous Environment Variables
+
+  Various aspects of the Coin runtime behaviour can be controlled through
+  setting different environment variables to some value.  Most of these
+  variables are there for debugging and problem-workaround purposes, but
+  a few are for telling Coin where to locate external resource files.
+
+  Here is a list of some of the environment variables Coin will check for
+  and can alter behavior because of.
+
+*/
+
+// *************************************************************************

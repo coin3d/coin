@@ -299,7 +299,7 @@ SUBDIRS = \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
-	vrml97 foreignfiles scxml .
+	vrml97 foreignfiles scxml doc .
 
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
