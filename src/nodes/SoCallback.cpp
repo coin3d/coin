@@ -93,7 +93,8 @@ SoCallback::initClass(void)
 /*!
   Set up the \a function to call at traversal of this node. \a
   userdata will be passed back as the first argument of the callback
-  \a function.
+  \a function. Setting \a function to NULL removes the previously set 
+  callback function.
 
   If you want a callback only for a specific action, you must (in your
   callback function) remember to check which action invoked the
