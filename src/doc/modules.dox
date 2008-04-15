@@ -56,6 +56,9 @@
 
 /*!
   \defgroup base Base Classes
+
+  This group is just a lot of basic types for linear algebra, string
+  manipulation and misc. other utilities.
 */
 
 // *************************************************************************
@@ -74,18 +77,37 @@
 
 /*!
   \defgroup collision Collision Detection Classes
+
+  This group is just the SoIntersectionDetectionAction.  This action is not
+  a high-performance component, so be warned.  Using it in a continuous
+  manner on complex scene graphs is doomed to be a performance killer.
 */
 
 // *************************************************************************
 
 /*!
   \defgroup details Detail Classes
+
+  Detail classes are objects that deliver additional information
+  wherever the SoPrimitiveVertex class is used.  This goes for ray
+  picking results, and it also goes for primitive generation by
+  SoShape classes for the SoCallbackAction class and fallback shape
+  rendering through primitive generation (a useful debugging trick
+  when debugging for instance raypicking).
+
 */
 
 // *************************************************************************
 
 /*!
   \defgroup draggers Dragger Classes
+
+  Draggers are interactive components in the scene graph that respond
+  to, and are controlled by mouse and keyboard events.  They are used in
+  manipulators as the user interface for the manipulation action, often
+  many draggers combined at the same time.
+
+  \see manips
 */
 
 // *************************************************************************
@@ -112,18 +134,37 @@
 
 /*!
   \defgroup engines Engine Classes
+
+  Engines are scene based objects that convert between field values of
+  various types or performs computations on them.  The most versatile
+  engine is the SoCalculator engine, which you can write your own
+  mathematical expressions to to get it to do almost anything.  The
+  other engines are more custom-tailored for specific purposes.
+
 */
 
 // *************************************************************************
 
 /*!
   \defgroup errors Error Handling Classes
+
+  The error classes are static classes that contain a callback pointer
+  for handling errors of the given type.  Coin has default handlers
+  for displaying all the types, but these can be overridden by
+  applications by setting other callbacks.
+
 */
 
 // *************************************************************************
 
 /*!
   \defgroup events Event Classes
+
+  These classes are te event types you can send to a scene graph
+  through the SoHandleEventAction.  They are a pretty direct mapping
+  from the various system event types you will have on all the host
+  architectures.
+
 */
 
 // *************************************************************************
@@ -142,6 +183,8 @@
 
 /*!
   \defgroup manips Manipulator Classes
+
+  \see draggers
 */
 
 // *************************************************************************
