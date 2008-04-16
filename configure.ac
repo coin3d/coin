@@ -586,11 +586,6 @@ AC_CHECK_HEADERS(
   [], [],
   [ ])
 
-AC_CHECK_HEADERS(
-  [CoreFoundation/CFBundle.h],
-  [], [],
-  [ ])
-
 SIM_AC_CHECK_HEADER_TLHELP32_H
 SIM_AC_CHECK_FUNC__SPLITPATH
 
