@@ -23,15 +23,16 @@
 
 /*!
   \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
-  \brief The SoIntersectionDetectionAction class is for detecting intersecting
-  primitives in a scene.
-  \ingroup actions
-  \ingroup collision
+  \brief The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.
 
   Note that only collisions between actual geometry in the scene is
   detected, so the contents of some special nodes like e.g. SoText2
   and SoImage (which projects to screen-plane bitmap graphics, and not
   actual polygons) will not be considered for collision detection.
+
+  Note also that the SoIntersectionDetectionAction class is not a
+  high-performance component in Coin.  Using it in a continuous manner
+  over complex scene graphs is doomed to be a performance killer.
 
   Below is a simple usage example for this class. It was written as a
   stand-alone framework set up for profiling and optimization of the
@@ -97,19 +98,7 @@
   }
   \endcode
 
-  \since Coin 2.1
-  \since TGS Inventor 2.4
-*/
-
-/*!
-  \page intersection_overview Intersection Detection
-
-  See the documentation for the SoIntersectionDetectionAction class
-  for example code on how to do intersection detection in a Coin scene.
-
-  \sa SoIntersectionDetectionAction
-
-  \ingroup collision
+  \ingroup actions
   \since Coin 2.1
   \since TGS Inventor 2.4
 */

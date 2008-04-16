@@ -24,7 +24,7 @@
 // *************************************************************************
 
 /*!
-  \page hardcopy An overview of the hardcopy support.
+  \page hardcopy_overview A HardCopy Overview
 
   The main API for HardCopy support in Coin is the abstract class
   SoVectorizeAction. SoVectorizeAction will extract geometry from an
