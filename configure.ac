@@ -2137,7 +2137,7 @@ SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_d
 
 AM_CONFIG_HEADER([src/discard.h src/config.h src/setup.h])
 
-SIM_AC_COIN_CONFIG_H_CHECK
+# SIM_AC_COIN_CONFIG_H_CHECK
 
 # **************************************************************************
 
