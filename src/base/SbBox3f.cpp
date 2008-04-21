@@ -301,6 +301,14 @@ SbBox3f::intersect(const SbBox3f & box) const
 */
 
 /*!
+  \fn SbVec3f SbBox3f::getSize(void) const
+
+  Returns width, height and depth of box as a 3D vector.
+
+  \since Coin 3.0
+*/
+
+/*!
   Marks this as an empty box.
 
   \sa isEmpty().
