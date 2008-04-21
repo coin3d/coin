@@ -84,7 +84,11 @@ public:
   void getSize(double & sizeX, double & sizeY, double & sizeZ) const
     { if (isEmpty()) { sizeX = sizeY = sizeZ = 0.0; }
       else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; sizeZ = maxpt[2] - minpt[2]; } }
-
+  SbVec3d getSize(void) const {
+    SbVec3d v;
+    this->getSize(v[0], v[1], v[2]);
+    return v;
+  }
   void getSpan(const SbVec3d & dir, double & dmin, double & dmax) const;
 
   void print(FILE * file) const;

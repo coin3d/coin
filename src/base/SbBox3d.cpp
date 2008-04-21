@@ -65,7 +65,7 @@
   \fn SbBox3d::SbBox3d(const SbVec3d & minval, const SbVec3d & maxval)
 
   Constructs a box with the given corners.
-  
+
   The coordinates of \a min should be less than the coordinates of \a
   max if you want to make a valid box.
 */
@@ -297,6 +297,14 @@ SbBox3d::intersect(const SbBox3d & box) const
   \fn void SbBox3d::getSize(double & sizeX, double & sizeY, double & sizeZ) const
 
   Returns width, height and depth of box.
+*/
+
+/*!
+  \fn SbVec3d SbBox3d::getSize(void) const
+
+  Returns width, height and depth of box as a 3D vector.
+
+  \since Coin 3.0
 */
 
 /*!
