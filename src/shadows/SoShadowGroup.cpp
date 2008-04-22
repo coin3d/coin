@@ -293,6 +293,7 @@
 #include <Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowCulling.h>
+#include <Inventor/annex/FXViz/nodes/SoShadowSpotLight.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -326,7 +327,9 @@
 class SoShadowSpotLightCache {
 public:
   SoShadowSpotLightCache(SoState * state,
-                         const SoPath * path, SoShadowGroup * scene,
+                         const SoPath * path, 
+                         SoShadowGroup * sg,
+                         SoNode * scene,
                          const int gausskernelsize,
                          const float gaussstandarddeviation)
   {
@@ -351,7 +354,7 @@ public:
     while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE)) {
       maxsize >>= 1;
     }
-    const int TEXSIZE = coin_geq_power_of_two((int) (scene->precision.getValue() * SbMin(maxsize, maxtexsize)));
+    const int TEXSIZE = coin_geq_power_of_two((int) (sg->precision.getValue() * SbMin(maxsize, maxtexsize)));
 
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
@@ -405,9 +408,13 @@ public:
     sep->addChild(cb);
     if (this->vsm_program) sep->addChild(this->vsm_program);
 
-    for (int i = 0; i < scene->getNumChildren(); i++) {
-      sep->addChild(scene->getChild(i));
+    if (scene->isOfType(SoShadowGroup::getClassTypeId())) {
+      SoShadowGroup * g = (SoShadowGroup*) scene;
+      for (int i = 0; i < g->getNumChildren(); i++) {
+        sep->addChild(g->getChild(i));
+      }
     }
+    else sep->addChild(scene);
 
     cb = new SoCallback;
     cb->setCallback(shadowmap_post_glcallback, this);
@@ -663,6 +670,7 @@ SoShadowGroup::init(void)
   SoShadowStyleElement::initClass();
   SoGLShadowCullingElement::initClass();
   SoShadowStyle::initClass();
+  SoShadowSpotLight::initClass();
   SoShadowCulling::initClass();
 }
 
@@ -776,15 +784,25 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)(pl[i]))->getTail();
       if (sl->on.getValue() && (numlights < maxlights)) numlights++;
     }
-
+    
     if (numlights != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
       for (i = 0; i < pl.getLength(); i++) {
         SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)pl[i])->getTail();
         if (sl->on.getValue() && (this->spotlights.getLength() < maxlights)) {
-          SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], PUBLIC(this),
-                                                                      gaussmatrixsize, gaussstandarddeviation);
+          SoNode * scene = PUBLIC(this);
+          if (sl->isOfType(SoShadowSpotLight::getClassTypeId())) {
+            SoShadowSpotLight * ssl = (SoShadowSpotLight*) sl;
+            if (ssl->shadowMapScene.getValue()) {
+              scene = ssl->shadowMapScene.getValue();
+            }
+          }
+          SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], 
+                                                                      PUBLIC(this),
+                                                                      scene,
+                                                                      gaussmatrixsize, 
+                                                                      gaussstandarddeviation);
           this->spotlights.append(cache);
         }
       }
@@ -1258,7 +1276,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
                   "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
 #endif
-                  "shadeFactor = (shadowCoord%d.z > -1.0%s ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
+                  "shadeFactor = ((map.x < 0.9999) && (shadowCoord%d.z > -1.0%s) ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
                   "color += shadeFactor * diffuse.rgb * mydiffuse.rgb;"
                   "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
                   spotname.getString(), lights.getLength()+i, i , i, i, i, insidetest.getString(), i, i, i);

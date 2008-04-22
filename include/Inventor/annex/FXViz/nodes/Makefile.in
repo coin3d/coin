@@ -265,6 +265,7 @@ target_vendor = @target_vendor@
 PublicHeaders = \
 		SoShadowGroup.h \
 		SoShadowStyle.h \
+                SoShadowSpotLight.h \
 		SoShadowCulling.h
 
 PrivateHeaders = 

@@ -2,6 +2,7 @@
 PublicHeaders = \
 		SoShadowGroup.h \
 		SoShadowStyle.h \
+                SoShadowSpotLight.h \
 		SoShadowCulling.h
 PrivateHeaders =
 ObsoleteHeaders =

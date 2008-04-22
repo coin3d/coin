@@ -1047,6 +1047,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowSpotLight.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowCulling.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoOrigin.h \
@@ -1542,6 +1543,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderParameter.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowGroup.cpp \
+                         @path_tag@@coin_src_dir@/src/shadows/SoShadowSpotLight.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowStyle.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowCulling.cpp \
                          @path_tag@@coin_src_dir@/src/threads/barrier.cpp \
