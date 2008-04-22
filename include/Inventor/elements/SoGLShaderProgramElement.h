@@ -38,9 +38,7 @@ class COIN_DLL_API SoGLShaderProgramElement : public SoReplacedElement {
 public:
   virtual void init(SoState * state);
 
-  static void enable(SoState * const state, SoNode * const node, 
-                     const SbBool onoff);
-
+  static void enable(SoState * const state, const SbBool onoff);
   static void set(SoState *const state, SoNode *const node,
 		  SoGLShaderProgram * program);
   static SoGLShaderProgram * get(SoState * state);
@@ -49,7 +47,7 @@ public:
   virtual void pop(SoState * state, const SoElement *prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  virtual SoElement * copyMatchInfo() const;
 
 SoINTERNAL public:
   static void initClass(void);
@@ -57,7 +55,6 @@ SoINTERNAL public:
 
 private:
   virtual ~SoGLShaderProgramElement();
-  SbList <uint32_t> objectids;
   SbBool enabled;
 };
 

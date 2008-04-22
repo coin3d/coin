@@ -53,14 +53,13 @@ SoGLShaderProgramElement::init(SoState *state)
   this->enabled = FALSE;
 }
 
-void 
-SoGLShaderProgramElement::enable(SoState * const state, SoNode * const node, 
-                                 const SbBool onoff)
+void
+SoGLShaderProgramElement::enable(SoState * const state, const SbBool onoff)
 {
   SoGLShaderProgramElement* element =
-    (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, node);
+    (SoGLShaderProgramElement*) SoElement::getElement(state,classStackIndex);
   element->enabled = onoff;
-
+  
   if (element->shaderProgram) {
     if (onoff) {
       if (!element->shaderProgram->isEnabled()) element->shaderProgram->enable(state);
@@ -102,6 +101,7 @@ SoGLShaderProgramElement::push(SoState * state)
   assert(prev);
   this->shaderProgram = prev->shaderProgram;
   this->enabled = prev->enabled;
+  this->nodeId = prev->nodeId;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -128,29 +128,20 @@ SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
   }
 }
 
+
 SbBool
 SoGLShaderProgramElement::matches(const SoElement * element) const
 {
   SoGLShaderProgramElement * elem = (SoGLShaderProgramElement*) element;
-
-  if (elem->shaderProgram) {
-    // just use elem->objectid to avoid allocating a new SbList
-    elem->objectids.truncate(0);
-    elem->shaderProgram->getShaderObjectIds(elem->objectids);
-    return (this->enabled == elem->enabled) && (this->objectids == elem->objectids);
-  }
-  // no shader program, return TRUE if cache had no shader objects
-  return (this->enabled == elem->enabled) && (this->objectids.getLength() == 0);
+  return inherited::matches(element) && (this->enabled == elem->enabled);
 }
 
 SoElement *
 SoGLShaderProgramElement::copyMatchInfo(void) const
 {
-  assert(getTypeId().canCreateInstance());
-  SoGLShaderProgramElement * element =
-    (SoGLShaderProgramElement *)(getTypeId().createInstance());
-  element->enabled = this->enabled;
-
-  if (this->shaderProgram) this->shaderProgram->getShaderObjectIds(element->objectids);
-  return element;
+  SoGLShaderProgramElement * elem = 
+    (SoGLShaderProgramElement*) inherited::copyMatchInfo();
+  
+  elem->enabled = this->enabled;
+  return elem;
 }
