@@ -123,6 +123,7 @@
 
   \endcode
 
+  \since Coin 2.5
 */
 
 
@@ -327,7 +328,7 @@
 class SoShadowSpotLightCache {
 public:
   SoShadowSpotLightCache(SoState * state,
-                         const SoPath * path, 
+                         const SoPath * path,
                          SoShadowGroup * sg,
                          SoNode * scene,
                          const int gausskernelsize,
@@ -706,7 +707,7 @@ SoShadowGroup::notify(SoNotList * nl)
         PRIVATE(this)->needscenesearch = TRUE;
       }
       else {
-        PRIVATE(this)->spotlightsvalid = FALSE;        
+        PRIVATE(this)->spotlightsvalid = FALSE;
       }
     }
   }
@@ -750,7 +751,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       this->searchaction.setInterest(SoSearchAction::ALL);
       this->searchaction.setSearchingAll(FALSE);
       this->searchaction.apply(PUBLIC(this));
-      
+
       int lastenabled;
       (void) SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
       this->numtexunitsinscene = lastenabled + 1;
@@ -770,7 +771,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
       this->searchaction.setSearchingAll(FALSE);
       this->searchaction.apply(PUBLIC(this));
       this->needscenesearch = FALSE;
-      
+
       this->copySpotlightPaths(this->searchaction.getPaths());
       this->searchaction.reset();
     }
@@ -778,13 +779,13 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
     int maxlights = maxunits - this->numtexunitsinscene;
     SbList <SoTempPath*> & pl = this->spotlightpaths;
-    
+
     int numlights = 0;
     for (i = 0; i < pl.getLength(); i++) {
       SoSpotLight * sl = (SoSpotLight*)((SoFullPath*)(pl[i]))->getTail();
       if (sl->on.getValue() && (numlights < maxlights)) numlights++;
     }
-    
+
     if (numlights != this->spotlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteSpotLights();
@@ -798,10 +799,10 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
               scene = ssl->shadowMapScene.getValue();
             }
           }
-          SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i], 
+          SoShadowSpotLightCache * cache = new SoShadowSpotLightCache(state, pl[i],
                                                                       PUBLIC(this),
                                                                       scene,
-                                                                      gaussmatrixsize, 
+                                                                      gaussmatrixsize,
                                                                       gaussstandarddeviation);
           this->spotlights.append(cache);
         }
@@ -825,7 +826,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
           cache->path = path->copy();
         }
         this->matrixaction.apply(path);
-        
+
         this->updateCamera(cache, this->matrixaction.getMatrix());
         i2++;
       }
@@ -882,7 +883,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   // The max cutoff is therefore PI/4. Some slack is needed, and 0.78
   // is about the maximum angle we can do.
   if (cutoff > 0.78f) cutoff = 0.78f;
-  
+
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
   cam->heightAngle.setValue(cutoff * 2.0f);
 
@@ -950,8 +951,8 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   if (cache->farval != cam->farDistance.getValue()) {
     cam->farDistance = cache->farval;
   }
-  
-  float realfarval = cache->farval / float(cos(cutoff * 2.0f));  
+
+  float realfarval = cache->farval / float(cos(cutoff * 2.0f));
   cache->fragment_farval->value = realfarval;
   cache->vsm_farval->value = realfarval;
 
@@ -1250,7 +1251,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 		       "vec3 coord;\n"
 		       "vec4 map;\n"
                        "mydiffuse.a *= texcolor.a;\n");
-  
+
   if (perpixelspot) {
     SbBool spotlight = FALSE;
     for (i = 0; i < numspots; i++) {
@@ -1281,7 +1282,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                   "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
                   spotname.getString(), lights.getLength()+i, i , i, i, i, insidetest.getString(), i, i, i);
       gen.addMainStatement(str);
-      
+
     }
     gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb;\n");
 
@@ -1347,11 +1348,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       gen.addMainStatement(str);
     }
   }
-  
+
   gen.addMainStatement("color = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));");
   gen.addMainStatement("if (coin_light_model != 0) { color *= texcolor.rgb; color += scolor; }\n"
                        "else color = mydiffuse.rgb * texcolor.rgb;\n");
-  
+
   int32_t fogType = this->getFog(state);
 
   switch (fogType) {
@@ -1377,7 +1378,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (fogType != SoEnvironmentElement::NONE) {
     gen.addMainStatement("color = mix(gl_Fog.color.rgb, color, clamp(fog, 0.0, 1.0));\n");
   }
-  
+
   gen.addMainStatement("gl_FragColor = vec4(color, mydiffuse.a);");
   gen.addDeclaration("uniform sampler2D textureMap0;\n", FALSE);
   gen.addDeclaration("uniform int coin_texunit0_model;\n", FALSE);
@@ -1447,14 +1448,14 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   texmap->value = 0;
 
   SoShaderParameter1i * texmap1 = NULL;
-  
+
   if (!this->texunit0) {
     this->texunit0 = new SoShaderParameter1i;
     this->texunit0->ref();
     this->texunit0->name = "coin_texunit0_model";
     this->texunit0->value = 0;
   }
-  
+
   if (this->numtexunitsinscene > 1) {
     if (!this->texunit1) {
       this->texunit1 = new SoShaderParameter1i;
@@ -1467,20 +1468,20 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     texmap1->name = str;
     texmap1->value = 1;
   }
-                       
+
   if (!this->lightmodel) {
     this->lightmodel = new SoShaderParameter1i;
     this->lightmodel->ref();
     this->lightmodel->name = "coin_light_model";
     this->lightmodel->value = 1;
   }
-  
+
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
   if (texmap1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
   if (this->numtexunitsinscene > 1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
-  
+
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
@@ -1563,7 +1564,7 @@ SoShadowGroupP::shader_enable_cb(void * closure,
                                  const SbBool enable)
 {
   SoShadowGroupP * thisp = (SoShadowGroupP*) closure;
-  
+
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   for (int i = 0; i < thisp->spotlights.getLength(); i++) {
@@ -1577,7 +1578,7 @@ SoShadowGroupP::shader_enable_cb(void * closure,
       cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
       if (enable) glEnable(GL_TEXTURE_2D);
       else glDisable(GL_TEXTURE_2D);
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0);      
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
     }
   }
 }
@@ -1631,12 +1632,12 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     this->setVertexShader(state);
   }
-  
+
   if (!this->fragmentshadercache || !this->fragmentshadercache->isValid(state)) {
     this->setFragmentShader(state);
   }
   this->shaderprogram->GLRender(action);
-  
+
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
@@ -1814,4 +1815,3 @@ BOOST_AUTO_TEST_CASE(initialized)
 }
 
 #endif // COIN_TEST_SUITE
-
