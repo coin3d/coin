@@ -367,7 +367,7 @@ SoMaterial::doAction(SoAction * action)
 
   SoState * state = action->getState();
 
-  if (SoProfiler::isActive()) {
+  if (SoProfiler::isEnabled()) {
     // register the SoColorPacker memory usage
     if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       const SoColorPacker * packer = PRIVATE(this)->getColorPacker();

@@ -21,6 +21,144 @@
  *
 \**************************************************************************/
 
+// just fake it somehow to get them into the doxygen doc.
+
+typedef EnvironmentVariable;
+
+/*!
+  \typedef EnvironmentVariable
+
+  <i> This is a fake type to peg documentation for environment variables
+  that Coin uses on. </i>
+
+  Environment variables are variables you set on your system, which
+  are read in by the Coin-based application at run-time.  These
+  environment variables are irrelevant at compile time when Coin is
+  built.
+
+  \ingroup envvars
+*/
+
+EnvironmentVariable COIN_PROFILER;
+EnvironmentVariable COIN_PROFILER_OVERLAY;
+
+// referencing block that goes to the envvars module
+/*!
+  \page envvars_profiler Scene Graph Profiler
+
+  The scene graph profiler subsystem uses a the following environment
+  variables:
+  - \ref COIN_PROFILER
+  - \ref COIN_PROFILER_OVERLAY
+
+  A lot of other environment variables will also affect the profiling
+  and listing them all would be tedious.  Most useful is perhaps the
+  \ref IV_SEPARATOR_MAX_CACHES variable for disabling caching, and
+  those that disable features like vertex arrays and frame buffer
+  objects, but using thise will of course cause you to profile special
+  cases that may not be as important as you might think.
+
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_PROFILER
+
+  This variable should be a set of profiler settings keywords,
+  separated by ":" characters.
+
+  The keywords are:
+  - \c on
+  - \c off
+  - \c syncgl
+
+  The \c on keyword just enables the profiling element so profiling
+  data is recorded.
+
+  The \c off keyword just disables the profiling subsystem.  There is
+  really no need for specifying this as it is off by default, but can
+  for instance be used to override settings already in the environment
+  at launch-time.
+
+  The \c syncgl keyword will make GL rendering flush the GL pipeline
+  between each node, so that the profiling data will better reflect
+  which nodes actually cause work for Open GL.  Note however that the
+  GL rendering performance drops like a rock when enabling this.
+  The \c syncgl keyword implies the \c on keyword.
+
+  \b Old \b Usage: When this was first implemented, just setting this
+  environment variable to \c "1" or any positive integer value turned
+  on the live scene graph profiling feature in Coin.  This usage is
+  still supported, but as the number of options grew, it was obvious
+  that we needed a new scheme rather than one variable for each
+  feature.  The positive integer approach can not be combined with
+  using keywords, and setting the value to \c "1" is the same thing as
+  setting it to \c "on".
+
+  \ingroup profiler
+*/
+
+/*!
+  \var EnvironmentVariable COIN_PROFILER_OVERLAY
+
+  This variable enables some default profiler statistics output
+  techniques.  It should be a set of profiler overlay settings
+  keywords, separated by ":" characters.
+
+  - \c autoredraw=&lt;float&gt;
+  - \c stdout
+  - \c stderr
+  - \c clear
+  - \c header
+  - \c lines=&lt;int&gt;
+  - \c action=&lt;actionclass&gt;
+  - \c category=&lt;nodes|types|names&gt;
+
+  The \c autoredraw=&lt;float&gt; option sets up the GL display to
+  automatically redraw the display after a delay of \c &lt;float&gt;
+  seconds.  Example: \c redraw=0.2 gives you somewhere below 5 redraws
+  a second, depending on how fast each frame is drawn.
+
+  The \c stdout keyword causes the profiling data to be sent to stdout
+  instead of being overlayed on the GL view.
+
+  The \c stderr keyword causes the profiling data to be sent to stderr
+  instead of being overlayed on the GL view.
+
+  The \c clear keyword works with \c stdout and \c stderr, and makes
+  Coin attempt to clear the console between each time it dumps
+  profiling data.  It just uses the ANSI console escape sequence for
+  clearing, which may not work on all types of terminals.
+
+  The \c header keyword makes the profiling output be preceded by a
+  header line that explains what each column means.  It only works
+  with \c stdout and \c stderr.
+
+  The \c lines=&lt;int&gt; option lets you select the number of lines
+  to output.  The default is 20.  This option only works with \c
+  stdout and \c stderr.
+
+  The \c action=&lt;actionclass&gt; option lets you select which
+  action is to be profiled.  The default is of course the
+  SoGLRenderAction.  This only works with \c stdout and \c stderr.
+
+  The \c category=&lt;keyword&gt; option lets you specify which view
+  you should have on the profiling data.  A \c nodes view will give
+  you one entry in the list for each node.  A \c types view will
+  summarize over each type and present one entry per node type.  A \a
+  names view will group nodes that belong under the same named node
+  together and presents that summary as one entry.
+
+  \b Old \b Usage: Setting this environment variable to \c "1" (or any
+  positive integer) turns on the live scene graph (primarily)
+  profiling overlay feature in Coin, the way it was in the beginning
+  of implementing this functionality.  This still works but just gives
+  you one default view.  It can not be combined with using keywords.
+
+  \ingroup profiler
+*/
+
+
 /*
   FIXME: document all variables. pederb, 2004-03-22
 

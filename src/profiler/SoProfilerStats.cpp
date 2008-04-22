@@ -55,11 +55,11 @@
 /*!
   \class SoProfilerStats SoProfilerStats.h Inventor/annex/Profiler/nodes/SoProfilerStats.h
   \brief The SoProfilerStats class is a node for exposing profiling results gathered by \a SoProfilerElement.
-  \ingroup profiler
 
   TODO: Describe functionality and provide usage example.
 
   \sa SoProfilerElement
+  \ingroup profiler
 */
 
 /*!

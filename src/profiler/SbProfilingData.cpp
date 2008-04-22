@@ -126,14 +126,14 @@ public:
   \var SbNodeProfilingData
   \brief Data structure for gathering scene graph traversal profiling information for one node.
 
-  \ingroup profiling
+  \ingroup profiler
 */
 
 /*!
   \class SbProfilingData Profiling/SbProfilingData.h
   \brief Data structure for gathering scene graph traversal profiling information.
 
-  \ingroup profiling
+  \ingroup profiler
 */
 
 /*!

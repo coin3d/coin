@@ -1,4 +1,4 @@
-/**************************************************************************\
+/************************************************************************** \
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
@@ -21,29 +21,29 @@
  *
 \**************************************************************************/
 
+// This page ends up under Modules => Scene Graph Profiling ...
+
+
 /*!
-  \page profiling Profiling support in Coin
+  \page profiling_intro
 
-  Sorry about the state of this documentation - it is still in its infancy.
+  <h2>Enabling profiling in Coin</h2>
 
-  <h>Enabling profiling in Coin</h>
+  To enable profiling in Coin, use the environment variable \ref
+  COIN_PROFILER.  When profiling is enabled, Coin will gather
+  profiling data during every scene graph traversal by any action.
 
-  To enable profiling in Coin, set the environment variable COIN_PROFILER
-  to any positive value. When profiling is enabled, Coin will gather
-  profiling data during every scene graph traversal.  Amongst the profiling
-  data gathered, you have traversal timings, whether nodes are cached,
-  and whether nodes are culled.
+  <h2>Enabling the default profiling display</h2>
 
-  <h>Enabling the default profiling display</h>
+  To get some profiling data shown on the screen, you also need to use
+  the \ref COIN_PROFILER_OVERLAY environment variable.
 
-  To get some profiling data shown on the screen, you also need to set the
-  COIN_PROFILER_OVERLAY environment variable to something other than 0.
-  This will give you the default profiling graphics, which shows a top-list
-  of node timings categorized by node types, a scrolling graph of action
-  traversal timings, and a scene graph navigator for closer scene graph
-  inspection.
+  This will give you the default profiling graphics, which
+  shows a top-list of node timings categorized by node types, a
+  scrolling graph of action traversal timings, and a scene graph
+  navigator for closer scene graph inspection.
 
-  <h>Read the profiling data</h>
+  <h2>Read the profiling data</h2>
 
   The SoProfilerStats node can be used to fetch the profiling data in the
   scene graph. If it is positioned anywhere in the scene graph, the
@@ -54,12 +54,9 @@
   wish to use the data, either attach sensors to the fields, or connect
   the the fields on other coin nodes to the fields on SoProfilerStats.
 
-  <h>Using SoProfilerTopKit</a>
-  
-  <h>Creating a custom profiler overlay</h>
-
-  \since Coin 3.0
+  \ingroup profiler
 */
+
 
 /**************************************************************************/
 
@@ -89,13 +86,19 @@
 
 // *************************************************************************
 
+/*!
+  \class SoProfiler SoProfiler.h Profiler/SoProfiler.h
+  \brief Main static class for initializing the scene graph profiling subsystem.
+
+  \ingroup profiler
+*/
+
 namespace {
 
   namespace profiler {
     static SbBool initialized = FALSE;
 
     static SbBool enabled = FALSE;
-    static SbBool active = FALSE;
 
     namespace rendering {
       static SbBool syncgl = FALSE;
@@ -160,7 +163,6 @@ SoProfiler::init(void)
 
   SoProfilingReportGenerator::init();
 
-  profiler::active = TRUE;
   profiler::enabled = TRUE;
 
   //SoProfilerP::setActionType(SoRayPickAction::getClassTypeId());
@@ -170,23 +172,13 @@ SoProfiler::init(void)
 }
 
 /*!
-  Returns whether profiling is active or not.
-*/
-
-SbBool
-SoProfiler::isActive(void)
-{
-  return profiler::enabled && profiler::active;
-}
-
-/*!
   Returns whether profiling info is shown in an overlay fashion on
   the GL canvas or not.
 */
 SbBool
 SoProfiler::isOverlayActive(void)
 {
-  return SoProfiler::isActive() && profiler::overlay::active;
+  return SoProfiler::isEnabled() && profiler::overlay::active;
 }
 
 /*!
@@ -195,7 +187,7 @@ SoProfiler::isOverlayActive(void)
 SbBool
 SoProfiler::isConsoleActive(void)
 {
-  return SoProfiler::isActive() && profiler::console::active;
+  return SoProfiler::isEnabled() && profiler::console::active;
 }
 
 /*!

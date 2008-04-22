@@ -522,7 +522,7 @@ SoAction::apply(SoNode * root)
     (void) this->getState();
 
     // send events to overlay graph first
-    if (SoProfiler::isActive() &&
+    if (SoProfiler::isEnabled() &&
         SoProfiler::isOverlayActive() &&
         this->isOfType(SoHandleEventAction::getClassTypeId()))
     {
@@ -547,7 +547,7 @@ SoAction::apply(SoNode * root)
     }
 
     // start profiling
-    if (SoProfiler::isActive() && 
+    if (SoProfiler::isEnabled() && 
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
       assert(elt);
@@ -560,7 +560,7 @@ SoAction::apply(SoNode * root)
     this->beginTraversal(root);
     this->endTraversal(root);
 
-    if (SoProfiler::isActive() && 
+    if (SoProfiler::isEnabled() && 
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
       assert(elt);
@@ -1375,7 +1375,7 @@ SoActionP::getProfilerStatsNode(void)
 SoProfilerOverlayKit *
 SoActionP::getProfilerOverlay(void)
 {
-  if (!SoProfiler::isActive() || !SoProfiler::isOverlayActive())
+  if (!SoProfiler::isEnabled() || !SoProfiler::isOverlayActive())
     return NULL;
 
   static SoProfilerOverlayKit * kit = NULL;

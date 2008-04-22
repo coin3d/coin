@@ -131,33 +131,10 @@ static SbRWMutex * sodb_globalmutex = NULL;
 
 // Coin-global envvars:
 
-/*!
-  \var const char * SoDBP::EnvVars::COIN_PROFILER
-
-  Setting the environment variable "COIN_PROFILER" to 1 turns on the
-  live scene graph (primarily) profiling feature in Coin.
-
-  \ingroup envvars
-*/
+#ifndef DOXYGEN_SKIP_THIS
 const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
-
-/*!
-  \var const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY
-
-  The SoGLRenderAction will render an overlay scenegraph with misc
-  profiler statistics if this environment variable is used.
-
-  This variable can be set to 1 just to get the default display up, or it can
-  be set to a parameter list to better control the system.
-
-  - autoredraw[=secs]
-    - set how long to wait after a renderpass to schedule a new redraw.
-
-  - toplist=type,
-
-  \ingroup envvars
-*/
 const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 

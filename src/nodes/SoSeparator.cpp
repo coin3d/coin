@@ -659,7 +659,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 #endif // debug
       state->pop();
 
-      if (SoProfiler::isActive()) {
+      if (SoProfiler::isEnabled()) {
         SoProfilerElement * e = SoProfilerElement::get(state);
         if (e) {
 	  e->getProfilingData().setNodeFlag(action->getCurPath(), SbProfilingData::GL_CACHED_FLAG, TRUE);
@@ -980,7 +980,7 @@ SoSeparatorP::doCull(SoSeparatorP * thisp, SoState * state,
 #if 0
 // temporarily disabled. setNodeFlag() needs current path, which is
 // unavailable here
-  if (outside && SoProfiler::isActive()) {
+  if (outside && SoProfiler::isEnabled()) {
     SoProfilerElement * elt = SoProfilerElement::get(state);
     if (elt) {
       // FIXME: need current path to set this flag. move outside cullTest()?

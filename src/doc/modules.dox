@@ -229,7 +229,7 @@
   Wrapping ones head around when, how, and why to create nodekits can
   be difficult in the beginning.  When do you write a nodekit, and
   when do you write a custom node?  It is easy to think in those terms
-  in the beginning, but it is actually not an either/or situation.
+  in the beginning, but it is often not an either/or situation.
 
   The concept of nodekits is to modularize useful, potentially
   repeated sub-structures you have in your scene graph as it
@@ -251,10 +251,13 @@
   nodekit, the answer is to think of what exactly is really custom
   about what you need to implement, and trim that down to the atomic
   level (but please stop trimming before you trim away all meaning).
-  Then implement that part as a custom node, and then, if it seems
-  worthwhile, implement the nodekit you need to bundle up this custom
-  node with its auxiliary support structure to achieve what you set
-  out to achieve.
+  If there is nothing really custom in what you want to implement,
+  then it is likely that implementing it as a nodekit is what you
+  ought to do.  However, if you do have to do somethingcustom that
+  Coin doesn't support, then implement that part as a custom node, and
+  then, if it seems worthwhile, implement the nodekit you need to
+  bundle up this custom part with an auxiliary support structure to
+  achieve what you set out to achieve.
 
   For VRML97, you have something called PROTOs, which is something
   similar to nodekits, except they are not very accessible from C++, as
@@ -346,13 +349,18 @@
 
   This set of classes is a basic implementation of State Chart XML.
   It is not complete, nor is it necessary conformant to those parts it
-  implements.  It is however a decent start for now.
+  implements.  It is however a decent start, and there are plans for
+  implementing more parts of the specification.
 
-  In Coin, SCXML is currently used for controlling non-interactive 3D
-  model user interaction in GL views.  In layman's terms, it controls
-  the examiner mouse navigation mode.
+  Currently Coin uses SCXML for managing 3D viewer user interaction
+  (the non-model-interaction part) - the examiner navigation mode in
+  layman terms - but with a more complete implementation of SCXML, the
+  potential for more uses should be quite huge.
 
   The Draft Specification for SCXML is at http://www.w3.org/TR/scxml/.
+
+  \since Coin 3.0
+
 */
 
 // *************************************************************************
@@ -372,9 +380,15 @@
   \defgroup VRMLnodes VRML97 Classes
 
   This is the set of items specified by VRML97, also known as VRML2.0.
+  These nodes are different from VRML1/Inventor nodes in the way you
+  structure them into scene-graphs, and in the requirements they set
+  for traversing them correctly (VRML1/Inventor require that you
+  traverse siblings on the left side before the node of interest,
+  while for VRML2.0 this is not true).
+
   You can find out more about VRML97 in \ref vrml2refbook.
 
-  The VRML97 specification is at
+  The VRML97 specification is online at
   http://www.web3d.org/x3d/specifications/vrml/
 
 */
@@ -395,6 +409,32 @@
 // *************************************************************************
 
 /*!
+  \defgroup profiler Scene Graph Profiling
+
+  Coin includes some scene graph profiling functionality.  This
+  functionality is intended for use during application development for
+  identifying performance bottlenecks in Coin-based applications with
+  regards to how Coin is being used and with regards to problems with
+  how Coin is implemented.
+
+  The profiling code can be enabled in existing Coin applications
+  without the need of adding any code by enabling it through the use
+  of some environment variables.  For particular profiling needs, the
+  default behaviour you can trigger through environment variables
+  might not work that well (you might have a specialized render
+  pipeline that causes the output to be garbled) or focus on the
+  information you need (the full application might perhaps add noise
+  to the system that Coin won't separate out).  In such cases,
+  programmatic access to the profiling subsystem will be necessary to
+  get the better results.
+
+  \since Coin 3.0
+
+*/
+
+// *************************************************************************
+
+/*!
   \defgroup envvars Miscellaneous Environment Variables
 
   Various aspects of the Coin runtime behaviour can be controlled through
@@ -402,8 +442,8 @@
   variables are there for debugging and problem-workaround purposes, but
   a few are for telling Coin where to locate external resource files.
 
-  Here is a list of some of the environment variables Coin will check for
-  and can alter behavior because of.
+  Here we will set up a list of some of the environment variables Coin will
+  check for and can alter behavior because of.
 
 */
 

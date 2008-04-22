@@ -38,14 +38,14 @@
 // *************************************************************************
 
 /*!
-  \class SoProfilingReportgenerator SoProfilingReportGenerator.h Profiler/tools/SoProfilingReportGenerator.h
+  \class SoProfilingReportGenerator SoProfilingReportGenerator.h Profiler/tools/SoProfilingReportGenerator.h
   \brief Convenience report generator functionality.
 
-  With this static class, you can with an SbProfilingData object
-  conveniently produce a profiling data report.
+  With this static class, you can conveniently produce a profiling
+  data report from an SbProfilingData object.
 
   \since Coin 3.0
-  \ingroup profiling
+  \ingroup profiler
 */
 
 // *************************************************************************
