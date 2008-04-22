@@ -55,6 +55,7 @@ SoINTERNAL public:
 
 private:
   virtual ~SoGLShaderProgramElement();
+  SbList <uint32_t> objectids;
   SbBool enabled;
 };
 

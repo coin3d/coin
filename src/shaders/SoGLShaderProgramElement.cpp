@@ -59,6 +59,7 @@ SoGLShaderProgramElement::enable(SoState * const state, const SbBool onoff)
   SoGLShaderProgramElement* element =
     (SoGLShaderProgramElement*) SoElement::getElement(state,classStackIndex);
   element->enabled = onoff;
+  element->objectids.truncate(0);
   
   if (element->shaderProgram) {
     if (onoff) {
@@ -67,6 +68,7 @@ SoGLShaderProgramElement::enable(SoState * const state, const SbBool onoff)
     else {
       if (element->shaderProgram->isEnabled()) element->shaderProgram->disable(state);
     }
+    element->shaderProgram->getShaderObjectIds(element->objectids);
   }
 }
 
@@ -76,14 +78,16 @@ SoGLShaderProgramElement::set(SoState* const state, SoNode *const node,
 {
   SoGLShaderProgramElement* element =
     (SoGLShaderProgramElement*)inherited::getElement(state,classStackIndex, node);
-
+  
   if (program != element->shaderProgram) {
     if (element->shaderProgram) element->shaderProgram->disable(state);
-    element->shaderProgram = program;
-    element->enabled = FALSE;
-    // don't enable new program here. The node will call enable()
-    // after setting up all the objects
   }
+  element->shaderProgram = program;
+  element->enabled = FALSE;
+  element->objectids.truncate(0);
+  if (program) program->getShaderObjectIds(element->objectids);
+  // don't enable new program here. The node will call enable()
+  // after setting up all the objects
 }
 
 SoGLShaderProgram *
@@ -102,6 +106,7 @@ SoGLShaderProgramElement::push(SoState * state)
   this->shaderProgram = prev->shaderProgram;
   this->enabled = prev->enabled;
   this->nodeId = prev->nodeId;
+  this->objectids = prev->objectids;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -126,6 +131,7 @@ SoGLShaderProgramElement::pop(SoState * state, const SoElement * prevTopElement)
       else this->shaderProgram->disable(state);
     }
   }
+  elem->shaderProgram = NULL;
 }
 
 
@@ -133,7 +139,7 @@ SbBool
 SoGLShaderProgramElement::matches(const SoElement * element) const
 {
   SoGLShaderProgramElement * elem = (SoGLShaderProgramElement*) element;
-  return inherited::matches(element) && (this->enabled == elem->enabled);
+  return (this->enabled == elem->enabled) && (this->objectids == elem->objectids);
 }
 
 SoElement *
@@ -143,5 +149,6 @@ SoGLShaderProgramElement::copyMatchInfo(void) const
     (SoGLShaderProgramElement*) inherited::copyMatchInfo();
   
   elem->enabled = this->enabled;
+  elem->objectids = this->objectids;
   return elem;
 }
