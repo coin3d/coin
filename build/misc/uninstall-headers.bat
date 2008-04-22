@@ -145,6 +145,7 @@ del %COINDIR%\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h
 del %COINDIR%\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h
+del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h
 del %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h
 del %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h
 del %COINDIR%\include\Inventor\annex\FXViz\elements\SoGLShadowCullingElement.h

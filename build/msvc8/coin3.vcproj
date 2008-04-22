@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{C86AE370-1640-4B1A-89F4-052429E0AE75}"
+	ProjectGUID="{E2CAA70A-38BE-461A-A885-123446BF0559}"
 	>
 	<Platforms>
 		<Platform
@@ -28962,56 +28962,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\nodes\SoBumpMappingProperty.cpp"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\nodes/"
-							ProgramDataBaseFileName="StaticDebug\nodes/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Release\nodes/"
-							ProgramDataBaseFileName="Release\nodes/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\nodes/"
-							ProgramDataBaseFileName="StaticRelease\nodes/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Debug\nodes/"
-							ProgramDataBaseFileName="Debug\nodes/"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\src\nodes\SoBumpMapTransform.cpp"
 					>
 					<FileConfiguration
@@ -37602,6 +37552,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\shadows\SoShadowSpotLight.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shadows/"
+							ProgramDataBaseFileName="StaticDebug\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shadows/"
+							ProgramDataBaseFileName="Release\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shadows/"
+							ProgramDataBaseFileName="StaticRelease\shadows/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shadows/"
+							ProgramDataBaseFileName="Debug\shadows/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\shadows\SoShadowStyle.cpp"
 					>
 					<FileConfiguration
@@ -45881,6 +45881,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h"
 					>
 				</File>
 				<File
