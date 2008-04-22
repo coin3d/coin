@@ -892,10 +892,24 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   float visnear = PUBLIC(this)->visibilityNearRadius.getValue();
   float visfar = PUBLIC(this)->visibilityRadius.getValue();
 
-  if ((visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
-      (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) ||
-      ((visnear < 0.0f) || (visfar < 0.0f))) {
+  SbBool needbbox = 
+    (visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
+    (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) ||
+    ((visnear < 0.0f) || (visfar < 0.0f));
 
+  if (light->isOfType(SoShadowSpotLight::getClassTypeId())) {
+    SoShadowSpotLight * sslight = (SoShadowSpotLight*) light;
+    const float ssnear = sslight->nearDistance.getValue();
+    const float ssfar = sslight->farDistance.getValue();
+    
+    if (ssnear > 0.0f && ssfar > ssnear) {
+      visnear = ssnear;
+      visfar = ssfar;
+      needbbox = FALSE;
+    }
+  }
+
+  if (needbbox) {
     // FIXME: cache bbox in the pimpl class
     this->bboxaction.apply(cache->depthmap->scene.getValue());
     SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
