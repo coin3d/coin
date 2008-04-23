@@ -287,33 +287,6 @@
 
 */
 
-/*!
-  \def SO_NODE_INIT_CLASS(classname, parent, parentname)
-
-  This macro is used in the initClass-function in a node class. It
-  creates a new SoType object for the class, and registers the node by
-  name so file reading will be able to create a node of this type and
-  fill it with its field values.
-
-  \ingroup nodes
-*/
-
-/*!
-  \def SO_NODE_CONSTRUCTOR(classname)
-
-  Place this in the node constructor.
-
-  \ingroup nodes
-*/
-
-/*!
-  \def SO_NODE_ADD_FIELD(field, default)
-
-  This registers a field for a node, and sets its value to the default.
-
-  \ingroup nodes
-*/
-
 // *************************************************************************
 
 /*!
@@ -409,6 +382,14 @@
 // *************************************************************************
 
 /*!
+  \defgroup XML XML related functions and objects
+
+  Coin now has its own XML parser that also canb be used from client code.
+*/
+
+// *************************************************************************
+
+/*!
   \defgroup profiler Scene Graph Profiling
 
   Coin includes some scene graph profiling functionality.  This
@@ -429,6 +410,16 @@
   get the better results.
 
   \since Coin 3.0
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup macros Miscellaneous Macros
+
+  When extending Coin, there are a number of macros one needs to know
+  about and use.
 
 */
 

@@ -266,7 +266,8 @@ EXTRA_DIST = \
         books.dox \
         environment.dox \
         main.dox \
-        modules.dox
+        modules.dox \
+        macros.dox
 
 subdir = src/doc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

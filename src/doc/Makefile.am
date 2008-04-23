@@ -3,5 +3,6 @@ EXTRA_DIST = \
         books.dox \
         environment.dox \
         main.dox \
-        modules.dox
+        modules.dox \
+        macros.dox
 

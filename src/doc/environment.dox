@@ -95,7 +95,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
   using keywords, and setting the value to \c "1" is the same thing as
   setting it to \c "on".
 
-  \ingroup profiler
+  \ingroup envvars profiler
 */
 
 /*!
@@ -155,7 +155,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
   of implementing this functionality.  This still works but just gives
   you one default view.  It can not be combined with using keywords.
 
-  \ingroup profiler
+  \ingroup envvars profiler
 */
 
 

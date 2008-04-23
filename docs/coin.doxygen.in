@@ -456,6 +456,7 @@ WARN_LOGFILE           =
 INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/doc/modules.dox \
                          @path_tag@@coin_src_dir@/src/doc/environment.dox \
+                         @path_tag@@coin_src_dir@/src/doc/macros.dox \
                          @path_tag@@coin_src_dir@/src/doc/books.dox \
                          @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBasic.h \
@@ -783,7 +784,6 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSeparatorKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSubNode.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAntiSquish.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoArray.h \

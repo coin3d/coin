@@ -93,10 +93,6 @@
   \sa XML, cc_xml_doc, cc_xml_elt, cc_xml_attr
 */
 
-/*!
-  \defgroup XML XML related functions and objects
-*/
-
 // *************************************************************************
 
 /*!
