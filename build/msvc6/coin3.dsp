@@ -7657,19 +7657,6 @@ SOURCE=..\..\src\nodes\SoBumpMapTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\nodes\SoBumpMappingProperty.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\nodes"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\nodes\SoCallback.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -9879,6 +9866,19 @@ SOURCE=..\..\src\shadows\SoShadowGroup.cpp
 # Begin Source File
 
 SOURCE=..\..\src\shadows\SoShadowStyle.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shadows"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shadows"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shadows\SoShadowSpotLight.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -12529,6 +12529,10 @@ SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h
 # End Source File
 # Begin Source File
 
