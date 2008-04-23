@@ -198,8 +198,8 @@
   libraries can ble linked with Coin at linktime or loaded at runtime,
   and this is controlled at configure-time.  They can also be disabled
   if compressed file input/output is not wanted.  The libz library is
-  likely pulled in as a dependency in other libraries as well, especially
-  graphics libraries.
+  likely to be pulled in as a dependency from other libraries as well,
+  especially graphics libraries.
 
   For font support, Coin uses \b Fontconfig or \b FreeType in addition
   to native platform APIs for font reading.  Freetype can be loaded at
@@ -212,9 +212,10 @@
   linktime.
 
   For sound support in VRML97, Coin uses \b OpenAL. OpenAL is loaded
-  at runtime or linked at linktime. Some versions of the OpenAL
+  at runtime or linked at linktime. BTW, some versions of the OpenAL
   library delivered with installers from Creative on MS Windows have
-  been known to crash/freeze Coin-applications when loaded.
+  been known to crash/freeze Coin-applications when loaded, so if you
+  experience something like that, that's one thing to investigate.
 
   For threading support, Coin uses POSIX threads (\b pthread library)
   or the native Win32 API on MS Windows. You can use pthread on MS
@@ -229,7 +230,7 @@
   Coin makes use of certain utilities like smart-pointers from \b
   Boost. The boost headers can be found under \c include/ in the Coin
   source code directory. No boost types are exposed in the Coin API,
-  nor will they ever be. They are completely hidden, vewed from the
+  nor will they ever be. They are completely hidden, viewed from the
   outside of Coin. All boost types used in Coin are completely inlined
   in the boost headers and therefore do not require a link library to
   pull their implementation from at runtime.
