@@ -497,7 +497,8 @@ public:
     texunit0(NULL),
     texunit1(NULL),
     lightmodel(NULL),
-    numtexunitsinscene(1)
+    numtexunitsinscene(1),
+    subgraphsearchenabled(TRUE)
   {
     this->shaderprogram = new SoShaderProgram;
     this->shaderprogram->ref();
@@ -611,6 +612,7 @@ public:
   SoShaderParameter1i * lightmodel;
 
   int numtexunitsinscene;
+  SbBool subgraphsearchenabled;
 };
 
 // *************************************************************************
@@ -704,7 +706,10 @@ SoShadowGroup::notify(SoNotList * nl)
       if (node->isOfType(SoGroup::getClassTypeId())) {
         // first rec was from a group node, we need to search the scene graph again
         PRIVATE(this)->spotlightsvalid = FALSE;
-        PRIVATE(this)->needscenesearch = TRUE;
+
+        if (PRIVATE(this)->subgraphsearchenabled) {
+          PRIVATE(this)->needscenesearch = TRUE;
+        }
       }
       else {
         PRIVATE(this)->spotlightsvalid = FALSE;
@@ -719,6 +724,25 @@ SoShadowGroup::notify(SoNotList * nl)
     PRIVATE(this)->fragmentshadercache->invalidate();
   }
   inherited::notify(nl);
+}
+
+/*!
+
+  By default, the SoShadowGroup node will search its subgraph for new
+  spot lights whenever a group node under it is touched. However, this
+  might lead to bad performance in some cases so it's possible to
+  disable this feature using this method. If you do disable this
+  feature, make sure you enable it again before inserting a new spot
+  light, or insert all spot lights in the scene graph before you
+  render the scene once, and just set "on" to FALSE if you want to toggle
+  spot lights on/off on the fly.
+
+  \since Coin 2.6
+ */
+void 
+SoShadowGroup::enableSubgraphSearchOnNotify(const SbBool onoff)
+{
+  PRIVATE(this)->subgraphsearchenabled = onoff;
 }
 
 #undef PRIVATE
@@ -745,7 +769,7 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
-    if (this->needscenesearch || this->spotlightpaths.getLength() == 0) {
+    if (this->needscenesearch) {
       // first, search for texture unit nodes
       this->searchaction.setType(SoTextureUnit::getClassTypeId());
       this->searchaction.setInterest(SoSearchAction::ALL);

@@ -68,6 +68,8 @@ public:
 
   virtual void notify(SoNotList * nl);
 
+  void enableSubgraphSearchOnNotify(const SbBool onoff);
+
 protected:
   virtual ~SoShadowGroup();
 
