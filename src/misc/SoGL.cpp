@@ -2293,7 +2293,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 
     // This is the same code as in SoGLCoordinateElement::send().
     // It is inlined here for speed (~15% speed increase).
-#define SEND_VERTEX(_idx_) \
+#define SEND_VERTEX_TRISTRIP(_idx_) \
     if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
@@ -2376,7 +2376,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 			vertexlist->get3(v1),
 			*currnormal);
       }
-      SEND_VERTEX(v1);
+      SEND_VERTEX_TRISTRIP(v1);
     
       /* vertex 2 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
@@ -2409,7 +2409,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 			vertexlist->get3(v2),
 			*currnormal);
       }
-      SEND_VERTEX(v2);
+      SEND_VERTEX_TRISTRIP(v2);
 
       /* vertex 3 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
@@ -2442,7 +2442,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 			vertexlist->get3(v3),
 			*currnormal);
       }
-      SEND_VERTEX(v3);
+      SEND_VERTEX_TRISTRIP(v3);
       
       v1 = viptr < viendptr ? *viptr++ : -1;
       while (v1 >= 0) {
@@ -2477,7 +2477,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 			  *currnormal);
 	}
 
-	SEND_VERTEX(v1);
+	SEND_VERTEX_TRISTRIP(v1);
 	v1 = viptr < viendptr ? *viptr++ : -1;
       }
       glEnd(); // end of tristrip
