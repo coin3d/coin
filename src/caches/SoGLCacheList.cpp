@@ -123,13 +123,13 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     const char * env = coin_getenv("COIN_AUTO_CACHING");
     if (env) COIN_AUTO_CACHING = atoi(env);
     else COIN_AUTO_CACHING = 1;
-  }  
+  }
   if (COIN_SMART_CACHING < 0) {
     const char * env = coin_getenv("COIN_SMART_CACHING");
     if (env) COIN_SMART_CACHING = atoi(env);
     else COIN_SMART_CACHING = 0;
   }
-  
+
   SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, PRIVATE(this));
 
 #if COIN_DEBUG
@@ -179,7 +179,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
   for (i = 0; i < n; i++) {
     SoGLRenderCache * cache = PRIVATE(this)->itemlist[i];
     if (cache->getCacheContext() == context) {
-      if (cache->isValid(state) && 
+      if (cache->isValid(state) &&
           SoGLLazyElement::preCacheCall(state, cache->getPreLazyState())) {
         cache->ref();
         // move cache to the end of the list. The MRU cache will be at
@@ -424,7 +424,7 @@ SoGLCacheList::call(SoGLRenderAction * action)
       SoGLRenderCache * cache = PRIVATE(this)->itemlist[i];
       if (cache->getCacheContext() == context) {
         SoDebugError::postInfo("SoGLCacheList::call",
-                               "cache %d isValid()? %s", i, cache->isValid(state) ? "TRUE" : "FALSE");        
+                               "cache %d isValid()? %s", i, cache->isValid(state) ? "TRUE" : "FALSE");
         if (!cache->isValid(state)) {
           const SoElement * elem = cache->getInvalidElement(state);
           if (elem) {
@@ -470,9 +470,9 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     if (PRIVATE(this)->numframesok >= 1) shouldcreate = TRUE;
   }
   else {
-    if (PRIVATE(this)->numframesok >= 2 && 
+    if (PRIVATE(this)->numframesok >= 2 &&
         (PRIVATE(this)->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE)) {
-      
+
       if (COIN_SMART_CACHING) {
         if (PRIVATE(this)->numshapes < 2) {
           if (PRIVATE(this)->numframesok >= 5) shouldcreate = TRUE;
@@ -511,9 +511,11 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     // determine if we really should create a new cache, based on numused and numdiscarded
     double docreate = (double) (PRIVATE(this)->numframesok + PRIVATE(this)->numused);
     double dontcreate = (PRIVATE(this)->numdiscarded);
-    // we used to be much more conservative here, and use dontcreate^4 to avoid 
-    // recreating caches too often. However, display lists are much faster with 
-    // current drivers than they used to be so we're a bit more aggressive now.    
+    
+    dontcreate *= dontcreate;
+    // we used to be more conservative here, and use dontcreate^4 to avoid
+    // recreating caches too often. However, display lists are much faster with
+    // current drivers than they used to be so we're a bit more aggressive now.
     if (dontcreate >= docreate) shouldcreate = FALSE;
   }
 
@@ -532,7 +534,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
                                   PRIVATE(this)->opencache->getPostLazyState());
     PRIVATE(this)->opencache->open(state);
 
-    // force a dependency on the transparecy type 
+    // force a dependency on the transparecy type
     // FIXME: consider adding a new element for storing the
     // transparency type.  The dependency tracking on the transparency
     // type would then work automatically. pederb, 2005-02-18
@@ -563,7 +565,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
   // close open cache before accepting it or throwing it away
   if (PRIVATE(this)->opencache) {
     PRIVATE(this)->opencache->close();
-    SoGLLazyElement::endCaching(state);            
+    SoGLLazyElement::endCaching(state);
   }
   if (SoCacheElement::setInvalid(PRIVATE(this)->savedinvalid)) {
     // notify parent caches
