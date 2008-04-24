@@ -511,9 +511,9 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     // determine if we really should create a new cache, based on numused and numdiscarded
     double docreate = (double) (PRIVATE(this)->numframesok + PRIVATE(this)->numused);
     double dontcreate = (PRIVATE(this)->numdiscarded);
-    dontcreate *= dontcreate;
-    dontcreate *= dontcreate;
-
+    // we used to be much more conservative here, and use dontcreate^4 to avoid 
+    // recreating caches too often. However, display lists are much faster with 
+    // current drivers than they used to be so we're a bit more aggressive now.    
     if (dontcreate >= docreate) shouldcreate = FALSE;
   }
 
