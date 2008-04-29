@@ -470,7 +470,7 @@ SoShaderObjectP::checkType(void)
   int len = fileName.getLength();
   if (len > 5) {
     SbString subStr = fileName.getSubString(len-5);
-    if (subStr == ".glsl") {
+    if (subStr == ".glsl" || subStr == ".vert" || subStr == ".frag") {
       this->cachedSourceType = SoShaderObject::GLSL_PROGRAM;
       return;
     }
@@ -498,7 +498,7 @@ SoShaderObjectP::checkType(void)
                             "*.fp -> ARB_PROGRAM (fragment)\n"
                             "*.vp -> ARB_PROGRAM (vertex)\n"
                             "*.cg -> CG_PROGRAM (fragment|vertex)\n"
-                            "*.glsl -> GLSL_PROGRAM (fragment|vertex)\n",
+                            "*.glsl *.vert *.frag -> GLSL_PROGRAM (fragment|vertex)\n",
                             fileName.getString());
   // error: could not determine SourceType
   this->cachedSourceType = SoShaderObject::FILENAME;
