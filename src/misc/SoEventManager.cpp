@@ -190,7 +190,10 @@ SoEventManager::setSceneGraph(SoNode * const sceneroot)
     // mode node.
     SoNavigationSystem * navsys = 
       PRIVATE(this)->searchForNavigationMode(sceneroot, PRIVATE(this)->navigationsystem);
-    this->setNavigationSystem(navsys);
+
+    if (navsys) {
+      this->setNavigationSystem(navsys);
+    }
   }
   
   if (oldroot) oldroot->unref();
