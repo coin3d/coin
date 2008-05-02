@@ -47,9 +47,9 @@
 
   The SoProfilerStats node can be used to fetch the profiling data in the
   scene graph. If it is positioned anywhere in the scene graph, the
-  fields of the node will be updated every time SoGLRenderedAction is 
+  fields of the node will be updated every time SoGLRenderAction is 
   applied to the scene graph, with profiling data gathered from every 
-  traversal through the scene graph, since the last SoGLRenderAction, up 
+  traversal through the scene graph since the last SoGLRenderAction, up 
   to the point where SoProfilerStats is located. Depending of how you
   wish to use the data, either attach sensors to the fields, or connect
   the the fields on other coin nodes to the fields on SoProfilerStats.
