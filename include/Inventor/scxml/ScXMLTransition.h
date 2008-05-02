@@ -25,10 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
-
-#include <vector>
-
-#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLEvent;
 class ScXMLInvoke;
@@ -45,17 +42,17 @@ public:
   virtual ~ScXMLTransition(void);
 
   // XML attributes
-  virtual void setEventXMLAttr(const char * event);
-  const char * getEventXMLAttr(void) const { return this->event; }
+  virtual void setEventAttribute(const char * event);
+  const char * getEventAttribute(void) const { return this->event; }
 
-  virtual void setCondXMLAttr(const char * cond);
-  const char * getCondXMLAttr(void) const { return this->cond; }
+  virtual void setCondAttribute(const char * cond);
+  const char * getCondAttribute(void) const { return this->cond; }
 
-  virtual void setTargetXMLAttr(const char * target);
-  const char * getTargetXMLAttr(void) const { return this->target; }
+  virtual void setTargetAttribute(const char * target);
+  const char * getTargetAttribute(void) const { return this->target; }
 
-  virtual void setAnchorXMLAttr(const char * anchor);
-  const char * getAnchorXMLAttr(void) const { return this->anchor; }
+  virtual void setAnchorAttribute(const char * anchor);
+  const char * getAnchorAttribute(void) const { return this->anchor; }
   
   virtual SbBool handleXMLAttributes(void);
 
@@ -89,13 +86,11 @@ protected:
   SbName eventkey;
   SbName targetkey;
 
-  std::vector<ScXMLInvoke *> invokelist;
-
 private:
   ScXMLTransition(const ScXMLTransition & rhs); // N/A
   ScXMLTransition & operator = (const ScXMLTransition & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLTransitionP> pimpl;
+  SbPimplPtr<ScXMLTransitionP> pimpl;
 
 }; // ScXMLTransition
 

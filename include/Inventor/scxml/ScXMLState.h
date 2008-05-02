@@ -24,11 +24,8 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLStateBase.h>
-
-#include <vector>
-
-#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLOnEntry;
 class ScXMLOnExit;
@@ -43,8 +40,8 @@ class ScXMLEvent;
 class ScXMLStateMachine;
 class ScXMLStateP;
 
-class COIN_DLL_API ScXMLState : public ScXMLStateBase {
-  typedef ScXMLStateBase inherited;
+class COIN_DLL_API ScXMLState : public ScXMLObject {
+  typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLState);
 
 public:
@@ -58,11 +55,14 @@ public:
   SbBool isParallel(void) const;
 
   // XML attributes
-  virtual void setSrcXMLAttr(const char * src);
-  const char * getSrcXMLAttr(void) const { return this->src; }
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
+
+  virtual void setSrcAttribute(const char * src);
+  const char * getSrcAttribute(void) const { return this->src; }
   
-  virtual void setTaskXMLAttr(const char * task);
-  const char * getTaskXMLAttr(void) const { return this->task; }
+  virtual void setTaskAttribute(const char * task);
+  const char * getTaskAttribute(void) const { return this->task; }
 
   virtual SbBool handleXMLAttributes(void);
 
@@ -126,26 +126,15 @@ protected:
   SbBool isparallel;
   SbBool istask;
 
+  char * id;
   char * src;
   char * task;
-
-  ScXMLOnEntry * onentryptr;
-  ScXMLOnExit * onexitptr;
-  std::vector<ScXMLTransition *> transitionlist;
-  ScXMLInitial * initialptr;
-  std::vector<ScXMLState *> statelist;
-  std::vector<ScXMLState *> parallellist;
-  std::vector<ScXMLFinal *> finallist;
-  std::vector<ScXMLHistory *> historylist;
-  std::vector<ScXMLAnchor *> anchorlist;
-  // datamodel
-  ScXMLInvoke * invokeptr;
 
 private:
   ScXMLState(const ScXMLState & rhs); // N/A
   ScXMLState & operator = (const ScXMLState & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLStateP> pimpl;
+  SbPimplPtr<ScXMLStateP> pimpl;
 
 }; // ScXMLState
 

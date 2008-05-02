@@ -28,13 +28,13 @@
 void                                                                    \
 classname::SO__CONCAT(set,singular)(objtype * obj)                      \
 {                                                                       \
-  this->pointer = obj;                                                  \
+  pointer = obj;                                                        \
 }                                                                       \
                                                                         \
 objtype *                                                               \
 classname::SO__CONCAT(get,singular)(void) const                         \
 {                                                                       \
-  return this->pointer;                                                 \
+  return pointer;                                                       \
 }
 
 #define SCXML_LIST_OBJECT_API_IMPL(classname, objtype, objlist, singular, plural) \
@@ -42,35 +42,35 @@ classname::SO__CONCAT(get,singular)(void) const                         \
 int                                                                     \
 classname::SO__CONCAT(getNum,plural)(void) const                        \
 {                                                                       \
-  return static_cast<int>(this->objlist.size());                        \
+  return static_cast<int>(objlist.size());                              \
 }                                                                       \
                                                                         \
 objtype *                                                               \
 classname::SO__CONCAT(get,singular)(int idx) const                      \
 {                                                                       \
-  assert(idx >= 0 && idx < static_cast<int>(this->objlist.size()));     \
-  return this->objlist.at(idx);                                         \
+  assert(idx >= 0 && idx < static_cast<int>(objlist.size()));           \
+  return objlist.at(idx);                                               \
 }                                                                       \
                                                                         \
 void                                                                    \
 classname::SO__CONCAT(add,singular)(objtype * obj)                      \
 {                                                                       \
-  this->objlist.push_back(obj);                                         \
+  objlist.push_back(obj);                                               \
 }                                                                       \
                                                                         \
 void                                                                    \
 classname::SO__CONCAT(remove,singular)(objtype * obj)                   \
 {                                                                       \
   std::vector<objtype *>::iterator it =                                 \
-    std::find(this->objlist.begin(), this->objlist.end(), obj);         \
-  assert(it != this->objlist.end());                                    \
-  this->objlist.erase(it);                                              \
+    std::find(objlist.begin(), objlist.end(), obj);                     \
+  assert(it != objlist.end());                                          \
+  objlist.erase(it);                                                    \
 }                                                                       \
                                                                         \
 void                                                                    \
 classname::SO__CONCAT(clearAll,plural)(void)                            \
 {                                                                       \
-  this->objlist.clear();                                                \
+  objlist.clear();                                                      \
 }
 
 #endif // !COIN_SCXMLCOMMONP_H

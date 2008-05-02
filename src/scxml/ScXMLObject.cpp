@@ -25,6 +25,7 @@
 
 #include <string.h>
 #include <assert.h>
+#include <map>
 
 #include <Inventor/SbName.h>
 #include <Inventor/scxml/ScXML.h>
@@ -40,6 +41,16 @@
   \since Coin 3.0
   \ingroup scxml
 */
+
+class ScXMLObjectP {
+public:
+  typedef std::map<const char *, char *> AttributeMap;
+  typedef std::pair<const char *, char *> AttributeEntry;
+  AttributeMap attributemap;
+
+};
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLObject);
 
@@ -59,12 +70,13 @@ ScXMLObject::ScXMLObject(void)
 ScXMLObject::~ScXMLObject(void)
 {
   {
-    AttributeMap::iterator it = this->attributemap.begin();
-    while (it != this->attributemap.end()) {
+    ScXMLObjectP::AttributeMap::iterator it =
+      PRIVATE(this)->attributemap.begin();
+    while (it != PRIVATE(this)->attributemap.end()) {
       delete [] it->second;
       ++it;
     }
-    this->attributemap.clear();
+    PRIVATE(this)->attributemap.clear();
   }
 }
 
@@ -83,22 +95,24 @@ ScXMLObject::isOfType(SoType type) const
   If NULL is passed as the value, the attribute is removed.
 */
 void
-ScXMLObject::setAttribute(const char * attribute, const char * value)
+ScXMLObject::setXMLAttribute(const char * attribute, const char * value)
 {
   assert(attribute);
   const SbName attrname(attribute); // uniqify on string pointer
-  AttributeMap::iterator it = this->attributemap.find(attrname.getString());
-  if (it == this->attributemap.end()) {
+  ScXMLObjectP::AttributeMap::iterator it =
+    PRIVATE(this)->attributemap.find(attrname.getString());
+  if (it == PRIVATE(this)->attributemap.end()) {
     if (value) {
       char * valuedup = new char [ strlen(value) + 1 ];
       strcpy(valuedup, value);
-      this->attributemap.insert(AttributeEntry(attrname.getString(), valuedup));
+      PRIVATE(this)->attributemap.insert(
+        ScXMLObjectP::AttributeEntry(attrname.getString(), valuedup));
     }
   } else {
     delete [] it->second;
     it->second = NULL;
     if (!value) {
-      this->attributemap.erase(it);
+      PRIVATE(this)->attributemap.erase(it);
     } else {
       it->second = new char [ strlen(value) + 1 ];
       strcpy(it->second, value);
@@ -111,11 +125,12 @@ ScXMLObject::setAttribute(const char * attribute, const char * value)
   NULL if not set.
 */
 const char *
-ScXMLObject::getAttribute(const char * attribute) const
+ScXMLObject::getXMLAttribute(const char * attribute) const
 {
   const SbName attrname(attribute);
-  AttributeMap::const_iterator it = this->attributemap.find(attrname.getString());
-  if (it != this->attributemap.end()) {
+  ScXMLObjectP::AttributeMap::const_iterator it =
+    PRIVATE(this)->attributemap.find(attrname.getString());
+  if (it != PRIVATE(this)->attributemap.end()) {
     return it->second;
   }
   return NULL;
@@ -162,6 +177,7 @@ ScXMLObject::isContainedIn(const ScXMLObject * object) const
 }
 
 // *************************************************************************
+
 /*!
   Internal method.
   Friendly forwarding for ScXMLObject subclasses.
@@ -182,3 +198,6 @@ ScXMLObject::registerInvokeClassType(const char * xmlns, const char * targettype
   ScXMLP::registerInvokeClassType(xmlns, targettype, source, type);
 }
 
+// *************************************************************************
+
+#undef PRIVATE

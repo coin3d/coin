@@ -25,12 +25,12 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
-
-#include <vector>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLInvoke;
 class ScXMLEvent;
 class ScXMLStateMachine;
+class ScXMLOnEntryP;
 
 class COIN_DLL_API ScXMLOnEntry : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -52,12 +52,11 @@ public:
   // invoke
   virtual void invoke(ScXMLStateMachine * statemachine);
   
-protected:
-  std::vector<ScXMLInvoke *> invokelist;
-
 private:
   ScXMLOnEntry(const ScXMLOnEntry & rhs); // N/A
   ScXMLOnEntry & operator = (const ScXMLOnEntry & rhs); // N/A
+
+  SbPimplPtr<ScXMLOnEntryP> pimpl;
 
 }; // ScXMLOnEntry
 

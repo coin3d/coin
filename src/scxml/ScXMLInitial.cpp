@@ -35,31 +35,66 @@
 
 /*!
   \class ScXMLInitial ScXMLInitial.h Inventor/scxml/ScXMLInitial.h
-  \brief Implementation of the <initial> SCXML element.
+  \brief Implementation of the &lt;initial&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
 */
+
+class ScXMLInitialP {
+public:
+
+};
 
 SCXML_OBJECT_SOURCE(ScXMLInitial);
 
 void
 ScXMLInitial::initClass(void)
 {
-  SCXML_OBJECT_INIT_CLASS(ScXMLInitial, ScXMLStateBase, SCXML_DEFAULT_NS, "initial");
+  SCXML_OBJECT_INIT_CLASS(ScXMLInitial, ScXMLObject, SCXML_DEFAULT_NS, "initial");
 }
 
 ScXMLInitial::ScXMLInitial(void)
-  : transitionptr(NULL)
+  : id(NULL),
+    transitionptr(NULL)
 {
 }
 
 ScXMLInitial::~ScXMLInitial(void)
 {
+  this->setIdAttribute(NULL);
+
   if (this->transitionptr) {
     delete this->transitionptr;
     this->transitionptr = NULL;
   }
+}
+
+void
+ScXMLInitial::setIdAttribute(const char * idstr)
+{
+  if (this->id && this->id != this->getXMLAttribute("id")) {
+    delete [] this->id;
+  }
+  this->id = NULL;
+  if (idstr) {
+    this->id = new char [ strlen(idstr) + 1 ];
+    strcpy(this->id, idstr);
+  }
+}
+
+// const char * ScXMLInitial::getIdAttrbute(void) const
+
+SbBool
+ScXMLInitial::handleXMLAttributes(void)
+{
+  if (!inherited::handleXMLAttributes()) return FALSE;
+
+  this->id = const_cast<char *>(this->getXMLAttribute("id"));
+
+  if (!this->id) { return FALSE; }
+
+  return TRUE;
 }
 
 // *************************************************************************

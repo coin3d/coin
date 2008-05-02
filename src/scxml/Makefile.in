@@ -268,7 +268,6 @@ RegularSources = \
         ScXML.cpp \
         ScXMLObject.cpp \
         ScXMLDocument.cpp \
-        ScXMLStateBase.cpp \
         ScXMLState.cpp \
         ScXMLOnEntry.cpp \
         ScXMLOnExit.cpp \
@@ -281,15 +280,15 @@ RegularSources = \
         ScXMLInvoke.cpp \
         ScXMLFallbackInvoke.cpp \
         ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp \
-	SoScXMLStateMachine.cpp \
+        SoScXMLEvent.cpp \
+        SoScXMLStateMachine.cpp \
         SoScXMLDebugInfoInvoke.cpp \
         SoScXMLScheduleRedrawInvoke.cpp \
         SoScXMLScheduleTimerEventInvoke.cpp
 
 
 LinkHackSources = \
-	all-scxml-cpp.cpp
+        all-scxml-cpp.cpp
 
 
 PublicHeaders = 
@@ -370,8 +369,8 @@ LIBRARIES = $(noinst_LIBRARIES)
 scxml_lst_AR = $(AR) cru
 scxml_lst_LIBADD =
 am__scxml_lst_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLStateBase.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
+	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -379,15 +378,14 @@ am__scxml_lst_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
 	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
 am__objects_1 = all-scxml-cpp.$(OBJEXT)
 am__objects_2 = ScXML.$(OBJEXT) ScXMLObject.$(OBJEXT) \
-	ScXMLDocument.$(OBJEXT) ScXMLStateBase.$(OBJEXT) \
-	ScXMLState.$(OBJEXT) ScXMLOnEntry.$(OBJEXT) \
-	ScXMLOnExit.$(OBJEXT) ScXMLInitial.$(OBJEXT) \
-	ScXMLFinal.$(OBJEXT) ScXMLAnchor.$(OBJEXT) \
-	ScXMLHistory.$(OBJEXT) ScXMLTransition.$(OBJEXT) \
-	ScXMLEvent.$(OBJEXT) ScXMLInvoke.$(OBJEXT) \
-	ScXMLFallbackInvoke.$(OBJEXT) ScXMLStateMachine.$(OBJEXT) \
-	SoScXMLEvent.$(OBJEXT) SoScXMLStateMachine.$(OBJEXT) \
-	SoScXMLDebugInfoInvoke.$(OBJEXT) \
+	ScXMLDocument.$(OBJEXT) ScXMLState.$(OBJEXT) \
+	ScXMLOnEntry.$(OBJEXT) ScXMLOnExit.$(OBJEXT) \
+	ScXMLInitial.$(OBJEXT) ScXMLFinal.$(OBJEXT) \
+	ScXMLAnchor.$(OBJEXT) ScXMLHistory.$(OBJEXT) \
+	ScXMLTransition.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
+	ScXMLInvoke.$(OBJEXT) ScXMLFallbackInvoke.$(OBJEXT) \
+	ScXMLStateMachine.$(OBJEXT) SoScXMLEvent.$(OBJEXT) \
+	SoScXMLStateMachine.$(OBJEXT) SoScXMLDebugInfoInvoke.$(OBJEXT) \
 	SoScXMLScheduleRedrawInvoke.$(OBJEXT) \
 	SoScXMLScheduleTimerEventInvoke.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
@@ -397,8 +395,8 @@ am__EXTRA_scxml_lst_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
 	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
 	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLStateBase.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
+	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -410,22 +408,20 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libscxml_la_LDFLAGS =
 libscxml_la_LIBADD =
 am__libscxml_la_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLStateBase.cpp ScXMLState.cpp \
-	ScXMLOnEntry.cpp ScXMLOnExit.cpp ScXMLInitial.cpp \
-	ScXMLFinal.cpp ScXMLAnchor.cpp ScXMLHistory.cpp \
-	ScXMLTransition.cpp ScXMLEvent.cpp ScXMLInvoke.cpp \
-	ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp SoScXMLEvent.cpp \
-	SoScXMLStateMachine.cpp SoScXMLDebugInfoInvoke.cpp \
-	SoScXMLScheduleRedrawInvoke.cpp \
+	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
+	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
+	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
+	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
+	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
 	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
 am__objects_6 = all-scxml-cpp.lo
-am__objects_7 = ScXML.lo ScXMLObject.lo ScXMLDocument.lo \
-	ScXMLStateBase.lo ScXMLState.lo ScXMLOnEntry.lo ScXMLOnExit.lo \
-	ScXMLInitial.lo ScXMLFinal.lo ScXMLAnchor.lo ScXMLHistory.lo \
-	ScXMLTransition.lo ScXMLEvent.lo ScXMLInvoke.lo \
-	ScXMLFallbackInvoke.lo ScXMLStateMachine.lo SoScXMLEvent.lo \
-	SoScXMLStateMachine.lo SoScXMLDebugInfoInvoke.lo \
-	SoScXMLScheduleRedrawInvoke.lo \
+am__objects_7 = ScXML.lo ScXMLObject.lo ScXMLDocument.lo ScXMLState.lo \
+	ScXMLOnEntry.lo ScXMLOnExit.lo ScXMLInitial.lo ScXMLFinal.lo \
+	ScXMLAnchor.lo ScXMLHistory.lo ScXMLTransition.lo ScXMLEvent.lo \
+	ScXMLInvoke.lo ScXMLFallbackInvoke.lo ScXMLStateMachine.lo \
+	SoScXMLEvent.lo SoScXMLStateMachine.lo \
+	SoScXMLDebugInfoInvoke.lo SoScXMLScheduleRedrawInvoke.lo \
 	SoScXMLScheduleTimerEventInvoke.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
@@ -434,8 +430,8 @@ am__EXTRA_libscxml_la_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
 	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
 	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLStateBase.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
+	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -445,21 +441,20 @@ libscxml_la_OBJECTS = $(am_libscxml_la_OBJECTS)
 libscxml@SUFFIX@LINKHACK_la_LDFLAGS =
 libscxml@SUFFIX@LINKHACK_la_LIBADD =
 am__libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLStateBase.cpp ScXMLState.cpp \
-	ScXMLOnEntry.cpp ScXMLOnExit.cpp ScXMLInitial.cpp \
-	ScXMLFinal.cpp ScXMLAnchor.cpp ScXMLHistory.cpp \
-	ScXMLTransition.cpp ScXMLEvent.cpp ScXMLInvoke.cpp \
-	ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp SoScXMLEvent.cpp \
-	SoScXMLStateMachine.cpp SoScXMLDebugInfoInvoke.cpp \
-	SoScXMLScheduleRedrawInvoke.cpp \
+	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
+	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
+	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
+	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
+	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
 	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
 am_libscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXMLP.h \
 	ScXMLCommonP.h ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
 	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLStateBase.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
+	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -494,8 +489,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLState.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLState.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateBase.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateBase.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateMachine.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateMachine.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLTransition.Plo \
@@ -624,8 +617,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLState.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLState.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateBase.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateBase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateMachine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateMachine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLTransition.Plo@am__quote@

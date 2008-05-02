@@ -31,7 +31,6 @@
 
 class ScXMLEvent;
 class ScXMLDocument;
-class ScXMLStateBase;
 class ScXMLStateMachine;
 class ScXMLStateMachineP;
 

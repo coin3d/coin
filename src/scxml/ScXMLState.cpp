@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <string.h>
 #include <algorithm>
+#include <vector>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/scxml/ScXML.h>
@@ -44,7 +45,8 @@
 
 /*!
   \class ScXMLState ScXMLState.h Inventor/scxml/ScXMLState.h
-  \brief Implementation of the <state> and <parallel> SCXML elements.
+  \brief Implementation of the &lt;state&gt; and &lt;parallel&gt; SCXML elements.
+
 
   \since Coin 3.0
   \ingroup scxml
@@ -52,10 +54,31 @@
 
 class ScXMLStateP {
 public:
+  ScXMLStateP(void)
+    : onentryptr(NULL), onexitptr(NULL), initialptr(NULL), invokeptr(NULL)
+  {
+  }
+
+  ScXMLOnEntry * onentryptr;
+  ScXMLOnExit * onexitptr;
+  std::vector<ScXMLTransition *> transitionlist;
+  ScXMLInitial * initialptr;
+  std::vector<ScXMLState *> statelist;
+  std::vector<ScXMLState *> parallellist;
+  std::vector<ScXMLFinal *> finallist;
+  std::vector<ScXMLHistory *> historylist;
+  std::vector<ScXMLAnchor *> anchorlist;
+  // datamodel
+  ScXMLInvoke * invokeptr;
+
 };
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_SOURCE(ScXMLState);
 
+/*!
+*/
 void
 ScXMLState::initClass(void)
 {
@@ -66,88 +89,94 @@ ScXMLState::initClass(void)
 
 ScXMLState::ScXMLState(void)
   : isparallel(FALSE), istask(FALSE),
-    src(NULL), task(NULL),
-    onentryptr(NULL), onexitptr(NULL), initialptr(NULL), invokeptr(NULL)
+    id(NULL), src(NULL), task(NULL)
 {
 }
 
 ScXMLState::~ScXMLState(void)
 {
-  this->setSrcXMLAttr(NULL);
-  this->setTaskXMLAttr(NULL);
+  this->setIdAttribute(NULL);
+  this->setSrcAttribute(NULL);
+  this->setTaskAttribute(NULL);
 
-  if (this->onentryptr) {
-    delete this->onentryptr;
-    this->onentryptr = NULL;
+  if (PRIVATE(this)->onentryptr) {
+    delete PRIVATE(this)->onentryptr;
+    PRIVATE(this)->onentryptr = NULL;
   }
 
-  if (this->onexitptr) {
-    delete this->onexitptr;
-    this->onexitptr = NULL;
+  if (PRIVATE(this)->onexitptr) {
+    delete PRIVATE(this)->onexitptr;
+    PRIVATE(this)->onexitptr = NULL;
   }
 
   {
-    std::vector<ScXMLTransition *>::iterator transitionit = this->transitionlist.begin();
-    while (transitionit != this->transitionlist.end()) {
+    std::vector<ScXMLTransition *>::iterator transitionit =
+      PRIVATE(this)->transitionlist.begin();
+    while (transitionit != PRIVATE(this)->transitionlist.end()) {
       delete *transitionit;
       ++transitionit;
     }
-    this->transitionlist.clear();
+    PRIVATE(this)->transitionlist.clear();
   }
 
-  if (this->initialptr) {
-    delete this->initialptr;
-    this->initialptr = NULL;
+  if (PRIVATE(this)->initialptr) {
+    delete PRIVATE(this)->initialptr;
+    PRIVATE(this)->initialptr = NULL;
   }
 
   {
-    std::vector<ScXMLState *>::iterator stateit = this->statelist.begin();
-    while (stateit != this->statelist.end()) {
+    std::vector<ScXMLState *>::iterator stateit =
+      PRIVATE(this)->statelist.begin();
+    while (stateit != PRIVATE(this)->statelist.end()) {
       delete *stateit;
       ++stateit;
     }
-    this->statelist.clear();
+    PRIVATE(this)->statelist.clear();
   }
 
   {
-    std::vector<ScXMLState *>::iterator parallelit = this->parallellist.begin();
-    while (parallelit != this->parallellist.end()) {
+    std::vector<ScXMLState *>::iterator parallelit =
+      PRIVATE(this)->parallellist.begin();
+    while (parallelit != PRIVATE(this)->parallellist.end()) {
       delete *parallelit;
       ++parallelit;
     }
-    this->parallellist.clear();
+    PRIVATE(this)->parallellist.clear();
   }
 
   {
-    std::vector<ScXMLFinal *>::iterator finalit = this->finallist.begin();
-    while (finalit != this->finallist.end()) {
+    std::vector<ScXMLFinal *>::iterator finalit =
+      PRIVATE(this)->finallist.begin();
+    while (finalit != PRIVATE(this)->finallist.end()) {
       delete *finalit;
       ++finalit;
     }
-    this->finallist.clear();
+    PRIVATE(this)->finallist.clear();
   }
 
   {
-    std::vector<ScXMLHistory *>::iterator historyit = this->historylist.begin();
-    while (historyit != this->historylist.end()) {
+    std::vector<ScXMLHistory *>::iterator historyit =
+      PRIVATE(this)->historylist.begin();
+    while (historyit != PRIVATE(this)->historylist.end()) {
       delete *historyit;
       ++historyit;
     }
-    this->historylist.clear();
+    PRIVATE(this)->historylist.clear();
   }
 
   {
-    std::vector<ScXMLAnchor *>::iterator anchorit = this->anchorlist.begin();
-    while (anchorit != this->anchorlist.end()) {
+    std::vector<ScXMLAnchor *>::iterator anchorit =
+      PRIVATE(this)->anchorlist.begin();
+    while (anchorit != PRIVATE(this)->anchorlist.end()) {
       delete *anchorit;
       ++anchorit;
     }
-    this->anchorlist.clear();
+    PRIVATE(this)->anchorlist.clear();
   }
 
-  if (this->invokeptr) {
-    delete this->invokeptr;
-    this->invokeptr = NULL;
+  if (PRIVATE(this)->invokeptr) {
+    delete PRIVATE(this)->invokeptr;
+    PRIVATE(this)->invokeptr = NULL;
   }
 }
 
@@ -168,9 +197,24 @@ ScXMLState::isParallel(void) const
 // *************************************************************************
 
 void
-ScXMLState::setSrcXMLAttr(const char * srcstr)
+ScXMLState::setIdAttribute(const char * idstr)
 {
-  if (this->src && this->src != this->getAttribute("src")) {
+  if (this->id && this->id != this->getXMLAttribute("id")) {
+    delete [] this->id;
+  }
+  this->id = NULL;
+  if (idstr) {
+    this->id = new char [ strlen(idstr) + 1 ];
+    strcpy(this->id, idstr);
+  }
+}
+
+// const char * ScXMLState::getIdAttribute(void) const
+
+void
+ScXMLState::setSrcAttribute(const char * srcstr)
+{
+  if (this->src && this->src != this->getXMLAttribute("src")) {
     delete [] this->src;
   }
   this->src = NULL;
@@ -180,12 +224,12 @@ ScXMLState::setSrcXMLAttr(const char * srcstr)
   }
 }
 
-// const char * ScXMLState::getSrcXMLAttr(void) const
+// const char * ScXMLState::getSrcAttribute(void) const
 
 void
-ScXMLState::setTaskXMLAttr(const char * taskstr)
+ScXMLState::setTaskAttribute(const char * taskstr)
 {
-  if (this->task && this->task != this->getAttribute("task")) {
+  if (this->task && this->task != this->getXMLAttribute("task")) {
     delete [] this->task;
   }
   this->task = NULL;
@@ -204,49 +248,52 @@ ScXMLState::setTaskXMLAttr(const char * taskstr)
   }
 }
 
-// const char * ScXMLState::getTaskXMLAttr(void) const
+// const char * ScXMLState::getTaskAttribute(void) const
 
 SbBool
 ScXMLState::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->src = const_cast<char *>(this->getAttribute("src"));
+  this->id = const_cast<char *>(this->getXMLAttribute("id"));
+  this->src = const_cast<char *>(this->getXMLAttribute("src"));
   this->task = NULL;
-  this->setTaskXMLAttr(this->getAttribute("task"));
+  this->setTaskAttribute(this->getXMLAttribute("task"));
+
+  if (!this->id) { return FALSE; }
 
   return TRUE;
 }
 
 // *************************************************************************
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLOnEntry, onentryptr, OnEntry);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLOnEntry, PRIVATE(this)->onentryptr, OnEntry);
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLOnExit, onexitptr, OnExit);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLOnExit, PRIVATE(this)->onexitptr, OnExit);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLTransition, transitionlist, Transition, Transitions);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLTransition, PRIVATE(this)->transitionlist, Transition, Transitions);
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInitial, initialptr, Initial);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInitial, PRIVATE(this)->initialptr, Initial);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLState, statelist, State, States);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLState, PRIVATE(this)->statelist, State, States);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLState, parallellist, Parallel, Parallels);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLState, PRIVATE(this)->parallellist, Parallel, Parallels);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLFinal, finallist, Final, Finals);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLFinal, PRIVATE(this)->finallist, Final, Finals);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLHistory, historylist, History, Histories);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLHistory, PRIVATE(this)->historylist, History, Histories);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLAnchor, anchorlist, Anchor, Anchors);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLState, ScXMLAnchor, PRIVATE(this)->anchorlist, Anchor, Anchors);
 
 // datamodel
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInvoke, invokeptr, Invoke);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInvoke, PRIVATE(this)->invokeptr, Invoke);
 
 void
 ScXMLState::invoke(ScXMLStateMachine * statemachine)
 {
-  if (this->invokeptr) {
-    this->invokeptr->invoke(statemachine);
+  if (PRIVATE(this)->invokeptr) {
+    PRIVATE(this)->invokeptr->invoke(statemachine);
   }
 }
 
@@ -259,9 +306,9 @@ ScXMLState::invoke(ScXMLStateMachine * statemachine)
 SbBool
 ScXMLState::isAtomicState(void) const
 {
-  return ((this->statelist.size() == 0) &&
-          (this->parallellist.size() == 0) &&
-          (this->invokeptr != NULL));
+  return ((PRIVATE(this)->statelist.size() == 0) &&
+          (PRIVATE(this)->parallellist.size() == 0) &&
+          (PRIVATE(this)->invokeptr != NULL));
 }
 
 /*!

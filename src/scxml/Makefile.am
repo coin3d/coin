@@ -2,7 +2,6 @@ RegularSources = \
         ScXML.cpp \
         ScXMLObject.cpp \
         ScXMLDocument.cpp \
-        ScXMLStateBase.cpp \
         ScXMLState.cpp \
         ScXMLOnEntry.cpp \
         ScXMLOnExit.cpp \
@@ -15,14 +14,14 @@ RegularSources = \
         ScXMLInvoke.cpp \
         ScXMLFallbackInvoke.cpp \
         ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp \
-	SoScXMLStateMachine.cpp \
+        SoScXMLEvent.cpp \
+        SoScXMLStateMachine.cpp \
         SoScXMLDebugInfoInvoke.cpp \
         SoScXMLScheduleRedrawInvoke.cpp \
         SoScXMLScheduleTimerEventInvoke.cpp
 
 LinkHackSources = \
-	all-scxml-cpp.cpp
+        all-scxml-cpp.cpp
 
 PublicHeaders =
 

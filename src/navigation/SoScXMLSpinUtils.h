@@ -30,6 +30,7 @@
 
 #include "navigation/SoScXMLNavigationInvoke.h"
 
+#include <map>
 #include <boost/intrusive_ptr.hpp>
 
 #include <Inventor/SbTime.h>

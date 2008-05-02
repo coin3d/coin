@@ -24,10 +24,13 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLStateBase.h>
+#include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 
-class COIN_DLL_API ScXMLFinal : public ScXMLStateBase {
-  typedef ScXMLStateBase inherited;
+class ScXMLFinalP;
+
+class COIN_DLL_API ScXMLFinal : public ScXMLObject {
+  typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLFinal);
 
 public:
@@ -36,9 +39,20 @@ public:
   ScXMLFinal(void);
   virtual ~ScXMLFinal(void);
 
+  // XML attributes
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
+
+  virtual SbBool handleXMLAttributes(void);
+
+protected:
+  char * id;
+
 private:
   ScXMLFinal(const ScXMLFinal & rhs); // N/A
   ScXMLFinal & operator = (const ScXMLFinal & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLFinalP> pimpl;
 
 }; // ScXMLFinal
 

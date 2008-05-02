@@ -33,7 +33,6 @@
 
 #include <Inventor/scxml/ScXMLObject.h>
 #include <Inventor/scxml/ScXMLDocument.h>
-#include <Inventor/scxml/ScXMLStateBase.h>
 #include <Inventor/scxml/ScXMLState.h>
 #include <Inventor/scxml/ScXMLInitial.h>
 #include <Inventor/scxml/ScXMLFinal.h>
@@ -60,7 +59,7 @@
 // *************************************************************************
 
 /*!
-  \page scxml ScXML
+  \page scxml State Chart XML
 
   The ScXML part of Coin is a basic, non-conformant, partial
   implementation of State Chart XML, based on the W3C Working Draft 21
@@ -96,38 +95,43 @@
   Partially Supported Items:
 
   - At the moment, the Coin ScXML module only supports "Executable
-    Content" through the <invoke> element, using the ScXMLInvoke class
-    interface and having the Executable Content written in C++ in
-    subclasses of the ScXMLInvoke class.
+    Content" through the &lt;invoke&gt; element, using the ScXMLInvoke
+    class interface and having the Executable Content written in C++
+    in subclasses of the ScXMLInvoke class. ECMAScript and XPath is
+    not supported yet.
 
   Unsupported Items:
 
-  - External document referencing through the <state>/<parallel> 'src'
-    attribute is not yet handled, but should be easy to implement so
-    it will likely be one of the first things that will be fixed.
+  - External document referencing through the &lt;state&gt; /
+    &lt;parallel&gt; 'src' attribute is not yet handled, but should be
+    easy to implement so it will likely be one of the first things
+    that will be fixed.
 
-  - The <parallel> element is not supported as intended with parallel
-    states.  Coin will just treat it as an ordinary <state> element
-    for now.  Parallel states is not high up on the priority list, so
-    expect this to be handled after a lot of other functionality is in
-    place.
+  - The &lt;parallel&gt; element is not supported as intended with
+    parallel states.  Coin will just treat it as an ordinary
+    &lt;state&gt; element for now.  Parallel states is not high up on
+    the priority list, so expect this to be handled after a lot of
+    other functionality is in place.
 
-  - The <datamodel>-related part of the specification is not supported.
+  - The &lt;datamodel&gt;-related part of the specification is not
+    supported.
 
-  - The condition attribute in the <transition> element is not supported,
-    so the only condition you can set is on the event type in the event
-    attribute.  The ScXMLTransition class has a virtual method
+  - The condition attribute in the &lt;transition&gt; element is not
+    supported, so the only condition you can set is on the event type
+    in the event attribute.  The ScXMLTransition class has a virtual
+    method
       SbBool evaluateCondition()
     which is used in the state machine logic, and should be all that is
     needed to overload to implement this in subclasses yourself.
 
-  - The 'target' attribute in the <transition> element can only identify
-    a single state currently, not multiple as you would have to when
-    having support for <parallel> elements (which we don't have).
+  - The 'target' attribute in the &lt;transition&gt; element can only
+    identify a single state currently, not multiple as you would have
+    to when having support for &lt;parallel&gt; elements (which we
+    don't have).
 
-  - The virtual state elements like <history> and <anchor> are just
-    implemented as dummy states for now and do not do anything in
-    relation to what they should actually do.
+  - The virtual state elements like &lt;history&gt; and &lt;anchor&gt;
+    are just implemented as dummy states for now and do not do
+    anything in relation to what they should actually do.
 
   - There are no mechanisms for inter-statemachine event passing yet.
 
@@ -138,17 +142,19 @@
   and look at the ScXML* source files in src/navigation/ for the C++
   counterparts to the same SCXML navigation system.
 
-  With support for <datamodel>, <transition>-conditions, and inline
-  executable content in the XML file in some scripting language, the C++
-  parts could probably have been greatly simplified, if not more or less
-  eliminated.  This will hopefully evolve for future versions of Coin.
+  With support for &lt;datamodel&gt;, &lt;transition&gt;-conditions,
+  and inline executable content in the XML file in some scripting
+  language, the C++ parts could probably have been greatly simplified,
+  if not more or less eliminated.  This will hopefully evolve for
+  future versions of Coin.
 
-  \since Coin 3.0
   \ingroup scxml
+  \since Coin 3.0
 */
 
 // *************************************************************************
 
+// private static variables
 ScXMLP::NamespaceDict ScXMLP::namespaces;
 ScXMLP::TargettypeDict ScXMLP::targettypes;
 
@@ -159,6 +165,11 @@ SbBool ScXMLP::no_datamodel_warning = FALSE;
 /*!
   \class ScXML ScXML.h Inventor/scxml/ScXML.h
   \brief Namespace for static ScXML-related functions.
+
+  This is a static namespace class for ScXML-related functions.
+
+  \ingroup scxml
+  \since Coin 3.0
 */
 
 /*!
@@ -172,7 +183,6 @@ ScXML::initClasses(void)
 
   ScXMLObject::initClass();
   ScXMLDocument::initClass();
-  ScXMLStateBase::initClass();
   ScXMLState::initClass();
   ScXMLInitial::initClass();
   ScXMLFinal::initClass();
@@ -455,7 +465,7 @@ ScXMLP::readScXMLDocument(ScXMLObject * container, cc_xml_elt * elt, const char 
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    document->setAttribute(attrname, attrvalue);
+    document->setXMLAttribute(attrname, attrvalue);
   }
   if (!document->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -547,7 +557,7 @@ ScXMLP::readScXMLState(ScXMLObject * container, cc_xml_elt * elt, const char * x
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    state->setAttribute(attrname, attrvalue);
+    state->setXMLAttribute(attrname, attrvalue);
   }
   if (!state->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -731,7 +741,7 @@ ScXMLP::readScXMLTransition(ScXMLObject * container, cc_xml_elt * elt, const cha
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    transition->setAttribute(attrname, attrvalue);
+    transition->setXMLAttribute(attrname, attrvalue);
   }
   if (!transition->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -789,7 +799,7 @@ ScXMLP::readScXMLInitial(ScXMLObject * container, cc_xml_elt * elt, const char *
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    initial->setAttribute(attrname, attrvalue);
+    initial->setXMLAttribute(attrname, attrvalue);
   }
   if (!initial->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -848,7 +858,7 @@ ScXMLP::readScXMLFinal(ScXMLObject * container, cc_xml_elt * elt, const char * x
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    final->setAttribute(attrname, attrvalue);
+    final->setXMLAttribute(attrname, attrvalue);
   }
   if (!final->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -891,7 +901,7 @@ ScXMLP::readScXMLHistory(ScXMLObject * container, cc_xml_elt * elt, const char *
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    history->setAttribute(attrname, attrvalue);
+    history->setXMLAttribute(attrname, attrvalue);
   }
   if (!history->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -950,7 +960,7 @@ ScXMLP::readScXMLOnEntry(ScXMLObject * container, cc_xml_elt * elt, const char *
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    onentry->setAttribute(attrname, attrvalue);
+    onentry->setXMLAttribute(attrname, attrvalue);
   }
   if (!onentry->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -1005,7 +1015,7 @@ ScXMLP::readScXMLOnExit(ScXMLObject * container, cc_xml_elt * elt, const char * 
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    onexit->setAttribute(attrname, attrvalue);
+    onexit->setXMLAttribute(attrname, attrvalue);
   }
   if (!onexit->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -1060,7 +1070,7 @@ ScXMLP::readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * 
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    anchor->setAttribute(attrname, attrvalue);
+    anchor->setXMLAttribute(attrname, attrvalue);
   }
   if (!anchor->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "error in handleXMLAttributes()");
@@ -1113,7 +1123,7 @@ ScXMLP::readScXMLInvoke(ScXMLObject * container, cc_xml_elt * elt, const char * 
   for (c = 0; c < numattrs; ++c) {
     const char * attrname = cc_xml_attr_get_name(attrs[c]);
     const char * attrvalue = cc_xml_attr_get_value(attrs[c]);
-    invoke->setAttribute(attrname, attrvalue);
+    invoke->setXMLAttribute(attrname, attrvalue);
   }
   if (!invoke->handleXMLAttributes()) {
     SoDebugError::postInfo("ScXML::readFile", "%s error in handleXMLAttributes()",

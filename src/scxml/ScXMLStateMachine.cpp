@@ -311,7 +311,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       PRIVATE(this)->activestatelist.begin();
     while (it != PRIVATE(this)->activestatelist.end()) {
       SoDebugError::postInfo("ScXMLStateMachine::processOneEvent",
-                             "active state: %s", (*it)->getAttribute("id"));
+                             "active state: %s", (*it)->getXMLAttribute("id"));
       ++it;
     }
   }
@@ -320,7 +320,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransition);
-      PRIVATE(this)->initializer->setTargetXMLAttr(PRIVATE(this)->description->getAttribute("initialstate"));
+      PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getXMLAttribute("initialstate"));
     }
     transitions.push_back(ScXMLStateMachineP::StateTransition(NULL, PRIVATE(this)->initializer.get()));
   } else {
@@ -358,7 +358,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     while (transit != transitions.end()) {
       if (transit->second->isSelfReferencing()) {
         ScXMLObject * containerobj = transit->second->getContainer();
-        ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(transit->second->getTargetXMLAttr());
+        ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(transit->second->getTargetAttribute());
 
         if (containerobj->isOfType(ScXMLState::getClassTypeId())) {
           ScXMLState * state = static_cast<ScXMLState *>(containerobj);
@@ -384,7 +384,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       continue;
     }
 
-    const char * targetid = transit->second->getTargetXMLAttr();
+    const char * targetid = transit->second->getTargetAttribute();
     ScXMLObject * targetstate = PRIVATE(this)->getObjectByIdentifier(targetid);
     if (!targetstate) {
       SoDebugError::post("ScXMLStateMachine::processOneEvent",
@@ -495,35 +495,35 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
             if (!initial) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "state '%s' has substates but no <initial>.",
-                                 state->getIdXMLAttr());
+                                 state->getIdAttribute());
               break;
             }
             ScXMLTransition * transition = initial->getTransition();
             if (!transition) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "state '%s' has <initial> without a transition.",
-                                 state->getIdXMLAttr());
+                                 state->getIdAttribute());
               break;
             }
-            const char * targetid = transition->getTargetXMLAttr();
+            const char * targetid = transition->getTargetAttribute();
             if (!targetid) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "state '%s' has <initial> with a targetless transition.",
-                                 state->getIdXMLAttr());
+                                 state->getIdAttribute());
               break;
             }
             ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(targetid);
             if (!targetobj) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "could not find target of state \"%s\"'s <initial> transition.",
-                                 state->getIdXMLAttr());
+                                 state->getIdAttribute());
               break;
             }
             
             if (targetobj->getContainer() != state) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "target of state \"%s\"'s <initial> transition is not an immediate child of the state",
-                                 state->getIdXMLAttr());
+                                 state->getIdAttribute());
               break;
             }
             
@@ -541,7 +541,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
           if (state->getInitial()) { // just checking
             SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                "state '%s' has <initial> but no sub-states.",
-                               state->getIdXMLAttr());
+                               state->getIdAttribute());
           }
           
           PRIVATE(this)->activestatelist.push_back(state);
@@ -753,8 +753,8 @@ ScXMLStateMachineP::fillIdentifierMap(ScXMLObject * object)
 {
   assert(object);
 
-  if (object->getAttribute("id") != NULL) {
-    SbName identifier = object->getAttribute("id");
+  if (object->getXMLAttribute("id") != NULL) {
+    SbName identifier = object->getXMLAttribute("id");
     this->identifiermap.insert(std::pair<const char *, ScXMLObject *>(identifier.getString(), object));
   }
 
@@ -919,7 +919,7 @@ ScXMLStateMachineP::exitState(ScXMLObject * object)
   assert(object);
   if (object->isOfType(ScXMLState::getClassTypeId())) {
     ScXMLState * state = static_cast<ScXMLState *>(object);
-    const char * id = state->getIdXMLAttr();
+    const char * id = state->getIdAttribute();
     if (state->isTask()) {
       this->invokeStateChangeCallbacks(id, FALSE);
     }
@@ -940,7 +940,7 @@ ScXMLStateMachineP::enterState(ScXMLObject * object)
     ScXMLFinal * final = static_cast<ScXMLFinal *>(object);
     const ScXMLObject * container = final->getContainer();
     assert(container);
-    const char * id = container->getAttribute("id");
+    const char * id = container->getXMLAttribute("id");
     if (!id || strlen(id) == 0) {
       if (container->isOfType(ScXMLDocument::getClassTypeId())) {
         // there is not ParentID to post a ParentID.done event in
@@ -959,7 +959,7 @@ ScXMLStateMachineP::enterState(ScXMLObject * object)
   }
   else if (object->isOfType(ScXMLState::getClassTypeId())) {
     ScXMLState * state = static_cast<ScXMLState *>(object);
-    const char * id = state->getIdXMLAttr();
+    const char * id = state->getIdAttribute();
     if (state->isTask()) {
       this->invokeStateChangeCallbacks(id, TRUE);
     }

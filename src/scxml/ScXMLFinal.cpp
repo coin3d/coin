@@ -24,6 +24,7 @@
 #include <Inventor/scxml/ScXMLFinal.h>
 
 #include <assert.h>
+#include <string.h>
 
 #include <Inventor/scxml/ScXML.h>
 
@@ -31,24 +32,59 @@
 
 /*!
   \class ScXMLFinal ScXMLFinal.h Inventor/scxml/ScXMLFinal.h
-  \brief Implementation of the <final> SCXML element.
+  \brief Implementation of the &lt;final&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
 */
+
+class ScXMLFinalP {
+public:
+
+};
 
 SCXML_OBJECT_SOURCE(ScXMLFinal);
 
 void
 ScXMLFinal::initClass(void)
 {
-  SCXML_OBJECT_INIT_CLASS(ScXMLFinal, ScXMLStateBase, SCXML_DEFAULT_NS, "final");
+  SCXML_OBJECT_INIT_CLASS(ScXMLFinal, ScXMLObject, SCXML_DEFAULT_NS, "final");
 }
 
 ScXMLFinal::ScXMLFinal(void)
+  : id(NULL)
 {
 }
 
 ScXMLFinal::~ScXMLFinal(void)
 {
+  this->setIdAttribute(NULL);
+}
+
+
+void
+ScXMLFinal::setIdAttribute(const char * idstr)
+{
+  if (this->id && this->id != this->getXMLAttribute("id")) {
+    delete [] this->id;
+  }
+  this->id = NULL;
+  if (idstr) {
+    this->id = new char [ strlen(idstr) + 1 ];
+    strcpy(this->id, idstr);
+  }
+}
+
+// const char * ScXMLFinal::getIdAttribute(void) const
+
+SbBool
+ScXMLFinal::handleXMLAttributes(void)
+{
+  if (!inherited::handleXMLAttributes()) return FALSE;
+
+  this->id = const_cast<char *>(this->getXMLAttribute("id"));
+
+  if (!this->id) { return FALSE; }
+
+  return TRUE;
 }

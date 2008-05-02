@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <string.h>
 #include <algorithm>
+#include <vector>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLEvent.h>
@@ -37,7 +38,7 @@
 
 /*!
   \class ScXMLTransition ScXMLTransition.h Inventor/scxml/ScXMLTransition.h
-  \brief Implementation of the <transition> SCXML element.
+  \brief Implementation of the &lt;transition&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
@@ -45,7 +46,11 @@
 
 class ScXMLTransitionP {
 public:
+  std::vector<ScXMLInvoke *> invokelist;
+
 };
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_SOURCE(ScXMLTransition);
 
@@ -66,45 +71,28 @@ ScXMLTransition::ScXMLTransition(void)
 
 ScXMLTransition::~ScXMLTransition(void)
 {
-  this->setEventXMLAttr(NULL);
-  this->setCondXMLAttr(NULL);
-  this->setTargetXMLAttr(NULL);
-  this->setAnchorXMLAttr(NULL);
+  this->setEventAttribute(NULL);
+  this->setCondAttribute(NULL);
+  this->setTargetAttribute(NULL);
+  this->setAnchorAttribute(NULL);
 
   {
-    std::vector<ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
-    while (invokeit != this->invokelist.end()) {
+    std::vector<ScXMLInvoke *>::iterator invokeit =
+      PRIVATE(this)->invokelist.begin();
+    while (invokeit != PRIVATE(this)->invokelist.end()) {
       delete *invokeit;
       ++invokeit;
     }
-    this->invokelist.clear();
+    PRIVATE(this)->invokelist.clear();
   }
 }
 
 // *************************************************************************
 
-SbBool
-ScXMLTransition::handleXMLAttributes(void)
-{
-  if (!inherited::handleXMLAttributes()) return FALSE;
-
-  this->setEventXMLAttr(this->getAttribute("event"));
-  this->cond = const_cast<char *>(this->getAttribute("cond"));
-  this->target = const_cast<char *>(this->getAttribute("target"));
-  this->anchor = const_cast<char *>(this->getAttribute("anchor"));
-
-  if (this->target && this->anchor) {
-    // only one of 'target' and 'anchor' may be specified
-    return FALSE;
-  }
-
-  return TRUE;
-}
-
 void
-ScXMLTransition::setEventXMLAttr(const char * eventstr)
+ScXMLTransition::setEventAttribute(const char * eventstr)
 {
-  if (this->event && this->event != this->getAttribute("event")) {
+  if (this->event && this->event != this->getXMLAttribute("event")) {
     delete [] this->event;
   }
   this->event = NULL;
@@ -134,12 +122,12 @@ ScXMLTransition::setEventXMLAttr(const char * eventstr)
   }
 }
 
-// const char * ScXMLTransition::getEventXMLAttr(void) const
+// const char * ScXMLTransition::getEventAttribute(void) const
 
 void
-ScXMLTransition::setCondXMLAttr(const char * condstr)
+ScXMLTransition::setCondAttribute(const char * condstr)
 {
-  if (this->cond && this->cond != this->getAttribute("cond")) {
+  if (this->cond && this->cond != this->getXMLAttribute("cond")) {
     delete [] this->cond;
   }
   this->cond = NULL;
@@ -149,12 +137,12 @@ ScXMLTransition::setCondXMLAttr(const char * condstr)
   }
 }
 
-// const char * ScXMLTransition::getCondXMLAttr(void) const
+// const char * ScXMLTransition::getCondAttribute(void) const
 
 void
-ScXMLTransition::setTargetXMLAttr(const char * targetstr)
+ScXMLTransition::setTargetAttribute(const char * targetstr)
 {
-  if (this->target && this->target != this->getAttribute("target")) {
+  if (this->target && this->target != this->getXMLAttribute("target")) {
     delete [] this->target;
   }
   this->target = NULL;
@@ -164,12 +152,12 @@ ScXMLTransition::setTargetXMLAttr(const char * targetstr)
   }
 }
 
-// const char * ScXMLTransition::getTargetXMLAttr(void) const
+// const char * ScXMLTransition::getTargetAttribute(void) const
 
 void
-ScXMLTransition::setAnchorXMLAttr(const char * anchorstr)
+ScXMLTransition::setAnchorAttribute(const char * anchorstr)
 {
-  if (this->anchor && this->anchor != this->getAttribute("anchor")) {
+  if (this->anchor && this->anchor != this->getXMLAttribute("anchor")) {
     delete [] this->anchor;
   }
   this->anchor = NULL;
@@ -179,7 +167,25 @@ ScXMLTransition::setAnchorXMLAttr(const char * anchorstr)
   }
 }
 
-// const char * ScXMLTransition::getAnchorXMLAttr(void) const
+// const char * ScXMLTransition::getAnchorAttribute(void) const
+
+SbBool
+ScXMLTransition::handleXMLAttributes(void)
+{
+  if (!inherited::handleXMLAttributes()) return FALSE;
+
+  this->setEventAttribute(this->getXMLAttribute("event"));
+  this->cond = const_cast<char *>(this->getXMLAttribute("cond"));
+  this->target = const_cast<char *>(this->getXMLAttribute("target"));
+  this->anchor = const_cast<char *>(this->getXMLAttribute("anchor"));
+
+  if (this->target && this->anchor) {
+    // only one of 'target' and 'anchor' may be specified
+    return FALSE;
+  }
+
+  return TRUE;
+}
 
 // *************************************************************************
 
@@ -227,7 +233,7 @@ SbBool
 ScXMLTransition::isSelfReferencing(void) const
 {
   if (this->target != NULL && this->getContainer()) {
-    const char * containerid = this->getContainer()->getAttribute("id");
+    const char * containerid = this->getContainer()->getXMLAttribute("id");
     if (strcmp(containerid, this->target) == 0) return TRUE;
   }
   return FALSE;
@@ -269,7 +275,7 @@ ScXMLTransition::isEventMatch(const ScXMLEvent * eventobj) const
 // *************************************************************************
 // executable content
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLTransition, ScXMLInvoke, invokelist, Invoke, Invokes);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLTransition, ScXMLInvoke, PRIVATE(this)->invokelist, Invoke, Invokes);
 
 /*!
   This function is not implemented currently, but will always return TRUE.
@@ -288,9 +294,11 @@ ScXMLTransition::evaluateCondition(ScXMLStateMachine * statemachine)
 void
 ScXMLTransition::invoke(ScXMLStateMachine * statemachine)
 {
-  std::vector<ScXMLInvoke *>::const_iterator it = this->invokelist.begin();
-  while (it != this->invokelist.end()) {
+  std::vector<ScXMLInvoke *>::const_iterator it = PRIVATE(this)->invokelist.begin();
+  while (it != PRIVATE(this)->invokelist.end()) {
     (*it)->invoke(statemachine);
     ++it;
   }
 }
+
+#undef PRIVATE

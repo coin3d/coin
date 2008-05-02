@@ -35,31 +35,38 @@
 
 /*!
   \class ScXMLHistory ScXMLHistory.h Inventor/scxml/ScXMLHistory.h
-  \brief Implementation of the <history> SCXML element.
+  \brief Implementation of the &lt;history&gt; SCXML element.
 
-  The <history> element is not supported, other than as a dummy state.
+  The &lt;history&gt; element is not supported, other than as a dummy
+  state.
   
   \since Coin 3.0
   \ingroup scxml
 */
+
+class ScXMLHistoryP {
+public:
+
+};
 
 SCXML_OBJECT_SOURCE(ScXMLHistory);
 
 void
 ScXMLHistory::initClass(void)
 {
-  SCXML_OBJECT_INIT_CLASS(ScXMLHistory, ScXMLStateBase, SCXML_DEFAULT_NS, "history");
+  SCXML_OBJECT_INIT_CLASS(ScXMLHistory, ScXMLObject, SCXML_DEFAULT_NS, "history");
 }
 
 ScXMLHistory::ScXMLHistory(void)
-  : type(NULL),
+  : id(NULL), type(NULL),
     transitionptr(NULL)
 {
 }
 
 ScXMLHistory::~ScXMLHistory(void)
 {
-  this->setTypeXMLAttr(NULL);
+  this->setIdAttribute(NULL);
+  this->setTypeAttribute(NULL);
 
   if (this->transitionptr) {
     delete this->transitionptr;
@@ -68,9 +75,22 @@ ScXMLHistory::~ScXMLHistory(void)
 }
 
 void
-ScXMLHistory::setTypeXMLAttr(const char * typestr)
+ScXMLHistory::setIdAttribute(const char * idstr)
 {
-  if (this->type && this->type != this->getAttribute("type")) {
+  if (this->id && this->id != this->getXMLAttribute("id")) {
+    delete [] this->id;
+  }
+  this->id = NULL;
+  if (idstr) {
+    this->id = new char [ strlen(idstr) + 1 ];
+    strcpy(this->id, idstr);
+  }
+}
+
+void
+ScXMLHistory::setTypeAttribute(const char * typestr)
+{
+  if (this->type && this->type != this->getXMLAttribute("type")) {
     delete [] this->type;
   }
   this->type = NULL;
@@ -85,7 +105,10 @@ ScXMLHistory::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->type = const_cast<char *>(this->getAttribute("type"));
+  this->id = const_cast<char *>(this->getXMLAttribute("id"));
+  this->type = const_cast<char *>(this->getXMLAttribute("type"));
+
+  if (!this->id) { return FALSE; }
 
   if (this->type) {
     if ((strcmp(this->type, "deep") != 0) &&

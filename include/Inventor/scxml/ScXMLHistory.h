@@ -24,15 +24,15 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLStateBase.h>
+#include <Inventor/scxml/ScXMLObject.h>
 
 #include <Inventor/tools/SbLazyPimplPtr.h>
 
 class ScXMLTransition;
 class ScXMLHistoryP;
 
-class COIN_DLL_API ScXMLHistory : public ScXMLStateBase {
-  typedef ScXMLStateBase inherited;
+class COIN_DLL_API ScXMLHistory : public ScXMLObject {
+  typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLHistory);
 
 public:
@@ -41,8 +41,11 @@ public:
   ScXMLHistory(void);
   virtual ~ScXMLHistory(void);
 
-  virtual void setTypeXMLAttr(const char * type);
-  const char * getTypeXMLAttr(void) const { return this->type; }
+  // XML attributes
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
+  virtual void setTypeAttribute(const char * type);
+  const char * getTypeAttribute(void) const { return this->type; }
 
   virtual SbBool handleXMLAttributes(void);
 
@@ -51,6 +54,7 @@ public:
   virtual ScXMLTransition * getTransition(void) const;
 
 protected:
+  char * id;
   char * type;
 
   ScXMLTransition * transitionptr;
@@ -59,7 +63,7 @@ private:
   ScXMLHistory(const ScXMLHistory & rhs); // N/A
   ScXMLHistory & operator = (const ScXMLHistory & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLHistory> pimpl;
+  SbLazyPimplPtr<ScXMLHistoryP> pimpl;
 
 }; // ScXMLHistory
 

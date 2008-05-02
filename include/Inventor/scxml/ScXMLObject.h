@@ -24,15 +24,16 @@
  *
 \**************************************************************************/
 
-#include <map>
-
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
-
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/scxml/ScXMLSubObject.h>
+
+class ScXMLObjectP;
 
 class COIN_DLL_API ScXMLObject {
   SCXML_OBJECT_ABSTRACT_HEADER(ScXMLObject);
+
 public:
   static void initClass(void);
 
@@ -41,8 +42,8 @@ public:
 
   SbBool isOfType(SoType type) const;
 
-  void setAttribute(const char * attribute, const char * value);
-  const char * getAttribute(const char * attribute) const;
+  void setXMLAttribute(const char * attribute, const char * value);
+  const char * getXMLAttribute(const char * attribute) const;
 
   virtual SbBool handleXMLAttributes(void);
 
@@ -61,13 +62,11 @@ protected:
 private:
   ScXMLObject * containerptr;
 
-  typedef std::map<const char *, char *> AttributeMap;
-  typedef std::pair<const char *, char *> AttributeEntry;
-  AttributeMap attributemap;
-
 private:
   ScXMLObject(const ScXMLObject & rhs); // N/A
   ScXMLObject & operator = (const ScXMLObject & rhs); // N/A
+
+  SbPimplPtr<ScXMLObjectP> pimpl;
 
 }; // ScXMLObject
 

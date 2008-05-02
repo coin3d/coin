@@ -4,7 +4,6 @@ PublicHeaders = \
         ScXMLObject.h \
         ScXMLSubObject.h \
         ScXMLDocument.h \
-        ScXMLStateBase.h \
         ScXMLState.h \
         ScXMLOnEntry.h \
         ScXMLOnExit.h \
@@ -21,7 +20,8 @@ PublicHeaders = \
 
 PrivateHeaders =
 
-ObsoleteHeaders =
+ObsoleteHeaders = \
+        ScXMLStateBase.h
 
 ##$ BEGIN TEMPLATE Make-Include-Common(scxml, scxml)
 # **************************************************************************

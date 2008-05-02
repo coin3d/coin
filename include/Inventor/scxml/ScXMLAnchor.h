@@ -40,11 +40,11 @@ public:
   ScXMLAnchor(void);
   virtual ~ScXMLAnchor(void);
 
-  virtual void setTypeXMLAttr(const char * type);
-  const char * getTypeXMLAttr(void) const { return this->type; }
+  virtual void setTypeAttribute(const char * type);
+  const char * getTypeAttribute(void) const { return this->type; }
 
-  virtual void setSnapshotXMLAttr(const char * snapshot);
-  const char * getSnapshotXMLAttr(void) const { return this->snapshot; }
+  virtual void setSnapshotAttribute(const char * snapshot);
+  const char * getSnapshotAttribute(void) const { return this->snapshot; }
 
   virtual SbBool handleXMLAttributes(void);
 

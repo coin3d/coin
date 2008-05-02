@@ -30,7 +30,7 @@
 
 /*!
   \class ScXMLInvoke ScXMLInvoke.h Inventor/scxml/ScXMLInvoke.h
-  \brief Implementation of the <invoke> SCXML element.
+  \brief Implementation of the &lt;invoke&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
@@ -55,16 +55,16 @@ ScXMLInvoke::ScXMLInvoke(void)
 
 ScXMLInvoke::~ScXMLInvoke(void)
 {
-  this->setTargetTypeXMLAttr(NULL);
-  this->setSrcXMLAttr(NULL);
-  this->setSrcExprXMLAttr(NULL);
+  this->setTargetTypeAttribute(NULL);
+  this->setSrcAttribute(NULL);
+  this->setSrcExprAttribute(NULL);
 }
 
 void
-ScXMLInvoke::setTargetTypeXMLAttr(const char * targettypestr)
+ScXMLInvoke::setTargetTypeAttribute(const char * targettypestr)
 {
   if (this->targettype &&
-      this->targettype != this->getAttribute("targettype")) {
+      this->targettype != this->getXMLAttribute("targettype")) {
     delete [] this->targettype;
   }
   this->targettype = NULL;
@@ -74,12 +74,12 @@ ScXMLInvoke::setTargetTypeXMLAttr(const char * targettypestr)
   }
 }
 
-// const char * ScXMLInvoke::getTargetTypeXMLAttr(void) const
+// const char * ScXMLInvoke::getTargetTypeAttribute(void) const
 
 void
-ScXMLInvoke::setSrcXMLAttr(const char * srcstr)
+ScXMLInvoke::setSrcAttribute(const char * srcstr)
 {
-  if (this->src && this->src != this->getAttribute("src")) {
+  if (this->src && this->src != this->getXMLAttribute("src")) {
     delete [] this->src;
   }
   this->src = NULL;
@@ -89,12 +89,12 @@ ScXMLInvoke::setSrcXMLAttr(const char * srcstr)
   }
 }
 
-// const char * ScXMLInvoke::getSrcXMLAttr(void) const
+// const char * ScXMLInvoke::getSrcAttribute(void) const
 
 void
-ScXMLInvoke::setSrcExprXMLAttr(const char * srcexprstr)
+ScXMLInvoke::setSrcExprAttribute(const char * srcexprstr)
 {
-  if (this->srcexpr && this->srcexpr != this->getAttribute("srcexpr")) {
+  if (this->srcexpr && this->srcexpr != this->getXMLAttribute("srcexpr")) {
     delete [] this->srcexpr;
   }
   this->srcexpr = NULL;
@@ -104,16 +104,16 @@ ScXMLInvoke::setSrcExprXMLAttr(const char * srcexprstr)
   }
 }
 
-// const char * ScXMLInvoke::getSrcExprXMLAttr(void) const
+// const char * ScXMLInvoke::getSrcExprAttribute(void) const
 
 SbBool
 ScXMLInvoke::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->targettype = const_cast<char *>(this->getAttribute("targettype"));
-  this->src = const_cast<char *>(this->getAttribute("src"));
-  this->srcexpr = const_cast<char *>(this->getAttribute("srcexpr"));
+  this->targettype = const_cast<char *>(this->getXMLAttribute("targettype"));
+  this->src = const_cast<char *>(this->getXMLAttribute("src"));
+  this->srcexpr = const_cast<char *>(this->getXMLAttribute("srcexpr"));
 
   if (!this->targettype) { return FALSE; }
 

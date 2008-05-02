@@ -24,14 +24,14 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLStateBase.h>
-
-#include <vector>
+#include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
 
 class ScXMLTransition;
+class ScXMLInitialP;
 
-class COIN_DLL_API ScXMLInitial : public ScXMLStateBase {
-  typedef ScXMLStateBase inherited;
+class COIN_DLL_API ScXMLInitial : public ScXMLObject {
+  typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLInitial);
 
 public:
@@ -39,17 +39,27 @@ public:
 
   ScXMLInitial(void);
   virtual ~ScXMLInitial(void);
+ 
+  // XML attributes
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
+
+  virtual SbBool handleXMLAttributes(void);
 
   // transition
   virtual void setTransition(ScXMLTransition * transition);
   virtual ScXMLTransition * getTransition(void) const;
 
 protected:
+  char * id;
+
   ScXMLTransition * transitionptr;
 
 private:
   ScXMLInitial(const ScXMLInitial & rhs); // N/A
   ScXMLInitial & operator = (const ScXMLInitial & rhs); // N/A
+
+  SbLazyPimplPtr<ScXMLInitialP> pimpl;
 
 }; // ScXMLInitial
 

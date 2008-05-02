@@ -25,6 +25,7 @@
 
 #include <assert.h>
 #include <algorithm>
+#include <vector>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLState.h>
@@ -36,7 +37,7 @@
 
 /*!
   \class ScXMLDocument ScXMLDocument.h Inventor/scxml/ScXMLDocument.h
-  \brief Implementation of the root <scxml> SCXML element.
+  \brief Implementation of the root &lt;scxml&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
@@ -44,7 +45,14 @@
 
 class ScXMLDocumentP {
 public:
+  std::vector<ScXMLState *> statelist;
+  std::vector<ScXMLState *> parallellist;
+  std::vector<ScXMLFinal *> finallist;
+  // datamodel
+
 };
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_SOURCE(ScXMLDocument);
 
@@ -62,35 +70,38 @@ ScXMLDocument::ScXMLDocument(void)
 
 ScXMLDocument::~ScXMLDocument(void)
 {
-  this->setXMLNSXMLAttr(NULL);
-  this->setVersionXMLAttr(NULL);
-  this->setInitialStateXMLAttr(NULL);
+  this->setXMLNSAttribute(NULL);
+  this->setVersionAttribute(NULL);
+  this->setInitialStateAttribute(NULL);
 
   {
-    std::vector<ScXMLState *>::iterator stateit = this->statelist.begin();
-    while (stateit != this->statelist.end()) {
+    std::vector<ScXMLState *>::iterator stateit =
+      PRIVATE(this)->statelist.begin();
+    while (stateit != PRIVATE(this)->statelist.end()) {
       delete *stateit;
       ++stateit;
     }
-    this->statelist.clear();
+    PRIVATE(this)->statelist.clear();
   }
 
   {
-    std::vector<ScXMLState *>::iterator parallelit = this->parallellist.begin();
-    while (parallelit != this->parallellist.end()) {
+    std::vector<ScXMLState *>::iterator parallelit =
+      PRIVATE(this)->parallellist.begin();
+    while (parallelit != PRIVATE(this)->parallellist.end()) {
       delete *parallelit;
       ++parallelit;
     }
-    this->parallellist.clear();
+    PRIVATE(this)->parallellist.clear();
   }
 
   {
-    std::vector<ScXMLFinal *>::iterator finalit = this->finallist.begin();
-    while (finalit != this->finallist.end()) {
+    std::vector<ScXMLFinal *>::iterator finalit =
+      PRIVATE(this)->finallist.begin();
+    while (finalit != PRIVATE(this)->finallist.end()) {
       delete *finalit;
       ++finalit;
     }
-    this->finallist.clear();
+    PRIVATE(this)->finallist.clear();
   }
 }
 
@@ -112,9 +123,9 @@ ScXMLDocument::isReferenced(void) const
 // *************************************************************************
 
 void
-ScXMLDocument::setXMLNSXMLAttr(const char * xmlnsstr)
+ScXMLDocument::setXMLNSAttribute(const char * xmlnsstr)
 {
-  if (this->xmlns && this->xmlns != this->getAttribute("xmlns")) {
+  if (this->xmlns && this->xmlns != this->getXMLAttribute("xmlns")) {
     delete [] this->xmlns;
   }
   this->xmlns = NULL;
@@ -124,12 +135,12 @@ ScXMLDocument::setXMLNSXMLAttr(const char * xmlnsstr)
   }
 }
 
-// const char * ScXMLDocument::getXMLNSXMLAttr(void) const
+// const char * ScXMLDocument::getXMLNSAttribute(void) const
 
 void
-ScXMLDocument::setVersionXMLAttr(const char * versionstr)
+ScXMLDocument::setVersionAttribute(const char * versionstr)
 {
-  if (this->version && this->version != this->getAttribute("version")) {
+  if (this->version && this->version != this->getXMLAttribute("version")) {
     delete [] this->version;
   }
   this->version = NULL;
@@ -139,13 +150,13 @@ ScXMLDocument::setVersionXMLAttr(const char * versionstr)
   }
 }
 
-// const char * ScXMLDocument::getVersionXMLAttr(void) const
+// const char * ScXMLDocument::getVersionAttribute(void) const
   
 void
-ScXMLDocument::setInitialStateXMLAttr(const char * initialstatestr)
+ScXMLDocument::setInitialStateAttribute(const char * initialstatestr)
 {
   if (this->initialstate &&
-      (this->initialstate != this->getAttribute("initialstate"))) {
+      (this->initialstate != this->getXMLAttribute("initialstate"))) {
     delete [] this->initialstate;
   }
   this->initialstate = NULL;
@@ -155,16 +166,16 @@ ScXMLDocument::setInitialStateXMLAttr(const char * initialstatestr)
   }
 }
 
-// const char * ScXMLDocument::getInitialStateXMLAttr(void) const
+// const char * ScXMLDocument::getInitialStateAttribute(void) const
 
 SbBool
 ScXMLDocument::handleXMLAttributes(void)
 {
   if (!inherited::handleXMLAttributes()) return FALSE;
 
-  this->xmlns = const_cast<char *>(this->getAttribute("xmlns"));
-  this->version = const_cast<char *>(this->getAttribute("version"));
-  this->initialstate = const_cast<char *>(this->getAttribute("initialstate"));
+  this->xmlns = const_cast<char *>(this->getXMLAttribute("xmlns"));
+  this->version = const_cast<char *>(this->getXMLAttribute("version"));
+  this->initialstate = const_cast<char *>(this->getXMLAttribute("initialstate"));
 
   if (!this->referenced && this->initialstate == NULL) {
     // requirement for root document, but not for referenced documents
@@ -176,9 +187,12 @@ ScXMLDocument::handleXMLAttributes(void)
 
 // *************************************************************************
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLState, statelist, State, States);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLState, PRIVATE(this)->statelist, State, States);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLState, parallellist, Parallel, Parallels);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLState, PRIVATE(this)->parallellist, Parallel, Parallels);
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLFinal, finallist, Final, Finals);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLDocument, ScXMLFinal, PRIVATE(this)->finallist, Final, Finals);
 
+// *************************************************************************
+
+#undef PRIVATE

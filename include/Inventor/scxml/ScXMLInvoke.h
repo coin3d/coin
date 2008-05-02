@@ -43,14 +43,14 @@ public:
   virtual ~ScXMLInvoke(void);
 
   // XML attributes
-  virtual void setTargetTypeXMLAttr(const char * id);
-  const char * getTargetTypeXMLAttr(void) const { return this->targettype; }
+  virtual void setTargetTypeAttribute(const char * id);
+  const char * getTargetTypeAttribute(void) const { return this->targettype; }
 
-  virtual void setSrcXMLAttr(const char * id);
-  const char * getSrcXMLAttr(void) const { return this->src; }
+  virtual void setSrcAttribute(const char * id);
+  const char * getSrcAttribute(void) const { return this->src; }
 
-  virtual void setSrcExprXMLAttr(const char * id);
-  const char * getSrcExprXMLAttr(void) const { return this->srcexpr; }
+  virtual void setSrcExprAttribute(const char * id);
+  const char * getSrcExprAttribute(void) const { return this->srcexpr; }
 
   virtual SbBool handleXMLAttributes(void);
 

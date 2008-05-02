@@ -25,6 +25,7 @@
 
 #include <assert.h>
 #include <algorithm>
+#include <vector>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLInvoke.h>
@@ -35,11 +36,19 @@
 
 /*!
   \class ScXMLOnEntry ScXMLOnEntry.h Inventor/scxml/ScXMLOnEntry.h
-  \brief Implementation of the <onentry> SCXML element.
+  \brief Implementation of the &lt;onentry&gt; SCXML element.
 
   \since Coin 3.0
   \ingroup scxml
 */
+
+class ScXMLOnEntryP {
+public:
+  std::vector<ScXMLInvoke *> invokelist;
+
+};
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_SOURCE(ScXMLOnEntry);
 
@@ -56,25 +65,27 @@ ScXMLOnEntry::ScXMLOnEntry(void)
 ScXMLOnEntry::~ScXMLOnEntry(void)
 {
   {
-    std::vector<ScXMLInvoke *>::iterator invokeit = this->invokelist.begin();
-    while (invokeit != this->invokelist.end()) {
+    std::vector<ScXMLInvoke *>::iterator invokeit =
+      PRIVATE(this)->invokelist.begin();
+    while (invokeit != PRIVATE(this)->invokelist.end()) {
       delete *invokeit;
       ++invokeit;
     }
-    this->invokelist.clear();
+    PRIVATE(this)->invokelist.clear();
   }
 }
 
 // *************************************************************************
 // executable content
 
-SCXML_LIST_OBJECT_API_IMPL(ScXMLOnEntry, ScXMLInvoke, invokelist, Invoke, Invokes);
+SCXML_LIST_OBJECT_API_IMPL(ScXMLOnEntry, ScXMLInvoke, PRIVATE(this)->invokelist, Invoke, Invokes);
 
 void
 ScXMLOnEntry::invoke(ScXMLStateMachine * statemachine)
 {
-  std::vector<ScXMLInvoke *>::const_iterator it = this->invokelist.begin();
-  while (it != this->invokelist.end()) {
+  std::vector<ScXMLInvoke *>::const_iterator it =
+    PRIVATE(this)->invokelist.begin();
+  while (it != PRIVATE(this)->invokelist.end()) {
     (*it)->invoke(statemachine);
     ++it;
   }

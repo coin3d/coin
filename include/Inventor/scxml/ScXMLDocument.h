@@ -26,9 +26,7 @@
 
 #include <Inventor/scxml/ScXMLObject.h>
 
-#include <vector>
-
-#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLState;
 class ScXMLFinal;
@@ -48,14 +46,14 @@ public:
   SbBool isReferenced(void) const;
 
   // XML attributes
-  virtual void setXMLNSXMLAttr(const char * xmlns);
-  const char * getXMLNSXMLAttr(void) const { return this->xmlns; }
+  virtual void setXMLNSAttribute(const char * xmlns);
+  const char * getXMLNSAttribute(void) const { return this->xmlns; }
 
-  virtual void setVersionXMLAttr(const char * version);
-  const char * getVersionXMLAttr(void) const { return this->version; }
+  virtual void setVersionAttribute(const char * version);
+  const char * getVersionAttribute(void) const { return this->version; }
   
-  virtual void setInitialStateXMLAttr(const char * initialstate);
-  const char * getInitialStateXMLAttr(void) const { return this->initialstate; }
+  virtual void setInitialStateAttribute(const char * initialstate);
+  const char * getInitialStateAttribute(void) const { return this->initialstate; }
 
   virtual SbBool handleXMLAttributes(void);
 
@@ -87,16 +85,11 @@ protected:
   char * version;
   char * initialstate;
 
-  std::vector<ScXMLState *> statelist;
-  std::vector<ScXMLState *> parallellist;
-  std::vector<ScXMLFinal *> finallist;
-  // datamodel
-
 private:
   ScXMLDocument(const ScXMLDocument & rhs); // N/A
   ScXMLDocument & operator = (const ScXMLDocument & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLDocumentP> pimpl;
+  SbPimplPtr<ScXMLDocumentP> pimpl;
 
 }; // ScXMLDocument
 

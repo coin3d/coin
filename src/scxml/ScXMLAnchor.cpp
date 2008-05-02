@@ -24,6 +24,7 @@
 #include <Inventor/scxml/ScXMLAnchor.h>
 
 #include <assert.h>
+#include <string.h>
 
 #include <Inventor/scxml/ScXML.h>
 
@@ -31,9 +32,10 @@
 
 /*!
   \class ScXMLAnchor ScXMLAnchor.h Inventor/scxml/ScXMLAnchor.h
-  \brief Implementation of the <anchor> SCXML element.
+  \brief Implementation of the &lt;anchor&gt; SCXML element.
 
-  The <anchor> element is not supported yet other than as a dummy state.
+  The &lt;anchor&gt; element is not supported yet other than as a
+  dummy state.
 
   \since Coin 3.0
   \ingroup scxml
@@ -58,14 +60,14 @@ ScXMLAnchor::ScXMLAnchor(void)
 
 ScXMLAnchor::~ScXMLAnchor(void)
 {
-  this->setTypeXMLAttr(NULL);
-  this->setSnapshotXMLAttr(NULL);
+  this->setTypeAttribute(NULL);
+  this->setSnapshotAttribute(NULL);
 }
 
 void
-ScXMLAnchor::setTypeXMLAttr(const char * typestr)
+ScXMLAnchor::setTypeAttribute(const char * typestr)
 {
-  if (this->type && this->type != this->getAttribute("type")) {
+  if (this->type && this->type != this->getXMLAttribute("type")) {
     delete [] this->type;
   }
   this->type = NULL;
@@ -76,9 +78,9 @@ ScXMLAnchor::setTypeXMLAttr(const char * typestr)
 }
 
 void
-ScXMLAnchor::setSnapshotXMLAttr(const char * snapshotstr)
+ScXMLAnchor::setSnapshotAttribute(const char * snapshotstr)
 {
-  if (this->snapshot && this->snapshot != this->getAttribute("snapshot")) {
+  if (this->snapshot && this->snapshot != this->getXMLAttribute("snapshot")) {
     delete [] this->snapshot;
   }
   this->snapshot = NULL;
@@ -91,8 +93,10 @@ ScXMLAnchor::setSnapshotXMLAttr(const char * snapshotstr)
 SbBool
 ScXMLAnchor::handleXMLAttributes(void)
 {
-  this->type = const_cast<char *>(this->getAttribute("type"));
-  this->snapshot = const_cast<char *>(this->getAttribute("snapshot"));
+  if (!inherited::handleXMLAttributes()) return FALSE;
+
+  this->type = const_cast<char *>(this->getXMLAttribute("type"));
+  this->snapshot = const_cast<char *>(this->getXMLAttribute("snapshot"));
 
   if (!this->type) {
     return FALSE;
@@ -100,4 +104,3 @@ ScXMLAnchor::handleXMLAttributes(void)
 
   return TRUE;
 }
-

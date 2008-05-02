@@ -24,7 +24,6 @@
 #include "ScXML.cpp"
 #include "ScXMLObject.cpp"
 #include "ScXMLDocument.cpp"
-#include "ScXMLStateBase.cpp"
 #include "ScXMLState.cpp"
 #include "ScXMLOnEntry.cpp"
 #include "ScXMLOnExit.cpp"
@@ -37,10 +36,10 @@
 #include "ScXMLInvoke.cpp"
 #include "ScXMLFallbackInvoke.cpp"
 #include "ScXMLStateMachine.cpp"
-// datamodel++
 
 #include "SoScXMLEvent.cpp"
 #include "SoScXMLStateMachine.cpp"
 #include "SoScXMLDebugInfoInvoke.cpp"
 #include "SoScXMLScheduleRedrawInvoke.cpp"
 #include "SoScXMLScheduleTimerEventInvoke.cpp"
+
