@@ -83,7 +83,7 @@ public:
     RGBA,
     RGBA2,
     RGBA4,
-    RGB5_A1,	
+    RGB5_A1,
     RGB10_A2,
     RGBA12,
     RGBA16

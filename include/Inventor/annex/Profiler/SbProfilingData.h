@@ -45,7 +45,7 @@ public:
   SbProfilingData(void);
   SbProfilingData(const SbProfilingData & rhs);
   ~SbProfilingData(void);
- 
+
   void setActionType(SoType actiontype);
   SoType getActionType(void) const;
 
@@ -77,12 +77,12 @@ public:
   SbTime getNodeTiming(int idx, unsigned int queryflags = 0) const;
 
   void setNodeFootprint(const SoPath * path, FootprintType type,
-			size_t footprint);
+                        size_t footprint);
   void setNodeFootprint(int idx, FootprintType type, size_t footprint);
   size_t getNodeFootprint(const SoPath * path, FootprintType type,
-			  unsigned int queryflags = 0) const;
+                          unsigned int queryflags = 0) const;
   size_t getNodeFootprint(int idx, FootprintType type,
-			  unsigned int queryflags = 0) const;
+                          unsigned int queryflags = 0) const;
 
   void setNodeFlag(const SoPath * path, NodeFlag flag, SbBool on);
   void setNodeFlag(int idx, NodeFlag flag, SbBool on);
@@ -106,11 +106,11 @@ public:
   // read out pre-categorized data
   void getStatsForTypesKeyList(SbList<SbProfilingNodeTypeKey> & keys_out) const;
   void getStatsForType(SbProfilingNodeTypeKey type,
-		       SbTime & total, SbTime & max, uint32_t & count) const;
+                       SbTime & total, SbTime & max, uint32_t & count) const;
 
   void getStatsForNamesKeyList(SbList<SbProfilingNodeNameKey> & keys_out) const;
   void getStatsForName(SbProfilingNodeNameKey name,
-		       SbTime & total, SbTime & max, uint32_t & count) const;
+                       SbTime & total, SbTime & max, uint32_t & count) const;
 
   // statistics management
   void reset(void);
@@ -140,9 +140,9 @@ private:
   int getIndexCreate(const SoFullPath * path, int pathlen);
   int getIndexNoCreate(const SoPath * path, int pathlen) const;
   int getIndexForwardCreate(const SoFullPath * path, int pathlen,
-			    int parentindex);
+                            int parentindex);
   int getIndexForwardNoCreate(const SoFullPath * path, int pathlen,
-			      int parentindex) const;
+                              int parentindex) const;
 
 }; // SbProfilingData
 

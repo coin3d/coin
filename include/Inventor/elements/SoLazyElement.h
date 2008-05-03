@@ -228,7 +228,7 @@ protected:
   virtual void setPackedElt(SoNode * node, int32_t numcolors,
                             const uint32_t * colors, const SbBool packedtransparency);
   virtual void setColorIndexElt(SoNode * node, int32_t numindices,
-                                const int32_t * indices);	
+                                const int32_t * indices);
   virtual void setTranspElt(SoNode * node, int32_t numtransp,
                             const float * transp, SoColorPacker * packer);
 

@@ -140,14 +140,14 @@ public:
 
   void addMode(SoNavigationMode * mode);
   void addModeTransition(SoNavigationMode * mode,
-			 TransitionType type,
-			 const SoEvent * trigger = NULL,
-			 const SoEvent * condition = NULL);
+                         TransitionType type,
+                         const SoEvent * trigger = NULL,
+                         const SoEvent * condition = NULL);
   void addModeTransition(SoNavigationMode * mode1,
-			 SoNavigationMode * mode2,
-			 TransitionType type,
-			 const SoEvent * trigger,
-			 const SoEvent * condition = NULL);
+                         SoNavigationMode * mode2,
+                         TransitionType type,
+                         const SoEvent * trigger,
+                         const SoEvent * condition = NULL);
 
 protected:
   friend class SoSceneManager;

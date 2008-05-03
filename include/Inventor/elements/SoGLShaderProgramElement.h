@@ -40,7 +40,7 @@ public:
 
   static void enable(SoState * const state, const SbBool onoff);
   static void set(SoState *const state, SoNode *const node,
-		  SoGLShaderProgram * program);
+                          SoGLShaderProgram * program);
   static SoGLShaderProgram * get(SoState * state);
 
   virtual void push(SoState *);

@@ -92,7 +92,7 @@ public:
   virtual void setPackedElt(SoNode * node, int32_t numcolors,
                             const uint32_t * colors, const SbBool packedtransparency);
   virtual void setColorIndexElt(SoNode * node, int32_t numindices,
-                                const int32_t * indices);	
+                                const int32_t * indices);
   virtual void setTranspElt(SoNode * node, int32_t numtransp,
                             const float * transp, SoColorPacker * packer);
 
@@ -134,7 +134,7 @@ public:
                              SoGLLazyElement::GLState * childpoststate);
 
   void updateColorVBO(SoVBO * vbo);
-  
+
 protected:
   virtual void lazyDidSet(uint32_t mask);
   virtual void lazyDidntSet(uint32_t mask);
@@ -158,7 +158,7 @@ private:
   void sendAlphaTest(const SbBool onoff) const;
   void initGL(void);
   void packColors(SoColorPacker * packer) const;
- 
+
   uint32_t didsetbitmask;
   uint32_t didntsetbitmask;
   uint32_t cachebitmask;
